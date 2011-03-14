@@ -13,7 +13,9 @@
 		</activity>
 		<activity android:name=".plugin.mainscreen.MainscreenConfiguration"></activity>
 		<activity android:name=".plugin.news.NewsConfiguration"></activity>
-		<activity android:name=".plugin.news.NewsDisplay"></activity>
+		<activity android:name=".plugin.news.NewsDisplay"
+                  android:configChanges="keyboardHidden|orientation">
+        </activity>
 
 	</application>
 	

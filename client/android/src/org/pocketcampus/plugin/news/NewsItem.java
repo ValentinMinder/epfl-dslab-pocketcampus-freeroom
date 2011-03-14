@@ -18,6 +18,20 @@ public class NewsItem {
 	
 	public NewsItem() { }
 	
+	
+	
+	public NewsItem(String title_, String description_, String link_,
+			String pubDate_, String image_) {
+		super();
+		this.title_ = title_;
+		this.description_ = description_;
+		this.link_ = link_;
+		this.pubDate_ = pubDate_;
+		this.image_ = image_;
+	}
+
+
+
 	public NewsItem clone() {
 		NewsItem fd = new NewsItem();
 		fd.title_ = this.title_;
