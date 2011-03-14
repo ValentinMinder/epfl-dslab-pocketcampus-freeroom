@@ -1,13 +1,16 @@
 package org.pocketcampus.plugin.news;
 
-import org.pocketcampus.core.ConfigurationBase;
-import org.pocketcampus.core.DisplayBase;
-import org.pocketcampus.core.Icon;
-import org.pocketcampus.core.Id;
-import org.pocketcampus.core.PluginBase;
-import org.pocketcampus.core.VersionNumber;
+import org.pocketcampus.core.plugin.ConfigurationBase;
+import org.pocketcampus.core.plugin.DisplayBase;
+import org.pocketcampus.core.plugin.Icon;
+import org.pocketcampus.core.plugin.Id;
+import org.pocketcampus.core.plugin.PluginBase;
+import org.pocketcampus.core.plugin.VersionNumber;
+import org.pocketcampus.core.service.infoprovider.IInfoProviderService;
+import org.pocketcampus.core.service.infoprovider.Informations;
+import org.pocketcampus.core.service.infoprovider.RefreshRate;
 
-public class NewsPlugin extends PluginBase {
+public class NewsPlugin extends PluginBase implements IInfoProviderService {
 
 	@Override
 	public Icon getIcon() {
@@ -37,5 +40,17 @@ public class NewsPlugin extends PluginBase {
 	@Override
 	public Class<? extends DisplayBase> getDisplayClass() {
 		return NewsDisplay.class;
+	}
+
+	@Override
+	public Informations getInformations(int maxNb) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RefreshRate refreshRate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

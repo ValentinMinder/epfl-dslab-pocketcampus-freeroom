@@ -3,10 +3,10 @@ package org.pocketcampus.plugin.mainscreen;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.Core;
-import org.pocketcampus.core.DisplayBase;
-import org.pocketcampus.core.IInfoProviderService;
-import org.pocketcampus.core.PluginDescriptor;
+import org.pocketcampus.core.plugin.Core;
+import org.pocketcampus.core.plugin.DisplayBase;
+import org.pocketcampus.core.plugin.PluginDescriptor;
+import org.pocketcampus.core.service.infoprovider.IInfoProviderService;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class MainscreenDisplay extends DisplayBase {
 		for (final PluginDescriptor plugin : plugins_) {
 			// Title
 			String informationProvider = "";
-			if(plugin.getDisplayClass()!=null && IInfoProviderService.class.isAssignableFrom(plugin.getDisplayClass())) {
+			if(IInfoProviderService.class.isAssignableFrom(plugin.getBaseClass())) {
 				informationProvider = ", information provider";
 			}
 			

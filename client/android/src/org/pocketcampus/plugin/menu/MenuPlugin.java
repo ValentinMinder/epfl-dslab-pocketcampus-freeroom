@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.menu;
 
-import org.pocketcampus.core.ConfigurationBase;
-import org.pocketcampus.core.DisplayBase;
-import org.pocketcampus.core.Icon;
-import org.pocketcampus.core.Id;
-import org.pocketcampus.core.PluginBase;
-import org.pocketcampus.core.VersionNumber;
+import org.pocketcampus.core.plugin.ConfigurationBase;
+import org.pocketcampus.core.plugin.DisplayBase;
+import org.pocketcampus.core.plugin.Icon;
+import org.pocketcampus.core.plugin.Id;
+import org.pocketcampus.core.plugin.PluginBase;
+import org.pocketcampus.core.plugin.VersionNumber;
 
 public class MenuPlugin extends PluginBase {
 
