@@ -11,9 +11,16 @@ package org.pocketcampus.core.service.infoprovider;
  */
 
 public interface IInfoProviderService {
-	// refresh rate
+	/**
+	 * Rate at which the informations should be retrieved.
+	 * @return
+	 */
 	public RefreshRate refreshRate();
 	
-	// what to display
+	/**
+	 * Retrieves the informations.
+	 * @param maxNb
+	 * @return
+	 */
 	public Informations getInformations(int maxNb);
 }
