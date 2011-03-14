@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.news;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A class that describes a news item, to be displayed by the News plugins
  * 
@@ -43,6 +46,17 @@ public class NewsItem {
 	}
 	
 	public String getImage() {
+		//if we don't have any images, we try to find an <img> tag inside the description
+		if(image_ == null && description_ != null) {
+			Pattern imagePattern = Pattern.compile("<img.*src=\"?(\\S+).*>");
+			Matcher m = imagePattern.matcher(description_);
+			if(m.find()) {
+				String img = m.group(1);
+				if(img.charAt(img.length() - 1) == '\"')
+					img = img.substring(0, img.length() - 1);
+				image_ = img;
+			}
+		}
 		return image_;
 	}
 	
