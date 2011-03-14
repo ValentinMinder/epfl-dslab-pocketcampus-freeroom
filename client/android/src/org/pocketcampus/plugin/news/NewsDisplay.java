@@ -14,13 +14,12 @@ public class NewsDisplay extends DisplayBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.news_list);
 		
 		ListView l = (ListView) findViewById(R.id.news_list_list);
 		NewsAdapter a = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
-		//a.setDebugData();
 		l.setAdapter(a);
+		a.setDebugData();
 		
 	}
 	
@@ -30,4 +29,6 @@ public class NewsDisplay extends DisplayBase {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
+	
+	
 }

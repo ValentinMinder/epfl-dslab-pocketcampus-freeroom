@@ -32,7 +32,7 @@ public class LoaderImageView extends LinearLayout{
 	
 	/**
 	 * This is used when creating the view in XML
-	 * To have an image load in XML use the tag 'image="http://developer.android.com/images/dialog_buttons.png"'
+	 * To have an image load in XML use the tag 'src="http://developer.android.com/images/dialog_buttons.png"'
 	 * Replacing the url with your desired image
 	 * Once you have instantiated the XML view you can call
 	 * setImageDrawable(url) to change the image
@@ -41,7 +41,7 @@ public class LoaderImageView extends LinearLayout{
 	 */
 	public LoaderImageView(final Context context, final AttributeSet attrSet) {
 		super(context, attrSet);
-		final String url = attrSet.getAttributeValue(null, "image");
+		final String url = attrSet.getAttributeValue(null, "src");
 		if(url != null){
 			instantiate(context, url);
 		} else {

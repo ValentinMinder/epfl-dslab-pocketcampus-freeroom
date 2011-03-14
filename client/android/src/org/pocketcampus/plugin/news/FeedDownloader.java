@@ -16,24 +16,33 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	@Override
 	protected List<NewsItem> doInBackground(String... params) {
 		
-		if(params.length != 1) {
+		List<NewsItem> list = new ArrayList<NewsItem>();
+		
+		if(params.length < 1) {
 			return null;
 		}
 		
-		RssParser parser = new RssParser(params[0]);
+		RssParser parser;
+		Feed feed;
+		for(String feedUrl : params) {
+			parser = new RssParser(feedUrl);
+			
+			parser.parse();
+			feed = parser.getFeed();
+			
+			list.addAll(feed.getItems());
+		}
 		
-		parser.parse();
-		Feed feed = parser.getFeed();
-		
-		return feed.getItems();
+		return list;
 	}
-
+	
 	@Override
 	protected void onPostExecute(List<NewsItem> result) {
 		adapter_.clear();
 		for(NewsItem item : result) {
 			adapter_.add(item);
 		}
+		adapter_.dataSetChanged();
 	}
 
 
