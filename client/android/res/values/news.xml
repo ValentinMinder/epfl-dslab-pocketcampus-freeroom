@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news_preferences_title">RSS choice</string>
+    
+    <string-array name="news_feeds_url">
+        <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
+        <item>http://feeds.nytimes.com/nyt/rss/HomePage</item>
+    </string-array>
+    <string-array name="news_feeds_name">
+        <item>EPFL</item>
+        <item>New York Times</item>
+    </string-array>
+</resources>

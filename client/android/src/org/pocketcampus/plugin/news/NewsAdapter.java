@@ -1,13 +1,14 @@
 package org.pocketcampus.plugin.news;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.pocketcampus.R;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +28,22 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 		this.setNotifyOnChange(false);
 		
 		mInflater_ = LayoutInflater.from(context);
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		
+		String[] urls = context.getResources().getStringArray(R.array.news_feeds_url);
+		
+		ArrayList<String> urlsToDownload = new ArrayList<String>();
+		
+		for(String url: urls) {
+			if(prefs.getBoolean("load_rss" + url, true)) {
+				urlsToDownload.add(url);
+			}
+		}
 		
 		downloader = new FeedDownloader(this);
-		downloader.execute("http://actu.epfl.ch/feeds/rss/mediacom/fr/", "http://feeds.nytimes.com/nyt/rss/HomePage");
+		//downloader.execute("http://actu.epfl.ch/feeds/rss/mediacom/fr/", "http://feeds.nytimes.com/nyt/rss/HomePage");
+		downloader.execute(urlsToDownload.toArray(new String[0]));
 	}
 	
 	public void setDebugData() {

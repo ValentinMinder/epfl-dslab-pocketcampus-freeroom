@@ -34,7 +34,7 @@ public class NewsPlugin extends PluginBase implements IInfoProviderService {
 
 	@Override
 	public Class<? extends ConfigurationBase> getConfigurationClass() {
-		return null;
+		return NewsConfiguration.class;
 	}
 
 	@Override
