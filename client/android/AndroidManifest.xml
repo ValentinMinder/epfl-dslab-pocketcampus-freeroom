@@ -16,4 +16,8 @@
 		<activity android:name=".plugin.news.NewsDisplay"></activity>
 
 	</application>
+	
+	
+		
+	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>
