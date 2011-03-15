@@ -3,6 +3,8 @@ package org.pocketcampus.plugin.news;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * A class that describes a news item, to be displayed by the News plugins
  * 
@@ -18,6 +20,8 @@ public class NewsItem {
 	private String link_;
 	private String pubDate_;
 	private String image_;
+	
+	private Drawable imageDrawable_;
 	
 	public NewsItem() { }
 	
@@ -45,7 +49,7 @@ public class NewsItem {
 		return fd;
 	}
 	
-	public String getImage() {
+	public String getImageUri() {
 		//if we don't have any images, we try to find an <img> tag inside the description
 		if(image_ == null && description_ != null) {
 			Pattern imagePattern = Pattern.compile("<img.*src=\"?(\\S+).*>");
@@ -94,6 +98,14 @@ public class NewsItem {
 
 	public void setPubDate(String pubDate) {
 		this.pubDate_ = pubDate;
+	}
+
+	public Drawable getImageDrawable() {
+		return imageDrawable_;
+	}
+
+	public void setImageDrawable(Drawable imageDrawable) {
+		this.imageDrawable_ = imageDrawable;
 	}
 	
 }

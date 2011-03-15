@@ -20,7 +20,7 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 	
 
 	private LayoutInflater mInflater_;
-	private FeedDownloader downloader;
+	private FeedDownloader downloader_;
 
 	public NewsAdapter(Context context, int textViewResourceId, List<NewsItem> items) {
 		super(context, textViewResourceId);
@@ -41,9 +41,8 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 			}
 		}
 		
-		downloader = new FeedDownloader(this);
-		//downloader.execute("http://actu.epfl.ch/feeds/rss/mediacom/fr/", "http://feeds.nytimes.com/nyt/rss/HomePage");
-		downloader.execute(urlsToDownload.toArray(new String[0]));
+		downloader_ = new FeedDownloader(this);
+		downloader_.execute(urlsToDownload.toArray(new String[0]));
 	}
 	
 	public void setDebugData() {
@@ -63,24 +62,19 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 			v = mInflater_.inflate(R.layout.news_newsentry, null);
 		}
 		
-		final NewsItem r = getItem(position);
+		final NewsItem newsItem = getItem(position);
 		
-		if (r != null) {
+		if (newsItem != null) {
 			TextView tv;
 			
 			tv = (TextView) v.findViewById(R.id.news_item_title);
-			tv.setText(r.getTitle());
+			tv.setText(newsItem.getTitle());
 			
 			tv = (TextView) v.findViewById(R.id.news_item_description);
-			tv.setText(r.getDescription());
+			tv.setText(newsItem.getDescription());
 			
-			LoaderImageView liv = (LoaderImageView) v.findViewById(R.id.news_item_image);
-			String imageUri = r.getImage();
-			if(imageUri != null) {
-				liv.setImageDrawable(imageUri);
-			} else {
-				liv.setNoImage();
-			}
+			LoaderNewsImageView liv = (LoaderNewsImageView) v.findViewById(R.id.news_item_image);
+			liv.setImageDrawable(newsItem);
 		}
 		
 		return v;

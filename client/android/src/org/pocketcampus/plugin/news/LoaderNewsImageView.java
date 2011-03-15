@@ -6,8 +6,8 @@ import java.net.MalformedURLException;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Handler.Callback;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -15,20 +15,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-/**
- * Free for anyone to use, just say thanks and share :-)
- * @author Blundell
- *
- */
-public class LoaderImageView extends LinearLayout {
+public class LoaderNewsImageView extends LinearLayout {
+	
 
 	private static final int COMPLETE = 0;
 	private static final int FAILED = 1;
 
-	private Context mContext;
-	private Drawable mDrawable;
-	private ProgressBar mSpinner;
-	private ImageView mImage;
+	private Context mContext_;
+	private Drawable mDrawable_;
+	private ProgressBar mSpinner_;
+	private ImageView mImage_;
+	
+	private NewsItem newsItem_;
 	
 	/**
 	 * This is used when creating the view in XML
@@ -39,7 +37,7 @@ public class LoaderImageView extends LinearLayout {
 	 * @param context
 	 * @param attrSet
 	 */
-	public LoaderImageView(final Context context, final AttributeSet attrSet) {
+	public LoaderNewsImageView(final Context context, final AttributeSet attrSet) {
 		super(context, attrSet);
 		final String url = attrSet.getAttributeValue(null, "src");
 		if(url != null){
@@ -56,7 +54,7 @@ public class LoaderImageView extends LinearLayout {
 	 * @param context the Activity context
 	 * @param imageUrl the Image URL you wish to load
 	 */
-	public LoaderImageView(final Context context, final String imageUrl) {
+	public LoaderNewsImageView(final Context context, final String imageUrl) {
 		super(context);
 		instantiate(context, imageUrl);		
 	}
@@ -67,80 +65,102 @@ public class LoaderImageView extends LinearLayout {
 	 *  get the required effects you want
 	 */
 	private void instantiate(final Context context, final String imageUrl) {
-		mContext = context;
+		mContext_ = context;
 		
-		mImage = new ImageView(mContext);
-		mImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		mImage_ = new ImageView(mContext_);
+		mImage_.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		
-		mSpinner = new ProgressBar(mContext);
-		mSpinner.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		mSpinner.setPadding(5, 5, 5, 5);
+		mSpinner_ = new ProgressBar(mContext_);
+		mSpinner_.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		mSpinner_.setPadding(5, 5, 5, 5);
 			
-		mSpinner.setIndeterminate(true);
+		mSpinner_.setIndeterminate(true);
 		
-		addView(mSpinner);
-		addView(mImage);
+		addView(mSpinner_);
+		addView(mImage_);
 		
 		if(imageUrl != null){
 			setImageDrawable(imageUrl);
 		}
 	}
 
+
 	/**
 	 * Set's the view's drawable, this uses the internet to retrieve the image
 	 * don't forget to add the correct permissions to your manifest
 	 * @param imageUrl the url of the image you wish to load
 	 */
-	public void setImageDrawable(final String imageUrl) {
-		mDrawable = null;
-		mSpinner.setVisibility(View.VISIBLE);
-		mImage.setVisibility(View.GONE);
+	private void setImageDrawable(final String imageUrl) {
+		mDrawable_ = null;
+		mSpinner_.setVisibility(View.VISIBLE);
+		mImage_.setVisibility(View.GONE);
 		new Thread(){
 			public void run() {
 				try {
-					Log.d(LoaderImageView.class.toString(), "Loading " + imageUrl);
-					mDrawable = getDrawableFromUrl(imageUrl);
-					Log.d(LoaderImageView.class.toString(), "Loaded " + imageUrl);
-					imageLoadedHandler.sendEmptyMessage(COMPLETE);
+					mDrawable_ = getDrawableFromUrl(imageUrl);
+					imageLoadedHandler_.sendEmptyMessage(COMPLETE);
 				} catch (MalformedURLException e) {
-					imageLoadedHandler.sendEmptyMessage(FAILED);
-					Log.d(LoaderImageView.class.toString(), "Could not load " + imageUrl);
+					imageLoadedHandler_.sendEmptyMessage(FAILED);
 				} catch (IOException e) {
-					imageLoadedHandler.sendEmptyMessage(FAILED);
-					Log.d(LoaderImageView.class.toString(), "Could not load " + imageUrl);
+					imageLoadedHandler_.sendEmptyMessage(FAILED);
 				}
 			};
 		}.start();
 	}
 
+	public void setImageDrawable(NewsItem newsItem) {
+		this.newsItem_ = newsItem;
+		Drawable draw = newsItem.getImageDrawable();
+		
+		if(draw != null) {
+			setImage(draw);
+		} else {
+			String imageUri = newsItem.getImageUri();
+			if(imageUri != null) {
+				this.setImageDrawable(imageUri);
+			} else {
+				this.setNoImage();
+			}
+		}
+	}
+
 
 	public void setNoImage() {
-		mDrawable = null;
-		mSpinner.setVisibility(View.GONE);
-		mImage.setVisibility(View.GONE);
+		mDrawable_ = null;
+		mSpinner_.setVisibility(View.GONE);
+		mImage_.setVisibility(View.GONE);
 	}
 	
 	/**
 	 * Callback that is received once the image has been downloaded
 	 */
-	private final Handler imageLoadedHandler = new Handler(new Callback() {
+	private final Handler imageLoadedHandler_ = new Handler(new Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
-			case COMPLETE:
-				mImage.setImageDrawable(mDrawable);
-				mImage.setVisibility(View.VISIBLE);
-				mSpinner.setVisibility(View.GONE);
-				break;
-			case FAILED:
-			default:
-				// Could change image here to a 'failed' image
-				// otherwise will just keep on spinning
-				break;
+				case COMPLETE:
+					setImage(mDrawable_);
+	
+					if(newsItem_ != null) {
+						newsItem_.setImageDrawable(mDrawable_);
+					}
+					
+					break;
+				case FAILED:
+				default:
+					// Could change image here to a 'failed' image
+					// otherwise will just keep on spinning
+					break;
 			}
 			return true;
 		}		
 	});
+	
+	private void setImage(Drawable drawable) {
+		mImage_.setImageDrawable(drawable);
+		mImage_.setVisibility(View.VISIBLE);
+		mSpinner_.setVisibility(View.GONE);
+	}
 
 	/**
 	 * Pass in an image url to get a drawable object
@@ -151,5 +171,5 @@ public class LoaderImageView extends LinearLayout {
 	private static Drawable getDrawableFromUrl(final String url) throws IOException, MalformedURLException {
 		return Drawable.createFromStream(((java.io.InputStream)new java.net.URL(url).getContent()), url);
 	}
-	
+
 }
