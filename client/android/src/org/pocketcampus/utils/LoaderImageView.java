@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.news;
+package org.pocketcampus.utils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
