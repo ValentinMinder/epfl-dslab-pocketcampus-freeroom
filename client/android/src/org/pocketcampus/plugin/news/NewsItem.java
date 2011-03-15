@@ -79,6 +79,59 @@ public class NewsItem {
 	public String getDescription() {
 		return description_;
 	}
+	
+	public String getDescriptionNoHtml() { //XXX maybe we want to have only a subsequence of the descritpion
+		return htmlToText(description_);
+	}
+	
+	/**
+	 * Convert the String containing html tags and characters into text only string.
+	 * @param s the string in html format.
+	 * @return the string in text format.
+	 */
+	private String htmlToText(String s) {
+		//XXX the function should be somewhere else
+		//XXX maybe there is a more efficient way to do this
+		s = s.replaceAll("\\<.*?\\>", "");
+		s = s.replaceAll("&amp;", "&");
+		s = s.replaceAll("&amp;", "&");
+		s = s.replaceAll("&rsquo;", "'");
+		s = s.replaceAll("&eacute;", "é");
+		s = s.replaceAll("&egrave;", "è");
+		s = s.replaceAll("&acirc;", "â");
+		s = s.replaceAll("&agrave;", "à");
+		s = s.replaceAll("&icirc;", "î");
+		s = s.replaceAll("&raquo;", "»");
+		s = s.replaceAll("&laquo;", "«");
+		s = s.replaceAll("&ucirc;", "û");
+		s = s.replaceAll("&ecirc;", "ê");
+		s = s.replaceAll("&oelig;", "œ");
+		s = s.replaceAll("&ocirc;", "ô");
+		s = s.replaceAll("&ccedil;", "ç");
+		s = s.replaceAll("&nbsp;", " ");
+		s = s.replaceAll("&ugrave;", "ù");
+		s = s.replaceAll("&ndash;", "-");
+		s = s.replaceAll("&iuml;", "ï");
+		s = s.replaceAll("&quot;", "\"");
+		s = s.replaceAll("&hellip;", "...");
+		s = s.replaceAll("&uuml;", "ü");
+		s = s.replaceAll("&euml;", "ë");
+		s = s.replaceAll("&deg;", "°");
+		s = s.replaceAll("&ldquo;", "\"");
+		s = s.replaceAll("&rdquo;", "\"");
+		s = s.replaceAll("&auml;", "ä");
+		s = s.replaceAll("&lt;", "<");
+		s = s.replaceAll("&gt;", ">");
+		s = s.replaceAll("&aacute;", "á");
+		s = s.replaceAll("&bull;", "·");
+		s = s.replaceAll("&Agrave;", "À");
+		s = s.replaceAll("&ouml;", "ö");
+		s = s.replaceAll("&copy;", "©");
+		s = s.replaceAll("&thinsp;", " ");
+		s = s.replaceAll("&Eacute;", "É");		
+		s = s.replaceAll("\\<.*?\\>", "");
+		return s;
+	}
 
 	public void setDescription(String description) {
 		this.description_ = description;

@@ -29,8 +29,8 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 			
 			parser.parse();
 			feed = parser.getFeed();
-			
-			list.addAll(feed.getItems());
+			if(feed != null)
+				list.addAll(feed.getItems());
 		}
 		
 		return list;

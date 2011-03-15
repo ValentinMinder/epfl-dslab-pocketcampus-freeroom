@@ -80,7 +80,7 @@ public class RssParser extends DefaultHandler {
 
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
-		// XXX use of qName or localName?
+		// XXX use of qName or localName? may differ on different Android platform (http://mmmyddd.freeshell.net/blog/Computer/Android/saxcompatibility)
 
 		if (localName.equalsIgnoreCase("channel")) {
 			this.rssFeed_ = new Feed();
