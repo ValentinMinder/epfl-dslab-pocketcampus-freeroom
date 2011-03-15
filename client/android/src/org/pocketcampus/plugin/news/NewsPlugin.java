@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.news;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.ConfigurationBase;
 import org.pocketcampus.core.plugin.DisplayBase;
 import org.pocketcampus.core.plugin.Icon;
@@ -14,7 +15,7 @@ public class NewsPlugin extends PluginBase implements IInfoProviderService {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon();
+		return new Icon(R.drawable.menu_news);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import org.pocketcampus.core.plugin.VersionNumber;
 public class MainscreenPlugin extends PluginBase {
 	@Override
 	public Icon getIcon() {
-		return new Icon();
+		return new Icon(-1);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.pocketcampus.core.plugin;
 
+
 /**
  * Represents the description of a plugin.
  * 
@@ -65,5 +66,9 @@ public class PluginDescriptor {
 	
 	public Class<? extends ConfigurationBase> getConfigurationClass() {
 		return configurationClass_;
+	}
+
+	public Icon getIcon() {
+		return icon_;
 	}
 }
