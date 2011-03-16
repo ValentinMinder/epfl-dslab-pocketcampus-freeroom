@@ -59,7 +59,7 @@ public class MainscreenDisplay extends DisplayBase {
 
 			// Configure button
 			Button configureButton = new Button(ctx_);
-			configureButton.setText("configure " + plugin.getId());
+			configureButton.setText(getString(R.string.mainscreen_configure)+ " " + plugin.getId());
 			
 			if(plugin.getConfigurationClass()!=null) {
 				configureButton.setOnClickListener(new View.OnClickListener() {
@@ -75,13 +75,3 @@ public class MainscreenDisplay extends DisplayBase {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-

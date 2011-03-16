@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.menu;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.ConfigurationBase;
 import org.pocketcampus.core.plugin.DisplayBase;
 import org.pocketcampus.core.plugin.Icon;
@@ -23,20 +24,17 @@ public class MenuPlugin extends PluginBase {
 
 	@Override
 	public Icon getIcon() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Icon(R.drawable.menu_menu);
 	}
 
 	@Override
 	public Id getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Id("menus");
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Food Service";
 	}
 
 	@Override
