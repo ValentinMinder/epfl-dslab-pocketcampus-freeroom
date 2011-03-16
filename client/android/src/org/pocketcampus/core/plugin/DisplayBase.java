@@ -12,15 +12,7 @@ package org.pocketcampus.core.plugin;
 
 public interface DisplayBase {
 	/**
-	 * Reference to the base plugin, to access the current plugin's name id etc.
+	 * Reference to the base plugin.
 	 */
 	public static PluginBase plugin_ = null;
-	
-	/**
-	 * Provides a custom Request which will talk to the plugin servlet.
-	 * @return
-	 */
-//	public Request newRequest() {
-//		return new Request(plugin_.getId());
-//	}
 }

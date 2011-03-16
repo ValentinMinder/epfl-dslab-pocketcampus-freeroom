@@ -2,7 +2,9 @@ package org.pocketcampus.plugin.menu;
 
 import org.pocketcampus.core.plugin.DisplayBase;
 
-public class MenuDisplay extends DisplayBase {
+import android.app.TabActivity;
+
+public class MenuDisplay extends TabActivity implements DisplayBase {
 /*
 	private String ownerPackage_ = MenuClassesData.getInstance().getOwnerPackage();
 	private String[] tabActivities = MenuClassesData.getInstance().getTabClasses();

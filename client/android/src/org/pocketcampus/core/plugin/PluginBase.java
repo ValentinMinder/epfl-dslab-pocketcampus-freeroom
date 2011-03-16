@@ -1,5 +1,7 @@
 package org.pocketcampus.core.plugin;
 
+import org.pocketcampus.core.communication.RequestFactory;
+
 /**
  * Base class for the main plugin class, provides the info necessary for them to be handled by the core.
  * 
@@ -12,7 +14,7 @@ package org.pocketcampus.core.plugin;
 public abstract class PluginBase {
 
 	/**
-	 * Setups plugin
+	 * Default constructor which setups plugin.
 	 */
 	public PluginBase() {
 		try {
@@ -28,31 +30,68 @@ public abstract class PluginBase {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
+	//-------------------------------------------------------
+	// Gives access to the Request classes.
+	//-------------------------------------------------------
+	
+	public RequestFactory getRequestFactory() {
+		return new RequestFactory(getId());
+	}
+	
+	
+	
+	//-------------------------------------------------------
+	// Abstract methods to get informations about the plugin.
+	//-------------------------------------------------------
+	
+	/**
+	 * Creates a plugin descriptor for this plugin from all the abstract classes.
+	 */
+	protected PluginDescriptor getPluginDescriptor() {
+		return new PluginDescriptor(getName(), getId(), getVersion(), getIcon(), getClass(), getDisplayClass(), getConfigurationClass());
+	}
+	
 	/**
 	 * "human readable" name
 	 */
 	public abstract String getName();
 
-	// unique ID
+	/**
+	 * unique ID
+	 * @return
+	 */
 	public abstract Id getId();
 
-	// version number
+	/**
+	 * version number
+	 * @return
+	 */
 	public abstract VersionNumber getVersion();
 
-	// intent used to display the plugin
+	/**
+	 * intent used to display the plugin
+	 * @return
+	 */
 	public abstract Class<? extends DisplayBase> getDisplayClass();
 
-	// intent used to configure the plugin
+	/**
+	 * intent used to configure the plugin
+	 * @return
+	 */
 	public abstract Class<? extends ConfigurationBase> getConfigurationClass();
 
-	// icon
+	/**
+	 * icon
+	 * @return
+	 */
 	public abstract Icon getIcon();
 
-	// plugin descriptor
-	protected PluginDescriptor getPluginDescriptor() {
-		return new PluginDescriptor(getName(), getId(), getVersion(), getIcon(), getClass(), getDisplayClass(), getConfigurationClass());
-	}
+	/**
+	 * plugin descriptor 
+	 * @return
+	 */
 }
 
 

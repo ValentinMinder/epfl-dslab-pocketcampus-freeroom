@@ -5,10 +5,11 @@ import org.pocketcampus.core.plugin.ConfigurationBase;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 
-public class NewsConfiguration extends ConfigurationBase {
+public class NewsConfiguration extends PreferenceActivity implements ConfigurationBase {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

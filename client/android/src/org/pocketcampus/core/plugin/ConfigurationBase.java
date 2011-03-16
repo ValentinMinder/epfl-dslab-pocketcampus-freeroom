@@ -1,6 +1,5 @@
 package org.pocketcampus.core.plugin;
 
-import android.preference.PreferenceActivity;
 
 /**
  * Base class for the Configuration class of the plugins.
@@ -13,7 +12,10 @@ import android.preference.PreferenceActivity;
  * 
  */
 
-public class ConfigurationBase extends PreferenceActivity {
-	public static Class<? extends PluginBase> plugin_;
+public interface ConfigurationBase {
+	/**
+	 * Reference to the base plugin.
+	 */
+	public static PluginBase plugin_ = null;
 	
 }
