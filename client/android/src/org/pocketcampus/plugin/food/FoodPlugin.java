@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.menu;
+package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.ConfigurationBase;
@@ -8,28 +8,28 @@ import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.VersionNumber;
 
-public class MenuPlugin extends PluginBase {
+public class FoodPlugin extends PluginBase {
 
 	@Override
 	public Class<? extends ConfigurationBase> getConfigurationClass() {
-		return MenuConfiguration.class;
+		return FoodConfiguration.class;
 		//return null;
 	}
 
 	@Override
 	public Class<? extends DisplayBase> getDisplayClass() {
-		return MenuDisplay.class;
+		return FoodDisplay.class;
 		//		return null;
 	}
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.menu_menu);
+		return new Icon(R.drawable.menu_food);
 	}
 
 	@Override
 	public Id getId() {
-		return new Id("menus");
+		return new Id("food");
 	}
 
 	@Override

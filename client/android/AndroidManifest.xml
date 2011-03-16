@@ -21,8 +21,8 @@
 		</activity>
         
         <!-- Food Plugin -->
-        <activity android:name=".plugin.menu.MenuConfiguration"></activity>
-        <activity android:name=".plugin.menu.MenuDisplay"></activity>
+        <activity android:name=".plugin.food.FoodConfiguration"></activity>
+        <activity android:name=".plugin.food.FoodDisplay"></activity>
         
 	</application>
 		

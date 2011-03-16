@@ -1,16 +1,18 @@
-package org.pocketcampus.plugin.menu;
+package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.core.plugin.DisplayBase;
 
 import android.app.TabActivity;
+import android.os.Bundle;
+import android.widget.TabHost;
 
-public class MenuDisplay extends TabActivity implements DisplayBase {
-/*
-	private String ownerPackage_ = MenuClassesData.getInstance().getOwnerPackage();
-	private String[] tabActivities = MenuClassesData.getInstance().getTabClasses();
+public class FoodDisplay extends TabActivity implements DisplayBase {
+
+	private String ownerPackage_ = FoodClassesData.getOwnerPackage();
+	private String[] tabActivities_ = FoodClassesData.getTabClasses();
 	
-	DailyMenus dailyMenusActivity;
-	public static Restaurants restaurantActivity;
+	/*DailyMenus dailyMenusActivity;
+	public static Restaurants restaurantActivity;*/
 
 	
 	String[] tabNames;
@@ -19,8 +21,8 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		restaurantActivity = this;
+		/*
+		//restaurantActivity = this;
 		
 		setTitle(R.string.Activity_Names_Restaurants);
 		setContentView(R.layout.restaurant_main);
@@ -33,24 +35,24 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			handleRequest(extras);
-		}
+		}*/
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
+		/*
 		if (MealCache.isInstanciated()){
 			MealCache.getInstance().flush();
-		}
+		}*/
 	}
 
 	/**
 	 * Adds sections for daily and weekly menus to the tab layout, and the activities that will be called
 	 * when pressed.
 	 */
-	/*private void setTabs(){
-		Resources res = getResources(); // Resource object to get Drawables
+	private void setTabs(){
+		/*Resources res = getResources(); // Resource object to get Drawables
 
 		tabNames = res.getStringArray(R.array.resto_tabNames);
 		tabHost = getTabHost(); // The activity TabHost
@@ -66,14 +68,13 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 			tabHost.addTab(spec);
 		}
 
-		tabHost.setCurrentTab(0);
+		tabHost.setCurrentTab(0);*/
 	}
 
 	private void handleRequest(Bundle extras) {
-		dailyMenusActivity = DailyMenus._dailyMenusActivity;
+		/*dailyMenusActivity = DailyMenus._dailyMenusActivity;
 
 		int todayWeekday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-//		todayWeekday=Calendar.MONDAY;
 		
 		if (extras.containsKey("MealTag")) {
 			// show matching Meals of the day for this Tag
@@ -83,10 +84,10 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 			// show daily Meals for given Restaurant
 			Restaurant resto = (Restaurant) (extras.getSerializable("Restaurant"));
 			showDailyMealsFor(resto, todayWeekday);
-		}
+		}*/
 	}
 
-	private void showDailyMealsFor(Restaurant resto, int weekday) {
+	/*private void showDailyMealsFor(Restaurant resto, int weekday) {
 		MealCache cache = MealCache.getInstance();
 		tabHost.setCurrentTab(0);
 //		if (resto.getName().equalsIgnoreCase("Table de Vallotton")) {
@@ -114,11 +115,11 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 		String infoText = getString(R.string.resto_dailymenu_showrestomeals);
 		dailyMenusActivity.moreInfo.setText(infoText+resto.getName());
 		tabHost.setCurrentTab(0);
-	}
+	}*/
 
 
-	private void showDailyMealsFor(MealTag tag, int weekday) {
-		MealTagger tagger = new MealTagger();
+	/*private void showDailyMealsFor(MealTag tag, int weekday) {
+		/*MealTagger tagger = new MealTagger();
 		MealCache cache = MealCache.getInstance();
 		HashMap<Meal, Rating> dailyMeals = cache.getMealsOfDay(weekday);
 		ListSeparator menuListSeparator = new ListSeparator(dailyMenusActivity);
@@ -150,36 +151,8 @@ public class MenuDisplay extends TabActivity implements DisplayBase {
 		dailyMenusActivity.setListAdapter(menuListSeparator);
 		dailyMenusActivity.moreInfo.setText(getString(R.string.resto_dailymenu_showtagmeals)+tag.toString());
 		tabHost.setCurrentTab(0);
-	}
-
-	/**
-	 * Sets the layout of the tab indicator.
-	 * 
-	 * @author Elodie
-	 * 
-	 */
-	/*public static class FeatureTabIndicator extends LinearLayout {
-		public FeatureTabIndicator(Context context, String label) {
-			super(context);
-
-			View tab = View.inflate(context, R.layout.feature_tab_indicator,
-					this);
-
-			TextView tv = (TextView) tab.findViewById(R.id.feature_tab_label);
-			tv.setText(label);
-		}
-	}
-
-	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
-
-
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
-		System.out.println("HERE");
-		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-			
-			TakePicture.onActivityResult(requestCode, resultCode, data, DailyMenus.isMealPicture());
-		}
 	}*/
+
+
 }
 

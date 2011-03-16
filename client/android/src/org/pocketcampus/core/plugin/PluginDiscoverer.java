@@ -3,8 +3,8 @@ package org.pocketcampus.core.plugin;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
+import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.logging.LoggingPlugin;
-import org.pocketcampus.plugin.menu.MenuPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
 import org.pocketcampus.plugin.positioning.PositioningPlugin;
 
@@ -36,7 +36,7 @@ public class PluginDiscoverer {
 		plugins.add((new AuthenticationPlugin()).getPluginDescriptor());
 		plugins.add((new PositioningPlugin()).getPluginDescriptor());
 		plugins.add((new LoggingPlugin()).getPluginDescriptor());
-		plugins.add((new MenuPlugin()).getPluginDescriptor());
+		plugins.add((new FoodPlugin()).getPluginDescriptor());
 		////////////////////////////////
 		
 		return plugins;
