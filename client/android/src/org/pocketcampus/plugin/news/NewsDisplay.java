@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.DisplayBase;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class NewsDisplay extends DisplayBase {
+public class NewsDisplay extends Activity implements DisplayBase {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

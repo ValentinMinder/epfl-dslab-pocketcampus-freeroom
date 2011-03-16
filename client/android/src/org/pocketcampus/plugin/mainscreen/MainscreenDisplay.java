@@ -8,6 +8,7 @@ import org.pocketcampus.core.plugin.DisplayBase;
 import org.pocketcampus.core.plugin.Icon;
 import org.pocketcampus.core.plugin.PluginDescriptor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class MainscreenDisplay extends DisplayBase {
+public class MainscreenDisplay extends Activity implements DisplayBase {
 	private Context ctx_;
 	private Core core_;
 	private Vector<PluginDescriptor> plugins_;

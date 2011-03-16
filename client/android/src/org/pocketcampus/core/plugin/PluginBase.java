@@ -10,7 +10,28 @@ package org.pocketcampus.core.plugin;
  */
 
 public abstract class PluginBase {
-	// "human readable" name
+
+	/**
+	 * Setups plugin
+	 */
+	public PluginBase() {
+		try {
+			if(getDisplayClass() != null) {
+				getDisplayClass().getField("plugin_").set(null, this);
+			}
+
+			if(getConfigurationClass() != null) {
+				getConfigurationClass().getField("plugin_").set(null, this);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * "human readable" name
+	 */
 	public abstract String getName();
 
 	// unique ID
@@ -27,9 +48,9 @@ public abstract class PluginBase {
 
 	// icon
 	public abstract Icon getIcon();
-	
+
 	// plugin descriptor
-	public PluginDescriptor getPluginDescriptor() {
+	protected PluginDescriptor getPluginDescriptor() {
 		return new PluginDescriptor(getName(), getId(), getVersion(), getIcon(), getClass(), getDisplayClass(), getConfigurationClass());
 	}
 }

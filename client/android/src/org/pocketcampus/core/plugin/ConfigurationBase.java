@@ -14,5 +14,6 @@ import android.preference.PreferenceActivity;
  */
 
 public class ConfigurationBase extends PreferenceActivity {
-
+	public static Class<? extends PluginBase> plugin_;
+	
 }
