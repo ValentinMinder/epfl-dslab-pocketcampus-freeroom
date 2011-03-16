@@ -4,7 +4,8 @@
 
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-
+		
+		<!-- Main Screen -->
 		<activity android:name=".plugin.mainscreen.MainscreenDisplay">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -12,14 +13,18 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".plugin.mainscreen.MainscreenConfiguration"></activity>
+		
+		<!-- News Plugin -->
 		<activity android:name=".plugin.news.NewsConfiguration"></activity>
 		<activity android:name=".plugin.news.NewsDisplay"
                   android:configChanges="keyboardHidden|orientation">
-        </activity>
-
+		</activity>
+        
+        <!-- Food Plugin -->
+        <activity android:name=".plugin.menu.MenuConfiguration"></activity>
+        <activity android:name=".plugin.menu.MenuDisplay"></activity>
+        
 	</application>
-	
-	
 		
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

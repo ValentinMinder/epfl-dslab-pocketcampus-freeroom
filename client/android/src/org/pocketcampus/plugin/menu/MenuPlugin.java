@@ -12,14 +12,14 @@ public class MenuPlugin extends PluginBase {
 
 	@Override
 	public Class<? extends ConfigurationBase> getConfigurationClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return MenuConfiguration.class;
+		//return null;
 	}
 
 	@Override
 	public Class<? extends DisplayBase> getDisplayClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return MenuDisplay.class;
+		//		return null;
 	}
 
 	@Override
