@@ -58,9 +58,9 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		if (v == null) {
+		//if (v == null) {
 			v = mInflater_.inflate(R.layout.news_newsentry, null);
-		}
+		//}
 		
 		final NewsItem newsItem = getItem(position);
 		
