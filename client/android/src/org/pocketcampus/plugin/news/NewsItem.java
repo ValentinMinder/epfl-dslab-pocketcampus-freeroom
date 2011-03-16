@@ -23,6 +23,8 @@ public class NewsItem {
 	
 	private Drawable imageDrawable_;
 	
+	private final static Pattern imagePattern_ = Pattern.compile("<img.*src=\"?(\\S+).*>");
+	
 	public NewsItem() { }
 	
 	
@@ -52,8 +54,7 @@ public class NewsItem {
 	public String getImageUri() {
 		//if we don't have any images, we try to find an <img> tag inside the description
 		if(image_ == null && description_ != null) {
-			Pattern imagePattern = Pattern.compile("<img.*src=\"?(\\S+).*>");
-			Matcher m = imagePattern.matcher(description_);
+			Matcher m = imagePattern_.matcher(description_);
 			if(m.find()) {
 				String img = m.group(1);
 				if(img.charAt(img.length() - 1) == '\"')
