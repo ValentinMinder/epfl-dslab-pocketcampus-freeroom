@@ -1,41 +1,66 @@
 package org.pocketcampus.plugin.food;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.DisplayBase;
 
 import android.app.TabActivity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
 public class FoodDisplay extends TabActivity implements DisplayBase {
-
-	private String ownerPackage_ = FoodClassesData.getOwnerPackage();
-	private String[] tabActivities_ = FoodClassesData.getTabClasses();
-	
 	/*DailyMenus dailyMenusActivity;
 	public static Restaurants restaurantActivity;*/
-
-	
-	String[] tabNames;
-	TabHost tabHost;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
+		
 		//restaurantActivity = this;
 		
-		setTitle(R.string.Activity_Names_Restaurants);
-		setContentView(R.layout.restaurant_main);
+		setTitle(R.string.food_display_title);
+		setContentView(R.layout.food_main);
 
 		// Fixed Portrait orientation
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
+		//Initialize activity tabs.
 		setTabs();
 		
+		//Handle additional requests passed on creation.
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			handleRequest(extras);
-		}*/
+		}
+	}
+	
+	private void setTabs(){
+		Resources res = getResources();
+		
+		TabHost tabHost;
+		//Retrieve information about what classes are going to be put in the tabs.
+		String[] tabNames = res.getStringArray(R.array.food_tabNames);
+		String ownerPackage = FoodClassesData.getOwnerPackage();
+		String[] tabActivities = FoodClassesData.getTabActivities();
+
+		if(tabNames != null && tabActivities != null){
+			tabHost = getTabHost();
+			
+			TabHost.TabSpec spec;
+			Intent intent;
+
+			for (int i = 0; i < tabActivities.length; i++) {
+				intent = new Intent().setClassName(ownerPackage, tabActivities[i]);
+				spec = tabHost.newTabSpec(tabNames[i])
+						.setIndicator(new FoodTabIndicator(this, tabNames[i]))
+						.setContent(intent);
+				tabHost.addTab(spec);
+			}
+
+			tabHost.setCurrentTab(0);
+		}
 	}
 
 	@Override
@@ -47,29 +72,7 @@ public class FoodDisplay extends TabActivity implements DisplayBase {
 		}*/
 	}
 
-	/**
-	 * Adds sections for daily and weekly menus to the tab layout, and the activities that will be called
-	 * when pressed.
-	 */
-	private void setTabs(){
-		/*Resources res = getResources(); // Resource object to get Drawables
 
-		tabNames = res.getStringArray(R.array.resto_tabNames);
-		tabHost = getTabHost(); // The activity TabHost
-		TabHost.TabSpec spec; // Resusable TabSpec for each tab
-		Intent intent; // Reusable Intent for each tab
-
-		for (int i = 0; i < tabActivities.length; i++) {
-			intent = new Intent().setClassName(ownerPackage, tabActivities[i]);
-			// Initialize a TabSpec for each tab and add it to the TabHost
-			spec = tabHost.newTabSpec(tabNames[i])
-					.setIndicator(new FeatureTabIndicator(this, tabNames[i]))
-					.setContent(intent);
-			tabHost.addTab(spec);
-		}
-
-		tabHost.setCurrentTab(0);*/
-	}
 
 	private void handleRequest(Bundle extras) {
 		/*dailyMenusActivity = DailyMenus._dailyMenusActivity;

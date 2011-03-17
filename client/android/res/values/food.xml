@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string-array name="food_tabNames">
+		<item>Daily Menus</item>
+		<item>Weekly Menus</item>
+	</string-array>
+	<string name="food_display_title">Food Service</string>
+	
+	<style name="food_tabIndicatorText">
+		<item name="android:textColor">@color/food_tab_indicator_text</item>
+		<item name="android:textStyle">bold</item>
+	</style>
 </resources>
