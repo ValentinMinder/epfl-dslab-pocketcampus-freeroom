@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food;
 import org.pocketcampus.plugin.news.NewsDisplay;
 
 
+
 public class FoodClassesData {
     private static final FoodClassesData INSTANCE = new FoodClassesData();
     
@@ -12,8 +13,9 @@ public class FoodClassesData {
     // Private constructor prevents instantiation from other classes
     private FoodClassesData() {
     	ownerPackage_ = "org.pocketcampus";
-    	//tabActivities_;
-    	tabActivities_ = null;
+    	tabActivities_ = new String[1];
+    	tabActivities_[0] = NewsDisplay.class.getName();
+    	//tabActivities_ = null;
     		/*{
     			DailyMenus.class.getName(), 
     			WeeklyMenus.class.getName() 
