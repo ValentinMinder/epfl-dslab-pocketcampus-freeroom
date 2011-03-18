@@ -13,11 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class NewsAdapter extends ArrayAdapter<NewsItem> {
 	
+	// The first news is selected by default
+	private int selectedItem_ = 0;
 
 	private LayoutInflater mInflater_;
 	private FeedDownloader downloader_;
@@ -58,9 +61,9 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		//if (v == null) {
+		if (v == null) {
 			v = mInflater_.inflate(R.layout.news_newsentry, null);
-		//}
+		}
 		
 		final NewsItem newsItem = getItem(position);
 		
@@ -72,9 +75,11 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 			
 			tv = (TextView) v.findViewById(R.id.news_item_description);
 			tv.setText(newsItem.getDescription());
+			tv.setMaxLines(selectedItem_ == position ? 20 : 2);
 			
 			LoaderNewsImageView liv = (LoaderNewsImageView) v.findViewById(R.id.news_item_image);
 			liv.setImageDrawable(newsItem);
+			
 		}
 		
 		return v;
@@ -99,6 +104,13 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 			}
 			
 		});
+	}
+
+	public void setClickedItem(AdapterView<?> parent, View view, int position, long id) {
+		selectedItem_ = position;
+
+		this.notifyDataSetChanged();
+		
 	}
 
 }

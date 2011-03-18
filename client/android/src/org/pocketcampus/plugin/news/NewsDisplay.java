@@ -21,20 +21,17 @@ public class NewsDisplay extends Activity implements DisplayBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_list);
 		
-		ListView l = (ListView) findViewById(R.id.news_list_list);
-		NewsAdapter a = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
+		final ListView l = (ListView) findViewById(R.id.news_list_list);
+		final NewsAdapter a = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
 		l.setAdapter(a);
 		a.setDebugData();
 		
 		l.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				
-				TextView tv = (TextView) arg1.findViewById(R.id.news_item_description);
-				
-				tv.setMaxLines(20);
-				
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				a.setClickedItem(parent, view, position, id);
+				l.smoothScrollToPosition(position);
 			}
 		});
 		
