@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.food;
+package org.pocketcampus.plugin.test;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Icon;
@@ -6,21 +6,21 @@ import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
-public class FoodInfo extends PluginInfo {
+public class TestInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.food_menu);
+		return new Icon(R.drawable.test_menu);
 	}
 
 	@Override
 	public Id getId() {
-		return new Id("food");
+		return new Id("test");
 	}
 
 	@Override
 	public String getName() {
-		return "Food";
+		return "Test Server";
 	}
 
 	@Override

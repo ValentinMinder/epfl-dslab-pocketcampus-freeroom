@@ -63,7 +63,6 @@ public class MainscreenPlugin extends PluginBase {
 				// ICON //
 				ImageButton button = new ImageButton(ctx_);
 
-				// display class
 				button.setOnClickListener(new View.OnClickListener() {
 		             public void onClick(View v) {
 		            	 core_.displayPlugin(ctx_, plugin);

@@ -13,7 +13,7 @@ public class NewsInfo extends PluginInfo implements IInfoProviderService {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.news_icon);
+		return new Icon(R.drawable.news_menu);
 	}
 
 	@Override

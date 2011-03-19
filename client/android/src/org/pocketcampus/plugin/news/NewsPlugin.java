@@ -32,7 +32,7 @@ public class NewsPlugin extends PluginBase {
 		final ListView l = (ListView) findViewById(R.id.news_list_list);
 		final NewsAdapter a = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
 		l.setAdapter(a);
-		a.setDebugData();
+		//a.setDebugData();
 		
 		l.setOnItemClickListener(new OnItemClickListener() {
 
