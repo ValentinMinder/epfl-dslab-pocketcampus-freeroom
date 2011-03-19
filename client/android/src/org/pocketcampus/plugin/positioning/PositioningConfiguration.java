@@ -1,9 +1,7 @@
 package org.pocketcampus.plugin.positioning;
 
-import org.pocketcampus.core.plugin.ConfigurationBase;
+import org.pocketcampus.core.plugin.PluginPreference;
 
-import android.preference.PreferenceActivity;
-
-public class PositioningConfiguration extends PreferenceActivity implements ConfigurationBase {
+public class PositioningConfiguration extends PluginPreference {
 
 }

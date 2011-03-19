@@ -2,11 +2,9 @@ package org.pocketcampus.core.plugin;
 
 import java.util.Vector;
 
-import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
-import org.pocketcampus.plugin.logging.LoggingPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
-import org.pocketcampus.plugin.positioning.PositioningPlugin;
+import org.pocketcampus.plugin.test.TestPlugin;
 
 /**
  * Discovers which plugin are available.
@@ -18,7 +16,7 @@ import org.pocketcampus.plugin.positioning.PositioningPlugin;
  */
 
 public class PluginDiscoverer {
-	static Vector<PluginDescriptor> discoverPlugins(Core.ReleaseMode appMode) {
+	static Vector<PluginBase> discoverPlugins(Core.ReleaseMode appMode) {
 		if(appMode == Core.ReleaseMode.RELEASE) {
 			return readPluginList();
 			
@@ -27,23 +25,28 @@ public class PluginDiscoverer {
 		}
 	}
 
-	private static Vector<PluginDescriptor> scanForPlugins() {
-		Vector<PluginDescriptor> plugins = new Vector<PluginDescriptor>();
+	private static Vector<PluginBase> scanForPlugins() {
+		Vector<PluginBase> plugins = new Vector<PluginBase>();
 		
 		// LIST OF REGISTERED PLUGINS //
 		// TODO scan for available plugins automatically
-		plugins.add((new NewsPlugin()).getPluginDescriptor());
+		
+		plugins.add(new NewsPlugin());
+		plugins.add(new TestPlugin());
+		plugins.add(new FoodPlugin());
+		
+		/*plugins.add((new NewsPlugin()).getPluginDescriptor());
 		plugins.add((new AuthenticationPlugin()).getPluginDescriptor());
 		plugins.add((new PositioningPlugin()).getPluginDescriptor());
 		plugins.add((new LoggingPlugin()).getPluginDescriptor());
-		plugins.add((new FoodPlugin()).getPluginDescriptor());
+		plugins.add((new FoodPlugin()).getPluginDescriptor());*/
 		////////////////////////////////
 		
 		return plugins;
 	}
 
-	private static Vector<PluginDescriptor> readPluginList() {
-		Vector<PluginDescriptor> plugins = new Vector<PluginDescriptor>();
+	private static Vector<PluginBase> readPluginList() {
+		Vector<PluginBase> plugins = new Vector<PluginBase>();
 		// TODO read from XML config file
 		return plugins;
 	}

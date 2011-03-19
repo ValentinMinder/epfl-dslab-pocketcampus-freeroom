@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, Core!</string>
-    <string name="app_name">PocketCampus</string>
+    <string name="app_name">PocketCampus EPFL</string>
     
     <string name="mainscreen_configure">Configure</string>
+    <string name="TestTextView">TestTextView</string>
+    
+    <string name="actionbar_activity_not_found">Failed to open intent...</string>
 </resources>

@@ -18,7 +18,7 @@ import android.content.Intent;
 public class Core {
 	private static Core instance_ = null;
 	private ReleaseMode applicationMode_;
-	private Vector<PluginDescriptor> availablePlugins_;
+	private Vector<PluginBase> availablePlugins_;
 
 	public enum ReleaseMode {
 		DEVELOPMENT, RELEASE
@@ -37,23 +37,27 @@ public class Core {
 		availablePlugins_ = PluginDiscoverer.discoverPlugins(applicationMode_);
 	}
 	
-	public void displayPlugin(Context ctx, PluginDescriptor plugin) {
-		Intent intent = new Intent(ctx, plugin.getDisplayClass());
+	public void displayPlugin(Context ctx, PluginBase plugin) {
+		Intent intent = new Intent(ctx, plugin.getClass());
 		startActivity(ctx, intent);
 	} 
 	
-	public void configurePlugin(Context ctx, PluginDescriptor plugin) {
-		Intent intent = new Intent(ctx, plugin.getConfigurationClass());
+	public void configurePlugin(Context ctx, PluginBase plugin) {
+		Intent intent = new Intent(ctx, plugin.getPluginPreference().getClass());
 		startActivity(ctx, intent);
 	}
 	
 	private void startActivity(Context ctx, Intent intent) {
-		// TODO handles displayMode s
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
 	}
 	
-	public Vector<PluginDescriptor> getAvailablePlugins() {
+	public Vector<PluginBase> getAvailablePlugins() {
 		return availablePlugins_;
+	}
+
+	public String getServerUrl() {
+		// Change this to your local IP.
+		return "http://128.178.252.49:8080/";
 	}
 }

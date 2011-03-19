@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="#FFFFFF">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+
+	<RelativeLayout android:layout_below="@+id/actionbar"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+		<EditText android:text="blablabla" android:id="@+id/editText"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+
+		<Button android:id="@+id/TestButton" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="to upper case"
+			android:layout_below="@+id/editText"></Button>
+
+		<TextView android:id="@+id/TestTextView"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_below="@+id/TestButton"></TextView>
+	</RelativeLayout>
+
+</RelativeLayout>

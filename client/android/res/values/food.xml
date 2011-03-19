@@ -7,7 +7,6 @@
 	<string name="food_display_title">Food Service</string>
 	
 	<style name="food_tabIndicatorText">
-		<item name="android:textColor">@color/food_tab_indicator_text</item>
 		<item name="android:textStyle">bold</item>
 	</style>
 </resources>

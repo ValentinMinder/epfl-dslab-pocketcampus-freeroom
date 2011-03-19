@@ -1,60 +1,19 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent">
-	
-	<LinearLayout
-		android:id="@+id/InfoLayout"
-		android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/background_epfl">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="#ffffffff">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+
+	<LinearLayout android:id="@+id/InfoLayout"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_below="@+id/actionbar">
 	</LinearLayout>
-	
-    <LinearLayout 
-        android:id="@+id/MenuLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        style="@android:style/ButtonBar" >
+
+	<LinearLayout android:id="@+id/MenuLayout"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
 		
-		
-		<!--
-		<ImageButton
-			android:id="@+id/NewsButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:paddingLeft="10dp"
-			android:src="@drawable/menu_news" />
-		
-		<ImageButton
-			android:id="@+id/MapButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/menu_map"
-			android:paddingLeft="10dp"
-			android:layout_toRightOf="@+id/NewsButton"  />
-		
-		<ImageButton
-			android:id="@+id/MenuButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:cropToPadding="false"
-			android:paddingLeft="10dp"
-			android:layout_toRightOf="@+id/MapButton"
-			android:src="@drawable/menu_menu">
-		</ImageButton>
-		
-		<ImageButton
-			android:id="@+id/MoodleButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:cropToPadding="false"
-			android:paddingLeft="10dp"
-			android:layout_toRightOf="@+id/MenuButton"
-			android:src="@drawable/menu_moodle">
-		</ImageButton>
-		-->
-    </LinearLayout>
+	</LinearLayout>
 
 </RelativeLayout>

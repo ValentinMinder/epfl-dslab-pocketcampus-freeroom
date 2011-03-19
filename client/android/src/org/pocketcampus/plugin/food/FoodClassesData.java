@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.food;
 
-import org.pocketcampus.plugin.news.NewsDisplay;
 
 
 
@@ -14,7 +13,7 @@ public class FoodClassesData {
     private FoodClassesData() {
     	ownerPackage_ = "org.pocketcampus";
     	tabActivities_ = new String[1];
-    	tabActivities_[0] = NewsDisplay.class.getName();
+    	tabActivities_[0] = FoodDisplay.class.getName();
     	//tabActivities_ = null;
     		/*{
     			DailyMenus.class.getName(), 

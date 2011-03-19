@@ -1,41 +1,20 @@
 package org.pocketcampus.plugin.positioning;
 
-import org.pocketcampus.core.plugin.ConfigurationBase;
-import org.pocketcampus.core.plugin.DisplayBase;
-import org.pocketcampus.core.plugin.Icon;
-import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginBase;
-import org.pocketcampus.core.plugin.VersionNumber;
+import org.pocketcampus.core.plugin.PluginInfo;
+import org.pocketcampus.core.plugin.PluginPreference;
 
 public class PositioningPlugin extends PluginBase {
 
 	@Override
-	public Class<? extends ConfigurationBase> getConfigurationClass() {
+	public PluginInfo getPluginInfo() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Class<? extends DisplayBase> getDisplayClass() {
-		return null;
-	}
-
-	@Override
-	public Icon getIcon() {
-		return null;
-	}
-
-	@Override
-	public Id getId() {
-		return new Id("positioning");
-	}
-
-	@Override
-	public String getName() {
-		return "Positioning System";
-	}
-
-	@Override
-	public VersionNumber getVersion() {
+	public PluginPreference getPluginPreference() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

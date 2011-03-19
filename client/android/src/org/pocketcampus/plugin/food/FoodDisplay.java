@@ -1,9 +1,10 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.plugin.DisplayBase;
+import org.pocketcampus.core.plugin.PluginBase;
+import org.pocketcampus.core.plugin.PluginInfo;
+import org.pocketcampus.core.plugin.PluginPreference;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
@@ -13,7 +14,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
 
-public class FoodDisplay extends Activity implements DisplayBase {
+public class FoodDisplay extends PluginBase {
 	/*
 	 * DailyMenus dailyMenusActivity; public static Restaurants
 	 * restaurantActivity;
@@ -124,6 +125,18 @@ public class FoodDisplay extends Activity implements DisplayBase {
 		 * (extras.getSerializable("Restaurant")); showDailyMealsFor(resto,
 		 * todayWeekday); }
 		 */
+	}
+
+	@Override
+	public PluginInfo getPluginInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PluginPreference getPluginPreference() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*

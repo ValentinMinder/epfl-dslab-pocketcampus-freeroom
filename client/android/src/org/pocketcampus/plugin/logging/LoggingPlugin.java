@@ -1,46 +1,19 @@
 package org.pocketcampus.plugin.logging;
 
-import org.pocketcampus.core.plugin.ConfigurationBase;
-import org.pocketcampus.core.plugin.DisplayBase;
-import org.pocketcampus.core.plugin.Icon;
-import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginBase;
-import org.pocketcampus.core.plugin.VersionNumber;
+import org.pocketcampus.core.plugin.PluginInfo;
+import org.pocketcampus.core.plugin.PluginPreference;
 
 public class LoggingPlugin extends PluginBase {
 
 	@Override
-	public Class<? extends ConfigurationBase> getConfigurationClass() {
+	public PluginInfo getPluginInfo() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Class<? extends DisplayBase> getDisplayClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Icon getIcon() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Id getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VersionNumber getVersion() {
+	public PluginPreference getPluginPreference() {
 		// TODO Auto-generated method stub
 		return null;
 	}
