@@ -20,26 +20,23 @@ public class SampleServlet extends HttpServlet {
      */
     public SampleServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Enumeration<String> attrNames = request.getParameterNames();
-		
 		response.setContentType("text/plain");
+		
+		Enumeration<String> attrNames = request.getParameterNames();
 		PrintWriter out = response.getWriter();
-		out.println("reponse");
 		
 		if(!attrNames.hasMoreElements())
 			out.println("vide");
 		
 		while(attrNames.hasMoreElements()){
 			String s = (String)request.getParameter( attrNames.nextElement() );
-			
-			out.println("In capital letters:" + s.toUpperCase());
+			out.println(s.toUpperCase());
 		}
 			
 	}
@@ -48,15 +45,7 @@ public class SampleServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Enumeration<String> attrNames = request.getAttributeNames();		
-		response.setContentType("text/plain");
-		PrintWriter out = response.getWriter();
 		
-		while(attrNames.hasMoreElements()){
-			String s = (String)request.getAttribute( attrNames.nextElement() );
-			
-			out.println("In capital letters:" + s.toUpperCase());
-		}
 	}
 
 }
