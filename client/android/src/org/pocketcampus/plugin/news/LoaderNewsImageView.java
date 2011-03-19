@@ -14,9 +14,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+/**
+ * Displays an image coming from a NewsItem.
+ * Show a spinner while the image is downloading.
+ * Once the image is downloaded, the Drawable object is set to the NewsItem
+ * to prevent it to redownload. 
+ * 
+ * @status complete
+ * 
+ * @author Jonas
+ *
+ */
 public class LoaderNewsImageView extends LinearLayout {
 	
-
+	// Status
 	private static final int COMPLETE = 0;
 	private static final int FAILED = 1;
 
@@ -29,10 +40,7 @@ public class LoaderNewsImageView extends LinearLayout {
 	
 	/**
 	 * This is used when creating the view in XML
-	 * To have an image load in XML use the tag 'src="http://developer.android.com/images/dialog_buttons.png"'
-	 * Replacing the url with your desired image
-	 * Once you have instantiated the XML view you can call
-	 * setImageDrawable(url) to change the image
+	 * To have an image load in XML use the attribute 'src="http://developer.android.com/images/dialog_buttons.png"'
 	 * @param context
 	 * @param attrSet
 	 */
@@ -48,8 +56,6 @@ public class LoaderNewsImageView extends LinearLayout {
 	
 	/**
 	 * This is used when creating the view programatically
-	 * Once you have instantiated the view you can call
-	 * setImageDrawable(url) to change the image
 	 * @param context the Activity context
 	 * @param imageUrl the Image URL you wish to load
 	 */
@@ -59,9 +65,11 @@ public class LoaderNewsImageView extends LinearLayout {
 	}
 
 	/**
-	 *  First time loading of the LoaderImageView
-	 *  Sets up the LayoutParams of the view, you can change these to
-	 *  get the required effects you want
+	 * First time loading of the LoaderImageView
+	 * Sets up the LayoutParams of the view
+	 * 
+	 * @param context
+	 * @param imageUrl
 	 */
 	private void instantiate(final Context context, final String imageUrl) {
 		mContext_ = context;
@@ -72,12 +80,12 @@ public class LoaderNewsImageView extends LinearLayout {
 		mSpinner_ = new ProgressBar(mContext_);
 		mSpinner_.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		mSpinner_.setPadding(5, 5, 5, 5);
-			
 		mSpinner_.setIndeterminate(true);
 		
 		addView(mSpinner_);
 		addView(mImage_);
 		
+		// Already set the image to download
 		if(imageUrl != null){
 			setImageDrawable(imageUrl);
 		}
@@ -85,14 +93,15 @@ public class LoaderNewsImageView extends LinearLayout {
 
 
 	/**
-	 * Set's the view's drawable, this uses the internet to retrieve the image
-	 * don't forget to add the correct permissions to your manifest
-	 * @param imageUrl the url of the image you wish to load
+	 * Sets the view's drawable
+	 * @param imageUrl the url of the image to load
 	 */
 	private void setImageDrawable(final String imageUrl) {
 		mDrawable_ = null;
 		mSpinner_.setVisibility(View.VISIBLE);
 		mImage_.setVisibility(View.GONE);
+		
+		// Download the image on a new thread
 		new Thread(){
 			public void run() {
 				try {
@@ -107,13 +116,20 @@ public class LoaderNewsImageView extends LinearLayout {
 		}.start();
 	}
 
-	public void setImageDrawable(NewsItem newsItem) {
+	/**
+	 * Set the NewsItem from where to get the image URL
+	 * @param newsItem The NewsItem to use
+	 */
+	public void setNewItem(NewsItem newsItem) {
 		this.newsItem_ = newsItem;
-		Drawable draw = newsItem.getImageDrawable();
 		
+		// Check if the image is not alreadz downloaded
+		Drawable draw = newsItem.getImageDrawable();
 		if(draw != null) {
 			setImage(draw);
 		} else {
+			
+			// Start the download
 			String imageUri = newsItem.getImageUri();
 			if(imageUri != null) {
 				this.setImageDrawable(imageUri);
@@ -123,7 +139,9 @@ public class LoaderNewsImageView extends LinearLayout {
 		}
 	}
 
-
+	/**
+	 * To show no image
+	 */
 	public void setNoImage() {
 		mDrawable_ = null;
 		mSpinner_.setVisibility(View.GONE);
@@ -147,14 +165,17 @@ public class LoaderNewsImageView extends LinearLayout {
 					break;
 				case FAILED:
 				default:
-					// Could change image here to a 'failed' image
-					// otherwise will just keep on spinning
+					setNoImage();
 					break;
 			}
 			return true;
 		}		
 	});
 	
+	/**
+	 * Set the image into the view
+	 * @param drawable The image to set
+	 */
 	private void setImage(Drawable drawable) {
 		mImage_.setImageDrawable(drawable);
 		mImage_.setVisibility(View.VISIBLE);

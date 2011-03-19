@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.news;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * A class that describes a news item, to be displayed by the News plugins
@@ -14,21 +16,24 @@ import android.graphics.drawable.Drawable;
  *
  */
 
-public class NewsItem {
+public class NewsItem implements Serializable, Comparable<NewsItem> {
+
+	private static final long serialVersionUID = 1443922113610132660L;
+
 	private String title_;
 	private String description_;
 	private String link_;
 	private String pubDate_;
 	private String image_;
-	
+
 	private Drawable imageDrawable_;
-	
+
 	private final static Pattern imagePattern_ = Pattern.compile("<img.*src=\"?(\\S+).*>");
-	
+
 	public NewsItem() { }
-	
-	
-	
+
+
+
 	public NewsItem(String title_, String description_, String link_,
 			String pubDate_, String image_) {
 		super();
@@ -50,7 +55,7 @@ public class NewsItem {
 		fd.image_ = this.image_;
 		return fd;
 	}
-	
+
 	public String getImageUri() {
 		//if we don't have any images, we try to find an <img> tag inside the description
 		if(image_ == null && description_ != null) {
@@ -64,11 +69,11 @@ public class NewsItem {
 		}
 		return image_;
 	}
-	
+
 	public void setImage(String image) {
 		image_ = image;
 	}
-	
+
 	public String getTitle() {
 		return title_;
 	}
@@ -80,11 +85,11 @@ public class NewsItem {
 	public String getDescription() {
 		return description_;
 	}
-	
+
 	public String getDescriptionNoHtml() { //XXX maybe we want to have only a subsequence of the descritpion
 		return htmlToText(description_);
 	}
-	
+
 	/**
 	 * Convert the String containing html tags and characters into text only string.
 	 * @param s the string in html format.
@@ -161,5 +166,19 @@ public class NewsItem {
 	public void setImageDrawable(Drawable imageDrawable) {
 		this.imageDrawable_ = imageDrawable;
 	}
-	
+
+
+
+	@Override
+	public int compareTo(NewsItem another) {
+		
+		Log.d(this.getClass().toString(), "Compare");
+		
+		try {
+			return this.getPubDate().compareTo(another.getPubDate());
+		} catch(NullPointerException e) {
+			return 0;
+		}
+	}
+
 }

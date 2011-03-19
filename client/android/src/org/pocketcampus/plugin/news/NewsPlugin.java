@@ -14,38 +14,44 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 public class NewsPlugin extends PluginBase {
-	
+
+	NewsAdapter adapter_;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.news_list);
-		
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle("PocketCampus EPFL");
-		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
-		
-		final ListView l = (ListView) findViewById(R.id.news_list_list);
-		final NewsAdapter a = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
-		l.setAdapter(a);
-		//a.setDebugData();
-		
-		l.setOnItemClickListener(new OnItemClickListener() {
 
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setTitle(getResources().getString(R.string.app_name));
+		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
+
+		final ListView l = (ListView) findViewById(R.id.news_list_list);
+		adapter_ = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
+		l.setAdapter(adapter_);
+
+		l.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				a.setClickedItem(parent, view, position, id);
-				l.smoothScrollToPosition(position);
+				if(adapter_ != null) {
+					adapter_.setClickedItem(parent, view, position, id);
+					l.smoothScrollToPosition(position);
+				}
 			}
 		});
-		
 	}
-	
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		adapter_.refreshIfNeeded();
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -64,6 +70,6 @@ public class NewsPlugin extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return new NewsPreference();
 	}
-	
-	
+
+
 }

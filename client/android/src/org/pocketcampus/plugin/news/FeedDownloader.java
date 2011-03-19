@@ -5,10 +5,26 @@ import java.util.List;
 
 import android.os.AsyncTask;
 
+/**
+ * Downloads RSS feeds and fills an adapter
+ * 
+ * @status complete
+ * 
+ * @author Jonas
+ * 
+ * @see org.pocketcampus.plugin.news.NewsItem
+ * @see org.pocketcampus.plugin.news.Feed
+ *
+ */
 public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	
+	// The adapter to fill
 	private NewsAdapter adapter_;
 	
+	/**
+	 * Constructor
+	 * @param adapter The adapter to fill
+	 */
 	public FeedDownloader(NewsAdapter adapter) {
 		this.adapter_ = adapter;
 	}
@@ -16,12 +32,15 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	@Override
 	protected List<NewsItem> doInBackground(String... params) {
 		
+		// List of items in the feeds
 		List<NewsItem> list = new ArrayList<NewsItem>();
 		
+		// There is no feed to download
 		if(params.length < 1) {
 			return null;
 		}
 		
+		// Create a parser for each feed and put the items into the list
 		RssParser parser;
 		Feed feed;
 		for(String feedUrl : params) {
@@ -29,8 +48,10 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 			
 			parser.parse();
 			feed = parser.getFeed();
-			if(feed != null)
+			
+			if(feed != null) {
 				list.addAll(feed.getItems());
+			}
 		}
 		
 		return list;
@@ -38,10 +59,14 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	
 	@Override
 	protected void onPostExecute(List<NewsItem> result) {
+		// Empty the list and put the new items 
+		
 		adapter_.clear();
 		for(NewsItem item : result) {
 			adapter_.add(item);
 		}
+		
+		// Notify that the data changed
 		adapter_.dataSetChanged();
 	}
 

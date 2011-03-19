@@ -15,6 +15,7 @@ import java.util.List;
  *
  */
 public class Feed {
+	
 	private String title_;
 	private String link_;
 	private String description_;
