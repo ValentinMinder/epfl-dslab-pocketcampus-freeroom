@@ -41,7 +41,7 @@ public class MainscreenPlugin extends PluginBase {
 		setContentView(R.layout.mainscreen_main);
 
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle("PocketCampus EPFL");
+		actionBar.setTitle(getResources().getString(R.string.app_name));
 
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
