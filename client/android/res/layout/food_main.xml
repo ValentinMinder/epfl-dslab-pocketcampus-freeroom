@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:background="@drawable/food_list_header_background"
+	android:background="@drawable/food_background"
 	android:layout_height="fill_parent">
 
 	<org.pocketcampus.core.ui.ActionBar
@@ -19,7 +19,6 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:fastScrollEnabled="true"
-			android:background="#000000"
 			android:cacheColorHint="#00000000"
 			android:drawSelectorOnTop="false">
 		</ListView>

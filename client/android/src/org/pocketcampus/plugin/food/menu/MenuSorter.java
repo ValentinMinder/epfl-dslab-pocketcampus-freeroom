@@ -60,7 +60,7 @@ public class MenuSorter {
 	 * 
 	 * @return the sorted list of meals
 	 **/
-	public static HashMap<String, Vector<Meal>> sortByRestaurant(Collection<Meal> meals) {
+	public HashMap<String, Vector<Meal>> sortByRestaurant(Collection<Meal> meals) {
 		
 		if(meals == null){
 			throw new IllegalArgumentException("The meals list cannot be null !");

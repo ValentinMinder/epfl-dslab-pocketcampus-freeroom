@@ -6,7 +6,6 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Meal;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import android.widget.TextView;
  */
 public class FoodListSection extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
-	private Context context_;
 	private Vector<Meal> meal_;
 	private Activity menusActivity_;
 
@@ -37,10 +35,9 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 	 * @param resto
 	 *            restaurant full menu represented in the list section.
 	 */
-	public FoodListSection(Context context, Vector<Meal> resto, Activity menus) {
+	public FoodListSection(Vector<Meal> resto, Activity menus) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
-		mInflater_ = LayoutInflater.from(context);
-		this.context_ = context;
+		mInflater_ = LayoutInflater.from(menus.getApplicationContext());
 		this.meal_ = resto;
 		this.menusActivity_ = menus;
 	}
@@ -131,7 +128,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		holder.menuLine.setText(currentMeal.getDescription());
 		holder.titleLine.setText(currentMeal.getName());
 
-		new DownloadRatingsTask(currentMeal, menusActivity_, holder);
+		new RatingsDownloader(currentMeal, menusActivity_, holder);
 
 		return convertView;
 	}

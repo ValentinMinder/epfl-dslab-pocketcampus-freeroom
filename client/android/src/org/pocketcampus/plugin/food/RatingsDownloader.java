@@ -17,7 +17,7 @@ import android.os.AsyncTask;
  * @author Elodie
  * 
  */
-public class DownloadRatingsTask extends AsyncTask<Meal, Integer, Rating> {
+public class RatingsDownloader extends AsyncTask<Meal, Integer, Rating> {
 	private Rating mealRating_;
 	private ViewHolder holder_;
 	private Activity menusActivity_;
@@ -29,7 +29,7 @@ public class DownloadRatingsTask extends AsyncTask<Meal, Integer, Rating> {
 	 * @param holder
 	 *            view holder for that list element.
 	 */
-	public DownloadRatingsTask(Meal m, Activity menusActivity, ViewHolder holder) {
+	public RatingsDownloader(Meal m, Activity menusActivity, ViewHolder holder) {
 		this.holder_ = holder;
 		this.menusActivity_ = menusActivity;
 		this.execute(m);

@@ -1,17 +1,10 @@
 package org.pocketcampus.plugin.food;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Vector;
-
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.food.menu.FoodMenu;
-import org.pocketcampus.plugin.food.menu.Meal;
-import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.content.Intent;
@@ -26,23 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class FoodPlugin extends PluginBase {
-	// Good
-	private FoodMenu campusMenu_;
-	private FoodListAdapter menuListAdapter_;
 	private ListView l_;
-	private int currentView;
-	
+	private FoodDisplayHandler foodDisplayHandler;
+
 	private static boolean takingMealPicture;
 	public static FoodPlugin foodPluginActivity;
 	public TextView empty;
-
-	// Bad
-	/*
-	 * private MenuListAdapter menuListAdapter; private SandwichListAdapter
-	 * sandwichListAdapter_;
-	 * 
-	 * private ProgressDialog progressDialog_;
-	 */
 
 	/**
 	 * Method called on activity creation
@@ -56,36 +38,31 @@ public class FoodPlugin extends PluginBase {
 		// Owner activity
 		foodPluginActivity = this;
 
-		// Campus menu
-		campusMenu_ = new FoodMenu();
-
-		// List displaying
-		menuListAdapter_ = new FoodListAdapter(this);
-		l_ = (ListView) findViewById(R.id.food_list);
-		empty = (TextView) findViewById(R.id.food_empty);
-
-		currentView = 0;
-		// At first, display food by restaurant
-		displayFood(FoodDisplayType.Restaurants);
-	}
-
-	public void displayFood(FoodDisplayType foodType) {
-
-		initializeView();
-
-		if (menuListAdapter_ != null) {
-			menuListAdapter_.removeSections();
-		}
-
-		showMenusByRestaurants();
-	}
-
-	public void initializeView() {
 		// Header
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
+
+		//ListView
+		l_ = (ListView) findViewById(R.id.food_list);
+		empty = (TextView) findViewById(R.id.food_empty);
+
+		//DisplayHandler
+		foodDisplayHandler = new FoodDisplayHandler(this);
+
+		// At first, display food by restaurant
+		displayView();
+	}
+
+	public void displayView() {
+		// List view
+		FoodListAdapter fla = foodDisplayHandler.getListAdapter();
+		if (foodDisplayHandler.valid() && fla != null) {
+			l_.setAdapter(foodDisplayHandler.getListAdapter());
+		} else {
+			empty.setText(getString(R.string.food_empty));
+		}
 	}
 
 	public static void setMealPicture(boolean isMealPicture) {
@@ -112,86 +89,25 @@ public class FoodPlugin extends PluginBase {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int selectedId = item.getItemId();
-		/*switch () {
+
+		switch (selectedId) {
 		case 1: // Show menus by restaurant
-			setContentView(R.layout.food_main);
-			if (menuListAdapter_ != null) {
-				menuListAdapter_.removeSections();
-			}
-			showMenusByRestaurants();
+		case 2: // Show menus by rating
+			//setContentView(R.layout.food_main);
+			foodDisplayHandler.setDisplayType(selectedId);
+			displayView();
 			return true;
-		case 2: // show menus by rating
-			setContentView(R.layout.food_main);
-			if (menuListAdapter_ != null) {
-				menuListAdapter_.removeSections();
-			}
-			showMenusByRatings();
-			return true;
-		case 3: // show sandwiches
-			/*
-			 * setContentView(R.layout.restaurant_dailymenu_main_4_sandwich);
-			 * showSandwich();
-			 */
-		/*	return true;
+		case 3: // show sandwiches /*
+			/*setContentView(R.layout.restaurant_dailymenu_main_4_sandwich);
+			showSandwich();
+
+			return true;*/
 		case 4: // show suggestions
-			// chargeMenuEPFL(2);
-			return true;
-		}*/
-		return false;
-	}
-
-	/**
-	 * Show the menus according to what restaurants they are available in.
-	 */
-	public void showMenusByRestaurants() {
-		// Sort meals by restaurant.
-		HashMap<String, Vector<Meal>> mealHashMap = MenuSorter
-				.sortByRestaurant(campusMenu_.getKeySet());
-		TextView empty = (TextView) findViewById(R.id.food_empty);
-		FoodListSection menuListAdapter;
-		FoodListAdapter foodListSection = new FoodListAdapter(
-				getApplicationContext());
-		/**
-		 * Iterate over the different restaurant menus
-		 */
-		if (!campusMenu_.isEmpty()) {
-			// Get the set of keys from the hash map to make sections.
-			Set<String> restaurantFullMenu = mealHashMap.keySet();
-			for (String restaurantName : restaurantFullMenu) {
-				// For each restaurant, make a list of its meals to add in its
-				// section
-				menuListAdapter = new FoodListSection(this,
-						mealHashMap.get(restaurantName), this);
-				foodListSection.addSection(restaurantName, menuListAdapter);
-			}
-			l_.setAdapter(foodListSection);
-			empty.setText("");
-		} else {
-			empty.setText(R.string.food_empty);
+			/*chargeMenuEPFL(2);
+			return true;*/
 		}
-	}
 
-	/**
-	 * Show the menus according to their ratings. Better rated first.
-	 */
-	public void showMenusByRatings() {
-		// Sort meals by ratings.
-		/*
-		 * if(campusMenu_ != null){ TextView empty = (TextView)
-		 * findViewById(R.id.restaurant_empty_daily);
-		 * 
-		 * /** Iterate over the different restaurant menus
-		 */
-		/*
-		 * if (!campusMenu_.isEmpty()) { Vector<Meal> mealVector =
-		 * sorter.sortByRatings(campusMenu_.getCampusMenu()); // Get the set of
-		 * keys from the hash map to make sections. menuListAdapter = new
-		 * MenuListAdapter(this, mealVector, this);
-		 * menuListSeparator.addSection(
-		 * getResources().getString(R.string.resto_rating), menuListAdapter);
-		 * setListAdapter(menuListSeparator); } else {
-		 * empty.setText(R.string.food_empty); } }
-		 */
+		return false;
 	}
 
 	/**
@@ -314,24 +230,4 @@ public class FoodPlugin extends PluginBase {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public enum FoodDisplayType {
-		Restaurants(1),
-		Ratings(2),
-		Sandwiches(3),
-		Suggestions(4);
-		
-		/** L'attribut qui contient la valeur associé à l'enum */
-		private final int value;
-		
-		/** Le constructeur qui associe une valeur à l'enum */
-		private FoodDisplayType(int value) {
-			this.value = value;
-		}
-		
-		/** La méthode accesseur qui renvoit la valeur de l'enum */
-		public int getValue() {
-			return this.value;
-		}
-	};
 }
