@@ -4,8 +4,22 @@
 		<item>Daily Menus</item>
 		<item>Weekly Menus</item>
 	</string-array>
+	
 	<string name="food_display_title">Food Service</string>
 	
+	<!-- Votes -->
+	<string name="food_menulist_votesPlural">votes</string>
+	<string name="food_menulist_votesSingular">vote</string>
+	
+	<string name="food_empty">No item to display</string>
+	
+	<!-- Options Menu -->
+	<string name="food_show_restaurant">Sort by restaurant</string>
+	<string name="food_show_ratings">Sort by ratings</string>
+	<string name="food_show_sandwiches">Sandwiches</string>
+	<string name="food_show_suggestions">Suggestions</string>
+	
+		
 	<style name="food_tabIndicatorText">
 		<item name="android:textStyle">bold</item>
 	</style>
