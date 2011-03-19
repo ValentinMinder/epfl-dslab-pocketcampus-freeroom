@@ -19,6 +19,15 @@
 	<string name="food_show_sandwiches">Sandwiches</string>
 	<string name="food_show_suggestions">Suggestions</string>
 	
+	<!-- Menu dialog -->
+	<string name="food_menudialog_rateittext">Rate it!</string>
+	<string name="food_menudialog_takethistext">I will eat this</string>
+	<string name="food_menudialog_gotheretext">Take me there</string>
+	<string name="food_menudialog_takepicturetext">Take a picture</string>
+	<string name="food_menudialog_takepictureQueuetext">Take Queue</string>
+	<string name="food_menudialog_seepictureQueuetext">See Queue</string>
+	<string name="food_menudialog_seepicturestext">See pictures</string>
+	
 		
 	<style name="food_tabIndicatorText">
 		<item name="android:textStyle">bold</item>

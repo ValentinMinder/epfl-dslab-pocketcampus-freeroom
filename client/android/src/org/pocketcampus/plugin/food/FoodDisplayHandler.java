@@ -37,11 +37,11 @@ public class FoodDisplayHandler {
 		ownerActivity_ = ownerActivity;
 		sorter_ = new MenuSorter();
 		currentDisplayType_ = FoodDisplayType.Restaurants;
-		
+
 		updateView();
 	}
-	
-	public boolean valid(){
+
+	public boolean valid() {
 		return !campusMenu_.isEmpty();
 	}
 
@@ -86,9 +86,11 @@ public class FoodDisplayHandler {
 			showMenusByRatings();
 			break;
 		case Sandwiches:
-
+			showSandwiches();
+			break;
 		case Suggestions:
-
+			showMenusBySuggestions();
+			break;
 		}
 	}
 
@@ -145,6 +147,59 @@ public class FoodDisplayHandler {
 
 			}
 		}
+	}
+
+	/**
+	 * Show sandwich view
+	 * 
+	 * @author nicolas.tran@epfl.ch
+	 * @throws ServerException
+	 */
+	public void showSandwiches() {
+
+		/*progressDialog_ = ProgressDialog.show(this,
+				getString(R.string.please_wait),
+				getString(R.string.loading_menus), true, false);
+		new Thread() {
+			public void run() {
+				SandwichListStore listStore;
+				try {
+					System.out.println("avant sandwichListStore()");
+					listStore = new SandwichListStore();
+					System.out.println("après sandwichListStore()");
+					sandwichListAdapter_ = new SandwichListAdapter(
+							DailyMenus.this, listStore.getStoreList());
+				} catch (ServerException e) {
+					System.out.println("erreur : " + e);
+				}
+				handler.sendEmptyMessage(1);
+			}
+		}.start();*/
+
+	}
+
+	public void showMenusBySuggestions() {
+		/*int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+		HashMap<Meal, Rating> meals = MealCache.getInstance()
+				.getMealsOfDay(day);
+		if (meals != null) {
+			Vector<Meal> mealsVector = sorter.sortByRatings(meals);
+			ArrayList<Meal> mealsList = new ArrayList<Meal>();
+
+			for (Meal meal : mealsVector) {
+				mealsList.add(meal);
+			}
+
+			Intent suggestions = new Intent(this.getApplicationContext(),
+					Suggestions.class);
+			suggestions.putExtra("Meals", mealsList);
+			startActivityForResult(suggestions, 1);
+		} else {
+			Toast.makeText(this,
+					getString(R.string.resto_suggestions_nomeal_nosuggestion),
+					Toast.LENGTH_LONG).show();
+		}
+		 */
 	}
 
 	public static enum FoodDisplayType {
