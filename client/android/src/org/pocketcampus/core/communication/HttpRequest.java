@@ -18,7 +18,7 @@ public class HttpRequest {
 	
 	private static final int BUFFER_SIZE = 2000;
 	
-	public HttpRequest(String urlString) {
+	protected HttpRequest(String urlString) {
 		try {
 			url_ = new URL(urlString);
 		} catch (MalformedURLException e) {

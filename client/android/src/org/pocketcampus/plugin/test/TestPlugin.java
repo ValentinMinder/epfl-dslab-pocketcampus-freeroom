@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.test;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +23,7 @@ public class TestPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.test_main);
-		
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle("PocketCampus EPFL");
-		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
+		setupActionBar(true);
 		
 		textView_ = (TextView) findViewById(R.id.TestTextView);
 		
@@ -35,25 +32,51 @@ public class TestPlugin extends PluginBase {
 			
 			@Override
 			public void onClick(View v) {
-				remoteUpperCaseText();
+				EditText editText = (EditText) findViewById(R.id.editText);
+				String editTextContent = editText.getText().toString();
+				
+				remoteUpperCaseText(editTextContent);
 			}
 		});
 	}
 	
-	private void remoteUpperCaseText() {
-		class UpperCaseRequest extends RawTextRequest {
+	/**
+	 * HOW TO make a request to the server.
+	 * Sample method transforming a String to uppercase on the server.
+	 */
+	private void remoteUpperCaseText(String text) {
+		textView_.setText("");
+		
+		// Create a class for your request with...
+		class UpperCaseRequest extends ServerRequest {
+			
+			// ...what to do when the result is ready
 			@Override
 			protected void onPostExecute(String result) {
 				textView_.setText(result);
-				System.out.println(result);
-				System.out.println("Done!");
+			}
+			
+			// ...what to do if cancelled
+			@Override
+			protected void onCancelled() {
+				System.out.println("Cancelled!");
 			}
 		}
 		
-		textView_.setText("");
+		// Create a RequestParameters object containing the parameters
+		RequestParameters reqParams = new RequestParameters();
+		reqParams.addParameter("text", text);
 		
-		EditText editText = (EditText) findViewById(R.id.editText);
-		new UpperCaseRequest().execute(editText.getText().toString());
+		// Use a RequestHandler to execute your request.
+		// You don't have to worry about which Servlet your talking to, it will automatically be the
+		// one corresponding to the plugin you're in.
+		// If you need to do a request from another class/Activity you can give it a RequestHandler instance.
+		getRequestHandler().execute(new UpperCaseRequest(), reqParams);
+		
+		
+		// To handle the loading another way, you can just use the RequestHandler to give you the complete
+		// request URL, including the server and servlet address.
+		System.out.println(getRequestHandler().getRequestUrl(reqParams));
 	}
 	
 	@Override

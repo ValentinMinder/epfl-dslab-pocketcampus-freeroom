@@ -40,18 +40,18 @@ public abstract class PluginInfo {
 	 */
 	public abstract boolean hasMenuIcon();
 	
-	@Override
-	public String toString() {
-		String text;
-		text  = "Plugin \"" + getName() + "\" (";
-		text += "menu icon:" + hasMenuIcon() + " ";
-		text += "id:" + getId() + " ";
-		text += "version:" + getVersion() + " ";
-		text += "icon:" + getIcon() + " ";
-		text += ")";
-			
-		return text;
-	}
+//	@Override
+//	public String toString() {
+//		String text;
+//		text  = "Plugin \"" + getName() + "\" (";
+//		text += "menu icon:" + hasMenuIcon() + " ";
+//		text += "id:" + getId() + " ";
+//		text += "version:" + getVersion() + " ";
+//		text += "icon:" + getIcon() + " ";
+//		text += ")";
+//			
+//		return text;
+//	}
 	
 }
 
