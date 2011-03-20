@@ -14,7 +14,6 @@
 		android:layout_below="@+id/actionbar"
 		android:layout_above="@+id/food_dayselector">
 		<ListView
-			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/food_list"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
@@ -22,7 +21,7 @@
 			android:cacheColorHint="#00000000"
 			android:drawSelectorOnTop="false">
 		</ListView>
-		
+				
 		<FrameLayout
 			android:layout_below="@+id/food_menu_moreinfo"
 			android:layout_height="fill_parent"
