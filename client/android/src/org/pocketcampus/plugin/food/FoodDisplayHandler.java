@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
@@ -12,6 +13,7 @@ import org.pocketcampus.plugin.food.menu.MenuSorter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 /**
  * Handles what is shown in the food plugin: Restaurant, ratings, suggestions or
@@ -180,27 +182,35 @@ public class FoodDisplayHandler {
 	}
 
 	public void showMenusBySuggestions() {
-		/*int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-		HashMap<Meal, Rating> meals = MealCache.getInstance()
+		/*
+			int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+			HashMap<Meal, Rating> meals = MealCache.getInstance()
 				.getMealsOfDay(day);
-		if (meals != null) {
-			Vector<Meal> mealsVector = sorter.sortByRatings(meals);
-			ArrayList<Meal> mealsList = new ArrayList<Meal>();
-
-			for (Meal meal : mealsVector) {
-				mealsList.add(meal);
-			}
-
-			Intent suggestions = new Intent(this.getApplicationContext(),
-					Suggestions.class);
-			suggestions.putExtra("Meals", mealsList);
-			startActivityForResult(suggestions, 1);
-		} else {
-			Toast.makeText(this,
-					getString(R.string.resto_suggestions_nomeal_nosuggestion),
-					Toast.LENGTH_LONG).show();
-		}
 		 */
+		
+		if (campusMenu_ != null) {
+			FoodListSection menuListSection;
+
+			if (!campusMenu_.isEmpty()) {
+				Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_);
+				
+				ArrayList<Meal> mealsList = new ArrayList<Meal>();
+
+				for (Meal meal : mealsVector) {
+					mealsList.add(meal);
+				}
+	
+				Intent suggestions = new Intent(activityContext_, Suggestions.class);
+				// Starting with the FLAG_ACTIVITY_NEW_TASK tag
+				suggestions.putExtra("Meals", mealsList);
+				suggestions.addFlags(268435456);
+				activityContext_.startActivity/*ForResult*/(suggestions);
+			} else {
+				Toast.makeText(activityContext_,
+						activityContext_.getResources().getString(R.string.food_suggestions_nomeal_nosuggestion),
+						Toast.LENGTH_LONG).show();
+			}
+		}
 		
 	}
 

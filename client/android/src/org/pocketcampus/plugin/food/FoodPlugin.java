@@ -83,12 +83,11 @@ public class FoodPlugin extends PluginBase {
 			showSandwich();*/
 			return true;
 		case 4: // show suggestions
-//			foodDisplayHandler.setDisplayType(selectedId);
-			
-			Intent suggestions = new Intent(this.getApplicationContext(),
-					Suggestions.class);
-			startActivity(suggestions);
-			return true;
+			foodDisplayHandler.setDisplayType(selectedId);
+			return true;			
+//			Intent suggestions = new Intent(this.getApplicationContext(),
+//					Suggestions.class);
+//			startActivity(suggestions);
 		}
 
 		return false;

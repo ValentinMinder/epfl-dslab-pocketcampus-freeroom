@@ -13,4 +13,5 @@
     <string name="food_suggestions_idontlike">I don\'t like</string>
     <string name="food_suggestlist_prompt_like">What do you like?</string>
     <string name="food_suggestlist_prompt_dislike">What don\'t you like?</string>
+    <string name="food_suggestions_nomeal_nosuggestion">Can\'t compute suggestions if there are no meals</string>
 </resources>

@@ -1,3 +1,9 @@
+/**
+ * Handling and computing suggestions for meals
+ * 
+ * @author oriane
+ * 
+ */
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
