@@ -32,4 +32,10 @@ public class MainscreenInfo extends PluginInfo {
 		return false;
 	}
 
+	@Override
+	public Icon getMiniIcon() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

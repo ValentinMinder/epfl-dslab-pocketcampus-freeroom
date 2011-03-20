@@ -12,13 +12,14 @@ import org.pocketcampus.core.ui.ActionBar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class MainscreenPlugin extends PluginBase {
 
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, MainscreenPlugin.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		//i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		return i;
 	}
 
@@ -92,32 +93,77 @@ public class MainscreenPlugin extends PluginBase {
 				textParams.addRule(RelativeLayout.BELOW, 1);
 				textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				text.setLayoutParams(textParams);
-				text.setTextColor(0xff000000);
+				text.setTextColor(0xff444444);
 				text.setGravity(Gravity.BOTTOM);
 				relLayout.addView(text);
 				
 				
 				// DONE //
-				relLayout.setPadding(23, 15, 23, 15);
+				relLayout.setPadding(9, 15, 9, 15);
 				layout.addView(relLayout);
 			}
 
 			// Configure button
-			Button configureButton = new Button(ctx_);
-			configureButton.setText(getString(R.string.mainscreen_configure)+ " " + plugin.getPluginInfo().getId());
-
+//			Button configureButton = new Button(ctx_);
+//			configureButton.setText(getString(R.string.mainscreen_configure)+ " " + plugin.getPluginInfo().getId());
+//
+//			if(plugin.getPluginPreference() != null) {
+//				configureButton.setOnClickListener(new View.OnClickListener() {
+//		             public void onClick(View v) {
+//		            	 core_.configurePlugin(ctx_, plugin);
+//		             }
+//		         });
+//			} else {
+//				configureButton.setEnabled(false);
+//			}
+//			
+//			configureButton.setBackgroundColor(0x00000000);
+//			infoLayout.addView(configureButton);
+			
 			if(plugin.getPluginPreference() != null) {
-				configureButton.setOnClickListener(new View.OnClickListener() {
+				RelativeLayout infoItemLayout = new RelativeLayout(ctx_);
+				
+				RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				iconParams.addRule(RelativeLayout.CENTER_VERTICAL);
+				
+				ImageView icon = new ImageView(ctx_);
+				icon.setLayoutParams(iconParams);
+				icon.setImageDrawable(pluginInfo.getMiniIcon().getDrawable(ctx_));
+				icon.setId(2);
+				icon.setPadding(6, 0, 12, 0);
+				infoItemLayout.addView(icon);
+				
+				RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				titleParams.addRule(RelativeLayout.RIGHT_OF, 2);
+				titleParams.addRule(RelativeLayout.ALIGN_BOTTOM);
+				
+				TextView title = new TextView(ctx_);
+				title.setText("Configure " + pluginInfo.getName());
+				title.setLayoutParams(titleParams);
+				title.setTextColor(0xff444444);
+				title.setTypeface(Typeface.DEFAULT_BOLD);
+				infoItemLayout.addView(title);
+				
+				RelativeLayout.LayoutParams detailParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				detailParams.addRule(RelativeLayout.BELOW, 2);
+				detailParams.addRule(RelativeLayout.RIGHT_OF, 2);
+				
+				TextView detail = new TextView(ctx_);
+				detail.setText("Id: " +pluginInfo.getId()+ ", hasMenuIcon: " +pluginInfo.hasMenuIcon());
+				detail.setTextColor(0xff696969);
+				detail.setLayoutParams(detailParams);
+				infoItemLayout.addView(detail);
+				
+				infoItemLayout.setPadding(6, 12, 5, 5);
+				infoLayout.addView(infoItemLayout);
+				
+				infoItemLayout.setOnClickListener(new View.OnClickListener() {
 		             public void onClick(View v) {
 		            	 core_.configurePlugin(ctx_, plugin);
 		             }
 		         });
-			} else {
-				configureButton.setEnabled(false);
 			}
 			
-			configureButton.setBackgroundColor(0x00000000);
-			infoLayout.addView(configureButton);
 		}
 	}
 

@@ -35,6 +35,12 @@ public abstract class PluginInfo {
 	public abstract Icon getIcon();
 	
 	/**
+	 * Plugin smaller icon.
+	 * @return
+	 */
+	public abstract Icon getMiniIcon();
+	
+	/**
 	 * Had this plugin to the mainscreen menu?
 	 * @return
 	 */

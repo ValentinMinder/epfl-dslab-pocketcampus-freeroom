@@ -33,4 +33,9 @@ public class TestInfo extends PluginInfo {
 		return true;
 	}
 
+	@Override
+	public Icon getMiniIcon() {
+		return new Icon(R.drawable.test_normal_mini);
+	}
+
 }

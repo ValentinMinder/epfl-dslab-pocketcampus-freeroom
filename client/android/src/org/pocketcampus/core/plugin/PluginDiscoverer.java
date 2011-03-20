@@ -3,6 +3,7 @@ package org.pocketcampus.core.plugin;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.food.FoodPlugin;
+import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
 import org.pocketcampus.plugin.test.TestPlugin;
 
@@ -30,16 +31,10 @@ public class PluginDiscoverer {
 		
 		// LIST OF REGISTERED PLUGINS //
 		// TODO scan for available plugins automatically
-		
 		plugins.add(new NewsPlugin());
 		plugins.add(new TestPlugin());
 		plugins.add(new FoodPlugin());
-		
-		/*plugins.add((new NewsPlugin()).getPluginDescriptor());
-		plugins.add((new AuthenticationPlugin()).getPluginDescriptor());
-		plugins.add((new PositioningPlugin()).getPluginDescriptor());
-		plugins.add((new LoggingPlugin()).getPluginDescriptor());
-		plugins.add((new FoodPlugin()).getPluginDescriptor());*/
+		plugins.add(new MapPlugin());
 		////////////////////////////////
 		
 		return plugins;

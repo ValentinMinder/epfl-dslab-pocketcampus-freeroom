@@ -33,4 +33,9 @@ public class FoodInfo extends PluginInfo {
 		return true;
 	}
 
+	@Override
+	public Icon getMiniIcon() {
+		return new Icon(R.drawable.food_normal_mini);
+	}
+
 }

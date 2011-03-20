@@ -48,4 +48,9 @@ public class NewsInfo extends PluginInfo implements IInfoProviderService {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	@Override
+	public Icon getMiniIcon() {
+		return new Icon(R.drawable.news_normal_mini);
+	}
 }
