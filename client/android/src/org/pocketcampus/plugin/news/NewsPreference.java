@@ -63,7 +63,7 @@ public class NewsPreference extends PluginPreference {
 		ListPreference lp = new ListPreference(this);
 		lp.setEntries(R.array.news_refresh_entries);
 		lp.setEntryValues(R.array.news_refresh_values);
-		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[0]);
+		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[getResources().getInteger(R.integer.news_default_refresh)]);
 		lp.setKey("news_refresh_rate");
 		lp.setTitle(R.string.news_refresh_title);
 		lp.setSummary(R.string.news_refresh_summary);

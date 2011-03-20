@@ -32,4 +32,6 @@
         <item>86400000</item>
     </string-array>
     
+    <item type="integer" name="news_default_refresh">2</item>
+    
 </resources>

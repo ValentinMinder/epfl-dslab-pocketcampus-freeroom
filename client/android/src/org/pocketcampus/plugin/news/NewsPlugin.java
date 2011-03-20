@@ -1,21 +1,17 @@
 package org.pocketcampus.plugin.news;
 
-import java.util.ArrayList;
-
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * PluginBase class for the News plugin. 
@@ -28,6 +24,7 @@ import android.widget.ListView;
 public class NewsPlugin extends PluginBase {
 
 	NewsAdapter adapter_;
+	NewsProvider newsProvider_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +32,20 @@ public class NewsPlugin extends PluginBase {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.news_list);
 
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle(getResources().getString(R.string.app_name));
-		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
-
+		newsProvider_ = NewsProvider.getInstance(this);
+		
+		setupActionBar(true);
+		
 		setLayout();
+		
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		adapter_.refreshIfNeeded();
+		newsProvider_.refreshIfNeeded();
 	}
 
 	@Override
@@ -67,7 +66,7 @@ public class NewsPlugin extends PluginBase {
 	
 	private void setLayout() {
 		final ListView l = (ListView) findViewById(R.id.news_list_list);
-		adapter_ = new NewsAdapter(this, new ArrayList<NewsItem>());
+		adapter_ = new NewsAdapter(this, newsProvider_);
 		l.setAdapter(adapter_);
 
 		l.setOnItemClickListener(new OnItemClickListener() {

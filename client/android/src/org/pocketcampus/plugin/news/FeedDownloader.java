@@ -6,7 +6,7 @@ import java.util.List;
 import android.os.AsyncTask;
 
 /**
- * Downloads RSS feeds and fills an adapter
+ * Downloads RSS feeds and fills a news provider
  * 
  * @status complete
  * 
@@ -18,15 +18,15 @@ import android.os.AsyncTask;
  */
 public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	
-	// The adapter to fill
-	private NewsAdapter adapter_;
+	// The NewsProvider to fill
+	private NewsProvider newsProvider_;
 	
 	/**
 	 * Constructor
 	 * @param adapter The adapter to fill
 	 */
-	public FeedDownloader(NewsAdapter adapter) {
-		this.adapter_ = adapter;
+	public FeedDownloader(NewsProvider adapter) {
+		this.newsProvider_ = adapter;
 	}
 
 	@Override
@@ -61,13 +61,13 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	protected void onPostExecute(List<NewsItem> result) {
 		// Empty the list and put the new items 
 		
-		adapter_.clear();
+		newsProvider_.clear();
 		for(NewsItem item : result) {
-			adapter_.add(item);
+			newsProvider_.add(item);
 		}
 		
 		// Notify that the data changed
-		adapter_.dataSetChanged();
+		newsProvider_.dataSetChanged();
 	}
 
 
