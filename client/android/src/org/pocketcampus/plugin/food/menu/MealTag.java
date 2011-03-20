@@ -1,15 +1,12 @@
-/*
- ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ]    see "licence"-file in the root directory
- * [   MAINTAINER  ]    andreas.kirchner@epfl.ch
- * [     STATUS    ]    Unstable
- *
- **************************[ C O M M E N T S ]**********************
- *
+/**
+ * Meal Tag
  * 
- *                      
- *******************************************************************
+ * @status incomplete
+ * @author oriane
+ * @license 
+ *
  */
+
 package org.pocketcampus.plugin.food.menu;
 
 
@@ -55,8 +52,9 @@ public enum MealTag {
 		public String toString() {        
 			return "Beef";    
 		}
-	}
-	, HORSE {
+	},
+	
+	HORSE {
 		public String toString() {        
 			return "Horse";    
 		}

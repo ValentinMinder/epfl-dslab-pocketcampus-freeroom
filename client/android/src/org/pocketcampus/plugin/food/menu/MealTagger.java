@@ -1,15 +1,12 @@
-/*
- ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ]    see "licence"-file in the root directory
- * [   MAINTAINER  ]    andreas.kirchner@epfl.ch
- * [     STATUS    ]    Unstable
- *
- **************************[ C O M M E N T S ]**********************
- *
+/**
+ * Meal Tagger
  * 
- *                      
- *******************************************************************
+ * @status incomplete
+ * @author oriane
+ * @license 
+ *
  */
+
 package org.pocketcampus.plugin.food.menu;
 
 import java.util.Collection;

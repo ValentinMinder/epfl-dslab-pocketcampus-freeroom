@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:background="@drawable/food_background"
+	android:layout_height="fill_parent">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+
+	<RelativeLayout
+		android:id="@+id/food_suggestions_rela"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@+id/actionbar">
+				
+			<TextView
+				android:id="@+id/food_suggestions_explanation"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/food_suggestions_explanation"
+				android:textColor="#ffffff"
+				android:gravity="center_horizontal"/>
+				
+			<!--  DEBUT -->
+			
+			<TextView
+				android:id="@+id/food_suggestions_ilike"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/food_suggestions_ilike"
+				style="?android:attr/listSeparatorTextViewStyle"
+				android:textColor="#ffffff"
+				android:background="@drawable/food_list_header_background"
+				android:gravity="center"
+				android:layout_gravity="center"
+				android:layout_below="@+id/food_suggestions_explanation" />
+
+			<LinearLayout
+				android:id="@+id/food_suggestions_linear1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_below="@+id/food_suggestions_ilike">
+
+				<Spinner
+					android:id="@+id/food_suggestions_spinner_like"
+					android:layout_width="220dip"
+					android:layout_height="wrap_content"
+					android:drawSelectorOnTop="true"
+					android:prompt="@string/food_suggestlist_prompt_like"
+					android:layout_marginTop="12dip" />
+
+				<ImageButton
+					android:id="@+id/food_suggestions_add_like"
+					android:background="@drawable/food_suggestions_add_button_xml"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_marginTop="15dip" />
+
+				<ImageButton
+					android:id="@+id/food_suggestions_remove_like"
+					android:background="@drawable/food_suggestions_remove_button_xml"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="2dip"
+					android:layout_marginLeft="10dip"
+					android:layout_marginTop="16dip" />
+					
+			</LinearLayout>
+	
+			<LinearLayout
+				android:id="@+id/food_suggestions_linear2"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_below="@+id/food_suggestions_linear1">
+
+				<TextView android:id="@+id/food_suggestions_display_like"
+					android:layout_width="fill_parent" android:layout_height="100dip"
+					android:textSize="20dip" android:layout_marginLeft="2dip"
+					android:textColor="#ffffff" />
+
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/food_suggestions_idontlike"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/food_suggestions_idontlike"
+				style="?android:attr/listSeparatorTextViewStyle"
+				android:textColor="#ffffff"
+				android:background="@drawable/food_list_header_background"
+				android:gravity="center"
+				android:layout_gravity="center"
+				android:layout_below="@+id/food_suggestions_linear2" />
+
+			<LinearLayout
+				android:id="@+id/food_suggestions_linear3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_below="@+id/food_suggestions_idontlike">
+
+				<Spinner
+					android:id="@+id/food_suggestions_spinner_dislike"
+					android:layout_width="220dip"
+					android:layout_height="wrap_content"
+					android:drawSelectorOnTop="true"
+					android:prompt="@string/food_suggestlist_prompt_dislike"
+					android:layout_marginTop="12dip" />
+
+				<ImageButton
+					android:id="@+id/food_suggestions_add_dislike"
+					android:background="@drawable/food_suggestions_add_button_xml"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_marginTop="15dip" />
+
+				<ImageButton
+					android:id="@+id/food_suggestions_remove_dislike"
+					android:background="@drawable/food_suggestions_remove_button_xml"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="2dip"
+					android:layout_marginLeft="10dip"
+					android:layout_marginTop="16dip" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/food_suggestions_linear4"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_below="@+id/food_suggestions_linear3" >
+
+				<TextView
+					android:id="@+id/food_suggestions_display_dislike"
+					android:layout_width="fill_parent"
+					android:layout_height="100dip"
+					android:textSize="20dip" 
+					android:layout_marginLeft="2dip"
+					android:textColor="#ffffff" />
+					
+			</LinearLayout>
+			
+			<ImageButton
+				android:id="@+id/food_suggestions_check_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:background="@drawable/food_suggestions_check_button_xml"
+				android:clickable="true" 
+				android:layout_below="@+id/food_suggestions_linear4" />
+
+	</RelativeLayout>
+	
+</RelativeLayout>

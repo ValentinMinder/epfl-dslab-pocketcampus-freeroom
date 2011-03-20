@@ -7,6 +7,7 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
@@ -79,12 +80,15 @@ public class FoodPlugin extends PluginBase {
 			return true;
 		case 3: // show sandwiches /*
 			/*setContentView(R.layout.restaurant_dailymenu_main_4_sandwich);
-			showSandwich();
-
-			return true;*/
+			showSandwich();*/
+			return true;
 		case 4: // show suggestions
-			/*chargeMenuEPFL(2);
-			return true;*/
+//			foodDisplayHandler.setDisplayType(selectedId);
+			
+			Intent suggestions = new Intent(this.getApplicationContext(),
+					Suggestions.class);
+			startActivity(suggestions);
+			return true;
 		}
 
 		return false;

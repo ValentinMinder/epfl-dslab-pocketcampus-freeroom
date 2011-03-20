@@ -24,6 +24,7 @@
 		<!-- Food Plugin -->
 		<activity android:name=".plugin.food.FoodPreference"></activity>
 		<activity android:name=".plugin.food.FoodPlugin"></activity>
+		<activity android:name=".plugin.food.Suggestions"></activity>
 
 		<!-- Test Plugin -->
 		<activity android:name=".plugin.test.TestPlugin"></activity>

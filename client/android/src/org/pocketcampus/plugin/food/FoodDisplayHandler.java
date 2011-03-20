@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.food.menu.MenuSorter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 /**
  * Handles what is shown in the food plugin: Restaurant, ratings, suggestions or
@@ -200,6 +201,7 @@ public class FoodDisplayHandler {
 					Toast.LENGTH_LONG).show();
 		}
 		 */
+		
 	}
 
 	public static enum FoodDisplayType {
