@@ -36,27 +36,27 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class Suggestions extends Activity{
-	private Context context;
+	private Context context_;
 
-	private Collection<Meal> meals;
-	private Vector<MealTag> likes = new Vector<MealTag>();
-	private Vector<MealTag> dislikes = new Vector<MealTag>();
+	private Collection<Meal> meals_;
+	private Vector<MealTag> likes_ = new Vector<MealTag>();
+	private Vector<MealTag> dislikes_ = new Vector<MealTag>();
 
-	private Spinner likeSpinner;
-	private Spinner dislikeSpinner;
+	private Spinner likeSpinner_;
+	private Spinner dislikeSpinner_;
 
-	private TextView likeTextView;
-	private TextView dislikeTextView;
+	private TextView likeTextView_;
+	private TextView dislikeTextView_;
 
-	private MealTag likeTag;
-	private MealTag dislikeTag;
+	private MealTag likeTag_;
+	private MealTag dislikeTag_;
 
-	//	private MealTagger tagger;
+	private MealTagger tagger_;
 
-	private ImageButton addButton_like;
-	private ImageButton removeButton_like;
-	private ImageButton addButton_dislike;
-	private ImageButton removeButton_dislike;
+	private ImageButton addButton_like_;
+	private ImageButton removeButton_like_;
+	private ImageButton addButton_dislike_;
+	private ImageButton removeButton_dislike_;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -71,7 +71,7 @@ public class Suggestions extends Activity{
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
 
-		context = this.getApplicationContext();
+		context_ = this.getApplicationContext();
 		
 		TextView t = (TextView)findViewById(R.id.food_suggestions_explanation);
 		
@@ -82,13 +82,13 @@ public class Suggestions extends Activity{
 //
 //		/*======================================== LIKES =================================================*/
 //		
-		likeSpinner = (Spinner) findViewById(R.id.food_suggestions_spinner_like);
+		likeSpinner_ = (Spinner) findViewById(R.id.food_suggestions_spinner_like);
 //		ArrayAdapter<MealTag> likeAdapter = new ArrayAdapter<MealTag>(context, R.layout.restaurant_suggestions_list_item, mTags);
 //		likeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //
 //		likeSpinner.setAdapter(likeAdapter);
 //
-		likeTextView = (TextView) findViewById(R.id.food_suggestions_display_like);
+		likeTextView_ = (TextView) findViewById(R.id.food_suggestions_display_like);
 //
 //		likeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 //			@Override
@@ -100,7 +100,7 @@ public class Suggestions extends Activity{
 //
 //		});
 //
-		addButton_like = (ImageButton) findViewById(R.id.food_suggestions_add_like);
+		addButton_like_ = (ImageButton) findViewById(R.id.food_suggestions_add_like);
 //
 //		addButton_like.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -109,8 +109,8 @@ public class Suggestions extends Activity{
 //			}
 //		});
 //
-		removeButton_like = (ImageButton) findViewById(R.id.food_suggestions_remove_like);
-		removeButton_like.setEnabled(false);
+		removeButton_like_ = (ImageButton) findViewById(R.id.food_suggestions_remove_like);
+		removeButton_like_.setEnabled(false);
 //
 //		removeButton_like.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -121,13 +121,13 @@ public class Suggestions extends Activity{
 //
 //		/*======================================= DISLIKES ================================================*/
 //
-		dislikeSpinner = (Spinner) findViewById(R.id.food_suggestions_spinner_dislike);
+		dislikeSpinner_ = (Spinner) findViewById(R.id.food_suggestions_spinner_dislike);
 //		ArrayAdapter<MealTag> dislikeAdapter = new ArrayAdapter<MealTag>(context, R.layout.restaurant_suggestions_list_item, mTags);
 //		dislikeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //
 //		dislikeSpinner.setAdapter(dislikeAdapter);
 //
-		dislikeTextView = (TextView) findViewById(R.id.food_suggestions_display_dislike);
+		dislikeTextView_ = (TextView) findViewById(R.id.food_suggestions_display_dislike);
 //
 //		dislikeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 //			@Override
@@ -139,7 +139,7 @@ public class Suggestions extends Activity{
 //
 //		});
 //
-		addButton_dislike = (ImageButton) findViewById(R.id.food_suggestions_add_dislike);
+		addButton_dislike_ = (ImageButton) findViewById(R.id.food_suggestions_add_dislike);
 //
 //		addButton_dislike.setOnClickListener(new OnClickListener() {
 //			@Override
@@ -148,8 +148,8 @@ public class Suggestions extends Activity{
 //			}
 //		});
 //
-		removeButton_dislike = (ImageButton) findViewById(R.id.food_suggestions_remove_dislike);
-		removeButton_dislike.setEnabled(false);
+		removeButton_dislike_ = (ImageButton) findViewById(R.id.food_suggestions_remove_dislike);
+		removeButton_dislike_.setEnabled(false);
 //		
 //		removeButton_dislike.setOnClickListener(new OnClickListener() {
 //			@Override
