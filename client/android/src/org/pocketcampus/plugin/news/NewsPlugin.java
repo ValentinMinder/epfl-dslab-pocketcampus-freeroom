@@ -17,6 +17,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+/**
+ * PluginBase class for the News plugin. 
+ * 
+ * @status complete
+ * 
+ * @author Jonas
+ *
+ */
 public class NewsPlugin extends PluginBase {
 
 	NewsAdapter adapter_;
@@ -31,19 +39,7 @@ public class NewsPlugin extends PluginBase {
 		actionBar.setTitle(getResources().getString(R.string.app_name));
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
 
-		final ListView l = (ListView) findViewById(R.id.news_list_list);
-		adapter_ = new NewsAdapter(getApplicationContext(), R.layout.news_newsentry, new ArrayList<NewsItem>());
-		l.setAdapter(adapter_);
-
-		l.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(adapter_ != null) {
-					adapter_.setClickedItem(parent, view, position, id);
-					l.smoothScrollToPosition(position);
-				}
-			}
-		});
+		setLayout();
 	}
 
 	@Override
@@ -64,11 +60,25 @@ public class NewsPlugin extends PluginBase {
 		return new NewsInfo();
 	}
 
-
-
 	@Override
 	public PluginPreference getPluginPreference() {
 		return new NewsPreference();
+	}
+	
+	private void setLayout() {
+		final ListView l = (ListView) findViewById(R.id.news_list_list);
+		adapter_ = new NewsAdapter(this, new ArrayList<NewsItem>());
+		l.setAdapter(adapter_);
+
+		l.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if(adapter_ != null) {
+					adapter_.setClickedItem(parent, view, position, id);
+					l.smoothScrollToPosition(position);
+				}
+			}
+		});
 	}
 
 

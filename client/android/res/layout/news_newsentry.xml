@@ -15,12 +15,20 @@
 			android:id="@+id/news_item_image" android:layout_gravity="center_vertical|center_horizontal"
 			android:layout_margin="5dp">
 		</org.pocketcampus.plugin.news.LoaderNewsImageView>
-
-		<TextView android:text="Item title" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:id="@+id/news_item_title"
-			android:ellipsize="marquee" android:textSize="20sp" android:maxLines="2"
-			android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
+		
+		<TextView android:text="Item title"
+			android:layout_height="wrap_content"
+			android:id="@+id/news_item_title"
+			android:textSize="20sp" android:maxLines="2"
+			android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_width="match_parent" android:layout_weight="1">
 		</TextView>
+		
+		<Button
+			android:id="@+id/news_view_more"
+			android:layout_height="40dp" android:layout_gravity="right|center_vertical" android:background="@drawable/news_viewmore" android:layout_width="40dp">
+		</Button>
+
+		
 	</LinearLayout>
 
 	<TextView android:text="Item description"

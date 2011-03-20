@@ -5,14 +5,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 /**
  * A class that describes a news item, to be displayed by the News plugins
  * 
  * @status complete, some attributes can be added.
- * @author jonas, johan
- * @license 
+ * @author Jonas, Johan
  *
  */
 
@@ -25,15 +23,13 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 	private String link_;
 	private String pubDate_;
 	private String image_;
-
 	private Drawable imageDrawable_;
 
+	// Used to get an image from the text
 	private final static Pattern imagePattern_ = Pattern.compile("<img.*src=\"?(\\S+).*>");
 
 	public NewsItem() { }
-
-
-
+	
 	public NewsItem(String title_, String description_, String link_,
 			String pubDate_, String image_) {
 		super();
@@ -43,7 +39,6 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		this.pubDate_ = pubDate_;
 		this.image_ = image_;
 	}
-
 
 
 	public NewsItem clone() {
@@ -56,6 +51,11 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		return fd;
 	}
 
+	/**
+	 * Get a uri to show as content from the news item.
+	 * If we don't have any images, we try to find an <img> tag inside the description
+	 * @return an image URI
+	 */
 	public String getImageUri() {
 		//if we don't have any images, we try to find an <img> tag inside the description
 		if(image_ == null && description_ != null) {
@@ -86,6 +86,10 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		return description_;
 	}
 
+	/**
+	 * Try to clean the html content to make it more readable
+	 * @return
+	 */
 	public String getDescriptionNoHtml() { //XXX maybe we want to have only a subsequence of the descritpion
 		return htmlToText(description_);
 	}
@@ -167,13 +171,8 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		this.imageDrawable_ = imageDrawable;
 	}
 
-
-
 	@Override
 	public int compareTo(NewsItem another) {
-		
-		Log.d(this.getClass().toString(), "Compare");
-		
 		try {
 			return this.getPubDate().compareTo(another.getPubDate());
 		} catch(NullPointerException e) {

@@ -9,11 +9,24 @@ import org.pocketcampus.core.service.infoprovider.IInfoProviderService;
 import org.pocketcampus.core.service.infoprovider.Informations;
 import org.pocketcampus.core.service.infoprovider.RefreshRate;
 
+/**
+ * PluginInfo class for the News plugin. 
+ * 
+ * @status incomplete, need to implement the IInfoProviderService.
+ * 
+ * @author Jonas
+ *
+ */
 public class NewsInfo extends PluginInfo implements IInfoProviderService {
 
 	@Override
 	public Icon getIcon() {
 		return new Icon(R.drawable.news_menu);
+	}
+
+	@Override
+	public Icon getMiniIcon() {
+		return new Icon(R.drawable.news_normal_mini);
 	}
 
 	@Override
@@ -45,12 +58,6 @@ public class NewsInfo extends PluginInfo implements IInfoProviderService {
 
 	@Override
 	public boolean hasMenuIcon() {
-		// TODO Auto-generated method stub
 		return true;
-	}
-
-	@Override
-	public Icon getMiniIcon() {
-		return new Icon(R.drawable.news_normal_mini);
 	}
 }
