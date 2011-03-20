@@ -30,6 +30,7 @@ public class FoodDisplayHandler {
 	private MenuSorter sorter_;
 
 	private FoodMenu campusMenu_;
+	private FoodMenu suggestionsMenu_;
 	private Activity ownerActivity_;
 	private Context activityContext_;
 
@@ -99,6 +100,16 @@ public class FoodDisplayHandler {
 
 	public String getDayLabel() {
 		return null;
+	}
+	
+	public FoodMenu getMenus(){
+		return this.campusMenu_;
+	}
+	
+	public void updateSuggestedMenus(FoodMenu suggestedMenus){
+		if(suggestedMenus != null){			
+			this.suggestionsMenu_ = suggestedMenus;
+		}
 	}
 
 	/**
@@ -188,10 +199,10 @@ public class FoodDisplayHandler {
 				.getMealsOfDay(day);
 		 */
 		
-		if (campusMenu_ != null) {
+		if (suggestionsMenu_ != null) {
 			FoodListSection menuListSection;
 
-			if (!campusMenu_.isEmpty()) {
+			if (!suggestionsMenu_.isEmpty()) {
 				Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_);
 				
 				ArrayList<Meal> mealsList = new ArrayList<Meal>();
@@ -199,12 +210,15 @@ public class FoodDisplayHandler {
 				for (Meal meal : mealsVector) {
 					mealsList.add(meal);
 				}
-	
-//				Intent suggestions = new Intent(activityContext_, Suggestions.class);
-				// Starting with the FLAG_ACTIVITY_NEW_TASK tag
-//				suggestions.putExtra("Meals", mealsList);
-//				suggestions.addFlags(268435456);
-//				activityContext_.startActivity/*ForResult*/(suggestions);
+				
+				menuListSection = new FoodListSection(mealsVector,
+						ownerActivity_);
+				currentListAdapter_
+						.addSection(
+								activityContext_.getResources().getString(
+										R.string.food_show_suggestions),
+								menuListSection);
+				
 			} else {
 				Toast.makeText(activityContext_,
 						activityContext_.getResources().getString(R.string.food_suggestions_nomeal_nosuggestion),

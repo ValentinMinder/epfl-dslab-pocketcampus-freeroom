@@ -12,6 +12,14 @@ package org.pocketcampus.plugin.food.menu;
 
 public enum MealTag {
 
+	/*This is for testing*/
+	TEST {
+		public String toString() {
+			return "Test";
+		}
+	},
+	/*end*/
+	
 	MEAT {
 		public String toString() {        
 			return "Meat";    

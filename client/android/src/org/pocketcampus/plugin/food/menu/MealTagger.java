@@ -36,6 +36,11 @@ public class MealTagger {
 		
 		this.tagPatterns = new HashMap<MealTag, Collection<Pattern>>();
 
+		/*This is for testing*/
+		Pattern testPatterns = Pattern.compile(".*(mauvais|pourri).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		addPattern(MealTag.TEST, testPatterns);
+		/*end*/
+		
 		Pattern meatPatterns = Pattern.compile(".*(boeuf|bœuf|caille|kangourou|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 //		Pattern meatPatterns2 = Pattern.compile(".*(émincé|roti|ragoût|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamar).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);

@@ -29,23 +29,27 @@ public class FoodMenu {
 		Meal m1 = new Meal("Name1", "Description1", r1, new Date(), true);
 		Meal m2 = new Meal("Name2", "Description2", r1, new Date(), true);
 		Meal m3 = new Meal("Name3", "Description3", r1, new Date(), true);
+		Meal m_mauvais = new Meal("Name4", "Mauvais repas", r1, new Date(), true);
 		
 		Rating rate1 = new Rating(StarRating.STAR_1_0, 5);
 		
 		campusMenu_.put(m1, rate1);
 		campusMenu_.put(m2, rate1);
 		campusMenu_.put(m3, rate1);
+		campusMenu_.put(m_mauvais, rate1);
 		
 		Restaurant r2 = new Restaurant("Orni");
 		Meal m4 = new Meal("Name1", "Description1", r2, new Date(), true);
 		Meal m5 = new Meal("Name2", "Description2", r2, new Date(), true);
 		Meal m6 = new Meal("Name3", "Description3", r2, new Date(), true);
+		Meal m_pourri = new Meal("Name4", "Plat pourri", r2, new Date(), true);
 		
 		Rating rate2 = new Rating(StarRating.STAR_1_0, 5);
 
 		campusMenu_.put(m4, rate2);
 		campusMenu_.put(m5, rate2);
 		campusMenu_.put(m6, rate2);
+		campusMenu_.put(m_pourri, rate2);
 	}
 	
 	public Set<Meal> getKeySet(){

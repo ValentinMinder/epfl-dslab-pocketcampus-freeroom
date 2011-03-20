@@ -28,6 +28,27 @@
 	<string name="food_menudialog_seepictureQueuetext">See Queue</string>
 	<string name="food_menudialog_seepicturestext">See pictures</string>
 	
+	<!--  Suggestions -->
+    <string name="food_suggestions_nothing_found">No suggestions found</string>
+    <string name="food_suggestions_meat">Meat</string>
+    <string name="food_suggestions_fish">Fish</string>
+    <string name="food_suggestions_beef">Beef</string>
+    <string name="food_suggestions_pasta">Pasta</string>
+    <string name="food_suggestions_horse">Horse</string>
+    <string name="food_suggestions_vege">Vegetarian</string>
+    <string name="food_suggestions_porc">Porc</string>
+    <string name="food_suggestions_chicken">Chicken</string>
+    
+    <string name="food_suggestions_test">Test</string>
+    
+    <string name="food_suggestions_notag">No existing Tag</string>
+    <string name="food_suggestions_alreadyAdded">This tag wass already added !</string>
+    <string name="food_suggestions_explanation">Pick the meals you (don\'t) like</string>
+    <string name="food_suggestions_ilike">I like</string>
+    <string name="food_suggestions_idontlike">I don\'t like</string>
+    <string name="food_suggestlist_prompt_like">What do you like?</string>
+    <string name="food_suggestlist_prompt_dislike">What don\'t you like?</string>
+    <string name="food_suggestions_nomeal_nosuggestion">Can\'t compute suggestions if there are no meals</string>
 		
 	<style name="food_tabIndicatorText">
 		<item name="android:textStyle">bold</item>

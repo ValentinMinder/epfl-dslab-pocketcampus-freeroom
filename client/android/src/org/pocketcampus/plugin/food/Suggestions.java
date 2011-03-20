@@ -37,7 +37,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class Suggestions extends Activity{
 	private Context context_;
-
+	
 	private Collection<Meal> meals_;
 	private Vector<MealTag> likes_ = new Vector<MealTag>();
 	private Vector<MealTag> dislikes_ = new Vector<MealTag>();
@@ -75,143 +75,114 @@ public class Suggestions extends Activity{
 		
 		TextView t = (TextView)findViewById(R.id.food_suggestions_explanation);
 		
+		handleExtras();
 		
-//		handleExtras();
-//		
-//		MealTag[] mTags = MealTag.values();
-//
-//		/*======================================== LIKES =================================================*/
-//		
+		MealTag[] mTags = MealTag.values();
+
+		/*======================================== LIKES =================================================*/
+		
 		likeSpinner_ = (Spinner) findViewById(R.id.food_suggestions_spinner_like);
-//		ArrayAdapter<MealTag> likeAdapter = new ArrayAdapter<MealTag>(context, R.layout.restaurant_suggestions_list_item, mTags);
-//		likeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//		likeSpinner.setAdapter(likeAdapter);
-//
+		ArrayAdapter<MealTag> likeAdapter = new ArrayAdapter<MealTag>(context_, R.layout.food_suggestions_list_item, mTags);
+		likeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		likeSpinner_.setAdapter(likeAdapter);
+
 		likeTextView_ = (TextView) findViewById(R.id.food_suggestions_display_like);
-//
-//		likeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-//			@Override
-//			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				likeTag = (MealTag)arg0.getItemAtPosition(arg2);
-//			}
-//			@Override
-//			public void onNothingSelected(AdapterView<?> arg0) {}
-//
-//		});
-//
+
+		likeSpinner_.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				likeTag_ = (MealTag)arg0.getItemAtPosition(arg2);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
+
+		});
+
 		addButton_like_ = (ImageButton) findViewById(R.id.food_suggestions_add_like);
-//
-//		addButton_like.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				addLikeSuggestion();
-//			}
-//		});
-//
+
+		addButton_like_.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addLikeSuggestion();
+			}
+		});
+
 		removeButton_like_ = (ImageButton) findViewById(R.id.food_suggestions_remove_like);
 		removeButton_like_.setEnabled(false);
-//
-//		removeButton_like.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				removeLikeSuggestion();
-//			}
-//		});
-//
-//		/*======================================= DISLIKES ================================================*/
-//
+
+		removeButton_like_.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				removeLikeSuggestion();
+			}
+		});
+
+		/*======================================= DISLIKES ================================================*/
+
 		dislikeSpinner_ = (Spinner) findViewById(R.id.food_suggestions_spinner_dislike);
-//		ArrayAdapter<MealTag> dislikeAdapter = new ArrayAdapter<MealTag>(context, R.layout.restaurant_suggestions_list_item, mTags);
-//		dislikeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//		dislikeSpinner.setAdapter(dislikeAdapter);
-//
+		ArrayAdapter<MealTag> dislikeAdapter = new ArrayAdapter<MealTag>(context_, R.layout.food_suggestions_list_item, mTags);
+		dislikeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		dislikeSpinner_.setAdapter(dislikeAdapter);
+
 		dislikeTextView_ = (TextView) findViewById(R.id.food_suggestions_display_dislike);
-//
-//		dislikeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-//			@Override
-//			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				dislikeTag = (MealTag)arg0.getItemAtPosition(arg2);
-//			}
-//			@Override
-//			public void onNothingSelected(AdapterView<?> arg0) {}
-//
-//		});
-//
+
+		dislikeSpinner_.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				dislikeTag_ = (MealTag)arg0.getItemAtPosition(arg2);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
+
+		});
+
 		addButton_dislike_ = (ImageButton) findViewById(R.id.food_suggestions_add_dislike);
-//
-//		addButton_dislike.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				addDislikeSuggestion();
-//			}
-//		});
-//
+
+		addButton_dislike_.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addDislikeSuggestion();
+			}
+		});
+
 		removeButton_dislike_ = (ImageButton) findViewById(R.id.food_suggestions_remove_dislike);
 		removeButton_dislike_.setEnabled(false);
-//		
-//		removeButton_dislike.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				removeDislikeSuggestion();
-//			}
-//		});
-//
-//		/*======================================= SUGGESTIONS ================================================*/
-//
-//		ImageButton suggestButton = (ImageButton) findViewById(R.id.food_suggestions_button);
-//		suggestButton.setOnClickListener(new OnClickListener(){
-//
-//			@Override
-//			public void onClick(View arg0) {
-//
-//				MealTagger tagger = new MealTagger();
-//				Collection<Meal> computeDislikeMeals = new HashSet<Meal>();
-//				Collection<Meal> computeLikeMeals = new HashSet<Meal>();
-//
-//				if(! likes.isEmpty() && meals != null){
-//					for(MealTag tag : likes){
-//						computeLikeMeals.addAll(computeSuggestions(meals, tag, tagger));
-//					}
-//				}else if ((likes.isEmpty()) && (meals != null)){
-//					computeLikeMeals.addAll(meals);
-//				}
-//
-//				if(! dislikes.isEmpty() && meals != null){				
-//					for(MealTag tag : dislikes){
-//						computeDislikeMeals.addAll(computeSuggestions(meals, tag, tagger));
-//					}
-//				}
-//
-//				Collection<Meal> computeMeals = new HashSet<Meal>(computeLikeMeals);
-//				computeMeals.removeAll(computeDislikeMeals);
-//
-//				ArrayList<Meal> list = new ArrayList<Meal>();
-//				for(Meal meal : computeMeals){
-//					list.add(meal);
-//				}
-//
-//				Intent menus = new Intent(context, DailyMenus.class);
-//				menus.putExtra("org.pocketcampus.suggestions.meals", list);
-//				setResult(Activity.RESULT_OK, menus);
-//				finish();
-//			}
-//		});
+		
+		removeButton_dislike_.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				removeDislikeSuggestion();
+			}
+		});
+
+		/*======================================= SUGGESTIONS ================================================*/
+
+		ImageButton suggestButton = (ImageButton) findViewById(R.id.food_suggestions_check_button);
+		suggestButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				finalizeSuggestions();
+			}
+		});
 
 	}
 
-	/*private void handleExtras(){
-		meals = new Vector<Meal>();
+	private void handleExtras(){
+		meals_ = new Vector<Meal>();
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null){
-			ArrayList<Meal> m = (ArrayList<Meal>)extras.getSerializable("Meals");
-			if(m != null){
+			ArrayList<Meal> m = (ArrayList<Meal>)extras.getSerializable("org.pocketcampus.suggestions.meals");
+			if(m != null && !m.isEmpty()){
 				for(Meal meal : m){
-					meals.add(meal);
+					meals_.add(meal);
 				}
+				Toast.makeText(this, "Extras 5/5 à l'aller !", Toast.LENGTH_LONG).show();
 			}
+		}else{
+			Toast.makeText(this, "Pas reçu d'extras à l'aller !", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -221,7 +192,7 @@ public class Suggestions extends Activity{
 					&& !(tagVector.contains(tag))
 					&& (tagVector.size() < 3)){
 				if(otherTagVector.contains(tag)){
-					Toast.makeText(context, getResources().getString(R.string.resto_suggestions_alreadyAdded), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context_, getResources().getString(R.string.food_suggestions_alreadyAdded), Toast.LENGTH_SHORT).show();
 				}else{
 					tagVector.add(tag);
 					removeButton.setEnabled(true);
@@ -239,11 +210,11 @@ public class Suggestions extends Activity{
 	}
 	
 	private void addLikeSuggestion(){
-		addSuggestion(likeTag, likes, dislikes, removeButton_like, addButton_like, likeTextView);
+		addSuggestion(likeTag_, likes_, dislikes_, removeButton_like_, addButton_like_, likeTextView_);
 	}
 	
 	private void addDislikeSuggestion(){
-		addSuggestion(dislikeTag, dislikes, likes, removeButton_dislike, addButton_dislike, dislikeTextView);
+		addSuggestion(dislikeTag_, dislikes_, likes_, removeButton_dislike_, addButton_dislike_, dislikeTextView_);
 	}
 	
 	private void removeSuggestion(Vector<MealTag> tagVector, ImageButton addButton, ImageButton removeButton, TextView text){
@@ -261,11 +232,11 @@ public class Suggestions extends Activity{
 	}
 	
 	private void removeLikeSuggestion(){
-		removeSuggestion(likes, addButton_like, removeButton_like, likeTextView);
+		removeSuggestion(likes_, addButton_like_, removeButton_like_, likeTextView_);
 	}
 	
 	private void removeDislikeSuggestion(){
-		removeSuggestion(dislikes, addButton_dislike, removeButton_dislike, dislikeTextView);
+		removeSuggestion(dislikes_, addButton_dislike_, removeButton_dislike_, dislikeTextView_);
 	}
 	
 	public static Collection<Meal> computeSuggestions(Collection<Meal> meals, MealTag tag, MealTagger tagger){
@@ -279,6 +250,46 @@ public class Suggestions extends Activity{
 		return returnedMeals;
 	}
 
+	private void finalizeSuggestions(){
+		
+		tagger_ = new MealTagger();
+		Collection<Meal> computeDislikeMeals = new HashSet<Meal>();
+		Collection<Meal> computeLikeMeals = new HashSet<Meal>();
+
+		if(! likes_.isEmpty() && meals_ != null){
+			for(MealTag tag : likes_){
+				computeLikeMeals.addAll(computeSuggestions(meals_, tag, tagger_));
+			}
+		}else if ((likes_.isEmpty()) && (meals_ != null)){
+			computeLikeMeals.addAll(meals_);
+		}
+
+		if(! dislikes_.isEmpty() && meals_ != null){				
+			for(MealTag tag : dislikes_){
+				computeDislikeMeals.addAll(computeSuggestions(meals_, tag, tagger_));
+			}
+		}
+
+		Collection<Meal> computeMeals = new HashSet<Meal>(computeLikeMeals);
+		computeMeals.removeAll(computeDislikeMeals);
+
+		ArrayList<Meal> list = new ArrayList<Meal>();
+		for(Meal meal : computeMeals){
+			list.add(meal);
+		}
+
+		/*Testing*/
+		if(!list.isEmpty()){
+			Toast.makeText(context_, "Ya des extras en retour !", Toast.LENGTH_LONG).show();
+		}
+		
+		Intent menus = new Intent(context_, FoodPlugin.class);
+		menus.putExtra("org.pocketcampus.suggestions.meals", list);
+		setResult(Activity.RESULT_OK, menus);
+		finish();
+		
+	}
+	
 	private String write(MealTag tag){
 		Resources r = getResources();
 
@@ -286,35 +297,41 @@ public class Suggestions extends Activity{
 
 		switch (tag){
 
+		/*This is for testing*/
+		case TEST : 
+			string = r.getString(R.string.food_suggestions_test).concat("\n");
+			break;
+		/*end*/
+		
 		case MEAT :
-			string = r.getString(R.string.resto_suggestions_meat).concat("\n");
+			string = r.getString(R.string.food_suggestions_meat).concat("\n");
 			break;
 		case FISH :
-			string = r.getString(R.string.resto_suggestions_fish).concat("\n");
+			string = r.getString(R.string.food_suggestions_fish).concat("\n");
 			break;
 		case VEGETARIAN :
-			string = r.getString(R.string.resto_suggestions_vege).concat("\n");
+			string = r.getString(R.string.food_suggestions_vege).concat("\n");
 			break;
 		case PASTA :
-			string = r.getString(R.string.resto_suggestions_pasta).concat("\n");
+			string = r.getString(R.string.food_suggestions_pasta).concat("\n");
 			break;
 		case PORC :
-			string = r.getString(R.string.resto_suggestions_porc).concat("\n");
+			string = r.getString(R.string.food_suggestions_porc).concat("\n");
 			break;
 		case CHICKEN :
-			string = r.getString(R.string.resto_suggestions_chicken).concat("\n");
+			string = r.getString(R.string.food_suggestions_chicken).concat("\n");
 			break;
 		case BEEF :
-			string = r.getString(R.string.resto_suggestions_beef).concat("\n");
+			string = r.getString(R.string.food_suggestions_beef).concat("\n");
 			break;
 		case HORSE :
-			string = r.getString(R.string.resto_suggestions_horse).concat("\n");
+			string = r.getString(R.string.food_suggestions_horse).concat("\n");
 			break;
 		default :
-			string = "No existing Tag";
+			string = r.getString(R.string.food_suggestions_notag).concat("\n");
 		}
 
 		return string;
-	}*/
+	}
 
 }
