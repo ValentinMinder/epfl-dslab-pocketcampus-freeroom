@@ -6,7 +6,10 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
 /**
@@ -39,8 +42,18 @@ public class NewsPreference extends PluginPreference {
         inlinePrefCat.setTitle(R.string.news_preferences_title);
         root.addPreference(inlinePrefCat);
         
+        // We want to force a refresh when the preferences have been changed
+        final NewsPreference that = this;
+        OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference arg0, Object arg1) {
+				PreferenceManager.getDefaultSharedPreferences(that).edit().putLong("news_cache_time", 0).commit();
+				return true;
+			}
+		};
+        
         // Feeds to display
-		String[] urls = getResources().getStringArray(R.array.news_feeds_url);
+		String[] urls  = getResources().getStringArray(R.array.news_feeds_url);
 		String[] names = getResources().getStringArray(R.array.news_feeds_name);
 
         CheckBoxPreference checkBoxPref;
@@ -48,13 +61,11 @@ public class NewsPreference extends PluginPreference {
 		for(String url : urls) {
 
 	        checkBoxPref = new CheckBoxPreference(this);
-	        
 	        checkBoxPref.setKey("load_rss" + url);
-	        
 	        checkBoxPref.setTitle(names[i++]);
 	        checkBoxPref.setSummary(url);
-	        
 	        checkBoxPref.setDefaultValue(true);
+	        checkBoxPref.setOnPreferenceChangeListener(listener);
 	        
 	        inlinePrefCat.addPreference(checkBoxPref);
 		}
@@ -70,7 +81,6 @@ public class NewsPreference extends PluginPreference {
 		lp.setDialogTitle(R.string.news_refresh_title);
 		root.addPreference(lp);
 		
-
         return root;
     }
 }

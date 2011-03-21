@@ -21,6 +21,7 @@ import android.util.Log;
 /**
  * Provider that is used both by the NewsAdapter and by the NewsInfo which provides news to the core platform.
  * This is a singleton that can be used from multiple part of the app.
+ * The provider can notify that the news have been updated by uing the {@link INewsListener} interface.
  * 
  * @status working on it
  * 
@@ -32,13 +33,12 @@ public class NewsProvider {
 	private Context context_;
 	SharedPreferences prefs_;
 	
-	// Signleton
+	// Singleton
 	private static NewsProvider instance_;
 	
-	
 	private FeedDownloader downloader_;
-	private NewsAdapter newsAdapter_;
-
+	
+	private List<INewsListener> newsListeners_;
 
 	// Data used to cache the feeds 
 	private final static String cacheFilename_ = "newscache.dat";
@@ -57,6 +57,7 @@ public class NewsProvider {
 		this.context_ = context;
 		
 		this.items_ = new ArrayList<NewsItem>();
+		this.newsListeners_ = new ArrayList<INewsListener>();
 		
 		prefs_ = PreferenceManager.getDefaultSharedPreferences(context);
 		
@@ -77,11 +78,19 @@ public class NewsProvider {
 	}
 
 	/**
-	 * Set the adapter that is going to be called when the list is refreshed.
-	 * @param adapter adapter to call
+	 * Add a listener
+	 * @param listener
 	 */
-	public void setAdapter(NewsAdapter adapter) {
-		newsAdapter_ = adapter;
+	public void addNewsListener(INewsListener listener) {
+		newsListeners_.add(listener);
+	}
+	
+	/**
+	 * Remove a listener
+	 * @param listener
+	 */
+	public void removeNewsListener(INewsListener listener) {
+		newsListeners_.remove(listener);
 	}
 	
 
@@ -94,22 +103,37 @@ public class NewsProvider {
 		// otherwise download the news
 		if(cacheTooOld()) {
 			Log.d(this.getClass().toString(), "Cache too old");
-			refresh();
+			forceRefresh();
 		} else {
 			Log.d(this.getClass().toString(), "Do not need to download news file");
 			loadNewsFromFile();
 		}
 
+	}	
+
+	/** 
+	 * Refresh the feeds (and handles the cache)
+	 */
+	public void forceRefresh() {
+		
+		for (INewsListener listener : newsListeners_) {
+			listener.newsRefreshing();
+		}
+		
+		downloadFeeds();
+		prefs_.edit().putLong(preferenceCacheKey_, System.currentTimeMillis()).commit();
+
+		Log.d(this.getClass().toString(), "Redownload news feeds");
 	}
 
 	/**
 	 * Tells that the items changed
 	 */
-	protected void dataSetChanged() {
+	protected void dataSetUpdated() {
 		this.sortNews();
 		
-		if(newsAdapter_ != null) {
-			newsAdapter_.notifyDataSetChanged();
+		for (INewsListener listener : newsListeners_) {
+			listener.newsRefreshed();
 		}
 		
 		this.saveNewsToFile();
@@ -199,17 +223,6 @@ public class NewsProvider {
 		Log.d(this.getClass().toString(), "Could not save news to file");
 
 		return false;
-	}
-	
-
-	/** 
-	 * Refresh the feeds (and handles the cache)
-	 */
-	private void refresh() {
-		downloadFeeds();
-		prefs_.edit().putLong(preferenceCacheKey_, System.currentTimeMillis()).commit();
-
-		Log.d(this.getClass().toString(), "Redownload news feeds");
 	}
 
 	/**

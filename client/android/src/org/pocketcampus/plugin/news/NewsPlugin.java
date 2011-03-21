@@ -4,14 +4,16 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 /**
  * PluginBase class for the News plugin. 
@@ -21,10 +23,11 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Jonas
  *
  */
-public class NewsPlugin extends PluginBase {
+public class NewsPlugin extends PluginBase implements INewsListener {
 
-	NewsAdapter adapter_;
-	NewsProvider newsProvider_;
+	private NewsAdapter adapter_;
+	private NewsProvider newsProvider_;
+	private ActionBar actionBar_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +36,32 @@ public class NewsPlugin extends PluginBase {
 		setContentView(R.layout.news_list);
 
 		newsProvider_ = NewsProvider.getInstance(this);
-		
+		newsProvider_.addNewsListener(this);
+
 		setupActionBar(true);
-		
+
 		setLayout();
+	}
+
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				newsProvider_.forceRefresh();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
 		
-		
+		super.setupActionBar(addHomeButton);
+
 	}
 
 	@Override
@@ -63,7 +86,7 @@ public class NewsPlugin extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return new NewsPreference();
 	}
-	
+
 	private void setLayout() {
 		final ListView l = (ListView) findViewById(R.id.news_list_list);
 		adapter_ = new NewsAdapter(this, newsProvider_);
@@ -78,6 +101,16 @@ public class NewsPlugin extends PluginBase {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void newsRefreshing() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void newsRefreshed() {
+		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
 

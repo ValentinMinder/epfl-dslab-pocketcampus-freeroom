@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -22,7 +22,7 @@ import android.widget.TextView;
  * @author Jonas
  *
  */
-public class NewsAdapter extends BaseAdapter {
+public class NewsAdapter extends BaseAdapter implements INewsListener {
 
 	private NewsProvider newsProvider_;
 
@@ -45,7 +45,7 @@ public class NewsAdapter extends BaseAdapter {
 		mInflater_ = LayoutInflater.from(context);
 		
 		newsProvider_ = newsProvider;
-		newsProvider_.setAdapter(this);
+		newsProvider_.addNewsListener(this);
 	}
 
 	@Override
@@ -123,6 +123,14 @@ public class NewsAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return newsProvider_.getItemId(position);
+	}
+
+	@Override
+	public void newsRefreshing() {}
+
+	@Override
+	public void newsRefreshed() {
+		this.notifyDataSetChanged();
 	}
 
 

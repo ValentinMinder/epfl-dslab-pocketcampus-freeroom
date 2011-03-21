@@ -67,7 +67,7 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 		}
 		
 		// Notify that the data changed
-		newsProvider_.dataSetChanged();
+		newsProvider_.dataSetUpdated();
 	}
 
 
