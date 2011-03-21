@@ -64,6 +64,10 @@ public class FoodMenu {
 	public HashMap<Meal, Rating> getCampusMenu(){
 		return this.campusMenu_;
 	}
+	
+	public void setCampusMenu(HashMap<Meal, Rating> menus){
+		this.campusMenu_ = menus;
+	}
 
 	public boolean isEmpty(){
 		return campusMenu_.isEmpty();

@@ -9,10 +9,12 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
+import org.pocketcampus.plugin.food.menu.Rating;
+import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -30,7 +32,7 @@ public class FoodDisplayHandler {
 	private MenuSorter sorter_;
 
 	private FoodMenu campusMenu_;
-	private FoodMenu suggestionsMenu_;
+	private HashMap<Meal, Rating> suggestionsMenu_;
 	private Activity ownerActivity_;
 	private Context activityContext_;
 
@@ -38,6 +40,7 @@ public class FoodDisplayHandler {
 		activityContext_ = ownerActivity.getApplicationContext();
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
 		campusMenu_ = new FoodMenu();
+		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		ownerActivity_ = ownerActivity;
 		sorter_ = new MenuSorter();
 		currentDisplayType_ = FoodDisplayType.Restaurants;
@@ -101,14 +104,45 @@ public class FoodDisplayHandler {
 	public String getDayLabel() {
 		return null;
 	}
-	
-	public FoodMenu getMenus(){
-		return this.campusMenu_;
+
+	/**
+	 * Get A List Of Menus
+	 * 
+	 * @return mealsList
+	 * 		The list of menus (not anymore a HashMap)
+	 * */
+	public ArrayList<Meal> getMenusList(){
+		ArrayList<Meal> mealsList = new ArrayList<Meal>();
+		if(campusMenu_ != null && !campusMenu_.isEmpty()){
+			Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_);
+			for(Meal m : mealsVector){
+				mealsList.add(m);
+			}
+		}
+		if(mealsList != null){
+			Toast.makeText(ownerActivity_, "Au moins je reçois les menus !", Toast.LENGTH_SHORT);
+		}
+		return mealsList;
 	}
+
 	
-	public void updateSuggestedMenus(FoodMenu suggestedMenus){
-		if(suggestedMenus != null){			
-			this.suggestionsMenu_ = suggestedMenus;
+	/**
+	 * Update Suggestions
+	 * 
+	 * @param suggestedMenus
+	 *            the menus returned by the Suggestions Class
+	 */
+	public void updateSuggestions(ArrayList<Meal> suggestedMenus){
+		if(suggestedMenus != null){
+			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
+			Toast.makeText(activityContext_, "Ya des menus suggested !", Toast.LENGTH_SHORT);
+			for(Meal m : suggestedMenus){
+				Toast.makeText(activityContext_, m.getName(), Toast.LENGTH_SHORT);
+				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
+			}
+			this.suggestionsMenu_ = menus;
+		}else{
+			Toast.makeText(activityContext_, "Ya pas de menus suggested !", Toast.LENGTH_SHORT);
 		}
 	}
 
@@ -118,7 +152,7 @@ public class FoodDisplayHandler {
 	public void showMenusByRestaurants() {
 		// Sort meals by restaurant.
 		HashMap<String, Vector<Meal>> mealHashMap = sorter_
-				.sortByRestaurant(campusMenu_.getKeySet());
+		.sortByRestaurant(campusMenu_.getKeySet());
 		FoodListSection menuListSection;
 
 		/**
@@ -154,9 +188,9 @@ public class FoodDisplayHandler {
 				menuListSection = new FoodListSection(mealVector,
 						ownerActivity_);
 				currentListAdapter_
-						.addSection(
-								activityContext_.getResources().getString(
-										R.string.food_show_ratings),
+				.addSection(
+						activityContext_.getResources().getString(
+								R.string.food_show_ratings),
 								menuListSection);
 
 			}
@@ -193,40 +227,36 @@ public class FoodDisplayHandler {
 	}
 
 	public void showMenusBySuggestions() {
-		/*
-			int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-			HashMap<Meal, Rating> meals = MealCache.getInstance()
-				.getMealsOfDay(day);
+
+		FoodListSection menuListSection;
+
+		/**
+		 * Iterate over the different restaurant menus
 		 */
-		
-		if (suggestionsMenu_ != null) {
-			FoodListSection menuListSection;
+		if (!suggestionsMenu_.isEmpty()) {
 
-			if (!suggestionsMenu_.isEmpty()) {
-				Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_);
-				
-				ArrayList<Meal> mealsList = new ArrayList<Meal>();
+			HashMap<String, Vector<Meal>> mealHashMap = sorter_
+			.sortByRestaurant(suggestionsMenu_.keySet());
 
-				for (Meal meal : mealsVector) {
-					mealsList.add(meal);
+			if(mealHashMap != null){
+
+				// Get the set of keys from the hash map to make sections.
+				Set<String> restaurantFullMenu = mealHashMap.keySet();
+				for (String restaurantName : restaurantFullMenu) {
+					// For each restaurant, make a list of its meals to add in its
+					// section
+					menuListSection = new FoodListSection(
+							mealHashMap.get(restaurantName), ownerActivity_);
+					currentListAdapter_.addSection(restaurantName, menuListSection);
 				}
-				
-				menuListSection = new FoodListSection(mealsVector,
-						ownerActivity_);
-				currentListAdapter_
-						.addSection(
-								activityContext_.getResources().getString(
-										R.string.food_show_suggestions),
-								menuListSection);
-				
-			} else {
-				Toast.makeText(activityContext_,
-						activityContext_.getResources().getString(R.string.food_suggestions_nomeal_nosuggestion),
-						Toast.LENGTH_LONG).show();
 			}
+		} else {
+			Toast.makeText(activityContext_,
+					activityContext_.getResources().getString(R.string.food_suggestions_nomeal_nosuggestion),
+					Toast.LENGTH_LONG).show();
 		}
-		
 	}
+
 
 	public static enum FoodDisplayType {
 		Restaurants(1), Ratings(2), Sandwiches(3), Suggestions(4);

@@ -179,7 +179,7 @@ public class Suggestions extends Activity{
 				for(Meal meal : m){
 					meals_.add(meal);
 				}
-				Toast.makeText(this, "Extras 5/5 à l'aller !", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "Extras 5/5 à l'aller !", Toast.LENGTH_LONG).show();
 			}
 		}else{
 			Toast.makeText(this, "Pas reçu d'extras à l'aller !", Toast.LENGTH_LONG).show();
@@ -276,11 +276,6 @@ public class Suggestions extends Activity{
 		ArrayList<Meal> list = new ArrayList<Meal>();
 		for(Meal meal : computeMeals){
 			list.add(meal);
-		}
-
-		/*Testing*/
-		if(!list.isEmpty()){
-			Toast.makeText(context_, "Ya des extras en retour !", Toast.LENGTH_LONG).show();
 		}
 		
 		Intent menus = new Intent(context_, FoodPlugin.class);
