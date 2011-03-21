@@ -34,14 +34,17 @@ public class FoodPlugin extends PluginBase {
 	public TextView empty;
 	private ArrayList<Meal> menus_;
 	private MenuSorter sorter_;
+	private boolean sandwich = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.food_main);
+		loadFirstScreen();
+	}
 
-		// Header
+	private void loadFirstScreen(){
+		setContentView(R.layout.food_main);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
@@ -57,7 +60,7 @@ public class FoodPlugin extends PluginBase {
 		// At first, display food by restaurant
 		displayView();
 	}
-
+	
 	public void displayView() {
 		// List view ; works only for menus by rating & restaurant.
 		if(txt_empty_ != null){
@@ -93,10 +96,16 @@ public class FoodPlugin extends PluginBase {
 		case 1: // Show menus by restaurant
 		case 2: // Show menus by rating
 			//setContentView(R.layout.food_main);
+			if(sandwich){
+				loadFirstScreen();
+			}
 			foodDisplayHandler.setDisplayType(selectedId);
 			displayView();
 			return true;
-		case 3: // show sandwiches /*
+		case 3: // show sandwiches
+			sandwich = true;
+			setContentView(R.layout.food_sandwich);
+			
 			/*setContentView(R.layout.restaurant_dailymenu_main_4_sandwich);
 			showSandwich();*/
 			return true;
