@@ -99,7 +99,7 @@ public class MainscreenPlugin extends PluginBase {
 				
 				
 				// DONE //
-				relLayout.setPadding(9, 15, 9, 15);
+				relLayout.setPadding(1, 15, 1, 15);
 				layout.addView(relLayout);
 			}
 
