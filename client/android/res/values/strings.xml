@@ -32,4 +32,7 @@
 	<string name="social_delete_confirm_yes">Yes</string>
 	<string name="social_delete_confirm_no">No</string>
 	<string name="social_friends_list_separator">Friends</string>
+	<string name="social_create_title">Create a new account:</string>
+	<string name="social_create_button">Create an account</string>
+	<string name="friendsRequestsListButtonValid">Go</string>
 </resources>
