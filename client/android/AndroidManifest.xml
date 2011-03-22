@@ -34,7 +34,12 @@
 		<activity android:name=".plugin.map.MapPlugin"></activity>
 		<activity android:name="plugin.map.MapPreference"></activity>
 
-	</application>
+	
+<activity android:name=".plugin.social.SocialPlugin"></activity>
+<activity android:name=".plugin.social.SocialPreference"></activity>
+<activity android:name=".plugin.social.SocialLogin"></activity>
+<activity android:name=".plugin.social.FriendsList"></activity>
+</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

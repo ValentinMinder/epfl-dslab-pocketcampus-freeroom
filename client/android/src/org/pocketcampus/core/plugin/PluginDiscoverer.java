@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
+import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.plugin.test.TestPlugin;
 
 /**
@@ -34,7 +35,9 @@ public class PluginDiscoverer {
 		plugins.add(new NewsPlugin());
 		plugins.add(new TestPlugin());
 		plugins.add(new FoodPlugin());
+		plugins.add(new SocialPlugin());
 		plugins.add(new MapPlugin());
+		
 		////////////////////////////////
 		
 		return plugins;

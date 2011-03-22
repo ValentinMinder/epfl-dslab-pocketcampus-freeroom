@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:weightSum="1.0">
+  
+  	<LinearLayout
+  			android:layout_weight="0.3"
+  			android:layout_width="fill_parent"
+  			android:layout_height="wrap_content">
+		<Spinner android:id="@+id/socialSpinnerServices" android:layout_width="wrap_content" android:layout_height="wrap_content" android:entries="@array/social_dialog_services" android:prompt="@string/social_permission_choose_service"></Spinner>
+	</LinearLayout>
+	
+	<LinearLayout
+			android:layout_weight="0.5"
+  			android:layout_width="fill_parent"
+  			android:layout_height="wrap_content">
+		
+			<RadioGroup
+      			android:layout_width="fill_parent"
+      			android:layout_height="fill_parent"
+      			android:orientation="vertical">
+      			<RadioButton android:id="@+id/permissionGranted"
+        	  		android:layout_width="wrap_content"
+          	    	android:layout_height="wrap_content"
+         	    	android:text="@string/social_permission_radio_granted" />
+         	   	<RadioButton android:id="@+id/permissionDenied"
+         	   		android:layout_width="wrap_content"
+         	   		android:layout_height="wrap_content"
+           	   		android:text="@string/social_permission_radio_denied" />
+      	 	 </RadioGroup>
+		</LinearLayout>
+		
+		<LinearLayout 
+				android:orientation="horizontal" 
+				android:layout_weight="0.2" 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" 
+				android:weightSum="1.0">
+				
+			<Button android:text="@string/social_permission_ok" android:id="@+id/socialPermissionOK" android:layout_weight="0.5" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
+			<Button android:text="@string/social_permission_cancel" android:id="@+id/socialPermissionCancel" android:layout_weight="0.5" android:layout_width="0px" android:layout_height="fill_parent"></Button>
+		
+		</LinearLayout>
+</LinearLayout>

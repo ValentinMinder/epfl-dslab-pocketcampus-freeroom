@@ -8,4 +8,28 @@
     
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
     
+    <!-- Social names -->
+    <string name="social_login_username_text">Username</string>
+    <string name="social_login_username_field"></string>
+    <string name="social_login_password_text">Password</string>
+    <string name="social_login_password_field"></string>
+    <string name="social_login_button">Login</string>
+    
+	<string name="friendsListButtonAdd">Search</string>
+	<string name="friendsListButtonPerm">Permissions</string>
+	<string name="friendsListButtonDel">Delete</string>
+	<string name="social_permission_radio_granted">Grant</string>
+	<string name="social_permission_radio_denied">Deny</string>
+	<string name="social_permission_ok">OK</string>
+	<string name="social_permission_cancel">Cancel</string>
+	<string name="social_permission_choose_service">Choose a service</string>
+	<string name="friendsRequestListField"></string>
+	<string name="social_create_username_text">Username</string>
+	<string name="social_create_username_field"></string>
+	<string name="social_create_password_text">Password</string>
+	<string name="social_create_password_field"></string>
+	<string name="social_delete_confirm">Are you sure?</string>
+	<string name="social_delete_confirm_yes">Yes</string>
+	<string name="social_delete_confirm_no">No</string>
+	<string name="social_friends_list_separator">Friends</string>
 </resources>
