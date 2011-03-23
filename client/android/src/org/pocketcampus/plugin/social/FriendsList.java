@@ -89,9 +89,9 @@ public class FriendsList extends ListActivity {
 			
 			@Override
 			public void onClick(View v) {
-//				Intent friendsSearchIntent = new Intent(thisActivity_, FriendsSearch.class);
-//				thisActivity_.finish();
-//				thisActivity_.startActivity(friendsSearchIntent);
+				Intent friendsSearchIntent = new Intent(thisActivity_, FriendsSearch.class);
+				thisActivity_.finish();
+				thisActivity_.startActivity(friendsSearchIntent);
 			}
 		});
 		
@@ -103,9 +103,9 @@ public class FriendsList extends ListActivity {
 		buttonPermission.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				Intent friendsPremissionsIntent = new Intent(thisActivity_, FriendsPermissions.class);
-//				friendsPremissionsIntent.putExtra("usernames", friendsListAdapter_.getSelectedFriends());
-//	        	startActivity(friendsPremissionsIntent);
+				Intent friendsPremissionsIntent = new Intent(thisActivity_, FriendsPermissions.class);
+				friendsPremissionsIntent.putExtra("usernames", friendsListAdapter_.getSelectedFriends());
+	        	startActivity(friendsPremissionsIntent);
 	        	
 //	        	thisActivity_.finish();
 			}
@@ -115,11 +115,11 @@ public class FriendsList extends ListActivity {
 		buttonDelete.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity_);
-//				builder.setMessage(thisActivity_.getString(R.string.social_delete_confirm))
-//				       .setCancelable(false)
-//				       .setPositiveButton(thisActivity_.getString(R.string.social_delete_confirm_yes), new DialogInterface.OnClickListener() {
-//				           public void onClick(DialogInterface dialog, int id) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity_);
+				builder.setMessage(thisActivity_.getString(R.string.social_delete_confirm))
+				       .setCancelable(false)
+				       .setPositiveButton(thisActivity_.getString(R.string.social_delete_confirm_yes), new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
 //				        	   
 //				        	   try {
 //					        	   Vector<Username> selectedFriends = friendsListAdapter_.getSelectedFriends();
@@ -134,15 +134,15 @@ public class FriendsList extends ListActivity {
 //				        		   e.printStackTrace();
 //				        		   new NotConnectedAlert(thisActivity_, thisActivity_.getString(R.string.social_login));
 //				        	   }
-//				           }
-//				       })
-//				       .setNegativeButton(thisActivity_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
-//				           public void onClick(DialogInterface dialog, int id) {
-//				                dialog.cancel();
-//				           }
-//				       });
-//				AlertDialog alert = builder.create();
-//				alert.show();
+				           }
+				       })
+				       .setNegativeButton(thisActivity_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				                dialog.cancel();
+				           }
+				       });
+				AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
 	}

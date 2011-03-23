@@ -39,6 +39,8 @@
 <activity android:name=".plugin.social.SocialPreference"></activity>
 <activity android:name=".plugin.social.SocialLogin"></activity>
 <activity android:name=".plugin.social.FriendsList"></activity>
+<activity android:name=".plugin.social.FriendsSearch"></activity>
+<activity android:name=".plugin.social.FriendsPermissions" android:theme="@android:style/Theme.Dialog" android:label="@string/social_edit_permissions" android:launchMode="singleInstance"></activity>
 </application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
