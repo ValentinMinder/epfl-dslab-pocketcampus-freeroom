@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pocketcampus" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+	package="org.pocketcampus" android:versionCode="1" android:versionName="1.0"
+	android:installLocation="auto">
 
 
 	<application android:icon="@drawable/app_icon"
 		android:label="@string/app_name">
 
 		<!-- Main Screen -->
-		<activity android:name=".plugin.mainscreen.MainscreenPlugin">
+		<activity android:name=".plugin.mainscreen.MainscreenPlugin"
+			android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -34,14 +36,16 @@
 		<activity android:name=".plugin.map.MapPlugin"></activity>
 		<activity android:name="plugin.map.MapPreference"></activity>
 
-	
-<activity android:name=".plugin.social.SocialPlugin"></activity>
-<activity android:name=".plugin.social.SocialPreference"></activity>
-<activity android:name=".plugin.social.SocialLogin"></activity>
-<activity android:name=".plugin.social.FriendsList"></activity>
-<activity android:name=".plugin.social.FriendsSearch"></activity>
-<activity android:name=".plugin.social.FriendsPermissions" android:theme="@android:style/Theme.Dialog" android:label="@string/social_edit_permissions" android:launchMode="singleInstance"></activity>
-</application>
+		<!-- Social Plugin -->
+		<activity android:name=".plugin.social.SocialPlugin"></activity>
+		<activity android:name=".plugin.social.SocialPreference"></activity>
+		<activity android:name=".plugin.social.SocialLogin"></activity>
+		<activity android:name=".plugin.social.FriendsList"></activity>
+		<activity android:name=".plugin.social.FriendsSearch"></activity>
+		<activity android:name=".plugin.social.FriendsPermissions"
+			android:theme="@android:style/Theme.Dialog" android:label="@string/social_edit_permissions"
+			android:launchMode="singleInstance"></activity>
+	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
