@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="food_tabNames">
-		<item>Daily Menus</item>
-		<item>Weekly Menus</item>
-	</string-array>
-	
+
+	<!-- Food Plugin -->
 	<string name="food_display_title">Food Service</string>
-	
-	<!-- Votes -->
+	<string name="food_empty">No item to display</string>
+
+	<!-- Ratings -->
 	<string name="food_menulist_votesPlural">votes</string>
 	<string name="food_menulist_votesSingular">vote</string>
-	
-	<string name="food_empty">No item to display</string>
-	
+
+	<!-- Rating dialog -->
+	<string name="food_rating_title">Rate it!</string>
+	<string name="food_rating_OK">OK</string>
+	<string name="food_rating_cancel">CANCEL!</string>
+
 	<!-- Options Menu -->
 	<string name="food_show_restaurant">Sort by restaurant</string>
 	<string name="food_show_ratings">Sort by ratings</string>
 	<string name="food_show_sandwiches">Sandwiches</string>
 	<string name="food_show_suggestions">Suggestions</string>
-	
+
 	<!-- Menu dialog -->
 	<string name="food_menudialog_rateittext">Rate it!</string>
 	<string name="food_menudialog_takethistext">I will eat this</string>
@@ -27,7 +28,7 @@
 	<string name="food_menudialog_takepictureQueuetext">Take Queue</string>
 	<string name="food_menudialog_seepictureQueuetext">See Queue</string>
 	<string name="food_menudialog_seepicturestext">See pictures</string>
-	
+
 	<!-- Sandwich -->
 	<string name="food_sandwich_list">Sandwich List</string>
 	<string name="food_sandwich_button_modify">Modify</string>
@@ -35,38 +36,44 @@
 	<string name="food_sandwich_button_no">No</string>
 	<string name="food_sandwich_question_actiavtion_modify">Activate modification?</string>
 	<string name="food_sandwich_question_modify">Are you sure you want to modify? </string>
-	<string name="food_sandwich_information">click on the sandwich store to see sandwiches</string>
+	<string name="food_sandwich_information">click on the sandwich store to see sandwiches
+	</string>
 	<string name="food_sandwich_not_available">not available</string>
 	<string name="food_sandwich_available">available</string>
 	<string name="food_sandwich_isModify"> is modified</string>
 	<string name="food_sandwich_noConnection">No Connection</string>
 	<string name="food_sandwich_please_wait">Please Wait ...</string>
 	<string name="food_sandwich_checking_connection">Checking Connection ...</string>
-	
-	
+
+
 	<!--  Suggestions -->
-    <string name="food_suggestions_nothing_found">No suggestions found</string>
-    <string name="food_suggestions_meat">Meat</string>
-    <string name="food_suggestions_fish">Fish</string>
-    <string name="food_suggestions_beef">Beef</string>
-    <string name="food_suggestions_pasta">Pasta</string>
-    <string name="food_suggestions_horse">Horse</string>
-    <string name="food_suggestions_vege">Vegetarian</string>
-    <string name="food_suggestions_porc">Porc</string>
-    <string name="food_suggestions_chicken">Chicken</string>
-    
-    <string name="food_suggestions_test">Test</string>
-    
-    <string name="food_suggestions_notag">No existing Tag</string>
-    <string name="food_suggestions_alreadyAdded">This tag wass already added !</string>
-    <string name="food_suggestions_explanation">Pick the meals you (don\'t) like</string>
-    <string name="food_suggestions_ilike">I like</string>
-    <string name="food_suggestions_idontlike">I don\'t like</string>
-    <string name="food_suggestlist_prompt_like">What do you like?</string>
-    <string name="food_suggestlist_prompt_dislike">What don\'t you like?</string>
-    <string name="food_suggestions_nomeal_nosuggestion">Can\'t compute suggestions if there are no meals</string>
-		
-	<style name="food_tabIndicatorText">
-		<item name="android:textStyle">bold</item>
-	</style>
+	<string name="food_suggestions_nothing_found">No suggestions found</string>
+	<string name="food_suggestions_meat">Meat</string>
+	<string name="food_suggestions_fish">Fish</string>
+	<string name="food_suggestions_beef">Beef</string>
+	<string name="food_suggestions_pasta">Pasta</string>
+	<string name="food_suggestions_horse">Horse</string>
+	<string name="food_suggestions_vege">Vegetarian</string>
+	<string name="food_suggestions_porc">Porc</string>
+	<string name="food_suggestions_chicken">Chicken</string>
+
+	<string name="food_suggestions_test">Test</string>
+
+	<string name="food_suggestions_notag">No existing Tag</string>
+	<string name="food_suggestions_alreadyAdded">This tag was already added !</string>
+	<string name="food_suggestions_explanation">Pick the meals you (don\'t) like</string>
+	<string name="food_suggestions_ilike">I like</string>
+	<string name="food_suggestions_idontlike">I don\'t like</string>
+	<string name="food_suggestlist_prompt_like">What do you like?</string>
+	<string name="food_suggestlist_prompt_dislike">What don\'t you like?</string>
+	<string name="food_suggestions_nomeal_nosuggestion">Can\'t compute suggestions if there are no meals
+	</string>
+
+	<!--  Gallery   -->
+	<string name="food_gallery_nopic_title">Sorry !</string>
+	<string name="food_gallery_nopic_msg">There are no pictures yet.\nPlease add some!</string>
+	<declare-styleable name="MealGallery">
+		<attr name="android:galleryItemBackground" />
+	</declare-styleable>
+
 </resources>

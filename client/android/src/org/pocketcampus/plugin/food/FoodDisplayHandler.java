@@ -14,7 +14,6 @@ import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 /**

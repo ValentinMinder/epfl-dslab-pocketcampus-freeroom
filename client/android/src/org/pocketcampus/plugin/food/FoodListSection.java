@@ -8,9 +8,11 @@ import org.pocketcampus.plugin.food.menu.Meal;
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -58,8 +60,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		// no need to re-inflate it. We only inflate a new View when the
 		// convertView supplied by ListView is null.
 		if (convertView == null) {
-			convertView = mInflater_.inflate(R.layout.food_menuentry,
-					null);
+			convertView = mInflater_.inflate(R.layout.food_menuentry, null);
 
 			// Creates a ViewHolder and store references to the two children
 			// views we want to bind data to.
@@ -81,46 +82,37 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 			// and the ImageView.
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		holder.menuLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//menuDialog(position);
+				// menuDialog(position);
 				Log.d("Click menu", "Click on the menuline");
 			}
 		});
-		
+
 		holder.menuInfoLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//menuDialog(position);
+				// menuDialog(position);
 			}
 		});
-		
+
 		/* when you click with the dpad center on the menu description */
 		/*
 		 * Not working yet
 		 */
-        convertView.setOnClickListener(new OnItemClickListener(position));
+		convertView.setOnClickListener(new OnItemClickListener(position));
 
 		// When you click on the rating stars, you can rate the meal.
-		/*holder.ratingLine.setOnTouchListener(new OnTouchListener() {
+		holder.ratingLine.setOnTouchListener(new OnTouchListener() {
 			private int pos = position;
 
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					// get the reminder for the ratings
-					RatingsReminder ratingChecker = new RatingsReminder(context_);
-					// Check if has already voted today
-					if (ratingChecker.hasAlreadyVotedToday()) {
-						// Means that user had already voted
-						ratingChecker.printAlreadyVotedMessage();
-					} else {
-						// Means that user hasn't voted today
-						showRatingStarsDialog(pos);
-					}
+					rate(position);
 				}
 				return true;
 			}
-		});*/
+		});
 
 		// Bind the data efficiently with the holder.
 		Meal currentMeal = meal_.get(position);
@@ -132,35 +124,38 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 		return convertView;
 	}
-	
-	private class OnItemClickListener implements OnClickListener{           
-        private int mPosition;
-        OnItemClickListener(int position){
-            mPosition = position;
-        }
-        @Override
-        public void onClick(View arg0) {
-        	//menuDialog(mPosition);                      
-        }
-    }
 
-	/*private void showRatingStarsDialog(int pos) {
-		RatingsDialog r = new RatingsDialog(context_, meal_.get(pos));
-		r.show();
-	}*/
-	
-	/* show the sandwich's list of the store */
-	/*private void menuDialog(int pos){
-		boolean isDailyMenu = false;
-		if(context_.getClass().getName().equals(DailyMenus.class.getName())){
-			isDailyMenu = true;
+	private class OnItemClickListener implements OnClickListener {
+		private int mPosition;
+
+		OnItemClickListener(int position) {
+			mPosition = position;
 		}
-		
-		MenuDialog r = new MenuDialog(context_, meal_.get(pos),
-				menusActivity_, isDailyMenu);
-		r.setOnDismissListener(new OnDismissMenuDialogListener());
+
+		@Override
+		public void onClick(View arg0) {
+			// menuDialog(mPosition);
+		}
+	}
+
+	private void rate(int pos) {
+		RatingsDialog r = new RatingsDialog(menusActivity_,
+				meal_.get(pos));
 		r.show();
-	}*/
+	}
+
+	/* show the sandwich's list of the store */
+	// private void menuDialog(int pos){
+	// boolean isDailyMenu = false;
+	// if(context_.getClass().getName().equals(DailyMenus.class.getName())){
+	// isDailyMenu = true;
+	// }
+	//		
+	// MenuDialog r = new MenuDialog(context_, meal_.get(pos),
+	// menusActivity_, isDailyMenu);
+	// r.setOnDismissListener(new OnDismissMenuDialogListener());
+	// r.show();
+	// }
 
 	static class ViewHolder {
 		TextView titleLine;
@@ -188,17 +183,17 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		return meal_.get(position);
 	}
 
-	/*private class OnDismissMenuDialogListener implements
-			MenuDialog.OnDismissListener {
+	// private class OnDismissMenuDialogListener implements
+	// MenuDialog.OnDismissListener {
+	//
+	// @Override
+	// public void onDismiss(DialogInterface dialogInt) {
+	// notifyDataSetChanged();
+	// }
+	// }
 
-		@Override
-		public void onDismiss(DialogInterface dialogInt) {
-			notifyDataSetChanged();
-		}
-	}*/
-
-	/*protected void dataSetChanged() {
-		this.sortNews();
-		this.notifyDataSetChanged();
-	}*/
+	// protected void dataSetChanged() {
+	// this.sortNews();
+	// this.notifyDataSetChanged();
+	// }
 }
