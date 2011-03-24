@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.ListActivity;
@@ -33,6 +34,17 @@ public class FriendsSearch extends ListActivity {
 		setContentView(R.layout.social_friends_requests_list);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
+		actionBar.addAction(new Action() {
+			@Override
+			public void performAction(View view) {
+				SocialLogin.logout(thisActivity_);
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
 		

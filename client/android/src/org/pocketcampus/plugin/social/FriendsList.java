@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 public class FriendsList extends ListActivity {
@@ -23,7 +24,7 @@ public class FriendsList extends ListActivity {
 	private SharedPreferences sharedPreferences_;
 	private AuthToken authToken_;
 	private FriendsListAdapter friendsListAdapter_;
-	private FriendsList thisActivity_;
+	private final FriendsList thisActivity_ = this;
 	private Vector<Username> friendsCollection;
 	private boolean hasNotifications;
 	
@@ -34,6 +35,17 @@ public class FriendsList extends ListActivity {
 		setContentView(R.layout.social_friends_list);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
+		actionBar.addAction(new Action() {
+			@Override
+			public void performAction(View view) {
+				SocialLogin.logout(thisActivity_);
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
 //		actionBar.addAction(new ActionBar.IntentClosingAction(this, new Intent(this, SocialLogout.class), android.R.drawable.presence_offline, this));
@@ -42,7 +54,6 @@ public class FriendsList extends ListActivity {
 		
 //		serverAPI_ = new ServerAPI();
 		sharedPreferences_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		thisActivity_ = this;
 		hasNotifications = false;
 		
 		String username = sharedPreferences_.getString("preferences_keyUsername", "N/a");

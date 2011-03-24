@@ -91,6 +91,12 @@ public class SocialLogin extends Activity {
 		});
 	}
 	
+	public static void logout(Activity parentActivity) {
+		//perform logout
+		parentActivity.startActivity(new Intent(parentActivity, SocialLogin.class));
+		parentActivity.finish();
+	}
+	
 	@Override
 		public void onBackPressed() {
 			// TODO Auto-generated method stub
