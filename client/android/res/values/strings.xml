@@ -4,7 +4,7 @@
     <string name="app_name">PocketCampus EPFL</string>
     
     <string name="mainscreen_configure">Configure</string>
-    <string name="TestTextView">TestTextView</string>
+    <string name="TestTextViewBlabla">TestTextView</string>
     
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
     
@@ -51,4 +51,8 @@
 	
 	<string name="social_login_title">Please log in with a previously created account.</string>
 	<string name="social_login_createAccount">If you do not have an account yet, please create one in the main menu of the preferences.</string>
+	
+	
+	<string name="directory_friendly_name">Directory</string>
+	<string name="directory_search">Search</string>
 </resources>

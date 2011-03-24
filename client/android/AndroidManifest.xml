@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pocketcampus" android:versionCode="1" android:versionName="1.0"
-	android:installLocation="auto">
+	package="org.pocketcampus" android:versionCode="1" android:versionName="1.0">
+	<!-- android:installLocation="auto"> -->
 
 
 	<application android:icon="@drawable/app_icon"
@@ -16,6 +16,8 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".plugin.mainscreen.MainscreenConfiguration"></activity>
+        <activity android:name=".plugin.directory.DirectoryConfiguration"></activity>
+        
 
 		<!-- News Plugin -->
 		<activity android:name=".plugin.news.NewsPlugin"></activity>
@@ -34,7 +36,12 @@
 
 		<!-- Map Plugin -->
 		<activity android:name=".plugin.map.MapPlugin"></activity>
-		<activity android:name="plugin.map.MapPreference"></activity>
+		<!-- activity android:name="plugin.map.MapPreference"></activity> -->
+		
+		<!--  Directory (ldap) Plugin -->
+		<activity android:name=".plugin.directory.DirectoryPlugin"></activity>
+		<activity android:name=".plugin.directory.DirectoryPreference"></activity>
+		
 
 		<!-- Social Plugin -->
 		<activity android:name=".plugin.social.SocialPlugin"></activity>
@@ -43,7 +50,6 @@
 		<activity android:name=".plugin.social.FriendsList"></activity>
 		<activity android:name=".plugin.social.FriendsSearch"></activity>
 		<activity android:name=".plugin.social.FriendsPermissions"
-			android:theme="@android:style/Theme.Dialog" android:label="@string/social_edit_permissions"
 			android:launchMode="singleInstance"></activity>
 	</application>
 
