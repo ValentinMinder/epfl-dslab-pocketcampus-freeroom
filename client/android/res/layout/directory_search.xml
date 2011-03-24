@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:weightSum="0.2" android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="fill_parent">
+  android:orientation="vertical" android:weightSum="0.2">
+  	
+  	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+  
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_below="@+id/actionbar">
         <TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="First name:"></TextView>
         <EditText android:layout_height="wrap_content" android:id="@+id/directory_first_name_input" android:layout_width="fill_parent"></EditText>
     </LinearLayout>
-    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="fill_parent">
+    
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2"  android:layout_below="@+id/linearLayout1">
         <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:text="Last name:" android:layout_width="wrap_content"></TextView>
         <EditText android:layout_height="wrap_content" android:id="@+id/directory_last_name_input" android:layout_width="fill_parent"></EditText>
     </LinearLayout>
-    <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="Search" android:id="@+id/directory_search_button"></Button>
-</LinearLayout>
+    
+    <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="Search" android:id="@+id/directory_search_button" android:layout_below="@+id/linearLayout2"></Button>
+</RelativeLayout>

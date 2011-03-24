@@ -25,13 +25,12 @@ public class DirectoryInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.directory_icon);
+		return new Icon(R.drawable.directory_menu);
 	}
 
 	@Override
 	public Icon getMiniIcon() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Icon(R.drawable.directory_normal_mini);
 	}
 
 	@Override

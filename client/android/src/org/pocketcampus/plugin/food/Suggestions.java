@@ -64,7 +64,7 @@ public class Suggestions extends Activity{
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.food_suggestions);
-
+		
 		// Header
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
@@ -179,10 +179,10 @@ public class Suggestions extends Activity{
 				for(Meal meal : m){
 					meals_.add(meal);
 				}
-//				Toast.makeText(this, "Extras 5/5 à l'aller !", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "Extras 5/5 ï¿½ l'aller !", Toast.LENGTH_LONG).show();
 			}
 		}else{
-			Toast.makeText(this, "Pas reçu d'extras à l'aller !", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Pas reï¿½u d'extras ï¿½ l'aller !", Toast.LENGTH_LONG).show();
 		}
 	}
 	
