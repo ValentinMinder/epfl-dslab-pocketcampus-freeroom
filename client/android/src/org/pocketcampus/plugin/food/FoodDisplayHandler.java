@@ -10,6 +10,7 @@ import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.menu.Rating;
+import org.pocketcampus.plugin.food.menu.Sandwich;
 import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
@@ -29,6 +30,9 @@ public class FoodDisplayHandler {
 	private String dayLabel_;
 	private FoodDisplayType currentDisplayType_;
 	private MenuSorter sorter_;
+	
+	private SandwichListAdapter sandwichListAdapter_;
+	private SandwichListStore sandwichListStore_;
 
 	private FoodMenu campusMenu_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
@@ -124,7 +128,7 @@ public class FoodDisplayHandler {
 		return mealsList;
 	}
 
-	
+
 	/**
 	 * Update Suggestions
 	 * 
@@ -203,26 +207,7 @@ public class FoodDisplayHandler {
 	 * @throws ServerException
 	 */
 	public void showSandwiches() {
-
-		/*progressDialog_ = ProgressDialog.show(this,
-				getString(R.string.please_wait),
-				getString(R.string.loading_menus), true, false);
-		new Thread() {
-			public void run() {
-				SandwichListStore listStore;
-				try {
-					System.out.println("avant sandwichListStore()");
-					listStore = new SandwichListStore();
-					System.out.println("après sandwichListStore()");
-					sandwichListAdapter_ = new SandwichListAdapter(
-							DailyMenus.this, listStore.getStoreList());
-				} catch (ServerException e) {
-					System.out.println("erreur : " + e);
-				}
-				handler.sendEmptyMessage(1);
-			}
-		}.start();*/
-
+		
 	}
 
 	public void showMenusBySuggestions() {

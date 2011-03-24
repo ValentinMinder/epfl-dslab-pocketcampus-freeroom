@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -12,8 +10,7 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
-import org.pocketcampus.plugin.food.menu.Rating;
-import org.pocketcampus.plugin.food.menu.StarRating;
+import org.pocketcampus.plugin.food.menu.Sandwich;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.Activity;
@@ -35,30 +32,47 @@ public class FoodPlugin extends PluginBase {
 	private ArrayList<Meal> menus_;
 	private MenuSorter sorter_;
 	private boolean sandwich = false;
+	
+	private SandwichListAdapter sandwichListAdapter_;
+	private SandwichListStore sandwichListStore_;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		loadFirstScreen();
+		loadFirstScreen(R.layout.food_main);
 	}
 
-	private void loadFirstScreen(){
-		setContentView(R.layout.food_main);
+	private void loadFirstScreen(int layout){
+		setContentView(layout);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
-
-		//ListView
-		l_ = (ListView) findViewById(R.id.food_list);
-		empty = (TextView) findViewById(R.id.food_empty);
-
-		//DisplayHandler
-		foodDisplayHandler = new FoodDisplayHandler(this);
-
-		// At first, display food by restaurant
-		displayView();
+		
+		if(layout == R.layout.food_main){
+			//ListView
+			l_ = (ListView) findViewById(R.id.food_list);
+			empty = (TextView) findViewById(R.id.food_empty);
+			
+			//DisplayHandler
+			foodDisplayHandler = new FoodDisplayHandler(this);
+			
+			// At first, display food by restaurant
+			displayView();
+		}
+		
+		else if(layout == R.layout.food_sandwich){
+			l_ = (ListView) findViewById(R.id.sandwich_list);
+			
+			
+			sandwichListStore_ = new SandwichListStore();
+			/*Ok jusqu'ici*/
+			Vector<Vector<Sandwich>> sandVec = sandwichListStore_.getStoreList();
+			sandwichListAdapter_ = new SandwichListAdapter(getApplicationContext(), sandVec);
+			l_.setAdapter(sandwichListAdapter_);
+		}
+		
 	}
 	
 	public void displayView() {
@@ -97,17 +111,15 @@ public class FoodPlugin extends PluginBase {
 		case 2: // Show menus by rating
 			//setContentView(R.layout.food_main);
 			if(sandwich){
-				loadFirstScreen();
+				loadFirstScreen(R.layout.food_main);
 			}
 			foodDisplayHandler.setDisplayType(selectedId);
 			displayView();
 			return true;
 		case 3: // show sandwiches
 			sandwich = true;
-			setContentView(R.layout.food_sandwich);
-			
-			/*setContentView(R.layout.restaurant_dailymenu_main_4_sandwich);
-			showSandwich();*/
+			loadFirstScreen(R.layout.food_sandwich);
+			foodDisplayHandler.setDisplayType(selectedId);
 			return true;
 		case 4: // show suggestions
 			menus_ = foodDisplayHandler.getMenusList();

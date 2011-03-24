@@ -42,4 +42,8 @@ public class Sandwich implements Serializable {
 	public Date getDate() {
 		return date;
 	}
+	
+	public String toString(){
+		return "[" + restaurant + ", " + name + "]";
+	}
 }

@@ -14,6 +14,8 @@ import java.util.Vector;
 
 import org.pocketcampus.plugin.food.menu.Sandwich;
 
+import android.util.Log;
+
 public class SandwichListStore {
 	
 	/* List of sandwich sort by Restaurant */
@@ -40,6 +42,7 @@ public class SandwichListStore {
 			addListSandwichToTheServer(sandwichList_);
 		}
 		else{
+			Log.d("SANDWICH_LIST_STORE","test=false");
 			sandwichList_ = sortListSandwichByRestaurant();
 		}
 		valid();
@@ -47,7 +50,7 @@ public class SandwichListStore {
 	
 	private void valid(){
 //		if(sApi == null) throw new IllegalArgumentException("serverAPI can not be null");
-		if(sandwichList_ == null) throw new IllegalArgumentException("sandwichList can not be null");
+		if(sandwichList_ == null) throw new IllegalArgumentException("sandwichList cannot be null");
 	}
 	
 	/* return the list of the restaurant */
@@ -76,7 +79,7 @@ public class SandwichListStore {
 //		Collection<Sandwich> sandwichListServer = sApi.getSandwiches();
 		
 		
-		/*FAKE CONTENT*/
+		/*FAKE CONTENT ON*/
 		
 		Collection<Sandwich> sandwichListServer = new ArrayList<Sandwich>();
 		Sandwich s1 = new Sandwich("Satellite", "Poulet Curry", true, new Date());
@@ -86,11 +89,16 @@ public class SandwichListStore {
 		Sandwich s4 = new Sandwich("Le Négoce", "Thon", true, new Date());
 		Sandwich s5 = new Sandwich("Le Négoce", "Poulet Curry", true, new Date());
 		
+		Sandwich s6 = new Sandwich("Cafeteria INM", "Poulet Curry", true, new Date());
+		
 		sandwichListServer.add(s1);
 		sandwichListServer.add(s2);
 		sandwichListServer.add(s3);
 		sandwichListServer.add(s4);
 		sandwichListServer.add(s5);
+		sandwichListServer.add(s6);
+		
+		/*FAKE CONTENT OFF*/
 		
 		for(Sandwich i: sandwichListServer){
 			if(storeList.contains(i.getRestaurant())){

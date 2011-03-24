@@ -23,7 +23,7 @@ import android.widget.Toast;
 public class SandwichCheckBoxDialog {
 
 	private Vector<Sandwich> sandwichList_; /* sandwich's list of the restaurant */
-	private Context WeeklyMenusContext_; /* context (where to display) */
+	private Context context_; /* context (where to display) */
 	private int sandwichListSize_; /* sandwich list size */
 	// private ServerAPI sApi; /* to use the method setSandwicheAvailability */
 	private ProgressDialog progressDialog_; /* the progressDialog */
@@ -31,8 +31,8 @@ public class SandwichCheckBoxDialog {
 
 	/** Constructor with two arguments (SandwichStore and Context) */
 	public SandwichCheckBoxDialog(Vector<Sandwich> store,
-			Context WeeklyMenusContext) {
-		this.WeeklyMenusContext_ = WeeklyMenusContext;
+			Context context) {
+		this.context_ = context;
 		this.sandwichList_ = store;
 		this.sandwichListSize_ = sandwichList_.size();
 		// sApi = new ServerAPI();
@@ -42,7 +42,7 @@ public class SandwichCheckBoxDialog {
 	private void valid() {
 		if (sandwichList_ == null)
 			throw new IllegalArgumentException("SandwichList cannot be null ");
-		if (WeeklyMenusContext_ == null)
+		if (context_ == null)
 			throw new IllegalArgumentException(
 					"WeeklyMenusContext cannot be null ");
 		// if(sApi == null) throw new
@@ -67,7 +67,7 @@ public class SandwichCheckBoxDialog {
 
 		/* Create the appearance of my Dialog Box */
 		AlertDialog.Builder builder = new AlertDialog.Builder(
-				WeeklyMenusContext_);
+				context_);
 		builder.setTitle(R.string.food_sandwich_list);
 		builder.setMultiChoiceItems(nameSandwichList, sandwichListavailable,
 				new DialogInterface.OnMultiChoiceClickListener() {
@@ -110,7 +110,7 @@ public class SandwichCheckBoxDialog {
 			final DialogInterface dialog2) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(
-				WeeklyMenusContext_);
+				context_);
 		builder.setMessage(R.string.food_sandwich_question_modify);
 		builder.setCancelable(false);
 
@@ -120,10 +120,10 @@ public class SandwichCheckBoxDialog {
 
 						progressDialog_ = ProgressDialog
 								.show(
-										WeeklyMenusContext_,
-										WeeklyMenusContext_
+										context_,
+										context_
 												.getString(R.string.food_sandwich_please_wait),
-										WeeklyMenusContext_
+										context_
 												.getString(R.string.food_sandwich_checking_connection),
 										true, false);
 
@@ -172,17 +172,17 @@ public class SandwichCheckBoxDialog {
 			if (msg.what == 0) {
 				Toast
 						.makeText(
-								WeeklyMenusContext_,
-								WeeklyMenusContext_
+								context_,
+								context_
 										.getString(R.string.food_sandwich_noConnection),
 								Toast.LENGTH_SHORT).show();
 			}
 			if (msg.what == 1) {
 				Toast
 						.makeText(
-								WeeklyMenusContext_,
+								context_,
 								currentSandwich_
-										+ WeeklyMenusContext_
+										+ context_
 												.getString(R.string.food_sandwich_isModify),
 								Toast.LENGTH_SHORT).show();
 			}
@@ -193,7 +193,7 @@ public class SandwichCheckBoxDialog {
 	/** confirmation of activation to modify the checkbox's */
 	private void confirmationActivationModify() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(
-				WeeklyMenusContext_);
+				context_);
 		builder.setMessage(R.string.food_sandwich_question_actiavtion_modify);
 		builder.setCancelable(false);
 

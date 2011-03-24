@@ -13,6 +13,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Sandwich;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class SandwichListAdapter extends BaseAdapter{
 		ViewHolder holder; /* keeps references to children views */
 		
 		if(convertView == null) {
-			
+						
 			/* inflate the .xml */
 			convertView = mInflater_.inflate(R.layout.food_sandwich_list_item, null);
 			
@@ -59,14 +60,14 @@ public class SandwichListAdapter extends BaseAdapter{
 			holder.sandwichLeft = (CheckBox) convertView.findViewById(R.id.food_sandwich_left_checkbox);
 			
 			convertView.setTag(holder);
-		} else {
+		} else {			
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
 		/* click listener */
 		holder.sandwichInfoLigne.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				checkBoxDialog(position);
+//				checkBoxDialog(position);
 			}
 		});
 		
@@ -75,7 +76,6 @@ public class SandwichListAdapter extends BaseAdapter{
 //				checkBoxDialog(position);
 //			}
 //		});
-		
 		
 		holder.sandwichPlace.setText(storeList_.get(position).get(0).getRestaurant());
 		holder.sandwichLeft.setChecked(sandwichLeft(storeList_.get(position)));
@@ -108,16 +108,13 @@ public class SandwichListAdapter extends BaseAdapter{
 		LinearLayout sandwichInfoLigne;
 	}
 
-
 	public int getCount() {
 		return storeList_.size();
 	}
 
-
 	public Object getItem(int position) {
 		return storeList_.get(position);
 	}
-
 
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
