@@ -31,11 +31,12 @@ public class FoodDisplayHandler {
 	private FoodDisplayType currentDisplayType_;
 	private MenuSorter sorter_;
 	
-	private SandwichListAdapter sandwichListAdapter_;
 	private SandwichListStore sandwichListStore_;
 
 	private FoodMenu campusMenu_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
+	private Vector<Vector<Sandwich>> campusSandwich_;
+	
 	private Activity ownerActivity_;
 	private Context activityContext_;
 
@@ -44,6 +45,7 @@ public class FoodDisplayHandler {
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
 		campusMenu_ = new FoodMenu();
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
+		campusSandwich_ = new Vector<Vector<Sandwich>>();
 		ownerActivity_ = ownerActivity;
 		sorter_ = new MenuSorter();
 		currentDisplayType_ = FoodDisplayType.Restaurants;
@@ -207,7 +209,20 @@ public class FoodDisplayHandler {
 	 * @throws ServerException
 	 */
 	public void showSandwiches() {
+		sandwichListStore_ = new SandwichListStore();
+		campusSandwich_ = sandwichListStore_.getStoreList();
 		
+		if(campusSandwich_ != null){
+			SandwichListSection sandwichListSection;
+			
+			if(!campusSandwich_.isEmpty()){
+				for(Vector<Sandwich> v : campusSandwich_){
+					sandwichListSection = new SandwichListSection(v, ownerActivity_);
+					currentListAdapter_.addSection(v.get(0).getRestaurant(), sandwichListSection);
+				}
+				
+			}
+		}
 	}
 
 	public void showMenusBySuggestions() {

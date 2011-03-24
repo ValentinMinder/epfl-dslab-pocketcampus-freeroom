@@ -29,8 +29,12 @@
 		android:id="@+id/sandwich_text1"
 		android:layout_gravity="center"
 		android:layout_height="wrap_content" android:layout_width="wrap_content"
-		android:textSize="15dip" android:textColor="#FFFFFF"
-		android:text="@string/food_sandwich_information" android:layout_below="@+id/linear_sandwich"></TextView>
+		android:textSize="15dip" android:textColor="#FFFFFF" 
+		style="?android:attr/listSeparatorTextViewStyle"
+		android:background="@drawable/food_list_header_background"
+		android:gravity="center"
+		android:text="@string/food_sandwich_information" 
+		android:layout_below="@+id/linear_sandwich"></TextView>
 	
 
 		

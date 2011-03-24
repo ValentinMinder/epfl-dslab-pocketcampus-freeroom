@@ -32,8 +32,7 @@ public class FoodPlugin extends PluginBase {
 	private ArrayList<Meal> menus_;
 	private MenuSorter sorter_;
 	private boolean sandwich = false;
-	
-	private SandwichListAdapter sandwichListAdapter_;
+
 	private SandwichListStore sandwichListStore_;
 
 	@Override
@@ -49,38 +48,25 @@ public class FoodPlugin extends PluginBase {
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
-		
-		if(layout == R.layout.food_main){
-			//ListView
-			l_ = (ListView) findViewById(R.id.food_list);
-			empty = (TextView) findViewById(R.id.food_empty);
-			
-			//DisplayHandler
-			foodDisplayHandler = new FoodDisplayHandler(this);
-			
-			// At first, display food by restaurant
-			displayView();
-		}
-		
-		else if(layout == R.layout.food_sandwich){
-			l_ = (ListView) findViewById(R.id.sandwich_list);
-			
-			
-			sandwichListStore_ = new SandwichListStore();
-			/*Ok jusqu'ici*/
-			Vector<Vector<Sandwich>> sandVec = sandwichListStore_.getStoreList();
-			sandwichListAdapter_ = new SandwichListAdapter(getApplicationContext(), sandVec);
-			l_.setAdapter(sandwichListAdapter_);
-		}
-		
+
+		//ListView
+		l_ = (ListView) findViewById(R.id.food_list);
+		empty = (TextView) findViewById(R.id.food_empty);
+
+		//DisplayHandler
+		foodDisplayHandler = new FoodDisplayHandler(this);
+
+		// At first, display food by restaurant
+		displayView();
+
 	}
-	
+
 	public void displayView() {
 		// List view ; works only for menus by rating & restaurant.
 		if(txt_empty_ != null){
 			txt_empty_.setText("");
 		}
-		
+
 		FoodListAdapter fla = foodDisplayHandler.getListAdapter();
 		if (foodDisplayHandler.valid() && fla != null) {
 			l_.setAdapter(foodDisplayHandler.getListAdapter());
@@ -118,8 +104,8 @@ public class FoodPlugin extends PluginBase {
 			return true;
 		case 3: // show sandwiches
 			sandwich = true;
-			loadFirstScreen(R.layout.food_sandwich);
 			foodDisplayHandler.setDisplayType(selectedId);
+			displayView();
 			return true;
 		case 4: // show suggestions
 			menus_ = foodDisplayHandler.getMenusList();
@@ -159,13 +145,13 @@ public class FoodPlugin extends PluginBase {
 
 				Bundle extras = data.getExtras();
 				if(extras != null){
-					
+
 					ArrayList<Meal> list = (ArrayList<Meal>)extras.getSerializable("org.pocketcampus.suggestions.meals");
-					
+
 					foodDisplayHandler.updateSuggestions(list);
 					foodDisplayHandler.setDisplayType(4);
 					displayView();
-										
+
 				}else{
 					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG).show();
 				}
