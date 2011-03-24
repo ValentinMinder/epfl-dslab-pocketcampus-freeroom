@@ -4,11 +4,11 @@
     
     <string-array name="news_feeds_url">
         <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
-        <item>http://feeds.nytimes.com/nyt/rss/HomePage</item>
+        <item>http://rss.news.yahoo.com/rss/topstories</item>
     </string-array>
     <string-array name="news_feeds_name">
         <item>EPFL</item>
-        <item>New York Times</item>
+        <item>Yahoo! News: Top Stories</item>
     </string-array>
     
     <string name="news_refresh_title">Refresh time</string>

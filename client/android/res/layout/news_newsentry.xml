@@ -20,20 +20,24 @@
 			android:layout_height="wrap_content"
 			android:id="@+id/news_item_title"
 			android:textSize="20sp" android:maxLines="2"
+			android:textColor="@color/black"
 			android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_width="match_parent" android:layout_weight="1">
 		</TextView>
 		
 		<Button
 			android:id="@+id/news_view_more"
-			android:layout_height="40dp" android:layout_gravity="right|center_vertical" android:background="@drawable/news_viewmore" android:layout_width="40dp">
-		</Button>
-
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_gravity="right|center_vertical"
+			android:drawableLeft="@drawable/ic_btn_search_go"
+			/>
 		
 	</LinearLayout>
 
 	<TextView android:text="Item description"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:id="@+id/news_item_description" android:layout_margin="5dp"
+		android:textColor="@color/dark_grey"
 		android:maxLines="2"></TextView>
 
 

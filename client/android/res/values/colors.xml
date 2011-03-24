@@ -22,4 +22,7 @@
     <color name="actionbar_background_end">#9F080B</color>
     <color name="actionbar_background_item_pressed_start">#FF0D17</color>
     <color name="actionbar_background_item_pressed_end">#D70B18</color>
+    
+    <color name="black">#000000</color>
+    <color name="dark_grey">#2E2E2E</color>
 </resources>

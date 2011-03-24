@@ -19,7 +19,7 @@ import android.widget.TextView;
  * 
  * @status complete
  * 
- * @author Jonas
+ * @author Jonas, Johan
  *
  */
 public class NewsAdapter extends BaseAdapter implements INewsListener {
@@ -65,7 +65,8 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 			tv.setText(newsItem.getTitle());
 
 			tv = (TextView) v.findViewById(R.id.news_item_description);
-			tv.setText(newsItem.getDescriptionNoHtml());
+			
+			tv.setText(newsItem.getFormatedDescription());
 			tv.setMaxLines(selectedItem_ == position ? 15 : 2); // Bigger if the item is selected
 
 			LoaderNewsImageView liv = (LoaderNewsImageView) v.findViewById(R.id.news_item_image);

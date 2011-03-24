@@ -146,6 +146,8 @@ public class LoaderNewsImageView extends LinearLayout {
 		mDrawable_ = null;
 		mSpinner_.setVisibility(View.GONE);
 		mImage_.setVisibility(View.GONE);
+		this.setVisibility(View.GONE);
+		//XXX Try to fix this. The view should be gone when there is no image to display
 	}
 	
 	/**
@@ -180,6 +182,7 @@ public class LoaderNewsImageView extends LinearLayout {
 		mImage_.setImageDrawable(drawable);
 		mImage_.setVisibility(View.VISIBLE);
 		mSpinner_.setVisibility(View.GONE);
+		this.setVisibility(View.VISIBLE);
 	}
 
 	/**
