@@ -217,7 +217,7 @@ public class FoodDisplayHandler {
 			
 			if(!campusSandwich_.isEmpty()){
 				for(Vector<Sandwich> v : campusSandwich_){
-					sandwichListSection = new SandwichListSection(v, ownerActivity_);
+					sandwichListSection = new SandwichListSection(v, ownerActivity_, activityContext_);
 					currentListAdapter_.addSection(v.get(0).getRestaurant(), sandwichListSection);
 				}
 				

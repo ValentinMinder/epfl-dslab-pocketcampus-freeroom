@@ -1,35 +1,40 @@
+/**
+ * Sandwich List Adapter
+ * 
+ * @author Oriane
+ * 
+ */
+
 package org.pocketcampus.plugin.food;
 
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.Sandwich;
 
 import android.app.Activity;
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 /**
- * This class is used to make each section of a list of menus.
+ * This class is used to make each section of a list of sandwiches.
  * 
  */
 public class SandwichListSection extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
 	private Vector<Sandwich> sandwich_;
 	private Activity menusActivity_;
+	private Context activityContext_;
+	private CheckBox box_;
 
 	/**
 	 * Constructor
@@ -39,11 +44,12 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 	 * @param sandwiches
 	 *            all sandwiches represented in the list section.
 	 */
-	public SandwichListSection(Vector<Sandwich> sandwiches, Activity menus) {
+	public SandwichListSection(Vector<Sandwich> sandwiches, Activity menus, Context context) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		mInflater_ = LayoutInflater.from(menus.getApplicationContext());
 		this.sandwich_ = sandwiches;
 		this.menusActivity_ = menus;
+		this.activityContext_ = context;
 	}
 
 	/**
@@ -77,10 +83,17 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 			// and the ImageView.
 			holder = (ViewHolder) convertView.getTag();
 		}
-
-		holder.sandwichInfoLine.setOnClickListener(new OnClickListener() {
+		
+		box_ = holder.sandwichLeft;
+		holder.sandwichLeft.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-//				checkBoxDialog(position);
+				
+//				if(box_.isChecked()){					
+					SandwichCheckBoxDialog dialog = new SandwichCheckBoxDialog(menusActivity_, activityContext_, sandwich_.get(position), box_);
+					dialog.show();
+//				}else{
+//					box_.setChecked(true);
+//				}
 			}
 		});
 
@@ -88,8 +101,7 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 		
 		holder.sandwichLeft.setChecked(sandwichLeft(sandwich_));
 
-		/* when you click with the dpad center on the menu description */
-		/*
+		/* when you click with the dpad center on the sandwich description
 		 * Not working yet
 		 */
 		convertView.setOnClickListener(new OnItemClickListener(position));
@@ -117,22 +129,8 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 		}
 
 		@Override
-		public void onClick(View arg0) {
-			// menuDialog(mPosition);
-		}
+		public void onClick(View arg0) {}
 	}
-
-	// private void menuDialog(int pos){
-	// boolean isDailyMenu = false;
-	// if(context_.getClass().getName().equals(DailyMenus.class.getName())){
-	// isDailyMenu = true;
-	// }
-	//		
-	// MenuDialog r = new MenuDialog(context_, meal_.get(pos),
-	// menusActivity_, isDailyMenu);
-	// r.setOnDismissListener(new OnDismissMenuDialogListener());
-	// r.show();
-	// }
 
 	static class ViewHolder {
 		LinearLayout sandwichInfoLine;
@@ -157,18 +155,4 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 	public Object getItem(int position) {
 		return sandwich_.get(position);
 	}
-
-	// private class OnDismissMenuDialogListener implements
-	// MenuDialog.OnDismissListener {
-	//
-	// @Override
-	// public void onDismiss(DialogInterface dialogInt) {
-	// notifyDataSetChanged();
-	// }
-	// }
-
-	// protected void dataSetChanged() {
-	// this.sortNews();
-	// this.notifyDataSetChanged();
-	// }
 }

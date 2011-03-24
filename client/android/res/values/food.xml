@@ -31,20 +31,13 @@
 
 	<!-- Sandwich -->
 	<string name="food_sandwich_list">Sandwich List</string>
-	<string name="food_sandwich_button_modify">Modify</string>
 	<string name="food_sandwich_button_yes">Yes</string>
 	<string name="food_sandwich_button_no">No</string>
-	<string name="food_sandwich_question_actiavtion_modify">Activate modification?</string>
 	<string name="food_sandwich_question_modify">Are you sure you want to modify? </string>
-	<string name="food_sandwich_information">click on the sandwich store to see sandwiches
-	</string>
+	<string name="food_sandwich_information">click on the sandwich store to see sandwiches</string>
 	<string name="food_sandwich_not_available">not available</string>
 	<string name="food_sandwich_available">available</string>
-	<string name="food_sandwich_isModify"> is modified</string>
-	<string name="food_sandwich_noConnection">No Connection</string>
-	<string name="food_sandwich_please_wait">Please Wait ...</string>
-	<string name="food_sandwich_checking_connection">Checking Connection ...</string>
-
+	<string name="food_sandwich_confirmation">Confirmation</string>
 
 	<!--  Suggestions -->
 	<string name="food_suggestions_nothing_found">No suggestions found</string>
