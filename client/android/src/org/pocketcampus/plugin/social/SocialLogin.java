@@ -90,4 +90,11 @@ public class SocialLogin extends Activity {
 			}
 		});
 	}
+	
+	@Override
+		public void onBackPressed() {
+			// TODO Auto-generated method stub
+			this.startActivity(new Intent(this, MainscreenPlugin.class));
+			this.finish();
+		}
 }

@@ -36,6 +36,8 @@ public class FriendsList extends ListActivity {
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
+//		actionBar.addAction(new ActionBar.IntentClosingAction(this, new Intent(this, SocialLogout.class), android.R.drawable.presence_offline, this));
+		
 		
 		
 //		serverAPI_ = new ServerAPI();
