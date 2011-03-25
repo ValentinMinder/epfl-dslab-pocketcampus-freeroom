@@ -78,7 +78,6 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 			holder.sandwichInfoLine = (LinearLayout) convertView.findViewById(R.id.food_sandwich_lign_list);
 			holder.sandwichName = (TextView) convertView.findViewById(R.id.food_sandwich_place);
 			holder.sandwichLeft = (CheckBox) convertView.findViewById(R.id.food_sandwich_left_checkbox);
-			holder.sandwichLeft.setEnabled(false);
 			
 			convertView.setTag(holder);
 		} else {
