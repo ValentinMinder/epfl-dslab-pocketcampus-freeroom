@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.news;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.os.AsyncTask;
@@ -54,6 +55,9 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 			}
 		}
 		
+		// Sort the news (done asynchronously)
+		Collections.sort(list);
+		
 		return list;
 	}
 	
@@ -62,9 +66,7 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 		// Empty the list and put the new items 
 		newsProvider_.clear();
 		
-		for(NewsItem item : result) {
-			newsProvider_.add(item);
-		}
+		newsProvider_.addAll(result);
 		
 		// Notify that the data changed
 		newsProvider_.dataSetUpdated();

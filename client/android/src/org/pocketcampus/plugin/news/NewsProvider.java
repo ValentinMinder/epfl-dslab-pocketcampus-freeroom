@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -129,18 +128,11 @@ public class NewsProvider {
 	 * Tells that the items changed
 	 */
 	protected void dataSetUpdated() {
-		this.sortNews();
-		
 		for (INewsListener listener : newsListeners_) {
 			listener.newsRefreshed();
 		}
 		
 		this.saveNewsToFile();
-	}
-	
-
-	private void sortNews() {
-		Collections.sort(items_);
 	}
 
 	/**
