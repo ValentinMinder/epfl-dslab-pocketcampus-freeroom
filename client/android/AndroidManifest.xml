@@ -19,10 +19,11 @@
         
 
 		<!-- News Plugin -->
-		<activity android:name=".plugin.news.NewsPlugin"></activity>
+		<activity android:name=".plugin.news.NewsPlugin"
+			android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".plugin.news.NewsPreference"
-			android:configChanges="keyboardHidden|orientation">
-		</activity>
+			android:configChanges="keyboardHidden|orientation"
+			android:theme="@android:style/Theme.NoTitleBar"></activity>
 
 		<!-- Food Plugin -->
 		<activity android:name=".plugin.food.FoodPlugin"></activity>

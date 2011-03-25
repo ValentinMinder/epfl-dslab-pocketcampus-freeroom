@@ -2,8 +2,6 @@ package org.pocketcampus.plugin.news;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -13,7 +11,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.view.Window;
 
 /**
  * PluginPreference class for the News plugin. 
@@ -27,7 +24,6 @@ public class NewsPreference extends PluginPreference {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		
 		setPreferenceScreen(createPreferenceHierarchy());
