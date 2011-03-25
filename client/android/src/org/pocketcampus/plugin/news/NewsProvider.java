@@ -42,7 +42,6 @@ public class NewsProvider {
 
 	// Data used to cache the feeds 
 	private final static String cacheFilename_ = "newscache.dat";
-	private final static String preferenceCacheKey_ = "news_cache_time";
 	private long refreshRate_;
 
 	// Items  from the feeds (merged)
@@ -121,7 +120,7 @@ public class NewsProvider {
 		}
 		
 		downloadFeeds();
-		prefs_.edit().putLong(preferenceCacheKey_, System.currentTimeMillis()).commit();
+		prefs_.edit().putLong(NewsPreference.cacheTime, System.currentTimeMillis()).commit();
 
 		Log.d(this.getClass().toString(), "Redownload news feeds");
 	}
@@ -155,7 +154,7 @@ public class NewsProvider {
 
 		// Take only the one selected by the user in the preferences
 		for(String url: urls) {
-			if(prefs_.getBoolean("load_rss" + url, true)) {
+			if(prefs_.getBoolean(NewsPreference.loadRss + url, true)) {
 				urlsToDownload.add(url);
 			}
 		}
@@ -231,9 +230,9 @@ public class NewsProvider {
 	 */
 	private boolean cacheTooOld() {
 
-		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(preferenceCacheKey_, 0));
+		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(NewsPreference.cacheTime, 0));
 
-		return prefs_.getLong(preferenceCacheKey_, 0) + refreshRate_ < System.currentTimeMillis();
+		return prefs_.getLong(NewsPreference.cacheTime, 0) + refreshRate_ < System.currentTimeMillis();
 	}
 	
 
@@ -255,6 +254,10 @@ public class NewsProvider {
 
 	protected void add(NewsItem item) {
 		items_.add(item);
+	}
+
+	protected void addAll(List<NewsItem> items) {
+		items_.addAll(items);
 	}
 	
 	

@@ -181,7 +181,7 @@ public class LoaderNewsImageView extends LinearLayout {
 	private void setImage(Drawable drawable) {
 		
 		// Check if the view shows the current NewsItem
-		if(this.getTag().equals(newsItem_)) {			
+		if(this.getTag() != null && this.getTag().equals(newsItem_)) {			
 			mImage_.setImageDrawable(drawable);
 			mImage_.setVisibility(View.VISIBLE);
 			mSpinner_.setVisibility(View.GONE);

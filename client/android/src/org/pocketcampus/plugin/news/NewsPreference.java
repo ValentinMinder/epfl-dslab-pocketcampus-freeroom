@@ -22,6 +22,11 @@ import android.preference.PreferenceScreen;
  */
 public class NewsPreference extends PluginPreference {
 	
+	// Preferences Strings
+	protected final static String cacheTime = "news_cache_time";
+	protected final static String loadRss = "load_rss";
+	protected final static String refreshRate = "news_refresh_rate";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +35,7 @@ public class NewsPreference extends PluginPreference {
 	}
 	
 	/**
-	 * Create the preferences programmaticaly
+	 * Create the preferences programmatically
 	 * @return 
 	 */
 	private PreferenceScreen createPreferenceHierarchy() {
@@ -46,7 +51,7 @@ public class NewsPreference extends PluginPreference {
         OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
-				PreferenceManager.getDefaultSharedPreferences(that).edit().putLong("news_cache_time", 0).commit();
+				PreferenceManager.getDefaultSharedPreferences(that).edit().putLong(cacheTime, 0).commit();
 				return true;
 			}
 		};
@@ -60,7 +65,7 @@ public class NewsPreference extends PluginPreference {
 		for(String url : urls) {
 
 	        checkBoxPref = new CheckBoxPreference(this);
-	        checkBoxPref.setKey("load_rss" + url);
+	        checkBoxPref.setKey(loadRss + url);
 	        checkBoxPref.setTitle(names[i++]);
 	        checkBoxPref.setSummary(url);
 	        checkBoxPref.setDefaultValue(true);
@@ -74,7 +79,7 @@ public class NewsPreference extends PluginPreference {
 		lp.setEntries(R.array.news_refresh_entries);
 		lp.setEntryValues(R.array.news_refresh_values);
 		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[getResources().getInteger(R.integer.news_default_refresh)]);
-		lp.setKey("news_refresh_rate");
+		lp.setKey(refreshRate);
 		lp.setTitle(R.string.news_refresh_title);
 		lp.setSummary(R.string.news_refresh_summary);
 		lp.setDialogTitle(R.string.news_refresh_title);

@@ -60,8 +60,8 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 	@Override
 	protected void onPostExecute(List<NewsItem> result) {
 		// Empty the list and put the new items 
-		
 		newsProvider_.clear();
+		
 		for(NewsItem item : result) {
 			newsProvider_.add(item);
 		}
