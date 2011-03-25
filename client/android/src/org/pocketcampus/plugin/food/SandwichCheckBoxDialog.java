@@ -59,15 +59,15 @@ public class SandwichCheckBoxDialog {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						/*Here we'll send the info to the sever*/
-						box_.setChecked(false);
+						box_.setChecked(box_.isChecked());
 					}
 				});
 
 		builder.setNegativeButton(R.string.food_sandwich_button_no,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						box_.setChecked(true);
 						dialog.dismiss();
+						box_.setChecked(!box_.isChecked());
 					}
 				});
 

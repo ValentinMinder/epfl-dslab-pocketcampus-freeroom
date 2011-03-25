@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:background="@drawable/food_background"
 	android:layout_height="fill_parent">
 
 	<org.pocketcampus.core.ui.ActionBar
@@ -18,10 +17,8 @@
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/food_suggestions_explanation"
-				android:textColor="#ffffff"
+				android:textColor="#000000"
 				android:gravity="center_horizontal"/>
-				
-			<!--  DEBUT -->
 			
 			<TextView
 				android:id="@+id/food_suggestions_ilike"
@@ -29,7 +26,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/food_suggestions_ilike"
 				style="?android:attr/listSeparatorTextViewStyle"
-				android:textColor="#ffffff"
+				android:textColor="#000000"
 				android:background="@drawable/food_list_header_background"
 				android:gravity="center"
 				android:layout_gravity="center"
@@ -79,7 +76,7 @@
 				<TextView android:id="@+id/food_suggestions_display_like"
 					android:layout_width="fill_parent" android:layout_height="100dip"
 					android:textSize="20dip" android:layout_marginLeft="2dip"
-					android:textColor="#ffffff" />
+					android:textColor="#000000" />
 
 			</LinearLayout>
 
@@ -89,7 +86,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/food_suggestions_idontlike"
 				style="?android:attr/listSeparatorTextViewStyle"
-				android:textColor="#ffffff"
+				android:textColor="#000000"
 				android:background="@drawable/food_list_header_background"
 				android:gravity="center"
 				android:layout_gravity="center"
@@ -142,7 +139,7 @@
 					android:layout_height="100dip"
 					android:textSize="20dip" 
 					android:layout_marginLeft="2dip"
-					android:textColor="#ffffff" />
+					android:textColor="#000000" />
 					
 			</LinearLayout>
 			

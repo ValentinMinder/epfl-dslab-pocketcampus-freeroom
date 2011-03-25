@@ -10,7 +10,7 @@
 	<TextView android:id="@+id/food_menuentry_title"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="@android:color/white"
+		android:textColor="@android:color/black"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:padding="6dip" />
 
@@ -21,7 +21,7 @@
 		<TextView android:id="@+id/food_menuentry_content"
 			android:layout_width="170dip" android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="@android:color/white" android:paddingLeft="15dip"
+			android:textColor="@android:color/black" android:paddingLeft="15dip"
 			android:layout_marginBottom="5dip" />
 
 		<RelativeLayout
@@ -57,7 +57,7 @@
 					android:layout_height="wrap_content"
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:layout_alignParentRight="true"
-					android:textColor="@android:color/white"
+					android:textColor="@android:color/black"
 					android:paddingRight="15dip"
 					android:layout_marginBottom="5dip"
 					android:layout_below="@+id/food_menuentry_ratingIndicator" />

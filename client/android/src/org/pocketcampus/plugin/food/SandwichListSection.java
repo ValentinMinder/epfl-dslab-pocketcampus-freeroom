@@ -78,7 +78,7 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 			holder.sandwichInfoLine = (LinearLayout) convertView.findViewById(R.id.food_sandwich_lign_list);
 			holder.sandwichName = (TextView) convertView.findViewById(R.id.food_sandwich_place);
 			holder.sandwichLeft = (CheckBox) convertView.findViewById(R.id.food_sandwich_left_checkbox);
-			
+
 			convertView.setTag(holder);
 		} else {
 			// Get the ViewHolder back to get fast access to the TextView
@@ -86,26 +86,18 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 			holder = (ViewHolder) convertView.getTag();
 			//System.out.println("XXX");
 		}
-		
-//		box_ = holder.sandwichLeft;
+
+		//		box_ = holder.sandwichLeft;
 		holder.sandwichLeft.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CheckBox c =  (CheckBox)v;
-//				ViewHolder h = (ViewHolder)v.getTag();
-//				box_ = h.sandwichLeft;
-				System.out.println("checked? " + c.isChecked());
-				
-				if(!c.isChecked()){					
-					SandwichCheckBoxDialog dialog = new SandwichCheckBoxDialog(menusActivity_, activityContext_, sandwich_.get(position), c);
-					dialog.show();
-				}else{
-					c.setChecked(true);
-				}
+				SandwichCheckBoxDialog dialog = new SandwichCheckBoxDialog(menusActivity_, activityContext_, sandwich_.get(position), c);
+				dialog.show();
 			}
 		});
 
 		holder.sandwichName.setText(sandwich_.get(position).getName());
-		
+
 		holder.sandwichLeft.setChecked(sandwichLeft(sandwich_.get(position)));
 
 		/* when you click with the dpad center on the sandwich description
@@ -115,7 +107,7 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 
 		return convertView;
 	}
-	
+
 	/* return true if there are at least on Sandwich */
 	private boolean sandwichLeft(Sandwich sandwich){
 		if(sandwich.isAvailable()){
