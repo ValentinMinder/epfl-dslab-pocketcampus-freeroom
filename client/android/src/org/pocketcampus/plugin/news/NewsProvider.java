@@ -42,6 +42,7 @@ public class NewsProvider {
 	// Data used to cache the feeds 
 	private final static String cacheFilename_ = "newscache.dat";
 	private long refreshRate_;
+	String defaultRefreshRate_;
 
 	// Items  from the feeds (merged)
 	private List<NewsItem> items_;
@@ -58,9 +59,7 @@ public class NewsProvider {
 		this.newsListeners_ = new ArrayList<INewsListener>();
 		
 		prefs_ = PreferenceManager.getDefaultSharedPreferences(context);
-		
-		String defaultRefresh = context.getResources().getStringArray(R.array.news_refresh_values)[context.getResources().getInteger(R.integer.news_default_refresh)];
-		refreshRate_ = Integer.parseInt(prefs_.getString("news_refresh_rate", defaultRefresh));
+		defaultRefreshRate_ = context.getResources().getStringArray(R.array.news_refresh_values)[context.getResources().getInteger(R.integer.news_default_refresh)];
 	}
 	
 	/**
@@ -221,9 +220,13 @@ public class NewsProvider {
 	 * @return Too old or not
 	 */
 	private boolean cacheTooOld() {
+		
+		refreshRate_ = Integer.parseInt(prefs_.getString("news_refresh_rate", defaultRefreshRate_));
 
 		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(NewsPreference.cacheTime, 0));
-
+		Log.d(this.getClass().toString(), "Current time: " + System.currentTimeMillis());
+		Log.d(this.getClass().toString(), "Refresh rate: " + refreshRate_);
+		
 		return prefs_.getLong(NewsPreference.cacheTime, 0) + refreshRate_ < System.currentTimeMillis();
 	}
 	
