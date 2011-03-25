@@ -6,6 +6,14 @@ import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
+/**
+ * PluginInfo class for the Camipro plugin.
+ * 
+ * @status complete
+ * 
+ * @author Jonas
+ *
+ */
 public class CamiproInfo extends PluginInfo {
 
 	@Override
