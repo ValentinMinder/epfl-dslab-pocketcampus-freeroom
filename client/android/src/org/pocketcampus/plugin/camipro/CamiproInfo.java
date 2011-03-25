@@ -18,7 +18,7 @@ public class CamiproInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.camipro_normal_mini);
+		return new Icon(R.drawable.camipro_normal_menu);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="camipro_website_url">https://camipro.epfl.ch/</string>
+    <string name="camipro_website_url">http://camipro.epfl.ch/</string>
 </resources>
