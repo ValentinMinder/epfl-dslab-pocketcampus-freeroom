@@ -10,7 +10,7 @@ public class DirectoryInfo extends PluginInfo {
 
 	@Override
 	public String getName() {
-		return "directory";
+		return "Directory";
 	}
 
 	@Override

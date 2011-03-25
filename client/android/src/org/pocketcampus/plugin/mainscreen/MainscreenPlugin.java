@@ -48,20 +48,21 @@ public class MainscreenPlugin extends PluginBase {
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
 
-		LinearLayout layout = (LinearLayout) findViewById(R.id.MenuLayout);
-		LinearLayout infoLayout = (LinearLayout) findViewById(R.id.InfoLayout);
+		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
+		LinearLayout configLayout = (LinearLayout) findViewById(R.id.InfoLayout);
 
 		for (final PluginBase plugin : plugins_) {
 			PluginInfo pluginInfo = plugin.getPluginInfo();
 			
+			// MENU ICONS
 			if(pluginInfo.hasMenuIcon() == true) {
-				// LAYOUT //
+				// layout
 				RelativeLayout relLayout = new RelativeLayout(ctx_);
 				RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 				relLayout.setLayoutParams(layoutParams);
 				
-				
-				// ICON //
+				// button
 				ImageButton button = new ImageButton(ctx_);
 
 				button.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class MainscreenPlugin extends PluginBase {
 				button.setId(1);
 				relLayout.addView(button);
 				
-				// LABEL //
+				// label
 				TextView text = new TextView(ctx_);
 				text.setText(pluginInfo.getName());
 				
@@ -98,28 +99,12 @@ public class MainscreenPlugin extends PluginBase {
 				relLayout.addView(text);
 				
 				
-				// DONE //
+				// put it in
 				relLayout.setPadding(1, 15, 1, 15);
-				layout.addView(relLayout);
+				menuLayout.addView(relLayout);
 			}
-
-			// Configure button
-//			Button configureButton = new Button(ctx_);
-//			configureButton.setText(getString(R.string.mainscreen_configure)+ " " + plugin.getPluginInfo().getId());
-//
-//			if(plugin.getPluginPreference() != null) {
-//				configureButton.setOnClickListener(new View.OnClickListener() {
-//		             public void onClick(View v) {
-//		            	 core_.configurePlugin(ctx_, plugin);
-//		             }
-//		         });
-//			} else {
-//				configureButton.setEnabled(false);
-//			}
-//			
-//			configureButton.setBackgroundColor(0x00000000);
-//			infoLayout.addView(configureButton);
 			
+			// CONFIGURATION BUTTONS (temporary)
 			if(plugin.getPluginPreference() != null) {
 				RelativeLayout infoItemLayout = new RelativeLayout(ctx_);
 				
@@ -155,7 +140,7 @@ public class MainscreenPlugin extends PluginBase {
 				infoItemLayout.addView(detail);
 				
 				infoItemLayout.setPadding(6, 12, 5, 5);
-				infoLayout.addView(infoItemLayout);
+				configLayout.addView(infoItemLayout);
 				
 				infoItemLayout.setOnClickListener(new View.OnClickListener() {
 		             public void onClick(View v) {

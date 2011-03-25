@@ -33,7 +33,7 @@ public class CamiproInfo extends PluginInfo {
 
 	@Override
 	public String getName() {
-		return "Camipro";
+		return "Balance";
 	}
 
 	@Override

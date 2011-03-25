@@ -10,7 +10,7 @@
 	</style>
 	
 	<style name="Theme.BottomBar">
-		<item name="android:background">#FFBB0A0C</item>
+		<item name="android:background">#FFCC0000</item>
 	</style>
 	
 	<style name="Theme.MainLayout">
