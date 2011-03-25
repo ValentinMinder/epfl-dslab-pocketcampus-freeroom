@@ -7,6 +7,7 @@
 
 package org.pocketcampus.plugin.food;
 
+import java.util.Currency;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -63,11 +64,12 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 		 * A ViewHolder keeps references to children views to avoid unnecessary
 		 * calls to findViewById() on each row.
 		 */
-		ViewHolder holder;
+		ViewHolder holder = null;
 		// When convertView is not null, we can reuse it directly, there is
 		// no need to re-inflate it. We only inflate a new View when the
 		// convertView supplied by ListView is null.
 		if (convertView == null) {
+			System.out.println("YYY");
 			convertView = mInflater_.inflate(R.layout.food_sandwich_list_item, null);
 
 			// Creates a ViewHolder and store references to the two children
@@ -76,30 +78,36 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 			holder.sandwichInfoLine = (LinearLayout) convertView.findViewById(R.id.food_sandwich_lign_list);
 			holder.sandwichName = (TextView) convertView.findViewById(R.id.food_sandwich_place);
 			holder.sandwichLeft = (CheckBox) convertView.findViewById(R.id.food_sandwich_left_checkbox);
+			holder.sandwichLeft.setEnabled(false);
 			
 			convertView.setTag(holder);
 		} else {
 			// Get the ViewHolder back to get fast access to the TextView
 			// and the ImageView.
 			holder = (ViewHolder) convertView.getTag();
+			//System.out.println("XXX");
 		}
 		
-		box_ = holder.sandwichLeft;
+//		box_ = holder.sandwichLeft;
 		holder.sandwichLeft.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				CheckBox c =  (CheckBox)v;
+//				ViewHolder h = (ViewHolder)v.getTag();
+//				box_ = h.sandwichLeft;
+				System.out.println("checked? " + c.isChecked());
 				
-//				if(box_.isChecked()){					
-					SandwichCheckBoxDialog dialog = new SandwichCheckBoxDialog(menusActivity_, activityContext_, sandwich_.get(position), box_);
+				if(!c.isChecked()){					
+					SandwichCheckBoxDialog dialog = new SandwichCheckBoxDialog(menusActivity_, activityContext_, sandwich_.get(position), c);
 					dialog.show();
-//				}else{
-//					box_.setChecked(true);
-//				}
+				}else{
+					c.setChecked(true);
+				}
 			}
 		});
 
 		holder.sandwichName.setText(sandwich_.get(position).getName());
 		
-		holder.sandwichLeft.setChecked(sandwichLeft(sandwich_));
+		holder.sandwichLeft.setChecked(sandwichLeft(sandwich_.get(position)));
 
 		/* when you click with the dpad center on the sandwich description
 		 * Not working yet
@@ -110,15 +118,12 @@ public class SandwichListSection extends BaseAdapter implements Filterable {
 	}
 	
 	/* return true if there are at least on Sandwich */
-	private boolean sandwichLeft(Vector<Sandwich> store){
-		for(Sandwich i: store){
-			if(i.isAvailable()){
-				/* we have at least one sandwich available */
-				return true;
-			}
-			else { /* this sandwich is not available */ }
+	private boolean sandwichLeft(Sandwich sandwich){
+		if(sandwich.isAvailable()){
+			return true;
+		}else{
+			return false;
 		}
-		return false;
 	}
 
 	private class OnItemClickListener implements OnClickListener {
