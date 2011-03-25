@@ -7,10 +7,17 @@
 		android:orientation="vertical" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_below="@+id/actionbar">
 	</LinearLayout>
-
-	<LinearLayout android:id="@+id/MenuLayout"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true" android:gravity="center">
-	</LinearLayout>
+	
+	<HorizontalScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+		
+		<LinearLayout android:id="@+id/MenuLayout"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true" android:gravity="center">
+		</LinearLayout>
+		
+	</HorizontalScrollView>
 
 </RelativeLayout>

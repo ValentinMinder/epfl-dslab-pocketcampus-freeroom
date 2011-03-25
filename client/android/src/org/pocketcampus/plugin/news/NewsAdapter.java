@@ -5,6 +5,7 @@ import org.pocketcampus.R;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,7 +63,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 			TextView tv;
 
 			tv = (TextView) v.findViewById(R.id.news_item_title);
-			tv.setText(newsItem.getTitle());
+			tv.setText(Html.fromHtml(newsItem.getTitle()));
 
 			tv = (TextView) v.findViewById(R.id.news_item_description);
 			
