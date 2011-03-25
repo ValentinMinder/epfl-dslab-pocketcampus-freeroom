@@ -70,6 +70,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 			tv.setMaxLines(selectedItem_ == position ? 15 : 2); // Bigger if the item is selected
 
 			LoaderNewsImageView liv = (LoaderNewsImageView) v.findViewById(R.id.news_item_image);
+			liv.setTag(newsItem); // This view shows this NewsItem
 			liv.setNewItem(newsItem);
 
 			// "View more" button, shown only on the selected item

@@ -123,7 +123,7 @@ public class LoaderNewsImageView extends LinearLayout {
 	public void setNewItem(NewsItem newsItem) {
 		this.newsItem_ = newsItem;
 		
-		// Check if the image is not alreadz downloaded
+		// Check if the image is not already downloaded
 		Drawable draw = newsItem.getImageDrawable();
 		if(draw != null) {
 			setImage(draw);
@@ -179,10 +179,14 @@ public class LoaderNewsImageView extends LinearLayout {
 	 * @param drawable The image to set
 	 */
 	private void setImage(Drawable drawable) {
-		mImage_.setImageDrawable(drawable);
-		mImage_.setVisibility(View.VISIBLE);
-		mSpinner_.setVisibility(View.GONE);
-		this.setVisibility(View.VISIBLE);
+		
+		// Check if the view shows the current NewsItem
+		if(this.getTag().equals(newsItem_)) {			
+			mImage_.setImageDrawable(drawable);
+			mImage_.setVisibility(View.VISIBLE);
+			mSpinner_.setVisibility(View.GONE);
+			this.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
