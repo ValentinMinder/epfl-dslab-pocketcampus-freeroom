@@ -31,7 +31,7 @@ public class MainscreenPlugin extends PluginBase {
 
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, MainscreenPlugin.class);
-		//i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		return i;
 	}
 
