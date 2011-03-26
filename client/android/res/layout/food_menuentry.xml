@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/food_menuentry_list"
@@ -12,10 +11,11 @@
 		android:layout_height="wrap_content"
 		android:textColor="@android:color/black"
 		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:text="testTitle"
 		android:padding="6dip" />
 
 	<LinearLayout android:id="@+id/rela1"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:orientation="horizontal">
 
 		<TextView android:id="@+id/food_menuentry_content"
