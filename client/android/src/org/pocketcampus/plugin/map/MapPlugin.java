@@ -7,12 +7,9 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.os.Bundle;
 import android.view.Window;
-import android.view.WindowManager;
 
 public class MapPlugin extends PluginBase {
 

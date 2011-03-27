@@ -21,7 +21,6 @@ import android.webkit.WebViewClient;
  *
  */
 public class CamiproPlugin extends PluginBase {
-	
 	private WebView webView_;
 	
 	@Override
@@ -42,8 +41,10 @@ public class CamiproPlugin extends PluginBase {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if ((keyCode == KeyEvent.KEYCODE_BACK) && webView_.canGoBack()) {
-	        webView_.goBack();
+		// -2 fixes the bug where you had to press back twice to go back to mainscreen:
+		// if only 1 page in history then it's the login page, which will redirect to the balance page...
+	    if ((keyCode == KeyEvent.KEYCODE_BACK) && webView_.canGoBackOrForward(-2)) {
+	        webView_.goBackOrForward(-2);
 	        return true;
 	    }
 	    return super.onKeyDown(keyCode, event);

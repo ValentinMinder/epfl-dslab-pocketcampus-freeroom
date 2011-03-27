@@ -2,9 +2,12 @@ package org.pocketcampus.core.communication;
 
 import org.pocketcampus.core.plugin.PluginInfo;
 
+import com.unboundid.ldap.sdk.GetEntryLDAPConnectionPoolHealthCheck;
+
 import android.os.AsyncTask;
 
 public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer, String> {
+	protected Exception exception_;
 	private PluginInfo pluginInfo_;
 	private String serverUrl_;
 	
@@ -20,8 +23,8 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 			String resp = req.getContent();
 			return resp;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "Error!";
+			exception_ = e;
+			return null;
 		}
 	}
 	

@@ -42,6 +42,9 @@
 		<activity android:name=".plugin.directory.DirectoryPlugin"></activity>
 		<activity android:name=".plugin.directory.DirectoryPreference"></activity>
 		
+		<!--  Transport Plugin -->
+		<activity android:name=".plugin.transport.TransportPlugin"></activity>
+		<activity android:name=".plugin.transport.TransportPreference"></activity>
 
 		<!-- Social Plugin -->
 		<activity android:name=".plugin.social.SocialPlugin"></activity>

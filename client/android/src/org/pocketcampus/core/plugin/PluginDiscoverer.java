@@ -9,6 +9,8 @@ import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.plugin.test.TestPlugin;
+import org.pocketcampus.plugin.transport.TransportPlugin;
+import org.pocketcampus.plugin.transport.TransportPlugin;
 
 /**
  * Discovers which plugin are available.
@@ -36,11 +38,11 @@ public class PluginDiscoverer {
 		// TODO scan for available plugins automatically
 		plugins.add(new NewsPlugin());
 		plugins.add(new TestPlugin());
-		//plugins.add(new CamiproPlugin());
 		plugins.add(new DirectoryPlugin());
 		plugins.add(new FoodPlugin());
 		plugins.add(new SocialPlugin());
 		plugins.add(new CamiproPlugin());
+		plugins.add(new TransportPlugin());
 		plugins.add(new MapPlugin());
 		
 		////////////////////////////////

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical">
+
+	<org.pocketcampus.core.ui.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" />
+
+	<RelativeLayout android:layout_below="@+id/actionbar">
+		<AutoCompleteTextView android:id="@+id/location_departure" android:hint="From"></AutoCompleteTextView>
+		<AutoCompleteTextView android:id="@+id/location_arrival" android:hint="To" android:layout_below="@+id/location_departure"></AutoCompleteTextView>
+		<Button android:id="@+id/search_button" android:text="Search" android:layout_below="@+id/location_arrival"></Button>
+		<TextView android:id="@+id/result" android:layout_below="@+id/search_button"></TextView>
+	</RelativeLayout>
+	
+</RelativeLayout>
+

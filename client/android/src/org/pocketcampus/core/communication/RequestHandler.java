@@ -4,8 +4,12 @@ import org.pocketcampus.core.plugin.PluginInfo;
 
 public class RequestHandler {
 	private PluginInfo pluginInfo_;
-	//private String serverUrl_ = "http://10.0.2.2:8080/pocketcampus-server/";
-	private String serverUrl_ = "http://192.168.1.48:8080/pocketcampus-server/";
+	
+	// EMULATOR URL
+	//private String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
+	
+	// AWS SERVER URL
+	private String serverUrl_ = "http://pcepfl.elasticbeanstalk.com/";
 	
 	public RequestHandler(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
