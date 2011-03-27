@@ -3,6 +3,8 @@ package org.pocketcampus.plugin.map;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.tileprovider.tilesource.*;
+import org.osmdroid.ResourceProxy;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -13,6 +15,9 @@ import android.view.Window;
 
 public class MapPlugin extends PluginBase {
 
+	private MapView mapView_;
+	private MapController mapController_;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,15 +29,25 @@ public class MapPlugin extends PluginBase {
 		actionBar.setTitle(getResources().getString(R.string.app_name));
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));*/
 		
-		MapView mapView = (MapView) findViewById(R.id.mapview);
-		//MapView mapView = new MapView(this, 256);
-        //setContentView(mapView);
+		mapView_ = (MapView) findViewById(R.id.mapview);
         
-		MapController controller = mapView.getController();
-		GeoPoint point = new GeoPoint(46519732, 6566734);
-		controller.setCenter(point);
-		controller.setZoom(10);
+		mapController_ = mapView_.getController();
+		
+		
+		ITileSource epflTile = new EpflTileSource("Epfl1", ResourceProxy.string.osmarender, 16, 19, 256, ".png", "http://plan-epfl-tile2.epfl.ch/batiments1/");
+		
+		mapView_.setTileSource(epflTile);
+		mapView_.setMultiTouchControls(true);
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
+		mapController_.setCenter(epflPoint);
+		mapController_.setZoom(16);
+	}
+	
 	
 	@Override
 	public PluginInfo getPluginInfo() {
