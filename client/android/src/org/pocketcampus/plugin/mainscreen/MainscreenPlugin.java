@@ -100,7 +100,7 @@ public class MainscreenPlugin extends PluginBase {
 				
 				
 				// put it in
-				relLayout.setPadding(1, 15, 1, 15);
+				relLayout.setPadding(1, 5, 1, 10);
 				menuLayout.addView(relLayout);
 			}
 			
