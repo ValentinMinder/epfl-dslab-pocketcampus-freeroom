@@ -21,6 +21,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -95,7 +96,7 @@ public class MainscreenPlugin extends PluginBase {
 				textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				text.setLayoutParams(textParams);
 				text.setTextColor(0xff444444);
-				text.setGravity(Gravity.BOTTOM);
+				text.setGravity(Gravity.TOP);
 				relLayout.addView(text);
 				
 				
@@ -107,6 +108,7 @@ public class MainscreenPlugin extends PluginBase {
 			// CONFIGURATION BUTTONS (temporary)
 			if(plugin.getPluginPreference() != null) {
 				RelativeLayout infoItemLayout = new RelativeLayout(ctx_);
+				infoItemLayout.setBackgroundDrawable(ctx_.getResources().getDrawable(R.drawable.box_bg));
 				
 				RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				iconParams.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -139,7 +141,7 @@ public class MainscreenPlugin extends PluginBase {
 				detail.setLayoutParams(detailParams);
 				infoItemLayout.addView(detail);
 				
-				infoItemLayout.setPadding(6, 12, 5, 5);
+				infoItemLayout.setPadding(15, 15, 15, 15);
 				configLayout.addView(infoItemLayout);
 				
 				infoItemLayout.setOnClickListener(new View.OnClickListener() {

@@ -1,24 +1,32 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/Theme.MainLayout">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/Theme.MainLayout">
 
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
 
 	<LinearLayout android:id="@+id/InfoLayout"
 		android:orientation="vertical" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_below="@+id/actionbar">
+		android:layout_height="fill_parent" android:layout_below="@+id/actionbar"
+		android:paddingBottom="13px" android:paddingLeft="9px"
+		android:paddingRight="13px" android:paddingTop="13px" android:background="@drawable/bg">
+
+		<!-- <LinearLayout android:background="@drawable/box_bg"
+			android:paddingBottom="15px" android:paddingLeft="15px"
+			android:paddingRight="15px" android:paddingTop="15px">
+			<TextView android:text="Hello world!\nLorem ipsum dolorem sit amet."></TextView>
+		</LinearLayout>-->
+
 	</LinearLayout>
-	
-	<HorizontalScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
+
+	<HorizontalScrollView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
 		android:background="@drawable/mainscreen_background">
-		
+
 		<LinearLayout android:id="@+id/MenuLayout"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true" android:gravity="center">
 		</LinearLayout>
-		
+
 	</HorizontalScrollView>
 
 </RelativeLayout>
