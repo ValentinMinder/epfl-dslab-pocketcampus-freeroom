@@ -146,9 +146,16 @@ public class RssParser extends DefaultHandler
     }
     
     public String removeBadStuff(String s){
+    	s = s.replace("<p>", "");
+    	s = s.replace("<em>", "");
+    	s = s.replace("</em>", "");
+    	s = s.replace("</p>", "");
     	s = s.replace("<br>", "");
     	s = s.replace("<br />", "");
-    	return s;
+    	if(!(s.charAt(s.length()-1) == ('\n'))){
+    		s+="\n";
+    	}
+    	return s.trim();
     }
    
     public static void _setProxy()

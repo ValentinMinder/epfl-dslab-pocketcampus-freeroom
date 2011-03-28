@@ -5,6 +5,7 @@ import org.pocketcampus.plugin.food.FoodListSection.ViewHolder;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.Rating;
 import org.pocketcampus.plugin.food.menu.Restaurant;
+import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ public class RatingsDownloader extends AsyncTask<Meal, Integer, Rating> {
 		/*ConnexionHandler connHandler = new ConnexionHandler(context_);
 		mealRating = connHandler.getRating(currentMeal);
 		connHandler.close();*/
+		mealRating_ = new Rating(StarRating.STAR_3_0, 12);
 
 		return mealRating_;
 	}

@@ -18,10 +18,13 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:orientation="horizontal">
 
-		<TextView android:id="@+id/food_menuentry_content"
-			android:layout_width="170dip" android:layout_height="wrap_content"
+		<TextView
+			android:id="@+id/food_menuentry_content"
+			android:layout_width="220dip"
+			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="@android:color/black" android:paddingLeft="15dip"
+			android:textColor="@android:color/black"
+			android:paddingLeft="15dip"
 			android:layout_marginBottom="5dip" />
 
 		<RelativeLayout
@@ -34,7 +37,7 @@
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
 				android:layout_gravity="right"
-				android:paddingLeft="10dip">
+				android:paddingLeft="20dip">
 
 				<RatingBar
 					android:id="@+id/food_menuentry_ratingIndicator"
