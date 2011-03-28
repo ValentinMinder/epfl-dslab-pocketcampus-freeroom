@@ -78,6 +78,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 			Button b = (Button) v.findViewById(R.id.news_view_more);
 			
 			if(selectedItem_ == position) {
+				
 				b.setVisibility(View.VISIBLE);
 
 				b.setOnClickListener(new OnClickListener() {
@@ -87,7 +88,8 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 						context_.startActivity(i);
 					}
 				});
-
+				
+				b.setFocusable(false);
 			} else {
 				b.setVisibility(View.GONE);
 			}
@@ -106,7 +108,10 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 	 * @param id
 	 */
 	public void setClickedItem(AdapterView<?> parent, View view, int position, long id) {
-		selectedItem_ = position;
+		if(selectedItem_ == position)
+			selectedItem_ = -1;
+		else
+			selectedItem_ = position;
 
 		// Recompute the view
 		this.notifyDataSetChanged();
