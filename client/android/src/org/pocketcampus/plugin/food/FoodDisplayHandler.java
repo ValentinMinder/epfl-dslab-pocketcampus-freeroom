@@ -43,7 +43,7 @@ public class FoodDisplayHandler {
 	public FoodDisplayHandler(Activity ownerActivity) {
 		activityContext_ = ownerActivity.getApplicationContext();
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
-		campusMenu_ = new FoodMenu();
+		campusMenu_ = new FoodMenu(activityContext_);
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		campusSandwich_ = new Vector<Vector<Sandwich>>();
 		ownerActivity_ = ownerActivity;
