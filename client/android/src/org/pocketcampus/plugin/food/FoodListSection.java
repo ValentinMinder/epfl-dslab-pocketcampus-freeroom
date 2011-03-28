@@ -6,6 +6,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Meal;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -66,15 +67,15 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 			// views we want to bind data to.
 			holder = new ViewHolder();
 			holder.menuInfoLine = (LinearLayout) convertView
-					.findViewById(R.id.food_menuentry_list);
+			.findViewById(R.id.food_menuentry_list);
 			holder.titleLine = (TextView) convertView
-					.findViewById(R.id.food_menuentry_title);
+			.findViewById(R.id.food_menuentry_title);
 			holder.menuLine = (TextView) convertView
-					.findViewById(R.id.food_menuentry_content);
+			.findViewById(R.id.food_menuentry_content);
 			holder.ratingLine = (RatingBar) convertView
-					.findViewById(R.id.food_menuentry_ratingIndicator);
+			.findViewById(R.id.food_menuentry_ratingIndicator);
 			holder.votesLine = (TextView) convertView
-					.findViewById(R.id.food_menuentry_numberOfVotes);
+			.findViewById(R.id.food_menuentry_numberOfVotes);
 
 			convertView.setTag(holder);
 		} else {
@@ -85,7 +86,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 		holder.menuLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				// menuDialog(position);
+				menuDialog(position);
 				Log.d("Click menu", "Click on the menuline");
 			}
 		});
@@ -144,18 +145,13 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		r.show();
 	}
 
-	/* show the sandwich's list of the store */
-	// private void menuDialog(int pos){
-	// boolean isDailyMenu = false;
-	// if(context_.getClass().getName().equals(DailyMenus.class.getName())){
-	// isDailyMenu = true;
-	// }
-	//		
-	// MenuDialog r = new MenuDialog(context_, meal_.get(pos),
-	// menusActivity_, isDailyMenu);
-	// r.setOnDismissListener(new OnDismissMenuDialogListener());
-	// r.show();
-	// }
+	private void menuDialog(int pos){
+
+		MenuDialog r = new MenuDialog(menusActivity_, meal_.get(pos),
+				menusActivity_, true);
+		r.setOnDismissListener(new OnDismissMenuDialogListener());
+		r.show();
+	}
 
 	static class ViewHolder {
 		TextView titleLine;
@@ -183,14 +179,14 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		return meal_.get(position);
 	}
 
-	// private class OnDismissMenuDialogListener implements
-	// MenuDialog.OnDismissListener {
-	//
-	// @Override
-	// public void onDismiss(DialogInterface dialogInt) {
-	// notifyDataSetChanged();
-	// }
-	// }
+	private class OnDismissMenuDialogListener implements
+	MenuDialog.OnDismissListener {
+
+		@Override
+		public void onDismiss(DialogInterface dialogInt) {
+			notifyDataSetChanged();
+		}
+	}
 
 	// protected void dataSetChanged() {
 	// this.sortNews();

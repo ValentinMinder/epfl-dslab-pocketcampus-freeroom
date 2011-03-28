@@ -29,6 +29,7 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -96,17 +97,17 @@ public class MenuDialog extends Dialog {
 		paintRatingBar();
 
 		// Chose a menu
-		Button takeThis = (Button) findViewById(R.id.food_menudialog_takeThis);
+		ImageButton takeThis = (ImageButton) findViewById(R.id.food_menudialog_takeThis);
 		takeThis.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// give me the feault MealTagger
-				MealTagger tagger = new MealTagger();
-				Collection<Meal> oneMealCollection = new HashSet<Meal>();
-				oneMealCollection.add(meal);
+//				MealTagger tagger = new MealTagger();
+//				Collection<Meal> oneMealCollection = new HashSet<Meal>();
+//				oneMealCollection.add(meal);
 				// give me all Tags for this Meal
-				Collection<MealTag> allTags = tagger
-						.extractTagsFrom(oneMealCollection);
+//				Collection<MealTag> allTags = tagger
+//						.extractTagsFrom(oneMealCollection);
 
 				// update the statistics
 				/*MealStatsManagement mealsManagement = MealStatsManagement
@@ -125,12 +126,12 @@ public class MenuDialog extends Dialog {
 		});
 
 		// Route to the Restaurant
-		Button goThere = (Button) findViewById(R.id.food_menudialog_goThere);
+		ImageButton goThere = (ImageButton) findViewById(R.id.food_menudialog_goThere);
 		goThere.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Restaurant resto = meal.getRestaurant();
-				callNavigationActivity(resto);
+//				Restaurant resto = meal.getRestaurant();
+//				callNavigationActivity(resto);
 //				menusActivity.finish();
 			}
 		});
@@ -139,7 +140,7 @@ public class MenuDialog extends Dialog {
 		 * meal -the queue (for the restaurant corresponding to this meal)
 		 */
 		// Take a picture of the meal
-		Button takePic = (Button) findViewById(R.id.food_menudialog_takePicture);
+		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
 		takePic.setEnabled(photoButtonsEnabled);
 		takePic.setOnClickListener(new View.OnClickListener() {
 
@@ -150,39 +151,6 @@ public class MenuDialog extends Dialog {
 			}
 		});
 
-		// See pictures of the meal
-		Button seePic = (Button) findViewById(R.id.food_menudialog_seePictures);
-		seePic.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				/*Intent seePicture = new Intent(getContext(),
-						SlidingImageActivity.class);
-				seePicture.putExtra("meal", meal);
-				seePicture.putExtra("wantToSeeMeal", true);
-
-				ch.startActivity(seePicture);*/
-			}
-		});
-		
-		// Take a picture of the Queue
-		Button takePicQueue = (Button) findViewById(R.id.food_menudialog_takePictureQueue);
-		takePicQueue.setEnabled(photoButtonsEnabled);
-		takePicQueue.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				/*TakePicture cameraMachin = new TakePicture(menusActivity, meal);
-				DailyMenus.setMealPicture(false);
-				cameraMachin.takePicture();*/
-			}
-		});
-
-		// See pictures of the Queue
-		Button seePicQueue = (Button) findViewById(R.id.food_menudialog_seePicturesQueue);
-		seePicQueue.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				seePicturesQueue();
-			}
-		});
 		progressDialog_.dismiss();
 
 	}
