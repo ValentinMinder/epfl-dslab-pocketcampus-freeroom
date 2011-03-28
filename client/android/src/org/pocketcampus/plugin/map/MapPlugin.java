@@ -42,11 +42,12 @@ public class MapPlugin extends PluginBase {
 	protected void onStart() {
 		super.onStart();
 		//center the view at epfl
+		//important to set the zoom before the position (bug of osmdroid)
+		mapController_.setZoom(16);
 		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
 		mapController_.setCenter(epflPoint);
-		mapController_.setZoom(16);
+		
 	}
-	
 	
 	@Override
 	public PluginInfo getPluginInfo() {

@@ -18,8 +18,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 public class EpflTileSource extends OnlineTileSourceBase {
 	private OnlineTileSourceBase outsideEpflTileSource_ = TileSourceFactory.MAPNIK;
 
-	private final static int MIN_ZOOM = 16;
-	private final static int MAX_ZOOM = 19;
+	private final static int MIN_ZOOM = 0;
+	private final static int MAX_ZOOM = 18;
 	private final static int TILE_SIZE_PX = 256;
 	private final static String TILE_IMAGE_TYPE = ".png";
 	
@@ -43,7 +43,7 @@ public class EpflTileSource extends OnlineTileSourceBase {
 	public EpflTileSource() {
 		this("all-merc");
 	}
-
+	
 	@Override
 	public String getTileURLString(MapTile aTile) {
 		String url = getBaseUrl() + aTile.getZoomLevel() + "/"
@@ -59,6 +59,7 @@ public class EpflTileSource extends OnlineTileSourceBase {
 
 	}
 
+	//XXX Find a faster way to do that...
 	/**
 	 * Checks that the URL exists
 	 * @param url the url to check.
