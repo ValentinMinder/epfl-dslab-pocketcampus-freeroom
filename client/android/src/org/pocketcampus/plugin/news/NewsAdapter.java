@@ -5,6 +5,7 @@ import org.pocketcampus.R;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 	// Misc
 	private LayoutInflater mInflater_;
 	private Context context_;
+	private boolean showImage_;
 
 	/**
 	 * Adapter constructor
@@ -42,7 +44,9 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 	public NewsAdapter(Context context, NewsProvider newsProvider) {
 		super();
 		this.context_ = context;
-
+		
+		this.showImage_ = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(NewsPreference.showImg, true);
+		
 		mInflater_ = LayoutInflater.from(context);
 		
 		newsProvider_ = newsProvider;
@@ -54,6 +58,10 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 		View v = convertView;
 		if (v == null) {
 			v = mInflater_.inflate(R.layout.news_newsentry, null);
+			
+			if(!showImage_) {
+				v.findViewById(R.id.news_item_image).setVisibility(View.GONE);
+			}
 		}
 
 		// The item to display
@@ -71,8 +79,10 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 			tv.setMaxLines(selectedItem_ == position ? 15 : 2); // Bigger if the item is selected
 
 			LoaderNewsImageView liv = (LoaderNewsImageView) v.findViewById(R.id.news_item_image);
-			liv.setTag(newsItem); // This view shows this NewsItem
-			liv.setNewItem(newsItem);
+			if(showImage_) {
+				liv.setTag(newsItem); // This view shows this NewsItem
+				liv.setNewItem(newsItem);
+			}
 
 			// "View more" button, shown only on the selected item
 			Button b = (Button) v.findViewById(R.id.news_view_more);

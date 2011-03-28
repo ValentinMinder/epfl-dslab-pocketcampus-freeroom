@@ -26,6 +26,7 @@ public class NewsPreference extends PluginPreference {
 	protected final static String cacheTime = "news_cache_time";
 	protected final static String loadRss = "load_rss";
 	protected final static String refreshRate = "news_refresh_rate";
+	protected final static String showImg = "news_show_thumbnail";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,13 @@ public class NewsPreference extends PluginPreference {
 		lp.setSummary(R.string.news_refresh_summary);
 		lp.setDialogTitle(R.string.news_refresh_title);
 		root.addPreference(lp);
+		
+		CheckBoxPreference showImgPref = new CheckBoxPreference(this);
+		showImgPref.setTitle(R.string.news_show_image_title);
+		showImgPref.setSummary(R.string.news_show_image_summary);
+		showImgPref.setDefaultValue(true);
+		showImgPref.setKey(showImg);
+		root.addPreference(showImgPref);
 		
         return root;
     }

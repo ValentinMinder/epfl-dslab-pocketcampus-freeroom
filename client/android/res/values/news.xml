@@ -13,6 +13,8 @@
     
     <string name="news_refresh_title">Refresh time</string>
     <string name="news_refresh_summary">The pace at which the feeds get refreshed</string>
+    <string name="news_show_image_title">Show a thumbnail</string>
+    <string name="news_show_image_summary">Shows an image accodring to the news</string>
     
     <string-array name="news_refresh_entries">
         <item>At each load</item>
