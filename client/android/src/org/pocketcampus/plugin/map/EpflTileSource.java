@@ -5,10 +5,13 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.osmdroid.tileprovider.MapTile;
+import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.ResourceProxy.string;
 
 public class EpflTileSource extends OnlineTileSourceBase {
+	private OnlineTileSourceBase outsideEpflTileSource_ = TileSourceFactory.MAPNIK;
 
 	public EpflTileSource(final String aName, final string aResourceId,
 			final int aZoomMinLevel, final int aZoomMaxLevel,
@@ -27,8 +30,7 @@ public class EpflTileSource extends OnlineTileSourceBase {
 			System.out.println("FOUND: " + url);
 			return url;
 		} else {
-			System.out.println("NOT FOUND: " + url);
-			return "http://jleuleu.neqo.org/temp/transparent.png";
+			return outsideEpflTileSource_.getTileURLString(aTile);
 		}
 
 	}

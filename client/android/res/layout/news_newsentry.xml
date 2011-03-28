@@ -30,6 +30,7 @@
 			android:layout_width="wrap_content"
 			android:layout_gravity="right|center_vertical"
 			android:drawableLeft="@drawable/ic_btn_search_go"
+			android:focusable="false"
 			/>
 		
 	</LinearLayout>

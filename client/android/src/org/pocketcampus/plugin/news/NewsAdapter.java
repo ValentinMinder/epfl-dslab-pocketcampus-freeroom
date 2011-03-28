@@ -88,8 +88,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 						context_.startActivity(i);
 					}
 				});
-				
-				b.setFocusable(false);
+
 			} else {
 				b.setVisibility(View.GONE);
 			}
