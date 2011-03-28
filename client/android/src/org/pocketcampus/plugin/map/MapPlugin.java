@@ -21,15 +21,17 @@ public class MapPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.map_main);
-		
-		/*ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle(getResources().getString(R.string.app_name));
-		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));*/
-		
+
+		setupActionBar(true);
+
+		setupMapView();
+	}
+	
+	private void setupMapView() {
+
 		mapView_ = (MapView) findViewById(R.id.mapview);
         
 		mapController_ = mapView_.getController();
-		
 		
 		ITileSource epflTile = new EpflTileSource();
 		
@@ -37,7 +39,7 @@ public class MapPlugin extends PluginBase {
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
