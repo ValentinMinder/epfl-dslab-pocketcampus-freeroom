@@ -4,9 +4,12 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.core.ui.ActionBar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -22,6 +25,7 @@ import android.webkit.WebViewClient;
  */
 public class CamiproPlugin extends PluginBase {
 	private WebView webView_;
+	private ActionBar actionBar_;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +33,18 @@ public class CamiproPlugin extends PluginBase {
 		setContentView(R.layout.camipro_main);
 		setupActionBar(true);
 		
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		
+		setupWebview();
+	}
+	
+	private void setupWebview() {
 		webView_ = (WebView) findViewById(R.id.camipro_webview);
 	    webView_.setWebViewClient(new HelloWebViewClient());
 	    webView_.getSettings().setJavaScriptEnabled(true);
 	    webView_.loadUrl(getResources().getString(R.string.camipro_website_url));
 	}
-	
+
 	/**
 	 * Allows to handle the back button on the browser
 	 * Otherwise do the normal behavior
@@ -61,7 +71,22 @@ public class CamiproPlugin extends PluginBase {
 	        view.loadUrl(url);
 	        return true;
 	    }
-	    
+
+		@Override
+		public void onPageFinished(WebView view, String url) {
+
+			actionBar_.setProgressBarVisibility(View.GONE);
+			
+			super.onPageFinished(view, url);
+		}
+
+		@Override
+		public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+			actionBar_.setProgressBarVisibility(View.VISIBLE);
+			
+			super.onPageStarted(view, url, favicon);
+		}
 	    
 	}
 
