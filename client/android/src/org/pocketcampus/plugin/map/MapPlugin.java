@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.map;
 
-import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -32,15 +31,17 @@ public class MapPlugin extends PluginBase {
 		mapController_ = mapView_.getController();
 		
 		
-		ITileSource epflTile = new EpflTileSource("Epfl1", ResourceProxy.string.osmarender, 16, 19, 256, ".png", "http://plan-epfl-tile2.epfl.ch/batiments1/");
+		ITileSource epflTile = new EpflTileSource();
 		
 		mapView_.setTileSource(epflTile);
 		mapView_.setMultiTouchControls(true);
+		mapView_.setBuiltInZoomControls(true);
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
+		//center the view at epfl
 		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
 		mapController_.setCenter(epflPoint);
 		mapController_.setZoom(16);

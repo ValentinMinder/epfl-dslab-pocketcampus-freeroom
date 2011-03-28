@@ -4,20 +4,44 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTile;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.ResourceProxy.string;
 
+/**
+ * Tile source of EPFL map for OSMDroid
+ * 
+ * @author Johan
+ *
+ */
 public class EpflTileSource extends OnlineTileSourceBase {
 	private OnlineTileSourceBase outsideEpflTileSource_ = TileSourceFactory.MAPNIK;
 
-	public EpflTileSource(final String aName, final string aResourceId,
-			final int aZoomMinLevel, final int aZoomMaxLevel,
-			final int aTileSizePixels, final String aImageFilenameEnding,
-			final String... aBaseUrl) {
-		super(aName, aResourceId, aZoomMinLevel, aZoomMaxLevel, aTileSizePixels, aImageFilenameEnding, aBaseUrl);
+	private final static int MIN_ZOOM = 16;
+	private final static int MAX_ZOOM = 19;
+	private final static int TILE_SIZE_PX = 256;
+	private final static String TILE_IMAGE_TYPE = ".png";
+	
+	/**
+	 * Creates a new tile source for the EPFL map
+	 * @param level the level to display (-4 to 8, and all-merc)
+	 */
+	public EpflTileSource(final String level) {
+		super("EPFL" + level, ResourceProxy.string.mapnik, MIN_ZOOM, MAX_ZOOM, TILE_SIZE_PX, TILE_IMAGE_TYPE,
+				"http://plan-epfl-tile0.epfl.ch/batiments" + level + "/",
+				"http://plan-epfl-tile1.epfl.ch/batiments" + level + "/",
+				"http://plan-epfl-tile2.epfl.ch/batiments" + level + "/",
+				"http://plan-epfl-tile3.epfl.ch/batiments" + level + "/",
+				"http://plan-epfl-tile4.epfl.ch/batiments" + level + "/");
+		
+	}
+	
+	/**
+	 * Creates a new tile source for the EPFL map (level=all)
+	 */
+	public EpflTileSource() {
+		this("all-merc");
 	}
 
 	@Override
@@ -35,6 +59,11 @@ public class EpflTileSource extends OnlineTileSourceBase {
 
 	}
 
+	/**
+	 * Checks that the URL exists
+	 * @param url the url to check.
+	 * @return true if the url exists, false otherwise.
+	 */
 	private boolean checkUrl(String url) {
 		URL u = null;
 
@@ -54,22 +83,25 @@ public class EpflTileSource extends OnlineTileSourceBase {
 		return false;
 	}
 
-	String decomp(int a) {
+	/**
+	 * Splits the integer into the following format -> NNN/NNN/NNN
+	 * @param a the integer to decompose
+	 * @return the formatted string.
+	 */
+	private String decomp(int a) {
 		String s1 = pad(a);
 		String s = s1.substring(0, 3) + "/" + s1.substring(3, 6) + "/"
 				+ s1.substring(6, 9);
 		return s;
 	}
 
-	String pad(int a) {
-		Integer b = a;
-		String c = b.toString();
-
-		while (c.length() < 9) {
-			c = "0" + c;
-		}
-
-		return c;
+	/**
+	 * Adds leading zero to a number
+	 * @param a an integer
+	 * @return the padded number.
+	 */
+	private String pad(int a) {
+		return String.format("%09d", a); 
 	}
 
 	int ycoord(int y, int zoom) {
