@@ -73,7 +73,6 @@ public class MenuSorter {
 
 			if (!meal.getDescription().matches("\\s+")) {
 				if (map.containsKey(resto)) {
-
 					map.get(resto).add(meal);
 				} else {
 					Vector<Meal> vector = new Vector<Meal>();
@@ -83,6 +82,14 @@ public class MenuSorter {
 			} else {
 				System.out.println("SortingMeals: Skip empty Description: "+meal.getDescription()+" - Name: "+meal.getName()+" Resto: "+meal.getRestaurant());
 			}
+		}
+		Set<String> menus = map.keySet();
+		for(String resto : menus){
+			Collections.sort(map.get(resto), new Comparator<Meal>() {
+			    public int compare(Meal one, Meal other) {
+			        return one.getName().compareTo(other.getName());
+			    }
+			});
 		}
 		return map;
 	}
