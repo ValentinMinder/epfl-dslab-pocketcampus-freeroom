@@ -1,16 +1,23 @@
 package org.pocketcampus.plugin.map;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.tileprovider.MapTileProviderBasic;
+import java.util.List;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 
@@ -54,28 +61,40 @@ public class MapPlugin extends PluginBase {
 		selectedLayers_ = new ArrayList<MapElementsList>();
 	}
 	
+	/**
+	 * The background is provided by the default tile source.
+	 * We add a TileOverlay over the background (for example
+	 * the map of the epfl campus).
+	 */
 	private void setupMapView() {
 
 		mapView_ = (MapView) findViewById(R.id.mapview);
         
 		mapController_ = mapView_.getController();
 		
-		ITileSource epflTile = new EpflTileSource();
-		
-		mapView_.setTileSource(epflTile);
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
+		
+		
+		// Add tiles layer
+		ITileSource epflTile = new EpflTileSource();
+
+		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
+        mProvider.setTileSource(epflTile);
+        TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
+        mapView_.getOverlays().add(mTilesOverlay);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
+		
 		//center the view at epfl
 		//important to set the zoom before the position (bug of osmdroid)
 		mapController_.setZoom(16);
 		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
 		mapController_.setCenter(epflPoint);
-		
+		setDebugItemizedOverlay();
 	}
 	
 	@Override
@@ -135,6 +154,16 @@ public class MapPlugin extends PluginBase {
 	@Override
 	public PluginPreference getPluginPreference() {
 		return null;
+	}
+	
+	//XXX debug
+	private void setDebugItemizedOverlay() {
+		MapElementsList items = new MapElementsList("Restaurants", -1);
+		items.add(new MapElement("Cafétaria INM","blabla",new GeoPoint(46.518600, 6.563316)));
+		ItemizedOverlay<OverlayItem> overlays = new ItemizedIconOverlay<OverlayItem>(items, null, new DefaultResourceProxyImpl(getApplicationContext()));
+		mapView_.getOverlays().add(overlays);
+		
+		System.out.println("overlays size " + mapView_.getOverlays().size());
 	}
 
 }

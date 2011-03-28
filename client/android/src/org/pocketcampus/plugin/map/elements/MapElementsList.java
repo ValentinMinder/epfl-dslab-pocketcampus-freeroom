@@ -2,9 +2,16 @@ package org.pocketcampus.plugin.map.elements;
 
 import java.util.ArrayList;
 
-public class MapElementsList extends ArrayList<MapElement> {
+import org.osmdroid.views.overlay.OverlayItem;
+
+import android.graphics.drawable.Drawable;
+
+public class MapElementsList extends ArrayList<OverlayItem> {
 	private static final long serialVersionUID = 1054957477020550085L;
 
+	/**
+	 * The title of the layer, for example restaurant, parking, etc.
+	 */
 	private String layerTitle_;
 	private int cacheTimeInMinutes_;
 	
@@ -12,7 +19,13 @@ public class MapElementsList extends ArrayList<MapElement> {
 		this.layerTitle_ = title;
 		this.cacheTimeInMinutes_ = cache;
 	}
-
+		
+		
+	public Drawable getDefaultDrawable() {
+		//TODO 
+		return null;
+	}
+	
 	public String getLayerTitle() {
 		return layerTitle_;
 	}
