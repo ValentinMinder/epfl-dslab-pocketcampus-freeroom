@@ -6,7 +6,14 @@ import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
-
+/**
+ * PluginInfo class for the map plugin 
+ * 
+ * @status complete
+ * 
+ * @author Jonas, Johan
+ *
+ */
 public class MapInfo extends PluginInfo {
 
 	@Override
