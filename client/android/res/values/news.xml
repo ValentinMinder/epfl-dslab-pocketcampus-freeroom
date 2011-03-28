@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="news_preferences_title">RSS Options</string>
+    <string name="news_preferences_rss_title">RSS Options</string>
+    <string name="news_preferences_other_title">Other Options</string>
     
     <string-array name="news_feeds_url">
         <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>

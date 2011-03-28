@@ -43,9 +43,9 @@ public class NewsPreference extends PluginPreference {
         // Root
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
-        PreferenceCategory inlinePrefCat = new PreferenceCategory(this);
-        inlinePrefCat.setTitle(R.string.news_preferences_title);
-        root.addPreference(inlinePrefCat);
+        PreferenceCategory rssPrefCat = new PreferenceCategory(this);
+        rssPrefCat.setTitle(R.string.news_preferences_rss_title);
+        root.addPreference(rssPrefCat);
         
         // We want to force a refresh when the preferences have been changed
         final NewsPreference that = this;
@@ -72,8 +72,12 @@ public class NewsPreference extends PluginPreference {
 	        checkBoxPref.setDefaultValue(true);
 	        checkBoxPref.setOnPreferenceChangeListener(listener);
 	        
-	        inlinePrefCat.addPreference(checkBoxPref);
+	        rssPrefCat.addPreference(checkBoxPref);
 		}
+		
+		PreferenceCategory otherPrefsCat = new PreferenceCategory(this);
+        rssPrefCat.setTitle(R.string.news_preferences_other_title);
+        root.addPreference(otherPrefsCat);
 		
 		// List of available refresh rates for the feeds
 		ListPreference lp = new ListPreference(this);
@@ -84,14 +88,14 @@ public class NewsPreference extends PluginPreference {
 		lp.setTitle(R.string.news_refresh_title);
 		lp.setSummary(R.string.news_refresh_summary);
 		lp.setDialogTitle(R.string.news_refresh_title);
-		root.addPreference(lp);
+		otherPrefsCat.addPreference(lp);
 		
 		CheckBoxPreference showImgPref = new CheckBoxPreference(this);
 		showImgPref.setTitle(R.string.news_show_image_title);
 		showImgPref.setSummary(R.string.news_show_image_summary);
 		showImgPref.setDefaultValue(true);
 		showImgPref.setKey(showImg);
-		root.addPreference(showImgPref);
+		otherPrefsCat.addPreference(showImgPref);
 		
         return root;
     }
