@@ -10,7 +10,6 @@ import org.pocketcampus.core.ui.ActionBar.Action;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -32,7 +31,6 @@ public class NewsPlugin extends PluginBase implements INewsListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.news_list);
 
 		newsProvider_ = NewsProvider.getInstance(this);

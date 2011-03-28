@@ -19,7 +19,6 @@ import org.pocketcampus.plugin.food.menu.Meal;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -38,8 +37,6 @@ public class RatingsDialog extends Dialog {
 	public RatingsDialog(Context context, Meal meal) {
 		super(context);
 		this.meal = meal;
-		/** 'Window.FEATURE_NO_TITLE' - Used to hide the title */
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/** Design the dialog in main.xml file */
 		setContentView(R.layout.food_dialog_rating);
 

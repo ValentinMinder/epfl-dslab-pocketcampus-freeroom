@@ -19,11 +19,9 @@
         
 
 		<!-- News Plugin -->
-		<activity android:name=".plugin.news.NewsPlugin"
-			android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".plugin.news.NewsPlugin"></activity>
 		<activity android:name=".plugin.news.NewsPreference"
-			android:configChanges="keyboardHidden|orientation"
-			android:theme="@android:style/Theme.NoTitleBar"></activity>
+			android:configChanges="keyboardHidden|orientation"></activity>
 
 		<!-- Food Plugin -->
 		<activity android:name=".plugin.food.FoodPlugin"></activity>
@@ -57,8 +55,7 @@
 			
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:screenOrientation="portrait"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

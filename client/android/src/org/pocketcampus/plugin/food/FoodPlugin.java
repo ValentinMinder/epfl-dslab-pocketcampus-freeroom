@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
@@ -10,7 +9,6 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
-import org.pocketcampus.plugin.food.menu.Sandwich;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.Activity;
@@ -19,7 +17,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +35,6 @@ public class FoodPlugin extends PluginBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		loadFirstScreen(R.layout.food_main);
 	}
 

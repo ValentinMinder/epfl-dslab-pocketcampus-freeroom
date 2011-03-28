@@ -2,6 +2,11 @@ package org.pocketcampus.plugin.social;
 
 import java.util.Vector;
 
+import org.pocketcampus.R;
+import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -10,14 +15,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import org.pocketcampus.R;
-import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.core.ui.ActionBar.Action;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 public class FriendsList extends ListActivity {
 //	private ServerAPI serverAPI_;
@@ -30,8 +30,7 @@ public class FriendsList extends ListActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState); 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_friends_list);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");

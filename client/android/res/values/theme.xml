@@ -7,6 +7,7 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textColor">#FF444444</item>
 		<item name="android:fastScrollEnabled">true</item>
+		<item name="android:windowNoTitle">true</item>
 	</style>
 	
 	<style name="Theme.BottomBar">
@@ -21,7 +22,6 @@
 	<style name="Theme.ListView">
 		<item name="android:cacheColorHint">#00000000</item>
 	</style>
-	
 	
 	<!-- Granite Theme
 	<style name="Theme" parent="android:Theme.Black">

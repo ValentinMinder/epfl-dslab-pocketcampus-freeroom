@@ -19,18 +19,14 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MealTag;
 import org.pocketcampus.plugin.food.menu.MealTagger;
-import org.pocketcampus.plugin.food.menu.Rating;
 import org.pocketcampus.plugin.food.menu.Restaurant;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -53,9 +49,6 @@ public class MenuDialog extends Dialog {
 		menusActivity = menus;
 		this.photoButtonsEnabled = photoButtonsEnabled;
 		//ch = new ConnexionHandler(menusActivity);
-
-		// Dialog box will have no title
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.food_dialog_menu);
 

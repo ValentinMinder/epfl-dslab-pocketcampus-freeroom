@@ -1,20 +1,8 @@
 package org.pocketcampus.plugin.social;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
-//import org.pocketcampus.gui.mainscreen.InternetUtilities;
-//import org.pocketcampus.gui.mainscreen.InternetUtilities.ConnexionStatus;
-//import org.pocketcampus.gui.preferences.Preferences;
-//import org.pocketcampus.map.Position;
-//import org.pocketcampus.positioning.Locator;
-//import org.pocketcampus.serverapi.ServerAPI;
-//import org.pocketcampus.shared.accounts.AuthToken;
-//import org.pocketcampus.shared.accounts.Encryption;
-//import org.pocketcampus.shared.accounts.Password;
-//import org.pocketcampus.shared.accounts.Username;
-//import org.pocketcampus.shared.exceptions.ServerException;
-//import org.pocketcampus.shared.map.MapPersonData;
-//import org.pocketcampus.shared.map.PositionData;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,11 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import org.pocketcampus.R;
 public class SocialLogin extends Activity {
 //	private ServerAPI serverAPI_;
 	private SocialLogin thisActivity_;
@@ -37,7 +23,6 @@ public class SocialLogin extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_login);
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle("PocketCampus EPFL");

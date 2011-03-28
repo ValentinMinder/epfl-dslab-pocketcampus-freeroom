@@ -1,17 +1,16 @@
 package org.pocketcampus.plugin.map;
 
+import org.osmdroid.ResourceProxy;
+import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.tileprovider.tilesource.*;
-import org.osmdroid.ResourceProxy;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 
 import android.os.Bundle;
-import android.view.Window;
 
 public class MapPlugin extends PluginBase {
 
@@ -22,7 +21,6 @@ public class MapPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.map_main);
 		
 		/*ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
