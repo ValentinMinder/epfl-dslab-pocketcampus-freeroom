@@ -7,6 +7,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
@@ -17,6 +18,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +27,14 @@ public class FoodPlugin extends PluginBase {
 	private ListView l_;
 	private FoodDisplayHandler foodDisplayHandler;
 	private TextView txt_empty_;
-	public TextView empty;
+	private TextView empty;
 	private ArrayList<Meal> menus_;
 	private MenuSorter sorter_;
 	private boolean sandwich = false;
 
 	private SandwichListStore sandwichListStore_;
+	
+	private ActionBar actionBar_;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,28 +42,47 @@ public class FoodPlugin extends PluginBase {
 		loadFirstScreen(R.layout.food_main);
 	}
 
-	private void loadFirstScreen(int layout){
+	private void loadFirstScreen(int layout) {
 		setContentView(layout);
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle("PocketCampus EPFL");
-		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
-				.createIntent(this), R.drawable.mini_home));
-
-		//ListView
+		
+		setupActionBar(true);
+		
+		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
 
-		//DisplayHandler
+		// DisplayHandler
 		foodDisplayHandler = new FoodDisplayHandler(this);
 
 		// At first, display food by restaurant
 		displayView();
 
 	}
+	
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+//				newsProvider_.forceRefresh();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
+		
+		super.setupActionBar(addHomeButton);
+
+	}
 
 	public void displayView() {
 		// List view ; works only for menus by rating & restaurant.
-		if(txt_empty_ != null){
+		if (txt_empty_ != null) {
 			txt_empty_.setText("");
 		}
 
@@ -91,8 +114,8 @@ public class FoodPlugin extends PluginBase {
 		switch (selectedId) {
 		case 1: // Show menus by restaurant
 		case 2: // Show menus by rating
-			//setContentView(R.layout.food_main);
-			if(sandwich){
+			// setContentView(R.layout.food_main);
+			if (sandwich) {
 				loadFirstScreen(R.layout.food_main);
 			}
 			foodDisplayHandler.setDisplayType(selectedId);
@@ -105,14 +128,17 @@ public class FoodPlugin extends PluginBase {
 			return true;
 		case 4: // show suggestions
 			menus_ = foodDisplayHandler.getMenusList();
-			if(menus_ != null){
-				Intent suggestions = new Intent(getApplicationContext(), Suggestions.class);
-				suggestions.putExtra("org.pocketcampus.suggestions.meals", menus_);
+			if (menus_ != null) {
+				Intent suggestions = new Intent(getApplicationContext(),
+						Suggestions.class);
+				suggestions.putExtra("org.pocketcampus.suggestions.meals",
+						menus_);
 				startActivityForResult(suggestions, 1);
-			}else{
-				Toast.makeText(this, "Pas de menus !", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(this, "Pas de menus !", Toast.LENGTH_LONG)
+						.show();
 			}
-			return true;			
+			return true;
 
 		}
 
@@ -130,31 +156,34 @@ public class FoodPlugin extends PluginBase {
 		return null;
 	}
 
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		switch(requestCode) { 
+		switch (requestCode) {
 
-		//Result from the Suggestions class
-		case (1) : 			
+		// Result from the Suggestions class
+		case (1):
 			if (resultCode == Activity.RESULT_OK) {
 
 				Bundle extras = data.getExtras();
-				if(extras != null){
+				if (extras != null) {
 
-					ArrayList<Meal> list = (ArrayList<Meal>)extras.getSerializable("org.pocketcampus.suggestions.meals");
+					ArrayList<Meal> list = (ArrayList<Meal>) extras
+							.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler.updateSuggestions(list);
 					foodDisplayHandler.setDisplayType(4);
 					displayView();
 
-				}else{
-					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG)
+							.show();
 				}
-			}else{
-				Toast.makeText(this, "RESULT_PAS_OK !", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(this, "RESULT_PAS_OK !", Toast.LENGTH_LONG)
+						.show();
 			}
-		break;		
+			break;
 		}
 	}
 }

@@ -12,13 +12,8 @@
  */
 package org.pocketcampus.plugin.food;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Meal;
-import org.pocketcampus.plugin.food.menu.MealTag;
-import org.pocketcampus.plugin.food.menu.MealTagger;
 import org.pocketcampus.plugin.food.menu.Restaurant;
 
 import android.app.Activity;
@@ -27,8 +22,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -48,6 +43,9 @@ public class MenuDialog extends Dialog {
 		this.meal = meal;
 		this.context = context;
 		menusActivity = menus;
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		this.photoButtonsEnabled = photoButtonsEnabled;
 		//ch = new ConnexionHandler(menusActivity);
 

@@ -1,5 +1,10 @@
 package org.pocketcampus.plugin.food.menu;
 
+/**
+ * Goes on the server.
+ * Imports menus from 
+ * @author Elodie and Oriane
+ */
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -13,6 +18,7 @@ public class MenuImporter {
 	
 	private HashMap<Meal, Rating> campusMenu_;
 	private Context ctx_;
+	
 	MenuImporter(Context context){
 		ctx_ = context;
 		importMenus();
@@ -33,7 +39,7 @@ public class MenuImporter {
 			RssFeed feed = rp.getFeed();
 			
 			Restaurant newResto = new Restaurant(r);
-			if (feed.items != null) {
+			if (feed != null && feed.items != null) {
 				for (int i = 0; i < feed.items.size(); i++) {
 					Log.d("MEAL", feed.items.get(i).title);
 					Meal newMeal = new Meal(feed.items.get(i).title,  feed.items.get(i).description, newResto,new Date(), true);

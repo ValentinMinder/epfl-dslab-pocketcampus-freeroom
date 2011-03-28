@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.pocketcampus.R;
@@ -14,11 +15,12 @@ public class RestaurantListParser {
 
 	private HashMap<String, String> feeds;
 	private Context ctx_;
+	private String feedString;
 	
 	RestaurantListParser(Context context){
 		ctx_ = context;
-//		File testFile = new File("restaurants_list.txt");
-		feeds = restaurantFeeds(getContents());
+		feedString = getContents();
+		feeds = restaurantFeeds(feedString);
 	}
 	
 	public HashMap<String, String> getFeeds(){
@@ -38,10 +40,9 @@ public class RestaurantListParser {
 
 		try {
 			// use buffering, reading one line at a time
-			// FileReader always assumes default encoding is OK!
 			InputStream instream = ctx_.getResources().openRawResource(
 					R.raw.restaurants_list);
-//			InputStream instream = ctx_.openFileInput("restaurants_list.txt");
+
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader input = new BufferedReader(inputreader);
 
@@ -99,5 +100,35 @@ public class RestaurantListParser {
 		}
 		
 		return feeds;
+	}
+}
+
+class TagPair{
+	private String startTag_;
+	private String endTag_;
+	
+	TagPair(String startTag, String endTag){
+		startTag_ = startTag;
+		endTag_ = endTag;
+	}
+	
+	public String getStartTag(){
+		return startTag_;
+	}
+	
+	public String getEndTag(){
+		return endTag_;
+	}
+}
+
+class TagTree{
+	private ArrayList<String> tagTree_;
+	
+	TagTree(){
+		
+	}
+	
+	public void addTagPair(TagPair tagPair){
+		
 	}
 }
