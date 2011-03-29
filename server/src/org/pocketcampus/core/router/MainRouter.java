@@ -22,8 +22,6 @@ public abstract class MainRouter extends HttpServlet {
 		
 		Method methlist[] = this.getClass().getDeclaredMethods();
 		
-		System.out.println(this.getClass().toString());
-		
 		for(Method m : methlist) {
 			Annotation[] annotations = m.getDeclaredAnnotations();
 
@@ -75,7 +73,7 @@ public abstract class MainRouter extends HttpServlet {
 	}
 	
 	/**
-	 * Give the name of the default method when calling the servelt without arguments
+	 * Give the name of the default method when calling the servlet without arguments
 	 * @return default method name
 	 */
 	protected abstract String getDefaultMethod();
