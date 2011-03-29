@@ -176,10 +176,10 @@ public class Suggestions extends Activity{
 				for(Meal meal : m){
 					meals_.add(meal);
 				}
-//				Toast.makeText(this, "Extras 5/5 ï¿½ l'aller !", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "Extras 5/5 à l'aller !", Toast.LENGTH_LONG).show();
 			}
 		}else{
-			Toast.makeText(this, "Pas reï¿½u d'extras ï¿½ l'aller !", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Pas reçu d'extras à l'aller !", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -236,10 +236,11 @@ public class Suggestions extends Activity{
 		removeSuggestion(dislikes_, addButton_dislike_, removeButton_dislike_, dislikeTextView_);
 	}
 	
-	public static Collection<Meal> computeSuggestions(Collection<Meal> meals, MealTag tag, MealTagger tagger){
+	public Collection<Meal> computeSuggestions(Collection<Meal> meals, MealTag tag, MealTagger tagger){
 
 		Collection<Meal> returnedMeals = null;
 		returnedMeals = tagger.parseMealsFor(tag, meals);
+		Toast.makeText(this, "Tagger result size : " + returnedMeals.size(), Toast.LENGTH_SHORT).show();
 
 		if(returnedMeals==null){
 			return new HashSet<Meal>();
@@ -256,6 +257,9 @@ public class Suggestions extends Activity{
 		if(! likes_.isEmpty() && meals_ != null){
 			for(MealTag tag : likes_){
 				computeLikeMeals.addAll(computeSuggestions(meals_, tag, tagger_));
+				for(Meal m : computeLikeMeals){
+					Toast.makeText(this, "LikeMeal : " + m.getName(), Toast.LENGTH_SHORT).show();
+				}
 			}
 		}else if ((likes_.isEmpty()) && (meals_ != null)){
 			computeLikeMeals.addAll(meals_);
@@ -273,6 +277,7 @@ public class Suggestions extends Activity{
 		ArrayList<Meal> list = new ArrayList<Meal>();
 		for(Meal meal : computeMeals){
 			list.add(meal);
+			Toast.makeText(this, "Meal : " + meal.getName(), Toast.LENGTH_SHORT).show();
 		}
 		
 		Intent menus = new Intent(context_, FoodPlugin.class);
@@ -288,13 +293,6 @@ public class Suggestions extends Activity{
 		String string = "";
 
 		switch (tag){
-
-		/*This is for testing*/
-		case TEST : 
-			string = r.getString(R.string.food_suggestions_test).concat("\n");
-			break;
-		/*end*/
-		
 		case MEAT :
 			string = r.getString(R.string.food_suggestions_meat).concat("\n");
 			break;

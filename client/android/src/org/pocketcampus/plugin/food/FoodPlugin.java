@@ -165,8 +165,7 @@ public class FoodPlugin extends PluginBase {
 				Bundle extras = data.getExtras();
 				if (extras != null) {
 
-					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					ArrayList<Meal> list = (ArrayList<Meal>) extras.getSerializable("org.pocketcampus.suggestions.meals");
 					
 					foodDisplayHandler.updateSuggestions(list);
 					foodDisplayHandler.setDisplayType(4);

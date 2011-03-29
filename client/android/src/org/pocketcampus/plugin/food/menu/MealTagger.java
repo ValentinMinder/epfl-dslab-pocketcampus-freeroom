@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+
 public class MealTagger {
 
 	private HashMap<MealTag, Collection<Pattern>> tagPatterns;
@@ -35,15 +37,10 @@ public class MealTagger {
 	public MealTagger() {
 		
 		this.tagPatterns = new HashMap<MealTag, Collection<Pattern>>();
-
-		/*This is for testing*/
-		Pattern testPatterns = Pattern.compile(".*(mauvais|pourri).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		addPattern(MealTag.TEST, testPatterns);
-		/*end*/
 		
 		Pattern meatPatterns = Pattern.compile(".*(boeuf|bœuf|caille|kangourou|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 //		Pattern meatPatterns2 = Pattern.compile(".*(émincé|roti|ragoût|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamar).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern vegetarianPatterns = Pattern.compile(".*V.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern pastaPatterns = Pattern.compile(".*(pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern.compile(".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
@@ -102,6 +99,7 @@ public class MealTagger {
 		if (patterns == null || patterns.size() == 0) {
 			return null;
 		}
+		
 		for (Meal meal: allMeals) {
 			if(mealBelongsTo(tag, meal)) {
 				resultMeals.add(meal);
@@ -124,15 +122,22 @@ public class MealTagger {
 			return false;
 		}
 		
+		String mealDescription = meal.getDescription();
+		String mDescr = mealDescription.replace('\n', ' ');
+		String mealName = meal.getName();
 		
+		//check the name or the description against all patterns
 		for (Pattern pattern : patterns) {
-			//check the name or the description against all patterns
-			String mealDescription = meal.getDescription();
-			String mealName = meal.getName();
-			Matcher matcher = pattern.matcher(mealName+mealDescription);
-			if (matcher.matches()) {
+			
+			if(Pattern.matches(pattern.pattern(), mealName+mDescr)){
+				Log.d("TAGGER", "Return True !!!");
 				return true;
 			}
+			
+//			Matcher matcher = pattern.matcher(mealName+mealDescription);
+//			if (matcher.matches()) {
+//				return true;
+//			}
 		}
 		return false;
 		

@@ -15,6 +15,7 @@ import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -133,10 +134,6 @@ public class FoodDisplayHandler {
 				mealsList.add(m);
 			}
 		}
-		if (mealsList != null) {
-			Toast.makeText(ownerActivity_, "Au moins je reçois les menus !",
-					Toast.LENGTH_SHORT);
-		}
 		return mealsList;
 	}
 
@@ -147,19 +144,16 @@ public class FoodDisplayHandler {
 	 *            the menus returned by the Suggestions Class
 	 */
 	public void updateSuggestions(ArrayList<Meal> suggestedMenus) {
-		if (suggestedMenus != null) {
+		if (suggestedMenus != null && !suggestedMenus.isEmpty()) {
 			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
-			Toast.makeText(activityContext_, "Ya des menus suggested !",
-					Toast.LENGTH_SHORT);
+			
 			for (Meal m : suggestedMenus) {
-				Toast.makeText(activityContext_, m.getName(),
-						Toast.LENGTH_SHORT);
 				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
 			}
 			this.suggestionsMenu_ = menus;
 		} else {
 			Toast.makeText(activityContext_, "Ya pas de menus suggested !",
-					Toast.LENGTH_SHORT);
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -238,7 +232,6 @@ public class FoodDisplayHandler {
 	}
 
 	public void showMenusBySuggestions() {
-
 		FoodListSection menuListSection;
 
 		/**
@@ -254,9 +247,7 @@ public class FoodDisplayHandler {
 				// Get the set of keys from the hash map to make sections.
 				Set<String> restaurantFullMenu = mealHashMap.keySet();
 				for (String restaurantName : restaurantFullMenu) {
-					// For each restaurant, make a list of its meals to add in
-					// its
-					// section
+					// For each restaurant, make a list of its meals to add in its section
 					menuListSection = new FoodListSection(mealHashMap
 							.get(restaurantName), ownerActivity_);
 					currentListAdapter_.addSection(restaurantName,
