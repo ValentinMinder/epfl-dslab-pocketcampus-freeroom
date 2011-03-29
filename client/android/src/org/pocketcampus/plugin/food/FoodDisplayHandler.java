@@ -240,17 +240,10 @@ public class FoodDisplayHandler {
 	public void updateSuggestions(ArrayList<Meal> suggestedMenus) {
 		if (suggestedMenus != null) {
 			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
-			Toast.makeText(activityContext_, "Ya des menus suggested !",
-					Toast.LENGTH_SHORT);
 			for (Meal m : suggestedMenus) {
-				Toast.makeText(activityContext_, m.getName(),
-						Toast.LENGTH_SHORT);
 				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
 			}
 			this.suggestionsMenu_ = menus;
-		} else {
-			Toast.makeText(activityContext_, "Ya pas de menus suggested !",
-					Toast.LENGTH_SHORT);
 		}
 	}
 
