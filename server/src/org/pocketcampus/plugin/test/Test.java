@@ -1,51 +1,39 @@
 package org.pocketcampus.plugin.test;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.pocketcampus.core.router.MainRouter;
+import org.pocketcampus.core.router.PublicMethod;
 
 /**
  * Servlet implementation class SampleServlet
  */
-public class Test extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Test() {
-        super();
-    }
+public class Test extends MainRouter {
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/plain");
-		
-		Enumeration<String> attrNames = request.getParameterNames();
-		PrintWriter out = response.getWriter();
+	private static final long serialVersionUID = -3719959899511131113L;
+
+	@SuppressWarnings("unchecked")
+	@PublicMethod
+	public String capitalize(HttpServletRequest request) {
+    	Enumeration<String> attrNames = request.getParameterNames();
 		
 		if(!attrNames.hasMoreElements())
-			out.println("vide");
+			return "vide";
 		
+		String ret = new String();
 		while(attrNames.hasMoreElements()){
 			String s = (String)request.getParameter( attrNames.nextElement() );
-			out.println(s.toUpperCase());
+			ret += s.toUpperCase();
 		}
-			
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		return ret;
+    }
+
+	@Override
+	protected String getDefaultMethod() {
+		return "capitalize";
 	}
 
 }
