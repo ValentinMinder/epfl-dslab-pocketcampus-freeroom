@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.food.menu;
+package org.pocketcampus.plugin.food.sandwiches;
 
 import java.io.Serializable;
 import java.util.Date;

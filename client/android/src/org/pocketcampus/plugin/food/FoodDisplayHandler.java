@@ -10,10 +10,11 @@ import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.menu.Rating;
-import org.pocketcampus.plugin.food.menu.Sandwich;
 import org.pocketcampus.plugin.food.menu.StarRating;
+import org.pocketcampus.plugin.food.sandwiches.Sandwich;
+import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
+import org.pocketcampus.plugin.food.sandwiches.SandwichListStore;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,49 +28,36 @@ import android.widget.Toast;
  */
 public class FoodDisplayHandler {
 
-	private FoodListAdapter currentListAdapter_;
-	// private String dayLabel_;
 	private FoodDisplayType currentDisplayType_;
+	private FoodListAdapter currentListAdapter_;
 	private MenuSorter sorter_;
 
-	private SandwichListStore sandwichListStore_;
-
 	private FoodMenu campusMenu_;
+	private SandwichListStore sandwichListStore_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
 	private Vector<Vector<Sandwich>> campusSandwich_;
 
-	private Activity ownerActivity_;
+	private FoodPlugin ownerActivity_;
 	private Context activityContext_;
 
-	public FoodDisplayHandler(Activity ownerActivity) {
+	public FoodDisplayHandler(FoodPlugin ownerActivity) {
+		ownerActivity_ = ownerActivity;
 		activityContext_ = ownerActivity.getApplicationContext();
+
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
-		campusMenu_ = new FoodMenu(activityContext_);
+		currentDisplayType_ = FoodDisplayType.Restaurants;
+
+		campusMenu_ = new FoodMenu(ownerActivity_);
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		campusSandwich_ = new Vector<Vector<Sandwich>>();
-		ownerActivity_ = ownerActivity;
+
 		sorter_ = new MenuSorter();
-		currentDisplayType_ = FoodDisplayType.Restaurants;
 
 		updateView();
 	}
 
 	public boolean valid() {
 		return !campusMenu_.isEmpty();
-	}
-
-	public void refreshMenu() {
-		if(campusMenu_.isEmpty()){
-			campusMenu_.loadCampusMenu();
-			//TODO: also if it's yesterday's menu.
-		} else {
-			//Refresh only ratings.
-		}
-		updateView();
-	}
-
-	public FoodListAdapter getListAdapter() {
-		return currentListAdapter_;
 	}
 
 	/**
@@ -116,6 +104,28 @@ public class FoodDisplayHandler {
 			break;
 		}
 	}
+	
+	public void refreshView(){
+		switch (currentDisplayType_) {
+		case Restaurants:
+			campusMenu_.refreshMenu();
+			updateView();
+			break;
+		case Ratings:
+			
+			break;
+		case Sandwiches:
+			
+			break;
+		case Suggestions:
+			
+			break;
+		}
+	}
+
+	public FoodListAdapter getListAdapter() {
+		return currentListAdapter_;
+	}
 
 	public String getDayLabel() {
 		return null;
@@ -138,32 +148,12 @@ public class FoodDisplayHandler {
 	}
 
 	/**
-	 * Update Suggestions
-	 * 
-	 * @param suggestedMenus
-	 *            the menus returned by the Suggestions Class
-	 */
-	public void updateSuggestions(ArrayList<Meal> suggestedMenus) {
-		if (suggestedMenus != null && !suggestedMenus.isEmpty()) {
-			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
-			
-			for (Meal m : suggestedMenus) {
-				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
-			}
-			this.suggestionsMenu_ = menus;
-		} else {
-			Toast.makeText(activityContext_, "Ya pas de menus suggested !",
-					Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	/**
 	 * Get the adapter to show the menus sorted by restaurants.
 	 */
 	public void showMenusByRestaurants() {
 		// Sort meals by restaurant.
 		HashMap<String, Vector<Meal>> mealHashMap = sorter_
-				.sortByRestaurant(campusMenu_.getKeySet());
+				.sortByRestaurant(campusMenu_.getMeals());
 		FoodListSection menuListSection;
 
 		/**
@@ -207,30 +197,8 @@ public class FoodDisplayHandler {
 	}
 
 	/**
-	 * Show sandwich view
-	 * 
-	 * @author nicolas.tran@epfl.ch
-	 * @throws ServerException
+	 * Show suggestions view.
 	 */
-	public void showSandwiches() {
-		sandwichListStore_ = new SandwichListStore();
-		campusSandwich_ = sandwichListStore_.getStoreList();
-
-		if (campusSandwich_ != null) {
-			SandwichListSection sandwichListSection;
-
-			if (!campusSandwich_.isEmpty()) {
-				for (Vector<Sandwich> v : campusSandwich_) {
-					sandwichListSection = new SandwichListSection(v,
-							ownerActivity_, activityContext_);
-					currentListAdapter_.addSection(v.get(0).getRestaurant(),
-							sandwichListSection);
-				}
-
-			}
-		}
-	}
-
 	public void showMenusBySuggestions() {
 		FoodListSection menuListSection;
 
@@ -260,6 +228,54 @@ public class FoodDisplayHandler {
 					activityContext_.getResources().getString(
 							R.string.food_suggestions_nomeal_nosuggestion),
 					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	/**
+	 * Update Suggestions
+	 * 
+	 * @param suggestedMenus
+	 *            the menus returned by the Suggestions Class
+	 */
+	public void updateSuggestions(ArrayList<Meal> suggestedMenus) {
+		if (suggestedMenus != null) {
+			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
+			Toast.makeText(activityContext_, "Ya des menus suggested !",
+					Toast.LENGTH_SHORT);
+			for (Meal m : suggestedMenus) {
+				Toast.makeText(activityContext_, m.getName(),
+						Toast.LENGTH_SHORT);
+				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
+			}
+			this.suggestionsMenu_ = menus;
+		} else {
+			Toast.makeText(activityContext_, "Ya pas de menus suggested !",
+					Toast.LENGTH_SHORT);
+		}
+	}
+
+	/**
+	 * Show sandwich view
+	 * 
+	 * @author nicolas.tran@epfl.ch
+	 * 
+	 */
+	public void showSandwiches() {
+		sandwichListStore_ = new SandwichListStore();
+		campusSandwich_ = sandwichListStore_.getStoreList();
+
+		if (campusSandwich_ != null) {
+			SandwichListSection sandwichListSection;
+
+			if (!campusSandwich_.isEmpty()) {
+				for (Vector<Sandwich> v : campusSandwich_) {
+					sandwichListSection = new SandwichListSection(v,
+							ownerActivity_, activityContext_);
+					currentListAdapter_.addSection(v.get(0).getRestaurant(),
+							sandwichListSection);
+				}
+
+			}
 		}
 	}
 

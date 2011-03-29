@@ -10,10 +10,6 @@ package org.pocketcampus.plugin.food.menu;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.food.menu.RssParser.RssFeed;
 
 import android.content.Context;
@@ -30,15 +27,16 @@ import android.util.Base64;
 import android.util.Base64InputStream;
 import android.util.Base64OutputStream;
 import android.util.Log;
-import android.widget.Toast;
 
 public class FoodMenu {
 	private HashMap<Meal, Rating> campusMenu_;
 	private MenuDownloader menuDownloader_;
+	private FoodPlugin handler_;
 	private Context ctx_;
 
-	public FoodMenu(Context context) {
-		ctx_ = context;
+	public FoodMenu(FoodPlugin ownerActivity_) {
+		handler_ = ownerActivity_;
+		ctx_ = ownerActivity_.getApplicationContext();
 		// Instantiate menuEPFL
 		campusMenu_ = new HashMap<Meal, Rating>();
 		loadCampusMenu();
@@ -78,16 +76,17 @@ public class FoodMenu {
 		// testExample.put(m6, rate2);
 		// testExample.put(m_pourri, rate2);
 
-		File cacheDir = ctx_.getCacheDir();
-		// Toast.makeText(ctx_, cacheDir.getAbsolutePath(), Toast.LENGTH_LONG)
-		// .show();
+//		File cacheDir = ctx_.getCacheDir();
+//		// Toast.makeText(ctx_, cacheDir.getAbsolutePath(), Toast.LENGTH_LONG)
+//		// .show();
+//
+//		FileInputStream fis;
+//		String campusMenuString;
+//		byte[] buffer = new byte[1024];
+//
+//		boolean isDownloaded = true;
 
-		FileInputStream fis;
-		String campusMenuString;
-		byte[] buffer = new byte[1024];
-
-		boolean isDownloaded = true;
-
+		handler_.menuRefreshing();
 		menuDownloader_ = new MenuDownloader(this);
 		menuDownloader_.execute();
 
@@ -127,7 +126,7 @@ public class FoodMenu {
 //		// }
 	}
 
-	public Set<Meal> getKeySet() {
+	public Set<Meal> getMeals() {
 		if (campusMenu_ == null) {
 			return null;
 		}
@@ -145,6 +144,15 @@ public class FoodMenu {
 
 	public void setCampusMenu(HashMap<Meal, Rating> menus) {
 		this.campusMenu_ = menus;
+	}
+	
+	public void refreshMenu() {
+		if(campusMenu_.isEmpty()){
+			loadCampusMenu();
+			//TODO: also if it's yesterday's menu.
+		} else {
+			//Refresh only ratings.
+		}
 	}
 
 	public boolean isEmpty() {
@@ -221,6 +229,7 @@ public class FoodMenu {
 		protected void onPostExecute(HashMap<Meal, Rating> result) {
 			if (result != null) {
 				foodMenu_.setCampusMenu(result);
+				handler_.menuRefreshed();
 			}
 		}
 	}

@@ -22,60 +22,80 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase {
+	private ActionBar actionBar_;
+
 	private ListView l_;
 	private FoodDisplayHandler foodDisplayHandler;
+
 	private TextView txt_empty_;
 	private TextView empty;
-	private ArrayList<Meal> menus_;
-	private boolean sandwich = false;
 
-	private ActionBar actionBar_;
+	private ArrayList<Meal> suggestionMenus_;
+	private boolean isSandwichDisplay_ = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		loadFirstScreen(R.layout.food_main);
+		
+		setContentView(R.layout.food_main);
+		
+		setupActionBar(true);
+
+		// ListView
+		l_ = (ListView) findViewById(R.id.food_list);
+		empty = (TextView) findViewById(R.id.food_empty);
+		
+		// DisplayHandler
+		foodDisplayHandler = new FoodDisplayHandler(this);
 	}
 
 	private void loadFirstScreen(int layout) {
 		setContentView(layout);
-		
+
 		setupActionBar(true);
 		
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
-
-		// DisplayHandler
-		foodDisplayHandler = new FoodDisplayHandler(this);
-
+		
 		// At first, display food by restaurant
 		displayView();
-
 	}
-	
+
+
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
 
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		actionBar_.addAction(new Action() {
-
 			@Override
 			public void performAction(View view) {
-				foodDisplayHandler.refreshMenu();
+				foodDisplayHandler.refreshView();
 				displayView();
 			}
-
 			@Override
 			public int getDrawable() {
 				return R.drawable.refresh;
 			}
 		});
-		
 		super.setupActionBar(addHomeButton);
-
 	}
 
+	// @Override
+	public void menuRefreshing() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+
+	// @Override
+	public void menuRefreshed() {
+		foodDisplayHandler.refreshView();
+		displayView();
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+
+	/**
+	 * Displays the current view, by restaurant or rating.
+	 */
 	public void displayView() {
 		// List view ; works only for menus by rating & restaurant.
 		if (txt_empty_ != null) {
@@ -84,7 +104,7 @@ public class FoodPlugin extends PluginBase {
 
 		FoodListAdapter fla = foodDisplayHandler.getListAdapter();
 		if (foodDisplayHandler.valid() && fla != null) {
-			l_.setAdapter(foodDisplayHandler.getListAdapter());
+			l_.setAdapter(fla);
 			empty.setText("");
 		} else {
 			empty.setText(getString(R.string.food_empty));
@@ -105,6 +125,8 @@ public class FoodPlugin extends PluginBase {
 		return true;
 	}
 
+	final int SUGGESTIONS_REQUEST_CODE= 1;
+	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int selectedId = item.getItemId();
 
@@ -112,31 +134,30 @@ public class FoodPlugin extends PluginBase {
 		case 1: // Show menus by restaurant
 		case 2: // Show menus by rating
 			// setContentView(R.layout.food_main);
-			if (sandwich) {
+			if (isSandwichDisplay_) {
 				loadFirstScreen(R.layout.food_main);
 			}
 			foodDisplayHandler.setDisplayType(selectedId);
 			displayView();
 			return true;
 		case 3: // show sandwiches
-			sandwich = true;
+			isSandwichDisplay_ = true;
 			foodDisplayHandler.setDisplayType(selectedId);
 			displayView();
 			return true;
 		case 4: // show suggestions
-			menus_ = foodDisplayHandler.getMenusList();
-			if (menus_ != null) {
+			suggestionMenus_ = foodDisplayHandler.getMenusList();
+			if (suggestionMenus_ != null) {
 				Intent suggestions = new Intent(getApplicationContext(),
 						Suggestions.class);
 				suggestions.putExtra("org.pocketcampus.suggestions.meals",
-						menus_);
-				startActivityForResult(suggestions, 1);
+						suggestionMenus_);
+				startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 			} else {
 				Toast.makeText(this, "Pas de menus !", Toast.LENGTH_LONG)
 						.show();
 			}
 			return true;
-
 		}
 
 		return false;
@@ -157,20 +178,15 @@ public class FoodPlugin extends PluginBase {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		switch (requestCode) {
-
-		// Result from the Suggestions class
-		case (1):
+		case SUGGESTIONS_REQUEST_CODE: // Result from the Suggestions class
 			if (resultCode == Activity.RESULT_OK) {
-
 				Bundle extras = data.getExtras();
 				if (extras != null) {
-
 					ArrayList<Meal> list = (ArrayList<Meal>) extras.getSerializable("org.pocketcampus.suggestions.meals");
-					
+
 					foodDisplayHandler.updateSuggestions(list);
 					foodDisplayHandler.setDisplayType(4);
 					displayView();
-
 				} else {
 					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG)
 							.show();

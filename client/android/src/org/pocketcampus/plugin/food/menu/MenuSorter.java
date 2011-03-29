@@ -32,7 +32,7 @@ public class MenuSorter {
 		
 		List<RatedMeal> ratedMeals = new ArrayList<RatedMeal>();
 		
-		Set<Meal> set = menu_.getKeySet();
+		Set<Meal> set = menu_.getMeals();
 		for(Meal meal : set){
 			if(!meal.getDescription().matches("\\s+")){
 				Rating rate = menu_.getRating(meal);
@@ -112,7 +112,7 @@ public class MenuSorter {
 		for (int i=0; i<5; i++) {
 			vec.add(new Vector<Meal>());
 		}
-		Set<Meal> set = meals.getKeySet();
+		Set<Meal> set = meals.getMeals();
 		for (Meal meal : set) {
 			if(!meal.getDescription().matches("\\s+")){
 				int day = meal.getDay();
