@@ -14,12 +14,15 @@ package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.plugin.food.menu.Rating;
 import org.pocketcampus.plugin.food.menu.Restaurant;
+import org.pocketcampus.plugin.food.menu.StarRating;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.Window;
@@ -33,21 +36,25 @@ public class MenuDialog extends Dialog {
 	private final Activity menusActivity;
 	private RatingBar rateIt;
 	private TextView numbVotes;
-	//private final ConnexionHandler ch;
+	// private final ConnexionHandler ch;
 	private ProgressDialog progressDialog_;
 	private Context context;
 	private boolean photoButtonsEnabled;
 
-	public MenuDialog(final Context context, final Meal meal, final Activity menus, boolean photoButtonsEnabled) {
+	public MenuDialog(final Context context, final Meal meal,
+			final Activity menus, boolean photoButtonsEnabled) {
 		super(context);
 		this.meal = meal;
 		this.context = context;
 		menusActivity = menus;
-		
+
+		/**
+		 * No title for dialog Else there is indeed space for the title.
+		 **/
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		this.photoButtonsEnabled = photoButtonsEnabled;
-		//ch = new ConnexionHandler(menusActivity);
+		// ch = new ConnexionHandler(menusActivity);
 
 		setContentView(R.layout.food_dialog_menu);
 
@@ -57,11 +64,11 @@ public class MenuDialog extends Dialog {
 
 		// Dialog box is closed when we touch outside.
 		setCanceledOnTouchOutside(true);
-		
+
 		setDialogContent();
 	}
-	
-	private void setDialogContent(){
+
+	private void setDialogContent() {
 		progressDialog_ = ProgressDialog.show(context, "Please Wait",
 				"Loading menus...", true, false);
 
@@ -78,15 +85,9 @@ public class MenuDialog extends Dialog {
 		// Clicking on the star rating will open the rating dialog
 		rateItYourself.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				/*RatingsReminder ratingChecker = new RatingsReminder(
-						getContext());
-				if (ratingChecker.hasAlreadyVotedToday()) {
-					ratingChecker.printAlreadyVotedMessage();
-				} else {
-					RatingsDialog r = new RatingsDialog(getContext(), getMeal());
-					r.setOnDismissListener(new OnDismissRatingsListener());
-					r.show();
-				}*/
+				RatingsDialog r = new RatingsDialog(getContext(), getMeal());
+				r.setOnDismissListener(new OnDismissRatingsListener());
+				r.show();
 			}
 		});
 
@@ -100,25 +101,27 @@ public class MenuDialog extends Dialog {
 
 			public void onClick(View v) {
 				// give me the feault MealTagger
-//				MealTagger tagger = new MealTagger();
-//				Collection<Meal> oneMealCollection = new HashSet<Meal>();
-//				oneMealCollection.add(meal);
+				// MealTagger tagger = new MealTagger();
+				// Collection<Meal> oneMealCollection = new HashSet<Meal>();
+				// oneMealCollection.add(meal);
 				// give me all Tags for this Meal
-//				Collection<MealTag> allTags = tagger
-//						.extractTagsFrom(oneMealCollection);
+				// Collection<MealTag> allTags = tagger
+				// .extractTagsFrom(oneMealCollection);
 
 				// update the statistics
-				/*MealStatsManagement mealsManagement = MealStatsManagement
-						.getInstance(menusActivity.getApplicationContext());
-
-				// first increment the MealTags
-				mealsManagement.incrementMealTagCounter(allTags);
-
-				// then the number of visits in this Restaurant
-				Restaurant resto = meal.getRestaurant();
-				mealsManagement.incrementRestaurantCounter(resto);
-
-				callStatisticsActivity();*/
+				/*
+				 * MealStatsManagement mealsManagement = MealStatsManagement
+				 * .getInstance(menusActivity.getApplicationContext());
+				 * 
+				 * // first increment the MealTags
+				 * mealsManagement.incrementMealTagCounter(allTags);
+				 * 
+				 * // then the number of visits in this Restaurant Restaurant
+				 * resto = meal.getRestaurant();
+				 * mealsManagement.incrementRestaurantCounter(resto);
+				 * 
+				 * callStatisticsActivity();
+				 */
 			}
 
 		});
@@ -128,9 +131,9 @@ public class MenuDialog extends Dialog {
 		goThere.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-//				Restaurant resto = meal.getRestaurant();
-//				callNavigationActivity(resto);
-//				menusActivity.finish();
+				// Restaurant resto = meal.getRestaurant();
+				// callNavigationActivity(resto);
+				// menusActivity.finish();
 			}
 		});
 		/**
@@ -143,9 +146,11 @@ public class MenuDialog extends Dialog {
 		takePic.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				/*TakePicture cameraMachin = new TakePicture(menusActivity, meal);
-				DailyMenus.setMealPicture(true);
-				cameraMachin.takePicture();*/
+				/*
+				 * TakePicture cameraMachin = new TakePicture(menusActivity,
+				 * meal); DailyMenus.setMealPicture(true);
+				 * cameraMachin.takePicture();
+				 */
 			}
 		});
 
@@ -153,25 +158,28 @@ public class MenuDialog extends Dialog {
 
 	}
 
-	private void seePicturesQueue(){
-		/*Intent seePicture = new Intent(getContext(),
-				SlidingImageActivity.class);
-		seePicture.putExtra("meal", meal);
-		ch.startActivity(seePicture);*/
+	private void seePicturesQueue() {
+		/*
+		 * Intent seePicture = new Intent(getContext(),
+		 * SlidingImageActivity.class); seePicture.putExtra("meal", meal);
+		 * ch.startActivity(seePicture);
+		 */
 	}
-	
+
 	private void callNavigationActivity(Restaurant selectedRestaurant) {
-		/*Intent startNavActivity = new Intent(getContext(),
-				NavigationActivity.class);
-		startNavActivity.putExtra("Restaurant", selectedRestaurant);
-		ch.startActivity(startNavActivity);
-		dismiss();*/
+		/*
+		 * Intent startNavActivity = new Intent(getContext(),
+		 * NavigationActivity.class); startNavActivity.putExtra("Restaurant",
+		 * selectedRestaurant); ch.startActivity(startNavActivity); dismiss();
+		 */
 	}
 
 	private void callStatisticsActivity() {
-		/*Intent startStatActivity = new Intent(getContext(),
-				RestaurantStats.class);
-		menusActivity.startActivity(startStatActivity);*/
+		/*
+		 * Intent startStatActivity = new Intent(getContext(),
+		 * RestaurantStats.class);
+		 * menusActivity.startActivity(startStatActivity);
+		 */
 	}
 
 	private String getVoteString(int numbVotes) {
@@ -186,26 +194,31 @@ public class MenuDialog extends Dialog {
 		return this.meal;
 	}
 
-	/*private class OnDismissRatingsListener implements
-		RatingsDialog.OnDismissListener {
+	private class OnDismissRatingsListener implements
+			RatingsDialog.OnDismissListener {
+
 		@Override
 		public void onDismiss(DialogInterface dialogInt) {
 			paintRatingBar();
 		}
-	}*/
+	}
 
 	private void paintRatingBar() {
-		/*rateIt = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
+		rateIt = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
 
-		ConnexionHandler ch = new ConnexionHandler(getContext());
-		Rating rating = ch.getRating(meal);
-
+//		ConnexionHandler ch = new ConnexionHandler(getContext());
+//		Rating rating = ch.getRating(meal);
+		
+		/**
+		 * Exemple rating:
+		 */
+		Rating rating = new Rating(StarRating.STAR_4_0, 12);
 		rateIt.setRating((float) Restaurant.starRatingToDouble(rating
 				.getValue()));
-
+		
 		// Retrieve the number of votes from the server.
 		int numbVote = rating.getNumberOfVotes();
 		String votes = getVoteString(numbVote);
-		numbVotes.setText(numbVote + " " + votes);*/
+		numbVotes.setText(numbVote + " " + votes);
 	}
 }

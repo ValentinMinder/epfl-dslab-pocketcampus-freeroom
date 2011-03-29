@@ -10,7 +10,6 @@
 		android:id="@+id/food_menudialog_title"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="@android:color/white"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:padding="6dip"
 		android:layout_marginBottom="16dip" />
@@ -24,7 +23,6 @@
 			android:layout_width="170dip"
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="@android:color/white"
 			android:paddingLeft="15dip"
 			android:layout_marginBottom="5dip" />
 
@@ -49,7 +47,6 @@
 				android:text="Rating goes here"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="@android:color/white"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:layout_marginRight="15dip"
 				android:layout_gravity="right" />
@@ -80,7 +77,8 @@
 	
 	<LinearLayout
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_gravity="right">
 		<ImageButton
 			android:background="@drawable/food_take_this_xml"
 			android:id="@+id/food_menudialog_takeThis"

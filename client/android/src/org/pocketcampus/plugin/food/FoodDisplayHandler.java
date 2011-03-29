@@ -27,7 +27,7 @@ import android.widget.Toast;
 public class FoodDisplayHandler {
 
 	private FoodListAdapter currentListAdapter_;
-	private String dayLabel_;
+	// private String dayLabel_;
 	private FoodDisplayType currentDisplayType_;
 	private MenuSorter sorter_;
 
@@ -55,6 +55,16 @@ public class FoodDisplayHandler {
 
 	public boolean valid() {
 		return !campusMenu_.isEmpty();
+	}
+
+	public void refreshMenu() {
+		if(campusMenu_.isEmpty()){
+			campusMenu_.loadCampusMenu();
+			//TODO: also if it's yesterday's menu.
+		} else {
+			//Refresh only ratings.
+		}
+		updateView();
 	}
 
 	public FoodListAdapter getListAdapter() {

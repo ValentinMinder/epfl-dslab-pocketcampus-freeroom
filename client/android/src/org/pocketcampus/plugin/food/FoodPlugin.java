@@ -9,8 +9,6 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.food.menu.Meal;
-import org.pocketcampus.plugin.food.menu.MenuSorter;
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,11 +27,8 @@ public class FoodPlugin extends PluginBase {
 	private TextView txt_empty_;
 	private TextView empty;
 	private ArrayList<Meal> menus_;
-	private MenuSorter sorter_;
 	private boolean sandwich = false;
 
-	private SandwichListStore sandwichListStore_;
-	
 	private ActionBar actionBar_;
 
 	@Override
@@ -67,7 +62,8 @@ public class FoodPlugin extends PluginBase {
 
 			@Override
 			public void performAction(View view) {
-//				newsProvider_.forceRefresh();
+				foodDisplayHandler.refreshMenu();
+				displayView();
 			}
 
 			@Override
@@ -89,6 +85,7 @@ public class FoodPlugin extends PluginBase {
 		FoodListAdapter fla = foodDisplayHandler.getListAdapter();
 		if (foodDisplayHandler.valid() && fla != null) {
 			l_.setAdapter(foodDisplayHandler.getListAdapter());
+			empty.setText("");
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}

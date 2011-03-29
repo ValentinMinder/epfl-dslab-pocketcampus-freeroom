@@ -12,21 +12,23 @@ package org.pocketcampus.plugin.food.menu;
 import java.io.Serializable;
 
 public class Rating implements Serializable {
-	
+
 	private static final long serialVersionUID = -7175081667515809103L;
 	private StarRating rating_;
 	private int numberOfVotes_;
-	
+
 	/**
 	 * 
-	 * @param initialrating: The initial average rating
-	 * @param numberOfVotes: The number of votes so far
-	 * @return 
+	 * @param initialrating
+	 *            : The initial average rating
+	 * @param numberOfVotes
+	 *            : The number of votes so far
+	 * @return
 	 */
 	public Rating(StarRating rating, int numberOfVotes) {
-		if(rating==null || numberOfVotes<0)
+		if (rating == null || numberOfVotes < 0)
 			throw new IllegalArgumentException();
-		
+
 		this.rating_ = rating;
 		this.numberOfVotes_ = numberOfVotes;
 	}
@@ -38,9 +40,10 @@ public class Rating implements Serializable {
 	public int getNumberOfVotes() {
 		return numberOfVotes_;
 	}
-	
+
 	public String toString() {
-		return "Average rating : "+rating_+ ", number of votes : "+numberOfVotes_;
-		
+		return "Average rating : " + rating_ + ", number of votes : "
+				+ numberOfVotes_;
+
 	}
 }

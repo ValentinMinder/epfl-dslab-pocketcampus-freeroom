@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.pocketcampus.R;
@@ -16,17 +15,17 @@ public class RestaurantListParser {
 	private HashMap<String, String> feeds;
 	private Context ctx_;
 	private String feedString;
-	
-	RestaurantListParser(Context context){
+
+	RestaurantListParser(Context context) {
 		ctx_ = context;
 		feedString = getContents();
 		feeds = restaurantFeeds(feedString);
 	}
-	
-	public HashMap<String, String> getFeeds(){
+
+	public HashMap<String, String> getFeeds() {
 		return feeds;
 	}
-	
+
 	/**
 	 * Fetch the entire contents of a text file, and return it in a String. This
 	 * style of implementation does not throw Exceptions to the caller.
@@ -66,69 +65,62 @@ public class RestaurantListParser {
 
 		return contents.toString();
 	}
-	
-	private HashMap<String, String> restaurantFeeds(String restaurantList){
+
+	private HashMap<String, String> restaurantFeeds(String restaurantList) {
 		String tagRestaurant = "<Resto>";
 		String tagName = "<name>";
 		String tagUrl = "<rssfeed>";
-		
+
 		String tagRestEnd = "</Resto>";
 		String tagNameEnd = "</name>";
 		String tagUrlEnd = "</rssfeed>";
-		
+
 		HashMap<String, String> feeds = new HashMap<String, String>();
-		
-		while(restaurantList.length()>1){
-			//Restaurant
+
+		while (restaurantList.length() > 1) {
+			// Restaurant
 			int startResto = restaurantList.indexOf(tagRestaurant);
 			int endResto = restaurantList.indexOf(tagRestEnd);
-			String restAttributes = restaurantList.substring(startResto+tagRestaurant.length(), endResto).trim();
-			
-			//Restaurant Names
+			String restAttributes = restaurantList.substring(
+					startResto + tagRestaurant.length(), endResto).trim();
+
+			// Restaurant Names
 			int startName = restAttributes.indexOf(tagName);
 			int endName = restAttributes.indexOf(tagNameEnd);
-			String restaurantName = restAttributes.substring(startName+tagName.length(), endName).trim();
-			
-			//Restaurant Feeds
+			String restaurantName = restAttributes.substring(
+					startName + tagName.length(), endName).trim();
+
+			// Restaurant Feeds
 			int startUrl = restAttributes.indexOf(tagUrl);
 			int endUrl = restAttributes.indexOf(tagUrlEnd);
-			String restaurantUrl = restAttributes.substring(startUrl+tagUrl.length(), endUrl).trim();
-			
+			String restaurantUrl = restAttributes.substring(
+					startUrl + tagUrl.length(), endUrl).trim();
+
 			feeds.put(restaurantName, restaurantUrl);
-			
-			restaurantList = restaurantList.substring(endResto+tagRestEnd.length(), restaurantList.length()).trim();
+
+			restaurantList = restaurantList.substring(
+					endResto + tagRestEnd.length(), restaurantList.length())
+					.trim();
 		}
-		
+
 		return feeds;
 	}
 }
 
-class TagPair{
-	private String startTag_;
-	private String endTag_;
-	
-	TagPair(String startTag, String endTag){
-		startTag_ = startTag;
-		endTag_ = endTag;
-	}
-	
-	public String getStartTag(){
-		return startTag_;
-	}
-	
-	public String getEndTag(){
-		return endTag_;
-	}
-}
-
-class TagTree{
-	private ArrayList<String> tagTree_;
-	
-	TagTree(){
-		
-	}
-	
-	public void addTagPair(TagPair tagPair){
-		
-	}
-}
+// class TagPair{
+// private String startTag_;
+// private String endTag_;
+//	
+// TagPair(String startTag, String endTag){
+// startTag_ = startTag;
+// endTag_ = endTag;
+// }
+//	
+// public String getStartTag(){
+// return startTag_;
+// }
+//	
+// public String getEndTag(){
+// return endTag_;
+// }
+// }
