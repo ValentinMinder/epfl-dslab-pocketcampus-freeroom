@@ -8,7 +8,7 @@ import org.pocketcampus.core.router.MainRouter;
 import org.pocketcampus.core.router.PublicMethod;
 
 /**
- * Servlet implementation class SampleServlet
+ * Servlet implementation class Test
  */
 public class Test extends MainRouter {
 
