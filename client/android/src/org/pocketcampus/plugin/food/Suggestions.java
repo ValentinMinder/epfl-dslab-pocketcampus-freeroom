@@ -240,7 +240,6 @@ public class Suggestions extends Activity{
 
 		Collection<Meal> returnedMeals = null;
 		returnedMeals = tagger.parseMealsFor(tag, meals);
-		Toast.makeText(this, "Tagger result size : " + returnedMeals.size(), Toast.LENGTH_SHORT).show();
 
 		if(returnedMeals==null){
 			return new HashSet<Meal>();
@@ -257,9 +256,6 @@ public class Suggestions extends Activity{
 		if(! likes_.isEmpty() && meals_ != null){
 			for(MealTag tag : likes_){
 				computeLikeMeals.addAll(computeSuggestions(meals_, tag, tagger_));
-				for(Meal m : computeLikeMeals){
-					Toast.makeText(this, "LikeMeal : " + m.getName(), Toast.LENGTH_SHORT).show();
-				}
 			}
 		}else if ((likes_.isEmpty()) && (meals_ != null)){
 			computeLikeMeals.addAll(meals_);
@@ -277,7 +273,6 @@ public class Suggestions extends Activity{
 		ArrayList<Meal> list = new ArrayList<Meal>();
 		for(Meal meal : computeMeals){
 			list.add(meal);
-			Toast.makeText(this, "Meal : " + meal.getName(), Toast.LENGTH_SHORT).show();
 		}
 		
 		Intent menus = new Intent(context_, FoodPlugin.class);

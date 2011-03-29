@@ -38,7 +38,7 @@ public class MealTagger {
 		
 		this.tagPatterns = new HashMap<MealTag, Collection<Pattern>>();
 		
-		Pattern meatPatterns = Pattern.compile(".*(boeuf|bœuf|caille|kangourou|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern meatPatterns = Pattern.compile(".*(boeuf|bœuf|caille|kangourou|kebab|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka|osso.?buco).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 //		Pattern meatPatterns2 = Pattern.compile(".*(émincé|roti|ragoût|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern vegetarianPatterns = Pattern.compile(".*V.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
@@ -123,22 +123,21 @@ public class MealTagger {
 		}
 		
 		String mealDescription = meal.getDescription();
-		String mDescr = mealDescription.replace('\n', ' ');
+		String mDescr = mealDescription.replaceAll("[\\r\\n]", " ");
+		mDescr = mDescr.toLowerCase();
 		String mealName = meal.getName();
+		mealName = mealName.toLowerCase();
+		
+		Log.d("TAGGER",""+mDescr);
 		
 		//check the name or the description against all patterns
 		for (Pattern pattern : patterns) {
-			
-			if(Pattern.matches(pattern.pattern(), mealName+mDescr)){
-				Log.d("TAGGER", "Return True !!!");
+			if ((mealName+mDescr).matches(pattern.pattern())) {
+				Log.d("TAGGER", "Return true!");
 				return true;
 			}
-			
-//			Matcher matcher = pattern.matcher(mealName+mealDescription);
-//			if (matcher.matches()) {
-//				return true;
-//			}
 		}
+		Log.d("TAGGER","--------------------------------");
 		return false;
 		
 	}
