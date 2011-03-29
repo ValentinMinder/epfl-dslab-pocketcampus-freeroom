@@ -29,6 +29,7 @@ public class FoodPlugin extends PluginBase {
 
 	private TextView txt_empty_;
 	private TextView empty;
+	private TextView validityDate_;
 
 	private ArrayList<Meal> suggestionMenus_;
 	private boolean isSandwichDisplay_ = false;
@@ -44,6 +45,7 @@ public class FoodPlugin extends PluginBase {
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
+		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		
 		// DisplayHandler
 		foodDisplayHandler = new FoodDisplayHandler(this);
@@ -57,6 +59,7 @@ public class FoodPlugin extends PluginBase {
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
+		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		
 		// At first, display food by restaurant
 		displayView();
@@ -88,7 +91,7 @@ public class FoodPlugin extends PluginBase {
 
 	// @Override
 	public void menuRefreshed() {
-		foodDisplayHandler.refreshView();
+		foodDisplayHandler.updateView();
 		displayView();
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
@@ -106,6 +109,11 @@ public class FoodPlugin extends PluginBase {
 		if (foodDisplayHandler.valid() && fla != null) {
 			l_.setAdapter(fla);
 			empty.setText("");
+			if(foodDisplayHandler.getDateLastUpdatedMenus() == null){
+				validityDate_.setText("Rien trouvé");
+			} else {
+				validityDate_.setText(foodDisplayHandler.getDateLastUpdatedMenus().toString());				
+			}
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}

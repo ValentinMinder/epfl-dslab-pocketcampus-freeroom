@@ -41,16 +41,23 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:background="#C40A0C">
-		<ImageView android:id="@+id/food_day_left"
+		<!-- <ImageView android:id="@+id/food_day_left"
 			android:src="@drawable/food_day_left"
 			android:layout_width="wrap_content"
   			android:layout_height="wrap_content"
-  			android:layout_alignParentLeft="true"/>
-  		<ImageView android:id="@+id/food_day_right"
+  			android:layout_alignParentLeft="true"/> -->
+ 		<TextView android:id="@+id/food_day_label"
+			android:gravity="center"
+			android:layout_centerInParent="true"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:textColor="#FFFFFF"
+			android:textSize="15dip"></TextView>
+  		<!-- <ImageView android:id="@+id/food_day_right"
 			android:src="@drawable/food_day_right"
 			android:layout_width="wrap_content"
   			android:layout_height="wrap_content"
-  			android:layout_alignParentRight="true"/>
+  			android:layout_alignParentRight="true"/> -->
 	</RelativeLayout>
 	
 </RelativeLayout>

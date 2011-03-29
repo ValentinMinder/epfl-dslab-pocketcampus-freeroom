@@ -8,12 +8,12 @@
  */
 package org.pocketcampus.plugin.food.menu;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -23,107 +23,76 @@ import org.pocketcampus.plugin.food.menu.RssParser.RssFeed;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Base64;
-import android.util.Base64InputStream;
-import android.util.Base64OutputStream;
 import android.util.Log;
+import android.widget.Toast;
 
 public class FoodMenu {
+
 	private HashMap<Meal, Rating> campusMenu_;
 	private MenuDownloader menuDownloader_;
 	private FoodPlugin handler_;
 	private Context ctx_;
+	private Date validityDate_;
 
-	public FoodMenu(FoodPlugin ownerActivity_) {
-		handler_ = ownerActivity_;
-		ctx_ = ownerActivity_.getApplicationContext();
+	public FoodMenu(FoodPlugin ownerActivity) {
+		handler_ = ownerActivity;
+		ctx_ = ownerActivity.getApplicationContext();
 		// Instantiate menuEPFL
 		campusMenu_ = new HashMap<Meal, Rating>();
 		loadCampusMenu();
 	}
 
 	// Load menu from server
-	@SuppressWarnings("unchecked")
-	public void loadCampusMenu() {
-		// HashMap<Meal, Rating> testExample = new HashMap<Meal, Rating>();
-
-		// Test Example
-		// Restaurant r1 = new Restaurant("Corbu");
-		// Meal m1 = new Meal("Name1", "Description1", r1, new Date(), true);
-		// Meal m2 = new Meal("Name2", "Description2", r1, new Date(), true);
-		// Meal m3 = new Meal("Name3", "Description3", r1, new Date(), true);
-		// Meal m_mauvais = new Meal("Name4", "Mauvais repas", r1, new Date(),
-		// true);
-		//
-		// Rating rate1 = new Rating(StarRating.STAR_1_0, 5);
-		//
-		// testExample.put(m1, rate1);
-		// testExample.put(m2, rate1);
-		// testExample.put(m3, rate1);
-		// testExample.put(m_mauvais, rate1);
-		//
-		// Restaurant r2 = new Restaurant("Orni");
-		// Meal m4 = new Meal("Name1", "Description1", r2, new Date(), true);
-		// Meal m5 = new Meal("Name2", "Description2", r2, new Date(), true);
-		// Meal m6 = new Meal("Name3", "Description3", r2, new Date(), true);
-		// Meal m_pourri = new Meal("Name4", "Plat pourri", r2, new Date(),
-		// true);
-		//
-		// Rating rate2 = new Rating(StarRating.STAR_1_0, 5);
-		//
-		// testExample.put(m4, rate2);
-		// testExample.put(m5, rate2);
-		// testExample.put(m6, rate2);
-		// testExample.put(m_pourri, rate2);
-
-//		File cacheDir = ctx_.getCacheDir();
-//		// Toast.makeText(ctx_, cacheDir.getAbsolutePath(), Toast.LENGTH_LONG)
-//		// .show();
-//
-//		FileInputStream fis;
-//		String campusMenuString;
-//		byte[] buffer = new byte[1024];
-//
-//		boolean isDownloaded = true;
-
+	private void loadCampusMenu() {
 		handler_.menuRefreshing();
 		menuDownloader_ = new MenuDownloader(this);
 		menuDownloader_.execute();
+	}
 
-//		File menuFile = new File(cacheDir, "MenusCache");
+	public void writeToFile(Date currentDate) {
+		String filename = "MenusCache";
 
-//		// if (campusMenu_ != null) {
-//		campusMenuString = objectToString(campusMenu_);
-//
-//		FileOutputStream fos;
-//		try {
-//			fos = new FileOutputStream(menuFile);
-//			fos.write(campusMenuString.getBytes());
-//			fos.close();
-//		} catch (FileNotFoundException e) {
-//			Toast.makeText(ctx_, "File not found", Toast.LENGTH_SHORT).show();
-//		} catch (IOException e) {
-//			Toast.makeText(ctx_, "IO Exception", Toast.LENGTH_SHORT).show();
-//		}
-//		// } else {
-//		// isDownloaded = false;
-//		// }
-//
-//		// if (!isDownloaded) {
-//		try {
-//			fis = new FileInputStream(menuFile.getPath());
-//			fis.read(buffer);
-//			fis.close();
-//
-//			campusMenuString = new String(buffer);
-//
-//			campusMenu_ = (HashMap<Meal, Rating>) stringToObject(campusMenuString);
-//		} catch (FileNotFoundException e) {
-//			isDownloaded = false;
-//		} catch (IOException e) {
-//			isDownloaded = false;
-//		}
-//		// }
+		File menuFile = new File(ctx_.getCacheDir(), filename);
+
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(menuFile);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(currentDate);
+			out.writeObject(campusMenu_);
+			out.close();
+		} catch (IOException ex) {
+			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	public HashMap<Meal, Rating> restoreFromFile() {
+		String filename = "MenusCache";
+		HashMap<Meal, Rating> menu = null;
+		File toGet = new File(ctx_.getCacheDir(), filename);
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		Date date = null;
+		try {
+			fis = new FileInputStream(toGet);
+			in = new ObjectInputStream(fis);
+			date = (Date) in.readObject();
+			setValidityDate(date);
+			menu = (HashMap<Meal, Rating>) in.readObject();
+
+			in.close();
+		} catch (IOException ex) {
+			// Toast.makeText(ctx_, "IO Exception", Toast.LENGTH_SHORT).show();
+		} catch (ClassNotFoundException ex) {
+			// Toast.makeText(ctx_, "Class not found",
+			// Toast.LENGTH_SHORT).show();
+		} catch (ClassCastException cce) {
+			
+		}
+
+		return menu;
 	}
 
 	public Set<Meal> getMeals() {
@@ -133,6 +102,7 @@ public class FoodMenu {
 		return campusMenu_.keySet();
 	}
 
+	// Get rating for a menu
 	public Rating getRating(Meal m) {
 		return campusMenu_.get(m);
 	}
@@ -142,52 +112,29 @@ public class FoodMenu {
 		return this.campusMenu_;
 	}
 
+	public Date getValidityDate() {
+		return validityDate_;
+	}
+
+	public void setValidityDate(Date date) {
+		validityDate_ = date;
+	}
+
 	public void setCampusMenu(HashMap<Meal, Rating> menus) {
 		this.campusMenu_ = menus;
 	}
-	
+
 	public void refreshMenu() {
-		if(campusMenu_.isEmpty()){
-			loadCampusMenu();
-			//TODO: also if it's yesterday's menu.
+		loadCampusMenu();
+		if (campusMenu_.isEmpty()) {
+			// TODO: also if it's yesterday's menu.
 		} else {
-			//Refresh only ratings.
+			// Refresh only ratings.
 		}
 	}
 
 	public boolean isEmpty() {
 		return campusMenu_.isEmpty();
-	}
-
-	public static String objectToString(Serializable object) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			new ObjectOutputStream(out).writeObject(object);
-			byte[] data = out.toByteArray();
-			out.close();
-
-			out = new ByteArrayOutputStream();
-			Base64OutputStream b64 = new Base64OutputStream(out, Base64.DEFAULT);
-			b64.write(data);
-			b64.close();
-			out.close();
-
-			return new String(out.toByteArray());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static Object stringToObject(String encodedObject) {
-		try {
-			return new ObjectInputStream(new Base64InputStream(
-					new ByteArrayInputStream(encodedObject.getBytes()),
-					Base64.DEFAULT)).readObject();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	class MenuDownloader extends AsyncTask<String, Void, HashMap<Meal, Rating>> {
@@ -203,8 +150,10 @@ public class FoodMenu {
 
 			RestaurantListParser rlp = new RestaurantListParser(ctx_);
 			HashMap<String, String> restaurantFeeds = rlp.getFeeds();
-			HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
 			Set<String> restaurants = restaurantFeeds.keySet();
+
+			HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
+
 			for (String r : restaurants) {
 				RssParser rp = new RssParser(restaurantFeeds.get(r));
 				rp.parse();
@@ -228,10 +177,28 @@ public class FoodMenu {
 		@Override
 		protected void onPostExecute(HashMap<Meal, Rating> result) {
 			if (result != null) {
-				foodMenu_.setCampusMenu(result);
+				if (result.isEmpty()) {
+					/* TESTING IN PROGRESS */
+					Toast.makeText(ctx_, "Reading from file",
+							Toast.LENGTH_SHORT).show();
+					HashMap<Meal, Rating> fromCache = restoreFromFile();
+					if (fromCache != null) {
+						foodMenu_.setCampusMenu(fromCache);
+					} else {
+						Toast.makeText(ctx_, "Empty cache", Toast.LENGTH_SHORT)
+								.show();
+					}
+				} else {
+					foodMenu_.setCampusMenu(result);
+					Date currentDate = new Date();
+					foodMenu_.setValidityDate(currentDate);
+					writeToFile(currentDate);
+					/* TESTING IN PROGRESS */
+					Toast.makeText(ctx_, "Writing to file", Toast.LENGTH_SHORT)
+							.show();
+				}
 				handler_.menuRefreshed();
 			}
 		}
 	}
-
 }

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
@@ -16,7 +17,6 @@ import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListStore;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -58,6 +58,10 @@ public class FoodDisplayHandler {
 
 	public boolean valid() {
 		return !campusMenu_.isEmpty();
+	}
+	
+	public Date getDateLastUpdatedMenus(){
+		return campusMenu_.getValidityDate();
 	}
 
 	/**
@@ -108,11 +112,9 @@ public class FoodDisplayHandler {
 	public void refreshView(){
 		switch (currentDisplayType_) {
 		case Restaurants:
+		case Ratings:
 			campusMenu_.refreshMenu();
 			updateView();
-			break;
-		case Ratings:
-			
 			break;
 		case Sandwiches:
 			
