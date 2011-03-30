@@ -41,8 +41,8 @@ public class MealTagger {
 		Pattern meatPatterns = Pattern.compile(".*(boeuf|bœuf|caille|kangourou|kebab|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka|osso.?buco).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 //		Pattern meatPatterns2 = Pattern.compile(".*(émincé|roti|ragoût|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		Pattern vegetarianPatterns = Pattern.compile(".*V.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		Pattern pastaPatterns = Pattern.compile(".*(pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern vegetarianPatterns = Pattern.compile(".*v.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern pastaPatterns = Pattern.compile(".*(pâtes|pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern.compile(".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern chickenPatterns = Pattern.compile(".*(poulet|coq .?coquelet.?|dinde|volaille|nugget).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern beefPatterns = Pattern.compile(".*(boeuf|bœuf|burger).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
@@ -127,12 +127,13 @@ public class MealTagger {
 		mDescr = mDescr.toLowerCase();
 		String mealName = meal.getName();
 		mealName = mealName.toLowerCase();
+		String match = mealName.concat(mDescr);
 		
-		Log.d("TAGGER",""+mDescr);
+		Log.d("TAGGER",""+match);
 		
 		//check the name or the description against all patterns
 		for (Pattern pattern : patterns) {
-			if ((mealName+mDescr).matches(pattern.pattern())) {
+			if ((match).matches(pattern.pattern())) {
 				Log.d("TAGGER", "Return true!");
 				return true;
 			}

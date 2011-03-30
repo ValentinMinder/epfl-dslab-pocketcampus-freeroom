@@ -228,8 +228,9 @@ public class FoodDisplayHandler {
 			Toast.makeText(
 					activityContext_,
 					activityContext_.getResources().getString(
-							R.string.food_suggestions_nomeal_nosuggestion),
+							R.string.food_suggestions_nothing_found),
 					Toast.LENGTH_LONG).show();
+			setDisplayType(1);
 		}
 	}
 

@@ -26,7 +26,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/food_suggestions_ilike"
 				style="?android:attr/listSeparatorTextViewStyle"
-				android:textColor="#000000"
+				android:textColor="#ffffff"
 				android:background="@drawable/food_list_header_background"
 				android:gravity="center"
 				android:layout_gravity="center"
@@ -86,7 +86,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/food_suggestions_idontlike"
 				style="?android:attr/listSeparatorTextViewStyle"
-				android:textColor="#000000"
+				android:textColor="#ffffff"
 				android:background="@drawable/food_list_header_background"
 				android:gravity="center"
 				android:layout_gravity="center"
@@ -143,14 +143,22 @@
 					
 			</LinearLayout>
 			
-			<ImageButton
-				android:id="@+id/food_suggestions_check_button"
-				android:layout_width="wrap_content"
+			 <RelativeLayout
+				android:id="@+id/food_suggestions_linear5"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:background="@drawable/food_suggestions_check_button_xml"
-				android:clickable="true" 
-				android:layout_below="@+id/food_suggestions_linear4" />
+				android:orientation="horizontal"
+				android:layout_below="@+id/food_suggestions_linear4" > 
+				
+				<ImageButton
+					android:id="@+id/food_suggestions_check_button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:background="@drawable/food_suggestions_check_button_xml"
+					android:clickable="true"  />
+					
+			</RelativeLayout>
 
 	</RelativeLayout>
 	
