@@ -4,13 +4,13 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.MainRouter;
+import org.pocketcampus.core.router.IServerBase;
 import org.pocketcampus.core.router.PublicMethod;
 
 /**
  * Servlet implementation class Test
  */
-public class Test extends MainRouter {
+public class Test implements IServerBase {
 
 	private static final long serialVersionUID = -3719959899511131113L;
 
@@ -30,9 +30,9 @@ public class Test extends MainRouter {
 		
 		return ret;
     }
+	
 
-	@Override
-	protected String getDefaultMethod() {
+	public String getDefaultMethod() {
 		return "capitalize";
 	}
 
