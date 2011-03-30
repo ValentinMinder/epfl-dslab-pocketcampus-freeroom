@@ -55,14 +55,14 @@ public class LayerSelector {
 		builder.setTitle(R.string.map_layer_pick_text);
 		builder.setCancelable(false)
 		// Callback when an item is clicked
-		.setMultiChoiceItems(items, new boolean[] { false, false, false }, new OnMultiChoiceClickListener() {
+		.setMultiChoiceItems(items, checked, new OnMultiChoiceClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 				if(isChecked) {
 					selectedLayers_.add(layers_.get(which));
 				} else {
-					selectedLayers_.remove(which);
+					selectedLayers_.remove(layers_.get(which));
 				}
 			}
 		})
