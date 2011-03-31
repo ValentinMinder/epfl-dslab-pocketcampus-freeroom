@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
-	android:background="@android:color/white" android:orientation="vertical">
+	android:background="@android:color/white" android:orientation="vertical"
+	android:layout_centerHorizontal="true">
 
 	<TextView android:id="@+id/food_menudialog_title"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:layout_marginBottom="16dip" android:layout_marginLeft="5dip" />
+		android:layout_gravity="center" android:layout_marginBottom="16dip"
+		android:layout_marginLeft="5dip" />
 
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@android:color/white" android:orientation="horizontal">
+		android:background="@android:color/white" android:orientation="horizontal"
+		android:layout_centerHorizontal="true">
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/food_menudialog_linear1"
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/food_menudialog_linear1" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:background="@android:color/white"
+			android:orientation="horizontal" android:layout_centerHorizontal="true"
+			android:gravity="center">
+
+			<RatingBar android:id="@+id/food_menudialog_ratingBarIndicator"
+				android:layout_width="wrap_content" style="?android:attr/ratingBarStyleSmall"
+				android:numStars="5" android:isIndicator="true" android:layout_centerInParent="true"
+				android:layout_marginTop="3dip" android:layout_marginRight="10dip"/>
+
+			<TextView android:id="@+id/food_menudialog_nbvotes"
+				android:layout_width="wrap_content" android:layout_height="wrap_content" 
+				android:textAppearance="?android:attr/textAppearanceSmall" android:layout_centerInParent="true"
+				android:layout_toRightOf="@+id/food_menudialog_ratingBarIndicator"/>
+
+		</RelativeLayout>
+
+		<TextView android:id="@+id/food_menudialog_description"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:background="@android:color/white" android:orientation="vertical" >
-
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:layout_width="fill_parent" android:layout_height="wrap_content"
-				android:background="@android:color/white" android:orientation="horizontal">
-
-				<RatingBar android:id="@+id/food_menudialog_ratingBarIndicator"
-					android:layout_width="wrap_content" style="?android:attr/ratingBarStyleSmall"
-					android:numStars="5" android:isIndicator="true"
-					android:layout_marginTop="4dip" android:layout_marginRight="15dip"
-					android:layout_marginLeft="10dip" />
-
-				<TextView android:id="@+id/food_menudialog_nbvotes"
-					android:text="Rating goes here" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" />
-
-			</LinearLayout>
-
-			<TextView android:id="@+id/food_menudialog_description"
-				android:layout_width="170dip" android:layout_height="wrap_content"
-				android:layout_marginTop="10dip" android:textAppearance="?android:attr/textAppearanceSmall"
-				android:paddingLeft="15dip" android:layout_marginBottom="5dip" />
-
-		</LinearLayout>
+			android:textAppearance="?android:attr/textAppearanceSmall"	android:layout_centerHorizontal="true"
+			android:gravity="center"
+			android:layout_marginTop="15dip" android:layout_below="@+id/food_menudialog_linear1" />
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_alignParentRight="true" 
-			android:background="@android:color/white" android:orientation="vertical"
-			android:layout_toRightOf="@+id/food_menudialog_linear1">
+			android:background="@android:color/white"
+			android:orientation="horizontal" android:layout_below="@+id/food_menudialog_description" 
+			android:gravity="center" android:layout_centerHorizontal="true">
 
 			<ImageButton android:background="@drawable/food_rate_it_xml"
 				android:id="@+id/food_menudialog_rateIt" android:layout_height="wrap_content"
-				android:layout_width="wrap_content" android:layout_gravity="center"
-				android:layout_weight="1"></ImageButton>
+				android:layout_width="wrap_content" android:gravity="center"
+				android:layout_weight="1" android:layout_marginRight="10dip"
+				android:layout_marginTop="10dip" android:layout_marginBottom="10dip"></ImageButton>
 
 			<ImageButton android:background="@drawable/food_go_there_xml"
 				android:id="@+id/food_menudialog_goThere" android:layout_height="wrap_content"
-				android:layout_width="wrap_content" android:layout_gravity="center"
-				android:layout_marginTop="5dip" 
-				android:layout_weight="1"></ImageButton>
+				android:layout_width="wrap_content" android:gravity="center"
+				android:layout_weight="1" android:layout_marginTop="10dip" android:layout_marginBottom="10dip"
+				android:layout_marginRight="10dip" android:layout_marginLeft="10dip"></ImageButton>
 
 			<ImageButton android:background="@drawable/food_pictures_xml"
 				android:id="@+id/food_menudialog_Pictures" android:layout_height="wrap_content"
-				android:layout_width="wrap_content" android:layout_gravity="center"
-				android:layout_marginTop="5dip" android:layout_marginBottom="5dip" 
-				android:layout_weight="1"></ImageButton>
+				android:layout_width="wrap_content" android:gravity="center"
+				android:layout_weight="1" android:layout_marginLeft="10dip"
+				android:layout_marginTop="10dip" android:layout_marginBottom="10dip"></ImageButton>
 
 		</LinearLayout>
 	</RelativeLayout>

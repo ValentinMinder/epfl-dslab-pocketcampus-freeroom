@@ -84,6 +84,13 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
+		holder.titleLine.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				menuDialog(position);
+				Log.d("Click menu", "Click on the menuline");
+			}
+		});
+		
 		holder.menuLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				menuDialog(position);
