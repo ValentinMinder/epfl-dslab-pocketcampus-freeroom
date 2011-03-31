@@ -1,20 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:weightSum="0.2">
+  android:orientation="vertical">
   	
   	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
   
-    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_below="@+id/actionbar">
+    <LinearLayout android:layout_height="wrap_content" android:layout_below="@+id/actionbar" android:id="@+id/directory_ll1">
         <TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="First name:"></TextView>
         <EditText android:layout_height="wrap_content" android:id="@+id/directory_first_name_input" android:layout_width="fill_parent"></EditText>
     </LinearLayout>
     
-    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2"  android:layout_below="@+id/linearLayout1">
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/directory_ll2" android:layout_below="@+id/directory_ll1">
         <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:text="Last name:" android:layout_width="wrap_content"></TextView>
         <EditText android:layout_height="wrap_content" android:id="@+id/directory_last_name_input" android:layout_width="fill_parent"></EditText>
     </LinearLayout>
+    <Button android:layout_width="fill_parent" android:text="Search" android:id="@+id/directory_search_button" android:layout_height="wrap_content" android:layout_below="@+id/directory_ll2"></Button>
     
-    <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="Search" android:id="@+id/directory_search_button" android:layout_below="@+id/linearLayout2"></Button>
+     <LinearLayout android:id="@+id/directory_ll3" android:layout_height="match_parent" android:layout_width="wrap_content" android:visibility="invisible" android:layout_below="@+id/directory_search_button" android:gravity="center_horizontal">
+        <TextView android:id="@+id/textView3" android:text="Sciper:" android:layout_height="wrap_content" android:layout_width="20px"></TextView>
+        <EditText android:id="@+id/directory_sciper_input" android:layout_height="wrap_content" android:inputType="number" android:layout_width="20px"></EditText>
+    </LinearLayout>
+    
+   
 </RelativeLayout>
