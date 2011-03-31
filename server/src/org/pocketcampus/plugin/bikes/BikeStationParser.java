@@ -1,0 +1,64 @@
+package org.pocketcampus.plugin.bikes;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class BikeStationParser {
+
+	private static final String URL = "http://www.bicincitta.com/wsexchange/panoramica.aspx?city=2000&usr=polyright&pw=bv9y7t34b9je";	
+	
+	public ArrayList<BikeStation> parserBikes() throws IOException {
+		ArrayList<BikeStation> stations = new ArrayList<BikeStation>();
+		
+		
+		String source = getSource(URL);
+		
+		Pattern p = Pattern.compile("<sites>(.*)</sites>");
+		Matcher m = p.matcher(source);
+		
+		if(m.find()) {
+			source = m.group(1);
+			
+			p = Pattern.compile("<item empty=\\\"([0-9]{1,2})\\\" bikes=\\\"([0-9]{1,2})\\\" .{1,100} geoLat=\\\"([0-9]{1,3},[0-9]{1,15})\\\" geoLng=\\\"([0-9]{1,3},[0-9]{1,15})\\\" .{1,50}>[ ]?[0-9]{4}[ ]?(.{1,25})</item>");
+			m = p.matcher(source);
+			
+			while(m.find()) {
+				int empty = Integer.parseInt(m.group(1));
+				int bikes = Integer.parseInt(m.group(2));
+				double geoLat = Double.parseDouble(m.group(3).replace(",","."));
+				double geoLng = Double.parseDouble(m.group(4).replace(",","."));
+				stations.add(new BikeStation(empty, bikes, geoLat, geoLng, m.group(5)));
+			}
+		}
+		
+		return stations;
+	}
+	
+	private String getSource(String url) throws IOException {
+		URL page = new URL(url);
+		InputStream is = page.openConnection().getInputStream();
+		
+		ArrayList<Byte> bytes = new ArrayList<Byte>(); 
+		int bte = is.read();
+		while(bte != -1) {
+			bytes.add((byte)bte);
+			bte = is.read();
+		}
+		
+		byte[] btes = new byte[bytes.size()];
+		for (int i = 0; i < btes.length; i++) {
+			btes[i] = bytes.get(i);
+		}
+		
+		return new String(btes);
+	}
+	
+	public static void main(String[] args) throws IOException {
+		System.out.println(parserBikes());
+	}
+	
+}

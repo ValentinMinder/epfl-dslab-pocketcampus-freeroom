@@ -51,7 +51,7 @@ public class MainRouter extends HttpServlet {
 		// Get the object and the method connected to the command
 		IServerBase obj = getObject(path);
 		Method m = getMethod(obj, path);
-
+		
 		invoke(request, response, obj, m);
 		
 	}
