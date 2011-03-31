@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +44,7 @@ public class MainRouter extends HttpServlet {
 
 		// Request without any command
 		if("/".equals(path)) {
-			response.getOutputStream().println("Hell yeah!");
+			listMethods(response);
 			return;
 		}
 		
@@ -51,6 +52,35 @@ public class MainRouter extends HttpServlet {
 		IServerBase obj = getObject(path);
 		Method m = getMethod(obj, path);
 
+		invoke(request, response, obj, m);
+		
+	}
+	
+	private void listMethods(HttpServletResponse response) {
+		
+		ServletOutputStream out;
+		try {
+			out = response.getOutputStream();
+			
+			out.println("Loaded plugins:");
+			out.println();
+
+			for(String c : methods.keySet()) {
+				out.println();
+				out.println(c);
+				
+				for(String m : methods.get(c).keySet()) {
+					out.println("-" + m);
+				}
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void invoke(HttpServletRequest request, HttpServletResponse response, IServerBase obj, Method m) throws IOException {
 		// Create the arguments to pass to the method
 		Object arglist[] = new Object[1];
 		arglist[0] = request;
@@ -74,10 +104,9 @@ public class MainRouter extends HttpServlet {
 		} catch (InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		} 
 	}
-	
+
 	/**
 	 * Get the name of the method that has to be invoked using the URL
 	 * @param path path from the request
