@@ -21,10 +21,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import de.schildbach.pte.SbbProvider;
-import de.schildbach.pte.NetworkProvider.WalkSpeed;
-import de.schildbach.pte.dto.Location;
-import de.schildbach.pte.dto.QueryConnectionsResult;
 
 /**
  * Transport tests.
@@ -36,7 +32,7 @@ public class TransportPlugin extends PluginBase {
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
 
-	private SbbProvider sbbProvider_;
+//	private SbbProvider sbbProvider_; XXX
 	private Calendar dateTime_;
 	
 	private AutoCompleteTextView departureAutoCompleteTextView_;
@@ -53,18 +49,18 @@ public class TransportPlugin extends PluginBase {
 		setContentView(R.layout.transport_main);
 		setupActionBar(true);
 		
-		sbbProvider_ = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
+//		sbbProvider_ = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
 		dateTime_ = Calendar.getInstance();
 		
 		resultTextView_ = (TextView) findViewById(R.id.result);
 
-		departureAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_departure);
-		LocationAdapter adapterDeparture = new LocationAdapter(this, R.layout.transport_locationentry, departureAutoCompleteTextView_, sbbProvider_);
-		departureAutoCompleteTextView_.setAdapter(adapterDeparture);
-
-		arrivalAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_arrival);
-		LocationAdapter adapterArrival = new LocationAdapter(this, R.layout.transport_locationentry, arrivalAutoCompleteTextView_, sbbProvider_);
-		arrivalAutoCompleteTextView_.setAdapter(adapterArrival);
+//		departureAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_departure);
+//		LocationAdapter adapterDeparture = new LocationAdapter(this, R.layout.transport_locationentry, departureAutoCompleteTextView_, sbbProvider_);
+//		departureAutoCompleteTextView_.setAdapter(adapterDeparture);
+//
+//		arrivalAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_arrival);
+//		LocationAdapter adapterArrival = new LocationAdapter(this, R.layout.transport_locationentry, arrivalAutoCompleteTextView_, sbbProvider_);
+//		arrivalAutoCompleteTextView_.setAdapter(adapterArrival);
 
 		dateButton_ = (Button) findViewById(R.id.date_button);
 		updateDateDisplay();
@@ -89,10 +85,10 @@ public class TransportPlugin extends PluginBase {
 			@Override
 			public void onClick(View v) {
 				try {
-					Location from = sbbProvider_.autocompleteStations(departureAutoCompleteTextView_.getText()).get(0);
-					Location to = sbbProvider_.autocompleteStations(arrivalAutoCompleteTextView_.getText()).get(0);
-					QueryConnectionsResult result = sbbProvider_.queryConnections(from, null, to, new Date(), true, null, WalkSpeed.NORMAL);
-					resultTextView_.setText(result.connections.toString());
+//					Location from = sbbProvider_.autocompleteStations(departureAutoCompleteTextView_.getText()).get(0);
+//					Location to = sbbProvider_.autocompleteStations(arrivalAutoCompleteTextView_.getText()).get(0);
+//					QueryConnectionsResult result = sbbProvider_.queryConnections(from, null, to, new Date(), true, null, WalkSpeed.NORMAL);
+//					resultTextView_.setText(result.connections.toString());
 
 				} catch (Exception e) {
 					resultTextView_.setText(e.toString());
