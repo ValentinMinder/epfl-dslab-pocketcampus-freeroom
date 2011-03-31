@@ -36,7 +36,6 @@ public class RssParser extends DefaultHandler
         try
         {
             URL url = new URL(this.urlString);
-            _setProxy(); // Set the proxy if needed
             urlInputStream = url.openConnection().getInputStream();           
             spf = SAXParserFactory.newInstance();
             if (spf != null)
@@ -77,14 +76,14 @@ public class RssParser extends DefaultHandler
     public void startElement(String uri, String localName, String qName,
             Attributes attributes)
     {
-        if (qName.equalsIgnoreCase("channel"))
+        if (localName.equalsIgnoreCase("channel"))
             this.rssFeed = new RssFeed();
-        else if (qName.equalsIgnoreCase("item") && (this.rssFeed != null))
+        else if (localName.equalsIgnoreCase("item") && (this.rssFeed != null))
         {
             this.item = new Item();
             this.rssFeed.addItem(this.item);
         }
-        else if (qName.equalsIgnoreCase("image") && (this.rssFeed != null))
+        else if (localName.equalsIgnoreCase("image") && (this.rssFeed != null))
             this.imgStatus = true;
     }
    
@@ -93,48 +92,48 @@ public class RssParser extends DefaultHandler
         if (this.rssFeed == null)
             return;
        
-        if (qName.equalsIgnoreCase("item"))
+        if (localName.equalsIgnoreCase("item"))
             this.item = null;
        
-        else if (qName.equalsIgnoreCase("image"))
+        else if (localName.equalsIgnoreCase("image"))
             this.imgStatus = false;
        
-        else if (qName.equalsIgnoreCase("title"))
+        else if (localName.equalsIgnoreCase("title"))
         {
             if (this.item != null) this.item.title = this.text.toString().trim();
             else if (this.imgStatus) this.rssFeed.imageTitle = this.text.toString().trim();
             else this.rssFeed.title = this.text.toString().trim();
         }       
        
-        else if (qName.equalsIgnoreCase("link"))
+        else if (localName.equalsIgnoreCase("link"))
         {
             if (this.item != null) this.item.link = this.text.toString().trim();
             else if (this.imgStatus) this.rssFeed.imageLink = this.text.toString().trim();
             else this.rssFeed.link = this.text.toString().trim();
         }       
        
-        else if (qName.equalsIgnoreCase("description"))
+        else if (localName.equalsIgnoreCase("description"))
         {
             if (this.item != null) this.item.description = removeBadStuff(this.text.toString().trim());
             else this.rssFeed.description = this.text.toString().trim();
         }
        
-        else if (qName.equalsIgnoreCase("url") && this.imgStatus)
+        else if (localName.equalsIgnoreCase("url") && this.imgStatus)
             this.rssFeed.imageUrl = this.text.toString().trim();
        
-        else if (qName.equalsIgnoreCase("language"))
+        else if (localName.equalsIgnoreCase("language"))
             this.rssFeed.language = this.text.toString().trim();
        
-        else if (qName.equalsIgnoreCase("generator"))
+        else if (localName.equalsIgnoreCase("generator"))
             this.rssFeed.generator = this.text.toString().trim();
        
-        else if (qName.equalsIgnoreCase("copyright"))
+        else if (localName.equalsIgnoreCase("copyright"))
             this.rssFeed.copyright = this.text.toString().trim();
        
-        else if (qName.equalsIgnoreCase("pubDate") && (this.item != null))
+        else if (localName.equalsIgnoreCase("pubDate") && (this.item != null))
             this.item.pubDate = this.text.toString().trim();
        
-        else if (qName.equalsIgnoreCase("category") && (this.item != null))
+        else if (localName.equalsIgnoreCase("category") && (this.item != null))
             this.rssFeed.addItem(this.text.toString().trim(), this.item);
        
         this.text.setLength(0);
@@ -156,15 +155,6 @@ public class RssParser extends DefaultHandler
     		s+="\n";
     	}
     	return s.trim();
-    }
-   
-    public static void _setProxy()
-    throws IOException
-    {
-        Properties sysProperties = System.getProperties();
-        sysProperties.put("proxyHost", "<Proxy IP Address>");
-        sysProperties.put("proxyPort", "<Proxy Port Number>");
-        System.setProperties(sysProperties);
     }
   
     public static class RssFeed

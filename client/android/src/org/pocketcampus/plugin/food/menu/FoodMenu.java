@@ -89,7 +89,7 @@ public class FoodMenu {
 			// Toast.makeText(ctx_, "Class not found",
 			// Toast.LENGTH_SHORT).show();
 		} catch (ClassCastException cce) {
-			
+
 		}
 
 		return menu;
@@ -155,6 +155,7 @@ public class FoodMenu {
 			HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
 
 			for (String r : restaurants) {
+				Log.d("Debug", r);
 				RssParser rp = new RssParser(restaurantFeeds.get(r));
 				rp.parse();
 				RssFeed feed = rp.getFeed();
@@ -169,6 +170,8 @@ public class FoodMenu {
 						campusMenu.put(newMeal, new Rating(StarRating.STAR_3_0,
 								0));
 					}
+				} else {
+					Log.d("Debug", "null");
 				}
 			}
 			return campusMenu;
