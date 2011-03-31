@@ -1,12 +1,11 @@
 package org.pocketcampus.plugin.bikes;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.pocketcampus.shared.bikes.BikeStation;
 import org.pocketcampus.shared.utils.URLLoader;
 
 public class BikeStationParser {

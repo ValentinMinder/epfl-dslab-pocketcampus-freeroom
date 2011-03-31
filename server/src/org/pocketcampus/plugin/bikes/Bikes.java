@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.router.IServerBase;
 import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.shared.bikes.BikeStation;
 
 public class Bikes  implements IServerBase {
 
