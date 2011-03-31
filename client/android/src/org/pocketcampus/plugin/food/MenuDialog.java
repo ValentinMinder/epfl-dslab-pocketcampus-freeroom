@@ -75,7 +75,7 @@ public class MenuDialog extends Dialog {
 		// Set the title, description, rating and number of votes.
 		TextView title = (TextView) findViewById(R.id.food_menudialog_title);
 		TextView description = (TextView) findViewById(R.id.food_menudialog_description);
-		TextView rateItYourself = (TextView) findViewById(R.id.food_menudialog_rateityourself);
+//		TextView rateItYourself = (TextView) findViewById(R.id.food_menudialog_rateityourself);
 		numbVotes = (TextView) findViewById(R.id.food_menudialog_nbvotes);
 
 		// Set title of dialog box to Meal @ Restaurant
@@ -83,21 +83,21 @@ public class MenuDialog extends Dialog {
 		description.setText(meal.getDescription());
 
 		// Clicking on the star rating will open the rating dialog
-		rateItYourself.setOnClickListener(new View.OnClickListener() {
+		/*rateItYourself.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				RatingsDialog r = new RatingsDialog(getContext(), getMeal());
 				r.setOnDismissListener(new OnDismissRatingsListener());
 				r.show();
 			}
-		});
+		});*/
 
 		// Retrieve the meal's rating from the server to display it.
 		rateIt = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
 		paintRatingBar();
 
 		// Chose a menu
-		ImageButton takeThis = (ImageButton) findViewById(R.id.food_menudialog_takeThis);
-		takeThis.setOnClickListener(new View.OnClickListener() {
+		ImageButton rateIt = (ImageButton) findViewById(R.id.food_menudialog_rateIt);
+		rateIt.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// give me the feault MealTagger
@@ -219,6 +219,6 @@ public class MenuDialog extends Dialog {
 		// Retrieve the number of votes from the server.
 		int numbVote = rating.getNumberOfVotes();
 		String votes = getVoteString(numbVote);
-		numbVotes.setText(numbVote + " " + votes);
+		numbVotes.setText("("+ numbVote + " " + votes + ")");
 	}
 }
