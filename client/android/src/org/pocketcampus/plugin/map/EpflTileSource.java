@@ -86,6 +86,7 @@ public class EpflTileSource extends OnlineTileSourceBase {
 
 	/**
 	 * Splits the integer into the following format -> NNN/NNN/NNN
+	 * XXX see utils.StringUtils
 	 * @param a the integer to decompose
 	 * @return the formatted string.
 	 */
