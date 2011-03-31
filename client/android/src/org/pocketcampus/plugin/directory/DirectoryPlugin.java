@@ -126,12 +126,12 @@ public class DirectoryPlugin extends PluginBase implements OnClickListener{
 					Type listType = new TypeToken<ArrayList<Person>>()  {}.getType();
 
 					if(listType == null || result == null)
-						Toast.makeText(getApplicationContext(), "pouet",Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "a",Toast.LENGTH_SHORT).show();
 					
 					resultsList = (ArrayList<Person>)gson.fromJson(result, listType);
 					
 				} else {
-					Toast.makeText(getApplicationContext(), "2 fast 4 U",Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "too fast?",Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class DirectoryPlugin extends PluginBase implements OnClickListener{
 		
 		//TODO add username and pwd via configuration
 		reqParams.addParameter("username", "scheiben");
-		reqParams.addParameter("password", "g4$p4r3pfl"); //TODO mettre vos userame pour test
+		reqParams.addParameter("password", "b"); //TODO mettre vos userame pour test
 		
 		
 		
