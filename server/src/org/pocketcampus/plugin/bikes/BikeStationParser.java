@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.pocketcampus.shared.utils.URLLoader;
+
 public class BikeStationParser {
 
 	private static final String URL = "http://www.bicincitta.com/wsexchange/panoramica.aspx?city=2000&usr=polyright&pw=bv9y7t34b9je";	
@@ -15,7 +17,7 @@ public class BikeStationParser {
 		ArrayList<BikeStation> stations = new ArrayList<BikeStation>();
 		
 		
-		String source = getSource(URL);
+		String source = URLLoader.getSource(URL);
 		
 		Pattern p = Pattern.compile("<sites>(.*)</sites>");
 		Matcher m = p.matcher(source);
@@ -37,28 +39,6 @@ public class BikeStationParser {
 		
 		return stations;
 	}
-	
-	private String getSource(String url) throws IOException {
-		URL page = new URL(url);
-		InputStream is = page.openConnection().getInputStream();
-		
-		ArrayList<Byte> bytes = new ArrayList<Byte>(); 
-		int bte = is.read();
-		while(bte != -1) {
-			bytes.add((byte)bte);
-			bte = is.read();
-		}
-		
-		byte[] btes = new byte[bytes.size()];
-		for (int i = 0; i < btes.length; i++) {
-			btes[i] = bytes.get(i);
-		}
-		
-		return new String(btes);
-	}
-	
-	public static void main(String[] args) throws IOException {
-		System.out.println(parserBikes());
-	}
+
 	
 }

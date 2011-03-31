@@ -45,7 +45,7 @@ public class BikeStation {
 
 	@Override
 	public String toString() {
-		return name_ + " ("+geoLat_+", "+geoLng_+") :" + bikes_ + " / " + empty_ + "\n";
+		return name_ + " ("+geoLat_+", "+geoLng_+") :" + bikes_ + " / " + empty_;
 	}
 	
 }
