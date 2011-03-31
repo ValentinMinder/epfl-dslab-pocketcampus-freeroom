@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/unboundid-ldapsdk-se.jar"/>
 	<classpathentry kind="src" path="/hafas-api"/>
 	<classpathentry kind="lib" path="lib/osmdroid-android-3.0.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pocketcampus-shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
