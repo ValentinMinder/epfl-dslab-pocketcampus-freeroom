@@ -75,6 +75,5 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 			return false;
 		return true;
 	}
-	
-	
+
 }

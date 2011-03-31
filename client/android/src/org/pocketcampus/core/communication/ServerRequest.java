@@ -2,8 +2,6 @@ package org.pocketcampus.core.communication;
 
 import org.pocketcampus.core.plugin.PluginInfo;
 
-import com.unboundid.ldap.sdk.GetEntryLDAPConnectionPoolHealthCheck;
-
 import android.os.AsyncTask;
 
 public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer, String> {
