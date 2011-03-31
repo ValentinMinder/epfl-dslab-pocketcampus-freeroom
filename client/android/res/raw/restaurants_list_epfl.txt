@@ -1,0 +1,52 @@
+<Resto>
+	<name>Le Corbusier</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LE%20CORBUSIER</rssfeed>
+</Resto>
+<Resto>
+	<name>Parmentier</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=PARMENTIER</rssfeed>
+</Resto>
+<Resto>
+	<name>Le Vinci</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LE%20VINCI</rssfeed>
+</Resto>
+<Resto>
+	<name>Cafeteria BC</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=CAFETERIA%20BC</rssfeed>
+</Resto>
+<Resto>
+	<name>Esplanade</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=ESPLANADE</rssfeed>
+</Resto>
+<Resto>
+	<name>Le Copernic</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LE%20COPERNIC</rssfeed>
+</Resto>
+<Resto>
+	<name>Bistro31</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=BISTRO31</rssfeed>
+</Resto>
+<Resto>
+	<name>Cafeteria MX</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=CAFETERIA%20MX</rssfeed>
+</Resto>
+<Resto>
+	<name>Le Giacometti</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LE%20GIACOMETTI</rssfeed>
+</Resto>
+<Resto>
+	<name>Atlantide</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=ATLANTIDE</rssfeed>
+</Resto>
+<Resto>
+	<name>Ornithorynque</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=ORNITHORYNQUE</rssfeed>
+</Resto>
+<Resto>
+	<name>La Table de Vallotton</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LA%20TABLE%20DE%20VALLOTTON</rssfeed>
+</Resto>
+<Resto>
+	<name>Cafeteria Hodler</name>
+	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=CAFETERIA%20HODLER</rssfeed>
+</Resto>
