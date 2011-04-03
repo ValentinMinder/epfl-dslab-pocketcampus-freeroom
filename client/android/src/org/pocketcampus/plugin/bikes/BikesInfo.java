@@ -15,7 +15,7 @@ public class BikesInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("bikes");
+		return new Id("bikes.Bikes");
 	}
 
 	@Override

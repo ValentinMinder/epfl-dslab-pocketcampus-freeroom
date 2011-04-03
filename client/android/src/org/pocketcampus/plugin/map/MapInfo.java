@@ -23,7 +23,7 @@ public class MapInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("Map");
+		return new Id("map.Map");
 	}
 
 	@Override

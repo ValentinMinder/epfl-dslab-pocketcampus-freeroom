@@ -15,9 +15,10 @@ public class RequestHandler {
 		pluginInfo_ = pluginInfo;
 	}
 
-	public void execute(ServerRequest req, RequestParameters... params) {
+	public void execute(ServerRequest req, String command, RequestParameters... params) {
 		req.setPluginInfo(pluginInfo_);
 		req.setServerUrl(serverUrl_);
+		req.setCommand(command);
 		req.execute(params);
 	}
 	

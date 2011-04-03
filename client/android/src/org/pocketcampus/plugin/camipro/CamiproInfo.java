@@ -23,7 +23,7 @@ public class CamiproInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("camipro");
+		return new Id("camipro.Camipro");
 	}
 
 	@Override

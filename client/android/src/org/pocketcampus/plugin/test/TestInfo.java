@@ -15,7 +15,7 @@ public class TestInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("Test");
+		return new Id("test.Test");
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class NewsInfo extends PluginInfo implements IInfoProviderService {
 
 	@Override
 	public Id getId() {
-		return new Id("news");
+		return new Id("news.News");
 	}
 
 	@Override
