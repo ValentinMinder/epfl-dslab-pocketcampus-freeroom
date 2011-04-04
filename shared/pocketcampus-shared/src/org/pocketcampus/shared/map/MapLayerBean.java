@@ -3,16 +3,26 @@ package org.pocketcampus.shared.map;
 public class MapLayerBean {
 	private String name, drawable_url;
 	private int id,cache;
+	private boolean displayable;
 	
 	public MapLayerBean() {
 		
 	}
 	
-	public MapLayerBean(String name, String drawable_url, int id, int cache) {
+	public MapLayerBean(String name, String drawable_url, int id, int cache, boolean displayable) {
 		this.name = name;
 		this.drawable_url = drawable_url;
 		this.id = id;
 		this.cache = cache;
+		this.displayable = displayable;
+	}
+	
+	public boolean isDisplayable() {
+		return displayable;
+	}
+	
+	public void setDisplayable(boolean displayable) {
+		this.displayable = displayable;
 	}
 	
 	public String getName() {
