@@ -11,12 +11,18 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	private String serverUrl_;
 	private String command_;
 	
+	public String getUrl() {
+		return serverUrl_ + pluginInfo_.getId() + "/" + command_;
+	}
+	
 	@Override
 	protected String doInBackground(RequestParameters... params) {
-		System.out.println(params[0]);
-		System.out.println(pluginInfo_.getId());
+//		System.out.println(command_);
+//		System.out.println(params[0]);
+//		System.out.println(pluginInfo_.getId());
 		
-		String url = serverUrl_ + pluginInfo_.getId() + "/" + command_;
+		String url = getUrl();
+		
 		if(params[0] != null) {
 			url += params[0].toString();
 		}
@@ -26,7 +32,6 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 		Log.d(this.getClass().toString(), url);
 		
 		try {
-			System.out.println("Sending query...");
 			String resp = req.getContent();
 			return resp;
 		} catch (Exception e) {
@@ -50,3 +55,9 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 		command_ = command;
 	}
 }
+
+
+
+
+
+

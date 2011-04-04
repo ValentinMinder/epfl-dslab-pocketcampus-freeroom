@@ -11,11 +11,14 @@ public class RequestHandler {
 	// AWS SERVER URL
 	//private String serverUrl_ = "http://pcepfl.elasticbeanstalk.com/";
 	
+	// FLORIAN LOCAL SERVER URL
+	private String serverUrl_ = "http://10.0.0.157:8080/pocketcampus-server/";
+	
 	// JOHAN LOCAL SERVER URL
 	//private String serverUrl_ = "http://192.168.1.46:8080/pocketcampus-server/";
 	
 	// JOHAN DEBUG STATIC SERVER
-	private String serverUrl_ = "http://jleuleu.neqo.org/temp/";
+	//private String serverUrl_ = "http://jleuleu.neqo.org/temp/";
 	
 	public RequestHandler(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
@@ -32,8 +35,8 @@ public class RequestHandler {
 		req.execute(params);
 	}
 	
-	public String getRequestUrl(RequestParameters req) {
-		return serverUrl_ + pluginInfo_.getId() + req.toString();
+	public String getRequestUrl(RequestParameters req, String command) {
+		return serverUrl_ + pluginInfo_.getId() + "/" + command;
 	}
 }
 

@@ -52,11 +52,6 @@ public class TestPlugin extends PluginBase {
 		// Create a class for your request with...
 		class UpperCaseRequest extends ServerRequest {
 			
-			@Override
-			protected void onPreExecute() {
-				setCommand("capitalize");
-			}
-			
 			// ...what to do when the result is ready
 			protected void onPostExecute(String result) {
 				if(result != null) {
@@ -87,7 +82,7 @@ public class TestPlugin extends PluginBase {
 		
 		// To handle the loading another way, you can just use the RequestHandler to give you the complete
 		// request URL, including the server and servlet address.
-		System.out.println(getRequestHandler().getRequestUrl(reqParams));
+		System.out.println( getRequestHandler().getRequestUrl(reqParams, "capitalize") );
 	}
 	
 	private void startTimer() {
