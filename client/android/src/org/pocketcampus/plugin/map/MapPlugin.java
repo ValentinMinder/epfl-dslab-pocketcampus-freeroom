@@ -2,16 +2,17 @@ package org.pocketcampus.plugin.map;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
-import java.util.List;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
@@ -24,15 +25,15 @@ import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.map.MapElementBean;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 /**
  * PluginBase class for the Map plugin 
  * 
@@ -47,6 +48,7 @@ public class MapPlugin extends PluginBase {
 	private MapController mapController_;
 	private List<MapElementsList> layers_;
 	private List<MapElementsList> selectedLayers_;
+	private MyLocationOverlay myLocationOverlay_;
 	
 	/**
 	 * Overlays which are unconditionally displayed
@@ -79,6 +81,7 @@ public class MapPlugin extends PluginBase {
 	private void setupMapView() {
 
 		mapView_ = (MapView) findViewById(R.id.mapview);
+        constantOverlays_ = new ArrayList<Overlay>();
         
 		mapController_ = mapView_.getController();
 		
@@ -86,15 +89,27 @@ public class MapPlugin extends PluginBase {
 		mapView_.setBuiltInZoomControls(true);
 		
 		
-		// Add tiles layer
+		// Add EPFL tiles layer
 		ITileSource epflTile = new EpflTileSource();
-
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
         mProvider.setTileSource(epflTile);
         TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
-        constantOverlays_ = new ArrayList<Overlay>();
         constantOverlays_.add(mTilesOverlay);
         mapView_.getOverlays().add(mTilesOverlay);
+        
+        // Following the user
+        myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+        myLocationOverlay_.enableMyLocation();
+        myLocationOverlay_.enableFollowLocation();
+        constantOverlays_.add(myLocationOverlay_);
+        mapView_.getOverlays().add(myLocationOverlay_);
+	}
+
+	@Override
+	protected void onResume() {
+		myLocationOverlay_.enableMyLocation();
+		myLocationOverlay_.enableCompass();
+		super.onResume();
 	}
 
 	@Override
@@ -108,6 +123,13 @@ public class MapPlugin extends PluginBase {
 		mapController_.setCenter(epflPoint);
 		
 		updateOverlays();
+	}
+
+	@Override
+	protected void onPause() {
+		myLocationOverlay_.disableMyLocation();
+		myLocationOverlay_.disableCompass();
+		super.onPause();
 	}
 		
 	@Override
@@ -123,6 +145,10 @@ public class MapPlugin extends PluginBase {
 		switch (item.getItemId()) {
 		case R.id.map_menu_layers_button:
 			layerSelector();
+			return true;
+			
+		case R.id.map_my_position:
+			centerOnPosition();
 			return true;
 
 		default:
@@ -144,6 +170,10 @@ public class MapPlugin extends PluginBase {
 			}
 		});
 		
+	}
+	
+	private void centerOnPosition() {
+        myLocationOverlay_.enableFollowLocation();
 	}
 	
 	/**

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="map_menu_layers">Layers</string>
+    <string name="map_menu_my_position">My position</string>
+    
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_layer_ok_button">Ok</string>
 </resources>
