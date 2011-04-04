@@ -11,11 +11,6 @@ import org.pocketcampus.shared.bikes.BikeStation;
 
 public class Bikes  implements IServerBase {
 
-	@Override
-	public String getDefaultMethod() {
-		return "bikes";
-	}
-	
 	@PublicMethod
 	public ArrayList<BikeStation> bikes(HttpServletRequest request) {
 

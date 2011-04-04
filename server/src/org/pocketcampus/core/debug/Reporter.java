@@ -12,26 +12,42 @@ import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.core.router.IServerBase;
 
 public class Reporter {
-	
+	private Date startupTime_;
 	enum ReportType {STATUS, ERROR};
+	enum AdditionalInfo {SHOW_METHODS, SHOW_CLASSES};
+	
+	public Reporter() {
+		startupTime_ = new Date();
+	}
 	
 	private void displayReport(HttpServletResponse response, String content) {
 		try {
 			ServletOutputStream out = response.getOutputStream();
 			
 			out.println("<html>");
+			
 			out.println("<h1>PocketCampus Server</h1>");
 			
 			out.println(content);
 			
-			out.println("<hr>");
-			out.println("<i>" + new Date().toString() + "</i>");
+			//out.println("<p><a href=\"/\">Status report</a></p>");
+			
+			out.println("<hr><i>");
+			out.println(new Date().toString());
+			out.println(" - ");
+			out.println("uptime " + getUptime());
+			out.println("</i>");
 			out.println("</html>");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private String getUptime() {
+		int uptime = (int) ((new Date().getTime() - startupTime_.getTime()) / (1000));
+		return uptime + "s";
 	}
 
 	public void statusReport(HttpServletResponse response, HashMap<String, IServerBase> classes, HashMap<String, HashMap<String, Method>> methods) {
@@ -53,8 +69,10 @@ public class Reporter {
 	}
 
 	public void errorReport(HttpServletResponse response, ServerException e) {
+		response.setStatus(500);
+		
 		String content = "<p><b>Arf! " + e.toString() + "</b></p>";
-		content += "<p><i>" + e.getExplanation() + "</i></p>";
+		content += "<p>" + e.getExplanation() + "</p>";
 		
 		content += "<ul><b>Stack</b>";
 		for(StackTraceElement el : e.getStackTrace()) {

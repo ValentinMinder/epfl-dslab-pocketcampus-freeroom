@@ -68,6 +68,11 @@ public class MainRouter extends HttpServlet {
 	
 	private IServerBase getObject(String path) throws ServerException {
 		String className = getClassNameFromPath(path);
+		
+		if(className==null || className.equals("")) {
+			throw new ServerException("No method provided.");
+		}
+		
 		IServerBase obj = initClass(className);
 		
 		if(obj == null) {
@@ -81,11 +86,16 @@ public class MainRouter extends HttpServlet {
 		String split[] = path.split("/");
 		
 		if(split.length > 1) {
-			return "org.pocketcampus.plugin." + split[1];
+			return "org.pocketcampus.plugin." + split[1].toLowerCase() + "." + capitalize(split[1]);
 		}
 		
 		return null;
 	}
+	
+	private static String capitalize(String s) {
+        if (s.length() == 0) return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+    }
 
 	private void invoke(HttpServletRequest request, HttpServletResponse response, IServerBase obj, Method m) throws IOException {
 		// Create the arguments to pass to the method
@@ -132,13 +142,13 @@ public class MainRouter extends HttpServlet {
 	}
 	
 	
-	private Method getMethod(IServerBase obj, String path) {
+	private Method getMethod(IServerBase obj, String path) throws ServerException {
 		
 		String className = getClassNameFromPath(path);
 		String methodName = getMethodNameFromPath(path);
 		
 		if(methodName == null || !methods_.get(className).containsKey(methodName)) {
-			methodName = obj.getDefaultMethod();
+			throw new ServerException("Method <b>"+ methodName +"</b> not found in package <b>"+ className +"</b>. Mispelled?");
 		}
 		
 		Method m = methods_.get(className).get(methodName);
@@ -191,26 +201,26 @@ public class MainRouter extends HttpServlet {
 			methods_.put(className, classMethods);
 			
 		} catch (ClassNotFoundException e) {
-			throw new ServerException("The class \"" + className + "\" was not found. You probably mispeled it.");
+			throw new ServerException("The class <b>" + className + "</b> was not found. Mispelled?");
 			
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServerException();
+			
 		}
 		
 		return obj;
