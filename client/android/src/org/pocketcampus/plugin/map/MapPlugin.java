@@ -151,7 +151,7 @@ public class MapPlugin extends PluginBase {
 	 * @param message
 	 */
 	private void showToast(String message) {
-		Toast.makeText(this, message, Toast.LENGTH_LONG);
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
@@ -424,7 +424,19 @@ public class MapPlugin extends PluginBase {
 					layer.add(new MapElement(meb));
 				}
 				
-				ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(layer, null, new DefaultResourceProxyImpl(getApplicationContext()));
+				ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(layer, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+					@Override
+					public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+						return false;
+					}
+					
+					@Override
+					public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
+						showToast(arg1.mTitle);
+						return true;
+					}
+				}, new DefaultResourceProxyImpl(getApplicationContext()));
+				
 				mapView_.getOverlays().add(aOverlay);
 				mapView_.invalidate();
 				decrementProgressCounter();
