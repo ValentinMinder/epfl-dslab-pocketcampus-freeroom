@@ -6,6 +6,7 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.logging.Tracker;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -39,6 +40,8 @@ public class NewsPlugin extends PluginBase implements INewsListener {
 		setupActionBar(true);
 
 		setLayout();
+		
+		Tracker.getInstance().trackPageView("news/home");
 	}
 
 	@Override
@@ -96,6 +99,8 @@ public class NewsPlugin extends PluginBase implements INewsListener {
 				if(adapter_ != null) {
 					adapter_.setClickedItem(parent, view, position, id);
 					l.smoothScrollToPosition(position);
+
+					Tracker.getInstance().trackPageView("news/previewItem");
 				}
 			}
 		});

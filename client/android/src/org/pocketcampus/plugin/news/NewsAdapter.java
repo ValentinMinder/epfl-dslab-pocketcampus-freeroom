@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.news;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.logging.Tracker;
 
 import android.content.Context;
 import android.content.Intent;
@@ -94,6 +95,9 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 				b.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+
+						Tracker.getInstance().trackPageView("news/viewItem");
+						
 						Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(newsItem.getLink()));
 						context_.startActivity(i);
 					}
