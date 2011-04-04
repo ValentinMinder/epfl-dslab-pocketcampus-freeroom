@@ -22,12 +22,15 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
+import org.pocketcampus.plugin.map.elements.MapPathOverlay;
+import org.pocketcampus.plugin.map.elements.Path;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.map.MapElementBean;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +53,7 @@ public class MapPlugin extends PluginBase {
 	private List<MapElementsList> layers_;
 	private List<MapElementsList> selectedLayers_;
 	private MyLocationOverlay myLocationOverlay_;
+	private MapPathOverlay mapPathOverlay_;
 	
 	/**
 	 * Overlays which are unconditionally displayed
@@ -96,14 +100,16 @@ public class MapPlugin extends PluginBase {
         mProvider.setTileSource(epflTile);
         TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
         constantOverlays_.add(mTilesOverlay);
-        mapView_.getOverlays().add(mTilesOverlay);
         
         // Following the user
         myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
         myLocationOverlay_.enableMyLocation();
         myLocationOverlay_.enableFollowLocation();
         constantOverlays_.add(myLocationOverlay_);
-        mapView_.getOverlays().add(myLocationOverlay_);
+        
+        // Path overlay
+        mapPathOverlay_ = new MapPathOverlay(Color.BLUE, this);
+        constantOverlays_.add(mapPathOverlay_);
 	}
 
 	@Override
@@ -156,6 +162,10 @@ public class MapPlugin extends PluginBase {
 		case R.id.map_my_position:
 			centerOnPosition();
 			return true;
+			
+		case R.id.map_path:
+			showDirections();
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -180,6 +190,17 @@ public class MapPlugin extends PluginBase {
 	
 	private void centerOnPosition() {
         myLocationOverlay_.enableFollowLocation();
+	}
+	
+	private void showDirections() {
+		
+		Path path = new Path();
+		ArrayList<GeoPoint> list = path.getGeoPointList();
+		list.add(new GeoPoint(46.51811752656941, 6.568092385190248));
+		list.add(new GeoPoint(46.52011208093279, 6.565411761843846));
+		list.add(new GeoPoint(46.51854536111413, 6.563350147693381));
+		
+		mapPathOverlay_.setPath(path);
 	}
 	
 	/**
