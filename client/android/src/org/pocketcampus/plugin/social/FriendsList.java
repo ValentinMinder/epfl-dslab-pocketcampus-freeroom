@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.AlertDialog;
@@ -49,7 +50,7 @@ public class FriendsList extends ListActivity {
 				.createIntent(this), R.drawable.mini_home));
 //		actionBar.addAction(new ActionBar.IntentClosingAction(this, new Intent(this, SocialLogout.class), android.R.drawable.presence_offline, this));
 		
-		
+		Tracker.getInstance().trackPageView("social/friends");
 		
 //		serverAPI_ = new ServerAPI();
 		sharedPreferences_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -101,9 +102,9 @@ public class FriendsList extends ListActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent friendsSearchIntent = new Intent(thisActivity_, FriendsSearch.class);
+				Intent intent = new Intent(thisActivity_, FriendsSearch.class);
+				thisActivity_.startActivity(intent);
 				thisActivity_.finish();
-				thisActivity_.startActivity(friendsSearchIntent);
 			}
 		});
 		
@@ -157,12 +158,5 @@ public class FriendsList extends ListActivity {
 				alert.show();
 			}
 		});
-	}
-	
-	@Override
-	public void onBackPressed() {
-		Intent backToLogin = new Intent(thisActivity_, SocialLogin.class);
-		this.finish();
-		startActivity(backToLogin);
 	}
 }

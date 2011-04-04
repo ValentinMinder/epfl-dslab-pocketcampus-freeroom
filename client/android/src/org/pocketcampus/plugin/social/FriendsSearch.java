@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.ListActivity;
@@ -45,6 +46,8 @@ public class FriendsSearch extends ListActivity {
 		});
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
+		
+		Tracker.getInstance().trackPageView("requests");
 		
 //		serverAPI_ = new ServerAPI();
 		sharedPreferences_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -154,9 +157,8 @@ public class FriendsSearch extends ListActivity {
 	}
 	
 	public void onBackPressed() {
-		Intent friendsListIntent = new Intent(FriendsSearch.this,
-				FriendsList.class);
-		startActivity(friendsListIntent);
+		Intent intent = new Intent(FriendsSearch.this, FriendsList.class);
+		startActivity(intent);
 		this.finish();
 	}
 }

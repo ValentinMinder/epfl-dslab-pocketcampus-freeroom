@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/Theme.MainLayout"
 	android:layout_width="fill_parent"
-	android:background="@drawable/social_background"
 	android:layout_height="fill_parent">
 	
 	<org.pocketcampus.core.ui.ActionBar
@@ -20,7 +20,6 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
 			<ImageView
-				android:src="@drawable/app_icon"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"></ImageView>
 		</LinearLayout>

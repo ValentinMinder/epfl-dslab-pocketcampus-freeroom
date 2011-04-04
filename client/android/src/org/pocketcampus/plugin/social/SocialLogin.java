@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.social;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.Activity;
@@ -28,7 +29,9 @@ public class SocialLogin extends Activity {
 		actionBar.setTitle("PocketCampus EPFL");
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin
 				.createIntent(this), R.drawable.mini_home));
-
+		
+		Tracker.getInstance().trackPageView("social/login");
+		
 //		serverAPI_ = new ServerAPI();
 		thisActivity_ = this;
 		sharedPreferences_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -81,11 +84,4 @@ public class SocialLogin extends Activity {
 		parentActivity.startActivity(new Intent(parentActivity, SocialLogin.class));
 		parentActivity.finish();
 	}
-	
-	@Override
-		public void onBackPressed() {
-			// TODO Auto-generated method stub
-			this.startActivity(new Intent(this, MainscreenPlugin.class));
-			this.finish();
-		}
 }

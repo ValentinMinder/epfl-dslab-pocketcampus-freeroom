@@ -9,6 +9,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.plugin.logging.Tracker;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class MainscreenPlugin extends PluginBase {
 	private Context ctx_;
 	private Core core_;
 	private Vector<PluginBase> plugins_;
+	private Tracker tracker_;
 
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, MainscreenPlugin.class);
@@ -41,7 +43,10 @@ public class MainscreenPlugin extends PluginBase {
 
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(getResources().getString(R.string.app_name));
-
+		
+		tracker_ = Tracker.getInstance();
+		tracker_.start("UA-22101967-1", 60, this);
+		
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();

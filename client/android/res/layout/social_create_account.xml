@@ -1,78 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:background="@drawable/social_background"
-	android:layout_gravity="center_horizontal">
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:padding="20dip"
-		android:orientation="vertical"
-		android:layout_gravity="center_horizontal">
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-			<ImageView
-				android:src="@drawable/app_icon"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"></ImageView>
-		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/TableRow01"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-			<TextView
-				android:text="@string/social_create_title"
-				android:id="@+id/socialLoginTitle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"></TextView>
-		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/TableRow01"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingRight="10dip"
-			android:paddingLeft="10dip">
-			<EditText
-				android:hint="@string/social_create_username_text"
-				android:text="@string/social_create_username_field"
-				android:paddingLeft="10dip"
-				android:id="@+id/socialCreateUsernameField"
-				android:singleLine="true"
-				android:maxLines="1"
-				android:ems="10"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"></EditText>
-		</LinearLayout>
-	
-		<TableRow
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingRight="10dip"
-			android:paddingLeft="10dip">
-			<EditText
-				android:hint="@string/social_create_password_text"
-				android:text="@string/social_create_password_field"
-				android:id="@+id/socialCreatePasswordField"
-				android:layout_width="fill_parent"
-				android:singleLine="true"
-				android:maxLines="1"
-				android:ems="10"
-				android:password="true"
-				android:layout_height="wrap_content"></EditText>
-		</TableRow>
-	
-		<Button
-			android:text="@string/social_create_button"
-			android:id="@+id/socialCreateButton"
-			android:layout_gravity="right"
-			android:layout_width="140dip"
-			android:layout_height="wrap_content"
-			android:paddingRight="10dip"></Button>
-	</LinearLayout>
-</FrameLayout>
+<TableLayout android:id="@+id/TableLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+<ToggleButton android:text="@+id/ToggleButton01" android:id="@+id/ToggleButton01" android:layout_width="wrap_content" android:layout_height="wrap_content"></ToggleButton>
+
+</TableRow>
+<TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content"><TextSwitcher android:id="@+id/TextSwitcher01" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextSwitcher>
+</TableRow>
+<TableRow android:id="@+id/TableRow03" android:layout_width="wrap_content" android:layout_height="wrap_content"><CheckedTextView android:text="@+id/CheckedTextView01" android:id="@+id/CheckedTextView01" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckedTextView>
+</TableRow>
+</TableLayout>

@@ -153,7 +153,7 @@ public class DirectoryPlugin extends PluginBase implements OnClickListener{
 		// You don't have to worry about which Servlet your talking to, it will automatically be the
 		// one corresponding to the plugin you're in.
 		// If you need to do a request from another class/Activity you can give it a RequestHandler instance.
-		getRequestHandler().execute(new DirectoryRequest(), reqParams);
+		//getRequestHandler().execute(new DirectoryRequest(), reqParams);
 		
 		
 		// To handle the loading another way, you can just use the RequestHandler to give you the complete
