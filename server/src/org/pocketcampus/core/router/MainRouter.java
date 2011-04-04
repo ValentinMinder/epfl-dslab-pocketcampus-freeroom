@@ -7,10 +7,12 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.pocketcampus.core.debug.Reporter;
+import org.pocketcampus.core.exception.ServerException;
 
 import com.google.gson.Gson;
 
@@ -19,18 +21,22 @@ public class MainRouter extends HttpServlet {
 	private static final long serialVersionUID = 2912684020711306666L;
 	
 	// List of available methods for the plugin
-	private static HashMap<String, HashMap<String, Method>> methods;
-	private static HashMap<String, IServerBase> classes;
+	private static HashMap<String, HashMap<String, Method>> methods_;
+	private static HashMap<String, IServerBase> classes_;
 	
-	private static Gson gson;
+	// Gson instance to serialize resulting objects
+	private static Gson gson_;
+	
+	private static Reporter reporter_;
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		
-		methods = new HashMap<String, HashMap<String, Method>>();
-		classes = new HashMap<String, IServerBase>();
-		gson = new Gson();
+		methods_ = new HashMap<String, HashMap<String, Method>>();
+		classes_ = new HashMap<String, IServerBase>();
+		gson_ = new Gson();
+		reporter_ = new Reporter();
 	}
 
 	/**
@@ -43,41 +49,42 @@ public class MainRouter extends HttpServlet {
 		String path = request.getPathInfo();
 
 		// Request without any command
-		if("/".equals(path)) {
-			listMethods(response);
+		if(path.equals("/")) {
+			reporter_.statusReport(response, classes_, methods_);
 			return;
 		}
 		
 		// Get the object and the method connected to the command
-		IServerBase obj = getObject(path);
-		Method m = getMethod(obj, path);
-		
-		invoke(request, response, obj, m);
+		try {
+			IServerBase obj = getObject(path);
+			Method m = getMethod(obj, path);
+			invoke(request, response, obj, m);
+			
+		} catch (ServerException e) {
+			reporter_.errorReport(response, e);
+		}
 		
 	}
 	
-	private void listMethods(HttpServletResponse response) {
+	private IServerBase getObject(String path) throws ServerException {
+		String className = getClassNameFromPath(path);
+		IServerBase obj = initClass(className);
 		
-		ServletOutputStream out;
-		try {
-			out = response.getOutputStream();
-			
-			out.println("Loaded plugins:");
-			out.println();
-
-			for(String c : methods.keySet()) {
-				out.println();
-				out.println(c);
-				
-				for(String m : methods.get(c).keySet()) {
-					out.println("-" + m);
-				}
-			}
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(obj == null) {
+			throw new ServerException("Object initialization failed.");
 		}
+		
+		return obj;
+	}
+	
+	private String getClassNameFromPath(String path) {
+		String split[] = path.split("/");
+		
+		if(split.length > 1) {
+			return "org.pocketcampus.plugin." + split[1];
+		}
+		
+		return null;
 	}
 
 	private void invoke(HttpServletRequest request, HttpServletResponse response, IServerBase obj, Method m) throws IOException {
@@ -90,7 +97,7 @@ public class MainRouter extends HttpServlet {
 			// Invoke the method
 			Object ret = m.invoke(obj, arglist);
 			
-			String json = gson.toJson(ret);
+			String json = gson_.toJson(ret);
 			
 			// Put the method content into the response
 			response.getOutputStream().println(json);
@@ -124,43 +131,25 @@ public class MainRouter extends HttpServlet {
 		
 	}
 	
-	private String getClassNameFromPath(String path) {
-		
-		String split[] = path.split("/");
-		
-		if(split.length > 1) {
-			return "org.pocketcampus.plugin." + split[1];
-		}
-		
-		return null;
-	}
-	
-	private IServerBase getObject(String path) {
-
-		String className = getClassNameFromPath(path);
-		IServerBase obj = initClass(className);
-		
-		return obj;
-	}
 	
 	private Method getMethod(IServerBase obj, String path) {
 		
 		String className = getClassNameFromPath(path);
 		String methodName = getMethodNameFromPath(path);
 		
-		if(methodName == null || !methods.get(className).containsKey(methodName)) {
+		if(methodName == null || !methods_.get(className).containsKey(methodName)) {
 			methodName = obj.getDefaultMethod();
 		}
 		
-		Method m = methods.get(className).get(methodName);
+		Method m = methods_.get(className).get(methodName);
 		
 		return m;
 	}
 	
-	private IServerBase initClass(String className) {
+	private IServerBase initClass(String className) throws ServerException {
 		
-		// Check if the class already exists
-		IServerBase clazz = classes.get(className);
+		// Checks if the class already exists
+		IServerBase clazz = classes_.get(className);
 		if(clazz != null) {
 			return clazz;
 		}
@@ -168,9 +157,7 @@ public class MainRouter extends HttpServlet {
 		IServerBase obj = null;
 		
 		try {
-			
 			Class<?> c = Class.forName(className);
-			
 			Constructor<?> ct = c.getConstructor();
 			
 			// Check that the class implements the correct interface
@@ -186,7 +173,7 @@ public class MainRouter extends HttpServlet {
 
 			obj = (IServerBase) ct.newInstance(new Object[0]);
 			
-			classes.put(className, obj);
+			classes_.put(className, obj);
 			
 			// Get the methods from the class
 			Method methlist[] = c.getDeclaredMethods();
@@ -201,7 +188,10 @@ public class MainRouter extends HttpServlet {
 				}
 			}
 			
-			methods.put(className, classMethods);
+			methods_.put(className, classMethods);
+			
+		} catch (ClassNotFoundException e) {
+			throw new ServerException("The class \"" + className + "\" was not found. You probably mispeled it.");
 			
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
@@ -213,9 +203,6 @@ public class MainRouter extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
