@@ -24,6 +24,7 @@ import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.elements.Path;
+import org.pocketcampus.plugin.map.elements.Search;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.map.MapElementBean;
 
@@ -193,12 +194,19 @@ public class MapPlugin extends PluginBase {
 	}
 	
 	private void showDirections() {
+
+		MapElement start = new MapElement("Depart", "", new GeoPoint(0, 0));
+		MapElement end = new MapElement("Arrivee", "", new GeoPoint(1, 1));
 		
+		Path path = Search.searchPathBetween(start, end, false);
+		
+		/*
 		Path path = new Path();
 		ArrayList<GeoPoint> list = path.getGeoPointList();
 		list.add(new GeoPoint(46.51811752656941, 6.568092385190248));
 		list.add(new GeoPoint(46.52011208093279, 6.565411761843846));
 		list.add(new GeoPoint(46.51854536111413, 6.563350147693381));
+		*/
 		
 		mapPathOverlay_.setPath(path);
 	}
