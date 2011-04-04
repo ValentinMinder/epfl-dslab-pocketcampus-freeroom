@@ -33,7 +33,8 @@
 		<activity android:name=".plugin.test.TestPreference"></activity>
 
 		<!-- Map Plugin -->
-		<activity android:name=".plugin.map.MapPlugin"></activity>
+		<activity android:name=".plugin.map.MapPlugin"
+		        android:configChanges="keyboardHidden|orientation"></activity>
 		<!-- activity android:name="plugin.map.MapPreference"></activity> -->
 		
 		<!--  Directory (ldap) Plugin -->

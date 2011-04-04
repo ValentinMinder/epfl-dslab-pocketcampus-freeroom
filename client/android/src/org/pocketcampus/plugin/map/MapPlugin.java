@@ -27,6 +27,7 @@ import org.pocketcampus.shared.map.MapElementBean;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,6 +131,11 @@ public class MapPlugin extends PluginBase {
 		myLocationOverlay_.disableMyLocation();
 		myLocationOverlay_.disableCompass();
 		super.onPause();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
 	}
 		
 	@Override
