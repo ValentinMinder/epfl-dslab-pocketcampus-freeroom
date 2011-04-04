@@ -7,7 +7,7 @@ import org.pocketcampus.core.plugin.VersionNumber;
 import org.pocketcampus.R;
 public class SocialInfo extends PluginInfo {
 	
-	Id id_ = new Id("social.Social");
+	Id id_ = new Id("social");
 	String name_ = "Social";
 	
 	@Override

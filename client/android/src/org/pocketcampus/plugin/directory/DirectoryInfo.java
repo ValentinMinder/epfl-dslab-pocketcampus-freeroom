@@ -15,7 +15,7 @@ public class DirectoryInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("Directory");
+		return new Id("directory");
 	}
 
 	@Override

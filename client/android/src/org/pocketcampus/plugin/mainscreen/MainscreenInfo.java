@@ -14,7 +14,7 @@ public class MainscreenInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("mainscreen.Mainscreen");
+		return new Id("mainscreen");
 	}
 
 	@Override

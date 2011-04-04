@@ -52,9 +52,13 @@ public class TestPlugin extends PluginBase {
 		// Create a class for your request with...
 		class UpperCaseRequest extends ServerRequest {
 			
+			@Override
+			protected void onPreExecute() {
+				setCommand("capitalize");
+			}
+			
 			// ...what to do when the result is ready
 			protected void onPostExecute(String result) {
-				
 				if(result != null) {
 					int elapsed = stopTimer();
 					

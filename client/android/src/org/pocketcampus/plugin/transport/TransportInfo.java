@@ -23,7 +23,7 @@ public class TransportInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("transport.Transport");
+		return new Id("transport");
 	}
 
 	@Override

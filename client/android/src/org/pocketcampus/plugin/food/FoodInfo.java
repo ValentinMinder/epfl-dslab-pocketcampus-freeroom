@@ -15,7 +15,7 @@ public class FoodInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("food.Food");
+		return new Id("food");
 	}
 
 	@Override

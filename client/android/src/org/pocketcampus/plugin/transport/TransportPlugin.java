@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.transport;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
