@@ -1,7 +1,8 @@
 package org.pocketcampus.plugin.map.elements;
 
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.PathOverlay;
+import org.pocketcampus.shared.map.Path;
+import org.pocketcampus.shared.map.Position;
 
 import android.content.Context;
 
@@ -15,7 +16,7 @@ public class MapPathOverlay extends PathOverlay {
 		
 		this.clearPath();
 		
-		for(GeoPoint p : path.getGeoPointList()) {
+		for(Position p : path.getPositionList()) {
 			this.addPoint(p.getLatitudeE6(), p.getLongitudeE6());
 		}
 	}

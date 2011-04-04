@@ -26,11 +26,11 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
-import org.pocketcampus.plugin.map.elements.Path;
 import org.pocketcampus.plugin.map.elements.Search;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.map.MapElementBean;
 import org.pocketcampus.shared.map.MapLayerBean;
+import org.pocketcampus.shared.map.Path;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -44,6 +44,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;

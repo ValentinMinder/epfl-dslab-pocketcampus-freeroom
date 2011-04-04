@@ -4,18 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
-import org.pocketcampus.core.service.positioning.Position;
+import org.pocketcampus.shared.map.Path;
+import org.pocketcampus.shared.map.Position;
 import org.pocketcampus.utils.CoordinateConverter;
-import org.slf4j.Marker;
 
 import android.util.Log;
 
@@ -147,37 +143,33 @@ public class Search {
 			JSONArray road = json.getJSONArray("roadmap");
 			for (int i=0;i<road.length();i++){
 
-				GeoPoint pos = CoordinateConverter.convertEPSG4326ToLatLong(road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(0),
-						road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(1)); /*,
-						road.getJSONObject(i).getJSONObject("properties").getInt("level"));*/
+				Position pos = CoordinateConverter.convertEPSG4326ToLatLong(road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(0),
+						road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(1),
+						road.getJSONObject(i).getJSONObject("properties").getInt("level"));
 				myPath.getRoadmapList().add(pos); 	
 			}
 
 
-			GeoPoint previousEnd = new GeoPoint(46.51811752656941, 6.568092385190248); //start.position();
-			myPath.getGeoPointList().add(previousEnd);
+			Position previousEnd = new Position(46.51811752656941, 6.568092385190248, 0); //start.position();
+			myPath.getPositionList().add(previousEnd);
 
 			int k=0;
 			for (int i = 0; i < coor.length(); i++) {
-				/*
-				int l1=myPath.getRoadmapList().get(k).getLevel();
-				int l2=myPath.getRoadmapList().get(k).getLevel();
-				GeoPoint pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(0).getDouble(0), coor.getJSONArray(i).getJSONArray(0).getDouble(1), l1);
-				GeoPoint pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(1).getDouble(0), coor.getJSONArray(i).getJSONArray(1).getDouble(1), l2);
-				*/
 				
-				GeoPoint pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(0).getDouble(0), coor.getJSONArray(i).getJSONArray(0).getDouble(1));
-				GeoPoint pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(1).getDouble(0), coor.getJSONArray(i).getJSONArray(1).getDouble(1));
+				int l1=myPath.getRoadmapList().get(k).getAltitude();
+				int l2=myPath.getRoadmapList().get(k).getAltitude();
+				Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(0).getDouble(0), coor.getJSONArray(i).getJSONArray(0).getDouble(1), l1);
+				Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(1).getDouble(0), coor.getJSONArray(i).getJSONArray(1).getDouble(1), l2);
 				
 				if((myPath.getRoadmapList().contains(pos1))||(myPath.getRoadmapList().contains(pos2))){
 					k=k+1;          	
 				}
 
 				if(pos1 == previousEnd) {
-					myPath.getGeoPointList().add(pos2);
+					myPath.getPositionList().add(pos2);
 					previousEnd = pos2;
 				} else {
-					myPath.getGeoPointList().add(pos1);
+					myPath.getPositionList().add(pos1);
 					previousEnd = pos1;
 				}
 			}

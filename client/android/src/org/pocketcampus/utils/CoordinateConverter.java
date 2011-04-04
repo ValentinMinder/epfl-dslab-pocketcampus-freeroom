@@ -1,6 +1,6 @@
 package org.pocketcampus.utils;
 
-import org.osmdroid.util.GeoPoint;
+import org.pocketcampus.shared.map.Position;
 
 
 public class CoordinateConverter {
@@ -9,9 +9,10 @@ public class CoordinateConverter {
  * 
  * @param x northing in EPSG:4326
  * @param y easting in EPSG:4326
+ * @param level the level(not modified)
  * @return A Position in standard lat/long coordinates (WGS84)
  */
-	public static GeoPoint convertEPSG4326ToLatLong(double x, double y) {	
+	public static Position convertEPSG4326ToLatLong(double x, double y, int level) {	
 		double a = 6378137;
 		double lat = (Math.PI/2.0 - 2.0 * Math.atan(Math.exp(-y / a)));
 		double lon = adjust_lon(x/a);
@@ -20,15 +21,16 @@ public class CoordinateConverter {
 		lat = lat/Math.PI*180;
 		lon = lon/Math.PI*180;
 
-		return new GeoPoint(lat, lon);
+		return new Position(lat, lon, level);
 	}
 
 	/**
 	 * @param lat Latitude in WGS84
 	 * @param lon Longitude in WGS84
+	 * @param level the level(not modified)
 	 * @return A Position in standard EPSG:4326
 	 */
-	public static GeoPoint convertLatLongToEPSG4326(double lat, double lon) {
+	public static Position convertLatLongToEPSG4326(double lat, double lon, int level) {
 		double a = 6378137;
 		
 		//convert to radian
@@ -38,16 +40,17 @@ public class CoordinateConverter {
 		double x = a*adjust_lon(lon);
 		double y = a*Math.log(Math.tan(Math.PI/4.0 + 0.5*lat));
 
-		return new GeoPoint(x, y);
+		return new Position(x, y, level);
 	}
 	
 	/**
 	 * 
 	 * @param x northing in CH1903
 	 * @param y easting in CH1903
+	 * @param level the level(not modified)
 	 * @return A Position in standard lat/long coordinates (WGS84)
 	 */
-	public static GeoPoint convertCH1903ToLatLong(double x, double y) {	
+	public static Position convertCH1903ToLatLong(double x, double y, int level) {	
 		double y_aux = (y - 600000)/1000000;
 		double x_aux = (x - 200000)/1000000;
 
@@ -68,7 +71,7 @@ public class CoordinateConverter {
 
 		lng = lng * 100/36;
 
-		return new GeoPoint(lat, lng);
+		return new Position(lat, lng, level);
 	}
 	
 	private static double adjust_lon(double x) {
@@ -76,3 +79,4 @@ public class CoordinateConverter {
 		return x;
 	}
 }
+
