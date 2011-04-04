@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.map.elements;
 import java.util.ArrayList;
 
 import org.osmdroid.views.overlay.OverlayItem;
+import org.pocketcampus.shared.map.MapLayerBean;
 
 import android.graphics.drawable.Drawable;
 
@@ -15,12 +16,23 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	 */
 	private String layerTitle_;
 	private int cacheTimeInMinutes_;
+	private int layerId_;
 	
 	public MapElementsList(String title, int cache) {
 		this.layerTitle_ = title;
 		this.cacheTimeInMinutes_ = cache;
 	}
+	
+	public MapElementsList(MapLayerBean mlb) {
+		this.layerTitle_ = mlb.getName();
+		this.cacheTimeInMinutes_ = mlb.getCache();
+		this.layerId_ = mlb.getId();
+		//XXX more?
+	}
 		
+	public int getLayerId() {
+		return layerId_;
+	}
 		
 	public Drawable getDefaultDrawable() {
 		//TODO 
@@ -49,31 +61,22 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	public void setCacheTimeInMinutes(int cacheTimeInMinutes) {
 		this.cacheTimeInMinutes_ = cacheTimeInMinutes;
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((layerTitle_ == null) ? 0 : layerTitle_.hashCode());
-		return result;
-	}
-
+		
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MapElementsList other = (MapElementsList) obj;
-		if (layerTitle_ == null) {
-			if (other.layerTitle_ != null)
+		else
+			if (obj.getClass() != getClass())
 				return false;
-		} else if (!layerTitle_.equals(other.layerTitle_))
-			return false;
-		return true;
+			else
+				return ((MapElementsList)obj).layerId_ == this.layerId_ &&
+					((MapElementsList)obj).layerTitle_.equals(this.layerTitle_);
+	}
+	
+	@Override
+	public String toString() {
+		return "MapElementsList:<" + this.layerTitle_ + ">";
 	}
 
 }

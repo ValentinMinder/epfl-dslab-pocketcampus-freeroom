@@ -9,4 +9,8 @@
     
 	<string name="directory_friendly_name">Directory</string>
 	<string name="directory_search">Search</string>
+	
+	<string name="server_connection_error">Server connection error</string>
+	<string name="please_wait">Please wait...</string>
+	<string name="unexpected_response">Unexpected response from server</string>
 </resources>

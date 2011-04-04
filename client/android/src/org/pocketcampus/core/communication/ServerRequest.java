@@ -16,7 +16,10 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 		System.out.println(params[0]);
 		System.out.println(pluginInfo_.getId());
 		
-		String url = serverUrl_ + pluginInfo_.getId() + "/" + command_ + params[0].toString();
+		String url = serverUrl_ + pluginInfo_.getId() + "/" + command_;
+		if(params[0] != null) {
+			url += params[0].toString();
+		}
 		
 		HttpRequest req = new HttpRequest(url);
 		
