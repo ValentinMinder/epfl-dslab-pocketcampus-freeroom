@@ -103,7 +103,9 @@ public class MainRouter extends HttpServlet {
 		arglist[0] = request;
 
 		try {
-
+			// sets the content type
+			response.setCharacterEncoding("UTF-8");
+			
 			// Invoke the method
 			Object ret = m.invoke(obj, arglist);
 			
@@ -204,22 +206,22 @@ public class MainRouter extends HttpServlet {
 			throw new ServerException("The class <b>" + className + "</b> was not found. Mispelled?");
 			
 		} catch (IllegalArgumentException e) {
-			throw new ServerException();
+			throw new ServerException("IllegalArgumentException");
 			
 		} catch (InstantiationException e) {
-			throw new ServerException();
+			throw new ServerException("InstantiationException");
 			
 		} catch (IllegalAccessException e) {
-			throw new ServerException();
+			throw new ServerException("IllegalAccessException");
 			
 		} catch (InvocationTargetException e) {
-			throw new ServerException();
+			throw new ServerException("InvocationTargetException");
 			
 		} catch (SecurityException e) {
-			throw new ServerException();
+			throw new ServerException("SecurityException");
 			
 		} catch (NoSuchMethodException e) {
-			throw new ServerException();
+			throw new ServerException("NoSuchMethodException");
 			
 		}
 		
