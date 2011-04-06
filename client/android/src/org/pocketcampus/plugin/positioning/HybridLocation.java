@@ -1,5 +1,57 @@
 package org.pocketcampus.plugin.positioning;
 
-public class HybridLocation {
+import java.io.IOException;
 
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.pocketcampus.core.service.positioning.GpsLocation;
+import org.pocketcampus.core.service.positioning.GsmLocation;
+import org.pocketcampus.core.service.positioning.Position;
+import org.pocketcampus.core.service.positioning.WifiLocation;
+
+import android.content.Context;
+
+public class HybridLocation {
+	
+	private GpsLocation gpsLocation_;
+	private GsmLocation gsmLocation_;
+	private WifiLocation wifiLocation_;
+	private Context ctx_;
+	private MapView mapView_;
+	
+	
+	public HybridLocation(Context _ctx , MapView _map){
+		
+		this.ctx_ = _ctx;
+		this.mapView_ = _map;
+		this.gpsLocation_ = new GpsLocation(ctx_,mapView_);
+		this.gsmLocation_ = new GsmLocation(ctx_);
+		this.wifiLocation_ = new WifiLocation(ctx_);
+	}
+
+	
+	
+	
+	public GeoPoint getGsmLocation() throws IOException{
+		return this.gsmLocation_.getGSMLocation();
+	}
+	
+	
+	public GeoPoint getGpsLocation(){
+		return this.gpsLocation_.getGpsLocation();
+	}
+	
+	public Position getWifiLocation(){
+		return null;
+		// to do 
+	}
+	
+	
+	public Position getHybridLocation(){
+		return null;
+		// TODO
+	}
 }
+
+
+
