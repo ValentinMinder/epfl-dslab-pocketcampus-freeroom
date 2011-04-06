@@ -10,12 +10,7 @@ package org.pocketcampus.core.service.positioning;
  * [     STATUS    ]    under developement
  *
  **************************[ C O M M E N T S ]**********************
- *
- * See the IMap class for methods documentation.
- * 
- * There's a lot of functionalities handled from here, so please keep
- * this class as clean as possible and put as much logic as possible
- * in separate classes.
+ *   Naive version
  *
  *******************************************************************
  */
