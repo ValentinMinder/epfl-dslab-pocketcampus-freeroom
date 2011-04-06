@@ -31,7 +31,6 @@ public class TransportPlugin extends PluginBase {
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
 
-//	private SbbProvider sbbProvider_; XXX
 	private Calendar dateTime_;
 	
 	private AutoCompleteTextView departureAutoCompleteTextView_;
@@ -48,18 +47,17 @@ public class TransportPlugin extends PluginBase {
 		setContentView(R.layout.transport_main);
 		setupActionBar(true);
 		
-//		sbbProvider_ = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
 		dateTime_ = Calendar.getInstance();
 		
 		resultTextView_ = (TextView) findViewById(R.id.result);
 
-//		departureAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_departure);
-//		LocationAdapter adapterDeparture = new LocationAdapter(this, R.layout.transport_locationentry, departureAutoCompleteTextView_, sbbProvider_);
-//		departureAutoCompleteTextView_.setAdapter(adapterDeparture);
-//
-//		arrivalAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_arrival);
-//		LocationAdapter adapterArrival = new LocationAdapter(this, R.layout.transport_locationentry, arrivalAutoCompleteTextView_, sbbProvider_);
-//		arrivalAutoCompleteTextView_.setAdapter(adapterArrival);
+		departureAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_departure);
+		LocationAdapter adapterDeparture = new LocationAdapter(this, R.layout.transport_locationentry, departureAutoCompleteTextView_, getRequestHandler());
+		departureAutoCompleteTextView_.setAdapter(adapterDeparture);
+
+		arrivalAutoCompleteTextView_ = (AutoCompleteTextView) findViewById(R.id.location_arrival);
+		LocationAdapter adapterArrival = new LocationAdapter(this, R.layout.transport_locationentry, arrivalAutoCompleteTextView_, getRequestHandler());
+		arrivalAutoCompleteTextView_.setAdapter(adapterArrival);
 
 		dateButton_ = (Button) findViewById(R.id.date_button);
 		updateDateDisplay();

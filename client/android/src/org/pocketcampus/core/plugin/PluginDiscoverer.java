@@ -3,7 +3,6 @@ package org.pocketcampus.core.plugin;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.camipro.CamiproPlugin;
-import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
@@ -38,7 +37,7 @@ public class PluginDiscoverer {
 		// TODO scan for available plugins automatically
 		plugins.add(new NewsPlugin());
 		plugins.add(new TestPlugin());
-		plugins.add(new DirectoryPlugin());
+		//plugins.add(new DirectoryPlugin());
 		plugins.add(new FoodPlugin());
 		plugins.add(new SocialPlugin());
 		plugins.add(new CamiproPlugin());
