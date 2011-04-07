@@ -2,10 +2,10 @@ package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.FoodListSection.ViewHolder;
-import org.pocketcampus.plugin.food.menu.Meal;
-import org.pocketcampus.plugin.food.menu.Rating;
-import org.pocketcampus.plugin.food.menu.Restaurant;
-import org.pocketcampus.plugin.food.menu.StarRating;
+import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.food.Rating;
+import org.pocketcampus.shared.food.Restaurant;
+import org.pocketcampus.shared.food.StarRating;
 
 import android.app.Activity;
 import android.os.AsyncTask;

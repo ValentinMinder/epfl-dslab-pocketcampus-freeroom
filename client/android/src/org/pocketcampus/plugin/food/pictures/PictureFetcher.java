@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.shared.food.Meal;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

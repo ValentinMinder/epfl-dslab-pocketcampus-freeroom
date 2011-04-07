@@ -13,10 +13,10 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.Meal;
-import org.pocketcampus.plugin.food.menu.Rating;
-import org.pocketcampus.plugin.food.menu.Restaurant;
-import org.pocketcampus.plugin.food.menu.StarRating;
+import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.food.Rating;
+import org.pocketcampus.shared.food.Restaurant;
+import org.pocketcampus.shared.food.StarRating;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -79,8 +79,8 @@ public class MenuDialog extends Dialog {
 		numbVotes = (TextView) findViewById(R.id.food_menudialog_nbvotes);
 
 		// Set title of dialog box to Meal @ Restaurant
-		title.setText(meal.getName() + " @ " + meal.getRestaurant().getName());
-		description.setText(meal.getDescription());
+		title.setText(meal.getName_() + " @ " + meal.getRestaurant_().getName());
+		description.setText(meal.getDescription_());
 
 		// Clicking on the star rating will open the rating dialog
 		/*rateItYourself.setOnClickListener(new View.OnClickListener() {

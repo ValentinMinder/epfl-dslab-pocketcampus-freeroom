@@ -13,10 +13,10 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MealTag;
 import org.pocketcampus.plugin.food.menu.MealTagger;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+import org.pocketcampus.shared.food.Meal;
 
 import android.app.Activity;
 import android.content.Context;

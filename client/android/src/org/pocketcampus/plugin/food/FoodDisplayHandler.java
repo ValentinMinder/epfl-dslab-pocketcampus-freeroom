@@ -7,14 +7,15 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.plugin.food.menu.FoodMenu;
-import org.pocketcampus.plugin.food.menu.Meal;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
-import org.pocketcampus.plugin.food.menu.Rating;
-import org.pocketcampus.plugin.food.menu.StarRating;
 import org.pocketcampus.plugin.food.sandwiches.Sandwich;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListStore;
+import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.food.Rating;
+import org.pocketcampus.shared.food.StarRating;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -40,14 +41,14 @@ public class FoodDisplayHandler {
 	private FoodPlugin ownerActivity_;
 	private Context activityContext_;
 
-	public FoodDisplayHandler(FoodPlugin ownerActivity) {
+	public FoodDisplayHandler(FoodPlugin ownerActivity, RequestHandler requestHandler_) {
 		ownerActivity_ = ownerActivity;
 		activityContext_ = ownerActivity.getApplicationContext();
 
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
 		currentDisplayType_ = FoodDisplayType.Restaurants;
 
-		campusMenu_ = new FoodMenu(ownerActivity_);
+		campusMenu_ = new FoodMenu(ownerActivity_, requestHandler_);
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		campusSandwich_ = new Vector<Vector<Sandwich>>();
 

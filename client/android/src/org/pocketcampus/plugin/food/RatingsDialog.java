@@ -14,7 +14,7 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.shared.food.Meal;
 
 import android.app.Dialog;
 import android.content.Context;

@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.Set;
 
-import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.shared.food.Meal;
 
 import android.app.Activity;
 import android.content.ContentValues;

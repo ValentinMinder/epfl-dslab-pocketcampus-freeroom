@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.pocketcampus.shared.food.Meal;
+
 import android.util.Log;
 
 public class MealTagger {
@@ -122,10 +124,10 @@ public class MealTagger {
 			return false;
 		}
 		
-		String mealDescription = meal.getDescription();
+		String mealDescription = meal.getDescription_();
 		String mDescr = mealDescription.replaceAll("[\\r\\n]", " ");
 		mDescr = mDescr.toLowerCase();
-		String mealName = meal.getName();
+		String mealName = meal.getName_();
 		mealName = mealName.toLowerCase();
 		String match = mealName.concat(mDescr);
 		

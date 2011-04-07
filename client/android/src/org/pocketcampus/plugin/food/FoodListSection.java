@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.food;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.shared.food.Meal;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -125,8 +125,8 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		// Bind the data efficiently with the holder.
 		Meal currentMeal = meal_.get(position);
 
-		holder.menuLine.setText(currentMeal.getDescription());
-		holder.titleLine.setText(currentMeal.getName());
+		holder.menuLine.setText(currentMeal.getDescription_());
+		holder.titleLine.setText(currentMeal.getName_());
 
 		new RatingsDownloader(currentMeal, menusActivity_, holder);
 

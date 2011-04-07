@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.food.RatedMeal;
+import org.pocketcampus.shared.food.Rating;
+import org.pocketcampus.shared.food.Restaurant;
+
 public class MenuSorter {
 
 	public MenuSorter() {}
@@ -34,7 +39,7 @@ public class MenuSorter {
 		
 		Set<Meal> set = menu_.getMeals();
 		for(Meal meal : set){
-			if(!meal.getDescription().matches("\\s+")){
+			if(!meal.getDescription_().matches("\\s+")){
 				Rating rate = menu_.getRating(meal);
 				if(rate != null)
 				ratedMeals.add(new RatedMeal(meal, rate));
@@ -69,9 +74,9 @@ public class MenuSorter {
 		HashMap<String, Vector<Meal>> map = new HashMap<String, Vector<Meal>>();
 		
 		for (Meal meal : meals) {
-			String resto = meal.getRestaurant().getName();
+			String resto = meal.getRestaurant_().getName();
 
-			if (!meal.getDescription().matches("\\s+")) {
+			if (!meal.getDescription_().matches("\\s+")) {
 				if (map.containsKey(resto)) {
 					map.get(resto).add(meal);
 				} else {
@@ -80,14 +85,14 @@ public class MenuSorter {
 					map.put(resto, vector);
 				}
 			} else {
-				System.out.println("SortingMeals: Skip empty Description: "+meal.getDescription()+" - Name: "+meal.getName()+" Resto: "+meal.getRestaurant());
+				System.out.println("SortingMeals: Skip empty Description: "+meal.getDescription_()+" - Name: "+meal.getName_()+" Resto: "+meal.getRestaurant_());
 			}
 		}
 		Set<String> menus = map.keySet();
 		for(String resto : menus){
 			Collections.sort(map.get(resto), new Comparator<Meal>() {
 			    public int compare(Meal one, Meal other) {
-			        return one.getName().compareTo(other.getName());
+			        return one.getName_().compareTo(other.getName_());
 			    }
 			});
 		}
@@ -114,8 +119,8 @@ public class MenuSorter {
 		}
 		Set<Meal> set = meals.getMeals();
 		for (Meal meal : set) {
-			if(!meal.getDescription().matches("\\s+")){
-				int day = meal.getDay();
+			if(!meal.getDescription_().matches("\\s+")){
+				int day = meal.getDay_();
 				vec.get(day-2).add(meal);
 			}
 		}	

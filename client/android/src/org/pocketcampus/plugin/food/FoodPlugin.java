@@ -8,7 +8,7 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
-import org.pocketcampus.plugin.food.menu.Meal;
+import org.pocketcampus.shared.food.Meal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,7 +48,7 @@ public class FoodPlugin extends PluginBase {
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		
 		// DisplayHandler
-		foodDisplayHandler = new FoodDisplayHandler(this);
+		foodDisplayHandler = new FoodDisplayHandler(this, getRequestHandler());
 	}
 
 	private void loadFirstScreen(int layout) {
