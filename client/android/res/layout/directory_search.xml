@@ -16,9 +16,9 @@
     </LinearLayout>
     <Button android:layout_width="fill_parent" android:text="Search" android:id="@+id/directory_search_button" android:layout_height="wrap_content" android:layout_below="@+id/directory_ll2"></Button>
     
-     <LinearLayout android:id="@+id/directory_ll3" android:layout_height="match_parent" android:layout_width="wrap_content" android:visibility="invisible" android:layout_below="@+id/directory_search_button" android:gravity="center_horizontal">
-        <TextView android:id="@+id/textView3" android:text="Sciper:" android:layout_height="wrap_content" android:layout_width="20px"></TextView>
-        <EditText android:id="@+id/directory_sciper_input" android:layout_height="wrap_content" android:inputType="number" android:layout_width="20px"></EditText>
+     <LinearLayout android:id="@+id/directory_ll3" android:visibility="invisible" android:layout_below="@+id/directory_search_button" android:layout_height="wrap_content">
+        <TextView android:id="@+id/textView3" android:text="Sciper:" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+        <EditText android:id="@+id/directory_sciper_input" android:layout_height="wrap_content" android:inputType="number" android:layout_width="fill_parent"></EditText>
     </LinearLayout>
     
    
