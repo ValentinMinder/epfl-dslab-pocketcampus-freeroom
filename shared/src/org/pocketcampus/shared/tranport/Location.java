@@ -24,12 +24,16 @@ import java.io.Serializable;
  */
 public final class Location implements Serializable
 {
-	public final LocationType type;
-	public final int id;
-	public final int lat, lon;
-	public final String place;
-	public final String name;
-
+	public LocationType type;
+	public int id;
+	public int lat, lon;
+	public String place;
+	public String name;
+	
+	public Location() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Location(final LocationType type, final int id, final int lat, final int lon, final String place, final String name)
 	{
 		this.type = type;
