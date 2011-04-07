@@ -15,34 +15,26 @@ public class Person implements Serializable {
 	String first_name;
 	String last_name;
 	String mail;
-	//URL web;
+	String web;
 	public String phone_number;
 	String room;
+	String uid;
 	//List<PersonStatus> status;
 	
-	public Person(String first_name, String last_name, String mail, String web, String phone_number, String room, List<PersonStatus> status) {
+	public Person(String first_name, String last_name, String mail, String web, String phone_number, String room, String uid) {
 
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.mail = mail;
-//		try {
-//			this.web = new URL (randomString());
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//		}
+		this.web =web;
 		this.phone_number = phone_number;
 		this.room = room;
-		//this.status = status;
+		this.uid = uid;
 	}
 	
 	public Person(String n){
 		first_name = n;
 		
-//		try {
-//			web = new URL (randomString());
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//		}
 		
 		//status = new ArrayList<PersonStatus>();
 		//status.add(new PersonStatus("etudiant", randomString() ));
@@ -57,6 +49,13 @@ public class Person implements Serializable {
 
 	public String toString(){
 		return  first_name + " " + last_name;
+	}
+	
+	public boolean equals(Object p){
+		if(uid.compareTo( ((Person)p ).uid) == 0)
+			return true;
+		else
+			return false;
 	}
 	
 	public String fullInfoToString(){
