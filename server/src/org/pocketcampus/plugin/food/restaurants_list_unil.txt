@@ -1,0 +1,4 @@
+<Resto>
+	<name>Unil</name>
+	<rssfeed>http://www2.unil.ch/menus/rss/menus-du-jour/</rssfeed>
+</Resto>
