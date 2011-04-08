@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.shared.tranport.Location;
 
 import de.schildbach.pte.SbbProvider;
 
-public class Transport implements IServerBase {
+public class Transport implements IPlugin {
 	
 	private SbbProvider sbbProvider_;
 	

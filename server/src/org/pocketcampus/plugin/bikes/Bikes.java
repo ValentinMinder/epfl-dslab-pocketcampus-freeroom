@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.shared.bikes.BikeStation;
 
-public class Bikes  implements IServerBase {
+public class Bikes implements IPlugin, IMapElementsProvider {
 
 	@PublicMethod
 	public ArrayList<BikeStation> bikes(HttpServletRequest request) {
@@ -24,6 +25,16 @@ public class Bikes  implements IServerBase {
 		
 		return bikes;
     }
+
+	@Override
+	public String getLayerName() {
+		return "Velopass";
+	}
+
+	@Override
+	public String getLayerDescription() {
+		return "Shows available bicycles.";
+	}
 	
 
 }

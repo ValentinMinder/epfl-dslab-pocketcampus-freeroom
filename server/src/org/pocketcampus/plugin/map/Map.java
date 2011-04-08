@@ -6,18 +6,36 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.core.plugin.Core;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.shared.map.MapElementBean;
 import org.pocketcampus.shared.map.MapLayerBean;
 
-public class Map implements IServerBase {
-	
+public class Map implements IPlugin {
+	@PublicMethod
+	public String layers(HttpServletRequest request) {
+		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
+		
+		String layersDesc = "";
+		Iterator<IPlugin> iter = providers.iterator();
+		IMapElementsProvider provider;
+		
+		while(iter.hasNext()) {
+			provider = (IMapElementsProvider)iter.next();
+			layersDesc += provider.getLayerName() + " ("+ provider.getLayerDescription() +"); ";
+		}
+		
+		return layersDesc;
+	}
 
 	@PublicMethod
 	public String map(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package org.pocketcampus.core.router;
+package org.pocketcampus.core.plugin;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -13,30 +13,46 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.pocketcampus.core.debug.Reporter;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.shared.utils.StringUtils;
 
 import com.google.gson.Gson;
 
-public class MainRouter extends HttpServlet {
-	
+/**
+ * Server core. Singleton
+ * @author Jonas
+ * @author Florian
+ * @status working, incomplete
+ */
+public class Router extends HttpServlet {
+	/** Serialization crap */
 	private static final long serialVersionUID = 2912684020711306666L;
 	
-	// List of available methods for the plugin
-	private static HashMap<String, HashMap<String, Method>> methods_;
-	private static HashMap<String, IServerBase> classes_;
+	private Core core_;
 	
-	// Gson instance to serialize resulting objects
+	/** Gson instance to serialize resulting objects */
 	private static Gson gson_;
 	
+	/** Displays nice HTML pages */
 	private static Reporter reporter_;
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		
-		methods_ = new HashMap<String, HashMap<String, Method>>();
-		classes_ = new HashMap<String, IServerBase>();
+		core_ = Core.getInstance();
 		gson_ = new Gson();
 		reporter_ = new Reporter();
+		
+		// XXX
+		try {
+			initClass("org.pocketcampus.plugin.food.Food");
+			initClass("org.pocketcampus.plugin.map.Map");
+			initClass("org.pocketcampus.plugin.transport.Transport");
+			initClass("org.pocketcampus.plugin.test.Test");
+			initClass("org.pocketcampus.plugin.bikes.Bikes");
+		} catch (ServerException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -50,13 +66,13 @@ public class MainRouter extends HttpServlet {
 
 		// Request without any command
 		if(path.equals("/")) {
-			reporter_.statusReport(response, classes_, methods_);
+			reporter_.statusReport(response, core_.getPluginList(), core_.getMethodList());
 			return;
 		}
 		
 		// Get the object and the method connected to the command
 		try {
-			IServerBase obj = getObject(path);
+			IPlugin obj = getObject(path);
 			Method m = getMethod(obj, path);
 			invoke(request, response, obj, m);
 			
@@ -66,14 +82,20 @@ public class MainRouter extends HttpServlet {
 		
 	}
 	
-	private IServerBase getObject(String path) throws ServerException {
+	/**
+	 * Creates an instance of the plugin from its path.
+	 * @param plugin path
+	 * @return instance of the plugin
+	 * @throws ServerException
+	 */
+	private IPlugin getObject(String path) throws ServerException {
 		String className = getClassNameFromPath(path);
 		
 		if(className==null || className.equals("")) {
 			throw new ServerException("No method provided.");
 		}
 		
-		IServerBase obj = initClass(className);
+		IPlugin obj = initClass(className);
 		
 		if(obj == null) {
 			throw new ServerException("Object initialization failed.");
@@ -82,36 +104,44 @@ public class MainRouter extends HttpServlet {
 		return obj;
 	}
 	
+	/**
+	 * Extracts the class name of a class path.
+	 * @param class path of a plugin
+	 * @return class name
+	 */
 	private String getClassNameFromPath(String path) {
 		String split[] = path.split("/");
 		
 		if(split.length > 1) {
-			return "org.pocketcampus.plugin." + split[1].toLowerCase() + "." + capitalize(split[1]);
+			return "org.pocketcampus.plugin." + split[1].toLowerCase() + "." + StringUtils.capitalize(split[1]);
 		}
 		
 		return null;
 	}
 	
-	private static String capitalize(String s) {
-        if (s.length() == 0) return s;
-        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-    }
-
-	private void invoke(HttpServletRequest request, HttpServletResponse response, IServerBase obj, Method m) throws IOException {
+	/**
+	 * Invokes the plugin.
+	 * @param request
+	 * @param response
+	 * @param obj
+	 * @param m
+	 * @throws IOException
+	 */
+	private void invoke(HttpServletRequest request, HttpServletResponse response, IPlugin obj, Method m) throws IOException {
 		// Create the arguments to pass to the method
 		Object arglist[] = new Object[1];
 		arglist[0] = request;
 
 		try {
-			// sets the content type
+			// Sets the content type
 			response.setCharacterEncoding("UTF-8");
 			
-			// Invoke the method
+			// Invokes the method
 			Object ret = m.invoke(obj, arglist);
 			
 			String json = gson_.toJson(ret);
 			
-			// Put the method content into the response
+			// Puts the method content into the response
 			response.getOutputStream().println(json);
 			
 		} catch (IllegalArgumentException e) {
@@ -144,29 +174,28 @@ public class MainRouter extends HttpServlet {
 	}
 	
 	
-	private Method getMethod(IServerBase obj, String path) throws ServerException {
-		
+	private Method getMethod(IPlugin obj, String path) throws ServerException {
 		String className = getClassNameFromPath(path);
 		String methodName = getMethodNameFromPath(path);
 		
-		if(methodName == null || !methods_.get(className).containsKey(methodName)) {
+		if(methodName == null || !core_.getMethodList().get(className).containsKey(methodName)) {
 			throw new ServerException("Method <b>"+ methodName +"</b> not found in package <b>"+ className +"</b>. Mispelled?");
 		}
 		
-		Method m = methods_.get(className).get(methodName);
+		Method m = core_.getMethodList().get(className).get(methodName);
 		
 		return m;
 	}
 	
-	private IServerBase initClass(String className) throws ServerException {
+	private IPlugin initClass(String className) throws ServerException {
 		
 		// Checks if the class already exists
-		IServerBase clazz = classes_.get(className);
+		IPlugin clazz = core_.getPluginList().get(className);
 		if(clazz != null) {
 			return clazz;
 		}
 		
-		IServerBase obj = null;
+		IPlugin obj = null;
 		
 		try {
 			Class<?> c = Class.forName(className);
@@ -176,16 +205,16 @@ public class MainRouter extends HttpServlet {
 			Class<?>[] interfaces = c.getInterfaces();
 			boolean ok = false;
 			for(Class<?> i : interfaces) {
-				ok = ok || i.equals(IServerBase.class);
+				ok = ok || i.equals(IPlugin.class);
 			}
 			
 			if(!ok) {
 				return null;
 			}
 
-			obj = (IServerBase) ct.newInstance(new Object[0]);
+			obj = (IPlugin) ct.newInstance(new Object[0]);
 			
-			classes_.put(className, obj);
+			core_.getPluginList().put(className, obj);
 			
 			// Get the methods from the class
 			Method methlist[] = c.getDeclaredMethods();
@@ -200,7 +229,7 @@ public class MainRouter extends HttpServlet {
 				}
 			}
 			
-			methods_.put(className, classMethods);
+			core_.getMethodList().put(className, classMethods);
 			
 		} catch (ClassNotFoundException e) {
 			throw new ServerException("The class <b>" + className + "</b> was not found. Mispelled?");

@@ -9,7 +9,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.pocketcampus.core.exception.ServerException;
-import org.pocketcampus.core.router.IServerBase;
+import org.pocketcampus.core.plugin.IPlugin;
 
 public class Reporter {
 	private Date startupTime_;
@@ -50,7 +50,7 @@ public class Reporter {
 		return uptime + "s";
 	}
 
-	public void statusReport(HttpServletResponse response, HashMap<String, IServerBase> classes, HashMap<String, HashMap<String, Method>> methods) {
+	public void statusReport(HttpServletResponse response, HashMap<String, IPlugin> classes, HashMap<String, HashMap<String, Method>> methods) {
 		String content = "<p><b>Loaded plugins</b></p>";
 		content += "<ul>";
 

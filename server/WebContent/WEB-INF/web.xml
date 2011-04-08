@@ -12,12 +12,12 @@
 
   <servlet>
     <description></description>
-    <display-name>MainRouter</display-name>
-    <servlet-name>MainRouter</servlet-name>
-    <servlet-class>org.pocketcampus.core.router.MainRouter</servlet-class>
+    <display-name>Router</display-name>
+    <servlet-name>Router</servlet-name>
+    <servlet-class>org.pocketcampus.core.plugin.Router</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>MainRouter</servlet-name>
+    <servlet-name>Router</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
   

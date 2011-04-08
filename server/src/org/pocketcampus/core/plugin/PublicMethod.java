@@ -1,4 +1,4 @@
-package org.pocketcampus.core.router;
+package org.pocketcampus.core.plugin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

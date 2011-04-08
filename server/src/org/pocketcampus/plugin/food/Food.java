@@ -6,15 +6,16 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.food.RssParser.RssFeed;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.shared.food.Meal;
 import org.pocketcampus.shared.food.Rating;
 import org.pocketcampus.shared.food.Restaurant;
 import org.pocketcampus.shared.food.StarRating;
 
-public class Food implements IServerBase {
+public class Food implements IPlugin, IMapElementsProvider {
 
 	private HashMap<Meal, Rating> campusMenu_;
 
@@ -111,5 +112,15 @@ public class Food implements IServerBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getLayerName() {
+		return "Restaurants";
+	}
+
+	@Override
+	public String getLayerDescription() {
+		return "Places to eat.";
 	}
 }

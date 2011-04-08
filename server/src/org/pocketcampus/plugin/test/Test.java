@@ -4,13 +4,14 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.provider.newsfeed.INewsFeedProvider;
 
 /**
  * Servlet implementation class Test
  */
-public class Test implements IServerBase {
+public class Test implements IPlugin, INewsFeedProvider {
 
 	private static final long serialVersionUID = -3719959899511131113L;
 

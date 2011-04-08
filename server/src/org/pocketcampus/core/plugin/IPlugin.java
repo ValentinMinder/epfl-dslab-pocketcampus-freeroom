@@ -1,6 +1,6 @@
-package org.pocketcampus.core.router;
+package org.pocketcampus.core.plugin;
 
-public interface IServerBase {
+public interface IPlugin {
 	
 	/**
 	 * Give the name of the default method when calling the servlet without arguments
