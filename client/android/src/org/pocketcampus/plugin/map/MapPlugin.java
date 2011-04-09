@@ -28,9 +28,9 @@ import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.elements.Search;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
-import org.pocketcampus.shared.map.MapElementBean;
-import org.pocketcampus.shared.map.MapLayerBean;
-import org.pocketcampus.shared.map.Path;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
+import org.pocketcampus.shared.plugin.map.Path;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

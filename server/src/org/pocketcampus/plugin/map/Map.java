@@ -17,8 +17,8 @@ import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
-import org.pocketcampus.shared.map.MapElementBean;
-import org.pocketcampus.shared.map.MapLayerBean;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 public class Map implements IPlugin {
 	@PublicMethod

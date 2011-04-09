@@ -23,8 +23,8 @@ import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
-import org.pocketcampus.shared.food.Meal;
-import org.pocketcampus.shared.food.Rating;
+import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.content.Context;
 import android.util.Log;

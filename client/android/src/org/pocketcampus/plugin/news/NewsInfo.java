@@ -5,9 +5,6 @@ import org.pocketcampus.core.plugin.Icon;
 import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
-import org.pocketcampus.core.service.infoprovider.IInfoProviderService;
-import org.pocketcampus.core.service.infoprovider.Informations;
-import org.pocketcampus.core.service.infoprovider.RefreshRate;
 
 /**
  * PluginInfo class for the News plugin. 
@@ -17,7 +14,7 @@ import org.pocketcampus.core.service.infoprovider.RefreshRate;
  * @author Jonas
  *
  */
-public class NewsInfo extends PluginInfo implements IInfoProviderService {
+public class NewsInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
@@ -42,18 +39,6 @@ public class NewsInfo extends PluginInfo implements IInfoProviderService {
 	@Override
 	public VersionNumber getVersion() {
 		return new VersionNumber();
-	}
-
-	@Override
-	public Informations getInformations(int maxNb) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public RefreshRate refreshRate() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
-import org.pocketcampus.shared.tranport.Location;
+import org.pocketcampus.shared.plugin.transport.Location;
 
 import de.schildbach.pte.SbbProvider;
 

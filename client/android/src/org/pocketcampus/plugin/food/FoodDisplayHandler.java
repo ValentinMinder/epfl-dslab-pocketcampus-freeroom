@@ -13,9 +13,9 @@ import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.sandwiches.Sandwich;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListStore;
-import org.pocketcampus.shared.food.Meal;
-import org.pocketcampus.shared.food.Rating;
-import org.pocketcampus.shared.food.StarRating;
+import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.content.Context;
 import android.widget.Toast;

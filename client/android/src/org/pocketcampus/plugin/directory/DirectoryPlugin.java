@@ -33,7 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.pocketcampus.shared.directory.Person;
+import org.pocketcampus.shared.plugin.directory.Person;
 
 public class DirectoryPlugin extends PluginBase implements OnClickListener{
 

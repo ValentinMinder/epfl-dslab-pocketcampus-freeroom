@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.map.elements;
 
 import org.osmdroid.views.overlay.PathOverlay;
-import org.pocketcampus.shared.map.Path;
-import org.pocketcampus.shared.map.Position;
+import org.pocketcampus.shared.plugin.map.Path;
+import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
 

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
-import org.pocketcampus.shared.bikes.BikeStation;
+import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
 public class Bikes implements IPlugin, IMapElementsProvider {
 

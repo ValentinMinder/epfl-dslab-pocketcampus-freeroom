@@ -7,8 +7,8 @@ import java.util.List;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
-import org.pocketcampus.shared.map.MapLayerBean;
-import org.pocketcampus.shared.tranport.Location;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
+import org.pocketcampus.shared.plugin.transport.Location;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

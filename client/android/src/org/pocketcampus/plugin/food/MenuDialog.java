@@ -13,10 +13,10 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.shared.food.Meal;
-import org.pocketcampus.shared.food.Rating;
-import org.pocketcampus.shared.food.Restaurant;
-import org.pocketcampus.shared.food.StarRating;
+import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Restaurant;
+import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.app.Activity;
 import android.app.Dialog;

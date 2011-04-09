@@ -10,10 +10,10 @@ import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.food.RssParser.RssFeed;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
-import org.pocketcampus.shared.food.Meal;
-import org.pocketcampus.shared.food.Rating;
-import org.pocketcampus.shared.food.Restaurant;
-import org.pocketcampus.shared.food.StarRating;
+import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Restaurant;
+import org.pocketcampus.shared.plugin.food.StarRating;
 
 public class Food implements IPlugin, IMapElementsProvider {
 

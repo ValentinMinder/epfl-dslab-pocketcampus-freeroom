@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.pocketcampus.core.service.positioning.GpsLocation;
-import org.pocketcampus.core.service.positioning.GsmLocation;
-import org.pocketcampus.core.service.positioning.Position;
-import org.pocketcampus.core.service.positioning.WifiLocation;
+import org.pocketcampus.provider.authentication.GpsLocation;
+import org.pocketcampus.provider.authentication.GsmLocation;
+import org.pocketcampus.provider.authentication.Position;
+import org.pocketcampus.provider.authentication.WifiLocation;
 
 import android.content.Context;
 

@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.pocketcampus.shared.food.Meal;
-import org.pocketcampus.shared.food.RatedMeal;
-import org.pocketcampus.shared.food.Rating;
-import org.pocketcampus.shared.food.Restaurant;
+import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.RatedMeal;
+import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Restaurant;
 
 public class MenuSorter {
 

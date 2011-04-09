@@ -21,8 +21,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.pocketcampus.shared.tranport.Location;
-import org.pocketcampus.shared.tranport.LocationType;
+import org.pocketcampus.shared.plugin.transport.Location;
+import org.pocketcampus.shared.plugin.transport.LocationType;
 
 import de.schildbach.pte.util.ParserUtils;
 

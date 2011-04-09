@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.pocketcampus.shared.tranport.GetConnectionDetailsResult;
-import org.pocketcampus.shared.tranport.Location;
-import org.pocketcampus.shared.tranport.NearbyStationsResult;
-import org.pocketcampus.shared.tranport.QueryConnectionsResult;
-import org.pocketcampus.shared.tranport.QueryDeparturesResult;
+import org.pocketcampus.shared.plugin.transport.GetConnectionDetailsResult;
+import org.pocketcampus.shared.plugin.transport.Location;
+import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
+import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
+import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
 
 
 /**

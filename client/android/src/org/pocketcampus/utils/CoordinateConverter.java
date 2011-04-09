@@ -1,6 +1,6 @@
 package org.pocketcampus.utils;
 
-import org.pocketcampus.shared.map.Position;
+import org.pocketcampus.shared.plugin.map.Position;
 
 
 public class CoordinateConverter {

@@ -27,16 +27,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.shared.tranport.Connection;
-import org.pocketcampus.shared.tranport.Departure;
-import org.pocketcampus.shared.tranport.GetConnectionDetailsResult;
-import org.pocketcampus.shared.tranport.Line;
-import org.pocketcampus.shared.tranport.Location;
-import org.pocketcampus.shared.tranport.LocationType;
-import org.pocketcampus.shared.tranport.NearbyStationsResult;
-import org.pocketcampus.shared.tranport.QueryConnectionsResult;
-import org.pocketcampus.shared.tranport.QueryDeparturesResult;
-import org.pocketcampus.shared.tranport.StationDepartures;
+import org.pocketcampus.shared.plugin.transport.Connection;
+import org.pocketcampus.shared.plugin.transport.Departure;
+import org.pocketcampus.shared.plugin.transport.GetConnectionDetailsResult;
+import org.pocketcampus.shared.plugin.transport.Line;
+import org.pocketcampus.shared.plugin.transport.Location;
+import org.pocketcampus.shared.plugin.transport.LocationType;
+import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
+import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
+import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
+import org.pocketcampus.shared.plugin.transport.StationDepartures;
 
 import de.schildbach.pte.exception.SessionExpiredException;
 import de.schildbach.pte.util.ParserUtils;

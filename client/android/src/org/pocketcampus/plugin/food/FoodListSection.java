@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.food;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
 import android.content.DialogInterface;

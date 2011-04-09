@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.map.elements;
 import java.util.ArrayList;
 
 import org.osmdroid.views.overlay.OverlayItem;
-import org.pocketcampus.shared.map.MapLayerBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 import android.graphics.drawable.Drawable;
 

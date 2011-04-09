@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.pocketcampus.shared.tranport.Location;
+import org.pocketcampus.shared.plugin.transport.Location;
 
 import de.schildbach.pte.util.Color;
 import de.schildbach.pte.util.ParserUtils;

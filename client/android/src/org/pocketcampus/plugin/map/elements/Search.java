@@ -9,8 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
-import org.pocketcampus.shared.map.Path;
-import org.pocketcampus.shared.map.Position;
+import org.pocketcampus.shared.plugin.map.Path;
+import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.utils.CoordinateConverter;
 
 import android.util.Log;

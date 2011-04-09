@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.map.elements;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.pocketcampus.shared.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
 
 import android.graphics.drawable.Drawable;
 

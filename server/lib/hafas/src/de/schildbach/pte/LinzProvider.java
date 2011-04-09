@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.pocketcampus.shared.tranport.Location;
+import org.pocketcampus.shared.plugin.transport.Location;
 
 import de.schildbach.pte.util.ParserUtils;
 

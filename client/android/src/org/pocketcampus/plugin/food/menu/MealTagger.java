@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.shared.food.Meal;
+import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.util.Log;
 
