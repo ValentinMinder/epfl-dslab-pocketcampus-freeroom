@@ -19,6 +19,7 @@ package org.pocketcampus.core.ui;
 import java.util.LinkedList;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -48,10 +49,12 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
     private ImageButton mHomeBtn;
     private RelativeLayout mHomeLayout;
     private ProgressBar mProgress;
+    private Context mContext;
 
     public ActionBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        
+        mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         mBarView = (RelativeLayout) mInflater.inflate(R.layout.actionbar, null);
@@ -292,7 +295,33 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
             }
         }
     }
-
+    
+    public static void setup(Context ctx, View view, boolean addHomeButton) {
+    	ActionBar actionBar = (ActionBar) view;
+    	
+    	if(ctx != null) {
+    		System.out.println(1);
+    	}
+    	
+    	if(actionBar != null) {
+    		System.out.println(4);
+    	}
+    	
+    	if(ctx.getResources() != null) {
+    		System.out.println(2);
+    	}
+    	
+    	if(ctx.getResources().getText(R.string.app_name) != null) {
+    		System.out.println(3);
+    	}
+    	
+    	//actionBar.setTitle(ctx.getResources().getText(R.string.app_name));
+		
+		//if(addHomeButton) {
+		//	actionBar.addAction(new ActionBar.IntentAction(ctx, MainscreenPlugin.createIntent(ctx), R.drawable.mini_home));
+		//}
+	}
+    
     /*
     public static abstract class SearchAction extends AbstractAction {
         public SearchAction() {

@@ -4,7 +4,10 @@
 	android:id="@+id/travelplan_summary"
 	android:orientation="vertical"
 	android:layout_width="fill_parent" android:layout_height="fill_parent">
-		
+	
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+	
 	<TextView android:id="@+id/travelplan_summary_title"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		style="?android:attr/listSeparatorTextViewStyle"

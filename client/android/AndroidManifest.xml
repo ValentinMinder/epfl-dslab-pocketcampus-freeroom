@@ -43,6 +43,7 @@
 		
 		<!--  Transport Plugin -->
 		<activity android:name=".plugin.transport.TransportPlugin"></activity>
+		<activity android:name=".plugin.transport.TransportResults"></activity>
 		<activity android:name=".plugin.transport.TransportPreference"></activity>
 
 		<!-- Social Plugin -->

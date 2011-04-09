@@ -7,16 +7,15 @@ import java.util.List;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
-import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.transport.Location;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class LocationAdapter extends ArrayAdapter<Location> {
 	private List<Location> locations_;
@@ -41,7 +40,6 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 						Gson gson = new Gson();
 						Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
 						
-						System.out.println(result);
 						locations_ = gson.fromJson(result, AutocompleteType);
 						System.out.println(locations_);
 						
