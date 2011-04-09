@@ -45,7 +45,7 @@ public class MainscreenPlugin extends PluginBase {
 		actionBar.setTitle(getResources().getString(R.string.app_name));
 		
 		tracker_ = Tracker.getInstance();
-		tracker_.start("UA-22135241-1", 60, this);
+		tracker_.start("UA-22135241-2", 10, this);
 		
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
