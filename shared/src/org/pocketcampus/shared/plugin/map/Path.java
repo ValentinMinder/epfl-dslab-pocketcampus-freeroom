@@ -9,18 +9,18 @@ import java.util.List;
 
 public class Path {
 	private ArrayList<Position> positionList_;
-	//private ArrayList<Position> roadmapList_;
+	private ArrayList<Position> roadmapList_;
 	
 
 	public Path() {
 		positionList_ = new ArrayList<Position>();
-		//roadmapList_ = new ArrayList<Position>();
+		roadmapList_ = new ArrayList<Position>();
 	}
 	
 	
-	public Path(ArrayList<Position> p/*, ArrayList<Position> r*/) {
+	public Path(ArrayList<Position> p, ArrayList<Position> r) {
 		positionList_ = p;
-		//roadmapList_ = r;
+		roadmapList_ = r;
 	}
 	
 
@@ -28,11 +28,9 @@ public class Path {
 		return positionList_;
 	}
 
-	/*
 	public ArrayList<Position> getRoadmapList() {
 		return roadmapList_;
 	}
-	*/
 
 	/*
 	 * TODO
