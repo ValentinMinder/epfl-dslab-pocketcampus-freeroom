@@ -29,7 +29,6 @@ import org.pocketcampus.plugin.map.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
-import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
 
 import android.app.ProgressDialog;
@@ -328,11 +327,12 @@ public class MapPlugin extends PluginBase {
 
 				// Deserializes the response
 				Gson gson = new Gson();
-				Path path = null;
+				List<Position> path = null;
+				Type t = new TypeToken<List<Position>>(){}.getType();
 				
 				try {
-					path = gson.fromJson(result, Path.class);
-					mapPathOverlay_.setPath(path);
+					path = gson.fromJson(result, t);
+					mapPathOverlay_.setList(path);
 				} catch(Exception e) {
 					System.out.println(e);
 				}
