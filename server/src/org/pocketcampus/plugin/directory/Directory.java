@@ -27,26 +27,24 @@ import com.unboundid.ldap.sdk.extensions.StartTLSExtendedRequest;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
 
-import org.pocketcampus.core.router.IServerBase;
-import org.pocketcampus.core.router.PublicMethod;
-import org.pocketcampus.shared.directory.Person;
+//import org.pocketcampus.core.router.IServerBase;
+//import org.pocketcampus.core.router.PublicMethod;
+import org.pocketcampus.shared.plugin.directory.*;
+import org.pocketcampus.core.plugin.IPlugin;
+import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.directory.DirectoryQuery;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 
 
 /**
  * Servlet implementation class Directory
  */
-public class Directory implements IServerBase {
+public class Directory implements IPlugin, IMapElementsProvider {
 	private static final long serialVersionUID = 14545643453L;
      
 
 
 	public void init() throws ServletException {
-	}
-	
-	@PublicMethod
-	public String lolilol(HttpServletRequest request){
-		return "popipop";
 	}
 	
 	@PublicMethod
@@ -88,6 +86,16 @@ public class Directory implements IServerBase {
 
 	public void destroy() {
 		
+	}
+
+	@Override
+	public String getLayerName() {
+		return "Person";
+	}
+
+	@Override
+	public String getLayerDescription() {
+		return "Show a person's office";
 	}
 	
 	

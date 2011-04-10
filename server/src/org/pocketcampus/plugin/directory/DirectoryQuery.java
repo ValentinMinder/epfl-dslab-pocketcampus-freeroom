@@ -8,7 +8,7 @@ import java.util.List;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.pocketcampus.shared.directory.Person;
+import org.pocketcampus.shared.plugin.directory.*;
 
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.ExtendedResult;
