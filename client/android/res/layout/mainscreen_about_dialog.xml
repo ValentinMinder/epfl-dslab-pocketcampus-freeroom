@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="wrap_content"
+	xmlns:android="http://schemas.android.com/apk/res/android" style="@style/Theme.MainLayout"
+	android:padding="15dip" android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<TextView android:text="PocketCampus" android:textStyle="bold"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	<TextView android:text="v2 alpha1\n" android:layout_width="wrap_content"
+		android:layout_height="wrap_content"></TextView>
+
+	<TextView android:text="Developers" android:textStyle="bold"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	<TextView
+		android:text="
+George Candea\n
+Silviu Andrica\n\n
+Mohamed Tarek Benoudina\n
+Gianluca Dal Mas\n
+Andreas Kirchner\n
+Florian Laurent\n
+Johan Leuenberger\n
+Jeremiah Menétrey\n
+Oriane Rodriguez\n
+Pascal Scheiben\n
+Jonas Schmid\n
+Elodie Nilane Triponez\n
+Guillaume Ulrich"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+</LinearLayout>

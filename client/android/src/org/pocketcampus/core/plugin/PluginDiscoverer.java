@@ -34,14 +34,14 @@ public class PluginDiscoverer {
 		
 		// LIST OF REGISTERED PLUGINS //
 		// TODO scan for available plugins automatically
-		plugins.add(new NewsPlugin());
-		plugins.add(new TestPlugin());
-		plugins.add(new TransportPlugin());
-		//plugins.add(new DirectoryPlugin());
+//		plugins.add(new TestPlugin());
+//		plugins.add(new DirectoryPlugin());
 		plugins.add(new FoodPlugin());
-		plugins.add(new SocialPlugin());
-		plugins.add(new CamiproPlugin());
+		plugins.add(new TransportPlugin());
+//		plugins.add(new SocialPlugin());
 		plugins.add(new MapPlugin());
+		plugins.add(new CamiproPlugin());
+		plugins.add(new NewsPlugin());
 		
 		////////////////////////////////
 		
