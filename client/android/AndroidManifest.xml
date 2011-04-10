@@ -34,7 +34,8 @@
 
 		<!-- Map Plugin -->
 		<activity android:name=".plugin.map.MapPlugin"
-		        android:configChanges="keyboardHidden|orientation"></activity>
+		        android:configChanges="keyboardHidden|orientation"
+		        android:screenOrientation="portrait"></activity>
 		<!-- activity android:name="plugin.map.MapPreference"></activity> -->
 		
 		<!--  Directory (ldap) Plugin -->
