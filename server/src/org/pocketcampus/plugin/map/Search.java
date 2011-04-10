@@ -6,7 +6,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
+import org.pocketcampus.plugin.map.routing.GeometryF;
+import org.pocketcampus.plugin.map.routing.Roadmap;
 import org.pocketcampus.plugin.map.routing.Routing;
+import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
 
@@ -106,7 +109,7 @@ public class Search {
 	/**
 	 * Computes the shortest walkable Path between two MapElements.
 	 */
-	public static Path searchPathBetween(String startMapElement, String endMapElement, boolean bike) {
+	public static List<Position> searchPathBetween(String startMapElement, String endMapElement, boolean bike) {
 		if(startMapElement==null || endMapElement==null) {
 			return null;
 		}
@@ -132,66 +135,55 @@ public class Search {
 			
 			Routing r = new Gson().fromJson(jsonString, Routing.class);
 			
-
 			Path path = new Path();
-			List<Position> list = path.getPositionList();
-//			list.add(new Position(46.51811752656941, 6.568092385190248, 1));
-//			list.add(new Position(46.52011208093279, 6.565411761843846, 1));
-//			list.add(new Position(46.51854536111413, 6.563350147693381, 1));
-			list.add(new Position(46.51811752656941f, 6.568092385190248f, 1));
-			list.add(new Position(46.52011208093279f, 6.565411761843846f, 1));
-			list.add(new Position(46.51854536111413f, 6.563350147693381f, 1));
-			
-			
-			return path;
-			
-			/*
-			//get the JSONarray which contain coordinates
-			JsonObject json = new JsonObject(jsonString);
-			JSONObject geom = json.getJSONObject("feature").getJSONObject("geometry");
-			JSONArray coor = geom.getJSONArray("coordinates");
+
+			GeometryF geom = r.feature.geometry;
+			double[][][] coor = geom.coordinates;
 
 			//get the roadmap object which contains informations about level
-			JSONArray road = json.getJSONArray("roadmap");
-			for (int i=0;i<road.length();i++){
+			Roadmap[] road = r.roadmap;
+			for (int i = 0; i < road.length; ++i){
 
-				Position pos = CoordinateConverter.convertEPSG4326ToLatLong(road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(0),
-						road.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getDouble(1),
-						road.getJSONObject(i).getJSONObject("properties").getInt("level"));
-				myPath.getRoadmapList().add(pos); 	
+				Position pos = CoordinateConverter.convertEPSG4326ToLatLong(
+						road[i].geometry.coordinates[0],
+						road[i].geometry.coordinates[1],
+						Integer.parseInt(road[i].properties.level));
+				
+				path.getRoadmapList().add(pos); 	
 			}
 
 
 			Position previousEnd = new Position(46.51811752656941, 6.568092385190248, 0); //start.position();
-			myPath.getPositionList().add(previousEnd);
+			path.getPositionList().add(previousEnd);
 
 			int k=0;
-			for (int i = 0; i < coor.length(); i++) {
+			for (int i = 0; i < coor.length; ++i) {
 				
-				int l1=myPath.getRoadmapList().get(k).getAltitude();
-				int l2=myPath.getRoadmapList().get(k).getAltitude();
-				Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(0).getDouble(0), coor.getJSONArray(i).getJSONArray(0).getDouble(1), l1);
-				Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor.getJSONArray(i).getJSONArray(1).getDouble(0), coor.getJSONArray(i).getJSONArray(1).getDouble(1), l2);
+				int l1 = path.getRoadmapList().get(k).getAltitude();
+				int l2 = path.getRoadmapList().get(k).getAltitude();
 				
-				if((myPath.getRoadmapList().contains(pos1))||(myPath.getRoadmapList().contains(pos2))){
+				Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][0][0], coor[i][0][1], l1);
+				Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][1][0], coor[i][1][1], l2);
+				
+				if((path.getRoadmapList().contains(pos1))||(path.getRoadmapList().contains(pos2))){
 					k=k+1;          	
 				}
 
 				if(pos1 == previousEnd) {
-					myPath.getPositionList().add(pos2);
+					path.getPositionList().add(pos2);
 					previousEnd = pos2;
 				} else {
-					myPath.getPositionList().add(pos1);
+					path.getPositionList().add(pos1);
 					previousEnd = pos1;
 				}
 			}
-			*/
+			
+			return path.getPositionList();
 
 		} catch (Exception e) { // TODO JSONException
 			e.printStackTrace();
 		}
 
-		//return myPath;
 		return null;
 	}
 

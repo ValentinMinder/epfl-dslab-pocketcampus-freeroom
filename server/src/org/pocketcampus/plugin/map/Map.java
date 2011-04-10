@@ -19,7 +19,7 @@ import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
-import org.pocketcampus.shared.plugin.map.Path;
+import org.pocketcampus.shared.plugin.map.Position;
 
 public class Map implements IPlugin {
 	@PublicMethod
@@ -154,8 +154,8 @@ public class Map implements IPlugin {
 	}
 	
 	@PublicMethod
-	public Path routing(HttpServletRequest request) {
-		Path path = Search.searchPathBetween("plop", "huhu", false);
+	public List<Position> routing(HttpServletRequest request) {
+		List<Position> path = Search.searchPathBetween("plop", "huhu", false);
 		
 		return path;
 	}
