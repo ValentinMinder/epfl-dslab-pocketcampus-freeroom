@@ -229,6 +229,6 @@ public class Map implements IPlugin {
 		try {
 			query = request.getParameter("q");
 		} catch(Exception e) {}
-		return Search.searchText(query,50);
+		return Search.searchText(query,100);
 	}
 }
