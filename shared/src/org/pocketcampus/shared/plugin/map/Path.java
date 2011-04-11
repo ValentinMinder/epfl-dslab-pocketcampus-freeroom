@@ -1,5 +1,6 @@
 package org.pocketcampus.shared.plugin.map;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -7,8 +8,8 @@ import java.util.ArrayList;
  * */
 
 public class Path {
-	private ArrayList<Position> positionList_;
-	private ArrayList<Position> roadmapList_;
+	private List<Position> positionList_;
+	private List<Position> roadmapList_;
 	
 
 	public Path() {
@@ -17,17 +18,17 @@ public class Path {
 	}
 	
 	
-	public Path(ArrayList<Position> p, ArrayList<Position> r) {
+	public Path(List<Position> p, List<Position> r) {
 		positionList_ = p;
 		roadmapList_ = r;
 	}
 	
 
-	public ArrayList<Position> getPositionList() {
+	public List<Position> getPositionList() {
 		return positionList_;
 	}
 
-	public ArrayList<Position> getRoadmapList() {
+	public List<Position> getRoadmapList() {
 		return roadmapList_;
 	}
 
