@@ -27,6 +27,7 @@ import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
+import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -288,7 +289,7 @@ public class MapPlugin extends PluginBase {
 			return true;
 
 		case R.id.map_path:
-			showDirections();
+			showDirectionsFromHereToPOI(6718);
 			return true;
 
 		default:
@@ -317,7 +318,7 @@ public class MapPlugin extends PluginBase {
 		myLocationOverlay_.enableFollowLocation();
 	}
 
-	private void showDirections() {
+	private void showDirectionsFromHereToPOI(int poi) {
 		
 		mapPathOverlay_.clearPath();
 
@@ -328,8 +329,8 @@ public class MapPlugin extends PluginBase {
 			return;
 		}
 		
-		Position pos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
-		double distanceToCenter = directDistanceBetween(pos, EPFL_CENTER);
+		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
+		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
 		
 		if(distanceToCenter > EPFL_RADIUS) {
 			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
@@ -337,8 +338,39 @@ public class MapPlugin extends PluginBase {
 		}
 				
 		RequestParameters params = new RequestParameters();
-		params.addParameter("latitude", Double.toString(pos.getLatitude()));
-		params.addParameter("longitude", Double.toString(pos.getLongitude()));
+		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
+		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
+		params.addParameter("endPoiId", Integer.toString(poi));
+
+		//request of the layers
+		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
+
+	}
+
+	private void showDirectionsFromHereToPosition(Position endPos) {
+		
+		mapPathOverlay_.clearPath();
+
+		Location fix = myLocationOverlay_.getLastFix();
+		
+		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
+			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
+			return;
+		}
+		
+		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
+		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
+		
+//		if(distanceToCenter > EPFL_RADIUS) {
+//			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
+//			return;
+//		}
+				
+		RequestParameters params = new RequestParameters();
+		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
+		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
+		params.addParameter("endLatitude", Double.toString(endPos.getLatitude()));
+		params.addParameter("endLongitude", Double.toString(endPos.getLongitude()));
 
 		//request of the layers
 		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
@@ -438,8 +470,9 @@ public class MapPlugin extends PluginBase {
 					}
 
 					@Override
-					public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
-						MyToast.showToast(getApplicationContext(), arg1.mTitle);
+					public boolean onItemSingleTapUp(int index, OverlayItem item) {
+						MyToast.showToast(getApplicationContext(), item.mTitle);
+						showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
 						return true;
 					}
 				}, new DefaultResourceProxyImpl(getApplicationContext()));
