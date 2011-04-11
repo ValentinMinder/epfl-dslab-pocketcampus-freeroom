@@ -6,4 +6,7 @@
     
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_layer_ok_button">Ok</string>
+    
+    <string name="map_directions_not_accurate">We cannot locate you precisely enough to show directions</string>
+    <string name="map_directions_not_at_epfl">It seems you are not at EPFL... We cannot show directions from outside campus.</string>
 </resources>

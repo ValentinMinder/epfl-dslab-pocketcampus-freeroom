@@ -30,19 +30,20 @@ import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
+import org.pocketcampus.utils.MyToast;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -58,17 +59,21 @@ import com.google.gson.reflect.TypeToken;
  */
 public class MapPlugin extends PluginBase {
 
+	private static final float maxAccuracyForDirections = 100;
+	private static final Position EPFL_CENTER = new Position(46.520101, 6.565189, 0);
+	private static final int EPFL_RADIUS = 350;
+	
 	private MapView mapView_;
 	private MapController mapController_;
 	private List<MapElementsList> layers_;
 	private List<MapElementsList> selectedLayers_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
-	
+
 	private ProgressDialog progressDialog_;
 	private ActionBar actionBar_;
-	
-	
+
+
 	/**
 	 * Number of parallel threads being executed.
 	 * When the counter is > 0, it means that at least one thread
@@ -76,14 +81,14 @@ public class MapPlugin extends PluginBase {
 	 * is shown. When the progressCount is 0, no progress bar is displayed.
 	 */
 	private int progressCount_ = 0;
-	
-	
+
+
 	/**
 	 * Overlays which are unconditionally displayed
 	 * like the EPFL Tiles Overlay
 	 */
 	private List<Overlay> constantOverlays_;
-		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -98,7 +103,7 @@ public class MapPlugin extends PluginBase {
 		layers_ = new ArrayList<MapElementsList>();
 		selectedLayers_ = new ArrayList<MapElementsList>();
 	}
-	
+
 	/**
 	 * The background is provided by the default tile source.
 	 * We add a TileOverlay above the background (for example
@@ -107,32 +112,30 @@ public class MapPlugin extends PluginBase {
 	private void setupMapView() {
 
 		mapView_ = (MapView) findViewById(R.id.mapview);
-        constantOverlays_ = new ArrayList<Overlay>();
-        
+		constantOverlays_ = new ArrayList<Overlay>();
+
 		mapController_ = mapView_.getController();
-		
+
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
-		
-		
+
+
 		// Add EPFL tiles layer
 		ITileSource epflTile = new EpflTileSource();
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
-        mProvider.setTileSource(epflTile);
-        TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
-        constantOverlays_.add(mTilesOverlay);
-        
-        // Following the user
-        myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
-        myLocationOverlay_.enableMyLocation();
-        //myLocationOverlay_.enableFollowLocation();
-        constantOverlays_.add(myLocationOverlay_);
-        
-        // Path overlay
-        mapPathOverlay_ = new MapPathOverlay(Color.BLUE, this);
-        constantOverlays_.add(mapPathOverlay_);
+		mProvider.setTileSource(epflTile);
+		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
+		constantOverlays_.add(mTilesOverlay);
+
+		// Following the user
+		myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+		constantOverlays_.add(myLocationOverlay_);
+
+		// Path overlay
+		mapPathOverlay_ = new MapPathOverlay(Color.BLUE, this);
+		constantOverlays_.add(mapPathOverlay_);
 	}
-	
+
 	/**
 	 * Displays a not-cancelable progress dialog with the specific message.
 	 * @param message
@@ -144,15 +147,7 @@ public class MapPlugin extends PluginBase {
 		progressDialog_.setCancelable(false);
 		progressDialog_.show();
 	}
-	
-	/**
-	 * Displays the message (toast)
-	 * @param message
-	 */
-	private void showToast(String message) {
-		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-	}
-	
+
 	/**
 	 * Dismisses the progress dialog (displayed using showProgressDialog)
 	 */
@@ -165,7 +160,7 @@ public class MapPlugin extends PluginBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Increments the progressCounter. It displays the progress bar
 	 * of the action bar. It allows several parallel threads doing background
@@ -175,7 +170,7 @@ public class MapPlugin extends PluginBase {
 		progressCount_++;
 		actionBar_.setProgressBarVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * Decrements the progressCounter. Called when a thread has finished
 	 * doing some background work.
@@ -185,7 +180,7 @@ public class MapPlugin extends PluginBase {
 		if(progressCount_ < 0) { //Should never happen!
 			Log.e("MapPlugin", "ERROR progresscount is negative!");
 		}
-		
+
 		if(progressCount_ <= 0) {
 			actionBar_.setProgressBarVisibility(View.GONE);
 		}
@@ -193,21 +188,24 @@ public class MapPlugin extends PluginBase {
 
 	@Override
 	protected void onResume() {
-		myLocationOverlay_.enableMyLocation();
-		myLocationOverlay_.enableCompass();
+
+		if(myLocationOverlay_.isFollowLocationEnabled()) {
+			myLocationOverlay_.enableMyLocation();
+		}
+
 		super.onResume();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		//Center the view at epfl
 		//It is important to set the zoom before the position (bug of osmdroid)
 		mapController_.setZoom(16);
 		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
 		mapController_.setCenter(epflPoint);
-		
+
 		updateOverlays();
 	}
 
@@ -218,14 +216,14 @@ public class MapPlugin extends PluginBase {
 		class LayersRequest extends ServerRequest {
 			@Override
 			protected void onPostExecute(String result) {
-				
+
 				if(result == null) { //an error happened
 					dismissProgressDialog();
-					showToast(getResources().getString(R.string.server_connection_error));
+					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
 					return;
 				}
 				Log.d("SERVER", "response: " + result);
-				
+
 				//Deserializes the response
 				Gson gson = new Gson();
 				Type mapLayersType = new TypeToken<List<MapLayerBean>>(){}.getType();
@@ -234,15 +232,15 @@ public class MapPlugin extends PluginBase {
 					layers = gson.fromJson(result, mapLayersType);
 				} catch (JsonSyntaxException e) {
 					dismissProgressDialog();
-					showToast(getResources().getString(R.string.unexpected_response));
+					MyToast.showToast(getApplicationContext(), R.string.unexpected_response);
 					return;
 				}
 				if(layers == null) {
 					dismissProgressDialog();
-					showToast(getResources().getString(R.string.server_connection_error));
+					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
 					return;
 				}
-				
+
 				layers_ = new ArrayList<MapElementsList>(layers.size());
 				for(MapLayerBean mlb : layers) {
 					if(mlb.isDisplayable())
@@ -260,7 +258,6 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void onPause() {
 		myLocationOverlay_.disableMyLocation();
-		myLocationOverlay_.disableCompass();
 		super.onPause();
 	}
 
@@ -269,7 +266,7 @@ public class MapPlugin extends PluginBase {
 		super.onConfigurationChanged(newConfig);
 	}
 
-		
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -285,11 +282,11 @@ public class MapPlugin extends PluginBase {
 			showProgressDialog("Loading layers...");
 			loadLayersFromServer();
 			return true;
-			
+
 		case R.id.map_my_position:
 			centerOnPosition();
 			return true;
-			
+
 		case R.id.map_path:
 			showDirections();
 			return true;
@@ -298,13 +295,13 @@ public class MapPlugin extends PluginBase {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	/**
 	 * Launch the dialog that allows to select the different layers
 	 */
 	private void layerSelector() {
 		final LayerSelector l = new LayerSelector(this, layers_, selectedLayers_);
-		
+
 		// Show the dialog, using a callback to the the selected layers back
 		l.selectLayers(new OnClickListener() {
 			@Override
@@ -312,44 +309,49 @@ public class MapPlugin extends PluginBase {
 				setSelectedLayers(l.getSelectedLayers());
 			}
 		});
-		
+
 	}
-	
+
 	private void centerOnPosition() {
-        myLocationOverlay_.enableFollowLocation();
+		myLocationOverlay_.enableMyLocation();
+		myLocationOverlay_.enableFollowLocation();
 	}
-	
+
 	private void showDirections() {
 		
-		class LayersRequest extends ServerRequest {
-			@Override
-			protected void onPostExecute(String result) {
+		mapPathOverlay_.clearPath();
 
-				// Deserializes the response
-				Gson gson = new Gson();
-				List<Position> path = null;
-				Type t = new TypeToken<List<Position>>(){}.getType();
-				
-				try {
-					path = gson.fromJson(result, t);
-					mapPathOverlay_.setList(path);
-				} catch(Exception e) {
-					System.out.println(e);
-				}
-
-			}
+		Location fix = myLocationOverlay_.getLastFix();
+		
+		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
+			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
+			return;
 		}
+		
+		Position pos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
+		double distanceToCenter = directDistanceBetween(pos, EPFL_CENTER);
+		
+		if(distanceToCenter > EPFL_RADIUS) {
+			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
+			return;
+		}
+				
+		RequestParameters params = new RequestParameters();
+		params.addParameter("latitude", Double.toString(pos.getLatitude()));
+		params.addParameter("longitude", Double.toString(pos.getLongitude()));
+
 		//request of the layers
-		getRequestHandler().execute(new LayersRequest(), "routing", (RequestParameters)null);
+		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
+
 	}
-	
+
 	/**
 	 * Set the selected layers
 	 * @param selectedLayers
 	 */
 	private void setSelectedLayers(ArrayList<MapElementsList> selectedLayers) {
 		this.selectedLayers_ = selectedLayers;
-		
+
 		updateOverlays();
 	}
 
@@ -362,8 +364,8 @@ public class MapPlugin extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Displays all selected overlay items (from layers).
 	 */
@@ -384,7 +386,7 @@ public class MapPlugin extends PluginBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds corresponding MapElements into the list.
 	 * @param layer the layer (= list of items) where the item will be added
@@ -393,27 +395,27 @@ public class MapPlugin extends PluginBase {
 		if(layer == null) {
 			return;
 		}
-		
+
 		/* The idea is to add MapElements (=item) into the MapElementsList.
 		 * The data comes from the cache (local file?) or from the server
 		 */
-		
+
 		incrementProgressCounter();
 		class ItemsRequest extends ServerRequest {
 			@Override
 			protected void onPostExecute(String result) {
 				if(result == null) {
 					decrementProgressCounter();
-					showToast(getResources().getString(R.string.server_connection_error));
+					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
 					return;
 				}
 				Log.d("SERVER", "response: " + result);
-				
+
 				//Deserializes the response
 				Gson gson = new Gson();
 				Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
 				List<MapElementBean> items = new ArrayList<MapElementBean>();
-						
+
 				try {
 					items = gson.fromJson(result, mapElementType);
 				} catch (JsonSyntaxException e) {
@@ -424,24 +426,24 @@ public class MapPlugin extends PluginBase {
 					decrementProgressCounter();
 					return;
 				}
-				
+
 				for(MapElementBean meb : items) {
 					layer.add(new MapElement(meb));
 				}
-				
+
 				ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(layer, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
 					@Override
 					public boolean onItemLongPress(int arg0, OverlayItem arg1) {
 						return false;
 					}
-					
+
 					@Override
 					public boolean onItemSingleTapUp(int arg0, OverlayItem arg1) {
-						showToast(arg1.mTitle);
+						MyToast.showToast(getApplicationContext(), arg1.mTitle);
 						return true;
 					}
 				}, new DefaultResourceProxyImpl(getApplicationContext()));
-				
+
 				mapView_.getOverlays().add(aOverlay);
 				mapView_.invalidate();
 				decrementProgressCounter();
@@ -450,5 +452,30 @@ public class MapPlugin extends PluginBase {
 		RequestParameters param = new RequestParameters();
 		param.addParameter("layer_id", layer.getLayerId() + "");
 		getRequestHandler().execute(new ItemsRequest(), "getItems", param);
+	}
+	
+	private static double directDistanceBetween(Position start, Position end) {
+		GeoPoint s = new GeoPoint(start.getLatitude(), start.getLongitude(), start.getAltitude());
+		GeoPoint e = new GeoPoint(end.getLatitude(), end.getLongitude(), end.getAltitude());
+		return s.distanceTo(e);
+	}
+
+	class DirectionsRequest extends ServerRequest {
+		@Override
+		protected void onPostExecute(String result) {
+
+			// Deserializes the response
+			Gson gson = new Gson();
+			List<Position> path = null;
+			Type t = new TypeToken<List<Position>>(){}.getType();
+
+			try {
+				path = gson.fromJson(result, t);
+				mapPathOverlay_.setList(path);
+			} catch(Exception e) {
+				System.out.println(e);
+			}
+
+		}
 	}
 }
