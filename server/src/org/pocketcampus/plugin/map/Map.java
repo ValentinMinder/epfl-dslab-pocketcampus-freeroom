@@ -188,4 +188,18 @@ public class Map implements IPlugin {
 
 		return elements;
 	}
+	
+	/**
+	 * Allows to search a text among the title and description of the elements. 
+	 * @param request a request where the parameter q is the searched text
+	 * @return a list answering the query
+	 */
+	@PublicMethod
+	public List<MapElementBean> search(HttpServletRequest request) {
+		String query = null;
+		try {
+			query = request.getParameter("q");
+		} catch(Exception e) {}
+		return Search.searchText(query,50);
+	}
 }

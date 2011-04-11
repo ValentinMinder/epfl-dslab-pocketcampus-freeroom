@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.map;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,6 +14,7 @@ import org.pocketcampus.plugin.map.routing.GeometryF;
 import org.pocketcampus.plugin.map.routing.Roadmap;
 import org.pocketcampus.plugin.map.routing.Routing;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -196,5 +198,56 @@ public class Search {
 		return elems;
 	}
 	 */
+	
+	/**
+	 * Searches the elements with a specific title or description
+	 * @param query the text query
+	 * @param maxResults the max number of results returned
+	 * @return the elements corresponding to the query (null if an error happened)
+	 */
+	public static List<MapElementBean> searchText(String query, int maxResults) {
+		if(query == null || query.length() <= 0 || maxResults <= 0)
+			return null;
+		
+		List<MapElementBean> elements = new LinkedList<MapElementBean>();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Server error: unable to load jdbc Drivers");
+			e.printStackTrace();
+			return null;
+		}
+
+		Connection dbConnection = null;
+		try {
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where title like ? or description like ? limit ?");
+			statement.setString(1, "%" + query + "%");
+			statement.setString(2, "%" + query + "%");
+			statement.setInt(3, maxResults);
+			ResultSet rs = statement.executeQuery();
+
+			while (rs.next()) {
+				MapElementBean meb = new MapElementBean();
+				meb.setId(rs.getInt("id"));
+				meb.setLayer_id(rs.getInt("layer_id"));
+				meb.setTitle(rs.getString("title"));
+				meb.setDescription(rs.getString("description"));
+				meb.setLatitude(rs.getDouble("centerX"));
+				meb.setLongitude(rs.getDouble("centerY"));
+				meb.setAltitude(rs.getDouble("altitude"));
+				elements.add(meb);
+			}
+			
+			statement.close();
+			dbConnection.close();
+		} catch (SQLException e) {
+			System.err.println("Error with SQL");
+			e.printStackTrace();
+		}
+		
+		return elements;
+	}
 }
 
