@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -38,6 +37,51 @@ public class Map implements IPlugin {
 		layers.addAll(getExternalLayers());
 		
 		return getInternalLayers();
+	}
+
+	@PublicMethod
+	public List<MapElementBean> getItems(HttpServletRequest request) {
+		
+		if(request == null) {
+			return null;
+		}
+		
+		ArrayList<MapElementBean> items = new ArrayList<MapElementBean>();
+
+		String layerId = request.getParameter("layer_id");
+		int id;
+		try {
+			id = Integer.parseInt(layerId);
+			items.addAll(getInternalItems(id));
+		} catch (Exception e) {
+			return null;
+		}
+		
+		items.addAll(getExternalItems(id));
+		
+		
+		return items;
+	}
+
+	@PublicMethod
+	public List<Position> routing(HttpServletRequest request) {
+
+		double lat = 46.520101;
+		double lon = 6.565189;
+
+		try {
+			lat = Double.parseDouble(request.getParameter("latitude"));
+		} catch (Exception e) {}
+
+		try {
+			lon = Double.parseDouble(request.getParameter("longitude"));
+		} catch (Exception e) {}
+
+		Position p = new Position(lat, lon, 0);
+
+		List<Position> path = Search.searchPathBetween(p, 6718, false);
+
+		return path;
 	}
 
 	private List<MapLayerBean> getInternalLayers() {
@@ -91,30 +135,6 @@ public class Map implements IPlugin {
 
 		return layers;
 	}
-
-	@PublicMethod
-	public List<MapElementBean> getItems(HttpServletRequest request) {
-		
-		if(request == null) {
-			return null;
-		}
-		
-		ArrayList<MapElementBean> items = new ArrayList<MapElementBean>();
-
-		String layerId = request.getParameter("layer_id");
-		int id;
-		try {
-			id = Integer.parseInt(layerId);
-			items.addAll(getInternalItems(id));
-		} catch (Exception e) {
-			return null;
-		}
-		
-		items.addAll(getExternalItems(id));
-		
-		
-		return items;
-	}
 	
 	private List<MapElementBean> getExternalItems(int id) {
 		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
@@ -167,26 +187,5 @@ public class Map implements IPlugin {
 		}
 
 		return elements;
-	}
-
-	@PublicMethod
-	public List<Position> routing(HttpServletRequest request) {
-
-		double lat = 46.520101;
-		double lon = 6.565189;
-
-		try {
-			lat = Double.parseDouble(request.getParameter("latitude"));
-		} catch (Exception e) {}
-
-		try {
-			lon = Double.parseDouble(request.getParameter("longitude"));
-		} catch (Exception e) {}
-
-		Position p = new Position(lat, lon, 0);
-
-		List<Position> path = Search.searchPathBetween(p, 6718, false);
-
-		return path;
 	}
 }
