@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.food;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 import org.pocketcampus.shared.plugin.food.StarRating;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 public class Food implements IPlugin, IMapElementsProvider {
 
@@ -115,12 +119,14 @@ public class Food implements IPlugin, IMapElementsProvider {
 	}
 
 	@Override
-	public String getLayerName() {
-		return "Restaurants";
+	public List<MapElementBean> getLayerItems() {
+		// TODO Auto-generated method stub
+		return new ArrayList<MapElementBean>();
 	}
 
 	@Override
-	public String getLayerDescription() {
-		return "Places to eat.";
+	public MapLayerBean getLayer() {
+		// TODO Auto-generated method stub
+		return new MapLayerBean("Restaurants", "", 15678, -1, true);
 	}
 }

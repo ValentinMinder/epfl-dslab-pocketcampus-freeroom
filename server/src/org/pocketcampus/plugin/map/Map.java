@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,24 +24,33 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 public class Map implements IPlugin {
 	@PublicMethod
-	public String layers(HttpServletRequest request) {
+	public List<MapLayerBean> layers(HttpServletRequest request) {
+		return getExternalLayers();
+	}
+
+	private List<MapLayerBean> getExternalLayers() {
 		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
-		
-		String layersDesc = "";
+
 		Iterator<IPlugin> iter = providers.iterator();
 		IMapElementsProvider provider;
-		
+		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
+
 		while(iter.hasNext()) {
 			provider = (IMapElementsProvider)iter.next();
-			layersDesc += provider.getLayerName() + " ("+ provider.getLayerDescription() +"); ";
+			layers.add(provider.getLayer());
 		}
-		
-		return layersDesc;
+
+		return layers;
 	}
-	
+
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
+		return getInternalLayers();
+	}
+
+	private List<MapLayerBean> getInternalLayers() {
 		List<MapLayerBean> layers = new LinkedList<MapLayerBean>();
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -64,31 +74,41 @@ public class Map implements IPlugin {
 				mlb.setDisplayable(rs.getBoolean("displayable"));
 				layers.add(mlb);
 			}
-			
+
 			statement.close();
 			dbConnection.close();
 		} catch (SQLException e) {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
 		}
+
 		return layers;
 	}
-	
+
 	@PublicMethod
 	public List<MapElementBean> getItems(HttpServletRequest request) {
-		List<MapElementBean> elements = new LinkedList<MapElementBean>();
-		if(request == null)
-			return elements;
 		
+
+		if(request == null) {
+			return null;
+		}
+
 		String layerId = request.getParameter("layer_id");
 		int id;
 		try {
 			id = Integer.parseInt(layerId);
 		} catch (Exception e) {
-			System.err.println("Error with parameter (layer_id)");
-			return elements;
+			return null;
 		}
 		
+		return getInternalItems(id);
+	}
+	
+	public List<MapElementBean> getInternalItems(int layerId) {
+		List<MapElementBean> elements = new LinkedList<MapElementBean>();
+		
+		int id = layerId;
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -113,14 +133,14 @@ public class Map implements IPlugin {
 				meb.setAltitude(rs.getDouble("altitude"));
 				elements.add(meb);
 			}
-			
+
 			statement.close();
 			dbConnection.close();
 		} catch (SQLException e) {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
 		}
-		
+
 		return elements;
 	}
 
@@ -133,15 +153,15 @@ public class Map implements IPlugin {
 		try {
 			lat = Double.parseDouble(request.getParameter("latitude"));
 		} catch (Exception e) {}
-		
+
 		try {
 			lon = Double.parseDouble(request.getParameter("longitude"));
 		} catch (Exception e) {}
-		
+
 		Position p = new Position(lat, lon, 0);
-		
+
 		List<Position> path = Search.searchPathBetween(p, 6718, false);
-		
+
 		return path;
 	}
 }

@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.ServletException;
@@ -30,6 +31,8 @@ import com.unboundid.util.ssl.TrustAllTrustManager;
 //import org.pocketcampus.core.router.IServerBase;
 //import org.pocketcampus.core.router.PublicMethod;
 import org.pocketcampus.shared.plugin.directory.*;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.directory.DirectoryQuery;
@@ -89,13 +92,15 @@ public class Directory implements IPlugin, IMapElementsProvider {
 	}
 
 	@Override
-	public String getLayerName() {
-		return "Person";
+	public List<MapElementBean> getLayerItems() {
+		// TODO Auto-generated method stub
+		return new ArrayList<MapElementBean>();
 	}
 
 	@Override
-	public String getLayerDescription() {
-		return "Show a person's office";
+	public MapLayerBean getLayer() {
+		// TODO Auto-generated method stub
+		return new MapLayerBean("Person", "", 131232654, 60, false);
 	}
 	
 	
