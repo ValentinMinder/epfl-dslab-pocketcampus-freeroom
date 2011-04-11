@@ -13,4 +13,5 @@
 	<string name="server_connection_error">Server connection error</string>
 	<string name="please_wait">Please wait...</string>
 	<string name="unexpected_response">Unexpected response from server</string>
+	<string name="search_no_results">Your search did not match any elements</string>
 </resources>

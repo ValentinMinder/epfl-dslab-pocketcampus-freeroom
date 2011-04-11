@@ -9,4 +9,7 @@
     
     <string name="map_directions_not_accurate">We cannot locate you precisely enough to show directions</string>
     <string name="map_directions_not_at_epfl">It seems you are not at EPFL... We cannot show directions from outside campus.</string>
+    
+    <string name="map_search">Search the map</string>
+    <string name="map_searching">Searching the map</string>
 </resources>

@@ -103,6 +103,42 @@ public class MapPlugin extends PluginBase {
 
 		layers_ = new ArrayList<MapElementsList>();
 		selectedLayers_ = new ArrayList<MapElementsList>();
+		
+		Bundle extras = getIntent().getExtras();
+		handleIntent(extras);
+	}
+	
+	/**
+	 * Handle the eventual extras of the intent.
+	 * For example, it can show a map element
+	 * @param extras the bundle containing the extras
+	 */
+	private void handleIntent(Bundle extras) {
+		if(extras == null)
+			return;
+		
+		if(extras.containsKey("MapElement")) {
+			Log.d("MapPlugin", "intent with extras");
+			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
+			OverlayItem overItem = new OverlayItem(meb.getTitle(), meb.getDescription(),
+					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
+			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
+			overItems.add(overItem);
+			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+				@Override
+				public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+					return false;
+				}
+
+				@Override
+				public boolean onItemSingleTapUp(int index, OverlayItem item) {
+					MyToast.showToast(getApplicationContext(), item.mTitle);
+					showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
+					return true;
+				}
+			}, new DefaultResourceProxyImpl(getApplicationContext()));
+			constantOverlays_.add(aOverlay);
+		}
 	}
 
 	/**
@@ -289,7 +325,7 @@ public class MapPlugin extends PluginBase {
 			return true;
 
 		case R.id.map_path:
-			showDirectionsFromHereToPOI(6718);
+			onSearchRequested(); //shows the search dialog
 			return true;
 
 		default:
