@@ -27,15 +27,19 @@ import java.util.List;
  */
 public final class Connection implements Serializable
 {
-	public final String id;
-	public final String link;
-	public final Date departureTime;
-	public final Date arrivalTime;
-	public final Location from;
-	public final Location to;
-	public final List<Part> parts;
-	public final List<Fare> fares;
-
+	public String id;
+	public String link;
+	public Date departureTime;
+	public Date arrivalTime;
+	public Location from;
+	public Location to;
+	public List<Part> parts;
+	public List<Fare> fares;
+	
+	public Connection() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Connection(final String id, final String link, final Date departureTime, final Date arrivalTime, final Location from, final Location to,
 			final List<Part> parts, final List<Fare> fares)
 	{
@@ -75,10 +79,14 @@ public final class Connection implements Serializable
 
 	public static class Part implements Serializable
 	{
-		public final Location departure;
-		public final Location arrival;
-		public final List<Point> path;
-
+		public Location departure;
+		public Location arrival;
+		public List<Point> path;
+		
+		public Part() {
+			// TODO Auto-generated constructor stub
+		}
+		
 		public Part(final Location departure, final Location arrival, final List<Point> path)
 		{
 			this.departure = departure;

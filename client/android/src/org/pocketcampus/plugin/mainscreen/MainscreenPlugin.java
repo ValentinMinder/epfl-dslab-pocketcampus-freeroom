@@ -9,15 +9,12 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.plugin.food.MenuDialog;
 import org.pocketcampus.plugin.logging.Tracker;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -161,8 +158,6 @@ public class MainscreenPlugin extends PluginBase {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
 		builder.setTitle("About PocketCampus");
-//		builder.setIcon(getResources().getDrawable(R.drawable.app_icon));
-//		builder.setMessage("v2 alpha1\nr225");
 		
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.mainscreen_about_dialog, null);

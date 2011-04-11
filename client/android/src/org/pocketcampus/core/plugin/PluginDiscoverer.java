@@ -6,8 +6,6 @@ import org.pocketcampus.plugin.camipro.CamiproPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
-import org.pocketcampus.plugin.social.SocialPlugin;
-import org.pocketcampus.plugin.test.TestPlugin;
 import org.pocketcampus.plugin.transport.TransportPlugin;
 
 /**

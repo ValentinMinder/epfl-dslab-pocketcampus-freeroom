@@ -31,10 +31,5 @@ public class Test implements IPlugin, INewsFeedProvider {
 		
 		return ret;
     }
-	
-
-	public String getDefaultMethod() {
-		return "capitalize";
-	}
 
 }

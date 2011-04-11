@@ -6,29 +6,10 @@
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
 
-	<RelativeLayout android:layout_below="@+id/actionbar">
-		<AutoCompleteTextView android:id="@+id/location_departure"
-			android:hint="Departure"></AutoCompleteTextView>
-		<AutoCompleteTextView android:id="@+id/location_arrival"
-			android:hint="Arrival" android:layout_below="@+id/location_departure"></AutoCompleteTextView>
-
-		<TableLayout android:layout_below="@+id/location_arrival"
-			android:stretchColumns="true">
-			<TableRow>
-				<Button android:id="@+id/date_button" android:layout_width="wrap_content"
-					android:layout_below="@+id/location_arrival"></Button>
-
-				<Button android:id="@+id/time_button" android:layout_width="wrap_content"
-					android:layout_below="@+id/location_arrival"
-					android:layout_toRightOf="@+id/date_button"></Button>
-			</TableRow>
-		</TableLayout>
-
-		<Button android:id="@+id/search_button" android:text="Search"
-			android:layout_alignParentBottom="true"></Button>
-
-		<TextView android:id="@+id/result" android:layout_below="@+id/search_button"></TextView>
-	</RelativeLayout>
+	<ListView android:layout_below="@+id/actionbar" android:id="@+id/transport_mainlist">
+		
+	
+	</ListView>
 
 </RelativeLayout>
 

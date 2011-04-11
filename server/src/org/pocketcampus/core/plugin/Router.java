@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.shared.utils.StringUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Server core. Singleton
@@ -40,12 +42,14 @@ public class Router extends HttpServlet {
 		super.init();
 		
 		core_ = Core.getInstance();
-		gson_ = new Gson();
 		reporter_ = new Reporter();
+		
+		// .setPrettyPrinting()
+		gson_ = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").setPrettyPrinting().create();
 		
 		// XXX
 		try {
-			initClass("org.pocketcampus.plugin.food.Food");
+			//initClass("org.pocketcampus.plugin.food.Food");
 			initClass("org.pocketcampus.plugin.map.Map");
 			initClass("org.pocketcampus.plugin.transport.Transport");
 			initClass("org.pocketcampus.plugin.test.Test");

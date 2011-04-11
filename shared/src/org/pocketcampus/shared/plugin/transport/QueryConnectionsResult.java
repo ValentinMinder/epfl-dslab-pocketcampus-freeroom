@@ -30,24 +30,28 @@ public final class QueryConnectionsResult implements Serializable
 		OK, AMBIGUOUS, TOO_CLOSE, UNRESOLVABLE_ADDRESS, NO_CONNECTIONS, INVALID_DATE, SERVICE_DOWN;
 	}
 
-	public static final QueryConnectionsResult TOO_CLOSE = new QueryConnectionsResult(Status.TOO_CLOSE);
-	public static final QueryConnectionsResult UNRESOLVABLE_ADDRESS = new QueryConnectionsResult(Status.UNRESOLVABLE_ADDRESS);
-	public static final QueryConnectionsResult NO_CONNECTIONS = new QueryConnectionsResult(Status.NO_CONNECTIONS);
-	public static final QueryConnectionsResult INVALID_DATE = new QueryConnectionsResult(Status.INVALID_DATE);
+	public static QueryConnectionsResult TOO_CLOSE = new QueryConnectionsResult(Status.TOO_CLOSE);
+	public static QueryConnectionsResult UNRESOLVABLE_ADDRESS = new QueryConnectionsResult(Status.UNRESOLVABLE_ADDRESS);
+	public static QueryConnectionsResult NO_CONNECTIONS = new QueryConnectionsResult(Status.NO_CONNECTIONS);
+	public static QueryConnectionsResult INVALID_DATE = new QueryConnectionsResult(Status.INVALID_DATE);
 
-	public final Status status;
+	public Status status;
 
-	public final List<Location> ambiguousFrom;
-	public final List<Location> ambiguousVia;
-	public final List<Location> ambiguousTo;
+	public List<Location> ambiguousFrom;
+	public List<Location> ambiguousVia;
+	public List<Location> ambiguousTo;
 
-	public final String queryUri;
-	public final Location from;
-	public final Location via;
-	public final Location to;
-	public final String context;
-	public final List<Connection> connections;
+	public String queryUri;
+	public Location from;
+	public Location via;
+	public Location to;
+	public String context;
+	public List<Connection> connections;
 
+	public QueryConnectionsResult() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public QueryConnectionsResult(final String queryUri, final Location from, final Location via, final Location to, final String context,
 			final List<Connection> connections)
 	{
