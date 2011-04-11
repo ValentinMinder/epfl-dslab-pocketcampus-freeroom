@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,23 +29,14 @@ public class Map implements IPlugin {
 		return getExternalLayers();
 	}
 
-	private List<MapLayerBean> getExternalLayers() {
-		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
-
-		Iterator<IPlugin> iter = providers.iterator();
-		IMapElementsProvider provider;
-		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-
-		while(iter.hasNext()) {
-			provider = (IMapElementsProvider)iter.next();
-			layers.add(provider.getLayer());
-		}
-
-		return layers;
-	}
-
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
+		
+		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
+
+		layers.addAll(getInternalLayers());
+		layers.addAll(getExternalLayers());
+		
 		return getInternalLayers();
 	}
 
@@ -85,25 +77,58 @@ public class Map implements IPlugin {
 		return layers;
 	}
 
+	private List<MapLayerBean> getExternalLayers() {
+		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
+
+		Iterator<IPlugin> iter = providers.iterator();
+		IMapElementsProvider provider;
+		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
+
+		while(iter.hasNext()) {
+			provider = (IMapElementsProvider)iter.next();
+			layers.add(provider.getLayer());
+		}
+
+		return layers;
+	}
+
 	@PublicMethod
 	public List<MapElementBean> getItems(HttpServletRequest request) {
 		
-
 		if(request == null) {
 			return null;
 		}
+		
+		ArrayList<MapElementBean> items = new ArrayList<MapElementBean>();
 
 		String layerId = request.getParameter("layer_id");
 		int id;
 		try {
 			id = Integer.parseInt(layerId);
+			items.addAll(getInternalItems(id));
 		} catch (Exception e) {
 			return null;
 		}
 		
-		return getInternalItems(id);
+		items.addAll(getExternalItems(id));
+		
+		
+		return items;
 	}
 	
+	private List<MapElementBean> getExternalItems(int id) {
+		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
+
+		Iterator<IPlugin> iter = providers.iterator();
+		IMapElementsProvider provider;
+
+		while(iter.hasNext()) {
+			provider = (IMapElementsProvider)iter.next();
+		}
+		
+		return new ArrayList<MapElementBean>();
+	}
+
 	public List<MapElementBean> getInternalItems(int layerId) {
 		List<MapElementBean> elements = new LinkedList<MapElementBean>();
 		
