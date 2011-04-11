@@ -16,6 +16,12 @@ public class Position implements Serializable {
 		this.altitude_ = alt;
 	}
 	
+	public Position(int lat, int lon, int alt) {
+		this.latitude_ = lat / 1E6;
+		this.longitude_ = lon / 1E6;
+		this.altitude_ = alt;
+	}
+	
 	public double getLatitude() {
 		return latitude_;
 	}
