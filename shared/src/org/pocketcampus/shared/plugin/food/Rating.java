@@ -17,6 +17,7 @@ public class Rating implements Serializable {
 	private StarRating rating_;
 	private int numberOfVotes_;
 
+	public Rating(){}
 	/**
 	 * 
 	 * @param initialrating

@@ -106,27 +106,27 @@ public class MenuSorter {
 	 * 
 	 * @return the sorted list of meals
 	 **/
-	public Vector<Vector<Meal>> sortByDay(FoodMenu meals) {
-		
-		if(meals == null){
-			throw new IllegalArgumentException("The meals list cannot be null !");
-		}
-		
-		Vector<Vector<Meal>> vec = new Vector<Vector<Meal>>();		
-		
-		for (int i=0; i<5; i++) {
-			vec.add(new Vector<Meal>());
-		}
-		Set<Meal> set = meals.getMeals();
-		for (Meal meal : set) {
-			if(!meal.getDescription_().matches("\\s+")){
-				int day = meal.getDay_();
-				vec.get(day-2).add(meal);
-			}
-		}	
-		
-		return vec;
-	}
+//	public Vector<Vector<Meal>> sortByDay(FoodMenu meals) {
+//		
+//		if(meals == null){
+//			throw new IllegalArgumentException("The meals list cannot be null !");
+//		}
+//		
+//		Vector<Vector<Meal>> vec = new Vector<Vector<Meal>>();		
+//		
+//		for (int i=0; i<5; i++) {
+//			vec.add(new Vector<Meal>());
+//		}
+//		Set<Meal> set = meals.getMeals();
+//		for (Meal meal : set) {
+//			if(!meal.getDescription_().matches("\\s+")){
+//				int day = meal.getDay_();
+//				vec.get(day-2).add(meal);
+//			}
+//		}	
+//		
+//		return vec;
+//	}
 
 	/**
 	 * Compares meals using their rating, in order to 

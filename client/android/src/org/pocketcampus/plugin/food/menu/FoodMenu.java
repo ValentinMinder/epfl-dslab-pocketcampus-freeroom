@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.pocketcampus.core.communication.RequestHandler;
@@ -25,6 +27,7 @@ import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.content.Context;
 import android.util.Log;
@@ -50,7 +53,6 @@ public class FoodMenu {
 		campusMenu_ = new HashMap<Meal, Rating>();
 		loadCampusMenu();
 	}
-
 
 	public void writeToFile(Date currentDate) {
 		String filename = "MenusCache";
@@ -91,7 +93,8 @@ public class FoodMenu {
 		} catch (ClassNotFoundException ex) {
 			// Toast.makeText(ctx_, "Class not found",
 			// Toast.LENGTH_SHORT).show();
-		} catch (ClassCastException cce) {}
+		} catch (ClassCastException cce) {
+		}
 
 		return menu;
 	}
@@ -142,24 +145,38 @@ public class FoodMenu {
 	private void loadCampusMenu() {
 		pluginHandler_.menuRefreshing();
 		class MenusRequest extends ServerRequest {
-			private HashMap<Meal, Rating> campusMenu;
+			private List<Meal> campusMenuList;
 
 			@Override
 			protected void onPostExecute(String result) {
 
-				Log.d("SERVER", "response: " + result);
-				campusMenu = new HashMap<Meal, Rating>();
+				// Log.d("SERVER", "response: " + result);
+
+				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
 				Gson gson = new Gson();
-				Type menuType = new TypeToken<HashMap<Meal, Rating>>() {
-				}.getType();
+
+				Type menuType = new TypeToken<List<Meal>>() {}.getType();
 				try {
 					Log.d("SERVER", "Gson " + result);
-					campusMenu = gson.fromJson(result, menuType);
+					campusMenuList = gson.fromJson(result, menuType);
 				} catch (JsonSyntaxException e) {
+					Log.d("SERVER", "Jsonsyntax");
+					e.printStackTrace();
 					return;
 				} catch (NullPointerException npe) {
+					Log.d("SERVER", "Null Pointer");
 					return;
+				}
+
+				Log.d("SERVER", "Arrive ici");
+
+				HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
+
+				if (campusMenuList != null) {
+					for (Meal m : campusMenuList) {
+						campusMenu.put(m, new Rating(StarRating.STAR_2_5, 3));
+					}
 				}
 
 				if (campusMenu != null) {
@@ -174,12 +191,15 @@ public class FoodMenu {
 						setValidityDate(currentDate);
 						writeToFile(currentDate);
 					}
-					pluginHandler_.menuRefreshed();
+				} else {
+					Log.d("SERVER", "null menu");
 				}
+				pluginHandler_.menuRefreshed();
 			}
 		}
-		MenusRequest menusRequest = new MenusRequest();
+		// MenusRequest menusRequest = ;
 		// request of the menus
-		requestHandler_.execute(menusRequest, "getMenus", (RequestParameters) null);
+		requestHandler_.execute(new MenusRequest(), "getMenus",
+				(RequestParameters) null);
 	}
 }

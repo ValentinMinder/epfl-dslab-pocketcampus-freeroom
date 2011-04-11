@@ -16,6 +16,8 @@ public class Restaurant implements IRestaurant, Serializable {
 	private String name_;
 	//private PositionData position;
 	
+	public Restaurant(){}
+	
 	public Restaurant(String name/*, PositionData position*/) {
 		this.name_ = name;
 		//this.position = position;

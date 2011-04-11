@@ -140,19 +140,20 @@ public class Router extends HttpServlet {
 	private void invoke(HttpServletRequest request, HttpServletResponse response, IPlugin obj, Method m) throws IOException {
 		// Create the arguments to pass to the method
 		Object arglist[] = new Object[1];
+		request.setCharacterEncoding("iso-8859-15");
 		arglist[0] = request;
-
-		try {
+		try {			
 			// Sets the content type
-			response.setCharacterEncoding("UTF-8");
-			
+			final String encoding = "text/html; charset=iso-8859-15";
+			response.setContentType(encoding);
+				
 			// Invokes the method
 			Object ret = m.invoke(obj, arglist);
 			
 			String json = gson_.toJson(ret);
 			
 			// Puts the method content into the response
-			response.getOutputStream().println(json);
+			response.getWriter().println(json);
 			
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block

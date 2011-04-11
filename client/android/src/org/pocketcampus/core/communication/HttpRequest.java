@@ -38,7 +38,7 @@ public class HttpRequest {
 		
 		URLConnection connection = url_.openConnection();
 		InputStream content = connection.getInputStream();
-		InputStreamReader reader = new InputStreamReader(content, Charset.forName("UTF-8"));
+		InputStreamReader reader = new InputStreamReader(content, Charset.forName("iso-8859-15"));
 		         
 		while ((charRead = reader.read(inputBuffer))>0) {                    
 			String readString = String.copyValueOf(inputBuffer, 0, charRead);                    

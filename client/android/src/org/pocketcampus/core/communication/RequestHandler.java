@@ -12,7 +12,10 @@ public class RequestHandler {
 	//private String serverUrl_ = "http://pcepfl.elasticbeanstalk.com/";
 	
 	// FLORIAN LOCAL SERVER URL
-	private String serverUrl_ = "http://10.0.0.157:8080/pocketcampus-server/";
+	//private String serverUrl_ = "http://10.0.0.157:8080/pocketcampus-server/";
+	
+	// ELODIE LOCAL SERVER URL
+	private String serverUrl_ = "http://128.178.240.75:8080/pocketcampus-server/";
 	
 	// JOHAN LOCAL SERVER URL
 	//private String serverUrl_ = "http://192.168.1.46:8080/pocketcampus-server/";
