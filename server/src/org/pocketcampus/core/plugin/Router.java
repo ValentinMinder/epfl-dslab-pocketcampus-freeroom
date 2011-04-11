@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -47,16 +46,23 @@ public class Router extends HttpServlet {
 		// .setPrettyPrinting()
 		gson_ = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").setPrettyPrinting().create();
 		
+		String[] plugins = new String[] {
+				"org.pocketcampus.plugin.food.Food",
+				"org.pocketcampus.plugin.map.Map",
+				"org.pocketcampus.plugin.transport.Transport",
+				"org.pocketcampus.plugin.test.Test",
+				"org.pocketcampus.plugin.bikes.Bikes"
+		};
+		
 		// XXX
-		try {
-			//initClass("org.pocketcampus.plugin.food.Food");
-			initClass("org.pocketcampus.plugin.map.Map");
-			initClass("org.pocketcampus.plugin.transport.Transport");
-			initClass("org.pocketcampus.plugin.test.Test");
-			initClass("org.pocketcampus.plugin.bikes.Bikes");
-		} catch (ServerException e) {
-			e.printStackTrace();
+		for(String s : plugins) {
+			try {
+				initClass(s);
+			} catch (ServerException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 	/**
