@@ -1,12 +1,19 @@
 package org.pocketcampus.plugin.map;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.pocketcampus.plugin.map.routing.GeometryF;
 import org.pocketcampus.plugin.map.routing.Roadmap;
 import org.pocketcampus.plugin.map.routing.Routing;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.utils.URLLoader;
@@ -69,14 +76,32 @@ public class Search {
 	 * Returns the MapPOI closest to the MapPerson person. 
 	 */
 	public static int getClosestPOI(Position person) {
-		// conversion to EPSG4326 coordinate system (used on the EPFL POI database)
-		//Position personPositionConverted = CoordinateConverter.convertLatLongToEPSG4326( person.getLatitude(),  person.getLongitude(),  person.getAltitude());
+		int loc_id = -1;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Server error: unable to load jdbc Drivers");
+			e.printStackTrace();
+			return loc_id;
+		}
 
-		//Position closestPOI = closestPOIList.iterator().next();
+		Connection dbConnection = null;
+		try {
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			Statement statement = dbConnection.createStatement();
+			ResultSet rs = statement.executeQuery("select *, 3956*2*asin(sqrt(power(sin((" + person.getLatitude() + "-abs(dest.centerX))*pi()/180/2),2)+cos(" + person.getLatitude() + "*pi()/180)*cos(abs(dest.centerX)*pi()/180)*power(sin((" + person.getLongitude() + "-dest.centerY)*pi()/180/2),2))) as distance from map_pois dest order by distance asc limit 1");
 
-		// TODO Johan
-
-		return 17435;
+			if(rs.next()) {
+				loc_id = rs.getInt("loc_id");
+			}
+			
+			statement.close();
+			dbConnection.close();
+		} catch (SQLException e) {
+			System.err.println("Error with SQL");
+			e.printStackTrace();
+		}
+		return loc_id;
 	}
 
 
