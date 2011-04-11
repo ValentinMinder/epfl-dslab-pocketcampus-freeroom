@@ -37,31 +37,6 @@ public class Map implements IPlugin {
 		
 		return layersDesc;
 	}
-
-	@PublicMethod
-	public String map(HttpServletRequest request) {
-		return "I am MAP ";
-	}
-	
-	@PublicMethod
-	public String hello(HttpServletRequest request) {
-		return "Hello World";
-	}
-	
-	@PublicMethod
-	public String bonjour(HttpServletRequest request) {
-		return "Bonjour Monde";
-	}
-	
-	@PublicMethod
-	public String hola(HttpServletRequest request) {
-		return "Hola mundo";
-	}
-	
-	@PublicMethod
-	public Object arr(HttpServletRequest request) {
-		return new String[] {"Hi", "guys", "huhu"};
-	}
 	
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
@@ -149,13 +124,23 @@ public class Map implements IPlugin {
 		return elements;
 	}
 
-	public String getDefaultMethod() {
-		return "map";
-	}
-	
 	@PublicMethod
 	public List<Position> routing(HttpServletRequest request) {
-		List<Position> path = Search.searchPathBetween("plop", "huhu", false);
+
+		double lat = 46;
+		double lon = 6; 
+
+		try {
+			lat = Double.parseDouble(request.getParameter("latitude"));
+		} catch (Exception e) {}
+		
+		try {
+			lon = Double.parseDouble(request.getParameter("longitude"));
+		} catch (Exception e) {}
+		
+		Position p = new Position(lat, lon, 0);
+		
+		List<Position> path = Search.searchPathBetween(p, 6718, false);
 		
 		return path;
 	}

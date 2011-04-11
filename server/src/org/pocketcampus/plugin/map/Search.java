@@ -1,9 +1,6 @@
 package org.pocketcampus.plugin.map;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 
 import org.pocketcampus.plugin.map.routing.GeometryF;
@@ -12,6 +9,7 @@ import org.pocketcampus.plugin.map.routing.Routing;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
+import org.pocketcampus.shared.utils.URLLoader;
 
 import com.google.gson.Gson;
 
@@ -34,7 +32,7 @@ public class Search {
 			if(jsonString == null) {
 				return elemSet;
 			}
-			
+
 			JSONArray jsonArray = (new JSONObject(jsonString)).getJSONArray("features");
 			JSONObject current;
 			JSONObject geom;
@@ -63,165 +61,99 @@ public class Search {
 
 		return elemSet;
 	}
-	*/
+	 */
 
-	
-	
+
+
 	/**
 	 * Returns the MapPOI closest to the MapPerson person. 
 	 */
-	/*
-	public static MapPOI getClosestPOI(MapPerson person, Marker icon) {
+	public static int getClosestPOI(Position person) {
 		// conversion to EPSG4326 coordinate system (used on the EPFL POI database)
-		Position personPositionConverted = CoordinateConverter.convertLatLongToEPSG4326( person.position().getLat(),  person.position().getLon(),  person.position().getLevel());
+		//Position personPositionConverted = CoordinateConverter.convertLatLongToEPSG4326( person.getLatitude(),  person.getLongitude(),  person.getAltitude());
 
-		// warps the positon in a PositionData object, so we can send it to the PC server
-		PositionData personPositionData = new PositionData(personPositionConverted.getLat(), personPositionConverted.getLon(), personPositionConverted.getLevel());
+		//Position closestPOI = closestPOIList.iterator().next();
 
-		// gets the closest point from the PC server
-		MapPOIData closestPOIData = null;
-		try {
-			closestPOIData = (new ServerAPI()).getNearestMapPOIData(personPositionData);
-		} catch (ServerException e) {
-			Log.d("MapSearch","Server does not answer. Details: "+e.toString());
-		}
+		// TODO Johan
 
-		if(closestPOIData == null) {
-			return null;
-		}
-		
-		// we need the vertexId of this POI, so we ask the EPFL server the complete MapPOI object
-		HashSet<MapElement> closestPOIList = (HashSet<MapElement>) searchMapElement(closestPOIData.type_, closestPOIData.title_, icon);
-
-		if(closestPOIList==null || closestPOIList.size()==0) {
-			return null;
-		}
-		
-		MapElement closestPOI = closestPOIList.iterator().next();
-		Position position = CoordinateConverter.convertEPSG4326ToLatLong(closestPOIData.position_.lat, closestPOIData.position_.lon, closestPOIData.position_.level);
-		MapPOI closestPOIWithVertexId = new MapPOI(position, closestPOIData.type_, icon, closestPOIData.id_, closestPOI.getClosestPOI().vertexID());
-		return closestPOIWithVertexId;
+		return 17435;
 	}
-	*/
 
-	
-	
+
+	public static List<Position> searchPathBetween(Position userPosition, int endMapElement, boolean bike) {
+
+		int poi = getClosestPOI(userPosition);
+
+		return searchPathBetween(userPosition, poi, endMapElement, bike);
+	}
+
 	/**
 	 * Computes the shortest walkable Path between two MapElements.
 	 */
-	public static List<Position> searchPathBetween(String startMapElement, String endMapElement, boolean bike) {
-		if(startMapElement==null || endMapElement==null) {
-			return null;
-		}
-		
+	public static List<Position> searchPathBetween(Position startPosition, int startMapElement, int endMapElement, boolean bike) {
+
 		/*
 		MapPOI start = startMapElement.getClosestPOI();
 		MapPOI end = endMapElement.getClosestPOI();
 		Log.d("Search", "searchPathBetween VertexID:"+start.vertexID()+" and "+ end.vertexID());
-		*/
+		 */
+
+		String bikeOn = bike ? "&disabled=on" : ""; 
+		String pageUrl = "http://plan.epfl.ch/routing?from=" + startMapElement + "&to=" + endMapElement + bikeOn;
 		
-		//Path myPath = new Path();
-
+		String jsonString;
 		try {
-			String on = bike ? "&disabled=on" : ""; 
-			//String pageUrl = "http://plan.epfl.ch/routing?from=" + start.vertexID() + "&to=" + end.vertexID() + on;
-			String pageUrl = "http://plan.epfl.ch/routing?from=" + 17435 + "&to=" + 6718 + on;
-			String jsonString = getJsonString(pageUrl);
-			
-			if (jsonString == null) {
-				//Log.d("Search", "jsonString is null in searchPathBetween-Method between VertexID:"+start.vertexID()+" and "+ end.vertexID());
-				return null;
-			}
-			
-			Routing r = new Gson().fromJson(jsonString, Routing.class);
-			
-			Path path = new Path();
-
-			GeometryF geom = r.feature.geometry;
-			double[][][] coor = geom.coordinates;
-
-			//get the roadmap object which contains informations about level
-			Roadmap[] road = r.roadmap;
-			for (int i = 0; i < road.length; ++i){
-
-				Position pos = CoordinateConverter.convertEPSG4326ToLatLong(
-						road[i].geometry.coordinates[0],
-						road[i].geometry.coordinates[1],
-						Integer.parseInt(road[i].properties.level));
-				
-				path.getRoadmapList().add(pos); 	
-			}
-
-
-			Position previousEnd = new Position(46.51811752656941, 6.568092385190248, 0); //start.position();
-			path.getPositionList().add(previousEnd);
-
-			int k=0;
-			for (int i = 0; i < coor.length; ++i) {
-				
-				int l1 = path.getRoadmapList().get(k).getAltitude();
-				int l2 = path.getRoadmapList().get(k).getAltitude();
-				
-				Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][0][0], coor[i][0][1], l1);
-				Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][1][0], coor[i][1][1], l2);
-				
-				if((path.getRoadmapList().contains(pos1))||(path.getRoadmapList().contains(pos2))){
-					k=k+1;          	
-				}
-
-				if(pos1 == previousEnd) {
-					path.getPositionList().add(pos2);
-					previousEnd = pos2;
-				} else {
-					path.getPositionList().add(pos1);
-					previousEnd = pos1;
-				}
-			}
-			
-			return path.getPositionList();
-
-		} catch (Exception e) { // TODO JSONException
-			e.printStackTrace();
+			jsonString = URLLoader.getSource(pageUrl);
+		} catch (IOException e) {
+			return null;
 		}
 
-		return null;
-	}
+		Routing r = new Gson().fromJson(jsonString, Routing.class);
 
-	
-	/**
-	 * This method returns the content of a web page as a String.
-	 * This should probably be a static method in one of the Parser package in Shared.
-	 * @param sourceUrl The address of the web page
-	 * @return the content of the web page
-	 */
-	private static String getJsonString(String sourceUrl){
-		BufferedInputStream buffer = null;
-		try{
-			URL url = new URL(sourceUrl);
-			URLConnection urlc = url.openConnection();
+		Path path = new Path();
 
-			buffer = new BufferedInputStream(urlc.getInputStream());
+		GeometryF geom = r.feature.geometry;
+		double[][][] coor = geom.coordinates;
 
-			StringBuilder builder = new StringBuilder();
-			int byteRead;
-			while ((byteRead = buffer.read()) != -1){
-				builder.append((char) byteRead);
+		//get the roadmap object which contains informations about level
+		Roadmap[] road = r.roadmap;
+		for (int i = 0; i < road.length; ++i){
+
+			Position pos = CoordinateConverter.convertEPSG4326ToLatLong(
+					road[i].geometry.coordinates[0],
+					road[i].geometry.coordinates[1],
+					Integer.parseInt(road[i].properties.level));
+
+			path.getRoadmapList().add(pos); 	
+		}
+
+
+		Position previousEnd = startPosition;
+		path.getPositionList().add(previousEnd);
+
+		int k=0;
+		for (int i = 0; i < coor.length; ++i) {
+
+			int l1 = path.getRoadmapList().get(k).getAltitude();
+			int l2 = path.getRoadmapList().get(k).getAltitude();
+
+			Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][0][0], coor[i][0][1], l1);
+			Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][1][0], coor[i][1][1], l2);
+
+			if((path.getRoadmapList().contains(pos1)) || (path.getRoadmapList().contains(pos2))) {
+				++k;          	
 			}
-			return builder.toString();
 
-		}catch (IOException e) {
-			//Log.i("Search","",e);
-
-		}finally{
-			if(buffer != null){
-				try {
-					buffer.close();
-				} catch (IOException e) {
-					//Log.i("Search","",e);
-				}
+			if(pos1 == previousEnd) {
+				path.getPositionList().add(pos2);
+				previousEnd = pos2;
+			} else {
+				path.getPositionList().add(pos1);
+				previousEnd = pos1;
 			}
 		}
-		return null;
+
+		return path.getPositionList();
 	}
 
 	/**
@@ -235,9 +167,9 @@ public class Search {
 			Position pos = CoordinateConverter.convertEPSG4326ToLatLong(e.position_.lat, e.position_.lon, e.position_.level);
 			elems.add(new MapPOI(pos , e.type_, marker, 0, 0, e.title_, e.description_));
 		}
-		
+
 		return elems;
 	}
-	*/
+	 */
 }
 
