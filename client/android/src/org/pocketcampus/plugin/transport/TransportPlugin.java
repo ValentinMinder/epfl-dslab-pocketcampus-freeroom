@@ -1,92 +1,67 @@
 package org.pocketcampus.plugin.transport;
 
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.shared.plugin.transport.Location;
-import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import org.pocketcampus.core.ui.ActionBar.Action;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class TransportPlugin extends PluginBase {
-	private String defaultDestination = "Lausanne, Flon";
 	private ListView mainList_;
-	private TransportSummaryAdapter adapter_;
+	private TransportSummaryListAdapter adapter_;
 	private ActionBar actionBar_;
-	
+	private ArrayList<TransportSummaryAdapter> summaryList_;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.transport_main);
-		
+
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		setupActionBar(true);
 		
-		
 		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
-		
-		adapter_ = new TransportSummaryAdapter(this);
+		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
 		mainList_.setAdapter(adapter_);
 		
-		getTransportSummaries();
+		summaryList_ = new ArrayList<TransportSummaryAdapter>();
+		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Lausanne, Flon"));
+		summaryList_.add(new TransportSummaryAdapter(this, "Lausanne, Vigie", "Ecublens VD, EPFL"));
+		//summaryList_.add(new TransportSummaryAdapter(this, "Paris", "Berlin"));
+
+		for(TransportSummaryAdapter summary : summaryList_) {
+			adapter_.addSection(summary);
+		}
 		
-		showToast("From EPFL to Flon");
+		adapter_.loadSummaryList();
 	}
 	
-	private void getTransportSummaries() {
-		class ConnectionsRequest extends ServerRequest {
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
 
 			@Override
-			protected void onPostExecute(String result) {
-				System.out.println(result);
-				
-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
-				
-				Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
-				QueryConnectionsResult summaryList = gson.fromJson(result, SummaryListType);
-				
-				System.out.println(summaryList);
-				
-				adapter_.setTransportSummaries(summaryList);
-				hideSipnner();
+			public void performAction(View view) {
+				adapter_.loadSummaryList();
 			}
-			
-		} 
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
 		
-		RequestParameters params = new RequestParameters();
-		params.addParameter("from", "Ecublens VD, EPFL");
-		params.addParameter("to", defaultDestination);
-		
-		getRequestHandler().execute(new ConnectionsRequest(), "connections", params);
-		showSpinner();
-	}
-	
-	private void showSpinner() {
-		actionBar_.setProgressBarVisibility(View.VISIBLE);
-	}
-	
-	private void hideSipnner() {
-		actionBar_.setProgressBarVisibility(View.GONE);
-	}
-	
-	private void showToast(String message) {
-		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+		super.setupActionBar(addHomeButton);
+
 	}
 	
 	@Override
