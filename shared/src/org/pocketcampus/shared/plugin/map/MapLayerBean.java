@@ -1,6 +1,10 @@
 package org.pocketcampus.shared.plugin.map;
 
-public class MapLayerBean {
+import java.io.Serializable;
+
+public class MapLayerBean implements Serializable{
+
+	private static final long serialVersionUID = -314236678555986755L;
 	private String name, drawable_url;
 	private int id,cache;
 	private boolean displayable;

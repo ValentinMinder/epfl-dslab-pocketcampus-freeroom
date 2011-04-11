@@ -1,6 +1,10 @@
 package org.pocketcampus.shared.plugin.map;
 
-public class MapElementBean {
+import java.io.Serializable;
+
+public class MapElementBean implements Serializable {
+	
+	private static final long serialVersionUID = -5827393357802491225L;
 	private String title, description;
 	private double latitude, longitude, altitude;
 	private int id, layer_id;
