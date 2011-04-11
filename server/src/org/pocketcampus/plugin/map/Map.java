@@ -127,8 +127,8 @@ public class Map implements IPlugin {
 	@PublicMethod
 	public List<Position> routing(HttpServletRequest request) {
 
-		double lat = 46;
-		double lon = 6; 
+		double lat = 46.520101;
+		double lon = 6.565189;
 
 		try {
 			lat = Double.parseDouble(request.getParameter("latitude"));

@@ -134,8 +134,8 @@ public class Search {
 		int k=0;
 		for (int i = 0; i < coor.length; ++i) {
 
-			int l1 = path.getRoadmapList().get(k).getAltitude();
-			int l2 = path.getRoadmapList().get(k).getAltitude();
+			double l1 = path.getRoadmapList().get(k).getAltitude();
+			double l2 = path.getRoadmapList().get(k).getAltitude();
 
 			Position pos1 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][0][0], coor[i][0][1], l1);
 			Position pos2 = CoordinateConverter.convertEPSG4326ToLatLong(coor[i][1][0], coor[i][1][1], l2);
