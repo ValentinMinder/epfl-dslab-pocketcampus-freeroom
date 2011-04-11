@@ -76,7 +76,7 @@ public class NewsPreference extends PluginPreference {
 		}
 		
 		PreferenceCategory otherPrefsCat = new PreferenceCategory(this);
-        rssPrefCat.setTitle(R.string.news_preferences_other_title);
+		otherPrefsCat.setTitle(R.string.news_preferences_other_title);
         root.addPreference(otherPrefsCat);
 		
 		// List of available refresh rates for the feeds
