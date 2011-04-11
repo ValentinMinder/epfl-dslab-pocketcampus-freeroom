@@ -11,7 +11,7 @@ public class CoordinateConverter {
  * @param level the level(not modified)
  * @return A Position in standard lat/long coordinates (WGS84)
  */
-	public static Position convertEPSG4326ToLatLong(double x, double y, int level) {	
+	public static Position convertEPSG4326ToLatLong(double x, double y, double level) {	
 		double a = 6378137;
 		double lat = (Math.PI/2.0 - 2.0 * Math.atan(Math.exp(-y / a)));
 		double lon = adjust_lon(x/a);
@@ -29,7 +29,7 @@ public class CoordinateConverter {
 	 * @param level the level(not modified)
 	 * @return A Position in standard EPSG:4326
 	 */
-	public static Position convertLatLongToEPSG4326(double lat, double lon, int level) {
+	public static Position convertLatLongToEPSG4326(double lat, double lon, double level) {
 		double a = 6378137;
 		
 		//convert to radian
@@ -49,7 +49,7 @@ public class CoordinateConverter {
 	 * @param level the level(not modified)
 	 * @return A Position in standard lat/long coordinates (WGS84)
 	 */
-	public static Position convertCH1903ToLatLong(double x, double y, int level) {	
+	public static Position convertCH1903ToLatLong(double x, double y, double level) {	
 		double y_aux = (y - 600000)/1000000;
 		double x_aux = (x - 200000)/1000000;
 

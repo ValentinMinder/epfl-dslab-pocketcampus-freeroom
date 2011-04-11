@@ -1,7 +1,6 @@
 package org.pocketcampus.shared.plugin.map;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class Path gives all points connecting from_ & to_ points

@@ -6,11 +6,11 @@ public class Position implements Serializable {
 	private static final long serialVersionUID = -8760312491181393320L;
 	private double latitude_;
 	private double longitude_;
-	private int altitude_;
+	private double altitude_;
 	
 	public Position(){}
 	
-	public Position(double lat, double lon, int alt) {
+	public Position(double lat, double lon, double alt) {
 		this.latitude_ = lat;
 		this.longitude_ = lon;
 		this.altitude_ = alt;
@@ -32,7 +32,7 @@ public class Position implements Serializable {
 		return (int) (longitude_ * 1E6);
 	}
 	
-	public int getAltitude() {
+	public double getAltitude() {
 		return altitude_;
 	}
 	
