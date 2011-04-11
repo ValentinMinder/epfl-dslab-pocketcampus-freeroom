@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,24 +103,22 @@ public class Food implements IPlugin, IMapElementsProvider {
 		for (String r : restaurants) {
 			// For now, filter restaurants that cause encoding problems for
 			// current day.
-//			if (!(r.equals("La Table de Vallotton") || r.equals("Le Corbusier"))) {
-				// System.out.println(r);
-				RssParser rp = new RssParser(restaurantFeeds.get(r));
-				rp.parse();
-				RssFeed feed = rp.getFeed();
+			// System.out.println(r);
+			RssParser rp = new RssParser(restaurantFeeds.get(r));
+			rp.parse();
+			RssFeed feed = rp.getFeed();
 
-				Restaurant newResto = new Restaurant(r);
-				if (feed != null && feed.items != null) {
-					for (int i = 0; i < feed.items.size(); i++) {
-						Meal newMeal = new Meal(feed.items.get(i).title,
-								feed.items.get(i).description, newResto, true);
-						campusMenu_.put(newMeal, new Rating(
-								StarRating.STAR_3_0, 0));
-					}
-				} else {
-					// System.out.println("Debug: feed null for " + r + ".");
+			Restaurant newResto = new Restaurant(r);
+			if (feed != null && feed.items != null) {
+				for (int i = 0; i < feed.items.size(); i++) {
+					Meal newMeal = new Meal(feed.items.get(i).title, feed.items
+							.get(i).description, newResto, true);
+					campusMenu_
+							.put(newMeal, new Rating(StarRating.STAR_3_0, 0));
 				}
-//			}
+			} else {
+				// System.out.println("Debug: feed null for " + r + ".");
+			}
 		}
 	}
 
