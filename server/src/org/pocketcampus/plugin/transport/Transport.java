@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.shared.plugin.transport.Location;
+import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
+import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
 
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
@@ -42,6 +44,44 @@ public class Transport implements IPlugin {
 		return completions;
 	}
 
+	@PublicMethod
+	public Object nextDepartures(HttpServletRequest request) {
+		String idStation = request.getParameter("idStation");
+		
+		if(idStation == null) {
+			return null;
+		}
+		
+		QueryDeparturesResult nextDepartures = null;
+		
+		try {
+			nextDepartures = sbbProvider_.queryDepartures(idStation, 5, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return nextDepartures;
+	}
+	
+	@PublicMethod
+	public Object nearbyStations(HttpServletRequest request) {
+		String idStation = request.getParameter("idStation");
+		
+		if(idStation == null) {
+			return null;
+		}
+		
+		NearbyStationsResult nearbyStations = null;
+		
+		try {
+			nearbyStations = sbbProvider_.nearbyStations(null, 46520381, 6568444, 1000, 3);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return nearbyStations;
+	}
+	
 	@PublicMethod
 	public Object connections(HttpServletRequest request) {
 		String fromConstraint = request.getParameter("from");
@@ -213,6 +253,7 @@ public class Transport implements IPlugin {
 		
 		return station;
 	}
+	
 }
 
 
