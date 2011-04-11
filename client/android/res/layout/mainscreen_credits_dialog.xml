@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="wrap_content"
+	xmlns:android="http://schemas.android.com/apk/res/android" style="@style/Theme.MainLayout"
+	android:padding="15dip" android:layout_height="wrap_content"
+	android:layout_gravity="center_horizontal">
+
+	<TextView android:text="Developers" android:textStyle="bold"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:id="@+id/title"></TextView>
+
+	<TextView
+		android:text="George Candea\nSilviu Andrica\nMohamed Tarek Benoudina\nGianluca Dal Mas\nAndreas Kirchner\nFlorian Laurent\nJohan Leuenberger\nJeremiah Menétrey\nOriane Rodriguez\nPascal Scheiben\nJonas Schmid\nElodie Nilane Triponez\nGuillaume Ulrich"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@+id/title"></TextView>
+
+</RelativeLayout>

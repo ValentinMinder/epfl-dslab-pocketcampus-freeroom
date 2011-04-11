@@ -71,6 +71,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		String s1, s2;
 		
 		int minutesLeft = (int) (connection.departureTime.getTime() - new Date().getTime()) / (60 * 1000);
+		minutesLeft = Math.max(minutesLeft, 0);
 		
 		String changes = "";
 		if(connection.parts.size() > 1) {
@@ -83,7 +84,13 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		SimpleDateFormat formatter = new SimpleDateFormat();
 		formatter.applyPattern("k:mm");
 		
-		s1 = "In " + minutesLeft + " minute" + ((minutesLeft>1)?"s":"");
+		if(minutesLeft > 0) {
+			s1 = "In " + minutesLeft + " minute" + ((minutesLeft>1)?"s":"");
+		} else {
+			s1 = "Now!";
+		}
+		
+		
 		s2 = formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes + transporter;
 		
 		timeTextView.setText(s1);

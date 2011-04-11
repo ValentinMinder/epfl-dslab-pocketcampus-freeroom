@@ -50,7 +50,6 @@ public class MainscreenPlugin extends PluginBase {
 		plugins_ = core_.getAvailablePlugins();
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
-		//LinearLayout configLayout = (LinearLayout) findViewById(R.id.InfoLayout);
 
 		for (final PluginBase plugin : plugins_) {
 			PluginInfo pluginInfo = plugin.getPluginInfo();
@@ -104,75 +103,53 @@ public class MainscreenPlugin extends PluginBase {
 				relLayout.setPadding(0, 5, 0, 10);
 				menuLayout.addView(relLayout);
 			}
-
-			// CONFIGURATION BUTTONS (temporary)
-			//			if(plugin.getPluginPreference() != null) {
-			//				RelativeLayout infoItemLayout = new RelativeLayout(ctx_);
-			//				infoItemLayout.setBackgroundDrawable(ctx_.getResources().getDrawable(R.drawable.box_bg));
-			//				
-			//				RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			//				iconParams.addRule(RelativeLayout.CENTER_VERTICAL);
-			//				
-			//				ImageView icon = new ImageView(ctx_);
-			//				icon.setLayoutParams(iconParams);
-			//				icon.setImageDrawable(pluginInfo.getMiniIcon().getDrawable(ctx_));
-			//				icon.setId(2);
-			//				icon.setPadding(6, 0, 12, 0);
-			//				infoItemLayout.addView(icon);
-			//				
-			//				RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			//				titleParams.addRule(RelativeLayout.RIGHT_OF, 2);
-			//				titleParams.addRule(RelativeLayout.ALIGN_BOTTOM);
-			//				
-			//				TextView title = new TextView(ctx_);
-			//				title.setText("Configure " + pluginInfo.getName());
-			//				title.setLayoutParams(titleParams);
-			//				title.setTextColor(0xff444444);
-			//				title.setTypeface(Typeface.DEFAULT_BOLD);
-			//				infoItemLayout.addView(title);
-			//				
-			//				RelativeLayout.LayoutParams detailParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			//				detailParams.addRule(RelativeLayout.BELOW, 2);
-			//				detailParams.addRule(RelativeLayout.RIGHT_OF, 2);
-			//				
-			//				TextView detail = new TextView(ctx_);
-			//				detail.setText("Id: " +pluginInfo.getId()+ ", hasMenuIcon: " +pluginInfo.hasMenuIcon());
-			//				detail.setTextColor(0xff696969);
-			//				detail.setLayoutParams(detailParams);
-			//				infoItemLayout.addView(detail);
-			//				
-			//				infoItemLayout.setPadding(15, 15, 15, 15);
-			//				configLayout.addView(infoItemLayout);
-			//				
-			//				infoItemLayout.setOnClickListener(new View.OnClickListener() {
-			//		             public void onClick(View v) {
-			//		            	 core_.configurePlugin(ctx_, plugin);
-			//		             }
-			//		         });
-			//			}
-
 		}
 	}
 
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		builder.setTitle("About PocketCampus");
-		
+
+		builder.setTitle("About");
+
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.mainscreen_about_dialog, null);
 		builder.setView(layout);
-		
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+		builder.setNeutralButton("Credits", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {				
+				dialog.dismiss();
+				showCredits();
+			}
+		});
+
+		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 			}
 		});
-		
+
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
+
+	private void showCredits() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Credits");
+
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.mainscreen_credits_dialog, null);
+		builder.setView(layout);
+
+		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {				
+				dialog.dismiss();
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
 	public static Intent createIntent(Context context) {
 		Intent i = new Intent(context, MainscreenPlugin.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -185,7 +162,7 @@ public class MainscreenPlugin extends PluginBase {
 		inflater.inflate(R.menu.mainscreen, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -194,11 +171,11 @@ public class MainscreenPlugin extends PluginBase {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			return true;
-			
+
 		case R.id.transport_menu_about:
 			showAbout();
 			return true;
-			
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
