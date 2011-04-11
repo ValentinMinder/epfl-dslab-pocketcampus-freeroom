@@ -15,7 +15,6 @@ import org.pocketcampus.plugin.map.routing.Roadmap;
 import org.pocketcampus.plugin.map.routing.Routing;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
-import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Path;
 import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.utils.URLLoader;
@@ -108,16 +107,20 @@ public class Search {
 
 
 	public static List<Position> searchPathBetween(Position userPosition, int endMapElement, boolean bike) {
-
 		int poi = getClosestPOI(userPosition);
+		return searchPathBetween(poi, endMapElement, bike);
+	}
 
-		return searchPathBetween(userPosition, poi, endMapElement, bike);
+	public static List<Position> searchPathBetween(Position userPosition, Position endPosition, boolean bike) {
+		int startPoi = getClosestPOI(userPosition);
+		int endPoi = getClosestPOI(endPosition);
+		return searchPathBetween(startPoi, endPoi, bike);
 	}
 
 	/**
 	 * Computes the shortest walkable Path between two MapElements.
 	 */
-	public static List<Position> searchPathBetween(Position startPosition, int startMapElement, int endMapElement, boolean bike) {
+	public static List<Position> searchPathBetween(int startMapElement, int endMapElement, boolean bike) {
 
 		/*
 		MapPOI start = startMapElement.getClosestPOI();
@@ -155,7 +158,7 @@ public class Search {
 		}
 
 
-		Position previousEnd = startPosition;
+		Position previousEnd = CoordinateConverter.convertEPSG4326ToLatLong(coor[0][0][0], coor[0][0][1], path.getRoadmapList().get(0).getAltitude());
 		path.getPositionList().add(previousEnd);
 
 		int k=0;

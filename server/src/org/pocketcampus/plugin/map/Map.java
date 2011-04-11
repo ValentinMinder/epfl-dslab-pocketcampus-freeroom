@@ -36,7 +36,7 @@ public class Map implements IPlugin {
 		layers.addAll(getInternalLayers());
 		layers.addAll(getExternalLayers());
 		
-		return getInternalLayers();
+		return layers;
 	}
 
 	@PublicMethod
@@ -57,8 +57,9 @@ public class Map implements IPlugin {
 			return null;
 		}
 		
-		items.addAll(getExternalItems(id));
-		
+		if(items.isEmpty()) {
+			items.addAll(getExternalItems(id));
+		}
 		
 		return items;
 	}
@@ -66,22 +67,47 @@ public class Map implements IPlugin {
 	@PublicMethod
 	public List<Position> routing(HttpServletRequest request) {
 
-		double lat = 46.520101;
-		double lon = 6.565189;
+		double startLat = 46.520101;
+		double startLon = 6.565189;
+		double endLat = startLat;
+		double endLon = startLon;
+		int poi = 0;
 
 		try {
-			lat = Double.parseDouble(request.getParameter("latitude"));
+			startLat = Double.parseDouble(request.getParameter("startLatitude"));
 		} catch (Exception e) {}
 
 		try {
-			lon = Double.parseDouble(request.getParameter("longitude"));
+			startLon = Double.parseDouble(request.getParameter("startLongitude"));
 		} catch (Exception e) {}
+		
+		Position startPos = new Position(startLat, startLon, 0);
 
-		Position p = new Position(lat, lon, 0);
+		String endPoi = request.getParameter("endPoiId");
+		
+		if(endPoi != null) {
+			try {
+				poi = Integer.parseInt(endPoi);
+			} catch (Exception e) {}
 
-		List<Position> path = Search.searchPathBetween(p, 6718, false);
+			return Search.searchPathBetween(startPos, poi, false);
+			
+		} else {
 
-		return path;
+			try {
+				endLat = Double.parseDouble(request.getParameter("endLatitude"));
+			} catch (Exception e) {}
+
+			try {
+				endLon = Double.parseDouble(request.getParameter("endLongitude"));
+			} catch (Exception e) {}
+			
+			Position endPos = new Position(endLat, endLon, 0);
+			
+			return Search.searchPathBetween(startPos, endPos, false);
+		}
+
+
 	}
 
 	private List<MapLayerBean> getInternalLayers() {
@@ -135,19 +161,6 @@ public class Map implements IPlugin {
 
 		return layers;
 	}
-	
-	private List<MapElementBean> getExternalItems(int id) {
-		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
-
-		Iterator<IPlugin> iter = providers.iterator();
-		IMapElementsProvider provider;
-
-		while(iter.hasNext()) {
-			provider = (IMapElementsProvider)iter.next();
-		}
-		
-		return new ArrayList<MapElementBean>();
-	}
 
 	public List<MapElementBean> getInternalItems(int layerId) {
 		List<MapElementBean> elements = new LinkedList<MapElementBean>();
@@ -187,6 +200,22 @@ public class Map implements IPlugin {
 		}
 
 		return elements;
+	}
+	
+	private List<MapElementBean> getExternalItems(int id) {
+		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
+
+		Iterator<IPlugin> iter = providers.iterator();
+		IMapElementsProvider provider;
+
+		while(iter.hasNext()) {
+			provider = (IMapElementsProvider)iter.next();
+			if(provider.getLayer().getId() == id) {
+				return provider.getLayerItems();
+			}
+		}
+		
+		return new ArrayList<MapElementBean>();
 	}
 	
 	/**
