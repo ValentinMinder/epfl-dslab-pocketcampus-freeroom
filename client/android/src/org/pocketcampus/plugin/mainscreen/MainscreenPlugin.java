@@ -9,7 +9,11 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.news.INewsListener;
+import org.pocketcampus.plugin.news.NewsAdapter;
+import org.pocketcampus.plugin.news.NewsProvider;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,25 +27,33 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class MainscreenPlugin extends PluginBase {
+public class MainscreenPlugin extends PluginBase implements INewsListener {
 	private Context ctx_;
 	private Core core_;
 	private Vector<PluginBase> plugins_;
 	private Tracker tracker_;
+	
+	private NewsAdapter adapter_;
+	private NewsProvider newsProvider_;
+	private ActionBar actionBar_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainscreen_main);
+		
+		Tracker.getInstance().trackPageView("news/home");
 
-		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setTitle(getResources().getString(R.string.app_name));
-
+		setupActionBar(false);
+		
 		tracker_ = Tracker.getInstance();
 		tracker_.start("UA-22135241-2", 10, this);
 
@@ -49,6 +61,14 @@ public class MainscreenPlugin extends PluginBase {
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
 
+		
+		newsProvider_ = NewsProvider.getInstance(ctx_);
+		newsProvider_.addNewsListener(this);
+
+		setLayout();
+		
+		
+		
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
 		for (final PluginBase plugin : plugins_) {
@@ -189,5 +209,54 @@ public class MainscreenPlugin extends PluginBase {
 	@Override
 	public PluginInfo getPluginInfo() {
 		return new MainscreenInfo();
+	}
+
+	@Override
+	public void newsRefreshing() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void newsRefreshed() {
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
+	private void setLayout() {
+		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
+		adapter_ = new NewsAdapter(ctx_, newsProvider_);
+		l.setAdapter(adapter_);
+
+		l.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if(adapter_ != null) {
+					adapter_.setClickedItem(parent, view, position, id);
+					l.smoothScrollToPosition(position);
+
+					Tracker.getInstance().trackPageView("news/previewItem");
+				}
+			}
+		});
+	}
+	
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.setTitle(getResources().getString(R.string.app_name));
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				newsProvider_.forceRefresh();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
+		
+		super.setupActionBar(addHomeButton);
+
 	}
 }
