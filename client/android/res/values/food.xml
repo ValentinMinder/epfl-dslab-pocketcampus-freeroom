@@ -5,6 +5,14 @@
 	<string name="food_display_title">Food Service</string>
 	<string name="food_empty">No item to display</string>
 
+	<!-- Date -->
+	<string name="food_monday">Monday</string>
+	<string name="food_tuesday">Tuesday</string>
+	<string name="food_wednesday">Wednesday</string>
+	<string name="food_thursday">Thursday</string>
+	<string name="food_friday">Friday</string>
+	<string name="food_today_menus">Today\'s menus</string>
+	
 	<!-- Ratings -->
 	<string name="food_menulist_votesPlural">votes</string>
 	<string name="food_menulist_votesSingular">vote</string>

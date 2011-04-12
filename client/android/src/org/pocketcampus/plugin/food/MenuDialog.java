@@ -13,6 +13,7 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
@@ -32,29 +33,27 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class MenuDialog extends Dialog {
-	private final Meal meal;
-	private final Activity menusActivity;
-	private RatingBar rateIt;
-	private TextView numbVotes;
-	// private final ConnexionHandler ch;
+	private final Meal displayedMeal_;
+//	private final Activity menusActivity;
+	private RatingBar ratingBar_;
+	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
-	private Context context;
-	private boolean photoButtonsEnabled;
+	private Context context_;
+	private boolean photoButtonsEnabled_;
 
 	public MenuDialog(final Context context, final Meal meal,
 			final Activity menus, boolean photoButtonsEnabled) {
 		super(context);
-		this.meal = meal;
-		this.context = context;
-		menusActivity = menus;
+		this.displayedMeal_ = meal;
+		this.context_ = context;
+//		menusActivity = menus;
 
 		/**
 		 * No title for dialog Else there is indeed space for the title.
 		 **/
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		this.photoButtonsEnabled = photoButtonsEnabled;
-		// ch = new ConnexionHandler(menusActivity);
+		this.photoButtonsEnabled_ = photoButtonsEnabled;
 
 		setContentView(R.layout.food_dialog_menu);
 
@@ -69,30 +68,22 @@ public class MenuDialog extends Dialog {
 	}
 
 	private void setDialogContent() {
-		progressDialog_ = ProgressDialog.show(context, "Please Wait",
+		progressDialog_ = ProgressDialog.show(context_, "Please Wait",
 				"Loading menus...", true, false);
 
 		// Set the title, description, rating and number of votes.
 		TextView title = (TextView) findViewById(R.id.food_menudialog_title);
 		TextView description = (TextView) findViewById(R.id.food_menudialog_description);
-//		TextView rateItYourself = (TextView) findViewById(R.id.food_menudialog_rateityourself);
-		numbVotes = (TextView) findViewById(R.id.food_menudialog_nbvotes);
+
+		numbVotes_ = (TextView) findViewById(R.id.food_menudialog_nbvotes);
 
 		// Set title of dialog box to Meal @ Restaurant
-		title.setText(meal.getName_() + " @ " + meal.getRestaurant_().getName());
-		description.setText(meal.getDescription_());
+		title.setText(displayedMeal_.getName_() + " @ " + displayedMeal_.getRestaurant_().getName());
+		description.setText(displayedMeal_.getDescription_());
 
-		// Clicking on the star rating will open the rating dialog
-		/*rateItYourself.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				RatingsDialog r = new RatingsDialog(getContext(), getMeal());
-				r.setOnDismissListener(new OnDismissRatingsListener());
-				r.show();
-			}
-		});*/
 
 		// Retrieve the meal's rating from the server to display it.
-		rateIt = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
+		ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
 		paintRatingBar();
 
 		// Chose a menu
@@ -100,28 +91,15 @@ public class MenuDialog extends Dialog {
 		rateIt.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// give me the feault MealTagger
-				// MealTagger tagger = new MealTagger();
-				// Collection<Meal> oneMealCollection = new HashSet<Meal>();
-				// oneMealCollection.add(meal);
-				// give me all Tags for this Meal
-				// Collection<MealTag> allTags = tagger
-				// .extractTagsFrom(oneMealCollection);
-
-				// update the statistics
-				/*
-				 * MealStatsManagement mealsManagement = MealStatsManagement
-				 * .getInstance(menusActivity.getApplicationContext());
-				 * 
-				 * // first increment the MealTags
-				 * mealsManagement.incrementMealTagCounter(allTags);
-				 * 
-				 * // then the number of visits in this Restaurant Restaurant
-				 * resto = meal.getRestaurant();
-				 * mealsManagement.incrementRestaurantCounter(resto);
-				 * 
-				 * callStatisticsActivity();
-				 */
+				RatingsReminder ratingChecker = new RatingsReminder(
+						getContext());
+//				if (ratingChecker.hasAlreadyVotedToday()) {
+//					ratingChecker.printAlreadyVotedMessage();
+//				} else {
+					RatingsDialog r = new RatingsDialog(getContext(), displayedMeal_);
+					r.setOnDismissListener(new OnDismissRatingsListener());
+					r.show();
+//				}
 			}
 
 		});
@@ -142,7 +120,7 @@ public class MenuDialog extends Dialog {
 		 */
 		// Take a picture of the meal
 		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
-		takePic.setEnabled(photoButtonsEnabled);
+		takePic.setEnabled(photoButtonsEnabled_);
 		takePic.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -190,9 +168,9 @@ public class MenuDialog extends Dialog {
 		return votes;
 	}
 
-	private Meal getMeal() {
-		return this.meal;
-	}
+//	private Meal getMeal() {
+//		return this.displayedMeal_;
+//	}
 
 	private class OnDismissRatingsListener implements
 			RatingsDialog.OnDismissListener {
@@ -204,21 +182,15 @@ public class MenuDialog extends Dialog {
 	}
 
 	private void paintRatingBar() {
-		rateIt = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
-
-//		ConnexionHandler ch = new ConnexionHandler(getContext());
-//		Rating rating = ch.getRating(meal);
+		ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
 		
-		/**
-		 * Exemple rating:
-		 */
-		Rating rating = new Rating(StarRating.STAR_4_0, 12);
-		rateIt.setRating((float) Restaurant.starRatingToDouble(rating
+		Rating rating = displayedMeal_.getRating();
+		ratingBar_.setRating((float) Restaurant.starRatingToDouble(rating
 				.getValue()));
 		
 		// Retrieve the number of votes from the server.
 		int numbVote = rating.getNumberOfVotes();
 		String votes = getVoteString(numbVote);
-		numbVotes.setText("("+ numbVote + " " + votes + ")");
+		numbVotes_.setText("("+ numbVote + " " + votes + ")");
 	}
 }

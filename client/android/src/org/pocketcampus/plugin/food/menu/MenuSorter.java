@@ -40,7 +40,7 @@ public class MenuSorter {
 		Set<Meal> set = menu_.getMeals();
 		for(Meal meal : set){
 			if(!meal.getDescription_().matches("\\s+")){
-				Rating rate = menu_.getRating(meal);
+				Rating rate = meal.getRating();
 				if(rate != null)
 				ratedMeals.add(new RatedMeal(meal, rate));
 			}

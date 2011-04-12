@@ -10,8 +10,6 @@ package org.pocketcampus.shared.plugin.food;
  */
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Meal implements Serializable {
 
@@ -20,18 +18,19 @@ public class Meal implements Serializable {
 	private String description_;
 	private Restaurant restaurant_;
 	private boolean available_;
-
+	private Rating rating_;
+	
 	// private HashMap<UserStatus,Price> prices;
 
 	public Meal() {}
 	
-	public Meal(String name, String description, Restaurant restaurant, boolean available) {
-
+	public Meal(String name, String description, Restaurant restaurant, boolean available, Rating rating) {
 		this.name_ = name;
 		this.description_ = description;
 		this.restaurant_ = restaurant;
 
 		this.available_ = available;
+		this.rating_ = rating;
 		// this.prices = new HashMap<UserStatus, Price>(prices);
 		valid();
 	}
@@ -48,9 +47,7 @@ public class Meal implements Serializable {
 		 * IllegalArgumentException("Entry is null"); }
 		 */
 	}
-
-
-
+	
 	public boolean isAvailable() {
 		return available_;
 	}
@@ -98,31 +95,23 @@ public class Meal implements Serializable {
 		return name_;
 	}
 
-	public void setName_(String name) {
-		name_ = name;
-	}
-
 	public String getDescription_() {
 		return description_;
-	}
-
-	public void setDescription_(String description) {
-		description_ = description;
 	}
 
 	public Restaurant getRestaurant_() {
 		return restaurant_;
 	}
-
-	public void setRestaurant_(Restaurant restaurant) {
-		restaurant_ = restaurant;
+	
+	public Rating getRating(){
+		return this.rating_;
+	}
+	
+	public void setRating(Rating r){
+		rating_ = r;
 	}
 
 	public boolean isAvailable_() {
 		return available_;
-	}
-
-	public void setAvailable_(boolean available) {
-		available_ = available;
 	}
 }

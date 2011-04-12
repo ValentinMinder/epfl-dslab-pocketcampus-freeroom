@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.food;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,34 +21,58 @@ import org.pocketcampus.shared.plugin.food.StarRating;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 public class Food implements IPlugin, IMapElementsProvider {
 
-	private HashMap<Meal, Rating> campusMenu_;
 	private List<Meal> campusMeals_;
+	private HashMap<Meal, Double> realRatings_;
+	private Date lastImportDate_;
 
 	/**
 	 * Parse the menus on startup.
 	 */
 	public Food() {
-		campusMenu_ = new HashMap<Meal, Rating>();
+		campusMeals_ = new ArrayList<Meal>();
+		realRatings_ = new HashMap<Meal, Double>();
 		importMenus();
-		Set<Meal> menuKeys = campusMenu_.keySet();
-		campusMeals_ = new LinkedList<Meal>();
-
-		for (Meal m : menuKeys) {
-			campusMeals_.add(m);
-		}
-		// System.out.println("Importing menus");
 	}
 
-	@PublicMethod
-	public String food(HttpServletRequest request) {
-		return "Food tryouts.";
-	}
-
+	/**
+	 * Get all menus of the day.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
+		if (!isValid()) {
+			importMenus();
+			System.out.println("Reimporting menus.");
+		} else {
+			System.out.println("Not reimporting menus.");
+		}
 		return campusMeals_;
+	}
+
+	/**
+	 * Checks whether the saved menu is today's.
+	 * 
+	 * @return
+	 */
+	private boolean isValid() {
+		Calendar now = Calendar.getInstance();
+		now.setTime(new Date());
+
+		Calendar then = Calendar.getInstance();
+		then.setTime(lastImportDate_);
+
+		if (now.get(Calendar.DAY_OF_WEEK) == then.get(Calendar.DAY_OF_WEEK)) {
+			return true;
+		} else
+			return false;
 	}
 
 	/**
@@ -58,25 +84,57 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 *            the rating we want to put.
 	 * @return whether the operation worked.
 	 */
-	// @PublicMethod
-	// public boolean setRating(Meal meal, StarRating rating) {
-	// if (campusMenu_.containsKey(meal)) {
-	// //Average in the new rating with the ones previously there.
-	// Rating oldRating = campusMenu_.get(meal);
-	// double oldRatingValue = Restaurant.starRatingToDouble(oldRating
-	// .getValue());
-	// int oldRatingCount = oldRating.getNumberOfVotes();
-	// double newRatingValue = Restaurant.starRatingToDouble(rating);
-	//
-	// Rating newMenuRating = new Rating(Restaurant
-	// .doubleToStarRating(((oldRatingValue) * oldRatingCount)
-	// + newRatingValue), oldRatingCount + 1);
-	//
-	// campusMenu_.put(meal, newMenuRating);
-	// return true;
-	// }
-	// return false;
-	// }
+	@PublicMethod
+	public boolean setRating(HttpServletRequest request) {
+		System.out.println("Rating request.");
+		String stringMeal = request.getParameter("meal");
+		String stringRating = request.getParameter("rating");
+		if (stringMeal == null || stringRating == null) {
+			return false;
+		}
+
+		Meal m = new Meal();
+		double r = Double.parseDouble(stringRating);
+
+		Gson gson = new Gson();
+
+		Type mealType = new TypeToken<Meal>() {
+		}.getType();
+		try {
+			m = gson.fromJson(stringMeal, mealType);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+		} catch (NullPointerException npe) {
+		}
+
+		for (int index = 0; index < campusMeals_.size(); index++) {
+
+		}
+		if (campusMeals_.contains(m)) {
+			for (int i = 0; i < campusMeals_.size(); i++) {
+				Meal currentMeal = campusMeals_.get(i);
+				if (currentMeal.equals(m)) {
+					// Average in the new rating with the ones previously there.
+					Double oldRatingTotal = realRatings_.get(m);
+
+					int oldRatingCount = currentMeal.getRating()
+							.getNumberOfVotes();
+					int newRatingCount = oldRatingCount + 1;
+
+					Rating newMenuRating = new Rating(Restaurant
+							.doubleToStarRating((oldRatingTotal + r)
+									/ newRatingCount), newRatingCount);
+
+					// Update rating for meal
+					currentMeal.setRating(newMenuRating);
+					// Update the total value of ratings for meal
+					realRatings_.put(m, oldRatingTotal + r);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Get the rating for a particular meal
@@ -98,12 +156,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 		HashMap<String, String> restaurantFeeds = rlp.getFeeds();
 		Set<String> restaurants = restaurantFeeds.keySet();
 
-		campusMenu_ = new HashMap<Meal, Rating>();
+		Rating origRating = new Rating(StarRating.STAR_3_0, 0);
 
 		for (String r : restaurants) {
-			// For now, filter restaurants that cause encoding problems for
-			// current day.
-			// System.out.println(r);
 			RssParser rp = new RssParser(restaurantFeeds.get(r));
 			rp.parse();
 			RssFeed feed = rp.getFeed();
@@ -112,14 +167,13 @@ public class Food implements IPlugin, IMapElementsProvider {
 			if (feed != null && feed.items != null) {
 				for (int i = 0; i < feed.items.size(); i++) {
 					Meal newMeal = new Meal(feed.items.get(i).title, feed.items
-							.get(i).description, newResto, true);
-					campusMenu_
-							.put(newMeal, new Rating(StarRating.STAR_3_0, 0));
+							.get(i).description, newResto, true, origRating);
+					campusMeals_.add(newMeal);
+					realRatings_.put(newMeal, new Double(0));
 				}
-			} else {
-				// System.out.println("Debug: feed null for " + r + ".");
 			}
 		}
+		lastImportDate_ = new Date();
 	}
 
 	@Override

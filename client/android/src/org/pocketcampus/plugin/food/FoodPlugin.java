@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -25,8 +27,8 @@ public class FoodPlugin extends PluginBase {
 	private ActionBar actionBar_;
 
 	private ListView l_;
-	private FoodDisplayHandler foodDisplayHandler;
-
+	private FoodDisplayHandler foodDisplayHandler_;
+	private static RequestHandler foodRequestHandler_;
 	private TextView txt_empty_;
 	private TextView empty;
 	private TextView validityDate_;
@@ -37,34 +39,40 @@ public class FoodPlugin extends PluginBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.food_main);
-		
+
 		setupActionBar(true);
 
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
+		empty.setText("Empty");
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
-		
+
+		//RequestHandler
+		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
-		foodDisplayHandler = new FoodDisplayHandler(this, getRequestHandler());
+		foodDisplayHandler_ = new FoodDisplayHandler(this);
+	}
+	
+	public static RequestHandler getFoodRequestHandler(){
+		return foodRequestHandler_;
 	}
 
 	private void loadFirstScreen(int layout) {
 		setContentView(layout);
 
 		setupActionBar(true);
-		
+
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
-		
+
 		// At first, display food by restaurant
 		displayView();
 	}
-
 
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
@@ -73,9 +81,9 @@ public class FoodPlugin extends PluginBase {
 		actionBar_.addAction(new Action() {
 			@Override
 			public void performAction(View view) {
-				foodDisplayHandler.refreshView();
-				displayView();
+				foodDisplayHandler_.refreshView();
 			}
+
 			@Override
 			public int getDrawable() {
 				return R.drawable.refresh;
@@ -91,7 +99,7 @@ public class FoodPlugin extends PluginBase {
 
 	// @Override
 	public void menuRefreshed() {
-		foodDisplayHandler.updateView();
+		foodDisplayHandler_.updateView();
 		displayView();
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
@@ -105,14 +113,22 @@ public class FoodPlugin extends PluginBase {
 			txt_empty_.setText("");
 		}
 
-		FoodListAdapter fla = foodDisplayHandler.getListAdapter();
-		if (foodDisplayHandler.valid() && fla != null) {
+		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
+		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
 			empty.setText("");
-			if(foodDisplayHandler.getDateLastUpdatedMenus() == null){
+			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("Rien trouvé");
 			} else {
-				validityDate_.setText(foodDisplayHandler.getDateLastUpdatedMenus().toString());				
+				Date today = new Date();
+				Date lastUpdated = foodDisplayHandler_.getDateLastUpdatedMenus();
+				if (today.getDay() == lastUpdated.getDay()
+						&& today.getMonth() == lastUpdated.getMonth()) {
+					validityDate_.setText(getResources().getString(
+							R.string.food_today_menus));
+				} else {
+					validityDate_.setText(lastUpdated.toLocaleString());
+				}
 			}
 		} else {
 			empty.setText(getString(R.string.food_empty));
@@ -133,8 +149,8 @@ public class FoodPlugin extends PluginBase {
 		return true;
 	}
 
-	final int SUGGESTIONS_REQUEST_CODE= 1;
-	
+	final int SUGGESTIONS_REQUEST_CODE = 1;
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int selectedId = item.getItemId();
 
@@ -145,16 +161,16 @@ public class FoodPlugin extends PluginBase {
 			if (isSandwichDisplay_) {
 				loadFirstScreen(R.layout.food_main);
 			}
-			foodDisplayHandler.setDisplayType(selectedId);
+			foodDisplayHandler_.setDisplayType(selectedId);
 			displayView();
 			return true;
 		case 3: // show sandwiches
 			isSandwichDisplay_ = true;
-			foodDisplayHandler.setDisplayType(selectedId);
+			foodDisplayHandler_.setDisplayType(selectedId);
 			displayView();
 			return true;
 		case 4: // show suggestions
-			suggestionMenus_ = foodDisplayHandler.getMenusList();
+			suggestionMenus_ = foodDisplayHandler_.getMenusList();
 			if (suggestionMenus_ != null) {
 				Intent suggestions = new Intent(getApplicationContext(),
 						Suggestions.class);
@@ -190,10 +206,11 @@ public class FoodPlugin extends PluginBase {
 			if (resultCode == Activity.RESULT_OK) {
 				Bundle extras = data.getExtras();
 				if (extras != null) {
-					ArrayList<Meal> list = (ArrayList<Meal>) extras.getSerializable("org.pocketcampus.suggestions.meals");
+					ArrayList<Meal> list = (ArrayList<Meal>) extras
+							.getSerializable("org.pocketcampus.suggestions.meals");
 
-					foodDisplayHandler.updateSuggestions(list);
-					foodDisplayHandler.setDisplayType(4);
+					foodDisplayHandler_.updateSuggestions(list);
+					foodDisplayHandler_.setDisplayType(4);
 					displayView();
 				} else {
 					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG)

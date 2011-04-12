@@ -8,6 +8,7 @@ public class RatedMeal {
 	private Rating rating;
 	private Meal meal;
 	
+	public RatedMeal(){}
 	public RatedMeal(Meal m, Rating r){
 		this.meal = m;
 		this.rating = r;
@@ -16,6 +17,10 @@ public class RatedMeal {
 	
 	public Rating getRating(){
 		return this.rating;
+	}
+	
+	public void setRating(Rating r){
+		this.rating = r;
 	}
 	
 	public Meal getMeal(){

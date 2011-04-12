@@ -21,13 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
-import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.content.Context;
 import android.util.Log;
@@ -41,19 +39,115 @@ public class FoodMenu {
 
 	private HashMap<Meal, Rating> campusMenu_;
 	private FoodPlugin pluginHandler_;
-	private RequestHandler requestHandler_;
 	private Context ctx_;
 	private Date validityDate_;
 
-	public FoodMenu(FoodPlugin ownerActivity, RequestHandler requestHandler) {
+	/**
+	 * Food menu for the corresponding food plugin.
+	 * @param ownerActivity
+	 */
+	public FoodMenu(FoodPlugin ownerActivity) {
 		pluginHandler_ = ownerActivity;
-		requestHandler_ = requestHandler;
 		ctx_ = ownerActivity.getApplicationContext();
 		// Instantiate menuEPFL
 		campusMenu_ = new HashMap<Meal, Rating>();
 		loadCampusMenu();
 	}
 
+	/**
+	 * Get meals in menu
+	 * @return
+	 */
+	public Set<Meal> getMeals() {
+		if (campusMenu_ == null) {
+			return null;
+		}
+		return campusMenu_.keySet();
+	}
+
+	// Get menu to display
+	public HashMap<Meal, Rating> getCampusMenu() {
+		return this.campusMenu_;
+	}
+	
+	public void setCampusMenu(HashMap<Meal, Rating> menus) {
+		this.campusMenu_ = menus;
+	}
+
+	public Date getValidityDate() {
+		return validityDate_;
+	}
+
+	public void setValidityDate(Date date) {
+		validityDate_ = date;
+	}
+
+	public void refreshMenu() {
+		loadCampusMenu();
+		if (campusMenu_.isEmpty()) {
+			// TODO: also if it's yesterday's menu.
+		} else {
+			// Refresh only ratings.
+		}
+	}
+
+	public boolean isEmpty() {
+		return campusMenu_.isEmpty();
+	}
+
+	// Load menu from server
+	private void loadCampusMenu() {
+		pluginHandler_.menuRefreshing();
+		class MenusRequest extends ServerRequest {
+			private List<Meal> campusMenuList;
+			
+			@Override
+			protected void onPostExecute(String result) {
+
+				campusMenuList = new ArrayList<Meal>();
+				// Deserializes the response
+				Gson gson = new Gson();
+
+				Type menuType = new TypeToken<List<Meal>>() {}.getType();
+				try {
+					campusMenuList = gson.fromJson(result, menuType);
+				} catch (JsonSyntaxException e) {
+					Log.d("SERVER", "Jsonsyntax");
+					e.printStackTrace();
+					return;
+				} 
+
+				HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
+
+				if (campusMenuList != null) {
+					for (Meal m : campusMenuList) {
+						campusMenu.put(m, m.getRating());
+					}
+				}
+
+				if (campusMenu != null) {
+					if (campusMenu.isEmpty()) {
+						HashMap<Meal, Rating> fromCache = restoreFromFile();
+						if (fromCache != null) {
+							setCampusMenu(fromCache);
+						}
+					} else {
+						setCampusMenu(campusMenu);
+						Date currentDate = new Date();
+						setValidityDate(currentDate);
+						writeToFile(currentDate);
+					}
+				} else {
+					Log.d("SERVER", "null menu");
+				}
+				pluginHandler_.menuRefreshed();
+			}
+		}
+
+		FoodPlugin.getFoodRequestHandler().execute(new MenusRequest(), "getMenus",
+				(RequestParameters) null);
+	}
+	
 	public void writeToFile(Date currentDate) {
 		String filename = "MenusCache";
 
@@ -99,107 +193,4 @@ public class FoodMenu {
 		return menu;
 	}
 
-	public Set<Meal> getMeals() {
-		if (campusMenu_ == null) {
-			return null;
-		}
-		return campusMenu_.keySet();
-	}
-
-	// Get rating for a menu
-	public Rating getRating(Meal m) {
-		return campusMenu_.get(m);
-	}
-
-	// Get menu to display
-	public HashMap<Meal, Rating> getCampusMenu() {
-		return this.campusMenu_;
-	}
-
-	public Date getValidityDate() {
-		return validityDate_;
-	}
-
-	public void setValidityDate(Date date) {
-		validityDate_ = date;
-	}
-
-	public void setCampusMenu(HashMap<Meal, Rating> menus) {
-		this.campusMenu_ = menus;
-	}
-
-	public void refreshMenu() {
-		loadCampusMenu();
-		if (campusMenu_.isEmpty()) {
-			// TODO: also if it's yesterday's menu.
-		} else {
-			// Refresh only ratings.
-		}
-	}
-
-	public boolean isEmpty() {
-		return campusMenu_.isEmpty();
-	}
-
-	// Load menu from server
-	private void loadCampusMenu() {
-		pluginHandler_.menuRefreshing();
-		class MenusRequest extends ServerRequest {
-			private List<Meal> campusMenuList;
-
-			@Override
-			protected void onPostExecute(String result) {
-
-				// Log.d("SERVER", "response: " + result);
-
-				campusMenuList = new ArrayList<Meal>();
-				// Deserializes the response
-				Gson gson = new Gson();
-
-				Type menuType = new TypeToken<List<Meal>>() {}.getType();
-				try {
-					Log.d("SERVER", "Gson " + result);
-					campusMenuList = gson.fromJson(result, menuType);
-				} catch (JsonSyntaxException e) {
-					Log.d("SERVER", "Jsonsyntax");
-					e.printStackTrace();
-					return;
-				} catch (NullPointerException npe) {
-					Log.d("SERVER", "Null Pointer");
-					return;
-				}
-
-				Log.d("SERVER", "Arrive ici");
-
-				HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
-
-				if (campusMenuList != null) {
-					for (Meal m : campusMenuList) {
-						campusMenu.put(m, new Rating(StarRating.STAR_2_5, 3));
-					}
-				}
-
-				if (campusMenu != null) {
-					if (campusMenu.isEmpty()) {
-						HashMap<Meal, Rating> fromCache = restoreFromFile();
-						if (fromCache != null) {
-							setCampusMenu(fromCache);
-						}
-					} else {
-						setCampusMenu(campusMenu);
-						Date currentDate = new Date();
-						setValidityDate(currentDate);
-						writeToFile(currentDate);
-					}
-				} else {
-					Log.d("SERVER", "null menu");
-				}
-				pluginHandler_.menuRefreshed();
-			}
-		}
-		// MenusRequest menusRequest = ;
-		// request of the menus
-		requestHandler_.execute(new MenusRequest(), "getMenus",
-				(RequestParameters) null);
-	}
 }

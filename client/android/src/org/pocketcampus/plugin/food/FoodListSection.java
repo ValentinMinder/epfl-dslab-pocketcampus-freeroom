@@ -3,7 +3,10 @@ package org.pocketcampus.plugin.food;
 import java.util.Vector;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Restaurant;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -112,11 +115,20 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 		// When you click on the rating stars, you can rate the meal.
 		holder.ratingLine.setOnTouchListener(new OnTouchListener() {
-			private int pos = position;
 
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					rate(position);
+					
+					// get the reminder for the ratings
+					RatingsReminder ratingChecker = new RatingsReminder(menusActivity_);
+					// Check if has already voted today
+//					if (ratingChecker.hasAlreadyVotedToday()) {
+//						// Means that user had already voted
+//						ratingChecker.printAlreadyVotedMessage();
+//					} else {
+						// Means that user hasn't voted today
+						ratingDialog(position);
+//					}
 				}
 				return true;
 			}
@@ -127,9 +139,9 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 		holder.menuLine.setText(currentMeal.getDescription_());
 		holder.titleLine.setText(currentMeal.getName_());
-
-		new RatingsDownloader(currentMeal, menusActivity_, holder);
-
+		
+		setRating(holder, currentMeal.getRating());
+		
 		return convertView;
 	}
 
@@ -145,15 +157,31 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 			// menuDialog(mPosition);
 		}
 	}
+	
+	private void setRating(ViewHolder holder, Rating currentRating){
+		holder.ratingLine.setRating((float)Restaurant.starRatingToDouble(currentRating.getValue()));
+		
+		int numbVotes = currentRating.getNumberOfVotes();
+		if (numbVotes != 1 && numbVotes != 0) {
+			holder.votesLine.setText(numbVotes
+					+ " "
+					+ menusActivity_.getResources().getString(
+							R.string.food_menulist_votesPlural));
+		} else {
+			holder.votesLine.setText(numbVotes
+					+ " "
+					+ menusActivity_.getResources().getString(
+							R.string.food_menulist_votesSingular));
+		}
+	}
 
-	private void rate(int pos) {
+	private void ratingDialog(int pos) {
 		RatingsDialog r = new RatingsDialog(menusActivity_,
 				meal_.get(pos));
 		r.show();
 	}
 
 	private void menuDialog(int pos){
-
 		MenuDialog r = new MenuDialog(menusActivity_, meal_.get(pos),
 				menusActivity_, true);
 		r.setOnDismissListener(new OnDismissMenuDialogListener());
@@ -194,9 +222,4 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 			notifyDataSetChanged();
 		}
 	}
-
-	// protected void dataSetChanged() {
-	// this.sortNews();
-	// this.notifyDataSetChanged();
-	// }
 }

@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.sandwiches.Sandwich;
@@ -41,14 +40,14 @@ public class FoodDisplayHandler {
 	private FoodPlugin ownerActivity_;
 	private Context activityContext_;
 
-	public FoodDisplayHandler(FoodPlugin ownerActivity, RequestHandler requestHandler_) {
+	public FoodDisplayHandler(FoodPlugin ownerActivity) {
 		ownerActivity_ = ownerActivity;
 		activityContext_ = ownerActivity.getApplicationContext();
 
 		currentListAdapter_ = new FoodListAdapter(activityContext_);
 		currentDisplayType_ = FoodDisplayType.Restaurants;
 
-		campusMenu_ = new FoodMenu(ownerActivity_, requestHandler_);
+		campusMenu_ = new FoodMenu(ownerActivity_);
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		campusSandwich_ = new Vector<Vector<Sandwich>>();
 
@@ -56,7 +55,7 @@ public class FoodDisplayHandler {
 
 		updateView();
 	}
-
+	
 	public boolean valid() {
 		return !campusMenu_.isEmpty();
 	}
@@ -115,13 +114,10 @@ public class FoodDisplayHandler {
 		case Restaurants:
 		case Ratings:
 			campusMenu_.refreshMenu();
-			updateView();
 			break;
 		case Sandwiches:
-			
 			break;
 		case Suggestions:
-			
 			break;
 		}
 	}
