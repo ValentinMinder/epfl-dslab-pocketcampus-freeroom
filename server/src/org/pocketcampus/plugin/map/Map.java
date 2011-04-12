@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,6 +37,14 @@ public class Map implements IPlugin {
 
 		layers.addAll(getInternalLayers());
 		layers.addAll(getExternalLayers());
+		
+		Collections.sort(layers, new Comparator<MapLayerBean>() {
+
+			@Override
+			public int compare(MapLayerBean o1, MapLayerBean o2) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			}
+		});
 		
 		return layers;
 	}
