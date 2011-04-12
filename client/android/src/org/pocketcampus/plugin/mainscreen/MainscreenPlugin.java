@@ -1,5 +1,10 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -28,19 +33,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class MainscreenPlugin extends PluginBase implements INewsListener {
 	private Context ctx_;
 	private Core core_;
 	private Vector<PluginBase> plugins_;
 	private Tracker tracker_;
-	
+
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
 	private ActionBar actionBar_;
@@ -49,11 +55,11 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainscreen_main);
-		
+
 		Tracker.getInstance().trackPageView("news/home");
 
 		setupActionBar(false);
-		
+
 		tracker_ = Tracker.getInstance();
 		tracker_.start("UA-22135241-2", 10, this);
 
@@ -61,14 +67,19 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
 
-		
+
 		newsProvider_ = NewsProvider.getInstance(ctx_);
 		newsProvider_.addNewsListener(this);
 
 		setLayout();
 		
 		
-		
+		//Checkin internet connection
+		if(!isOnline()) {
+			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
+			toast.show();
+		}
+
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
 		for (final PluginBase plugin : plugins_) {
@@ -124,6 +135,20 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 				menuLayout.addView(relLayout);
 			}
 		}
+
+	}
+
+
+	private boolean isOnline() {
+		try {
+			URL url = new URL(core_.getServerUrl());
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.connect();
+			return connection.getResponseCode() == 200;
+		} catch (IOException e) {
+			return false;
+		}
+
 	}
 
 	private void showAbout() {
@@ -220,7 +245,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	public void newsRefreshed() {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-	
+
 	private void setLayout() {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
 		adapter_ = new NewsAdapter(ctx_, newsProvider_);
@@ -238,7 +263,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
@@ -255,11 +280,11 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 				return R.drawable.refresh;
 			}
 		});
-		
+
 		super.setupActionBar(addHomeButton);
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
