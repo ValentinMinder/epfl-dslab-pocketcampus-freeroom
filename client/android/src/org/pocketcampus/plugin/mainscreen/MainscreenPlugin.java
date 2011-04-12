@@ -259,4 +259,11 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		super.setupActionBar(addHomeButton);
 
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		newsProvider_.refreshIfNeeded();
+	}
 }
