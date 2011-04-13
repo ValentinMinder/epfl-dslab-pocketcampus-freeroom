@@ -1,16 +1,20 @@
 package org.pocketcampus.shared.plugin.map;
 
 
-
+/**
+ * Used to convert coordinates, taken from V1 
+ * 
+ * @status Complete
+ */
 public class CoordinateConverter {
 
-/**
- * 
- * @param x northing in EPSG:4326
- * @param y easting in EPSG:4326
- * @param level the level(not modified)
- * @return A Position in standard lat/long coordinates (WGS84)
- */
+	/**
+	 * 
+	 * @param x northing in EPSG:4326
+	 * @param y easting in EPSG:4326
+	 * @param level the level(not modified)
+	 * @return A Position in standard lat/long coordinates (WGS84)
+	 */
 	public static Position convertEPSG4326ToLatLong(double x, double y, double level) {	
 		double a = 6378137;
 		double lat = (Math.PI/2.0 - 2.0 * Math.atan(Math.exp(-y / a)));
@@ -31,17 +35,17 @@ public class CoordinateConverter {
 	 */
 	public static Position convertLatLongToEPSG4326(double lat, double lon, double level) {
 		double a = 6378137;
-		
+
 		//convert to radian
 		lat = lat*Math.PI/180;
 		lon = lon*Math.PI/180;
-		
+
 		double x = a*adjust_lon(lon);
 		double y = a*Math.log(Math.tan(Math.PI/4.0 + 0.5*lat));
 
 		return new Position(x, y, level);
 	}
-	
+
 	/**
 	 * 
 	 * @param x northing in CH1903
@@ -72,7 +76,7 @@ public class CoordinateConverter {
 
 		return new Position(lat, lng, level);
 	}
-	
+
 	private static double adjust_lon(double x) {
 		x = (Math.abs(x) < Math.PI) ? x: (x - (Double.compare(x, 0)*2*Math.PI) );
 		return x;

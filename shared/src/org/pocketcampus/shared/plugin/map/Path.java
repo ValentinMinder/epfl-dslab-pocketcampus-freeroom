@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 /**
  * Class Path gives all points connecting from_ & to_ points
- * */
-
+ * 
+ * Taken from V1
+ */
 public class Path {
 	private List<Position> positionList_;
 	private List<Position> roadmapList_;

@@ -2,6 +2,14 @@ package org.pocketcampus.shared.plugin.map;
 
 import java.io.Serializable;
 
+/**
+ * Position class. 
+ * 
+ * @status complete
+ * 
+ * @author Jonas
+ *
+ */
 public class Position implements Serializable {
 	private static final long serialVersionUID = -8760312491181393320L;
 	private double latitude_;
