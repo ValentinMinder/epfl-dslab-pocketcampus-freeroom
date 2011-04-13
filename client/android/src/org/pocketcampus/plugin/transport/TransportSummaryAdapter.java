@@ -104,8 +104,8 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		
 		// fill in the views
 		String s1, s2;
-		s1 = "In " + DateUtils.formatDateDelta(new Date(), connection.departureTime, "Now");
-		s2 = formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes;
+		s1 = "In " + DateUtils.formatDateDelta(new Date(), connection.departureTime, "less than a minute");
+		s2 = "At " + formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes + ".";
 		
 		timeTextView.setText(s1);
 		transpTextView.setText(s2);

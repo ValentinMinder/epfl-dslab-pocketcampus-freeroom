@@ -5,18 +5,18 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="#FFFFFF">
 
-	<RelativeLayout android:layout_gravity="clip_horizontal"
-		android:orientation="horizontal" android:id="@+id/news_item_texts"
+	<LinearLayout android:layout_gravity="clip_horizontal"
+		android:orientation="horizontal" android:id="@+id/travel_summary"
 		android:layout_width="fill_parent" android:layout_margin="5dip"
 		android:layout_height="wrap_content">
 
-		<TextView android:text="Data unavailable." android:layout_toRightOf="@+id/spinner"
-			android:layout_centerInParent="true" android:layout_height="fill_parent"
-			android:layout_width="fill_parent" android:paddingLeft="15dip"
-			android:textSize="20sp" android:textColor="@color/black"
-			android:layout_weight="1">
+		<TextView android:text="Data unavailable."
+			android:layout_height="wrap_content" android:id="@+id/travel_summary_time"
+			android:textSize="20sp" android:maxLines="2"
+			android:layout_marginLeft="5dp" android:layout_marginRight="5dp"
+			android:layout_width="match_parent" android:layout_weight="1">
 		</TextView>
 
-	</RelativeLayout>
+	</LinearLayout>
 
 </LinearLayout>

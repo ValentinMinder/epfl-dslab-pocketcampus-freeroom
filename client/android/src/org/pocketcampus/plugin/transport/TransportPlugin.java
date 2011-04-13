@@ -9,7 +9,11 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -29,13 +33,14 @@ public class TransportPlugin extends PluginBase {
 		setupActionBar(true);
 		
 		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
+		mainList_.setItemsCanFocus(false);
 		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
 		mainList_.setAdapter(adapter_);
 		
 		// TODO load this from a list editable in the preferences
 		summaryList_ = new ArrayList<TransportSummaryAdapter>();
 		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Lausanne, Flon"));
-		summaryList_.add(new TransportSummaryAdapter(this, "Lausanne, Vigie", "Ecublens VD, EPFL"));
+		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Renens VD"));
 
 		for(TransportSummaryAdapter summary : summaryList_) {
 			adapter_.addSection(summary);
@@ -66,12 +71,41 @@ public class TransportPlugin extends PluginBase {
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.transport, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+		
+		switch (item.getItemId()) {
+		case R.id.transport_menu_settings:
+			intent = new Intent(this, TransportPreference.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			return true;
+
+		case R.id.transport_menu_detailed:
+			intent = new Intent(this, TransportDetailed.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
 	public PluginInfo getPluginInfo() {
 		return new TransportInfo();
 	}
 
 	@Override
 	public PluginPreference getPluginPreference() {
-		return null;
+		return new TransportPreference();
 	}
 }
