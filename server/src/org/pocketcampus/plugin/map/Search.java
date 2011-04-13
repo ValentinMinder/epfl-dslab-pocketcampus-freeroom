@@ -21,60 +21,22 @@ import org.pocketcampus.shared.utils.URLLoader;
 
 import com.google.gson.Gson;
 
+
+/**
+ * Class used to do routing search 
+ * 
+ * @status WIP
+ * 
+ * @author Jonas, Johan
+ *
+ */
 public class Search {
-	/**
-	 * WILL DO THE SEARCH ON PLAN.EPFL.CH.
-	 * Returns a Set of all the MapElements of a given type matching a search string.
-	 */
-	/*
-	public static Set<MapElement> searchMapElement(MapElementType type, String search, Marker marker) {
-		//if there are spaces, replace with HTML-space-encoding %20 etc...
-		search = URLEncoder.encode(search);
-
-		// OLD CODE USING REQUEST TO PLAN.EPFL.CH
-		Set<MapElement> elemSet = new HashSet<MapElement>();
-
-		try {
-			String jsonString = getJsonString("http://plan.epfl.ch/search?keyword=" + search);
-
-			if(jsonString == null) {
-				return elemSet;
-			}
-
-			JSONArray jsonArray = (new JSONObject(jsonString)).getJSONArray("features");
-			JSONObject current;
-			JSONObject geom;
-			JSONObject prop;
-			for (int i = 0; i < jsonArray.length(); i++) {
-				current = jsonArray.getJSONObject(i);
-
-				geom = current.getJSONObject("geometry");
-				JSONArray coor = geom.getJSONArray("coordinates");
-
-				prop = current.getJSONObject("properties");
-				String poiName = prop.getString("text");
-				//Log.d("Search", "Found a MapPoi with "+poiName);
-
-				//vertex_id may be null and throw an exception
-				if(!prop.isNull("vertex_id")){
-					MapElement elem = new MapPOI(CoordinateConverter.convertEPSG4326ToLatLong(coor.getInt(0), coor.getInt(1), 0), 
-							type, marker, prop.getInt("id"), prop.getInt("vertex_id"), poiName, "");
-					elemSet.add(elem);
-				}
-			}
-
-		}catch (JSONException e) {
-			Log.i("Search","",e);
-		}
-
-		return elemSet;
-	}
-	 */
-
-
 
 	/**
-	 * Returns the MapPOI closest to the MapPerson person. 
+	 * Returns the POI ID closest to the given position
+	 * 
+	 * @param person Position where we look for a POI
+	 * @return -1 if not POI found
 	 */
 	public static int getClosestPOI(Position person) {
 		int loc_id = -1;
@@ -105,12 +67,28 @@ public class Search {
 		return loc_id;
 	}
 
-
+	/**
+	 * Loop for a path between the user position and a certain POI.
+	 * 
+	 * @param userPosition Position of the user
+	 * @param endMapElement ID of the POI
+	 * @param bike Whether we want to use the path with a bike
+	 * @return List of points of the path
+	 */
 	public static List<Position> searchPathBetween(Position userPosition, int endMapElement, boolean bike) {
 		int poi = getClosestPOI(userPosition);
 		return searchPathBetween(poi, endMapElement, bike);
 	}
 
+	/**
+	 * Loop for a path between two positions.
+	 * Use the closest POI to do so.
+	 * 
+	 * @param userPosition Position of the user
+	 * @param endPosition End position
+	 * @param bike Whether we want to use the path with a bike
+	 * @return List of points of the path
+	 */
 	public static List<Position> searchPathBetween(Position userPosition, Position endPosition, boolean bike) {
 		int startPoi = getClosestPOI(userPosition);
 		int endPoi = getClosestPOI(endPosition);
@@ -118,19 +96,22 @@ public class Search {
 	}
 
 	/**
-	 * Computes the shortest walkable Path between two MapElements.
+	 * Loop for a path between two POIs.
+	 * 
+	 * @param startMapElement Position of the user
+	 * @param endMapElement End position
+	 * @param bike Whether we want to use the path with a bike
+	 * @return List of points of the path
 	 */
 	public static List<Position> searchPathBetween(int startMapElement, int endMapElement, boolean bike) {
 
-		/*
-		MapPOI start = startMapElement.getClosestPOI();
-		MapPOI end = endMapElement.getClosestPOI();
-		Log.d("Search", "searchPathBetween VertexID:"+start.vertexID()+" and "+ end.vertexID());
-		 */
-
-		String bikeOn = bike ? "&disabled=on" : ""; 
+		// Using the bike or not
+		String bikeOn = bike ? "&disabled=on" : "";
+		
+		// Building the URL
 		String pageUrl = "http://plan.epfl.ch/routing?from=" + startMapElement + "&to=" + endMapElement + bikeOn;
 		
+		// Getting the content from the server
 		String jsonString;
 		try {
 			jsonString = URLLoader.getSource(pageUrl);
@@ -138,15 +119,20 @@ public class Search {
 			return null;
 		}
 
+		// Parsing the content into an object
 		Routing r = new Gson().fromJson(jsonString, Routing.class);
-
-		Path path = new Path();
-
+		
+		// Points data
 		GeometryF geom = r.feature.geometry;
+		
+		// Coordinates
 		double[][][] coor = geom.coordinates;
-
-		//get the roadmap object which contains informations about level
+		
+		// Roadmap object which contains informations about level
 		Roadmap[] road = r.roadmap;
+
+		// Creating point for the road
+		Path path = new Path();
 		for (int i = 0; i < road.length; ++i){
 
 			Position pos = CoordinateConverter.convertEPSG4326ToLatLong(
@@ -157,10 +143,11 @@ public class Search {
 			path.getRoadmapList().add(pos); 	
 		}
 
-
+		// First point
 		Position previousEnd = CoordinateConverter.convertEPSG4326ToLatLong(coor[0][0][0], coor[0][0][1], path.getRoadmapList().get(0).getAltitude());
 		path.getPositionList().add(previousEnd);
 
+		// Creating points for the path
 		int k=0;
 		for (int i = 0; i < coor.length; ++i) {
 
@@ -186,22 +173,6 @@ public class Search {
 		return path.getPositionList();
 	}
 
-	/**
-	 * Converts a Collection of MapElementData to a Set a MapElement.
-	 */
-	/*
-	public static Set<MapElement> dataToMapElement(Collection<MapElementData> elemsData, Marker marker){
-		Set<MapElement> elems = new HashSet<MapElement>();
-
-		for (MapElementData e : elemsData) {
-			Position pos = CoordinateConverter.convertEPSG4326ToLatLong(e.position_.lat, e.position_.lon, e.position_.level);
-			elems.add(new MapPOI(pos , e.type_, marker, 0, 0, e.title_, e.description_));
-		}
-
-		return elems;
-	}
-	 */
-	
 	/**
 	 * Searches the elements with a specific title or description
 	 * @param query the text query

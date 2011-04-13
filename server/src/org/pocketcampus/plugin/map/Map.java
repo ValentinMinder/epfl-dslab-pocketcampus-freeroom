@@ -24,22 +24,33 @@ import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
 
-public class Map implements IPlugin {
-	@PublicMethod
-	public List<MapLayerBean> layers(HttpServletRequest request) {
-		return getExternalLayers();
-	}
 
+/**
+ * IPlugin server class for the Map plugin 
+ * 
+ * @status WIP
+ * 
+ * @author Jonas, Johan
+ *
+ */
+public class Map implements IPlugin {
+
+	/**
+	 * Get a list of available layers
+	 *
+	 * @param request not used
+	 * @return A list of available layers
+	 */
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
 		
+		// Get internal and external layers
 		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-
 		layers.addAll(getInternalLayers());
 		layers.addAll(getExternalLayers());
 		
+		// Sort the layers by alphabetic order
 		Collections.sort(layers, new Comparator<MapLayerBean>() {
-
 			@Override
 			public int compare(MapLayerBean o1, MapLayerBean o2) {
 				return o1.getName().compareToIgnoreCase(o2.getName());
@@ -49,6 +60,12 @@ public class Map implements IPlugin {
 		return layers;
 	}
 
+	/**
+	 * Get the items of a particular layer.
+	 *
+	 * @param request Has a parameter "layer_id" containing the layer ID
+	 * @return
+	 */
 	@PublicMethod
 	public List<MapElementBean> getItems(HttpServletRequest request) {
 		
@@ -74,6 +91,24 @@ public class Map implements IPlugin {
 		return items;
 	}
 
+	/**
+	 * Get the points that define a path between two places.
+	 * The start position must be composed by a latitude and a longitude.
+	 * The end position can be either a POI ID or a latitude+longitude.
+	 * 
+	 * Start position:
+	 * - startLatitude
+	 * - startLongitude
+	 * 
+	 * End position:
+	 * - endLatitude
+	 * - endLongitude
+	 * OR
+	 * - endPoiId
+	 * 
+	 * @param request
+	 * @return List of points
+	 */
 	@PublicMethod
 	public List<Position> routing(HttpServletRequest request) {
 
@@ -120,6 +155,11 @@ public class Map implements IPlugin {
 
 	}
 
+	/**
+	 * Get a list of layers coming from the Map plugin itself, from the database
+	 * 
+	 * @return list of database layers
+	 */
 	private List<MapLayerBean> getInternalLayers() {
 		List<MapLayerBean> layers = new LinkedList<MapLayerBean>();
 
@@ -157,21 +197,38 @@ public class Map implements IPlugin {
 		return layers;
 	}
 
+	/**
+	 * Get a list of layers coming from the other plugins
+	 * 
+	 * @return List of layers
+	 */
 	private List<MapLayerBean> getExternalLayers() {
+		
+		// Returned list
+		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
+		
+		// Get the plugins with the "map" interface
 		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
 
+		// Iterate through all the plugins
 		Iterator<IPlugin> iter = providers.iterator();
 		IMapElementsProvider provider;
-		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-
 		while(iter.hasNext()) {
 			provider = (IMapElementsProvider)iter.next();
+			
+			// Get the plugin layer
 			layers.add(provider.getLayer());
 		}
 
 		return layers;
 	}
 
+	/**
+	 * Get a list of items from a certain layer, coming from the Map plugin itself, from the database
+	 * 
+	 * @param layerId ID of the layer to use
+	 * @return List of items
+	 */
 	public List<MapElementBean> getInternalItems(int layerId) {
 		List<MapElementBean> elements = new LinkedList<MapElementBean>();
 		
@@ -212,19 +269,30 @@ public class Map implements IPlugin {
 		return elements;
 	}
 	
+	/**
+	 * Get a list of items coming from a layers coming from another plugins
+	 * 
+	 * @param id ID of the layer to use
+	 * @return List of items from the layer
+	 */
 	private List<MapElementBean> getExternalItems(int id) {
+
+		// Get the plugins with the "map" interface
 		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
 
+		// Iterate through the plugins
 		Iterator<IPlugin> iter = providers.iterator();
 		IMapElementsProvider provider;
-
 		while(iter.hasNext()) {
 			provider = (IMapElementsProvider)iter.next();
+			
+			// The plugin provides a layer with this ID, return it
 			if(provider.getLayer().getId() == id) {
 				return provider.getLayerItems();
 			}
 		}
 		
+		// Nothing found
 		return new ArrayList<MapElementBean>();
 	}
 	
