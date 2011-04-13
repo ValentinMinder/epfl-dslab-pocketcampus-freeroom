@@ -4,14 +4,15 @@ import java.io.IOException;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.pocketcampus.provider.authentication.GpsLocation;
-import org.pocketcampus.provider.authentication.GsmLocation;
-import org.pocketcampus.provider.authentication.Position;
-import org.pocketcampus.provider.authentication.WifiLocation;
+import org.pocketcampus.provider.positioning.ILocation;
+import org.pocketcampus.provider.positioning.Position;
+import org.pocketcampus.provider.positioning.GpsLocation;
+import org.pocketcampus.provider.positioning.GsmLocation;
+import org.pocketcampus.provider.positioning.WifiLocation;
 
 import android.content.Context;
 
-public class HybridLocation {
+public class HybridLocation implements ILocation{
 	
 	private GpsLocation gpsLocation_;
 	private GsmLocation gsmLocation_;
@@ -50,6 +51,24 @@ public class HybridLocation {
 	public Position getHybridLocation(){
 		return null;
 		// TODO
+	}
+
+
+
+
+	@Override
+	public Position getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	@Override
+	public double getAccuracy() {
+		// TODO Auto-generated method stub
+		return (Double) null;
 	}
 }
 
