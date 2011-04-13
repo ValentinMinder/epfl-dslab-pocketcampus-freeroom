@@ -49,6 +49,10 @@ public class Position implements Serializable {
 		return altitude_;
 	}
 	
+	public int getLevel(){
+		return level_;
+	}
+	
 	@Override
 	public String toString() {
 		return "("+latitude_+", "+longitude_+", "+altitude_+")";
@@ -59,9 +63,5 @@ public class Position implements Serializable {
 		return toString().hashCode();
 	}
 
-	public String getLevel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 
