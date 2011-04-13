@@ -54,6 +54,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		} else {
 			System.out.println("Not reimporting menus.");
 		}
+		System.out.println(campusMeals_);
 		return campusMeals_;
 	}
 

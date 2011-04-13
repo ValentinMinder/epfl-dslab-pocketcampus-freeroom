@@ -162,7 +162,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		holder.ratingLine.setRating((float)Restaurant.starRatingToDouble(currentRating.getValue()));
 		
 		int numbVotes = currentRating.getNumberOfVotes();
-		if (numbVotes != 1 && numbVotes != 0) {
+		if (numbVotes != 1) {
 			holder.votesLine.setText(numbVotes
 					+ " "
 					+ menusActivity_.getResources().getString(

@@ -108,6 +108,10 @@ public class FoodMenu {
 				// Deserializes the response
 				Gson gson = new Gson();
 
+				if(result != null){
+					Log.d("SERVER", result);
+				}
+				
 				Type menuType = new TypeToken<List<Meal>>() {}.getType();
 				try {
 					campusMenuList = gson.fromJson(result, menuType);
