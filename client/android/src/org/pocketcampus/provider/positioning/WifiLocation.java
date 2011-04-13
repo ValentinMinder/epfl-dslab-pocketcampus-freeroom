@@ -123,7 +123,7 @@ public class WifiLocation {
 				if (pos != null) {
 //					pos = CoordinateConverter.convertCH1903ToLatLong(pos
 //							.getLon(), pos.getLat(), pos.getLevel());
-					Position geoPos = new Position(pos.getLon(),pos.getLat(),pos.getLevel());
+					Position geoPos = new Position(pos.getLongitude(),pos.getLatitude(),pos.getLevel());
 					
 					usableAP.add(new AccessPoint(ap, name, geoPos));
 				}
@@ -156,7 +156,7 @@ public class WifiLocation {
 				Ap = p;
 			}
 		}
-		po = new Position(Ap.position().getLat(), Ap.position().getLon(), Ap
+		po = new Position(Ap.position().getLatitude(), Ap.position().getLongitude(), Ap
 				.position().getLevel());
 		System.out.println("The Nearest!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("Level" + Ap.getSignalLevel() + "Distance"
@@ -227,19 +227,19 @@ public class WifiLocation {
 				return emitter.position();
 			}else if (level > 40) {
 				total += 5 * level;
-				posXAvg += 5 * emitter.position().getLat() * level;
-				posYAvg += 5 * emitter.position().getLon() * level;
+				posXAvg += 5 * emitter.position().getLatitude() * level;
+				posYAvg += 5 * emitter.position().getLongitude() * level;
 				//levelAvg += 3 * emitter.position().getLevel() * level;
 			} else if (level > 20) {
 				total += 2 * level;
-				posXAvg += 2 * emitter.position().getLat() * level;
-				posYAvg += 2 * emitter.position().getLon() * level;
+				posXAvg += 2 * emitter.position().getLatitude() * level;
+				posYAvg += 2 * emitter.position().getLongitude() * level;
 				levelAvg += 2 * emitter.position().getLevel() * level;
 			}
 			else if (level > 10) {
 				total += level;
-				posXAvg += emitter.position().getLat() * level;
-				posYAvg += emitter.position().getLon() * level;
+				posXAvg += emitter.position().getLatitude() * level;
+				posYAvg += emitter.position().getLongitude() * level;
 				//levelAvg += emitter.position().getLevel() * level;
 			}
 		}
@@ -291,7 +291,7 @@ public class WifiLocation {
 		}
 		System.out.println("Adjusted result :::"+position.toString());
 
-		result = new Position((double)position.getLat()-0.000090,(double)position.getLon()+0.000020,position.getLevel());
+		result = new Position((double)position.getLatitude()-0.000090,(double)position.getLongitude()+0.000020,position.getLevel());
 
 
 
