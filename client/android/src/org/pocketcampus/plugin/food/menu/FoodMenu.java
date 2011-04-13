@@ -103,13 +103,15 @@ public class FoodMenu {
 			
 			@Override
 			protected void onPostExecute(String result) {
-
+				Log.d("SERVER", "Got here");
 				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
 				Gson gson = new Gson();
 
 				if(result != null){
 					Log.d("SERVER", result);
+				} else {
+					Log.d("SERVER", "null");
 				}
 				
 				Type menuType = new TypeToken<List<Meal>>() {}.getType();
@@ -147,7 +149,7 @@ public class FoodMenu {
 				pluginHandler_.menuRefreshed();
 			}
 		}
-
+		Log.d("SERVER", "Requesting menus.");
 		FoodPlugin.getFoodRequestHandler().execute(new MenusRequest(), "getMenus",
 				(RequestParameters) null);
 	}

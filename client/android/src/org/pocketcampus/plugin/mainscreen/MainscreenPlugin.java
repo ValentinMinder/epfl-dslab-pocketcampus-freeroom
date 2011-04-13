@@ -75,10 +75,10 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		
 		
 		//Checkin internet connection
-		if(!isOnline()) {
-			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
-			toast.show();
-		}
+//		if(!isOnline()) {
+//			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
+//			toast.show();
+//		}
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
@@ -139,17 +139,17 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	}
 
 
-	private boolean isOnline() {
-		try {
-			URL url = new URL(core_.getServerUrl());
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.connect();
-			return connection.getResponseCode() == 200;
-		} catch (IOException e) {
-			return false;
-		}
-
-	}
+//	private boolean isOnline() {
+//		try {
+//			URL url = new URL(core_.getServerUrl());
+//			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//			connection.connect();
+//			return connection.getResponseCode() == 200;
+//		} catch (IOException e) {
+//			return false;
+//		}
+//
+//	}
 
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
