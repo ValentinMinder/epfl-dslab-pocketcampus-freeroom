@@ -60,6 +60,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public class MapPlugin extends PluginBase {
 
+	// Used for the location
 	private static final float maxAccuracyForDirections = 100;
 	private static final Position EPFL_CENTER = new Position(46.520101, 6.565189, 0);
 	private static final int EPFL_RADIUS = 350;
@@ -223,6 +224,9 @@ public class MapPlugin extends PluginBase {
 		}
 	}
 
+	/**
+	 * Re-enable the location service
+	 */
 	@Override
 	protected void onResume() {
 
@@ -291,7 +295,9 @@ public class MapPlugin extends PluginBase {
 		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 	}
 
-
+	/**
+	 * Disable the location service
+	 */
 	@Override
 	protected void onPause() {
 		myLocationOverlay_.disableMyLocation();
@@ -303,7 +309,9 @@ public class MapPlugin extends PluginBase {
 		super.onConfigurationChanged(newConfig);
 	}
 
-
+	/**
+	 * Handle the menu
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -311,21 +319,28 @@ public class MapPlugin extends PluginBase {
 		return true;
 	}
 
+	/**
+	 * Handle the menu
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		
+		// Show a layer selection
 		case R.id.map_menu_layers_button:
 			showProgressDialog("Loading layers...");
 			loadLayersFromServer();
 			return true;
 
+		// Enable the user following
 		case R.id.map_my_position:
 			centerOnPosition();
 			return true;
 
+		// Shows the search dialog
 		case R.id.map_path:
-			onSearchRequested(); //shows the search dialog
+			onSearchRequested(); 
 			return true;
 
 		default:
@@ -349,12 +364,22 @@ public class MapPlugin extends PluginBase {
 
 	}
 
+	/**
+	 * Enable the location and center the map on the user
+	 */
 	private void centerOnPosition() {
 		myLocationOverlay_.enableMyLocation();
 		myLocationOverlay_.enableFollowLocation();
 	}
 
+	/**
+	 * Show the directions layer to a certain POI 
+	 *
+	 * @param poi ID of the POI
+	 */
 	private void showDirectionsFromHereToPOI(int poi) {
+		
+		// TODO factorize
 		
 		mapPathOverlay_.clearPath();
 
@@ -383,25 +408,34 @@ public class MapPlugin extends PluginBase {
 
 	}
 
+	/**
+	 * Show the directions layer to a certain POI 
+	 *
+	 * @param endPos Position where to go
+	 */
 	private void showDirectionsFromHereToPosition(Position endPos) {
 		
+		// Clear the path if there was an old one
 		mapPathOverlay_.clearPath();
 
+		// Get the position of the user
 		Location fix = myLocationOverlay_.getLastFix();
 		
+		// Check if the user is located and has a good accuracy
 		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
 			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
 			return;
 		}
 		
+		// Check if the user is at EPFL
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
 		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
-		
 //		if(distanceToCenter > EPFL_RADIUS) {
 //			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
 //			return;
 //		}
-				
+		
+		// Parameters 
 		RequestParameters params = new RequestParameters();
 		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
 		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
@@ -414,7 +448,7 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
-	 * Set the selected layers
+	 * Set the selected layers and update the overlays
 	 * @param selectedLayers
 	 */
 	private void setSelectedLayers(ArrayList<MapElementsList> selectedLayers) {
@@ -523,12 +557,22 @@ public class MapPlugin extends PluginBase {
 		getRequestHandler().execute(new ItemsRequest(), "getItems", param);
 	}
 	
+	/**
+	 * Get the distance between two points
+	 * 
+	 * @param start Start position
+	 * @param end End position
+	 * @return distance in meters
+	 */
 	private static double directDistanceBetween(Position start, Position end) {
 		GeoPoint s = new GeoPoint(start.getLatitude(), start.getLongitude(), start.getAltitude());
 		GeoPoint e = new GeoPoint(end.getLatitude(), end.getLongitude(), end.getAltitude());
 		return s.distanceTo(e);
 	}
 
+	/**
+	 * Request class for the directions
+	 */
 	class DirectionsRequest extends ServerRequest {
 		@Override
 		protected void onPostExecute(String result) {
