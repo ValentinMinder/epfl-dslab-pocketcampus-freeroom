@@ -100,7 +100,11 @@ public class Transport implements IPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		if(from==null || to==null) {
+			return null;
+		}
+		
 		Date date = new Date();
 		boolean dep = true;
 		String products = (String)null;

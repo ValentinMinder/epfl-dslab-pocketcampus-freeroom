@@ -67,18 +67,16 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
 
-
-		newsProvider_ = NewsProvider.getInstance(ctx_);
-		newsProvider_.addNewsListener(this);
-
-		setLayout();
+		//newsProvider_ = NewsProvider.getInstance(ctx_);
+		//newsProvider_.addNewsListener(this);
+		//displayNews();
 		
 		
 		//Checkin internet connection
-//		if(!isOnline()) {
-//			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
-//			toast.show();
-//		}
+		/*if(!isOnline()) {
+			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
+			toast.show();
+		}*/
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
@@ -139,17 +137,17 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	}
 
 
-//	private boolean isOnline() {
-//		try {
-//			URL url = new URL(core_.getServerUrl());
-//			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//			connection.connect();
-//			return connection.getResponseCode() == 200;
-//		} catch (IOException e) {
-//			return false;
-//		}
-//
-//	}
+	private boolean isOnline() {
+		try {
+			URL url = new URL(core_.getServerUrl());
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.connect();
+			return connection.getResponseCode() == 200;
+		} catch (IOException e) {
+			return false;
+		}
+
+	}
 
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -246,7 +244,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
-	private void setLayout() {
+	private void displayNews() {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
 		adapter_ = new NewsAdapter(ctx_, newsProvider_);
 		l.setAdapter(adapter_);
@@ -289,6 +287,6 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	protected void onResume() {
 		super.onResume();
 
-		newsProvider_.refreshIfNeeded();
+		//newsProvider_.refreshIfNeeded();
 	}
 }

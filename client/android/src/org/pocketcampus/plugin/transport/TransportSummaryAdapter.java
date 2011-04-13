@@ -6,6 +6,7 @@ import java.util.Date;
 import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
+import org.pocketcampus.shared.utils.DateUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,23 +15,104 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * Adapter to diplay the summaries of the travel.
+ * @author Florian
+ * @status working
+ */
 public class TransportSummaryAdapter extends BaseAdapter {
-	private LayoutInflater inflater_;
+	private enum SummaryState {EMPTY, VALID, ERROR};
+	
 	private QueryConnectionsResult summary_;
+	private SummaryState state_;
+	private LayoutInflater inflater_;
 	private String departure_;
 	private String arrival_;
 
 	public TransportSummaryAdapter(Context ctx, String departure, String arrival) {
+		state_ = SummaryState.EMPTY;
 		inflater_ = LayoutInflater.from(ctx);
 		departure_ = departure;
 		arrival_ = arrival;
 	}
 	
+	/**
+	 * Sets the summary content.
+	 * @param summary
+	 */
 	public void setSummary(QueryConnectionsResult summary) {
+		if(summary == null) {
+			setSummaryError();
+			return;
+		}
+		
 		summary_ = summary;
+		state_ = SummaryState.VALID;
 		notifyDataSetChanged();
 	}
 	
+	/**
+	 * Indicates that there has been an error while retrieving the data.
+	 */
+	void setSummaryError() {
+		summary_ = null;
+		state_ = SummaryState.ERROR;
+		notifyDataSetChanged();
+	}
+	
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view;
+		
+		if(state_ == SummaryState.EMPTY) {
+			view = inflater_.inflate(R.layout.transport_loadingentry, null);
+			return view;
+		}
+		
+		if(state_ == SummaryState.ERROR) {
+			view = inflater_.inflate(R.layout.transport_errorentry, null);
+			return view;
+		}
+		
+		view = inflater_.inflate(R.layout.transport_summaryentry, null);
+		view = fillView(position, view);
+		
+		return view;
+	}
+	
+	/**
+	 * Complete the view with the relevant travel info.
+	 * @param position
+	 * @param view
+	 * @return
+	 */
+	private View fillView(int position, View view) {
+		Connection connection = (Connection) getItem(position);
+		
+		TextView timeTextView = (TextView) view.findViewById(R.id.travel_summary_time);
+		TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
+		
+		// nb of changes
+		String changes = "";
+		if(connection.parts.size() > 1) {
+			changes = ", " + (connection.parts.size()-1) + " changes";
+		}
+		
+		// date formatter
+		SimpleDateFormat formatter = new SimpleDateFormat();
+		formatter.applyPattern("k:mm");
+		
+		// fill in the views
+		String s1, s2;
+		s1 = "In " + DateUtils.formatDateDelta(new Date(), connection.departureTime, "Now");
+		s2 = formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes;
+		
+		timeTextView.setText(s1);
+		transpTextView.setText(s2);
+		
+		return view;
+	}
+
 	@Override
 	public int getCount() {
 		if(summary_ == null) {
@@ -54,59 +136,27 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		if(summary_==null) {
-			View view = inflater_.inflate(R.layout.transport_loadingentry, null);
-			return view;
-		}
-		
-		View view = inflater_.inflate(R.layout.transport_summaryentry, null);
-		
-		Connection connection = (Connection) getItem(position);
-		
-		TextView timeTextView = (TextView) view.findViewById(R.id.travel_summary_time);
-		TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
-		String s1, s2;
-		
-		int minutesLeft = (int) (connection.departureTime.getTime() - new Date().getTime()) / (60 * 1000);
-		minutesLeft = Math.max(minutesLeft, 0);
-		
-		String changes = "";
-		if(connection.parts.size() > 1) {
-			changes = ", " + (connection.parts.size()-1) + " changes";
-		}
-		
-		String transporter = "";
-//		transporter = ", by " + connection.link;
-		
-		SimpleDateFormat formatter = new SimpleDateFormat();
-		formatter.applyPattern("k:mm");
-		
-		if(minutesLeft > 0) {
-			s1 = "In " + minutesLeft + " minute" + ((minutesLeft>1)?"s":"");
-		} else {
-			s1 = "Now!";
-		}
-		
-		
-		s2 = formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes + transporter;
-		
-		timeTextView.setText(s1);
-		transpTextView.setText(s2);
-		
-		return view;
-	}
-
+	
+	/**
+	 * Caption accessor.
+	 * @return
+	 */
 	public String getCaption() {
 		return departure_ + " to " + arrival_;
 	}
 	
+	/**
+	 * Departure accessor.
+	 * @return
+	 */
 	public String getDeparture() {
 		return departure_;
 	}
 	
+	/**
+	 * Arrival accessor.
+	 * @return
+	 */
 	public String getArrival() {
 		return arrival_;
 	}

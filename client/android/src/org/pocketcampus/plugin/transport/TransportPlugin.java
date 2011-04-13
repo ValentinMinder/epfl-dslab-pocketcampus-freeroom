@@ -14,10 +14,11 @@ import android.view.View;
 import android.widget.ListView;
 
 public class TransportPlugin extends PluginBase {
-	private ListView mainList_;
-	private TransportSummaryListAdapter adapter_;
 	private ActionBar actionBar_;
+	private ListView mainList_;
+	
 	private ArrayList<TransportSummaryAdapter> summaryList_;
+	private TransportSummaryListAdapter adapter_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,10 @@ public class TransportPlugin extends PluginBase {
 		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
 		mainList_.setAdapter(adapter_);
 		
+		// TODO load this from a list editable in the preferences
 		summaryList_ = new ArrayList<TransportSummaryAdapter>();
 		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Lausanne, Flon"));
 		summaryList_.add(new TransportSummaryAdapter(this, "Lausanne, Vigie", "Ecublens VD, EPFL"));
-		//summaryList_.add(new TransportSummaryAdapter(this, "Paris", "Berlin"));
 
 		for(TransportSummaryAdapter summary : summaryList_) {
 			adapter_.addSection(summary);

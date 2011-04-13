@@ -32,6 +32,9 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		actionBar_ = actionBar;
 	}
 	
+	/**
+	 * Loads all the summaries.
+	 */
 	public void loadSummaryList() {
 		for(Section section : sections) {
 			TransportSummaryAdapter adapter = (TransportSummaryAdapter)section.adapter;
@@ -53,9 +56,19 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 
 				adapter.setSummary(summary);
 				notifyDataSetChanged();
+				
+				System.out.println("------------>" + summary);
+				
 				decrementProgressCounter();
 			}
-
+			
+			@Override
+			protected void onCancelled() {
+				super.onCancelled();
+				adapter.setSummaryError();
+				notifyDataSetChanged();
+			}
+			
 		} 
 
 		RequestParameters params = new RequestParameters();
