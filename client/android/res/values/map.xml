@@ -2,13 +2,14 @@
 <resources>
     <string name="map_menu_layers">Layers</string>
     <string name="map_menu_my_position">My position</string>
+    <string name="map_menu_campus_position">Campus</string>
     <string name="map_menu_path">Directions</string>
     
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_layer_ok_button">Ok</string>
     
     <string name="map_directions_not_accurate">We cannot locate you precisely enough to show directions</string>
-    <string name="map_directions_not_at_epfl">It seems you are not at EPFL... We cannot show directions from outside campus.</string>
+    <string name="map_directions_not_on_campus">It seems you are not on campus... We cannot show directions from outside campus.</string>
     
     <string name="map_search">Search the map</string>
     <string name="map_searching">Searching the map</string>

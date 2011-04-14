@@ -64,7 +64,7 @@ public class MapPlugin extends PluginBase {
 	private static final float maxAccuracyForDirections = 100;
 	private static final Position EPFL_CENTER = new Position(46.520101, 6.565189, 0);
 	private static final int EPFL_RADIUS = 350;
-	
+
 	private MapView mapView_;
 	private MapController mapController_;
 	private List<MapElementsList> layers_;
@@ -104,11 +104,11 @@ public class MapPlugin extends PluginBase {
 
 		layers_ = new ArrayList<MapElementsList>();
 		selectedLayers_ = new ArrayList<MapElementsList>();
-		
+
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
 	}
-	
+
 	/**
 	 * Handle the eventual extras of the intent.
 	 * For example, it can show a map element
@@ -117,7 +117,7 @@ public class MapPlugin extends PluginBase {
 	private void handleIntent(Bundle extras) {
 		if(extras == null)
 			return;
-		
+
 		if(extras.containsKey("MapElement")) {
 			Log.d("MapPlugin", "intent with extras");
 			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
@@ -241,13 +241,10 @@ public class MapPlugin extends PluginBase {
 	protected void onStart() {
 		super.onStart();
 
-		//Center the view at epfl
-		//It is important to set the zoom before the position (bug of osmdroid)
 		mapController_.setZoom(16);
-		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
-		mapController_.setCenter(epflPoint);
-
 		updateOverlays();
+		
+		centerAtEpfl();
 	}
 
 	/**
@@ -326,19 +323,24 @@ public class MapPlugin extends PluginBase {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		
+
 		// Show a layer selection
 		case R.id.map_menu_layers_button:
 			showProgressDialog("Loading layers...");
 			loadLayersFromServer();
 			return true;
 
-		// Enable the user following
+			// Enable the user following
 		case R.id.map_my_position:
-			centerOnPosition();
+			centerOnUserPosition();
 			return true;
 
-		// Shows the search dialog
+			// Enable the user following
+		case R.id.map_campus_position:
+			centerAtEpfl();
+			return true;
+
+			// Shows the search dialog
 		case R.id.map_path:
 			onSearchRequested(); 
 			return true;
@@ -367,9 +369,18 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Enable the location and center the map on the user
 	 */
-	private void centerOnPosition() {
+	private void centerOnUserPosition() {
 		myLocationOverlay_.enableMyLocation();
 		myLocationOverlay_.enableFollowLocation();
+	}
+
+	/**
+	 * Center the map at EPFL
+	 */
+	private void centerAtEpfl() {
+		myLocationOverlay_.disableFollowLocation();
+		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
+		mapController_.setCenter(epflPoint);
 	}
 
 	/**
@@ -377,27 +388,29 @@ public class MapPlugin extends PluginBase {
 	 *
 	 * @param poi ID of the POI
 	 */
+	/*
 	private void showDirectionsFromHereToPOI(int poi) {
-		
+
 		// TODO factorize
-		
+
 		mapPathOverlay_.clearPath();
+		mapView_.invalidate();
 
 		Location fix = myLocationOverlay_.getLastFix();
-		
+
 		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
 			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
 			return;
 		}
-		
+
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
 		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
-		
+
 		if(distanceToCenter > EPFL_RADIUS) {
-			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
+			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
 			return;
 		}
-				
+
 		RequestParameters params = new RequestParameters();
 		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
 		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
@@ -407,44 +420,63 @@ public class MapPlugin extends PluginBase {
 		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
 
 	}
+	*/
 
 	/**
 	 * Show the directions layer to a certain POI 
 	 *
 	 * @param endPos Position where to go
 	 */
-	private void showDirectionsFromHereToPosition(Position endPos) {
+	private void showDirectionsFromHereToPosition(final Position endPos) {
 		
+		centerOnUserPosition();
+
 		// Clear the path if there was an old one
 		mapPathOverlay_.clearPath();
-
-		// Get the position of the user
-		Location fix = myLocationOverlay_.getLastFix();
+		mapView_.invalidate();
 		
+		myLocationOverlay_.runOnFirstFix(new Runnable() {
+
+			@Override
+			public void run() {
+				Location fix = myLocationOverlay_.getLastFix();
+				showDirectionFromTo(fix, endPos);
+			}
+		});
+	}
+
+
+	/**
+	 * Show direction from the given fix to a position
+	 * @param fix Fix from the GPS
+	 * @param to where to go
+	 */
+	private void showDirectionFromTo(Location fix, Position to) {
+
 		// Check if the user is located and has a good accuracy
-		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
+		if(fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections) {
 			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
 			return;
 		}
-		
+
 		// Check if the user is at EPFL
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
 		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
-//		if(distanceToCenter > EPFL_RADIUS) {
-//			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_at_epfl);
-//			return;
-//		}
-		
+		if(distanceToCenter > EPFL_RADIUS) {
+			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
+			return;
+		}
+
 		// Parameters 
 		RequestParameters params = new RequestParameters();
 		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
 		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
-		params.addParameter("endLatitude", Double.toString(endPos.getLatitude()));
-		params.addParameter("endLongitude", Double.toString(endPos.getLongitude()));
+		params.addParameter("endLatitude", Double.toString(to.getLatitude()));
+		params.addParameter("endLongitude", Double.toString(to.getLongitude()));
 
 		//request of the layers
+		incrementProgressCounter();
 		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
-
 	}
 
 	/**
@@ -556,7 +588,7 @@ public class MapPlugin extends PluginBase {
 		param.addParameter("layer_id", layer.getLayerId() + "");
 		getRequestHandler().execute(new ItemsRequest(), "getItems", param);
 	}
-	
+
 	/**
 	 * Get the distance between two points
 	 * 
@@ -577,6 +609,8 @@ public class MapPlugin extends PluginBase {
 		@Override
 		protected void onPostExecute(String result) {
 
+			decrementProgressCounter();
+
 			// Deserializes the response
 			Gson gson = new Gson();
 			List<Position> path = null;
@@ -585,6 +619,7 @@ public class MapPlugin extends PluginBase {
 			try {
 				path = gson.fromJson(result, t);
 				mapPathOverlay_.setList(path);
+				mapView_.invalidate();
 			} catch(Exception e) {
 				System.out.println(e);
 			}

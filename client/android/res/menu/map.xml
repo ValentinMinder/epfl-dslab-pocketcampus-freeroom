@@ -7,7 +7,11 @@
 	<item
 		android:title="@string/map_menu_my_position"
 		android:id="@+id/map_my_position"
-		android:icon="@android:drawable/ic_menu_compass" />
+		android:icon="@android:drawable/ic_menu_mylocation" />
+	<item
+		android:title="@string/map_menu_campus_position"
+		android:id="@+id/map_campus_position"
+		android:icon="@android:drawable/ic_dialog_info" />
 	<item
 		android:title="@string/map_menu_path"
 		android:id="@+id/map_path"
