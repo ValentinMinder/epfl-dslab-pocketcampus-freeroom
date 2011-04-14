@@ -5,7 +5,6 @@ package org.pocketcampus.plugin.food.menu;
  * 
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,8 +14,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.shared.plugin.food.Meal;
-import org.pocketcampus.shared.plugin.food.RatedMeal;
-import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 
 public class MenuSorter {
@@ -35,24 +32,15 @@ public class MenuSorter {
 			throw new IllegalArgumentException("The meals list cannot be null !");
 		}
 		
-		List<RatedMeal> ratedMeals = new ArrayList<RatedMeal>();
+		List<Meal> menus = menu_.getMeals();
 		
-		Set<Meal> set = menu_.getMeals();
-		for(Meal meal : set){
-			if(!meal.getDescription_().matches("\\s+")){
-				Rating rate = meal.getRating();
-				if(rate != null)
-				ratedMeals.add(new RatedMeal(meal, rate));
-			}
-		}
-		
-		Collections.sort(ratedMeals, new RatingComparator());
-		Collections.reverse(ratedMeals);
+		Collections.sort(menus, new RatingComparator());
+		Collections.reverse(menus);
 		
 		Vector<Meal> mealsVector = new Vector<Meal>();
 		
-		for (RatedMeal ratedMeal : ratedMeals) {
-			mealsVector.add(ratedMeal.getMeal());
+		for (Meal meal : menus) {
+			mealsVector.add(meal);
 		}
 
 		return mealsVector;
@@ -89,6 +77,8 @@ public class MenuSorter {
 			}
 		}
 		Set<String> menus = map.keySet();
+		
+		//Sort menus alphabetically
 		for(String resto : menus){
 			Collections.sort(map.get(resto), new Comparator<Meal>() {
 			    public int compare(Meal one, Meal other) {
@@ -96,6 +86,7 @@ public class MenuSorter {
 			    }
 			});
 		}
+		
 		return map;
 	}
 
@@ -133,16 +124,16 @@ public class MenuSorter {
 	 * sort them.
 	 *
 	 */
-	private class RatingComparator implements Comparator<RatedMeal>{
+	private class RatingComparator implements Comparator<Meal>{
 		
-		public int compare(RatedMeal arg0, RatedMeal arg1) {
-			double d0 = Restaurant.starRatingToDouble(arg0.getRating().getValue());
-			double d1 = Restaurant.starRatingToDouble(arg1.getRating().getValue());
+		public int compare(Meal thisMeal, Meal otherMeal) {
+			double d0 = Restaurant.starRatingToDouble(thisMeal.getRating().getValue());
+			double d1 = Restaurant.starRatingToDouble(otherMeal.getRating().getValue());
 			if(d0 != d1){
 				return (d0 < d1 ? -1:1);
 			} else{
-				int n0 = arg0.getRating().getNumberOfVotes();
-				int n1 = arg0.getRating().getNumberOfVotes();
+				int n0 = thisMeal.getRating().getNumberOfVotes();
+				int n1 = thisMeal.getRating().getNumberOfVotes();
 				return (n0 < n1 ? -1:1);
 			}
 		}		

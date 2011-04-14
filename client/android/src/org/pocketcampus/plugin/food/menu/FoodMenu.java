@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
@@ -37,7 +36,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class FoodMenu {
 
-	private HashMap<Meal, Rating> campusMenu_;
+	private List<Meal> campusMenu_;
 	private FoodPlugin pluginHandler_;
 	private Context ctx_;
 	private Date validityDate_;
@@ -50,7 +49,7 @@ public class FoodMenu {
 		pluginHandler_ = ownerActivity;
 		ctx_ = ownerActivity.getApplicationContext();
 		// Instantiate menuEPFL
-		campusMenu_ = new HashMap<Meal, Rating>();
+		campusMenu_ = new ArrayList<Meal>();
 		loadCampusMenu();
 	}
 
@@ -58,19 +57,16 @@ public class FoodMenu {
 	 * Get meals in menu
 	 * @return
 	 */
-	public Set<Meal> getMeals() {
-		if (campusMenu_ == null) {
-			return null;
-		}
-		return campusMenu_.keySet();
+	public List<Meal> getMeals() {
+		return campusMenu_;
 	}
 
 	// Get menu to display
-	public HashMap<Meal, Rating> getCampusMenu() {
+	public List<Meal> getCampusMenu() {
 		return this.campusMenu_;
 	}
 	
-	public void setCampusMenu(HashMap<Meal, Rating> menus) {
+	public void setCampusMenu(List<Meal> menus) {
 		this.campusMenu_ = menus;
 	}
 
@@ -102,18 +98,11 @@ public class FoodMenu {
 			private List<Meal> campusMenuList;
 			
 			@Override
-			protected void onPostExecute(String result) {
-				Log.d("SERVER", "Got here");
+			protected void onPostExecute(String result) {				
 				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
 				Gson gson = new Gson();
 
-				if(result != null){
-					Log.d("SERVER", result);
-				} else {
-					Log.d("SERVER", "null");
-				}
-				
 				Type menuType = new TypeToken<List<Meal>>() {}.getType();
 				try {
 					campusMenuList = gson.fromJson(result, menuType);
@@ -123,22 +112,15 @@ public class FoodMenu {
 					return;
 				} 
 
-				HashMap<Meal, Rating> campusMenu = new HashMap<Meal, Rating>();
 
 				if (campusMenuList != null) {
-					for (Meal m : campusMenuList) {
-						campusMenu.put(m, m.getRating());
-					}
-				}
-
-				if (campusMenu != null) {
-					if (campusMenu.isEmpty()) {
-						HashMap<Meal, Rating> fromCache = restoreFromFile();
+					if (campusMenuList.isEmpty()) {
+						List<Meal> fromCache = restoreFromFile();
 						if (fromCache != null) {
 							setCampusMenu(fromCache);
 						}
 					} else {
-						setCampusMenu(campusMenu);
+						setCampusMenu(campusMenuList);
 						Date currentDate = new Date();
 						setValidityDate(currentDate);
 						writeToFile(currentDate);
@@ -173,9 +155,9 @@ public class FoodMenu {
 		}
 	}
 
-	public HashMap<Meal, Rating> restoreFromFile() {
+	public List<Meal> restoreFromFile() {
 		String filename = "MenusCache";
-		HashMap<Meal, Rating> menu = null;
+		List<Meal> menu = null;
 		File toGet = new File(ctx_.getCacheDir(), filename);
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
@@ -185,7 +167,7 @@ public class FoodMenu {
 			in = new ObjectInputStream(fis);
 			date = (Date) in.readObject();
 			setValidityDate(date);
-			menu = (HashMap<Meal, Rating>) in.readObject();
+			menu = (List<Meal>) in.readObject();
 
 			in.close();
 		} catch (IOException ex) {

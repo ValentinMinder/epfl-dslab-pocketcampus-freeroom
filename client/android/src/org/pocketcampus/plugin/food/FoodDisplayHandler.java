@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -14,7 +16,6 @@ import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Sandwich;
-import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -55,12 +56,21 @@ public class FoodDisplayHandler {
 
 		updateView();
 	}
-	
+
+	/**
+	 * Checks whether a valid menu is available.
+	 * 
+	 * @return
+	 */
 	public boolean valid() {
 		return !campusMenu_.isEmpty();
 	}
-	
-	public Date getDateLastUpdatedMenus(){
+
+	/**
+	 * 
+	 * @return the date the last menus were imported
+	 */
+	public Date getDateLastUpdatedMenus() {
 		return campusMenu_.getValidityDate();
 	}
 
@@ -108,8 +118,8 @@ public class FoodDisplayHandler {
 			break;
 		}
 	}
-	
-	public void refreshView(){
+
+	public void refreshView() {
 		switch (currentDisplayType_) {
 		case Restaurants:
 		case Ratings:
@@ -124,10 +134,6 @@ public class FoodDisplayHandler {
 
 	public FoodListAdapter getListAdapter() {
 		return currentListAdapter_;
-	}
-
-	public String getDayLabel() {
-		return null;
 	}
 
 	/**
@@ -160,7 +166,10 @@ public class FoodDisplayHandler {
 		 */
 		if (!campusMenu_.isEmpty()) {
 			// Get the set of keys from the hash map to make sections.
-			Set<String> restaurantFullMenu = mealHashMap.keySet();
+			Set<String> restaurantFullMenuSet = mealHashMap.keySet();
+			
+			SortedSet<String> restaurantFullMenu = new TreeSet<String>(restaurantFullMenuSet);
+			
 			for (String restaurantName : restaurantFullMenu) {
 				// For each restaurant, make a list of its meals to add in its
 				// section
@@ -214,7 +223,8 @@ public class FoodDisplayHandler {
 				// Get the set of keys from the hash map to make sections.
 				Set<String> restaurantFullMenu = mealHashMap.keySet();
 				for (String restaurantName : restaurantFullMenu) {
-					// For each restaurant, make a list of its meals to add in its section
+					// For each restaurant, make a list of its meals to add in
+					// its section
 					menuListSection = new FoodListSection(mealHashMap
 							.get(restaurantName), ownerActivity_);
 					currentListAdapter_.addSection(restaurantName,
@@ -241,7 +251,7 @@ public class FoodDisplayHandler {
 		if (suggestedMenus != null) {
 			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
 			for (Meal m : suggestedMenus) {
-				menus.put(m, new Rating(StarRating.STAR_1_0, 0));
+				menus.put(m, new Rating());
 			}
 			this.suggestionsMenu_ = menus;
 		}

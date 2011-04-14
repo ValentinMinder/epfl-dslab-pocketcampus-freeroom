@@ -31,7 +31,7 @@ import android.widget.TextView;
 public class FoodListSection extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
 	private Vector<Meal> meal_;
-	private Activity menusActivity_;
+	private FoodPlugin menusActivity_;
 
 	/**
 	 * Constructor
@@ -41,7 +41,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 	 * @param resto
 	 *            restaurant full menu represented in the list section.
 	 */
-	public FoodListSection(Vector<Meal> resto, Activity menus) {
+	public FoodListSection(Vector<Meal> resto, FoodPlugin menus) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		mInflater_ = LayoutInflater.from(menus.getApplicationContext());
 		this.meal_ = resto;
