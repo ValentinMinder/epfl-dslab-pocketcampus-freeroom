@@ -8,6 +8,7 @@
 package org.pocketcampus.plugin.food.sandwiches;
 
 import org.pocketcampus.R;
+import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.app.Activity;
 import android.app.AlertDialog;

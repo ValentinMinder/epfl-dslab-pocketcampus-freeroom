@@ -9,11 +9,11 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
-import org.pocketcampus.plugin.food.sandwiches.Sandwich;
+import org.pocketcampus.plugin.food.sandwiches.SandwichList;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
-import org.pocketcampus.plugin.food.sandwiches.SandwichListStore;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Sandwich;
 import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.content.Context;
@@ -33,7 +33,7 @@ public class FoodDisplayHandler {
 	private MenuSorter sorter_;
 
 	private FoodMenu campusMenu_;
-	private SandwichListStore sandwichListStore_;
+	private SandwichList sandwichList_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
 	private Vector<Vector<Sandwich>> campusSandwich_;
 
@@ -254,8 +254,8 @@ public class FoodDisplayHandler {
 	 * 
 	 */
 	public void showSandwiches() {
-		sandwichListStore_ = new SandwichListStore();
-		campusSandwich_ = sandwichListStore_.getStoreList();
+		sandwichList_ = new SandwichList();
+		campusSandwich_ = sandwichList_.getStoreList();
 
 		if (campusSandwich_ != null) {
 			SandwichListSection sandwichListSection;
