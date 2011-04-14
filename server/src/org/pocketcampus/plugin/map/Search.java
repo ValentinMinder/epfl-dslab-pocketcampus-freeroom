@@ -16,10 +16,10 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pocketcampus.plugin.map.routing.GeometryF;
-import org.pocketcampus.plugin.map.routing.Roadmap;
-import org.pocketcampus.plugin.map.routing.Routing;
 import org.pocketcampus.plugin.map.search.jsonitems.BasicSearchResponse;
+import org.pocketcampus.plugin.map.search.jsonitems.GeometryF;
+import org.pocketcampus.plugin.map.search.jsonitems.Roadmap;
+import org.pocketcampus.plugin.map.search.jsonitems.Routing;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.Path;

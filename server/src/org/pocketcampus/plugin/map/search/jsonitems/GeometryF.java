@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.map.routing;
+package org.pocketcampus.plugin.map.search.jsonitems;
 
 /**
  * Class used to deserialize content from the routing server 
@@ -7,9 +7,7 @@ package org.pocketcampus.plugin.map.routing;
  * 
  * @author Jonas
  */
-public class Roadmap {
-	public int id;
+public class GeometryF {
 	public String type;
-	public GeometryR geometry;
-	public Properties properties;
+	public double coordinates[][][];
 }

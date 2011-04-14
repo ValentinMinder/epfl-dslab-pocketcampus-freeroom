@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.map.routing;
+package org.pocketcampus.plugin.map.search.jsonitems;
 
 /**
  * Class used to deserialize content from the routing server 
