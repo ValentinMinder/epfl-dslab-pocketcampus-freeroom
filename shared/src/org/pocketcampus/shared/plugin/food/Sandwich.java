@@ -11,20 +11,18 @@ public class Sandwich implements Serializable {
 	private String restaurant;
 	private String name;
 	private boolean available;
-	private Date date;
 	
-	public Sandwich(String restaurant, String name, boolean available, Date date) {
+	public Sandwich(){}
+	
+	public Sandwich(String restaurant, String name, boolean available) {
 		if (restaurant == null || restaurant.length() > 50)
 			throw new IllegalArgumentException("restaurant cannot be null / max length is 50 characters");
 		if (name == null || name.length() > 50)
 			throw new IllegalArgumentException("name cannot be null / max length is 50 characters");
-		if (date == null)
-			throw new IllegalArgumentException("date cannot be null");
 		
 		this.restaurant = restaurant;
 		this.name = name;
 		this.available = available;
-		this.date = date;
 	}
 
 	public String getRestaurant() {
@@ -39,10 +37,6 @@ public class Sandwich implements Serializable {
 		return available;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-	
 	public String toString(){
 		return "[" + restaurant + ", " + name + "]";
 	}
