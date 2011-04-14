@@ -16,6 +16,9 @@ public class BikeStation {
 		this.geoLng_ = geoLng;
 		this.name_ = name;
 	}
+	
+	//Necessary for the gson library
+	public BikeStation() {}
 
 
 	public int getEmpty_() {
