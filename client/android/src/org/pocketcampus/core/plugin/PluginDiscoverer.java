@@ -2,6 +2,7 @@ package org.pocketcampus.core.plugin;
 
 import java.util.Vector;
 
+import org.pocketcampus.plugin.bikes.BikesPlugin;
 import org.pocketcampus.plugin.camipro.CamiproPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
@@ -40,6 +41,7 @@ public class PluginDiscoverer {
 		plugins.add(new MapPlugin());
 		plugins.add(new CamiproPlugin());
 		plugins.add(new NewsPlugin());
+//		plugins.add(new BikesPlugin());
 		
 		////////////////////////////////
 		

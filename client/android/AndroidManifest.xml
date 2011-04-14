@@ -69,6 +69,7 @@
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".plugin.bikes.BikesPlugin"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
