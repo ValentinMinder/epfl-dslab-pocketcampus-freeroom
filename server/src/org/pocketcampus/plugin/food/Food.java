@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,10 +30,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 	private List<Meal> campusMeals_;
 	private HashMap<Meal, Double> realRatings_;
-	private Vector<Vector<Sandwich>> sandwichList_;
-	
-	private Date lastMenuImportDate_;
-	private Date lastSandwichImportDate_;
+	private Date lastImportDateM_;
+	private Date lastImportDateS_;
+	private List<Sandwich> sandwichList_;
 
 	/**
 	 * Parse the menus on startup.
@@ -42,13 +40,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 	public Food() {
 		campusMeals_ = new ArrayList<Meal>();
 		realRatings_ = new HashMap<Meal, Double>();
-		sandwichList_ = new Vector<Vector<Sandwich>>();
-		lastMenuImportDate_ = null;
-		importSandwiches();
-		System.out.println("Importing menus.");
+		sandwichList_ = new ArrayList<Sandwich>();
+		lastImportDateS_ = new Date();
+//		importSandwiches();
 		importMenus();
 	}
-
+	
 	/**
 	 * Get all menus of the day.
 	 * 
@@ -57,14 +54,35 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
-		if (!isValid(lastMenuImportDate_)) {
+		if (!isValid(lastImportDateM_)) {
 			importMenus();
 			System.out.println("Reimporting menus.");
 		} else {
-			System.out.println(lastMenuImportDate_);
 			System.out.println("Not reimporting menus.");
 		}
 		return campusMeals_;
+	}
+	
+	/**
+	 * Get all sandwiches of the day.
+	 * 
+	 * @param request
+	 * @return the sandwich list
+	 */
+	@PublicMethod
+	public List<Sandwich> getSandwiches(HttpServletRequest request) {
+		if (!isValid(lastImportDateS_)) {
+//			importSandwiches();
+			System.out.println("Reimporting sandwiches.");
+		} else {
+			System.out.println("Not reimporting sandwiches.");
+		}
+		
+		List<Sandwich> test = new ArrayList<Sandwich>();
+		test.add(new Sandwich("RestoTest", "Kangourou", true));
+		return test;
+//		return sandwichList_;
+		
 	}
 
 	/**
@@ -73,9 +91,6 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 * @return
 	 */
 	private boolean isValid(Date oldDate) {
-		if(oldDate == null){
-			return false;
-		}
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
@@ -186,202 +201,176 @@ public class Food implements IPlugin, IMapElementsProvider {
 				}
 			}
 		}
-		lastMenuImportDate_ = new Date();
+		lastImportDateM_ = new Date();
 	}
 
-	@PublicMethod
-	public Vector<Vector<Sandwich>> getSandwiches(HttpServletRequest request) {
-		if (!isValid(lastSandwichImportDate_)) {
-			importSandwiches();
-			System.out.println("Reimporting sandwiches.");
-		} else {
-			System.out.println("Not reimporting sandwiches.");
-		}
-		return sandwichList_;
-		
-	}
-
-	private void importSandwiches(){
-		Vector<Sandwich> CafeteriaINM = new Vector<Sandwich>();
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true,
-				new Date()));
-		CafeteriaINM
-		.add(new Sandwich("Cafeteria INM", "Thon", true, new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Jambon", true,
-				new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Fromage", true,
-				new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella",
-				true, new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Jambon Cru", true,
-				new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Salami", true,
-				new Date()));
-		CafeteriaINM.add(new Sandwich("Cafeteria INM", "Autres", true,
-				new Date()));
-
-		/* Cafeteria BM */
-		Vector<Sandwich> CafeteriaBM = defaultSandwichList("Cafeteria BM");
-
-		/* Cafeteria BC */
-		Vector<Sandwich> CafeteriaBC = defaultSandwichList("Cafeteria BM");
-
-		/* Cafeteria SV */
-		Vector<Sandwich> CafeteriaSV = defaultSandwichList("Cafeteria SV");
-
-		/* Cafeteria MX */
-		Vector<Sandwich> CafeteriaMX = defaultSandwichList("Cafeteria MX");
-
-		/* Cafeteria PH */
-		Vector<Sandwich> CafeteriaPH = defaultSandwichList("Cafeteria PH");
-
-		/* Cafeteria ELA */
-		Vector<Sandwich> CafeteriaELA = defaultSandwichList("Cafeteria ELA");
-
-		/* Le Giacomettia (Cafeteria SG) */
-		Vector<Sandwich> CafeteriaSG = new Vector<Sandwich>();
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Jambon", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Salami", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Jambon de dinde", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Gruyière", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Viande Séchée", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Jambon cru", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Roast-Beef", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Poulet Jijommaise",
-				true, new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Crevettes", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Saumon fumé", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Poulet au Curry", true,
-				new Date()));
-		CafeteriaSG.add(new Sandwich("Le Giacomettia", "Autres", true,
-				new Date()));
-
-		/* L'Esplanade */
-		Vector<Sandwich> esplanade = new Vector<Sandwich>();
-		esplanade.add(new Sandwich("L'Esplanade", "Thon", true, new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Poulet au Curry", true,
-				new Date()));
-		esplanade
-		.add(new Sandwich("L'Esplanade", "Aubergine", true, new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Roast-Beef", true,
-				new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Jambon Cru", true,
-				new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true,
-				new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Saumon Fumé", true,
-				new Date()));
-		esplanade.add(new Sandwich("L'Esplanade", "Autres", true, new Date()));
-
-		/* L'Arcadie */
-		Vector<Sandwich> arcadie = defaultSandwichList("L'Arcadie");
-
-		/* Atlantide */
-		Vector<Sandwich> atlantide = new Vector<Sandwich>();
-		atlantide.add(new Sandwich("L'Atlantide", "Sandwich long", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Sandwich intégral", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Sandwich provençal", true,
-				new Date()));
-		atlantide
-		.add(new Sandwich("L'Atlantide", "Parisette", true, new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Jambon", true, new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Salami", true, new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Dinde", true, new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Thon", true, new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Mozzarella", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Saumon Fumé", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Viande Séchée", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Jambon Cru", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Roast-Beef", true,
-				new Date()));
-		atlantide.add(new Sandwich("L'Atlantide", "Autres", true, new Date()));
-
-		/* Satellite */
-		Vector<Sandwich> satellite = new Vector<Sandwich>();
-		satellite.add(new Sandwich("Satellite", "Thon", true, new Date()));
-		satellite.add(new Sandwich("Satellite", "Jambon fromage", true,
-				new Date()));
-		satellite
-		.add(new Sandwich("Satellite", "Roast-Beef", true, new Date()));
-		satellite.add(new Sandwich("Satellite", "Poulet au Curry", true,
-				new Date()));
-		satellite
-		.add(new Sandwich("Satellite", "Jambon Cru", true, new Date()));
-		satellite.add(new Sandwich("Satellite", "Tomate mozza", true,
-				new Date()));
-		satellite.add(new Sandwich("Satellite", "Salami", true, new Date()));
-		satellite.add(new Sandwich("Satellite", "Parmesan", true, new Date()));
-		satellite.add(new Sandwich("Satellite", "Aubergine grillé", true,
-				new Date()));
-		satellite.add(new Sandwich("Satellite", "Viande séchée", true,
-				new Date()));
-		satellite.add(new Sandwich("Satellite", "Autres", true, new Date()));
-
-		/* Negoce */
-		Vector<Sandwich> Negoce = new Vector<Sandwich>();
-		Negoce.add(new Sandwich("Negoce", "Dinde", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Thon", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Gratine Jambon", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Mozza Olives", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Poulet au Curry", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Jambon fromage", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Jambon", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Salami", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "RoseBeef", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Mozzarella", true, new Date()));
-		Negoce.add(new Sandwich("Negoce", "Autres", true, new Date()));
-
-		sandwichList_.add(CafeteriaINM);
-		sandwichList_.add(CafeteriaBM);
-		sandwichList_.add(CafeteriaBC);
-		sandwichList_.add(CafeteriaSV);
-		sandwichList_.add(CafeteriaMX);
-		sandwichList_.add(CafeteriaPH);
-		sandwichList_.add(CafeteriaELA);
-		sandwichList_.add(CafeteriaSG);
-		sandwichList_.add(esplanade);
-		sandwichList_.add(arcadie);
-		sandwichList_.add(atlantide);
-		sandwichList_.add(satellite);
-		sandwichList_.add(Negoce);
-
-		lastSandwichImportDate_ = new Date();
-	}
-
-	private Vector<Sandwich> defaultSandwichList(String name) {
-
-		Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
-
-		defaultSandwichList.add(new Sandwich(name, "Thon", true, new Date()));
-		defaultSandwichList.add(new Sandwich(name, "Jambon", true, new Date()));
-		defaultSandwichList
-		.add(new Sandwich(name, "Fromage", true, new Date()));
-		defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true,
-				new Date()));
-		defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true,
-				new Date()));
-		defaultSandwichList.add(new Sandwich(name, "Salami", true, new Date()));
-		defaultSandwichList.add(new Sandwich(name, "Autres", true, new Date()));
-
-		return defaultSandwichList;
-	}
+	/**
+	 * Creates the sandwich list
+	 */
+//	private void importSandwiches(){
+//		
+//		/*Cafeteria INM*/
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true,
+//				new Date()));
+//		sandwichList_
+//		.add(new Sandwich("Cafeteria INM", "Thon", true, new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella",
+//				true, new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon Cru", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Salami", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Cafeteria INM", "Autres", true,
+//				new Date()));
+//
+//		/* Cafeteria BM */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+//
+//		/* Cafeteria BC */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+//
+//		/* Cafeteria SV */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria SV"));
+//
+//		/* Cafeteria MX */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria MX"));
+//
+//		/* Cafeteria PH */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria PH"));
+//
+//		/* Cafeteria ELA */
+//		sandwichList_.addAll(defaultSandwichList("Cafeteria ELA"));
+//
+//		/* Le Giacomettia (Cafeteria SG) */
+//		
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon de dinde", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Roast-Beef", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Poulet Jijommaise",
+//				true, new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Poulet au Curry", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true,
+//				new Date()));
+//
+//		/* L'Esplanade */
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Thon", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Poulet au Curry", true,
+//				new Date()));
+//		sandwichList_
+//		.add(new Sandwich("L'Esplanade", "Aubergine", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Roast-Beef", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Jambon Cru", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Saumon Fumé", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Esplanade", "Autres", true, new Date()));
+//
+//		/* L'Arcadie */
+//		sandwichList_.addAll(defaultSandwichList("L'Arcadie"));
+//
+//		/* Atlantide */
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich intégral", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal", true,
+//				new Date()));
+//		sandwichList_
+//		.add(new Sandwich("L'Atlantide", "Parisette", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Jambon", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Salami", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Dinde", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Thon", true, new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Mozzarella", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Saumon Fumé", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Viande Séchée", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Jambon Cru", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Roast-Beef", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("L'Atlantide", "Autres", true, new Date()));
+//
+//		/* Satellite */
+//		sandwichList_.add(new Sandwich("Satellite", "Thon", true, new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Jambon fromage", true,
+//				new Date()));
+//		sandwichList_
+//		.add(new Sandwich("Satellite", "Roast-Beef", true, new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Poulet au Curry", true,
+//				new Date()));
+//		sandwichList_
+//		.add(new Sandwich("Satellite", "Jambon Cru", true, new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Tomate mozza", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Salami", true, new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Parmesan", true, new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Aubergine grillé", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Viande séchée", true,
+//				new Date()));
+//		sandwichList_.add(new Sandwich("Satellite", "Autres", true, new Date()));
+//
+//		/* Negoce */
+//		sandwichList_.add(new Sandwich("Negoce", "Dinde", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Thon", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Gratine Jambon", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Mozza Olives", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Poulet au Curry", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Jambon fromage", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Jambon", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Salami", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "RoseBeef", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Mozzarella", true, new Date()));
+//		sandwichList_.add(new Sandwich("Negoce", "Autres", true, new Date()));
+//
+//		lastImportDateS_ = new Date();
+//	}
+//
+//	private Vector<Sandwich> defaultSandwichList(String name) {
+//
+//		Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
+//
+//		defaultSandwichList.add(new Sandwich(name, "Thon", true, new Date()));
+//		defaultSandwichList.add(new Sandwich(name, "Jambon", true, new Date()));
+//		defaultSandwichList
+//		.add(new Sandwich(name, "Fromage", true, new Date()));
+//		defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true,
+//				new Date()));
+//		defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true,
+//				new Date()));
+//		defaultSandwichList.add(new Sandwich(name, "Salami", true, new Date()));
+//		defaultSandwichList.add(new Sandwich(name, "Autres", true, new Date()));
+//
+//		return defaultSandwichList;
+//	}
 
 	@Override
 	public List<MapElementBean> getLayerItems() {
