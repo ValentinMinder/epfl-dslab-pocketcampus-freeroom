@@ -1,6 +1,12 @@
 package org.pocketcampus.plugin.map;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +19,7 @@ import java.util.List;
 import org.pocketcampus.plugin.map.routing.GeometryF;
 import org.pocketcampus.plugin.map.routing.Roadmap;
 import org.pocketcampus.plugin.map.routing.Routing;
+import org.pocketcampus.plugin.map.search.jsonitems.BasicSearchResponse;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.Path;
@@ -39,14 +46,16 @@ public class Search {
 	 * @return -1 if not POI found
 	 */
 	public static int getClosestPOI(Position person) {
-		int loc_id = -1;
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			System.err.println("Server error: unable to load jdbc Drivers");
 			e.printStackTrace();
-			return loc_id;
+			return -1;
 		}
+		
+		String titleClosetPOI = "";
 
 		Connection dbConnection = null;
 		try {
@@ -55,7 +64,7 @@ public class Search {
 			ResultSet rs = statement.executeQuery("select *, 3956*2*asin(sqrt(power(sin((" + person.getLatitude() + "-abs(dest.centerX))*pi()/180/2),2)+cos(" + person.getLatitude() + "*pi()/180)*cos(abs(dest.centerX)*pi()/180)*power(sin((" + person.getLongitude() + "-dest.centerY)*pi()/180/2),2))) as distance from map_pois dest order by distance asc limit 1");
 
 			if(rs.next()) {
-				loc_id = rs.getInt("loc_id");
+				titleClosetPOI = rs.getString("title");
 			}
 			
 			statement.close();
@@ -64,7 +73,39 @@ public class Search {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
 		}
-		return loc_id;
+		return getVertexId(titleClosetPOI);
+	}
+	
+	/**
+	 * Get the vertex_id of a given element. We need to fetch it every time because
+	 * it changes often (too bad...)
+	 * @param title the title of the element we want (= fied 'text')
+	 * @return the vertex_id of the element
+	 */
+	private static int getVertexId(String title) {
+		URL searchUrl = null;
+		try {
+			searchUrl = new URL("http://plan.epfl.ch/search?keyword=" + URLEncoder.encode(title, "UTF-8"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return -1;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		
+		Gson gson = new Gson();
+		int vertexId = -1;
+		try {
+			InputStreamReader reader = new InputStreamReader(searchUrl.openStream());
+			BasicSearchResponse response = gson.fromJson(reader, BasicSearchResponse.class);
+			String vid = response.features[0].properties.vertex_id;
+			if(vid != null && !vid.equals("null"))
+				vertexId = Integer.parseInt(response.features[0].properties.vertex_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vertexId;
 	}
 
 	/**
