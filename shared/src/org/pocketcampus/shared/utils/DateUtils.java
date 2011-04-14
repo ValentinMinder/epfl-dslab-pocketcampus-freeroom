@@ -16,9 +16,9 @@ public class DateUtils {
 	 * @return
 	 */
 	public static String formatDateDelta(Date startDate, Date endDate, String simultanateDates) {
-		long delta = (endDate.getTime() - startDate.getTime()) / 1000;
+		int delta = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
 		
-		if(delta <= 0) {
+		if(delta <= NB_SECONDS_IN_MINUTE) {
 			return simultanateDates;
 		}
 		
