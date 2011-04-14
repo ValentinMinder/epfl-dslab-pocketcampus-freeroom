@@ -172,6 +172,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		});
 
 		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
 		alert.show();
 	}
 
@@ -190,6 +191,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		});
 
 		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
 		alert.show();
 	}
 

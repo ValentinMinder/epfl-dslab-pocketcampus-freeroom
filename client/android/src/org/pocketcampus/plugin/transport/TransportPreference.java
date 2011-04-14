@@ -148,6 +148,7 @@ public class TransportPreference extends PluginPreference {
 		});
 
 		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
 		alert.show();
 	}
 }

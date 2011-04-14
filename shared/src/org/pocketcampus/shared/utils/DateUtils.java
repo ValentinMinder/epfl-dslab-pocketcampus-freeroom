@@ -22,7 +22,7 @@ public class DateUtils {
 			return simultanateDates;
 		}
 		
-		int nbDays = 0; 
+		int nbDays = 0;
 		int nbHours = 0;
 		int nbMinutes = 0;
 		
