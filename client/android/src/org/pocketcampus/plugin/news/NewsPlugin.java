@@ -98,7 +98,6 @@ public class NewsPlugin extends PluginBase implements INewsListener {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if(adapter_ != null) {
 					adapter_.setClickedItem(parent, view, position, id);
-					l.smoothScrollToPosition(position);
 
 					Tracker.getInstance().trackPageView("news/previewItem");
 				}
