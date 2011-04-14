@@ -98,7 +98,7 @@ public class RssParser extends DefaultHandler
        
         else if (localName.equalsIgnoreCase("title") || qName.equalsIgnoreCase("title"))
         {
-            if (this.item != null) this.item.title = this.text.toString().trim();
+            if (this.item != null) this.item.title = removeBadStuff(this.text.toString().trim());
             else if (this.imgStatus) this.rssFeed.imageTitle = this.text.toString().trim();
             else this.rssFeed.title = this.text.toString().trim();
         }       
@@ -143,6 +143,9 @@ public class RssParser extends DefaultHandler
     }
     
     public String removeBadStuff(String s){
+    	s = s.replace("’", "'");
+    	s = s.replace("l?", "l'");
+    	s = s.replace("Ã©", "é");
     	s = s.replace("<p>", "");
     	s = s.replace("<em>", "");
     	s = s.replace("</em>", "");

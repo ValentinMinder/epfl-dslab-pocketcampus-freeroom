@@ -31,9 +31,10 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 	private List<Meal> campusMeals_;
 	private HashMap<Meal, Double> realRatings_;
-	private Date lastImportDateM_;
-	private Date lastImportDateS_;
 	private Vector<Vector<Sandwich>> sandwichList_;
+	
+	private Date lastMenuImportDate_;
+	private Date lastSandwichImportDate_;
 
 	/**
 	 * Parse the menus on startup.
@@ -42,7 +43,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 		campusMeals_ = new ArrayList<Meal>();
 		realRatings_ = new HashMap<Meal, Double>();
 		sandwichList_ = new Vector<Vector<Sandwich>>();
+		lastMenuImportDate_ = null;
 		importSandwiches();
+		System.out.println("Importing menus.");
 		importMenus();
 	}
 
@@ -54,10 +57,11 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
-		if (!isValid(lastImportDateM_)) {
+		if (!isValid(lastMenuImportDate_)) {
 			importMenus();
 			System.out.println("Reimporting menus.");
 		} else {
+			System.out.println(lastMenuImportDate_);
 			System.out.println("Not reimporting menus.");
 		}
 		return campusMeals_;
@@ -69,6 +73,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 * @return
 	 */
 	private boolean isValid(Date oldDate) {
+		if(oldDate == null){
+			return false;
+		}
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
@@ -179,12 +186,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 				}
 			}
 		}
-		lastImportDateM_ = new Date();
+		lastMenuImportDate_ = new Date();
 	}
 
 	@PublicMethod
 	public Vector<Vector<Sandwich>> getSandwiches(HttpServletRequest request) {
-		if (!isValid(lastImportDateS_)) {
+		if (!isValid(lastSandwichImportDate_)) {
 			importSandwiches();
 			System.out.println("Reimporting sandwiches.");
 		} else {
@@ -355,7 +362,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		sandwichList_.add(satellite);
 		sandwichList_.add(Negoce);
 
-		lastImportDateS_ = new Date();
+		lastSandwichImportDate_ = new Date();
 	}
 
 	private Vector<Sandwich> defaultSandwichList(String name) {
