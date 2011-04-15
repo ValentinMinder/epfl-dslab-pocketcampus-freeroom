@@ -6,10 +6,17 @@
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
 
-	<ListView android:layout_below="@+id/actionbar" android:id="@+id/transport_mainlist">
+	<ListView 
+		android:layout_below="@+id/actionbar" 
+		android:id="@+id/transport_mainlist" 
+		android:layout_height="fill_parent"></ListView>
 		
-	
-	</ListView>
+	<TextView
+		android:text="No destination set."
+		android:id="@+id/msg_empty"
+		android:gravity="center"
+		android:layout_height="fill_parent"
+		android:textSize="15dip"></TextView>
 
 </RelativeLayout>
 

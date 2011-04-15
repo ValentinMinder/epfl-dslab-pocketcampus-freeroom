@@ -53,12 +53,12 @@ public class TransportPreference extends PluginPreference {
 		root.addPreference(pluginPrefCat);
 
 		// Reference destination
-		Destination referenceDestination = new Destination("Ecublens VD, EPFL");
-		Preference refDestPref = new Preference(this);
-		refDestPref.setTitle(referenceDestination.getDestination());
-		refDestPref.setSummary("Reference destination.");
-		refDestPref.setEnabled(false);
-		pluginPrefCat.addPreference(refDestPref);
+//		Destination referenceDestination = new Destination("Ecublens VD, EPFL");
+//		Preference refDestPref = new Preference(this);
+//		refDestPref.setTitle(referenceDestination.getDestination());
+//		refDestPref.setSummary("Reference destination.");
+//		refDestPref.setEnabled(false);
+//		pluginPrefCat.addPreference(refDestPref);
 
 		// Common destinations
 		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs_.getAll();
@@ -82,14 +82,17 @@ public class TransportPreference extends PluginPreference {
 		}
 
 		// Add new
-		EditTextPreference editTextPref = new EditTextPreference(this);
-        editTextPref.setDialogTitle("New destination");
+		AutoCompleteEditTextPreference editTextPref = new AutoCompleteEditTextPreference(this, TransportPlugin.getTransportRequestHandler());
         editTextPref.setTitle("Add a destination");
         
         OnPreferenceChangeListener onPreferenceChangeListener = new OnPreferenceChangeListener() {
 			
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				if(newValue==null || ((String)newValue).equals("")) {
+					return false;
+				}
+				
 				commonDestPrefsEditor_.putString((String)newValue, (String)newValue);
 				commonDestPrefsEditor_.commit();
 				forceRefresh();
@@ -105,43 +108,43 @@ public class TransportPreference extends PluginPreference {
 		// OTHER //
 		///////////
 
-		PreferenceCategory otherCat = new PreferenceCategory(this);
-		otherCat.setTitle("Other options");
-		root.addPreference(otherCat);
-
-		// frontpage
-		Preference frontpagePref = new CheckBoxPreference(this);
-		frontpagePref.setTitle("Frontpage");
-		frontpagePref.setSummary("Destinations shown on the frontpage.");
-
-		OnPreferenceClickListener onFrontpageOptionsClickListener = new OnPreferenceClickListener() {
-
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				// TODO
-				return false;
-			}
-		};
-
-		frontpagePref.setOnPreferenceClickListener(onFrontpageOptionsClickListener);
-		otherCat.addPreference(frontpagePref);
-
-		// time format
-		Preference timeFormatPref = new CheckBoxPreference(this);
-		timeFormatPref.setTitle("Time format");
-		timeFormatPref.setSummary("Select how the departures times are diplayed.");
-
-		OnPreferenceClickListener onTimeFormatOptionsClickListener = new OnPreferenceClickListener() {
-
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				// TODO
-				return false;
-			}
-		};
-
-		timeFormatPref.setOnPreferenceClickListener(onTimeFormatOptionsClickListener);
-		otherCat.addPreference(timeFormatPref);
+//		PreferenceCategory otherCat = new PreferenceCategory(this);
+//		otherCat.setTitle("Other options");
+//		root.addPreference(otherCat);
+//
+//		// frontpage
+//		Preference frontpagePref = new CheckBoxPreference(this);
+//		frontpagePref.setTitle("Frontpage");
+//		frontpagePref.setSummary("Destinations shown on the frontpage.");
+//
+//		OnPreferenceClickListener onFrontpageOptionsClickListener = new OnPreferenceClickListener() {
+//
+//			@Override
+//			public boolean onPreferenceClick(Preference preference) {
+//				// TODO
+//				return false;
+//			}
+//		};
+//
+//		frontpagePref.setOnPreferenceClickListener(onFrontpageOptionsClickListener);
+//		otherCat.addPreference(frontpagePref);
+//
+//		// time format
+//		Preference timeFormatPref = new CheckBoxPreference(this);
+//		timeFormatPref.setTitle("Time format");
+//		timeFormatPref.setSummary("Select how the departures times are diplayed.");
+//
+//		OnPreferenceClickListener onTimeFormatOptionsClickListener = new OnPreferenceClickListener() {
+//
+//			@Override
+//			public boolean onPreferenceClick(Preference preference) {
+//				// TODO
+//				return false;
+//			}
+//		};
+//
+//		timeFormatPref.setOnPreferenceClickListener(onTimeFormatOptionsClickListener);
+//		otherCat.addPreference(timeFormatPref);
 
 		return root;
 	}
@@ -150,11 +153,11 @@ public class TransportPreference extends PluginPreference {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(destination.getDestination());
 
-		builder.setPositiveButton("Move up", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {				
-				dialog.dismiss();
-			}
-		});
+//		builder.setPositiveButton("Move up", new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int id) {				
+//				dialog.dismiss();
+//			}
+//		});
 
 		builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {

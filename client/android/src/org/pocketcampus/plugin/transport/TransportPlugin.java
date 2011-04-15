@@ -1,27 +1,28 @@
 package org.pocketcampus.plugin.transport;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
-import org.pocketcampus.shared.plugin.transport.Destination;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class TransportPlugin extends PluginBase {
 	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
+	private static RequestHandler requestHandler_;
 	private ActionBar actionBar_;
 	private ListView mainList_;
 
@@ -29,7 +30,11 @@ public class TransportPlugin extends PluginBase {
 
 	private SharedPreferences commonDestPrefs_;
 	private Map<String, String> commonDestinations_;
-
+	
+	public TransportPlugin() {
+		requestHandler_ = getRequestHandler();
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +62,18 @@ public class TransportPlugin extends PluginBase {
 		
 		if(commonDestinationsInPrefs.equals(commonDestinations_)) {
 			return;
+		}
+		
+		ListView listView = (ListView) findViewById(R.id.transport_mainlist);
+		TextView msgEmpty = (TextView) findViewById(R.id.msg_empty);
+		
+		if(commonDestinationsInPrefs.size() == 0) {
+			listView.setVisibility(View.GONE);
+			msgEmpty.setVisibility(View.VISIBLE);
+			
+		} else {
+			listView.setVisibility(View.VISIBLE);
+			msgEmpty.setVisibility(View.GONE);
 		}
 		
 		commonDestinations_ = commonDestinationsInPrefs;
@@ -128,5 +145,9 @@ public class TransportPlugin extends PluginBase {
 	@Override
 	public PluginPreference getPluginPreference() {
 		return new TransportPreference();
+	}
+
+	public static RequestHandler getTransportRequestHandler() {
+		return requestHandler_;
 	}
 }

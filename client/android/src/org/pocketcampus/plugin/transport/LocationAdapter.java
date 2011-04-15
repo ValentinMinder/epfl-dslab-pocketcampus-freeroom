@@ -41,7 +41,6 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 						Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
 						
 						locations_ = gson.fromJson(result, AutocompleteType);
-						System.out.println(locations_);
 						
 						notifyDataSetChanged();
 					}
@@ -66,6 +65,7 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 			return 0;
 		}
 		
-		return locations_.size();
+		//return locations_.size();
+		return Math.min(1, locations_.size());
 	}
 }

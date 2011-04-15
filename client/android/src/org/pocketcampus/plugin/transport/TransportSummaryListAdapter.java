@@ -36,15 +36,12 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 	 * Loads all the summaries.
 	 */
 	public void loadSummaryList() {
-		if(sections_==null || sections_.size()==0) {
-			notifyDataSetChanged();
-			return;
-		}
-		
 		for(Section section : sections_) {
 			TransportSummaryAdapter adapter = (TransportSummaryAdapter)section.adapter;
 			loadSummary(adapter);
 		}
+		
+		notifyDataSetChanged();
 	}
 	
 	private void loadSummary(final TransportSummaryAdapter adapter) {

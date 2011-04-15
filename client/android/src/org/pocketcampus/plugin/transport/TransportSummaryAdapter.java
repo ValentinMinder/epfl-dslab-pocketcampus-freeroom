@@ -43,7 +43,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	 * @param summary
 	 */
 	public void setSummary(QueryConnectionsResult summary) {
-		if(summary == null) {
+		if(summary==null || summary.connections==null) {
 			setSummaryError();
 			return;
 		}
