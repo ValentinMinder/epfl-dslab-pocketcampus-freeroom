@@ -129,7 +129,7 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 
 
 				// put it in
-				relLayout.setPadding(0, 5, 0, 10);
+				relLayout.setPadding(2, 5, 2, 10);
 				menuLayout.addView(relLayout);
 			}
 		}
