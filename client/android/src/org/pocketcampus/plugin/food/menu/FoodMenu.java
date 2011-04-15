@@ -17,14 +17,12 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
-import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.content.Context;
 import android.util.Log;

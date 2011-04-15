@@ -3,26 +3,15 @@ package org.pocketcampus.plugin.food;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
-import org.pocketcampus.shared.plugin.food.Rating;
-import org.pocketcampus.shared.plugin.food.Restaurant;
 
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 /**
  * This class is used to make each section of a list of menus.
@@ -59,7 +48,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		 * A ViewHolder keeps references to children views to avoid unnecessary
 		 * calls to findViewById() on each row.
 		 */
-		ViewHolder holder;
+		MenuView holder;
 		// When convertView is not null, we can reuse it directly, there is
 		// no need to re-inflate it. We only inflate a new View when the
 		// convertView supplied by ListView is null.
@@ -68,134 +57,27 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 			// Creates a ViewHolder and store references to the two children
 			// views we want to bind data to.
-			holder = new ViewHolder();
-			holder.menuInfoLine = (LinearLayout) convertView
-			.findViewById(R.id.food_menuentry_list);
-			holder.titleLine = (TextView) convertView
-			.findViewById(R.id.food_menuentry_title);
-			holder.menuLine = (TextView) convertView
-			.findViewById(R.id.food_menuentry_content);
-			holder.ratingLine = (RatingBar) convertView
-			.findViewById(R.id.food_menuentry_ratingIndicator);
-			holder.votesLine = (TextView) convertView
-			.findViewById(R.id.food_menuentry_numberOfVotes);
-
-			convertView.setTag(holder);
+			holder = new MenuView(menusActivity_, meal_.get(position));
 		} else {
-			// Get the ViewHolder back to get fast access to the TextView
-			// and the ImageView.
-			holder = (ViewHolder) convertView.getTag();
+			holder = (MenuView) convertView;
 		}
-
-		holder.titleLine.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				menuDialog(position);
-				Log.d("Click menu", "Click on the menuline");
-			}
-		});
 		
-		holder.menuLine.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				menuDialog(position);
-				Log.d("Click menu", "Click on the menuline");
-			}
-		});
-
-		holder.menuInfoLine.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// menuDialog(position);
-			}
-		});
-
-		/* when you click with the dpad center on the menu description */
-		/*
-		 * Not working yet
-		 */
-		convertView.setOnClickListener(new OnItemClickListener(position));
-
-		// When you click on the rating stars, you can rate the meal.
-		holder.ratingLine.setOnTouchListener(new OnTouchListener() {
-
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					
-					// get the reminder for the ratings
-					RatingsReminder ratingChecker = new RatingsReminder(menusActivity_);
-					// Check if has already voted today
-//					if (ratingChecker.hasAlreadyVotedToday()) {
-//						// Means that user had already voted
-//						ratingChecker.printAlreadyVotedMessage();
-//					} else {
-						// Means that user hasn't voted today
-						ratingDialog(position);
-//					}
-				}
-				return true;
-			}
-		});
-
-		// Bind the data efficiently with the holder.
-		Meal currentMeal = meal_.get(position);
-
-		holder.menuLine.setText(currentMeal.getDescription_());
-		holder.titleLine.setText(currentMeal.getName_());
-		
-		setRating(holder, currentMeal.getRating());
-		
-		return convertView;
+		return holder;
 	}
 
-	private class OnItemClickListener implements OnClickListener {
-		private int mPosition;
-
-		OnItemClickListener(int position) {
-			mPosition = position;
-		}
-
-		@Override
-		public void onClick(View arg0) {
-			// menuDialog(mPosition);
-		}
-	}
+//	private class OnItemClickListener implements OnClickListener {
+//		private int mPosition;
+//
+//		OnItemClickListener(int position) {
+//			mPosition = position;
+//		}
+//
+//		@Override
+//		public void onClick(View arg0) {
+//			// menuDialog(mPosition);
+//		}
+//	}
 	
-	private void setRating(ViewHolder holder, Rating currentRating){
-		holder.ratingLine.setRating((float)Restaurant.starRatingToDouble(currentRating.getValue()));
-		
-		int numbVotes = currentRating.getNumberOfVotes();
-		if (numbVotes != 1) {
-			holder.votesLine.setText(numbVotes
-					+ " "
-					+ menusActivity_.getResources().getString(
-							R.string.food_menulist_votesPlural));
-		} else {
-			holder.votesLine.setText(numbVotes
-					+ " "
-					+ menusActivity_.getResources().getString(
-							R.string.food_menulist_votesSingular));
-		}
-	}
-
-	private void ratingDialog(int pos) {
-		RatingsDialog r = new RatingsDialog(menusActivity_,
-				meal_.get(pos));
-		r.show();
-	}
-
-	private void menuDialog(int pos){
-		MenuDialog r = new MenuDialog(menusActivity_, meal_.get(pos),
-				menusActivity_, true);
-		r.setOnDismissListener(new OnDismissMenuDialogListener());
-		r.show();
-	}
-
-	static class ViewHolder {
-		TextView titleLine;
-		TextView menuLine;
-		RatingBar ratingLine;
-		TextView votesLine;
-		LinearLayout menuInfoLine;
-	}
-
 	public Filter getFilter() {
 		return null;
 	}
@@ -212,14 +94,5 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 	// Returns the meal to be represented at that position.
 	public Object getItem(int position) {
 		return meal_.get(position);
-	}
-
-	private class OnDismissMenuDialogListener implements
-	MenuDialog.OnDismissListener {
-
-		@Override
-		public void onDismiss(DialogInterface dialogInt) {
-			notifyDataSetChanged();
-		}
 	}
 }

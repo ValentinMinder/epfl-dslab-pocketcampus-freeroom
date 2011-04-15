@@ -17,7 +17,6 @@ import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
-import org.pocketcampus.shared.plugin.food.StarRating;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -34,19 +33,17 @@ import android.widget.TextView;
 
 public class MenuDialog extends Dialog {
 	private final Meal displayedMeal_;
-//	private final Activity menusActivity;
 	private RatingBar ratingBar_;
 	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
 	private Context context_;
 	private boolean photoButtonsEnabled_;
 
-	public MenuDialog(final Context context, final Meal meal,
+	public MenuDialog(final Meal meal,
 			final Activity menus, boolean photoButtonsEnabled) {
-		super(context);
+		super(menus);
 		this.displayedMeal_ = meal;
-		this.context_ = context;
-//		menusActivity = menus;
+		this.context_ = menus.getApplicationContext();
 
 		/**
 		 * No title for dialog Else there is indeed space for the title.

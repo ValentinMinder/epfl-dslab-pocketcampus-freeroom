@@ -152,14 +152,39 @@ public class FoodDisplayHandler {
 		return mealsList;
 	}
 
-	/**
-	 * Get the adapter to show the menus sorted by restaurants.
-	 */
+//	/**
+//	 * Get the adapter to show the menus sorted by restaurants.
+//	 */
+//	 public void showMenusByRestaurants() {
+//	 // Sort meals by restaurant.
+//	 HashMap<String, Vector<Meal>> mealHashMap = sorter_
+//	 .sortByRestaurant(campusMenu_.getMeals());
+//	 FoodListSection menuListSection;
+//	
+//	 /**
+//	 * Iterate over the different restaurant menus
+//	 */
+//	 if (!campusMenu_.isEmpty()) {
+//	 // Get the set of keys from the hash map to make sections.
+//	 Set<String> restaurantFullMenuSet = mealHashMap.keySet();
+//				
+//	 SortedSet<String> restaurantFullMenu = new
+//	 TreeSet<String>(restaurantFullMenuSet);
+//				
+//	 for (String restaurantName : restaurantFullMenu) {
+//	 // For each restaurant, make a list of its meals to add in its
+//	 // section
+//	 menuListSection = new FoodListSection(mealHashMap
+//	 .get(restaurantName), ownerActivity_);
+//	 currentListAdapter_.addSection(restaurantName, menuListSection);
+//	 }
+//	 }
+//	 }
+
 	public void showMenusByRestaurants() {
-		// Sort meals by restaurant.
 		HashMap<String, Vector<Meal>> mealHashMap = sorter_
 				.sortByRestaurant(campusMenu_.getMeals());
-		FoodListSection menuListSection;
+		RestaurantListAdapter restaurantList = null;
 
 		/**
 		 * Iterate over the different restaurant menus
@@ -167,15 +192,16 @@ public class FoodDisplayHandler {
 		if (!campusMenu_.isEmpty()) {
 			// Get the set of keys from the hash map to make sections.
 			Set<String> restaurantFullMenuSet = mealHashMap.keySet();
-			
-			SortedSet<String> restaurantFullMenu = new TreeSet<String>(restaurantFullMenuSet);
-			
-			for (String restaurantName : restaurantFullMenu) {
-				// For each restaurant, make a list of its meals to add in its
-				// section
-				menuListSection = new FoodListSection(mealHashMap
-						.get(restaurantName), ownerActivity_);
-				currentListAdapter_.addSection(restaurantName, menuListSection);
+
+			SortedSet<String> restaurantFullMenu = new TreeSet<String>(
+					restaurantFullMenuSet);
+
+			Vector<String> restaurants = new Vector<String>(restaurantFullMenu);
+
+			if(currentListAdapter_.isEmpty()){
+				restaurantList = new RestaurantListAdapter(restaurants, mealHashMap,
+					ownerActivity_);
+				currentListAdapter_.addSection("Restaurants", restaurantList);
 			}
 		}
 	}

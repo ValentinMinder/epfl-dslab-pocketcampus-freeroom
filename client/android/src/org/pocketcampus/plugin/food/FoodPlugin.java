@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,8 @@ public class FoodPlugin extends PluginBase {
 	private TextView txt_empty_;
 	private TextView empty;
 	private TextView validityDate_;
-
+	private ProgressBar spinner_;
+	
 	private ArrayList<Meal> suggestionMenus_;
 	private boolean isSandwichDisplay_ = false;
 
@@ -47,8 +49,11 @@ public class FoodPlugin extends PluginBase {
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
-		empty.setText("Empty");
+
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
+
+		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
+		spinner_.setVisibility(View.VISIBLE);
 
 		//RequestHandler
 		foodRequestHandler_ = getRequestHandler();
@@ -103,6 +108,10 @@ public class FoodPlugin extends PluginBase {
 		displayView();
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
+	
+	public void notifyDataSetChanged(){
+		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
+	}
 
 	/**
 	 * Displays the current view, by restaurant or rating.
@@ -113,12 +122,16 @@ public class FoodPlugin extends PluginBase {
 			txt_empty_.setText("");
 		}
 
+		if(spinner_ != null && spinner_.isShown()){
+			spinner_.setVisibility(View.GONE);
+		}
+		
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
 			empty.setText("");
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
-				validityDate_.setText("Rien trouvé");
+				validityDate_.setText("");
 			} else {
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_.getDateLastUpdatedMenus();
@@ -217,8 +230,8 @@ public class FoodPlugin extends PluginBase {
 							.show();
 				}
 			} else {
-				Toast.makeText(this, "RESULT_PAS_OK !", Toast.LENGTH_LONG)
-						.show();
+//				Toast.makeText(this, "RESULT_PAS_OK !", Toast.LENGTH_LONG)
+//						.show();
 			}
 			break;
 		}
