@@ -66,18 +66,22 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		ViewHolder holder;
 
 		String restaurant = restaurants_.get(position);
-		if (convertView == null) {
-			// Creates a ViewHolder and store references to the two children
-			// views we want to bind data to.
-			holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
-					.get(restaurant), mExpanded_[position]);
-		} else {
-			holder = (ViewHolder) convertView;
-			holder.setTitle(restaurant);
-			holder.setMenus(restaurant);
-			
-			holder.setExpanded(mExpanded_[position]);
-		}
+//		if (convertView == null) {
+//			// Creates a ViewHolder and store references to the two children
+//			// views we want to bind data to.
+//			holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
+//					.get(restaurant), mExpanded_[position]);
+//		} else {
+//			holder = (ViewHolder) convertView;
+//			holder.setTitle(restaurant);
+//			holder.setMenus(restaurant);
+//			
+//			holder.setExpanded(mExpanded_[position]);
+//		}
+		
+		holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
+				.get(restaurant), mExpanded_[position]);
+
 
 		holder.mTitle.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

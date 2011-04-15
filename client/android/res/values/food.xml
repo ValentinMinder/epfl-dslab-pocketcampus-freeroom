@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
 	<!-- Food Plugin -->
 	<string name="food_display_title">Food Service</string>
 	<string name="food_empty">No item to display</string>
+	<string name="food_restaurants">Restaurants</string>
 
 	<!-- Date -->
 	<string name="food_monday">Monday</string>
@@ -12,10 +14,10 @@
 	<string name="food_thursday">Thursday</string>
 	<string name="food_friday">Friday</string>
 	<string name="food_today_menus">Today\'s menus</string>
-	<string name="food_rating_submitted">Rating submission successful.</string>
-	<string name="food_rating_notsubmitted">Rating submission unsuccessful.</string>
 	
 	<!-- Ratings -->
+	<string name="food_rating_submitted">Rating submission successful.</string>
+	<string name="food_rating_notsubmitted">Rating submission unsuccessful.</string>
 	<string name="food_menulist_votesPlural">votes</string>
 	<string name="food_menulist_votesSingular">vote</string>
 

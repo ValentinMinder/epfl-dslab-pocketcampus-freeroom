@@ -201,7 +201,7 @@ public class FoodDisplayHandler {
 			if(currentListAdapter_.isEmpty()){
 				restaurantList = new RestaurantListAdapter(restaurants, mealHashMap,
 					ownerActivity_);
-				currentListAdapter_.addSection("Restaurants", restaurantList);
+				currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), restaurantList);
 			}
 		}
 	}
