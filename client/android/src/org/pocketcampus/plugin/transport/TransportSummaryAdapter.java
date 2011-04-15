@@ -46,6 +46,9 @@ public class TransportSummaryAdapter extends BaseAdapter {
 			return;
 		}
 		
+		// XXX
+		//setSummaryError();
+		
 		summary_ = summary;
 		state_ = SummaryState.VALID;
 		notifyDataSetChanged();
@@ -90,7 +93,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		Connection connection = (Connection) getItem(position);
 		
 		TextView timeTextView = (TextView) view.findViewById(R.id.travel_summary_time);
-		TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
+		//TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
 		
 		// nb of changes
 		String changes = "";
@@ -108,7 +111,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		s2 = "At " + formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes + ".";
 		
 		timeTextView.setText(s1);
-		transpTextView.setText(s2);
+		//transpTextView.setText(s2);
 		
 		return view;
 	}

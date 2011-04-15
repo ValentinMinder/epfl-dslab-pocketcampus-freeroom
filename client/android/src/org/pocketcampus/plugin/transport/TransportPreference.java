@@ -119,6 +119,22 @@ public class TransportPreference extends PluginPreference {
 			}
 		};
 		
+		// time format
+		Preference timeFormatPref = new Preference(this);
+		timeFormatPref.setTitle("Time format");
+		timeFormatPref.setSummary("Select how the departures times are diplayed.");
+		
+		OnPreferenceClickListener onTimeFormatOptionsClickListener = new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				return false;
+			}
+		};
+		
+		timeFormatPref.setOnPreferenceClickListener(onTimeFormatOptionsClickListener);
+		otherCat.addPreference(timeFormatPref);
+		
 		frontpagePref.setOnPreferenceClickListener(onFrontpageOptionsClickListener);
 		otherCat.addPreference(frontpagePref);
 		
