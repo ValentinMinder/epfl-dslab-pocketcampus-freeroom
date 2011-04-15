@@ -36,7 +36,12 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 	 * Loads all the summaries.
 	 */
 	public void loadSummaryList() {
-		for(Section section : sections) {
+		if(sections_==null || sections_.size()==0) {
+			notifyDataSetChanged();
+			return;
+		}
+		
+		for(Section section : sections_) {
 			TransportSummaryAdapter adapter = (TransportSummaryAdapter)section.adapter;
 			loadSummary(adapter);
 		}
@@ -101,6 +106,14 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		
 		TextView timeTextView = (TextView) view.findViewById(R.id.list_header_title);
 		timeTextView.setText(caption);
+		
+		return view;
+	}
+
+	@Override
+	protected View getEmptyListView(View convertView, ViewGroup parent) {
+		View view = convertView;
+		view = inflater_.inflate(R.layout.transport_emptyentry, null);
 		
 		return view;
 	}

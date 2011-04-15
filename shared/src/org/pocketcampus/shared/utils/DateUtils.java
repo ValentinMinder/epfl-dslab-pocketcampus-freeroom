@@ -60,7 +60,8 @@ public class DateUtils {
 			formattedDateDelta += nbHours + " hour" + plural(nbHours);
 		}
 		
-		if(nbMinutes > 0) {
+		// skip the minutes if more than a day
+		if(nbMinutes > 0 && nbDays == 0) {
 			if(nbHours > 0) {
 				if(nbDays == 0) {
 					formattedDateDelta += " and ";

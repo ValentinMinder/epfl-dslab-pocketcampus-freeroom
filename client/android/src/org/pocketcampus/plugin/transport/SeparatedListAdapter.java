@@ -8,25 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class SeparatedListAdapter extends BaseAdapter {
+	protected List<Section> sections_ = new ArrayList<Section>();
+	private static int TYPE_SECTION_HEADER = 0;
+	
 	abstract protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent);
-
-	protected List<Section> sections=new ArrayList<Section>();
-	private static int TYPE_SECTION_HEADER=0;
-
+	
+	abstract protected View getEmptyListView(View convertView, ViewGroup parent);
+	
 	public SeparatedListAdapter() {
 		super();
 	}
 
 	public void addSection(Adapter adapter) {
-		sections.add(new Section(((TransportSummaryAdapter) adapter).getCaption(), adapter));
+		sections_.add(new Section(((TransportSummaryAdapter) adapter).getCaption(), adapter));
 	}
 	
 	public void addSection(String caption, Adapter adapter) {
-		sections.add(new Section(caption, adapter));
+		sections_.add(new Section(caption, adapter));
 	}
-
+	
+	public void clearSections() {
+		sections_.clear();
+	}
+	
 	public Object getItem(int position) {
-		for (Section section : this.sections) {
+		for (Section section : this.sections_) {
 			if (position==0) {
 				return(section);
 			}
@@ -44,19 +50,20 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 	}
 
 	public int getCount() {
-		int total=0;
+		int total = 0;
 
-		for (Section section : this.sections) {
-			total+=section.adapter.getCount()+1; // add one for header
+		for (Section section : sections_) {
+			total += section.adapter.getCount()+1; // add one for header
 		}
 
-		return(total);
+		total = Math.max(total, 1);
+		return total;
 	}
 
 	public int getViewTypeCount() {
 		int total=1;	// one for the header, plus those from sections
 
-		for (Section section : this.sections) {
+		for (Section section : this.sections_) {
 			total+=section.adapter.getViewTypeCount();
 		}
 
@@ -66,7 +73,7 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 	public int getItemViewType(int position) {
 		int typeOffset=TYPE_SECTION_HEADER+1;	// start counting from here
 
-		for (Section section : this.sections) {
+		for (Section section : this.sections_) {
 			if (position==0) {
 				return(TYPE_SECTION_HEADER);
 			}
@@ -93,29 +100,30 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView,
-			ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		if(sections_.size() == 0) {
+			return getEmptyListView(convertView, parent);
+		}
+		
 		int sectionIndex=0;
 
-		for (Section section : this.sections) {
+		for (Section section : this.sections_) {
 			if (position==0) {
-				return(getHeaderView(section.caption, sectionIndex,
-						convertView, parent));
+				return(getHeaderView(section.caption, sectionIndex, convertView, parent));
 			}
 
 			int size=section.adapter.getCount()+1;
 
 			if (position<size) {
-				return(section.adapter.getView(position-1,
-						convertView,
-						parent));
+				return(section.adapter.getView(position-1, convertView, parent));
 			}
 
 			position-=size;
 			sectionIndex++;
 		}
 
-		return(null);
+		return null;
 	}
 
 	@Override
