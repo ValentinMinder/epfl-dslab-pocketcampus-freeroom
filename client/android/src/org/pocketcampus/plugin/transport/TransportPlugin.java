@@ -33,14 +33,16 @@ public class TransportPlugin extends PluginBase {
 		setupActionBar(true);
 		
 		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
-		mainList_.setItemsCanFocus(false);
+		//mainList_.setItemsCanFocus(false);
 		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
 		mainList_.setAdapter(adapter_);
 		
 		// TODO load this from a list editable in the preferences
 		summaryList_ = new ArrayList<TransportSummaryAdapter>();
 		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Lausanne, Flon"));
+		summaryList_.add(new TransportSummaryAdapter(this, "Lausanne, Vigie", "Ecublens VD, EPFL"));
 		summaryList_.add(new TransportSummaryAdapter(this, "Ecublens VD, EPFL", "Renens VD"));
+		//summaryList_.add(new TransportSummaryAdapter(this, "Paris", "Berlin"));
 
 		for(TransportSummaryAdapter summary : summaryList_) {
 			adapter_.addSection(summary);

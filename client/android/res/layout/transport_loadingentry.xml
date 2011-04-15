@@ -11,10 +11,11 @@
 		android:layout_height="wrap_content"
 		android:padding="5dip"
 		android:layout_gravity="center_vertical"
-		android:src="@drawable/transport_summarylist_arrow"></ImageView>
+		android:src="@drawable/transport_summarylist_arrow"
+		android:visibility="visible"></ImageView>
 		
 	<TextView 
-		android:text="Loading"
+		android:text="Loading..."
 		android:id="@+id/travel_summary_time"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import org.pocketcampus.shared.utils.DateUtils;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private LayoutInflater inflater_;
 	private String departure_;
 	private String arrival_;
+	private int nbMaxItems_ = 4;
 
 	public TransportSummaryAdapter(Context ctx, String departure, String arrival) {
 		state_ = SummaryState.EMPTY;
@@ -46,9 +48,6 @@ public class TransportSummaryAdapter extends BaseAdapter {
 			return;
 		}
 		
-		// XXX
-		//setSummaryError();
-		
 		summary_ = summary;
 		state_ = SummaryState.VALID;
 		notifyDataSetChanged();
@@ -64,7 +63,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	}
 	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view;
 		
 		if(state_ == SummaryState.EMPTY) {
@@ -80,6 +79,17 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		view = inflater_.inflate(R.layout.transport_summaryentry, null);
 		view = fillView(position, view);
 		
+		OnClickListener l = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				View toChange = getView(position, null, null);
+				toChange = inflater_.inflate(R.layout.transport_summaryentry_expanded, null);
+				notifyDataSetChanged();
+			}
+		};
+		
+		view.setOnClickListener(l);
 		return view;
 	}
 	
@@ -126,7 +136,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 			return 0;
 		}
 		
-		return summary_.connections.size();
+		return Math.min(summary_.connections.size(), nbMaxItems_);
 	}
 
 	@Override

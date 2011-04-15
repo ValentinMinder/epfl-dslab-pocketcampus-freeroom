@@ -57,8 +57,6 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 				adapter.setSummary(summary);
 				notifyDataSetChanged();
 				
-				System.out.println("------------>" + summary);
-				
 				decrementProgressCounter();
 			}
 			
