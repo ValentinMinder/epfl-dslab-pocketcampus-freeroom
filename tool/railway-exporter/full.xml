@@ -1,0 +1,1350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="OpenStreetMap server">
+  <node id="252984710" lat="46.5240339" lon="6.5924029" version="12" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:01Z"/>
+  <node id="252984897" lat="46.5241394" lon="6.5927638" version="6" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:01Z"/>
+  <node id="252984898" lat="46.5242698" lon="6.593429" version="6" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:02Z"/>
+  <node id="252984900" lat="46.5243115" lon="6.594109" version="7" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:02Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252984901" lat="46.5241735" lon="6.5952711" version="6" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:03Z"/>
+  <node id="252985029" lat="46.523888" lon="6.592001" version="11" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:01Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252985014" lat="46.5251718" lon="6.5807022" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:23Z"/>
+  <node id="252985016" lat="46.5252854" lon="6.5818932" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:32Z"/>
+  <node id="252985017" lat="46.5252451" lon="6.5824478" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:33Z"/>
+  <node id="252985028" lat="46.5233141" lon="6.5902171" version="13" changeset="5625840" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2010-08-29T13:40:24Z">
+    <tag k="name" v="Bourdonnette"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+  </node>
+  <node id="252985020" lat="46.524171" lon="6.584769" version="17" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:54:18Z">
+    <tag k="name" v="UNIL-Dorigny"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501211"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-p-Ren., UNIL-Dorigny"/>
+    <tag k="ele" v="388"/>
+  </node>
+  <node id="252990037" lat="46.5236277" lon="6.5977566" version="8" changeset="3108330" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-13T19:46:23Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252990038" lat="46.5234612" lon="6.5988021" version="5" changeset="3108330" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-13T19:46:24Z"/>
+  <node id="252990040" lat="46.5238253" lon="6.6012302" version="5" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:35Z"/>
+  <node id="253051894" lat="46.5217512" lon="6.6153965" version="4" changeset="3093337" user="benni_75" uid="34307" visible="true" timestamp="2009-11-11T20:18:45Z"/>
+  <node id="253051896" lat="46.521858" lon="6.613575" version="12" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:54:13Z">
+    <tag k="name" v="Montelly"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501207"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Montelly"/>
+    <tag k="ele" v="441"/>
+  </node>
+  <node id="253154155" lat="46.5252087" lon="6.5810646" version="10" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:31Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="253201483" lat="46.5222993" lon="6.5644453" version="12" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:00Z"/>
+  <node id="253201480" lat="46.5233256" lon="6.5638378" version="13" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:08Z"/>
+  <node id="253201486" lat="46.5216702" lon="6.5694245" version="10" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:12Z"/>
+  <node id="253201487" lat="46.5216055" lon="6.5699681" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:14Z"/>
+  <node id="253201484" lat="46.5222313" lon="6.5649968" version="10" changeset="1438310" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-06-06T14:35:01Z"/>
+  <node id="253201478" lat="46.528151" lon="6.56684" version="13" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:31:58Z">
+    <tag k="name" v="Cerisaie"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501216"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, Cerisaie"/>
+    <tag k="ele" v="396"/>
+  </node>
+  <node id="253201479" lat="46.524861" lon="6.564718" version="15" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:31:58Z">
+    <tag k="name" v="Bassenges"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501215"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, Bassenges"/>
+    <tag k="ele" v="398"/>
+  </node>
+  <node id="253201932" lat="46.5212015" lon="6.6259131" version="2" changeset="3388011" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-12-16T16:53:59Z"/>
+  <node id="253201931" lat="46.5207818" lon="6.6272684" version="3" changeset="3388011" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-12-16T16:53:59Z"/>
+  <node id="254147211" lat="46.5231363" lon="6.5749267" version="13" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:17Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="261682008" lat="46.5287401" lon="6.5671572" version="7" changeset="834955" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-03-20T12:26:55Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="261682216" lat="46.5341009" lon="6.5709636" version="11" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:15:59Z"/>
+  <node id="263329036" lat="46.5222456" lon="6.5668732" version="12" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:08Z"/>
+  <node id="263329037" lat="46.5221141" lon="6.5680435" version="14" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:10Z"/>
+  <node id="282356033" lat="46.5233961" lon="6.5994096" version="4" changeset="2122028" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-08-12T19:18:51Z"/>
+  <node id="282356462" lat="46.5235014" lon="6.5984745" version="5" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:35Z"/>
+  <node id="286031113" lat="46.5389332" lon="6.574888" version="4" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="334288807" lat="46.5233431" lon="6.59018" version="10" changeset="5625840" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2010-08-29T13:47:53Z">
+    <tag k="name" v="Bourdonnette"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+  </node>
+  <node id="334288866" lat="46.52224" lon="6.566146" version="8" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:32:04Z">
+    <tag k="name" v="EPFL"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501214"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="EPFL"/>
+    <tag k="ele" v="396"/>
+  </node>
+  <node id="334321646" lat="46.5240268" lon="6.6019035" version="2" changeset="3108330" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-13T19:46:26Z"/>
+  <node id="334321775" lat="46.5222945" lon="6.6120154" version="8" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="334321831" lat="46.5213887" lon="6.625187" version="3" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:39Z"/>
+  <node id="334321795" lat="46.5202543" lon="6.6290278" version="3" changeset="3386471" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-12-16T13:07:55Z"/>
+  <node id="335535606" lat="46.5221573" lon="6.566805" version="5" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:01Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="335535601" lat="46.5221596" lon="6.567539" version="6" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:02Z"/>
+  <node id="335535604" lat="46.5220829" lon="6.5681826" version="13" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:10Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="335882599" lat="46.5242487" lon="6.6034006" version="5" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:48Z"/>
+  <node id="335882604" lat="46.5234319" lon="6.5906586" version="5" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="335882603" lat="46.5234035" lon="6.5906899" version="5" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="335882601" lat="46.5241793" lon="6.6027931" version="5" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:36Z"/>
+  <node id="335882602" lat="46.5241442" lon="6.6028042" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:36Z"/>
+  <node id="339792067" lat="46.52863" lon="6.5670808" version="5" changeset="834955" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-03-20T12:26:53Z"/>
+  <node id="339792069" lat="46.5284123" lon="6.5669049" version="1" changeset="28281" user="stedewa" uid="9733" visible="true" timestamp="2009-02-01T17:52:39Z"/>
+  <node id="339792070" lat="46.5278012" lon="6.5665594" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:14Z"/>
+  <node id="339792375" lat="46.5339569" lon="6.5708874" version="1" changeset="28281" user="stedewa" uid="9733" visible="true" timestamp="2009-02-01T17:53:10Z"/>
+  <node id="339792378" lat="46.5331952" lon="6.5703381" version="1" changeset="28281" user="stedewa" uid="9733" visible="true" timestamp="2009-02-01T17:53:10Z"/>
+  <node id="339792382" lat="46.5328063" lon="6.5700465" version="4" changeset="834955" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-03-20T12:26:53Z"/>
+  <node id="334321779" lat="46.5204256" lon="6.6283317" version="5" changeset="6428397" user="dubochet" uid="55320" visible="true" timestamp="2010-11-22T00:50:01Z"/>
+  <node id="334321785" lat="46.5202193" lon="6.6290108" version="4" changeset="6428397" user="dubochet" uid="55320" visible="true" timestamp="2010-11-22T00:50:01Z"/>
+  <node id="334321790" lat="46.5199984" lon="6.6299773" version="7" changeset="6428462" user="dubochet" uid="55320" visible="true" timestamp="2010-11-22T01:12:31Z"/>
+  <node id="253201930" lat="46.520103" lon="6.630024" version="11" changeset="6428462" user="dubochet" uid="55320" visible="true" timestamp="2010-11-22T01:12:32Z"/>
+  <node id="347549311" lat="46.5216665" lon="6.5707506" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z"/>
+  <node id="347549314" lat="46.5217801" lon="6.5722289" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z"/>
+  <node id="364060354" lat="46.5322779" lon="6.5696794" version="2" changeset="871599" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-03-31T12:43:56Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="364060457" lat="46.5304672" lon="6.5683733" version="2" changeset="871599" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-03-31T12:43:56Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="364060449" lat="46.5277802" lon="6.5665993" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:14Z"/>
+  <node id="252985026" lat="46.5232249" lon="6.589012" version="9" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:30Z"/>
+  <node id="252985023" lat="46.5232692" lon="6.5867824" version="15" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:31Z"/>
+  <node id="253201489" lat="46.5219457" lon="6.5726214" version="11" changeset="1435155" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-06-06T08:01:36Z"/>
+  <node id="253201491" lat="46.5225728" lon="6.5738231" version="10" changeset="1435155" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-06-06T08:01:36Z"/>
+  <node id="253201482" lat="46.5223485" lon="6.5641558" version="13" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:55Z"/>
+  <node id="416330124" lat="46.5225099" lon="6.563949" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:55Z"/>
+  <node id="253201481" lat="46.5227045" lon="6.5638058" version="12" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416330123" lat="46.5229083" lon="6.5637435" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="415915275" lat="46.5231203" lon="6.5637614" version="3" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416330125" lat="46.5221754" lon="6.5646588" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:00Z"/>
+  <node id="334288832" lat="46.5222424" lon="6.5643876" version="5" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:00Z"/>
+  <node id="334288830" lat="46.5221455" lon="6.5650144" version="5" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:00Z"/>
+  <node id="416330122" lat="46.5237119" lon="6.5640571" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:08Z"/>
+  <node id="416330126" lat="46.5221493" lon="6.5677322" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:10Z"/>
+  <node id="416330129" lat="46.5217632" lon="6.5691005" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:12Z"/>
+  <node id="416330128" lat="46.5218118" lon="6.5689725" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:12Z"/>
+  <node id="416330127" lat="46.5220102" lon="6.5684617" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:12Z"/>
+  <node id="343328481" lat="46.5216325" lon="6.5696509" version="4" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:12Z"/>
+  <node id="416330130" lat="46.5216239" lon="6.5703968" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:14Z"/>
+  <node id="416330131" lat="46.5216831" lon="6.5710312" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z"/>
+  <node id="416330132" lat="46.5216901" lon="6.5716407" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z"/>
+  <node id="416330134" lat="46.5248039" lon="6.577989" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:20Z"/>
+  <node id="334288818" lat="46.5248702" lon="6.5782536" version="7" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z"/>
+  <node id="253201496" lat="46.5248843" lon="6.578245" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z"/>
+  <node id="416330137" lat="46.5249178" lon="6.5783696" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z"/>
+  <node id="253201490" lat="46.522171" lon="6.573048" version="12" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:31:59Z">
+    <tag k="name" v="UNIL-Sorge"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501213"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, UNIL-Sorge"/>
+    <tag k="ele" v="391"/>
+  </node>
+  <node id="416462995" lat="46.5225354" lon="6.5640077" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:55Z"/>
+  <node id="416462996" lat="46.522393" lon="6.5642052" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:55Z"/>
+  <node id="416462993" lat="46.5228905" lon="6.5638041" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416462994" lat="46.5227042" lon="6.5638713" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416462991" lat="46.5232803" lon="6.5638687" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416462992" lat="46.5230706" lon="6.5638096" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:56Z"/>
+  <node id="416462997" lat="46.5222499" lon="6.564697" version="2" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:59:00Z"/>
+  <node id="367995054" lat="46.5225502" lon="6.5737881" version="2" changeset="1439306" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-06-06T16:09:22Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="438048178" lat="46.5221674" lon="6.5677363" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:10Z"/>
+  <node id="253051900" lat="46.523688" lon="6.6066243" version="7" changeset="3093337" user="benni_75" uid="34307" visible="true" timestamp="2009-11-11T20:18:40Z"/>
+  <node id="253051897" lat="46.5226338" lon="6.6109546" version="9" changeset="3093337" user="benni_75" uid="34307" visible="true" timestamp="2009-11-11T20:18:42Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252990039" lat="46.5234736" lon="6.600057" version="5" changeset="2122028" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-08-12T19:18:50Z"/>
+  <node id="335882600" lat="46.5242075" lon="6.6034003" version="5" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:48Z"/>
+  <node id="335882593" lat="46.5219681" lon="6.613117" version="5" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="462623855" lat="46.5219798" lon="6.621412" version="4" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:02Z"/>
+  <node id="252990042" lat="46.524128" lon="6.6046407" version="13" changeset="3126164" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T19:46:39Z"/>
+  <node id="348197777" lat="46.533578" lon="6.570615" version="6" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:32:47Z">
+    <tag k="name" v="Crochy"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501217"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-près-Renens, Crochy"/>
+    <tag k="ele" v="403"/>
+  </node>
+  <node id="348197778" lat="46.528081" lon="6.566712" version="6" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:32:47Z">
+    <tag k="name" v="Cerisaie"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501216"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, Cerisaie"/>
+    <tag k="ele" v="396"/>
+  </node>
+  <node id="252990041" lat="46.524184" lon="6.60308" version="10" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:53:53Z">
+    <tag k="name" v="Malley"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501209"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Malley"/>
+    <tag k="ele" v="425"/>
+  </node>
+  <node id="334288827" lat="46.522152" lon="6.566161" version="7" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:32:02Z">
+    <tag k="name" v="EPFL"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501214"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="EPFL"/>
+    <tag k="ele" v="396"/>
+  </node>
+  <node id="560903069" lat="46.5239242" lon="6.6055946" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="560903076" lat="46.5227153" lon="6.6106766" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="560903080" lat="46.5221034" lon="6.6126967" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="267491477" lat="46.5217295" lon="6.6146384" version="9" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:53Z"/>
+  <node id="560903084" lat="46.5218404" lon="6.6179977" version="3" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:01Z"/>
+  <node id="560903083" lat="46.5218418" lon="6.6201116" version="2" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:01Z"/>
+  <node id="560903085" lat="46.5219224" lon="6.6224451" version="3" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:02Z"/>
+  <node id="253201927" lat="46.521835" lon="6.6228401" version="9" changeset="3127966" user="inetis" uid="138032" visible="true" timestamp="2009-11-15T22:46:25Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="561537683" lat="46.5242933" lon="6.5936549" version="3" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:02Z"/>
+  <node id="561537633" lat="46.5233721" lon="6.5865371" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:32Z"/>
+  <node id="561537671" lat="46.5242388" lon="6.5932318" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:35Z"/>
+  <node id="561537631" lat="46.523223" lon="6.586934" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:34Z"/>
+  <node id="561537639" lat="46.5231768" lon="6.5871901" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:34Z"/>
+  <node id="561537641" lat="46.5231624" lon="6.5874085" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:35Z"/>
+  <node id="334288805" lat="46.5237036" lon="6.5915384" version="7" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="335882605" lat="46.523258" lon="6.5897129" version="4" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:30Z"/>
+  <node id="335882606" lat="46.5232885" lon="6.5897007" version="4" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:30Z"/>
+  <node id="561537647" lat="46.523583" lon="6.5912729" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:30Z"/>
+  <node id="562647704" lat="46.5237775" lon="6.6062532" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="562647735" lat="46.5229921" lon="6.6096702" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:37Z"/>
+  <node id="335882590" lat="46.5214787" lon="6.6245743" version="3" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:38Z"/>
+  <node id="335882589" lat="46.5215292" lon="6.6245909" version="3" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:38Z"/>
+  <node id="562648136" lat="46.5217296" lon="6.6142428" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:38Z"/>
+  <node id="562648133" lat="46.5217264" lon="6.6148845" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:38Z"/>
+  <node id="562648145" lat="46.5218785" lon="6.6169117" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:38Z"/>
+  <node id="562648150" lat="46.5219815" lon="6.6219834" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:39Z"/>
+  <node id="562648152" lat="46.5219357" lon="6.6207999" version="2" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:39Z"/>
+  <node id="335882591" lat="46.521693" lon="6.6233403" version="3" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:39Z"/>
+  <node id="335882592" lat="46.5217254" lon="6.6233577" version="3" changeset="3104535" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-13T09:53:39Z"/>
+  <node id="562647752" lat="46.5220034" lon="6.6128726" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="335882588" lat="46.5218282" lon="6.6137153" version="6" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="335882587" lat="46.5217938" lon="6.6137005" version="6" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="335882598" lat="46.5219346" lon="6.6131068" version="7" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="562648129" lat="46.5218363" lon="6.616109" version="5" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:19Z"/>
+  <node id="253201929" lat="46.5218786" lon="6.6166508" version="7" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:20Z"/>
+  <node id="562648148" lat="46.521871" lon="6.6171452" version="4" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:20Z"/>
+  <node id="562648127" lat="46.5218198" lon="6.6193404" version="3" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:20Z"/>
+  <node id="253201933" lat="46.521616" lon="6.623975" version="10" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:56:04Z">
+    <tag k="name" v="Vigie"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8592133"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Vigie"/>
+    <tag k="ele" v="486"/>
+  </node>
+  <node id="563240547" lat="46.5236398" lon="6.6006371" version="1" changeset="3108330" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-13T19:45:59Z"/>
+  <node id="563240587" lat="46.5241916" lon="6.6041431" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="563240496" lat="46.5242347" lon="6.5949586" version="2" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:03Z"/>
+  <node id="563240460" lat="46.5232789" lon="6.5899555" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:33Z"/>
+  <node id="563240461" lat="46.5233123" lon="6.5899409" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:33Z"/>
+  <node id="563240466" lat="46.523383" lon="6.5904229" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:33Z"/>
+  <node id="563240470" lat="46.5233517" lon="6.590454" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="563240473" lat="46.5235109" lon="6.5910867" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="563240474" lat="46.5235395" lon="6.5910683" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="563240477" lat="46.5236469" lon="6.5914183" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="563240503" lat="46.5238389" lon="6.5967837" version="2" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:35Z"/>
+  <node id="563240573" lat="46.5241203" lon="6.6026373" version="3" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:36Z"/>
+  <node id="563240572" lat="46.524154" lon="6.6026281" version="3" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:36Z"/>
+  <node id="563240733" lat="46.521758" lon="6.6139048" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:52Z"/>
+  <node id="561537690" lat="46.5243028" lon="6.5944016" version="3" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:02Z"/>
+  <node id="561537692" lat="46.5243082" lon="6.5938816" version="3" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:02Z"/>
+  <node id="561537700" lat="46.5242756" lon="6.594696" version="3" changeset="3177421" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-21T16:23:03Z"/>
+  <node id="561537645" lat="46.5232468" lon="6.5895342" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:33Z"/>
+  <node id="561537643" lat="46.5232713" lon="6.5895356" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:33Z"/>
+  <node id="561537655" lat="46.5234714" lon="6.5909592" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="561537657" lat="46.5235023" lon="6.5909366" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="561537653" lat="46.5236053" lon="6.5912635" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:34Z"/>
+  <node id="561540551" lat="46.5238116" lon="6.5918084" version="4" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:35Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="562647683" lat="46.5242049" lon="6.6039645" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="562647679" lat="46.5242397" lon="6.6039569" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="562647673" lat="46.5242136" lon="6.6036498" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="562647670" lat="46.5242481" lon="6.6036579" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="562647685" lat="46.5241925" lon="6.6043177" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="562647690" lat="46.5238633" lon="6.6058765" version="4" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="563812430" lat="46.5272811" lon="6.5662689" version="1" changeset="3113254" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-14T13:49:45Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="563812431" lat="46.5272901" lon="6.5662213" version="1" changeset="3113254" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-14T13:49:45Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="339792072" lat="46.5269252" lon="6.5659817" version="8" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:13Z"/>
+  <node id="563240745" lat="46.5217343" lon="6.6151063" version="2" changeset="3113848" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2009-11-14T15:05:06Z"/>
+  <node id="563240747" lat="46.521774" lon="6.6156247" version="3" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:19Z"/>
+  <node id="564301700" lat="46.5222342" lon="6.6122303" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:46Z"/>
+  <node id="564301701" lat="46.522476" lon="6.6114653" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:46Z"/>
+  <node id="564301702" lat="46.5221507" lon="6.6125345" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:46Z"/>
+  <node id="564301703" lat="46.5219097" lon="6.613332" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:46Z"/>
+  <node id="564301705" lat="46.5218737" lon="6.6133276" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:46Z"/>
+  <node id="564301741" lat="46.5217251" lon="6.6144338" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:47Z"/>
+  <node id="564301742" lat="46.5217374" lon="6.614425" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:47Z"/>
+  <node id="564301743" lat="46.52174" lon="6.6140794" version="1" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:47Z"/>
+  <node id="563240589" lat="46.5242264" lon="6.6040999" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z"/>
+  <node id="563240584" lat="46.52421" lon="6.6038604" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="563240586" lat="46.5242419" lon="6.6038355" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:49Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="563240616" lat="46.5240538" lon="6.6049951" version="2" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:50Z"/>
+  <node id="563240737" lat="46.5217509" lon="6.6142434" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:52Z"/>
+  <node id="563240736" lat="46.5217923" lon="6.6139221" version="3" changeset="3117955" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T22:59:52Z"/>
+  <node id="563240611" lat="46.5241743" lon="6.6043133" version="3" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:37Z"/>
+  <node id="564308373" lat="46.5231287" lon="6.6091369" version="1" changeset="3118006" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:09:51Z"/>
+  <node id="564315133" lat="46.5218616" lon="6.6163492" version="1" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:15Z"/>
+  <node id="564315181" lat="46.5218501" lon="6.6176418" version="1" changeset="3118112" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-14T23:29:16Z"/>
+  <node id="564406530" lat="46.5218215" lon="6.6196837" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406532" lat="46.5218322" lon="6.6199253" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406534" lat="46.5219801" lon="6.62169" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406536" lat="46.5219684" lon="6.6211365" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406538" lat="46.5217896" lon="6.6230608" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406540" lat="46.5218822" lon="6.6226266" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406542" lat="46.5219556" lon="6.6222392" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:00Z"/>
+  <node id="564406546" lat="46.521614" lon="6.623642" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:01Z"/>
+  <node id="564406547" lat="46.5216682" lon="6.6236643" version="1" changeset="3118444" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T00:41:01Z"/>
+  <node id="564955456" lat="46.5240922" lon="6.604819" version="1" changeset="3126164" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-15T19:46:38Z"/>
+  <node id="568325757" lat="46.5232457" lon="6.5892822" version="1" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:30Z"/>
+  <node id="568325766" lat="46.5242005" lon="6.5930259" version="1" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:30Z"/>
+  <node id="568325769" lat="46.5237294" lon="6.5972684" version="1" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:30Z"/>
+  <node id="568325772" lat="46.5241677" lon="6.6027016" version="1" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:30Z"/>
+  <node id="568325773" lat="46.5241329" lon="6.6027134" version="1" changeset="3184608" user="Marc Mongenet" uid="74847" visible="true" timestamp="2009-11-22T11:27:31Z"/>
+  <node id="568325735" lat="46.5231872" lon="6.5871026" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:35Z"/>
+  <node id="649303036" lat="46.5222896" lon="6.5642726" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303041" lat="46.5224302" lon="6.564033" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303044" lat="46.5226031" lon="6.5638639" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303046" lat="46.5226048" lon="6.5639379" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303047" lat="46.5224649" lon="6.5640964" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303049" lat="46.5223421" lon="6.5643196" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303054" lat="46.5228092" lon="6.563764" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303055" lat="46.5229765" lon="6.5638028" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:41Z"/>
+  <node id="649303057" lat="46.5227785" lon="6.5638357" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303066" lat="46.5230048" lon="6.5637429" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303067" lat="46.5232238" lon="6.5637946" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303068" lat="46.5231729" lon="6.5638322" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303083" lat="46.5222047" lon="6.5645169" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303085" lat="46.5222677" lon="6.5645733" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303087" lat="46.522157" lon="6.5648212" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:42Z"/>
+  <node id="649303088" lat="46.522237" lon="6.5648341" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:43Z"/>
+  <node id="649303354" lat="46.5218566" lon="6.5724321" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:50Z"/>
+  <node id="649303358" lat="46.5217111" lon="6.5719197" version="1" changeset="3937320" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T18:58:50Z"/>
+  <node id="649303337" lat="46.5216805" lon="6.5709157" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="649748324" lat="46.5235123" lon="6.5639647" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:44Z"/>
+  <node id="649748325" lat="46.5235192" lon="6.5639413" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:44Z"/>
+  <node id="649748344" lat="46.5222335" lon="6.5671309" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:45Z"/>
+  <node id="649748346" lat="46.5222044" lon="6.5674761" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:45Z"/>
+  <node id="649748356" lat="46.5221355" lon="6.5678817" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:45Z"/>
+  <node id="649748358" lat="46.5220407" lon="6.568354" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:45Z"/>
+  <node id="649748456" lat="46.5219303" lon="6.5686902" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:47Z"/>
+  <node id="649748460" lat="46.5219675" lon="6.5685874" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:47Z"/>
+  <node id="649748470" lat="46.5216152" lon="6.5698105" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:48Z"/>
+  <node id="649748474" lat="46.5217039" lon="6.569285" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:48Z"/>
+  <node id="649748520" lat="46.525579" lon="6.5651365" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:49Z"/>
+  <node id="649748526" lat="46.5259411" lon="6.565351" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:49Z"/>
+  <node id="649748528" lat="46.5263008" lon="6.565574" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:49Z"/>
+  <node id="649748533" lat="46.5266722" lon="6.5658125" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:49Z"/>
+  <node id="649748544" lat="46.5270679" lon="6.566092" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:49Z"/>
+  <node id="649748594" lat="46.5271811" lon="6.5661867" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:50Z"/>
+  <node id="649748596" lat="46.5216066" lon="6.5701583" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:50Z"/>
+  <node id="649748621" lat="46.5217021" lon="6.5718374" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:51Z"/>
+  <node id="649748624" lat="46.5217517" lon="6.572134" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:51Z"/>
+  <node id="649748626" lat="46.5218131" lon="6.5723268" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:51Z"/>
+  <node id="649748704" lat="46.523371" lon="6.5753556" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:53Z"/>
+  <node id="649748705" lat="46.5235289" lon="6.5756386" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:53Z"/>
+  <node id="649748708" lat="46.5236859" lon="6.5759006" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:53Z"/>
+  <node id="649748760" lat="46.524476" lon="6.5772386" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:54Z"/>
+  <node id="649748766" lat="46.5246539" lon="6.5775891" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:54Z"/>
+  <node id="649748767" lat="46.5245696" lon="6.5774116" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:54Z"/>
+  <node id="649748776" lat="46.5247018" lon="6.5777027" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:54Z"/>
+  <node id="649748779" lat="46.5247382" lon="6.5777933" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:54Z"/>
+  <node id="649748798" lat="46.5248934" lon="6.5783904" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649748808" lat="46.5249412" lon="6.5785021" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649748810" lat="46.5249672" lon="6.5786896" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649748812" lat="46.524935" lon="6.5787067" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649748831" lat="46.5250726" lon="6.580028" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649748833" lat="46.5251216" lon="6.5803336" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:28:55Z"/>
+  <node id="649749069" lat="46.5236317" lon="6.5859604" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:01Z"/>
+  <node id="649749080" lat="46.5237929" lon="6.5855616" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:01Z"/>
+  <node id="649749085" lat="46.5237436" lon="6.5857524" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:01Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="649749160" lat="46.5252873" lon="6.5820636" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:03Z"/>
+  <node id="649749233" lat="46.5252812" lon="6.5821974" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:05Z"/>
+  <node id="649749235" lat="46.5252655" lon="6.5823259" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:05Z"/>
+  <node id="649749246" lat="46.5252156" lon="6.582564" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:05Z"/>
+  <node id="649749269" lat="46.5244898" lon="6.584106" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:05Z"/>
+  <node id="649749293" lat="46.5245975" lon="6.5839133" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:06Z"/>
+  <node id="649749314" lat="46.5232433" lon="6.5868639" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:06Z"/>
+  <node id="649749319" lat="46.5231627" lon="6.5876187" version="1" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:06Z"/>
+  <node id="649303109" lat="46.5222223" lon="6.5673011" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:10Z"/>
+  <node id="649303356" lat="46.5217292" lon="6.5720329" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:15Z"/>
+  <node id="367996469" lat="46.5249577" lon="6.578602" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="367996509" lat="46.524925" lon="6.5786098" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="416330136" lat="46.5249112" lon="6.5785086" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:21Z"/>
+  <node id="367996519" lat="46.5250873" lon="6.5798718" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:23Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="367996523" lat="46.5250546" lon="6.5798789" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:23Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="347549318" lat="46.52353" lon="6.5861976" version="6" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:30Z"/>
+  <node id="367998692" lat="46.5239074" lon="6.5853184" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:30Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="367998695" lat="46.523936" lon="6.5853436" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:30Z">
+    <tag k="railway" v="crossing"/>
+  </node>
+  <node id="367994717" lat="46.523701" lon="6.5857843" version="3" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:30Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252985015" lat="46.5252293" lon="6.5812835" version="12" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:32Z"/>
+  <node id="416330140" lat="46.5252556" lon="6.5815173" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:32Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="252985018" lat="46.5251763" lon="6.582695" version="11" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:33Z"/>
+  <node id="416330141" lat="46.5250872" lon="6.5829161" version="2" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:33Z"/>
+  <node id="334288809" lat="46.5247131" lon="6.5837103" version="8" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:34Z"/>
+  <node id="335882610" lat="46.5243949" lon="6.5842937" version="8" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:34Z"/>
+  <node id="335882609" lat="46.5244209" lon="6.5843234" version="5" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:34Z"/>
+  <node id="406736196" lat="46.5232026" lon="6.5870147" version="5" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:35Z"/>
+  <node id="252985024" lat="46.523167" lon="6.5872991" version="9" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:35Z"/>
+  <node id="252985025" lat="46.5231614" lon="6.5875048" version="10" changeset="3939629" user="Marc Mongenet" uid="74847" visible="true" timestamp="2010-02-21T22:29:35Z"/>
+  <node id="836514919" lat="46.5237891" lon="6.5917521" version="2" changeset="5339656" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2010-07-28T16:53:43Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="563240489" lat="46.5239658" lon="6.5922025" version="4" changeset="5339656" user="Stéphane Brunner" uid="17835" visible="true" timestamp="2010-07-28T16:53:46Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="253201476" lat="46.533498" lon="6.570691" version="11" changeset="6332360" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:31:58Z">
+    <tag k="name" v="Crochy"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501217"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-près-Renens, Crochy"/>
+    <tag k="ele" v="403"/>
+  </node>
+  <node id="334288820" lat="46.524984" lon="6.579172" version="14" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:55:10Z">
+    <tag k="name" v="UNIL-Mouline"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501212"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-près-Renens, Mouline"/>
+    <tag k="ele" v="385"/>
+  </node>
+  <node id="334288811" lat="46.524197" lon="6.584796" version="10" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:55:10Z">
+    <tag k="name" v="UNIL-Dorigny"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501211"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-p-Ren., UNIL-Dorigny"/>
+    <tag k="ele" v="388"/>
+  </node>
+  <node id="253201475" lat="46.5377184" lon="6.5736758" version="9" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:15:59Z">
+    <tag k="name" v="Epenex"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501218"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, Epenex"/>
+    <tag k="ele" v="417"/>
+  </node>
+  <node id="334288859" lat="46.5377033" lon="6.5735291" version="7" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:16:03Z">
+    <tag k="name" v="Epenex"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501218"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Ecublens VD, Epenex"/>
+    <tag k="ele" v="417"/>
+  </node>
+  <node id="334321798" lat="46.521556" lon="6.623956" version="9" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:54:07Z">
+    <tag k="name" v="Vigie"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8592133"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Vigie"/>
+    <tag k="ele" v="486"/>
+  </node>
+  <node id="253051899" lat="46.523243" lon="6.608639" version="14" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:54:14Z">
+    <tag k="name" v="Provence"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501208"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Provence"/>
+    <tag k="ele" v="427"/>
+  </node>
+  <node id="334288823" lat="46.525016" lon="6.579166" version="13" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:55:10Z">
+    <tag k="name" v="UNIL-Mouline"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501212"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Chavannes-près-Renens, Mouline"/>
+    <tag k="ele" v="385"/>
+  </node>
+  <node id="334321654" lat="46.521825" lon="6.61356" version="10" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:56:00Z">
+    <tag k="name" v="Montelly"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501207"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Montelly"/>
+    <tag k="ele" v="441"/>
+  </node>
+  <node id="334321641" lat="46.524224" lon="6.603065" version="8" changeset="6332491" user="DidokImportCH" uid="368211" visible="true" timestamp="2010-11-09T22:56:00Z">
+    <tag k="name" v="Malley"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8501209"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Lausanne, Malley"/>
+    <tag k="ele" v="425"/>
+  </node>
+  <node id="1139576108" lat="46.5384921" lon="6.5740992" version="1" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:15:58Z"/>
+  <node id="253201474" lat="46.5380645" lon="6.5738014" version="8" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:15:59Z"/>
+  <node id="261682217" lat="46.5349328" lon="6.5716294" version="4" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:15:59Z"/>
+  <node id="339790565" lat="46.5371907" lon="6.573187" version="3" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:16:00Z"/>
+  <node id="267517378" lat="46.5356292" lon="6.5721426" version="6" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:16:01Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="339790563" lat="46.5368946" lon="6.5729961" version="4" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:16:03Z"/>
+  <node id="339790851" lat="46.5364228" lon="6.572687" version="4" changeset="7208311" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-06T19:16:04Z">
+    <tag k="railway" v="level_crossing"/>
+  </node>
+  <node id="1140124944" lat="46.5384151" lon="6.5763673" version="1" changeset="7211792" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T00:26:40Z"/>
+  <node id="253201469" lat="46.5380856" lon="6.5769826" version="4" changeset="7211792" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T00:27:12Z"/>
+  <node id="253201470" lat="46.5387841" lon="6.5756823" version="4" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="253201471" lat="46.5388742" lon="6.5754118" version="6" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="1139576114" lat="46.5389281" lon="6.5751902" version="2" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="253201472" lat="46.5388869" lon="6.5746379" version="6" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="1139576113" lat="46.5388003" lon="6.5744573" version="2" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="253201473" lat="46.5386469" lon="6.5742332" version="7" changeset="7217636" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T16:11:02Z"/>
+  <node id="348197776" lat="46.5372769" lon="6.5785518" version="8" changeset="7220586" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T20:35:18Z">
+    <tag k="name" v="Renens-Gare"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+    <tag k="railway" v="station"/>
+    <tag k="uic_ref" v="8530749"/>
+    <tag k="operator" v="TL"/>
+    <tag k="uic_name" v="Renens VD, gare"/>
+    <tag k="ele" v="416"/>
+  </node>
+  <node id="339792987" lat="46.5377548" lon="6.5774817" version="3" changeset="7220586" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T20:35:20Z"/>
+  <node id="339792986" lat="46.5372176" lon="6.5784909" version="3" changeset="7220586" user="Marc Mongenet" uid="74847" visible="true" timestamp="2011-02-07T20:35:27Z"/>
+  <way id="23365452" visible="true" timestamp="2009-11-15T19:46:43Z" version="18" changeset="3126164" user="Marc Mongenet" uid="74847">
+    <nd ref="252990042"/>
+    <nd ref="564955456"/>
+    <nd ref="563240616"/>
+    <nd ref="560903069"/>
+    <nd ref="562647690"/>
+    <nd ref="562647704"/>
+    <nd ref="253051900"/>
+    <nd ref="253051899"/>
+    <nd ref="564308373"/>
+    <nd ref="562647735"/>
+    <nd ref="560903076"/>
+    <nd ref="253051897"/>
+    <nd ref="564301701"/>
+    <nd ref="334321775"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="23370663" visible="true" timestamp="2009-11-12T22:35:32Z" version="12" changeset="3102440" user="Marc Mongenet" uid="74847">
+    <nd ref="252985026"/>
+    <nd ref="561537645"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="23370660" visible="true" timestamp="2010-02-21T22:29:58Z" version="10" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="252985023"/>
+    <nd ref="649749314"/>
+    <nd ref="561537631"/>
+    <nd ref="406736196"/>
+    <nd ref="568325735"/>
+    <nd ref="561537639"/>
+    <nd ref="252985024"/>
+    <nd ref="561537641"/>
+    <nd ref="252985025"/>
+    <nd ref="649749319"/>
+    <nd ref="252985026"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="23385103" visible="true" timestamp="2011-02-07T00:26:54Z" version="13" changeset="7211792" user="Marc Mongenet" uid="74847">
+    <nd ref="348197776"/>
+    <nd ref="253201469"/>
+    <nd ref="1140124944"/>
+    <nd ref="253201470"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="23385146" visible="true" timestamp="2009-11-15T00:41:06Z" version="12" changeset="3118444" user="Marc Mongenet" uid="74847">
+    <nd ref="253201929"/>
+    <nd ref="562648145"/>
+    <nd ref="562648148"/>
+    <nd ref="564315181"/>
+    <nd ref="560903084"/>
+    <nd ref="562648127"/>
+    <nd ref="564406530"/>
+    <nd ref="564406532"/>
+    <nd ref="560903083"/>
+    <nd ref="562648152"/>
+    <nd ref="564406536"/>
+    <nd ref="462623855"/>
+    <nd ref="564406534"/>
+    <nd ref="562648150"/>
+    <nd ref="564406542"/>
+    <nd ref="560903085"/>
+    <nd ref="564406540"/>
+    <nd ref="253201927"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="23392140" visible="true" timestamp="2011-02-06T19:16:00Z" version="6" changeset="7208311" user="Marc Mongenet" uid="74847">
+    <nd ref="253201470"/>
+    <nd ref="253201471"/>
+    <nd ref="1139576114"/>
+    <nd ref="286031113"/>
+    <nd ref="253201472"/>
+    <nd ref="1139576113"/>
+    <nd ref="253201473"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+  </way>
+  <way id="23392133" visible="true" timestamp="2011-02-06T19:16:04Z" version="18" changeset="7208311" user="Marc Mongenet" uid="74847">
+    <nd ref="253201473"/>
+    <nd ref="1139576108"/>
+    <nd ref="253201474"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="24158257" visible="true" timestamp="2010-02-21T22:29:54Z" version="27" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="252985023"/>
+    <nd ref="561537633"/>
+    <nd ref="347549318"/>
+    <nd ref="649749085"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="24158259" visible="true" timestamp="2009-07-06T11:02:05Z" version="4" changeset="1751447" user="ahirzel" uid="117761">
+    <nd ref="261682217"/>
+    <nd ref="261682216"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.8c"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="30319450" visible="true" timestamp="2009-11-13T19:46:50Z" version="5" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="334288805"/>
+    <nd ref="561537653"/>
+    <nd ref="563240474"/>
+    <nd ref="561537657"/>
+    <nd ref="335882604"/>
+    <nd ref="563240466"/>
+    <nd ref="334288807"/>
+    <nd ref="563240461"/>
+    <nd ref="335882606"/>
+    <nd ref="561537643"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30319452" visible="true" timestamp="2010-02-21T22:29:53Z" version="6" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="416330134"/>
+    <nd ref="334288818"/>
+    <nd ref="649748798"/>
+    <nd ref="416330136"/>
+    <nd ref="367996509"/>
+    <nd ref="649748812"/>
+    <nd ref="334288820"/>
+    <nd ref="367996523"/>
+    <nd ref="649748831"/>
+    <nd ref="649748833"/>
+    <nd ref="252985014"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30319451" visible="true" timestamp="2010-02-21T22:29:54Z" version="7" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="649749085"/>
+    <nd ref="367998695"/>
+    <nd ref="334288811"/>
+    <nd ref="335882609"/>
+    <nd ref="334288809"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30321520" visible="true" timestamp="2009-11-13T19:46:48Z" version="5" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="252990042"/>
+    <nd ref="562647685"/>
+    <nd ref="563240589"/>
+    <nd ref="562647679"/>
+    <nd ref="563240586"/>
+    <nd ref="562647670"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30321524" visible="true" timestamp="2009-11-13T09:53:42Z" version="4" changeset="3104535" user="Stéphane Brunner" uid="17835">
+    <nd ref="253201927"/>
+    <nd ref="335882591"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30321521" visible="true" timestamp="2009-11-14T22:59:55Z" version="6" changeset="3117955" user="Marc Mongenet" uid="74847">
+    <nd ref="334321775"/>
+    <nd ref="562647752"/>
+    <nd ref="335882598"/>
+    <nd ref="564301705"/>
+    <nd ref="334321654"/>
+    <nd ref="335882587"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30722844" visible="true" timestamp="2009-07-06T11:02:02Z" version="3" changeset="1751447" user="ahirzel" uid="117761">
+    <nd ref="261682216"/>
+    <nd ref="339792375"/>
+    <nd ref="348197777"/>
+    <nd ref="339792378"/>
+    <nd ref="339792382"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30319453" visible="true" timestamp="2010-02-21T22:29:42Z" version="9" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="253201482"/>
+    <nd ref="649303036"/>
+    <nd ref="334288832"/>
+    <nd ref="649303083"/>
+    <nd ref="416330125"/>
+    <nd ref="649303087"/>
+    <nd ref="334288830"/>
+    <nd ref="334288827"/>
+    <nd ref="335535606"/>
+    <nd ref="335535601"/>
+    <nd ref="416330126"/>
+    <nd ref="649748356"/>
+    <nd ref="263329037"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="35545436" visible="true" timestamp="2010-02-21T22:29:43Z" version="6" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="253201482"/>
+    <nd ref="649303041"/>
+    <nd ref="416330124"/>
+    <nd ref="649303044"/>
+    <nd ref="253201481"/>
+    <nd ref="649303054"/>
+    <nd ref="416330123"/>
+    <nd ref="649303066"/>
+    <nd ref="415915275"/>
+    <nd ref="649303067"/>
+    <nd ref="253201480"/>
+    <nd ref="649748325"/>
+    <nd ref="416330122"/>
+    <nd ref="253201479"/>
+    <nd ref="649748520"/>
+    <nd ref="649748526"/>
+    <nd ref="649748528"/>
+    <nd ref="649748533"/>
+    <nd ref="339792072"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30722836" visible="true" timestamp="2010-02-21T22:29:42Z" version="5" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="339792067"/>
+    <nd ref="339792069"/>
+    <nd ref="348197778"/>
+    <nd ref="339792070"/>
+    <nd ref="563812431"/>
+    <nd ref="339792072"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30319455" visible="true" timestamp="2009-07-09T12:28:34Z" version="5" changeset="1780197" user="Stéphane Brunner" uid="17835">
+    <nd ref="253201474"/>
+    <nd ref="334288859"/>
+    <nd ref="339790565"/>
+    <nd ref="339790563"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="30722864" visible="true" timestamp="2009-07-06T11:02:02Z" version="2" changeset="1751447" user="ahirzel" uid="117761">
+    <nd ref="339792986"/>
+    <nd ref="339792987"/>
+    <nd ref="253201469"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449656" visible="true" timestamp="2009-07-09T12:28:32Z" version="1" changeset="1780197" user="Stéphane Brunner" uid="17835">
+    <nd ref="339792067"/>
+    <nd ref="261682008"/>
+    <nd ref="364060457"/>
+    <nd ref="364060354"/>
+    <nd ref="339792382"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449657" visible="true" timestamp="2009-07-09T12:28:32Z" version="1" changeset="1780197" user="Stéphane Brunner" uid="17835">
+    <nd ref="339792382"/>
+    <nd ref="253201476"/>
+    <nd ref="261682216"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449658" visible="true" timestamp="2009-07-09T12:28:33Z" version="1" changeset="1780197" user="Stéphane Brunner" uid="17835">
+    <nd ref="339790563"/>
+    <nd ref="253201475"/>
+    <nd ref="253201474"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449659" visible="true" timestamp="2009-07-09T12:28:33Z" version="1" changeset="1780197" user="Stéphane Brunner" uid="17835">
+    <nd ref="339790563"/>
+    <nd ref="339790851"/>
+    <nd ref="267517378"/>
+    <nd ref="261682217"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="created_by" v="Potlatch 0.10f"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449644" visible="true" timestamp="2009-11-13T19:46:56Z" version="3" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="334321646"/>
+    <nd ref="563240573"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="37449653" visible="true" timestamp="2010-02-21T22:29:40Z" version="3" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="416330134"/>
+    <nd ref="649748779"/>
+    <nd ref="649748776"/>
+    <nd ref="649748766"/>
+    <nd ref="649748767"/>
+    <nd ref="649748760"/>
+    <nd ref="649748708"/>
+    <nd ref="649748705"/>
+    <nd ref="649748704"/>
+    <nd ref="254147211"/>
+    <nd ref="253201491"/>
+    <nd ref="367995054"/>
+    <nd ref="253201490"/>
+    <nd ref="253201489"/>
+    <nd ref="649303354"/>
+    <nd ref="649748626"/>
+    <nd ref="347549314"/>
+    <nd ref="649748624"/>
+    <nd ref="649303356"/>
+    <nd ref="649303358"/>
+    <nd ref="649748621"/>
+    <nd ref="416330132"/>
+    <nd ref="416330131"/>
+    <nd ref="649303337"/>
+    <nd ref="347549311"/>
+    <nd ref="416330130"/>
+    <nd ref="649748596"/>
+    <nd ref="253201487"/>
+    <nd ref="649748470"/>
+    <nd ref="343328481"/>
+    <nd ref="253201486"/>
+    <nd ref="649748474"/>
+    <nd ref="416330129"/>
+    <nd ref="416330128"/>
+    <nd ref="649748456"/>
+    <nd ref="649748460"/>
+    <nd ref="416330127"/>
+    <nd ref="649748358"/>
+    <nd ref="335535604"/>
+    <nd ref="263329037"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449655" visible="true" timestamp="2010-02-21T22:29:42Z" version="3" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="339792072"/>
+    <nd ref="649748544"/>
+    <nd ref="649748594"/>
+    <nd ref="563812430"/>
+    <nd ref="364060449"/>
+    <nd ref="253201478"/>
+    <nd ref="339792067"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449654" visible="true" timestamp="2010-02-21T22:29:42Z" version="3" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="263329037"/>
+    <nd ref="438048178"/>
+    <nd ref="649748346"/>
+    <nd ref="649303109"/>
+    <nd ref="649748344"/>
+    <nd ref="263329036"/>
+    <nd ref="334288866"/>
+    <nd ref="253201484"/>
+    <nd ref="649303088"/>
+    <nd ref="416462997"/>
+    <nd ref="649303085"/>
+    <nd ref="253201483"/>
+    <nd ref="649303049"/>
+    <nd ref="416462996"/>
+    <nd ref="649303047"/>
+    <nd ref="416462995"/>
+    <nd ref="649303046"/>
+    <nd ref="416462994"/>
+    <nd ref="649303057"/>
+    <nd ref="416462993"/>
+    <nd ref="649303055"/>
+    <nd ref="416462992"/>
+    <nd ref="649303068"/>
+    <nd ref="416462991"/>
+    <nd ref="649748324"/>
+    <nd ref="416330122"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449648" visible="true" timestamp="2010-02-21T22:29:47Z" version="2" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="334288809"/>
+    <nd ref="416330141"/>
+    <nd ref="252985018"/>
+    <nd ref="649749246"/>
+    <nd ref="252985017"/>
+    <nd ref="649749235"/>
+    <nd ref="649749233"/>
+    <nd ref="649749160"/>
+    <nd ref="252985016"/>
+    <nd ref="416330140"/>
+    <nd ref="252985015"/>
+    <nd ref="253154155"/>
+    <nd ref="252985014"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449650" visible="true" timestamp="2010-02-21T22:29:53Z" version="2" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="252985014"/>
+    <nd ref="367996519"/>
+    <nd ref="334288823"/>
+    <nd ref="649748810"/>
+    <nd ref="367996469"/>
+    <nd ref="649748808"/>
+    <nd ref="416330137"/>
+    <nd ref="253201496"/>
+    <nd ref="416330134"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="37449646" visible="true" timestamp="2010-02-21T22:29:54Z" version="2" changeset="3939629" user="Marc Mongenet" uid="74847">
+    <nd ref="334288809"/>
+    <nd ref="649749293"/>
+    <nd ref="649749269"/>
+    <nd ref="335882610"/>
+    <nd ref="252985020"/>
+    <nd ref="367998692"/>
+    <nd ref="649749080"/>
+    <nd ref="367994717"/>
+    <nd ref="649749069"/>
+    <nd ref="347549318"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44213634" visible="true" timestamp="2009-11-22T11:27:39Z" version="2" changeset="3184608" user="Marc Mongenet" uid="74847">
+    <nd ref="561537643"/>
+    <nd ref="568325757"/>
+    <nd ref="252985026"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="44280994" visible="true" timestamp="2009-11-13T19:46:50Z" version="2" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="562647670"/>
+    <nd ref="335882599"/>
+    <nd ref="334321641"/>
+    <nd ref="335882601"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="44280993" visible="true" timestamp="2009-11-13T19:46:58Z" version="2" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="562647673"/>
+    <nd ref="563240584"/>
+    <nd ref="562647683"/>
+    <nd ref="563240587"/>
+    <nd ref="563240611"/>
+    <nd ref="252990042"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44280991" visible="true" timestamp="2009-11-14T22:59:53Z" version="4" changeset="3117955" user="Marc Mongenet" uid="74847">
+    <nd ref="335882587"/>
+    <nd ref="563240733"/>
+    <nd ref="564301743"/>
+    <nd ref="562648136"/>
+    <nd ref="564301741"/>
+    <nd ref="267491477"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="44280990" visible="true" timestamp="2009-11-14T22:59:55Z" version="2" changeset="3117955" user="Marc Mongenet" uid="74847">
+    <nd ref="335882588"/>
+    <nd ref="253051896"/>
+    <nd ref="564301703"/>
+    <nd ref="335882593"/>
+    <nd ref="560903080"/>
+    <nd ref="564301702"/>
+    <nd ref="564301700"/>
+    <nd ref="334321775"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44280985" visible="true" timestamp="2009-11-15T00:41:05Z" version="2" changeset="3118444" user="Marc Mongenet" uid="74847">
+    <nd ref="335882591"/>
+    <nd ref="564406546"/>
+    <nd ref="334321798"/>
+    <nd ref="335882590"/>
+    <nd ref="334321831"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="44280992" visible="true" timestamp="2009-11-15T00:41:06Z" version="2" changeset="3118444" user="Marc Mongenet" uid="74847">
+    <nd ref="335882592"/>
+    <nd ref="564406538"/>
+    <nd ref="253201927"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44327944" visible="true" timestamp="2009-11-13T19:46:11Z" version="1" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="335882602"/>
+    <nd ref="252990041"/>
+    <nd ref="335882600"/>
+    <nd ref="562647673"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="44327946" visible="true" timestamp="2009-11-13T19:46:12Z" version="1" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="563240572"/>
+    <nd ref="334321646"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="44213635" visible="true" timestamp="2009-11-13T19:46:43Z" version="2" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="561537645"/>
+    <nd ref="335882605"/>
+    <nd ref="563240460"/>
+    <nd ref="252985028"/>
+    <nd ref="563240470"/>
+    <nd ref="335882603"/>
+    <nd ref="561537655"/>
+    <nd ref="563240473"/>
+    <nd ref="561537647"/>
+    <nd ref="563240477"/>
+    <nd ref="334288805"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44213633" visible="true" timestamp="2009-11-13T19:46:51Z" version="2" changeset="3108330" user="Marc Mongenet" uid="74847">
+    <nd ref="252990038"/>
+    <nd ref="282356033"/>
+    <nd ref="252990039"/>
+    <nd ref="563240547"/>
+    <nd ref="252990040"/>
+    <nd ref="334321646"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="tunnel" v="yes"/>
+    <tag k="layer" v="-1"/>
+  </way>
+  <way id="31258359" visible="true" timestamp="2009-11-14T22:59:53Z" version="7" changeset="3117955" user="Marc Mongenet" uid="74847">
+    <nd ref="267491477"/>
+    <nd ref="564301742"/>
+    <nd ref="563240737"/>
+    <nd ref="563240736"/>
+    <nd ref="335882588"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+  </way>
+  <way id="44327945" visible="true" timestamp="2009-11-22T11:27:39Z" version="2" changeset="3184608" user="Marc Mongenet" uid="74847">
+    <nd ref="335882601"/>
+    <nd ref="568325772"/>
+    <nd ref="563240572"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44327943" visible="true" timestamp="2009-11-22T11:27:40Z" version="2" changeset="3184608" user="Marc Mongenet" uid="74847">
+    <nd ref="563240573"/>
+    <nd ref="568325773"/>
+    <nd ref="335882602"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="24607242" visible="true" timestamp="2010-11-09T00:16:59Z" version="7" changeset="6324917" user="mfvl" uid="204153">
+    <nd ref="267491477"/>
+    <nd ref="562648133"/>
+    <nd ref="563240745"/>
+    <nd ref="253051894"/>
+    <nd ref="563240747"/>
+    <nd ref="562648129"/>
+    <nd ref="564315133"/>
+    <nd ref="253201929"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="layer" v="1"/>
+    <tag k="bridge" v="yes"/>
+  </way>
+  <way id="25884726" visible="true" timestamp="2010-07-28T16:54:15Z" version="16" changeset="5339656" user="Stéphane Brunner" uid="17835">
+    <nd ref="334288805"/>
+    <nd ref="836514919"/>
+    <nd ref="561540551"/>
+    <nd ref="252985029"/>
+    <nd ref="563240489"/>
+    <nd ref="252984710"/>
+    <nd ref="252984897"/>
+    <nd ref="568325766"/>
+    <nd ref="561537671"/>
+    <nd ref="252984898"/>
+    <nd ref="561537683"/>
+    <nd ref="561537692"/>
+    <nd ref="252984900"/>
+    <nd ref="561537690"/>
+    <nd ref="561537700"/>
+    <nd ref="563240496"/>
+    <nd ref="252984901"/>
+    <nd ref="563240503"/>
+    <nd ref="568325769"/>
+    <nd ref="252990037"/>
+    <nd ref="282356462"/>
+    <nd ref="252990038"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+  </way>
+  <way id="44522412" visible="true" timestamp="2010-11-22T00:49:52Z" version="3" changeset="6428397" user="dubochet" uid="55320">
+    <nd ref="334321779"/>
+    <nd ref="334321785"/>
+    <nd ref="334321790"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="ref" v="2"/>
+    <tag k="layer" v="-1"/>
+    <tag k="tunnel" v="yes"/>
+  </way>
+  <way id="44522413" visible="true" timestamp="2010-11-22T00:49:54Z" version="3" changeset="6428397" user="dubochet" uid="55320">
+    <nd ref="253201930"/>
+    <nd ref="334321795"/>
+    <nd ref="334321779"/>
+    <nd ref="253201931"/>
+    <nd ref="253201932"/>
+    <nd ref="334321831"/>
+    <nd ref="335882589"/>
+    <nd ref="253201933"/>
+    <nd ref="564406547"/>
+    <nd ref="335882592"/>
+    <tag k="name" v="m1"/>
+    <tag k="old_name" v="TSOL"/>
+    <tag k="railway" v="subway"/>
+    <tag k="ref" v="1"/>
+    <tag k="layer" v="-1"/>
+    <tag k="tunnel" v="yes"/>
+  </way>
+  <relation id="79742" visible="true" timestamp="2010-11-22T00:49:49Z" version="21" changeset="6428397" user="dubochet" uid="55320">
+    <member type="node" ref="253201930" role="forward:stop"/>
+    <member type="node" ref="334321790" role="backward:stop"/>
+    <member type="node" ref="253201933" role="forward:stop"/>
+    <member type="node" ref="334321798" role="backward:stop "/>
+    <member type="node" ref="253051896" role="forward:stop"/>
+    <member type="node" ref="334321654" role="backward:stop "/>
+    <member type="node" ref="253051899" role="stop"/>
+    <member type="node" ref="252990041" role="forward:stop"/>
+    <member type="node" ref="334321641" role="backward:stop "/>
+    <member type="node" ref="252985028" role="forward:stop"/>
+    <member type="node" ref="334288807" role="backward:stop "/>
+    <member type="node" ref="334288811" role="forward:stop"/>
+    <member type="node" ref="252985020" role="backward:stop "/>
+    <member type="node" ref="253201490" role="stop"/>
+    <member type="node" ref="334288820" role="forward:stop"/>
+    <member type="node" ref="334288823" role="backward:stop "/>
+    <member type="node" ref="334288827" role="forward:stop"/>
+    <member type="node" ref="334288866" role="backward:stop "/>
+    <member type="node" ref="253201479" role="stop"/>
+    <member type="node" ref="253201478" role="forward:stop"/>
+    <member type="node" ref="348197778" role="backward:stop "/>
+    <member type="node" ref="253201476" role="forward:stop"/>
+    <member type="node" ref="348197777" role="backward:stop "/>
+    <member type="node" ref="334288859" role="forward:stop"/>
+    <member type="node" ref="253201475" role="backward:stop "/>
+    <member type="node" ref="348197776" role="stop"/>
+    <member type="way" ref="23365452" role=""/>
+    <member type="way" ref="23370660" role=""/>
+    <member type="way" ref="23370663" role="forward"/>
+    <member type="way" ref="44213635" role="forward"/>
+    <member type="way" ref="44280992" role="forward"/>
+    <member type="way" ref="23385103" role=""/>
+    <member type="way" ref="23385146" role=""/>
+    <member type="way" ref="23392133" role=""/>
+    <member type="way" ref="37449658" role="forward"/>
+    <member type="way" ref="37449659" role=""/>
+    <member type="way" ref="23392140" role=""/>
+    <member type="way" ref="35545436" role=""/>
+    <member type="way" ref="37449655" role="forward"/>
+    <member type="way" ref="37449656" role=""/>
+    <member type="way" ref="37449657" role="forward"/>
+    <member type="way" ref="24158259" role=""/>
+    <member type="way" ref="24607242" role=""/>
+    <member type="way" ref="25884726" role=""/>
+    <member type="way" ref="44213633" role=""/>
+    <member type="way" ref="37449644" role="forward"/>
+    <member type="way" ref="44327943" role="forward"/>
+    <member type="way" ref="44327944" role="forward"/>
+    <member type="way" ref="44280993" role="forward"/>
+    <member type="way" ref="30319450" role="forward"/>
+    <member type="way" ref="44213634" role="forward"/>
+    <member type="way" ref="30319451" role="forward"/>
+    <member type="way" ref="30319452" role="forward"/>
+    <member type="way" ref="30319453" role="forward"/>
+    <member type="way" ref="30319455" role="forward"/>
+    <member type="way" ref="30321520" role="forward"/>
+    <member type="way" ref="44280994" role="forward"/>
+    <member type="way" ref="44327945" role="forward"/>
+    <member type="way" ref="44327946" role="forward"/>
+    <member type="way" ref="31258359" role="forward"/>
+    <member type="way" ref="44280990" role="forward"/>
+    <member type="way" ref="30321521" role="forward"/>
+    <member type="way" ref="44280991" role="forward"/>
+    <member type="way" ref="30321524" role="forward"/>
+    <member type="way" ref="44280985" role="forward"/>
+    <member type="way" ref="30722836" role="forward"/>
+    <member type="way" ref="30722844" role="forward"/>
+    <member type="way" ref="30722864" role=""/>
+    <member type="way" ref="24158257" role=""/>
+    <member type="way" ref="37449646" role="forward"/>
+    <member type="way" ref="37449648" role=""/>
+    <member type="way" ref="37449650" role="forward"/>
+    <member type="way" ref="37449653" role=""/>
+    <member type="way" ref="37449654" role="forward"/>
+    <member type="way" ref="44522412" role=""/>
+    <member type="way" ref="44522413" role=""/>
+    <tag k="color" v="#0000FF"/>
+    <tag k="name" v="M1"/>
+    <tag k="network" v="TL"/>
+    <tag k="ref" v="m1"/>
+    <tag k="route" v="subway"/>
+    <tag k="type" v="route"/>
+    <tag k="url" v="http://www.t-l.ch/"/>
+  </relation>
+</osm>
