@@ -6,7 +6,8 @@ import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 
-import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,10 +24,10 @@ public class MenuView extends LinearLayout {
 	LinearLayout menuInfoLine_;
 	View convertView;
 	Meal currentMeal_;
-	Activity ctx_;
+	FoodPlugin ctx_;
 	LayoutInflater mInflater_;
 
-	MenuView(Activity context, Meal currentMeal) {
+	MenuView(FoodPlugin context, Meal currentMeal) {
 		super(context);
 		convertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.food_menuentry, null);
@@ -101,6 +102,13 @@ public class MenuView extends LinearLayout {
 
 	private void ratingDialog() {
 		RatingsDialog r = new RatingsDialog(ctx_, currentMeal_);
+		r.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				ctx_.notifyDataSetChanged();	
+			}
+		});
 		r.show();
 	}
 

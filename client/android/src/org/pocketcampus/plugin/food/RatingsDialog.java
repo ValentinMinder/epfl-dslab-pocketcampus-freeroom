@@ -70,14 +70,13 @@ public class RatingsDialog extends Dialog {
 	 * 
 	 */
 	private class OKListener implements android.view.View.OnClickListener {
-
 		public void onClick(View v) {
 			submitRating((double) ratingbar.getRating());
 			RatingsDialog.this.dismiss();
 		}
 	}
 
-	// Load menu from server
+	// Submit Rating to the server.
 	private void submitRating(double rating) {
 		class SubmitRatingRequest extends ServerRequest {
 			@Override

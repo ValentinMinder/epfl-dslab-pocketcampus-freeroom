@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -66,22 +67,21 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		ViewHolder holder;
 
 		String restaurant = restaurants_.get(position);
-//		if (convertView == null) {
-//			// Creates a ViewHolder and store references to the two children
-//			// views we want to bind data to.
-//			holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
-//					.get(restaurant), mExpanded_[position]);
-//		} else {
-//			holder = (ViewHolder) convertView;
-//			holder.setTitle(restaurant);
-//			holder.setMenus(restaurant);
-//			
-//			holder.setExpanded(mExpanded_[position]);
-//		}
-		
+		// if (convertView == null) {
+		// // Creates a ViewHolder and store references to the two children
+		// // views we want to bind data to.
+		// holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
+		// .get(restaurant), mExpanded_[position]);
+		// } else {
+		// holder = (ViewHolder) convertView;
+		// holder.setTitle(restaurant);
+		// holder.setMenus(restaurant);
+		//			
+		// holder.setExpanded(mExpanded_[position]);
+		// }
+
 		holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
 				.get(restaurant), mExpanded_[position]);
-
 
 		holder.mTitle.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -93,7 +93,8 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 	}
 
 	public void toggle(int position) {
-		Log.d("List", "Toggling " + position + ", old: "+mExpanded_[position]+", new: "+!mExpanded_[position]);
+		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
+				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];
 		menusActivity_.notifyDataSetChanged();
 	}
@@ -120,6 +121,8 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 
 		View mView;
 		TextView mTitle;
+		ImageView mImage;
+
 		private List<View> mMenus;
 
 		public ViewHolder(Context context, String title, Vector<Meal> resto,
@@ -134,6 +137,14 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 					.findViewById(R.id.food_restaurantentry_title);
 			mTitle.setText(title);
 
+			mImage = (ImageView) mView
+					.findViewById(R.id.food_restaurantentry_arrow);
+			if(expanded){
+				mImage.setImageDrawable(menusActivity_.getResources().getDrawable(R.drawable.food_restaurantlist_south));
+			} else {
+				mImage.setImageDrawable(menusActivity_.getResources().getDrawable(R.drawable.food_restaurantlist_east));
+			}
+				
 			addView(mView);
 
 			mMenus = new ArrayList<View>();
@@ -188,9 +199,5 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 				v.setVisibility(expanded ? VISIBLE : GONE);
 			}
 		}
-	}
-
-	public void listRefreshed() {
-		this.notifyDataSetChanged();
 	}
 }
