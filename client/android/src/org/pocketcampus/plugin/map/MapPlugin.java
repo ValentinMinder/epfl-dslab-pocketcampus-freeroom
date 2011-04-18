@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.map;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -78,7 +78,8 @@ public class MapPlugin extends PluginBase {
 	private MapController mapController_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
-	private HashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays;
+	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays;
+	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays;
 
 	private OnItemGestureListener<OverlayItem> overlayClickHandler;
 
@@ -113,7 +114,8 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		displayedLayers_ = new ArrayList<MapElementsList>();
-		cachedOverlays = new HashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
+		cachedOverlays = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
+		lastRefreshedOverlays = new ConcurrentHashMap<MapElementsList, Long>();
 
 		overlayClickHandler = new OverlayClickHandler(this);
 
@@ -310,7 +312,7 @@ public class MapPlugin extends PluginBase {
 
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.map_clear_path).setVisible(mapPathOverlay_.isShowingPath());
@@ -321,7 +323,7 @@ public class MapPlugin extends PluginBase {
 		} else {
 			follow.setTitle(R.string.map_menu_my_position_on);
 		}
-		
+
 		return true;
 	}
 
@@ -497,10 +499,13 @@ public class MapPlugin extends PluginBase {
 		for(MapElementsList layer : displayedLayers_) {
 			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
 
-			if(aOverlay == null) {
-				populateLayer(layer);
-			} else {
+			if(aOverlay != null) {
 				mapView_.getOverlays().add(aOverlay);
+			}
+
+			if(aOverlay == null || isLayerOutdated(layer)) {
+				Log.d(this.getClass().toString(), "Layer outdated: " + layer.toString());
+				populateLayer(layer);
 			}
 
 		}
@@ -525,6 +530,22 @@ public class MapPlugin extends PluginBase {
 		RequestParameters param = new RequestParameters();
 		param.addParameter("layer_id", String.valueOf(layer.getLayerId()));
 		getRequestHandler().execute(new ItemsRequest(layer), "getItems", param);
+	}
+
+	private boolean isLayerOutdated(MapElementsList layer) {
+
+		int cacheTime = layer.getCacheTimeInMinutes();
+		if(cacheTime < 0) {
+			return false;
+		}
+
+		// Get the last time we got the data, will be 0 if we never did
+		long lastRefresh = lastRefreshedOverlays.get(layer);
+
+		// minutes to milliseconds
+		cacheTime = cacheTime * 1000 * 60;
+
+		return lastRefresh + cacheTime < System.currentTimeMillis();
 	}
 
 	/**
@@ -622,8 +643,9 @@ public class MapPlugin extends PluginBase {
 	 */
 	class ItemsRequest extends ServerRequest {
 
-		ItemizedIconOverlay<OverlayItem> aOverlay = null;
-		final MapElementsList layer_;
+		private final MapElementsList layer_;
+		private ItemizedIconOverlay<OverlayItem> aOverlay = null;
+		private ItemizedIconOverlay<OverlayItem> oldOverlay = null;
 
 		ItemsRequest(final MapElementsList layer) {
 			this.layer_ = layer;
@@ -653,9 +675,12 @@ public class MapPlugin extends PluginBase {
 				return;
 			}
 
+			layer_.clear();
 			for(MapElementBean meb : items) {
 				layer_.add(new MapElement(meb));
 			}
+
+			Log.d(this.getClass().toString(), "got new items");
 
 			// Try to get the icon for the overlay
 			try {
@@ -665,7 +690,8 @@ public class MapPlugin extends PluginBase {
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
-			cachedOverlays.put(layer_, aOverlay);
+			oldOverlay = cachedOverlays.put(layer_, aOverlay);
+			lastRefreshedOverlays.put(layer_, System.currentTimeMillis());
 		}
 
 		@Override
@@ -676,7 +702,13 @@ public class MapPlugin extends PluginBase {
 				return;
 			}
 
+			// If we had another overlay that displayed the same data, remove it
+			if(oldOverlay != null) {
+				mapView_.getOverlays().remove(oldOverlay);
+			}
+
 			mapView_.getOverlays().add(aOverlay);
+
 			mapView_.invalidate();
 			decrementProgressCounter();
 		}

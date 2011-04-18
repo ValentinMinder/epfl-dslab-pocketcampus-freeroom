@@ -73,17 +73,24 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
-		else
-			if (obj.getClass() != getClass())
-				return false;
-			else
-				return ((MapElementsList)obj).layerId_ == this.layerId_ &&
-					((MapElementsList)obj).layerTitle_.equals(this.layerTitle_);
+	public int hashCode() {
+		final int prime = 31;
+		int result = prime * layerId_;
+		return result;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		MapElementsList other = (MapElementsList) obj;
+		if (layerId_ != other.layerId_)
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "MapElementsList:<" + this.layerTitle_ + ">";
