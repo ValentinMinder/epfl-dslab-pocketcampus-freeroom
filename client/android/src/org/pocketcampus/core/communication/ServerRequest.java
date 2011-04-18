@@ -12,7 +12,7 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	private String command_;
 	
 	public String getUrl() {
-		return serverUrl_ + pluginInfo_.getId() + "/" + command_;
+		return serverUrl_ + pluginInfo_.getId() + "/" + command_ + ".do";
 	}
 	
 	@Override
