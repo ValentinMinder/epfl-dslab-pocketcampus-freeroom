@@ -5,17 +5,15 @@
     
     <string-array name="news_feeds_url">
         <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
-        <item>http://rss.news.yahoo.com/rss/topstories</item>
     </string-array>
     <string-array name="news_feeds_name">
         <item>EPFL</item>
-        <item>Yahoo! News: Top Stories</item>
     </string-array>
     
     <string name="news_refresh_title">Refresh time</string>
     <string name="news_refresh_summary">The pace at which the feeds get refreshed</string>
     <string name="news_show_image_title">Show a thumbnail</string>
-    <string name="news_show_image_summary">Shows an image accodring to the news</string>
+    <string name="news_show_image_summary">Shows an image according to the news</string>
     
     <string-array name="news_refresh_entries">
         <item>At each load</item>

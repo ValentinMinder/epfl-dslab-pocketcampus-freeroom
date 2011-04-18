@@ -1,5 +1,6 @@
 package org.pocketcampus.core.communication;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -16,8 +17,6 @@ import java.nio.charset.Charset;
 public class HttpRequest {
 	private URL url_;
 	
-	private static final int BUFFER_SIZE = 2000;
-	
 	protected HttpRequest(String urlString) {
 		try {
 			url_ = new URL(urlString);
@@ -32,21 +31,14 @@ public class HttpRequest {
 	 * @throws Exception
 	 */
 	public String getContent() throws Exception {
-		int charRead;
-		char[] inputBuffer = new char[BUFFER_SIZE]; 
-		String str = "";
 		
-		URLConnection connection = url_.openConnection();
-		InputStream content = connection.getInputStream();
-		InputStreamReader reader = new InputStreamReader(content, Charset.forName("iso-8859-15"));
-		         
-		while ((charRead = reader.read(inputBuffer))>0) {                    
-			String readString = String.copyValueOf(inputBuffer, 0, charRead);                    
-			str += readString;
-			inputBuffer = new char[BUFFER_SIZE];
+		BufferedReader breader = new BufferedReader(new InputStreamReader(url_.openStream(), "UTF-8"));
+		String s;
+		StringBuilder str = new StringBuilder();
+		while((s = breader.readLine()) != null) {
+			str.append(s);
 		}
-		
-		content.close();
-		return str;
+		breader.close();
+		return str.toString();
 	}
 }

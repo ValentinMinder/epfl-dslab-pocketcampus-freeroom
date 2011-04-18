@@ -27,6 +27,8 @@ import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
+import org.pocketcampus.plugin.map.ui.LevelBar;
+import org.pocketcampus.plugin.map.ui.OnLevelBarChangeListener;
 import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
@@ -45,6 +47,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -105,19 +109,49 @@ public class MapPlugin extends PluginBase {
 		CAMPUS_CENTER = new Position(lat, lon, alt);
 		CAMPUS_RADIUS = Integer.parseInt(getResources().getString(R.string.map_campus_radius));
 
-		// Setup view
-		setupActionBar(true);
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		setupMapView();
 
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		displayedLayers_ = new ArrayList<MapElementsList>();
+		
+		// Setup view
+		setupActionBar(true);
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		setupMapView();
+		
+		// Display the level bar if needed
+		if(getResources().getBoolean(R.bool.map_has_levels)) {
+			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
+			int max = getResources().getInteger(R.integer.map_level_max);
+			int min = getResources().getInteger(R.integer.map_level_min);
+			new LevelBar(seekBar, new OnLevelBarChangeListener() {
+				@Override
+				public void onLevelChanged(int level) {
+					changeLevel(level);
+					String slevel = getResources().getString(R.string.map_level);
+					Toast.makeText(getApplicationContext(), slevel + " " + level, Toast.LENGTH_SHORT).show();
+				}
+			}, max, min, max);
+		}
 
 		// Check if another activity want to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
+	}
+	
+	/**
+	 * Change the level of the map.
+	 * @param level the new level
+	 */
+	private void changeLevel(int level) {
+		ITileSource epflTile = new EpflTileSource(level + "");
+		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
+		mProvider.setTileSource(epflTile);
+		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, getBaseContext());
+		constantOverlays_.remove(0);
+		constantOverlays_.add(0, mTilesOverlay);
+		updateOverlays();
 	}
 
 	/**
@@ -171,7 +205,7 @@ public class MapPlugin extends PluginBase {
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
 		mProvider.setTileSource(epflTile);
 		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
-		constantOverlays_.add(mTilesOverlay);
+		constantOverlays_.add(0, mTilesOverlay);
 
 		// Following the user
 		myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
