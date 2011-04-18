@@ -217,10 +217,10 @@ public class MapPlugin extends PluginBase {
 	 * Displays a not-cancelable progress dialog with the specific message.
 	 * @param message
 	 */
-	private void showProgressDialog(String message) {
+	private void showProgressDialog(int messageId) {
 		progressDialog_ = new ProgressDialog(this);
 		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
-		progressDialog_.setMessage(message);
+		progressDialog_.setMessage(getResources().getString(messageId));
 		progressDialog_.setCancelable(false);
 		progressDialog_.show();
 	}
@@ -335,7 +335,7 @@ public class MapPlugin extends PluginBase {
 
 		// Show a layer selection
 		case R.id.map_menu_layers_button:
-			showProgressDialog("Loading layers...");
+			showProgressDialog(R.string.map_loading_layers);
 			loadLayersFromServer();
 			return true;
 

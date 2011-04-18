@@ -3,11 +3,12 @@
     <string name="map_menu_layers">Layers</string>
     <string name="map_menu_my_position_on">Follow me</string>
     <string name="map_menu_my_position_off">Do not follow me</string>
-    <string name="map_menu_campus_position">Campus</string>
+    <string name="map_menu_campus_position">Locate campus</string>
     <string name="map_menu_search">Search</string>
     <string name="map_menu_clear_path">Clear path</string>
     
     <string name="map_layer_pick_text">Choose layers</string>
+    <string name="map_loading_layers">Loading layers...</string>
     <string name="map_layer_ok_button">Ok</string>
     
     <string name="map_directions_not_accurate">We cannot locate you precisely enough to show directions</string>
