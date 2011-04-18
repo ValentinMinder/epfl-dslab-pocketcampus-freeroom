@@ -5,7 +5,7 @@
 		android:id="@+id/map_menu_layers_button"
 		android:icon="@android:drawable/ic_menu_preferences" />
 	<item
-		android:title="@string/map_menu_my_position"
+		android:title="@string/map_menu_my_position_on"
 		android:id="@+id/map_my_position"
 		android:icon="@android:drawable/ic_menu_mylocation" />
 	<item
@@ -13,7 +13,12 @@
 		android:id="@+id/map_campus_position"
 		android:icon="@android:drawable/ic_dialog_info" />
 	<item
-		android:title="@string/map_menu_path"
-		android:id="@+id/map_path"
-		android:icon="@android:drawable/ic_menu_myplaces" />
+		android:title="@string/map_menu_search"
+		android:id="@+id/map_search"
+		android:icon="@android:drawable/ic_search_category_default" />
+	<item
+		android:title="@string/map_menu_clear_path"
+		android:id="@+id/map_clear_path"
+		android:icon="@android:drawable/ic_menu_myplaces"
+		android:visible="false" />
 </menu>

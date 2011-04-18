@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="map_menu_layers">Layers</string>
-    <string name="map_menu_my_position">My position</string>
+    <string name="map_menu_my_position_on">Follow me</string>
+    <string name="map_menu_my_position_off">Do not follow me</string>
     <string name="map_menu_campus_position">Campus</string>
-    <string name="map_menu_path">Directions</string>
+    <string name="map_menu_search">Search</string>
+    <string name="map_menu_clear_path">Clear path</string>
     
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_layer_ok_button">Ok</string>
@@ -14,4 +16,5 @@
     <string name="map_search">Search the map</string>
     <string name="map_searching">Searching the map</string>
     <string name="map_level">Level</string>
+    <string name="map_take_me_there_button">Take me there!</string>
 </resources>

@@ -9,6 +9,8 @@ import org.pocketcampus.shared.plugin.map.Position;
 import android.content.Context;
 
 public class MapPathOverlay extends PathOverlay {
+	
+	private boolean isShowing_;
 
 	public MapPathOverlay(int color, float width, Context ctx) {
 		super(color, ctx);
@@ -26,6 +28,18 @@ public class MapPathOverlay extends PathOverlay {
 		for(Position p : list) {
 			this.addPoint(p.getLatitudeE6(), p.getLongitudeE6());
 		}
+		
+		isShowing_ = true;
+	}
+	
+	@Override
+	public void clearPath() {
+		super.clearPath();
+		isShowing_ = false;
+	}
+
+	public boolean isShowingPath() {
+		return isShowing_;
 	}
 	
 
