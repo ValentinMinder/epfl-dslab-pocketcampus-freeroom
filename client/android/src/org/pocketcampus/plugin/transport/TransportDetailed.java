@@ -88,7 +88,7 @@ public class TransportDetailed extends Activity {
 					class ConnectionsRequest extends ServerRequest {
 
 						@Override
-						protected void onPostExecute(String result) {
+						protected void doInUiThread(String result) {
 							System.out.println(result);
 							
 							Intent intent = new Intent(TransportDetailed.this, org.pocketcampus.plugin.transport.TransportResults.class);

@@ -36,7 +36,7 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 				class AutocompleteRequest extends ServerRequest {
 
 					@Override
-					protected void onPostExecute(String result) {
+					protected void doInUiThread(String result) {
 						Gson gson = new Gson();
 						Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
 						

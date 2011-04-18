@@ -33,7 +33,7 @@ public class SandwichList {
 		class SandwichRequest extends ServerRequest {
 			
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 
 				sandwichList_ = new Vector<Vector<Sandwich>>();
 				

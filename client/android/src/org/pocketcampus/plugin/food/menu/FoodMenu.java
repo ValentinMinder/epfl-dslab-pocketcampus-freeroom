@@ -96,7 +96,7 @@ public class FoodMenu {
 			private List<Meal> campusMenuList;
 			
 			@Override
-			protected void onPostExecute(String result) {				
+			protected void doInUiThread(String result) {				
 				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
 				Gson gson = new Gson();

@@ -50,7 +50,7 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		class ConnectionsRequest extends ServerRequest {
 
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
 
 				Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();

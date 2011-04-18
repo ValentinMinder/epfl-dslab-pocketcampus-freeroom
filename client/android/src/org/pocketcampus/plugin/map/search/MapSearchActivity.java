@@ -69,7 +69,7 @@ public class MapSearchActivity extends ListActivity {
 		
 		class MapSearchRequest extends ServerRequest{
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 				if(progressDialog_ != null) {
 					progressDialog_.dismiss();
 				}

@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.map;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.osmdroid.DefaultResourceProxyImpl;
@@ -79,6 +78,9 @@ public class MapPlugin extends PluginBase {
 	private MapController mapController_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
+	private HashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays;
+	
+	private OnItemGestureListener<OverlayItem> overlayClickHandler;
 
 	// UI
 	private ProgressDialog progressDialog_;
@@ -101,7 +103,6 @@ public class MapPlugin extends PluginBase {
 	// List of all and displayed overlays
 	private List<MapElementsList> allLayers_;
 	private List<MapElementsList> displayedLayers_;
-	public OnItemGestureListener<OverlayItem> overlayClickHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,7 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		displayedLayers_ = new ArrayList<MapElementsList>();
+		cachedOverlays = new HashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
 		
 		overlayClickHandler = new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
 			@Override
@@ -360,7 +362,7 @@ public class MapPlugin extends PluginBase {
 	private void loadLayersFromServer() {
 		class LayersRequest extends ServerRequest {
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 
 				if(result == null) { //an error happened
 					dismissProgressDialog();
@@ -510,16 +512,20 @@ public class MapPlugin extends PluginBase {
 		for(Overlay over : constantOverlays_) {
 			mapView_.getOverlays().add(over);
 		}
+		
 		// Display the selected layers
 		for(MapElementsList layer : displayedLayers_) {
-			if(layer.size() == 0) {
+			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
+			
+			if(aOverlay == null) {
 				populateLayer(layer);
-			} else { //the items have already been fetched
-				ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(layer, null, new DefaultResourceProxyImpl(getApplicationContext()));
+			} else {
 				mapView_.getOverlays().add(aOverlay);
-				mapView_.invalidate();
 			}
+
 		}
+		
+		mapView_.invalidate();
 	}
 
 	/**
@@ -559,7 +565,7 @@ public class MapPlugin extends PluginBase {
 	 */
 	class DirectionsRequest extends ServerRequest {
 		@Override
-		protected void onPostExecute(String result) {
+		protected void doInUiThread(String result) {
 
 			decrementProgressCounter();
 
@@ -589,7 +595,7 @@ public class MapPlugin extends PluginBase {
 		}
 		
 		@Override
-		protected void onPostExecute(String result) {
+		protected void doInUiThread(String result) {
 			if(result == null) {
 				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
@@ -607,6 +613,7 @@ public class MapPlugin extends PluginBase {
 				decrementProgressCounter();
 				return;
 			}
+			
 			if(items == null) {
 				decrementProgressCounter();
 				return;
@@ -618,7 +625,7 @@ public class MapPlugin extends PluginBase {
 			
 			// Try to get the icon for the overlay
 			// TODO do it elsewhere than in the main thread
-			ItemizedOverlay<OverlayItem> aOverlay = null;
+			ItemizedIconOverlay<OverlayItem> aOverlay = null;
 			try {
 				Drawable icon = ImageUtil.getDrawableFromUrl(layer_.getIconUrl());
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
@@ -626,6 +633,8 @@ public class MapPlugin extends PluginBase {
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
+			cachedOverlays.put(layer_, aOverlay);
+			
 			mapView_.getOverlays().add(aOverlay);
 			mapView_.invalidate();
 			decrementProgressCounter();

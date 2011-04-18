@@ -17,10 +17,7 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	
 	@Override
 	protected String doInBackground(RequestParameters... params) {
-//		System.out.println(command_);
-//		System.out.println(params[0]);
-//		System.out.println(pluginInfo_.getId());
-		
+
 		String url = getUrl();
 		
 		if(params[0] != null) {
@@ -31,17 +28,22 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 		
 		Log.d(this.getClass().toString(), url);
 		
+		String result = null;
 		try {
-			String resp = req.getContent();
-			return resp;
+			result = req.getContent();
 		} catch (Exception e) {
 			exception_ = e;
-			return null;
 		}
+		
+		doInBackgroundThread(result);
+		
+		return result;
 	}
 	
 	@Override
-	protected abstract void onPostExecute(String result);
+	protected final void onPostExecute(String result) {
+		doInUiThread(result);
+	}
 	
 	public void setPluginInfo(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
@@ -54,6 +56,9 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	public void setCommand(String command) {
 		command_ = command;
 	}
+
+	protected void doInBackgroundThread(String result) {};
+	protected abstract void doInUiThread(String result);
 }
 
 

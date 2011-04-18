@@ -80,7 +80,7 @@ public class RatingsDialog extends Dialog {
 	private void submitRating(double rating) {
 		class SubmitRatingRequest extends ServerRequest {
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 				String submitted = "";
 				if (result.contains("true")) {
 					submitted = ctx_.getResources().getString(

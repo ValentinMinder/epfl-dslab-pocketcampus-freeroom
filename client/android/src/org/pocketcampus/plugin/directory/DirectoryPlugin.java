@@ -152,7 +152,7 @@ public class DirectoryPlugin extends PluginBase implements OnClickListener{
 			
 			// ...what to do when the result is ready
 			@Override
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 				if(result != null) {
 					System.out.println(result);
 					Gson gson = new Gson();

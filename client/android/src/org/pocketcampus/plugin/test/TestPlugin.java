@@ -53,7 +53,7 @@ public class TestPlugin extends PluginBase {
 		class UpperCaseRequest extends ServerRequest {
 			
 			// ...what to do when the result is ready
-			protected void onPostExecute(String result) {
+			protected void doInUiThread(String result) {
 				if(result != null) {
 					int elapsed = stopTimer();
 					
