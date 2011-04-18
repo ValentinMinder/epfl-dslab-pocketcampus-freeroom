@@ -173,7 +173,8 @@ public class Map implements IPlugin {
 
 		Connection dbConnection = null;
 		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			Statement statement = dbConnection.createStatement();
 			ResultSet rs = statement.executeQuery("select * from MAP_LAYERS");
 
@@ -244,7 +245,8 @@ public class Map implements IPlugin {
 
 		Connection dbConnection = null;
 		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where layer_id=?");
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();

@@ -58,7 +58,8 @@ public class Search {
 
 		Connection dbConnection = null;
 		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			Statement statement = dbConnection.createStatement();
 			ResultSet rs = statement.executeQuery("select *, 3956*2*asin(sqrt(power(sin((" + person.getLatitude() + "-abs(dest.centerX))*pi()/180/2),2)+cos(" + person.getLatitude() + "*pi()/180)*cos(abs(dest.centerX)*pi()/180)*power(sin((" + person.getLongitude() + "-dest.centerY)*pi()/180/2),2))) as distance from map_pois dest order by distance asc limit 1");
 
@@ -235,7 +236,8 @@ public class Search {
 
 		Connection dbConnection = null;
 		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
+			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where title like ? or description like ? limit ?");
 			statement.setString(1, "%" + query + "%");
 			statement.setString(2, "%" + query + "%");
