@@ -16,7 +16,7 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	}
 	
 	@Override
-	protected String doInBackground(RequestParameters... params) {
+	protected final String doInBackground(RequestParameters... params) {
 
 		String url = getUrl();
 		
