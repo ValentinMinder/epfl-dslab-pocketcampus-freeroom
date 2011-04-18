@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,6 +73,12 @@ public class Router extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Request: " + request.getRequestURL());
+		Enumeration<String> ps = request.getParameterNames();
+		while(ps.hasMoreElements()) {
+			String s = ps.nextElement();
+			System.out.println("Parameter: " + s + " -> " + request.getParameter(s));
+		}
+		
 		// URL used to access the servlet
 		//String path = request.getPathInfo();
 		String path = request.getServletPath();
