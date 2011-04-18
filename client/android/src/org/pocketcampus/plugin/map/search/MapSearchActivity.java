@@ -11,7 +11,7 @@ import org.pocketcampus.core.communication.ServerRequest;
 import org.pocketcampus.plugin.map.MapInfo;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
-import org.pocketcampus.utils.MyToast;
+import org.pocketcampus.utils.Notification;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -75,7 +75,7 @@ public class MapSearchActivity extends ListActivity {
 				}
 				if(result == null) {
 					try {
-						MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
+						Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 					} catch(Exception e) {
 						Log.e("MapSearchActivity", e.toString());
 					}

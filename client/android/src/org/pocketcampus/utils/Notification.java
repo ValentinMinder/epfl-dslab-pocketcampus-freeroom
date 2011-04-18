@@ -11,7 +11,7 @@ import android.widget.Toast;
  * @author Jonas
  *
  */
-public class MyToast {
+public class Notification {
 	
 	/**
 	 * Show a toast with short duration

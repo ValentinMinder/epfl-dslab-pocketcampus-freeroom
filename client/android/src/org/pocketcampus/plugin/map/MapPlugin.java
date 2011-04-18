@@ -31,7 +31,7 @@ import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
-import org.pocketcampus.utils.MyToast;
+import org.pocketcampus.utils.Notification;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -65,16 +65,15 @@ public class MapPlugin extends PluginBase {
 	private static Position CAMPUS_CENTER;
 	private static int CAMPUS_RADIUS;
 
+	// Map UI
 	private MapView mapView_;
 	private MapController mapController_;
-	private List<MapElementsList> layers_;
-	private List<MapElementsList> selectedLayers_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
 
+	// UI
 	private ProgressDialog progressDialog_;
 	private ActionBar actionBar_;
-
 
 	/**
 	 * Number of parallel threads being executed.
@@ -84,32 +83,39 @@ public class MapPlugin extends PluginBase {
 	 */
 	private int progressCount_ = 0;
 
-
 	/**
-	 * Overlays which are unconditionally displayed
-	 * like the EPFL Tiles Overlay
+	 * Overlays which are unconditionally displayed,
+	 * like the campus Tiles Overlay, or the user position
 	 */
 	private List<Overlay> constantOverlays_;
+	
+	// List of all and displayed overlays
+	private List<MapElementsList> allLayers_;
+	private List<MapElementsList> displayedLayers_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
 
+		// Get the campus coordinates
 		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
 		double lon = Double.parseDouble(getResources().getString(R.string.map_campus_longitude));
 		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
 		CAMPUS_CENTER = new Position(lat, lon, alt);
 		CAMPUS_RADIUS = Integer.parseInt(getResources().getString(R.string.map_campus_radius));
 
+		// Setup view
 		setupActionBar(true);
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-
 		setupMapView();
 
-		layers_ = new ArrayList<MapElementsList>();
-		selectedLayers_ = new ArrayList<MapElementsList>();
+		// The layers are not know yet
+		constantOverlays_ = new ArrayList<Overlay>();
+		allLayers_ = new ArrayList<MapElementsList>();
+		displayedLayers_ = new ArrayList<MapElementsList>();
 
+		// Check if another activity want to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
 	}
@@ -138,7 +144,7 @@ public class MapPlugin extends PluginBase {
 
 				@Override
 				public boolean onItemSingleTapUp(int index, OverlayItem item) {
-					MyToast.showToast(getApplicationContext(), item.mTitle);
+					Notification.showToast(getApplicationContext(), item.mTitle);
 					showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
 					return true;
 				}
@@ -150,17 +156,14 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * The background is provided by the default tile source.
 	 * We add a TileOverlay above the background (for example
-	 * the map of the epfl campus).
+	 * the map of the campus).
 	 */
 	private void setupMapView() {
 
 		mapView_ = (MapView) findViewById(R.id.mapview);
-		constantOverlays_ = new ArrayList<Overlay>();
-
-		mapController_ = mapView_.getController();
-
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
+		mapController_ = mapView_.getController();
 
 
 		// Add EPFL tiles layer
@@ -175,7 +178,7 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.add(myLocationOverlay_);
 
 		// Path overlay
-		mapPathOverlay_ = new MapPathOverlay(Color.BLUE, this);
+		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
 		constantOverlays_.add(mapPathOverlay_);
 	}
 
@@ -249,52 +252,7 @@ public class MapPlugin extends PluginBase {
 		mapController_.setZoom(16);
 		updateOverlays();
 		
-		centerAtEpfl();
-	}
-
-	/**
-	 * Downloads the list of available layers
-	 */
-	private void loadLayersFromServer() {
-		class LayersRequest extends ServerRequest {
-			@Override
-			protected void onPostExecute(String result) {
-
-				if(result == null) { //an error happened
-					dismissProgressDialog();
-					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
-					return;
-				}
-				Log.d("SERVER", "response: " + result);
-
-				//Deserializes the response
-				Gson gson = new Gson();
-				Type mapLayersType = new TypeToken<List<MapLayerBean>>(){}.getType();
-				List<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-				try {
-					layers = gson.fromJson(result, mapLayersType);
-				} catch (JsonSyntaxException e) {
-					dismissProgressDialog();
-					MyToast.showToast(getApplicationContext(), R.string.unexpected_response);
-					return;
-				}
-				if(layers == null) {
-					dismissProgressDialog();
-					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
-					return;
-				}
-
-				layers_ = new ArrayList<MapElementsList>(layers.size());
-				for(MapLayerBean mlb : layers) {
-					if(mlb.isDisplayable())
-						layers_.add(new MapElementsList(mlb));
-				}
-				dismissProgressDialog();
-				layerSelector();
-			}
-		}
-		//request of the layers
-		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+		centerOnCampus();
 	}
 
 	/**
@@ -342,7 +300,7 @@ public class MapPlugin extends PluginBase {
 
 			// Enable the user following
 		case R.id.map_campus_position:
-			centerAtEpfl();
+			centerOnCampus();
 			return true;
 
 			// Shows the search dialog
@@ -356,10 +314,55 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
+	 * Downloads the list of available layers
+	 */
+	private void loadLayersFromServer() {
+		class LayersRequest extends ServerRequest {
+			@Override
+			protected void onPostExecute(String result) {
+
+				if(result == null) { //an error happened
+					dismissProgressDialog();
+					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+					return;
+				}
+				Log.d("SERVER", "response: " + result);
+
+				//Deserializes the response
+				Gson gson = new Gson();
+				Type mapLayersType = new TypeToken<List<MapLayerBean>>(){}.getType();
+				List<MapLayerBean> layers = new ArrayList<MapLayerBean>();
+				try {
+					layers = gson.fromJson(result, mapLayersType);
+				} catch (JsonSyntaxException e) {
+					dismissProgressDialog();
+					Notification.showToast(getApplicationContext(), R.string.unexpected_response);
+					return;
+				}
+				if(layers == null) {
+					dismissProgressDialog();
+					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+					return;
+				}
+
+				allLayers_ = new ArrayList<MapElementsList>(layers.size());
+				for(MapLayerBean mlb : layers) {
+					if(mlb.isDisplayable())
+						allLayers_.add(new MapElementsList(mlb));
+				}
+				dismissProgressDialog();
+				layerSelector();
+			}
+		}
+		//request of the layers
+		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+	}
+
+	/**
 	 * Launch the dialog that allows to select the different layers
 	 */
 	private void layerSelector() {
-		final LayerSelector l = new LayerSelector(this, layers_, selectedLayers_);
+		final LayerSelector l = new LayerSelector(this, allLayers_, displayedLayers_);
 
 		// Show the dialog, using a callback to the the selected layers back
 		l.selectLayers(new OnClickListener() {
@@ -380,52 +383,13 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
-	 * Center the map at EPFL
+	 * Center the map on campus
 	 */
-	private void centerAtEpfl() {
+	private void centerOnCampus() {
 		myLocationOverlay_.disableFollowLocation();
-		GeoPoint epflPoint = new GeoPoint(46519732, 6566734);
-		mapController_.setCenter(epflPoint);
+		GeoPoint campusPoint = new GeoPoint(46519732, 6566734);
+		mapController_.setCenter(campusPoint);
 	}
-
-	/**
-	 * Show the directions layer to a certain POI 
-	 *
-	 * @param poi ID of the POI
-	 */
-	/*
-	private void showDirectionsFromHereToPOI(int poi) {
-
-		// TODO factorize
-
-		mapPathOverlay_.clearPath();
-		mapView_.invalidate();
-
-		Location fix = myLocationOverlay_.getLastFix();
-
-		if(fix == null || (fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections)) {
-			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
-			return;
-		}
-
-		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
-		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
-
-		if(distanceToCenter > EPFL_RADIUS) {
-			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
-			return;
-		}
-
-		RequestParameters params = new RequestParameters();
-		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
-		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
-		params.addParameter("endPoiId", Integer.toString(poi));
-
-		//request of the layers
-		getRequestHandler().execute(new DirectionsRequest(), "routing", params);
-
-	}
-	*/
 
 	/**
 	 * Show the directions layer to a certain POI 
@@ -460,15 +424,15 @@ public class MapPlugin extends PluginBase {
 
 		// Check if the user is located and has a good accuracy
 		if(fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections) {
-			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
+			Notification.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
 			return;
 		}
 
-		// Check if the user is at EPFL
+		// Check if the user is on campus
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
 		double distanceToCenter = directDistanceBetween(startPos, CAMPUS_CENTER);
 		if(distanceToCenter > CAMPUS_RADIUS) {
-			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
+			Notification.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
 			return;
 		}
 
@@ -489,19 +453,9 @@ public class MapPlugin extends PluginBase {
 	 * @param selectedLayers
 	 */
 	private void setSelectedLayers(ArrayList<MapElementsList> selectedLayers) {
-		this.selectedLayers_ = selectedLayers;
+		this.displayedLayers_ = selectedLayers;
 
 		updateOverlays();
-	}
-
-	@Override
-	public PluginInfo getPluginInfo() {
-		return new MapInfo();
-	}
-
-	@Override
-	public PluginPreference getPluginPreference() {
-		return null;
 	}
 
 
@@ -515,7 +469,7 @@ public class MapPlugin extends PluginBase {
 			mapView_.getOverlays().add(over);
 		}
 		// Display the selected layers
-		for(MapElementsList layer : selectedLayers_) {
+		for(MapElementsList layer : displayedLayers_) {
 			if(layer.size() == 0) {
 				populateLayer(layer);
 			} else { //the items have already been fetched
@@ -545,7 +499,7 @@ public class MapPlugin extends PluginBase {
 			protected void onPostExecute(String result) {
 				if(result == null) {
 					decrementProgressCounter();
-					MyToast.showToast(getApplicationContext(), R.string.server_connection_error);
+					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 					return;
 				}
 				Log.d("SERVER", "response: " + result);
@@ -578,7 +532,7 @@ public class MapPlugin extends PluginBase {
 
 					@Override
 					public boolean onItemSingleTapUp(int index, OverlayItem item) {
-						MyToast.showToast(getApplicationContext(), item.mTitle);
+						Notification.showToast(getApplicationContext(), item.mTitle);
 						showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
 						return true;
 					}
@@ -630,5 +584,17 @@ public class MapPlugin extends PluginBase {
 			}
 
 		}
+	}
+	
+
+
+	@Override
+	public PluginInfo getPluginInfo() {
+		return new MapInfo();
+	}
+
+	@Override
+	public PluginPreference getPluginPreference() {
+		return null;
 	}
 }

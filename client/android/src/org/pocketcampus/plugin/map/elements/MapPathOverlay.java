@@ -10,8 +10,9 @@ import android.content.Context;
 
 public class MapPathOverlay extends PathOverlay {
 
-	public MapPathOverlay(int color, Context ctx) {
+	public MapPathOverlay(int color, float width, Context ctx) {
 		super(color, ctx);
+		this.getPaint().setStrokeWidth(width);
 	}
 	
 	public void setPath(Path path) {
