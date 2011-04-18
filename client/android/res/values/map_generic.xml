@@ -3,7 +3,7 @@
     <string name="map_campus_latitude">46.520101</string>
     <string name="map_campus_longitude">6.565189</string>
     <string name="map_campus_altitude">0</string>
-    <string name="map_campus_radius">350</string>
+    <integer name="map_campus_radius">350</integer>
     
     <bool name="map_has_levels">true</bool>
     <integer name="map_level_min">-4</integer>

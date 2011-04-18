@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.map;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
@@ -33,6 +36,7 @@ import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
+import org.pocketcampus.utils.ImageUtil;
 import org.pocketcampus.utils.Notification;
 
 import android.app.ProgressDialog;
@@ -40,6 +44,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,25 +101,39 @@ public class MapPlugin extends PluginBase {
 	// List of all and displayed overlays
 	private List<MapElementsList> allLayers_;
 	private List<MapElementsList> displayedLayers_;
+	public OnItemGestureListener<OverlayItem> overlayClickHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
 
-		// Get the campus coordinates
-		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
-		double lon = Double.parseDouble(getResources().getString(R.string.map_campus_longitude));
-		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
-		CAMPUS_CENTER = new Position(lat, lon, alt);
-		CAMPUS_RADIUS = Integer.parseInt(getResources().getString(R.string.map_campus_radius));
-
-
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		displayedLayers_ = new ArrayList<MapElementsList>();
 		
+		overlayClickHandler = new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+			@Override
+			public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+				return false;
+			}
+
+			@Override
+			public boolean onItemSingleTapUp(int index, OverlayItem item) {
+				Notification.showToast(getApplicationContext(), item.mTitle);
+				showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
+				return true;
+			}
+		};
+
+		// Get the campus coordinates
+		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
+		double lon = Double.parseDouble(getResources().getString(R.string.map_campus_longitude));
+		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
+		CAMPUS_CENTER = new Position(lat, lon, alt);
+		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
+
 		// Setup view
 		setupActionBar(true);
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
@@ -135,7 +154,7 @@ public class MapPlugin extends PluginBase {
 			}, max, min, max);
 		}
 
-		// Check if another activity want to show something
+		// Check if another activity wants to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
 	}
@@ -170,19 +189,7 @@ public class MapPlugin extends PluginBase {
 					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
 			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
 			overItems.add(overItem);
-			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-				@Override
-				public boolean onItemLongPress(int arg0, OverlayItem arg1) {
-					return false;
-				}
-
-				@Override
-				public boolean onItemSingleTapUp(int index, OverlayItem item) {
-					Notification.showToast(getApplicationContext(), item.mTitle);
-					showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
-					return true;
-				}
-			}, new DefaultResourceProxyImpl(getApplicationContext()));
+			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
 			constantOverlays_.add(aOverlay);
 		}
 	}
@@ -360,9 +367,8 @@ public class MapPlugin extends PluginBase {
 					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 					return;
 				}
-				Log.d("SERVER", "response: " + result);
 
-				//Deserializes the response
+				// Deserializes the response
 				Gson gson = new Gson();
 				Type mapLayersType = new TypeToken<List<MapLayerBean>>(){}.getType();
 				List<MapLayerBean> layers = new ArrayList<MapLayerBean>();
@@ -381,13 +387,15 @@ public class MapPlugin extends PluginBase {
 
 				allLayers_ = new ArrayList<MapElementsList>(layers.size());
 				for(MapLayerBean mlb : layers) {
-					if(mlb.isDisplayable())
+					if(mlb.isDisplayable()) {
 						allLayers_.add(new MapElementsList(mlb));
+					}
 				}
 				dismissProgressDialog();
 				layerSelector();
 			}
 		}
+		
 		//request of the layers
 		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 	}
@@ -528,58 +536,9 @@ public class MapPlugin extends PluginBase {
 		 */
 
 		incrementProgressCounter();
-		class ItemsRequest extends ServerRequest {
-			@Override
-			protected void onPostExecute(String result) {
-				if(result == null) {
-					decrementProgressCounter();
-					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
-					return;
-				}
-				Log.d("SERVER", "response: " + result);
-
-				//Deserializes the response
-				Gson gson = new Gson();
-				Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
-				List<MapElementBean> items = new ArrayList<MapElementBean>();
-
-				try {
-					items = gson.fromJson(result, mapElementType);
-				} catch (JsonSyntaxException e) {
-					decrementProgressCounter();
-					return;
-				}
-				if(items == null) {
-					decrementProgressCounter();
-					return;
-				}
-
-				for(MapElementBean meb : items) {
-					layer.add(new MapElement(meb));
-				}
-
-				ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(layer, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-					@Override
-					public boolean onItemLongPress(int arg0, OverlayItem arg1) {
-						return false;
-					}
-
-					@Override
-					public boolean onItemSingleTapUp(int index, OverlayItem item) {
-						Notification.showToast(getApplicationContext(), item.mTitle);
-						showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
-						return true;
-					}
-				}, new DefaultResourceProxyImpl(getApplicationContext()));
-
-				mapView_.getOverlays().add(aOverlay);
-				mapView_.invalidate();
-				decrementProgressCounter();
-			}
-		}
 		RequestParameters param = new RequestParameters();
-		param.addParameter("layer_id", layer.getLayerId() + "");
-		getRequestHandler().execute(new ItemsRequest(), "getItems", param);
+		param.addParameter("layer_id", String.valueOf(layer.getLayerId()));
+		getRequestHandler().execute(new ItemsRequest(layer), "getItems", param);
 	}
 
 	/**
@@ -620,6 +579,58 @@ public class MapPlugin extends PluginBase {
 		}
 	}
 	
+
+	class ItemsRequest extends ServerRequest {
+		
+		final MapElementsList layer_;
+		
+		ItemsRequest(final MapElementsList layer) {
+			this.layer_ = layer;
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			if(result == null) {
+				decrementProgressCounter();
+				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+				return;
+			}
+
+			// Deserializes the response
+			Gson gson = new Gson();
+			Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
+			List<MapElementBean> items = new ArrayList<MapElementBean>();
+
+			try {
+				items = gson.fromJson(result, mapElementType);
+			} catch (JsonSyntaxException e) {
+				decrementProgressCounter();
+				return;
+			}
+			if(items == null) {
+				decrementProgressCounter();
+				return;
+			}
+
+			for(MapElementBean meb : items) {
+				layer_.add(new MapElement(meb));
+			}
+			
+			// Try to get the icon for the overlay
+			// TODO do it elsewhere than in the main thread
+			ItemizedOverlay<OverlayItem> aOverlay = null;
+			try {
+				Drawable icon = ImageUtil.getDrawableFromUrl(layer_.getIconUrl());
+				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
+			} catch (Exception e) {
+				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
+			}
+
+			mapView_.getOverlays().add(aOverlay);
+			mapView_.invalidate();
+			decrementProgressCounter();
+		}
+	}
 
 
 	@Override

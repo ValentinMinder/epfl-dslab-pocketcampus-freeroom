@@ -17,6 +17,7 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	private String layerTitle_;
 	private int cacheTimeInMinutes_;
 	private int layerId_;
+	private String iconUrl_;
 	
 	public MapElementsList(String title, int cache) {
 		this.layerTitle_ = title;
@@ -27,6 +28,7 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		this.layerTitle_ = mlb.getName();
 		this.cacheTimeInMinutes_ = mlb.getCache();
 		this.layerId_ = mlb.getId();
+		this.iconUrl_ = mlb.getDrawableUrl();
 		//XXX more?
 	}
 		
@@ -62,6 +64,14 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		this.cacheTimeInMinutes_ = cacheTimeInMinutes;
 	}
 		
+	public String getIconUrl() {
+		return iconUrl_;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl_ = iconUrl;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)
