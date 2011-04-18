@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class MapLayerBean implements Serializable{
 
 	private static final long serialVersionUID = -314236678555986755L;
-	private String name, drawable_url;
+	private String name, drawableUrl;
 	private int id,cache;
 	private boolean displayable;
 	
@@ -15,7 +15,7 @@ public class MapLayerBean implements Serializable{
 	
 	public MapLayerBean(String name, String drawable_url, int id, int cache, boolean displayable) {
 		this.name = name;
-		this.drawable_url = drawable_url;
+		this.drawableUrl = drawable_url;
 		this.id = id;
 		this.cache = cache;
 		this.displayable = displayable;
@@ -35,11 +35,11 @@ public class MapLayerBean implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDrawable_url() {
-		return drawable_url;
+	public String getDrawableUrl() {
+		return drawableUrl;
 	}
 	public void setDrawable_url(String drawable_url) {
-		this.drawable_url = drawable_url;
+		this.drawableUrl = drawable_url;
 	}
 	public int getId() {
 		return id;
