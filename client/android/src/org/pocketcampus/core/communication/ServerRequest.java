@@ -57,7 +57,21 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 		command_ = command;
 	}
 
+	/**
+	 * Method called to handle the content coming from the server.
+	 * Do not change the UI in this method.
+	 * This method can be slow, since it is not running on the UI thread.
+	 * 
+	 * @param result Data from the server
+	 */
 	protected void doInBackgroundThread(String result) {};
+	
+	/**
+	 * Method called after {@link doInBackgroundThread}, can be used to update the UI.
+	 * This method runs on the UI thread so it must be fast! 
+	 * 
+	 * @param result Data from the server
+	 */
 	protected void doInUiThread(String result) {};
 }
 
