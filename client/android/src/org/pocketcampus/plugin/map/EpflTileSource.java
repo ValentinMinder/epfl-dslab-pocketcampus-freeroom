@@ -8,6 +8,7 @@ import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.pocketcampus.shared.utils.StringUtils;
 
 /**
  * Tile source of EPFL map for OSMDroid
@@ -86,26 +87,16 @@ public class EpflTileSource extends OnlineTileSourceBase {
 
 	/**
 	 * Splits the integer into the following format -> NNN/NNN/NNN
-	 * XXX see utils.StringUtils
 	 * @param a the integer to decompose
 	 * @return the formatted string.
 	 */
 	private String decomp(int a) {
-		String s1 = pad(a);
+		String s1 = StringUtils.pad(a, 9);
 		String s = s1.substring(0, 3) + "/" + s1.substring(3, 6) + "/"
 				+ s1.substring(6, 9);
 		return s;
 	}
-
-	/**
-	 * Adds leading zero to a number
-	 * @param a an integer
-	 * @return the padded number.
-	 */
-	private String pad(int a) {
-		return String.format("%09d", a); 
-	}
-
+	
 	int ycoord(int y, int zoom) {
 		return (int) Math.floor(4194303 / (Math.pow(2, (22 - zoom)))) - y;
 	}
