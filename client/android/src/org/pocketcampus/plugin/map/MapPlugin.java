@@ -62,8 +62,8 @@ public class MapPlugin extends PluginBase {
 
 	// Used for the location
 	private static final float maxAccuracyForDirections = 100;
-	private static final Position EPFL_CENTER = new Position(46.520101, 6.565189, 0);
-	private static final int EPFL_RADIUS = 350;
+	private static Position CAMPUS_CENTER;
+	private static int CAMPUS_RADIUS;
 
 	private MapView mapView_;
 	private MapController mapController_;
@@ -94,8 +94,13 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.map_main);
+
+		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
+		double lon = Double.parseDouble(getResources().getString(R.string.map_campus_longitude));
+		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
+		CAMPUS_CENTER = new Position(lat, lon, alt);
+		CAMPUS_RADIUS = Integer.parseInt(getResources().getString(R.string.map_campus_radius));
 
 		setupActionBar(true);
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
@@ -461,8 +466,8 @@ public class MapPlugin extends PluginBase {
 
 		// Check if the user is at EPFL
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
-		double distanceToCenter = directDistanceBetween(startPos, EPFL_CENTER);
-		if(distanceToCenter > EPFL_RADIUS) {
+		double distanceToCenter = directDistanceBetween(startPos, CAMPUS_CENTER);
+		if(distanceToCenter > CAMPUS_RADIUS) {
 			MyToast.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
 			return;
 		}

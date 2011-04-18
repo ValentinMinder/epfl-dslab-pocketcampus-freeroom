@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map_campus_latitude">46.520101</string>
+    <string name="map_campus_longitude">6.565189</string>
+    <string name="map_campus_altitude">0</string>
+    <string name="map_campus_radius">350</string>
+</resources>
