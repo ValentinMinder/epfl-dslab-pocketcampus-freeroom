@@ -48,6 +48,7 @@ public class MapSearchActivity extends ListActivity {
 	    Intent intent = getIntent();
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	      String query = intent.getStringExtra(SearchManager.QUERY);
+	      query = query.trim();
 	      searchMap(query);
 	    }
 
@@ -111,6 +112,10 @@ public class MapSearchActivity extends ListActivity {
 		}
 		if(items_ == null) {
 			return;
+		}
+		
+		if(items_.size() == 1) {
+			startMapActivity(items_.get(0));
 		}
 
 		ArrayAdapter<String> results = new ArrayAdapter<String>(this, R.layout.map_list);

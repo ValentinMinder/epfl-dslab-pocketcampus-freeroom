@@ -252,7 +252,8 @@ public class NewsProvider {
 	}
 
 	protected void addAll(List<NewsItem> items) {
-		items_.addAll(items);
+		if(items_ != null && items != null)
+			items_.addAll(items);
 	}
 	
 	
