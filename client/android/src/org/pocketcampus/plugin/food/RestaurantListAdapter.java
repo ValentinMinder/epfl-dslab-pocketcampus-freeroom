@@ -83,7 +83,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
 				.get(restaurant), mExpanded_[position]);
 
-		holder.mTitle.setOnClickListener(new OnClickListener() {
+		holder.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				toggle(position);
 			}

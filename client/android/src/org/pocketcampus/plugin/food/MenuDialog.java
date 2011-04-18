@@ -43,7 +43,7 @@ public class MenuDialog extends Dialog {
 			final Activity menus, boolean photoButtonsEnabled) {
 		super(menus);
 		this.displayedMeal_ = meal;
-		this.context_ = menus.getApplicationContext();
+		this.context_ = menus;
 
 		/**
 		 * No title for dialog Else there is indeed space for the title.
