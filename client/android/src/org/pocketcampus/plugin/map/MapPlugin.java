@@ -588,6 +588,7 @@ public class MapPlugin extends PluginBase {
 
 	class ItemsRequest extends ServerRequest {
 		
+		ItemizedIconOverlay<OverlayItem> aOverlay = null;
 		final MapElementsList layer_;
 		
 		ItemsRequest(final MapElementsList layer) {
@@ -595,13 +596,8 @@ public class MapPlugin extends PluginBase {
 		}
 		
 		@Override
-		protected void doInUiThread(String result) {
-			if(result == null) {
-				decrementProgressCounter();
-				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
-				return;
-			}
-
+		protected void doInBackgroundThread(String result) {
+			
 			// Deserializes the response
 			Gson gson = new Gson();
 			Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
@@ -624,8 +620,6 @@ public class MapPlugin extends PluginBase {
 			}
 			
 			// Try to get the icon for the overlay
-			// TODO do it elsewhere than in the main thread
-			ItemizedIconOverlay<OverlayItem> aOverlay = null;
 			try {
 				Drawable icon = ImageUtil.getDrawableFromUrl(layer_.getIconUrl());
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
@@ -634,7 +628,16 @@ public class MapPlugin extends PluginBase {
 			}
 
 			cachedOverlays.put(layer_, aOverlay);
-			
+		}
+		
+		@Override
+		protected void doInUiThread(String result) {
+			if(result == null) {
+				decrementProgressCounter();
+				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+				return;
+			}
+
 			mapView_.getOverlays().add(aOverlay);
 			mapView_.invalidate();
 			decrementProgressCounter();

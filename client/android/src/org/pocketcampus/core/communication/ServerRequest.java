@@ -58,7 +58,7 @@ public abstract class ServerRequest extends AsyncTask<RequestParameters, Integer
 	}
 
 	protected void doInBackgroundThread(String result) {};
-	protected abstract void doInUiThread(String result);
+	protected void doInUiThread(String result) {};
 }
 
 
