@@ -31,7 +31,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 
 	@Override
 	public MapLayerBean getLayer() {
-		return new MapLayerBean("Velopass", "http://www.google.com", 1337, 5, true);
+		return new MapLayerBean("Velopass", "http://192.168.1.39/pocketcampus/bikes_normal_mini.png", 1337, 5, true);
 	}
 
 	@Override
