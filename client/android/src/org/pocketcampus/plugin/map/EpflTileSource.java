@@ -22,14 +22,14 @@ public class EpflTileSource extends OnlineTileSourceBase {
 	private final static int MIN_ZOOM = 0;
 	private final static int MAX_ZOOM = 18;
 	private final static int TILE_SIZE_PX = 256;
-	private final static String TILE_IMAGE_TYPE = ".png";
+	private final static String TILE_IMAGE_EXTENSION = ".png";
 	
 	/**
 	 * Creates a new tile source for the EPFL map
 	 * @param level the level to display (-4 to 8, and all-merc)
 	 */
 	public EpflTileSource(final String level) {
-		super("EPFL" + level, ResourceProxy.string.mapnik, MIN_ZOOM, MAX_ZOOM, TILE_SIZE_PX, TILE_IMAGE_TYPE,
+		super("EPFL" + level, ResourceProxy.string.mapnik, MIN_ZOOM, MAX_ZOOM, TILE_SIZE_PX, TILE_IMAGE_EXTENSION,
 				"http://plan-epfl-tile0.epfl.ch/batiments" + level + "/",
 				"http://plan-epfl-tile1.epfl.ch/batiments" + level + "/",
 				"http://plan-epfl-tile2.epfl.ch/batiments" + level + "/",
@@ -49,10 +49,10 @@ public class EpflTileSource extends OnlineTileSourceBase {
 	public String getTileURLString(MapTile aTile) {
 		String url = getBaseUrl() + aTile.getZoomLevel() + "/"
 				+ decomp(aTile.getX()) + "/"
-				+ decomp(ycoord(aTile.getY(), aTile.getZoomLevel())) + ".png";
+				+ decomp(ycoord(aTile.getY(), aTile.getZoomLevel()))
+				+ TILE_IMAGE_EXTENSION;
 
 		if (checkUrl(url)) {
-			System.out.println("FOUND: " + url);
 			return url;
 		} else {
 			return outsideEpflTileSource_.getTileURLString(aTile);
