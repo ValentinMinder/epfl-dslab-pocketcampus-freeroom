@@ -70,12 +70,17 @@ public class Router extends HttpServlet {
 	 * Final because the children do not have to handle the request by themselves
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		System.out.println("Request: " + request.getRequestURL());
 		// URL used to access the servlet
-		String path = request.getPathInfo();
+		//String path = request.getPathInfo();
+		String path = request.getServletPath();
+		
+		if(path != null && path.endsWith(".do")) {
+			path = path.substring(0, path.length() - 3);
+		}
 
 		// Request without any command
-		if(path.equals("/")) {
+		if(path == null || path.equals("/")) {
 			reporter_.statusReport(response, core_.getPluginList(), core_.getMethodList());
 			return;
 		}
