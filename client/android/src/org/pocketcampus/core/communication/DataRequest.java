@@ -28,9 +28,7 @@ public abstract class DataRequest extends Request<String> {
 		} catch (Exception e) {
 			exception_ = e;
 		}
-		
-		doInBackgroundThread(result);
-		
+
 		return result;
 	}
 	
