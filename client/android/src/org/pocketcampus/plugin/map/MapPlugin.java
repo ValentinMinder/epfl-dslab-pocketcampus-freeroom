@@ -111,6 +111,19 @@ public class MapPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
 
+		initVariables();
+
+		// Setup view
+		setupActionBar(true);
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		setupMapView();
+
+		// Check if another activity wants to show something
+		Bundle extras = getIntent().getExtras();
+		handleIntent(extras);
+	}
+	
+	private void initVariables() {
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
@@ -126,30 +139,6 @@ public class MapPlugin extends PluginBase {
 		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
 		CAMPUS_CENTER = new Position(lat, lon, alt);
 		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
-
-		// Setup view
-		setupActionBar(true);
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		setupMapView();
-
-		// Display the level bar if needed
-		if(getResources().getBoolean(R.bool.map_has_levels)) {
-			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
-			int max = getResources().getInteger(R.integer.map_level_max);
-			int min = getResources().getInteger(R.integer.map_level_min);
-			new LevelBar(seekBar, new OnLevelBarChangeListener() {
-				@Override
-				public void onLevelChanged(int level) {
-					changeLevel(level);
-					String slevel = getResources().getString(R.string.map_level);
-					Toast.makeText(getApplicationContext(), slevel + " " + level, Toast.LENGTH_SHORT).show();
-				}
-			}, max, min, max);
-		}
-
-		// Check if another activity wants to show something
-		Bundle extras = getIntent().getExtras();
-		handleIntent(extras);
 	}
 
 	@Override
@@ -218,6 +207,21 @@ public class MapPlugin extends PluginBase {
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
 		mapController_ = mapView_.getController();
+		
+		// Display the level bar if needed
+		if(getResources().getBoolean(R.bool.map_has_levels)) {
+			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
+			int max = getResources().getInteger(R.integer.map_level_max);
+			int min = getResources().getInteger(R.integer.map_level_min);
+			new LevelBar(seekBar, new OnLevelBarChangeListener() {
+				@Override
+				public void onLevelChanged(int level) {
+					changeLevel(level);
+					String slevel = getResources().getString(R.string.map_level);
+					Toast.makeText(getApplicationContext(), slevel + " " + level, Toast.LENGTH_SHORT).show();
+				}
+			}, max, min, max);
+		}
 
 		// Add EPFL tiles layer
 		ITileSource epflTile = new EpflTileSource();
