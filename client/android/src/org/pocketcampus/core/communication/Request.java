@@ -96,6 +96,7 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 
 		A cachedValue = (A) cacheManager_.getFromCache(url);
 		if(cachedValue != null) {
+			doInBackgroundThread(cachedValue);
 			return cachedValue;
 		}
 
