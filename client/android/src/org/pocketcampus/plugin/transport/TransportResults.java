@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.transport;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.ui.ActionBar;
 
 import android.app.Activity;

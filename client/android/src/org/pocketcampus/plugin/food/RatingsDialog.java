@@ -15,7 +15,7 @@ package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 
@@ -78,7 +78,7 @@ public class RatingsDialog extends Dialog {
 
 	// Submit Rating to the server.
 	private void submitRating(double rating) {
-		class SubmitRatingRequest extends ServerRequest {
+		class SubmitRatingRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
 				String submitted = "";

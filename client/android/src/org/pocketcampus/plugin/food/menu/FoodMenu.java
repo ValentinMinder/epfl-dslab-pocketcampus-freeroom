@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 
@@ -92,7 +92,7 @@ public class FoodMenu {
 	// Load menu from server
 	private void loadCampusMenu() {
 		pluginHandler_.menuRefreshing();
-		class MenusRequest extends ServerRequest {
+		class MenusRequest extends DataRequest {
 			private List<Meal> campusMenuList;
 			
 			@Override

@@ -20,7 +20,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -564,7 +564,7 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Request class for the directions
 	 */
-	class DirectionsRequest extends ServerRequest {
+	class DirectionsRequest extends DataRequest {
 		@Override
 		protected void doInUiThread(String result) {
 
@@ -589,7 +589,7 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Used to retreive the layers from the server
 	 */
-	class LayersRequest extends ServerRequest {
+	class LayersRequest extends DataRequest {
 
 		@Override
 		protected void doInBackgroundThread(String result) {
@@ -641,7 +641,7 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Used to retrieve the items from a layer
 	 */
-	class ItemsRequest extends ServerRequest {
+	class ItemsRequest extends DataRequest {
 
 		private final MapElementsList layer_;
 		private ItemizedIconOverlay<OverlayItem> aOverlay = null;

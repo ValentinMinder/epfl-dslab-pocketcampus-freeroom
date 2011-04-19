@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -50,7 +50,7 @@ public class TestPlugin extends PluginBase {
 		textView_.setText("");
 		
 		// Create a class for your request with...
-		class UpperCaseRequest extends ServerRequest {
+		class UpperCaseRequest extends DataRequest {
 			
 			// ...what to do when the result is ready
 			protected void doInUiThread(String result) {

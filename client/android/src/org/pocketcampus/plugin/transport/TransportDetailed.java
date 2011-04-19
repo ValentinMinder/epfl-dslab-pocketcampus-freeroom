@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -85,7 +85,7 @@ public class TransportDetailed extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					class ConnectionsRequest extends ServerRequest {
+					class ConnectionsRequest extends DataRequest {
 
 						@Override
 						protected void doInUiThread(String result) {

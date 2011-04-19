@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -148,7 +148,7 @@ public class DirectoryPlugin extends PluginBase implements OnClickListener{
 	private void search(String first_name, String last_name, String sciper) {
 		
 		// Create a class for your request with...
-		class DirectoryRequest extends ServerRequest {
+		class DirectoryRequest extends DataRequest {
 			
 			// ...what to do when the result is ready
 			@Override

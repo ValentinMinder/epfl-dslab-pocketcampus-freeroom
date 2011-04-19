@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
@@ -30,7 +30,7 @@ public class SandwichList {
 	}
 	
 	private void loadSandwiches(){
-		class SandwichRequest extends ServerRequest {
+		class SandwichRequest extends DataRequest {
 			
 			@Override
 			protected void doInUiThread(String result) {

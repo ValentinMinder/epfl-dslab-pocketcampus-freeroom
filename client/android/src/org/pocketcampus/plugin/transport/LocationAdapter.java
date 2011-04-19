@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.shared.plugin.transport.Location;
 
 import android.content.Context;
@@ -33,7 +33,7 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 			public void onInvalidated() {
 				super.onInvalidated();
 				
-				class AutocompleteRequest extends ServerRequest {
+				class AutocompleteRequest extends DataRequest {
 
 					@Override
 					protected void doInUiThread(String result) {

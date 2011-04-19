@@ -1,18 +1,55 @@
 package org.pocketcampus.core.communication;
 
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 
-public abstract class ImageRequest extends AsyncTask<String, Integer, String> {
+public abstract class ImageRequest extends Request<Drawable> {
 	
-	@Override
-	protected String doInBackground(String... params) {
-		System.out.println(params);
-		
-		// TODO handle images loading
-		
-		return null;
+	protected int expirationDelay() {
+		// default to 1 hour
+		return 60 * 60 * 1;
 	}
 	
 	@Override
-	protected abstract void onPostExecute(String result);
+	protected int timeoutDelay() {
+		// default 10 seconds
+		return 10;
+	}
+	
+	protected final String getUrl() {
+		return serverUrl_ + pluginInfo_.getId() + "/image/" + command_;
+	}
+	
+	@Override
+	protected final Drawable loadFromServer(String url) {
+		Drawable result = null;
+		
+		try {
+			result = Drawable.createFromStream(((java.io.InputStream)new java.net.URL(url).getContent()), url);
+		} catch (Exception e) {
+			exception_ = e;
+		}
+		
+		doInBackgroundThread(result);
+		
+		return result;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 
@@ -47,8 +47,14 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 	private void loadSummary(final TransportSummaryAdapter adapter) {
 		incrementProgressCounter();
 		
-		class ConnectionsRequest extends ServerRequest {
-
+		class ConnectionsRequest extends DataRequest {
+			
+			@Override
+			protected int expirationDelay() {
+				// 5 minutes
+				return 60 * 5;
+			}
+			
 			@Override
 			protected void doInUiThread(String result) {
 				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
@@ -64,7 +70,7 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 			
 			@Override
 			protected void onCancelled() {
-				super.onCancelled();
+				decrementProgressCounter();
 				adapter.setSummaryError();
 				notifyDataSetChanged();
 			}

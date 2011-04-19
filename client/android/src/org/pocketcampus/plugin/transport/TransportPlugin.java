@@ -48,16 +48,16 @@ public class TransportPlugin extends PluginBase {
 		mainList_.setAdapter(adapter_);
 
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
-		setupSummuryList();
+		setupSummaryList();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setupSummuryList();
+		setupSummaryList();
 	}
 
-	private void setupSummuryList() {
+	private void setupSummaryList() {
 		Map<String, String> commonDestinationsInPrefs = (Map<String, String>) commonDestPrefs_.getAll();
 		
 		if(commonDestinationsInPrefs.equals(commonDestinations_)) {

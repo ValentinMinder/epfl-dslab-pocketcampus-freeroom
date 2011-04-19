@@ -7,7 +7,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.ServerRequest;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.plugin.map.MapInfo;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
@@ -68,7 +68,7 @@ public class MapSearchActivity extends ListActivity {
 		
 		items_ = null;
 		
-		class MapSearchRequest extends ServerRequest{
+		class MapSearchRequest extends DataRequest{
 			@Override
 			protected void doInUiThread(String result) {
 				if(progressDialog_ != null) {

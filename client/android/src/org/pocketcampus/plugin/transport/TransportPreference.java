@@ -63,6 +63,14 @@ public class TransportPreference extends PluginPreference {
 		// Common destinations
 		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs_.getAll();
 
+		// TODO remove, just for test //
+		if(commonDestinations.size() == 0) {
+			commonDestPrefsEditor_.putString("Vevey", "Vevey");
+			commonDestPrefsEditor_.commit();
+			forceRefresh();
+		}
+		///////////////////////////////
+		
 		for(String dest : commonDestinations.values()) {
 			final Destination destination = new Destination(dest);
 			Preference commonDestPref = new Preference(this);
@@ -76,7 +84,7 @@ public class TransportPreference extends PluginPreference {
 					return false;
 				}
 			};
-
+			
 			commonDestPref.setOnPreferenceClickListener(onPreferenceClickListener);
 			pluginPrefCat.addPreference(commonDestPref);
 		}
@@ -121,7 +129,6 @@ public class TransportPreference extends PluginPreference {
 //
 //			@Override
 //			public boolean onPreferenceClick(Preference preference) {
-//				// TODO
 //				return false;
 //			}
 //		};
@@ -138,7 +145,6 @@ public class TransportPreference extends PluginPreference {
 //
 //			@Override
 //			public boolean onPreferenceClick(Preference preference) {
-//				// TODO
 //				return false;
 //			}
 //		};
