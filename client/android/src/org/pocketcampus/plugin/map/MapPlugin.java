@@ -198,7 +198,6 @@ public class MapPlugin extends PluginBase {
 		mapView_.setBuiltInZoomControls(true);
 		mapController_ = mapView_.getController();
 
-
 		// Add EPFL tiles layer
 		ITileSource epflTile = new EpflTileSource();
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
@@ -213,6 +212,10 @@ public class MapPlugin extends PluginBase {
 		// Path overlay
 		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
 		constantOverlays_.add(mapPathOverlay_);
+
+		// Center map
+		mapController_.setZoom(16);
+		centerOnCampus();
 	}
 
 	/**
@@ -282,10 +285,7 @@ public class MapPlugin extends PluginBase {
 	protected void onStart() {
 		super.onStart();
 
-		mapController_.setZoom(16);
 		updateOverlays();
-
-		centerOnCampus();
 	}
 
 	/**
@@ -499,10 +499,18 @@ public class MapPlugin extends PluginBase {
 		for(MapElementsList layer : displayedLayers_) {
 			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
 
+			// The overlay allready exists
 			if(aOverlay != null) {
 				mapView_.getOverlays().add(aOverlay);
+				Log.d(this.getClass().toString(), "Overlay: " + aOverlay.toString());
+			} else {
+				Log.d(this.getClass().toString(), "Overlay NULL");
 			}
 
+			Log.d(this.getClass().toString(), "Cached overlays: " + cachedOverlays.toString());
+			
+			// The overlay does not exist, or is outdated 
+			// If outdated, we redownload the new items, but keep the old ones on the screen while downloading
 			if(aOverlay == null || isLayerOutdated(layer)) {
 				Log.d(this.getClass().toString(), "Layer outdated: " + layer.toString());
 				populateLayer(layer);
@@ -640,6 +648,8 @@ public class MapPlugin extends PluginBase {
 
 	/**
 	 * Used to retrieve the items from a layer
+	 * If the layer already exists, but is outdated,
+	 * we redownload the new items, but keep the old ones on the screen while downloading
 	 */
 	class ItemsRequest extends DataRequest {
 
@@ -690,6 +700,7 @@ public class MapPlugin extends PluginBase {
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
+			// Put the new overlay, get the old one if any (to be removed in the UI thread)
 			oldOverlay = cachedOverlays.put(layer_, aOverlay);
 			lastRefreshedOverlays.put(layer_, System.currentTimeMillis());
 		}
@@ -705,6 +716,9 @@ public class MapPlugin extends PluginBase {
 			// If we had another overlay that displayed the same data, remove it
 			if(oldOverlay != null) {
 				mapView_.getOverlays().remove(oldOverlay);
+				Log.d(this.getClass().toString(), "Old overlay: " + oldOverlay.toString());
+			} else {
+				Log.d(this.getClass().toString(), "No old overlay");
 			}
 
 			mapView_.getOverlays().add(aOverlay);
