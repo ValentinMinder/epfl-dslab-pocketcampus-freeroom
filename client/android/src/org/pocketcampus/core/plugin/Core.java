@@ -17,7 +17,7 @@ import android.content.Intent;
 
 public class Core {
 	private static Core instance_ = null;
-	private ReleaseMode applicationMode_;
+	private static ReleaseMode applicationMode_;
 	private Vector<PluginBase> availablePlugins_;
 
 	public enum ReleaseMode {
@@ -59,5 +59,9 @@ public class Core {
 	public String getServerUrl() {
 		// Change this to your local IP.
 		return "http://128.178.252.49:8080/";
+	}
+	
+	public static ReleaseMode getApplicationMode() {
+		return applicationMode_;
 	}
 }

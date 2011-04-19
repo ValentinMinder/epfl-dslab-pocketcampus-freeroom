@@ -6,6 +6,7 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
 import android.os.Bundle;
@@ -41,6 +42,8 @@ public class AuthenticationPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_login);
 
+		Tracker.getInstance().trackPageView("auth");
+		
 //		String username = getIntent().getExtras().getString("username");
 //		String password = getIntent().getExtras().getString("password");
 

@@ -56,13 +56,12 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainscreen_main);
 
-		Tracker.getInstance().trackPageView("news/home");
-
 		setupActionBar(false);
 
 		tracker_ = Tracker.getInstance();
-		tracker_.start("UA-22135241-2", 10, this);
-
+		tracker_.start(this);
+		tracker_.trackPageView("news/home");
+		
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
@@ -77,6 +76,8 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
 			toast.show();
 		}*/
+		
+		
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
@@ -290,4 +291,10 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 
 		//newsProvider_.refreshIfNeeded();
 	}
+	
+	@Override
+	  protected void onDestroy() {
+	    super.onDestroy();
+	    tracker_.stop();
+	  }
 }
