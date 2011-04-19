@@ -2,10 +2,8 @@ package org.pocketcampus.plugin.food;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,13 +24,12 @@ import org.pocketcampus.shared.plugin.food.Sandwich;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
-
 public class Food implements IPlugin, IMapElementsProvider {
 
 	private List<Meal> campusMeals_;
 	private HashMap<Integer, Meal> campusHashMap_;
 	private Date lastImportDateM_;
-	
+
 	private List<Sandwich> sandwichList_;
 	private Date lastImportDateS_;
 
@@ -56,7 +53,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
 		if (!isValid(lastImportDateM_)) {
-			System.out.println("<getMenus>: Date not valid. Reimporting menus.");
+			System.out
+					.println("<getMenus>: Date not valid. Reimporting menus.");
 			campusMeals_.clear();
 			importMenus();
 		} else {
@@ -136,7 +134,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 			if (currentMeal.hashCode() == mealHashCode) {
 				// Update rating for meal
 				currentMeal.getRating().addRating(r);
-				writeToFile();
+				// writeToFile();
 				return true;
 			}
 		}
@@ -154,13 +152,13 @@ public class Food implements IPlugin, IMapElementsProvider {
 	public Rating getRating(HttpServletRequest request) {
 		System.out.println("Single rating request.");
 		String hashCodeString = request.getParameter("meal");
-		
-		if(hashCodeString == null){
+
+		if (hashCodeString == null) {
 			return null;
 		}
-		
+
 		int mealHashCode = Integer.parseInt(hashCodeString);
-		return new Rating(); 
+		return new Rating();
 	}
 
 	/**
@@ -186,9 +184,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 				lastImportDateM_ = new Date();
 			}
 		}
-		if(!campusMeals_.isEmpty()){
+		if (!campusMeals_.isEmpty()) {
 			System.out.println("<importMenus>: Writing to file.");
-			writeToFile();
+			// writeToFile();
 		} else {
 			System.out.println("<importMenus>: Restoring");
 			campusMeals_ = restoreFromFile();
@@ -386,21 +384,22 @@ public class Food implements IPlugin, IMapElementsProvider {
 		return new MapLayerBean("Restaurants", "", 15678, -1, true);
 	}
 
-	public void writeToFile() {
-		lastImportDateM_ = new Date();
-		String filename = "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
-
-		File menuFile = new File(filename);
-
-		FileOutputStream fos = null;
-		ObjectOutputStream out = null;
-		try {
-			fos = new FileOutputStream(menuFile);
-			out = new ObjectOutputStream(fos);
-			out.writeObject(campusMeals_);
-			out.close();
-		} catch (IOException ex) {}
-	}
+	// public void writeToFile() {
+	// lastImportDateM_ = new Date();
+	// String filename =
+	// "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
+	//
+	// File menuFile = new File(filename);
+	//
+	// FileOutputStream fos = null;
+	// ObjectOutputStream out = null;
+	// try {
+	// fos = new FileOutputStream(menuFile);
+	// out = new ObjectOutputStream(fos);
+	// out.writeObject(campusMeals_);
+	// out.close();
+	// } catch (IOException ex) {}
+	// }
 
 	public List<Meal> restoreFromFile() {
 		String filename = "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
