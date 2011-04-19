@@ -25,6 +25,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
@@ -149,6 +150,26 @@ public class MapPlugin extends PluginBase {
 		// Check if another activity wants to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
+	}
+
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				updateOverlays();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
+		
+		super.setupActionBar(addHomeButton);
 	}
 
 	/**
