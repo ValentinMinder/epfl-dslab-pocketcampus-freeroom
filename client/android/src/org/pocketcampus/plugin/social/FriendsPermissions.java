@@ -3,6 +3,10 @@ package org.pocketcampus.plugin.social;
 import java.util.ArrayList;
 
 import org.pocketcampus.R;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
+import org.pocketcampus.shared.plugin.authentication.SessionId;
+import org.pocketcampus.shared.plugin.authentication.Username;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

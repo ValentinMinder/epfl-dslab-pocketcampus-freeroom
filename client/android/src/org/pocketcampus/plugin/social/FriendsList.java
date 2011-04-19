@@ -7,6 +7,9 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
+import org.pocketcampus.shared.plugin.authentication.SessionId;
+import org.pocketcampus.shared.plugin.authentication.Username;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;

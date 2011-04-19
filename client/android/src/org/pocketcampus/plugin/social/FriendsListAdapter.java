@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.social;
 import java.util.Vector;
 
 import org.pocketcampus.R;
+import org.pocketcampus.shared.plugin.authentication.Username;
 
 import android.app.Activity;
 import android.content.Context;

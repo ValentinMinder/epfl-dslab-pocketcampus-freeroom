@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.social;
 
 import java.io.Serializable;
 
+import org.pocketcampus.shared.plugin.authentication.Username;
+
 public class ContactNotification implements Serializable {
 	/**
 	 * 
