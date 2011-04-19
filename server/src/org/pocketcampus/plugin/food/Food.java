@@ -1,9 +1,5 @@
 package org.pocketcampus.plugin.food;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -187,10 +183,11 @@ public class Food implements IPlugin, IMapElementsProvider {
 		if (!campusMeals_.isEmpty()) {
 			System.out.println("<importMenus>: Writing to file.");
 			// writeToFile();
-		} else {
-			System.out.println("<importMenus>: Restoring");
-			campusMeals_ = restoreFromFile();
 		}
+		// else {
+		// System.out.println("<importMenus>: Restoring");
+		// campusMeals_ = restoreFromFile();
+		// }
 	}
 
 	/**
@@ -401,25 +398,29 @@ public class Food implements IPlugin, IMapElementsProvider {
 	// } catch (IOException ex) {}
 	// }
 
-	public List<Meal> restoreFromFile() {
-		String filename = "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
-		List<Meal> menu = null;
-
-		File toGet = new File(filename);
-		FileInputStream fis = null;
-		ObjectInputStream in = null;
-		try {
-			fis = new FileInputStream(toGet);
-			in = new ObjectInputStream(fis);
-			menu = (List<Meal>) in.readObject();
-
-			in.close();
-		} catch (IOException ex) {
-		} catch (ClassNotFoundException ex) {
-		} catch (ClassCastException cce) {
-		}
-
-		return menu;
-	}
+//	public List<Meal> restoreFromFile() {
+//		String filename = "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
+//		List<Meal> menu = null;
+//
+//		File toGet = new File(filename);
+//		FileInputStream fis = null;
+//		ObjectInputStream in = null;
+//		try {
+//			fis = new FileInputStream(toGet);
+//			in = new ObjectInputStream(fis);
+//			Object obj = in.readObject();
+//			
+//			if(obj instanceof List<?>){
+//				menu = (List<Meal>) obj;
+//			}
+//
+//			in.close();
+//		} catch (IOException ex) {
+//		} catch (ClassNotFoundException ex) {
+//		} catch (ClassCastException cce) {
+//		}
+//
+//		return menu;
+//	}
 
 }
