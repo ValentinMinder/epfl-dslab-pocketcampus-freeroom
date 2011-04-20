@@ -1,0 +1,40 @@
+#mainNav ul,
+#content,
+ul.folio,
+ul.social,
+ul.social a,
+#comments h2,
+.comment-paging,
+li.widget
+{
+	height: 1%;
+}
+
+#header {
+	zoom:1;
+}
+
+.searchform .submit {
+	padding: 1px 2px 0;
+}
+
+/* No pngs for naughty IE 6 */
+#wrapper {
+	width: 448px;
+}
+#content, #header, #mainNav, #content_wrapper {
+	background: #fff none;
+	padding: 0;
+}
+#subContent {
+	padding: 36px 0 0;	
+}
+div#footer {
+	padding: 0 0 72px;
+	}
+#header {
+	padding: 14px 78px 14px 16px;
+}
+#header .dlvcard {
+	margin-right: 14px;
+}

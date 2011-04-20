@@ -1,6 +1,4 @@
-<%@ page import="org.pocketcampus.core.plugin.Core" %>
-<%@ page import="org.pocketcampus.shared.utils.DateUtils" %>
-<%@ page import="java.util.Date;" %>
+<%@ page import="org.pocketcampus.core.plugin.Core;" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"> 
@@ -54,38 +52,47 @@
 	<div class="vcard" id="header"> 
 	
 			<h1 id="name">PocketCampus Server</h1> 
-			<p class="title"><% out.print(Core.INSTANCE_NAME); %></p> 
+			<p class="title">EPFL Test Instance</p> 
  
 		<div class="clear"></div> 
 	</div> 
 	<div class="clear"></div> 
 	<div id="mainNav"> 
 		<ul>
-			<li class="page_item page-item-3 current_page_item"><a href="index.jsp" title="Dashboard">Dashboard</a></li> 
-			<li class="page_item page-item-2"><a href="plugins.jsp" title="Plugins">Plugins</a></li> 
+			<li class="page_item page-item-3"><a href="index.jsp" title="Dashboard">Dashboard</a></li> 
+			<li class="page_item page-item-2 current_page_item"><a href="plugins.jsp" title="Plugins">Plugins</a></li> 
 		</ul> 
 		<div class="clear"></div> 
 	</div> 
-	<div id="content_wrapper"><div id="content"><div class="inner"> 
- 
- 	<div id="mainContent">
-		<div class="post">
-			<p>
-				<b>Instance:</b> <% out.print(Core.INSTANCE_NAME); %>
-				<br /><b>Uptime:</b> <% out.print(DateUtils.formatDateDelta(Core.getInstance().getStartupTime(), new Date(), "less than a minute")); %> ago
-				<br /><b>Plugins:</b> <% out.print(Core.getInstance().getMethodList().size()); %> loaded
-			</p>
-		</div>
-	</div>
- 
-	</div></div></div><!-- end content --> 
+	<div id="content_wrapper"><div id="content"><div class="inner">
+	<ul class="social">
+	
+		<%
+		boolean isOdd = false;
+		String type;
+		
+		for(String pluginName : Core.getInstance().getMethodList().keySet()) {
+			type = "";
+			if(isOdd) {
+				type = " class=\"alt\"";
+			}
+			
+			out.print("<li"+type+"><a href=\"#\" style=\"background-image: url(static/images/plugin.png)\">"+pluginName.substring(pluginName.lastIndexOf("."))+"</a></li>");
+			
+			isOdd = !isOdd;
+		}
+		
+		if(isOdd) {
+			out.print("<li class=\"alt\"></li>");
+		}
+		
+		%>
+	<div class="clear"></div> 
+	<div class="clear"></div> 
+	</div></div></div><!-- end content -->
+
 	
 	
 </div><!-- end wrapper --> 
 </body> 
 </html>
-
-
-
-
-
