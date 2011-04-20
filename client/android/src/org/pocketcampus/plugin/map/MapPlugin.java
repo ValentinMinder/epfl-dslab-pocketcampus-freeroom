@@ -12,20 +12,21 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.pocketcampus.R;
-import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
@@ -110,6 +111,8 @@ public class MapPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
+		
+		Tracker.getInstance().trackPageView("map/home");
 
 		initVariables();
 
@@ -150,6 +153,8 @@ public class MapPlugin extends PluginBase {
 			@Override
 			public void performAction(View view) {
 				updateOverlays();
+				
+				Tracker.getInstance().trackPageView("map/manualRefresh");
 			}
 
 			@Override
@@ -173,6 +178,8 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.remove(0);
 		constantOverlays_.add(0, mTilesOverlay);
 		updateOverlays();
+		
+		Tracker.getInstance().trackPageView("map/changeLevel" + level);
 	}
 
 	/**
@@ -364,25 +371,36 @@ public class MapPlugin extends PluginBase {
 		case R.id.map_menu_layers_button:
 			showProgressDialog(R.string.map_loading_layers);
 			loadLayersFromServer();
+			
+			Tracker.getInstance().trackPageView("map/menu/getLayers");
 			return true;
 
 			// Enable the user following
 		case R.id.map_my_position:
 			toggleCenterOnUserPosition();
+			
+			Tracker.getInstance().trackPageView("map/menu/togglPosition");
 			return true;
 
 			// Enable the user following
 		case R.id.map_campus_position:
 			centerOnCampus();
+			
+			Tracker.getInstance().trackPageView("map/menu/centerOnCampus");
 			return true;
 
 			// Shows the search dialog
 		case R.id.map_search:
-			onSearchRequested(); 
+			onSearchRequested();
+			
+			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 
 		case R.id.map_clear_path:
 			clearPath();
+			
+			Tracker.getInstance().trackPageView("map/menu/clearPath");
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -463,6 +481,8 @@ public class MapPlugin extends PluginBase {
 				showDirectionFromTo(fix, endPos);
 			}
 		});
+		
+		Tracker.getInstance().trackPageView("map/showDirections?d=" + endPos.toString());
 	}
 
 
@@ -507,6 +527,15 @@ public class MapPlugin extends PluginBase {
 		this.displayedLayers_ = selectedLayers;
 
 		updateOverlays();
+		
+		// Track
+		StringBuffer selected = new StringBuffer("?layers=");
+		for(MapElementsList l : selectedLayers) {
+			selected.append(l.getLayerTitle());
+			selected.append(',');
+		}
+		
+		Tracker.getInstance().trackPageView("map/selectedLayers" + selected);
 	}
 
 
