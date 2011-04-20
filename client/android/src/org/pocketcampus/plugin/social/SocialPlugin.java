@@ -30,7 +30,7 @@ public class SocialPlugin extends PluginBase {
 		String username = sharedPreferences_.getString("username", null);
 		String sessionId = sharedPreferences_.getString("sessionId", null);
 		
-		if(AuthenticationPlugin.authenticate(this, username, sessionId)) {
+		if(AuthenticationPlugin.authenticate(username, sessionId)) {
 			Intent socialLoginIntent = new Intent(thisActivity_, SocialLogin.class);
         	startActivity(socialLoginIntent);
         	thisActivity_.finish();
