@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.news;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -31,6 +33,10 @@ public class NewsPreference extends PluginPreference {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.mainscreen_preference);
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setTitle(getResources().getText(R.string.app_name));
+		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
 		
 		setPreferenceScreen(createPreferenceHierarchy());
 	}

@@ -63,12 +63,12 @@ public class TransportPreference extends PluginPreference {
 		// Common destinations
 		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs_.getAll();
 
-		// TODO remove, just for test //
-		if(commonDestinations.size() == 0) {
-			commonDestPrefsEditor_.putString("Vevey", "Vevey");
-			commonDestPrefsEditor_.commit();
-			forceRefresh();
-		}
+		// TOO remove, just for test //
+//		if(commonDestinations.size() == 0) {
+//			commonDestPrefsEditor_.putString("Vevey", "Vevey");
+//			commonDestPrefsEditor_.commit();
+//			forceRefresh();
+//		}
 		///////////////////////////////
 		
 		for(String dest : commonDestinations.values()) {
