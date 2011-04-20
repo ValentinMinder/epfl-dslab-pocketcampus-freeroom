@@ -102,7 +102,9 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 
 		A result = loadFromServer(url);
 
-		cacheManager_.putInCache(url, result, expirationDelay());
+		if(result != null) {
+			cacheManager_.putInCache(url, result, expirationDelay());
+		}
 
 		doInBackgroundThread(result);
 

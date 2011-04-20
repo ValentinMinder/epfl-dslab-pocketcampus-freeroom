@@ -10,7 +10,7 @@
  
 	<title>PocketCampus Server</title> 
 	
-	<link rel="stylesheet" href="static/style.css" type="text/css" /> 
+	<link rel="stylesheet" href="http://mikejolley.com/wp-content/themes/minicard/style.css" type="text/css" /> 
 	
 				<style type="text/css"> 
 					body {
@@ -72,8 +72,9 @@
 		<div class="post">
 			<p>
 				<b>Instance:</b> <% out.print(Core.INSTANCE_NAME); %>
-				<br /><b>Uptime:</b> <% out.print(DateUtils.formatDateDelta(Core.getInstance().getStartupTime(), new Date(), "less than a minute")); %> ago
+				<br /><b>Uptime:</b> <% out.print(DateUtils.formatDateDelta(Core.getInstance().getStartupTime(), new Date(), "less than a minute")); %>
 				<br /><b>Plugins:</b> <% out.print(Core.getInstance().getMethodList().size()); %> loaded
+				
 			</p>
 		</div>
 	</div>

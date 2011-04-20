@@ -8,7 +8,7 @@
  
 	<title>PocketCampus Server</title> 
 	
-	<link rel="stylesheet" href="static/style.css" type="text/css" /> 
+	<link rel="stylesheet" href="http://mikejolley.com/wp-content/themes/minicard/style.css" type="text/css" /> 
 	
 				<style type="text/css"> 
 					body {
@@ -69,17 +69,27 @@
 	
 		<%
 		boolean isOdd = false;
+		int num = 0;
 		String type;
+		String first;
 		
 		for(String pluginName : Core.getInstance().getMethodList().keySet()) {
 			type = "";
+			
 			if(isOdd) {
-				type = " class=\"alt\"";
+				type = "alt";
 			}
+			
+			if(num<2) {
+				type += " first";
+			}
+			
+			type = " class=\"" + type + "\"";
 			
 			out.print("<li"+type+"><a href=\"#\" style=\"background-image: url(static/images/plugin.png)\">"+pluginName.substring(pluginName.lastIndexOf("."))+"</a></li>");
 			
 			isOdd = !isOdd;
+			num++;
 		}
 		
 		if(isOdd) {
@@ -87,6 +97,7 @@
 		}
 		
 		%>
+	</ul>
 	<div class="clear"></div> 
 	<div class="clear"></div> 
 	</div></div></div><!-- end content -->

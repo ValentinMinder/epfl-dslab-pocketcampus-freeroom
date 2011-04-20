@@ -1,6 +1,7 @@
 package org.pocketcampus.core.communication;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.util.Log;
@@ -17,8 +18,8 @@ import android.util.Log;
 public class CacheManager<A> {
 	private static final String TAG = "CacheManager";
 	private static CacheManager instance_;
-	ConcurrentHashMap<String, Date> expirationMap_;
-	ConcurrentHashMap<String, A> cacheMap_;
+	HashMap<String, Date> expirationMap_;
+	HashMap<String, A> cacheMap_;
 	
 	/**
 	 * Gets the single instance.
@@ -36,8 +37,8 @@ public class CacheManager<A> {
 	 * Private constructor.
 	 */
 	private CacheManager() {
-		expirationMap_ = new ConcurrentHashMap<String, Date>();
-		cacheMap_ = new ConcurrentHashMap<String, A>();
+		expirationMap_ = new HashMap<String, Date>();
+		cacheMap_ = new HashMap<String, A>();
 	}
 	
 	/**
