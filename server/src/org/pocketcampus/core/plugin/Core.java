@@ -1,12 +1,15 @@
 package org.pocketcampus.core.plugin;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import org.pocketcampus.core.provider.IProvider;
 
 public class Core {
+	public final static String INSTANCE_NAME = "EPFL Test Instance"; 
+	
 	/** Available plugins */
 	private HashMap<String, IPlugin> pluginList_;
 	
@@ -16,12 +19,16 @@ public class Core {
 	/** Singleton instance */
 	private static Core instance_;
 	
+	/** Startup time */
+	private Date startupTime_;
+	
 	/**
 	 * Private constructor.
 	 */
 	private Core() {
 		methodList_ = new HashMap<String, HashMap<String, Method>>();
 		pluginList_ = new HashMap<String, IPlugin>();
+		startupTime_ = new Date();
 	}
 	
 	/** Access to the instance */
@@ -72,4 +79,20 @@ public class Core {
 	public HashMap<String, HashMap<String, Method>> getMethodList() {
 		return methodList_;
 	}
+	
+	/**
+	 * Gets the server uptime.
+	 * @return
+	 */
+	public Date getStartupTime() {
+		return startupTime_;
+	}
 }
+
+
+
+
+
+
+
+
