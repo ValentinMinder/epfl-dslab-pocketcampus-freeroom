@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,6 +110,12 @@ public class FoodPlugin extends PluginBase {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 	
+	public void menuRefreshedSandwich() {
+		foodDisplayHandler_.updateView();
+		displaySandwiches();
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
 	public void notifyDataSetChanged(){
 		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
 	}
@@ -147,6 +154,16 @@ public class FoodPlugin extends PluginBase {
 			empty.setText(getString(R.string.food_empty));
 		}
 	}
+	
+	public void displaySandwiches(){
+		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
+		if (foodDisplayHandler_.valid() && fla != null) {
+			l_.setAdapter(fla);
+			Log.d("SANDWICHES","Il l'a seté le con en plus.");
+		}else{
+			empty.setText(getString(R.string.food_empty));
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -178,9 +195,10 @@ public class FoodPlugin extends PluginBase {
 			displayView();
 			return true;
 		case 3: // show sandwiches
+			Log.d("SANDWICHES","Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
 			foodDisplayHandler_.setDisplayType(selectedId);
-			displayView();
+			displaySandwiches();
 			return true;
 		case 4: // show suggestions
 			suggestionMenus_ = foodDisplayHandler_.getMenusList();

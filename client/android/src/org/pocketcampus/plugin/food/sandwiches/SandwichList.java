@@ -2,41 +2,43 @@ package org.pocketcampus.plugin.food.sandwiches;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 public class SandwichList {
-
-	private Vector<Vector<Sandwich>> sandwichList_;
+	private FoodPlugin pluginHandler_;
+//	private Vector<Vector<Sandwich>> sandwichList_;
+	private HashMap<String, Vector<Sandwich>> sandwichList_;
 	private List<Sandwich> sandwichFromServer_;
 	
-	public SandwichList(){
+	public SandwichList(FoodPlugin ownerActivity){
+		pluginHandler_ = ownerActivity;
 		loadSandwiches();
 	}
 	
-	public Vector<Vector<Sandwich>> getStoreList() {
+	public HashMap<String, Vector<Sandwich>> getStoreList() {
 		return sandwichList_;
 	}
 	
 	private void loadSandwiches(){
+		pluginHandler_.menuRefreshing();
+		
 		class SandwichRequest extends DataRequest {
 			
 			@Override
 			protected void doInUiThread(String result) {
 
-				sandwichList_ = new Vector<Vector<Sandwich>>();
-				
 				sandwichFromServer_ = new ArrayList<Sandwich>();
 				
 				if(result != null){
@@ -51,19 +53,35 @@ public class SandwichList {
 				Type menuType = new TypeToken<List<Sandwich>>() {}.getType();
 				try {
 					sandwichFromServer_ = gson.fromJson(result, menuType);
-				} catch (JsonSyntaxException e) {
-					Log.d("SANDWICHES", "Jsonsyntax");
-					e.printStackTrace();
-					return;
 				} catch (Exception e){
 					e.printStackTrace();
 					Log.d("SANDWICHES","Json Exception !");
 				}
+				
+				sandwichList_ = new HashMap<String, Vector<Sandwich>>();
+				sandwichList_ = sortByRestaurant(sandwichFromServer_);
+				
+				pluginHandler_.menuRefreshedSandwich();
 			}
 		}
 
 		FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(), "getSandwiches",
 				(RequestParameters) null);
 	}
+	
+	private HashMap<String, Vector<Sandwich>> sortByRestaurant(List<Sandwich> serverList){
+		HashMap<String, Vector<Sandwich>> hashMap = new HashMap<String, Vector<Sandwich>>();
 		
+		for(Sandwich s : serverList){
+			if(hashMap.containsKey(s.getRestaurant())){
+				hashMap.get(s.getRestaurant()).add(s);
+			}else{
+				Vector<Sandwich> v = new Vector<Sandwich>();
+				v.add(s);
+				hashMap.put(s.getRestaurant(), v);
+			}
+		}
+		return hashMap;
+	}
+			
 }

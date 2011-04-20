@@ -12,12 +12,14 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.sandwiches.SandwichList;
+import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListSection;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -36,7 +38,8 @@ public class FoodDisplayHandler {
 	private FoodMenu campusMenu_;
 	private SandwichList sandwichList_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
-	private Vector<Vector<Sandwich>> campusSandwich_;
+//	private Vector<Vector<Sandwich>> campusSandwich_;
+	HashMap<String, Vector<Sandwich>> campusSandwich_;
 
 	private FoodPlugin ownerActivity_;
 	private Context activityContext_;
@@ -49,8 +52,9 @@ public class FoodDisplayHandler {
 		currentDisplayType_ = FoodDisplayType.Restaurants;
 
 		campusMenu_ = new FoodMenu(ownerActivity_);
+		sandwichList_ = new SandwichList(ownerActivity_);
 		suggestionsMenu_ = new HashMap<Meal, Rating>();
-		campusSandwich_ = new Vector<Vector<Sandwich>>();
+		campusSandwich_ = new HashMap<String, Vector<Sandwich>>(); 
 
 		sorter_ = new MenuSorter();
 
@@ -290,22 +294,45 @@ public class FoodDisplayHandler {
 	 * 
 	 */
 	public void showSandwiches() {
-		sandwichList_ = new SandwichList();
+		Log.d("SANDWICHES","Il a compris qu'il devait afficher les sandwiches. [FoodDisplayHandler]");
+		
 		campusSandwich_ = sandwichList_.getStoreList();
+		
+		SandwichListAdapter sandwichList = null;
 
-		if (campusSandwich_ != null) {
+		/**
+		 * Iterate over the different restaurant menus
+		 */
+		if (!campusSandwich_.isEmpty()) {
+			// Get the set of keys from the hash map to make sections.
+			Set<String> restaurantFullMenuSet = campusSandwich_.keySet();
+
+			SortedSet<String> restaurantFullMenu = new TreeSet<String>(
+					restaurantFullMenuSet);
+
+			Vector<String> sandwiches = new Vector<String>(restaurantFullMenu);
+
+			if(currentListAdapter_.isEmpty()){
+				sandwichList = new SandwichListAdapter(sandwiches, campusSandwich_,
+					ownerActivity_);
+				currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), sandwichList);
+			}
+		}
+				
+		/*if (campusSandwich_ != null) {
 			SandwichListSection sandwichListSection;
 
 			if (!campusSandwich_.isEmpty()) {
-				for (Vector<Sandwich> v : campusSandwich_) {
-					sandwichListSection = new SandwichListSection(v,
-							ownerActivity_, activityContext_);
-					currentListAdapter_.addSection(v.get(0).getRestaurant(),
-							sandwichListSection);
+				for (String s : campusSandwich_.keySet()) {
+					sandwichListSection = new SandwichListSection(campusSandwich_.get(s), ownerActivity_);
+					currentListAdapter_.addSection(s, sandwichListSection);
 				}
-
+			}else{
+				Log.d("SANDWICHES","On a un souci dans le Handler, je reçois pas la liste.");
 			}
-		}
+		}else{
+			Log.d("SANDWICHES", "Mais pourquoiiiiiii ?");
+		}*/
 	}
 
 	public static enum FoodDisplayType {

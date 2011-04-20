@@ -6,24 +6,9 @@
   android:orientation="horizontal">
   
 	<TextView 
-  		android:id="@+id/food_sandwich_place"
+  		android:id="@+id/food_sandwich_name"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textColor="@android:color/black" android:padding="6dip" 
 		android:paddingLeft="15dip"/>
-	
-	<LinearLayout
-		android:id="@+id/rela2"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="vertical" android:layout_gravity="right"
-		android:paddingLeft="15dip" android:paddingRight="25dip">
-				
-		<CheckBox 
-			android:id="@+id/food_sandwich_left_checkbox" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_gravity="right" android:clickable="false"
-			android:paddingLeft="15dip"/>
-	
-	</LinearLayout>
 		
 </LinearLayout>
