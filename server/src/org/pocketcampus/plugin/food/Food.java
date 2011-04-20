@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,7 +37,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		campusMeals_ = new ArrayList<Meal>();
 		sandwichList_ = new ArrayList<Sandwich>();
 		lastImportDateS_ = new Date();
-		// importSandwiches();
+		importSandwiches();
 		importMenus();
 	}
 
@@ -68,17 +69,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 	@PublicMethod
 	public List<Sandwich> getSandwiches(HttpServletRequest request) {
 		if (!isValid(lastImportDateS_)) {
-			// importSandwiches();
+			 importSandwiches();
 			System.out.println("Reimporting sandwiches.");
 		} else {
 			System.out.println("Not reimporting sandwiches.");
 		}
-
-		List<Sandwich> test = new ArrayList<Sandwich>();
-		test.add(new Sandwich("RestoTest", "Kangourou", true));
-		return test;
-		// return sandwichList_;
-
+		return sandwichList_;
 	}
 
 	/**
@@ -193,181 +189,126 @@ public class Food implements IPlugin, IMapElementsProvider {
 	/**
 	 * Creates the sandwich list
 	 */
-	// private void importSandwiches(){
-	//		
-	// /*Cafeteria INM*/
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true,
-	// new Date()));
-	// sandwichList_
-	// .add(new Sandwich("Cafeteria INM", "Thon", true, new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella",
-	// true, new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon Cru", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Salami", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Cafeteria INM", "Autres", true,
-	// new Date()));
-	//
-	// /* Cafeteria BM */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
-	//
-	// /* Cafeteria BC */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
-	//
-	// /* Cafeteria SV */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria SV"));
-	//
-	// /* Cafeteria MX */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria MX"));
-	//
-	// /* Cafeteria PH */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria PH"));
-	//
-	// /* Cafeteria ELA */
-	// sandwichList_.addAll(defaultSandwichList("Cafeteria ELA"));
-	//
-	// /* Le Giacomettia (Cafeteria SG) */
-	//		
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Jambon de dinde", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Roast-Beef", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Poulet Jijommaise",
-	// true, new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Poulet au Curry", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true,
-	// new Date()));
-	//
-	// /* L'Esplanade */
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Thon", true, new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Poulet au Curry", true,
-	// new Date()));
-	// sandwichList_
-	// .add(new Sandwich("L'Esplanade", "Aubergine", true, new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Roast-Beef", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Jambon Cru", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Saumon Fumé", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Esplanade", "Autres", true, new
-	// Date()));
-	//
-	// /* L'Arcadie */
-	// sandwichList_.addAll(defaultSandwichList("L'Arcadie"));
-	//
-	// /* Atlantide */
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich intégral", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal", true,
-	// new Date()));
-	// sandwichList_
-	// .add(new Sandwich("L'Atlantide", "Parisette", true, new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Jambon", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Salami", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Dinde", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Thon", true, new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Mozzarella", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Saumon Fumé", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Viande Séchée", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Jambon Cru", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Roast-Beef", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("L'Atlantide", "Autres", true, new
-	// Date()));
-	//
-	// /* Satellite */
-	// sandwichList_.add(new Sandwich("Satellite", "Thon", true, new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Jambon fromage", true,
-	// new Date()));
-	// sandwichList_
-	// .add(new Sandwich("Satellite", "Roast-Beef", true, new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Poulet au Curry", true,
-	// new Date()));
-	// sandwichList_
-	// .add(new Sandwich("Satellite", "Jambon Cru", true, new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Tomate mozza", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Salami", true, new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Parmesan", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Aubergine grillé", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Viande séchée", true,
-	// new Date()));
-	// sandwichList_.add(new Sandwich("Satellite", "Autres", true, new Date()));
-	//
-	// /* Negoce */
-	// sandwichList_.add(new Sandwich("Negoce", "Dinde", true, new Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Thon", true, new Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Gratine Jambon", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Mozza Olives", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Poulet au Curry", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Jambon fromage", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Jambon", true, new Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Salami", true, new Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "RoseBeef", true, new Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Mozzarella", true, new
-	// Date()));
-	// sandwichList_.add(new Sandwich("Negoce", "Autres", true, new Date()));
-	//
-	// lastImportDateS_ = new Date();
-	// }
-	//
-	// private Vector<Sandwich> defaultSandwichList(String name) {
-	//
-	// Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
-	//
-	// defaultSandwichList.add(new Sandwich(name, "Thon", true, new Date()));
-	// defaultSandwichList.add(new Sandwich(name, "Jambon", true, new Date()));
-	// defaultSandwichList
-	// .add(new Sandwich(name, "Fromage", true, new Date()));
-	// defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true,
-	// new Date()));
-	// defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true,
-	// new Date()));
-	// defaultSandwichList.add(new Sandwich(name, "Salami", true, new Date()));
-	// defaultSandwichList.add(new Sandwich(name, "Autres", true, new Date()));
-	//
-	// return defaultSandwichList;
-	// }
+	 private void importSandwiches(){
+			
+	 /*Cafeteria INM*/
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true));
+	 sandwichList_
+	 .add(new Sandwich("Cafeteria INM", "Thon", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon Cru", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Salami", true));
+	 sandwichList_.add(new Sandwich("Cafeteria INM", "Autres", true));
+	
+	 /* Cafeteria BM */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+	
+	 /* Cafeteria BC */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+	
+	 /* Cafeteria SV */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria SV"));
+	
+	 /* Cafeteria MX */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria MX"));
+	
+	 /* Cafeteria PH */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria PH"));
+	
+	 /* Cafeteria ELA */
+	 sandwichList_.addAll(defaultSandwichList("Cafeteria ELA"));
+	
+	 /* Le Giacomettia (Cafeteria SG) */
+			
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon de dinde", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Roast-Beef", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Poulet Jijommaise", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Poulet au Curry", true));
+	 sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true));
+	
+	 /* L'Esplanade */
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Thon", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Poulet au Curry", true));
+	 sandwichList_
+	 .add(new Sandwich("L'Esplanade", "Aubergine", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Roast-Beef", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Jambon Cru", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Saumon Fumé", true));
+	 sandwichList_.add(new Sandwich("L'Esplanade", "Autres", true));
+	
+	 /* L'Arcadie */
+	 sandwichList_.addAll(defaultSandwichList("L'Arcadie"));
+	
+	 /* Atlantide */
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich intégral", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Parisette", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Jambon", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Salami", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Dinde", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Thon", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Mozzarella", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Saumon Fumé", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Viande Séchée", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Jambon Cru", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Roast-Beef", true));
+	 sandwichList_.add(new Sandwich("L'Atlantide", "Autres", true));
+	
+	 /* Satellite */
+	 sandwichList_.add(new Sandwich("Satellite", "Thon", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Jambon fromage", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Roast-Beef", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Poulet au Curry", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Jambon Cru", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Tomate mozza", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Salami", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Parmesan", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Aubergine grillé", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Viande séchée", true));
+	 sandwichList_.add(new Sandwich("Satellite", "Autres", true));
+	
+	 /* Negoce */
+	 sandwichList_.add(new Sandwich("Negoce", "Dinde", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Thon", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Gratine Jambon", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Mozza Olives", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Poulet au Curry", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Jambon fromage", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Jambon", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Salami", true));
+	 sandwichList_.add(new Sandwich("Negoce", "RoseBeef", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Mozzarella", true));
+	 sandwichList_.add(new Sandwich("Negoce", "Autres", true));
+	
+	 lastImportDateS_ = new Date();
+	 }
+	
+	 private Vector<Sandwich> defaultSandwichList(String name) {
+	
+	 Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
+	
+	 defaultSandwichList.add(new Sandwich(name, "Thon", true));
+	 defaultSandwichList.add(new Sandwich(name, "Jambon", true));
+	 defaultSandwichList.add(new Sandwich(name, "Fromage", true));
+	 defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true));
+	 defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true));
+	 defaultSandwichList.add(new Sandwich(name, "Salami", true));
+	 defaultSandwichList.add(new Sandwich(name, "Autres", true));
+	
+	 return defaultSandwichList;
+	 }
 
 	@Override
 	public List<MapElementBean> getLayerItems() {
