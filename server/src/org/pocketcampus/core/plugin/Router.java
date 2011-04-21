@@ -171,7 +171,7 @@ public class Router extends HttpServlet {
 			String json = gson_.toJson(ret);
 			
 			// Fixes the damn encoding
-			json = charset.encode(json).toString();
+			//json = charset.encode(json).toString();
 			
 			// Puts the method content into the response
 			response.getWriter().println(json);
