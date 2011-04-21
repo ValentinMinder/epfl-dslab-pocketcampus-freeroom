@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase {
 	private ActionBar actionBar_;
@@ -159,7 +158,15 @@ public class FoodPlugin extends PluginBase {
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
-			Log.d("SANDWICHES","Il l'a seté le con en plus.");
+		}else{
+			empty.setText(getString(R.string.food_empty));
+		}
+	}
+	
+	public void displaySuggestions(){
+		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
+		if (foodDisplayHandler_.valid() && fla != null) {
+			l_.setAdapter(fla);
 		}else{
 			empty.setText(getString(R.string.food_empty));
 		}
@@ -208,9 +215,6 @@ public class FoodPlugin extends PluginBase {
 				suggestions.putExtra("org.pocketcampus.suggestions.meals",
 						suggestionMenus_);
 				startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
-			} else {
-				Toast.makeText(this, "Pas de menus !", Toast.LENGTH_LONG)
-						.show();
 			}
 			return true;
 		}
@@ -242,14 +246,12 @@ public class FoodPlugin extends PluginBase {
 
 					foodDisplayHandler_.updateSuggestions(list);
 					foodDisplayHandler_.setDisplayType(4);
-					displayView();
+					displaySuggestions();
 				} else {
-					Toast.makeText(this, "Pas d'extras !", Toast.LENGTH_LONG)
-							.show();
+					Log.d("SUGGESTIONS", "Pas d'extras !");
 				}
 			} else {
-//				Toast.makeText(this, "RESULT_PAS_OK !", Toast.LENGTH_LONG)
-//						.show();
+				Log.d("SUGGESTIONS", "RESULT_PAS_OK !");
 			}
 			break;
 		}

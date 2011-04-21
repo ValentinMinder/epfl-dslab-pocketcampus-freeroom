@@ -318,21 +318,7 @@ public class FoodDisplayHandler {
 				currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), sandwichList);
 			}
 		}
-				
-		/*if (campusSandwich_ != null) {
-			SandwichListSection sandwichListSection;
-
-			if (!campusSandwich_.isEmpty()) {
-				for (String s : campusSandwich_.keySet()) {
-					sandwichListSection = new SandwichListSection(campusSandwich_.get(s), ownerActivity_);
-					currentListAdapter_.addSection(s, sandwichListSection);
-				}
-			}else{
-				Log.d("SANDWICHES","On a un souci dans le Handler, je reçois pas la liste.");
-			}
-		}else{
-			Log.d("SANDWICHES", "Mais pourquoiiiiiii ?");
-		}*/
+		
 	}
 
 	public static enum FoodDisplayType {

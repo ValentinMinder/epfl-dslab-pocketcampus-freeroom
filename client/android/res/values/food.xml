@@ -61,7 +61,7 @@
 	<string name="food_suggestions_vege">Vegetarian</string>
 	<string name="food_suggestions_porc">Porc</string>
 	<string name="food_suggestions_chicken">Chicken</string>
-
+	<string name="food_suggestions_ok">Submit</string>
 	<string name="food_suggestions_test">Test</string>
 
 	<string name="food_suggestions_notag">No existing Tag</string>
