@@ -5,10 +5,11 @@ import java.io.IOException;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.pocketcampus.provider.positioning.ILocation;
-import org.pocketcampus.provider.positioning.Position;
+//import org.pocketcampus.provider.positioning.Position;
 import org.pocketcampus.provider.positioning.GpsLocation;
 import org.pocketcampus.provider.positioning.GsmLocation;
 import org.pocketcampus.provider.positioning.WifiLocation;
+import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
 
