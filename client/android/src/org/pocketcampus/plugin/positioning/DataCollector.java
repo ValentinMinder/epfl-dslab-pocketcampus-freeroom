@@ -71,7 +71,7 @@ public class DataCollector {
 ////							.getLon(), pos.getLat(), pos.getLevel());
 //					Position geoPos = new Position(pos.getLongitude(),pos.getLatitude(),pos.getLatitude());
 					
-					usableAP.add(new AccessPoint(ap));
+//					usableAP.add(new AccessPoint(ap));
 				}
 				// }
 			//}
