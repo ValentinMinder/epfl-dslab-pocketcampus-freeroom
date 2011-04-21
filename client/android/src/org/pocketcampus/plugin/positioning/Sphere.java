@@ -12,7 +12,7 @@
  * is detected 
  * 
  */
-package org.pocketcampus.provider.positioning;
+package org.pocketcampus.plugin.positioning;
 
 public class Sphere {
 

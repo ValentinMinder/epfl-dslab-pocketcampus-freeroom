@@ -11,7 +11,7 @@
  * Intersection class compute the result of geometric
  * forms intersection such lines , spheres ,...etc
  */
-//package org.pocketcampus.provider.positioning;
+//package org.pocketcampus.plugin.positioning;
 //
 //import java.util.ArrayList;
 //
