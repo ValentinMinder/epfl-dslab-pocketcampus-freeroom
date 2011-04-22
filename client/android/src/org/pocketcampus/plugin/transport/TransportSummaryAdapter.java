@@ -80,18 +80,6 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		view = inflater_.inflate(R.layout.transport_summaryentry, null);
 		view = fillView(position, view);
 		
-		OnClickListener l = new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				View toChange = getView(position, null, null);
-				toChange = inflater_.inflate(R.layout.transport_summaryentry_expanded, null);
-				notifyDataSetChanged();
-				System.out.println("click");
-			}
-		};
-		
-		view.setOnClickListener(l);
 		return view;
 	}
 	
