@@ -5,18 +5,15 @@
 
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
-
-	<ListView 
-		android:layout_below="@+id/actionbar" 
-		android:id="@+id/transport_mainlist" 
-		android:layout_height="fill_parent"></ListView>
-		
-	<TextView
-		android:text="No destination set."
-		android:id="@+id/msg_empty"
-		android:gravity="center"
-		android:layout_height="fill_parent"
-		android:textSize="15dip"></TextView>
+	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="wrap_content" android:layout_below="@+id/actionbar" android:layout_height="fill_parent">
+		<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/transport_fav" android:layout_above="@+id/transport_autoCompleteSearch" android:layout_below="@+id/actionbar">
+			<ListView android:id="@+id/transport_mainlist" android:layout_width="fill_parent" android:layout_height="wrap_content"></ListView>
+			<TextView android:gravity="center" android:id="@+id/msg_empty" android:text="No destination set." android:layout_width="wrap_content" android:layout_height="fill_parent" android:textSize="15dip"></TextView>
+		</RelativeLayout>
+		<RelativeLayout android:id="@+id/relativeLayout2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+			<AutoCompleteTextView android:text="Destination" android:id="@+id/transport_autoCompleteSearch" android:layout_width="fill_parent" android:layout_height="wrap_content"></AutoCompleteTextView>
+		</RelativeLayout>
+	</RelativeLayout>
 
 </RelativeLayout>
 

@@ -9,6 +9,10 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.shared.plugin.directory.Person;
+import org.pocketcampus.shared.plugin.transport.Location;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,14 +21,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class TransportPlugin extends PluginBase {
 	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
 	private static RequestHandler requestHandler_;
 	private ActionBar actionBar_;
 	private ListView mainList_;
+	private AutoCompleteTextView autoCompleteGoTo_;
 
 	private TransportSummaryListAdapter adapter_;
 
@@ -46,7 +56,12 @@ public class TransportPlugin extends PluginBase {
 		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
 		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
 		mainList_.setAdapter(adapter_);
-
+		
+		
+		autoCompleteGoTo_ = (AutoCompleteTextView)findViewById(R.id.transport_autoCompleteSearch);
+		ArrayAdapter<Location> adapter = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
+		autoCompleteGoTo_.setAdapter(adapter);
+		
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
 		setupSummaryList();
 	}
@@ -65,6 +80,15 @@ public class TransportPlugin extends PluginBase {
 		}
 		
 		ListView listView = (ListView) findViewById(R.id.transport_mainlist);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+			System.out.println("click");
+				
+
+			}
+		});
+		
 		TextView msgEmpty = (TextView) findViewById(R.id.msg_empty);
 		
 		if(commonDestinationsInPrefs.size() == 0) {

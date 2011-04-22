@@ -51,9 +51,13 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 
 		AlertDialog.Builder mBuilder = new AlertDialog.Builder(context)
 		.setNegativeButton("Cancel", this);
+		mBuilder.setPositiveButton("ok", this);
 
+		
 		View contentView = onCreateDialogView();
+		
 		if (contentView != null) {
+			
 			onBindDialogView(contentView);
 			mBuilder.setView(contentView);
 		}
@@ -63,7 +67,9 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		//getPreferenceManager().registerOnActivityDestroyListener(this);
 
 		// Create the dialog
+		
 		dialog_ = mBuilder.create();
+	
 
 		// requests input method
 		Window window = dialog_.getWindow();
@@ -94,6 +100,8 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		vg.removeView(editText);        
 		// construct a new editable autocomplete object with the appropriate params
 		// and id that the TextEditPreference is expecting
+
+		
 		mACTV = new AutoCompleteTextView(getContext());
 		mACTV.setLayoutParams(params);
 		mACTV.setId(android.R.id.edit);

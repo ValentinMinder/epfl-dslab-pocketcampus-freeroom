@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Adapter to diplay the summaries of the travel.
@@ -86,6 +87,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 				View toChange = getView(position, null, null);
 				toChange = inflater_.inflate(R.layout.transport_summaryentry_expanded, null);
 				notifyDataSetChanged();
+				System.out.println("click");
 			}
 		};
 		
