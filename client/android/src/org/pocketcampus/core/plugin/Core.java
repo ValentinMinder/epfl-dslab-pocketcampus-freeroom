@@ -2,6 +2,8 @@ package org.pocketcampus.core.plugin;
 
 import java.util.Vector;
 
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -44,8 +46,10 @@ public class Core {
 	
 	public static void startPluginWithID(Context ctx, PluginBase plugin, int id) {
 		Intent intent = new Intent(ctx, plugin.getClass());
+		if(plugin instanceof IAllowsID) {
+			intent.putExtra("id", id);
+		}
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("id", id);
 		ctx.startActivity(intent);
 	}
 	
