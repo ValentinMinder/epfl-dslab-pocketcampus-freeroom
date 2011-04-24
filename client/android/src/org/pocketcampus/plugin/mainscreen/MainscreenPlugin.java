@@ -1,10 +1,5 @@
 package org.pocketcampus.plugin.mainscreen;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -14,11 +9,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
-import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
-import org.pocketcampus.plugin.news.INewsListener;
-import org.pocketcampus.plugin.news.NewsAdapter;
-import org.pocketcampus.plugin.news.NewsProvider;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,23 +30,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainscreenPlugin extends PluginBase implements INewsListener {
+public class MainscreenPlugin extends PluginBase {
 	private Context ctx_;
 	private Core core_;
 	private Vector<PluginBase> plugins_;
 	private Tracker tracker_;
 
-	private NewsAdapter adapter_;
-	private NewsProvider newsProvider_;
+	private MainscreenAdapter adapter_;
+	
 	private ActionBar actionBar_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainscreen_main);
-
+		
 		setupActionBar(false);
 
 		tracker_ = Tracker.getInstance();
@@ -65,19 +55,8 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
-
-		//newsProvider_ = NewsProvider.getInstance(ctx_);
-		//newsProvider_.addNewsListener(this);
-		//displayNews();
 		
-		
-		//Checkin internet connection
-		/*if(!isOnline()) {
-			Toast toast = Toast.makeText(ctx_, "This application requires internet connectivity. Please check your internet connection and try again later.", Toast.LENGTH_SHORT);
-			toast.show();
-		}*/
-		
-		
+		displayNews();
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
@@ -137,18 +116,6 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 
 	}
 
-
-	private boolean isOnline() {
-		try {
-			URL url = new URL(core_.getServerUrl());
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.connect();
-			return connection.getResponseCode() == 200;
-		} catch (IOException e) {
-			return false;
-		}
-
-	}
 
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -236,65 +203,22 @@ public class MainscreenPlugin extends PluginBase implements INewsListener {
 	public PluginInfo getPluginInfo() {
 		return new MainscreenInfo();
 	}
-
-	@Override
-	public void newsRefreshing() {
-		actionBar_.setProgressBarVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void newsRefreshed() {
-		actionBar_.setProgressBarVisibility(View.GONE);
-	}
-
+	
+	
 	private void displayNews() {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
-		adapter_ = new NewsAdapter(ctx_, newsProvider_);
+		adapter_ = new MainscreenAdapter(ctx_);
 		l.setAdapter(adapter_);
-
 		l.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(adapter_ != null) {
-					adapter_.setClickedItem(parent, view, position, id);
-
-					Tracker.getInstance().trackPageView("news/previewItem");
+				MainscreenNews selected = (MainscreenNews) adapter_.getItem(position);
+				if(selected.getPlugin_() instanceof IAllowsID) {
+					Core.startPluginWithID(ctx_, selected.getPlugin_(), selected.getId_());
 				}
 			}
 		});
 	}
 
-	@Override
-	protected void setupActionBar(boolean addHomeButton) {
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		actionBar_.setTitle(getResources().getString(R.string.app_name));
-		actionBar_.addAction(new Action() {
 
-			@Override
-			public void performAction(View view) {
-				newsProvider_.forceRefresh();
-			}
-
-			@Override
-			public int getDrawable() {
-				return R.drawable.refresh;
-			}
-		});
-
-		super.setupActionBar(addHomeButton);
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		//newsProvider_.refreshIfNeeded();
-	}
-	
-	@Override
-	  protected void onDestroy() {
-	    super.onDestroy();
-	    tracker_.stop();
-	  }
 }

@@ -1,18 +1,23 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.core.plugin.Icon;
+public class MainscreenNewsProvider {
 
-/**
- * This interface allows the plugins to display some news on the mainscreen
- * 
- * 
- * @author Guillaume Ulrich
- *
- */
-public interface MainscreenNewsProvider {
-
-	public List<MainscreenNews> getNews();
+	
+	public static List<MainscreenNews> getNews() {
+		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
+		
+		/*
+		 * In order to test your news on the mainscreen, you can add the following line here:
+		 * l.addAll(myIMainscreenNewsProvider.getNews());
+		 * 
+		 * This will be modified with the addition of the mainscreen configuration page
+		 * 
+		 */
+				
+		return l;
+	}
 	
 }
