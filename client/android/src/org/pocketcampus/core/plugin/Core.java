@@ -40,7 +40,14 @@ public class Core {
 	public void displayPlugin(Context ctx, PluginBase plugin) {
 		Intent intent = new Intent(ctx, plugin.getClass());
 		startActivity(ctx, intent);
-	} 
+	}
+	
+	public static void startPluginWithID(Context ctx, PluginBase plugin, int id) {
+		Intent intent = new Intent(ctx, plugin.getClass());
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("id", id);
+		ctx.startActivity(intent);
+	}
 	
 	public void configurePlugin(Context ctx, PluginBase plugin) {
 		Intent intent = new Intent(ctx, plugin.getPluginPreference().getClass());
