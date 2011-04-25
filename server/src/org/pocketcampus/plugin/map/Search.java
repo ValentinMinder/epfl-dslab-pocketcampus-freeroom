@@ -210,7 +210,7 @@ public class Search {
 				previousEnd = pos1;
 			}
 		}
-
+		
 		return path.getPositionList();
 	}
 
@@ -238,7 +238,7 @@ public class Search {
 		try {
 			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
 			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
-			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where title like ? or description like ? limit ?");
+			PreparedStatement statement = dbConnection.prepareStatement("select * from `MAP_POIS` where `title` like ? or `description` like ? order by `title`, `description` limit ?");
 			statement.setString(1, "%" + query + "%");
 			statement.setString(2, "%" + query + "%");
 			statement.setInt(3, maxResults);
