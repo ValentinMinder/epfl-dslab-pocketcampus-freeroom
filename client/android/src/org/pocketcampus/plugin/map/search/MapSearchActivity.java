@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.plugin.map.MapInfo;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
@@ -33,12 +33,11 @@ import com.google.gson.reflect.TypeToken;
  * A class used to search map elements and display the result of the search
  * Look at http://developer.android.com/guide/topics/search/search-dialog.html
  * 
- * @author Johan
+ * @author Johan, Jonas
  *
  */
 public class MapSearchActivity extends ListActivity {
 	private ProgressDialog progressDialog_;
-	private List<MapElementBean> items_;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +65,56 @@ public class MapSearchActivity extends ListActivity {
 		progressDialog_.setCancelable(false);
 		progressDialog_.show();
 		
-		items_ = null;
-		
-		class MapSearchRequest extends DataRequest{
+		class MapSearchRequest extends DataRequest {
+			
+			private MapSearchActivity a_;
+			private ArrayAdapter<String> results_;
+			private List<MapElementBean> items_;
+			
+			public MapSearchRequest(MapSearchActivity a) {
+				a_ = a;
+			}
+			
+			@Override
+			protected void doInBackgroundThread(String result) {
+				if(result == null) {
+					return;
+				}
+				
+				//Deserializes the response
+				Gson gson = new Gson();
+				Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
+				items_ = new ArrayList<MapElementBean>();
+
+				try {
+					items_ = gson.fromJson(result, mapElementType);
+				} catch (JsonSyntaxException e) {
+					Log.e("MapSearchActivity", e.toString());
+					return;
+				}
+				if(items_ == null) {
+					return;
+				}
+
+
+				results_ = new ArrayAdapter<String>(a_, R.layout.map_list);
+				if(items_.size() <= 0) {
+					results_.add(getResources().getString(R.string.search_no_results));
+				} else {
+					for(MapElementBean meb : items_) {
+						results_.add(meb.getTitle());
+					}
+				}
+				
+			}
+
 			@Override
 			protected void doInUiThread(String result) {
-				if(progressDialog_ != null) {
+				if(progressDialog_ != null && progressDialog_.isShowing()) {
 					progressDialog_.dismiss();
 				}
-				if(result == null) {
+				
+				if(results_ == null) {
 					try {
 						Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 					} catch(Exception e) {
@@ -83,7 +123,8 @@ public class MapSearchActivity extends ListActivity {
 					finish();
 					return;
 				}
-				parseAndDisplayResult(result);
+				
+				parseAndDisplayResult(results_, items_);
 			}
 		}
 		
@@ -91,55 +132,34 @@ public class MapSearchActivity extends ListActivity {
 		params.addParameter("q", query);
 		
 		RequestHandler rh = new RequestHandler(new MapInfo());
-		rh.execute(new MapSearchRequest(), "search", params);
+		rh.execute(new MapSearchRequest(this), "search", params);
 	}
 	
 	/**
 	 * Parses the result from JSON and then displays the list of results
-	 * @param result the results in JSON format (List of MapElementBean).
+	 * @param results A list containing the results title
+	 * @param items Beans of the items
 	 */
-	private void parseAndDisplayResult(String result) {
-		//Deserializes the response
-		Gson gson = new Gson();
-		Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
-		items_ = new ArrayList<MapElementBean>();
-
-		try {
-			items_ = gson.fromJson(result, mapElementType);
-		} catch (JsonSyntaxException e) {
-			Log.e("MapSearchActivity", e.toString());
-			return;
-		}
-		if(items_ == null) {
-			return;
-		}
+	private void parseAndDisplayResult(ArrayAdapter<String> results, final List<MapElementBean> items) {
 		
-		if(items_.size() == 1) {
-			startMapActivity(items_.get(0));
+		if(results != null && results.getCount() == 1) {
+			startMapActivity(items.get(0));
 		}
-
-		ArrayAdapter<String> results = new ArrayAdapter<String>(this, R.layout.map_list);
-		if(items_.size() <= 0) {
-			results.add(getResources().getString(R.string.search_no_results));
-		} else {
-			for(MapElementBean meb : items_) {
-				results.add(meb.getTitle());
-			}
-		}
-		setListAdapter(results);
 		
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(items_ != null && items_.size() > 0) {
+				if(items != null && items.size() > 0) {
 					try {
-						MapElementBean meb = items_.get(position); 
+						MapElementBean meb = items.get(position); 
 						startMapActivity(meb);
 					} catch (Exception e) {}
 				}
 			}
 		});
+		
+		setListAdapter(results);
 
 	}
 	
