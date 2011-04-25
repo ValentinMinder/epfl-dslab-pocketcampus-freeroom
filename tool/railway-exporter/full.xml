@@ -268,7 +268,7 @@
     <tag k="name" v="Vigie"/>
     <tag k="url" v="http://www.t-l.ch/"/>
     <tag k="railway" v="station"/>
-    <tag k="uic_ref" v="8592133"/>
+    <tag k="uic_ref" v="8501206"/>
     <tag k="operator" v="TL"/>
     <tag k="uic_name" v="Lausanne, Vigie"/>
     <tag k="ele" v="486"/>
@@ -513,7 +513,7 @@
     <tag k="name" v="Vigie"/>
     <tag k="url" v="http://www.t-l.ch/"/>
     <tag k="railway" v="station"/>
-    <tag k="uic_ref" v="8592133"/>
+    <tag k="uic_ref" v="8501206"/>
     <tag k="operator" v="TL"/>
     <tag k="uic_name" v="Lausanne, Vigie"/>
     <tag k="ele" v="486"/>

@@ -56,6 +56,12 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 			}
 			
 			@Override
+			protected int timeoutDelay() {
+				// longer timeout as CFF website is often slow
+				return 10;
+			}
+			
+			@Override
 			protected void doInUiThread(String result) {
 				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
 

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.shared.plugin.transport.Location;
+import org.pocketcampus.shared.plugin.transport.LocationType;
 import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
@@ -74,7 +75,7 @@ public class Transport implements IPlugin {
 		NearbyStationsResult nearbyStations = null;
 		
 		try {
-			nearbyStations = sbbProvider_.nearbyStations(null, 46520381, 6568444, 1000, 3);
+			nearbyStations = sbbProvider_.nearbyStations(idStation, 46520381, 6568444, 1000, 3);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -130,16 +131,26 @@ public class Transport implements IPlugin {
 			return null;
 		}
 		
+		int fromId = Integer.parseInt(fromIDConstraint);
+		int toId = Integer.parseInt(toIDConstraint);
+		
 		Location from = null, via = null, to = null;
 		
-		try {
+		//try {
 			//FIXME list maybe empty
-			from = sbbProvider_.nearbyStations(fromIDConstraint, 0, 0, 1, 1).stations.get(0);
-			to = sbbProvider_.nearbyStations(toIDConstraint, 0, 0, 1, 1).stations.get(0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//			from = sbbProvider_.nearbyStations(fromIDConstraint, 0, 0, 1, 1).stations.get(0);
+//			to = sbbProvider_.nearbyStations(toIDConstraint, 0, 0, 1, 1).stations.get(0);
+			
+			from = new Location(LocationType.STATION, fromId);
+			to = new Location(LocationType.STATION, toId);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
+		if(from==null || to==null) {
+			return null;
+		}
+			
 		Date date = new Date();
 		boolean dep = true;
 		String products = (String)null;

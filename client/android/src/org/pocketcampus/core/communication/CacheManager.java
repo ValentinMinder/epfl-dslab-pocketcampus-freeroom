@@ -49,18 +49,18 @@ public class CacheManager<A> {
 	public A getFromCache(String url) {
 		
 		if(!expirationMap_.containsKey(url)) {
-			Log.d(TAG, "Not in cache:" + url);
+			//Log.d(TAG, "Not in cache:" + url);
 			return null;
 		}
 		
 		float delta = new Date().getTime() - expirationMap_.get(url).getTime();
 		
 		if(delta > 0) {
-			Log.d(TAG, "Expired for " + delta/1000 + "s: " + url);
+			//Log.d(TAG, "Expired for " + delta/1000 + "s: " + url);
 			return null;
 		}
 		
-		Log.d(TAG, "Retrieved from cache, " + delta*(-1.0/1000.0) + "s left: " + url);
+		//Log.d(TAG, "Retrieved from cache, " + delta*(-1.0/1000.0) + "s left: " + url);
 		return cacheMap_.get(url);
 	}
 
@@ -77,7 +77,7 @@ public class CacheManager<A> {
 		
 		cacheMap_.put(url, (A) result);
 		
-		Log.d(TAG, "Added to cache: " + url);
+		//Log.d(TAG, "Added to cache: " + url);
 	}
 
 }

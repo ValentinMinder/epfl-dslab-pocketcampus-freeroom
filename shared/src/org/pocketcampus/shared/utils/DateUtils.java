@@ -49,7 +49,7 @@ public class DateUtils {
 		
 		if(nbHours > 0) {
 			if(nbDays > 0) {
-				if(nbMinutes == 0) {
+				if(nbMinutes==0 || nbDays>0) {
 					formattedDateDelta += " and ";
 				} else {
 					formattedDateDelta += ", ";

@@ -34,6 +34,7 @@ import org.pocketcampus.plugin.map.ui.ItemDialog;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.plugin.map.ui.LevelBar;
 import org.pocketcampus.plugin.map.ui.OnLevelBarChangeListener;
+import org.pocketcampus.plugin.transport.TransportLiveOverlay;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -142,6 +143,9 @@ public class MapPlugin extends PluginBase {
 		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
 		CAMPUS_CENTER = new Position(lat, lon, alt);
 		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
+		
+		// XXX Displays the overlay for live transport
+		//new TransportLiveOverlay(getApplicationContext()).requestOverlay(this);
 	}
 
 	@Override
@@ -548,12 +552,12 @@ public class MapPlugin extends PluginBase {
 		for(Overlay over : constantOverlays_) {
 			mapView_.getOverlays().add(over);
 		}
-
+		
 		// Display the selected layers
 		for(MapElementsList layer : displayedLayers_) {
 			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
 
-			// The overlay allready exists
+			// The overlay already exists
 			if(aOverlay != null) {
 				mapView_.getOverlays().add(aOverlay);
 				Log.d(this.getClass().toString(), "Overlay: " + aOverlay.toString());
@@ -575,6 +579,12 @@ public class MapPlugin extends PluginBase {
 		mapView_.invalidate();
 	}
 
+	public void setRailwayOverlay(Overlay railwayOverlay) {
+		updateOverlays();
+		mapView_.getOverlays().add(railwayOverlay);
+		mapView_.invalidate();
+	}
+	
 	/**
 	 * Adds corresponding MapElements into the list.
 	 * @param layer the layer (= list of items) where the item will be added
@@ -818,4 +828,5 @@ public class MapPlugin extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return null;
 	}
+
 }

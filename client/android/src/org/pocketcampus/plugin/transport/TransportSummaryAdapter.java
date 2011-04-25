@@ -30,7 +30,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private LayoutInflater inflater_;
 	private String departure_;
 	private String arrival_;
-	private int nbMaxItems_ = 4;
+	private int nbMaxItems_ = 3;
 
 	public TransportSummaryAdapter(Context ctx, String departure, String arrival) {
 		state_ = SummaryState.EMPTY;
