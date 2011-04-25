@@ -30,7 +30,7 @@ import android.util.Log;
 public class NewsProvider {
 
 	private Context context_;
-	SharedPreferences prefs_;
+	private SharedPreferences prefs_;
 	
 	// Singleton
 	private static NewsProvider instance_;
@@ -42,7 +42,7 @@ public class NewsProvider {
 	// Data used to cache the feeds 
 	private final static String cacheFilename_ = "newscache.dat";
 	private long refreshRate_;
-	String defaultRefreshRate_;
+	private String defaultRefreshRate_;
 
 	// Items  from the feeds (merged)
 	private List<NewsItem> items_;

@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.news;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -7,6 +10,8 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
+import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,11 +28,12 @@ import android.widget.ListView;
  * @author Jonas
  *
  */
-public class NewsPlugin extends PluginBase implements INewsListener {
+public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, INewsListener {
 
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
 	private ActionBar actionBar_;
+	private final static int NB_NEWS = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +119,24 @@ public class NewsPlugin extends PluginBase implements INewsListener {
 	@Override
 	public void newsRefreshed() {
 		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+
+	@Override
+	public List<MainscreenNews> getNews() {
+		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
+		
+		// Number of news to display
+		int min = newsProvider_.getCount();
+		min = Math.min(min, NB_NEWS);
+		
+		NewsItem tmp;
+		for(int i = 0; i < min; ++i) {
+			tmp = newsProvider_.getItem(i);
+			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), tmp.hashCode(), this));
+		}
+		
+		return l;
+		
 	}
 
 
