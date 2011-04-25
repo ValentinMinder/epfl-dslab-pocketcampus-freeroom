@@ -18,4 +18,5 @@
     <string name="map_searching">Searching the map</string>
     <string name="map_level">Level</string>
     <string name="map_take_me_there_button">Take me there!</string>
+    <string name="map_zoom_button">Center/zoom</string>
 </resources>

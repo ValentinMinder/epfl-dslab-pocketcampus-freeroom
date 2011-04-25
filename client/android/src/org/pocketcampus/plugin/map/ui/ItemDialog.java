@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 /**
- * Show a gialog box when the user clicks on an item on the map
+ * Show a dialog box when the user clicks on an item on the map
  * 
  * @status WIP
  * 
@@ -44,6 +44,16 @@ public class ItemDialog extends Dialog {
 			@Override
 			public void onClick(View v) {
 				mp_.showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
+				dismiss();
+			}
+		});
+		
+		Button zoom = (Button) findViewById(R.id.map_zoom_button);
+		zoom.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mp_.centerOnPoint(item.getPoint());
 				dismiss();
 			}
 		});

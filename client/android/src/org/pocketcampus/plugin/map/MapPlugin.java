@@ -72,7 +72,8 @@ public class MapPlugin extends PluginBase {
 
 	// Used for the location
 	private static final float maxAccuracyForDirections = 100;
-	private static Position CAMPUS_CENTER;
+	private static Position CAMPUS_CENTER_P;
+	private static GeoPoint CAMPUS_CENTER_G;
 	private static int CAMPUS_RADIUS;
 
 	// Map UI
@@ -140,7 +141,8 @@ public class MapPlugin extends PluginBase {
 		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
 		double lon = Double.parseDouble(getResources().getString(R.string.map_campus_longitude));
 		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
-		CAMPUS_CENTER = new Position(lat, lon, alt);
+		CAMPUS_CENTER_P = new Position(lat, lon, alt);
+		CAMPUS_CENTER_G = new GeoPoint(CAMPUS_CENTER_P.getLatitude(), CAMPUS_CENTER_P.getLongitude(), CAMPUS_CENTER_P.getAltitude());
 		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
 		
 		// XXX Displays the overlay for live transport
@@ -249,7 +251,6 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.add(mapPathOverlay_);
 
 		// Center map
-		mapController_.setZoom(16);
 		centerOnCampus();
 	}
 
@@ -451,9 +452,18 @@ public class MapPlugin extends PluginBase {
 	 * Center the map on campus
 	 */
 	private void centerOnCampus() {
+		centerOnPoint(CAMPUS_CENTER_G);
+	}
+	
+	/**
+	 * Center on a point on the map
+ 	 * @param point Where to center the map
+	 */
+	public void centerOnPoint(GeoPoint point) {
 		myLocationOverlay_.disableFollowLocation();
-		GeoPoint campusPoint = new GeoPoint(46519732, 6566734);
-		mapController_.setCenter(campusPoint);
+
+		mapController_.setZoom(getResources().getInteger(R.integer.map_zoom_level)); 
+		mapController_.setCenter(point);
 	}
 
 	/**
@@ -504,7 +514,7 @@ public class MapPlugin extends PluginBase {
 
 		// Check if the user is on campus
 		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
-		double distanceToCenter = directDistanceBetween(startPos, CAMPUS_CENTER);
+		double distanceToCenter = directDistanceBetween(startPos, CAMPUS_CENTER_P);
 		if(distanceToCenter > CAMPUS_RADIUS) {
 			Notification.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
 			return;
@@ -661,6 +671,12 @@ public class MapPlugin extends PluginBase {
 	 * Used to retreive the layers from the server
 	 */
 	class LayersRequest extends DataRequest {
+		
+		@Override
+		protected void onCancelled() {
+			dismissProgressDialog();
+			Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+		}
 
 		@Override
 		protected void doInBackgroundThread(String result) {
