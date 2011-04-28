@@ -135,9 +135,6 @@ public class MapPlugin extends PluginBase {
 		// Check if another activity wants to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
-		
-		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
-		overlaysHandler_.postDelayed(overlaysRefreshTicker_, LAYERS_REFRESH_TIMEOUT);
 	}
 
 	private void initVariables() {
@@ -318,7 +315,7 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
-	 * Re-enable the location service
+	 * Re-enable the location service and the layers refresh
 	 */
 	@Override
 	protected void onResume() {
@@ -326,23 +323,22 @@ public class MapPlugin extends PluginBase {
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			myLocationOverlay_.enableMyLocation();
 		}
+		
+		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
+		overlaysHandler_.post(overlaysRefreshTicker_);
 
 		super.onResume();
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		updateOverlays(false);
-	}
-
 	/**
-	 * Disable the location service
+	 * Disable the location service and the layers refresh
 	 */
 	@Override
 	protected void onPause() {
 		myLocationOverlay_.disableMyLocation();
+		
+		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
+		
 		super.onPause();
 	}
 
