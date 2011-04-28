@@ -112,7 +112,7 @@ public class MapPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
-		
+
 		Tracker.getInstance().trackPageView("map/home");
 
 		initVariables();
@@ -126,7 +126,7 @@ public class MapPlugin extends PluginBase {
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
 	}
-	
+
 	private void initVariables() {
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
@@ -144,7 +144,7 @@ public class MapPlugin extends PluginBase {
 		CAMPUS_CENTER_P = new Position(lat, lon, alt);
 		CAMPUS_CENTER_G = new GeoPoint(CAMPUS_CENTER_P.getLatitude(), CAMPUS_CENTER_P.getLongitude(), CAMPUS_CENTER_P.getAltitude());
 		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
-		
+
 		// XXX Displays the overlay for live transport
 		//new TransportLiveOverlay(getApplicationContext()).requestOverlay(this);
 	}
@@ -158,7 +158,7 @@ public class MapPlugin extends PluginBase {
 			@Override
 			public void performAction(View view) {
 				updateOverlays(true);
-				
+
 				Tracker.getInstance().trackPageView("map/manualRefresh");
 			}
 
@@ -167,7 +167,7 @@ public class MapPlugin extends PluginBase {
 				return R.drawable.refresh;
 			}
 		});
-		
+
 		super.setupActionBar(addHomeButton);
 	}
 
@@ -183,7 +183,7 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.remove(0);
 		constantOverlays_.add(0, mTilesOverlay);
 		updateOverlays(false);
-		
+
 		Tracker.getInstance().trackPageView("map/changeLevel" + level);
 	}
 
@@ -219,7 +219,7 @@ public class MapPlugin extends PluginBase {
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
 		mapController_ = mapView_.getController();
-		
+
 		// Display the level bar if needed
 		if(getResources().getBoolean(R.bool.map_has_levels)) {
 			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
@@ -373,36 +373,35 @@ public class MapPlugin extends PluginBase {
 
 		// Show a layer selection
 		case R.id.map_menu_layers_button:
-			showProgressDialog(R.string.map_loading_layers);
-			loadLayersFromServer();
-			
+			selectLayers();
+
 			Tracker.getInstance().trackPageView("map/menu/getLayers");
 			return true;
 
 			// Enable the user following
 		case R.id.map_my_position:
 			toggleCenterOnUserPosition();
-			
+
 			Tracker.getInstance().trackPageView("map/menu/togglPosition");
 			return true;
 
 			// Enable the user following
 		case R.id.map_campus_position:
 			centerOnCampus();
-			
+
 			Tracker.getInstance().trackPageView("map/menu/centerOnCampus");
 			return true;
 
 			// Shows the search dialog
 		case R.id.map_search:
 			onSearchRequested();
-			
+
 			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 
 		case R.id.map_clear_path:
 			clearPath();
-			
+
 			Tracker.getInstance().trackPageView("map/menu/clearPath");
 			return true;
 
@@ -414,9 +413,17 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Downloads the list of available layers
 	 */
-	private void loadLayersFromServer() {
-		//request of the layers
-		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+	private void selectLayers() {
+		
+		// If don't we already have a cache of the layers
+		if(allLayers_ == null || allLayers_.size() == 0) {
+			showProgressDialog(R.string.map_loading_layers);
+			
+			//request of the layers
+			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+		} else {
+			layerSelector();
+		}
 	}
 
 	/**
@@ -454,10 +461,10 @@ public class MapPlugin extends PluginBase {
 	private void centerOnCampus() {
 		centerOnPoint(CAMPUS_CENTER_G);
 	}
-	
+
 	/**
 	 * Center on a point on the map
- 	 * @param point Where to center the map
+	 * @param point Where to center the map
 	 */
 	public void centerOnPoint(GeoPoint point) {
 		myLocationOverlay_.disableFollowLocation();
@@ -494,7 +501,7 @@ public class MapPlugin extends PluginBase {
 				showDirectionFromTo(fix, endPos);
 			}
 		});
-		
+
 		Tracker.getInstance().trackPageView("map/showDirections?d=" + endPos.toString());
 	}
 
@@ -540,14 +547,14 @@ public class MapPlugin extends PluginBase {
 		this.displayedLayers_ = selectedLayers;
 
 		updateOverlays(false);
-		
+
 		// Track
 		StringBuffer selected = new StringBuffer("?layers=");
 		for(MapElementsList l : selectedLayers) {
 			selected.append(l.getLayerTitle());
 			selected.append(',');
 		}
-		
+
 		Tracker.getInstance().trackPageView("map/selectedLayers" + selected);
 	}
 
@@ -561,7 +568,7 @@ public class MapPlugin extends PluginBase {
 		for(Overlay over : constantOverlays_) {
 			mapView_.getOverlays().add(over);
 		}
-		
+
 		// Display the selected layers
 		for(MapElementsList layer : displayedLayers_) {
 			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
@@ -575,7 +582,7 @@ public class MapPlugin extends PluginBase {
 			}
 
 			Log.d(this.getClass().toString(), "Cached overlays: " + cachedOverlays.toString());
-			
+
 			// The overlay does not exist, or is outdated 
 			// If outdated, we redownload the new items, but keep the old ones on the screen while downloading
 			if(aOverlay == null || isLayerOutdated(layer) || forceRefresh) {
@@ -593,7 +600,7 @@ public class MapPlugin extends PluginBase {
 		mapView_.getOverlays().add(railwayOverlay);
 		mapView_.invalidate();
 	}
-	
+
 	/**
 	 * Adds corresponding MapElements into the list.
 	 * @param layer the layer (= list of items) where the item will be added
@@ -671,13 +678,13 @@ public class MapPlugin extends PluginBase {
 	 * Used to retreive the layers from the server
 	 */
 	class LayersRequest extends DataRequest {
-		
+
 		@Override
 		protected void onCancelled() {
 			dismissProgressDialog();
 			Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 		}
-
+		
 		@Override
 		protected void doInBackgroundThread(String result) {
 
