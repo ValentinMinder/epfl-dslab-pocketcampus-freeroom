@@ -11,14 +11,14 @@ public class MapLayerBean implements Serializable{
 	private String name, drawableUrl;
 	private String externalId;
 	private transient int pluginInternalId; // Do not serialize it
-	private int cache;
+	private int cacheInSeconds;
 	private boolean displayable;
 	
 	public MapLayerBean(String name, String drawable_url, int pluginId, int layerId, int cache, boolean displayable) {
 		this.name = name;
 		this.drawableUrl = drawable_url;
 		this.pluginInternalId = layerId;
-		this.cache = cache;
+		this.cacheInSeconds = cache;
 		this.displayable = displayable;
 		
 		MessageDigest m;
@@ -60,11 +60,11 @@ public class MapLayerBean implements Serializable{
 	public int getInternalId() {
 		return pluginInternalId;
 	}
-	public int getCache() {
-		return cache;
+	public int getCacheInSeconds() {
+		return cacheInSeconds;
 	}
-	public void setCache(int cache) {
-		this.cache = cache;
+	public void setCacheInSeconds(int cache) {
+		this.cacheInSeconds = cache;
 	}
 	
 	
