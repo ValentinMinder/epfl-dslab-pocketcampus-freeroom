@@ -92,15 +92,17 @@ public class Directory implements IPlugin, IMapElementsProvider {
 	}
 
 	@Override
-	public List<MapElementBean> getLayerItems() {
+	public List<MapElementBean> getLayerItems(int layerId) {
 		// TODO Auto-generated method stub
 		return new ArrayList<MapElementBean>();
 	}
 
 	@Override
-	public MapLayerBean getLayer() {
+	public List<MapLayerBean> getLayers() {
 		// TODO Auto-generated method stub
-		return new MapLayerBean("Person", "", 131232654, 60, false);
+		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+		l.add(new MapLayerBean("Person", "", this.hashCode(), 1, 60, false));
+		return l;
 	}
 	
 	

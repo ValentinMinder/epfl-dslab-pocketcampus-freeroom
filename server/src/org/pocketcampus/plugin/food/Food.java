@@ -311,15 +311,17 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 }
 
 	@Override
-	public List<MapElementBean> getLayerItems() {
+	public List<MapElementBean> getLayerItems(int layerId) {
 		// TODO Auto-generated method stub
 		return new ArrayList<MapElementBean>();
 	}
 
 	@Override
-	public MapLayerBean getLayer() {
+	public List<MapLayerBean> getLayers() {
 		// TODO Auto-generated method stub
-		return new MapLayerBean("Restaurants", "", 15678, -1, true);
+		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+		l.add(new MapLayerBean("Restaurants", "", this.hashCode(), 1, -1, true));
+		return l;
 	}
 
 	// public void writeToFile() {

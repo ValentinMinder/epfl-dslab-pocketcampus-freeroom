@@ -7,7 +7,7 @@ import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 public interface IMapElementsProvider extends IProvider {
-	abstract public MapLayerBean getLayer();
+	abstract public List<MapLayerBean> getLayers();
 	
-	abstract public List<MapElementBean> getLayerItems();
+	abstract public List<MapElementBean> getLayerItems(int layerId);
 }

@@ -30,12 +30,14 @@ public class Bikes implements IPlugin, IMapElementsProvider {
     }
 
 	@Override
-	public MapLayerBean getLayer() {
-		return new MapLayerBean("Velopass", "http://192.168.1.39/pocketcampus/bikes_normal_mini.png", 1337, 0, true);
+	public List<MapLayerBean> getLayers() {
+		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+		l.add(new MapLayerBean("Velopass", "http://192.168.1.39/pocketcampus/bikes_normal_mini.png", this.hashCode(), 1, 0, true));
+		return l;
 	}
 
 	@Override
-	public List<MapElementBean> getLayerItems() {
+	public List<MapElementBean> getLayerItems(int layerId) {
 		ArrayList<BikeStation> b = bikes(null);
 		
 		List<MapElementBean> items = new ArrayList<MapElementBean>();

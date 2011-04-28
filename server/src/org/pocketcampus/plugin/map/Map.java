@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,14 +27,28 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 
 /**
- * IPlugin server class for the Map plugin 
+ * IPlugin server class for the Map plugin.
+ * 
+ * The plugin lists all the layers each server plugin make available using {@link IMapElementsProvider}.
+ * This plugin is used as a regular IMapElementsProvider plugin.
+ * 
+ * The plugins create MapLayerBean objects to make the layers available. 
+ * They have to provide their hashcode (to make it unique) and a layer id.
+ * This layer id is only unique in the plugin's scope.
+ * We create an "external id", that we provide to the mobile.
+ * We have hashmaps to recall where an "external id" comes from a get the items from the correct plugin.
  * 
  * @status WIP
  * 
  * @author Jonas, Johan
  *
  */
-public class Map implements IPlugin {
+public class Map implements IPlugin, IMapElementsProvider {
+
+	// Remember the available layers (but not their content)
+	private List<MapLayerBean> layersList = new ArrayList<MapLayerBean>();
+	private HashMap<String, IMapElementsProvider> layerProviders = new HashMap<String, IMapElementsProvider>();
+	private HashMap<String, Integer> layerIds = new HashMap<String, Integer>();
 
 	/**
 	 * Get a list of available layers
@@ -43,52 +58,46 @@ public class Map implements IPlugin {
 	 */
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
-		
-		// Get internal and external layers
-		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-		layers.addAll(getInternalLayers());
-		layers.addAll(getExternalLayers());
-		
-		// Sort the layers by alphabetic order
-		Collections.sort(layers, new Comparator<MapLayerBean>() {
-			@Override
-			public int compare(MapLayerBean o1, MapLayerBean o2) {
-				return o1.getName().compareToIgnoreCase(o2.getName());
+
+		// Get the layers
+		// Do it only once
+		synchronized (layersList) {
+			if(layersList.size() == 0) {
+				getPluginsLayers();
+
+				// Sort the layers by alphabetic order
+				Collections.sort(layersList, new Comparator<MapLayerBean>() {
+					@Override
+					public int compare(MapLayerBean o1, MapLayerBean o2) {
+						return o1.getName().compareToIgnoreCase(o2.getName());
+					}
+				});
 			}
-		});
-		
-		return layers;
+		}
+
+		return layersList;
 	}
 
 	/**
 	 * Get the items of a particular layer.
 	 *
-	 * @param request Has a parameter "layer_id" containing the layer ID
+	 * @param request Has a string parameter "layer_id" containing the external layer ID
 	 * @return
 	 */
 	@PublicMethod
 	public List<MapElementBean> getItems(HttpServletRequest request) {
-		
+
 		if(request == null) {
 			return null;
 		}
-		
-		ArrayList<MapElementBean> items = new ArrayList<MapElementBean>();
 
 		String layerId = request.getParameter("layer_id");
-		int id;
-		try {
-			id = Integer.parseInt(layerId);
-			items.addAll(getInternalItems(id));
-		} catch (Exception e) {
-			return null;
+
+		if(layerId != null) {		
+			return getPluginItems(layerId);
+		} else {
+			return new ArrayList<MapElementBean>();
 		}
-		
-		if(items.isEmpty()) {
-			items.addAll(getExternalItems(id));
-		}
-		
-		return items;
 	}
 
 	/**
@@ -125,18 +134,18 @@ public class Map implements IPlugin {
 		try {
 			startLon = Double.parseDouble(request.getParameter("startLongitude"));
 		} catch (Exception e) {}
-		
+
 		Position startPos = new Position(startLat, startLon, 0);
 
 		String endPoi = request.getParameter("endPoiId");
-		
+
 		if(endPoi != null) {
 			try {
 				poi = Integer.parseInt(endPoi);
 			} catch (Exception e) {}
 
 			return Search.searchPathBetween(startPos, poi, false);
-			
+
 		} else {
 
 			try {
@@ -146,13 +155,82 @@ public class Map implements IPlugin {
 			try {
 				endLon = Double.parseDouble(request.getParameter("endLongitude"));
 			} catch (Exception e) {}
-			
+
 			Position endPos = new Position(endLat, endLon, 0);
-			
+
 			return Search.searchPathBetween(startPos, endPos, false);
 		}
+	}
+
+	/**
+	 * Allows to search a text among the title and description of the elements. 
+	 * @param request a request where the parameter q is the searched text
+	 * @return a list answering the query
+	 */
+	@PublicMethod
+	public List<MapElementBean> search(HttpServletRequest request) {
+		String query = null;
+		try {
+			query = request.getParameter("q");
+		} catch(Exception e) {}
+		return Search.searchText(query,100);
+	}
 
 
+	/**
+	 * Fill the hashmaps with a list of layers
+	 * coming from the {@link IMapElementsProvider} plugins.
+	 */
+	private void getPluginsLayers() {
+
+		// Get the plugins with the "map" interface
+		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
+
+		// Iterate through all the plugins
+		Iterator<IPlugin> iter = providers.iterator();
+		IMapElementsProvider provider;
+		while(iter.hasNext()) {
+			provider = (IMapElementsProvider)iter.next();
+
+			// For each layer of the current plugin, remember it
+			for(MapLayerBean mlb : provider.getLayers()) {
+				layersList.add(mlb);
+				layerProviders.put(mlb.getExternalId(), provider);
+				layerIds.put(mlb.getExternalId(), mlb.getInternalId());
+			}
+		}
+	}
+
+	/**
+	 * Get a list of items coming from a {@link IMapElementsProvider} plugin
+	 * 
+	 * @param externalId ID of the layer to use
+	 * @return List of items from the layer
+	 */
+	private List<MapElementBean> getPluginItems(String externalId) {
+
+		IMapElementsProvider provider = layerProviders.get(externalId);
+
+		if(provider != null) {
+			return provider.getLayerItems(layerIds.get(externalId));
+		}
+
+		// Nothing found
+		return new ArrayList<MapElementBean>();
+	}
+
+
+
+	/***** Methods from the interface ****/
+
+	@Override
+	public List<MapLayerBean> getLayers() {
+		return getInternalLayers();
+	}
+
+	@Override
+	public List<MapElementBean> getLayerItems(int layerId) {
+		return getInternalItems(layerId);
 	}
 
 	/**
@@ -179,12 +257,12 @@ public class Map implements IPlugin {
 			ResultSet rs = statement.executeQuery("select * from MAP_LAYERS");
 
 			while (rs.next()) {
-				MapLayerBean mlb = new MapLayerBean();
-				mlb.setId(rs.getInt("id"));
-				mlb.setName(rs.getString("title"));
-				mlb.setCache(rs.getInt("cache"));
-				mlb.setDrawable_url(rs.getString("image_url"));
-				mlb.setDisplayable(rs.getBoolean("displayable"));
+				MapLayerBean mlb = new MapLayerBean(rs.getString("title"), 
+						rs.getString("image_url"),
+						this.hashCode(),
+						rs.getInt("id"),
+						rs.getInt("cache"),
+						rs.getBoolean("displayable"));
 				layers.add(mlb);
 			}
 
@@ -199,40 +277,14 @@ public class Map implements IPlugin {
 	}
 
 	/**
-	 * Get a list of layers coming from the other plugins
-	 * 
-	 * @return List of layers
-	 */
-	private List<MapLayerBean> getExternalLayers() {
-		
-		// Returned list
-		ArrayList<MapLayerBean> layers = new ArrayList<MapLayerBean>();
-		
-		// Get the plugins with the "map" interface
-		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
-
-		// Iterate through all the plugins
-		Iterator<IPlugin> iter = providers.iterator();
-		IMapElementsProvider provider;
-		while(iter.hasNext()) {
-			provider = (IMapElementsProvider)iter.next();
-			
-			// Get the plugin layer
-			layers.add(provider.getLayer());
-		}
-
-		return layers;
-	}
-
-	/**
 	 * Get a list of items from a certain layer, coming from the Map plugin itself, from the database
 	 * 
 	 * @param layerId ID of the layer to use
 	 * @return List of items
 	 */
-	public List<MapElementBean> getInternalItems(int layerId) {
+	private List<MapElementBean> getInternalItems(int layerId) {
 		List<MapElementBean> elements = new LinkedList<MapElementBean>();
-		
+
 		int id = layerId;
 
 		try {
@@ -269,46 +321,5 @@ public class Map implements IPlugin {
 		}
 
 		return elements;
-	}
-	
-	/**
-	 * Get a list of items coming from a layers coming from another plugins
-	 * 
-	 * @param id ID of the layer to use
-	 * @return List of items from the layer
-	 */
-	private List<MapElementBean> getExternalItems(int id) {
-
-		// Get the plugins with the "map" interface
-		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
-
-		// Iterate through the plugins
-		Iterator<IPlugin> iter = providers.iterator();
-		IMapElementsProvider provider;
-		while(iter.hasNext()) {
-			provider = (IMapElementsProvider)iter.next();
-			
-			// The plugin provides a layer with this ID, return it
-			if(provider.getLayer().getId() == id) {
-				return provider.getLayerItems();
-			}
-		}
-		
-		// Nothing found
-		return new ArrayList<MapElementBean>();
-	}
-	
-	/**
-	 * Allows to search a text among the title and description of the elements. 
-	 * @param request a request where the parameter q is the searched text
-	 * @return a list answering the query
-	 */
-	@PublicMethod
-	public List<MapElementBean> search(HttpServletRequest request) {
-		String query = null;
-		try {
-			query = request.getParameter("q");
-		} catch(Exception e) {}
-		return Search.searchText(query,100);
 	}
 }
