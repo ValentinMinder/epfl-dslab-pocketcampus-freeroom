@@ -16,7 +16,7 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	 */
 	private String layerTitle_;
 	private int cacheTimeInMinutes_;
-	private int layerId_;
+	private String layerId_;
 	private String iconUrl_;
 	
 	public MapElementsList(String title, int cache) {
@@ -27,12 +27,12 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	public MapElementsList(MapLayerBean mlb) {
 		this.layerTitle_ = mlb.getName();
 		this.cacheTimeInMinutes_ = mlb.getCache();
-		this.layerId_ = mlb.getId();
+		this.layerId_ = mlb.getExternalId();
 		this.iconUrl_ = mlb.getDrawableUrl();
 		//XXX more?
 	}
 		
-	public int getLayerId() {
+	public String getLayerId() {
 		return layerId_;
 	}
 		
@@ -72,10 +72,11 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		this.iconUrl_ = iconUrl;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = prime * layerId_;
+		int result = prime + ((layerId_ == null) ? 0 : layerId_.hashCode());
 		return result;
 	}
 
@@ -86,7 +87,10 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		if (getClass() != obj.getClass())
 			return false;
 		MapElementsList other = (MapElementsList) obj;
-		if (layerId_ != other.layerId_)
+		if (layerId_ == null) {
+			if (other.layerId_ != null)
+				return false;
+		} else if (!layerId_.equals(other.layerId_))
 			return false;
 		return true;
 	}
