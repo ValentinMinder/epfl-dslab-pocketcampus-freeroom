@@ -1,24 +1,37 @@
 package org.pocketcampus.shared.plugin.map;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MapLayerBean implements Serializable{
 
 	private static final long serialVersionUID = -314236678555986755L;
 	private String name, drawableUrl;
-	private int id,cache;
+	private String externalId;
+	private transient int pluginInternalId; // Do not serialize it
+	private int cache;
 	private boolean displayable;
 	
-	public MapLayerBean() {
-		
-	}
-	
-	public MapLayerBean(String name, String drawable_url, int id, int cache, boolean displayable) {
+	public MapLayerBean(String name, String drawable_url, int pluginId, int layerId, int cache, boolean displayable) {
 		this.name = name;
 		this.drawableUrl = drawable_url;
-		this.id = id;
+		this.pluginInternalId = layerId;
 		this.cache = cache;
 		this.displayable = displayable;
+		
+		MessageDigest m;
+		try {
+			m = MessageDigest.getInstance("MD5");
+			String s = new String("" + pluginId + layerId);
+		    m.update(s.getBytes(),0,s.length());
+		    BigInteger i = new BigInteger(1,m.digest());
+			this.externalId =  String.format("%1$032X", i);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean isDisplayable() {
@@ -41,11 +54,11 @@ public class MapLayerBean implements Serializable{
 	public void setDrawable_url(String drawable_url) {
 		this.drawableUrl = drawable_url;
 	}
-	public int getId() {
-		return id;
+	public String getExternalId() {
+		return externalId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public int getInternalId() {
+		return pluginInternalId;
 	}
 	public int getCache() {
 		return cache;
