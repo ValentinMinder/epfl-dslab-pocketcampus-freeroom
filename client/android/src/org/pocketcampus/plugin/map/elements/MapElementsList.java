@@ -15,18 +15,18 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 	 * The title of the layer, for example restaurant, parking, etc.
 	 */
 	private String layerTitle_;
-	private int cacheTimeInMinutes_;
+	private int cacheTimeInSeconds_;
 	private String layerId_;
 	private String iconUrl_;
 	
 	public MapElementsList(String title, int cache) {
 		this.layerTitle_ = title;
-		this.cacheTimeInMinutes_ = cache;
+		this.cacheTimeInSeconds_ = cache;
 	}
 	
 	public MapElementsList(MapLayerBean mlb) {
 		this.layerTitle_ = mlb.getName();
-		this.cacheTimeInMinutes_ = mlb.getCache();
+		this.cacheTimeInSeconds_ = mlb.getCacheInSeconds();
 		this.layerId_ = mlb.getExternalId();
 		this.iconUrl_ = mlb.getDrawableUrl();
 		//XXX more?
@@ -49,19 +49,19 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		this.layerTitle_ = layerTitle;
 	}
 
-	public int getCacheTimeInMinutes() {
-		return cacheTimeInMinutes_;
+	public int getCacheTimeInSeconds() {
+		return cacheTimeInSeconds_;
 	}
 
 	/**
-	 * Set the time in minutes the elements can be cached.
-	 * 0 mean no cache at all.
+	 * Set the time in seconds the elements can be cached.
+	 * 0 means no cache at all.
 	 * -1 means never refresh automatically
 	 * 
-	 * @param cacheTimeInMinutes Cache time
+	 * @param cacheTimeInSeconds Cache time
 	 */
-	public void setCacheTimeInMinutes(int cacheTimeInMinutes) {
-		this.cacheTimeInMinutes_ = cacheTimeInMinutes;
+	public void setCacheTimeInSeconds(int cacheTimeInSeconds) {
+		this.cacheTimeInSeconds_ = cacheTimeInSeconds;
 	}
 		
 	public String getIconUrl() {

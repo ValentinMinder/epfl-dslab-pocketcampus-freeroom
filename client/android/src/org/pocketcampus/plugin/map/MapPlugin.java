@@ -1,7 +1,10 @@
 package org.pocketcampus.plugin.map;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,6 +51,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,7 +75,8 @@ import com.google.gson.reflect.TypeToken;
 public class MapPlugin extends PluginBase {
 
 	// Used for the location
-	private static final float maxAccuracyForDirections = 100;
+	private static final float MAX_ACCURACY_FROM_DIRECTIONS = 100;
+	private static final long LAYERS_REFRESH_TIMEOUT = 10000;
 	private static Position CAMPUS_CENTER_P;
 	private static GeoPoint CAMPUS_CENTER_G;
 	private static int CAMPUS_RADIUS;
@@ -81,10 +86,10 @@ public class MapPlugin extends PluginBase {
 	private MapController mapController_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
-	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays;
-	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays;
+	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays_;
+	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays_;
 
-	private OnItemGestureListener<OverlayItem> overlayClickHandler;
+	private OnItemGestureListener<OverlayItem> overlayClickHandler_;
 
 	// UI
 	private ProgressDialog progressDialog_;
@@ -107,6 +112,11 @@ public class MapPlugin extends PluginBase {
 	// List of all and displayed overlays
 	private List<MapElementsList> allLayers_;
 	private List<MapElementsList> displayedLayers_;
+	
+	private HashMap<String, Drawable> icons = new HashMap<String, Drawable>();
+
+	// Handler used to refresh the overlays 
+	private Handler overlaysHandler_ = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +135,9 @@ public class MapPlugin extends PluginBase {
 		// Check if another activity wants to show something
 		Bundle extras = getIntent().getExtras();
 		handleIntent(extras);
+		
+		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
+		overlaysHandler_.postDelayed(overlaysRefreshTicker_, LAYERS_REFRESH_TIMEOUT);
 	}
 
 	private void initVariables() {
@@ -132,10 +145,10 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		displayedLayers_ = new ArrayList<MapElementsList>();
-		cachedOverlays = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
-		lastRefreshedOverlays = new ConcurrentHashMap<MapElementsList, Long>();
+		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
+		lastRefreshedOverlays_ = new ConcurrentHashMap<MapElementsList, Long>();
 
-		overlayClickHandler = new OverlayClickHandler(this);
+		overlayClickHandler_ = new OverlayClickHandler(this);
 
 		// Get the campus coordinates
 		double lat = Double.parseDouble(getResources().getString(R.string.map_campus_latitude));
@@ -203,7 +216,7 @@ public class MapPlugin extends PluginBase {
 					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
 			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
 			overItems.add(overItem);
-			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
+			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			constantOverlays_.add(aOverlay);
 		}
 	}
@@ -411,14 +424,14 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
-	 * Downloads the list of available layers
+	 * Download the list of available layers
 	 */
 	private void selectLayers() {
-		
-		// If don't we already have a cache of the layers
+
+		// If we don't already have a cache of the layers
 		if(allLayers_ == null || allLayers_.size() == 0) {
 			showProgressDialog(R.string.map_loading_layers);
-			
+
 			//request of the layers
 			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 		} else {
@@ -514,7 +527,7 @@ public class MapPlugin extends PluginBase {
 	private void showDirectionFromTo(Location fix, Position to) {
 
 		// Check if the user is located and has a good accuracy
-		if(fix.hasAccuracy() && fix.getAccuracy() > maxAccuracyForDirections) {
+		if(fix.hasAccuracy() && fix.getAccuracy() > MAX_ACCURACY_FROM_DIRECTIONS) {
 			Notification.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
 			return;
 		}
@@ -561,6 +574,8 @@ public class MapPlugin extends PluginBase {
 
 	/**
 	 * Displays all selected overlay items (from layers).
+	 * 
+	 * @param forceRefresh Whether to check is the cache is still valid or to force refresh.
 	 */
 	private void updateOverlays(boolean forceRefresh) {
 		// First we remove all the overlays and then add the constant ones
@@ -571,7 +586,7 @@ public class MapPlugin extends PluginBase {
 
 		// Display the selected layers
 		for(MapElementsList layer : displayedLayers_) {
-			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays.get(layer);
+			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays_.get(layer);
 
 			// The overlay already exists
 			if(aOverlay != null) {
@@ -581,7 +596,7 @@ public class MapPlugin extends PluginBase {
 				Log.d(this.getClass().toString(), "Overlay NULL");
 			}
 
-			Log.d(this.getClass().toString(), "Cached overlays: " + cachedOverlays.toString());
+			Log.d(this.getClass().toString(), "Cached overlays: " + cachedOverlays_.toString());
 
 			// The overlay does not exist, or is outdated 
 			// If outdated, we redownload the new items, but keep the old ones on the screen while downloading
@@ -622,16 +637,16 @@ public class MapPlugin extends PluginBase {
 
 	private boolean isLayerOutdated(MapElementsList layer) {
 
-		long cacheTime = layer.getCacheTimeInMinutes();
+		long cacheTime = layer.getCacheTimeInSeconds();
 		if(cacheTime < 0) {
 			return false;
 		}
 
 		// Get the last time we got the data, will be 0 if we never did
-		long lastRefresh = lastRefreshedOverlays.get(layer);
+		long lastRefresh = lastRefreshedOverlays_.get(layer);
 
-		// minutes to milliseconds
-		cacheTime *= 60000;
+		// seconds to milliseconds
+		cacheTime *= 1000;
 
 		return lastRefresh + cacheTime < System.currentTimeMillis();
 	}
@@ -684,7 +699,7 @@ public class MapPlugin extends PluginBase {
 			dismissProgressDialog();
 			Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 		}
-		
+
 		@Override
 		protected void doInBackgroundThread(String result) {
 
@@ -780,15 +795,15 @@ public class MapPlugin extends PluginBase {
 
 			// Try to get the icon for the overlay
 			try {
-				Drawable icon = ImageUtil.getDrawableFromUrl(layer_.getIconUrl());
-				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
+				Drawable icon = getDrawableFromCacheOrUrl(layer_.getIconUrl());
+				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			} catch (Exception e) {
-				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler, new DefaultResourceProxyImpl(getApplicationContext()));
+				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
 			// Put the new overlay, get the old one if any (to be removed in the UI thread)
-			oldOverlay = cachedOverlays.put(layer_, aOverlay);
-			lastRefreshedOverlays.put(layer_, System.currentTimeMillis());
+			oldOverlay = cachedOverlays_.put(layer_, aOverlay);
+			lastRefreshedOverlays_.put(layer_, System.currentTimeMillis());
 		}
 
 		@Override
@@ -840,6 +855,40 @@ public class MapPlugin extends PluginBase {
 			return true;
 		}
 	}
+
+	/**
+	 * Get the Drawable object from an icon on the server.
+	 * Get a cached version if available
+	 * @param iconUrl URL of the icon
+	 * @return the Drawable
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public Drawable getDrawableFromCacheOrUrl(String iconUrl) throws MalformedURLException, IOException {
+		
+		Drawable i = icons.get(iconUrl);
+		
+		if(i == null) {
+			i = ImageUtil.getDrawableFromUrl(iconUrl);
+			icons.put(iconUrl, i);
+		}
+		
+		return i;
+	}
+
+	/**
+	 * Runnable used to refresh the layers automatically
+	 */
+	private Runnable overlaysRefreshTicker_ = new Runnable() {
+		public void run() {
+			
+			Log.d(this.getClass().toString(), "ticker");
+
+			updateOverlays(false);
+			
+			overlaysHandler_.postDelayed(this, LAYERS_REFRESH_TIMEOUT);
+		}
+	};
 
 	@Override
 	public PluginInfo getPluginInfo() {
