@@ -46,9 +46,9 @@ import org.pocketcampus.shared.plugin.map.Position;
 public class Map implements IPlugin, IMapElementsProvider {
 
 	// Remember the available layers (but not their content)
-	private List<MapLayerBean> layersList = new ArrayList<MapLayerBean>();
-	private HashMap<String, IMapElementsProvider> layerProviders = new HashMap<String, IMapElementsProvider>();
-	private HashMap<String, Integer> layerIds = new HashMap<String, Integer>();
+	private List<MapLayerBean> layersList_ = new ArrayList<MapLayerBean>();
+	private HashMap<String, IMapElementsProvider> layerProviders_ = new HashMap<String, IMapElementsProvider>();
+	private HashMap<String, Integer> layerIds_ = new HashMap<String, Integer>();
 
 	/**
 	 * Get a list of available layers
@@ -61,12 +61,12 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 		// Get the layers
 		// Do it only once
-		synchronized (layersList) {
-			if(layersList.size() == 0) {
+		synchronized (layersList_) {
+			if(layersList_.size() == 0) {
 				getPluginsLayers();
 
 				// Sort the layers by alphabetic order
-				Collections.sort(layersList, new Comparator<MapLayerBean>() {
+				Collections.sort(layersList_, new Comparator<MapLayerBean>() {
 					@Override
 					public int compare(MapLayerBean o1, MapLayerBean o2) {
 						return o1.getName().compareToIgnoreCase(o2.getName());
@@ -75,7 +75,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 			}
 		}
 
-		return layersList;
+		return layersList_;
 	}
 
 	/**
@@ -194,9 +194,9 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 			// For each layer of the current plugin, remember it
 			for(MapLayerBean mlb : provider.getLayers()) {
-				layersList.add(mlb);
-				layerProviders.put(mlb.getExternalId(), provider);
-				layerIds.put(mlb.getExternalId(), mlb.getInternalId());
+				layersList_.add(mlb);
+				layerProviders_.put(mlb.getExternalId(), provider);
+				layerIds_.put(mlb.getExternalId(), mlb.getInternalId());
 			}
 		}
 	}
@@ -209,10 +209,10 @@ public class Map implements IPlugin, IMapElementsProvider {
 	 */
 	private List<MapElementBean> getPluginItems(String externalId) {
 
-		IMapElementsProvider provider = layerProviders.get(externalId);
+		IMapElementsProvider provider = layerProviders_.get(externalId);
 
 		if(provider != null) {
-			return provider.getLayerItems(layerIds.get(externalId));
+			return provider.getLayerItems(layerIds_.get(externalId));
 		}
 
 		// Nothing found
