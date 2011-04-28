@@ -157,7 +157,7 @@ public class MapPlugin extends PluginBase {
 
 			@Override
 			public void performAction(View view) {
-				updateOverlays();
+				updateOverlays(true);
 				
 				Tracker.getInstance().trackPageView("map/manualRefresh");
 			}
@@ -182,7 +182,7 @@ public class MapPlugin extends PluginBase {
 		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, getBaseContext());
 		constantOverlays_.remove(0);
 		constantOverlays_.add(0, mTilesOverlay);
-		updateOverlays();
+		updateOverlays(false);
 		
 		Tracker.getInstance().trackPageView("map/changeLevel" + level);
 	}
@@ -321,7 +321,7 @@ public class MapPlugin extends PluginBase {
 	protected void onStart() {
 		super.onStart();
 
-		updateOverlays();
+		updateOverlays(false);
 	}
 
 	/**
@@ -539,7 +539,7 @@ public class MapPlugin extends PluginBase {
 	private void setSelectedLayers(ArrayList<MapElementsList> selectedLayers) {
 		this.displayedLayers_ = selectedLayers;
 
-		updateOverlays();
+		updateOverlays(false);
 		
 		// Track
 		StringBuffer selected = new StringBuffer("?layers=");
@@ -555,7 +555,7 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Displays all selected overlay items (from layers).
 	 */
-	private void updateOverlays() {
+	private void updateOverlays(boolean forceRefresh) {
 		// First we remove all the overlays and then add the constant ones
 		mapView_.getOverlays().clear();
 		for(Overlay over : constantOverlays_) {
@@ -578,7 +578,7 @@ public class MapPlugin extends PluginBase {
 			
 			// The overlay does not exist, or is outdated 
 			// If outdated, we redownload the new items, but keep the old ones on the screen while downloading
-			if(aOverlay == null || isLayerOutdated(layer)) {
+			if(aOverlay == null || isLayerOutdated(layer) || forceRefresh) {
 				Log.d(this.getClass().toString(), "Layer outdated: " + layer.toString());
 				populateLayer(layer);
 			}
@@ -589,7 +589,7 @@ public class MapPlugin extends PluginBase {
 	}
 
 	public void setRailwayOverlay(Overlay railwayOverlay) {
-		updateOverlays();
+		updateOverlays(false);
 		mapView_.getOverlays().add(railwayOverlay);
 		mapView_.invalidate();
 	}
@@ -615,7 +615,7 @@ public class MapPlugin extends PluginBase {
 
 	private boolean isLayerOutdated(MapElementsList layer) {
 
-		int cacheTime = layer.getCacheTimeInMinutes();
+		long cacheTime = layer.getCacheTimeInMinutes();
 		if(cacheTime < 0) {
 			return false;
 		}
@@ -624,7 +624,7 @@ public class MapPlugin extends PluginBase {
 		long lastRefresh = lastRefreshedOverlays.get(layer);
 
 		// minutes to milliseconds
-		cacheTime = cacheTime * 1000 * 60;
+		cacheTime *= 60000;
 
 		return lastRefresh + cacheTime < System.currentTimeMillis();
 	}
