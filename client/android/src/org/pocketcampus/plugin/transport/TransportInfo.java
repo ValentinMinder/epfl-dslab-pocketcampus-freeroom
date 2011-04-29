@@ -7,11 +7,9 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
 /**
- * PluginInfo class for the Camipro plugin.
- * 
+ * PluginInfo class for the Transport plugin.
  * @status complete
- * 
- * @author Jonas
+ * @author Florian
  *
  */
 public class TransportInfo extends PluginInfo {

@@ -4,9 +4,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.shared.plugin.transport.Location;
 
 import android.content.Context;
@@ -17,41 +17,78 @@ import android.widget.AutoCompleteTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Adapter providing transport locations from the CFF server.
+ * @author Florian
+ * @status working
+ */
 public class LocationAdapter extends ArrayAdapter<Location> {
-	private List<Location> locations_;
+	private static final int MAX_DISPLAY_AUTOCOMPLETIONS = 3;
+
+	/** Request handler instance from the Transport Plugin */
 	private RequestHandler requestHandler_;
 	
+	/** List of locations for the last input. */
+	private List<Location> locations_;
+	
+	/**
+	 * 
+	 * @param context
+	 * @param textViewResourceId
+	 * @param inputView the input view
+	 * @param requestHandler a Transport request handler
+	 */
 	public LocationAdapter(Context context, int textViewResourceId, final AutoCompleteTextView inputView, RequestHandler requestHandler) {
 		super(context, textViewResourceId);
-		
 		locations_ = new ArrayList<Location>();
 		requestHandler_ = requestHandler;
 		
+		/**
+		 * Registers the Observer for this Adapter.
+		 */
 		registerDataSetObserver(new DataSetObserver() {
-
 			@Override
 			public void onInvalidated() {
 				super.onInvalidated();
 				
-				class AutocompleteRequest extends DataRequest {
-
-					@Override
-					protected void doInUiThread(String result) {
-						Gson gson = new Gson();
-						Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
-						
-						locations_ = gson.fromJson(result, AutocompleteType);
-						
-						notifyDataSetChanged();
-					}
-					
-				}
-				
 				RequestParameters reqParam = new RequestParameters();
 				reqParam.addParameter("constraint", inputView.getText().toString());
-				requestHandler_.execute(new AutocompleteRequest(), "autocomplete", reqParam );
+				requestHandler_.execute(new AutocompleteRequest(), "autocomplete", reqParam);
 			}
 		});
+	}
+	
+	/**
+	 * Inner class that loads autocompletions and put them in the <code>locations_</code> field. 
+	 * @author Florian
+	 */
+	class AutocompleteRequest extends DataRequest {
+		@Override
+		protected int timeoutDelay() {
+			// Needs to be fast.
+			return 4;
+		}
+		
+		@Override
+		protected int expirationDelay() {
+			// Not likely to change.
+			return 6 * 60 * 60;
+		}
+		
+		@Override
+		protected void doInUiThread(String result) {
+			Gson gson = new Gson();
+			Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
+			locations_ = gson.fromJson(result, AutocompleteType);
+			
+			// updates the Adapter display
+			notifyDataSetChanged();
+		}
+		
+		@Override
+		protected void onCancelled() {
+			// TODO display toast?
+		}
 	}
 	
 	@Override
@@ -65,7 +102,7 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 			return 0;
 		}
 		
-		//return locations_.size();
-		return Math.min(1, locations_.size());
+		// Limits the number of autocompletions displayed.
+		return Math.min(MAX_DISPLAY_AUTOCOMPLETIONS, locations_.size());
 	}
 }

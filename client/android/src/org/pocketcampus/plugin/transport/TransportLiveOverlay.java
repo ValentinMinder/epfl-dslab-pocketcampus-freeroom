@@ -24,6 +24,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+/**
+ * Animated overlay showing the transporters on the map.
+ * @status WIP 
+ * @author Florian
+ */
 public class TransportLiveOverlay {
 	private Context ctx_;
 	private Railway path_;

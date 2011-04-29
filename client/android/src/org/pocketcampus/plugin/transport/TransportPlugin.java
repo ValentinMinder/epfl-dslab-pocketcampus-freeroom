@@ -12,7 +12,6 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
-import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 
@@ -20,26 +19,28 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
+/**
+ * 
+ * @author Pascal
+ * @author Florian
+ *
+ */
 public class TransportPlugin extends PluginBase implements OnClickListener{
 	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
 	private static RequestHandler requestHandler_;
@@ -136,7 +137,7 @@ public class TransportPlugin extends PluginBase implements OnClickListener{
 		
 		for(String destination : commonDestinations_.values()) {
 			TransportSummaryAdapter adapter = new TransportSummaryAdapter(this, REFERENCE_DESTINATION, destination);
-			adapter_.addSection(adapter);
+			adapter_.addSection(adapter.getCaption(), adapter);
 		}
 
 		adapter_.loadSummaryList();

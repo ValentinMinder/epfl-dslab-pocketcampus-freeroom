@@ -26,10 +26,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * Transport tests.
+ * Detailed transport form.
  * 
- * @status WIP
  * @author Florian
+ * @status INCOMPLETE.
  */
 public class TransportDetailed extends Activity {
 	// autocomplete input fields
