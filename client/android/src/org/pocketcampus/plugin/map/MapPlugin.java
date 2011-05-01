@@ -30,6 +30,8 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.map.cache.ILayersCacheCallback;
+import org.pocketcampus.plugin.map.cache.LayersCache;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
@@ -111,9 +113,13 @@ public class MapPlugin extends PluginBase {
 
 	// List of all and displayed overlays
 	private List<MapElementsList> allLayers_;
-	private List<MapElementsList> displayedLayers_;
+	private List<MapElementsList> selectedLayers_;
 	
+	// Cache the overlay icons
 	private HashMap<String, Drawable> icons = new HashMap<String, Drawable>();
+	
+	// Used to save the layers to a file
+	private LayersCache layersCache_;
 
 	// Handler used to refresh the overlays 
 	private Handler overlaysHandler_ = new Handler();
@@ -122,14 +128,14 @@ public class MapPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_main);
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		setupActionBar(true);
 
 		Tracker.getInstance().trackPageView("map/home");
 
 		initVariables();
 
 		// Setup view
-		setupActionBar(true);
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		setupMapView();
 
 		// Check if another activity wants to show something
@@ -141,7 +147,7 @@ public class MapPlugin extends PluginBase {
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
-		displayedLayers_ = new ArrayList<MapElementsList>();
+		selectedLayers_ = new ArrayList<MapElementsList>();
 		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
 		lastRefreshedOverlays_ = new ConcurrentHashMap<MapElementsList, Long>();
 
@@ -154,6 +160,12 @@ public class MapPlugin extends PluginBase {
 		CAMPUS_CENTER_P = new Position(lat, lon, alt);
 		CAMPUS_CENTER_G = new GeoPoint(CAMPUS_CENTER_P.getLatitude(), CAMPUS_CENTER_P.getLongitude(), CAMPUS_CENTER_P.getAltitude());
 		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
+		
+		layersCache_ = new LayersCache(this);
+		
+		// Download the available layers
+		incrementProgressCounter();
+		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 
 		// XXX Displays the overlay for live transport
 		//new TransportLiveOverlay(getApplicationContext()).requestOverlay(this);
@@ -162,7 +174,6 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
 
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		actionBar_.addAction(new Action() {
 
 			@Override
@@ -360,8 +371,13 @@ public class MapPlugin extends PluginBase {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		// Do we display a path?
 		menu.findItem(R.id.map_clear_path).setVisible(mapPathOverlay_.isShowingPath());
 
+		// Do we already have the available layers?
+		menu.findItem(R.id.map_menu_layers_button).setEnabled(allLayers_ != null && allLayers_.size() > 0);
+		
+		// Change the text if we follow the user or not
 		MenuItem follow = menu.findItem(R.id.map_my_position);
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			follow.setTitle(R.string.map_menu_my_position_off);
@@ -420,26 +436,22 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
-	 * Download the list of available layers
+	 * Show the list of available layers
 	 */
 	private void selectLayers() {
 
-		// If we don't already have a cache of the layers
-		if(allLayers_ == null || allLayers_.size() == 0) {
-			showProgressDialog(R.string.map_loading_layers);
-
-			//request of the layers
-			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
-		} else {
+		// If we already have a cache of the layers
+		if(allLayers_ != null && allLayers_.size() > 0) {
 			layerSelector();
 		}
+		// else wait, it will come ;)
 	}
 
 	/**
 	 * Launch the dialog that allows to select the different layers
 	 */
 	private void layerSelector() {
-		final LayerSelector l = new LayerSelector(this, allLayers_, displayedLayers_);
+		final LayerSelector l = new LayerSelector(this, allLayers_, selectedLayers_);
 
 		// Show the dialog, using a callback to the the selected layers back
 		l.selectLayers(new DialogInterface.OnClickListener() {
@@ -553,9 +565,11 @@ public class MapPlugin extends PluginBase {
 	 * @param selectedLayers
 	 */
 	private void setSelectedLayers(ArrayList<MapElementsList> selectedLayers) {
-		this.displayedLayers_ = selectedLayers;
+		this.selectedLayers_ = selectedLayers;
 
 		updateOverlays(false);
+		
+		layersCache_.saveSelectedLayersToFile(this.selectedLayers_);
 
 		// Track
 		StringBuffer selected = new StringBuffer("?layers=");
@@ -581,7 +595,7 @@ public class MapPlugin extends PluginBase {
 		}
 
 		// Display the selected layers
-		for(MapElementsList layer : displayedLayers_) {
+		for(MapElementsList layer : selectedLayers_) {
 			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays_.get(layer);
 
 			// The overlay already exists
@@ -692,7 +706,7 @@ public class MapPlugin extends PluginBase {
 
 		@Override
 		protected void onCancelled() {
-			dismissProgressDialog();
+			decrementProgressCounter();
 			Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 		}
 
@@ -710,12 +724,12 @@ public class MapPlugin extends PluginBase {
 			try {
 				layers = gson.fromJson(result, mapLayersType);
 			} catch (JsonSyntaxException e) {
-				dismissProgressDialog();
+				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.unexpected_response);
 				return;
 			}
 			if(layers == null) {
-				dismissProgressDialog();
+				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 				return;
 			}
@@ -726,20 +740,26 @@ public class MapPlugin extends PluginBase {
 					allLayers_.add(new MapElementsList(mlb));
 				}
 			}
+			
+			layersCache_.loadSelectedLayersFromFile(allLayers_, new ILayersCacheCallback() {
+				@Override
+				public void onLayersLoadedFromFile(List<MapElementsList> selected) {
+					selectedLayers_ = selected;
+					updateOverlays(false);
+				}
+			});
 
 		}
 
 		@Override
 		protected void doInUiThread(String result) {
+			
+			decrementProgressCounter();
 
 			if(result == null) { //an error happened
-				dismissProgressDialog();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 				return;
 			}
-
-			dismissProgressDialog();
-			layerSelector();
 		}
 	}
 

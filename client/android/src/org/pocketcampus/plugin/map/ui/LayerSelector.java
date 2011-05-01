@@ -25,6 +25,12 @@ public class LayerSelector {
 	private ArrayList<MapElementsList> selectedLayers_;
 	private List<MapElementsList> layers_;
 	
+	/**
+	 * Create the layer selector
+	 * @param context Context
+	 * @param layers All the available layers
+	 * @param selected Layers already selected
+	 */
 	public LayerSelector(Context context, List<MapElementsList> layers, List<MapElementsList> selected) {
 		this.context_ = context;
 		this.layers_ = new ArrayList<MapElementsList>(layers);
@@ -52,8 +58,7 @@ public class LayerSelector {
 
 		// Creation of the dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(context_);
-		builder.setTitle(R.string.map_layer_pick_text);
-		builder.setCancelable(false)
+		builder.setTitle(R.string.map_layer_pick_text)
 		// Callback when an item is clicked
 		.setMultiChoiceItems(items, checked, new OnMultiChoiceClickListener() {
 			

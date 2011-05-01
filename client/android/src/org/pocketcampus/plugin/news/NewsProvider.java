@@ -40,7 +40,7 @@ public class NewsProvider {
 	private List<INewsListener> newsListeners_;
 
 	// Data used to cache the feeds 
-	private final static String cacheFilename_ = "newscache.dat";
+	private final static String CACHE_FILENAME = "newscache.dat";
 	private long refreshRate_;
 	private String defaultRefreshRate_;
 
@@ -162,7 +162,7 @@ public class NewsProvider {
 	@SuppressWarnings("unchecked")
 	private boolean loadNewsFromFile() {
 		try {
-			FileInputStream fis = context_.openFileInput(cacheFilename_);
+			FileInputStream fis = context_.openFileInput(CACHE_FILENAME);
 			ObjectInputStream in = new ObjectInputStream(fis);
 
 			Object o = in.readObject();
@@ -197,7 +197,7 @@ public class NewsProvider {
 
 		FileOutputStream fos;
 		try {
-			fos = context_.openFileOutput(cacheFilename_, Context.MODE_PRIVATE);
+			fos = context_.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(items_);
 			fos.close();
