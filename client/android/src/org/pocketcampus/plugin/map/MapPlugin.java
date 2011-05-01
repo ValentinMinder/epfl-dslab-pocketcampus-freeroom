@@ -140,7 +140,11 @@ public class MapPlugin extends PluginBase {
 
 		// Check if another activity wants to show something
 		Bundle extras = getIntent().getExtras();
-		handleIntent(extras);
+		if(!handleIntent(extras)) {
+			// Download the available layers
+			incrementProgressCounter();
+			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+		}
 	}
 
 	private void initVariables() {
@@ -163,9 +167,6 @@ public class MapPlugin extends PluginBase {
 		
 		layersCache_ = new LayersCache(this);
 		
-		// Download the available layers
-		incrementProgressCounter();
-		getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 
 		// XXX Displays the overlay for live transport
 		//new TransportLiveOverlay(getApplicationContext()).requestOverlay(this);
@@ -212,10 +213,12 @@ public class MapPlugin extends PluginBase {
 	 * Handle the eventual extras of the intent.
 	 * For example, it can show a map element
 	 * @param extras the bundle containing the extras
+	 * @return Whether it handled the intent or not
 	 */
-	private void handleIntent(Bundle extras) {
-		if(extras == null)
-			return;
+	private boolean handleIntent(Bundle extras) {
+		if(extras == null) {
+			return false;
+		}
 
 		if(extras.containsKey("MapElement")) {
 			Log.d("MapPlugin", "intent with extras");
@@ -226,7 +229,11 @@ public class MapPlugin extends PluginBase {
 			overItems.add(overItem);
 			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			constantOverlays_.add(aOverlay);
+			
+			return true;
 		}
+		
+		return false;
 	}
 
 	/**
