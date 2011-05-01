@@ -786,6 +786,11 @@ public class MapPlugin extends PluginBase {
 		}
 
 		@Override
+		protected void onCancelled() {
+			decrementProgressCounter();
+		}
+
+		@Override
 		protected void doInBackgroundThread(String result) {
 
 			if(result == null) {
@@ -831,8 +836,10 @@ public class MapPlugin extends PluginBase {
 
 		@Override
 		protected void doInUiThread(String result) {
+			
+			decrementProgressCounter();
+			
 			if(result == null) {
-				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 				return;
 			}
@@ -846,9 +853,7 @@ public class MapPlugin extends PluginBase {
 			}
 
 			mapView_.getOverlays().add(aOverlay);
-
 			mapView_.invalidate();
-			decrementProgressCounter();
 		}
 	}
 
