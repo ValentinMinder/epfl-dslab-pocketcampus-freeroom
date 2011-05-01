@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 
@@ -41,6 +41,7 @@ public class FoodMenu {
 
 	/**
 	 * Food menu for the corresponding food plugin.
+	 * 
 	 * @param ownerActivity
 	 */
 	public FoodMenu(FoodPlugin ownerActivity) {
@@ -53,6 +54,7 @@ public class FoodMenu {
 
 	/**
 	 * Get meals in menu
+	 * 
 	 * @return
 	 */
 	public List<Meal> getMeals() {
@@ -63,7 +65,7 @@ public class FoodMenu {
 	public List<Meal> getCampusMenu() {
 		return this.campusMenu_;
 	}
-	
+
 	public void setCampusMenu(List<Meal> menus) {
 		this.campusMenu_ = menus;
 	}
@@ -94,22 +96,28 @@ public class FoodMenu {
 		pluginHandler_.menuRefreshing();
 		class MenusRequest extends DataRequest {
 			private List<Meal> campusMenuList;
-			
+
 			@Override
-			protected void doInUiThread(String result) {				
+			public void onCancelled() {
+				Log.d("SERVER", "Task cancelled");
+				pluginHandler_.menuRefreshed(false);
+			}
+
+			@Override
+			protected void doInUiThread(String result) {
 				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
 				Gson gson = new Gson();
 
-				Type menuType = new TypeToken<List<Meal>>() {}.getType();
+				Type menuType = new TypeToken<List<Meal>>() {
+				}.getType();
 				try {
 					campusMenuList = gson.fromJson(result, menuType);
 				} catch (JsonSyntaxException e) {
 					Log.d("SERVER", "Jsonsyntax");
 					e.printStackTrace();
 					return;
-				} 
-
+				}
 
 				if (campusMenuList != null) {
 					if (campusMenuList.isEmpty()) {
@@ -126,14 +134,14 @@ public class FoodMenu {
 				} else {
 					Log.d("SERVER", "null menu");
 				}
-				pluginHandler_.menuRefreshed();
+				pluginHandler_.menuRefreshed(true);
 			}
 		}
 		Log.d("SERVER", "Requesting menus.");
-		FoodPlugin.getFoodRequestHandler().execute(new MenusRequest(), "getMenus",
-				(RequestParameters) null);
+		FoodPlugin.getFoodRequestHandler().execute(new MenusRequest(),
+				"getMenus", (RequestParameters) null);
 	}
-	
+
 	public void writeToFile(Date currentDate) {
 		String filename = "MenusCache";
 
@@ -153,6 +161,7 @@ public class FoodMenu {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Meal> restoreFromFile() {
 		String filename = "MenusCache";
 		List<Meal> menu = null;
@@ -165,6 +174,7 @@ public class FoodMenu {
 			in = new ObjectInputStream(fis);
 			date = (Date) in.readObject();
 			setValidityDate(date);
+			
 			menu = (List<Meal>) in.readObject();
 
 			in.close();

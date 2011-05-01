@@ -6,6 +6,7 @@
 	<string name="food_display_title">Food Service</string>
 	<string name="food_empty">No item to display</string>
 	<string name="food_restaurants">Restaurants</string>
+	<string name="food_menucancelled">Could not connect to the server.</string>
 
 	<!-- Date -->
 	<string name="food_monday">Monday</string>

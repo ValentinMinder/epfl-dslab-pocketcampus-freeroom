@@ -5,7 +5,6 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.food.Meal;
 
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

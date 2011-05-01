@@ -14,13 +14,14 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -43,7 +44,7 @@ public class RatingsDialog extends Dialog {
 		super(context);
 		this.meal = meal;
 		this.ctx_ = context;
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/** Design the dialog in main.xml file */
 		setContentView(R.layout.food_dialog_rating);
@@ -99,10 +100,14 @@ public class RatingsDialog extends Dialog {
 			}
 		}
 
+		String deviceId = Settings.Secure.ANDROID_ID;
+
 		RequestParameters params = new RequestParameters();
 
 		params.addParameter("meal", Integer.toString(meal.hashCode()));
 		params.addParameter("rating", Double.toString(rating));
+		params.addParameter("deviceId", deviceId);
+		
 		FoodPlugin.getFoodRequestHandler().execute(new SubmitRatingRequest(),
 				"setRating", (RequestParameters) params);
 	}

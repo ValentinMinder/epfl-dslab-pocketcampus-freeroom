@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,19 +25,26 @@ import org.pocketcampus.shared.plugin.map.MapLayerBean;
 public class Food implements IPlugin, IMapElementsProvider {
 
 	private List<Meal> campusMeals_;
-	private HashMap<Integer, Meal> campusHashMap_;
-	private Date lastImportDateM_;
+	private HashMap<Integer, Rating> campusMealRatings_;
+	private Date lastImportMenus_;
+	private ArrayList<String> deviceIds_;
 
 	private List<Sandwich> sandwichList_;
 	private Date lastImportDateS_;
+
+	private FoodDB database_;
 
 	/**
 	 * Parse the menus on startup.
 	 */
 	public Food() {
+		database_ = new FoodDB("PocketCampusDB");
+
 		campusMeals_ = new ArrayList<Meal>();
+		campusMealRatings_ = new HashMap<Integer, Rating>();
 		sandwichList_ = new ArrayList<Sandwich>();
 		lastImportDateS_ = new Date();
+		deviceIds_ = new ArrayList<String>();
 		importSandwiches();
 		importMenus();
 	}
@@ -49,10 +57,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
-		if (!isValid(lastImportDateM_)) {
+		if (!isValid(lastImportMenus_)) {
 			System.out
 					.println("<getMenus>: Date not valid. Reimporting menus.");
 			campusMeals_.clear();
+			deviceIds_.clear();
+			campusMealRatings_.clear();
 			importMenus();
 		} else {
 			System.out.println("<getMenus>: Not reimporting menus.");
@@ -69,7 +79,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	@PublicMethod
 	public List<Sandwich> getSandwiches(HttpServletRequest request) {
 		if (!isValid(lastImportDateS_)) {
-			 importSandwiches();
+			importSandwiches();
 			System.out.println("Reimporting sandwiches.");
 		} else {
 			System.out.println("Not reimporting sandwiches.");
@@ -109,13 +119,31 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public boolean setRating(HttpServletRequest request) {
-		System.out.println("Rating request.");
+		System.out.println("<setRating>: Rating request.");
+
+		String deviceId = request.getParameter("deviceId");
 
 		String stringMeal = request.getParameter("meal");
 		System.out.println(stringMeal + " " + campusMeals_.size());
 		String stringRating = request.getParameter("rating");
-		if (stringMeal == null || stringRating == null) {
+
+		if (stringMeal == null || stringRating == null || deviceId == null) {
 			return false;
+		}
+
+		Connection connection = database_.createConnection();
+
+		boolean voted = database_.checkVotedDevice(connection, deviceId);
+
+		if (deviceIds_.contains(deviceId)) {
+			System.out.println("Already in list");
+			return false;
+		} else if (voted) {
+			System.out.println("Already in database.");
+			return false;
+		} else {
+			database_.insertVotedDevice(connection, deviceId);
+			deviceIds_.add(deviceId);
 		}
 
 		int mealHashCode = Integer.parseInt(stringMeal);
@@ -126,10 +154,14 @@ public class Food implements IPlugin, IMapElementsProvider {
 			if (currentMeal.hashCode() == mealHashCode) {
 				// Update rating for meal
 				currentMeal.getRating().addRating(r);
-				// writeToFile();
+				// Update rating in the database
+				database_.insertRating(connection, mealHashCode, currentMeal);
+				// Update rating in the list
+				campusMealRatings_.put(mealHashCode, currentMeal.getRating());
 				return true;
 			}
 		}
+		database_.closeConnection(connection);
 		return false;
 	}
 
@@ -141,174 +173,189 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 * @return the corresponding rating.
 	 */
 	@PublicMethod
-	public Rating getRating(HttpServletRequest request) {
-		System.out.println("Single rating request.");
-		String hashCodeString = request.getParameter("meal");
+	public HashMap<Integer, Rating> getRatings(HttpServletRequest request) {
+		System.out.println("<getRatings>: rating request.");
 
-		if (hashCodeString == null) {
-			return null;
+		if (campusMealRatings_ != null) {
+			return campusMealRatings_;
 		}
-
-		int mealHashCode = Integer.parseInt(hashCodeString);
-		return new Rating();
+		return null;
 	}
 
 	/**
 	 * Import menus from the Rss feeds
 	 */
 	private void importMenus() {
-		RestaurantListParser rlp = new RestaurantListParser();
-		HashMap<String, String> restaurantFeeds = rlp.getFeeds();
-		Set<String> restaurants = restaurantFeeds.keySet();
 
-		for (String r : restaurants) {
-			RssParser rp = new RssParser(restaurantFeeds.get(r));
-			rp.parse();
-			RssFeed feed = rp.getFeed();
+		Connection connection = database_.createConnection();
 
-			Restaurant newResto = new Restaurant(r);
-			if (feed != null && feed.items != null) {
-				for (int i = 0; i < feed.items.size(); i++) {
-					Meal newMeal = new Meal(feed.items.get(i).title, feed.items
-							.get(i).description, newResto, true, new Rating());
-					campusMeals_.add(newMeal);
+		List<Meal> mealsFromDB = database_.getMeals(connection);
+
+		if (mealsFromDB != null) {
+			campusMeals_ = mealsFromDB;
+			for (Meal m : campusMeals_) {
+				campusMealRatings_.put(m.hashCode(), m.getRating());
+			}
+			lastImportMenus_ = new Date();
+			System.out.println("<getMenus>: Got from database.");
+		} else {
+			RestaurantListParser rlp = new RestaurantListParser();
+			HashMap<String, String> restaurantFeeds = rlp.getFeeds();
+			Set<String> restaurants = restaurantFeeds.keySet();
+
+			for (String r : restaurants) {
+				RssParser rp = new RssParser(restaurantFeeds.get(r));
+				rp.parse();
+				RssFeed feed = rp.getFeed();
+
+				Restaurant newResto = new Restaurant(r);
+				if (feed != null && feed.items != null) {
+					for (int i = 0; i < feed.items.size(); i++) {
+						Rating mealRating = new Rating();
+						Meal newMeal = new Meal(feed.items.get(i).title,
+								feed.items.get(i).description, newResto, true,
+								mealRating);
+						campusMeals_.add(newMeal);
+						campusMealRatings_.put(newMeal.hashCode(), mealRating);
+					}
+					lastImportMenus_ = new Date();
 				}
-				lastImportDateM_ = new Date();
+			}
+			for (Meal m : campusMeals_) {
+				database_.insertMeal(connection, m);
 			}
 		}
-		if (!campusMeals_.isEmpty()) {
-			System.out.println("<importMenus>: Writing to file.");
-			// writeToFile();
-		}
-		// else {
-		// System.out.println("<importMenus>: Restoring");
-		// campusMeals_ = restoreFromFile();
-		// }
 	}
 
 	/**
 	 * Creates the sandwich list
 	 */
-	 private void importSandwiches(){
-			
-	 /*Cafeteria INM*/
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true));
-	 sandwichList_
-	 .add(new Sandwich("Cafeteria INM", "Thon", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon Cru", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Salami", true));
-	 sandwichList_.add(new Sandwich("Cafeteria INM", "Autres", true));
-	
-	 /* Cafeteria BM */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
-	
-	 /* Cafeteria BC */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
-	
-	 /* Cafeteria SV */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria SV"));
-	
-	 /* Cafeteria MX */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria MX"));
-	
-	 /* Cafeteria PH */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria PH"));
-	
-	 /* Cafeteria ELA */
-	 sandwichList_.addAll(defaultSandwichList("Cafeteria ELA"));
-	
-	 /* Le Giacomettia (Cafeteria SG) */
-			
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon de dinde", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Roast-Beef", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Poulet Jijommaise", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Poulet au Curry", true));
-	 sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true));
-	
-	 /* L'Esplanade */
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Thon", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Poulet au Curry", true));
-	 sandwichList_
-	 .add(new Sandwich("L'Esplanade", "Aubergine", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Roast-Beef", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Jambon Cru", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Saumon Fumé", true));
-	 sandwichList_.add(new Sandwich("L'Esplanade", "Autres", true));
-	
-	 /* L'Arcadie */
-	 sandwichList_.addAll(defaultSandwichList("L'Arcadie"));
-	
-	 /* Atlantide */
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich intégral", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Parisette", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Jambon", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Salami", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Dinde", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Thon", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Mozzarella", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Saumon Fumé", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Viande Séchée", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Jambon Cru", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Roast-Beef", true));
-	 sandwichList_.add(new Sandwich("L'Atlantide", "Autres", true));
-	
-	 /* Satellite */
-	 sandwichList_.add(new Sandwich("Satellite", "Thon", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Jambon fromage", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Roast-Beef", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Poulet au Curry", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Jambon Cru", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Tomate mozza", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Salami", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Parmesan", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Aubergine grillé", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Viande séchée", true));
-	 sandwichList_.add(new Sandwich("Satellite", "Autres", true));
-	
-	 /* Negoce */
-	 sandwichList_.add(new Sandwich("Negoce", "Dinde", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Thon", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Gratine Jambon", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Mozza Olives", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Poulet au Curry", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Jambon fromage", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Jambon", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Salami", true));
-	 sandwichList_.add(new Sandwich("Negoce", "RoseBeef", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Mozzarella", true));
-	 sandwichList_.add(new Sandwich("Negoce", "Autres", true));
-	
-	 lastImportDateS_ = new Date();
-	 }
-	
-	 private Vector<Sandwich> defaultSandwichList(String name) {
-	
-	 Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
-	
-	 defaultSandwichList.add(new Sandwich(name, "Thon", true));
-	 defaultSandwichList.add(new Sandwich(name, "Jambon", true));
-	 defaultSandwichList.add(new Sandwich(name, "Fromage", true));
-	 defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true));
-	 defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true));
-	 defaultSandwichList.add(new Sandwich(name, "Salami", true));
-	 defaultSandwichList.add(new Sandwich(name, "Autres", true));
-	
-	 return defaultSandwichList;
-	 }
+	private void importSandwiches() {
+
+		/* Cafeteria INM */
+		sandwichList_
+				.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Thon", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Tomate Mozzarella",
+				true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon Cru", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Salami", true));
+		sandwichList_.add(new Sandwich("Cafeteria INM", "Autres", true));
+
+		/* Cafeteria BM */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+
+		/* Cafeteria BC */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria BM"));
+
+		/* Cafeteria SV */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria SV"));
+
+		/* Cafeteria MX */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria MX"));
+
+		/* Cafeteria PH */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria PH"));
+
+		/* Cafeteria ELA */
+		sandwichList_.addAll(defaultSandwichList("Cafeteria ELA"));
+
+		/* Le Giacomettia (Cafeteria SG) */
+
+		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true));
+		sandwichList_
+				.add(new Sandwich("Le Giacometti", "Jambon de dinde", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Roast-Beef", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Poulet Jijommaise",
+				true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true));
+		sandwichList_
+				.add(new Sandwich("Le Giacometti", "Poulet au Curry", true));
+		sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true));
+
+		/* L'Esplanade */
+		sandwichList_.add(new Sandwich("L'Esplanade", "Thon", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Poulet au Curry", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Aubergine", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Roast-Beef", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Jambon Cru", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Vuabde Séchée", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Saumon Fumé", true));
+		sandwichList_.add(new Sandwich("L'Esplanade", "Autres", true));
+
+		/* L'Arcadie */
+		sandwichList_.addAll(defaultSandwichList("L'Arcadie"));
+
+		/* Atlantide */
+		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true));
+		sandwichList_
+				.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true));
+		sandwichList_
+				.add(new Sandwich("L'Atlantide", "Sandwich intégral", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal",
+				true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Parisette", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Jambon", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Salami", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Dinde", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Thon", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Mozzarella", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Saumon Fumé", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Viande Séchée", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Jambon Cru", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Roast-Beef", true));
+		sandwichList_.add(new Sandwich("L'Atlantide", "Autres", true));
+
+		/* Satellite */
+		sandwichList_.add(new Sandwich("Satellite", "Thon", true));
+		sandwichList_.add(new Sandwich("Satellite", "Jambon fromage", true));
+		sandwichList_.add(new Sandwich("Satellite", "Roast-Beef", true));
+		sandwichList_.add(new Sandwich("Satellite", "Poulet au Curry", true));
+		sandwichList_.add(new Sandwich("Satellite", "Jambon Cru", true));
+		sandwichList_.add(new Sandwich("Satellite", "Tomate mozza", true));
+		sandwichList_.add(new Sandwich("Satellite", "Salami", true));
+		sandwichList_.add(new Sandwich("Satellite", "Parmesan", true));
+		sandwichList_.add(new Sandwich("Satellite", "Aubergine grillé", true));
+		sandwichList_.add(new Sandwich("Satellite", "Viande séchée", true));
+		sandwichList_.add(new Sandwich("Satellite", "Autres", true));
+
+		/* Negoce */
+		sandwichList_.add(new Sandwich("Negoce", "Dinde", true));
+		sandwichList_.add(new Sandwich("Negoce", "Thon", true));
+		sandwichList_.add(new Sandwich("Negoce", "Gratine Jambon", true));
+		sandwichList_.add(new Sandwich("Negoce", "Mozza Olives", true));
+		sandwichList_.add(new Sandwich("Negoce", "Poulet au Curry", true));
+		sandwichList_.add(new Sandwich("Negoce", "Jambon fromage", true));
+		sandwichList_.add(new Sandwich("Negoce", "Jambon", true));
+		sandwichList_.add(new Sandwich("Negoce", "Salami", true));
+		sandwichList_.add(new Sandwich("Negoce", "RoseBeef", true));
+		sandwichList_.add(new Sandwich("Negoce", "Mozzarella", true));
+		sandwichList_.add(new Sandwich("Negoce", "Autres", true));
+
+		lastImportDateS_ = new Date();
+	}
+
+	private Vector<Sandwich> defaultSandwichList(String name) {
+
+		Vector<Sandwich> defaultSandwichList = new Vector<Sandwich>();
+
+		defaultSandwichList.add(new Sandwich(name, "Thon", true));
+		defaultSandwichList.add(new Sandwich(name, "Jambon", true));
+		defaultSandwichList.add(new Sandwich(name, "Fromage", true));
+		defaultSandwichList.add(new Sandwich(name, "Tomate Mozzarella", true));
+		defaultSandwichList.add(new Sandwich(name, "Jambon Cru", true));
+		defaultSandwichList.add(new Sandwich(name, "Salami", true));
+		defaultSandwichList.add(new Sandwich(name, "Autres", true));
+
+		return defaultSandwichList;
+	}
 
 	@Override
 	public List<MapElementBean> getLayerItems(int layerId) {
@@ -320,7 +367,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 	public List<MapLayerBean> getLayers() {
 		// TODO Auto-generated method stub
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Restaurants", "", this.hashCode(), 1, -1, true));
+		l
+				.add(new MapLayerBean("Restaurants", "", this.hashCode(), 1,
+						-1, true));
 		return l;
 	}
 
@@ -341,29 +390,30 @@ public class Food implements IPlugin, IMapElementsProvider {
 	// } catch (IOException ex) {}
 	// }
 
-//	public List<Meal> restoreFromFile() {
-//		String filename = "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
-//		List<Meal> menu = null;
-//
-//		File toGet = new File(filename);
-//		FileInputStream fis = null;
-//		ObjectInputStream in = null;
-//		try {
-//			fis = new FileInputStream(toGet);
-//			in = new ObjectInputStream(fis);
-//			Object obj = in.readObject();
-//			
-//			if(obj instanceof List<?>){
-//				menu = (List<Meal>) obj;
-//			}
-//
-//			in.close();
-//		} catch (IOException ex) {
-//		} catch (ClassNotFoundException ex) {
-//		} catch (ClassCastException cce) {
-//		}
-//
-//		return menu;
-//	}
+	// public List<Meal> restoreFromFile() {
+	// String filename =
+	// "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
+	// List<Meal> menu = null;
+	//
+	// File toGet = new File(filename);
+	// FileInputStream fis = null;
+	// ObjectInputStream in = null;
+	// try {
+	// fis = new FileInputStream(toGet);
+	// in = new ObjectInputStream(fis);
+	// Object obj = in.readObject();
+	//			
+	// if(obj instanceof List<?>){
+	// menu = (List<Meal>) obj;
+	// }
+	//
+	// in.close();
+	// } catch (IOException ex) {
+	// } catch (ClassNotFoundException ex) {
+	// } catch (ClassCastException cce) {
+	// }
+	//
+	// return menu;
+	// }
 
 }

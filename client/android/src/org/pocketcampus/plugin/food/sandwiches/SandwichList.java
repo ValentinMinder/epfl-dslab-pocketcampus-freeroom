@@ -18,70 +18,73 @@ import com.google.gson.reflect.TypeToken;
 
 public class SandwichList {
 	private FoodPlugin pluginHandler_;
-//	private Vector<Vector<Sandwich>> sandwichList_;
+	// private Vector<Vector<Sandwich>> sandwichList_;
 	private HashMap<String, Vector<Sandwich>> sandwichList_;
 	private List<Sandwich> sandwichFromServer_;
-	
-	public SandwichList(FoodPlugin ownerActivity){
+
+	public SandwichList(FoodPlugin ownerActivity) {
 		pluginHandler_ = ownerActivity;
 		loadSandwiches();
 	}
-	
+
 	public HashMap<String, Vector<Sandwich>> getStoreList() {
 		return sandwichList_;
 	}
-	
-	private void loadSandwiches(){
+
+	private void loadSandwiches() {
 		pluginHandler_.menuRefreshing();
-		
+
 		class SandwichRequest extends DataRequest {
-			
+
 			@Override
 			protected void doInUiThread(String result) {
 
 				sandwichFromServer_ = new ArrayList<Sandwich>();
-				
-				if(result != null){
+
+				if (result != null) {
 					Log.d("SANDWICHES", result);
 				} else {
 					Log.d("SANDWICHES", "null");
 				}
-				
+
 				// Deserializes the response
 				Gson gson = new Gson();
 
-				Type menuType = new TypeToken<List<Sandwich>>() {}.getType();
+				Type menuType = new TypeToken<List<Sandwich>>() {
+				}.getType();
 				try {
 					sandwichFromServer_ = gson.fromJson(result, menuType);
-				} catch (Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
-					Log.d("SANDWICHES","Json Exception !");
+					Log.d("SANDWICHES", "Json Exception !");
 				}
-				
+
 				sandwichList_ = new HashMap<String, Vector<Sandwich>>();
 				sandwichList_ = sortByRestaurant(sandwichFromServer_);
-				
+
 				pluginHandler_.menuRefreshedSandwich();
 			}
 		}
 
-		FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(), "getSandwiches",
-				(RequestParameters) null);
+		FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
+				"getSandwiches", (RequestParameters) null);
 	}
-	
-	private HashMap<String, Vector<Sandwich>> sortByRestaurant(List<Sandwich> serverList){
+
+	private HashMap<String, Vector<Sandwich>> sortByRestaurant(
+			List<Sandwich> serverList) {
 		HashMap<String, Vector<Sandwich>> hashMap = new HashMap<String, Vector<Sandwich>>();
-		
-		for(Sandwich s : serverList){
-			if(hashMap.containsKey(s.getRestaurant())){
-				hashMap.get(s.getRestaurant()).add(s);
-			}else{
-				Vector<Sandwich> v = new Vector<Sandwich>();
-				v.add(s);
-				hashMap.put(s.getRestaurant(), v);
+		if (serverList != null) {
+			for (Sandwich s : serverList) {
+				if (hashMap.containsKey(s.getRestaurant())) {
+					hashMap.get(s.getRestaurant()).add(s);
+				} else {
+					Vector<Sandwich> v = new Vector<Sandwich>();
+					v.add(s);
+					hashMap.put(s.getRestaurant(), v);
+				}
 			}
 		}
 		return hashMap;
 	}
-			
+
 }

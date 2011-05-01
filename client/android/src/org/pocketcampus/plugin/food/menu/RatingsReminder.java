@@ -3,8 +3,6 @@ package org.pocketcampus.plugin.food.menu;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.pocketcampus.R;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase {
 	private ActionBar actionBar_;
@@ -34,7 +35,7 @@ public class FoodPlugin extends PluginBase {
 	private TextView empty;
 	private TextView validityDate_;
 	private ProgressBar spinner_;
-	
+
 	private ArrayList<Meal> suggestionMenus_;
 	private boolean isSandwichDisplay_ = false;
 
@@ -55,13 +56,13 @@ public class FoodPlugin extends PluginBase {
 		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
 		spinner_.setVisibility(View.VISIBLE);
 
-		//RequestHandler
+		// RequestHandler
 		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
 	}
-	
-	public static RequestHandler getFoodRequestHandler(){
+
+	public static RequestHandler getFoodRequestHandler() {
 		return foodRequestHandler_;
 	}
 
@@ -97,25 +98,28 @@ public class FoodPlugin extends PluginBase {
 		super.setupActionBar(addHomeButton);
 	}
 
-	// @Override
 	public void menuRefreshing() {
 		actionBar_.setProgressBarVisibility(View.VISIBLE);
 	}
 
-	// @Override
-	public void menuRefreshed() {
+	public void menuRefreshed(boolean successful) {
+		if (!successful) {
+			Toast.makeText(this,
+					this.getResources().getString(R.string.food_menucancelled),
+					Toast.LENGTH_SHORT).show();
+		}
 		foodDisplayHandler_.updateView();
 		displayView();
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-	
+
 	public void menuRefreshedSandwich() {
 		foodDisplayHandler_.updateView();
 		displaySandwiches();
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-	
-	public void notifyDataSetChanged(){
+
+	public void notifyDataSetChanged() {
 		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
 	}
 
@@ -128,10 +132,10 @@ public class FoodPlugin extends PluginBase {
 			txt_empty_.setText("");
 		}
 
-		if(spinner_ != null && spinner_.isShown()){
+		if (spinner_ != null && spinner_.isShown()) {
 			spinner_.setVisibility(View.GONE);
 		}
-		
+
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
@@ -140,7 +144,8 @@ public class FoodPlugin extends PluginBase {
 				validityDate_.setText("");
 			} else {
 				Date today = new Date();
-				Date lastUpdated = foodDisplayHandler_.getDateLastUpdatedMenus();
+				Date lastUpdated = foodDisplayHandler_
+						.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -153,21 +158,21 @@ public class FoodPlugin extends PluginBase {
 			empty.setText(getString(R.string.food_empty));
 		}
 	}
-	
-	public void displaySandwiches(){
+
+	public void displaySandwiches() {
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
-		}else{
+		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
 	}
-	
-	public void displaySuggestions(){
+
+	public void displaySuggestions() {
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
-		}else{
+		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
 	}
@@ -202,7 +207,9 @@ public class FoodPlugin extends PluginBase {
 			displayView();
 			return true;
 		case 3: // show sandwiches
-			Log.d("SANDWICHES","Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
+			Log
+					.d("SANDWICHES",
+							"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
 			foodDisplayHandler_.setDisplayType(selectedId);
 			displaySandwiches();
@@ -233,6 +240,7 @@ public class FoodPlugin extends PluginBase {
 		return null;
 	}
 
+	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -241,6 +249,7 @@ public class FoodPlugin extends PluginBase {
 			if (resultCode == Activity.RESULT_OK) {
 				Bundle extras = data.getExtras();
 				if (extras != null) {
+					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
 							.getSerializable("org.pocketcampus.suggestions.meals");
 
