@@ -1,4 +1,4 @@
-package org.pocketcampus.core.communication.exception;
+package org.pocketcampus.core.communication.exceptions;
 
 /**
  * Indicates a serious problem at the Communication Service level. It is generally due to

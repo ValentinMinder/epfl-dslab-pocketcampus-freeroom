@@ -1,4 +1,4 @@
-package org.pocketcampus.core.communication.exception;
+package org.pocketcampus.core.communication.exceptions;
 
 import org.pocketcampus.core.communication.Status;
 

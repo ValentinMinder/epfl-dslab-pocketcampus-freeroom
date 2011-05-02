@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pocketcampus.core.communication.Status;
-import org.pocketcampus.core.communication.exception.PcpException;
+import org.pocketcampus.core.communication.exceptions.PcpException;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
