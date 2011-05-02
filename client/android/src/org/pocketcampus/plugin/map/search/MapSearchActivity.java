@@ -62,7 +62,7 @@ public class MapSearchActivity extends ListActivity {
 		progressDialog_ = new ProgressDialog(this);
 		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
 		progressDialog_.setMessage(getResources().getString(R.string.map_searching));
-		progressDialog_.setCancelable(false);
+		progressDialog_.setCancelable(true);
 		progressDialog_.show();
 		
 		class MapSearchRequest extends DataRequest {
@@ -80,6 +80,7 @@ public class MapSearchActivity extends ListActivity {
 				if(result == null) {
 					return;
 				}
+				Log.d("MapSearchActivity", "Response received " + result);
 				
 				//Deserializes the response
 				Gson gson = new Gson();
@@ -110,6 +111,7 @@ public class MapSearchActivity extends ListActivity {
 
 			@Override
 			protected void doInUiThread(String result) {
+				Log.d("MapSearchActivity", "doInUiThread-> " + result);
 				if(progressDialog_ != null && progressDialog_.isShowing()) {
 					progressDialog_.dismiss();
 				}

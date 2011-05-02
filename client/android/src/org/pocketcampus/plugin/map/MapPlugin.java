@@ -227,7 +227,8 @@ public class MapPlugin extends PluginBase {
 					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
 			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
 			overItems.add(overItem);
-			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
+			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			constantOverlays_.add(aOverlay);
 			
 			return true;
