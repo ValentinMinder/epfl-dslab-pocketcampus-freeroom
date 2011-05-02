@@ -14,7 +14,7 @@ public class MapLayerBean implements Serializable{
 	private int cacheInSeconds;
 	private boolean displayable;
 	
-	public MapLayerBean(String name, String drawable_url, int pluginId, int layerId, int cache, boolean displayable) {
+	public MapLayerBean(String name, String drawable_url, String pluginClassname, int layerId, int cache, boolean displayable) {
 		this.name = name;
 		this.drawableUrl = drawable_url;
 		this.pluginInternalId = layerId;
@@ -24,7 +24,7 @@ public class MapLayerBean implements Serializable{
 		MessageDigest m;
 		try {
 			m = MessageDigest.getInstance("MD5");
-			String s = new String("" + pluginId + layerId);
+			String s = new String(pluginClassname + layerId);
 		    m.update(s.getBytes(),0,s.length());
 		    BigInteger i = new BigInteger(1,m.digest());
 			this.externalId =  String.format("%1$032X", i);
