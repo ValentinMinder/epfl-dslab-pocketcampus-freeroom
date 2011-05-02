@@ -74,7 +74,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 				});
 			}
 		}
-
+		
 		return layersList_;
 	}
 
@@ -93,6 +93,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 		String layerId = request.getParameter("layer_id");
 
+		// Does the parameter exist
 		if(layerId != null) {		
 			return getPluginItems(layerId);
 		} else {
@@ -259,7 +260,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 			while (rs.next()) {
 				MapLayerBean mlb = new MapLayerBean(rs.getString("title"), 
 						rs.getString("image_url"),
-						this.hashCode(),
+						this.getClass().getCanonicalName(),
 						rs.getInt("id"),
 						rs.getInt("cache"),
 						rs.getBoolean("displayable"));

@@ -32,7 +32,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 	@Override
 	public List<MapLayerBean> getLayers() {
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Velopass", "http://192.168.1.41/pocketcampus/bikes_normal_mini.png", this.hashCode(), 1, 9, true));
+		l.add(new MapLayerBean("Velopass", "http://192.168.1.45/pocketcampus/bikes_normal_mini.png", this.getClass().getCanonicalName(), 1, 9, true));
 		return l;
 	}
 
