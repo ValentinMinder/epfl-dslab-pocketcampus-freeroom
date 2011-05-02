@@ -17,6 +17,10 @@
 		android:id="@+id/map_search"
 		android:icon="@android:drawable/ic_search_category_default" />
 	<item
+		android:title="@string/map_menu_toggle_map_mode"
+		android:id="@+id/map_toggle_mode"
+		android:icon="@android:drawable/ic_menu_mapmode" />
+	<item
 		android:title="@string/map_menu_clear_path"
 		android:id="@+id/map_clear_path"
 		android:icon="@android:drawable/ic_menu_myplaces"

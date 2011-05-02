@@ -6,6 +6,7 @@
     <string name="map_menu_campus_position">Locate campus</string>
     <string name="map_menu_search">Search</string>
     <string name="map_menu_clear_path">Clear path</string>
+    <string name="map_menu_toggle_map_mode">Map mode</string>
     
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_loading_layers">Loading layers...</string>

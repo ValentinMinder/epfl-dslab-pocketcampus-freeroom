@@ -160,6 +160,7 @@ public class MapSearchActivity extends ListActivity {
 		
 		if(results != null && results.getCount() == 1) {
 			startMapActivity(items.get(0));
+			finish();
 		}
 		
 		ListView lv = getListView();

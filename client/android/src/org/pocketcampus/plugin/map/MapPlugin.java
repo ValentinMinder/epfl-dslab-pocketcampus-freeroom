@@ -430,6 +430,10 @@ public class MapPlugin extends PluginBase {
 
 			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
+			
+		case R.id.map_toggle_mode:
+			toggleMapMode();
+			return true;
 
 		case R.id.map_clear_path:
 			clearPath();
@@ -500,6 +504,11 @@ public class MapPlugin extends PluginBase {
 		mapController_.setZoom(getResources().getInteger(R.integer.map_zoom_level)); 
 		mapController_.setCenter(point);
 	}
+	
+	
+	private void toggleMapMode() {
+		Notification.showToast(this, "Is it possible to show satellite images?");
+	}
 
 	/**
 	 * Clear the displayed path
@@ -515,7 +524,9 @@ public class MapPlugin extends PluginBase {
 	 */
 	public void showDirectionsFromHereToPosition(final Position endPos) {
 
-		toggleCenterOnUserPosition();
+		if(!myLocationOverlay_.isFollowLocationEnabled()) {
+			toggleCenterOnUserPosition();
+		}
 
 		// Clear the path if there was an old one
 		mapPathOverlay_.clearPath();
@@ -696,6 +707,10 @@ public class MapPlugin extends PluginBase {
 			Type t = new TypeToken<List<Position>>(){}.getType();
 
 			try {
+
+				Log.d(this.getClass().toString(), "Route :");
+				Log.d(this.getClass().toString(), result);
+				
 				path = gson.fromJson(result, t);
 				mapPathOverlay_.setList(path);
 				mapView_.invalidate();
@@ -825,7 +840,11 @@ public class MapPlugin extends PluginBase {
 			try {
 				Drawable icon = getDrawableFromCacheOrUrl(layer_.getIconUrl());
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
-			} catch (Exception e) {
+			} catch (Exception e) {}
+			
+			// We don't have an icon
+			if(aOverlay == null) {
+				Log.d(this.getClass().toString(), "No icon for: " + layer_.getLayerTitle());
 				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
@@ -837,9 +856,8 @@ public class MapPlugin extends PluginBase {
 		@Override
 		protected void doInUiThread(String result) {
 			
-			decrementProgressCounter();
-			
 			if(result == null) {
+				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 				return;
 			}
@@ -854,6 +872,8 @@ public class MapPlugin extends PluginBase {
 
 			mapView_.getOverlays().add(aOverlay);
 			mapView_.invalidate();
+
+			decrementProgressCounter();
 		}
 	}
 
