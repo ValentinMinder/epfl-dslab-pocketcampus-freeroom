@@ -62,7 +62,7 @@ public class MapSearchActivity extends ListActivity {
 		progressDialog_ = new ProgressDialog(this);
 		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
 		progressDialog_.setMessage(getResources().getString(R.string.map_searching));
-		progressDialog_.setCancelable(true);
+		progressDialog_.setCancelable(false);
 		progressDialog_.show();
 		
 		class MapSearchRequest extends DataRequest {
@@ -127,6 +127,20 @@ public class MapSearchActivity extends ListActivity {
 				}
 				
 				parseAndDisplayResult(results_, items_);
+			}
+			
+			@Override
+			protected void onCancelled() {
+				super.onCancelled();
+				if(progressDialog_ != null && progressDialog_.isShowing()) {
+					progressDialog_.dismiss();
+				}
+				try {
+					Notification.showToast(getApplicationContext(), R.string.server_connection_error);
+				} catch(Exception e) {
+					Log.e("MapSearchActivity", e.toString());
+				}
+				finish();
 			}
 		}
 		

@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -46,7 +48,6 @@ import org.pocketcampus.utils.ImageUtil;
 import org.pocketcampus.utils.Notification;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -94,7 +95,6 @@ public class MapPlugin extends PluginBase {
 	private OnItemGestureListener<OverlayItem> overlayClickHandler_;
 
 	// UI
-	private ProgressDialog progressDialog_;
 	private ActionBar actionBar_;
 
 	/**
@@ -198,15 +198,38 @@ public class MapPlugin extends PluginBase {
 	 * @param level the new level
 	 */
 	private void changeLevel(int level) {
-		ITileSource epflTile = new EpflTileSource(level + "");
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
-		mProvider.setTileSource(epflTile);
+
+		ITileSource tileSource = getTileSource(level);
+
+		mProvider.setTileSource(tileSource);
+		
 		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, getBaseContext());
 		constantOverlays_.remove(0);
 		constantOverlays_.add(0, mTilesOverlay);
 		updateOverlays(false);
 
 		Tracker.getInstance().trackPageView("map/changeLevel" + level);
+	}
+	
+	/**
+	 * Returns the tile source to be displayed
+	 * @return the tile source
+	 */
+	private ITileSource getTileSource(int level) {
+		ITileSource tileSource;
+		if(getResources().getBoolean(R.bool.map_tilesource_is_epfl)) {
+			tileSource = new EpflTileSource(level + "");
+		} else {
+			String name = getResources().getString(R.string.map_tilesource_name);
+			int zoomMin = getResources().getInteger(R.integer.map_tilesource_zoom_min);
+			int zoomMax = getResources().getInteger(R.integer.map_tilesource_zoom_max);	
+			int tileSize = getResources().getInteger(R.integer.map_tilesource_tile_size);
+			String ext = getResources().getString(R.string.map_tilesource_filename_ending);
+			String[] urls = getResources().getStringArray(R.array.map_tilesource_urls);
+			tileSource = new XYTileSource(name, ResourceProxy.string.mapnik, zoomMin, zoomMax, tileSize, ext, urls);
+		}
+		return tileSource;
 	}
 
 	/**
@@ -264,10 +287,11 @@ public class MapPlugin extends PluginBase {
 			}, max, min, max);
 		}
 
-		// Add EPFL tiles layer
-		ITileSource epflTile = new EpflTileSource();
+		// Add Campus tiles layer
+		int level = getResources().getInteger(R.integer.map_level_default);
+		ITileSource campusTile = getTileSource(level);
 		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
-		mProvider.setTileSource(epflTile);
+		mProvider.setTileSource(campusTile);
 		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
 		constantOverlays_.add(0, mTilesOverlay);
 
@@ -281,31 +305,6 @@ public class MapPlugin extends PluginBase {
 
 		// Center map
 		centerOnCampus();
-	}
-
-	/**
-	 * Displays a not-cancelable progress dialog with the specific message.
-	 * @param message
-	 */
-	private void showProgressDialog(int messageId) {
-		progressDialog_ = new ProgressDialog(this);
-		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
-		progressDialog_.setMessage(getResources().getString(messageId));
-		progressDialog_.setCancelable(false);
-		progressDialog_.show();
-	}
-
-	/**
-	 * Dismisses the progress dialog (displayed using showProgressDialog)
-	 */
-	private void dismissProgressDialog() {
-		if(progressDialog_ != null) {
-			try {
-				progressDialog_.dismiss();
-			} catch (Exception e) {
-				Log.e("MapPlugin", e.toString());
-			}
-		}
 	}
 
 	/**
