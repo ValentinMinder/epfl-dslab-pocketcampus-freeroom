@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
 import org.pocketcampus.core.plugin.PluginInfo;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A> {
 	private CacheManager<?> cacheManager_;
@@ -74,6 +75,7 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 					futureTask.get(timeoutDelay(), TimeUnit.SECONDS);
 					
 				} catch (TimeoutException e) {
+					Log.d("Request", "start -> timeout");
 					cancel(true);
 				} catch (ExecutionException e) {
 					e.printStackTrace();
@@ -105,10 +107,19 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 		if(result != null) {
 			cacheManager_.putInCache(url, result, expirationDelay());
 		}
+		
+		if(isCancelled())
+			return result;
 
 		doInBackgroundThread(result);
 
 		return result;
+	}
+	
+	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		Log.d("Request", "The request has been canceled (command: " + this.command_ + ")");
 	}
 	
 	public final void setPluginInfo(PluginInfo pluginInfo) {
