@@ -79,7 +79,7 @@ public class MapPlugin extends PluginBase {
 
 	// Used for the location
 	private static final float MAX_ACCURACY_FROM_DIRECTIONS = 100;
-	private static final long LAYERS_REFRESH_TIMEOUT = 10000;
+	private static final long LAYERS_REFRESH_TIMEOUT = 30000;
 	private static Position CAMPUS_CENTER_P;
 	private static GeoPoint CAMPUS_CENTER_G;
 	private static int CAMPUS_RADIUS;
@@ -439,6 +439,12 @@ public class MapPlugin extends PluginBase {
 			clearPath();
 
 			Tracker.getInstance().trackPageView("map/menu/clearPath");
+			return true;
+			
+		case R.id.map_menu_clear_layers_button:
+			setSelectedLayers(new ArrayList<MapElementsList>());
+			
+			Tracker.getInstance().trackPageView("map/menu/clearLayers");
 			return true;
 
 		default:

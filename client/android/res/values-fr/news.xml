@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news_preferences_rss_title">Options RSS</string>
+    <string name="news_preferences_other_title">Autres options</string>
+   
+    <string name="news_refresh_title">Temps d\'actualisation</string>
+    <string name="news_refresh_summary">Le temps qui s\'écoule entre deux actualisations</string>
+    <string name="news_show_image_title">Afficher une miniature</string>
+    <string name="news_show_image_summary">Affiche une image miniature (si disponible)</string>
+    
+    <string-array name="news_refresh_entries">
+        <item>A chaque chargement</item>
+        <item>10 minutes</item>
+        <item>1 heure</item>
+        <item>5 heures</item>
+        <item>12 heures</item>
+        <item>1 jour</item>
+    </string-array>
+    
+    <string-array name="news_feeds_url">
+        <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
+    </string-array>
+    <string-array name="news_feeds_name">
+        <item>EPFL</item>
+    </string-array>
+
+</resources>

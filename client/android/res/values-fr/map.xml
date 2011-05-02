@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map_menu_layers">Points d\'intérêt</string>
+    <string name="map_menu_my_position_on">Ma position</string>
+    <string name="map_menu_my_position_off">Arrêter de me suivre</string>
+    <string name="map_menu_campus_position">Trouver le Campus</string>
+    <string name="map_menu_search">Recherche</string>
+    <string name="map_menu_clear_path">Effacer l\'itinéraire</string>
+    <string name="map_menu_toggle_map_mode">Mode d\'affichage</string>
+    <string name="map_menu_clear_layers">Effacer les POI</string>
+    
+    <string name="map_layer_pick_text">Choisissez des POI</string>
+    <string name="map_loading_layers">Chargement des POI...</string>
+    <string name="map_layer_ok_button">Ok</string>
+    
+    <string name="map_directions_not_accurate">Impossible de vous localisez assez précisément pour vous fournir un itinéraire</string>
+    <string name="map_directions_not_on_campus">Vous êtes en dehors du campus, impossible de fournir un itinéraire</string>
+    
+    <string name="map_search">Chercher sur la carte</string>
+    <string name="map_searching">Recherche en cours</string>
+    <string name="map_level">Etage</string>
+    <string name="map_take_me_there_button">Aller là</string>
+    <string name="map_zoom_button">Centrer la carte</string>
+</resources>

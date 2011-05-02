@@ -16,6 +16,8 @@ import org.pocketcampus.utils.Notification;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,12 +60,6 @@ public class MapSearchActivity extends ListActivity {
 	 * @param query the text to search
 	 */
 	private void searchMap(String query) {
-		
-		progressDialog_ = new ProgressDialog(this);
-		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
-		progressDialog_.setMessage(getResources().getString(R.string.map_searching));
-		progressDialog_.setCancelable(false);
-		progressDialog_.show();
 		
 		class MapSearchRequest extends DataRequest {
 			
@@ -144,6 +140,23 @@ public class MapSearchActivity extends ListActivity {
 			}
 		}
 		
+		progressDialog_ = new ProgressDialog(this);
+		progressDialog_.setTitle(getResources().getString(R.string.please_wait));
+		progressDialog_.setMessage(getResources().getString(R.string.map_searching));
+		progressDialog_.setCancelable(true);
+		
+		progressDialog_.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				finish();
+				
+			}
+		});
+		
+		progressDialog_.show();
+		
+		
+		
 		RequestParameters params = new RequestParameters();
 		params.addParameter("q", query);
 		
@@ -187,7 +200,8 @@ public class MapSearchActivity extends ListActivity {
 	private void startMapActivity(MapElementBean meb) {
 		Intent startMapActivity = new Intent(this, MapPlugin.class);
 		startMapActivity.putExtra("MapElement", meb);
-		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+		//startMapActivity.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP); //had a problem of outofmemory if too many consecutive searches
+		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(startMapActivity);
 	}
 

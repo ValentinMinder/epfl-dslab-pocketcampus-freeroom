@@ -5,13 +5,17 @@
 		android:id="@+id/map_menu_layers_button"
 		android:icon="@android:drawable/ic_menu_preferences" />
 	<item
+		android:title="@string/map_menu_clear_layers"
+		android:id="@+id/map_menu_clear_layers_button"
+		android:icon="@drawable/ic_menu_close_clear_cancel" />
+	<item
 		android:title="@string/map_menu_my_position_on"
 		android:id="@+id/map_my_position"
 		android:icon="@android:drawable/ic_menu_mylocation" />
 	<item
 		android:title="@string/map_menu_campus_position"
 		android:id="@+id/map_campus_position"
-		android:icon="@android:drawable/ic_dialog_info" />
+		android:icon="@drawable/ic_menu_home" />
 	<item
 		android:title="@string/map_menu_search"
 		android:id="@+id/map_search"
