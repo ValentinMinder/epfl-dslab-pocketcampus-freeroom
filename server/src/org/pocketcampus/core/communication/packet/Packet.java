@@ -1,16 +1,16 @@
 package org.pocketcampus.core.communication.packet;
 
-import java.util.Date;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
+/**
+ * POJO Structure for a PCP Packet
+ */
 public class Packet {
-	private String handledPcpVersion = "0.1";
-	
 	@Expose
 	@SerializedName("Protocol")
-	private String protocol;
+	private Protocol protocol;
 	
 	@Expose
 	@SerializedName("Date")
@@ -28,5 +28,55 @@ public class Packet {
 	@SerializedName("Payload")
 	private Payload payload;
 	
-	private Packet() {}
+	
+	/**
+	 * Creates a new POJO PCP Packet
+	 * @param payload
+	 * @param generator describes the entity that generated the packet
+	 * @param options
+	 */
+	public Packet(Payload payload, String generator, Options options) {
+		this.payload = payload;
+		this.generator = generator;
+		this.options = options;
+		
+		this.protocol = new Protocol("PCP", "1.0");
+		this.date = new Date();
+	}
+	
+	
+	/**
+	 * @return the protocol of this packet
+	 */
+	public Protocol getProtocol() {
+		return this.protocol;
+	}
+	
+	/**
+	 * @return the generation date of this packet
+	 */
+	public Date getDate() {
+		return this.date;
+	}
+	
+	/**
+	 * @return the string identifying the generator of this packet
+	 */
+	public String getGenerator() {
+		return this.generator;
+	}
+	
+	/**
+	 * @return link options associated to this packet
+	 */
+	public Options getOptions() {
+		return this.options;
+	}
+	
+	/**
+	 * @return this packet's payload
+	 */
+	public Payload getPayload() {
+		return this.payload;
+	}
 }

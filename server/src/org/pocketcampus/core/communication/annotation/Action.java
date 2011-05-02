@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Declares a method which is part of the PCP API and can be called directly
- * from a PCP client.
+ * from a PCP client (<i>i.e. a PocketCampus Action</i>).
  *
  */
 @Documented

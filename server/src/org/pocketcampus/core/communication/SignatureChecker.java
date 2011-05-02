@@ -3,7 +3,9 @@ package org.pocketcampus.core.communication;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -64,9 +66,17 @@ public class SignatureChecker {
 		/**
 		 * The checked method's return type must be the same (not a subclass) as the
 		 * reference method's return type. For generic types, the parameterized type
-		 * is not compared.
+		 * is not compared. For primitives, their wrapper object is used for comparison.
 		 */
 		SAME,
+		
+		/**
+		 * The checked method's return type must be a subclass of (or the same class as)
+		 * the reference method's return type. For primitives, their wrapper object is
+		 * used for comparison (e.g. <code>int extends Object</code> is true, since
+		 * <code>[int ~ Integer] extends Object</code>).
+		 */
+		SUBCLASS,
 		
 		/**
 		 * The return type is not taken into account for the comparison.
@@ -74,6 +84,25 @@ public class SignatureChecker {
 		IGNORE
 	}
 	
+	
+	
+	
+	/**
+	 * Maps each primitive's class (plus the pseudo-primitive 'void') to its Wrapper
+	 * Object's class
+	 */
+	private final static Map<Class<?>, Class<?>> primitivesWrapperMap_ = new HashMap<Class<?>, Class<?>>();
+	static {
+		primitivesWrapperMap_.put(boolean.class, Boolean.class);
+		primitivesWrapperMap_.put(byte.class, Byte.class);
+		primitivesWrapperMap_.put(char.class, Character.class);
+		primitivesWrapperMap_.put(short.class, Short.class);
+		primitivesWrapperMap_.put(int.class, Integer.class);
+		primitivesWrapperMap_.put(long.class, Long.class);
+		primitivesWrapperMap_.put(float.class, Float.class);
+		primitivesWrapperMap_.put(double.class, Double.class);
+		primitivesWrapperMap_.put(void.class, Void.class);
+	}
 	
 	
 	
@@ -96,10 +125,23 @@ public class SignatureChecker {
 	 */
 	public static boolean checkReturnType(Method checked, Method reference,
 			ReturnTypePolicy policy) {
-		boolean valid = true;
+		boolean valid = false;
+		Class<?> crt = toWrapper(checked.getReturnType());
+		Class<?> rrt = toWrapper(reference.getReturnType());
 		
-		if (policy == ReturnTypePolicy.SAME)
-			valid &= checked.getReturnType().equals(reference.getReturnType());
+		switch(policy) {
+		case SAME:
+			valid = rrt.equals(crt);
+			break;
+		case SUBCLASS:
+			valid = rrt.isAssignableFrom(crt);
+			break;
+		case IGNORE:
+			valid = true;
+			break;
+		default:
+			throw new NotImplementedException();
+		}
 		
 		return valid;
 	}
@@ -201,6 +243,11 @@ public class SignatureChecker {
 	}
 	
 	
+	/**
+	 * Returns a new set containing all checked exceptions of the given set.
+	 * @param ths
+	 * @return
+	 */
 	private static HashSet<Throwable> retainCheckedExceptions(HashSet<Throwable> ths) {
 		HashSet<Throwable> out = new HashSet<Throwable>();
 		
@@ -213,6 +260,11 @@ public class SignatureChecker {
 		return out;
 	}
 	
+	/**
+	 * Return a set containing all Throwables of the given array
+	 * @param cls
+	 * @return
+	 */
 	private static HashSet<Throwable> toThrowables(Class<?>[] cls) {
 		HashSet<Throwable> out = new HashSet<Throwable>();
 		
@@ -226,10 +278,26 @@ public class SignatureChecker {
 		return out;
 	}
 	
+	/**
+	 * Convert an array of annotations into a set of annotations
+	 * @param as
+	 * @return
+	 */
 	private static HashSet<Annotation> toAnnotations(Annotation[] as) {
 		HashSet<Annotation> out = new HashSet<Annotation>();
 		out.addAll(Arrays.asList(as));
 		return out;
+	}
+	
+	/**
+	 * If the given class is a primitive, return its wrapper. Else, return the given class
+	 * @param clazz
+	 * @return
+	 */
+	private static Class<?> toWrapper(Class<?> clazz) {
+		if (!clazz.isPrimitive())
+			return clazz;
+		return primitivesWrapperMap_.get(clazz);
 	}
 	
 	

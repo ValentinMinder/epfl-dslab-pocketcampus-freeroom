@@ -1,5 +1,16 @@
 package org.pocketcampus.core.communication.packet;
 
+import java.lang.reflect.Type;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
 /**
  * The RawJson class allows an easy and straightforward serialization and deserialization
  * by GSON of the data contained in a JSON String.
@@ -13,19 +24,34 @@ public class RawJson {
 	private String data;
 	
 	/**
-	 * Instance creator for GSON
+	 * Creates a new RawJson object
+	 * @param any raw JSON string
 	 */
-	private RawJson() {}
-	
 	public RawJson(String data) {
 		this.data = data;
 	}
 	
-	public String getRaw() {
+	/**
+	 * Returns the raw JSON string contained in this RawJson
+	 */
+	public String toString() {
 		return this.data;
 	}
 	
-	public String toString() {
-		return this.data;
+	public static class GsonAdapter implements JsonSerializer<RawJson>, JsonDeserializer<RawJson> {
+
+		@Override
+		public RawJson deserialize(JsonElement json, Type typeOfT,
+				JsonDeserializationContext context) throws JsonParseException {
+			return new RawJson(json.getAsJsonObject().toString());
+		}
+		
+		@Override
+		public JsonElement serialize(RawJson src, Type typeOfSrc,
+				JsonSerializationContext context) {
+			
+			JsonParser parser = new JsonParser();
+			return parser.parse(src.data);
+		}
 	}
 }
