@@ -21,10 +21,10 @@ import org.pocketcampus.core.communication.packet.Options;
 import org.pocketcampus.core.communication.packet.Packet;
 import org.pocketcampus.core.communication.packet.Payload;
 import org.pocketcampus.core.communication.packet.ServerOptions;
-import org.pocketcampus.core.communication.pipe.IPipe;
-import org.pocketcampus.core.communication.pipe.IPipeReader;
-import org.pocketcampus.core.communication.pipe.IPipeWriter;
-import org.pocketcampus.core.communication.pipe.SimpleBox;
+import org.pocketcampus.core.communication.pipes.IPipe;
+import org.pocketcampus.core.communication.pipes.IPipeReader;
+import org.pocketcampus.core.communication.pipes.IPipeWriter;
+import org.pocketcampus.core.communication.pipes.SimpleBox;
 import org.pocketcampus.core.logging.Logger;
 
 import com.google.gson.Gson;

@@ -1,8 +1,8 @@
 package org.pocketcampus.core.communication;
 
-import org.pocketcampus.core.communication.annotation.Action;
+import org.pocketcampus.core.communication.annotations.Action;
 import org.pocketcampus.core.communication.packet.Payload;
-import org.pocketcampus.core.communication.pipe.IPipeWriter;
+import org.pocketcampus.core.communication.pipes.IPipeWriter;
 import org.pocketcampus.core.exception.ServerException;
 
 /**
