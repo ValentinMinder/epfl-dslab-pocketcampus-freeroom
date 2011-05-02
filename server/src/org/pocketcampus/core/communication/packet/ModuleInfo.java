@@ -4,9 +4,6 @@ import java.lang.reflect.Type;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pocketcampus.core.communication.Status;
-import org.pocketcampus.core.communication.exceptions.PcpException;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -68,8 +65,7 @@ public class ModuleInfo {
 			Matcher m = p.matcher(json.toString());
 			
 			if (!m.matches()) {
-				PcpException bpe = new PcpException("Malformed module declaration", Status.BAD_REQUEST);
-				throw new JsonParseException(bpe);
+				throw new JsonParseException("Malformed Module Declaration");
 			}
 			
 			String moduleId = m.group(1);
