@@ -368,7 +368,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		// TODO Auto-generated method stub
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
 		l
-				.add(new MapLayerBean("Restaurants", "", this.getClass().getCanonicalName(), 1,
+				.add(new MapLayerBean("Restaurants", "", this, 1,
 						-1, true));
 		return l;
 	}

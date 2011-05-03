@@ -101,7 +101,7 @@ public class Directory implements IPlugin, IMapElementsProvider {
 	public List<MapLayerBean> getLayers() {
 		// TODO Auto-generated method stub
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Person", "", this.getClass().getCanonicalName(), 1, 3600, false));
+		l.add(new MapLayerBean("Person", "", this, 1, 3600, false));
 		return l;
 	}
 	

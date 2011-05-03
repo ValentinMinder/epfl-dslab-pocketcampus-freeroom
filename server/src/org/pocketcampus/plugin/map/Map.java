@@ -260,7 +260,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 			while (rs.next()) {
 				MapLayerBean mlb = new MapLayerBean(rs.getString("title"), 
 						rs.getString("image_url"),
-						this.getClass().getCanonicalName(),
+						this,
 						rs.getInt("id"),
 						rs.getInt("cache"),
 						rs.getBoolean("displayable"));
