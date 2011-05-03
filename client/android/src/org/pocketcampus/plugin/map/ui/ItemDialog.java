@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 import android.app.Dialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Show a dialog box when the user clicks on an item on the map
@@ -32,8 +33,15 @@ public class ItemDialog extends Dialog {
 		
 		setTitle(item.getTitle());
 
-//		TextView text = (TextView) findViewById(R.id.map_dialog_description);
-//		text.setText(item.getTitle());
+		String description = item.getSnippet();
+		
+		TextView text = (TextView) findViewById(R.id.map_item_description);
+		
+		if(description == null || "".equals(description)) {
+			text.setVisibility(View.GONE);
+		} else {
+			text.setText(description);
+		}
 
 //		ImageView img = (ImageView) dialog.findViewById(R.id.map_dialog_image);
 //		img.setImageDrawable(item.getDrawable());
