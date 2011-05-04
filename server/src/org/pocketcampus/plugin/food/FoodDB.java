@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -78,15 +77,17 @@ public class FoodDB {
 	 * @param m
 	 * @return
 	 */
-	public boolean insertMeal(Connection connection_, Meal m) {
-		Statement s;
-		String value = "";
+	public boolean insertMeal(Meal m) {
+		Connection connection_ = createConnection();
+		PreparedStatement insertMeal = null;
+		String insertString = "INSERT INTO MENUS (Title, Description, Restaurant, Rating, NumberOfVotes, hashcode, JsonObject, stamp_created)"
+				+ " VALUES (?,?,?,?,?,?,?,?)";
+
 		try {
-			s = connection_.createStatement();
 			int count = 0;
-			String name = quote(m.getName_());
-			String description = quote(m.getDescription_());
-			String restaurant = quote(m.getRestaurant_().getName());
+			String name = m.getName_();
+			String description = m.getDescription_();
+			String restaurant = m.getRestaurant_().getName();
 			double rating = Restaurant.starRatingToDouble(m.getRating()
 					.getValue());
 			int numberOfVotes = m.getRating().getNumberOfVotes();
@@ -94,31 +95,105 @@ public class FoodDB {
 
 			Gson gson = new Gson();
 
-			String jsonObject = quote("JsonObject");
+			String jsonObject = "JsonObject";
 
 			try {
-				jsonObject = quote(gson.toJson(m));
+				jsonObject = gson.toJson(m);
 			} catch (JsonSyntaxException e) {
-
 			}
 
 			Calendar cal = Calendar.getInstance();
-			String dateString = quote(cal.get(Calendar.YEAR) + "."
+			String dateString = cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ cal.get(Calendar.DAY_OF_MONTH));
+					+ cal.get(Calendar.DAY_OF_MONTH);
 
-			value = name + ", " + description + ", " + restaurant + ", "
-					+ rating + ", " + numberOfVotes + ", " + hashcode + ", "
-					+ jsonObject + ", " + dateString;
-			count = s
-					.executeUpdate("INSERT INTO MENUS (Title, Description, Restaurant, Rating, NumberOfVotes, hashcode, JsonObject, stamp_created)"
-							+ " VALUES (" + value + ")");
-			s.close();
+			connection_.setAutoCommit(false);
+
+			insertMeal = connection_.prepareStatement(insertString);
+
+			insertMeal.setString(1, name);
+			insertMeal.setString(2, description);
+			insertMeal.setString(3, restaurant);
+			insertMeal.setFloat(4, (float) rating);
+			insertMeal.setInt(5, numberOfVotes);
+			insertMeal.setInt(6, hashcode);
+			insertMeal.setString(7, jsonObject);
+			insertMeal.setString(8, dateString);
+
+			insertMeal.executeQuery();
+			connection_.commit();
+
 			System.out.println(count + " rows were inserted");
 			return true;
 		} catch (SQLException e) {
-			System.out.println("Problem in insert meal: " + value);
+			System.out.println("Problem in insert meal.");
 			return false;
+		} finally {
+			try {
+				if (insertMeal != null) {
+					insertMeal.close();
+				}
+				connection_.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Meal getMeal(int mealHashCode) {
+		PreparedStatement getMeal = null;
+		Connection connection_ = createConnection();
+		String getString = "SELECT * FROM MENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
+		Meal newMeal = null;
+
+		try {
+			Calendar cal = Calendar.getInstance();
+			String dateString = cal.get(Calendar.YEAR) + "."
+					+ (cal.get(Calendar.MONTH) + 1) + "."
+					+ (cal.get(Calendar.DAY_OF_MONTH));
+
+			connection_.setAutoCommit(false);
+
+			getMeal = connection_.prepareStatement(getString);
+			getMeal.setString(1, dateString);
+			getMeal.setInt(2, mealHashCode);
+
+			ResultSet rset = getMeal.executeQuery();
+
+			connection_.commit();
+
+			System.out.println("<getMeal>: getting " + mealHashCode);
+
+			Gson gson = new Gson();
+
+			String jsonObject = "";
+			Type mealType = new TypeToken<Meal>() {
+			}.getType();
+
+			while (rset.next()) {
+				jsonObject = rset.getString("JsonObject");
+				try {
+					newMeal = gson.fromJson(jsonObject, mealType);
+				} catch (JsonSyntaxException e) {
+					System.out.println("JsonSyntaxException");
+				}
+			}
+
+			return newMeal;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (getMeal != null) {
+					getMeal.close();
+				}
+				if (connection_ != null) {
+					connection_.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -129,26 +204,26 @@ public class FoodDB {
 	 * @return
 	 */
 	public List<Meal> getMeals(Connection connection_) {
-		Statement s;
+		PreparedStatement getMeals = null;
+		String getString = "SELECT * FROM MENUS WHERE STAMP_CREATED = ?";
 		try {
-			s = connection_.createStatement();
-
 			List<Meal> campusMeals = new ArrayList<Meal>();
 
 			Calendar cal = Calendar.getInstance();
-			String dateString = quote(cal.get(Calendar.YEAR) + "."
+			String dateString = cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ (cal.get(Calendar.DAY_OF_MONTH) - 1));
+					+ (cal.get(Calendar.DAY_OF_MONTH));
 
-			/** TESTING **/
-			dateString = quote("2011.4.30");
-			/** END **/
+			connection_.setAutoCommit(false);
 
-			ResultSet rset = s
-					.executeQuery("SELECT * FROM MENUS WHERE STAMP_CREATED = "
-							+ dateString);
+			getMeals = connection_.prepareStatement(getString);
+			getMeals.setString(1, dateString);
+			ResultSet rset = getMeals.executeQuery();
 
-			System.out.println(dateString);
+			connection_.commit();
+
+			System.out.println("<getMeals>: getting " + dateString);
+
 			Gson gson = new Gson();
 
 			String jsonObject = "";
@@ -165,11 +240,19 @@ public class FoodDB {
 				}
 			}
 
-			s.close();
 			return campusMeals;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			try {
+				if (getMeals != null) {
+					getMeals.close();
+				}
+				connection_.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -181,38 +264,49 @@ public class FoodDB {
 	 * @return
 	 */
 	public boolean checkVotedDevice(Connection connection, String deviceID) {
-		Statement s;
+		PreparedStatement checkVotedDevice = null;
+		String getString = "SELECT count(DEVICEID) FROM DailyRatings WHERE DEVICEID = ? and STAMP_CREATED = ?";
+		ResultSet rset = null;
+		boolean found = false;
+
 		try {
-			s = connection.createStatement();
-
 			Calendar cal = Calendar.getInstance();
-			String dateString = quote(cal.get(Calendar.YEAR) + "."
+			String dateString = cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ cal.get(Calendar.DAY_OF_MONTH));
+					+ cal.get(Calendar.DAY_OF_MONTH);
 
-			ResultSet rset = s
-					.executeQuery("SELECT count(DEVICEID) FROM DailyRatings WHERE DEVICEID = "
-							+ quote(deviceID)
-							+ " and STAMP_CREATED = "
-							+ dateString);
+			checkVotedDevice = connection.prepareStatement(getString);
+			connection.setAutoCommit(false);
+			checkVotedDevice.setString(1, deviceID);
+			System.out.println(deviceID + " " + dateString);
+			checkVotedDevice.setString(2, dateString);
+
+			rset = checkVotedDevice.executeQuery();
 
 			while (rset.next()) {
 				if (Integer.parseInt(rset.getString(1)) == 1) {
-					rset.close();
-					s.close();
-					return true;
-				} else {
-					rset.close();
-					s.close();
-					return false;
+					found = true;
 				}
 			}
-			return false;
+			rset.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Problem in checkVotedToday: " + deviceID);
 			return false;
+		} finally {
+			try {
+				if (checkVotedDevice != null) {
+					checkVotedDevice.close();
+				}
+				if (rset != null) {
+					rset.close();
+				}
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return found;
 	}
 
 	/**
@@ -222,34 +316,48 @@ public class FoodDB {
 	 * @param deviceId
 	 */
 	public void insertVotedDevice(Connection connection_, String deviceId) {
-		Statement s;
-		String value = "";
+		PreparedStatement insertVotedDevice = null;
+		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created) VALUES (?, ?)";
+		ResultSet rset = null;
+
 		try {
-			s = connection_.createStatement();
+			insertVotedDevice = connection_.prepareStatement(insertString);
 			int count = 0;
 
 			Calendar cal = Calendar.getInstance();
-			String dateString = quote(cal.get(Calendar.YEAR) + "."
+			String dateString = cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ cal.get(Calendar.DAY_OF_MONTH));
+					+ cal.get(Calendar.DAY_OF_MONTH);
 
-			value = quote(deviceId) + ", " + dateString;
+			insertVotedDevice.setString(1, deviceId);
+			insertVotedDevice.setString(2, dateString);
 
-			count = s
-					.executeUpdate("INSERT INTO DAILYRATINGS (DeviceId, stamp_created)"
-							+ " VALUES (" + value + ")");
-			s.close();
+			count = insertVotedDevice.executeUpdate();
 			System.out.println(count + " rows were inserted");
 		} catch (SQLException e) {
-			System.out.println("Problem in insert voted device: " + value);
+			System.out.println("Problem in insert voted device.");
+		} finally {
+			try {
+				if (insertVotedDevice != null) {
+					insertVotedDevice.close();
+				}
+				if (rset != null) {
+					rset.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void insertRating(Connection connection_, int hashCode, Meal meal) {
-		Statement s;
+		System.out.println("Inserting rating.");
+		PreparedStatement insertRating = null;
+		String insertString = "UPDATE Menus SET Rating = ?, NumberOfVotes=?, JsonObject=? where hashcode=?";
+
 		String jsonObject = "";
 		try {
-			s = connection_.createStatement();
+			insertRating = connection_.prepareStatement(insertString);
 			Gson gson = new Gson();
 			jsonObject = "";
 			try {
@@ -258,32 +366,43 @@ public class FoodDB {
 			}
 
 			Rating r = meal.getRating();
-			s.executeUpdate("UPDATE Menus SET Rating="
-					+ Restaurant.starRatingToDouble(r.getValue())
-					+ ", NumberOfVotes=" + meal.getRating().getNumberOfVotes()
-					+ ", JsonObject=" + quote(jsonObject) + "where hashcode="
-					+ hashCode);
+			insertRating.setFloat(1, (float) Restaurant.starRatingToDouble(r
+					.getValue()));
+			insertRating.setInt(2, r.getNumberOfVotes());
+			insertRating.setString(3, jsonObject);
+			insertRating.setInt(4, hashCode);
+
+			insertRating.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Problem: could not insert rating:" + "Rating="
 					+ meal.getRating().getValue() + ", NumberOfVotes="
 					+ meal.getRating().getNumberOfVotes() + ", JsonObject="
-					+ quote(jsonObject) + "where hashcode=" + hashCode);
+					+ jsonObject + "where hashcode=" + hashCode);
 			e.printStackTrace();
+		} finally {
+			try {
+				if (insertRating != null) {
+					insertRating.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public boolean uploadPicture(Connection con, String uploader, int hashCode,
-			byte[] picture) {
+	public boolean uploadPicture(String uploader, int hashCode, byte[] picture) {
 
+		System.out.println("Inserting picture.");
+		Connection con = createConnection();
 		PreparedStatement uploadPicture = null;
 
 		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealHashCode, stamp_created)"
 				+ " VALUES (?,?,?,?)";
 
 		Calendar cal = Calendar.getInstance();
-		String dateString = quote(cal.get(Calendar.YEAR) + "."
+		String dateString = cal.get(Calendar.YEAR) + "."
 				+ (cal.get(Calendar.MONTH) + 1) + "."
-				+ cal.get(Calendar.DAY_OF_MONTH));
+				+ cal.get(Calendar.DAY_OF_MONTH);
 
 		try {
 			con.setAutoCommit(false);
@@ -313,18 +432,13 @@ public class FoodDB {
 				if (uploadPicture != null) {
 					uploadPicture.close();
 				}
-				con.setAutoCommit(true);
+				if (con != null) {
+					con.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return true;
 	}
-
-	private String quote(String toQuote) {
-		toQuote = toQuote.replace("\n", "$");
-		toQuote = toQuote.replace("\'", "\'\'");
-		return "\'" + toQuote + "\'";
-	}
-
 }

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food;
 
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +22,10 @@ import org.pocketcampus.shared.plugin.food.Restaurant;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 public class Food implements IPlugin, IMapElementsProvider {
 
@@ -65,7 +70,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 			campusMealRatings_.clear();
 			importMenus();
 		} else {
-			System.out.println("<getMenus>: Not reimporting menus.");
+			System.out.println("<getMenus>: " + lastImportMenus_
+					+ ", not reimporting menus.");
 		}
 		return campusMeals_;
 	}
@@ -122,12 +128,11 @@ public class Food implements IPlugin, IMapElementsProvider {
 		System.out.println("<setRating>: Rating request.");
 
 		String deviceId = request.getParameter("deviceId");
-
 		String stringMealHashCode = request.getParameter("meal");
-
 		String stringRating = request.getParameter("rating");
 
-		if (stringMealHashCode == null || stringRating == null || deviceId == null) {
+		if (stringMealHashCode == null || stringRating == null
+				|| deviceId == null) {
 			return false;
 		}
 
@@ -141,21 +146,23 @@ public class Food implements IPlugin, IMapElementsProvider {
 		} else if (voted) {
 			System.out.println("Already in database.");
 			return false;
-		} else {
-			database_.insertVotedDevice(connection, deviceId);
-			deviceIds_.add(deviceId);
 		}
 
 		int mealHashCode = Integer.parseInt(stringMealHashCode);
 		double r = Double.parseDouble(stringRating);
 
+		System.out.println(mealHashCode);
 		for (int i = 0; i < campusMeals_.size(); i++) {
 			Meal currentMeal = campusMeals_.get(i);
+			System.out.println("Dedans "+currentMeal.hashCode());
 			if (currentMeal.hashCode() == mealHashCode) {
 				// Update rating for meal
 				currentMeal.getRating().addRating(r);
 				// Update rating in the database
 				database_.insertRating(connection, mealHashCode, currentMeal);
+				database_.insertVotedDevice(connection, deviceId);
+				deviceIds_.add(deviceId);
+
 				// Update rating in the list
 				campusMealRatings_.put(mealHashCode, currentMeal.getRating());
 				return true;
@@ -163,6 +170,37 @@ public class Food implements IPlugin, IMapElementsProvider {
 		}
 		database_.closeConnection(connection);
 		return false;
+	}
+
+	/**
+	 * Upload a picture for a meal
+	 * @param request
+	 * @return
+	 */
+	public boolean setPicture(HttpServletRequest request) {
+		String deviceID = request.getParameter("deviceId");
+		String pictureString = request.getParameter("pictureArray");
+		String mealHashCodeString = request.getParameter("meal");
+
+		if(deviceID == null || pictureString == null || mealHashCodeString == null){
+			return false;
+		}
+		
+		int mealHashCode = Integer.parseInt(mealHashCodeString);
+		Gson gson = new Gson();
+
+		Type byteArrayType = new TypeToken<byte[]>() {
+		}.getType();
+		byte[] picture = null;
+		try {
+			picture = gson.fromJson(pictureString, byteArrayType);
+		} catch (JsonSyntaxException e) {
+			System.out.println("Json Syntax exception in retrieving picture.");
+			e.printStackTrace();
+			return false;
+		}
+		
+		return database_.uploadPicture(deviceID, mealHashCode, picture);
 	}
 
 	/**
@@ -191,7 +229,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		List<Meal> mealsFromDB = database_.getMeals(connection);
 
-		if (mealsFromDB != null) {
+		System.out.println(campusMeals_.size());
+		if (mealsFromDB != null && !mealsFromDB.isEmpty()) {
 			campusMeals_ = mealsFromDB;
 			for (Meal m : campusMeals_) {
 				campusMealRatings_.put(m.hashCode(), m.getRating());
@@ -219,10 +258,14 @@ public class Food implements IPlugin, IMapElementsProvider {
 						campusMealRatings_.put(newMeal.hashCode(), mealRating);
 					}
 					lastImportMenus_ = new Date();
+				} else {
+					System.out.println("<importMenus>: empty feed");
 				}
 			}
 			for (Meal m : campusMeals_) {
-				database_.insertMeal(connection, m);
+				database_.insertMeal(m);
+				System.out.println("<importMenus>: Inserting meal "
+						+ m.getName_() + ", " + m.getRestaurant_());
 			}
 		}
 	}
@@ -367,9 +410,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	public List<MapLayerBean> getLayers() {
 		// TODO Auto-generated method stub
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l
-				.add(new MapLayerBean("Restaurants", "", this, 1,
-						-1, true));
+		l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
 		return l;
 	}
 
