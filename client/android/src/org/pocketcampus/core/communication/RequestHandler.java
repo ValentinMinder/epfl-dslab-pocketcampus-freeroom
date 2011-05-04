@@ -9,10 +9,10 @@ public class RequestHandler {
 	//private String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
 
 	// AWS SERVER URL
-//	private String serverUrl_ = "http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus-server/";
+	private String serverUrl_ = "http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/";
 
 	// FLORIAN LOCAL SERVER URL
-	private String serverUrl_ = "http://128.178.183.51:8080/pocketcampus-server/";
+	//private String serverUrl_ = "http://10.0.0.80:8080/pocketcampus-server/";
 	
 	// ELODIE LOCAL SERVER URL
 	//private String serverUrl_ = "http://128.178.240.75:8080/pocketcampus-server/";
