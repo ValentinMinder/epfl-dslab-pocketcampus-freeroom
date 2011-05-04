@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class FriendsPermissions extends Activity {
-//	private ServerAPI serverAPI_;
 	private Activity thisActivity_;
 	private ArrayList<Username> selectedUsernames_;
 	private SharedPreferences sharedPreferences_;

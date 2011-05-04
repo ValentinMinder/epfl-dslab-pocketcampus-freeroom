@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 import org.pocketcampus.shared.plugin.authentication.Username;
 
@@ -23,9 +24,9 @@ public class FriendsList extends ListActivity {
 	private FriendsListAdapter friendsListAdapter_;
 	private final FriendsList thisActivity_ = this;
 	private Vector<Username> friendsCollection;
-	
-	private final String username_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("username", null);
-	private final String sessionId_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sessionId", null);
+
+	private String username_ = null;
+	private String sessionId_ = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,8 @@ public class FriendsList extends ListActivity {
 		actionBar.addAction(new Action() {
 			@Override
 			public void performAction(View view) {
-				SocialLogin.logout(thisActivity_);
+				AuthenticationPlugin.logout(thisActivity_);
+				thisActivity_.finish();
 			}
 
 			@Override
@@ -49,8 +51,14 @@ public class FriendsList extends ListActivity {
 				.createIntent(this), R.drawable.mini_home));
 		//			actionBar.addAction(new ActionBar.IntentClosingAction(this, new Intent(this, SocialLogout.class), android.R.drawable.presence_offline, this));
 
-		friendsCollection = retrieveFriends(username_, sessionId_);
+		username_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("username", null);
+		sessionId_ = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sessionId", null);
 		
+		friendsCollection = retrieveFriends(username_, sessionId_);
+		friendsCollection = new Vector<Username>();
+		friendsCollection.add(new Username("ma dude"));
+		friendsCollection.add(new Username("ma bro"));
+		friendsCollection.add(new Username("ma man"));
 		ListSeparator listSeparator = new ListSeparator(this);
 		friendsListAdapter_ = new FriendsListAdapter(this, friendsCollection, this);
 		listSeparator.addSection(thisActivity_.getString(R.string.social_friends_list_separator), friendsListAdapter_);

@@ -14,4 +14,8 @@
 	<string name="please_wait">Please wait...</string>
 	<string name="unexpected_response">Unexpected response from server</string>
 	<string name="search_no_results">Your search did not match any elements</string>
+	
+	<string name="authentication_wrong_password">Wrong username or password</string>
+	<string name="authentication_hitosomeone">Hi, </string>
+	
 </resources>

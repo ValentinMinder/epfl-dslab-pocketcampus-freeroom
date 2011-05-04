@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.social;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -22,19 +23,19 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class FriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
-	private Context context_;
 	private Vector<Username> friends_;
 	private Activity friendsListActivity_;
 	private int checkCount_;
 	private Vector<Username> selectedFriends;
+	private ArrayList<ViewHolder> holders_;
 	
 	public FriendsListAdapter(Context context, Vector<Username> friends, Activity friendsListActivity) {
 		this.mInflater_ = LayoutInflater.from(context);
-		this.context_ = context;
 		this.friends_ = friends;
 		this.friendsListActivity_ = friendsListActivity;
 		this.checkCount_ = 0;
 		this.selectedFriends = new Vector<Username>();
+		this.holders_ = new ArrayList<ViewHolder>();
 	}
 	
 	
@@ -77,7 +78,8 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 			holder = new ViewHolder();
 			holder.username = (TextView) convertView.findViewById(R.id.social_friend);
 			holder.selected = (CheckBox) convertView.findViewById(R.id.check);
-
+			holders_.add(holder);
+			
 			convertView.setTag(holder);
 		} else {
 			// Get the ViewHolder back to get fast access to the TextView
@@ -95,6 +97,14 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 
 		
 		final View _convertView = convertView;
+		convertView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(position);
+				_selected.toggle();
+			}
+		});
+		
 		// When you click on a menu description you'll get more info
 		holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			Button buttonPermission = (Button) friendsListActivity_.findViewById(R.id.friendsListButtonPerm);
@@ -145,6 +155,26 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 		holder.username.setText(currentUsername.toString());
 
 		return convertView;
+	}
+	
+	public void toggleAll() {
+		boolean uncheckAll = true;
+		for(ViewHolder holder : holders_) {
+			if(!holder.selected.isChecked()) {
+				holder.selected.toggle();
+				uncheckAll = false;
+			}
+		}
+		if(uncheckAll) {
+			for(ViewHolder holder : holders_) {
+				holder.selected.toggle();
+			}
+		}
+	}
+	
+	private void showDialog(int pos){
+		PermissionDialog r = new PermissionDialog(friendsListActivity_, friends_.get(pos), friendsListActivity_, true);
+		r.show();
 	}
 	
 	private static class ViewHolder {

@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
@@ -39,7 +40,8 @@ public class FriendsSearch extends ListActivity {
 		actionBar.addAction(new Action() {
 			@Override
 			public void performAction(View view) {
-				SocialLogin.logout(thisActivity_);
+				AuthenticationPlugin.logout(thisActivity_);
+				thisActivity_.finish();
 			}
 
 			@Override
