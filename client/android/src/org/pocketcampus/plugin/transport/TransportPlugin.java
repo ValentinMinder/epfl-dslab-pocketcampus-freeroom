@@ -114,7 +114,6 @@ public class TransportPlugin extends PluginBase{
 
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
-		transportDisplayHandler_.setupActionBar(addHomeButton);
 		super.setupActionBar(addHomeButton);
 	}
 
