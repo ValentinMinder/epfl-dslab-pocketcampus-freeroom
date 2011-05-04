@@ -33,8 +33,9 @@ public abstract class QueryRequestHandler<T> extends RequestHandler<ResultSet, T
 	 * sensitive strings (e.g. user inputs) are replaced by question marks.<br />
 	 * Ex : <code>SELECT `name` FROM `fruits` WHERE `category` = ?</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
+	 * @throws ServerException 
 	 */
-	public QueryRequestHandler(String sqlRequest) {
+	public QueryRequestHandler(String sqlRequest) throws ServerException {
 		super(sqlRequest);
 	}
 	
@@ -46,8 +47,9 @@ public abstract class QueryRequestHandler<T> extends RequestHandler<ResultSet, T
 	 * Ex : <code>SELECT `name` FROM `fruits` WHERE `category` = ?</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
 	 * @param exceptionHandler the handler that will be used in case of a thrown SQLException during the process
+	 * @throws ServerException 
 	 */
-	public QueryRequestHandler(String sqlRequest, SQLExceptionHandler<T> exceptionHandler) {
+	public QueryRequestHandler(String sqlRequest, SQLExceptionHandler<T> exceptionHandler) throws ServerException {
 		super(sqlRequest, exceptionHandler);
 	}
 	

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.pocketcampus.core.database.handlers.exceptions.SQLExceptionHandler;
+import org.pocketcampus.core.exception.ServerException;
 
 /**
  * Implementation of RequestHandler specialized in SQL DML and SQL DDL statements,
@@ -21,8 +22,9 @@ public abstract class UpdateRequestHandler extends RequestHandler<Integer, Integ
 	 * sensitive strings (e.g. user inputs) are replaced by question marks.<br />
 	 * Ex : <code>INSERT INTO `fruits` (`name`) VALUES (?)</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
+	 * @throws ServerException 
 	 */
-	public UpdateRequestHandler(String sqlRequest) {
+	public UpdateRequestHandler(String sqlRequest) throws ServerException {
 		super(sqlRequest);
 	}
 	
@@ -38,8 +40,9 @@ public abstract class UpdateRequestHandler extends RequestHandler<Integer, Integ
 	 * Ex : <code>INSERT INTO `fruits` (`name`) VALUES (?)</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
 	 * @param exceptionHandler the handler that will be used in case of a thrown SQLException during the process
+	 * @throws ServerException 
 	 */
-	public UpdateRequestHandler(String sqlRequest, SQLExceptionHandler<Integer> exceptionHandler) {
+	public UpdateRequestHandler(String sqlRequest, SQLExceptionHandler<Integer> exceptionHandler) throws ServerException {
 		super(sqlRequest, exceptionHandler);
 	}
 	

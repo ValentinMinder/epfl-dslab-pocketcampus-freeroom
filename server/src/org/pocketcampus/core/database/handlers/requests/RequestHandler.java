@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.pocketcampus.core.database.ConnectionManager;
 import org.pocketcampus.core.database.IConnectionManager;
 import org.pocketcampus.core.database.handlers.exceptions.SQLExceptionHandler;
 import org.pocketcampus.core.exception.ServerException;
@@ -61,8 +62,9 @@ public abstract class RequestHandler<R, O> {
 	 * sensitive strings (e.g. user inputs) are replaced by question marks.<br />
 	 * Ex : <code>SELECT `name` FROM `fruits` WHERE `category` = ?</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
+	 * @throws ServerException 
 	 */
-	public RequestHandler(String sqlRequest) {
+	public RequestHandler(String sqlRequest) throws ServerException {
 		this(sqlRequest, new SQLExceptionHandler<O>());
 	}
 	
@@ -75,10 +77,12 @@ public abstract class RequestHandler<R, O> {
 	 * Ex : <code>SELECT `name` FROM `fruits` WHERE `category` = ?</code><br />
 	 * See <code>PreparedStatement</code>'s documentation for more details.
 	 * @param exceptionHandler the handler that will be used in case of a thrown SQLException during the process
+	 * @throws ServerException 
 	 */
-	protected RequestHandler(String sqlRequest, SQLExceptionHandler<O> exceptionHandler) {
+	protected RequestHandler(String sqlRequest, SQLExceptionHandler<O> exceptionHandler) throws ServerException {
 		this.request = sqlRequest;
 		this.exceptionHandler = exceptionHandler;
+		this.dbManager = new ConnectionManager();
 	}
 	
 	/**

@@ -19,8 +19,9 @@ public abstract class CountRequestHandler extends QueryRequestHandler<Integer> {
 	 * @param countColName the SQL column or virtual column's name associated with the SQL
 	 * COUNT function. Ex.: "{@code SELECT COUNT(*) AS `colname` FROM ...}", 'colname' is the
 	 * virtual column associated with the COUNT function
+	 * @throws ServerException 
 	 */
-	public CountRequestHandler(String sqlRequest, String countColName) {
+	public CountRequestHandler(String sqlRequest, String countColName) throws ServerException {
 		super(sqlRequest);
 		this.countColName = countColName;
 	}
