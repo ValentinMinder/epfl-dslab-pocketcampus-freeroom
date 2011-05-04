@@ -32,7 +32,7 @@ public class MenuSorter {
 			throw new IllegalArgumentException("The meals list cannot be null !");
 		}
 		
-		List<Meal> menus = menu_.getMeals();
+		List<Meal> menus = menu_.getCampusMenu();
 		
 		Collections.sort(menus, new RatingComparator());
 		Collections.reverse(menus);

@@ -186,7 +186,7 @@ public class FoodDisplayHandler {
 
 	public void showMenusByRestaurants() {
 		HashMap<String, Vector<Meal>> mealHashMap = sorter_
-				.sortByRestaurant(campusMenu_.getMeals());
+				.sortByRestaurant(campusMenu_.getCampusMenu());
 		RestaurantListAdapter restaurantList = null;
 
 		/**

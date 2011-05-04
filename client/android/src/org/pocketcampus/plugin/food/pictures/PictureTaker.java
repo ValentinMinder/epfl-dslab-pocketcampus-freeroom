@@ -10,9 +10,13 @@ package org.pocketcampus.plugin.food.pictures;
  */
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
+import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
@@ -24,8 +28,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 public class PictureTaker {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
@@ -92,8 +99,8 @@ public class PictureTaker {
 
 					BitmapFactory.Options options = new BitmapFactory.Options();
 					options.inSampleSize = 1;
-					myBitmap = BitmapFactory.decodeFile(
-							myImage.getAbsolutePath(), options);
+					myBitmap = BitmapFactory.decodeFile(myImage
+							.getAbsolutePath(), options);
 				}
 
 				ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -102,19 +109,12 @@ public class PictureTaker {
 				myBitmap.recycle();
 
 				// Send picture to server
-
-				// ConnexionHandler ch = new ConnexionHandler(context);
-				// try {
-				// if (takingMealPicture) {
-				// ch.addMealPicture(meal, bytes.toByteArray());
-				// Log.d("Picture", "Is meal picture");
-				// } else {
-				// ch.addQueuePicture(meal, bytes.toByteArray());
-				// Log.d("Picture", "Is queue picture");
-				// }
-				// bytes.close();
-				// } catch (IOException e) {
-				// }
+				submitPicture(bytes.toByteArray(), meal_, takingMealPicture);
+				try {
+					bytes.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				Toast.makeText(context_, "Picture was not taken",
@@ -126,6 +126,10 @@ public class PictureTaker {
 		}
 	}
 
+	/**
+	 * Convert a Uri on the phone to the actual file where the picture is
+	 * stored.
+	 */
 	public static File convertImageUriToFile(Uri imageUri, Activity activity) {
 		Cursor cursor = null;
 		try {
@@ -149,4 +153,30 @@ public class PictureTaker {
 			}
 		}
 	}
+
+	// Submit picture to the server.
+	private static void submitPicture(byte[] picture, Meal m, boolean isMealPicture) {
+		class SubmitPictureRequest extends DataRequest {
+			@Override
+			protected void doInUiThread(String result) {
+				String submitted = "";
+				if (result.contains("true")) {
+				} else {
+				}
+			}
+		}
+
+		Gson gson = new Gson();
+		String jsonPicture = gson.toJson(picture);
+		String deviceId = Settings.Secure.ANDROID_ID;
+
+		RequestParameters params = new RequestParameters();
+		params.addParameter("meal", Integer.toString(m.hashCode()));
+		params.addParameter("deviceId", deviceId);
+		params.addParameter("pictureArray", jsonPicture);
+
+		FoodPlugin.getFoodRequestHandler().execute(new SubmitPictureRequest(),
+				"setPicture", (RequestParameters) params);
+	}
+
 }

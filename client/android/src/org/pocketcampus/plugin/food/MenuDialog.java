@@ -13,7 +13,6 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
@@ -39,8 +38,8 @@ public class MenuDialog extends Dialog {
 	private Context context_;
 	private boolean photoButtonsEnabled_;
 
-	public MenuDialog(final Meal meal,
-			final Activity menus, boolean photoButtonsEnabled) {
+	public MenuDialog(final Meal meal, final Activity menus,
+			boolean photoButtonsEnabled) {
 		super(menus);
 		this.displayedMeal_ = meal;
 		this.context_ = menus;
@@ -75,9 +74,9 @@ public class MenuDialog extends Dialog {
 		numbVotes_ = (TextView) findViewById(R.id.food_menudialog_nbvotes);
 
 		// Set title of dialog box to Meal @ Restaurant
-		title.setText(displayedMeal_.getName_() + " @ " + displayedMeal_.getRestaurant_().getName());
+		title.setText(displayedMeal_.getName_() + " @ "
+				+ displayedMeal_.getRestaurant_().getName());
 		description.setText(displayedMeal_.getDescription_());
-
 
 		// Retrieve the meal's rating from the server to display it.
 		ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
@@ -88,15 +87,10 @@ public class MenuDialog extends Dialog {
 		rateIt.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				RatingsReminder ratingChecker = new RatingsReminder(
-						getContext());
-//				if (ratingChecker.hasAlreadyVotedToday()) {
-//					ratingChecker.printAlreadyVotedMessage();
-//				} else {
-					RatingsDialog r = new RatingsDialog(getContext(), displayedMeal_);
-					r.setOnDismissListener(new OnDismissRatingsListener());
-					r.show();
-//				}
+				RatingsDialog r = new RatingsDialog(getContext(),
+						displayedMeal_);
+				r.setOnDismissListener(new OnDismissRatingsListener());
+				r.show();
 			}
 
 		});
@@ -165,9 +159,9 @@ public class MenuDialog extends Dialog {
 		return votes;
 	}
 
-//	private Meal getMeal() {
-//		return this.displayedMeal_;
-//	}
+	// private Meal getMeal() {
+	// return this.displayedMeal_;
+	// }
 
 	private class OnDismissRatingsListener implements
 			RatingsDialog.OnDismissListener {
@@ -180,14 +174,14 @@ public class MenuDialog extends Dialog {
 
 	private void paintRatingBar() {
 		ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
-		
+
 		Rating rating = displayedMeal_.getRating();
 		ratingBar_.setRating((float) Restaurant.starRatingToDouble(rating
 				.getValue()));
-		
+
 		// Retrieve the number of votes from the server.
 		int numbVote = rating.getNumberOfVotes();
 		String votes = getVoteString(numbVote);
-		numbVotes_.setText("("+ numbVote + " " + votes + ")");
+		numbVotes_.setText("(" + numbVote + " " + votes + ")");
 	}
 }

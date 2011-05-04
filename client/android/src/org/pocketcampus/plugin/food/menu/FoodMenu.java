@@ -52,15 +52,6 @@ public class FoodMenu {
 		loadCampusMenu();
 	}
 
-	/**
-	 * Get meals in menu
-	 * 
-	 * @return
-	 */
-	public List<Meal> getMeals() {
-		return campusMenu_;
-	}
-
 	// Get menu to display
 	public List<Meal> getCampusMenu() {
 		return this.campusMenu_;
@@ -106,6 +97,7 @@ public class FoodMenu {
 			@Override
 			protected void doInUiThread(String result) {
 				campusMenuList = new ArrayList<Meal>();
+				Log.d("SERVER", result);
 				// Deserializes the response
 				Gson gson = new Gson();
 

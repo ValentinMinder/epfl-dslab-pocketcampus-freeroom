@@ -16,7 +16,6 @@ package org.pocketcampus.plugin.food;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Dialog;
@@ -91,10 +90,6 @@ public class RatingsDialog extends Dialog {
 							R.string.food_rating_notsubmitted);
 				}
 				Toast.makeText(ctx_, submitted, Toast.LENGTH_SHORT).show();
-				// add the vote to the reminder
-				RatingsReminder ratingChecker = new RatingsReminder(
-						getContext());
-				ratingChecker.addVotedPreferences();
 
 				ratingbar.invalidate();
 			}

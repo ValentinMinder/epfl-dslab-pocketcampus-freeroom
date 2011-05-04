@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.menu.RatingsReminder;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
@@ -76,17 +75,7 @@ public class MenuView extends LinearLayout {
 
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-
-					// get the reminder for the ratings
-					RatingsReminder ratingChecker = new RatingsReminder(ctx_);
-					// Check if has already voted today
-					// if (ratingChecker.hasAlreadyVotedToday()) {
-					// // Means that user had already voted
-					// ratingChecker.printAlreadyVotedMessage();
-					// } else {
-					// Means that user hasn't voted today
 					ratingDialog();
-					// }
 				}
 				return true;
 			}
@@ -103,10 +92,10 @@ public class MenuView extends LinearLayout {
 	private void ratingDialog() {
 		RatingsDialog r = new RatingsDialog(ctx_, currentMeal_);
 		r.setOnDismissListener(new OnDismissListener() {
-			
+
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				ctx_.notifyDataSetChanged();	
+				ctx_.notifyDataSetChanged();
 			}
 		});
 		r.show();

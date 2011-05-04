@@ -68,8 +68,8 @@ public class FoodGalleryView extends Activity {
 		ga.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View clickedView, int position,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View clickedView,
+					int position, long arg3) {
 				Toast.makeText(
 						getBaseContext(),
 						"You have selected picture " + (position + 1)
