@@ -12,14 +12,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceClickListener;
 
+/**
+ * Transport Preferences. Allows the user the choose what are his default destinations, 
+ * and other misc options
+ * @author Florian
+ * @status working
+ */
 public class TransportPreference extends PluginPreference {
 	private SharedPreferences commonDestPrefs_;
 	private SharedPreferences miscPrefs_;
@@ -42,6 +46,10 @@ public class TransportPreference extends PluginPreference {
 		setPreferenceScreen(createPreferenceHierarchy());
 	}
 
+	/**
+	 * Creates the preference options.
+	 * @return
+	 */
 	private PreferenceScreen createPreferenceHierarchy() {
 		PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
@@ -52,24 +60,8 @@ public class TransportPreference extends PluginPreference {
 		pluginPrefCat.setTitle("Destinations");
 		root.addPreference(pluginPrefCat);
 
-		// Reference destination
-//		Destination referenceDestination = new Destination("Ecublens VD, EPFL");
-//		Preference refDestPref = new Preference(this);
-//		refDestPref.setTitle(referenceDestination.getDestination());
-//		refDestPref.setSummary("Reference destination.");
-//		refDestPref.setEnabled(false);
-//		pluginPrefCat.addPreference(refDestPref);
-
 		// Common destinations
 		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs_.getAll();
-
-		// TOO remove, just for test //
-//		if(commonDestinations.size() == 0) {
-//			commonDestPrefsEditor_.putString("Vevey", "Vevey");
-//			commonDestPrefsEditor_.commit();
-//			forceRefresh();
-//		}
-		///////////////////////////////
 		
 		for(String dest : commonDestinations.values()) {
 			final Destination destination = new Destination(dest);
@@ -155,6 +147,10 @@ public class TransportPreference extends PluginPreference {
 		return root;
 	}
 	
+	/**
+	 * Dialog shown when a destination is clicked.
+	 * @param destination
+	 */
 	private void showDestinationDialog(final Destination destination) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(destination.getDestination());
@@ -187,6 +183,7 @@ public class TransportPreference extends PluginPreference {
 	
 	/**
 	 * Forces a redisplay of the PreferenceActivity.
+	 * Not very clean, but apparently that's the only way to do it.
 	 */
 	private void forceRefresh() {
 		Intent selfIntent = getIntent();
