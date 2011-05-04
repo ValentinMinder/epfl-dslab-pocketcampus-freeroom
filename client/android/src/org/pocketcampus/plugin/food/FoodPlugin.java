@@ -67,7 +67,20 @@ public class FoodPlugin extends PluginBase {
 	}
 	
 	public static ArrayList<String> getRestaurantList(){
-		return foodDisplayHandler_.getRestaurantList(); 
+		if(foodDisplayHandler_ != null){
+			return foodDisplayHandler_.getRestaurantList(); 
+		}else{
+			return new ArrayList<String>();
+		}
+	}
+	
+	public static boolean modifyRestaurant(boolean add, String restaurant){
+		if(foodDisplayHandler_ != null){
+			foodDisplayHandler_.modifyRestaurant(add, restaurant);
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	private void loadFirstScreen(int layout) {

@@ -35,6 +35,7 @@ import com.google.gson.reflect.TypeToken;
 public class FoodMenu {
 
 	private List<Meal> campusMenu_;
+	private List<Meal> campusMenuFull_;
 	private FoodPlugin pluginHandler_;
 	private Context ctx_;
 	private Date validityDate_;
@@ -49,6 +50,7 @@ public class FoodMenu {
 		ctx_ = ownerActivity.getApplicationContext();
 		// Instantiate menuEPFL
 		campusMenu_ = new ArrayList<Meal>();
+		campusMenuFull_ = new ArrayList<Meal>();
 		loadCampusMenu();
 	}
 
@@ -57,8 +59,17 @@ public class FoodMenu {
 		return this.campusMenu_;
 	}
 
+	public void modifyRestaurant(boolean add, String restaurant){
+		Log.d("PREFERENCES","It went through the whole thing ! [FoodMenu]");
+		//Maintain a list of Restaurant we want to display ?
+	}
+
 	public void setCampusMenu(List<Meal> menus) {
 		this.campusMenu_ = menus;
+	}
+
+	public void setCampusMenuFull(List<Meal> menus) {
+		this.campusMenuFull_ = menus;
 	}
 
 	public Date getValidityDate() {
@@ -116,9 +127,11 @@ public class FoodMenu {
 						List<Meal> fromCache = restoreFromFile();
 						if (fromCache != null) {
 							setCampusMenu(fromCache);
+							setCampusMenuFull(fromCache);
 						}
 					} else {
 						setCampusMenu(campusMenuList);
+						setCampusMenuFull(campusMenuList);
 						Date currentDate = new Date();
 						setValidityDate(currentDate);
 						writeToFile(currentDate);
@@ -149,7 +162,7 @@ public class FoodMenu {
 			out.close();
 		} catch (IOException ex) {
 			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
-					.show();
+			.show();
 		}
 	}
 
@@ -166,7 +179,7 @@ public class FoodMenu {
 			in = new ObjectInputStream(fis);
 			date = (Date) in.readObject();
 			setValidityDate(date);
-			
+
 			menu = (List<Meal>) in.readObject();
 
 			in.close();

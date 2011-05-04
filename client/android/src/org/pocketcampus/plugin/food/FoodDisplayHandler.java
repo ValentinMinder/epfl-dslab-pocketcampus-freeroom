@@ -76,6 +76,9 @@ public class FoodDisplayHandler {
 		return campusMenu_.getValidityDate();
 	}
 	
+	/**
+	 * Returns the Restaurant List
+	 */
 	public ArrayList<String> getRestaurantList(){
 		ArrayList<String> list = new ArrayList<String>();
 		
@@ -86,6 +89,16 @@ public class FoodDisplayHandler {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * Modify which restaurants are displayed
+	 * 
+	 * @param add, restaurant
+	 *            if add is true this restaurant is added, else removed from the menus.
+	 */
+	public void modifyRestaurant(boolean add, String restaurant){
+		campusMenu_.modifyRestaurant(add, restaurant);
 	}
 
 	/**
