@@ -13,15 +13,34 @@
 		android:layout_height="fill_parent"
 		android:layout_below="@+id/actionbar">
 		
-		<Button android:id="@+id/food_suggestions_button" 
-		android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+		<Button android:id="@+id/food_suggestions_button"  
+			android:paddingLeft="3dip" android:paddingTop="5dip"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 			
+		<LinearLayout
+  		xmlns:android="http://schemas.android.com/apk/res/android"
+  		android:id="@+id/food_suggestions_linear"
+  		android:layout_width="fill_parent"  android:layout_height="wrap_content"
+		android:orientation="horizontal" android:gravity="right" 
+		android:layout_toRightOf="@+id/food_suggestions_button">
+			
+			<ImageButton android:id="@+id/food_suggestions_like_box_example"  
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right"
+				android:background="@drawable/food_suggestions_like" />
+		
+			<ImageButton android:id="@+id/food_suggestions_dislike_box_example" 
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right" 
+				android:background="@drawable/food_suggestions_dislike"/>
+			
+		</LinearLayout>
+					
 		<ListView android:id="@+id/food_suggestions_list" 
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:drawSelectorOnTop="false" android:fastScrollEnabled="true"
-			android:cacheColorHint="#00000000" android:layout_below="@+id/food_suggestions_button" />	
+			android:cacheColorHint="#00000000" android:layout_below="@+id/food_suggestions_linear"/>	
 			
-		
-</RelativeLayout>
+	</RelativeLayout>
 	
 </RelativeLayout>

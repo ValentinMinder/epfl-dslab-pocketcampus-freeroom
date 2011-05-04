@@ -7,6 +7,9 @@
 	<string name="food_empty">No item to display</string>
 	<string name="food_restaurants">Restaurants</string>
 	<string name="food_menucancelled">Could not connect to the server.</string>
+	
+	<!--  Preferences -->
+	<string name="food_preferences_title">Restaurants you want to display</string>
 
 	<!-- Date -->
 	<string name="food_monday">Monday</string>

@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class Suggestions extends Activity{
@@ -39,8 +41,11 @@ public class Suggestions extends Activity{
 	private Vector<MealTag> likes_ = new Vector<MealTag>();
 	private Vector<MealTag> dislikes_ = new Vector<MealTag>();
 
-	private MealTag likeTag_;
-	private MealTag dislikeTag_;
+//	private MealTag likeTag_;
+//	private MealTag dislikeTag_;
+	
+	private ImageButton likeExample_;
+	private ImageButton dislikeExample_;
 
 	private MealTagger tagger_;
 
@@ -71,10 +76,10 @@ public class Suggestions extends Activity{
 		fla_.addSection("Suggestions", sls_);
 		l_.setAdapter(fla_);
 		
-		Button b = (Button)findViewById(R.id.food_suggestions_button);
-		b.setText(R.string.food_suggestions_ok);
+		Button confirm = (Button)findViewById(R.id.food_suggestions_button);
+		confirm.setText(R.string.food_suggestions_ok);
 		
-		b.setOnClickListener(new OnClickListener() {
+		confirm.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				likes_ = sls_.getLikeTags();
 				dislikes_ = sls_.getDislikeTags();
@@ -83,6 +88,11 @@ public class Suggestions extends Activity{
 			}
 		});
 		
+		likeExample_ = (ImageButton) findViewById(R.id.food_suggestions_like_box_example);
+		dislikeExample_ = (ImageButton) findViewById(R.id.food_suggestions_dislike_box_example);
+		
+		likeExample_.setClickable(false);
+		dislikeExample_.setClickable(false);
 
 	}
 

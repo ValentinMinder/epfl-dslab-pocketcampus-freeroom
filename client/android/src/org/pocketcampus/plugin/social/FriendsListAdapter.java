@@ -173,8 +173,8 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 	}
 	
 	private void showDialog(int pos){
-		PermissionDialog r = new PermissionDialog(friendsListActivity_, friends_.get(pos), friendsListActivity_, true);
-		r.show();
+//		PermissionDialog r = new PermissionDialog(friendsListActivity_, friends_.get(pos), friendsListActivity_, true);
+//		r.show();
 	}
 	
 	private static class ViewHolder {

@@ -37,7 +37,6 @@ public class FoodDisplayHandler {
 	private FoodMenu campusMenu_;
 	private SandwichList sandwichList_;
 	private HashMap<Meal, Rating> suggestionsMenu_;
-//	private Vector<Vector<Sandwich>> campusSandwich_;
 	HashMap<String, Vector<Sandwich>> campusSandwich_;
 
 	private FoodPlugin ownerActivity_;
@@ -75,6 +74,18 @@ public class FoodDisplayHandler {
 	 */
 	public Date getDateLastUpdatedMenus() {
 		return campusMenu_.getValidityDate();
+	}
+	
+	public ArrayList<String> getRestaurantList(){
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for(Meal m : campusMenu_.getCampusMenu()){
+			String resto = m.getRestaurant_().getName();
+			if(!list.contains(resto)){
+				list.add(resto);
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -155,38 +166,38 @@ public class FoodDisplayHandler {
 		return mealsList;
 	}
 
-//	/**
-//	 * Get the adapter to show the menus sorted by restaurants.
-//	 */
-//	 public void showMenusByRestaurants() {
-//	 // Sort meals by restaurant.
-//	 HashMap<String, Vector<Meal>> mealHashMap = sorter_
-//	 .sortByRestaurant(campusMenu_.getMeals());
-//	 FoodListSection menuListSection;
-//	
-//	 /**
-//	 * Iterate over the different restaurant menus
-//	 */
-//	 if (!campusMenu_.isEmpty()) {
-//	 // Get the set of keys from the hash map to make sections.
-//	 Set<String> restaurantFullMenuSet = mealHashMap.keySet();
-//				
-//	 SortedSet<String> restaurantFullMenu = new
-//	 TreeSet<String>(restaurantFullMenuSet);
-//				
-//	 for (String restaurantName : restaurantFullMenu) {
-//	 // For each restaurant, make a list of its meals to add in its
-//	 // section
-//	 menuListSection = new FoodListSection(mealHashMap
-//	 .get(restaurantName), ownerActivity_);
-//	 currentListAdapter_.addSection(restaurantName, menuListSection);
-//	 }
-//	 }
-//	 }
+	//	/**
+	//	 * Get the adapter to show the menus sorted by restaurants.
+	//	 */
+	//	 public void showMenusByRestaurants() {
+	//	 // Sort meals by restaurant.
+	//	 HashMap<String, Vector<Meal>> mealHashMap = sorter_
+	//	 .sortByRestaurant(campusMenu_.getMeals());
+	//	 FoodListSection menuListSection;
+	//	
+	//	 /**
+	//	 * Iterate over the different restaurant menus
+	//	 */
+	//	 if (!campusMenu_.isEmpty()) {
+	//	 // Get the set of keys from the hash map to make sections.
+	//	 Set<String> restaurantFullMenuSet = mealHashMap.keySet();
+	//				
+	//	 SortedSet<String> restaurantFullMenu = new
+	//	 TreeSet<String>(restaurantFullMenuSet);
+	//				
+	//	 for (String restaurantName : restaurantFullMenu) {
+	//	 // For each restaurant, make a list of its meals to add in its
+	//	 // section
+	//	 menuListSection = new FoodListSection(mealHashMap
+	//	 .get(restaurantName), ownerActivity_);
+	//	 currentListAdapter_.addSection(restaurantName, menuListSection);
+	//	 }
+	//	 }
+	//	 }
 
 	public void showMenusByRestaurants() {
-		HashMap<String, Vector<Meal>> mealHashMap = sorter_
-				.sortByRestaurant(campusMenu_.getCampusMenu());
+		HashMap<String, Vector<Meal>> mealHashMap = sorter_.sortByRestaurant(campusMenu_.getCampusMenu());
+
 		RestaurantListAdapter restaurantList = null;
 
 		/**
@@ -203,7 +214,7 @@ public class FoodDisplayHandler {
 
 			if(currentListAdapter_.isEmpty()){
 				restaurantList = new RestaurantListAdapter(restaurants, mealHashMap,
-					ownerActivity_);
+						ownerActivity_);
 				currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), restaurantList);
 			}
 		}
@@ -226,8 +237,8 @@ public class FoodDisplayHandler {
 				menuListSection = new FoodListSection(mealVector,
 						ownerActivity_);
 				currentListAdapter_
-						.addSection(activityContext_.getResources().getString(
-								R.string.food_show_ratings), menuListSection);
+				.addSection(activityContext_.getResources().getString(
+						R.string.food_show_ratings), menuListSection);
 
 			}
 		}
@@ -245,7 +256,7 @@ public class FoodDisplayHandler {
 		if (!suggestionsMenu_.isEmpty()) {
 
 			HashMap<String, Vector<Meal>> mealHashMap = sorter_
-					.sortByRestaurant(suggestionsMenu_.keySet());
+			.sortByRestaurant(suggestionsMenu_.keySet());
 
 			if (mealHashMap != null) {
 
@@ -265,7 +276,7 @@ public class FoodDisplayHandler {
 					activityContext_,
 					activityContext_.getResources().getString(
 							R.string.food_suggestions_nothing_found),
-					Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG).show();
 			setDisplayType(1);
 		}
 	}
@@ -294,30 +305,31 @@ public class FoodDisplayHandler {
 	 */
 	public void showSandwiches() {
 		Log.d("SANDWICHES","Il a compris qu'il devait afficher les sandwiches. [FoodDisplayHandler]");
-		
+
 		campusSandwich_ = sandwichList_.getStoreList();
-		
+
 		SandwichListAdapter sandwichList = null;
 
-		/**
-		 * Iterate over the different restaurant menus
-		 */
-		if (!campusSandwich_.isEmpty()) {
-			// Get the set of keys from the hash map to make sections.
-			Set<String> restaurantFullMenuSet = campusSandwich_.keySet();
+		if(campusSandwich_ != null){
+			/**
+			 * Iterate over the different restaurant menus
+			 */
+			if (!campusSandwich_.isEmpty()) {
+				// Get the set of keys from the hash map to make sections.
+				Set<String> restaurantFullMenuSet = campusSandwich_.keySet();
 
-			SortedSet<String> restaurantFullMenu = new TreeSet<String>(
-					restaurantFullMenuSet);
+				SortedSet<String> restaurantFullMenu = new TreeSet<String>(
+						restaurantFullMenuSet);
 
-			Vector<String> sandwiches = new Vector<String>(restaurantFullMenu);
+				Vector<String> sandwiches = new Vector<String>(restaurantFullMenu);
 
-			if(currentListAdapter_.isEmpty()){
-				sandwichList = new SandwichListAdapter(sandwiches, campusSandwich_,
-					ownerActivity_);
-				currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), sandwichList);
+				if(currentListAdapter_.isEmpty()){
+					sandwichList = new SandwichListAdapter(sandwiches, campusSandwich_,
+							ownerActivity_);
+					currentListAdapter_.addSection(activityContext_.getString(R.string.food_restaurants), sandwichList);
+				}
 			}
 		}
-		
 	}
 
 	public static enum FoodDisplayType {

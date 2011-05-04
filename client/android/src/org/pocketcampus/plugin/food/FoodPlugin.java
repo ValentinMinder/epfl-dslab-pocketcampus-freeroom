@@ -29,7 +29,7 @@ public class FoodPlugin extends PluginBase {
 	private ActionBar actionBar_;
 
 	private ListView l_;
-	private FoodDisplayHandler foodDisplayHandler_;
+	private static FoodDisplayHandler foodDisplayHandler_;
 	private static RequestHandler foodRequestHandler_;
 	private TextView txt_empty_;
 	private TextView empty;
@@ -64,6 +64,10 @@ public class FoodPlugin extends PluginBase {
 
 	public static RequestHandler getFoodRequestHandler() {
 		return foodRequestHandler_;
+	}
+	
+	public static ArrayList<String> getRestaurantList(){
+		return foodDisplayHandler_.getRestaurantList(); 
 	}
 
 	private void loadFirstScreen(int layout) {
@@ -236,8 +240,7 @@ public class FoodPlugin extends PluginBase {
 
 	@Override
 	public PluginPreference getPluginPreference() {
-		// TODO Auto-generated method stub
-		return null;
+		return new FoodPreference();
 	}
 
 	

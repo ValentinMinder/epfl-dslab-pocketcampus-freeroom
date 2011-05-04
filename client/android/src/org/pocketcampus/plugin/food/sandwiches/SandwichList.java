@@ -18,7 +18,6 @@ import com.google.gson.reflect.TypeToken;
 
 public class SandwichList {
 	private FoodPlugin pluginHandler_;
-	// private Vector<Vector<Sandwich>> sandwichList_;
 	private HashMap<String, Vector<Sandwich>> sandwichList_;
 	private List<Sandwich> sandwichFromServer_;
 
@@ -36,6 +35,11 @@ public class SandwichList {
 
 		class SandwichRequest extends DataRequest {
 
+			@Override
+			public void onCancelled() {
+				Log.d("SANDWICHES", "Task cancelled");
+			}
+			
 			@Override
 			protected void doInUiThread(String result) {
 
@@ -60,12 +64,14 @@ public class SandwichList {
 				}
 
 				sandwichList_ = new HashMap<String, Vector<Sandwich>>();
-				sandwichList_ = sortByRestaurant(sandwichFromServer_);
+				if(sandwichFromServer_ != null){					
+					sandwichList_ = sortByRestaurant(sandwichFromServer_);
+				}
 
 				pluginHandler_.menuRefreshedSandwich();
 			}
 		}
-
+		Log.d("SANDWICHES", "Requesting sandwiches.");
 		FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
 				"getSandwiches", (RequestParameters) null);
 	}

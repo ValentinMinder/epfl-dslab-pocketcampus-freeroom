@@ -10,19 +10,22 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textColor="@android:color/black" android:padding="6dip" 
 		android:paddingLeft="15dip" />	
-		
-		<LinearLayout
-  			xmlns:android="http://schemas.android.com/apk/res/android"
-  			android:layout_width="fill_parent"  android:layout_height="wrap_content"
-	  		android:orientation="horizontal" android:gravity="right">
+			
+	<LinearLayout
+  		xmlns:android="http://schemas.android.com/apk/res/android"
+  		android:layout_width="fill_parent"  android:layout_height="wrap_content"
+		android:orientation="horizontal" android:gravity="right">
   	
 		<CheckBox android:id="@+id/food_suggestions_like_box"  
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_alignParentRight="true" android:gravity="right"/>
+			android:layout_alignParentRight="true" android:gravity="right" />
+			
+		<!-- android:button="@drawable/food_suggestions_like_xml" -->
+		<!-- android:button="@drawable/food_suggestions_dislike_xml" -->
 
 		<CheckBox android:id="@+id/food_suggestions_dislike_box" 
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_alignParentRight="true" android:gravity="right" />
-		
+	
 	</LinearLayout>
 </LinearLayout>

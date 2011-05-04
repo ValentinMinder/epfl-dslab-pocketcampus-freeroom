@@ -62,35 +62,24 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 	 *      android.view.ViewGroup)
 	 */
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		/*
-		 * A ViewHolder keeps references to children views to avoid unnecessary
-		 * calls to findViewById() on each row.
-		 */
-		ViewHolder holder = null;
 
-		if (convertView == null) {
-			convertView = mInflater_.inflate(R.layout.food_suggestions_list_item, null);
+		convertView = mInflater_.inflate(R.layout.food_suggestions_list_item, null);
 
-			holder = new ViewHolder();
-			holder.suggestionsLine = (LinearLayout) convertView.findViewById(R.id.food_suggestions_lign_list);
-			holder.tagName = (TextView) convertView.findViewById(R.id.food_suggestions_tag_name);
-			holder.likeBox = (CheckBox) convertView.findViewById(R.id.food_suggestions_like_box);
-			holder.dislikeBox = (CheckBox) convertView.findViewById(R.id.food_suggestions_dislike_box);
+		TextView tagName = (TextView) convertView.findViewById(R.id.food_suggestions_tag_name);
+		final CheckBox likeBox = (CheckBox) convertView.findViewById(R.id.food_suggestions_like_box);
+		final CheckBox dislikeBox = (CheckBox) convertView.findViewById(R.id.food_suggestions_dislike_box);
 
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
+		tagName.setText(write(tags_.get(position)));
 
-		holder.tagName.setText(write(tags_.get(position)));
-
-		//		box_ = holder.sandwichLeft;
-		holder.likeBox.setOnClickListener(new OnClickListener() {
+		likeBox.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CheckBox c = (CheckBox)v;
 				likeTag_ = tags_.get(position);
 
 				if(c.isChecked()){
+					if(dislikeBox.isChecked()){
+						dislikeBox.setChecked(false);
+					}					
 					addLikeSuggestion();
 				}else{
 					removeLikeSuggestion();
@@ -98,12 +87,15 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 			}
 		});
 
-		holder.dislikeBox.setOnClickListener(new OnClickListener() {
+		dislikeBox.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CheckBox c = (CheckBox)v;
 				dislikeTag_ = tags_.get(position);
 
 				if(c.isChecked()){
+					if(likeBox.isChecked()){
+						likeBox.setChecked(false);
+					}
 					addDislikeSuggestion();
 				}else{
 					removeDislikeSuggestion();
@@ -118,7 +110,7 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 
 		return convertView;
 	}
-	
+
 	private class OnItemClickListener implements OnClickListener {
 		private int mPosition;
 
@@ -130,13 +122,6 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 		public void onClick(View arg0) {}
 	}
 
-	static class ViewHolder {
-		LinearLayout suggestionsLine;
-		TextView tagName;
-		CheckBox likeBox;
-		CheckBox dislikeBox;
-	}
-
 	public Filter getFilter() {
 		return null;
 	}
@@ -145,12 +130,10 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 		return 0;
 	}
 
-	// Returns the number of meals in that section.
 	public int getCount() {
 		return tags_.size();
 	}
 
-	// Returns the meal to be represented at that position.
 	public Object getItem(int position) {
 		return tags_.get(position);
 	}
