@@ -57,7 +57,17 @@ public final class Connection implements Serializable
 	public String toString()
 	{
 		final SimpleDateFormat FORMAT = new SimpleDateFormat("E HH:mm");
-		return id + " " + FORMAT.format(departureTime) + "-" + FORMAT.format(arrivalTime);
+		String r = "Departure " + FORMAT.format(departureTime) + "arrival " + FORMAT.format(arrivalTime);
+		
+		r += "\n" + from;
+		for(Part p : parts)
+		{
+			r += " -> " + p.arrival;
+		}
+		
+		return r;	
+			//TODO remettre comme avant
+			//return id + " " + FORMAT.format(departureTime) + "-" + FORMAT.format(arrivalTime);
 	}
 
 	@Override

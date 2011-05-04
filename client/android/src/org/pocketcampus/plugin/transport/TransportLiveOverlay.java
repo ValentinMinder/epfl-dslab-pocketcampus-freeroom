@@ -38,7 +38,7 @@ public class TransportLiveOverlay {
 
 	public TransportLiveOverlay(Context ctx) {
 		ctx_ = ctx;
-		path_ = readRailwayFromFile(R.raw.railway_m1);
+		//path_ = readRailwayFromFile(R.raw.railway_m1);
 		nbRunningReq_ = 0;
 		pool_ = new ConnectionPool(ctx_, path_);
 	}

@@ -61,6 +61,7 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 	
 	@Override
 	public Object getItem(int position) {
+		System.out.println("getItem de separatedlist adapter");
 		for (Section section : this.sections_) {
 			if (position==0) {
 				return(section);

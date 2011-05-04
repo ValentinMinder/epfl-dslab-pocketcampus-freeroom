@@ -54,6 +54,10 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
+	public QueryConnectionsResult getSummary(){
+		return summary_;		
+	}
+	
 	/**
 	 * Indicates that there has been an error while retrieving the data.
 	 */

@@ -41,19 +41,14 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Florian
  *
  */
-public class TransportPlugin extends PluginBase implements OnClickListener{
+public class TransportPlugin extends PluginBase{
 	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
-	private static RequestHandler requestHandler_;
-	private ActionBar actionBar_;
-	private ListView mainList_;
-	private AutoCompleteTextView autoCompleteGoTo_;
-	private AutoCompleteTextView autoCompleteGoFrom_;
-	private Button switcharoo_;
-	private Button go_;
 	
-	
-	private TransportSummaryListAdapter adapter_;
 
+	private static RequestHandler requestHandler_;
+	private TransportDisplayHander transportDisplayHandler_;
+	
+	
 	private SharedPreferences commonDestPrefs_;
 	private Map<String, String> commonDestinations_;
 	
@@ -67,101 +62,60 @@ public class TransportPlugin extends PluginBase implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.transport_main);
 
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		setupActionBar(true);
-
-		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
-		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
-		mainList_.setAdapter(adapter_);
+//		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+//		setupActionBar(true);
+//
+//		mainList_ = (ListView) findViewById(R.id.transport_mainlist);
+//		adapter_ = new TransportSummaryListAdapter(this, getRequestHandler(), actionBar_);
+//		mainList_.setAdapter(adapter_);
+//		
+//		autoCompleteGoFrom_ = (AutoCompleteTextView)findViewById(R.id.transport_autoCompleteFrom);
+//		ArrayAdapter<Location> adapterFrom = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
+//		autoCompleteGoFrom_.setAdapter(adapterFrom);
+//		
+//		switcharoo_ = (Button)findViewById(R.id.transport_switchDirection);
+//		switcharoo_.setOnClickListener(this);
+//		
+//		autoCompleteGoTo_ = (AutoCompleteTextView)findViewById(R.id.transport_autoCompleteTo);
+//		ArrayAdapter<Location> adapterTo = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
+//		autoCompleteGoTo_.setAdapter(adapterTo);
+//		//autoCompleteGoTo_.setCompletionHint("where you wanna go"); //TODO remove this
+//		//autoCompleteGoTo_.setThreshold(3);
+//		
+//		go_ = (Button) findViewById(R.id.transport_go);
+//		go_.setOnClickListener(this);
 		
-		autoCompleteGoFrom_ = (AutoCompleteTextView)findViewById(R.id.transport_autoCompleteFrom);
-		ArrayAdapter<Location> adapterFrom = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
-		autoCompleteGoFrom_.setAdapter(adapterFrom);
-		
-		switcharoo_ = (Button)findViewById(R.id.transport_switchDirection);
-		switcharoo_.setOnClickListener(this);
-		
-		autoCompleteGoTo_ = (AutoCompleteTextView)findViewById(R.id.transport_autoCompleteTo);
-		ArrayAdapter<Location> adapterTo = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
-		autoCompleteGoTo_.setAdapter(adapterTo);
-		autoCompleteGoTo_.setCompletionHint("where you wanna go"); //TODO remove this
-		//autoCompleteGoTo_.setThreshold(3);
-		
-		go_ = (Button) findViewById(R.id.transport_go);
-		go_.setOnClickListener(this);
-		
-		
+		transportDisplayHandler_ = new TransportDisplayHander(this, requestHandler_);
 		
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
-		setupSummaryList();
+		boolean vis = (commonDestPrefs_.getAll().size() > 0);
+		System.out.println("visi: " + vis);
+		transportDisplayHandler_.setupSummaryList((Map<String, String>) commonDestPrefs_.getAll(), vis);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setupSummaryList();
-	}
-
-	private void setupSummaryList() {
+		
+		@SuppressWarnings("unchecked")
 		Map<String, String> commonDestinationsInPrefs = (Map<String, String>) commonDestPrefs_.getAll();
 		
 		if(commonDestinationsInPrefs.equals(commonDestinations_)) {
 			return;
+		}else{
+			commonDestinations_ = commonDestinationsInPrefs;
+			boolean vis = (commonDestinations_.size() > 0);
+			System.out.println("visi: " + vis);
+			transportDisplayHandler_.setupSummaryList(commonDestinations_, vis);
 		}
-		
-		final ListView listView = (ListView) findViewById(R.id.transport_mainlist);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-
-			System.out.println("*****************" );
-				
-			afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet();
-			}
-
-			
-		});
-		
-		TextView msgEmpty = (TextView) findViewById(R.id.msg_empty);
-		
-		if(commonDestinationsInPrefs.size() == 0) {
-			listView.setVisibility(View.GONE);
-			msgEmpty.setVisibility(View.VISIBLE);
-			
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			msgEmpty.setVisibility(View.GONE);
-		}
-		
-		commonDestinations_ = commonDestinationsInPrefs;
-		adapter_.clearSections();
-		
-		for(String destination : commonDestinations_.values()) {
-			TransportSummaryAdapter adapter = new TransportSummaryAdapter(this, REFERENCE_DESTINATION, destination);
-			adapter_.addSection(adapter.getCaption(), adapter);
-		}
-
-		adapter_.loadSummaryList();
 	}
+
+	
 
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
-
-		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		actionBar_.addAction(new Action() {
-
-			@Override
-			public void performAction(View view) {
-				adapter_.loadSummaryList();
-			}
-
-			@Override
-			public int getDrawable() {
-				return R.drawable.refresh;
-			}
-		});
-
+		transportDisplayHandler_.setupActionBar(addHomeButton);
 		super.setupActionBar(addHomeButton);
-
 	}
 
 	@Override
@@ -207,76 +161,12 @@ public class TransportPlugin extends PluginBase implements OnClickListener{
 		return requestHandler_;
 	}
 
-	@Override
-	public void onClick(View v) {
-		if( v.getId() == switcharoo_.getId() ){
-			//canceling autocompletion
-			autoCompleteGoFrom_.setAdapter((ArrayAdapter<String>)null);
-			autoCompleteGoTo_.setAdapter((ArrayAdapter<String>)null);
-			
-			//switching values
-			String tmp = autoCompleteGoFrom_.getText().toString();
-			autoCompleteGoFrom_.setText( autoCompleteGoTo_.getText());
-			autoCompleteGoTo_.setText(tmp);
-			
-			//re creating autocomletion
-			ArrayAdapter<Location> adapterFrom = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
-			autoCompleteGoFrom_.setAdapter(adapterFrom);
-			ArrayAdapter<Location> adapterTo = new LocationAdapter(this, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
-			autoCompleteGoTo_.setAdapter(adapterTo);
-		
-		
-		}else if (v.getId() == go_.getId()){
-			String to = autoCompleteGoTo_.getText().toString();
-			String from = autoCompleteGoFrom_.getText().toString();
-			
-			requestHandler_.toString();
-			
-			class ConnectionsRequest extends DataRequest {
-				
-				@Override
-				protected int expirationDelay() {
-					// 5 minutes
-					return 60 * 5;
-				}
-				
-				@Override
-				protected void doInUiThread(String result) {
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
-
-					Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
-					QueryConnectionsResult summary = gson.fromJson(result, SummaryListType);
-					
-					afficheUnSuperTrajetTropCoolDeLaMort(summary);
-
-				}
-				
-				@Override
-				protected void onCancelled() {
-				}
-				
-			} 
-
-			RequestParameters params = new RequestParameters();
-			params.addParameter("from", from);
-			params.addParameter("to", to);
-
-			requestHandler_.execute(new ConnectionsRequest(), "connections", params);
-			
-			
-			
-		}
-		
+	protected static String getReferenceDestination() {
+		return REFERENCE_DESTINATION;
 	}
+
 	
-	private void afficheUnSuperTrajetTropCoolDeLaMort(QueryConnectionsResult summary){
-		System.out.println(summary.toString());
-	}
 	
-	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 //	@Override
 //	public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {

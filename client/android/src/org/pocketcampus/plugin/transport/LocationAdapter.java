@@ -80,7 +80,7 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 			Gson gson = new Gson();
 			Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
 			locations_ = gson.fromJson(result, AutocompleteType);
-			
+			System.out.println(locations_);
 			// updates the Adapter display
 			notifyDataSetChanged();
 		}
