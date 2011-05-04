@@ -39,7 +39,6 @@ public class PictureFetcher {
 	 */
 	private void fetchPictureUrls() {
 		// Get all url of a meal
-		// ServerAPI server = new ServerAPI();
 		try {
 			if (isMealGallery_) {
 				// imagesURLs_ = server.getMealPictures(meal_);

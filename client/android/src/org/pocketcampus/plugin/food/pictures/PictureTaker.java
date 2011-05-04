@@ -39,10 +39,12 @@ public class PictureTaker {
 	private static Uri imageUri;
 	private static Meal meal_;
 	private static Activity context_;
+	private static PictureType type_;
 
-	public PictureTaker(Activity callingActivity, Meal meal) {
+	public PictureTaker(Activity callingActivity, Meal meal, PictureType type) {
 		context_ = callingActivity;
 		meal_ = meal;
+		type_ = type;
 	}
 
 	public void takePicture() {
@@ -109,7 +111,7 @@ public class PictureTaker {
 				myBitmap.recycle();
 
 				// Send picture to server
-				submitPicture(bytes.toByteArray(), meal_, takingMealPicture);
+				submitPicture(bytes.toByteArray(), meal_, type_);
 				try {
 					bytes.close();
 				} catch (IOException e) {
@@ -155,13 +157,14 @@ public class PictureTaker {
 	}
 
 	// Submit picture to the server.
-	private static void submitPicture(byte[] picture, Meal m, boolean isMealPicture) {
+	private static void submitPicture(byte[] picture, Meal m, PictureType type) {
 		class SubmitPictureRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
-				String submitted = "";
 				if (result.contains("true")) {
+					
 				} else {
+					
 				}
 			}
 		}
@@ -179,4 +182,7 @@ public class PictureTaker {
 				"setPicture", (RequestParameters) params);
 	}
 
+	public enum PictureType {
+		Meal, Queue
+	}
 }

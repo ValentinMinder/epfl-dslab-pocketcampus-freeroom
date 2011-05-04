@@ -13,6 +13,8 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.pictures.PictureTaker;
+import org.pocketcampus.plugin.food.pictures.PictureTaker.PictureType;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
@@ -29,13 +31,14 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuDialog extends Dialog {
 	private final Meal displayedMeal_;
 	private RatingBar ratingBar_;
 	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
-	private Context context_;
+	private Activity context_;
 	private boolean photoButtonsEnabled_;
 
 	public MenuDialog(final Meal meal, final Activity menus,
@@ -43,7 +46,6 @@ public class MenuDialog extends Dialog {
 		super(menus);
 		this.displayedMeal_ = meal;
 		this.context_ = menus;
-
 		/**
 		 * No title for dialog Else there is indeed space for the title.
 		 **/
@@ -115,11 +117,10 @@ public class MenuDialog extends Dialog {
 		takePic.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				/*
-				 * TakePicture cameraMachin = new TakePicture(menusActivity,
-				 * meal); DailyMenus.setMealPicture(true);
-				 * cameraMachin.takePicture();
-				 */
+				PictureTaker pictureTaker = new PictureTaker(context_,
+						displayedMeal_, PictureType.Meal);
+				
+				pictureTaker.takePicture();
 			}
 		});
 

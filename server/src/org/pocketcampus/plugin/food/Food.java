@@ -31,8 +31,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 	private List<Meal> campusMeals_;
 	private HashMap<Integer, Rating> campusMealRatings_;
-	private Date lastImportMenus_;
 	private ArrayList<String> deviceIds_;
+	private Date lastImportMenus_;
 
 	private List<Sandwich> sandwichList_;
 	private Date lastImportDateS_;
@@ -125,6 +125,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public boolean setRating(HttpServletRequest request) {
+		updateMenu();
 		System.out.println("<setRating>: Rating request.");
 
 		String deviceId = request.getParameter("deviceId");
@@ -212,12 +213,22 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public HashMap<Integer, Rating> getRatings(HttpServletRequest request) {
+		updateMenu();
 		System.out.println("<getRatings>: rating request.");
 
 		if (campusMealRatings_ != null) {
 			return campusMealRatings_;
 		}
 		return null;
+	}
+	
+	private void updateMenu(){
+		if(!isValid(lastImportMenus_)){
+			campusMeals_.clear();
+			deviceIds_.clear();
+			campusMealRatings_.clear();
+			importMenus();
+		}
 	}
 
 	/**

@@ -120,12 +120,13 @@ public class FoodDB {
 			insertMeal.setString(7, jsonObject);
 			insertMeal.setString(8, dateString);
 
-			insertMeal.executeQuery();
+			insertMeal.execute();
 			connection_.commit();
 
-			System.out.println(count + " rows were inserted");
+			System.out.println("inserted meal");
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("Problem in insert meal.");
 			return false;
 		} finally {
@@ -204,6 +205,9 @@ public class FoodDB {
 	 * @return
 	 */
 	public List<Meal> getMeals(Connection connection_) {
+		if(connection_ == null){
+			return null;
+		}
 		PreparedStatement getMeals = null;
 		String getString = "SELECT * FROM MENUS WHERE STAMP_CREATED = ?";
 		try {
@@ -264,6 +268,9 @@ public class FoodDB {
 	 * @return
 	 */
 	public boolean checkVotedDevice(Connection connection, String deviceID) {
+		if(connection == null){
+			return false;
+		}
 		PreparedStatement checkVotedDevice = null;
 		String getString = "SELECT count(DEVICEID) FROM DailyRatings WHERE DEVICEID = ? and STAMP_CREATED = ?";
 		ResultSet rset = null;
@@ -301,7 +308,9 @@ public class FoodDB {
 				if (rset != null) {
 					rset.close();
 				}
-				connection.setAutoCommit(true);
+				if (connection != null) {
+					connection.setAutoCommit(true);
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -316,6 +325,9 @@ public class FoodDB {
 	 * @param deviceId
 	 */
 	public void insertVotedDevice(Connection connection_, String deviceId) {
+		if(connection_ == null){
+			return;
+		}
 		PreparedStatement insertVotedDevice = null;
 		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created) VALUES (?, ?)";
 		ResultSet rset = null;
@@ -351,6 +363,9 @@ public class FoodDB {
 	}
 
 	public void insertRating(Connection connection_, int hashCode, Meal meal) {
+		if(connection_ == null){
+			return;
+		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
 		String insertString = "UPDATE Menus SET Rating = ?, NumberOfVotes=?, JsonObject=? where hashcode=?";

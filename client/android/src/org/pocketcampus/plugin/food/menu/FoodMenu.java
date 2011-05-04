@@ -16,13 +16,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.content.Context;
 import android.util.Log;
@@ -71,6 +74,14 @@ public class FoodMenu {
 	public void setCampusMenuFull(List<Meal> menus) {
 		this.campusMenuFull_ = menus;
 	}
+	
+	public void setCampusRatings(HashMap<Integer, Rating> ratings) {
+		if (campusMenu_ != null && !campusMenu_.isEmpty()) {
+			for (Meal m : campusMenu_) {
+				m.setRating(ratings.get(m.hashCode()));
+			}
+		}
+	}
 
 	public Date getValidityDate() {
 		return validityDate_;
@@ -81,16 +92,80 @@ public class FoodMenu {
 	}
 
 	public void refreshMenu() {
-		loadCampusMenu();
-		if (campusMenu_.isEmpty()) {
-			// TODO: also if it's yesterday's menu.
+		Log.d("SERVER", "Refreshing.");
+		if (campusMenu_.isEmpty() || !isTodayMenu()) {
+			Log.d("SERVER", "Reloading menus");
+			loadCampusMenu();
 		} else {
 			// Refresh only ratings.
+			Log.d("SERVER", "Reloading ratings");
+			loadRatings();
 		}
+	}
+
+	public boolean isTodayMenu() {
+		Calendar cal = Calendar.getInstance();
+		Log.d("Tag", "1: " + cal.get(Calendar.DAY_OF_MONTH) + " 2: "
+				+ cal.get(Calendar.MONTH) + " 3: " + cal.get(Calendar.YEAR));
+		Calendar validity = Calendar.getInstance();
+		validity.setTime(validityDate_);
+		Log.d("Tag", "1: " + validity.get(Calendar.DAY_OF_MONTH) + " 2: "
+				+ validity.get(Calendar.MONTH) + " 3: " + validity.get(Calendar.YEAR));
+		if (cal.get(Calendar.DAY_OF_MONTH) == validity.get(Calendar.DAY_OF_MONTH)) {
+			if (cal.get(Calendar.MONTH) == validity.get(Calendar.MONTH)) {
+				if (cal.get(Calendar.YEAR) == validity.get(Calendar.YEAR)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isEmpty() {
 		return campusMenu_.isEmpty();
+	}
+
+	// Load ratings from server
+	private void loadRatings() {
+		pluginHandler_.menuRefreshing();
+		class RatingsRequest extends DataRequest {
+			private HashMap<Integer, Rating> campusMenuRatingsList;
+
+			@Override
+			public void onCancelled() {
+				Log.d("SERVER", "Task cancelled");
+				pluginHandler_.menuRefreshed(false);
+			}
+
+			@Override
+			protected void doInUiThread(String result) {
+				campusMenuRatingsList = new HashMap<Integer, Rating>();
+				Log.d("SERVER", result);
+				// Deserializes the response
+				Gson gson = new Gson();
+
+				Type menuType = new TypeToken<HashMap<Integer, Rating>>() {
+				}.getType();
+				try {
+					campusMenuRatingsList = gson.fromJson(result, menuType);
+				} catch (JsonSyntaxException e) {
+					Log.d("SERVER", "Jsonsyntax");
+					e.printStackTrace();
+					return;
+				}
+
+				if (campusMenuRatingsList != null) {
+					setCampusRatings(campusMenuRatingsList);
+				} else {
+					Log.d("SERVER", "null menu");
+				}
+				pluginHandler_.menuRefreshed(true);
+			}
+		}
+		Log.d("SERVER", "Requesting menus.");
+		FoodPlugin.getFoodRequestHandler().execute(new RatingsRequest(),
+				"getRatings", (RequestParameters) null);
+
 	}
 
 	// Load menu from server
@@ -162,7 +237,7 @@ public class FoodMenu {
 			out.close();
 		} catch (IOException ex) {
 			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
-			.show();
+					.show();
 		}
 	}
 
