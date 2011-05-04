@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.transport;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.pocketcampus.R;
@@ -23,11 +25,14 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -150,12 +155,119 @@ public class TransportDisplayManager implements OnClickListener {
 	}
 	
 	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(Connection c) {
-		Toast.makeText(activityContext_, c.toString(), Toast.LENGTH_LONG).show();
+		//Toast.makeText(activityContext_, c.toString(), Toast.LENGTH_LONG).show();
+		
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
+
+		builder.setTitle("Details");
+
+		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.transport_details_dialog, null);
+		
+		
+		builder.setView(layout);
+		
+		
+		
+		 
+		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> map = new HashMap<String, String>();
+		for(Connection.Part p : c.parts){
+			map.put("dept", "hh:mm");
+			map.put("from", p.departure.name);
+			map.put("arrt", "hh:mm");
+			map.put("to", p.arrival.name);
+			
+			mylist.add(map);
+		}
+		
+		String[] keys = {"dept", "from", "arrt", "to"}; 
+		int[] ids = {R.id.transport_details_dialog_dep_time, R.id.transport_details_dialog_dep_place,
+				R.id.transport_details_dialog_arr_time, R.id.transport_details_dialog_arr_place};
+		
+		SimpleAdapter mSchedule = new SimpleAdapter(ownerActivity_, mylist, R.layout.transport_details_dialog_row, keys, ids);
+		
+
+		
+		ListView list = (ListView)ownerActivity_.findViewById(R.id.transport_details_dialog_list);
+		if(list == null)
+			System.out.println("saloooope");
+		list.setAdapter(mSchedule);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		builder.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {				
+				dialog.dismiss();
+				shareToEverybodyOnThePlanetYourSuperTravelPlane();
+			}
+		});
+		
+
+		builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {				
+				dialog.dismiss();
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
+		alert.show();
+		
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	}
+	
+	private void shareToEverybodyOnThePlanetYourSuperTravelPlane(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
+		builder.setTitle("Share travel plan");
 
-	protected void setupSummaryList(Map<String, String> commonDestinations, boolean noDestination) {
+		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.transport_share_dialog, null);
+		builder.setView(layout);
+
+		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {				
+				dialog.dismiss();
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
+		alert.show();
+	}
+
+	protected void setupSummaryList(Map<String, String> commonDestinations, boolean visibility) {
 		
 		mainList_.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -171,7 +283,7 @@ public class TransportDisplayManager implements OnClickListener {
 		
 		TextView msgEmpty = (TextView) ownerActivity_.findViewById(R.id.msg_empty);
 		
-		if(noDestination) {
+		if(!visibility) {
 			mainList_.setVisibility(View.GONE);
 			msgEmpty.setVisibility(View.VISIBLE);
 			
