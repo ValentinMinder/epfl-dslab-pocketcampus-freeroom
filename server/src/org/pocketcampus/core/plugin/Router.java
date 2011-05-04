@@ -267,22 +267,22 @@ public class Router extends HttpServlet {
 			throw new ServerException("The class <b>" + className + "</b> was not found. Mispelled?");
 			
 		} catch (IllegalArgumentException e) {
-			throw new ServerException("IllegalArgumentException");
+			throw new ServerException("IllegalArgumentException : " + className);
 			
 		} catch (InstantiationException e) {
-			throw new ServerException("InstantiationException");
+			throw new ServerException("InstantiationException : " + className);
 			
 		} catch (IllegalAccessException e) {
-			throw new ServerException("IllegalAccessException");
+			throw new ServerException("IllegalAccessException : " + className);
 			
 		} catch (InvocationTargetException e) {
-			throw new ServerException("InvocationTargetException");
+			throw new ServerException("InvocationTargetException : " + className);
 			
 		} catch (SecurityException e) {
-			throw new ServerException("SecurityException");
+			throw new ServerException("SecurityException : " + className);
 			
 		} catch (NoSuchMethodException e) {
-			throw new ServerException("NoSuchMethodException");
+			throw new ServerException("NoSuchMethodException : " + className);
 			
 		}
 		
