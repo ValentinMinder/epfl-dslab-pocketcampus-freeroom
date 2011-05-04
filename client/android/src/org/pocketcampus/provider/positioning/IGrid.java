@@ -6,14 +6,14 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 public interface IGrid {
 
-public Position getReferencePosition();
+public Position getInitialPosition();
 public double getDMax();
 public double getDMin();
 public int getNodeMin();
 public double getCellLength(); 
 public AccessPoint getPMax();
 public AccessPoint getPMin();
+public int getRowCell();
 public CartesianPoint convertPositionToCartesian(Position p);
 public Position convertCartesianToPosition(CartesianPoint cp);
-
 }
