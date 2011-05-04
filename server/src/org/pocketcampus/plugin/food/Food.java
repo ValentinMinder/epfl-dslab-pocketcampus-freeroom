@@ -123,11 +123,11 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		String deviceId = request.getParameter("deviceId");
 
-		String stringMeal = request.getParameter("meal");
-		System.out.println(stringMeal + " " + campusMeals_.size());
+		String stringMealHashCode = request.getParameter("meal");
+
 		String stringRating = request.getParameter("rating");
 
-		if (stringMeal == null || stringRating == null || deviceId == null) {
+		if (stringMealHashCode == null || stringRating == null || deviceId == null) {
 			return false;
 		}
 
@@ -146,7 +146,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 			deviceIds_.add(deviceId);
 		}
 
-		int mealHashCode = Integer.parseInt(stringMeal);
+		int mealHashCode = Integer.parseInt(stringMealHashCode);
 		double r = Double.parseDouble(stringRating);
 
 		for (int i = 0; i < campusMeals_.size(); i++) {

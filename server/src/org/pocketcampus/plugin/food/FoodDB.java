@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food;
 import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 
 import com.google.gson.Gson;
@@ -115,7 +117,7 @@ public class FoodDB {
 			System.out.println(count + " rows were inserted");
 			return true;
 		} catch (SQLException e) {
-			System.out.println("Problem: " + value);
+			System.out.println("Problem in insert meal: " + value);
 			return false;
 		}
 	}
@@ -136,7 +138,11 @@ public class FoodDB {
 			Calendar cal = Calendar.getInstance();
 			String dateString = quote(cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ cal.get(Calendar.DAY_OF_MONTH));
+					+ (cal.get(Calendar.DAY_OF_MONTH) - 1));
+
+			/** TESTING **/
+			dateString = quote("2011.4.30");
+			/** END **/
 
 			ResultSet rset = s
 					.executeQuery("SELECT * FROM MENUS WHERE STAMP_CREATED = "
@@ -176,17 +182,22 @@ public class FoodDB {
 	 */
 	public boolean checkVotedDevice(Connection connection, String deviceID) {
 		Statement s;
-		String value = "";
 		try {
 			s = connection.createStatement();
 
+			Calendar cal = Calendar.getInstance();
+			String dateString = quote(cal.get(Calendar.YEAR) + "."
+					+ (cal.get(Calendar.MONTH) + 1) + "."
+					+ cal.get(Calendar.DAY_OF_MONTH));
+
 			ResultSet rset = s
 					.executeQuery("SELECT count(DEVICEID) FROM DailyRatings WHERE DEVICEID = "
-							+ quote(deviceID));
+							+ quote(deviceID)
+							+ " and STAMP_CREATED = "
+							+ dateString);
 
 			while (rset.next()) {
-				System.out.println(rset.getString("DeviceId"));
-				if (Integer.parseInt(rset.getString("DeviceId")) == 1) {
+				if (Integer.parseInt(rset.getString(1)) == 1) {
 					rset.close();
 					s.close();
 					return true;
@@ -198,7 +209,8 @@ public class FoodDB {
 			}
 			return false;
 		} catch (SQLException e) {
-			System.out.println("Problem: " + value);
+			e.printStackTrace();
+			System.out.println("Problem in checkVotedToday: " + deviceID);
 			return false;
 		}
 	}
@@ -229,29 +241,84 @@ public class FoodDB {
 			s.close();
 			System.out.println(count + " rows were inserted");
 		} catch (SQLException e) {
-			System.out.println("Problem: " + value);
+			System.out.println("Problem in insert voted device: " + value);
 		}
 	}
 
 	public void insertRating(Connection connection_, int hashCode, Meal meal) {
 		Statement s;
-		String value = "";
+		String jsonObject = "";
 		try {
 			s = connection_.createStatement();
 			Gson gson = new Gson();
-			String jsonObject = "";
+			jsonObject = "";
 			try {
 				jsonObject = gson.toJson(meal);
 			} catch (JsonSyntaxException e) {
-
 			}
+
+			Rating r = meal.getRating();
 			s.executeUpdate("UPDATE Menus SET Rating="
+					+ Restaurant.starRatingToDouble(r.getValue())
+					+ ", NumberOfVotes=" + meal.getRating().getNumberOfVotes()
+					+ ", JsonObject=" + quote(jsonObject) + "where hashcode="
+					+ hashCode);
+		} catch (SQLException e) {
+			System.out.println("Problem: could not insert rating:" + "Rating="
 					+ meal.getRating().getValue() + ", NumberOfVotes="
 					+ meal.getRating().getNumberOfVotes() + ", JsonObject="
 					+ quote(jsonObject) + "where hashcode=" + hashCode);
-		} catch (SQLException e) {
-			System.out.println("Problem: " + value);
+			e.printStackTrace();
 		}
+	}
+
+	public boolean uploadPicture(Connection con, String uploader, int hashCode,
+			byte[] picture) {
+
+		PreparedStatement uploadPicture = null;
+
+		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealHashCode, stamp_created)"
+				+ " VALUES (?,?,?,?)";
+
+		Calendar cal = Calendar.getInstance();
+		String dateString = quote(cal.get(Calendar.YEAR) + "."
+				+ (cal.get(Calendar.MONTH) + 1) + "."
+				+ cal.get(Calendar.DAY_OF_MONTH));
+
+		try {
+			con.setAutoCommit(false);
+			uploadPicture = con.prepareStatement(insertString);
+
+			uploadPicture.setBytes(1, picture);
+			uploadPicture.setString(2, uploader);
+			uploadPicture.setInt(3, hashCode);
+			uploadPicture.setString(4, dateString);
+
+			uploadPicture.executeUpdate();
+
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			if (con != null) {
+				try {
+					System.err.print("Transaction is being rolled back");
+					con.rollback();
+				} catch (SQLException excep) {
+					excep.printStackTrace();
+				}
+			}
+			return false;
+		} finally {
+			try {
+				if (uploadPicture != null) {
+					uploadPicture.close();
+				}
+				con.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 
 	private String quote(String toQuote) {
