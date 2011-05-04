@@ -1,15 +1,15 @@
 package org.pocketcampus.plugin.authentication;
 
+import java.awt.Toolkit;
 import java.security.GeneralSecurityException;
+import java.util.Collection;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 
+import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
-import org.pocketcampus.shared.plugin.authentication.AuthToken;
-import org.pocketcampus.shared.plugin.authentication.SessionId;
-import org.pocketcampus.shared.plugin.authentication.Username;
 
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -21,12 +21,12 @@ import com.unboundid.ldap.sdk.SearchScope;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
 
-public class Authentication {
+public class Authentication implements IPlugin {
 	private LDAPConnection ldap_;
 
 	@PublicMethod
-	public AuthToken authenticate(HttpServletRequest request){
-		AuthToken authToken = null;
+	public String login(HttpServletRequest request){
+		String sessionId = null;
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -42,30 +42,65 @@ public class Authentication {
 				BindResult bResult = ldap_.bind(dn, password);
 
 				if(bResult.getResultCode().intValue() == ResultCode.SUCCESS.intValue()) {
-					authToken = generateAuthToken(username);
+					sessionId = AuthenticationSessions.newSession(username);
 				} else {
-					authToken = null; 
+					sessionId = null;
 				}
 			} else {
-				authToken = null;
+				sessionId = null;
 			}
 		} catch(LDAPException e) {
 			e.printStackTrace();
-			authToken = null;
+			sessionId = null;
 		} catch(GeneralSecurityException e) {
 			e.printStackTrace();
-			authToken = null;
+			sessionId = null;
 		} finally {
 			ldap_.close();
 		}
 
-		return authToken;
+		return sessionId;
 	}
-
-	private static AuthToken generateAuthToken(String username) {
-		//create session
-		SessionId sessionId = new SessionId(
-				"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-		return new AuthToken(new Username(username), sessionId);
+	
+	@PublicMethod
+	public String s(HttpServletRequest request) {
+		Toolkit.getDefaultToolkit().beep();
+		return AuthenticationSessions.newSession("tsouintsouin");
+	}
+	
+	@PublicMethod
+	public Collection<String> ss(HttpServletRequest request) {
+		return AuthenticationSessions.ss();
+	}
+	
+	@PublicMethod
+	public boolean authenticate(HttpServletRequest request) {
+		String username = request.getParameter("username");
+		String sessionId = request.getParameter("sessionId");
+		
+		boolean authed = false;
+		
+		if(username != null && sessionId != null) {
+			authed = AuthenticationSessions.authenticateSession(username, sessionId);
+		}
+		
+		return authed;
+	}
+	
+	@PublicMethod
+	public boolean logout(HttpServletRequest request) {
+		String username = request.getParameter("username");
+		String sessionId = request.getParameter("sessionId");
+		
+		boolean status = false;
+		
+		if(username != null && sessionId != null) {
+			if(AuthenticationSessions.authenticateSession(username, sessionId)) {
+				AuthenticationSessions.freeSession(username);
+				status = true;
+			}
+		}
+		
+		return status;
 	}
 }
