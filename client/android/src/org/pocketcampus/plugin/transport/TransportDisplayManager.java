@@ -17,7 +17,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -29,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class TransportDisplayHander implements OnClickListener {
+public class TransportDisplayManager implements OnClickListener {
 	private TransportPlugin ownerActivity_;
 	private Context activityContext_;
 	private RequestHandler requestHandler_;
@@ -47,7 +50,7 @@ public class TransportDisplayHander implements OnClickListener {
 	
 	
 	
-	public TransportDisplayHander(TransportPlugin ownerActivity, RequestHandler requestHandler){
+	public TransportDisplayManager(TransportPlugin ownerActivity, RequestHandler requestHandler){
 		ownerActivity_ = ownerActivity;
 		activityContext_ = ownerActivity_.getApplicationContext();
 		requestHandler_ = requestHandler;
@@ -157,10 +160,10 @@ public class TransportDisplayHander implements OnClickListener {
 		mainList_.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
-			TransportSummaryListAdapter y = (TransportSummaryListAdapter)parent.getAdapter();
-			Connection s =  (Connection)y.getItem(position);
+			TransportSummaryListAdapter adapter = (TransportSummaryListAdapter)parent.getAdapter();
+			Connection travel =  (Connection)adapter.getItem(position);
 			
-			afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(s);
+			afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(travel);
 			}
 
 			
@@ -202,6 +205,8 @@ public class TransportDisplayHander implements OnClickListener {
 				return R.drawable.refresh;
 			}
 		});
+		
+		ownerActivity_.setupActionBar(addHomeButton);
 
 		
 

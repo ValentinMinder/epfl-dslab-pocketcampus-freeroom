@@ -46,7 +46,7 @@ public class TransportPlugin extends PluginBase{
 	
 
 	private static RequestHandler requestHandler_;
-	private TransportDisplayHander transportDisplayHandler_;
+	private TransportDisplayManager transportDisplayHandler_;
 	
 	
 	private SharedPreferences commonDestPrefs_;
@@ -85,7 +85,7 @@ public class TransportPlugin extends PluginBase{
 //		go_ = (Button) findViewById(R.id.transport_go);
 //		go_.setOnClickListener(this);
 		
-		transportDisplayHandler_ = new TransportDisplayHander(this, requestHandler_);
+		transportDisplayHandler_ = new TransportDisplayManager(this, requestHandler_);
 		
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
 		boolean vis = (commonDestPrefs_.getAll().size() > 0);
