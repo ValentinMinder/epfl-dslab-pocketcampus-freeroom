@@ -205,6 +205,40 @@ public class WifiLocation {
 		}
 		return Ap;
 	}
+	
+	/**
+	 * getWeakestPosition() gives the position of the Ap which gives the low
+	 * intensity of signal
+	 * 
+	 * */
+	public AccessPoint getWeakestAP(List<AccessPoint> listAP) {
+		AccessPoint Ap = null;
+		int lev = 100;
+		for (AccessPoint p : listAP) {
+			if (p.getSignalLevel() < lev) {
+				lev = p.getSignalLevel();
+				Ap = p;
+			}
+		}
+		return Ap;
+	}
+	
+	/**
+	 * getMinNumberOfNodes() gives the number of Ap's limited to the weakestSignal
+	 * in other way limited to minmum distance 
+	 * 
+	 * */
+	public int getMinNumberOfnodes(List<AccessPoint> listAP) {
+		AccessPoint Ap = null;
+		int i =0;
+		int lev = getWeakestAP(listAP).getSignalLevel();
+		for (AccessPoint p : listAP) {
+			if ((p.getSignalLevel() < lev)||(p.getSignalLevel() == lev)) {
+				i++;
+			}
+		}
+		return i;
+	}
 
 	
 	
