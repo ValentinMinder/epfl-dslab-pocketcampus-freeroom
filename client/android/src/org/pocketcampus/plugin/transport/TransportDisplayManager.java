@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.transport;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -171,15 +172,23 @@ public class TransportDisplayManager implements OnClickListener {
 		
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		HashMap<String, String> map;
+		
+		// date formatter
+		SimpleDateFormat formatter = new SimpleDateFormat();
+		formatter.applyPattern("k:mm");
+		
 		for(Connection.Part p : c.parts){
 			map = new HashMap<String, String>();
 			map.put("dept", "hh:mm");
 			map.put("from", p.departure.name);
+			
 			map.put("arrt", "hh:mm");
 			map.put("to", p.arrival.name);
 			
 			mylist.add(map);
 		}
+		mylist.get(0).put("dept", formatter.format(c.departureTime));
+		mylist.get(mylist.size()-1).put("arrt", formatter.format(c.arrivalTime));
 		
 		String[] keys = {"dept", "from", "arrt", "to"}; 
 		int[] ids = {R.id.transport_details_dialog_dep_time, R.id.transport_details_dialog_dep_place,
