@@ -13,7 +13,7 @@ public class ConnectionManager implements IConnectionManager {
 	private Connection connection;
 	
 	public ConnectionManager() throws ServerException {
-		this("jdbc:mysql://localhost:3306/pocketbuddy",
+		this("jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com:3306/pocketbuddy",
 				"pocketbuddy",
 				"");
 	}
