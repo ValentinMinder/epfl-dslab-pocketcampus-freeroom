@@ -208,7 +208,9 @@ public class WifiLocation {
 
 	
 	
-	public Position getWifiLocationPerCoefficient(List<AccessPoint> treatedList) {
+	public Position getWifiLocationPerCoefficient() {
+		
+		List<AccessPoint> treatedList = getAccessPoints();
 		if (treatedList.size() == 0)
 			return null;
 
