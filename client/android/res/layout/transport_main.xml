@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_height="fill_parent">
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_height="fill_parent">
 
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
@@ -31,7 +33,7 @@
 				android:gravity="center"
 				android:id="@+id/msg_empty"
 				android:text="No destination set."
-				android:layout_width="wrap_content"
+				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:textSize="15dip"
 				></TextView>
