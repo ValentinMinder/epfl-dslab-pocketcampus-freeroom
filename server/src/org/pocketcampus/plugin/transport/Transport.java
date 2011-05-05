@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.shared.plugin.transport.GetConnectionDetailsResult;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.LocationType;
 import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
@@ -114,7 +115,13 @@ public class Transport implements IPlugin {
 		QueryConnectionsResult connections = null;
 		try {
 			connections = sbbProvider_.queryConnections(from, via, to, date, dep, products, walkSpeed);
+			
+//			GetConnectionDetailsResult a = sbbProvider_.getConnectionDetails(connections.queryUri);
+//			return a;
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("bwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			e.printStackTrace();
 		}
 		
@@ -219,6 +226,8 @@ public class Transport implements IPlugin {
 		QueryConnectionsResult connections = null;
 		try {
 			connections = sbbProvider_.queryConnections(from, via, to, date, dep, products, walkSpeed);
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

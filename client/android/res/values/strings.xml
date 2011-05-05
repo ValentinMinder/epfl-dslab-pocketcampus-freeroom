@@ -2,6 +2,16 @@
 <resources>
     <string name="app_name">PocketCampus EPFL</string>
     
+    <!-- Button lables -->
+	<string name="ok">Ok</string>
+	<string name="cancel">Cancel</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="Details">Details</string>
+	<string name="Share">Share</string>
+	<string name="Delete">Delete</string>
+	
+    
     <string name="mainscreen_configure">Configure</string>
     <string name="TestTextViewBlabla">TestTextView</string>
     

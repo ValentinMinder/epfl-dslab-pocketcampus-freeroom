@@ -26,17 +26,16 @@
 			<ListView
 				android:id="@+id/transport_mainlist" 
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="fill_parent"
 				></ListView>
 
 			<TextView
 				android:gravity="center"
 				android:id="@+id/msg_empty"
-				android:text="No destination set."
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:textSize="15dip"
-				></TextView>
+				android:text="@string/transport_noDestSet"></TextView>
 
 		</RelativeLayout>
 

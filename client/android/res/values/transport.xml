@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="transport_referenceStation">Ecublens VD, EPFL</string>
+
+     <string name="transport_to">to</string>
+     <string name="transport_from">from</string>
+     <string name="transport_in">in</string>
+     <string name="transport_at">at</string>
+     <string name="transport_lessThanAMinute">less than a minute</string>
+     <string name="transport_departure">departure</string>
+     <string name="transport_arrival">arrival</string>
+     <string name="transport_timetables">Timetables</string>
+     <string name="transport_Destinations">Destinations</string>
+     <string name="transport_change">change</string>
+     
+     
+     <string name="transport_destNotFound">Destination not found.</string>
+     <string name="transport_addADestination">Add a destination</string>
+     <string name="transport_noDestSet">There is no favourites destinations set yet.\nPlease press menu and add some.</string>
+     
+     <string name="transport_sentViaPCtransport">\n\n sent via pocketcampus android app</string>
+    
+    <string-array name="exemple">
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+        <item>d</item>
+        <item>e</item>
+        <item>f</item>
+    </string-array>
+
+</resources>

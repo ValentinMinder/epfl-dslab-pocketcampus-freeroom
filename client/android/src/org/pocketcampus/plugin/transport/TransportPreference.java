@@ -57,7 +57,7 @@ public class TransportPreference extends PluginPreference {
 		// DESTINATIONS //
 		//////////////////
 		PreferenceCategory pluginPrefCat = new PreferenceCategory(this);
-		pluginPrefCat.setTitle("Destinations");
+		pluginPrefCat.setTitle(getResources().getText(R.string.transport_Destinations));
 		root.addPreference(pluginPrefCat);
 
 		// Common destinations
@@ -83,7 +83,7 @@ public class TransportPreference extends PluginPreference {
 
 		// Add new
 		AutoCompleteEditTextPreference editTextPref = new AutoCompleteEditTextPreference(this, TransportPlugin.getTransportRequestHandler());
-        editTextPref.setTitle("Add a destination");
+        editTextPref.setTitle(getResources().getText(R.string.transport_addADestination));
         
         OnPreferenceChangeListener onPreferenceChangeListener = new OnPreferenceChangeListener() {
 			
@@ -161,7 +161,7 @@ public class TransportPreference extends PluginPreference {
 //			}
 //		});
 
-		builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(getResources().getText(R.string.Delete), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				commonDestPrefsEditor_.remove(destination.getDestination());
 				commonDestPrefsEditor_.commit();
@@ -170,7 +170,7 @@ public class TransportPreference extends PluginPreference {
 			}
 		});
 
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 			}

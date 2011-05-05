@@ -134,7 +134,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		return news;
 	}
 	
-	public static void makeToast(String text) {
-		Notification.showToast(context_, text);
+	public static void makeToast(int textId) {
+		Notification.showToast(context_, context_.getResources().getString(textId));
 	}
 }

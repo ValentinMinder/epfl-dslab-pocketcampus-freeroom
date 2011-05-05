@@ -160,11 +160,10 @@ public class TransportDisplayManager implements OnClickListener {
 	}
 	
 	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(final Connection c) {
-		//Toast.makeText(activityContext_, c.toString(), Toast.LENGTH_LONG).show();
 		
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
-		builder.setTitle("Details");
+		builder.setTitle(activityContext_.getResources().getString(R.string.Details));
 
 		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.transport_details_dialog, null);
@@ -197,20 +196,20 @@ public class TransportDisplayManager implements OnClickListener {
 		SimpleAdapter mSchedule = new SimpleAdapter(ownerActivity_, mylist, R.layout.transport_details_dialog_row, keys, ids);
 		
 
-		builder.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(activityContext_.getResources().getString(R.string.Share), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 				
 				Intent shareIntent = new Intent(Intent.ACTION_SEND); 
-		        shareIntent.putExtra(Intent.EXTRA_TEXT, c.toString() + "\n\n sent via pocketcampus android app");
-		        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "timetables");
+		        shareIntent.putExtra(Intent.EXTRA_TEXT, stringifier(c) + activityContext_.getResources().getString(R.string.transport_sentViaPCtransport));
+		        shareIntent.putExtra(Intent.EXTRA_SUBJECT, activityContext_.getResources().getString(R.string.transport_timetables));
 		        shareIntent.setType("text/plain");
 		        ownerActivity_.startActivity(shareIntent); 
 				
 			}
 		});
 		
-		builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(activityContext_.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 			}
@@ -227,7 +226,7 @@ public class TransportDisplayManager implements OnClickListener {
 		
 	}
 	
-	private void shareToEverybodyOnThePlanetYourSuperTravelPlane(Connection c){
+	private void shareToEverybodyOnThePlanetViaSMSYourSuperTravelPlane(Connection c){
 //		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
 //		builder.setTitle("Share travel plan");
 //
@@ -239,7 +238,7 @@ public class TransportDisplayManager implements OnClickListener {
 //			public void onClick(DialogInterface dialog, int id) {				
 //				dialog.dismiss();
 				Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-				sendIntent.putExtra("sms_body", c.toString()); 
+				sendIntent.putExtra("sms_body", stringifier(c)); 
 				sendIntent.setType("vnd.android-dir/mms-sms");
 				ownerActivity_.startActivity(sendIntent); 
 //			}
@@ -314,6 +313,21 @@ public class TransportDisplayManager implements OnClickListener {
 
 		
 
+	}
+	
+	protected String stringifier(Connection c){
+		final SimpleDateFormat FORMAT = new SimpleDateFormat("E HH:mm");
+		String r = 
+			activityContext_.getResources().getString(R.string.transport_departure)
+			+ ": " + FORMAT.format(c.departureTime) + ", " 
+			+ activityContext_.getResources().getString(R.string.transport_arrival)
+			+ ": " + FORMAT.format(c.arrivalTime);
+		
+		r += "\n" + c.from;
+		for(Connection.Part p : c.parts){
+			r += " -> " + p.arrival;
+		}
+		return r;
 	}
 	
 }

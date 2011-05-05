@@ -7,6 +7,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.shared.utils.DateUtils;
+import org.pocketcampus.shared.utils.StringUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,12 +32,28 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private String departure_;
 	private String arrival_;
 	private int nbMaxItems_ = 3;
+	private String to_StringRessource;
+	private String lessThanAMinute_StringRessource;
+	private String inCapital_StringRessource;
+	private String atCapital_StringRessource;
+	private String arrival_StringRessource;
+	private String at_StringRessource;
+	private String change_StringRessource;
 
 	public TransportSummaryAdapter(Context ctx, String departure, String arrival) {
 		state_ = SummaryState.EMPTY;
 		inflater_ = LayoutInflater.from(ctx);
 		departure_ = departure;
 		arrival_ = arrival;
+		
+		to_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_to);
+		lessThanAMinute_StringRessource = 	(String) ctx.getResources().getText(R.string.transport_lessThanAMinute);
+		arrival_StringRessource = 			(String) ctx.getResources().getText(R.string.transport_arrival);
+		change_StringRessource = 			(String) ctx.getResources().getText(R.string.transport_change);
+		at_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_at);
+		
+		atCapital_StringRessource = 			StringUtils.capitalize((String) ctx.getResources().getText(R.string.transport_at));
+		inCapital_StringRessource = 			StringUtils.capitalize((String) ctx.getResources().getText(R.string.transport_in));
 	}
 	
 	/**
@@ -100,9 +117,9 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		//TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
 		
 		// nb of changes
-		String changes = "";
+		String changesD = "";
 		if(connection.parts.size() > 1) {
-			changes = ", " + (connection.parts.size()-1) + " changes";
+			changesD = ", " + (connection.parts.size()-1) + " " + change_StringRessource;
 		}
 		
 		// date formatter
@@ -111,8 +128,8 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		
 		// fill in the views
 		String s1, s2;
-		s1 = "In " + DateUtils.formatDateDelta(new Date(), connection.departureTime, "less than a minute");
-		s2 = "At " + formatter.format(connection.departureTime) + ", arrival at " + formatter.format(connection.arrivalTime) + changes + ".";
+		s1 = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
+		s2 = atCapital_StringRessource + " " + formatter.format(connection.departureTime) + ", " + arrival_StringRessource + " " + at_StringRessource + " " + formatter.format(connection.arrivalTime) + change_StringRessource + ".";
 		
 		timeTextView.setText(s1);
 		//transpTextView.setText(s2);
@@ -152,7 +169,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	 * @return
 	 */
 	public String getCaption() {
-		return departure_ + " to " + arrival_;
+		return departure_ + " " + to_StringRessource + " " + arrival_;
 	}
 	
 	/**

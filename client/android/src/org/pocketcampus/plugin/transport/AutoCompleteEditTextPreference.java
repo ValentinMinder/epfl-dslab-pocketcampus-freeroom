@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.transport;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
@@ -54,8 +55,8 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		Context context = getContext();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setNegativeButton("Cancel", this);
-		builder.setPositiveButton("Ok", this);
+		builder.setNegativeButton(context.getResources().getString(R.string.cancel), this);
+		builder.setPositiveButton(context.getResources().getString(R.string.ok), this);
 		
 		View contentView = onCreateDialogView();
 		
@@ -178,13 +179,13 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 				}
 				
 			} else {
-				TransportPlugin.makeToast("Destination not found.");
+				TransportPlugin.makeToast(R.string.transport_destNotFound);
 			}
 		}
 		
 		@Override
 		protected void onCancelled() {
-			TransportPlugin.makeToast("Error accessing server.");
+			TransportPlugin.makeToast(R.string.server_connection_error);
 		}
 	}
 	

@@ -53,22 +53,22 @@ public final class Connection implements Serializable
 		this.fares = fares;
 	}
 
-	@Override
-	public String toString()
-	{
-		final SimpleDateFormat FORMAT = new SimpleDateFormat("E HH:mm");
-		String r = "Departure " + FORMAT.format(departureTime) + "arrival " + FORMAT.format(arrivalTime);
-		
-		r += "\n" + from;
-		for(Part p : parts)
-		{
-			r += " -> " + p.arrival;
-		}
-		
-		return r;	
-			//TODO remettre comme avant
-			//return id + " " + FORMAT.format(departureTime) + "-" + FORMAT.format(arrivalTime);
-	}
+//	@Override
+//	public String toString()
+//	{
+//		final SimpleDateFormat FORMAT = new SimpleDateFormat("E HH:mm");
+//		String r = "Departure: " + FORMAT.format(departureTime) + ", arrival: " + FORMAT.format(arrivalTime);
+//		
+//		
+//		for(Part p : parts)
+//		{	r += "\n" + from;
+//			r += " -> " + p.arrival;
+//		}
+//		
+//		return r;	
+//			//TODO remettre comme avant
+//			//return id + " " + FORMAT.format(departureTime) + "-" + FORMAT.format(arrivalTime);
+//	}
 
 	@Override
 	public boolean equals(Object o)
