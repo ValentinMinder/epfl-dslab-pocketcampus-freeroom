@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.transport;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,23 +10,28 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.GetConnectionDetailsResult;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.LocationType;
 import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
+import org.pocketcampus.shared.plugin.transport.Point;
 
 
+import de.schildbach.pte.BahnProvider;
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
 
 public class Transport implements IPlugin {
 
 	private SbbProvider sbbProvider_;
+	//private BahnProvider bahnProvider_;
 
 	public Transport() {
 		sbbProvider_ = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
+		//bahnProvider_ = new BahnProvider();
 	}
 
 	@PublicMethod
@@ -235,6 +241,124 @@ public class Transport implements IPlugin {
 		return connections;
 	}
 	
+	@PublicMethod
+	public Object detailedConnection(HttpServletRequest request){
+		//getting the parameters
+		String fromIDConstraint = request.getParameter("fromID");
+		String toIDConstraint = request.getParameter("toID");
+		String departureTime = request.getParameter("depTime");
+		String arrivalTime = request.getParameter("arrTime");
+		
+		//quit if non valid
+		if(fromIDConstraint == null 
+				|| toIDConstraint == null
+				|| departureTime == null)
+			return null;
+		
+		//get the usable variable from parameters
+		Location depStation = getLocationFromID(fromIDConstraint);
+		Location arrStation = getLocationFromID(toIDConstraint);
+		
+		Date depTime;
+		Date arrTime;
+		try{
+			depTime = new Date(Long.valueOf(departureTime));
+			if(arrivalTime != null)
+				arrTime = new Date(Long.valueOf(arrivalTime));
+			else 
+				arrTime = depTime;
+			
+		}catch(NumberFormatException e){
+			System.out.println("<Transport> couldn't get the time");
+			e.printStackTrace();
+			return null;
+		}
+		
+		//get the global connection
+		String products = (String)null;
+		WalkSpeed walkSpeed = WalkSpeed.NORMAL;
+		Boolean done = false;
+		
+		QueryConnectionsResult globalResult = null;
+		try {
+			globalResult = sbbProvider_.queryConnections(depStation, null, arrStation, depTime, true, products, walkSpeed);
+			if(globalResult == null)
+				return null;
+		} catch (IOException e) {
+			System.out.println("bwaaaaaaaaaaaaasdfa" + depTime);
+		} catch (Exception e) {
+			System.out.println("bwaaaaaaaaaaaaaaaaaaaaaaaa" + depTime);
+		}
+		
+		
+		
+		//and then for each part, get the details
+		List<Connection.Part> result = new ArrayList<Connection.Part>();
+		try {
+			QueryConnectionsResult tmp;
+			Location via = null;
+			
+			Connection travel_plan = globalResult.connections.get(0);
+			Date previous_connections_arrival_time = travel_plan.departureTime;
+			System.out.println("--------------------- " + depStation + " to " + arrStation);
+			System.out.println("--------------------- " + previous_connections_arrival_time );
+			
+			for(Connection.Part p : travel_plan.parts){
+				tmp = sbbProvider_.queryConnections(p.departure, via, p.arrival, previous_connections_arrival_time, true, products, walkSpeed);
+				System.out.print(p.departure + " TO " + p.arrival);
+				if(tmp.status != QueryConnectionsResult.Status.NO_CONNECTIONS){
+					Connection ic = tmp.connections.get(0);
+					System.out.println(" dep:" + ic.departureTime + " arr:" +  ic.arrivalTime );
+					Connection.Trip t = new Connection.Trip(null, travel_plan.to, ic.departureTime, null, ic.from, ic.arrivalTime, null, ic.to, null, null);
+					result.add(t);
+					
+					previous_connections_arrival_time = ic.arrivalTime;
+				}else{
+					List<Point> path = new ArrayList<Point>();
+					path.add(new Point(p.departure.lat, p.departure.lon));
+					path.add(new Point(p.arrival.lat, p.arrival.lon));
+					int duration = 1;
+					Connection.Footway t = new Connection.Footway(duration, p.departure, p.arrival, path);
+					result.add(t);
+					
+					Date a = previous_connections_arrival_time;
+					long someMinute = 1000L * 60L * duration;
+					long bs = a.getTime() + someMinute;
+					previous_connections_arrival_time = new Date(bs);
+					
+					System.out.println(" trajet à pied de " + duration +" min (" +a+ " - " + previous_connections_arrival_time+")" );
+				}
+			}
+			done = true;
+			
+		} catch (IOException e) {
+			System.out.println("plop la mouette");
+			e.printStackTrace();
+		} 
+		
+		//check
+		int cpt = result.size() -1;
+		boolean check = false;
+		while(cpt >= 0 && !check){
+			Connection.Part a = result.get(cpt);
+			if(a instanceof Connection.Trip)
+				if( ((Connection.Trip)a).arrivalTime.equals(arrTime) )
+					check = true;
+					
+		}
+		if(check){
+			System.out.println("no tress sur les trajets à pied");
+		}else{
+			System.out.println("un petit jogging?");
+		}
+		
+		if(!done)
+			result.clear();
+		
+		return result;
+		
+	}
+	
 	private Location getLocationFromID(String stationID){
 		if(stationID == null)
 			return null;
@@ -277,6 +401,7 @@ public class Transport implements IPlugin {
 		
 		return station;
 	}
+	
 	
 }
 
