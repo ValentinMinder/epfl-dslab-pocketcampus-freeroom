@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
-		android:title="Settings"
+		android:title="Manage destinations"
 		android:id="@+id/transport_menu_settings"
-		android:icon="@android:drawable/ic_menu_manage" />
+		android:icon="@android:drawable/ic_menu_agenda" />
 	<item
 		android:title="Detailed Search"
 		android:id="@+id/transport_menu_detailed"

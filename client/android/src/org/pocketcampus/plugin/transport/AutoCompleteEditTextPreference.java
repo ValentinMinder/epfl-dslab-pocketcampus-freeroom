@@ -88,17 +88,18 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		
 		// Copies its layout params
 		LayoutParams params = editText.getLayoutParams();
-		ViewGroup vg = (ViewGroup)editText.getParent();
+		ViewGroup group = (ViewGroup)editText.getParent();
 		String curVal = editText.getText().toString();
 		
 		// Removes it
-		vg.removeView(editText);
+		group.removeView(editText);
 		
 		// Builds a new autocomplete imitating the original one
 		AutoCompleteTextView_ = new AutoCompleteTextView(getContext());
 		AutoCompleteTextView_.setLayoutParams(params);
 		AutoCompleteTextView_.setId(android.R.id.edit);
 		AutoCompleteTextView_.setText(curVal);
+		AutoCompleteTextView_.setSingleLine(true);
 
 		// Sets the Adapter
 		ArrayAdapter<Location> adapter = new LocationAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, AutoCompleteTextView_, requestHandler_);
@@ -116,7 +117,7 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		AutoCompleteTextView_.setOnItemClickListener(onItemSelectedListener );
 		
 		// Adds the new view to the layout
-		vg.addView(AutoCompleteTextView_);
+		group.addView(AutoCompleteTextView_);
 	}
 
 	/**
