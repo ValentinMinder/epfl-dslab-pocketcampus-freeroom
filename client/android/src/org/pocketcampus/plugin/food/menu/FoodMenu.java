@@ -59,7 +59,7 @@ public class FoodMenu {
 	public List<Meal> getCampusMenu() {
 		return this.campusMenu_;
 	}
-	
+
 	public List<Meal> getCampusMenuPrefered() {
 		List<Meal> filteredMenus = filterMenus(this.campusMenu_);
 		return filteredMenus;
@@ -68,19 +68,23 @@ public class FoodMenu {
 	private List<Meal> filterMenus(List<Meal> allMeals){
 		List<String> restaurants = restaurantsFromFile();
 		List<Meal> prefMeals = new ArrayList<Meal>();
-		
-		for(String r : restaurants){
-			Log.d("PREFERENCES","Resto in the File : " + r);
-			for(Meal m : campusMenu_){
-				if(m.getRestaurant_().getName().equals(r)){
-					prefMeals.add(m);
+		if(restaurants != null){
+
+			for(String r : restaurants){
+				Log.d("PREFERENCES","Resto in the File : " + r);
+				for(Meal m : campusMenu_){
+					if(m.getRestaurant_().getName().equals(r)){
+						prefMeals.add(m);
+					}
 				}
 			}
+		}else{
+			prefMeals = campusMenu_;
 		}
-		
+
 		return prefMeals;
 	}
-	
+
 	public void setCampusMenu(List<Meal> menus) {
 		this.campusMenu_ = menus;
 	}
@@ -244,7 +248,7 @@ public class FoodMenu {
 			out.close();
 		} catch (IOException ex) {
 			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
-					.show();
+			.show();
 		}
 	}
 
@@ -275,7 +279,7 @@ public class FoodMenu {
 
 		return menu;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<String> restaurantsFromFile() {
 		String filename = "RestaurantsCache";
@@ -283,7 +287,7 @@ public class FoodMenu {
 		File toGet = new File(ctx_.getCacheDir(), filename);
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
-		
+
 		try {
 			fis = new FileInputStream(toGet);
 			in = new ObjectInputStream(fis);
