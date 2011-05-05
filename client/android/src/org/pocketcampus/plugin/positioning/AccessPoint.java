@@ -23,6 +23,8 @@ package org.pocketcampus.plugin.positioning;
  * returns : SSID , signal strength , distance , position.
  * 
  */
+import java.util.List;
+
 import org.pocketcampus.shared.plugin.map.Position;
 
 import android.net.wifi.ScanResult;
@@ -36,6 +38,7 @@ public class AccessPoint {
 	private double distance;
 	private double estimatedDistance;
 	private int frequency_;
+	private List<Node> nodes_;
 	
 	public AccessPoint(ScanResult sr, String apName, Position pos) {
 		SSID = sr.SSID;
@@ -45,6 +48,18 @@ public class AccessPoint {
 		radiatedPower = 100;  // cisco value 
 		distance = getDistance();
 		estimatedDistance = getEstimatedDistance();
+		nodes_ = null;
+	}
+	
+	public AccessPoint(AccessPoint _ap ,List<Node> _nodes) {
+		SSID = _ap.SSID;
+		signalLevel = _ap.signalLevel;   // sr.level < 0
+		name = _ap.name;
+		position = _ap.position;
+		radiatedPower = 100;  // cisco value 
+		distance = _ap.getDistance();
+		estimatedDistance = _ap.getEstimatedDistance();
+		nodes_ = _nodes;
 	}
 
 	public Position position() {
@@ -124,5 +139,11 @@ public class AccessPoint {
 	
 	public void setEstimatedDistance(double d){
 		this.estimatedDistance = d;
+	}
+	
+	
+	public void addNode(Node _node){
+		if (_node!=null) 
+		nodes_.add(_node);
 	}
 }
