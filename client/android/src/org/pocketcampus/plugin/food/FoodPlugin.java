@@ -78,6 +78,9 @@ public class FoodPlugin extends PluginBase {
 	private void loadFirstScreen(int layout) {
 		setContentView(layout);
 
+		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
+		spinner_.setVisibility(View.GONE);
+		
 		setupActionBar(true);
 
 		// ListView
@@ -87,6 +90,8 @@ public class FoodPlugin extends PluginBase {
 
 		if(spinner_ != null){
 			spinner_.setVisibility(View.GONE);
+		} else {
+			Toast.makeText(this, "Spinner is null when back", Toast.LENGTH_SHORT).show();
 		}
 		// At first, display food by restaurant
 		displayView();
