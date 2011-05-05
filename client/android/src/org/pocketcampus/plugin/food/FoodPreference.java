@@ -1,17 +1,22 @@
 package org.pocketcampus.plugin.food;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.http.entity.SerializableEntity;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,6 +35,7 @@ public class FoodPreference extends PluginPreference {
 	private Editor restoPrefsEditor_;
 
 	private final String RESTO_PREFS_NAME = "RestoPrefs";
+	private File menuFile_;
 	
 	private ArrayList<String> restaurants_;
 	private ArrayList<String> displayedRestaurants_;
@@ -44,6 +50,7 @@ public class FoodPreference extends PluginPreference {
 		actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
 
 		restaurants_ = new ArrayList<String>();
+		displayedRestaurants_ = new ArrayList<String>();
 
 		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
 		restoPrefsEditor_ = restoPrefs_.edit();
@@ -54,7 +61,6 @@ public class FoodPreference extends PluginPreference {
 	private PreferenceScreen createPreferenceHierarchy(){
 		PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
-		/*Restaurants that will be displayed*/
 		PreferenceCategory foodPrefCat = new PreferenceCategory(this);
 		foodPrefCat.setTitle(R.string.food_preferences_title);
 		root.addPreference(foodPrefCat);
@@ -62,10 +68,17 @@ public class FoodPreference extends PluginPreference {
 		final FoodPreference that = this;
 		CheckBoxPreference prefBox;
 		
-		restaurants_ = FoodPlugin.getRestaurantList();
+		/*Change to get the list from a permanent txt file.*/
+		restaurants_ = FoodPlugin.getRestaurantList();		
+		displayedRestaurants_ = readFromFile();
+		
+		if(displayedRestaurants_ == null || displayedRestaurants_.isEmpty()){
+			Log.d("PREFERENCES","displayedRestaurants_ was null or empty from file!");
+			displayedRestaurants_ = restaurants_;		
+		}else{
+		}
 
-		if(!restaurants_.isEmpty()){
-			displayedRestaurants_ = restaurants_;
+		if(!displayedRestaurants_.isEmpty()){
 			
 			for(String resto : restaurants_) {
 
@@ -86,11 +99,12 @@ public class FoodPreference extends PluginPreference {
 							displayedRestaurants_.remove(r);
 						}
 						int i = 1;
+						Log.d("PREFERENCES","Now in the list");
 						for(String s : displayedRestaurants_){
 							Log.d("PREFERENCES",i + " : " + s);
 							i++;
 						}
-						writeToFile();						
+						writeToFile();			
 						PreferenceManager.getDefaultSharedPreferences(that).edit().putLong(cacheTime_, 0).commit();
 						return true;
 					}
@@ -112,17 +126,40 @@ public class FoodPreference extends PluginPreference {
 	public void writeToFile() {
 		String filename = "RestaurantsCache";
 
-		File menuFile = new File(this.getCacheDir(), filename);
-
+		menuFile_ = new File(this.getCacheDir(), filename);			
+		
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
-			fos = new FileOutputStream(menuFile);
+			fos = new FileOutputStream(menuFile_);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(displayedRestaurants_);
 			out.close();
 		} catch (IOException ex) {
 			Log.d("PREFERENCES","Writing IO Exception");
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> readFromFile() {
+		String filename = "RestaurantsCache";
+		ArrayList<String> restosDisplayed = null;
+		File toGet = new File(this.getCacheDir(), filename);
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		
+		try {
+			fis = new FileInputStream(toGet);
+			in = new ObjectInputStream(fis);
+
+			restosDisplayed = (ArrayList<String>) in.readObject();
+
+			in.close();
+		} catch (IOException ex) {
+		} catch (ClassNotFoundException ex) {
+		} catch (ClassCastException cce) {
+		}
+
+		return restosDisplayed;
 	}
 }
