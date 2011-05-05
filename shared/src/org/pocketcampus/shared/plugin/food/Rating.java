@@ -19,7 +19,7 @@ public class Rating implements Serializable {
 	private double totalRating_;
 
 	public Rating() {
-		this.rating_ = StarRating.STAR_1_0;
+		this.rating_ = StarRating.STAR_0_0;
 		this.numberOfVotes_ = 0;
 		this.totalRating_ = 0;
 	}

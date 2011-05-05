@@ -68,6 +68,10 @@ public class Restaurant implements IRestaurant, Serializable {
 	}
 	public static double starRatingToDouble(StarRating rating){
 		switch(rating){
+		case STAR_0_0:
+			return 0.0;
+		case STAR_0_5:
+			return 0.5;
 		case STAR_1_0:
 			return 1.0;
 		case STAR_1_5:
@@ -91,7 +95,11 @@ public class Restaurant implements IRestaurant, Serializable {
 		}
 	}
 	public static StarRating doubleToStarRating(double rating){
-		if(rating < 1.25){
+		if(rating < 0.25){
+			return StarRating.STAR_0_0;
+		}else if(rating < 0.75){
+			return StarRating.STAR_0_5;
+		}else if(rating < 1.25){
 			return StarRating.STAR_1_0;
 		}else if(rating < 1.75){
 			return StarRating.STAR_1_5;

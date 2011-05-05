@@ -1,6 +1,8 @@
 package org.pocketcampus.shared.plugin.food;
 
 public enum StarRating {
+	STAR_0_0,
+	STAR_0_5,
 	STAR_1_0,
 	STAR_1_5,
 	STAR_2_0,
