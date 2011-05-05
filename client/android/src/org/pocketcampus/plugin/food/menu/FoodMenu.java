@@ -154,7 +154,9 @@ public class FoodMenu {
 			@Override
 			protected void doInUiThread(String result) {
 				campusMenuRatingsList = new HashMap<Integer, Rating>();
-				Log.d("SERVER", result);
+				if(result != null){
+					Log.d("SERVER", result);
+				}
 				// Deserializes the response
 				Gson gson = new Gson();
 
