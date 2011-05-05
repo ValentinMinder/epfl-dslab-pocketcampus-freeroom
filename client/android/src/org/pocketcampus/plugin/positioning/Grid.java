@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.positioning;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.provider.positioning.IGrid;
@@ -34,8 +35,34 @@ public class Grid implements IGrid {
 
 	@Override
 	public List<Node> getNodesList() {
-		
-		return null;
+		List<Node> nodeList = new ArrayList<Node>();
+		CartesianPoint coordinates1,coordinates2,coordinates3;
+		int RL = getRowCell();
+		//Node PMin = getPMin();
+		coordinates1 = PMin_.getCoordinates();
+		double x = coordinates1.getX();
+		double y = coordinates1.getY();
+		double z = coordinates1.getZ();
+		//nodeList.add(PMin);
+		Node PNode ;
+		// to take into cnsideration PMin
+		Node PBuffer2 = PMin_; 
+		for(int i=0;i<RL+1;i++)
+		{
+			y = PBuffer2.getCoordinates().getY();
+			for(int j=0;j<RL+1;j++)
+			{
+				
+				x = x+RL;
+				coordinates2 = new CartesianPoint(x, y, 0);
+				PNode = new Node(coordinates2, 0);
+				nodeList.add(PNode);
+				
+			}
+			coordinates3 = new CartesianPoint(PMin_.getCoordinates().getX(), y+RL, 0);
+			PBuffer2 = new Node(coordinates3,0);
+		}
+		return nodeList;
 	}
 
 	@Override
@@ -92,9 +119,20 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public AccessPoint getPMin() {
+	public Node getPMin() {
+		Node PMin;
+		CartesianPoint P0,P1;
+		double x,y,z,RL,CL;
+		RL=getRowCell();
+		CL=getCellLength();
+		P0 = convertPositionToCartesian(initialPosition_);
+		x=P0.getX()-CL*(RL/2);
+		y=P0.getY()-CL*(RL/2);
+		z=P0.getZ();
+		P1=new CartesianPoint(x, y, z);
+		PMin = new Node(P1,0);
 		
-		return null;
+		return PMin;
 	}
 
 	@Override
