@@ -99,9 +99,9 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			return true;
 
 		case R.id.transport_menu_detailed:
-			intent = new Intent(this, TransportDetailed.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+//			intent = new Intent(this, TransportDetailed.class);
+//			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			startActivity(intent);
 			return true;
 
 		default:

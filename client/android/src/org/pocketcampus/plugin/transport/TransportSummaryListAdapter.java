@@ -119,12 +119,4 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		return view;
 	}
 
-	@Override
-	protected View getEmptyListView(View convertView, ViewGroup parent) {
-		View view = convertView;
-		view = inflater_.inflate(R.layout.transport_emptyentry, null);
-		
-		return view;
-	}
-
 }

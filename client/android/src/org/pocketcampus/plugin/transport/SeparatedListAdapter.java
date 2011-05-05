@@ -29,14 +29,6 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 	abstract protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent);
 	
 	/**
-	 * Gets the empty view used if the section is empty.
-	 * @param convertView
-	 * @param parent
-	 * @return
-	 */
-	abstract protected View getEmptyListView(View convertView, ViewGroup parent);
-	
-	/**
 	 * Default public constructor.
 	 */
 	public SeparatedListAdapter() {
@@ -137,11 +129,6 @@ abstract public class SeparatedListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		if(sections_.size() == 0) {
-			return getEmptyListView(convertView, parent);
-		}
-		
 		int sectionIndex = 0;
 
 		for (Section section : this.sections_) {
