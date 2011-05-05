@@ -164,8 +164,6 @@ public class TransportDisplayManager implements OnClickListener {
 
 		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.transport_details_dialog, null);
-		
-		
 		builder.setView(layout);
 		
 		
@@ -267,7 +265,7 @@ public class TransportDisplayManager implements OnClickListener {
 		alert.show();
 	}
 
-	protected void setupSummaryList(Map<String, String> commonDestinations, boolean visibility) {
+	protected void setupSummaryList(Map<String, String> commonDestinations, boolean noDestination) {
 		
 		mainList_.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -283,7 +281,7 @@ public class TransportDisplayManager implements OnClickListener {
 		
 		TextView msgEmpty = (TextView) ownerActivity_.findViewById(R.id.msg_empty);
 		
-		if(!visibility) {
+		if(noDestination) {
 			mainList_.setVisibility(View.GONE);
 			msgEmpty.setVisibility(View.VISIBLE);
 			

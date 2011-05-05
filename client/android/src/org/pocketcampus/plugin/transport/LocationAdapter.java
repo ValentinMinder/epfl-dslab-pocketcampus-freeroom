@@ -64,12 +64,6 @@ public class LocationAdapter extends ArrayAdapter<Location> {
 	 */
 	class AutocompleteRequest extends DataRequest {
 		@Override
-		protected int timeoutDelay() {
-			// Needs to be fast.
-			return 4;
-		}
-		
-		@Override
 		protected int expirationDelay() {
 			// Not likely to change.
 			return 6 * 60 * 60;

@@ -11,12 +11,16 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
+import org.pocketcampus.utils.Notification;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * 
@@ -27,8 +31,9 @@ import android.view.MenuItem;
 public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider {
 	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
 	
-
 	private static RequestHandler requestHandler_;
+
+	private static Context context_;
 	private TransportDisplayManager transportDisplayHandler_;
 	
 	
@@ -46,6 +51,8 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		setContentView(R.layout.transport_main);
 		
 		transportDisplayHandler_ = new TransportDisplayManager(this, requestHandler_);
+		context_ = getApplicationContext();
+		
 		displaySummary();
 	}
 	
@@ -125,5 +132,9 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		
 		return news;
+	}
+	
+	public static void makeToast(String text) {
+		Notification.showToast(context_, text);
 	}
 }

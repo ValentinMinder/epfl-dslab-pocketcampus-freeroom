@@ -1,7 +1,16 @@
 package org.pocketcampus.plugin.transport;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.plugin.transport.LocationAdapter.AutocompleteRequest;
 import org.pocketcampus.shared.plugin.transport.Location;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * EditTextPreference dialog with autocompletion capabilities.
@@ -27,6 +37,7 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 	private AutoCompleteTextView AutoCompleteTextView_ = null;
 	private RequestHandler requestHandler_;
 	private AlertDialog dialog_;
+	private boolean validInput_ = false;
 
 	/**
 	 * AutoCompleteEditTextPreference constructor.
@@ -42,7 +53,9 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 	protected void showDialog(Bundle state) {
 		Context context = getContext();
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(context).setNegativeButton("Cancel", this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setNegativeButton("Cancel", this);
+		builder.setPositiveButton("Ok", this);
 		
 		View contentView = onCreateDialogView();
 		
@@ -95,6 +108,7 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 		OnItemClickListener onItemSelectedListener = new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				validInput_ = true;
 				dialog_.dismiss();
 				onDialogClosed(true);
 			}
@@ -108,20 +122,71 @@ public class AutoCompleteEditTextPreference extends EditTextPreference {
 	/**
 	 * Because the baseclass does not handle this correctly
 	 * we need to query our injected AutoCompleteTextView for
-	 * the value to save 
+	 * the value to save .
 	 */
 	protected void onDialogClosed(boolean positiveResult) {
 		super.onDialogClosed(positiveResult);
 
-		if (positiveResult && AutoCompleteTextView_ != null) 
-		{           
+		if (positiveResult && AutoCompleteTextView_!=null) {
 			String value = AutoCompleteTextView_.getText().toString();
-			if (callChangeListener(value)) {
-				setText(value);
+			
+			if(value.equals("")) {
+				return;
+			}
+			
+			if(validInput_) {
+				if (callChangeListener(value)) {
+					setText(value);
+				}
+			} else {
+				validateInput();
 			}
 		}
 	}
 
+	private void validateInput() {
+		RequestParameters reqParam = new RequestParameters();
+		reqParam.addParameter("constraint", AutoCompleteTextView_.getText().toString());
+		requestHandler_.execute(new AutocompleteRequest(), "autocomplete", reqParam);
+	}
+	
+	class AutocompleteRequest extends DataRequest {
+		@Override
+		protected int timeoutDelay() {
+			// Needs to be fast.
+			return 7;
+		}
+		
+		@Override
+		protected int expirationDelay() {
+			// Not likely to change.
+			return 6 * 60 * 60;
+		}
+		
+		@Override
+		protected void doInUiThread(String result) {
+			Gson gson = new Gson();
+			Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
+			List<Location> locations = gson.fromJson(result, AutocompleteType);
+			
+			if(locations!=null && locations.size()>0) {
+				String value = locations.get(0).toString();
+				
+				if (callChangeListener(value)) {
+					setText(value);
+				}
+				
+			} else {
+				TransportPlugin.makeToast("Destination not found.");
+			}
+		}
+		
+		@Override
+		protected void onCancelled() {
+			TransportPlugin.makeToast("Error accessing server.");
+		}
+	}
+	
 	/**
 	 * Again we need to override methods from the base class
 	 */
