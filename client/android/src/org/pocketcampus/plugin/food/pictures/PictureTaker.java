@@ -33,6 +33,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class PictureTaker {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
@@ -111,7 +112,10 @@ public class PictureTaker {
 				myBitmap.recycle();
 
 				// Send picture to server
-				submitPicture(bytes.toByteArray(), meal_, type_);
+				byte[] byteArray = bytes.toByteArray();
+				submitPicture(byteArray, meal_, type_);
+				Toast.makeText(context_, "Arrivé ici", Toast.LENGTH_SHORT)
+						.show();
 				try {
 					bytes.close();
 				} catch (IOException e) {
@@ -120,10 +124,10 @@ public class PictureTaker {
 
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				Toast.makeText(context_, "Picture was not taken",
-						Toast.LENGTH_SHORT);
+						Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(context_, "Picture was not taken",
-						Toast.LENGTH_SHORT);
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -161,16 +165,19 @@ public class PictureTaker {
 		class SubmitPictureRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
-				if (result.contains("true")) {
-					
-				} else {
-					
-				}
+				Toast.makeText(context_, "Submitting", Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
 
+		Log.d("Tag", "Submitting picture");
 		Gson gson = new Gson();
-		String jsonPicture = gson.toJson(picture);
+		String jsonPicture = "picture";
+		try {
+//			jsonPicture = gson.toJson(picture);
+		} catch (JsonSyntaxException jse) {
+			jse.printStackTrace();
+		}
 		String deviceId = Settings.Secure.ANDROID_ID;
 
 		RequestParameters params = new RequestParameters();

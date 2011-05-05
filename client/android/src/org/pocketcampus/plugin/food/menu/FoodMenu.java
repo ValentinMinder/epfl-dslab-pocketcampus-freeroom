@@ -183,7 +183,6 @@ public class FoodMenu {
 			@Override
 			protected void doInUiThread(String result) {
 				campusMenuList = new ArrayList<Meal>();
-				Log.d("SERVER", result);
 				// Deserializes the response
 				Gson gson = new Gson();
 

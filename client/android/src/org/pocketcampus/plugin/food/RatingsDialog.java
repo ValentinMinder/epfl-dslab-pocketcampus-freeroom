@@ -20,7 +20,7 @@ import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -95,8 +95,9 @@ public class RatingsDialog extends Dialog {
 			}
 		}
 
-		String deviceId = Settings.Secure.ANDROID_ID;
-
+		String deviceId = Secure.getString(getContext().getContentResolver(),
+                Secure.ANDROID_ID); 
+		
 		RequestParameters params = new RequestParameters();
 
 		params.addParameter("meal", Integer.toString(meal.hashCode()));

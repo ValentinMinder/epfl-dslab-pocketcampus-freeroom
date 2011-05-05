@@ -22,7 +22,6 @@ import org.pocketcampus.shared.plugin.food.Restaurant;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MenuDialog extends Dialog {
 	private final Meal displayedMeal_;
@@ -98,31 +96,36 @@ public class MenuDialog extends Dialog {
 		});
 
 		// Route to the Restaurant
-		ImageButton goThere = (ImageButton) findViewById(R.id.food_menudialog_goThere);
-		goThere.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				// Restaurant resto = meal.getRestaurant();
-				// callNavigationActivity(resto);
-				// menusActivity.finish();
-			}
-		});
+//		ImageButton goThere = (ImageButton) findViewById(R.id.food_menudialog_goThere);
+//		goThere.setOnClickListener(new View.OnClickListener() {
+//
+//			public void onClick(View v) {
+//				// Restaurant resto = meal.getRestaurant();
+//				// callNavigationActivity(resto);
+//				// menusActivity.finish();
+//			}
+//		});
 		/**
 		 * Here is the pictures option, we can take and see pictures of -the
 		 * meal -the queue (for the restaurant corresponding to this meal)
 		 */
 		// Take a picture of the meal
-		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
-		takePic.setEnabled(photoButtonsEnabled_);
-		takePic.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				PictureTaker pictureTaker = new PictureTaker(context_,
-						displayedMeal_, PictureType.Meal);
-				
-				pictureTaker.takePicture();
-			}
-		});
+//		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
+//		takePic.setEnabled(photoButtonsEnabled_);
+//		takePic.setOnClickListener(new View.OnClickListener() {
+//
+//			public void onClick(View v) {
+//				PictureTaker pictureTaker = new PictureTaker(context_,
+//						displayedMeal_, PictureType.Meal);
+//
+//				pictureTaker.takePicture();
+////				Intent seePicture = new Intent(getContext(),
+////						FoodPictureActivity.class);
+////				context_.startActivity(seePicture);
+////				PictureFetcher fetcher = new PictureFetcher(PictureType.Meal, displayedMeal_);
+////				Drawable[] pictures = fetcher.getPictures();
+//			}
+//		});
 
 		progressDialog_.dismiss();
 

@@ -5,10 +5,10 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.pocketcampus.plugin.food.pictures.PictureTaker.PictureType;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 public class PictureFetcher {
 
@@ -18,26 +18,15 @@ public class PictureFetcher {
 	private String[] myRemotePictures_;
 	private Drawable[] pictures_;
 
-	public PictureFetcher(Bundle bundle) {
-		if (bundle == null) {
-			throw new IllegalArgumentException("Bundle cannot be null.");
-		}
-		meal_ = null;
-		if (bundle.containsKey("meal")) {
-			meal_ = (Meal) bundle.get("meal");
-			if (bundle.containsKey("isMealGallery")) {
-				isMealGallery_ = true;
-			} else {
-				isMealGallery_ = false;
-			}
-			fetchPictureUrls();
-		}
+	public PictureFetcher(PictureType type, Meal meal) {
+		meal_ = meal;
+		fetchPictures();
 	}
 
 	/**
 	 * Fetch pictures corresponding to meal from the server.
 	 */
-	private void fetchPictureUrls() {
+	private void fetchPictures() {
 		// Get all url of a meal
 		try {
 			if (isMealGallery_) {

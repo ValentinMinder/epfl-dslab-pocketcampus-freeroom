@@ -10,6 +10,7 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.food.pictures.PictureTaker;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
@@ -125,6 +126,7 @@ public class FoodPlugin extends PluginBase {
 					this.getResources().getString(R.string.food_menucancelled),
 					Toast.LENGTH_SHORT).show();
 		}
+		this.notifyDataSetChanged();
 		foodDisplayHandler_.updateView();
 		displayView();
 		actionBar_.setProgressBarVisibility(View.GONE);
@@ -209,6 +211,7 @@ public class FoodPlugin extends PluginBase {
 	}
 
 	final int SUGGESTIONS_REQUEST_CODE = 1;
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int selectedId = item.getItemId();
@@ -278,6 +281,11 @@ public class FoodPlugin extends PluginBase {
 			} else {
 				Log.d("SUGGESTIONS", "RESULT_PAS_OK !");
 			}
+			break;
+		case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+			PictureTaker.onActivityResult(requestCode, resultCode,
+					data, true);
+			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}

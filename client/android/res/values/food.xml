@@ -80,6 +80,7 @@
 
 	<!--  Gallery   -->
 	<string name="food_gallery_nopic_title">Sorry !</string>
+	<string name="food_picture_dialog_title">Choose a picture type</string>
 	<string name="food_gallery_nopic_msg">There are no pictures yet.\nPlease add some!</string>
 	<declare-styleable name="MealGallery">
 		<attr name="android:galleryItemBackground" />

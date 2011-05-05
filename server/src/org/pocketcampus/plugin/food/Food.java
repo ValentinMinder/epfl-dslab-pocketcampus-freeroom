@@ -179,6 +179,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 * @return
 	 */
 	public boolean setPicture(HttpServletRequest request) {
+		System.out.println("<setPicture>: Picture request.");
 		String deviceID = request.getParameter("deviceId");
 		String pictureString = request.getParameter("pictureArray");
 		String mealHashCodeString = request.getParameter("meal");
