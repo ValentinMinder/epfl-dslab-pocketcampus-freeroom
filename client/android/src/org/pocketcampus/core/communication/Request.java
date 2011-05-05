@@ -108,10 +108,9 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 			cacheManager_.putInCache(url, result, expirationDelay());
 		}
 		
-		if(isCancelled())
-			return result;
-
-		doInBackgroundThread(result);
+		if(!isCancelled()) {
+			doInBackgroundThread(result);
+		}
 
 		return result;
 	}

@@ -6,6 +6,7 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 import org.pocketcampus.shared.plugin.transport.Destination;
+import org.pocketcampus.shared.plugin.transport.Location;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -82,7 +83,7 @@ public class TransportPreference extends PluginPreference {
 		}
 
 		// Add new
-		AutoCompleteEditTextPreference editTextPref = new AutoCompleteEditTextPreference(this, TransportPlugin.getTransportRequestHandler());
+		final StationAutoCompleteEditTextPreference editTextPref = new StationAutoCompleteEditTextPreference(this, TransportPlugin.getTransportRequestHandler());
         editTextPref.setTitle(getResources().getText(R.string.transport_addADestination));
         
         OnPreferenceChangeListener onPreferenceChangeListener = new OnPreferenceChangeListener() {
@@ -92,6 +93,8 @@ public class TransportPreference extends PluginPreference {
 				if(newValue==null || ((String)newValue).equals("")) {
 					return false;
 				}
+				
+				int id = ((StationAutoCompleteEditTextPreference) preference).getLastStationId();
 				
 				commonDestPrefsEditor_.putString((String)newValue, (String)newValue);
 				commonDestPrefsEditor_.commit();
