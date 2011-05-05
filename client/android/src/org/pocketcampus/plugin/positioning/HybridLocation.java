@@ -44,8 +44,8 @@ public class HybridLocation implements ILocation{
 	}
 	
 	public Position getWifiLocation(){
-		return null;
-		// to do 
+		return wifiLocation_.getWifiLocationPerCoefficient();
+		 
 	}
 	
 	
