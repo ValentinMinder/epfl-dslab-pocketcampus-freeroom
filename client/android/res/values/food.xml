@@ -10,6 +10,7 @@
 	
 	<!--  Preferences -->
 	<string name="food_preferences_title">Restaurants you want to display</string>
+	<string name="food_preferences_warning">You have to launch the FoodPlugin once before you can edit preferences.</string>
 
 	<!-- Date -->
 	<string name="food_monday">Monday</string>

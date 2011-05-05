@@ -74,15 +74,6 @@ public class FoodPlugin extends PluginBase {
 			return new ArrayList<String>();
 		}
 	}
-	
-	public static boolean modifyRestaurant(boolean add, String restaurant){
-		if(foodDisplayHandler_ != null){
-			foodDisplayHandler_.modifyRestaurant(add, restaurant);
-			return true;
-		}else{
-			return false;
-		}
-	}
 
 	private void loadFirstScreen(int layout) {
 		setContentView(layout);

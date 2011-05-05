@@ -1,17 +1,20 @@
 package org.pocketcampus.plugin.food;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.apache.http.entity.SerializableEntity;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
-import org.pocketcampus.shared.plugin.food.Restaurant;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -20,12 +23,16 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
+import android.widget.TextView;
 
 public class FoodPreference extends PluginPreference {
 	private SharedPreferences restoPrefs_;
-	private SharedPreferences.Editor restoPrefsEditor_;
+	private Editor restoPrefsEditor_;
 
+	private final String RESTO_PREFS_NAME = "RestoPrefs";
+	
 	private ArrayList<String> restaurants_;
+	private ArrayList<String> displayedRestaurants_;
 	protected final static String cacheTime_ = "food_cache_time";
 
 	@Override
@@ -38,7 +45,7 @@ public class FoodPreference extends PluginPreference {
 
 		restaurants_ = new ArrayList<String>();
 
-		restoPrefs_ = getSharedPreferences("RestoPrefs", 0);
+		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
 		restoPrefsEditor_ = restoPrefs_.edit();
 
 		setPreferenceScreen(createPreferenceHierarchy());
@@ -52,79 +59,70 @@ public class FoodPreference extends PluginPreference {
 		foodPrefCat.setTitle(R.string.food_preferences_title);
 		root.addPreference(foodPrefCat);
 
-		//		restaurants_ = FoodPlugin.getRestaurantList();
-		/*FAKE*/
-		restaurants_.add("Le Parmentier");
-		restaurants_.add("Cafeteria BC");
-		restaurants_.add("Le Vinci");
-		restaurants_.add("Le Hodler");
-		restaurants_.add("L'ornythorinque");
-
+		final FoodPreference that = this;
 		CheckBoxPreference prefBox;
-		int i = 0;
-		for(String resto : restaurants_) {
+		
+		restaurants_ = FoodPlugin.getRestaurantList();
 
-			prefBox = new CheckBoxPreference(this);
-			prefBox.setKey(resto);
-			prefBox.setTitle(resto);
-			prefBox.setDefaultValue(true);
+		if(!restaurants_.isEmpty()){
+			displayedRestaurants_ = restaurants_;
+			
+			for(String resto : restaurants_) {
 
-			final FoodPreference that = this;
+				prefBox = new CheckBoxPreference(this);
+				prefBox.setKey(resto);
+				prefBox.setTitle(resto);
+				prefBox.setDefaultValue(true);
 
-			prefBox.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
+				prefBox.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
 
-				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue) {
-					Log.d("PREFERENCES",preference.getKey());
-					if(FoodPlugin.modifyRestaurant((Boolean)newValue, preference.getKey())){						
+					@Override
+					public boolean onPreferenceChange(Preference preference, Object newValue) {
+						String r = preference.getKey();
+						
+						if((Boolean)newValue){
+							displayedRestaurants_.add(r);
+						}else{
+							displayedRestaurants_.remove(r);
+						}
+						int i = 1;
+						for(String s : displayedRestaurants_){
+							Log.d("PREFERENCES",i + " : " + s);
+							i++;
+						}
+						writeToFile();						
 						PreferenceManager.getDefaultSharedPreferences(that).edit().putLong(cacheTime_, 0).commit();
 						return true;
-					}else{
-						//Should warn the user one way or another that he should go to the FoodPlugin once before he can change preferences.
-						return false;
 					}
-				}
 
-			});
+				});
 
-			foodPrefCat.addPreference(prefBox);
+				foodPrefCat.addPreference(prefBox);
+			}
+		}else{
+			Log.d("PREFERENCES","There are no Restaurant List for now.");
+			TextView text = new TextView(this);
+			text.setText(getResources().getString(R.string.food_preferences_warning));
+			
 		}
 
 		return root;
 	}
+	
+	public void writeToFile() {
+		String filename = "RestaurantsCache";
 
-	private void showRestaurantDialog(final Restaurant resto) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(resto.getName());
+		File menuFile = new File(this.getCacheDir(), filename);
 
-		builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				restoPrefsEditor_.remove(resto.getName());
-				restoPrefsEditor_.commit();
-				dialog.dismiss();
-				forceRefresh();
-			}
-		});
-
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {				
-				dialog.dismiss();
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.setCanceledOnTouchOutside(true);
-		alert.show();
-	}
-
-	/**
-	 * Forces a redisplay of the PreferenceActivity.
-	 */
-	private void forceRefresh() {
-		Intent selfIntent = getIntent();
-		selfIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		startActivity(selfIntent);
-		finish();
-		overridePendingTransition(0, 0);
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(menuFile);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(displayedRestaurants_);
+			out.close();
+		} catch (IOException ex) {
+			Log.d("PREFERENCES","Writing IO Exception");
+		}
 	}
 }

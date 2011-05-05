@@ -38,7 +38,6 @@ import com.google.gson.reflect.TypeToken;
 public class FoodMenu {
 
 	private List<Meal> campusMenu_;
-	private List<Meal> campusMenuFull_;
 	private FoodPlugin pluginHandler_;
 	private Context ctx_;
 	private Date validityDate_;
@@ -53,7 +52,6 @@ public class FoodMenu {
 		ctx_ = ownerActivity.getApplicationContext();
 		// Instantiate menuEPFL
 		campusMenu_ = new ArrayList<Meal>();
-		campusMenuFull_ = new ArrayList<Meal>();
 		loadCampusMenu();
 	}
 
@@ -61,20 +59,32 @@ public class FoodMenu {
 	public List<Meal> getCampusMenu() {
 		return this.campusMenu_;
 	}
-
-	public void modifyRestaurant(boolean add, String restaurant){
-		Log.d("PREFERENCES","It went through the whole thing ! [FoodMenu]");
-		//Maintain a list of Restaurant we want to display ?
+	
+	public List<Meal> getCampusMenuPrefered() {
+		List<Meal> filteredMenus = filterMenus(this.campusMenu_);
+		return filteredMenus;
 	}
 
+	private List<Meal> filterMenus(List<Meal> allMeals){
+		List<String> restaurants = restaurantsFromFile();
+		List<Meal> prefMeals = new ArrayList<Meal>();
+		
+		for(String r : restaurants){
+			Log.d("PREFERENCES","Resto in the File : " + r);
+			for(Meal m : campusMenu_){
+				if(m.getRestaurant_().getName().equals(r)){
+					prefMeals.add(m);
+				}
+			}
+		}
+		
+		return prefMeals;
+	}
+	
 	public void setCampusMenu(List<Meal> menus) {
 		this.campusMenu_ = menus;
 	}
 
-	public void setCampusMenuFull(List<Meal> menus) {
-		this.campusMenuFull_ = menus;
-	}
-	
 	public void setCampusRatings(HashMap<Integer, Rating> ratings) {
 		if (campusMenu_ != null && !campusMenu_.isEmpty()) {
 			for (Meal m : campusMenu_) {
@@ -201,11 +211,9 @@ public class FoodMenu {
 						List<Meal> fromCache = restoreFromFile();
 						if (fromCache != null) {
 							setCampusMenu(fromCache);
-							setCampusMenuFull(fromCache);
 						}
 					} else {
 						setCampusMenu(campusMenuList);
-						setCampusMenuFull(campusMenuList);
 						Date currentDate = new Date();
 						setValidityDate(currentDate);
 						writeToFile(currentDate);
@@ -266,6 +274,29 @@ public class FoodMenu {
 		}
 
 		return menu;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> restaurantsFromFile() {
+		String filename = "RestaurantsCache";
+		List<String> restos = null;
+		File toGet = new File(ctx_.getCacheDir(), filename);
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		
+		try {
+			fis = new FileInputStream(toGet);
+			in = new ObjectInputStream(fis);
+
+			restos = (List<String>) in.readObject();
+
+			in.close();
+		} catch (IOException ex) {
+		} catch (ClassNotFoundException ex) {
+		} catch (ClassCastException cce) {
+		}
+
+		return restos;
 	}
 
 }

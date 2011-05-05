@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -91,16 +92,6 @@ public class FoodDisplayHandler {
 		return list;
 	}
 	
-	/**
-	 * Modify which restaurants are displayed
-	 * 
-	 * @param add, restaurant
-	 *            if add is true this restaurant is added, else removed from the menus.
-	 */
-	public void modifyRestaurant(boolean add, String restaurant){
-		campusMenu_.modifyRestaurant(add, restaurant);
-	}
-
 	/**
 	 * Change display type
 	 * 
@@ -209,15 +200,15 @@ public class FoodDisplayHandler {
 	//	 }
 
 	public void showMenusByRestaurants() {
-		HashMap<String, Vector<Meal>> mealHashMap = sorter_.sortByRestaurant(campusMenu_.getCampusMenu());
+		List<Meal> menusPrefered = campusMenu_.getCampusMenuPrefered();
+		HashMap<String, Vector<Meal>> mealHashMap = sorter_.sortByRestaurant(menusPrefered);
 
 		RestaurantListAdapter restaurantList = null;
 
 		/**
 		 * Iterate over the different restaurant menus
 		 */
-		if (!campusMenu_.isEmpty()) {
-			// Get the set of keys from the hash map to make sections.
+		if (!menusPrefered.isEmpty()) {
 			Set<String> restaurantFullMenuSet = mealHashMap.keySet();
 
 			SortedSet<String> restaurantFullMenu = new TreeSet<String>(
