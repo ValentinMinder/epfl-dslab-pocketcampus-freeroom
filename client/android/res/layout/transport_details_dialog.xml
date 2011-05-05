@@ -3,7 +3,10 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content">
-        <ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/transport_details_dialog_list"></ListView>
+	android:layout_height="wrap_content"
+	style="@style/Theme.MainLayout">
+        <ListView
+        	style="@style/Theme.ListView"
+        	android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/transport_details_dialog_list"></ListView>
 </LinearLayout>
 

@@ -4,6 +4,6 @@
 	xmlns:android="http://schemas.android.com/apk/res/android" style="@style/Theme.MainLayout"
 	android:padding="15dip" android:layout_height="wrap_content"
 	android:layout_gravity="center_horizontal">
-    <AnalogClock android:layout_height="wrap_content" android:id="@+id/analogClock1" android:layout_alignParentLeft="true" android:layout_width="wrap_content"></AnalogClock>
+    <AnalogClock android:id="@+id/analogClock1" android:layout_alignParentLeft="true" android:layout_height="fill_parent" android:layout_width="fill_parent" android:soundEffectsEnabled="true"></AnalogClock>
 
 </RelativeLayout>

@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -154,24 +156,21 @@ public class TransportDisplayManager implements OnClickListener {
 		System.out.println(summary.toString());
 	}
 	
-	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(Connection c) {
+	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(final Connection c) {
 		//Toast.makeText(activityContext_, c.toString(), Toast.LENGTH_LONG).show();
 		
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
-
 		builder.setTitle("Details");
 
 		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.transport_details_dialog, null);
 		builder.setView(layout);
 		
-		
-		
-		 
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map;
 		for(Connection.Part p : c.parts){
+			map = new HashMap<String, String>();
 			map.put("dept", "hh:mm");
 			map.put("from", p.departure.name);
 			map.put("arrt", "hh:mm");
@@ -187,37 +186,19 @@ public class TransportDisplayManager implements OnClickListener {
 		SimpleAdapter mSchedule = new SimpleAdapter(ownerActivity_, mylist, R.layout.transport_details_dialog_row, keys, ids);
 		
 
-		
-		ListView list = (ListView)ownerActivity_.findViewById(R.id.transport_details_dialog_list);
-		if(list == null)
-			System.out.println("saloooope");
-		list.setAdapter(mSchedule);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 		builder.setNeutralButton("Share", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
-				shareToEverybodyOnThePlanetYourSuperTravelPlane();
+				
+				Intent shareIntent = new Intent(Intent.ACTION_SEND); 
+		        shareIntent.putExtra(Intent.EXTRA_TEXT, c.toString() + "\n\n sent via pocketcampus android app");
+		        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "timetables");
+		        shareIntent.setType("text/plain");
+		        ownerActivity_.startActivity(shareIntent); 
+				
 			}
 		});
 		
-
 		builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
@@ -226,43 +207,44 @@ public class TransportDisplayManager implements OnClickListener {
 
 		AlertDialog alert = builder.create();
 		alert.setCanceledOnTouchOutside(true);
+		
 		alert.show();
 		
-		
-		
-		
-		
+		ListView list = (ListView)alert.findViewById(R.id.transport_details_dialog_list);
+		list.setAdapter(mSchedule);
 	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 	
-	private void shareToEverybodyOnThePlanetYourSuperTravelPlane(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
-		builder.setTitle("Share travel plan");
-
-		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.transport_share_dialog, null);
-		builder.setView(layout);
-
-		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {				
-				dialog.dismiss();
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.setCanceledOnTouchOutside(true);
-		alert.show();
+	private void shareToEverybodyOnThePlanetYourSuperTravelPlane(Connection c){
+//		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
+//		builder.setTitle("Share travel plan");
+//
+//		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		View layout = inflater.inflate(R.layout.transport_share_dialog, null);
+//		builder.setView(layout);
+//
+//		builder.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int id) {				
+//				dialog.dismiss();
+				Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+				sendIntent.putExtra("sms_body", c.toString()); 
+				sendIntent.setType("vnd.android-dir/mms-sms");
+				ownerActivity_.startActivity(sendIntent); 
+//			}
+//		});
+//		
+//		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int id) {				
+//				dialog.dismiss();
+//			}
+//		});
+//		
+//		
+//
+//		AlertDialog alert = builder.create();
+//		alert.setCanceledOnTouchOutside(true);
+//		alert.show();
 	}
 
 	protected void setupSummaryList(Map<String, String> commonDestinations, boolean noDestination) {
