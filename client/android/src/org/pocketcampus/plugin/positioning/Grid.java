@@ -14,36 +14,71 @@ public class Grid implements IGrid {
 	private int  rowCell_;
 	private List<Node> nodes_;
 	private List<AccessPoint> APGrid_;
+	private WifiLocation wifiLocation_;
+	
+	public Grid(){
+		this.initialPosition_ = getInitialPosition();
+		this.APGrid_ = getApGrid();
+		this.DMax_ = getDMax();
+		this.DMin_ = getDMin();
+		this.cellLength_ = getCellLength();
+		this.rowCell_ = getRowCell();
+		this.nodes_ = getNodesList();
+		
+	}
 
 	@Override
-	public Position getInitialPosition() {
-		// TODO Auto-generated method stub
+	public List<Node> getNodesList() {
+		
 		return null;
 	}
 
 	@Override
+	public Position getInitialPosition() {
+		return wifiLocation_.getWifiLocationPerCoefficient();
+	}
+
+	@Override
 	public double getDMax() {
-		// TODO Auto-generated method stub
-		return 0;
+		AccessPoint ap ;
+		ap = wifiLocation_.getWeakestAP(APGrid_);
+		return ap.getEstimatedDistance();
 	}
 
 	@Override
 	public double getDMin() {
-		// TODO Auto-generated method stub
-		return 0;
+		AccessPoint ap ;
+		ap = wifiLocation_.getStrongestAP(APGrid_);
+		return ap.getEstimatedDistance();
 	}
 
 	@Override
 	public int getNodeMin() {
-		// TODO Auto-generated method stub
-		return 0;
+		int min = wifiLocation_.getMinNumberOfnodes(APGrid_);
+		return min;
 	}
 
 	@Override
 	public double getCellLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		int CL,DMin;
+		int NMin = getNodeMin();
+		DMin = (int) getDMin();
+		CL = 2*DMin/NMin;
+		
+		return CL;
 	}
+	
+
+	@Override
+	public int getRowCell() {
+		int CL = 0;
+		int RL = 4;
+		CL= (int) getCellLength();
+		double DMax = getDMax();
+		if(CL!=0)
+		RL = (int) (2 * Math.ceil(DMax/CL));
+		return RL;
+	}	
 
 	@Override
 	public AccessPoint getPMax() {
@@ -70,9 +105,8 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public int getRowCell() {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<AccessPoint> getApGrid(){
+		return wifiLocation_.getAccessPoints();
 	}
 
 }
