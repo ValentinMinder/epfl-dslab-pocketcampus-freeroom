@@ -15,10 +15,10 @@ import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -204,15 +204,8 @@ public class FoodPlugin extends PluginBase {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		Resources res = getResources();
-		menu.add(0, 1, 0, res.getText(R.string.food_show_restaurant)).setIcon(
-				R.drawable.food_opt_icon_resto);
-		menu.add(0, 2, 0, res.getText(R.string.food_show_ratings)).setIcon(
-				R.drawable.food_opt_icon_ratings);
-		menu.add(0, 3, 0, res.getText(R.string.food_show_sandwiches)).setIcon(
-				R.drawable.food_opt_icon_sandwich);
-		menu.add(0, 4, 0, res.getText(R.string.food_show_suggestions)).setIcon(
-				R.drawable.food_opt_icon_suggestions);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.food, menu);
 		return true;
 	}
 
@@ -223,8 +216,8 @@ public class FoodPlugin extends PluginBase {
 		int selectedId = item.getItemId();
 
 		switch (selectedId) {
-		case 1: // Show menus by restaurant
-		case 2: // Show menus by rating
+		case R.id.food_menu_restaurants: // Show menus by restaurant
+		case R.id.food_menu_ratings: // Show menus by rating
 			// setContentView(R.layout.food_main);
 			if (isSandwichDisplay_) {
 				loadFirstScreen(R.layout.food_main);
@@ -232,7 +225,7 @@ public class FoodPlugin extends PluginBase {
 			foodDisplayHandler_.setDisplayType(selectedId);
 			displayView();
 			return true;
-		case 3: // show sandwiches
+		case R.id.food_menu_sandwiches: // show sandwiches
 			Log
 					.d("SANDWICHES",
 							"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
@@ -240,7 +233,7 @@ public class FoodPlugin extends PluginBase {
 			foodDisplayHandler_.setDisplayType(selectedId);
 			displaySandwiches();
 			return true;
-		case 4: // show suggestions
+		case R.id.food_menu_suggestions: // show suggestions
 			suggestionMenus_ = foodDisplayHandler_.getMenusList();
 			if (suggestionMenus_ != null) {
 				Intent suggestions = new Intent(getApplicationContext(),
@@ -249,6 +242,11 @@ public class FoodPlugin extends PluginBase {
 						suggestionMenus_);
 				startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 			}
+			return true;
+		case R.id.food_menu_settings: // show food settings
+			Intent intent = new Intent(this, FoodPreference.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			return true;
 		}
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:title="@string/food_show_restaurant"
+		android:id="@+id/food_menu_restaurants"
+		android:icon="@drawable/food_opt_icon_resto" />
+	<item
+		android:title="@string/food_show_ratings"
+		android:id="@+id/food_menu_ratings"
+		android:icon="@drawable/food_opt_icon_ratings" />
+	<item
+		android:title="@string/food_show_sandwiches"
+		android:id="@+id/food_menu_sandwiches"
+		android:icon="@drawable/food_opt_icon_sandwich" />
+	<item
+		android:title="@string/food_show_suggestions"
+		android:id="@+id/food_menu_suggestions"
+		android:icon="@drawable/food_opt_icon_suggestions" />
+	<item
+		android:title="Settings"
+		android:id="@+id/food_menu_settings"
+		android:icon="@android:drawable/ic_menu_manage" />
+</menu>

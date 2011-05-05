@@ -14,7 +14,7 @@
 		android:layout_below="@+id/actionbar">
 		
 		<Button android:id="@+id/food_suggestions_button"  
-			android:paddingLeft="3dip" android:paddingTop="5dip"
+			android:paddingTop="5dip"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 			
 		<LinearLayout

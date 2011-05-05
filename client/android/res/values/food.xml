@@ -8,7 +8,8 @@
 	<string name="food_restaurants">Restaurants</string>
 	<string name="food_menucancelled">Could not connect to the server.</string>
 	<string name="food_reload_unsuccessful">Unable to refresh menu.</string>
-	
+	<string name="food_settings">Settings</string>
+		
 	<!--  Preferences -->
 	<string name="food_preferences_title">Restaurants you want to display</string>
 	<string name="food_preferences_warning">You have to launch the FoodPlugin once before you can edit preferences.</string>
