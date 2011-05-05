@@ -752,12 +752,10 @@ public class MapPlugin extends PluginBase {
 			try {
 				layers = gson.fromJson(result, mapLayersType);
 			} catch (JsonSyntaxException e) {
-				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.unexpected_response);
 				return;
 			}
 			if(layers == null) {
-				decrementProgressCounter();
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 				return;
 			}
@@ -826,12 +824,10 @@ public class MapPlugin extends PluginBase {
 			try {
 				items = gson.fromJson(result, mapElementType);
 			} catch (JsonSyntaxException e) {
-				decrementProgressCounter();
 				return;
 			}
 
 			if(items == null) {
-				decrementProgressCounter();
 				return;
 			}
 
@@ -875,8 +871,9 @@ public class MapPlugin extends PluginBase {
 			} else {
 				Log.d(this.getClass().toString(), "No old overlay");
 			}
-
-			mapView_.getOverlays().add(aOverlay);
+			if(aOverlay != null) {
+				mapView_.getOverlays().add(aOverlay);
+			}
 			mapView_.invalidate();
 
 			decrementProgressCounter();
