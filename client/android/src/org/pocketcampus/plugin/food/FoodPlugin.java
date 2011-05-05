@@ -85,6 +85,9 @@ public class FoodPlugin extends PluginBase {
 		empty = (TextView) findViewById(R.id.food_empty);
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 
+		if(spinner_ != null){
+			spinner_.setVisibility(View.GONE);
+		}
 		// At first, display food by restaurant
 		displayView();
 	}
@@ -170,6 +173,11 @@ public class FoodPlugin extends PluginBase {
 	}
 
 	public void displaySandwiches() {
+		
+		if (spinner_ != null) {
+			spinner_.setVisibility(View.GONE);
+		}
+		
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
