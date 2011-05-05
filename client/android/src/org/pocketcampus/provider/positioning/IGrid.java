@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.plugin.positioning.AccessPoint;
 import org.pocketcampus.plugin.positioning.CartesianPoint;
+import org.pocketcampus.plugin.positioning.Node;
 import org.pocketcampus.shared.plugin.map.Position;
 
 public interface IGrid {
@@ -15,8 +16,9 @@ public double getDMin();
 public int getNodeMin();
 public double getCellLength(); 
 public AccessPoint getPMax();
-public AccessPoint getPMin();
+public Node getPMin();
 public int getRowCell();
 public CartesianPoint convertPositionToCartesian(Position p);
 public Position convertCartesianToPosition(CartesianPoint cp);
+public List<Node> getNodesList();
 }
