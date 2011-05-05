@@ -31,6 +31,11 @@ abstract class AutoCompleteStationRequest extends DataRequest {
 		Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
 		locations = gson.fromJson(result, AutocompleteType);
 		
+		if(locations == null) {
+			handleLocations(null);
+			return;
+		}
+		
 		// Keeps only the stations (no POIs etc)
 		ArrayList<Location> stations = new ArrayList<Location>();
 		
