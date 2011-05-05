@@ -11,7 +11,8 @@
 		android:layout_height="wrap_content"
 		android:padding="5dip"
 		android:layout_gravity="center_vertical"
-		android:src="@drawable/transport_summarylist_error"></ImageView>
+		android:src="@drawable/transport_summarylist_error"
+		></ImageView>
 		
 	<TextView 
 		android:text="Data unavailable"

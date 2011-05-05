@@ -11,8 +11,9 @@
 		android:layout_height="wrap_content"
 		android:padding="5dip"
 		android:layout_gravity="center_vertical"
-		android:src="@drawable/transport_summarylist_arrow"
-		android:visibility="visible"></ImageView>
+		android:src="@drawable/transport_summarylist_smallarrow"
+		android:visibility="visible"
+		></ImageView>
 		
 	<TextView 
 		android:text="Loading..."
@@ -22,6 +23,7 @@
 		android:layout_gravity="left"
 		android:textColor="@android:color/black"
 		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:padding="6dip" />
+		android:padding="6dip"
+		/>
 
 </LinearLayout>
