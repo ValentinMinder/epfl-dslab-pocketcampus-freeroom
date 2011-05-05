@@ -135,7 +135,10 @@ public class TransportSummaryAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return summary_.connections.get(position);
+		if(summary_ != null && summary_.connections != null)
+			return summary_.connections.get(position);
+		else
+			return null;
 	}
 
 	@Override

@@ -257,7 +257,8 @@ public class TransportDisplayManager implements OnClickListener {
 			TransportSummaryListAdapter adapter = (TransportSummaryListAdapter)parent.getAdapter();
 			Connection travel =  (Connection)adapter.getItem(position);
 			
-			afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(travel);
+			if(travel != null)
+				afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(travel);
 			}
 
 			
