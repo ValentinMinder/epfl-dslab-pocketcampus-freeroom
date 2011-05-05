@@ -5,6 +5,7 @@
 
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
+		
 	<RelativeLayout
 		android:layout_width="wrap_content"
 		android:layout_below="@+id/actionbar"
@@ -18,7 +19,6 @@
 			android:id="@+id/transport_fav"
 			android:layout_below="@+id/actionbar"
 			android:layout_above="@+id/transport_go"
-			android:layout_marginBottom="150px"
 			>
 
 			<ListView
