@@ -123,12 +123,14 @@ public class FoodPlugin extends PluginBase {
 		this.notifyDataSetChanged();
 		foodDisplayHandler_.updateView();
 		displayView();
+		spinner_.setVisibility(View.GONE);
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
 	public void menuRefreshedSandwich() {
 		foodDisplayHandler_.updateView();
 		displaySandwiches();
+		spinner_.setVisibility(View.GONE);
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
@@ -145,7 +147,7 @@ public class FoodPlugin extends PluginBase {
 			txt_empty_.setText("");
 		}
 
-		if (spinner_ != null && spinner_.isShown()) {
+		if (spinner_ != null) {
 			spinner_.setVisibility(View.GONE);
 		}
 

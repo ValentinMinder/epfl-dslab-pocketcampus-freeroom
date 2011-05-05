@@ -226,6 +226,10 @@ public class FoodMenu {
 					}
 				} else {
 					Log.d("SERVER", "null menu");
+					List<Meal> fromCache = restoreFromFile();
+					if (fromCache != null) {
+						setCampusMenu(fromCache);
+					}
 				}
 				pluginHandler_.menuRefreshed(true);
 			}

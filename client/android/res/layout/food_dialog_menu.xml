@@ -56,13 +56,13 @@
 				android:id="@+id/food_menudialog_goThere" android:layout_height="wrap_content"
 				android:layout_width="wrap_content" android:gravity="center"
 				android:layout_weight="1" android:layout_marginTop="10dip" android:layout_marginBottom="10dip"
-				android:layout_marginRight="10dip" android:layout_marginLeft="10dip"></ImageButton>
+				android:layout_marginRight="10dip" android:layout_marginLeft="10dip"></ImageButton> -->
 
 			<ImageButton android:background="@drawable/food_pictures_xml"
 				android:id="@+id/food_menudialog_Pictures" android:layout_height="wrap_content"
 				android:layout_width="wrap_content" android:gravity="center"
 				android:layout_weight="1" android:layout_marginLeft="10dip"
-				android:layout_marginTop="10dip" android:layout_marginBottom="10dip"></ImageButton> -->
+				android:layout_marginTop="10dip" android:layout_marginBottom="10dip"></ImageButton>
 
 		</LinearLayout>
 	</RelativeLayout>
