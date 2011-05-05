@@ -26,6 +26,10 @@ public class Node {
 		this.value_ = value_;
 	}
 	
+	public void increaseValue(){
+		this.value_++;
+	}
+	
 	
 	
 	
