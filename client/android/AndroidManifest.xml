@@ -53,7 +53,7 @@
 		
 		<!--  Transport Plugin -->
 		<activity android:name=".plugin.transport.TransportPlugin" android:screenOrientation="portrait"></activity>
-		<activity android:name=".plugin.transport.TransportDetailed" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.transport.TransportResults" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.transport.TransportPreference" android:screenOrientation="portrait"></activity>
 
 		<!-- Social Plugin -->

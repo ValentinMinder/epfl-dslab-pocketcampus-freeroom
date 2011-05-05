@@ -31,32 +31,32 @@
 				android:gravity="center"
 				android:id="@+id/msg_empty"
 				android:text="No destination set."
-				android:layout_width="fill_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:textSize="15dip"
 				></TextView>
 
 		</RelativeLayout>
 
-		<RelativeLayout
+		<!-- <RelativeLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true" 
 			android:id="@+id/transport_search"
-			android:background="@color/dark_grey">
+			android:background="@drawable/food_list_header_background">
 
 			<AutoCompleteTextView
 				android:layout_height="wrap_content"
-				android:text="Ecublens VD, EPFL"
 				android:id="@+id/transport_autoCompleteFrom"
 				android:layout_alignParentLeft="true"
 				android:layout_width="fill_parent"
 				android:layout_marginRight="105px"
+				android:hint="Departure"
 				></AutoCompleteTextView>
 
 			<Button
 				android:layout_height="wrap_content"
-				android:text="&lt;-&gt;"
+				android:text="Switch"
 				android:id="@+id/transport_switchDirection"
 				android:layout_alignParentRight="true"
 				android:layout_width="100px"
@@ -64,7 +64,7 @@
 				></Button>
 
 			<AutoCompleteTextView
-				android:text="Destination"
+				android:hint="Arrival"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/transport_autoCompleteTo"
@@ -80,7 +80,7 @@
 				android:layout_toLeftOf="@+id/transport_autoCompleteTo"
 				></Button>
 
-		</RelativeLayout>
+		</RelativeLayout> -->
 
 	</RelativeLayout>
 

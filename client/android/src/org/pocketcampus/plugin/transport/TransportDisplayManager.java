@@ -70,21 +70,21 @@ public class TransportDisplayManager implements OnClickListener {
 		adapter_ = new TransportSummaryListAdapter(ownerActivity, requestHandler_, actionBar_);
 		mainList_.setAdapter(adapter_);
 		
-		autoCompleteGoFrom_ = (AutoCompleteTextView)ownerActivity.findViewById(R.id.transport_autoCompleteFrom);
-		ArrayAdapter<Location> adapterFrom = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
-		autoCompleteGoFrom_.setAdapter(adapterFrom);
-		
-		switcharoo_ = (Button)ownerActivity.findViewById(R.id.transport_switchDirection);
-		switcharoo_.setOnClickListener(this);
-		
-		autoCompleteGoTo_ = (AutoCompleteTextView)ownerActivity_.findViewById(R.id.transport_autoCompleteTo);
-		ArrayAdapter<Location> adapterTo = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
-		autoCompleteGoTo_.setAdapter(adapterTo);
+//		autoCompleteGoFrom_ = (AutoCompleteTextView)ownerActivity.findViewById(R.id.transport_autoCompleteFrom);
+//		ArrayAdapter<Location> adapterFrom = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
+//		autoCompleteGoFrom_.setAdapter(adapterFrom);
+//		
+//		switcharoo_ = (Button)ownerActivity.findViewById(R.id.transport_switchDirection);
+//		switcharoo_.setOnClickListener(this);
+//		
+//		autoCompleteGoTo_ = (AutoCompleteTextView)ownerActivity_.findViewById(R.id.transport_autoCompleteTo);
+//		ArrayAdapter<Location> adapterTo = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
+//		autoCompleteGoTo_.setAdapter(adapterTo);
 		//autoCompleteGoTo_.setCompletionHint("where you wanna go"); //TODO remove this
 		//autoCompleteGoTo_.setThreshold(3);
 		
-		go_ = (Button) ownerActivity_.findViewById(R.id.transport_go);
-		go_.setOnClickListener(this);
+//		go_ = (Button) ownerActivity_.findViewById(R.id.transport_go);
+//		go_.setOnClickListener(this);
 		
 	}
 
@@ -153,7 +153,9 @@ public class TransportDisplayManager implements OnClickListener {
 	}
 	
 	private void afficheUnSuperTrajetTropCoolDeLaMort(QueryConnectionsResult summary){
-		System.out.println(summary.toString());
+		Intent intent = new Intent(activityContext_, TransportResults.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		activityContext_.startActivity(intent);
 	}
 	
 	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(final Connection c) {
