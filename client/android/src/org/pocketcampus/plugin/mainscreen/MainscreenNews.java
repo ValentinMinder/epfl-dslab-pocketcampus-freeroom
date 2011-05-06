@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.util.Date;
+
 import org.pocketcampus.core.plugin.PluginBase;
 
 /**
@@ -17,12 +19,14 @@ public class MainscreenNews {
 	private String content_;
 	private int id_;
 	private PluginBase plugin_;
+	private Date date_;
 	
-	public MainscreenNews(String title, String content, int id, PluginBase plugin) {
+	public MainscreenNews(String title, String content, int id, PluginBase plugin, Date date) {
 		this.content_ = content;
 		this.title_ = title;
 		this.id_ = id;
 		this.plugin_ = plugin;
+		this.date_ = date;
 	}
 	
 	public String getContent_() {
@@ -39,6 +43,10 @@ public class MainscreenNews {
 	
 	public PluginBase getPlugin_() {
 		return plugin_;
+	}
+	
+	public Date getDate_() {
+		return date_;
 	}
 	
 }
