@@ -7,8 +7,6 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.FoodPlugin;
-import org.pocketcampus.plugin.food.MenuView;
-import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.content.Context;
@@ -88,6 +86,13 @@ public class SandwichListAdapter extends BaseAdapter implements Filterable {
 		mExpanded_[position] = !mExpanded_[position];
 		menusActivity_.notifyDataSetChanged();
 	}
+	
+	public void toggleAll(boolean toggle) {
+		for (int i = 0; i < mExpanded_.length; i++) {
+			mExpanded_[i] = toggle;
+		}
+		menusActivity_.notifyDataSetChanged();
+	}
 
 	public Filter getFilter() {
 		return null;
@@ -147,34 +152,6 @@ public class SandwichListAdapter extends BaseAdapter implements Filterable {
 			for (int j = 0; j < sMenus.size(); j++) {
 				addView(sMenus.get(j));
 				sMenus.get(j).setVisibility(expanded ? VISIBLE : GONE);
-			}
-		}
-
-		/**
-		 * Convenience method to set the title of a ViewHolder
-		 */
-		public void setTitle(String title) {
-			sname.setText(title);
-		}
-
-		/**
-		 * Convenience method to set the dialogue of a SpeechView
-		 */
-		public void setMenus(String resto) {
-			Vector<Sandwich> sandwiches = sandwiches_.get(resto);
-			sMenus.clear();
-			for (Sandwich s : sandwiches) {
-				sMenus.add(new SandwichView(menusActivity_, s));
-			}
-		}
-
-
-		/**
-		 * Convenience method to expand or hide the menus
-		 */
-		public void setExpanded(boolean expanded) {
-			for (View v : sMenus) {
-				v.setVisibility(expanded ? VISIBLE : GONE);
 			}
 		}
 	}

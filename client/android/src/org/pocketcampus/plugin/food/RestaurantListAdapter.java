@@ -86,6 +86,13 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		mExpanded_[position] = !mExpanded_[position];
 		menusActivity_.notifyDataSetChanged();
 	}
+	
+	public void toggleAll(boolean toggle) {
+		for (int i = 0; i < mExpanded_.length; i++) {
+			mExpanded_[i] = toggle;
+		}
+		menusActivity_.notifyDataSetChanged();
+	}
 
 	public Filter getFilter() {
 		return null;
@@ -145,46 +152,6 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 			for (int j = 0; j < mMenus.size(); j++) {
 				addView(mMenus.get(j));
 				mMenus.get(j).setVisibility(expanded ? VISIBLE : GONE);
-			}
-		}
-
-		/**
-		 * Convenience method to set the title of a ViewHolder
-		 */
-		public void setTitle(String title) {
-			mTitle.setText(title);
-		}
-
-		/**
-		 * Convenience method to set the dialogue of a SpeechView
-		 */
-		public void setMenus(String resto) {
-			Vector<Meal> meals = mealHashMap_.get(resto);
-			mMenus.clear();
-			for (Meal m : meals) {
-				mMenus.add(new MenuView(m, menusActivity_));
-			}
-		}
-
-		// private class OnItemClickListener implements OnClickListener {
-		// private int mPosition;
-		//
-		// OnItemClickListener(int position) {
-		// mPosition = position;
-		// }
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // menuDialog(mPosition);
-		// }
-		// }
-
-		/**
-		 * Convenience method to expand or hide the menus
-		 */
-		public void setExpanded(boolean expanded) {
-			for (View v : mMenus) {
-				v.setVisibility(expanded ? VISIBLE : GONE);
 			}
 		}
 	}

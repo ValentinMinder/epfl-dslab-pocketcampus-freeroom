@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 
 import org.pocketcampus.R;
@@ -13,16 +12,21 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.pictures.PictureTaker;
+import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -50,20 +54,7 @@ public class FoodPlugin extends PluginBase {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.food_main);
-
-		setupActionBar(true);
-
-		// ListView
-		l_ = (ListView) findViewById(R.id.food_list);
-		empty = (TextView) findViewById(R.id.food_empty);
-
-		validityDate_ = (TextView) findViewById(R.id.food_day_label);
-		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
-
-		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
-		spinner_.setVisibility(View.VISIBLE);
-
+		loadFirstScreen();
 		restaurantAction_ = new RestaurantAction();
 		// RequestHandler
 		foodRequestHandler_ = getRequestHandler();
@@ -83,27 +74,24 @@ public class FoodPlugin extends PluginBase {
 		}
 	}
 
-	private void loadFirstScreen(int layout) {
-		setContentView(layout);
+	private void loadFirstScreen() {
+		setContentView(R.layout.food_main);
 
 		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
-		spinner_.setVisibility(View.GONE);
+		spinner_.setVisibility(View.VISIBLE);
 
 		setupActionBar(true);
-
 		// ListView
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
+
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
+		expandMenus_.setOnTouchListener(new ExpandListener());
+	}
 
-		if (spinner_ != null) {
-			spinner_.setVisibility(View.GONE);
-		} else {
-			Toast.makeText(this, "Spinner is null when back",
-					Toast.LENGTH_SHORT).show();
-		}
-		// At first, display food by restaurant
+	private void resetScreen() {
+		loadFirstScreen();
 		displayView();
 	}
 
@@ -139,52 +127,6 @@ public class FoodPlugin extends PluginBase {
 		}
 	}
 
-	class RestaurantAction implements Action {
-		private boolean isRestaurants_;
-		private boolean isShown_;
-
-		RestaurantAction() {
-			isRestaurants_ = true;
-			isShown_ = false;
-		}
-
-		@Override
-		public int getDrawable() {
-			if (isRestaurants_) {
-				return R.drawable.food_menus_by_ratings;
-			} else {
-				return R.drawable.food_menus_by_restaurant;
-			}
-		}
-
-		@Override
-		public void performAction(View view) {
-			isRestaurants_ = !isRestaurants_;
-			actionBar_.removeActionAt(0);
-			actionBar_.addAction(this, 0);
-			if (isRestaurants_) {
-				if (isSandwichDisplay_) {
-					loadFirstScreen(R.layout.food_main);
-					isSandwichDisplay_ = false;
-				}
-				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
-			} else {
-				foodDisplayHandler_.setCurrentDisplayType(125);
-			}
-			displayView();
-			foodDisplayHandler_.refreshView();
-		}
-
-		public boolean isShown() {
-			return isShown_;
-		}
-
-		public void setShown(boolean show) {
-			isShown_ = show;
-		}
-	}
-
 	public void menuRefreshing() {
 		actionBar_.setProgressBarVisibility(View.VISIBLE);
 	}
@@ -201,16 +143,6 @@ public class FoodPlugin extends PluginBase {
 		spinner_.setVisibility(View.GONE);
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-
-	// public void sandwichRefreshed() {
-	// foodDisplayHandler_.updateView();
-	// if (foodDisplayHandler_.getCurrentDisplayType() ==
-	// FoodDisplayType.Sandwiches) {
-	// displaySandwiches();
-	// }
-	// spinner_.setVisibility(View.GONE);
-	// actionBar_.setProgressBarVisibility(View.GONE);
-	// }
 
 	public void notifyDataSetChanged() {
 		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
@@ -230,32 +162,37 @@ public class FoodPlugin extends PluginBase {
 		}
 
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
+		expandMenus_.setVisibility(View.GONE);
+		
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
 			empty.setText("");
+			expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
+			expandMenus_.setOnTouchListener(new ExpandListener());
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("");
-				expandMenus_.setVisibility(View.GONE);
+			} else if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
+				validityDate_.setText(getResources().getString(
+						R.string.food_today_sandwiches));
+				expandMenus_.setVisibility(View.VISIBLE);
 			} else {
+				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Ratings) {
+				} else {
+					expandMenus_.setVisibility(View.VISIBLE);
+				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
 						.getDateLastUpdatedMenus();
-				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
-					validityDate_.setText(getResources().getString(
-							R.string.food_today_sandwiches));
-					expandMenus_.setVisibility(View.GONE);
-				} else if (today.getDay() == lastUpdated.getDay()
+				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
 							R.string.food_today_menus));
 				} else {
 					validityDate_.setText(lastUpdated.toLocaleString());
 				}
-				expandMenus_.setVisibility(View.VISIBLE);
 			}
 		} else {
 			empty.setText(getString(R.string.food_empty));
-			expandMenus_.setVisibility(View.GONE);
 		}
 	}
 
@@ -283,7 +220,7 @@ public class FoodPlugin extends PluginBase {
 			// case R.id.food_menu_ratings: // Show menus by rating
 			// setContentView(R.layout.food_main);
 			if (isSandwichDisplay_) {
-				loadFirstScreen(R.layout.food_main);
+				resetScreen();
 				isSandwichDisplay_ = false;
 			}
 			foodDisplayHandler_.setCurrentDisplayType(selectedId);
@@ -320,16 +257,6 @@ public class FoodPlugin extends PluginBase {
 	final int SUGGESTIONS_REQUEST_CODE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
 
-	@Override
-	public PluginInfo getPluginInfo() {
-		return new FoodInfo();
-	}
-
-	@Override
-	public PluginPreference getPluginPreference() {
-		return new FoodPreference();
-	}
-
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -357,6 +284,100 @@ public class FoodPlugin extends PluginBase {
 			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
 			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
 			break;
+		}
+	}
+
+	@Override
+	public PluginInfo getPluginInfo() {
+		return new FoodInfo();
+	}
+
+	@Override
+	public PluginPreference getPluginPreference() {
+		return new FoodPreference();
+	}
+
+	class RestaurantAction implements Action {
+		private boolean isRestaurants_;
+		private boolean isShown_;
+
+		RestaurantAction() {
+			isRestaurants_ = true;
+			isShown_ = false;
+		}
+
+		@Override
+		public int getDrawable() {
+			if (isRestaurants_) {
+				return R.drawable.food_menus_by_ratings;
+			} else {
+				return R.drawable.food_menus_by_restaurant;
+			}
+		}
+
+		@Override
+		public void performAction(View view) {
+			isRestaurants_ = !isRestaurants_;
+			actionBar_.removeActionAt(0);
+			actionBar_.addAction(this, 0);
+			if (isRestaurants_) {
+				if (isSandwichDisplay_) {
+					resetScreen();
+					isSandwichDisplay_ = false;
+				}
+				foodDisplayHandler_
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
+			} else {
+				foodDisplayHandler_.setCurrentDisplayType(125);
+			}
+			displayView();
+			foodDisplayHandler_.refreshView();
+		}
+
+		public boolean isShown() {
+			return isShown_;
+		}
+
+		public void setShown(boolean show) {
+			isShown_ = show;
+		}
+	}
+
+	class ExpandListener implements OnTouchListener {
+		private boolean expanded = false;
+		private Drawable expand_;
+		private Drawable unexpand_;
+		
+		public ExpandListener() {
+			expand_ = FoodPlugin.this.getResources().getDrawable(
+					R.drawable.food_menus_expand);
+			unexpand_ = FoodPlugin.this.getResources().getDrawable(
+					R.drawable.food_menus_remballe);
+
+			expandMenus_.setImageDrawable(expand_);
+		}
+		@Override
+		public boolean onTouch(View view, MotionEvent arg1) {
+			expanded = (!expanded);
+			if (!expanded) {
+				expandMenus_.setImageDrawable(expand_);
+			} else {
+				expandMenus_.setImageDrawable(unexpand_);
+			}
+			expandMenus_.invalidate();
+
+			Adapter adapt = foodDisplayHandler_.getListAdapter()
+					.getExpandableList(
+							FoodPlugin.this
+									.getString(R.string.food_restaurants));
+			if (adapt != null) {
+				if (adapt instanceof RestaurantListAdapter) {
+					((RestaurantListAdapter) adapt).toggleAll(expanded);
+				} else if (adapt instanceof SandwichListAdapter) {
+					((SandwichListAdapter) adapt).toggleAll(expanded);
+				}
+			}
+			return false;
 		}
 	}
 }

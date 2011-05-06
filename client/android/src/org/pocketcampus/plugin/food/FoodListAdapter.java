@@ -49,6 +49,10 @@ public class FoodListAdapter extends BaseAdapter {
 		this.sections_.put(section, adapter);
 	}
 	
+	public Adapter getExpandableList(String section){
+		return sections_.get(section);
+	}
+	
 	/**
 	 * Method to remove sections from the list view.
 	 */
