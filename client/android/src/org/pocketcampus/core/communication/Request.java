@@ -92,7 +92,7 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	protected final A doInBackground(RequestParameters... params) {
 		String url = getUrl();
 
-		if(params[0] != null) {
+		if(params!=null && params[0]!=null) {
 			url += params[0].toString();
 		}
 

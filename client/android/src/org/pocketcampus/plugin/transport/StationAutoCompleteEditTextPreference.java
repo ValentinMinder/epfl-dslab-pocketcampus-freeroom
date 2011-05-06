@@ -152,7 +152,12 @@ public class StationAutoCompleteEditTextPreference extends EditTextPreference {
 	class AutocompleteRequest extends AutoCompleteStationRequest {
 		@Override
 		protected void handleLocations(ArrayList<Location> locations) {
-			if(locations!=null && locations.size()>0) {
+			if(locations == null) {
+				onCancelled();
+				return;
+			}
+			
+			if(locations.size() > 0) {
 				Location station = locations.get(0);
 				lastStationId_ = station.id;
 				

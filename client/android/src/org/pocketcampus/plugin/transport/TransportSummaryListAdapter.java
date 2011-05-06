@@ -6,11 +6,14 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
@@ -63,10 +66,10 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 			
 			@Override
 			protected void doInUiThread(String result) {
-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
-
 				Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
-				QueryConnectionsResult summary = gson.fromJson(result, SummaryListType);
+				QueryConnectionsResult summary = null;
+				
+				summary = Json.fromJson(result, SummaryListType);
 
 				adapter.setSummary(summary);
 				notifyDataSetChanged();

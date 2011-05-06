@@ -93,64 +93,62 @@ public class TransportDisplayManager implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if( v.getId() == switcharoo_.getId() ){
-			//canceling autocompletion
-			autoCompleteGoFrom_.setAdapter((ArrayAdapter<String>)null);
-			autoCompleteGoTo_.setAdapter((ArrayAdapter<String>)null);
-			
-			//switching values
-			String tmp = autoCompleteGoFrom_.getText().toString();
-			autoCompleteGoFrom_.setText( autoCompleteGoTo_.getText());
-			autoCompleteGoTo_.setText(tmp);
-			
-			//re creating autocomletion
-			ArrayAdapter<Location> adapterFrom = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
-			autoCompleteGoFrom_.setAdapter(adapterFrom);
-			ArrayAdapter<Location> adapterTo = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
-			autoCompleteGoTo_.setAdapter(adapterTo);
-		
-		
-		}else if (v.getId() == go_.getId()){
-			String to = autoCompleteGoTo_.getText().toString();
-			String from = autoCompleteGoFrom_.getText().toString();
-			
-			requestHandler_.toString();
-			
-			class ConnectionsRequest extends DataRequest {
-				
-				@Override
-				protected int expirationDelay() {
-					// 5 minutes
-					return 60 * 5;
-				}
-				
-				@Override
-				protected void doInUiThread(String result) {
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
-
-					Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
-					QueryConnectionsResult summary = gson.fromJson(result, SummaryListType);
-					
-					afficheUnSuperTrajetTropCoolDeLaMort(summary);
-
-				}
-				
-				@Override
-				protected void onCancelled() {
-				}
-				
-			} 
-
-			RequestParameters params = new RequestParameters();
-			params.addParameter("from", from);
-			params.addParameter("to", to);
-
-			requestHandler_.execute(new ConnectionsRequest(), "connections", params);
-			
-			
-			
-		}
-		
+//		if( v.getId() == switcharoo_.getId() ){
+//			//canceling autocompletion
+//			autoCompleteGoFrom_.setAdapter((ArrayAdapter<String>)null);
+//			autoCompleteGoTo_.setAdapter((ArrayAdapter<String>)null);
+//			
+//			//switching values
+//			String tmp = autoCompleteGoFrom_.getText().toString();
+//			autoCompleteGoFrom_.setText( autoCompleteGoTo_.getText());
+//			autoCompleteGoTo_.setText(tmp);
+//			
+//			//re creating autocomletion
+//			ArrayAdapter<Location> adapterFrom = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoFrom_, requestHandler_);
+//			autoCompleteGoFrom_.setAdapter(adapterFrom);
+//			ArrayAdapter<Location> adapterTo = new LocationAdapter(ownerActivity_, android.R.layout.simple_dropdown_item_1line, autoCompleteGoTo_, requestHandler_);
+//			autoCompleteGoTo_.setAdapter(adapterTo);
+//		
+//		
+//		}else if (v.getId() == go_.getId()){
+//			String to = autoCompleteGoTo_.getText().toString();
+//			String from = autoCompleteGoFrom_.getText().toString();
+//			
+//			requestHandler_.toString();
+//			
+//			class ConnectionsRequest extends DataRequest {
+//				
+//				@Override
+//				protected int expirationDelay() {
+//					// 5 minutes
+//					return 60 * 5;
+//				}
+//				
+//				@Override
+//				protected void doInUiThread(String result) {
+//					Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
+//					QueryConnectionsResult summary = Json.fromJson(result, SummaryListType);
+//					
+//					afficheUnSuperTrajetTropCoolDeLaMort(summary);
+//
+//				}
+//				
+//				@Override
+//				protected void onCancelled() {
+//				}
+//				
+//			} 
+//
+//			RequestParameters params = new RequestParameters();
+//			params.addParameter("from", from);
+//			params.addParameter("to", to);
+//
+//			requestHandler_.execute(new ConnectionsRequest(), "connections", params);
+//			
+//			
+//			
+//		}
+//		
 	}
 	
 	private void afficheUnSuperTrajetTropCoolDeLaMort(QueryConnectionsResult summary){

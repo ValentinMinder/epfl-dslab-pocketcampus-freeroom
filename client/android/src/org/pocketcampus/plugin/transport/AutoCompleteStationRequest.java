@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.LocationType;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 abstract class AutoCompleteStationRequest extends DataRequest {
-	private ArrayList<Location> locations;
+	private ArrayList<Location> locations_;
 
 	public AutoCompleteStationRequest() {
-		locations = new ArrayList<Location>();
+		locations_ = new ArrayList<Location>();
 	}
 	
 	@Override
@@ -27,25 +27,24 @@ abstract class AutoCompleteStationRequest extends DataRequest {
 	@Override
 	final protected void doInUiThread(String result) {
 		// Extracts the result.
-		Gson gson = new Gson();
 		Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
-		locations = gson.fromJson(result, AutocompleteType);
+		locations_ = Json.fromJson(result, AutocompleteType);
 		
-		if(locations == null) {
+		if(locations_ == null) {
 			handleLocations(null);
 			return;
 		}
 		
 		// Keeps only the stations (no POIs etc)
-		ArrayList<Location> stations = new ArrayList<Location>();
+		ArrayList<Location> stations = new ArrayList<Location>();;
 		
-		for(Location location : locations) {
+		for(Location location : locations_) {
 			if(location.type == LocationType.STATION) {
 				stations.add(location);
 			}
 		}
 		
-		handleLocations(locations);
+		handleLocations(locations_);
 	}
 
 	protected abstract void handleLocations(ArrayList<Location> locations);

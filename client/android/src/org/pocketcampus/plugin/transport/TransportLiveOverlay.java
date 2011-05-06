@@ -8,9 +8,9 @@ import java.lang.reflect.Type;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.shared.plugin.transport.Railway;
@@ -59,7 +59,7 @@ public class TransportLiveOverlay {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
 
 			Type QueryConnectionsResultType = new TypeToken<QueryConnectionsResult>(){}.getType();
-			QueryConnectionsResult summary = gson.fromJson(result, QueryConnectionsResultType);
+			QueryConnectionsResult summary = Json.fromJson(result, QueryConnectionsResultType);
 			
 			if(summary!=null && summary.connections!=null && summary.connections.get(0)!=null) {
 				//System.out.println(node.getTag("uic_name"));
