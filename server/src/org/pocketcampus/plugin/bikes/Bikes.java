@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.bikes;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,18 +16,38 @@ import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 public class Bikes implements IPlugin, IMapElementsProvider {
 
+	
+	private ArrayList<BikeStation> bikes_;
+	private Date lastRequest_;
+	
+	private final static long REFRESH_TIME = 5*60*1000;
+	
+	public Bikes() {
+		try {
+			bikes_ = new BikeStationParser().parserBikes();
+			lastRequest_ = new Date();
+		} catch (IOException e) {
+			bikes_ = null;
+			lastRequest_ = null;
+		}
+	}
+	
+	
 	@PublicMethod
 	public ArrayList<BikeStation> bikes(HttpServletRequest request) {
-
-		ArrayList<BikeStation> bikes = new ArrayList<BikeStation>();
-		try {
-			bikes = new BikeStationParser().parserBikes();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		return bikes;
+		Date now = new Date();
+		if(bikes_ == null || lastRequest_ == null || (now.getTime()-lastRequest_.getTime()) > REFRESH_TIME) {
+			try {
+				bikes_ = new BikeStationParser().parserBikes();
+				lastRequest_ = now;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}
+		return bikes_;
     }
 
 	@Override
