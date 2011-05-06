@@ -52,13 +52,14 @@ public class FoodDisplayHandler {
 		currentDisplayType_ = FoodDisplayType.Restaurants;
 
 		campusMenu_ = new FoodMenu(ownerActivity_);
-		sandwichList_ = new SandwichList(ownerActivity_);
-		suggestionsMenu_ = new HashMap<Meal, Rating>();
 		campusSandwich_ = new HashMap<String, Vector<Sandwich>>();
+		sandwichList_ = new SandwichList(ownerActivity_);
+
+		suggestionsMenu_ = new HashMap<Meal, Rating>();
 
 		sorter_ = new MenuSorter();
 
-		// updateView();
+		updateView();
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class FoodDisplayHandler {
 		case 125:
 			currentDisplayType_ = FoodDisplayType.Ratings;
 			break;
-			
+
 		}
 		updateView();
 	}
@@ -149,6 +150,7 @@ public class FoodDisplayHandler {
 			campusMenu_.refreshMenu();
 			break;
 		case Sandwiches:
+			sandwichList_.refreshSandwiches();
 			break;
 		case Suggestions:
 			break;

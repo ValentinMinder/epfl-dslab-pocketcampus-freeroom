@@ -34,10 +34,8 @@ public class MenuDialog extends Dialog {
 	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
 	private FoodPlugin context_;
-	private boolean photoButtonsEnabled_;
 
-	public MenuDialog(final Meal meal, final FoodPlugin menus,
-			boolean photoButtonsEnabled) {
+	public MenuDialog(final Meal meal, final FoodPlugin menus) {
 		super(menus);
 		this.displayedMeal_ = meal;
 		this.context_ = menus;
@@ -46,7 +44,6 @@ public class MenuDialog extends Dialog {
 		 **/
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		this.photoButtonsEnabled_ = photoButtonsEnabled;
 
 		setContentView(R.layout.food_dialog_menu);
 
@@ -125,30 +122,6 @@ public class MenuDialog extends Dialog {
 
 		progressDialog_.dismiss();
 
-	}
-
-	private void seePicturesQueue() {
-		/*
-		 * Intent seePicture = new Intent(getContext(),
-		 * SlidingImageActivity.class); seePicture.putExtra("meal", meal);
-		 * ch.startActivity(seePicture);
-		 */
-	}
-
-	private void callNavigationActivity(Restaurant selectedRestaurant) {
-		/*
-		 * Intent startNavActivity = new Intent(getContext(),
-		 * NavigationActivity.class); startNavActivity.putExtra("Restaurant",
-		 * selectedRestaurant); ch.startActivity(startNavActivity); dismiss();
-		 */
-	}
-
-	private void callStatisticsActivity() {
-		/*
-		 * Intent startStatActivity = new Intent(getContext(),
-		 * RestaurantStats.class);
-		 * menusActivity.startActivity(startStatActivity);
-		 */
 	}
 
 	private String getVoteString(int numbVotes) {

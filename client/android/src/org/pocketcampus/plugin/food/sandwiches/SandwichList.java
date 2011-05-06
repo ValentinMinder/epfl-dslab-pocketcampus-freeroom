@@ -30,6 +30,14 @@ public class SandwichList {
 		return sandwichList_;
 	}
 
+	public void refreshSandwiches() {
+		Log.d("SERVER", "Refreshing.");
+		if (sandwichList_.isEmpty()) {
+			Log.d("SERVER", "Reloading sandwiches");
+			loadSandwiches();
+		}
+	}
+
 	private void loadSandwiches() {
 		pluginHandler_.menuRefreshing();
 
@@ -38,8 +46,9 @@ public class SandwichList {
 			@Override
 			public void onCancelled() {
 				Log.d("SANDWICHES", "Task cancelled");
+				pluginHandler_.menuRefreshed(false);
 			}
-			
+
 			@Override
 			protected void doInUiThread(String result) {
 
@@ -64,11 +73,11 @@ public class SandwichList {
 				}
 
 				sandwichList_ = new HashMap<String, Vector<Sandwich>>();
-				if(sandwichFromServer_ != null){					
+				if (sandwichFromServer_ != null) {
 					sandwichList_ = sortByRestaurant(sandwichFromServer_);
 				}
 
-				pluginHandler_.sandwichRefreshed();
+				pluginHandler_.menuRefreshed(true);
 			}
 		}
 		Log.d("SANDWICHES", "Requesting sandwiches.");

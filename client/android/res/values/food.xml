@@ -21,6 +21,7 @@
 	<string name="food_thursday">Thursday</string>
 	<string name="food_friday">Friday</string>
 	<string name="food_today_menus">Today\'s menus</string>
+	<string name="food_today_sandwiches">Today\'s sandwiches</string>
 	
 	<!-- Ratings -->
 	<string name="food_rating_submitted">Rating submission successful.</string>

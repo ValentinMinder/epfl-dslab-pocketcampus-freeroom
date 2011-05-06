@@ -102,7 +102,7 @@ public class MenuView extends LinearLayout {
 	}
 
 	private void menuDialog() {
-		MenuDialog r = new MenuDialog(currentMeal_, ctx_, true);
+		MenuDialog r = new MenuDialog(currentMeal_, ctx_);
 		r.show();
 	}
 

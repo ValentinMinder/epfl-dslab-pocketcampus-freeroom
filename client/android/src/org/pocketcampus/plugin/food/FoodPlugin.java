@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 
 import org.pocketcampus.R;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ public class FoodPlugin extends PluginBase {
 	private TextView txt_empty_;
 	private TextView empty;
 	private TextView validityDate_;
+	private ImageView expandMenus_;
+
 	private ProgressBar spinner_;
 	private RestaurantAction restaurantAction_;
 
@@ -55,6 +59,7 @@ public class FoodPlugin extends PluginBase {
 		empty = (TextView) findViewById(R.id.food_empty);
 
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
+		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
 
 		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
 		spinner_.setVisibility(View.VISIBLE);
@@ -90,6 +95,7 @@ public class FoodPlugin extends PluginBase {
 		l_ = (ListView) findViewById(R.id.food_list);
 		empty = (TextView) findViewById(R.id.food_empty);
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
+		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
 
 		if (spinner_ != null) {
 			spinner_.setVisibility(View.GONE);
@@ -196,12 +202,15 @@ public class FoodPlugin extends PluginBase {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
-	public void sandwichRefreshed() {
-		foodDisplayHandler_.updateView();
-		displaySandwiches();
-		spinner_.setVisibility(View.GONE);
-		actionBar_.setProgressBarVisibility(View.GONE);
-	}
+	// public void sandwichRefreshed() {
+	// foodDisplayHandler_.updateView();
+	// if (foodDisplayHandler_.getCurrentDisplayType() ==
+	// FoodDisplayType.Sandwiches) {
+	// displaySandwiches();
+	// }
+	// spinner_.setVisibility(View.GONE);
+	// actionBar_.setProgressBarVisibility(View.GONE);
+	// }
 
 	public void notifyDataSetChanged() {
 		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
@@ -226,34 +235,27 @@ public class FoodPlugin extends PluginBase {
 			empty.setText("");
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("");
+				expandMenus_.setVisibility(View.GONE);
 			} else {
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
 						.getDateLastUpdatedMenus();
-				if (today.getDay() == lastUpdated.getDay()
+				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
+					validityDate_.setText(getResources().getString(
+							R.string.food_today_sandwiches));
+					expandMenus_.setVisibility(View.GONE);
+				} else if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
 							R.string.food_today_menus));
 				} else {
 					validityDate_.setText(lastUpdated.toLocaleString());
 				}
+				expandMenus_.setVisibility(View.VISIBLE);
 			}
 		} else {
 			empty.setText(getString(R.string.food_empty));
-		}
-	}
-
-	public void displaySandwiches() {
-
-		if (spinner_ != null) {
-			spinner_.setVisibility(View.GONE);
-		}
-
-		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
-		if (foodDisplayHandler_.valid() && fla != null) {
-			l_.setAdapter(fla);
-		} else {
-			empty.setText(getString(R.string.food_empty));
+			expandMenus_.setVisibility(View.GONE);
 		}
 	}
 
@@ -293,7 +295,7 @@ public class FoodPlugin extends PluginBase {
 							"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
 			foodDisplayHandler_.setCurrentDisplayType(selectedId);
-			displaySandwiches();
+			displayView();
 			return true;
 		case R.id.food_menu_suggestions: // show suggestions
 			suggestionMenus_ = foodDisplayHandler_.getMenusList();
