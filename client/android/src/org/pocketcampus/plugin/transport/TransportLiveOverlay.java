@@ -11,13 +11,12 @@ import java.util.TimerTask;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.shared.plugin.transport.Railway;
 import org.pocketcampus.shared.plugin.transport.RailwayNode;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
@@ -56,10 +55,15 @@ public class TransportLiveOverlay {
 		
 		@Override
 		protected void doInBackgroundThread(String result) {
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
-
 			Type QueryConnectionsResultType = new TypeToken<QueryConnectionsResult>(){}.getType();
-			QueryConnectionsResult summary = Json.fromJson(result, QueryConnectionsResultType);
+			
+			QueryConnectionsResult summary = null;
+			try {
+				summary = Json.fromJson(result, QueryConnectionsResultType);
+			} catch (JsonException e) {
+				onCancelled();
+				return;
+			}
 			
 			if(summary!=null && summary.connections!=null && summary.connections.get(0)!=null) {
 				//System.out.println(node.getTag("uic_name"));

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.LocationType;
 
@@ -28,7 +29,13 @@ abstract class AutoCompleteStationRequest extends DataRequest {
 	final protected void doInUiThread(String result) {
 		// Extracts the result.
 		Type AutocompleteType = new TypeToken<List<Location>>(){}.getType();
-		locations_ = Json.fromJson(result, AutocompleteType);
+		
+		try {
+			locations_ = Json.fromJson(result, AutocompleteType);
+		} catch (JsonException e) {
+			onCancelled();
+			return;
+		}
 		
 		if(locations_ == null) {
 			handleLocations(null);
