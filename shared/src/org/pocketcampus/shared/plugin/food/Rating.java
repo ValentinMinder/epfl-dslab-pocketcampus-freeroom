@@ -62,6 +62,11 @@ public class Rating implements Serializable {
 	public String toString() {
 		return "Average rating : " + rating_ + ", number of votes : "
 				+ numberOfVotes_;
-
+	}
+	
+	public enum SubmitStatus {
+		AlreadyVoted,
+		Valid,
+		Error;
 	}
 }

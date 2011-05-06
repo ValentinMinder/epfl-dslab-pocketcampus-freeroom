@@ -51,32 +51,19 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		// When convertView is not null, we can reuse it directly, there is
 		// no need to re-inflate it. We only inflate a new View when the
 		// convertView supplied by ListView is null.
-		if (convertView == null) {
-			convertView = mInflater_.inflate(R.layout.food_menuentry, null);
-
-			// Creates a ViewHolder and store references to the two children
-			// views we want to bind data to.
-			holder = new MenuView(meal_.get(position), menusActivity_);
-		} else {
-			holder = (MenuView) convertView;
-		}
+		// if (convertView == null) {
+		// convertView = mInflater_.inflate(R.layout.food_menuentry, null);
+		//
+		// // Creates a ViewHolder and store references to the two children
+		// // views we want to bind data to.
+		// } else {
+		// holder = (MenuView) convertView;
+		// }
+		holder = new MenuView(meal_.get(position), menusActivity_);
 		
 		return holder;
 	}
 
-//	private class OnItemClickListener implements OnClickListener {
-//		private int mPosition;
-//
-//		OnItemClickListener(int position) {
-//			mPosition = position;
-//		}
-//
-//		@Override
-//		public void onClick(View arg0) {
-//			// menuDialog(mPosition);
-//		}
-//	}
-	
 	public Filter getFilter() {
 		return null;
 	}

@@ -25,7 +25,8 @@
 	
 	<!-- Ratings -->
 	<string name="food_rating_submitted">Rating submission successful.</string>
-	<string name="food_rating_notsubmitted">Rating submission unsuccessful.</string>
+	<string name="food_rating_alreadyvoted">Error: you have already voted today!</string>
+	<string name="food_rating_notsubmitted">Error: rating submission unsuccessful, please try again later.</string>
 	<string name="food_menulist_votesPlural">votes</string>
 	<string name="food_menulist_votesSingular">vote</string>
 

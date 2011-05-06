@@ -13,19 +13,28 @@
 
 package org.pocketcampus.plugin.food;
 
+import java.lang.reflect.Type;
+
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
 
 import android.app.Dialog;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Class will represent a rating dialog, that will be opened when rating a meal.
@@ -81,13 +90,37 @@ public class RatingsDialog extends Dialog {
 			protected void doInUiThread(String result) {
 
 				String submitted = "";
-				if (result != null && result.contains("true")) {
-					submitted = menusActivity_.getResources().getString(
-							R.string.food_rating_submitted);
-					menusActivity_.notifyDataSetChanged();
-				} else {
+				if (result == null) {
 					submitted = menusActivity_.getResources().getString(
 							R.string.food_rating_notsubmitted);
+				} else {
+					Type ratingStatusType = new TypeToken<SubmitStatus>() {
+					}.getType();
+
+					SubmitStatus status = null;
+
+					try {
+						status = Json.fromJson(result, ratingStatusType);
+					} catch (JsonSyntaxException e) {
+						Log.d("SERVER", "Jsonsyntax");
+						e.printStackTrace();
+						return;
+					} catch (JsonException e) {
+						e.printStackTrace();
+						return;
+					}
+
+					if (status == SubmitStatus.Valid) {
+						submitted = menusActivity_.getResources().getString(
+								R.string.food_rating_submitted);
+						menusActivity_.notifyDataSetChanged();
+					} else if (status == SubmitStatus.AlreadyVoted) {
+						submitted = menusActivity_.getResources().getString(
+								R.string.food_rating_alreadyvoted);
+					} else if (status == SubmitStatus.Error) {
+						submitted = menusActivity_.getResources().getString(
+								R.string.food_rating_notsubmitted);
+					}
 				}
 				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT)
 						.show();

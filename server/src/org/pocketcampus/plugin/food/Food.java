@@ -20,6 +20,7 @@ import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 import org.pocketcampus.shared.plugin.food.Sandwich;
+import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
@@ -140,7 +141,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	 * @return whether the operation worked.
 	 */
 	@PublicMethod
-	public boolean setRating(HttpServletRequest request) {
+	public Rating.SubmitStatus setRating(HttpServletRequest request) {
 		updateMenu();
 		System.out.println("<setRating>: Rating request.");
 
@@ -150,7 +151,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		if (stringMealHashCode == null || stringRating == null
 				|| deviceId == null) {
-			return false;
+			return SubmitStatus.Error;
 		}
 
 		Connection connection = database_.createConnection();
@@ -159,10 +160,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		if (deviceIds_.contains(deviceId)) {
 			System.out.println("Already in list");
-			return false;
+			database_.closeConnection(connection);
+			return SubmitStatus.AlreadyVoted;
 		} else if (voted) {
 			System.out.println("Already in database.");
-			return false;
+			database_.closeConnection(connection);
+			return SubmitStatus.AlreadyVoted;
 		}
 
 		int mealHashCode = Integer.parseInt(stringMealHashCode);
@@ -182,11 +185,12 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 				// Update rating in the list
 				campusMealRatings_.put(mealHashCode, currentMeal.getRating());
-				return true;
+				database_.closeConnection(connection);
+				return SubmitStatus.Valid;
 			}
 		}
 		database_.closeConnection(connection);
-		return false;
+		return SubmitStatus.Error;
 	}
 
 	/**
