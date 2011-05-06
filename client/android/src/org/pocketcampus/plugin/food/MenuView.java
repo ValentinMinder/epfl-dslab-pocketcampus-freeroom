@@ -26,7 +26,7 @@ public class MenuView extends LinearLayout {
 	FoodPlugin ctx_;
 	LayoutInflater mInflater_;
 
-	MenuView(FoodPlugin context, Meal currentMeal) {
+	MenuView(Meal currentMeal, FoodPlugin context) {
 		super(context);
 		convertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.food_menuentry, null);
@@ -90,7 +90,7 @@ public class MenuView extends LinearLayout {
 	}
 
 	private void ratingDialog() {
-		RatingsDialog r = new RatingsDialog(ctx_, currentMeal_);
+		RatingsDialog r = new RatingsDialog(currentMeal_, ctx_);
 		r.setOnDismissListener(new OnDismissListener() {
 
 			@Override

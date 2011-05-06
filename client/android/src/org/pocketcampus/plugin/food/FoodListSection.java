@@ -56,7 +56,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 			// Creates a ViewHolder and store references to the two children
 			// views we want to bind data to.
-			holder = new MenuView(menusActivity_, meal_.get(position));
+			holder = new MenuView(meal_.get(position), menusActivity_);
 		} else {
 			holder = (MenuView) convertView;
 		}

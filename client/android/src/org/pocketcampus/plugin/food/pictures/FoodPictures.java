@@ -69,19 +69,19 @@ public class FoodPictures extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Resources res = getResources();
-		menu.add(0, 1, 0, res.getText(R.string.food_show_restaurant)).setIcon(
-				R.drawable.food_opt_icon_resto);
-		menu.add(0, 2, 0, res.getText(R.string.food_show_ratings)).setIcon(
-				R.drawable.food_opt_icon_ratings);
-		menu.add(0, 3, 0, res.getText(R.string.food_show_sandwiches)).setIcon(
-				R.drawable.food_opt_icon_sandwich);
-		menu.add(0, 4, 0, res.getText(R.string.food_show_suggestions)).setIcon(
-				R.drawable.food_opt_icon_suggestions);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		Resources res = getResources();
+//		menu.add(0, 1, 0, res.getText(R.string.food_show_menus)).setIcon(
+//				R.drawable.food_opt_icon_resto);
+//		menu.add(0, 2, 0, res.getText(R.string.food_show_ratings)).setIcon(
+//				R.drawable.food_opt_icon_ratings);
+//		menu.add(0, 3, 0, res.getText(R.string.food_show_sandwiches)).setIcon(
+//				R.drawable.food_opt_icon_sandwich);
+//		menu.add(0, 4, 0, res.getText(R.string.food_show_suggestions)).setIcon(
+//				R.drawable.food_opt_icon_suggestions);
+//		return true;
+//	}
 
 	final int SUGGESTIONS_REQUEST_CODE = 1;
 

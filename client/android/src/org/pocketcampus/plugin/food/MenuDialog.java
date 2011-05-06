@@ -13,13 +13,10 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.pictures.PictureTaker;
-import org.pocketcampus.plugin.food.pictures.PictureTaker.PictureType;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -36,10 +33,10 @@ public class MenuDialog extends Dialog {
 	private RatingBar ratingBar_;
 	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
-	private Activity context_;
+	private FoodPlugin context_;
 	private boolean photoButtonsEnabled_;
 
-	public MenuDialog(final Meal meal, final Activity menus,
+	public MenuDialog(final Meal meal, final FoodPlugin menus,
 			boolean photoButtonsEnabled) {
 		super(menus);
 		this.displayedMeal_ = meal;
@@ -87,8 +84,7 @@ public class MenuDialog extends Dialog {
 		rateIt.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				RatingsDialog r = new RatingsDialog(getContext(),
-						displayedMeal_);
+				RatingsDialog r = new RatingsDialog(displayedMeal_, context_);
 				r.setOnDismissListener(new OnDismissRatingsListener());
 				r.show();
 			}

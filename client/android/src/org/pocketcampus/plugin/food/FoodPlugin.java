@@ -10,6 +10,7 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.pictures.PictureTaker;
 import org.pocketcampus.shared.plugin.food.Meal;
 
@@ -36,6 +37,7 @@ public class FoodPlugin extends PluginBase {
 	private TextView empty;
 	private TextView validityDate_;
 	private ProgressBar spinner_;
+	private RestaurantAction restaurantAction_;
 
 	private ArrayList<Meal> suggestionMenus_;
 	private boolean isSandwichDisplay_ = false;
@@ -57,6 +59,7 @@ public class FoodPlugin extends PluginBase {
 		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
 		spinner_.setVisibility(View.VISIBLE);
 
+		restaurantAction_ = new RestaurantAction();
 		// RequestHandler
 		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
@@ -66,11 +69,11 @@ public class FoodPlugin extends PluginBase {
 	public static RequestHandler getFoodRequestHandler() {
 		return foodRequestHandler_;
 	}
-	
-	public static ArrayList<String> getRestaurantList(){
-		if(foodDisplayHandler_ != null){
-			return foodDisplayHandler_.getRestaurantList(); 
-		}else{
+
+	public static ArrayList<String> getRestaurantList() {
+		if (foodDisplayHandler_ != null) {
+			return foodDisplayHandler_.getRestaurantList();
+		} else {
 			return new ArrayList<String>();
 		}
 	}
@@ -80,7 +83,7 @@ public class FoodPlugin extends PluginBase {
 
 		spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
 		spinner_.setVisibility(View.GONE);
-		
+
 		setupActionBar(true);
 
 		// ListView
@@ -88,10 +91,11 @@ public class FoodPlugin extends PluginBase {
 		empty = (TextView) findViewById(R.id.food_empty);
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 
-		if(spinner_ != null){
+		if (spinner_ != null) {
 			spinner_.setVisibility(View.GONE);
 		} else {
-			Toast.makeText(this, "Spinner is null when back", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Spinner is null when back",
+					Toast.LENGTH_SHORT).show();
 		}
 		// At first, display food by restaurant
 		displayView();
@@ -101,6 +105,7 @@ public class FoodPlugin extends PluginBase {
 	protected void setupActionBar(boolean addHomeButton) {
 
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+
 		actionBar_.addAction(new Action() {
 			@Override
 			public void performAction(View view) {
@@ -112,7 +117,66 @@ public class FoodPlugin extends PluginBase {
 				return R.drawable.refresh;
 			}
 		});
+
 		super.setupActionBar(addHomeButton);
+	}
+
+	protected void refreshActionBar(FoodDisplayType currentDisplayType) {
+		if ((currentDisplayType == FoodDisplayType.Restaurants || currentDisplayType == FoodDisplayType.Ratings)
+				&& !restaurantAction_.isShown()) {
+			actionBar_.addAction(restaurantAction_, 0);
+			restaurantAction_.setShown(true);
+		} else if (!(currentDisplayType == FoodDisplayType.Restaurants || currentDisplayType == FoodDisplayType.Ratings)
+				&& restaurantAction_.isShown_) {
+			actionBar_.removeActionAt(0);
+			restaurantAction_.setShown(false);
+		}
+	}
+
+	class RestaurantAction implements Action {
+		private boolean isRestaurants_;
+		private boolean isShown_;
+
+		RestaurantAction() {
+			isRestaurants_ = true;
+			isShown_ = false;
+		}
+
+		@Override
+		public int getDrawable() {
+			if (isRestaurants_) {
+				return R.drawable.food_menus_by_ratings;
+			} else {
+				return R.drawable.food_menus_by_restaurant;
+			}
+		}
+
+		@Override
+		public void performAction(View view) {
+			isRestaurants_ = !isRestaurants_;
+			actionBar_.removeActionAt(0);
+			actionBar_.addAction(this, 0);
+			if (isRestaurants_) {
+				if (isSandwichDisplay_) {
+					loadFirstScreen(R.layout.food_main);
+					isSandwichDisplay_ = false;
+				}
+				foodDisplayHandler_
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
+			} else {
+				foodDisplayHandler_.setCurrentDisplayType(125);
+			}
+			displayView();
+			foodDisplayHandler_.refreshView();
+		}
+
+		public boolean isShown() {
+			return isShown_;
+		}
+
+		public void setShown(boolean show) {
+			isShown_ = show;
+		}
 	}
 
 	public void menuRefreshing() {
@@ -132,7 +196,7 @@ public class FoodPlugin extends PluginBase {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
-	public void menuRefreshedSandwich() {
+	public void sandwichRefreshed() {
 		foodDisplayHandler_.updateView();
 		displaySandwiches();
 		spinner_.setVisibility(View.GONE);
@@ -180,11 +244,11 @@ public class FoodPlugin extends PluginBase {
 	}
 
 	public void displaySandwiches() {
-		
+
 		if (spinner_ != null) {
 			spinner_.setVisibility(View.GONE);
 		}
-		
+
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
@@ -209,20 +273,18 @@ public class FoodPlugin extends PluginBase {
 		return true;
 	}
 
-	final int SUGGESTIONS_REQUEST_CODE = 1;
-	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
-
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int selectedId = item.getItemId();
 
 		switch (selectedId) {
 		case R.id.food_menu_restaurants: // Show menus by restaurant
-		case R.id.food_menu_ratings: // Show menus by rating
+			// case R.id.food_menu_ratings: // Show menus by rating
 			// setContentView(R.layout.food_main);
 			if (isSandwichDisplay_) {
 				loadFirstScreen(R.layout.food_main);
+				isSandwichDisplay_ = false;
 			}
-			foodDisplayHandler_.setDisplayType(selectedId);
+			foodDisplayHandler_.setCurrentDisplayType(selectedId);
 			displayView();
 			return true;
 		case R.id.food_menu_sandwiches: // show sandwiches
@@ -230,7 +292,7 @@ public class FoodPlugin extends PluginBase {
 					.d("SANDWICHES",
 							"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
-			foodDisplayHandler_.setDisplayType(selectedId);
+			foodDisplayHandler_.setCurrentDisplayType(selectedId);
 			displaySandwiches();
 			return true;
 		case R.id.food_menu_suggestions: // show suggestions
@@ -253,6 +315,9 @@ public class FoodPlugin extends PluginBase {
 		return false;
 	}
 
+	final int SUGGESTIONS_REQUEST_CODE = 1;
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
+
 	@Override
 	public PluginInfo getPluginInfo() {
 		return new FoodInfo();
@@ -263,7 +328,6 @@ public class FoodPlugin extends PluginBase {
 		return new FoodPreference();
 	}
 
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -277,7 +341,8 @@ public class FoodPlugin extends PluginBase {
 							.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
-					foodDisplayHandler_.setDisplayType(4);
+					foodDisplayHandler_
+							.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions();
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -287,8 +352,7 @@ public class FoodPlugin extends PluginBase {
 			}
 			break;
 		case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-			PictureTaker.onActivityResult(requestCode, resultCode,
-					data, true);
+			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
 			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
 			break;
 		}

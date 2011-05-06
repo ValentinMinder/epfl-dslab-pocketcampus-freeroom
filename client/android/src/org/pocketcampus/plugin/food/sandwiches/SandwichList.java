@@ -68,7 +68,7 @@ public class SandwichList {
 					sandwichList_ = sortByRestaurant(sandwichFromServer_);
 				}
 
-				pluginHandler_.menuRefreshedSandwich();
+				pluginHandler_.sandwichRefreshed();
 			}
 		}
 		Log.d("SANDWICHES", "Requesting sandwiches.");

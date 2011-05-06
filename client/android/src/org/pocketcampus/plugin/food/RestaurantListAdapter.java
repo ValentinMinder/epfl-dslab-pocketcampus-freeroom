@@ -67,18 +67,6 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		ViewHolder holder;
 
 		String restaurant = restaurants_.get(position);
-		// if (convertView == null) {
-		// // Creates a ViewHolder and store references to the two children
-		// // views we want to bind data to.
-		// holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
-		// .get(restaurant), mExpanded_[position]);
-		// } else {
-		// holder = (ViewHolder) convertView;
-		// holder.setTitle(restaurant);
-		// holder.setMenus(restaurant);
-		//			
-		// holder.setExpanded(mExpanded_[position]);
-		// }
 
 		holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
 				.get(restaurant), mExpanded_[position]);
@@ -151,7 +139,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 
 			Vector<Meal> meals = mealHashMap_.get(title);
 			for (Meal m : meals) {
-				mMenus.add(new MenuView(menusActivity_, m));
+				mMenus.add(new MenuView(m, menusActivity_));
 			}
 
 			for (int j = 0; j < mMenus.size(); j++) {
@@ -174,7 +162,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 			Vector<Meal> meals = mealHashMap_.get(resto);
 			mMenus.clear();
 			for (Meal m : meals) {
-				mMenus.add(new MenuView(menusActivity_, m));
+				mMenus.add(new MenuView(m, menusActivity_));
 			}
 		}
 

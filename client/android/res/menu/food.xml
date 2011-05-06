@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
-		android:title="@string/food_show_restaurant"
+		android:title="@string/food_show_menus"
 		android:id="@+id/food_menu_restaurants"
 		android:icon="@drawable/food_opt_icon_resto" />
-	<item
-		android:title="@string/food_show_ratings"
-		android:id="@+id/food_menu_ratings"
-		android:icon="@drawable/food_opt_icon_ratings" />
 	<item
 		android:title="@string/food_show_sandwiches"
 		android:id="@+id/food_menu_sandwiches"

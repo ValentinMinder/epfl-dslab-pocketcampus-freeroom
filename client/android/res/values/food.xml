@@ -34,7 +34,7 @@
 	<string name="food_rating_cancel">CANCEL!</string>
 
 	<!-- Options Menu -->
-	<string name="food_show_restaurant">Sort by restaurant</string>
+	<string name="food_show_menus">Menus</string>
 	<string name="food_show_ratings">Sort by ratings</string>
 	<string name="food_show_sandwiches">Sandwiches</string>
 	<string name="food_show_suggestions">Suggestions</string>

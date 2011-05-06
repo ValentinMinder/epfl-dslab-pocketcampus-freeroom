@@ -37,13 +37,12 @@ public class RatingsDialog extends Dialog {
 	private Button cancelButton;
 	private RatingBar ratingbar;
 	private Meal meal;
-	private Context ctx_;
+	private FoodPlugin menusActivity_;
 
-	public RatingsDialog(Context context, Meal meal) {
-		super(context);
+	public RatingsDialog(Meal meal, FoodPlugin menusActivity) {
+		super(menusActivity);
 		this.meal = meal;
-		this.ctx_ = context;
-
+		this.menusActivity_ = menusActivity;
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/** Design the dialog in main.xml file */
 		setContentView(R.layout.food_dialog_rating);
@@ -83,13 +82,14 @@ public class RatingsDialog extends Dialog {
 			protected void doInUiThread(String result) {
 				String submitted = "";
 				if (result.contains("true")) {
-					submitted = ctx_.getResources().getString(
+					submitted = menusActivity_.getResources().getString(
 							R.string.food_rating_submitted);
+					menusActivity_.notifyDataSetChanged();
 				} else {
-					submitted = ctx_.getResources().getString(
+					submitted = menusActivity_.getResources().getString(
 							R.string.food_rating_notsubmitted);
 				}
-				Toast.makeText(ctx_, submitted, Toast.LENGTH_SHORT).show();
+				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT).show();
 
 				ratingbar.invalidate();
 			}
