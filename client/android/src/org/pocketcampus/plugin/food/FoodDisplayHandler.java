@@ -67,8 +67,17 @@ public class FoodDisplayHandler {
 	 * 
 	 * @return
 	 */
-	public boolean valid() {
+	public boolean validMenus() {
 		return !campusMenu_.isEmpty();
+	}
+	
+	/**
+	 * Checks whether a valid sandwich list is available.
+	 * 
+	 * @return
+	 */
+	public boolean validSandwich() {
+		return !sandwichList_.isEmpty();
 	}
 
 	/**

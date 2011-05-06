@@ -163,8 +163,8 @@ public class FoodPlugin extends PluginBase {
 
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		expandMenus_.setVisibility(View.GONE);
-		
-		if (foodDisplayHandler_.valid() && fla != null) {
+
+		if (foodDisplayHandler_.validMenus() && fla != null) {
 			l_.setAdapter(fla);
 			empty.setText("");
 			expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
@@ -172,9 +172,14 @@ public class FoodPlugin extends PluginBase {
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("");
 			} else if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
-				validityDate_.setText(getResources().getString(
-						R.string.food_today_sandwiches));
-				expandMenus_.setVisibility(View.VISIBLE);
+				if (foodDisplayHandler_.validSandwich()) {
+					validityDate_.setText(getResources().getString(
+							R.string.food_today_sandwiches));
+					expandMenus_.setVisibility(View.VISIBLE);
+				} else {
+					validityDate_.setText("");
+					empty.setText(getString(R.string.food_empty));
+				}
 			} else {
 				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Ratings) {
 				} else {
@@ -199,20 +204,21 @@ public class FoodPlugin extends PluginBase {
 	public void displaySuggestions() {
 		expandMenus_.setVisibility(View.GONE);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
-		if (foodDisplayHandler_.valid() && fla != null) {
+		if (foodDisplayHandler_.validMenus() && fla != null) {
 			l_.setAdapter(fla);
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
 		actionBar_.addAction(new Action() {
-			
+
 			@Override
 			public void performAction(View view) {
 				actionBar_.removeActionAt(0);
-				foodDisplayHandler_.setCurrentDisplayType(R.id.food_menu_restaurants);
+				foodDisplayHandler_
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 				displayView();
 			}
-			
+
 			@Override
 			public int getDrawable() {
 				return R.drawable.food_menus_by_restaurant;
@@ -362,7 +368,7 @@ public class FoodPlugin extends PluginBase {
 		private boolean expanded = false;
 		private Drawable expand_;
 		private Drawable unexpand_;
-		
+
 		public ExpandListener() {
 			expand_ = FoodPlugin.this.getResources().getDrawable(
 					R.drawable.food_menus_expand);
@@ -371,6 +377,7 @@ public class FoodPlugin extends PluginBase {
 
 			expandMenus_.setImageDrawable(expand_);
 		}
+
 		@Override
 		public boolean onTouch(View view, MotionEvent arg1) {
 			expanded = (!expanded);

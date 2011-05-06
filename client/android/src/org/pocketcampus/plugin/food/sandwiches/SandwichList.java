@@ -37,6 +37,10 @@ public class SandwichList {
 			loadSandwiches();
 		}
 	}
+	
+	public boolean isEmpty(){
+		return sandwichList_.isEmpty();
+	}
 
 	private void loadSandwiches() {
 		pluginHandler_.menuRefreshing();
