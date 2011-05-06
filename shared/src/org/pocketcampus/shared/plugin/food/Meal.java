@@ -63,6 +63,7 @@ public class Meal implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name_ == null) ? 0 : name_.hashCode());
+		result = prime * result + ((description_ == null) ? 0 : description_.hashCode());
 		result = prime * result
 				+ ((restaurant_ == null) ? 0 : restaurant_.hashCode());
 		return result;
