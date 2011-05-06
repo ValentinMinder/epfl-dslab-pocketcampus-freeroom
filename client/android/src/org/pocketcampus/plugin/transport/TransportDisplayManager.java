@@ -176,6 +176,12 @@ public class TransportDisplayManager implements OnClickListener {
 		SimpleDateFormat formatter = new SimpleDateFormat();
 		formatter.applyPattern("k:mm");
 		
+		//TODO faire une requete pour avoir les détails de la connection
+		///pocketcampus-server/transport/detailedConnection.do?fromID=8504741&toID=8502203&depTime=1304560087000
+		// avec les ID des stations et l'heure de départ en epock time (ms)
+		
+		
+		//parcourir les résultats de la requete List<Part>, soit Connection.Trip soit Connection.Footway
 		for(Connection.Part p : c.parts){
 			map = new HashMap<String, String>();
 			map.put("dept", "hh:mm");
@@ -186,8 +192,11 @@ public class TransportDisplayManager implements OnClickListener {
 			
 			mylist.add(map);
 		}
+		
+		//TODO enlever quand la requete est faite et qu'on peux ajouter les heures sur chaque trajets.
 		mylist.get(0).put("dept", formatter.format(c.departureTime));
 		mylist.get(mylist.size()-1).put("arrt", formatter.format(c.arrivalTime));
+		//jusqu'ici
 		
 		String[] keys = {"dept", "from", "arrt", "to"}; 
 		int[] ids = {R.id.transport_details_dialog_dep_time, R.id.transport_details_dialog_dep_place,
