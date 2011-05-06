@@ -204,6 +204,20 @@ public class FoodPlugin extends PluginBase {
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
+		actionBar_.addAction(new Action() {
+			
+			@Override
+			public void performAction(View view) {
+				actionBar_.removeActionAt(0);
+				foodDisplayHandler_.setCurrentDisplayType(R.id.food_menu_restaurants);
+				displayView();
+			}
+			
+			@Override
+			public int getDrawable() {
+				return R.drawable.food_menus_by_restaurant;
+			}
+		}, 0);
 	}
 
 	@Override
