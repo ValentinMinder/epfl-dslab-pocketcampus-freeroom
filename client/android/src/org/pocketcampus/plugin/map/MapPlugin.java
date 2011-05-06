@@ -25,6 +25,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -915,13 +916,21 @@ public class MapPlugin extends PluginBase {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	public Drawable getDrawableFromCacheOrUrl(String iconUrl) throws MalformedURLException, IOException {
+	public Drawable getDrawableFromCacheOrUrl(String iconUrl) {
+		Log.d("MAP", "loading icon: \"" + RequestHandler.getServerUrl() + iconUrl + "\"");
+		
+		if(iconUrl == null || iconUrl.equals("null") || iconUrl.length() <= 0 )
+			return null;
 		
 		Drawable i = icons.get(iconUrl);
 		
 		if(i == null) {
-			i = ImageUtil.getDrawableFromUrl(iconUrl);
-			icons.put(iconUrl, i);
+			try {
+				i = ImageUtil.getDrawableFromUrl(RequestHandler.getServerUrl() + iconUrl);
+				icons.put(iconUrl, i);
+			} catch (IOException e) {
+				Log.e("MAP", "getDrawableFromCacheOrUrl -> " + e.toString());
+			}
 		}
 		
 		return i;

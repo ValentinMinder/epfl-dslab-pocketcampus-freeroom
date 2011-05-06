@@ -10,8 +10,8 @@ public abstract class DataRequest extends Request<String> {
 	
 	@Override
 	protected int timeoutDelay() {
-		// default 12 seconds (5 seemed to be too short)
-		return 12;
+		// default 15 seconds (5 seemed to be too short)
+		return 15;
 	}
 	
 	protected final String getUrl() {
