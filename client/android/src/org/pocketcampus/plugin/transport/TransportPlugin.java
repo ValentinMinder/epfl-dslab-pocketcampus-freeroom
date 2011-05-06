@@ -128,7 +128,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 	}
 
 	@Override
-	public List<MainscreenNews> getNews() {
+	public List<MainscreenNews> getNews(Context ctx) {
 		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		
 		return news;

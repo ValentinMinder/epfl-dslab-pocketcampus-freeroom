@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -122,7 +123,7 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	}
 
 	@Override
-	public List<MainscreenNews> getNews() {
+	public List<MainscreenNews> getNews(Context ctx) {
 		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
 		
 		// Number of news to display
