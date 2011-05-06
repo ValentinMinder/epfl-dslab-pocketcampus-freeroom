@@ -171,7 +171,7 @@ public class MapSearchActivity extends ListActivity {
 	 */
 	private void parseAndDisplayResult(ArrayAdapter<String> results, final List<MapElementBean> items) {
 		
-		if(results != null && results.getCount() == 1) {
+		if(results != null && results.getCount() == 1 && items != null && items.size() > 0) {
 			startMapActivity(items.get(0));
 			finish();
 		}
