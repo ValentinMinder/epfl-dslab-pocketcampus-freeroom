@@ -197,6 +197,7 @@ public class FoodPlugin extends PluginBase {
 	}
 
 	public void displaySuggestions() {
+		expandMenus_.setVisibility(View.GONE);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		if (foodDisplayHandler_.valid() && fla != null) {
 			l_.setAdapter(fla);
