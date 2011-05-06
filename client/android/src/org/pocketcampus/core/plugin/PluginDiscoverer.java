@@ -35,12 +35,12 @@ public class PluginDiscoverer {
 		// TODO scan for available plugins automatically
 //		plugins.add(new TestPlugin());
 //		plugins.add(new DirectoryPlugin());
+		plugins.add(new CamiproPlugin());
 		plugins.add(new FoodPlugin());
+		plugins.add(new MapPlugin());
+		plugins.add(new NewsPlugin());
 		plugins.add(new TransportPlugin());
 //		plugins.add(new SocialPlugin());
-		plugins.add(new MapPlugin());
-		plugins.add(new CamiproPlugin());
-		plugins.add(new NewsPlugin());
 //		plugins.add(new BikesPlugin());
 		
 		////////////////////////////////
