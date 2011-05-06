@@ -80,8 +80,9 @@ public class RatingsDialog extends Dialog {
 		class SubmitRatingRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
+
 				String submitted = "";
-				if (result.contains("true")) {
+				if (result != null && result.contains("true")) {
 					submitted = menusActivity_.getResources().getString(
 							R.string.food_rating_submitted);
 					menusActivity_.notifyDataSetChanged();
@@ -89,21 +90,22 @@ public class RatingsDialog extends Dialog {
 					submitted = menusActivity_.getResources().getString(
 							R.string.food_rating_notsubmitted);
 				}
-				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT).show();
+				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT)
+						.show();
 
 				ratingbar.invalidate();
 			}
 		}
 
 		String deviceId = Secure.getString(getContext().getContentResolver(),
-                Secure.ANDROID_ID); 
-		
+				Secure.ANDROID_ID);
+
 		RequestParameters params = new RequestParameters();
 
 		params.addParameter("meal", Integer.toString(meal.hashCode()));
 		params.addParameter("rating", Double.toString(rating));
 		params.addParameter("deviceId", deviceId);
-		
+
 		FoodPlugin.getFoodRequestHandler().execute(new SubmitRatingRequest(),
 				"setRating", (RequestParameters) params);
 	}
