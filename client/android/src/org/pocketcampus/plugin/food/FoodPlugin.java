@@ -120,7 +120,8 @@ public class FoodPlugin extends PluginBase {
 				&& !restaurantAction_.isShown()) {
 			actionBar_.addAction(restaurantAction_, 0);
 			restaurantAction_.setShown(true);
-		} else if (restaurantAction_.isShown_) {
+		} else if (!(currentDisplayType == FoodDisplayType.Restaurants || currentDisplayType == FoodDisplayType.Ratings)
+				&& restaurantAction_.isShown_) {
 			actionBar_.removeActionAt(0);
 			restaurantAction_.setShown(false);
 		}
@@ -203,7 +204,9 @@ public class FoodPlugin extends PluginBase {
 	public void displaySuggestions() {
 		expandMenus_.setVisibility(View.GONE);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
-		refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
+//		refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
+		restaurantAction_.setIsRestaurant(true);
+		
 		if (foodDisplayHandler_.validMenus() && fla != null) {
 			l_.setAdapter(fla);
 			actionBar_.addAction(new Action() {
@@ -362,6 +365,10 @@ public class FoodPlugin extends PluginBase {
 
 		public void setShown(boolean show) {
 			isShown_ = show;
+		}
+		
+		public void setIsRestaurant(boolean isRestaurants) {
+			isRestaurants_ = isRestaurants;
 		}
 	}
 
