@@ -120,8 +120,7 @@ public class FoodPlugin extends PluginBase {
 				&& !restaurantAction_.isShown()) {
 			actionBar_.addAction(restaurantAction_, 0);
 			restaurantAction_.setShown(true);
-		} else if (!(currentDisplayType == FoodDisplayType.Restaurants || currentDisplayType == FoodDisplayType.Ratings)
-				&& restaurantAction_.isShown_) {
+		} else if (restaurantAction_.isShown_) {
 			actionBar_.removeActionAt(0);
 			restaurantAction_.setShown(false);
 		}
@@ -204,26 +203,28 @@ public class FoodPlugin extends PluginBase {
 	public void displaySuggestions() {
 		expandMenus_.setVisibility(View.GONE);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
+		refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
 		if (foodDisplayHandler_.validMenus() && fla != null) {
 			l_.setAdapter(fla);
+			actionBar_.addAction(new Action() {
+
+				@Override
+				public void performAction(View view) {
+					actionBar_.removeActionAt(0);
+					foodDisplayHandler_
+							.setCurrentDisplayType(R.id.food_menu_restaurants);
+					foodDisplayHandler_.updateView();
+					displayView();
+				}
+
+				@Override
+				public int getDrawable() {
+					return R.drawable.food_menus_by_restaurant;
+				}
+			}, 0);
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
-		actionBar_.addAction(new Action() {
-
-			@Override
-			public void performAction(View view) {
-				actionBar_.removeActionAt(0);
-				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
-				displayView();
-			}
-
-			@Override
-			public int getDrawable() {
-				return R.drawable.food_menus_by_restaurant;
-			}
-		}, 0);
 	}
 
 	@Override

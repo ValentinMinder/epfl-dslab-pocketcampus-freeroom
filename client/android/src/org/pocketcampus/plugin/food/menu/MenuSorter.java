@@ -127,6 +127,10 @@ public class MenuSorter {
 	private class RatingComparator implements Comparator<Meal>{
 		
 		public int compare(Meal thisMeal, Meal otherMeal) {
+			if(thisMeal.getRating() == null){
+				String thisMealString = ""+thisMeal;
+				throw new IllegalArgumentException(thisMealString);
+			}
 			double d0 = Restaurant.starRatingToDouble(thisMeal.getRating().getValue());
 			double d1 = Restaurant.starRatingToDouble(otherMeal.getRating().getValue());
 			if(d0 != d1){

@@ -5,8 +5,6 @@ package org.pocketcampus.plugin.food.pictures;
  * @author Elodie
  */
 import org.pocketcampus.R;
-import org.pocketcampus.plugin.food.pictures.PictureTaker.PictureType;
-import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
 import android.app.AlertDialog;

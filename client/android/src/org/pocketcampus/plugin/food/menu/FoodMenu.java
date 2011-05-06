@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
@@ -163,10 +165,15 @@ public class FoodMenu {
 				Type menuType = new TypeToken<HashMap<Integer, Rating>>() {
 				}.getType();
 				try {
-					campusMenuRatingsList = gson.fromJson(result, menuType);
+						campusMenuRatingsList = Json.fromJson(result, menuType);
 				} catch (JsonSyntaxException e) {
 					Log.d("SERVER", "Jsonsyntax");
 					e.printStackTrace();
+					pluginHandler_.menuRefreshed(false);
+					return;
+				} catch (JsonException e) {
+					e.printStackTrace();
+					pluginHandler_.menuRefreshed(false);
 					return;
 				}
 
@@ -200,15 +207,19 @@ public class FoodMenu {
 			protected void doInUiThread(String result) {
 				campusMenuList = new ArrayList<Meal>();
 				// Deserializes the response
-				Gson gson = new Gson();
 
 				Type menuType = new TypeToken<List<Meal>>() {
 				}.getType();
 				try {
-					campusMenuList = gson.fromJson(result, menuType);
+					campusMenuList = Json.fromJson(result, menuType);
 				} catch (JsonSyntaxException e) {
 					Log.d("SERVER", "Jsonsyntax");
 					e.printStackTrace();
+					pluginHandler_.menuRefreshed(false);
+					return;
+				} catch(JsonException e){
+					e.printStackTrace();
+					pluginHandler_.menuRefreshed(false);
 					return;
 				}
 

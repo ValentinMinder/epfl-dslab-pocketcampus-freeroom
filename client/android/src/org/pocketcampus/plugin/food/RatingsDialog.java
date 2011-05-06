@@ -19,7 +19,6 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.provider.Settings.Secure;
 import android.view.View;
 import android.view.Window;
