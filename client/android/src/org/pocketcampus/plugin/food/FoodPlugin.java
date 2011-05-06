@@ -201,30 +201,33 @@ public class FoodPlugin extends PluginBase {
 		}
 	}
 
-	public void displaySuggestions() {
+	public void displaySuggestions(FoodDisplayType previousDisplayType) {
 		expandMenus_.setVisibility(View.GONE);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
-//		refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
+		// refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
 		restaurantAction_.setIsRestaurant(true);
-		
+
 		if (foodDisplayHandler_.validMenus() && fla != null) {
 			l_.setAdapter(fla);
-			actionBar_.addAction(new Action() {
 
-				@Override
-				public void performAction(View view) {
-					actionBar_.removeActionAt(0);
-					foodDisplayHandler_
-							.setCurrentDisplayType(R.id.food_menu_restaurants);
-					foodDisplayHandler_.updateView();
-					displayView();
-				}
+			if (previousDisplayType != FoodDisplayType.Suggestions) {
+				actionBar_.addAction(new Action() {
 
-				@Override
-				public int getDrawable() {
-					return R.drawable.food_menus_by_restaurant;
-				}
-			}, 0);
+					@Override
+					public void performAction(View view) {
+						actionBar_.removeActionAt(0);
+						foodDisplayHandler_
+								.setCurrentDisplayType(R.id.food_menu_restaurants);
+						foodDisplayHandler_.updateView();
+						displayView();
+					}
+
+					@Override
+					public int getDrawable() {
+						return R.drawable.food_menus_by_restaurant;
+					}
+				}, 0);
+			}
 		} else {
 			empty.setText(getString(R.string.food_empty));
 		}
@@ -295,9 +298,11 @@ public class FoodPlugin extends PluginBase {
 							.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
+					FoodDisplayType previous = foodDisplayHandler_
+							.getCurrentDisplayType();
 					foodDisplayHandler_
 							.setCurrentDisplayType(R.id.food_menu_suggestions);
-					displaySuggestions();
+					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
 				}
@@ -366,7 +371,7 @@ public class FoodPlugin extends PluginBase {
 		public void setShown(boolean show) {
 			isShown_ = show;
 		}
-		
+
 		public void setIsRestaurant(boolean isRestaurants) {
 			isRestaurants_ = isRestaurants;
 		}

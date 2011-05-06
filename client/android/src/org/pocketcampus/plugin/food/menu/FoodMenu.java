@@ -67,20 +67,20 @@ public class FoodMenu {
 		return filteredMenus;
 	}
 
-	private List<Meal> filterMenus(List<Meal> allMeals){
+	private List<Meal> filterMenus(List<Meal> allMeals) {
 		List<String> restaurants = restaurantsFromFile();
 		List<Meal> prefMeals = new ArrayList<Meal>();
-		if(restaurants != null){
+		if (restaurants != null) {
 
-			for(String r : restaurants){
-				Log.d("PREFERENCES","Resto in the File : " + r);
-				for(Meal m : campusMenu_){
-					if(m.getRestaurant_().getName().equals(r)){
+			for (String r : restaurants) {
+				Log.d("PREFERENCES", "Resto in the File : " + r);
+				for (Meal m : campusMenu_) {
+					if (m.getRestaurant_().getName().equals(r)) {
 						prefMeals.add(m);
 					}
 				}
 			}
-		}else{
+		} else {
 			prefMeals = campusMenu_;
 		}
 
@@ -126,8 +126,10 @@ public class FoodMenu {
 		Calendar validity = Calendar.getInstance();
 		validity.setTime(validityDate_);
 		Log.d("Tag", "1: " + validity.get(Calendar.DAY_OF_MONTH) + " 2: "
-				+ validity.get(Calendar.MONTH) + " 3: " + validity.get(Calendar.YEAR));
-		if (cal.get(Calendar.DAY_OF_MONTH) == validity.get(Calendar.DAY_OF_MONTH)) {
+				+ validity.get(Calendar.MONTH) + " 3: "
+				+ validity.get(Calendar.YEAR));
+		if (cal.get(Calendar.DAY_OF_MONTH) == validity
+				.get(Calendar.DAY_OF_MONTH)) {
 			if (cal.get(Calendar.MONTH) == validity.get(Calendar.MONTH)) {
 				if (cal.get(Calendar.YEAR) == validity.get(Calendar.YEAR)) {
 					return true;
@@ -156,7 +158,7 @@ public class FoodMenu {
 			@Override
 			protected void doInUiThread(String result) {
 				campusMenuRatingsList = new HashMap<Integer, Rating>();
-				if(result != null){
+				if (result != null) {
 					Log.d("SERVER", result);
 				}
 				// Deserializes the response
@@ -165,7 +167,7 @@ public class FoodMenu {
 				Type menuType = new TypeToken<HashMap<Integer, Rating>>() {
 				}.getType();
 				try {
-						campusMenuRatingsList = Json.fromJson(result, menuType);
+					campusMenuRatingsList = Json.fromJson(result, menuType);
 				} catch (JsonSyntaxException e) {
 					Log.d("SERVER", "Jsonsyntax");
 					e.printStackTrace();
@@ -217,7 +219,7 @@ public class FoodMenu {
 					e.printStackTrace();
 					pluginHandler_.menuRefreshed(false);
 					return;
-				} catch(JsonException e){
+				} catch (JsonException e) {
 					e.printStackTrace();
 					pluginHandler_.menuRefreshed(false);
 					return;
@@ -252,20 +254,23 @@ public class FoodMenu {
 
 	public void writeToFile(Date currentDate) {
 		String filename = "MenusCache";
-
 		File menuFile = new File(ctx_.getCacheDir(), filename);
 
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentDate);
+//		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
+		
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
 			fos = new FileOutputStream(menuFile);
 			out = new ObjectOutputStream(fos);
-			out.writeObject(currentDate);
+			out.writeObject(cal.getTime());
 			out.writeObject(campusMenu_);
 			out.close();
 		} catch (IOException ex) {
 			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
-			.show();
+					.show();
 		}
 	}
 
@@ -281,17 +286,18 @@ public class FoodMenu {
 			fis = new FileInputStream(toGet);
 			in = new ObjectInputStream(fis);
 			date = (Date) in.readObject();
+			Log.d("Date", date.toString());
 			setValidityDate(date);
 
 			menu = (List<Meal>) in.readObject();
 
 			in.close();
 		} catch (IOException ex) {
-			// Toast.makeText(ctx_, "IO Exception", Toast.LENGTH_SHORT).show();
+			ex.printStackTrace();
 		} catch (ClassNotFoundException ex) {
-			// Toast.makeText(ctx_, "Class not found",
-			// Toast.LENGTH_SHORT).show();
-		} catch (ClassCastException cce) {
+			ex.printStackTrace();
+		} catch (ClassCastException ex) {
+			ex.printStackTrace();
 		}
 
 		return menu;
