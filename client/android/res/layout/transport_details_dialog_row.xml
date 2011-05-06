@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- row.xml -->
+<!-- row.xml  -->
 <LinearLayout
-     android:paddingTop="4dip"
-     android:paddingBottom="6dip"
-     android:layout_width="fill_parent"
-     android:layout_height="wrap_content"
-     style="@style/Theme.MainLayout" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_gravity="center_horizontal">
-    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <TextView android:id="@+id/transport_details_dialog_dep_time" android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"></TextView>
-        <TextView android:layout_height="wrap_content" android:id="@+id/transport_details_dialog_dep_place" android:text="TextView" android:layout_width="wrap_content" android:layout_alignParentLeft="true"></TextView>
-    </RelativeLayout>
-     
-     <!-- <ImageView android:layout_height="wrap_content"
-     	android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:src="@drawable/food_restaurantlist_east">
-     </ImageView> -->
-     <RelativeLayout android:id="@+id/relativeLayout2" android:layout_height="wrap_content" android:layout_width="fill_parent">
-         <TextView android:id="@+id/transport_details_dialog_arr_time" android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"></TextView>
-         <TextView android:text="TextView" android:layout_height="wrap_content" android:id="@+id/transport_details_dialog_arr_place" android:layout_width="wrap_content" android:layout_alignParentLeft="true"></TextView>
-     </RelativeLayout>
- 
- 
-     
+		android:layout_height="wrap_content"
+	     style="@style/Theme.MainLayout"
+	     xmlns:android="http://schemas.android.com/apk/res/android"
+	     android:layout_gravity="center_horizontal"
+	     android:layout_width="wrap_content"
+	     android:orientation="horizontal"
+	     android:gravity="center_vertical">
+    <ImageView
+    	android:layout_height="wrap_content"
+    	android:id="@+id/transport_detailedListImage"
+    	android:layout_width="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:layout_centerVertical="true"
+    	android:src="@drawable/transport_summarylist_arrow"
+    	android:paddingLeft="3dip">
+    </ImageView>
+
+
+	<LinearLayout
+	     android:layout_height="wrap_content"
+	     style="@style/Theme.MainLayout"
+	     xmlns:android="http://schemas.android.com/apk/res/android"
+	     android:orientation="vertical"
+	     android:layout_gravity="center_horizontal"
+	     android:layout_width="wrap_content"
+	     android:paddingLeft="3dip"
+	     android:paddingRight="3dip">
+	     
+	    <RelativeLayout
+	    	android:id="@+id/relativeLayout1"
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="wrap_content">
+	    	
+	        <TextView android:id="@+id/transport_details_dialog_dep_time" android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"></TextView>
+	        <TextView android:layout_height="wrap_content" android:id="@+id/transport_details_dialog_dep_place" android:text="TextView" android:layout_width="wrap_content"></TextView>
+	    </RelativeLayout>
+	     
+	    <RelativeLayout 
+	    	android:id="@+id/relativeLayout2"
+	    	android:layout_height="wrap_content"
+	    	android:layout_width="wrap_content">
+	         
+	         <TextView android:id="@+id/transport_details_dialog_arr_time" android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"></TextView>
+	         <TextView android:text="TextView" android:layout_height="wrap_content" android:id="@+id/transport_details_dialog_arr_place" android:layout_width="wrap_content"></TextView>
+	     </RelativeLayout>
+	     
+	</LinearLayout>
+	
 </LinearLayout>
