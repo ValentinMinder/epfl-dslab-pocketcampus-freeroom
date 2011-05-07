@@ -3,6 +3,8 @@ package org.pocketcampus.plugin.mainscreen;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pocketcampus.plugin.news.NewsPlugin;
+
 import android.content.Context;
 
 public class MainscreenNewsProvider {
@@ -18,6 +20,9 @@ public class MainscreenNewsProvider {
 		 * This will be modified with the addition of the mainscreen configuration page
 		 * 
 		 */
+		
+		// Hopefully, sometime, we will be able to uncommented this line. 
+		//l.addAll(NewsPluginINSTANCE.getNews(ctx));
 				
 		return l;
 	}

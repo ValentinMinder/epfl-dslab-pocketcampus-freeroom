@@ -125,15 +125,16 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	@Override
 	public List<MainscreenNews> getNews(Context ctx) {
 		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
+		NewsProvider np = NewsProvider.getInstance(ctx);
 		
 		// Number of news to display
-		int min = newsProvider_.getCount();
+		int min = np.getCount();
 		min = Math.min(min, NB_NEWS);
 		
 		NewsItem tmp;
 		for(int i = 0; i < min; ++i) {
-			tmp = newsProvider_.getItem(i);
-			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), tmp.hashCode(), this,tmp.getPubDateDate()));
+			tmp = np.getItem(i);
+			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), tmp.hashCode(), this, tmp.getPubDateDate()));
 		}
 		
 		return l;
