@@ -53,7 +53,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 	@Override
 	public List<MapLayerBean> getLayers() {
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Velopass", "http://128.178.254.75:8080/pocketcampus-server/data/bikes_normal_mini.png", this, 1, 9, true));
+		l.add(new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true));
 		return l;
 	}
 
@@ -64,7 +64,15 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		List<MapElementBean> items = new ArrayList<MapElementBean>();
 		
 		for(BikeStation s : b) {
-			items.add(new MapElementBean(s.getName_(), String.valueOf(s.getBikes_()), s.getGeoLat_() + Math.random() * 0.002, s.getGeoLng_() + Math.random() * 0.002, 0));
+			StringBuffer description = new StringBuffer();
+			description.append("Vélos libres: ");
+			description.append(String.valueOf(s.getBikes_()));
+			description.append("\n");
+			
+			description.append("Places libres: ");
+			description.append(String.valueOf(s.getEmpty_()));			
+			
+			items.add(new MapElementBean(s.getName_(), description.toString(), s.getGeoLat_(), s.getGeoLng_(), 0));
 		}
 		
 		return items;
