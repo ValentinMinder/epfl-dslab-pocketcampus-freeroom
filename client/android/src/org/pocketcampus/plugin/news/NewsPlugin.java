@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,7 +32,7 @@ import android.widget.ListView;
  * @author Jonas
  *
  */
-public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, INewsListener {
+public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, INewsListener, IAllowsID {
 
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
@@ -47,6 +50,15 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		setupActionBar(true);
 
 		setLayout();
+		
+		// An Intent was sent
+		if(hasIDInIntent()) {
+			try {
+				showNews(getIDFromIntent());
+			} catch (NoIDException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		Tracker.getInstance().trackPageView("news/home");
 	}
@@ -80,6 +92,12 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		newsProvider_.removeNewsListener(this);
+	}
+
+	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
@@ -104,12 +122,26 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if(adapter_ != null) {
-					adapter_.setClickedItem(parent, view, position, id);
+					adapter_.setClickedItem(position);
+					l.setSelection(position);
 
 					Tracker.getInstance().trackPageView("news/previewItem");
 				}
 			}
 		});
+	}
+
+	/**
+	 * Show a news because someone clicked on the mainscreen
+	 * @param id ID of the news, this is actually the position in the adapter
+	 */
+	private void showNews(int id) {
+		adapter_.setClickedItem(id);
+		final ListView l = (ListView) findViewById(R.id.news_list_list);
+		l.setSelection(id);
+
+		Log.d(this.getClass().toString(), "Show news " + id);
+		Tracker.getInstance().trackPageView("news/fromMainscreen");
 	}
 
 	@Override
@@ -134,7 +166,7 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		NewsItem tmp;
 		for(int i = 0; i < min; ++i) {
 			tmp = np.getItem(i);
-			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), tmp.hashCode(), this, tmp.getPubDateDate()));
+			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), i, this, tmp.getPubDateDate()));
 		}
 		
 		return l;

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -115,16 +114,14 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 
 	/**
 	 * Sets the item that has been selected, to show it bigger
-	 * @param parent 
-	 * @param view
 	 * @param position
-	 * @param id
 	 */
-	public void setClickedItem(AdapterView<?> parent, View view, int position, long id) {
-		if(selectedItem_ == position)
+	public void setClickedItem(int position) {
+		if(selectedItem_ == position) {
 			selectedItem_ = -1;
-		else
+		} else {
 			selectedItem_ = position;
+		}
 
 		// Recompute the view
 		this.notifyDataSetChanged();

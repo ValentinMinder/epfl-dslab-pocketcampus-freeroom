@@ -33,9 +33,9 @@ public class MainscreenAdapter extends BaseAdapter {
 		public MainscreenAdapter(Context context) {
 			super();
 			
-			this.news_ =  MainscreenNewsProvider.getNews(ctx_);
-			
 			this.ctx_ = context;
+			
+			this.news_ =  MainscreenNewsProvider.getNews(ctx_);
 						
 			mInflater_ = LayoutInflater.from(context);
 						

@@ -20,9 +20,9 @@ public class MainscreenNewsProvider {
 		 * This will be modified with the addition of the mainscreen configuration page
 		 * 
 		 */
-		
-		// Hopefully, sometime, we will be able to uncommented this line. 
-		//l.addAll(NewsPluginINSTANCE.getNews(ctx));
+
+		// May work, or not
+		l.addAll(new NewsPlugin().getNews(ctx));
 				
 		return l;
 	}

@@ -137,6 +137,14 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		this.imageDrawable_ = imageDrawable;
 	}
 	
+	/**
+	 * Get a unique ID for the news (based on the url)
+	 * @return
+	 */
+	public int getID() {
+		return this.link_.hashCode();
+	}
+	
 	@Override
 	public int compareTo(NewsItem another) {
 		try {

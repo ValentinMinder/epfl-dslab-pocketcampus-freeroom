@@ -6,6 +6,7 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 /**
  * Base class for the display of plugins. The Display class is the main interface of the plugins and will be started 
@@ -41,6 +42,20 @@ public abstract class PluginBase extends Activity {
 		if(addHomeButton) {
 			actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
 		}
+	}
+	
+	protected int getIDFromIntent() throws NoIDException {
+		Bundle extras = getIntent().getExtras();
+		if(!hasIDInIntent()) {
+			throw new NoIDException();
+		}
+		
+		return extras.getInt("id");
+	}
+
+	protected boolean hasIDInIntent() {
+		Bundle extras = getIntent().getExtras(); 
+		return extras != null && extras.containsKey("id");
 	}
 }
 

@@ -8,7 +8,6 @@ import org.pocketcampus.core.plugin.Icon;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.logging.Tracker;
 
 import android.app.AlertDialog;
@@ -39,8 +38,6 @@ public class MainscreenPlugin extends PluginBase {
 
 	private MainscreenAdapter adapter_;
 	
-	private ActionBar actionBar_;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
