@@ -2,6 +2,9 @@
 <resources>
     <string name="mainscreen_news_plugins">Mainscreen Options</string>
     <string name="mainscreen_language">Application Language</string>
+    <string name="mainscreen_news_plugins_message">At least one plugin must be selected</string>
+    
+    
     
     <string-array name="mainscreen_provider_plugins">
         <item>news.NewsPlugin</item>

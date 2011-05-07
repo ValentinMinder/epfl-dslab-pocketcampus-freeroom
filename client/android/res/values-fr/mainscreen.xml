@@ -2,5 +2,7 @@
 <resources>
     <string name="mainscreen_news_plugins">Ecran d\'accueil</string>
     <string name="mainscreen_language">Langue</string>
+    <string name="mainscreen_news_plugins_message">Au moins un plugin doit être séléctionné</string>
+    
     
 </resources>

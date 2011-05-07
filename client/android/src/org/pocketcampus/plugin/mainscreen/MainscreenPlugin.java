@@ -35,7 +35,9 @@ public class MainscreenPlugin extends PluginBase {
 	private Core core_;
 	private Vector<PluginBase> plugins_;
 	private Tracker tracker_;
-
+	
+	protected final static String PACKAGE = "org.pocketcampus.plugin.";
+	
 	private MainscreenAdapter adapter_;
 	
 	@Override
