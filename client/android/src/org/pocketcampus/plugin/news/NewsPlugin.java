@@ -166,7 +166,7 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		NewsItem tmp;
 		for(int i = 0; i < min; ++i) {
 			tmp = np.getItem(i);
-			l.add(new MainscreenNews(tmp.getTitle(), tmp.getDescription(), i, this, tmp.getPubDateDate()));
+			l.add(new MainscreenNews(tmp.getTitle(), tmp.getFormatedDescription().subSequence(0, 150).toString(), i, this, tmp.getPubDateDate()));
 		}
 		
 		return l;
