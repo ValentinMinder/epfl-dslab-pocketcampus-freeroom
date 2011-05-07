@@ -11,22 +11,14 @@
      <string name="transport_arrival">arrival</string>
      <string name="transport_timetables">Timetables</string>
      <string name="transport_Destinations">Destinations</string>
+     <string name="transport_departures">Departures</string>
      <string name="transport_change">change</string>
      
      
      <string name="transport_destNotFound">Destination not found.</string>
      <string name="transport_addADestination">Add a destination</string>
-     <string name="transport_noDestSet">There is no favourites destinations set yet.\nPlease press menu and add some.</string>
+     <string name="transport_noDestSet">No destination set.\n\nYou can add destinations from the menu.</string>
      
-     <string name="transport_sentViaPCtransport">\n\n sent via pocketcampus android app</string>
-    
-    <string-array name="exemple">
-        <item>a</item>
-        <item>b</item>
-        <item>c</item>
-        <item>d</item>
-        <item>e</item>
-        <item>f</item>
-    </string-array>
+     <string name="transport_sentViaPCtransport">\n\nSent from PocketCampus.</string>
 
 </resources>

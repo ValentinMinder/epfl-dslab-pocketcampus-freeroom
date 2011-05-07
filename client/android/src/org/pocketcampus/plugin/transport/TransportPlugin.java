@@ -34,7 +34,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 	private static RequestHandler requestHandler_;
 
 	private static Context context_;
-	private TransportDisplayManager transportDisplayHandler_;
+	private TransportDisplayManager transportDisplayManager_;
 	
 	
 	private SharedPreferences commonDestPrefs_;
@@ -50,7 +50,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.transport_main);
 		
-		transportDisplayHandler_ = new TransportDisplayManager(this, requestHandler_);
+		transportDisplayManager_ = new TransportDisplayManager(this, requestHandler_);
 		context_ = getApplicationContext();
 		
 		displaySummary();
@@ -72,7 +72,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 	private void displaySummary() {
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
 		boolean noDestination = (commonDestPrefs_.getAll().size() == 0);
-		transportDisplayHandler_.setupSummaryList((Map<String, String>) commonDestPrefs_.getAll(), noDestination);
+		transportDisplayManager_.setupSummaryList((Map<String, String>) commonDestPrefs_.getAll(), noDestination);
 	}
 
 	@Override

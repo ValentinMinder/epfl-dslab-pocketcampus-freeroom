@@ -13,6 +13,9 @@ public class RequestHandler {
 
 	// ELODIE LOCAL SERVER URL
 	//private String serverUrl_ = "http://128.178.240.75:8080/pocketcampus-server/";
+
+	// FLORIAN LOCAL SERVER URL
+	//private static final String serverUrl_ = "http://10.0.0.157:8080/pocketcampus-server/";
 	
 	// JOHAN LOCAL SERVER URL
 	//private String serverUrl_ = "http://192.168.1.46:8080/pocketcampus-server/";

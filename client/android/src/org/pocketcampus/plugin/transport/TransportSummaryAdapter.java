@@ -37,6 +37,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private String inCapital_StringRessource;
 	private String atCapital_StringRessource;
 	private String arrival_StringRessource;
+	private String departures_StringRessource;
 	private String at_StringRessource;
 	private String change_StringRessource;
 
@@ -48,6 +49,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		
 		to_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_to);
 		lessThanAMinute_StringRessource = 	(String) ctx.getResources().getText(R.string.transport_lessThanAMinute);
+		departures_StringRessource = 		(String) ctx.getResources().getText(R.string.transport_departures);
 		arrival_StringRessource = 			(String) ctx.getResources().getText(R.string.transport_arrival);
 		change_StringRessource = 			(String) ctx.getResources().getText(R.string.transport_change);
 		at_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_at);
@@ -169,7 +171,8 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	 * @return
 	 */
 	public String getCaption() {
-		return departure_ + " " + to_StringRessource + " " + arrival_;
+		//return departure_ + " " + to_StringRessource + " " + arrival_;
+		return departures_StringRessource +" "+ to_StringRessource +" "+ arrival_;
 	}
 	
 	/**
