@@ -157,111 +157,9 @@ public class TransportDisplayManager implements OnClickListener {
 		activityContext_.startActivity(intent);
 	}
 	
-	private void afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(final Connection c) {
-		
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
-		builder.setTitle(activityContext_.getResources().getString(R.string.Details));
-
-		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.transport_details_dialog, null);
-		builder.setView(layout);
-		
-		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-		HashMap<String, String> map;
-		
-		// date formatter
-		SimpleDateFormat formatter = new SimpleDateFormat();
-		formatter.applyPattern("k:mm");
-		
-		//TODO faire une requete pour avoir les détails de la connection
-		///pocketcampus-server/transport/detailedConnection.do?fromID=8504741&toID=8502203&depTime=1304560087000
-		// avec les ID des stations et l'heure de départ en epock time (ms)
-		
-		
-		//parcourir les résultats de la requete List<Part>, soit Connection.Trip soit Connection.Footway
-		for(Connection.Part p : c.parts){
-			map = new HashMap<String, String>();
-			map.put("dept", "hh:mm");
-			map.put("from", p.departure.name);
-			
-			map.put("arrt", "hh:mm");
-			map.put("to", p.arrival.name);
-			
-			mylist.add(map);
-		}
-		
-		//TODO enlever quand la requete est faite et qu'on peux ajouter les heures sur chaque trajets.
-		mylist.get(0).put("dept", formatter.format(c.departureTime));
-		mylist.get(mylist.size()-1).put("arrt", formatter.format(c.arrivalTime));
-		//jusqu'ici
-		
-		String[] keys = {"dept", "from", "arrt", "to"}; 
-		int[] ids = {R.id.transport_details_dialog_dep_time, R.id.transport_details_dialog_dep_place,
-				R.id.transport_details_dialog_arr_time, R.id.transport_details_dialog_arr_place};
-		
-		SimpleAdapter mSchedule = new SimpleAdapter(ownerActivity_, mylist, R.layout.transport_details_dialog_row, keys, ids);
-		
-
-		builder.setNeutralButton(activityContext_.getResources().getString(R.string.Share), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {				
-				dialog.dismiss();
-				
-				Intent shareIntent = new Intent(Intent.ACTION_SEND); 
-		        shareIntent.putExtra(Intent.EXTRA_TEXT, stringifier(c) + activityContext_.getResources().getString(R.string.transport_sentViaPCtransport));
-		        shareIntent.putExtra(Intent.EXTRA_SUBJECT, activityContext_.getResources().getString(R.string.transport_timetables));
-		        shareIntent.setType("text/plain");
-		        ownerActivity_.startActivity(shareIntent); 
-				
-			}
-		});
-		
-		builder.setNegativeButton(activityContext_.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {				
-				dialog.dismiss();
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.setCanceledOnTouchOutside(true);
-		
-		alert.show();
-		
-		ListView list = (ListView)alert.findViewById(R.id.transport_details_dialog_list);
-		list.setAdapter(mSchedule);
-	
-		
-	}
-	
-	private void shareToEverybodyOnThePlanetViaSMSYourSuperTravelPlane(Connection c){
-//		AlertDialog.Builder builder = new AlertDialog.Builder(ownerActivity_);
-//		builder.setTitle("Share travel plan");
-//
-//		LayoutInflater inflater = (LayoutInflater) ownerActivity_.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		View layout = inflater.inflate(R.layout.transport_share_dialog, null);
-//		builder.setView(layout);
-//
-//		builder.setNeutralButton("Share", new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int id) {				
-//				dialog.dismiss();
-				Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-				sendIntent.putExtra("sms_body", stringifier(c)); 
-				sendIntent.setType("vnd.android-dir/mms-sms");
-				ownerActivity_.startActivity(sendIntent); 
-//			}
-//		});
-//		
-//		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int id) {				
-//				dialog.dismiss();
-//			}
-//		});
-//		
-//		
-//
-//		AlertDialog alert = builder.create();
-//		alert.setCanceledOnTouchOutside(true);
-//		alert.show();
+	private void displayTravelPlan(final Connection connection) {
+		ConnectionDetailsDialog dialog = new ConnectionDetailsDialog(ownerActivity_, connection);
+		dialog.show();
 	}
 
 	protected void setupSummaryList(Map<String, String> commonDestinations, boolean noDestination) {
@@ -273,9 +171,8 @@ public class TransportDisplayManager implements OnClickListener {
 			Connection travel =  (Connection)adapter.getItem(position);
 			
 			if(travel != null)
-				afficheUneJoliPetiteFenetreAvecLesDetailsDuTrajet(travel);
+				displayTravelPlan(travel);
 			}
-
 			
 		});
 		
@@ -317,9 +214,6 @@ public class TransportDisplayManager implements OnClickListener {
 		});
 		
 		ownerActivity_.setupActionBar(addHomeButton);
-
-		
-
 	}
 	
 	protected String stringifier(Connection c){

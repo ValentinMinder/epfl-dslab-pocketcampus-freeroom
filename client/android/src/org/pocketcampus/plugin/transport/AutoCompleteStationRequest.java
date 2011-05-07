@@ -42,16 +42,20 @@ abstract class AutoCompleteStationRequest extends DataRequest {
 			return;
 		}
 		
-		// Keeps only the stations (no POIs etc)
-		ArrayList<Location> stations = new ArrayList<Location>();;
+		// Keeps only the stations (no POIs etc) that aren't the starting point
+		ArrayList<Location> stations = new ArrayList<Location>();
 		
 		for(Location location : locations_) {
+			
 			if(location.type == LocationType.STATION) {
-				stations.add(location);
+				if(!location.name.equals(TransportPlugin.REFERENCE_DESTINATION)) {
+					stations.add(location);
+				}
 			}
+			
 		}
 		
-		handleLocations(locations_);
+		handleLocations(stations);
 	}
 
 	protected abstract void handleLocations(ArrayList<Location> locations);

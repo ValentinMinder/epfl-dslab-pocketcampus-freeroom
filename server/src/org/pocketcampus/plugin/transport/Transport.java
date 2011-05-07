@@ -27,11 +27,9 @@ import de.schildbach.pte.SbbProvider;
 public class Transport implements IPlugin {
 
 	private SbbProvider sbbProvider_;
-	//private BahnProvider bahnProvider_;
 
 	public Transport() {
 		sbbProvider_ = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
-		//bahnProvider_ = new BahnProvider();
 	}
 
 	@PublicMethod
@@ -121,13 +119,7 @@ public class Transport implements IPlugin {
 		QueryConnectionsResult connections = null;
 		try {
 			connections = sbbProvider_.queryConnections(from, via, to, date, dep, products, walkSpeed);
-			
-//			GetConnectionDetailsResult a = sbbProvider_.getConnectionDetails(connections.queryUri);
-//			return a;
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("bwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			e.printStackTrace();
 		}
 		

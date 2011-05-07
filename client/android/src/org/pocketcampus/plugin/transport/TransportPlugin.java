@@ -29,7 +29,8 @@ import android.widget.Toast;
  *
  */
 public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider {
-	private static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
+	public static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
+	public static final String REFERENCE_DESTINATION_SHORTNAME = "EPFL";
 	
 	private static RequestHandler requestHandler_;
 

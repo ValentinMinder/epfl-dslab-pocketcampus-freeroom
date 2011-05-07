@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.pocketcampus.core.debug.Reporter;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.plugin.transport.PartSerializer;
+import org.pocketcampus.shared.plugin.transport.Connection.Footway;
+import org.pocketcampus.shared.plugin.transport.Connection.Part;
+import org.pocketcampus.shared.plugin.transport.Connection.Trip;
 import org.pocketcampus.shared.utils.StringUtils;
 
 import com.google.gson.Gson;
@@ -46,8 +50,12 @@ public class Router extends HttpServlet {
 		core_ = Core.getInstance();
 		reporter_ = new Reporter();
 		
-		// .setPrettyPrinting()
-		gson_ = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").setPrettyPrinting().create();
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
+		builder.setPrettyPrinting();
+		builder.registerTypeAdapter(Part.class, new PartSerializer());
+
+		gson_ = builder.create();
 		
 		String[] plugins = new String[] {
 				"org.pocketcampus.plugin.food.Food",

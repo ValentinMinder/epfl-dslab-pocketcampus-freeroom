@@ -2,6 +2,9 @@ package org.pocketcampus.core.parser;
 
 import java.lang.reflect.Type;
 
+import org.pocketcampus.plugin.transport.PartDeserializer;
+import org.pocketcampus.shared.plugin.transport.Connection.Part;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -20,7 +23,10 @@ public class Json {
 	 */
 	private static Gson getInstance() {
 		if(gson_ == null) {
-			gson_ = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
+			GsonBuilder builder = new GsonBuilder();
+			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
+			builder.registerTypeAdapter(Part.class, new PartDeserializer());
+			gson_ = builder.create();
 		}
 		
 		return gson_;
@@ -38,6 +44,7 @@ public class Json {
 		try {
 			return getInstance().fromJson(json, typeOfT);
 		} catch (JsonParseException e) {
+			e.printStackTrace();
 			throw new JsonException();
 		}
 	}
