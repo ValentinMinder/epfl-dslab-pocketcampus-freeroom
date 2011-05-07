@@ -36,10 +36,30 @@ public class MainscreenPreference extends PluginPreference {
 		// root
 		PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
-		// mainscreen preferences
-//		PreferenceCategory mainscreenPref = new PreferenceCategory(this);
-//		mainscreenPref.setTitle("Mainscreen Preferences");
-//		root.addPreference(mainscreenPref);
+//		 mainscreen preferences
+		PreferenceCategory mainscreenPref = new PreferenceCategory(this);
+		mainscreenPref.setTitle("Mainscreen Preferences");
+		root.addPreference(mainscreenPref);
+		
+		Preference mainPref;
+		mainPref = new Preference(this);
+		mainPref.setTitle("Mainscreen");
+		
+		OnPreferenceClickListener onMainPreferenceClickListener = new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Intent intent = new Intent(ctx_, new MainscreenPluginPreference().getClass());
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				return false;
+			}
+		};
+		
+		mainPref.setOnPreferenceClickListener(onMainPreferenceClickListener);
+		
+		mainscreenPref.addPreference(mainPref);
+		
 		// TODO
 
 		// plugins preferences

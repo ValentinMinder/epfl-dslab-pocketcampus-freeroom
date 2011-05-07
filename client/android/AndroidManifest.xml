@@ -71,6 +71,7 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".plugin.bikes.BikesPlugin"></activity>
         <activity android:name=".plugin.authentication.AuthenticationPlugin"></activity>
+        <activity android:name=".plugin.mainscreen.MainscreenPluginPreference"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

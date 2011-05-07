@@ -65,7 +65,7 @@ public class MainscreenAdapter extends BaseAdapter {
 
 				ImageView iv = (ImageView) v.findViewById(R.id.mainscree_news_image);
 				
-				iv.setImageDrawable(item.getPlugin_().getPluginInfo().getMiniIcon().getDrawable(ctx_));
+				iv.setImageDrawable(item.getPlugin_().getPluginInfo().getIcon().getDrawable(ctx_));
 				
 			}
 
