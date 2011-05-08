@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+	<!-- Food Plugin -->
+	<string name="food_display_title">Food Service</string>
+	<string name="food_empty">Aucun élément à afficher</string>
+	<string name="food_restaurants">Restaurants</string>
+	<string name="food_menucancelled">Connection au serveur impossible.</string>
+	<string name="food_reload_unsuccessful">Rafraichissement des menus impossible.</string>
+	<string name="food_settings">Paramètres</string>
+		
+	<!--  Preferences -->
+	<string name="food_preferences_title">Restaurants que vous voulez afficher.</string>
+	<string name="food_preferences_warning">Vous devez lancer le service Food au moins une fois avant de pouvoir éditer les préférences.</string>
+
+	<!-- Date -->
+	<string name="food_monday">Lundi</string>
+	<string name="food_tuesday">Mardi</string>
+	<string name="food_wednesday">Mercredi</string>
+	<string name="food_thursday">Jeudi</string>
+	<string name="food_friday">Vendredi</string>
+	<string name="food_today_menus">Menus d\'aujourd\'hui</string>
+	<string name="food_today_sandwiches">Sandwiches d\'aujourd\'hui</string>
+	
+	<!-- Ratings -->
+	<string name="food_rating_submitted">Votre vote a été enregistré.</string>
+	<string name="food_rating_alreadyvoted">Erreur: Vous avez déjà voté aujourd\'hui.</string>
+	<string name="food_rating_notsubmitted">Erreur: L\'enregistrement de votre vote a échoué, réessayez plus tard.</string>
+	<string name="food_menulist_votesPlural">votes</string>
+	<string name="food_menulist_votesSingular">vote</string>
+
+	<!-- Rating dialog -->
+	<string name="food_rating_title">Notez le!</string>
+	<string name="food_rating_OK">OK</string>
+	<string name="food_rating_cancel">ANNULER!</string>
+
+	<!-- Options Menu -->
+	<string name="food_show_menus">Menus</string>
+	<string name="food_show_ratings">Trier par note</string>
+	<string name="food_show_sandwiches">Sandwiches</string>
+	<string name="food_show_suggestions">Suggestions</string>
+
+	<!-- Menu dialog -->
+	<string name="food_menudialog_rateittext">Notez le!</string>
+	<string name="food_menudialog_takethistext">Je choisis ce menu</string>
+	<string name="food_menudialog_gotheretext">M\'y emmener</string>
+	<string name="food_menudialog_takepicturetext">Prendre une photo</string>
+	<string name="food_menudialog_takepictureQueuetext">Enregistrer la queue</string>
+	<string name="food_menudialog_seepictureQueuetext">Voir la queue</string>
+	<string name="food_menudialog_seepicturestext">Voir les photos</string>
+
+	<!-- Sandwich -->
+	<string name="food_sandwich_list">Liste des sandwiches</string>
+	<string name="food_sandwich_button_yes">Oui</string>
+	<string name="food_sandwich_button_no">Non</string>
+	<string name="food_sandwich_question_modify">Êtes-vous sûr de vouloir modifier?</string>
+	<string name="food_sandwich_information">cliquez sur la sandwicherie pour voir les sandwiches</string>
+	<string name="food_sandwich_not_available">non disponible</string>
+	<string name="food_sandwich_available">disponible</string>
+	<string name="food_sandwich_confirmation">Confirmation</string>
+
+	<!--  Suggestions -->
+	<string name="food_suggestions_nothing_found">Aucune suggestion trouvée</string>
+	<string name="food_suggestions_meat">Viande</string>
+	<string name="food_suggestions_fish">Poisson</string>
+	<string name="food_suggestions_beef">Boeuf</string>
+	<string name="food_suggestions_pasta">Pâets</string>
+	<string name="food_suggestions_horse">Cheval</string>
+	<string name="food_suggestions_vege">Végétarien</string>
+	<string name="food_suggestions_porc">Porc</string>
+	<string name="food_suggestions_chicken">Poulet</string>
+	<string name="food_suggestions_ok">Soumettre</string>
+	<string name="food_suggestions_test">Test</string>
+
+	<string name="food_suggestions_notag">Aucun tag existant</string>
+	<string name="food_suggestions_alreadyAdded">Ce tag a déjà été ajouté !</string>
+	<string name="food_suggestions_explanation">Choississez les repas que vous aimez (ou pas)</string>
+	<string name="food_suggestions_ilike">J\'aime</string>
+	<string name="food_suggestions_idontlike">Je n\'aime pas</string>
+	<string name="food_suggestlist_prompt_like">Qu'aimez-vous?</string>
+	<string name="food_suggestlist_prompt_dislike">Que n\'aimez vous pas?</string>
+	<string name="food_suggestions_nomeal_nosuggestion">Impossible de trouver des suggestions s\'il n\'y a aucun repas
+	</string>
+
+	<!--  Gallery   -->
+	<string name="food_gallery_nopic_title">Désolé !</string>
+	<string name="food_picture_dialog_title">Choississez un genre d\'image</string>
+	<string name="food_gallery_nopic_msg">Il n\'y a aucune image pour le moment.\nAjoutez en!</string>
+	<declare-styleable name="MealGallery">
+		<attr name="android:galleryItemBackground" />
+	</declare-styleable>
+
+</resources>
