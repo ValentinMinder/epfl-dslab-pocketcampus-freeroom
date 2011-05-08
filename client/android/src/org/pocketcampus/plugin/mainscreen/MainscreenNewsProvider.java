@@ -3,28 +3,42 @@ package org.pocketcampus.plugin.mainscreen;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.plugin.news.NewsPlugin;
+import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.PluginBase;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 public class MainscreenNewsProvider {
-
 	
 	public static List<MainscreenNews> getNews(Context ctx) {
 		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
-		
-		/*
-		 * In order to test your news on the mainscreen, you can add the following line here:
-		 * l.addAll(myIMainscreenNewsProvider.getNews(ctx));
-		 * 
-		 * This will be modified with the addition of the mainscreen configuration page
-		 * 
-		 */
 
-		// May work, or not
-		l.addAll(new NewsPlugin().getNews(ctx));
-				
+        // Feeds to display
+		String[] plugins  = ctx.getResources().getStringArray(R.array.mainscreen_provider_plugins);
+		
+
+        for(String key : plugins) {
+        	
+        	PluginBase plug = null;
+			try {
+				Class<?> cl = Class.forName(MainscreenPlugin.PACKAGE+key);
+	        	plug = (PluginBase) cl.newInstance();
+			} catch (ClassNotFoundException e) {
+			} catch (IllegalAccessException e) {
+			} catch (InstantiationException e) {
+			}
+        	
+			if(plug != null) {
+				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getName(), false)) {
+					l.addAll(((IMainscreenNewsProvider)plug).getNews(ctx));
+				}
+			}
+		}
+		
+
 		return l;
 	}
+
 	
 }
