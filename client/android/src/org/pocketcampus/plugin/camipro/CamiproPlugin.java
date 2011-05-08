@@ -42,7 +42,9 @@ public class CamiproPlugin extends PluginBase {
 		webView_ = (WebView) findViewById(R.id.camipro_webview);
 	    webView_.setWebViewClient(new HelloWebViewClient());
 	    webView_.getSettings().setJavaScriptEnabled(true);
-	    webView_.loadUrl(getResources().getString(R.string.camipro_website_url));
+	    
+	    String page = getResources().getString(R.string.camipro_page);
+	    webView_.loadUrl(getResources().getString(R.string.camipro_website_url) + page);
 	}
 
 	/**
