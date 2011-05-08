@@ -4,5 +4,9 @@
     <string name="mainscreen_language">Langue</string>
     <string name="mainscreen_news_plugins_message">Au moins un plugin doit être séléctionné</string>
     
+    <string-array name="mainscreen_languages">
+        <item>Anglais</item>
+        <item>Français</item>
+    </string-array>
     
 </resources>

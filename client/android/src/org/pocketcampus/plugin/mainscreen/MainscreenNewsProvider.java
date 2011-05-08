@@ -12,6 +12,9 @@ import android.preference.PreferenceManager;
 public class MainscreenNewsProvider {
 	
 	public static List<MainscreenNews> getNews(Context ctx) {
+		
+		MainscreenPlugin.refreshing();
+		
 		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
 
         // Feeds to display
@@ -36,6 +39,7 @@ public class MainscreenNewsProvider {
 			}
 		}
 		
+        MainscreenPlugin.refreshed();
 
 		return l;
 	}

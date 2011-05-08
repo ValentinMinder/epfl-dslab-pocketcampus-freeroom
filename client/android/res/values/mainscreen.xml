@@ -8,7 +8,16 @@
     
     <string-array name="mainscreen_provider_plugins">
         <item>news.NewsPlugin</item>
-        <item>transport.TransportPlugin</item>
+    </string-array>
+    
+    <string-array name="mainscreen_languages">
+        <item>English</item>
+        <item>French</item>
+    </string-array>
+    
+    <string-array name="mainscreen_languages_abr">
+        <item>en</item>
+        <item>fr</item>
     </string-array>
     
 </resources>

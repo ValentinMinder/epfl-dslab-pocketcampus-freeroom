@@ -5,10 +5,14 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.Icon;
+import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.news.NewsProvider;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -35,6 +39,9 @@ public class MainscreenPlugin extends PluginBase {
 	private Core core_;
 	private Vector<PluginBase> plugins_;
 	private Tracker tracker_;
+	
+	private static ActionBar actionBar_;
+
 	
 	protected final static String PACKAGE = "org.pocketcampus.plugin.";
 	
@@ -218,6 +225,46 @@ public class MainscreenPlugin extends PluginBase {
 			}
 		});
 	}
+	
 
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				refresh();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
+		
+		super.setupActionBar(addHomeButton);
+
+	}
+	
+	public void refresh() {
+		refreshing();
+		
+		displayNews();
+		
+		refreshed();
+	}
+	
+	public static void refreshing() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+
+
+	public static void refreshed() {
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
+	
 
 }
