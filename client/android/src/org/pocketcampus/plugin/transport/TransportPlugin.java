@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.transport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.utils.Notification;
@@ -53,6 +55,8 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		
 		transportDisplayManager_ = new TransportDisplayManager(this, requestHandler_);
 		context_ = getApplicationContext();
+		
+		Tracker.getInstance().trackPageView("transport/home");
 		
 		displaySummary();
 	}
@@ -130,7 +134,22 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 
 	@Override
 	public List<MainscreenNews> getNews(Context ctx) {
+		SharedPreferences commonDestPrefs = ctx.getSharedPreferences("CommonDestPrefs", 0);
 		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
+		
+		if(commonDestPrefs == null) {
+			return news;
+		}
+		
+		@SuppressWarnings("unchecked")
+		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs.getAll();
+		int destNum = 0;
+		
+		for(String destination : commonDestinations.values()) {
+			MainscreenNews newsObj = new MainscreenNews("Departures for " + destination, "", destNum, this, new Date());
+			news.add(newsObj);
+			destNum++;
+		}
 		
 		return news;
 	}
@@ -139,3 +158,16 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		Notification.showToast(context_, context_.getResources().getString(textId));
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -127,12 +127,8 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		formatter.applyPattern("k:mm");
 		
 		// fill in the views
-		String s1, s2;
-		s1 = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
-		s2 = atCapital_StringRessource + " " + formatter.format(connection.departureTime) + ", " + arrival_StringRessource + " " + at_StringRessource + " " + formatter.format(connection.arrivalTime) + change_StringRessource + ".";
-		
+		String s1 = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
 		timeTextView.setText(s1);
-		//transpTextView.setText(s2);
 		
 		return view;
 	}

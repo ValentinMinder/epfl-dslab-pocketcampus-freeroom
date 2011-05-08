@@ -56,7 +56,7 @@ public class MainscreenPlugin extends PluginBase {
 
 		tracker_ = Tracker.getInstance();
 		tracker_.start(this);
-		tracker_.trackPageView("news/home");
+		tracker_.trackPageView("mainscreen/home");
 		
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();

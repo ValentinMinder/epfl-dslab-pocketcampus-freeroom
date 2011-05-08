@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.Connection.Footway;
 import org.pocketcampus.shared.plugin.transport.Connection.Trip;
@@ -29,7 +30,9 @@ public class ConnectionDetailsDialog extends Dialog{
 		setContentView(R.layout.transport_details_dialog);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
-
+		
+		Tracker.getInstance().trackPageView("transport/detail");
+		
 		setDialogContent();
 	}
 

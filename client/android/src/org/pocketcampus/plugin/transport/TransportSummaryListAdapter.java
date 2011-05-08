@@ -48,6 +48,7 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		incrementProgressCounter();
 		
 		class ConnectionsRequest extends DataRequest {
+			private QueryConnectionsResult summary;
 			
 			@Override
 			protected int expirationDelay() {
@@ -62,9 +63,9 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 			}
 			
 			@Override
-			protected void doInUiThread(String result) {
+			protected void doInBackgroundThread(String result) {
 				Type SummaryListType = new TypeToken<QueryConnectionsResult>(){}.getType();
-				QueryConnectionsResult summary = null;
+				summary = null;
 				
 				try {
 					summary = Json.fromJson(result, SummaryListType);
@@ -72,10 +73,12 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 					onCancelled();
 					return;
 				}
-
+			}
+			
+			@Override
+			protected void doInUiThread(String result) {
 				adapter.setSummary(summary);
 				notifyDataSetChanged();
-				
 				decrementProgressCounter();
 			}
 			
