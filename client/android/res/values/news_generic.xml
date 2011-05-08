@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Only the first one will be selected by default -->
+    <string-array name="news_feeds_url">
+        <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/mediacom/en/</item>
+    </string-array>
+    <string-array name="news_feeds_name">
+        <item>EPFL Français</item>
+        <item>EPFL English</item>
+    </string-array>
+</resources>
