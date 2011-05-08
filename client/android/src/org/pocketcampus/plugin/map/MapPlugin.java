@@ -17,12 +17,12 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
@@ -48,7 +48,6 @@ import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.utils.ImageUtil;
 import org.pocketcampus.utils.Notification;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -432,9 +431,9 @@ public class MapPlugin extends PluginBase {
 			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 			
-		case R.id.map_toggle_mode:
-			toggleMapMode();
-			return true;
+//		case R.id.map_toggle_mode:
+//			toggleMapMode();
+//			return true;
 
 		case R.id.map_clear_path:
 			clearPath();
