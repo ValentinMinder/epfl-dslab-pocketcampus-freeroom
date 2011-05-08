@@ -5,10 +5,8 @@ import org.pocketcampus.R;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 
-import android.app.Dialog;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 /**
  * Show a dialog box when the user clicks on an item on the map
@@ -18,53 +16,42 @@ import android.widget.TextView;
  * @author Jonas
  *
  */
-public class ItemDialog extends Dialog {
+public class ItemDialog {
 	
 	private MapPlugin mp_;
+	private OverlayItem item_;
 	
 	public ItemDialog(final MapPlugin mp, final OverlayItem item) {
-		super(mp);
-		
 		this.mp_ = mp;
+		this.item_ = item;
+	}
+	
+	public void showDialog() {
 		
-		setContentView(R.layout.map_item_dialog);
-		setCancelable(true);
-		setCanceledOnTouchOutside(true);
+		AlertDialog.Builder builder = new AlertDialog.Builder(mp_);
+		builder.setTitle(item_.getTitle());
+		builder.setMessage(item_.getSnippet());
+		builder.setCancelable(true);
 		
-		setTitle(item.getTitle());
+		builder.setPositiveButton(mp_.getResources().getString(R.string.map_zoom_button), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				mp_.centerOnPoint(item_.getPoint());
+				dialog.dismiss();	
+			}
+		});
 
-		String description = item.getSnippet();
-		
-		TextView text = (TextView) findViewById(R.id.map_item_description);
-		
-		if(description == null || "".equals(description)) {
-			text.setVisibility(View.GONE);
-		} else {
-			text.setText(description);
-		}
-
-//		ImageView img = (ImageView) dialog.findViewById(R.id.map_dialog_image);
-//		img.setImageDrawable(item.getDrawable());
-		
-		Button take = (Button) findViewById(R.id.map_take_me_there_button);
-		take.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mp_.showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item.getPoint()));
-				dismiss();
+		builder.setNeutralButton(mp_.getResources().getString(R.string.map_take_me_there_button), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				mp_.showDirectionsFromHereToPosition(GeoPointConverter.toPosition(item_.getPoint()));				
+				dialog.dismiss();	
 			}
 		});
 		
-		Button zoom = (Button) findViewById(R.id.map_zoom_button);
-		zoom.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mp_.centerOnPoint(item.getPoint());
-				dismiss();
-			}
-		});
+		
+		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
+		
+		alert.show();
 	}
 	
 }

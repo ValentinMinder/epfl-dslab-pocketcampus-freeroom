@@ -530,7 +530,7 @@ public class MapPlugin extends PluginBase {
 	 * @param endPos Position where to go
 	 */
 	public void showDirectionsFromHereToPosition(final Position endPos) {
-
+		
 		if(!myLocationOverlay_.isFollowLocationEnabled()) {
 			toggleCenterOnUserPosition();
 		}
@@ -899,11 +899,9 @@ public class MapPlugin extends PluginBase {
 
 		@Override
 		public boolean onItemSingleTapUp(int index, final OverlayItem item) {
-
-			final Dialog dialog = new ItemDialog(a_, item);
-
-			dialog.show();
-
+			final ItemDialog dialog = new ItemDialog(a_, item);
+			dialog.showDialog();
+			
 			return true;
 		}
 	}
