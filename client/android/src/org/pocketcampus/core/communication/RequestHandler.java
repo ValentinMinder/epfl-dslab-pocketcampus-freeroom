@@ -5,11 +5,19 @@ import org.pocketcampus.core.plugin.PluginInfo;
 public class RequestHandler {
 	private PluginInfo pluginInfo_;
 
+	/**
+	 * Production server.
+	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
+	 * Revision: r520
+	 * Started on: 07/05/2011
+	 */
+	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/";
+	
+	/**
+	 * Development servers. 
+	 */
 	// EMULATOR URL
 	//private String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
-
-	// AWS SERVER URL
-	private static final String serverUrl_ = "http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/";
 
 	// ELODIE LOCAL SERVER URL
 	//private String serverUrl_ = "http://128.178.240.75:8080/pocketcampus-server/";
