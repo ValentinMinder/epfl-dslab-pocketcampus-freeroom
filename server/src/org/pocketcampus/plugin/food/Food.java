@@ -15,20 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.food.RssParser.RssFeed;
-import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
-import org.pocketcampus.shared.plugin.map.MapElementBean;
-import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-public class Food implements IPlugin, IMapElementsProvider {
+public class Food implements IPlugin/*, IMapElementsProvider*/ {
 
 	private List<Meal> campusMeals_;
 	private HashMap<Integer, Rating> campusMealRatings_;
@@ -439,19 +436,19 @@ public class Food implements IPlugin, IMapElementsProvider {
 		return defaultSandwichList;
 	}
 
-	@Override
-	public List<MapElementBean> getLayerItems(int layerId) {
-		// TODO Auto-generated method stub
-		return new ArrayList<MapElementBean>();
-	}
-
-	@Override
-	public List<MapLayerBean> getLayers() {
-		// TODO Auto-generated method stub
-		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
-		return l;
-	}
+//	@Override
+//	public List<MapElementBean> getLayerItems(int layerId) {
+//		// TODO Auto-generated method stub
+//		return new ArrayList<MapElementBean>();
+//	}
+//
+//	@Override
+//	public List<MapLayerBean> getLayers() {
+//		// TODO Auto-generated method stub
+//		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+//		l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
+//		return l;
+//	}
 
 	// public void writeToFile() {
 	// lastImportDateM_ = new Date();
