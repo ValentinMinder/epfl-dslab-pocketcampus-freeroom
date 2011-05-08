@@ -124,7 +124,6 @@ public class FoodDisplayHandler {
 		case 125:
 			currentDisplayType_ = FoodDisplayType.Ratings;
 			break;
-
 		}
 		updateView();
 	}

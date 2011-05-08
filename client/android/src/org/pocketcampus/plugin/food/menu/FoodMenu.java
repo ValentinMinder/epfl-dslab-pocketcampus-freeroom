@@ -33,7 +33,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -121,13 +120,16 @@ public class FoodMenu {
 
 	public boolean isTodayMenu() {
 		Calendar cal = Calendar.getInstance();
-		Log.d("Tag", "1: " + cal.get(Calendar.DAY_OF_MONTH) + " 2: "
-				+ cal.get(Calendar.MONTH) + " 3: " + cal.get(Calendar.YEAR));
+		Log.d("Tag",
+				"1: " + cal.get(Calendar.DAY_OF_MONTH) + " 2: "
+						+ cal.get(Calendar.MONTH) + " 3: "
+						+ cal.get(Calendar.YEAR));
 		Calendar validity = Calendar.getInstance();
 		validity.setTime(validityDate_);
-		Log.d("Tag", "1: " + validity.get(Calendar.DAY_OF_MONTH) + " 2: "
-				+ validity.get(Calendar.MONTH) + " 3: "
-				+ validity.get(Calendar.YEAR));
+		Log.d("Tag",
+				"1: " + validity.get(Calendar.DAY_OF_MONTH) + " 2: "
+						+ validity.get(Calendar.MONTH) + " 3: "
+						+ validity.get(Calendar.YEAR));
 		if (cal.get(Calendar.DAY_OF_MONTH) == validity
 				.get(Calendar.DAY_OF_MONTH)) {
 			if (cal.get(Calendar.MONTH) == validity.get(Calendar.MONTH)) {
@@ -161,8 +163,7 @@ public class FoodMenu {
 				if (result != null) {
 					Log.d("SERVER", result);
 				}
-				// Deserializes the response
-				Gson gson = new Gson();
+				// De-serializes the response
 
 				Type menuType = new TypeToken<HashMap<Integer, Rating>>() {
 				}.getType();
@@ -227,10 +228,10 @@ public class FoodMenu {
 
 				if (campusMenuList != null) {
 					if (campusMenuList.isEmpty()) {
-						List<Meal> fromCache = restoreFromFile();
-						if (fromCache != null) {
-							setCampusMenu(fromCache);
-						}
+						// List<Meal> fromCache = restoreFromFile();
+						// if (fromCache != null) {
+						// setCampusMenu(fromCache);
+						// }
 					} else {
 						setCampusMenu(campusMenuList);
 						Date currentDate = new Date();
@@ -239,7 +240,7 @@ public class FoodMenu {
 					}
 				} else {
 					Log.d("SERVER", "null menu");
-					List<Meal> fromCache = restoreFromFile();
+					List<Meal> fromCache = restoreFromFile();	
 					if (fromCache != null) {
 						setCampusMenu(fromCache);
 					}
@@ -258,8 +259,8 @@ public class FoodMenu {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
-//		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
-		
+		// cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
+
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
