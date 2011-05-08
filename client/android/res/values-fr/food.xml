@@ -78,7 +78,7 @@
 	<string name="food_suggestions_explanation">Choississez les repas que vous aimez (ou pas)</string>
 	<string name="food_suggestions_ilike">J\'aime</string>
 	<string name="food_suggestions_idontlike">Je n\'aime pas</string>
-	<string name="food_suggestlist_prompt_like">Qu'aimez-vous?</string>
+	<string name="food_suggestlist_prompt_like">Qu\'aimez-vous?</string>
 	<string name="food_suggestlist_prompt_dislike">Que n\'aimez vous pas?</string>
 	<string name="food_suggestions_nomeal_nosuggestion">Impossible de trouver des suggestions s\'il n\'y a aucun repas
 	</string>
