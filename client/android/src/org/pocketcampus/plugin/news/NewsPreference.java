@@ -75,7 +75,7 @@ public class NewsPreference extends PluginPreference {
 	        checkBoxPref.setKey(loadRss + url);
 	        checkBoxPref.setTitle(names[i++]);
 	        checkBoxPref.setSummary(url);
-	        checkBoxPref.setDefaultValue(i == 1);
+	        checkBoxPref.setDefaultValue(true);
 	        checkBoxPref.setOnPreferenceChangeListener(listener);
 	        
 	        rssPrefCat.addPreference(checkBoxPref);

@@ -8,6 +8,8 @@
     <string name="news_show_image_title">Afficher une miniature</string>
     <string name="news_show_image_summary">Affiche une image miniature (si disponible)</string>
     
+    <string name="news_menu_settings">Paramètres</string>
+    
     <string-array name="news_refresh_entries">
         <item>A chaque chargement</item>
         <item>10 minutes</item>
@@ -15,13 +17,6 @@
         <item>5 heures</item>
         <item>12 heures</item>
         <item>1 jour</item>
-    </string-array>
-    
-    <string-array name="news_feeds_url">
-        <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
-    </string-array>
-    <string-array name="news_feeds_name">
-        <item>EPFL</item>
     </string-array>
 
 </resources>

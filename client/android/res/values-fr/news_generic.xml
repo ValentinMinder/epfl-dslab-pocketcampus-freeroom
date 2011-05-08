@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="news_feeds_url">
-        <item>http://actu.epfl.ch/feeds/rss/mediacom/en/</item>
+        <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
     </string-array>
     <string-array name="news_feeds_name">
         <item>EPFL</item>

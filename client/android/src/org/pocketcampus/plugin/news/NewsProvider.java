@@ -144,12 +144,10 @@ public class NewsProvider {
 		ArrayList<String> urlsToDownload = new ArrayList<String>();
 
 		// Take only the ones selected by the user in the preferences
-		boolean useIt = true;
 		for(String url: urls) {
-			if(prefs_.getBoolean(NewsPreference.loadRss + url, useIt)) {
+			if(prefs_.getBoolean(NewsPreference.loadRss + url, true)) {
 				urlsToDownload.add(url);
 			}
-			useIt = false;
 		}
 
 		// Download the feeds

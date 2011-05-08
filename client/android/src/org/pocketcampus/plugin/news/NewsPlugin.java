@@ -16,13 +16,17 @@ import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * PluginBase class for the News plugin. 
@@ -100,6 +104,28 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.news, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+			case R.id.news_menu_settings:
+				Intent intent = new Intent(this, NewsPreference.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				return true;
+	
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 
