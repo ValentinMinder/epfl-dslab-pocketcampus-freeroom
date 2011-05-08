@@ -39,6 +39,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	private Date lastImportDateS_;
 
 	private FoodDB database_;
+	private boolean noMealsToday_;
 
 	/**
 	 * Parse the menus on startup.
@@ -65,7 +66,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	public List<Meal> getMenus(HttpServletRequest request) {
 		if (!isValid(lastImportMenus_)) {
 			System.out
-			.println("<getMenus>: Date not valid. Reimporting menus.");
+					.println("<getMenus>: Date not valid. Reimporting menus.");
 			campusMeals_.clear();
 			deviceIds_.clear();
 			campusMealRatings_.clear();
@@ -77,15 +78,14 @@ public class Food implements IPlugin, IMapElementsProvider {
 		return campusMeals_;
 	}
 
-
-	public List<String> getRestaurants(HttpServletRequest request){
+	public List<String> getRestaurants(HttpServletRequest request) {
 		ArrayList<String> restaurantList_ = new ArrayList<String>();
 
-		if(campusMeals_ != null){
+		if (campusMeals_ != null) {
 
-			for(Meal m : campusMeals_){
+			for (Meal m : campusMeals_) {
 				String r = m.getRestaurant_().getName();
-				if(!restaurantList_.contains(r)){
+				if (!restaurantList_.contains(r)) {
 					restaurantList_.add(r);
 				}
 			}
@@ -127,8 +127,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		if (now.get(Calendar.DAY_OF_WEEK) == then.get(Calendar.DAY_OF_WEEK)) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -174,7 +175,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		System.out.println(mealHashCode);
 		for (int i = 0; i < campusMeals_.size(); i++) {
 			Meal currentMeal = campusMeals_.get(i);
-			System.out.println("Dedans "+currentMeal.hashCode());
+			System.out.println("Dedans " + currentMeal.hashCode());
 			if (currentMeal.hashCode() == mealHashCode) {
 				// Update rating for meal
 				currentMeal.getRating().addRating(r);
@@ -195,6 +196,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 	/**
 	 * Upload a picture for a meal
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -204,7 +206,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 		String pictureString = request.getParameter("pictureArray");
 		String mealHashCodeString = request.getParameter("meal");
 
-		if(deviceID == null || pictureString == null || mealHashCodeString == null){
+		if (deviceID == null || pictureString == null
+				|| mealHashCodeString == null) {
 			return false;
 		}
 
@@ -243,8 +246,8 @@ public class Food implements IPlugin, IMapElementsProvider {
 		return null;
 	}
 
-	private void updateMenu(){
-		if(!isValid(lastImportMenus_)){
+	private void updateMenu() {
+		if (!isValid(lastImportMenus_)) {
 			campusMeals_.clear();
 			deviceIds_.clear();
 			campusMealRatings_.clear();
@@ -294,6 +297,10 @@ public class Food implements IPlugin, IMapElementsProvider {
 					System.out.println("<importMenus>: empty feed");
 				}
 			}
+			if(campusMeals_.isEmpty()){
+				noMealsToday_ = true;
+				lastImportMenus_ = new Date();
+			}
 			for (Meal m : campusMeals_) {
 				database_.insertMeal(m);
 				System.out.println("<importMenus>: Inserting meal "
@@ -309,7 +316,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 
 		/* Cafeteria INM */
 		sandwichList_
-		.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true));
+				.add(new Sandwich("Cafeteria INM", "Poulet au Curry", true));
 		sandwichList_.add(new Sandwich("Cafeteria INM", "Thon", true));
 		sandwichList_.add(new Sandwich("Cafeteria INM", "Jambon", true));
 		sandwichList_.add(new Sandwich("Cafeteria INM", "Fromage", true));
@@ -342,7 +349,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Salami", true));
 		sandwichList_
-		.add(new Sandwich("Le Giacometti", "Jambon de dinde", true));
+				.add(new Sandwich("Le Giacometti", "Jambon de dinde", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Gruyière", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Viande Séchée", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Jambon cru", true));
@@ -352,7 +359,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 		sandwichList_.add(new Sandwich("Le Giacometti", "Crevettes", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Saumon fumé", true));
 		sandwichList_
-		.add(new Sandwich("Le Giacometti", "Poulet au Curry", true));
+				.add(new Sandwich("Le Giacometti", "Poulet au Curry", true));
 		sandwichList_.add(new Sandwich("Le Giacometti", "Autres", true));
 
 		/* L'Esplanade */
@@ -371,9 +378,9 @@ public class Food implements IPlugin, IMapElementsProvider {
 		/* Atlantide */
 		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich long", true));
 		sandwichList_
-		.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true));
+				.add(new Sandwich("L'Atlantide", "Sandwich au pavot", true));
 		sandwichList_
-		.add(new Sandwich("L'Atlantide", "Sandwich intégral", true));
+				.add(new Sandwich("L'Atlantide", "Sandwich intégral", true));
 		sandwichList_.add(new Sandwich("L'Atlantide", "Sandwich provençal",
 				true));
 		sandwichList_.add(new Sandwich("L'Atlantide", "Parisette", true));
@@ -475,7 +482,7 @@ public class Food implements IPlugin, IMapElementsProvider {
 	// fis = new FileInputStream(toGet);
 	// in = new ObjectInputStream(fis);
 	// Object obj = in.readObject();
-	//			
+	//
 	// if(obj instanceof List<?>){
 	// menu = (List<Meal>) obj;
 	// }
