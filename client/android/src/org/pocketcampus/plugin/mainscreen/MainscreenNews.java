@@ -13,7 +13,7 @@ import org.pocketcampus.core.plugin.PluginBase;
  * @author Guillaume
  *
  */
-public class MainscreenNews {
+public class MainscreenNews implements Comparable<MainscreenNews> {
 
 	private String title_;
 	private String content_;
@@ -47,6 +47,14 @@ public class MainscreenNews {
 	
 	public Date getDate_() {
 		return date_;
+	}
+
+	@Override
+	public int compareTo(MainscreenNews another) {
+		if(another == null) return 1;
+		if(another.date_ == null ) return 1;
+		if(this.date_ == null) return -1;
+		return -(another.date_.compareTo(date_)); //-(...) beacuse we want it in desc order
 	}
 	
 }

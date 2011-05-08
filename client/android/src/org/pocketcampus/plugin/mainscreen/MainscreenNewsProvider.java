@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.mainscreen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -41,6 +42,8 @@ public class MainscreenNewsProvider {
 		
         MainscreenPlugin.refreshed();
 
+        Collections.sort(l);
+        
 		return l;
 	}
 
