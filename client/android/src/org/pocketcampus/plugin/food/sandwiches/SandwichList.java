@@ -100,10 +100,12 @@ public class SandwichList {
 			}
 		}
 		sandwichList_ = restoreFromFile();
-		if(sandwichList_ == null){						
+		if(sandwichList_ == null || sandwichList_.isEmpty()){						
 			Log.d("SANDWICHES", "Requesting sandwiches.");
 			FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
 					"getSandwiches", (RequestParameters) null);
+		}else{
+			pluginHandler_.menuRefreshed(true);
 		}
 		
 	}

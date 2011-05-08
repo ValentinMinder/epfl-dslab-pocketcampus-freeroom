@@ -196,10 +196,10 @@ public class FoodPlugin extends PluginBase {
 				validityDate_.setText(getResources().getString(
 						R.string.food_today_sandwiches));
 				expandMenus_.setVisibility(View.VISIBLE);
-				Log.d("SANDWICHES", "Eh ben alors ?");
 			} else {
 				validityDate_.setText("");
 				empty.setText(getString(R.string.food_empty));
+				actionBar_.setProgressBarVisibility(View.GONE);
 			}
 		}else {
 			empty.setText(getString(R.string.food_empty));
@@ -260,9 +260,6 @@ public class FoodPlugin extends PluginBase {
 			displayView();
 			return true;
 		case R.id.food_menu_sandwiches: // show sandwiches
-			Log
-			.d("SANDWICHES",
-			"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
 			foodDisplayHandler_.setCurrentDisplayType(selectedId);
 			displayView();

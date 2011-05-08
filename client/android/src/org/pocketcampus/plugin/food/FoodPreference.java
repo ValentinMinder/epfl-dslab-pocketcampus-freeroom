@@ -1,10 +1,13 @@
 
 package org.pocketcampus.plugin.food;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -67,12 +70,13 @@ public class FoodPreference extends PluginPreference {
 		CheckBoxPreference prefBox;
 
 		/* Change to get the list from a permanent txt file. */
-		restaurants_ = FoodPlugin.getRestaurantList();
+		restaurants_ = getRestaurants();
+		//		restaurants_ = FoodPlugin.getRestaurantList();
 		displayedRestaurants_ = readFromFile();
 
 		if (displayedRestaurants_ == null || displayedRestaurants_.isEmpty()) {
 			Log.d("PREFERENCES",
-					"displayedRestaurants_ was null or empty from file!");
+			"displayedRestaurants_ was null or empty from file!");
 			displayedRestaurants_ = restaurants_;
 		} else {
 		}
@@ -87,32 +91,26 @@ public class FoodPreference extends PluginPreference {
 				prefBox.setDefaultValue(true);
 
 				prefBox
-						.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
-							@Override
-							public boolean onPreferenceChange(
-									Preference preference, Object newValue) {
-								String r = preference.getKey();
+					@Override
+					public boolean onPreferenceChange(
+							Preference preference, Object newValue) {
+						String r = preference.getKey();
 
-								if ((Boolean) newValue) {
-									displayedRestaurants_.add(r);
-								} else {
-									displayedRestaurants_.remove(r);
-								}
-								int i = 1;
-								Log.d("PREFERENCES", "Now in the list");
-								for (String s : displayedRestaurants_) {
-									Log.d("PREFERENCES", i + " : " + s);
-									i++;
-								}
-								writeToFile();
-								PreferenceManager.getDefaultSharedPreferences(
-										that).edit().putLong(cacheTime_, 0)
-										.commit();
-								return true;
-							}
+						if ((Boolean) newValue) {
+							displayedRestaurants_.add(r);
+						} else {
+							displayedRestaurants_.remove(r);
+						}
+						writeToFile();
+						PreferenceManager.getDefaultSharedPreferences(
+								that).edit().putLong(cacheTime_, 0)
+								.commit();
+						return true;
+					}
 
-						});
+				});
 
 				foodPrefCat.addPreference(prefBox);
 			}
@@ -165,5 +163,33 @@ public class FoodPreference extends PluginPreference {
 		}
 
 		return restosDisplayed;
+	}
+
+	private ArrayList<String> getRestaurants(){
+		ArrayList<String> list = new ArrayList<String>();
+
+		try {
+			InputStream instream = this.getClass().getResourceAsStream("restaurants_names.txt");
+
+			if(instream != null){
+
+				InputStreamReader inputreader = new InputStreamReader(instream);
+				BufferedReader input = new BufferedReader(inputreader);
+
+				try {
+					String line = null; // not declared within while loop
+					
+					while ((line = input.readLine()) != null) {
+						list.add(line);
+					}
+				} finally {
+					input.close();
+				}
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
+		return list;
 	}
 }
