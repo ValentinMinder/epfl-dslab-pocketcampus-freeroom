@@ -6,15 +6,16 @@ public class RequestHandler {
 	private PluginInfo pluginInfo_;
 
 	/**
-	 * Production server.
+	 * PRODUCTION SERVER
+	 * Revision: r528
+	 * Started on: 08/05/2011
+	 * Plugins: Map, Food, Bikes, Transport
 	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
-	 * Revision: r520
-	 * Started on: 07/05/2011
 	 */
 	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/";
 	
 	/**
-	 * Development servers. 
+	 * DEVELOPMENT SERVERS
 	 */
 	// EMULATOR URL
 	//private String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
