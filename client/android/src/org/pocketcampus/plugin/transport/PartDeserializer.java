@@ -18,7 +18,7 @@ public class PartDeserializer implements JsonDeserializer<Part> {
 
 	@Override
 	public Part deserialize(JsonElement part, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 		
 		String partString = gson.fromJson(part, String.class);
 		

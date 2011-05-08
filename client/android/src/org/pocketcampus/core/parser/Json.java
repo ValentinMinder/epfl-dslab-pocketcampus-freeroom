@@ -24,7 +24,7 @@ public class Json {
 	private static Gson getInstance() {
 		if(gson_ == null) {
 			GsonBuilder builder = new GsonBuilder();
-			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
+			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			builder.registerTypeAdapter(Part.class, new PartDeserializer());
 			gson_ = builder.create();
 		}

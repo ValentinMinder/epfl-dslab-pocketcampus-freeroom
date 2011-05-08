@@ -51,7 +51,8 @@ public class Router extends HttpServlet {
 		reporter_ = new Reporter();
 		
 		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
+		//builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
+		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		builder.setPrettyPrinting();
 		builder.registerTypeAdapter(Part.class, new PartSerializer());
 

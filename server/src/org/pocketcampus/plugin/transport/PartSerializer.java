@@ -18,7 +18,7 @@ public class PartSerializer implements JsonSerializer<Part> {
 
 	@Override
 	public JsonElement serialize(Part part, Type arg1, JsonSerializationContext arg2) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 		
 		if(part instanceof Trip) {
 			String jsonString = (gson).toJson((Trip)part);
