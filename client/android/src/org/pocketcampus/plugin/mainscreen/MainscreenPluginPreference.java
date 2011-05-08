@@ -129,7 +129,7 @@ public class MainscreenPluginPreference extends PluginPreference {
 
 				currLang_ = arg0.getKey();
 				
-	            locale_ = new Locale(arg0.toString());
+	            locale_ = new Locale(currLang_);
 	            Locale.setDefault(locale_);
 	            config.locale = locale_;
 	            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
