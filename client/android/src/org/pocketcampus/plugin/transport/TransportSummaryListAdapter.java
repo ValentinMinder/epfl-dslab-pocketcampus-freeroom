@@ -70,7 +70,7 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 				try {
 					summary = Json.fromJson(result, SummaryListType);
 				} catch (JsonException e) {
-					onCancelled();
+					cancel(false);
 					return;
 				}
 			}
@@ -84,9 +84,9 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 			
 			@Override
 			protected void onCancelled() {
-				decrementProgressCounter();
 				adapter.setSummaryError();
 				notifyDataSetChanged();
+				decrementProgressCounter();
 			}
 			
 		} 
