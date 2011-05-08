@@ -1,7 +1,15 @@
 package org.pocketcampus.plugin.food.sandwiches;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -9,9 +17,11 @@ import java.util.Vector;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
+import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +37,10 @@ public class SandwichList {
 	}
 
 	public HashMap<String, Vector<Sandwich>> getStoreList() {
+		if(sandwichList_ == null || sandwichList_.isEmpty()){
+			Log.d("SANDWICHES", "Reloading Sandwiches");
+			loadSandwiches();
+		}
 		return sandwichList_;
 	}
 
@@ -80,13 +94,18 @@ public class SandwichList {
 				if (sandwichFromServer_ != null) {
 					sandwichList_ = sortByRestaurant(sandwichFromServer_);
 				}
-
+				writeToFile();
+				Log.d("SANDWICHES", "Writing to file");
 				pluginHandler_.menuRefreshed(true);
 			}
 		}
-		Log.d("SANDWICHES", "Requesting sandwiches.");
-		FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
-				"getSandwiches", (RequestParameters) null);
+		sandwichList_ = restoreFromFile();
+		if(sandwichList_ == null){						
+			Log.d("SANDWICHES", "Requesting sandwiches.");
+			FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
+					"getSandwiches", (RequestParameters) null);
+		}
+		
 	}
 
 	private HashMap<String, Vector<Sandwich>> sortByRestaurant(
@@ -105,5 +124,49 @@ public class SandwichList {
 		}
 		return hashMap;
 	}
+	
+	
+	public void writeToFile() {
+		String filename = "SandwichCache";
+		File sandwichFile = new File(pluginHandler_.getCacheDir(), filename);
 
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(sandwichFile);
+			out = new ObjectOutputStream(fos);
+
+			out.writeObject(sandwichList_);
+			out.close();
+		} catch (IOException ex) {
+			Toast.makeText(pluginHandler_, "Writing IO Exception", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Vector<Sandwich>> restoreFromFile() {
+		String filename = "SandwichCache";
+		HashMap<String, Vector<Sandwich>> sandwiches = null;
+		File toGet = new File(pluginHandler_.getCacheDir(), filename);
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		
+		try {
+			fis = new FileInputStream(toGet);
+			in = new ObjectInputStream(fis);
+
+			sandwiches = (HashMap<String, Vector<Sandwich>>) in.readObject();
+
+			in.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (ClassCastException ex) {
+			ex.printStackTrace();
+		}
+
+		return sandwiches;
+	}
 }

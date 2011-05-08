@@ -171,15 +171,6 @@ public class FoodPlugin extends PluginBase {
 			expandMenus_.setOnTouchListener(new ExpandListener());
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("");
-			} else if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
-				if (foodDisplayHandler_.validSandwich()) {
-					validityDate_.setText(getResources().getString(
-							R.string.food_today_sandwiches));
-					expandMenus_.setVisibility(View.VISIBLE);
-				} else {
-					validityDate_.setText("");
-					empty.setText(getString(R.string.food_empty));
-				}
 			} else {
 				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Ratings) {
 				} else {
@@ -187,7 +178,7 @@ public class FoodPlugin extends PluginBase {
 				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
-						.getDateLastUpdatedMenus();
+				.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -196,7 +187,21 @@ public class FoodPlugin extends PluginBase {
 					validityDate_.setText(lastUpdated.toLocaleString());
 				}
 			}
-		} else {
+		} else if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
+			if (foodDisplayHandler_.validSandwich()) {
+				l_.setAdapter(fla);
+				empty.setText("");
+				expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
+				expandMenus_.setOnTouchListener(new ExpandListener());
+				validityDate_.setText(getResources().getString(
+						R.string.food_today_sandwiches));
+				expandMenus_.setVisibility(View.VISIBLE);
+				Log.d("SANDWICHES", "Eh ben alors ?");
+			} else {
+				validityDate_.setText("");
+				empty.setText(getString(R.string.food_empty));
+			}
+		}else {
 			empty.setText(getString(R.string.food_empty));
 		}
 	}
@@ -217,7 +222,7 @@ public class FoodPlugin extends PluginBase {
 					public void performAction(View view) {
 						actionBar_.removeActionAt(0);
 						foodDisplayHandler_
-								.setCurrentDisplayType(R.id.food_menu_restaurants);
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 						foodDisplayHandler_.updateView();
 						displayView();
 					}
@@ -256,8 +261,8 @@ public class FoodPlugin extends PluginBase {
 			return true;
 		case R.id.food_menu_sandwiches: // show sandwiches
 			Log
-					.d("SANDWICHES",
-							"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
+			.d("SANDWICHES",
+			"Il a compris qu'il devait afficher les sandwiches. [FoodPlugin]");
 			isSandwichDisplay_ = true;
 			foodDisplayHandler_.setCurrentDisplayType(selectedId);
 			displayView();
@@ -295,13 +300,13 @@ public class FoodPlugin extends PluginBase {
 				if (extras != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
 					FoodDisplayType previous = foodDisplayHandler_
-							.getCurrentDisplayType();
+					.getCurrentDisplayType();
 					foodDisplayHandler_
-							.setCurrentDisplayType(R.id.food_menu_suggestions);
+					.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -356,7 +361,7 @@ public class FoodPlugin extends PluginBase {
 					isSandwichDisplay_ = false;
 				}
 				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
+				.setCurrentDisplayType(R.id.food_menu_restaurants);
 			} else {
 				foodDisplayHandler_.setCurrentDisplayType(125);
 			}
@@ -402,9 +407,9 @@ public class FoodPlugin extends PluginBase {
 			expandMenus_.invalidate();
 
 			Adapter adapt = foodDisplayHandler_.getListAdapter()
-					.getExpandableList(
-							FoodPlugin.this
-									.getString(R.string.food_restaurants));
+			.getExpandableList(
+					FoodPlugin.this
+					.getString(R.string.food_restaurants));
 			if (adapt != null) {
 				if (adapt instanceof RestaurantListAdapter) {
 					((RestaurantListAdapter) adapt).toggleAll(expanded);

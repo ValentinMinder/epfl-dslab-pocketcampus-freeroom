@@ -325,10 +325,6 @@ public class FoodDisplayHandler {
 	 * 
 	 */
 	public void showSandwiches() {
-		Log
-				.d("SANDWICHES",
-						"Il a compris qu'il devait afficher les sandwiches. [FoodDisplayHandler]");
-
 		campusSandwich_ = sandwichList_.getStoreList();
 
 		SandwichListAdapter sandwichList = null;
