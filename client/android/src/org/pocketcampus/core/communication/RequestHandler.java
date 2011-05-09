@@ -7,11 +7,10 @@ public class RequestHandler {
 
 	/**
 	 * PRODUCTION SERVER
-	 * Revision: r549
 	 * Plugins: Map, Food, Bikes, Transport
 	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
 	 */
-	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/";
+	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha1/";
 	
 	/**
 	 * DEVELOPMENT SERVERS
