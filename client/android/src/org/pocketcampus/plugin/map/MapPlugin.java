@@ -206,15 +206,16 @@ public class MapPlugin extends PluginBase {
 	 * @param level the new level
 	 */
 	private void changeLevel(int level) {
-		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
+		MapTileProviderBasic provider = new MapTileProviderBasic(getApplicationContext());
 
 		ITileSource tileSource = getTileSource(level);
 
-		mProvider.setTileSource(tileSource);
+		provider.setTileSource(tileSource);
 		
-		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, getBaseContext());
+		TilesOverlay tilesOverlay = new TilesOverlay(provider, getBaseContext());
+		tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
 		constantOverlays_.remove(0);
-		constantOverlays_.add(0, mTilesOverlay);
+		constantOverlays_.add(0, tilesOverlay);
 		updateOverlays(false);
 
 		Tracker.getInstance().trackPageView("map/changeLevel" + level);
@@ -296,10 +297,11 @@ public class MapPlugin extends PluginBase {
 		// Add Campus tiles layer
 		int level = getResources().getInteger(R.integer.map_level_default);
 		ITileSource campusTile = getTileSource(level);
-		MapTileProviderBasic mProvider = new MapTileProviderBasic(getApplicationContext());
-		mProvider.setTileSource(campusTile);
-		TilesOverlay mTilesOverlay = new TilesOverlay(mProvider, this.getBaseContext());
-		constantOverlays_.add(0, mTilesOverlay);
+		MapTileProviderBasic provider = new MapTileProviderBasic(getApplicationContext());
+		provider.setTileSource(campusTile);
+		TilesOverlay tilesOverlay = new TilesOverlay(provider, this.getBaseContext());
+		tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
+		constantOverlays_.add(0, tilesOverlay);
 
 		// Following the user
 		myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
