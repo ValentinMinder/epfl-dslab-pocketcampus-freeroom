@@ -217,7 +217,7 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.remove(0);
 		constantOverlays_.add(0, tilesOverlay);
 		updateOverlays(false);
-
+		mapView_.postInvalidate();
 		Tracker.getInstance().trackPageView("map/changeLevel" + level);
 	}
 	
