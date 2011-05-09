@@ -13,24 +13,21 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".plugin.mainscreen.MainscreenPreference"></activity>
-        <activity android:name=".plugin.directory.DirectoryConfiguration"></activity>
+		<activity android:name=".plugin.mainscreen.MainscreenPreference" android:screenOrientation="portrait"></activity>
+        <activity android:name=".plugin.mainscreen.MainscreenPluginPreference" android:screenOrientation="portrait"></activity>
         
 
 		<!-- News Plugin -->
-		<activity android:name=".plugin.news.NewsPlugin"></activity>
+		<activity android:name=".plugin.news.NewsPlugin" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.news.NewsPreference"
-			android:configChanges="keyboardHidden|orientation"></activity>
+			android:configChanges="keyboardHidden|orientation"
+			android:screenOrientation="portrait"></activity>
 
 		<!-- Food Plugin -->
 		<activity android:name=".plugin.food.FoodPlugin" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.food.FoodPreference" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.food.Suggestions" android:screenOrientation="portrait"></activity>
 		<!-- <activity android:name=".plugin.food.pictures.FoodPictureActivity" android:screenOrientation="portrait"></activity> -->
-
-		<!-- Test Plugin -->
-		<activity android:name=".plugin.test.TestPlugin"></activity>
-		<activity android:name=".plugin.test.TestPreference"></activity>
 
 		<!-- Map Plugin -->
 		<activity android:name=".plugin.map.MapPlugin"
@@ -41,7 +38,8 @@
 		</activity>
 		<activity android:name=".plugin.map.search.MapSearchActivity"
 				android:launchMode="singleTop"
-				android:noHistory="true">
+				android:noHistory="true"
+				android:screenOrientation="portrait">
 			<intent-filter>
             	<action android:name="android.intent.action.SEARCH" />
        		</intent-filter>
@@ -53,6 +51,7 @@
 		<!--  Directory (ldap) Plugin -->
 		<activity android:name=".plugin.directory.DirectoryPlugin"></activity>
 		<activity android:name=".plugin.directory.DirectoryPreference"></activity>
+		<activity android:name=".plugin.directory.DirectoryConfiguration"></activity>
 		
 		<!--  Transport Plugin -->
 		<activity android:name=".plugin.transport.TransportPlugin" android:screenOrientation="portrait"></activity>
@@ -71,9 +70,10 @@
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"
             android:screenOrientation="portrait"></activity>
+            
         <activity android:name=".plugin.bikes.BikesPlugin"></activity>
         <activity android:name=".plugin.authentication.AuthenticationPlugin"></activity>
-        <activity android:name=".plugin.mainscreen.MainscreenPluginPreference"></activity>
+        
         
         <!-- Used for install referrer tracking -->
 		<receiver android:name="com.google.android.apps.analytics.AnalyticsReceiver" android:exported="true">
