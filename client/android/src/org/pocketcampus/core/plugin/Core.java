@@ -1,7 +1,10 @@
 package org.pocketcampus.core.plugin;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Vector;
 
+import org.pocketcampus.core.provider.IProvider;
 import org.pocketcampus.plugin.mainscreen.IAllowsID;
 
 import android.content.Context;
@@ -73,6 +76,30 @@ public class Core {
 	
 	public Vector<PluginBase> getAvailablePlugins() {
 		return availablePlugins_;
+	}
+	
+	/**
+	 * Returns a list of instances of all plugins implementing a given interface.
+	 * @param providerInterface
+	 * @return
+	 */
+	public ArrayList<PluginBase> getProvidersOf(Class<? extends IProvider> providerInterface) {
+		
+		// we want an interface
+		if(!providerInterface.isInterface()) {
+			return null;
+		}
+		
+		ArrayList<PluginBase> providers = new ArrayList<PluginBase>();
+		
+		// find all appropriate plugins
+		for(PluginBase plugin : availablePlugins_) {
+			if(providerInterface.isInstance(plugin)) {
+				providers.add(plugin);
+			}
+		}
+		
+		return providers;
 	}
 
 	public String getServerUrl() {

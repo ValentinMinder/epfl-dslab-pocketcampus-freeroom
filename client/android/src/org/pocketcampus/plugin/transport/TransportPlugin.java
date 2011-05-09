@@ -30,7 +30,7 @@ import android.widget.Toast;
  * @author Florian
  *
  */
-public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider {
+public class TransportPlugin extends PluginBase /*implements IMainscreenNewsProvider*/ {
 	public static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
 	public static final String REFERENCE_DESTINATION_SHORTNAME = "EPFL";
 	
@@ -132,27 +132,27 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		return REFERENCE_DESTINATION;
 	}
 
-	@Override
-	public List<MainscreenNews> getNews(Context ctx) {
-		SharedPreferences commonDestPrefs = ctx.getSharedPreferences("CommonDestPrefs", 0);
-		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
-		
-		if(commonDestPrefs == null) {
-			return news;
-		}
-		
-		@SuppressWarnings("unchecked")
-		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs.getAll();
-		int destNum = 0;
-		
-		for(String destination : commonDestinations.values()) {
-			MainscreenNews newsObj = new MainscreenNews("" + destination, "Departures in x, y and z minutes.", destNum, this, new Date());
-			news.add(newsObj);
-			destNum++;
-		}
-		
-		return news;
-	}
+//	@Override
+//	public List<MainscreenNews> getNews(Context ctx) {
+//		SharedPreferences commonDestPrefs = ctx.getSharedPreferences("CommonDestPrefs", 0);
+//		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
+//		
+//		if(commonDestPrefs == null) {
+//			return news;
+//		}
+//		
+//		@SuppressWarnings("unchecked")
+//		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs.getAll();
+//		int destNum = 0;
+//		
+//		for(String destination : commonDestinations.values()) {
+//			MainscreenNews newsObj = new MainscreenNews(destination, "Departures in 5 minutes.", destNum, this, new Date());
+//			news.add(newsObj);
+//			destNum++;
+//		}
+//		
+//		return news;
+//	}
 	
 	public static void makeToast(int textId) {
 		Notification.showToast(context_, context_.getResources().getString(textId));

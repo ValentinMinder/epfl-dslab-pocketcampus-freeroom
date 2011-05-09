@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.mainscreen;
 
 import java.util.List;
+
+import org.pocketcampus.core.provider.IProvider;
+
 import android.content.Context;
 
 
@@ -11,7 +14,7 @@ import android.content.Context;
  * @author Guillaume Ulrich
  *
  */
-public interface IMainscreenNewsProvider {
+public interface IMainscreenNewsProvider extends IProvider {
 
 	public List<MainscreenNews> getNews(Context ctx);
 	

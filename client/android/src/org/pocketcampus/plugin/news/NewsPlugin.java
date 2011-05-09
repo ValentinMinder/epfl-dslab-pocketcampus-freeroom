@@ -41,7 +41,7 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
 	private ActionBar actionBar_;
-	private final static int NB_NEWS = 5;
+	private final static int NB_NEWS = 7;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
