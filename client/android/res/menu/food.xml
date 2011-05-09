@@ -13,7 +13,6 @@
 		android:id="@+id/food_menu_suggestions"
 		android:icon="@drawable/food_opt_icon_suggestions" />
 	<item
-		android:title="Settings"
 		android:id="@+id/food_menu_settings"
-		android:icon="@android:drawable/ic_menu_manage" />
+		android:icon="@android:drawable/ic_menu_manage" android:title="@string/settings"/>
 </menu>

@@ -13,6 +13,8 @@
 	<string name="close">Fermer</string>
 	<string name="credits">Crédits</string>
 	
+	<string name="settings">Paramètres</string>
+	<string name="loading">Chargement...</string>
     
     <string name="mainscreen_configure">Configurer</string>
     

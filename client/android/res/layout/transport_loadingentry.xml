@@ -16,7 +16,6 @@
 		></ImageView>
 		
 	<TextView 
-		android:text="Loading..."
 		android:id="@+id/travel_summary_time"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -24,6 +23,6 @@
 		android:textColor="@android:color/black"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:padding="6dip"
-		/>
+		android:text="@string/loading"/>
 
 </LinearLayout>

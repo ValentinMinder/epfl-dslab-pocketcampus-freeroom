@@ -20,10 +20,12 @@ import android.widget.TextView;
 
 public class ConnectionDetailsDialog extends Dialog{
 	private Connection connection_;
+	private Context ctx_;
 
-	public ConnectionDetailsDialog(Context context, Connection connection) {
-		super(context);
+	public ConnectionDetailsDialog(TransportPlugin tp, Connection connection) {
+		super(tp);
 		connection_ = connection;
+		ctx_ = tp.getApplicationContext();
 
 		// Setups dialog.
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -53,7 +55,7 @@ public class ConnectionDetailsDialog extends Dialog{
 				arrival = formatter.format(((Trip)part).arrivalTime);
 				
 			} else if(part instanceof Footway) {
-				departure = ((Footway)part).min + " min walk";
+				departure = ((Footway)part).min + " " + ctx_.getResources().getString(R.string.transport_walk_in_min);
 			}
 			
 //			if(((Trip)part).departureTime != null) {
@@ -98,7 +100,7 @@ public class ConnectionDetailsDialog extends Dialog{
 		list.setAdapter(mSchedule);
 
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
-		title.setText(TransportPlugin.REFERENCE_DESTINATION_SHORTNAME + " to " + connection_.to.name); // TODO string
+		title.setText(TransportPlugin.REFERENCE_DESTINATION_SHORTNAME + " " + ctx_.getResources().getString(R.string.transport_to)+ " " + connection_.to.name); 
 
 
 	}

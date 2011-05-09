@@ -3,7 +3,7 @@
 	<string name="transport_referenceStation">Ecublens VD, EPFL</string>
 
      <string name="transport_to">vers</string>
-     <string name="transport_from">à</string>
+     <string name="transport_from">de</string>
      <string name="transport_in">dans</string>
      <string name="transport_at">à</string>
      <string name="transport_lessThanAMinute">moins d\'une minute</string>
@@ -13,6 +13,10 @@
      <string name="transport_Destinations">Destinations</string>
      <string name="transport_departures">Départs</string>
      <string name="transport_change">changement</string>
+     <string name="transport_walk_in_min">min. à pied</string>
+      
+     <string name="transport_manage_destinations">Gérer les destinations</string>
+     <string name="transport_detailed_search">Recherche détaillée</string>
      
      
      <string name="transport_destNotFound">Destination non trouvée.</string>

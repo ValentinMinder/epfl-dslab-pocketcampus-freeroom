@@ -13,6 +13,10 @@
      <string name="transport_Destinations">Destinations</string>
      <string name="transport_departures">Departures</string>
      <string name="transport_change">change</string>
+     <string name="transport_walk_in_min">min. walk</string>
+     
+     <string name="transport_manage_destinations">Manage destinations</string>
+     <string name="transport_detailed_search">Detailed search</string>
      
      
      <string name="transport_destNotFound">Destination not found.</string>
