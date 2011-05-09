@@ -72,6 +72,7 @@ public class Search {
 		} catch (SQLException e) {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
+			return -1;
 		}
 		return getVertexId(titleClosetPOI);
 	}
@@ -79,7 +80,7 @@ public class Search {
 	/**
 	 * Get the vertex_id of a given element. We need to fetch it every time because
 	 * it changes often (too bad...)
-	 * @param title the title of the element we want (= fied 'text')
+	 * @param title the title of the element we want (= field 'text')
 	 * @return the vertex_id of the element
 	 */
 	private static int getVertexId(String title) {
@@ -104,6 +105,7 @@ public class Search {
 				vertexId = Integer.parseInt(response.features[0].properties.vertex_id);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return -1;
 		}
 		return vertexId;
 	}
@@ -146,6 +148,10 @@ public class Search {
 	 */
 	public static List<Position> searchPathBetween(int startMapElement, int endMapElement, boolean bike) {
 
+		if(startMapElement < 0 || endMapElement < 0 || startMapElement == endMapElement) {
+			return null;
+		}
+		
 		// Using the bike or not
 		String bikeOn = bike ? "&disabled=on" : "";
 		
@@ -261,6 +267,7 @@ public class Search {
 		} catch (SQLException e) {
 			System.err.println("Error with SQL");
 			e.printStackTrace();
+			return null;
 		}
 		
 		return elements;
