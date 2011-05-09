@@ -39,7 +39,7 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:gravity="center"
-			></LinearLayout>
+			android:layout_gravity="center_horizontal"></LinearLayout>
 
 	</HorizontalScrollView>
 

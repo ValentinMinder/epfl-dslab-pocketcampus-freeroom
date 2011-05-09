@@ -15,6 +15,8 @@ public abstract class PluginInfo {
 	 * Plugin's "human readable" name.
 	 */
 	public abstract String getName();
+	
+	//public abstract int getNameViaID();
 
 	/**
 	 * Plugin unique ID.

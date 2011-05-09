@@ -16,6 +16,7 @@
 	
 	<string name="settings">Settings</string>
 	<string name="loading">Loading...</string>
+	<string name="data_unavailable">Data unavailable</string>
 	
     
     <string name="mainscreen_configure">Configure</string>
@@ -24,6 +25,7 @@
     
 	<string name="directory_friendly_name">Directory</string>
 	<string name="directory_search">Search</string>
+	<string name="directory_pluginName">Directory</string>
 	
 	<string name="server_connection_error">Server connection error</string>
 	<string name="please_wait">Please wait...</string>

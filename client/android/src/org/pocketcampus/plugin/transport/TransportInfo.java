@@ -33,6 +33,11 @@ public class TransportInfo extends PluginInfo {
 	public String getName() {
 		return "Transport";
 	}
+	
+	//@Override
+	public int getNameViaID() {
+		return R.string.transport_pluginName;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

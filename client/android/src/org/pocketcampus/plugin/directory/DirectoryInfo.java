@@ -13,6 +13,11 @@ public class DirectoryInfo extends PluginInfo {
 		return "Directory";
 	}
 
+	//@Override
+	public int getNameViaID() {
+		return R.string.directory_pluginName;
+	}
+	
 	@Override
 	public Id getId() {
 		return new Id("directory");

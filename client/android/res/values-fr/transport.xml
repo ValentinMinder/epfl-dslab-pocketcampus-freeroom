@@ -18,6 +18,7 @@
      <string name="transport_manage_destinations">Gérer les destinations</string>
      <string name="transport_detailed_search">Recherche détaillée</string>
      
+     <string name="transport_pluginName">Transport</string>
      
      <string name="transport_destNotFound">Destination non trouvée.</string>
      <string name="transport_addADestination">Ajouter une destination</string>
