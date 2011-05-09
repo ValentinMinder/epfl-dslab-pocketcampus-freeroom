@@ -44,6 +44,14 @@ public class Core {
 		startActivity(ctx, intent);
 	}
 	
+	public static void startPluginWithID(Context ctx, String plugin, int id) {
+		Intent intent = new Intent();
+		intent.setClassName(ctx, plugin);
+		intent.putExtra("id", id);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		ctx.startActivity(intent);
+	}
+	
 	public static void startPluginWithID(Context ctx, PluginBase plugin, int id) {
 		Intent intent = new Intent(ctx, plugin.getClass());
 		if(plugin instanceof IAllowsID) {

@@ -17,12 +17,12 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
@@ -244,7 +244,6 @@ public class MapPlugin extends PluginBase {
 		}
 
 		if(extras.containsKey("MapElement")) {
-			Log.d("MapPlugin", "intent with extras");
 			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
 			OverlayItem overItem = new OverlayItem(meb.getTitle(), meb.getDescription(),
 					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
@@ -512,9 +511,9 @@ public class MapPlugin extends PluginBase {
 	}
 	
 	
-	private void toggleMapMode() {
-		Notification.showToast(this, "Is it possible to show satellite images?");
-	}
+//	private void toggleMapMode() {
+//		Notification.showToast(this, "Is it possible to show satellite images?");
+//	}
 
 	/**
 	 * Clear the displayed path
@@ -625,17 +624,11 @@ public class MapPlugin extends PluginBase {
 			// The overlay already exists
 			if(aOverlay != null) {
 				mapView_.getOverlays().add(aOverlay);
-				Log.d(this.getClass().toString(), "Overlay: " + aOverlay.toString());
-			} else {
-				Log.d(this.getClass().toString(), "Overlay NULL");
 			}
-
-			Log.d(this.getClass().toString(), "Cached overlays: " + cachedOverlays_.toString());
 
 			// The overlay does not exist, or is outdated 
 			// If outdated, we redownload the new items, but keep the old ones on the screen while downloading
 			if(aOverlay == null || isLayerOutdated(layer) || forceRefresh) {
-				Log.d(this.getClass().toString(), "Layer outdated: " + layer.toString());
 				populateLayer(layer);
 			}
 
@@ -731,6 +724,11 @@ public class MapPlugin extends PluginBase {
 	 * Used to retreive the layers from the server
 	 */
 	class LayersRequest extends DataRequest {
+
+		@Override
+		protected int expirationDelay() {
+			return 10;
+		}
 
 		@Override
 		protected void onCancelled() {
@@ -836,8 +834,6 @@ public class MapPlugin extends PluginBase {
 				layer_.add(new MapElement(meb));
 			}
 
-			Log.d(this.getClass().toString(), "got new items");
-
 			// Try to get the icon for the overlay
 			try {
 				Drawable icon = getDrawableFromCacheOrUrl(layer_.getIconUrl());
@@ -867,9 +863,6 @@ public class MapPlugin extends PluginBase {
 			// If we had another overlay that displayed the same data, remove it
 			if(oldOverlay != null) {
 				mapView_.getOverlays().remove(oldOverlay);
-				Log.d(this.getClass().toString(), "Old overlay: " + oldOverlay.toString());
-			} else {
-				Log.d(this.getClass().toString(), "No old overlay");
 			}
 			if(aOverlay != null) {
 				mapView_.getOverlays().add(aOverlay);
@@ -914,8 +907,6 @@ public class MapPlugin extends PluginBase {
 	 * @throws IOException
 	 */
 	public Drawable getDrawableFromCacheOrUrl(String iconUrl) {
-		Log.d("MAP", "loading icon: \"" + RequestHandler.getServerUrl() + iconUrl + "\"");
-		
 		if(iconUrl == null || iconUrl.equals("null") || iconUrl.length() <= 0 )
 			return null;
 		
@@ -926,7 +917,7 @@ public class MapPlugin extends PluginBase {
 				i = ImageUtil.getDrawableFromUrl(RequestHandler.getServerUrl() + iconUrl);
 				icons.put(iconUrl, i);
 			} catch (IOException e) {
-				Log.e("MAP", "getDrawableFromCacheOrUrl -> " + e.toString());
+				Log.e(this.getClass().toString(), "getDrawableFromCacheOrUrl -> " + e.toString());
 			}
 		}
 		
@@ -938,11 +929,7 @@ public class MapPlugin extends PluginBase {
 	 */
 	private Runnable overlaysRefreshTicker_ = new Runnable() {
 		public void run() {
-			
-			Log.d(this.getClass().toString(), "ticker");
-
-			updateOverlays(false);
-			
+			updateOverlays(false);			
 			overlaysHandler_.postDelayed(this, LAYERS_REFRESH_TIMEOUT);
 		}
 	};

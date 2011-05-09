@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.map.ui;
 
 import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 
@@ -46,6 +47,13 @@ public class ItemDialog {
 				dialog.dismiss();	
 			}
 		});
+		
+//		builder.setNegativeButton(mp_.getResources().getString(R.string.map_open_plugin_button), new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int id) {
+//				Core.startPluginWithID(mp_, "org.pocketcampus.plugin.news.NewsPlugin", 1);				
+//				dialog.dismiss();	
+//			}
+//		});
 		
 		
 		AlertDialog alert = builder.create();
