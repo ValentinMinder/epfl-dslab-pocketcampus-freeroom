@@ -19,7 +19,6 @@ import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -70,7 +69,11 @@ public class FoodDisplayHandler {
 	public boolean validMenus() {
 		return !campusMenu_.isEmpty();
 	}
-	
+
+	public boolean validSuggestions() {
+		return !suggestionsMenu_.isEmpty();
+	}
+
 	/**
 	 * Checks whether a valid sandwich list is available.
 	 * 
@@ -193,17 +196,17 @@ public class FoodDisplayHandler {
 	// HashMap<String, Vector<Meal>> mealHashMap = sorter_
 	// .sortByRestaurant(campusMenu_.getMeals());
 	// FoodListSection menuListSection;
-	//	
+	//
 	// /**
 	// * Iterate over the different restaurant menus
 	// */
 	// if (!campusMenu_.isEmpty()) {
 	// // Get the set of keys from the hash map to make sections.
 	// Set<String> restaurantFullMenuSet = mealHashMap.keySet();
-	//				
+	//
 	// SortedSet<String> restaurantFullMenu = new
 	// TreeSet<String>(restaurantFullMenuSet);
-	//				
+	//
 	// for (String restaurantName : restaurantFullMenu) {
 	// // For each restaurant, make a list of its meals to add in its
 	// // section
@@ -235,8 +238,9 @@ public class FoodDisplayHandler {
 			if (currentListAdapter_.isEmpty()) {
 				restaurantList = new RestaurantListAdapter(restaurants,
 						mealHashMap, ownerActivity_);
-				currentListAdapter_.addSection(activityContext_
-						.getString(R.string.food_restaurants), restaurantList);
+				currentListAdapter_.addSection(
+						activityContext_.getString(R.string.food_restaurants),
+						restaurantList);
 			}
 		}
 	}
@@ -258,8 +262,10 @@ public class FoodDisplayHandler {
 				menuListSection = new FoodListSection(mealVector,
 						ownerActivity_);
 				currentListAdapter_
-						.addSection(activityContext_.getResources().getString(
-								R.string.food_show_ratings), menuListSection);
+						.addSection(
+								activityContext_.getResources().getString(
+										R.string.food_show_ratings),
+								menuListSection);
 
 			}
 		}
@@ -286,8 +292,8 @@ public class FoodDisplayHandler {
 				for (String restaurantName : restaurantFullMenu) {
 					// For each restaurant, make a list of its meals to add in
 					// its section
-					menuListSection = new FoodListSection(mealHashMap
-							.get(restaurantName), ownerActivity_);
+					menuListSection = new FoodListSection(
+							mealHashMap.get(restaurantName), ownerActivity_);
 					currentListAdapter_.addSection(restaurantName,
 							menuListSection);
 				}
@@ -299,6 +305,7 @@ public class FoodDisplayHandler {
 							R.string.food_suggestions_nothing_found),
 					Toast.LENGTH_LONG).show();
 			setCurrentDisplayType(R.id.food_menu_restaurants);
+			updateView();
 		}
 	}
 
@@ -356,7 +363,9 @@ public class FoodDisplayHandler {
 	}
 
 	public static enum FoodDisplayType {
-		Restaurants(1), Ratings(2), Sandwiches(3), Suggestions(4);
+		Restaurants(R.id.food_menu_restaurants), Ratings(125), Sandwiches(
+				R.id.food_menu_sandwiches), Suggestions(
+				R.id.food_menu_suggestions);
 
 		/** Attribute with the value associated with the enum */
 		private final int value;

@@ -217,9 +217,13 @@ public class FoodPlugin extends PluginBase {
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		// refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
 		restaurantAction_.setIsRestaurant(true);
+		empty.setText("");
 
-		if (foodDisplayHandler_.validMenus() && fla != null) {
+		if (foodDisplayHandler_.validMenus()
+				&& foodDisplayHandler_.validSuggestions() && fla != null) {
 			l_.setAdapter(fla);
+			validityDate_.setText(getResources().getString(
+					R.string.food_today_suggestions));
 
 			if (previousDisplayType != FoodDisplayType.Suggestions) {
 				actionBar_.addAction(new Action() {
@@ -240,7 +244,10 @@ public class FoodPlugin extends PluginBase {
 				}, 0);
 			}
 		} else {
-			empty.setText(getString(R.string.food_empty));
+			foodDisplayHandler_
+					.setCurrentDisplayType(FoodDisplayType.Restaurants.getValue());
+			foodDisplayHandler_.updateView();
+			displayView();
 		}
 	}
 
