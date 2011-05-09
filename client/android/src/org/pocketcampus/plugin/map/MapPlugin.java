@@ -27,6 +27,8 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -65,7 +67,6 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -761,14 +762,12 @@ public class MapPlugin extends PluginBase {
 			}
 
 			// Deserializes the response
-			Gson gson = new Gson();
 			Type mapLayersType = new TypeToken<List<MapLayerBean>>(){}.getType();
 			List<MapLayerBean> layers = new ArrayList<MapLayerBean>();
 			try {
-				layers = gson.fromJson(result, mapLayersType);
-			} catch (JsonSyntaxException e) {
-				Notification.showToast(getApplicationContext(), R.string.unexpected_response);
-				return;
+				layers = Json.fromJson(result, mapLayersType);
+			} catch (JsonException e) {
+				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
 			}
 			if(layers == null) {
 				Notification.showToast(getApplicationContext(), R.string.server_connection_error);
@@ -838,7 +837,7 @@ public class MapPlugin extends PluginBase {
 
 			try {
 				items = gson.fromJson(result, mapElementType);
-			} catch (JsonSyntaxException e) {
+			} catch (Exception e) {
 				return;
 			}
 

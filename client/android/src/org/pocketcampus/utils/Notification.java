@@ -1,6 +1,7 @@
 package org.pocketcampus.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -20,7 +21,11 @@ public class Notification {
 	 * @param message The message
 	 */
 	public static void showToast(Context ctx, String message) {
-		Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show();
+		try {
+			Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show();
+		} catch (Exception e) {
+			Log.e("Notification", "Unable to display toast message. " + e.toString());
+		}
 	}
 
 	/**
