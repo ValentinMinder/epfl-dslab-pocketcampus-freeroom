@@ -8,7 +8,6 @@
 	<string name="food_restaurants">Restaurants</string>
 	<string name="food_menucancelled">Connection au serveur impossible.</string>
 	<string name="food_reload_unsuccessful">Rafraichissement des menus impossible.</string>
-	<string name="food_settings">Paramètres</string>
 		
 	<!--  Preferences -->
 	<string name="food_preferences_title">Restaurants que vous voulez afficher.</string>
