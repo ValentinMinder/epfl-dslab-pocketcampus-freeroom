@@ -288,6 +288,10 @@ public class MainscreenPlugin extends PluginBase {
 	public static void addAll(List<MainscreenNews> list) {
 		news_.addAll(list);
 	}
+	
+	public static void clean() {
+		news_ = new ArrayList<MainscreenNews>();
+	}
 
 	public static void sort() {
 		Collections.sort(news_);

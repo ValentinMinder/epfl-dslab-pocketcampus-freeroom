@@ -10,8 +10,10 @@ import android.util.Log;
 public class MainscreenNewsProvider {
 	
 	public static void getNews(Context ctx, MainscreenPlugin main) {
-				
+		
 		MainscreenPlugin.refreshing();
+		
+		MainscreenPlugin.clean();
 		
 		Log.d("MainscreenNewsProvider", "Getting News");
 		
