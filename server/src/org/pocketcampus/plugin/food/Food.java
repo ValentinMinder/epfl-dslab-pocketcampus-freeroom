@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-public class Food implements IPlugin/*, IMapElementsProvider*/ {
+public class Food implements IPlugin/* , IMapElementsProvider */{
 
 	private List<Meal> campusMeals_;
 	private HashMap<Integer, Rating> campusMealRatings_;
@@ -62,13 +62,17 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 	 */
 	@PublicMethod
 	public List<Meal> getMenus(HttpServletRequest request) {
-		if (!isValid(lastImportMenus_)) {
+		if (!isToday(lastImportMenus_)) {
 			System.out
 					.println("<getMenus>: Date not valid. Reimporting menus.");
 			campusMeals_.clear();
 			deviceIds_.clear();
 			campusMealRatings_.clear();
 			importMenus();
+		} else if (!isUpToDate(lastImportMenus_)) {
+			System.out
+					.println("<getMenus>: Time not valid. Reimporting menus.");
+			refreshMenus();
 		} else {
 			System.out.println("<getMenus>: " + lastImportMenus_
 					+ ", not reimporting menus.");
@@ -99,7 +103,7 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 	 */
 	@PublicMethod
 	public List<Sandwich> getSandwiches(HttpServletRequest request) {
-		if (!isValid(lastImportDateS_)) {
+		if (!isToday(lastImportDateS_)) {
 			importSandwiches();
 			System.out.println("Reimporting sandwiches.");
 		} else {
@@ -113,7 +117,7 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 	 * 
 	 * @return
 	 */
-	private boolean isValid(Date oldDate) {
+	private boolean isToday(Date oldDate) {
 		if (oldDate == null)
 			return false;
 
@@ -123,24 +127,45 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
 
-		System.out.println("Minutes:"+getMinutes(then.getTime(), now.getTime()));
-		
 		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
 		} else {
-			if(getMinutes(then.getTime(), now.getTime()) > 60){
+			return true;
+		}
+	}
+
+	/**
+	 * Checks if the menus have been refreshed less than
+	 * an hour ago.
+	 * @param oldDate
+	 * @return
+	 */
+	private boolean isUpToDate(Date oldDate) {
+		if (oldDate == null)
+			return false;
+
+		Calendar now = Calendar.getInstance();
+		now.setTime(new Date());
+
+		Calendar then = Calendar.getInstance();
+		then.setTime(oldDate);
+
+		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
+			return false;
+		} else {
+			if (getMinutes(then.getTime(), now.getTime()) > 60) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	private long getMinutes(Date then, Date now){
+
+	private long getMinutes(Date then, Date now) {
 		Period p = new Period(then.getTime(), now.getTime());
 		long hours = p.getHours();
 		long minutes = p.getMinutes();
 
-		return hours*60 + minutes;
+		return hours * 60 + minutes;
 	}
 
 	/**
@@ -258,7 +283,7 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 	}
 
 	private void updateMenu() {
-		if (!isValid(lastImportMenus_)) {
+		if (!isToday(lastImportMenus_)) {
 			campusMeals_.clear();
 			deviceIds_.clear();
 			campusMealRatings_.clear();
@@ -308,7 +333,7 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 					System.out.println("<importMenus>: empty feed");
 				}
 			}
-			if(campusMeals_.isEmpty()){
+			if (campusMeals_.isEmpty()) {
 				noMealsToday_ = true;
 				lastImportMenus_ = new Date();
 			}
@@ -318,6 +343,59 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 						+ m.getName_() + ", " + m.getRestaurant_());
 			}
 		}
+	}
+
+	private void refreshMenus() {
+		RestaurantListParser rlp = new RestaurantListParser();
+		HashMap<String, String> restaurantFeeds = rlp.getFeeds();
+		Set<String> restaurants = restaurantFeeds.keySet();
+
+		for (String r : restaurants) {
+			RssParser rp = new RssParser(restaurantFeeds.get(r));
+			rp.parse();
+			RssFeed feed = rp.getFeed();
+
+			Restaurant newResto = new Restaurant(r);
+			if (feed != null && feed.items != null) {
+				for (int i = 0; i < feed.items.size(); i++) {
+					Rating mealRating = new Rating();
+					Meal newMeal = new Meal(feed.items.get(i).title,
+							feed.items.get(i).description, newResto, true,
+							mealRating);
+					if (!alreadyExists(newMeal)) {
+						campusMeals_.add(newMeal);
+						campusMealRatings_.put(newMeal.hashCode(), mealRating);
+					}
+				}
+				lastImportMenus_ = new Date();
+			} else {
+				System.out.println("<importMenus>: empty feed");
+			}
+		}
+		if (campusMeals_.isEmpty()) {
+			noMealsToday_ = true;
+			lastImportMenus_ = new Date();
+		}
+		for (Meal m : campusMeals_) {
+			database_.insertMeal(m);
+			System.out.println("<importMenus>: Inserting meal " + m.getName_()
+					+ ", " + m.getRestaurant_());
+		}
+	}
+
+	/**
+	 * Checks if a meal is already in the list.
+	 * 
+	 * @param m
+	 * @return
+	 */
+	private boolean alreadyExists(Meal m) {
+		for (Meal meal : campusMeals_) {
+			if (m.hashCode() == meal.hashCode()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -450,19 +528,19 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 		return defaultSandwichList;
 	}
 
-//	@Override
-//	public List<MapElementBean> getLayerItems(int layerId) {
-//		// TODO Auto-generated method stub
-//		return new ArrayList<MapElementBean>();
-//	}
-//
-//	@Override
-//	public List<MapLayerBean> getLayers() {
-//		// TODO Auto-generated method stub
-//		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-//		l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
-//		return l;
-//	}
+	// @Override
+	// public List<MapElementBean> getLayerItems(int layerId) {
+	// // TODO Auto-generated method stub
+	// return new ArrayList<MapElementBean>();
+	// }
+	//
+	// @Override
+	// public List<MapLayerBean> getLayers() {
+	// // TODO Auto-generated method stub
+	// List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+	// l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
+	// return l;
+	// }
 
 	// public void writeToFile() {
 	// lastImportDateM_ = new Date();
