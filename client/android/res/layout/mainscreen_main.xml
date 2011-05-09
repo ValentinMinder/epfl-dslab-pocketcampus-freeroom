@@ -7,23 +7,39 @@
 	<org.pocketcampus.core.ui.ActionBar
 		android:id="@+id/actionbar" style="@style/ActionBar" />
 
-	<RelativeLayout android:layout_width="fill_parent"
-		android:layout_below="@+id/actionbar" android:background="@drawable/bg" android:layout_height="fill_parent" android:paddingBottom="95dp">
-		<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/mainscreen_news_list_list" style="@style/Theme.ListView" android:layout_width="fill_parent" android:layout_height="fill_parent">
-		</ListView>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_below="@+id/actionbar"
+		android:background="@drawable/bg"
+		android:layout_height="fill_parent"
+		android:paddingBottom="90dp"
+		>
+		
+		<ListView
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/mainscreen_news_list_list"
+			style="@style/Theme.ListView"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			></ListView>
+			
 	</RelativeLayout>
 
-	
-	
-	<HorizontalScrollView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-		android:background="@drawable/mainscreen_background">
+	<HorizontalScrollView
+		android:id="@+id/MenuScrollView"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/mainscreen_background"
+		>
 
-		<LinearLayout android:id="@+id/MenuLayout"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true" android:gravity="center">
-		</LinearLayout>
+		<LinearLayout
+			android:id="@+id/MenuLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:gravity="center"
+			></LinearLayout>
 
 	</HorizontalScrollView>
 

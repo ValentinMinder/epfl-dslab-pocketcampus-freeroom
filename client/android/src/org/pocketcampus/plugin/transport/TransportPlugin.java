@@ -146,7 +146,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		int destNum = 0;
 		
 		for(String destination : commonDestinations.values()) {
-			MainscreenNews newsObj = new MainscreenNews("Departures for " + destination, "", destNum, this, new Date());
+			MainscreenNews newsObj = new MainscreenNews("" + destination, "Departures in x, y and z minutes.", destNum, this, new Date());
 			news.add(newsObj);
 			destNum++;
 		}
