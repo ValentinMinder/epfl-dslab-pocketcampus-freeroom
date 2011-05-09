@@ -108,7 +108,7 @@ public class FoodMenu {
 
 	public void refreshMenu() {
 		Log.d("SERVER", "Refreshing.");
-		if (campusMenu_.isEmpty() || !isTodayMenu()) {
+		if (campusMenu_.isEmpty() || !isValidMenu()) {
 			Log.d("SERVER", "Reloading menus");
 			loadCampusMenu();
 		} else {
@@ -118,27 +118,30 @@ public class FoodMenu {
 		}
 	}
 
-	public boolean isTodayMenu() {
+	public boolean isValidMenu() {
 		Calendar cal = Calendar.getInstance();
-		Log.d("Tag",
-				"1: " + cal.get(Calendar.DAY_OF_MONTH) + " 2: "
-						+ cal.get(Calendar.MONTH) + " 3: "
-						+ cal.get(Calendar.YEAR));
 		Calendar validity = Calendar.getInstance();
 		validity.setTime(validityDate_);
-		Log.d("Tag",
-				"1: " + validity.get(Calendar.DAY_OF_MONTH) + " 2: "
-						+ validity.get(Calendar.MONTH) + " 3: "
-						+ validity.get(Calendar.YEAR));
 		if (cal.get(Calendar.DAY_OF_MONTH) == validity
 				.get(Calendar.DAY_OF_MONTH)) {
 			if (cal.get(Calendar.MONTH) == validity.get(Calendar.MONTH)) {
 				if (cal.get(Calendar.YEAR) == validity.get(Calendar.YEAR)) {
-					return true;
+					if(getMinutes(validity.getTime(), cal.getTime()) < 10){
+						return true;
+					}
 				}
 			}
 		}
 		return false;
+	}
+	
+	private long getMinutes(Date then, Date now){
+		long diff = now.getTime() - then.getTime();
+
+	    long diffMinutes = diff / (60 * 1000);
+	    
+	    System.out.println(diffMinutes);
+		return diffMinutes;
 	}
 
 	public boolean isEmpty() {
