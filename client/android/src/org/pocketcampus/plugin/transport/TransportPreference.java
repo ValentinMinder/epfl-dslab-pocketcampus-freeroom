@@ -164,7 +164,7 @@ public class TransportPreference extends PluginPreference {
 //			}
 //		});
 
-		builder.setNeutralButton(getResources().getText(R.string.Delete), new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(getResources().getText(R.string.delete), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				commonDestPrefsEditor_.remove(destination.getDestination());
 				commonDestPrefsEditor_.commit();

@@ -138,20 +138,20 @@ public class MainscreenPlugin extends PluginBase {
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle("About");
+		builder.setTitle(R.string.mainscreen_menu_about);
 
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.mainscreen_about_dialog, null);
 		builder.setView(layout);
 
-		builder.setNeutralButton("Credits", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(R.string.credits, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 				showCredits();
 			}
 		});
 
-		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 			}
@@ -164,13 +164,13 @@ public class MainscreenPlugin extends PluginBase {
 
 	private void showCredits() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Credits");
+		builder.setTitle(R.string.credits);
 
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.mainscreen_credits_dialog, null);
 		builder.setView(layout);
 
-		builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {				
 				dialog.dismiss();
 			}

@@ -7,9 +7,11 @@
 	<string name="cancel">Annuler</string>
 	<string name="yes">Oui</string>
 	<string name="no">Non</string>
-	<string name="Details">Détails</string>
-	<string name="Share">Partager</string>
-	<string name="Delete">Supprimer</string>
+	<string name="details">Détails</string>
+	<string name="share">Partager</string>
+	<string name="delete">Supprimer</string>
+	<string name="close">Fermer</string>
+	<string name="credits">Crédits</string>
 	
     
     <string name="mainscreen_configure">Configurer</string>
