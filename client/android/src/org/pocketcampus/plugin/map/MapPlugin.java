@@ -695,6 +695,7 @@ public class MapPlugin extends PluginBase {
 	 * Request class for the directions
 	 */
 	class DirectionsRequest extends DataRequest {
+		
 		@Override
 		protected void doInUiThread(String result) {
 
@@ -714,7 +715,7 @@ public class MapPlugin extends PluginBase {
 				mapPathOverlay_.setList(path);
 				mapView_.invalidate();
 			} catch(Exception e) {
-				System.out.println(e);
+				Notification.showToast(getApplicationContext(), R.string.map_directions_not_found);
 			}
 
 		}
