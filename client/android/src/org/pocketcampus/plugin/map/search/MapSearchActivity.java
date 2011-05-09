@@ -8,6 +8,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.plugin.map.MapInfo;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
@@ -91,13 +92,12 @@ public class MapSearchActivity extends ListActivity {
 				Log.d("MapSearchActivity", "Response received " + result);
 				
 				//Deserializes the response
-				Gson gson = new Gson();
 				Type mapElementType = new TypeToken<List<MapElementBean>>(){}.getType();
 				items_ = new ArrayList<MapElementBean>();
 
 				try {
-					items_ = gson.fromJson(result, mapElementType);
-				} catch (JsonSyntaxException e) {
+					items_ = Json.fromJson(result, mapElementType);
+				} catch (Exception e) {
 					Log.e("MapSearchActivity", e.toString());
 					return;
 				}
