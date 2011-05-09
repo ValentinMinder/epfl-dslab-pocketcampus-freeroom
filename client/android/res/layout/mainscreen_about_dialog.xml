@@ -10,45 +10,39 @@
 	>
 
 	<TextView 
-		android:text="PocketCampus" 
 		android:id="@+id/title"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:textSize="18dip"
 		android:textStyle="bold"
-		></TextView>
+		android:text="@string/app_name"></TextView>
 		
 	<TextView 
-		android:text="Preview Version\n" 
 		android:gravity="center"
 		android:id="@+id/version" 
 		android:layout_below="@+id/title"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		></TextView>
+		android:layout_height="wrap_content" android:text="@string/mainscreen_preview_version"></TextView>
 
 	<TextView 
-		android:text="PocketCampus is built using open source software. See relevant licenses.\n"
 		android:gravity="center" 
 		android:id="@+id/license"
 		android:layout_below="@+id/version" 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		></TextView>
+		android:text="@string/mainscreen_licence"></TextView>
 
 	<TextView 
-		android:text="Visit us at" 
 		android:id="@+id/visitus"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:layout_below="@+id/license" 
 		android:textStyle="bold"
-		></TextView>
+		android:text="@string/mainscreen_visit_us"></TextView>
 
 	<TextView 
-		android:text="http://www.pocketcampus.org/"
 		android:textStyle="bold" 
 		android:gravity="center" 
 		android:id="@+id/url"
@@ -56,6 +50,6 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:autoLink="web"
-		></TextView>
+		android:text="@string/website_url"></TextView>
 
 </RelativeLayout>

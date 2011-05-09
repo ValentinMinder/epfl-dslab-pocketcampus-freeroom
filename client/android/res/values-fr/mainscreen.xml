@@ -5,6 +5,11 @@
     <string name="mainscreen_news_plugins_message">Au moins un plugin doit être sélectionné</string>
     <string name="mainscreen_menu_settings">Paramètres</string>
     <string name="mainscreen_menu_about">A propos</string>
+    <string name="mainscreen_preview_version">Version de test</string>
+    <string name="mainscreen_licence">PocketCampus est construit avec des outils open source. Lisez les licences appropriées.</string>
+    <string name="mainscreen_visit_us">Rencontrez-nous sur:</string>
+    <string name="mainscreen_supervisors">Superviseurs</string>
+    <string name="mainscreen_developers">Développeurs</string>
     
     <string-array name="mainscreen_languages">
         <item>Anglais</item>

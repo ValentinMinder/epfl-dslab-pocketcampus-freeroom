@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PocketCampus</string>
+    <string name="website_url">http://www.pocketcampus.org/</string>
     
     <!-- Button labels -->
 	<string name="ok">Ok</string>
