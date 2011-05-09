@@ -27,6 +27,8 @@ public class MainscreenPluginPreference extends PluginPreference {
     private Locale locale_ = null;
     protected static String currLang_;
 
+    private final static String KEY = "mainscreen_provider";
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,12 +66,12 @@ public class MainscreenPluginPreference extends PluginPreference {
 				boolean checked = (Boolean)arg1;
 				
 				if(checked) {
-					PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.toString(), checked).commit();
+					PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
 				} else {
 					if(MainscreenPluginPreference.counter_ == 1) {
 						Toast.makeText(that, getResources().getString(R.string.mainscreen_news_plugins_message), Toast.LENGTH_SHORT).show();
 					} else {
-						PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.toString(), checked).commit();
+						PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
 					}
 				}
 
@@ -81,10 +83,12 @@ public class MainscreenPluginPreference extends PluginPreference {
 
 		// Feeds to display
 		String[] plugins  = getResources().getStringArray(R.array.mainscreen_provider_plugins);
-
+		
 		CheckBoxPreference checkBoxPref;
 
 		counter_ = 0;
+		
+		int i = 0;
 		
 		for(String key : plugins) {
 
@@ -99,10 +103,11 @@ public class MainscreenPluginPreference extends PluginPreference {
 
 			if(plug != null) {
 				checkBoxPref = new CheckBoxPreference(this);
-				checkBoxPref.setKey(key);
+				checkBoxPref.setKey(KEY+i);
+
 				checkBoxPref.setTitle(plug.getPluginInfo().getNameResource());
 
-				boolean checked = PreferenceManager.getDefaultSharedPreferences(that).getBoolean(plug.getPluginInfo().getName(), true);
+				boolean checked = PreferenceManager.getDefaultSharedPreferences(that).getBoolean(KEY+i, true);
 
 				if(checked) counter_++;
 
@@ -111,6 +116,8 @@ public class MainscreenPluginPreference extends PluginPreference {
 
 				news.addPreference(checkBoxPref);
 			}
+			
+			i++;
 		}
 		
 		
@@ -144,23 +151,23 @@ public class MainscreenPluginPreference extends PluginPreference {
 		String[] langAbr  = getResources().getStringArray(R.array.mainscreen_languages_abr);
 
 
-		int i = 0;
+		int j = 0;
 				
 		for(String str : lang) {
 
 			checkBoxPref = new CheckBoxPreference(this);
-			checkBoxPref.setKey(langAbr[i]);
+			checkBoxPref.setKey(langAbr[j]);
 			checkBoxPref.setTitle(str);
 
 			
-			boolean checked = currLang_.equals(langAbr[i]) ;
+			boolean checked = currLang_.equals(langAbr[j]) ;
 
 			checkBoxPref.setChecked(checked);
 			checkBoxPref.setOnPreferenceChangeListener(langListener);
 
 			language.addPreference(checkBoxPref);
 			
-			i++;
+			j++;
 		}
 		
 		
