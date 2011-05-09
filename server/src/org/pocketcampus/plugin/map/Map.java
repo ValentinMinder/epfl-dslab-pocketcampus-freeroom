@@ -174,10 +174,9 @@ public class Map implements IPlugin, IMapElementsProvider {
 		try {
 			query = request.getParameter("q");
 		} catch(Exception e) {}
-		return Search.searchText(query,100);
+		return Search.searchTextOnEpflWebsite(query,100);
 	}
-
-
+	
 	/**
 	 * Fill the hashmaps with a list of layers
 	 * coming from the {@link IMapElementsProvider} plugins.

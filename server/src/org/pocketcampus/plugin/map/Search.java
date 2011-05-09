@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.pocketcampus.plugin.map.search.jsonitems.BasicSearchResponse;
 import org.pocketcampus.plugin.map.search.jsonitems.GeometryF;
+import org.pocketcampus.plugin.map.search.jsonitems.GeometryR;
 import org.pocketcampus.plugin.map.search.jsonitems.Roadmap;
 import org.pocketcampus.plugin.map.search.jsonitems.Routing;
+import org.pocketcampus.plugin.map.search.jsonitems.SearchProperties;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.Path;
@@ -108,6 +110,54 @@ public class Search {
 			return -1;
 		}
 		return vertexId;
+	}
+	
+	/**
+	 * Queries the plan.epfl.ch website and return the results
+	 * @param text the query.
+	 * @param max the maximum number of results.
+	 * @return A list of MapElementBean containing the results.
+	 */
+	public static List<MapElementBean> searchTextOnEpflWebsite(String text, int max) {
+		List<MapElementBean> list = new LinkedList<MapElementBean>();
+		URL searchUrl = null;
+		try {
+			searchUrl = new URL("http://plan.epfl.ch/search?keyword=" + URLEncoder.encode(text + "*", "UTF-8"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return list;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return list;
+		}
+		
+		Gson gson = new Gson();
+
+		try {
+			InputStreamReader reader = new InputStreamReader(searchUrl.openStream());
+			BasicSearchResponse response = gson.fromJson(reader, BasicSearchResponse.class);
+			if(response != null && response.features != null) {
+				for(int i = 0; i < response.features.length && i < max; i++) {
+					GeometryR geometry = response.features[i].geometry;
+					SearchProperties properties = response.features[i].properties;
+					if(geometry != null && properties != null) {
+						MapElementBean meb = new MapElementBean();
+						meb.setTitle(properties.text);
+						if(properties.room != null && properties.room.length() > 0) {
+							meb.setDescription(properties.room);
+						}
+						Position p = CoordinateConverter.convertEPSG4326ToLatLong(geometry.coordinates[0], geometry.coordinates[1], 0);
+						meb.setLatitude(p.getLatitude());
+						meb.setLongitude(p.getLongitude());
+						list.add(meb);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return list;
+		}
+		return list;
 	}
 
 	/**
