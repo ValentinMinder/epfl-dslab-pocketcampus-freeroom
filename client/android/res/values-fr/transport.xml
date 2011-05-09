@@ -19,4 +19,6 @@
      <string name="transport_addADestination">Ajouter une destination</string>
      <string name="transport_noDestSet">Aucune destination n\'est définie.\n\nAjoutez une destination depuis le menu.</string>
      
+     <string name="transport_sentViaPCtransport">\n\nEnvoyé depuis PocketCampus.</string>
+     
 </resources>

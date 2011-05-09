@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">PocketCampus</string>
     
-    <!-- Button lables -->
+    <!-- Button labels -->
 	<string name="ok">Ok</string>
 	<string name="cancel">Cancel</string>
 	<string name="yes">Yes</string>
@@ -13,9 +13,8 @@
 	
     
     <string name="mainscreen_configure">Configure</string>
-    <string name="TestTextViewBlabla">TestTextView</string>
     
-    <string name="actionbar_activity_not_found">Failed to open intent...</string>
+    <string name="actionbar_activity_not_found">Failed to do the action...</string>
     
 	<string name="directory_friendly_name">Directory</string>
 	<string name="directory_search">Search</string>

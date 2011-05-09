@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Core!</string>
     <string name="app_name">PocketCampus</string>
+    
+    <!-- Button labels -->
+	<string name="ok">Ok</string>
+	<string name="cancel">Annuler</string>
+	<string name="yes">Oui</string>
+	<string name="no">Non</string>
+	<string name="Details">Détails</string>
+	<string name="Share">Partager</string>
+	<string name="Delete">Supprimer</string>
+	
+    
+    <string name="mainscreen_configure">Configurer</string>
+    
+    <string name="actionbar_activity_not_found">Impossible d\'effectuer cette action...</string>
+    
+	<string name="directory_friendly_name">Annuaire</string>
+	<string name="directory_search">Recherche</string>
+	
+	<string name="server_connection_error">Erreur de connexion au serveur</string>
+	<string name="please_wait">Veuillez attendre...</string>
+	<string name="unexpected_response">Réponse innatendue du serveur</string>
+	<string name="search_no_results">Votre recherche n\'a retourné aucun élément</string>
+	
+	<string name="authentication_wrong_password">Mauvais nom d\'utilisateur ou mot de passe</string>
+	<string name="authentication_hitosomeone">Bonjour, </string>
 </resources>
