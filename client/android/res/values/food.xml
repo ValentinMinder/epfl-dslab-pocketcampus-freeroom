@@ -41,6 +41,7 @@
 	<string name="food_show_ratings">Sort by ratings</string>
 	<string name="food_show_sandwiches">Sandwiches</string>
 	<string name="food_show_suggestions">Suggestions</string>
+	<string name="food_show_settings">Settings</string>
 
 	<!-- Menu dialog -->
 	<string name="food_menudialog_rateittext">Rate it!</string>
