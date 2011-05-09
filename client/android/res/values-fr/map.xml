@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="map_plugin_title">Carte</string>
+    <string name="map_plugin_title">Plan</string>
     
     <string name="map_menu_layers">Points d\'intérêt</string>
     <string name="map_menu_my_position_on">Ma position</string>
