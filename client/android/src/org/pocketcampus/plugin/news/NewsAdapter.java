@@ -45,7 +45,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 		super();
 		this.context_ = context;
 		
-		this.showImage_ = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(NewsPreference.showImg, true);
+		this.showImage_ = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(NewsPreference.SHOW_IMG, true);
 		
 		mInflater_ = LayoutInflater.from(context);
 		

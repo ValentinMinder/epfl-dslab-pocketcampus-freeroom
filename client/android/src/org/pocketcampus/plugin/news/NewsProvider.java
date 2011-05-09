@@ -118,7 +118,7 @@ public class NewsProvider {
 		}
 		
 		downloadFeeds();
-		prefs_.edit().putLong(NewsPreference.cacheTime, System.currentTimeMillis()).commit();
+		prefs_.edit().putLong(NewsPreference.CACHE_TIME, System.currentTimeMillis()).commit();
 
 		Log.d(this.getClass().toString(), "Redownload news feeds");
 	}
@@ -145,7 +145,7 @@ public class NewsProvider {
 
 		// Take only the ones selected by the user in the preferences
 		for(String url: urls) {
-			if(prefs_.getBoolean(NewsPreference.loadRss + url, true)) {
+			if(prefs_.getBoolean(NewsPreference.LOAD_RSS + url, true)) {
 				urlsToDownload.add(url);
 			}
 		}
@@ -223,11 +223,11 @@ public class NewsProvider {
 		
 		refreshRate_ = Integer.parseInt(prefs_.getString("news_refresh_rate", defaultRefreshRate_));
 
-		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(NewsPreference.cacheTime, 0));
+		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(NewsPreference.CACHE_TIME, 0));
 		Log.d(this.getClass().toString(), "Current time: " + System.currentTimeMillis());
 		Log.d(this.getClass().toString(), "Refresh rate: " + refreshRate_);
 		
-		return prefs_.getLong(NewsPreference.cacheTime, 0) + refreshRate_ < System.currentTimeMillis();
+		return prefs_.getLong(NewsPreference.CACHE_TIME, 0) + refreshRate_ < System.currentTimeMillis();
 	}
 	
 

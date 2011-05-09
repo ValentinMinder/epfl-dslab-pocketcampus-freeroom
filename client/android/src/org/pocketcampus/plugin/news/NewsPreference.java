@@ -25,10 +25,10 @@ import android.preference.PreferenceScreen;
 public class NewsPreference extends PluginPreference {
 	
 	// Preferences Strings
-	protected final static String cacheTime = "news_cache_time";
-	protected final static String loadRss = "load_rss";
-	protected final static String refreshRate = "news_refresh_rate";
-	protected final static String showImg = "news_show_thumbnail";
+	protected final static String CACHE_TIME = "news_cache_time";
+	protected final static String LOAD_RSS = "load_rss";
+	protected final static String REFRESH_RATE = "news_refresh_rate";
+	protected final static String SHOW_IMG = "news_show_thumbnail";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class NewsPreference extends PluginPreference {
         OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
-				PreferenceManager.getDefaultSharedPreferences(that).edit().putLong(cacheTime, 0).commit();
+				PreferenceManager.getDefaultSharedPreferences(that).edit().putLong(CACHE_TIME, 0).commit();
 				return true;
 			}
 		};
@@ -72,7 +72,7 @@ public class NewsPreference extends PluginPreference {
 		for(String url : urls) {
 
 	        checkBoxPref = new CheckBoxPreference(this);
-	        checkBoxPref.setKey(loadRss + url);
+	        checkBoxPref.setKey(LOAD_RSS + url);
 	        checkBoxPref.setTitle(names[i++]);
 	        checkBoxPref.setSummary(url);
 	        checkBoxPref.setDefaultValue(true);
@@ -90,7 +90,7 @@ public class NewsPreference extends PluginPreference {
 		lp.setEntries(R.array.news_refresh_entries);
 		lp.setEntryValues(R.array.news_refresh_values);
 		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[getResources().getInteger(R.integer.news_default_refresh)]);
-		lp.setKey(refreshRate);
+		lp.setKey(REFRESH_RATE);
 		lp.setTitle(R.string.news_refresh_title);
 		lp.setSummary(R.string.news_refresh_summary);
 		lp.setDialogTitle(R.string.news_refresh_title);
@@ -100,7 +100,7 @@ public class NewsPreference extends PluginPreference {
 		showImgPref.setTitle(R.string.news_show_image_title);
 		showImgPref.setSummary(R.string.news_show_image_summary);
 		showImgPref.setDefaultValue(true);
-		showImgPref.setKey(showImg);
+		showImgPref.setKey(SHOW_IMG);
 		otherPrefsCat.addPreference(showImgPref);
 		
         return root;
