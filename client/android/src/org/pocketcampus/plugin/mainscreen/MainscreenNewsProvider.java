@@ -41,7 +41,7 @@ public class MainscreenNewsProvider {
 				
 				Log.d("MainscreenNewsProvider", "Plugin not null");
 				
-				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getName(), true)) {
+				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getId().toString(), true)) {
 					Log.d("MainscreenNewsProvider","New MainscreenNewsGetter created");
 					new MainscreenNewsGetter((IMainscreenNewsProvider)plug,ctx,main).execute();
 				}

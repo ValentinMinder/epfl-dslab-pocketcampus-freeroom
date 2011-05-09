@@ -26,8 +26,6 @@ public class MainscreenPluginPreference extends PluginPreference {
 	protected static int counter_ = 0;
     private Locale locale_ = null;
     protected static String currLang_;
-
-    private final static String KEY = "mainscreen_provider";
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +101,11 @@ public class MainscreenPluginPreference extends PluginPreference {
 
 			if(plug != null) {
 				checkBoxPref = new CheckBoxPreference(this);
-				checkBoxPref.setKey(KEY+i);
+				checkBoxPref.setKey(plug.getPluginInfo().getId().toString());
 
 				checkBoxPref.setTitle(plug.getPluginInfo().getNameResource());
 
-				boolean checked = PreferenceManager.getDefaultSharedPreferences(that).getBoolean(KEY+i, true);
+				boolean checked = PreferenceManager.getDefaultSharedPreferences(that).getBoolean(plug.getPluginInfo().getId().toString(), true);
 
 				if(checked) counter_++;
 
