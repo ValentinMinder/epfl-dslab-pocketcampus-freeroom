@@ -120,7 +120,12 @@ public class Search {
 	 */
 	public static List<Position> searchPathBetween(Position userPosition, int endMapElement, boolean bike) {
 		int poi = getClosestPOI(userPosition);
-		return searchPathBetween(poi, endMapElement, bike);
+
+		List<Position> path = searchPathBetween(poi, endMapElement, bike);
+		
+		path.add(0, userPosition);
+		
+		return path;
 	}
 
 	/**
@@ -135,7 +140,13 @@ public class Search {
 	public static List<Position> searchPathBetween(Position userPosition, Position endPosition, boolean bike) {
 		int startPoi = getClosestPOI(userPosition);
 		int endPoi = getClosestPOI(endPosition);
-		return searchPathBetween(startPoi, endPoi, bike);
+		
+		List<Position> path = searchPathBetween(startPoi, endPoi, bike);
+		
+		path.add(0, userPosition);
+		path.add(endPosition);
+		
+		return path;
 	}
 
 	/**
