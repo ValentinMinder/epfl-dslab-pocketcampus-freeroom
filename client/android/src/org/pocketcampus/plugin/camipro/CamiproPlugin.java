@@ -6,8 +6,12 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -27,6 +31,8 @@ public class CamiproPlugin extends PluginBase {
 	private WebView webView_;
 	private ActionBar actionBar_;
 	
+	private static final String FIRST_LOAD = "camipro_first_load";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,8 +42,13 @@ public class CamiproPlugin extends PluginBase {
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		
 		setupWebview();
+		
+		showAlertIfNeeded();
 	}
 	
+	/**
+	 * Setup the view directly to the correct URL
+	 */
 	private void setupWebview() {
 		webView_ = (WebView) findViewById(R.id.camipro_webview);
 	    webView_.setWebViewClient(new HelloWebViewClient());
@@ -45,6 +56,37 @@ public class CamiproPlugin extends PluginBase {
 	    
 	    String page = getResources().getString(R.string.camipro_page);
 	    webView_.loadUrl(getResources().getString(R.string.camipro_website_url) + page);
+	}
+	
+	/**
+	 * Show a security notice that says we do not store their credentials.
+	 * This is shown only once
+	 */
+	private void showAlertIfNeeded() {
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		// Check if we already shown the alert
+		boolean alreadyShown = prefs.getBoolean(FIRST_LOAD, false);
+		if(alreadyShown) {
+			return;
+		}
+		
+		// Create the alert
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getResources().getString(R.string.camipro_alert_title));
+		builder.setMessage(getResources().getString(R.string.camipro_alert_text));
+		builder.setCancelable(false);
+		
+		// "I understand" button, set the preference to true
+		builder.setPositiveButton(getResources().getString(R.string.camipro_alert_ok), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+				prefs.edit().putBoolean(FIRST_LOAD, true).commit();
+			}
+		});
+		
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	/**
@@ -76,17 +118,13 @@ public class CamiproPlugin extends PluginBase {
 
 		@Override
 		public void onPageFinished(WebView view, String url) {
-
 			actionBar_.setProgressBarVisibility(View.GONE);
-			
 			super.onPageFinished(view, url);
 		}
 
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
 			actionBar_.setProgressBarVisibility(View.VISIBLE);
-			
 			super.onPageStarted(view, url, favicon);
 		}
 	    

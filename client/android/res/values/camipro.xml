@@ -2,4 +2,8 @@
 <resources>
     <string name="camipro_website_url">https://cmp2www.epfl.ch/client/iphone/</string>
     <string name="camipro_page">\?lang=1</string>
+    
+    <string name="camipro_alert_title">Security notice</string>
+    <string name="camipro_alert_text">This part of the application comes directly from the Camipro website. The credentials go directly to their website using an encrypted connection. We do not store them.</string>
+    <string name="camipro_alert_ok">I understand</string>
 </resources>

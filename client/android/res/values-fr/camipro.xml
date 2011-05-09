@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="camipro_page">\?lang=0</string>
+    
+    <string name="camipro_alert_title">Avertissement de sécurité</string>
+    <string name="camipro_alert_text">Cette partie de l\'application provient directement du site Camipro. Les informations de connexion vont directement sur leurs serveurs en utilisant une connexion sécurisée. Nous ne les mémorisons pas.</string>
+    <string name="camipro_alert_ok">J\'ai compris</string>
 </resources>
