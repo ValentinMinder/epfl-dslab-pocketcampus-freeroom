@@ -111,6 +111,11 @@ public class MapPlugin extends PluginBase {
 	 * like the campus Tiles Overlay, or the user position
 	 */
 	private List<Overlay> constantOverlays_;
+	
+	/**
+	 * Overlays which are temporary, like the search result.
+	 */
+	private List<Overlay> temporaryOverlays_;
 
 	// List of all and displayed overlays
 	private List<MapElementsList> allLayers_;
@@ -151,6 +156,7 @@ public class MapPlugin extends PluginBase {
 	private void initVariables() {
 		// The layers are not know yet
 		constantOverlays_ = new ArrayList<Overlay>();
+		temporaryOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		selectedLayers_ = new ArrayList<MapElementsList>();
 		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
@@ -251,7 +257,7 @@ public class MapPlugin extends PluginBase {
 			overItems.add(overItem);
 			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
 			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
-			constantOverlays_.add(aOverlay);
+			temporaryOverlays_.add(aOverlay);
 			centerOnPoint(gp);
 			return true;
 		}
@@ -638,6 +644,10 @@ public class MapPlugin extends PluginBase {
 				populateLayer(layer);
 			}
 
+		}
+		
+		for(Overlay over : temporaryOverlays_) {
+			mapView_.getOverlays().add(over);
 		}
 
 		mapView_.invalidate();
