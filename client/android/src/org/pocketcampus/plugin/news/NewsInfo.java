@@ -30,11 +30,6 @@ public class NewsInfo extends PluginInfo {
 	public Id getId() {
 		return new Id("news");
 	}
-
-	@Override
-	public String getName() {
-		return "News";
-	}
 	
 	@Override
 	public int getNameResource() {

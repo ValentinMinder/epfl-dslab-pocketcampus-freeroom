@@ -11,12 +11,7 @@ package org.pocketcampus.core.plugin;
  */
 
 public abstract class PluginInfo {
-	/**
-	 * Plugin's "human readable" name.
-	 */
-	@Deprecated
-	public abstract String getName();
-	
+
 	/**
 	 * Plugin's name, using the resources
 	 * @return

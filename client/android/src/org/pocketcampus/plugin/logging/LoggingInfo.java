@@ -24,10 +24,6 @@ public class LoggingInfo extends PluginInfo {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public String getName() {
-		return name_;
-	}
 	
 	@Override
 	public int getNameResource() {

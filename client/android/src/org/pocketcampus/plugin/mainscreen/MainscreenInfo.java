@@ -17,11 +17,6 @@ public class MainscreenInfo extends PluginInfo {
 	public Id getId() {
 		return new Id("mainscreen");
 	}
-
-	@Override
-	public String getName() {
-		return "Mainscreen";
-	}
 	
 	@Override
 	public int getNameResource() {

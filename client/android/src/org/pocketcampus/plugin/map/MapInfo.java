@@ -25,11 +25,6 @@ public class MapInfo extends PluginInfo {
 	public Id getId() {
 		return new Id("map");
 	}
-
-	@Override
-	public String getName() {
-		return "Map";
-	}
 	
 	@Override
 	public int getNameResource() {

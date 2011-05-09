@@ -8,7 +8,6 @@ import org.pocketcampus.core.plugin.VersionNumber;
 
 public class AuthenticationInfo extends PluginInfo {
 	private final Id id_ = new Id("authentication");
-	private final String name_ = "Authentication";
 	
 	@Override
 	public Icon getIcon() {
@@ -23,11 +22,6 @@ public class AuthenticationInfo extends PluginInfo {
 	@Override
 	public Icon getMiniIcon() {
 		return new Icon(R.drawable.social_normal_mini);
-	}
-
-	@Override
-	public String getName() {
-		return name_;
 	}
 	
 	@Override

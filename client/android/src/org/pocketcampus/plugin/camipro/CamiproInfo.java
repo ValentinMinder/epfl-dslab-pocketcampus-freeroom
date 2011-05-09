@@ -30,11 +30,6 @@ public class CamiproInfo extends PluginInfo {
 	public Icon getMiniIcon() {
 		return new Icon(R.drawable.camipro_normal_mini);
 	}
-
-	@Override
-	public String getName() {
-		return "Balance";
-	}
 	
 	@Override
 	public int getNameResource() {

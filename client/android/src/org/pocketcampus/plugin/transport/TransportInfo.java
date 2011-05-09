@@ -28,11 +28,6 @@ public class TransportInfo extends PluginInfo {
 	public Icon getMiniIcon() {
 		return new Icon(R.drawable.transport_normal_mini);
 	}
-
-	@Override
-	public String getName() {
-		return "Transport";
-	}
 	
 	@Override
 	public int getNameResource() {

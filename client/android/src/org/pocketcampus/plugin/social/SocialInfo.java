@@ -8,7 +8,6 @@ import org.pocketcampus.R;
 public class SocialInfo extends PluginInfo {
 	
 	private final Id id_ = new Id("social");
-	private final String name_ = "Social";
 	
 	@Override
 	public Icon getIcon() {
@@ -18,11 +17,6 @@ public class SocialInfo extends PluginInfo {
 	@Override
 	public Id getId() {
 		return id_;
-	}
-
-	@Override
-	public String getName() {
-		return name_;
 	}
 	
 	@Override

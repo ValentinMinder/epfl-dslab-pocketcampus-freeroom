@@ -7,11 +7,6 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
 public class BikesInfo extends PluginInfo {
-
-	@Override
-	public String getName() {
-		return "Bikes";
-	}
 	
 	@Override
 	public int getNameResource() {

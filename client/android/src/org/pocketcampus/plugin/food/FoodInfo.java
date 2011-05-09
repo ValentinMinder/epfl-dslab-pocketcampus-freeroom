@@ -17,11 +17,6 @@ public class FoodInfo extends PluginInfo {
 	public Id getId() {
 		return new Id("food");
 	}
-
-	@Override
-	public String getName() {
-		return "Food";
-	}
 	
 	@Override
 	public int getNameResource() {

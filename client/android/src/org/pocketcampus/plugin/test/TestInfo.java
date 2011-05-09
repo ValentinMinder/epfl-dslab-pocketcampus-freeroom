@@ -17,11 +17,6 @@ public class TestInfo extends PluginInfo {
 	public Id getId() {
 		return new Id("test");
 	}
-
-	@Override
-	public String getName() {
-		return "Server Test";
-	}
 	
 	@Override
 	public int getNameResource() {

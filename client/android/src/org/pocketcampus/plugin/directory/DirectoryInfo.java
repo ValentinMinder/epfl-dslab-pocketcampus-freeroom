@@ -7,11 +7,6 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
 public class DirectoryInfo extends PluginInfo {
-
-	@Override
-	public String getName() {
-		return "Directory";
-	}
 	
 	@Override
 	public int getNameResource() {
