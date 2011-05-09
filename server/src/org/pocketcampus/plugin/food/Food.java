@@ -12,14 +12,15 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joda.time.Period;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.food.RssParser.RssFeed;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
+import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
 import org.pocketcampus.shared.plugin.food.Restaurant;
 import org.pocketcampus.shared.plugin.food.Sandwich;
-import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -122,11 +123,24 @@ public class Food implements IPlugin/*, IMapElementsProvider*/ {
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
 
-		if (now.get(Calendar.DAY_OF_WEEK) == then.get(Calendar.DAY_OF_WEEK)) {
-			return true;
-		} else {
+		System.out.println("Minutes:"+getMinutes(then.getTime(), now.getTime()));
+		
+		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
+		} else {
+			if(getMinutes(then.getTime(), now.getTime()) > 60){
+				return false;
+			}
 		}
+		return true;
+	}
+	
+	private long getMinutes(Date then, Date now){
+		Period p = new Period(then.getTime(), now.getTime());
+		long hours = p.getHours();
+		long minutes = p.getMinutes();
+
+		return hours*60 + minutes;
 	}
 
 	/**
