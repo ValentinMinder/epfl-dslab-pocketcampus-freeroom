@@ -39,7 +39,9 @@
 				<meta-data android:name="android.app.default_searchable"
                 	android:value=".plugin.map.search.MapSearchActivity" />
 		</activity>
-		<activity android:name=".plugin.map.search.MapSearchActivity">
+		<activity android:name=".plugin.map.search.MapSearchActivity"
+				android:launchMode="singleTop"
+				android:noHistory="true">
 			<intent-filter>
             	<action android:name="android.intent.action.SEARCH" />
        		</intent-filter>

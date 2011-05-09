@@ -49,6 +49,7 @@ import org.pocketcampus.utils.ImageUtil;
 import org.pocketcampus.utils.Notification;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -242,17 +243,16 @@ public class MapPlugin extends PluginBase {
 		if(extras == null) {
 			return false;
 		}
-
 		if(extras.containsKey("MapElement")) {
 			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
-			OverlayItem overItem = new OverlayItem(meb.getTitle(), meb.getDescription(),
-					new GeoPoint(meb.getLatitude(), meb.getLongitude()));
+			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
+			OverlayItem overItem = new OverlayItem(meb.getTitle(), meb.getDescription(), gp);
 			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
 			overItems.add(overItem);
 			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
 			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			constantOverlays_.add(aOverlay);
-			
+			centerOnPoint(gp);
 			return true;
 		}
 		
@@ -357,6 +357,12 @@ public class MapPlugin extends PluginBase {
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		
 		super.onPause();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleIntent(intent.getExtras());
 	}
 
 	@Override

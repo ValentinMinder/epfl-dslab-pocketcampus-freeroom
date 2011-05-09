@@ -45,14 +45,26 @@ public class MapSearchActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Get the intent, verify the action and get the query
-	    Intent intent = getIntent();
+	    handleIntent(getIntent());
+	}
+	
+	/**
+	 * Verify the Intent's action and get the query
+	 * @param intent
+	 */
+	private void handleIntent(Intent intent) {
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-	      String query = intent.getStringExtra(SearchManager.QUERY);
-	      query = query.trim();
-	      searchMap(query);
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			query = query.trim();
+			searchMap(query);
 	    }
-
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		handleIntent(intent);
 	}
 	
 	/**
@@ -201,7 +213,8 @@ public class MapSearchActivity extends ListActivity {
 		Intent startMapActivity = new Intent(this, MapPlugin.class);
 		startMapActivity.putExtra("MapElement", meb);
 		//startMapActivity.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP); //had a problem of outofmemory if too many consecutive searches
-		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		//startMapActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //possible if we dont want the already displayed layers
+		startMapActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(startMapActivity);
 	}
 
