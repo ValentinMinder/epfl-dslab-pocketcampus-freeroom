@@ -180,7 +180,8 @@ public class FoodDisplayHandler {
 	public ArrayList<Meal> getMenusList() {
 		ArrayList<Meal> mealsList = new ArrayList<Meal>();
 		if (campusMenu_ != null && !campusMenu_.isEmpty()) {
-			Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_);
+			Vector<Meal> mealsVector = sorter_.sortByRatings(campusMenu_
+					.getCampusMenu());
 			for (Meal m : mealsVector) {
 				mealsList.add(m);
 			}
@@ -249,15 +250,16 @@ public class FoodDisplayHandler {
 	 * Show the menus according to their ratings. Better rated first.
 	 */
 	public void showMenusByRatings() {
+		List<Meal> menusPrefered = campusMenu_.getCampusMenuPrefered();
 		// Sort meals by ratings.
-		if (campusMenu_ != null) {
+		if (menusPrefered != null) {
 			FoodListSection menuListSection;
 			/**
 			 * Iterate over the different restaurant menus
 			 */
 
-			if (!campusMenu_.isEmpty()) {
-				Vector<Meal> mealVector = sorter_.sortByRatings(campusMenu_);
+			if (!menusPrefered.isEmpty()) {
+				Vector<Meal> mealVector = sorter_.sortByRatings(menusPrefered);
 				// Get the set of keys from the hash map to make sections.
 				menuListSection = new FoodListSection(mealVector,
 						ownerActivity_);

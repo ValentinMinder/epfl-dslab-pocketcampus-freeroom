@@ -18,27 +18,28 @@ import org.pocketcampus.shared.plugin.food.Restaurant;
 
 public class MenuSorter {
 
-	public MenuSorter() {}
+	public MenuSorter() {
+	}
 
 	/**
 	 * sorts the meals by Rating (best rates first)
 	 * 
-	 * @param the collection of meals for the day
+	 * @param the
+	 *            collection of meals for the day
 	 * 
 	 * @return the sorted list of meals
 	 **/
-	public Vector<Meal> sortByRatings(FoodMenu menu_) {
-		if(menu_ == null){
-			throw new IllegalArgumentException("The meals list cannot be null !");
+	public Vector<Meal> sortByRatings(List<Meal> menus) {
+		if (menus == null) {
+			throw new IllegalArgumentException(
+					"The meals list cannot be null !");
 		}
-		
-		List<Meal> menus = menu_.getCampusMenu();
-		
+
 		Collections.sort(menus, new RatingComparator());
 		Collections.reverse(menus);
-		
+
 		Vector<Meal> mealsVector = new Vector<Meal>();
-		
+
 		for (Meal meal : menus) {
 			mealsVector.add(meal);
 		}
@@ -49,18 +50,20 @@ public class MenuSorter {
 	/**
 	 * sorts the meals by Restaurant (Alphabetical order)
 	 * 
-	 * @param the collection of meals for the day
+	 * @param the
+	 *            collection of meals for the day
 	 * 
 	 * @return the sorted list of meals
 	 **/
 	public HashMap<String, Vector<Meal>> sortByRestaurant(Collection<Meal> meals) {
-		
-		if(meals == null){
-			throw new IllegalArgumentException("The meals list cannot be null !");
+
+		if (meals == null) {
+			throw new IllegalArgumentException(
+					"The meals list cannot be null !");
 		}
-		
+
 		HashMap<String, Vector<Meal>> map = new HashMap<String, Vector<Meal>>();
-		
+
 		for (Meal meal : meals) {
 			String resto = meal.getRestaurant_().getName();
 
@@ -73,73 +76,77 @@ public class MenuSorter {
 					map.put(resto, vector);
 				}
 			} else {
-				System.out.println("SortingMeals: Skip empty Description: "+meal.getDescription_()+" - Name: "+meal.getName_()+" Resto: "+meal.getRestaurant_());
+				System.out.println("SortingMeals: Skip empty Description: "
+						+ meal.getDescription_() + " - Name: "
+						+ meal.getName_() + " Resto: " + meal.getRestaurant_());
 			}
 		}
 		Set<String> menus = map.keySet();
-		
-		//Sort menus alphabetically
-		for(String resto : menus){
+
+		// Sort menus alphabetically
+		for (String resto : menus) {
 			Collections.sort(map.get(resto), new Comparator<Meal>() {
-			    public int compare(Meal one, Meal other) {
-			        return one.getName_().compareTo(other.getName_());
-			    }
+				public int compare(Meal one, Meal other) {
+					return one.getName_().compareTo(other.getName_());
+				}
 			});
 		}
-		
+
 		return map;
 	}
 
 	/**
 	 * sorts the meals by Day
 	 * 
-	 * @param the collection of meals for the week for a particular Restaurant
+	 * @param the
+	 *            collection of meals for the week for a particular Restaurant
 	 * 
 	 * @return the sorted list of meals
 	 **/
-//	public Vector<Vector<Meal>> sortByDay(FoodMenu meals) {
-//		
-//		if(meals == null){
-//			throw new IllegalArgumentException("The meals list cannot be null !");
-//		}
-//		
-//		Vector<Vector<Meal>> vec = new Vector<Vector<Meal>>();		
-//		
-//		for (int i=0; i<5; i++) {
-//			vec.add(new Vector<Meal>());
-//		}
-//		Set<Meal> set = meals.getMeals();
-//		for (Meal meal : set) {
-//			if(!meal.getDescription_().matches("\\s+")){
-//				int day = meal.getDay_();
-//				vec.get(day-2).add(meal);
-//			}
-//		}	
-//		
-//		return vec;
-//	}
+	// public Vector<Vector<Meal>> sortByDay(FoodMenu meals) {
+	//
+	// if(meals == null){
+	// throw new IllegalArgumentException("The meals list cannot be null !");
+	// }
+	//
+	// Vector<Vector<Meal>> vec = new Vector<Vector<Meal>>();
+	//
+	// for (int i=0; i<5; i++) {
+	// vec.add(new Vector<Meal>());
+	// }
+	// Set<Meal> set = meals.getMeals();
+	// for (Meal meal : set) {
+	// if(!meal.getDescription_().matches("\\s+")){
+	// int day = meal.getDay_();
+	// vec.get(day-2).add(meal);
+	// }
+	// }
+	//
+	// return vec;
+	// }
 
 	/**
-	 * Compares meals using their rating, in order to 
-	 * sort them.
-	 *
+	 * Compares meals using their rating, in order to sort them.
+	 * 
 	 */
-	private class RatingComparator implements Comparator<Meal>{
-		
+	private class RatingComparator implements Comparator<Meal> {
+
 		public int compare(Meal thisMeal, Meal otherMeal) {
-			if(thisMeal.getRating() == null){
-				String thisMealString = ""+thisMeal;
+			if (thisMeal.getRating() == null) {
+				String thisMealString = "" + thisMeal;
 				throw new IllegalArgumentException(thisMealString);
 			}
-			double d0 = Restaurant.starRatingToDouble(thisMeal.getRating().getValue());
-			double d1 = Restaurant.starRatingToDouble(otherMeal.getRating().getValue());
-			if(d0 != d1){
-				return (d0 < d1 ? -1:1);
-			} else{
+			double d0 = Restaurant.starRatingToDouble(thisMeal.getRating()
+					.getValue());
+			double d1 = Restaurant.starRatingToDouble(otherMeal.getRating()
+					.getValue());
+			if (d0 != d1) {
+				return (d0 < d1 ? -1 : 1);
+			} else {
 				int n0 = thisMeal.getRating().getNumberOfVotes();
 				int n1 = thisMeal.getRating().getNumberOfVotes();
-				return (n0 < n1 ? -1:1);
+				return (n0 < n1 ? -1 : 1);
 			}
-		}		
+		}
 	}
 }
