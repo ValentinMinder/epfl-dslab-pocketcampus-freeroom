@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Icon;
 import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -20,6 +21,11 @@ public class MainscreenInfo extends PluginInfo {
 	@Override
 	public String getName() {
 		return "Mainscreen";
+	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.mainscreen_plugin_title;
 	}
 
 	@Override

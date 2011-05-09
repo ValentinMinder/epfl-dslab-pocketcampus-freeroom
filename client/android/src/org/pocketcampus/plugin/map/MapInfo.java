@@ -30,6 +30,11 @@ public class MapInfo extends PluginInfo {
 	public String getName() {
 		return "Map";
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.map_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

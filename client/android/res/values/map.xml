@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="map_plugin_title">Map</string>
+    
     <string name="map_menu_layers">Layers</string>
     <string name="map_menu_my_position_on">Follow me</string>
     <string name="map_menu_my_position_off">Do not follow me</string>

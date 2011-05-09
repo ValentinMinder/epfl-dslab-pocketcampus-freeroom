@@ -22,6 +22,11 @@ public class FoodInfo extends PluginInfo {
 	public String getName() {
 		return "Food";
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.food_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

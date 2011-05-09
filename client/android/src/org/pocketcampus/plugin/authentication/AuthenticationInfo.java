@@ -29,6 +29,11 @@ public class AuthenticationInfo extends PluginInfo {
 	public String getName() {
 		return name_;
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.authentication_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

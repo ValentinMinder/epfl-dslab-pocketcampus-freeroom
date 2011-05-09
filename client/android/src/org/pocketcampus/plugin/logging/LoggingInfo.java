@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.logging;
 
+import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Icon;
 import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -27,6 +28,12 @@ public class LoggingInfo extends PluginInfo {
 	public String getName() {
 		return name_;
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.logging_plugin_title;
+	}
+	
 	@Override
 	public VersionNumber getVersion() {
 		return new VersionNumber();

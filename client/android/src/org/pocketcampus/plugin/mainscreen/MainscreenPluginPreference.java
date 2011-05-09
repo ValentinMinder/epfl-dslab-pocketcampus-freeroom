@@ -100,7 +100,7 @@ public class MainscreenPluginPreference extends PluginPreference {
 			if(plug != null) {
 				checkBoxPref = new CheckBoxPreference(this);
 				checkBoxPref.setKey(key);
-				checkBoxPref.setTitle(plug.getPluginInfo().getName());
+				checkBoxPref.setTitle(plug.getPluginInfo().getNameResource());
 
 				boolean checked = PreferenceManager.getDefaultSharedPreferences(that).getBoolean(plug.getPluginInfo().getName(), true);
 

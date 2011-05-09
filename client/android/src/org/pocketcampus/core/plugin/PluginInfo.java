@@ -14,9 +14,14 @@ public abstract class PluginInfo {
 	/**
 	 * Plugin's "human readable" name.
 	 */
+	@Deprecated
 	public abstract String getName();
 	
-	//public abstract int getNameViaID();
+	/**
+	 * Plugin's name, using the resources
+	 * @return
+	 */
+	public abstract int getNameResource();
 
 	/**
 	 * Plugin unique ID.

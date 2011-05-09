@@ -34,9 +34,9 @@ public class TransportInfo extends PluginInfo {
 		return "Transport";
 	}
 	
-	//@Override
-	public int getNameViaID() {
-		return R.string.transport_pluginName;
+	@Override
+	public int getNameResource() {
+		return R.string.transport_plugin_title;
 	}
 
 	@Override

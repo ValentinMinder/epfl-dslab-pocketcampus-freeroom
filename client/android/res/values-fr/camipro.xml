@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="camipro_plugin_title">Camipro</string>
+
     <string name="camipro_page">\?lang=0</string>
     
     <string name="camipro_alert_title">Avertissement de sécurité</string>

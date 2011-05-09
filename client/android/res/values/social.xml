@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- SOCIAL NAMES -->
+    <string name="social_plugin_title">Social</string>
+    <string name="authentication_plugin_title">Authentication</string>
     <string name="social_login_username_text">Username</string>
     <string name="social_login_username_field"></string>
     <string name="social_login_password_text">Password</string>

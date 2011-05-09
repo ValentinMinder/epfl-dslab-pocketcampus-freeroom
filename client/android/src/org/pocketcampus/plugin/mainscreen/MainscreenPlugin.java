@@ -114,7 +114,7 @@ public class MainscreenPlugin extends PluginBase {
 
 				// label
 				TextView text = new TextView(ctx_);
-				text.setText(pluginInfo.getName());
+				text.setText(pluginInfo.getNameResource());
 				//text.setText(getResources().getString(pluginInfo.getNameViaID()));
 
 				RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

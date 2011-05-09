@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="camipro_plugin_title">Camipro</string>
+
     <string name="camipro_website_url">https://cmp2www.epfl.ch/client/iphone/</string>
     <string name="camipro_page">\?lang=1</string>
     

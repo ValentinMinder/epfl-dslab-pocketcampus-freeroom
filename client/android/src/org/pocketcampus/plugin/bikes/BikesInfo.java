@@ -12,6 +12,11 @@ public class BikesInfo extends PluginInfo {
 	public String getName() {
 		return "Bikes";
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.bikes_plugin_title;
+	}
 
 	@Override
 	public Id getId() {

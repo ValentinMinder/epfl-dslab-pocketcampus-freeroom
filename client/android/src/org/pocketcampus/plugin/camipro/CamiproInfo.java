@@ -35,6 +35,11 @@ public class CamiproInfo extends PluginInfo {
 	public String getName() {
 		return "Balance";
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.camipro_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

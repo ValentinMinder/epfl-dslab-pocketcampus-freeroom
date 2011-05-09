@@ -12,10 +12,10 @@ public class DirectoryInfo extends PluginInfo {
 	public String getName() {
 		return "Directory";
 	}
-
-	//@Override
-	public int getNameViaID() {
-		return R.string.directory_pluginName;
+	
+	@Override
+	public int getNameResource() {
+		return R.string.directory_plugin_title;
 	}
 	
 	@Override

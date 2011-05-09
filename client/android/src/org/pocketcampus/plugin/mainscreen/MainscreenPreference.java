@@ -38,12 +38,12 @@ public class MainscreenPreference extends PluginPreference {
 
 //		 mainscreen preferences
 		PreferenceCategory mainscreenPref = new PreferenceCategory(this);
-		mainscreenPref.setTitle("Mainscreen Preferences");
+		mainscreenPref.setTitle(R.string.mainscreen_plugin_title);
 		root.addPreference(mainscreenPref);
 		
 		Preference mainPref;
 		mainPref = new Preference(this);
-		mainPref.setTitle("Mainscreen");
+		mainPref.setTitle(R.string.mainscreen_plugin_title);
 		
 		OnPreferenceClickListener onMainPreferenceClickListener = new OnPreferenceClickListener() {
 			
@@ -64,7 +64,7 @@ public class MainscreenPreference extends PluginPreference {
 
 		// plugins preferences
 		PreferenceCategory pluginPrefCat = new PreferenceCategory(this);
-		pluginPrefCat.setTitle("Plugins Preferences");
+		pluginPrefCat.setTitle(R.string.mainscreen_plugins_options);
 		root.addPreference(pluginPrefCat);
 		
 		Vector<PluginBase> plugins = Core.getInstance().getAvailablePlugins();
@@ -73,7 +73,7 @@ public class MainscreenPreference extends PluginPreference {
 		for (final PluginBase plugin : plugins) {
 			if(plugin.getPluginPreference() != null) {
 				pluginPref = new Preference(this);
-				pluginPref.setTitle(plugin.getPluginInfo().getName());
+				pluginPref.setTitle(plugin.getPluginInfo().getNameResource());
 				
 				OnPreferenceClickListener onPreferenceClickListener = new OnPreferenceClickListener() {
 					

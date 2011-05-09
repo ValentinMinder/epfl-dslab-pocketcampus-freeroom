@@ -35,6 +35,11 @@ public class NewsInfo extends PluginInfo {
 	public String getName() {
 		return "News";
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.news_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

@@ -3,6 +3,7 @@
 <resources>
 
 	<!-- Food Plugin -->
+    <string name="food_plugin_title">Nourriture</string>
 	<string name="food_display_title">Food Service</string>
 	<string name="food_empty">Aucun élément à afficher</string>
 	<string name="food_restaurants">Restaurants</string>

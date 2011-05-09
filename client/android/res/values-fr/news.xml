@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="news_plugin_title">News</string>
+    
     <string name="news_preferences_rss_title">Options RSS</string>
     <string name="news_preferences_other_title">Autres options</string>
    

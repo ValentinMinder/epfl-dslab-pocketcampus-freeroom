@@ -24,6 +24,11 @@ public class SocialInfo extends PluginInfo {
 	public String getName() {
 		return name_;
 	}
+	
+	@Override
+	public int getNameResource() {
+		return R.string.social_plugin_title;
+	}
 
 	@Override
 	public VersionNumber getVersion() {

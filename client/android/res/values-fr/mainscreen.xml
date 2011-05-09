@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="mainscreen_plugin_title">Ecran d\'accueil</string>
     <string name="mainscreen_news_plugins">Ecran d\'accueil</string>
+    <string name="mainscreen_plugins_options">Options des plugins</string>
     <string name="mainscreen_language">Langue</string>
     <string name="mainscreen_news_plugins_message">Au moins un plugin doit être sélectionné</string>
     <string name="mainscreen_menu_settings">Paramètres</string>
