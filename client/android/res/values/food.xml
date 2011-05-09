@@ -74,14 +74,6 @@
 	<string name="food_suggestions_test">Test</string>
 
 	<string name="food_suggestions_notag">No existing Tag</string>
-	<string name="food_suggestions_alreadyAdded">This tag was already added !</string>
-	<string name="food_suggestions_explanation">Pick the meals you (don\'t) like</string>
-	<string name="food_suggestions_ilike">I like</string>
-	<string name="food_suggestions_idontlike">I don\'t like</string>
-	<string name="food_suggestlist_prompt_like">What do you like?</string>
-	<string name="food_suggestlist_prompt_dislike">What don\'t you like?</string>
-	<string name="food_suggestions_nomeal_nosuggestion">Can\'t compute suggestions if there are no meals
-	</string>
 
 	<!--  Gallery   -->
 	<string name="food_gallery_nopic_title">Sorry !</string>
