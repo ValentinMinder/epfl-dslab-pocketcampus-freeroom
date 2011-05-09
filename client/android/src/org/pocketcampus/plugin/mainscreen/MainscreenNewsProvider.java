@@ -1,28 +1,30 @@
 package org.pocketcampus.plugin.mainscreen;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginBase;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class MainscreenNewsProvider {
 	
-	public static List<MainscreenNews> getNews(Context ctx) {
-		
+	public static void getNews(Context ctx, MainscreenPlugin main) {
+				
 		MainscreenPlugin.refreshing();
 		
-		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
-
+		Log.d("MainscreenNewsProvider", "Getting News");
+		
         // Feeds to display
 		String[] plugins  = ctx.getResources().getStringArray(R.array.mainscreen_provider_plugins);
 		
+		Log.d("MainscreenNewsProvider", "Array size: " + plugins.length);
+
 
         for(String key : plugins) {
+        	
+    		Log.d("MainscreenNewsProvider", "Current Plugin: " + key);
+
         	
         	PluginBase plug = null;
 			try {
@@ -34,17 +36,16 @@ public class MainscreenNewsProvider {
 			}
         	
 			if(plug != null) {
-				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getName(), false)) {
-					l.addAll(((IMainscreenNewsProvider)plug).getNews(ctx));
+				
+				Log.d("MainscreenNewsProvider", "Plugin not null");
+				
+				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getName(), true)) {
+					Log.d("MainscreenNewsProvider","New MainscreenNewsGetter created");
+					new MainscreenNewsGetter((IMainscreenNewsProvider)plug,ctx,main).execute();
 				}
 			}
 		}
-		
-        MainscreenPlugin.refreshed();
 
-        Collections.sort(l);
-        
-		return l;
 	}
 
 	

@@ -41,7 +41,7 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
 	private ActionBar actionBar_;
-	private final static int NB_NEWS = 3;
+	private final static int NB_NEWS = 5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +184,8 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	public List<MainscreenNews> getNews(Context ctx) {
 		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
 		NewsProvider np = NewsProvider.getInstance(ctx);
+		
+
 		np.refreshIfNeeded();
 		
 		// Number of news to display

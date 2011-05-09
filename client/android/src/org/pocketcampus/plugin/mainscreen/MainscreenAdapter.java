@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.mainscreen;
 
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -30,12 +32,12 @@ public class MainscreenAdapter extends BaseAdapter {
 		 * @param context Context of the application
 		 * @param items Items that have to be on the list
 		 */
-		public MainscreenAdapter(Context context) {
+		public MainscreenAdapter(Context context, List<MainscreenNews> list) {
 			super();
 			
 			this.ctx_ = context;
 			
-			this.news_ =  MainscreenNewsProvider.getNews(ctx_);
+			this.news_ =  list;
 						
 			mInflater_ = LayoutInflater.from(context);
 						
@@ -88,5 +90,6 @@ public class MainscreenAdapter extends BaseAdapter {
 		public long getItemId(int position) {
 			return news_.get(position).getId_();
 		}
+
 
 }

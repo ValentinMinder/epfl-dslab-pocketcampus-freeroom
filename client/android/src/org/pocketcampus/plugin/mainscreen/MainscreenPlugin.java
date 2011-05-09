@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -43,10 +46,13 @@ public class MainscreenPlugin extends PluginBase {
 	
 	private static ActionBar actionBar_;
 
+	private static List<Class> readyNews_;
 	
-	protected final static String PACKAGE = "org.pocketcampus.plugin.";
+	public final static String PACKAGE = "org.pocketcampus.plugin.";
 	
 	private MainscreenAdapter adapter_;
+	
+	private static List<MainscreenNews> news_;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,10 @@ public class MainscreenPlugin extends PluginBase {
 		
 		setupActionBar(false);
 
+		readyNews_ = new ArrayList<Class>();
+		news_ = new ArrayList<MainscreenNews>();
+		
+		
 		tracker_ = Tracker.getInstance();
 		tracker_.start(this);
 		tracker_.trackPageView("mainscreen/home");
@@ -62,8 +72,9 @@ public class MainscreenPlugin extends PluginBase {
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
+				
 		
-		displayNews();
+		refresh();
 
 		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
 
@@ -212,9 +223,9 @@ public class MainscreenPlugin extends PluginBase {
 	}
 	
 	
-	private void displayNews() {
+	protected void displayNews() {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
-		adapter_ = new MainscreenAdapter(ctx_);
+		adapter_ = new MainscreenAdapter(ctx_, news_);
 		l.setAdapter(adapter_);
 		l.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -249,14 +260,9 @@ public class MainscreenPlugin extends PluginBase {
 
 	}
 	
-	public void refresh() {
-		refreshing();
-		
+	public void refresh() {		
 		Log.d("MainscreenPlugin", "Refreshing");
-		
-		displayNews();
-		
-		refreshed();
+		MainscreenNewsProvider.getNews(ctx_, this);
 	}
 	
 	public static void refreshing() {
@@ -268,6 +274,24 @@ public class MainscreenPlugin extends PluginBase {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 	
+	public static void notifyMainscreen(Class cl) {
+		Log.d("MainscreenPlugin", "Notification added for plugin " + cl);
+		readyNews_.add(cl);
+	}
+	
+	public static boolean hasNotification(Class cl) {
+		Log.d("MainscreenPlugin","Notification requested for plugin " + cl);
+		return readyNews_.contains(cl);
+	}
+	
+	
+	public static void addAll(List<MainscreenNews> list) {
+		news_.addAll(list);
+	}
+
+	public static void sort() {
+		Collections.sort(news_);
+	}
 	
 
 }

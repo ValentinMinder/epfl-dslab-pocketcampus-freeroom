@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+
 import android.os.AsyncTask;
 
 /**
@@ -70,6 +72,13 @@ public class FeedDownloader extends AsyncTask<String, Void, List<NewsItem>> {
 		
 		// Notify that the data changed
 		newsProvider_.dataSetUpdated();
+		
+		try {
+			MainscreenPlugin.notifyMainscreen(Class.forName(MainscreenPlugin.PACKAGE+"news.NewsPlugin"));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
