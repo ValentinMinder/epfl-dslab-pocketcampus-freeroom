@@ -13,8 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
  *
  */
 public class LevelBar implements OnSeekBarChangeListener{
-	private static final String TAG = "LevelBar";
-	
+
 	private SeekBar seekBar_;
 	private OnLevelBarChangeListener listener_;
 	private int currentLevel_;
@@ -38,8 +37,8 @@ public class LevelBar implements OnSeekBarChangeListener{
 		this.currentLevel_ = default_level;
 		
 		seekBar_.setVisibility(View.VISIBLE);
-		seekBar_.setMax(max - min);
-		seekBar_.setProgress(default_level - min);
+		seekBar_.setMax(maxLevel_ - minLevel_);
+		seekBar_.setProgress(default_level - minLevel_);
 		seekBar_.setOnSeekBarChangeListener(this);
 	}
 	

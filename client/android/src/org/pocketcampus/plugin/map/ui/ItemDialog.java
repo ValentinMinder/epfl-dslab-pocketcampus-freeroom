@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.map.ui;
 
 import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.R;
-import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 
