@@ -32,8 +32,8 @@
 
 	<!-- Rating dialog -->
 	<string name="food_rating_title">Notez le!</string>
-	<string name="food_rating_OK">OK</string>
-	<string name="food_rating_cancel">ANNULER!</string>
+	<string name="food_rating_OK">Ok</string>
+	<string name="food_rating_cancel">Annuler</string>
 
 	<!-- Options Menu -->
 	<string name="food_show_menus">Menus</string>
