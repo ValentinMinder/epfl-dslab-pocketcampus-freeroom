@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.shared.plugin.transport.Connection;
-import org.pocketcampus.shared.plugin.transport.GetConnectionDetailsResult;
 import org.pocketcampus.shared.plugin.transport.Location;
 import org.pocketcampus.shared.plugin.transport.LocationType;
 import org.pocketcampus.shared.plugin.transport.NearbyStationsResult;
@@ -20,7 +18,6 @@ import org.pocketcampus.shared.plugin.transport.QueryDeparturesResult;
 import org.pocketcampus.shared.plugin.transport.Point;
 
 
-import de.schildbach.pte.BahnProvider;
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
 

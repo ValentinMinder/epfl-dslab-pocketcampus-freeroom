@@ -8,7 +8,8 @@ import java.util.HashSet;
 import org.pocketcampus.core.provider.IProvider;
 
 public class Core {
-	public final static String INSTANCE_NAME = "EPFL Development Instance"; 
+	public final static String INSTANCE_NAME = "EPFL Instance"; 
+	public final static String INSTANCE_TIMEZONE = "Europe/Zurich";
 	
 	/** Available plugins */
 	private HashMap<String, IPlugin> pluginList_;

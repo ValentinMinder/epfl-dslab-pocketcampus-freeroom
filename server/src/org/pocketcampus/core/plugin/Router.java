@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.pocketcampus.core.debug.Reporter;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.plugin.transport.DateSerializer;
 import org.pocketcampus.plugin.transport.PartSerializer;
 import org.pocketcampus.shared.plugin.transport.Connection.Footway;
 import org.pocketcampus.shared.plugin.transport.Connection.Part;
@@ -51,10 +53,10 @@ public class Router extends HttpServlet {
 		reporter_ = new Reporter();
 		
 		GsonBuilder builder = new GsonBuilder();
-		//builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
-		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		builder.setPrettyPrinting();
-		builder.registerTypeAdapter(Part.class, new PartSerializer());
+		//builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		builder.registerTypeAdapter(Date.class, new DateSerializer());
+		builder.registerTypeAdapter(Part.class, new PartSerializer(builder));
 
 		gson_ = builder.create();
 		

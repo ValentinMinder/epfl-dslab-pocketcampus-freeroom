@@ -15,10 +15,15 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class PartSerializer implements JsonSerializer<Part> {
+	GsonBuilder builder_;
+	
+	public PartSerializer(GsonBuilder builder) {
+		builder_ = builder;
+	}
 
 	@Override
 	public JsonElement serialize(Part part, Type arg1, JsonSerializationContext arg2) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		Gson gson = builder_.create();
 		
 		if(part instanceof Trip) {
 			String jsonString = (gson).toJson((Trip)part);
