@@ -318,10 +318,13 @@ public class FoodDisplayHandler {
 	 *            the menus returned by the Suggestions Class
 	 */
 	public void updateSuggestions(ArrayList<Meal> suggestedMenus) {
+		List<Meal> menusPrefered = campusMenu_.getCampusMenuPrefered();
 		if (suggestedMenus != null) {
 			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
 			for (Meal m : suggestedMenus) {
-				menus.put(m, new Rating());
+				if(menusPrefered.contains(m)){
+					menus.put(m, new Rating());					
+				}	
 			}
 			this.suggestionsMenu_ = menus;
 		}
