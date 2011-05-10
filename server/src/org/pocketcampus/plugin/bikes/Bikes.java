@@ -66,13 +66,13 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		for(BikeStation s : b) {
 			StringBuffer description = new StringBuffer();
 			description.append("Vélos libres: ");
-			description.append(String.valueOf(s.getBikes_()));
+			description.append(String.valueOf(s.getFreeBikes()));
 			description.append("\n");
 			
 			description.append("Places libres: ");
-			description.append(String.valueOf(s.getEmpty_()));			
+			description.append(String.valueOf(s.getEmptyRacks()));
 			
-			items.add(new MapElementBean(s.getName_(), description.toString(), s.getGeoLat_(), s.getGeoLng_(), 0));
+			items.add(new MapElementBean(s.getName(), description.toString(), s.getGeoLat(), s.getGeoLng(), 0, 1, s.getName().hashCode(), "org.pocketcampus.plugin.bikes.BikesPlugin"));
 		}
 		
 		return items;

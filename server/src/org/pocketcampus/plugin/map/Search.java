@@ -60,7 +60,6 @@ public class Search {
 
 		Connection dbConnection = null;
 		try {
-			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
 			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			Statement statement = dbConnection.createStatement();
 			ResultSet rs = statement.executeQuery("select *, 3956*2*asin(sqrt(power(sin((" + person.getLatitude() + "-abs(dest.centerX))*pi()/180/2),2)+cos(" + person.getLatitude() + "*pi()/180)*cos(abs(dest.centerX)*pi()/180)*power(sin((" + person.getLongitude() + "-dest.centerY)*pi()/180/2),2))) as distance from map_pois dest order by distance asc limit 1");
@@ -141,14 +140,12 @@ public class Search {
 					GeometryR geometry = response.features[i].geometry;
 					SearchProperties properties = response.features[i].properties;
 					if(geometry != null && properties != null) {
-						MapElementBean meb = new MapElementBean();
-						meb.setTitle(properties.text);
+						String description = "";
 						if(properties.room != null && properties.room.length() > 0) {
-							meb.setDescription(properties.room);
+							description = properties.room;
 						}
 						Position p = CoordinateConverter.convertEPSG4326ToLatLong(geometry.coordinates[0], geometry.coordinates[1], 0);
-						meb.setLatitude(p.getLatitude());
-						meb.setLongitude(p.getLongitude());
+						MapElementBean meb = new MapElementBean(properties.text, description, p.getLatitude(), p.getLongitude(), 0, -1, -1);
 						list.add(meb);
 					}
 				}
@@ -312,14 +309,7 @@ public class Search {
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				MapElementBean meb = new MapElementBean();
-				meb.setId(rs.getInt("id"));
-				meb.setLayer_id(rs.getInt("layer_id"));
-				meb.setTitle(rs.getString("title"));
-				meb.setDescription(rs.getString("description"));
-				meb.setLatitude(rs.getDouble("centerX"));
-				meb.setLongitude(rs.getDouble("centerY"));
-				meb.setAltitude(rs.getDouble("altitude"));
+				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), rs.getInt("id"), rs.getInt("layer_id"));
 				elements.add(meb);
 			}
 			

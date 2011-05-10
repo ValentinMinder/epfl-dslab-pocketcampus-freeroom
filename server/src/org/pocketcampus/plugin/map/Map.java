@@ -297,19 +297,13 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 		Connection dbConnection = null;
 		try {
-			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
 			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
 			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where layer_id=?");
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				MapElementBean meb = new MapElementBean();
-				meb.setTitle(rs.getString("title"));
-				meb.setDescription(rs.getString("description"));
-				meb.setLatitude(rs.getDouble("centerX"));
-				meb.setLongitude(rs.getDouble("centerY"));
-				meb.setAltitude(rs.getDouble("altitude"));
+				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), id, rs.getInt("layer_id"));
 				elements.add(meb);
 			}
 
