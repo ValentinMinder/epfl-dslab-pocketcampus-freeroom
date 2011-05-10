@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.shared.plugin.social.User;
 
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -25,8 +26,8 @@ public class Authentication implements IPlugin {
 	private LDAPConnection ldap_;
 
 	@PublicMethod
-	public String login(HttpServletRequest request){
-		String sessionId = null;
+	public User login(HttpServletRequest request){
+		User user = null;
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -42,24 +43,29 @@ public class Authentication implements IPlugin {
 				BindResult bResult = ldap_.bind(dn, password);
 
 				if(bResult.getResultCode().intValue() == ResultCode.SUCCESS.intValue()) {
-					sessionId = AuthenticationSessions.newSession(username);
+					String firstName = entries.get(0).getAttribute("givenName").getValue();
+					String lastName = entries.get(0).getAttribute("sn").getValue();
+					String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
+					
+					user = new User(firstName, lastName, sciper);
+					user.setSessionId(AuthenticationSessions.newSession(username));
 				} else {
-					sessionId = null;
+					user = null;
 				}
 			} else {
-				sessionId = null;
+				user = null;
 			}
 		} catch(LDAPException e) {
 			e.printStackTrace();
-			sessionId = null;
+			user = null;
 		} catch(GeneralSecurityException e) {
 			e.printStackTrace();
-			sessionId = null;
+			user = null;
 		} finally {
 			ldap_.close();
 		}
 
-		return sessionId;
+		return user;
 	}
 	
 	@PublicMethod
@@ -102,5 +108,38 @@ public class Authentication implements IPlugin {
 		}
 		
 		return status;
+	}
+	
+	public static User identify(String username) {
+		User user = null;
+		LDAPConnection ldap = null;
+		
+		try {
+			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
+			ldap = new LDAPConnection(socketFactory, "ldap.epfl.ch", 636);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(uid="+username+")");
+			List<SearchResultEntry> entries = searchResult.getSearchEntries();
+
+			if(!entries.isEmpty()) {
+				String firstName = entries.get(0).getAttribute("givenName").getValue();
+				String lastName = entries.get(0).getAttribute("sn").getValue();
+				String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
+					
+				user = new User(firstName, lastName, sciper);
+				user.setSessionId(AuthenticationSessions.getSession(username));
+			} else {
+				user = null;
+			}
+		} catch(LDAPException e) {
+			e.printStackTrace();
+			user = null;
+		} catch(GeneralSecurityException e) {
+			e.printStackTrace();
+			user = null;
+		} finally {
+			ldap.close();
+		}
+
+		return user;
 	}
 }

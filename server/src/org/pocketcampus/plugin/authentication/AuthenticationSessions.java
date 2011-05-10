@@ -53,6 +53,25 @@ public class AuthenticationSessions {
 		return authed;
 	}
 	
+	public static String getSession(String username) {
+		if(username == null)
+			throw new IllegalArgumentException();
+		if(!valid())
+			init();
+		
+		String session = null;
+		
+		sessionsLock_.lock();
+		
+		if(sessions_.containsKey(username)) {
+			session = sessions_.get(username);
+		}
+		
+		sessionsLock_.unlock();
+		
+		return session;
+	}
+	
 	public static boolean freeSession(String username) {
 		if(username == null)
 			throw new IllegalArgumentException();
