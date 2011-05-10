@@ -21,7 +21,6 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
@@ -91,10 +90,10 @@ public class MapPlugin extends PluginBase {
 	private MapController mapController_;
 	private MyLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
-	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>> cachedOverlays_;
+	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>> cachedOverlays_;
 	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays_;
 
-	private OnItemGestureListener<OverlayItem> overlayClickHandler_;
+	private OnItemGestureListener<MapElement> overlayClickHandler_;
 
 	// UI
 	private ActionBar actionBar_;
@@ -160,7 +159,7 @@ public class MapPlugin extends PluginBase {
 		temporaryOverlays_ = new ArrayList<Overlay>();
 		allLayers_ = new ArrayList<MapElementsList>();
 		selectedLayers_ = new ArrayList<MapElementsList>();
-		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<OverlayItem>>();
+		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>>();
 		lastRefreshedOverlays_ = new ConcurrentHashMap<MapElementsList, Long>();
 
 		overlayClickHandler_ = new OverlayClickHandler(this);
@@ -254,11 +253,11 @@ public class MapPlugin extends PluginBase {
 		if(extras.containsKey("MapElement")) {
 			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
 			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
-			OverlayItem overItem = new OverlayItem(meb.getTitle(), meb.getDescription(), gp);
-			List<OverlayItem> overItems = new ArrayList<OverlayItem>(1);
+			MapElement overItem = new MapElement(meb.getTitle(), meb.getDescription(), gp);
+			List<MapElement> overItems = new ArrayList<MapElement>(1);
 			overItems.add(overItem);
 			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
-			ItemizedOverlay<OverlayItem> aOverlay = new ItemizedIconOverlay<OverlayItem>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			temporaryOverlays_.add(aOverlay);
 			centerOnPoint(gp);
 			return true;
@@ -634,7 +633,7 @@ public class MapPlugin extends PluginBase {
 
 		// Display the selected layers
 		for(MapElementsList layer : selectedLayers_) {
-			ItemizedIconOverlay<OverlayItem> aOverlay = cachedOverlays_.get(layer);
+			ItemizedIconOverlay<MapElement> aOverlay = cachedOverlays_.get(layer);
 
 			// The overlay already exists
 			if(aOverlay != null) {
@@ -813,8 +812,8 @@ public class MapPlugin extends PluginBase {
 	class ItemsRequest extends DataRequest {
 
 		private final MapElementsList layer_;
-		private ItemizedIconOverlay<OverlayItem> aOverlay = null;
-		private ItemizedIconOverlay<OverlayItem> oldOverlay = null;
+		private ItemizedIconOverlay<MapElement> aOverlay = null;
+		private ItemizedIconOverlay<MapElement> oldOverlay = null;
 
 		ItemsRequest(final MapElementsList layer) {
 			this.layer_ = layer;
@@ -855,13 +854,13 @@ public class MapPlugin extends PluginBase {
 			// Try to get the icon for the overlay
 			try {
 				Drawable icon = getDrawableFromCacheOrUrl(layer_.getIconUrl());
-				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, icon, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+				aOverlay = new ItemizedIconOverlay<MapElement>(layer_, icon, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			} catch (Exception e) {}
 			
 			// We don't have an icon
 			if(aOverlay == null) {
 				Log.d(this.getClass().toString(), "No icon for: " + layer_.getLayerTitle());
-				aOverlay = new ItemizedIconOverlay<OverlayItem>(layer_, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+				aOverlay = new ItemizedIconOverlay<MapElement>(layer_, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
 			}
 
 			// Put the new overlay, get the old one if any (to be removed in the UI thread)
@@ -894,7 +893,7 @@ public class MapPlugin extends PluginBase {
 	/**
 	 * Handle a click on an item
 	 */
-	class OverlayClickHandler implements ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
+	class OverlayClickHandler implements ItemizedIconOverlay.OnItemGestureListener<MapElement> {
 
 		MapPlugin a_;
 
@@ -903,12 +902,12 @@ public class MapPlugin extends PluginBase {
 		}
 
 		@Override
-		public boolean onItemLongPress(int arg0, OverlayItem arg1) {
+		public boolean onItemLongPress(int arg0, MapElement arg1) {
 			return false;
 		}
 
 		@Override
-		public boolean onItemSingleTapUp(int index, final OverlayItem item) {
+		public boolean onItemSingleTapUp(int index, final MapElement item) {
 			final ItemDialog dialog = new ItemDialog(a_, item);
 			dialog.showDialog();
 			

@@ -7,8 +7,7 @@ import java.util.HashMap;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
+import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.Railway;
@@ -41,9 +40,9 @@ public class ConnectionPool {
 		connections_.get(arrivalTime).add(connection);
 	}
 
-	public ItemizedIconOverlay<OverlayItem> crunch(double metroSpeed, double timeAtStop) {
+	public ItemizedIconOverlay<MapElement> crunch(double metroSpeed, double timeAtStop) {
 		GeoPoint geoPoint;
-		OverlayItem item;
+		MapElement item;
 		MapElementsList layer = new MapElementsList("Metros", 0);
 		
 		//System.out.println("-ARRIVAL DATES-");
@@ -73,7 +72,7 @@ public class ConnectionPool {
 					prevClosestNum = closest.getNum();
 					
 					geoPoint = new GeoPoint(closest.getLat(), closest.getLon());
-					item = new OverlayItem("title", "desc", geoPoint);
+					item = new MapElement("title", "desc", geoPoint);
 					layer.add(item);
 				}
 			}
@@ -84,7 +83,7 @@ public class ConnectionPool {
 		//System.out.println("VARIATION: " + variation);
 		//return variation;
 		
-		ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(layer, null, new DefaultResourceProxyImpl(ctx_));
+		ItemizedIconOverlay<MapElement> overlay = new ItemizedIconOverlay<MapElement>(layer, null, new DefaultResourceProxyImpl(ctx_));
 		return overlay;
 	}
 

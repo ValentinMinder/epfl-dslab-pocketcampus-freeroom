@@ -1,8 +1,9 @@
 package org.pocketcampus.plugin.map.ui;
 
-import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.plugin.map.MapPlugin;
+import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 
 import android.app.AlertDialog;
@@ -17,22 +18,22 @@ import android.content.DialogInterface;
  *
  */
 public class ItemDialog {
-	
+
 	private MapPlugin mp_;
-	private OverlayItem item_;
-	
-	public ItemDialog(final MapPlugin mp, final OverlayItem item) {
+	private MapElement item_;
+
+	public ItemDialog(final MapPlugin mp, final MapElement item) {
 		this.mp_ = mp;
 		this.item_ = item;
 	}
-	
+
 	public void showDialog() {
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(mp_);
 		builder.setTitle(item_.getTitle());
 		builder.setMessage(item_.getSnippet());
 		builder.setCancelable(true);
-		
+
 		builder.setPositiveButton(mp_.getResources().getString(R.string.map_zoom_button), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				mp_.centerOnPoint(item_.getPoint());
@@ -46,19 +47,22 @@ public class ItemDialog {
 				dialog.dismiss();	
 			}
 		});
-		
-//		builder.setNegativeButton(mp_.getResources().getString(R.string.map_open_plugin_button), new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int id) {
-//				Core.startPluginWithID(mp_, "org.pocketcampus.plugin.news.NewsPlugin", 1);				
-//				dialog.dismiss();	
-//			}
-//		});
-		
-		
+
+		// The item has a plugin linked to it
+		if(item_.getPluginId() != null) {
+			builder.setNegativeButton(mp_.getResources().getString(R.string.map_open_plugin_button), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					Core.startPluginWithID(mp_, item_.getPluginId(), item_.getItemId());				
+					dialog.dismiss();	
+				}
+			});
+		}
+
+
 		AlertDialog alert = builder.create();
 		alert.setCanceledOnTouchOutside(true);
-		
+
 		alert.show();
 	}
-	
+
 }

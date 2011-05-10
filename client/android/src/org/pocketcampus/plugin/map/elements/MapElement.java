@@ -4,20 +4,30 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 
-import android.graphics.drawable.Drawable;
-
 public class MapElement extends OverlayItem {
-	public MapElement(MapElementBean meb) {
-		super(meb.getTitle(), meb.getDescription(), new GeoPoint(meb.getLatitude(), meb.getLongitude(), meb.getAltitude()));
-	}
+	
+	private String pluginId_;
+	private int itemId_;
 	
 	public MapElement(String title, String description, GeoPoint coordinates) {
 		super(title, description, coordinates);
 	}
 	
-	@Override
-	public Drawable getDrawable() {
-		// TODO Auto-generated method stub
-		return null;
+	public MapElement(String title, String description, GeoPoint coordinates, String pluginId, int itemId) {
+		this(title, description, coordinates);
+		this.pluginId_ = pluginId;
+		this.itemId_ = itemId;
+	}
+	
+	public MapElement(MapElementBean meb) {
+		this(meb.getTitle(), meb.getDescription(), new GeoPoint(meb.getLatitude(), meb.getLongitude(), meb.getAltitude()), meb.getPluginId(), meb.getId());
+	}
+	
+	public String getPluginId() {
+		return pluginId_;
+	}
+
+	public int getItemId() {
+		return itemId_;
 	}
 }

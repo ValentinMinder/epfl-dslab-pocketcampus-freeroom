@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -14,6 +15,7 @@ import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TableLayout;
@@ -24,7 +26,7 @@ import android.widget.Toast;
 public class BikesPlugin extends PluginBase {
 
 	private ActionBar actionBar_;
-	
+
 	@Override
 	protected void onCreate(Bundle  savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +37,8 @@ public class BikesPlugin extends PluginBase {
 
 		setLayout();
 		
+		handleIntent();
+
 		Tracker.getInstance().trackPageView("bikes/home");		
 	}
 
@@ -48,109 +52,119 @@ public class BikesPlugin extends PluginBase {
 		return null;
 	}
 
-		@Override
-		protected void setupActionBar(boolean addHomeButton) {
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
 
-			actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-			actionBar_.addAction(new Action() {
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		actionBar_.addAction(new Action() {
 
-				@Override
-				public void performAction(View view) {
-					//bikes_.forceRefresh();
-				}
-
-				@Override
-				public int getDrawable() {
-					return R.drawable.refresh;
-				}
-			});
-			
-			super.setupActionBar(addHomeButton);
-
-		}
-
-		@Override
-		protected void onResume() {
-			super.onResume();
-
-			//bikes_.refreshIfNeeded();
-		}
-
-		private void setLayout() {
-			final TableLayout table = (TableLayout) findViewById(R.id.bikes_table);
-			
-			List<BikeStation> bikeStations = null;
-			try {
-				bikeStations = BikeStationParser.getBikeStations();
-			} catch (IOException e) {
-				Toast error = Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG);
-				error.show();
-				e.printStackTrace();
+			@Override
+			public void performAction(View view) {
+				//bikes_.forceRefresh();
 			}
-			
-			
-			
-			int index = 0;
-			
-			
-			Toast b = Toast.makeText(this, "" + (bikeStations == null), Toast.LENGTH_LONG);
-			b.show();
-	        for (BikeStation station: bikeStations) {
-	        	
-	            // Create a TableRow and give it an ID
-	            TableRow tr = new TableRow(this);
-	            tr.setId(index);
-	            tr.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.WRAP_CONTENT));   
 
-	            // Create a TextView to house the name of the stations
-	            TextView stationName = new TextView(this);
-	            stationName.setId(100+index);
-	            stationName.setText(station.getName_());
-	            stationName.setTextColor(Color.BLACK);
-	            stationName.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.WRAP_CONTENT));
-	            tr.addView(stationName);
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
+			}
+		});
 
-	            // Create a TextView for the available bikes
-	            TextView available = new TextView(this);
-	            available.setId(200+index);
-	            available.setText(station.getBikes_());
-	            available.setTextColor(Color.GREEN);
-	            available.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.WRAP_CONTENT));
-	            tr.addView(available);
+		super.setupActionBar(addHomeButton);
 
-	            TextView empty = new TextView(this);
-	            empty.setId(300+index);
-	            empty.setText(station.getEmpty_());
-	            empty.setTextColor(Color.RED);
-	            empty.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.WRAP_CONTENT));
-	            tr.addView(empty);
-	            
-	            // Add the TableRow to the TableLayout
-	            table.addView(tr, new TableLayout.LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.WRAP_CONTENT));
-	            
-	            index++;
-	        }
-			
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		//bikes_.refreshIfNeeded();
+	}
+
+	private void setLayout() {
+		final TableLayout table = (TableLayout) findViewById(R.id.bikes_table);
+
+		List<BikeStation> bikeStations = null;
+		try {
+			bikeStations = BikeStationParser.getBikeStations();
+		} catch (IOException e) {
+			Toast error = Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG);
+			error.show();
+			e.printStackTrace();
 		}
-//
-//		@Override
-//		public void bikesRefreshing() {
-//			actionBar_.setProgressBarVisibility(View.VISIBLE);
-//		}
-//
-//		@Override
-//		public void bikesRefreshed() {
-//			actionBar_.setProgressBarVisibility(View.GONE);
-//		}
+
+
+
+		int index = 0;
+
+
+		Toast b = Toast.makeText(this, "" + (bikeStations == null), Toast.LENGTH_LONG);
+		b.show();
+		for (BikeStation station: bikeStations) {
+
+			// Create a TableRow and give it an ID
+			TableRow tr = new TableRow(this);
+			tr.setId(index);
+			tr.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));   
+
+			// Create a TextView to house the name of the stations
+			TextView stationName = new TextView(this);
+			stationName.setId(100+index);
+			stationName.setText(station.getName());
+			stationName.setTextColor(Color.BLACK);
+			stationName.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));
+			tr.addView(stationName);
+
+			// Create a TextView for the available bikes
+			TextView available = new TextView(this);
+			available.setId(200+index);
+			available.setText(station.getFreeBikes() + "");
+			available.setTextColor(Color.GREEN);
+			available.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));
+			tr.addView(available);
+
+			TextView empty = new TextView(this);
+			empty.setId(300+index);
+			empty.setText(station.getEmptyRacks() + "");
+			empty.setTextColor(Color.RED);
+			empty.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));
+			tr.addView(empty);
+
+			// Add the TableRow to the TableLayout
+			table.addView(tr, new TableLayout.LayoutParams(
+					LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));
+
+			index++;
+		}
+
+	}
+
+	private void handleIntent() {
+		try {
+			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID " + getIDFromIntent() : "Does not have ID");
+		} catch (NoIDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//
+	//		@Override
+	//		public void bikesRefreshing() {
+	//			actionBar_.setProgressBarVisibility(View.VISIBLE);
+	//		}
+	//
+	//		@Override
+	//		public void bikesRefreshed() {
+	//			actionBar_.setProgressBarVisibility(View.GONE);
+	//		}
 
 }

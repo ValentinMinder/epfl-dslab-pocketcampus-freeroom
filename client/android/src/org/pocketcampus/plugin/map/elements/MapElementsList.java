@@ -2,12 +2,11 @@ package org.pocketcampus.plugin.map.elements;
 
 import java.util.ArrayList;
 
-import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 import android.graphics.drawable.Drawable;
 
-public class MapElementsList extends ArrayList<OverlayItem> {
+public class MapElementsList extends ArrayList<MapElement> {
 
 	private static final long serialVersionUID = 1054957477020550085L;
 
@@ -34,11 +33,6 @@ public class MapElementsList extends ArrayList<OverlayItem> {
 		
 	public String getLayerId() {
 		return layerId_;
-	}
-		
-	public Drawable getDefaultDrawable() {
-		//TODO 
-		return null;
 	}
 	
 	public String getLayerTitle() {
