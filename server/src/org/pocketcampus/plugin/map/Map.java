@@ -303,7 +303,14 @@ public class Map implements IPlugin, IMapElementsProvider {
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), id, rs.getInt("layer_id"));
+				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), id, rs.getInt("id"));
+
+				// Check if this item wants to launch another plugin
+				String pluginPackage = rs.getString("plugin_package");
+				if(pluginPackage != null && !"".equals(pluginPackage)) {
+					meb.setPluginId(pluginPackage);
+				}
+				
 				elements.add(meb);
 			}
 
