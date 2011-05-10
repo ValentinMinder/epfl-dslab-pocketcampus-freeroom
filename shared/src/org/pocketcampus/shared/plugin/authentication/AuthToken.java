@@ -1,28 +1,21 @@
 package org.pocketcampus.shared.plugin.authentication;
 
-import java.io.Serializable;
-
-public class AuthToken implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2627881588989875394L;
-	/**
-	 * 
-	 */
-	private final Username username_;
-	private final SessionId sessionId_;
+public class AuthToken {
+	public final static int SESSION_ID_SIZE = 128;
 	
-	public AuthToken(Username username, SessionId sessionId) {
-		username_ = username;
-		sessionId_ = sessionId;
+	private final String username_;
+	private final String sessionId_;
+	
+	public AuthToken(String username, String sessionId) {
+		this.username_ = username;
+		this.sessionId_ = sessionId;
 	}
 	
-	public Username getUsername() {
+	public String getUsername() {
 		return username_;
 	}
 	
-	public SessionId getSessionId() {
+	public String getSessionId() {
 		return sessionId_;
 	}
 }
