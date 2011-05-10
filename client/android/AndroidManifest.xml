@@ -61,11 +61,6 @@
 		<!-- Social Plugin -->
 		<activity android:name=".plugin.social.SocialPlugin"></activity>
 		<activity android:name=".plugin.social.SocialPreference"></activity>
-		<activity android:name=".plugin.social.SocialLogin"></activity>
-		<activity android:name=".plugin.social.FriendsList"></activity>
-		<activity android:name=".plugin.social.FriendsSearch"></activity>
-		<activity android:name=".plugin.social.FriendsPermissions"
-			android:launchMode="singleInstance"></activity>
 			
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"
@@ -81,6 +76,7 @@
 		    <action android:name="com.android.vending.INSTALL_REFERRER" />
 		  </intent-filter>
 		</receiver>
+		<activity android:name=".plugin.social.SocialFriendsList"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

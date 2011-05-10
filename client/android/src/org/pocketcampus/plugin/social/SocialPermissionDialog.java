@@ -1,3 +1,4 @@
+package org.pocketcampus.plugin.social;
 //package org.pocketcampus.plugin.social;
 //
 //import org.pocketcampus.R;

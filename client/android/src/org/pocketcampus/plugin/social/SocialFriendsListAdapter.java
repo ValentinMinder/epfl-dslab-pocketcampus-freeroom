@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.social;
 
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.LinkedList;
 
 import org.pocketcampus.R;
-import org.pocketcampus.shared.plugin.authentication.Username;
+import org.pocketcampus.shared.plugin.social.User;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,20 +21,20 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class FriendsListAdapter extends BaseAdapter implements Filterable {
+public class SocialFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
-	private Vector<Username> friends_;
-	private Activity friendsListActivity_;
+	private LinkedList<User> friends_;
+	private Activity socialFriendsListActivity_;
 	private int checkCount_;
-	private Vector<Username> selectedFriends;
+	private LinkedList<User> selectedFriends;
 	private ArrayList<ViewHolder> holders_;
 	
-	public FriendsListAdapter(Context context, Vector<Username> friends, Activity friendsListActivity) {
+	public SocialFriendsListAdapter(Context context, LinkedList<User> friends, Activity socialFriendsListActivity) {
 		this.mInflater_ = LayoutInflater.from(context);
 		this.friends_ = friends;
-		this.friendsListActivity_ = friendsListActivity;
+		this.socialFriendsListActivity_ = socialFriendsListActivity;
 		this.checkCount_ = 0;
-		this.selectedFriends = new Vector<Username>();
+		this.selectedFriends = new LinkedList<User>();
 		this.holders_ = new ArrayList<ViewHolder>();
 	}
 	
@@ -107,8 +107,8 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 		
 		// When you click on a menu description you'll get more info
 		holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			Button buttonPermission = (Button) friendsListActivity_.findViewById(R.id.friendsListButtonPerm);
-			Button buttonDelete = (Button) friendsListActivity_.findViewById(R.id.friendsListButtonDel);
+			Button buttonPermission = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonPerm);
+			Button buttonDelete = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonDel);
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -117,7 +117,7 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 					_convertView.setPressed(true);
 					if(checkCount_ == 0) {
 						//buttons are disabled enabled if some friends are selected
-						if(friendsListActivity_ instanceof FriendsList) {
+						if(socialFriendsListActivity_ instanceof SocialFriendsList) {
 							if(!buttonPermission.isEnabled())
 								buttonPermission.setEnabled(true);
 							if(!buttonDelete.isEnabled())
@@ -134,7 +134,7 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 					} else {
 						if(checkCount_ == 1) {
 							//buttons are disabled if no friend is selected
-							if(friendsListActivity_ instanceof FriendsList) {
+							if(socialFriendsListActivity_ instanceof SocialFriendsList) {
 								if(buttonPermission.isEnabled())
 									buttonPermission.setEnabled(false);
 								if(buttonDelete.isEnabled())
@@ -150,9 +150,9 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 		});
 
 		// Bind the data efficiently with the holder.
-		Username currentUsername = friends_.get(position);
+		User currentUser = friends_.get(position);
 
-		holder.username.setText(currentUsername.toString());
+		holder.username.setText(currentUser.toString());
 
 		return convertView;
 	}
@@ -182,7 +182,7 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 		CheckBox selected;
 	}
 	
-	public Vector<Username> getSelectedFriends() {
+	public LinkedList<User> getSelectedFriends() {
 		return selectedFriends;
 	}
 }

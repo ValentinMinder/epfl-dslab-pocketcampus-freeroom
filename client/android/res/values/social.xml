@@ -8,7 +8,7 @@
     <string name="social_login_password_text">Password</string>
     <string name="social_login_password_field"></string>
     <string name="social_login_button">Login</string>
-	<string name="friendsListButtonAdd">Search</string>
+	<string name="friendsListButtonToggle">Toggle</string>
 	<string name="friendsListButtonPerm">Permissions</string>
 	<string name="friendsListButtonDel">Delete</string>
 	<string name="social_permission_radio_granted">Grant</string>
@@ -25,6 +25,7 @@
 	<string name="social_delete_confirm_yes">Yes</string>
 	<string name="social_delete_confirm_no">No</string>
 	<string name="social_friends_list_separator">Friends</string>
+	<string name="social_requesting_friends_list_separator">Requests</string>
 	<string name="social_create_title">Create a new account:</string>
 	<string name="social_create_button">Create an account</string>
 	<string name="friendsRequestsListButtonValid">Go</string>
@@ -43,4 +44,10 @@
 	<string name="social_permissions_updated">Permissions updated !</string>
 	<string name="social_login_title">Please log in with a previously created account.</string>
 	<string name="social_login_createAccount">If you do not have an account yet, please create one in the main menu of the preferences.</string>
+	<string name="social_operation_successful">Operation was successful</string>
+	<string name="social_operation_failure">Operation failed</string>
+	<string name="social_requesting_friend_notice">wants to be your friend</string>
+	<string name="social_requesting_friend_confirm">confirm</string>
+	<string name="social_requesting_friend_ignore">ignore</string>
+	
 </resources>

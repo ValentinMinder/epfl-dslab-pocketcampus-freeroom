@@ -7,6 +7,8 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
+import org.pocketcampus.shared.plugin.social.User;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,7 +30,8 @@ public class AuthenticationPlugin extends PluginBase {
 	private AuthenticationPreference preferences_;
 	private static RequestHandler requestHandler_ = null;
 
-	private static String sessionId_ = null;
+	private static User user_ = null;
+	
 	private static String username = null;
 	private static String password = null;
 	private final Activity thisActivity_ = this;
@@ -65,7 +68,7 @@ public class AuthenticationPlugin extends PluginBase {
 
 	private void login(String username, String password) {
 		if(username == null || password == null) {
-			sessionId_ = null;
+			user_ = null;
 		} else {
 			RequestParameters parameters = new RequestParameters();
 			parameters.addParameter("username", username);
@@ -101,7 +104,13 @@ public class AuthenticationPlugin extends PluginBase {
 			e.printStackTrace();
 		} finally {
 			requestHandler_ = null;
-			PreferenceManager.getDefaultSharedPreferences(context).edit().putString("username", null).putString("sessionId", null).commit();
+			PreferenceManager.getDefaultSharedPreferences(context).edit()
+				.putString("username", null)
+				.putString("sessionId", null)
+				.putString("first", null)
+				.putString("last", null)
+				.putString("sciper", null)
+				.commit();
 		}
 	}
 	
@@ -159,19 +168,25 @@ public class AuthenticationPlugin extends PluginBase {
 				Gson gson = new Gson();
 				
 				try{
-					sessionId_ = gson.fromJson(result, new TypeToken<String>(){}.getType());
+					user_ = gson.fromJson(result, new TypeToken<User>(){}.getType());
 				} catch (JsonSyntaxException e) {
-					sessionId_ = null;
+					user_ = null;
 					e.printStackTrace();
 				}
 			} else {
-				sessionId_ = null;
+				user_ = null;
 			}
 
-			if(sessionId_ != null) {
+			if(user_ != null) {
 				//update session data
-				PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("username", username).putString("sessionId", sessionId_).commit();
-
+				PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit()
+					.putString("username", username)
+					.putString("sessionId", user_.getSessionId())
+					.putString("first", user_.getFirstName())
+					.putString("last", user_.getLastName())
+					.putString("sciper", user_.getSciper())
+					.commit();
+				
 				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + username, Toast.LENGTH_LONG).show();
 				
 				//close login activity
@@ -190,5 +205,38 @@ public class AuthenticationPlugin extends PluginBase {
 			alert.setCanceledOnTouchOutside(true);
 			alert.show();
 		}
+	}
+	
+	public static AuthToken getAuthToken(Context context) {
+		if(context == null) throw new IllegalArgumentException();
+		
+		AuthToken token = null;
+		
+		String username = PreferenceManager.getDefaultSharedPreferences(context).getString("username", null);
+		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
+		
+		if(username != null && sessionId != null) {
+			token = new AuthToken(username, sessionId);
+		}
+		
+		return token;
+	}
+	
+	public static User getUser(Context context) {
+		if(context == null) throw new IllegalArgumentException();
+		
+		User user = null;
+		
+		String first = PreferenceManager.getDefaultSharedPreferences(context).getString("first", null);
+		String last = PreferenceManager.getDefaultSharedPreferences(context).getString("last", null);
+		String sciper = PreferenceManager.getDefaultSharedPreferences(context).getString("sciper", null);
+		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
+		
+		if(first != null && last != null && sciper != null && sessionId != null) {
+			user = new User(first, last, sciper);
+			user.setSessionId(sessionId);
+		}
+		
+		return user;
 	}
 }

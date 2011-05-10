@@ -11,13 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import org.pocketcampus.R;
 
-public class ListSeparator extends BaseAdapter {
+public class SocialListSeparator extends BaseAdapter {
 
 	public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();
 	public final ArrayAdapter<String> headers;
 	public final static int TYPE_SECTION_HEADER = 0;
 
-	public ListSeparator(Context context) {
+	public SocialListSeparator(Context context) {
 		// For the headers, we use the list_header.xml file
 		headers = new ArrayAdapter<String>(context,
 				R.layout.social_list_header);
