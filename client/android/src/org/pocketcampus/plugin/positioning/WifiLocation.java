@@ -203,6 +203,8 @@ public class WifiLocation {
 				Ap = p;
 			}
 		}
+		
+		System.out.println("AP Nearest Distance:"+Ap.getDistance()+" Level : "+Ap.getSignalLevel()+" Name :"+Ap.getSSID());
 		return Ap;
 	}
 	
@@ -220,6 +222,9 @@ public class WifiLocation {
 				Ap = p;
 			}
 		}
+		
+		System.out.println("AP Farest Distance:"+Ap.getDistance()+" Level : "+Ap.getSignalLevel()+" Name :"+Ap.getSSID());
+
 		return Ap;
 	}
 	
