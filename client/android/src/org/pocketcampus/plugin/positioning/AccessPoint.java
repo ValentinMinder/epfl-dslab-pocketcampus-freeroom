@@ -33,6 +33,7 @@ public class AccessPoint {
 	private Position position;
 	private String SSID;
 	private int signalLevel;
+	private int pathLoss_;
 	private String name;
 	private int radiatedPower;
 	private double distance;
@@ -43,8 +44,10 @@ public class AccessPoint {
 	public AccessPoint(ScanResult sr, String apName, Position pos) {
 		SSID = sr.SSID;
 		signalLevel = 100 + sr.level;   // sr.level < 0
+		pathLoss_ = sr.level;
 		name = apName;
 		position = pos;
+		frequency_ = sr.frequency;
 		radiatedPower = 100;  // cisco value 
 		distance = getDistance();
 		estimatedDistance = getEstimatedDistance();
@@ -54,8 +57,10 @@ public class AccessPoint {
 	public AccessPoint(AccessPoint _ap ,List<Node> _nodes) {
 		SSID = _ap.SSID;
 		signalLevel = _ap.signalLevel;   // sr.level < 0
+		pathLoss_ = _ap.pathLoss_;
 		name = _ap.name;
 		position = _ap.position;
+		frequency_ = _ap.frequency_;
 		radiatedPower = 100;  // cisco value 
 		distance = _ap.getDistance();
 		estimatedDistance = _ap.getEstimatedDistance();
@@ -97,13 +102,22 @@ public class AccessPoint {
  *	so RSS = Power/4*PI*R^2 (R is the distance)
  */
 	
+//	public double getDistance(){
+//		double distance = 0;
+//		double pi = Math.PI;
+//		int power = this.radiatedPower;
+//		int lev = this.getSignalLevel();
+//		distance = Math.sqrt((power/4*pi*lev));	
+//		return distance;
+//	}
+	
 	public double getDistance(){
-		double distance = 0;
-		double pi = Math.PI;
-		int power = this.radiatedPower;
-		int lev = this.getSignalLevel();
-		distance = Math.sqrt((power/4*pi*lev));
-		
+		int pathLoss = pathLoss_*(-1);
+		double distance;
+		int pathlossd0 = 30;
+		int n = 2;
+		double expn = Math.pow(10, n);
+		distance = Math.pow(10,((pathLoss-pathlossd0)/expn));
 		
 		return distance;
 	}
@@ -130,6 +144,10 @@ public class AccessPoint {
 	
 	public String getName(){
 		return this.name;
+	}
+	
+	public int getPathLoss(){
+		return this.pathLoss_;
 	}
 	
 	public void setDistance(double d){
