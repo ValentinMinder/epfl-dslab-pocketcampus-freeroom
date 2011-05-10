@@ -21,27 +21,27 @@ public class BikeStation {
 	public BikeStation() {}
 
 
-	public int getEmpty_() {
+	public int getEmptyRacks() {
 		return empty_;
 	}
 
 
-	public int getBikes_() {
+	public int getFreeBikes() {
 		return bikes_;
 	}
 
 
-	public double getGeoLat_() {
+	public double getGeoLat() {
 		return geoLat_;
 	}
 
 
-	public double getGeoLng_() {
+	public double getGeoLng() {
 		return geoLng_;
 	}
 
 
-	public String getName_() {
+	public String getName() {
 		return name_;
 	}
 
