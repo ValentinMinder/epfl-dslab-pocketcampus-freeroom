@@ -49,10 +49,11 @@ public class ItemDialog {
 		});
 
 		// The item has a plugin linked to it
-		if(item_.getPluginId() != null) {
+		final String pluginId = item_.getPluginId();
+		if(pluginId != null && !"".equals(pluginId)) {
 			builder.setNegativeButton(mp_.getResources().getString(R.string.map_open_plugin_button), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					Core.startPluginWithID(mp_, item_.getPluginId(), item_.getItemId());				
+					Core.startPluginWithID(mp_, pluginId, item_.getItemId());				
 					dialog.dismiss();	
 				}
 			});

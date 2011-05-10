@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -60,6 +61,19 @@ public class FoodPlugin extends PluginBase {
 		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
+		
+		handleIntent();
+	}
+
+	private void handleIntent() {
+		// TODO Auto-generated method stub
+
+		try {
+			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID " + getIDFromIntent() : "Does not have ID");
+		} catch (NoIDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static RequestHandler getFoodRequestHandler() {
