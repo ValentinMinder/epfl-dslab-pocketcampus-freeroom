@@ -11,7 +11,7 @@ public interface ILocation {
 	
 public Position getPosition();
 public GeoPoint getGsmLocation() throws IOException;
-public GeoPoint getGpsLocation();
+public Position getGpsLocation();
 public Position getHybridLocation();
 public double getAccuracy();
 	
