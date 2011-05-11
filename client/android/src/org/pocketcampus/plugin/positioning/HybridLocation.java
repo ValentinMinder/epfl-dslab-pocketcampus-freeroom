@@ -39,7 +39,7 @@ public class HybridLocation implements ILocation{
 	}
 	
 	
-	public GeoPoint getGpsLocation(){
+	public Position getGpsLocation(){
 		return this.gpsLocation_.getGpsLocation();
 	}
 	
@@ -59,8 +59,9 @@ public class HybridLocation implements ILocation{
 
 	@Override
 	public Position getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		if(wifiLocation_.getWifiLocationPerCoefficient()==null)
+			return getGpsLocation();
+		else return getWifiLocation();
 	}
 
 
