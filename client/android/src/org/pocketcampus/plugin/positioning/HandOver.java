@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.positioning;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.shared.plugin.map.Position;
@@ -47,9 +49,20 @@ public class HandOver {
 
 
 
-	public void evaluateNodes(Measure measure_2, Measure secondMeasure) {
-		// TODO Auto-generated method stub
-		
+	public void evaluateNodes(Measure measure, Measure secondMeasure) {
+		HashMap<AccessPoint,Integer> differenceValue = new HashMap<AccessPoint,Integer>();
+		for(AccessPoint ap:measure.getMeasure().keySet()){
+			if(secondMeasure.getMeasure().containsKey(ap)){
+				int val1 = measure.getMeasure().get(ap);
+				int val2 = secondMeasure.getMeasure().get(ap);
+				int diff = val1-val2;
+				if(diff<0){
+					ap.increaseNode();
+				}else if (diff>0){
+					ap.decreaseNode();
+				}
+			}	
+		}
 	}
 
 

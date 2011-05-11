@@ -56,6 +56,11 @@ public class Node {
 		
 		return distance;
 	}
+
+	public void decrease() {
+		this.value_--;
+		
+	}
 	
 	
 

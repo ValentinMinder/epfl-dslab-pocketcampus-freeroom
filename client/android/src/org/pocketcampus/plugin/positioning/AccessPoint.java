@@ -174,4 +174,17 @@ public class AccessPoint {
 	public void setNodeList(List<Node> list){
 		nodes_ = list; 
 	}
+
+	public void increaseNode() {
+		if(nodes_!=null)
+			for(Node node : nodes_ )
+				node.increaseValue();
+		
+	}
+
+	public void decreaseNode() {
+		if(nodes_!=null)
+			for(Node node : nodes_ )
+				node.decrease();
+	}
 }
