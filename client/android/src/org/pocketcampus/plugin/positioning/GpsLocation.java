@@ -31,7 +31,8 @@ package org.pocketcampus.plugin.positioning;
 
 	import org.osmdroid.util.GeoPoint;
 	import org.osmdroid.views.MapView;
-	import org.osmdroid.views.overlay.MyLocationOverlay;
+import org.osmdroid.views.overlay.MyLocationOverlay;
+import org.pocketcampus.shared.plugin.map.Position;
 
 	public class GpsLocation {
 		
@@ -47,12 +48,14 @@ package org.pocketcampus.plugin.positioning;
 	    	locOverlay_ = new MyLocationOverlay(_ctx, _mapView);
 	    }
 	    
-	    public GeoPoint getGpsLocation(){
-	    	
+	    public Position getGpsLocation(){
+	    	Position pos = null;
 	    	if(!(locOverlay_.isMyLocationEnabled()))
 	    		locOverlay_.enableMyLocation();
-	    	
-	    	return locOverlay_.getMyLocation();
+	    	double x = locOverlay_.getMyLocation().getLatitudeE6();
+	    	double y = locOverlay_.getMyLocation().getLongitudeE6();
+	    	pos = new Position(x,y,0);
+	    	return pos;
 	    }
 	    
 	    public double getLatitude(){
