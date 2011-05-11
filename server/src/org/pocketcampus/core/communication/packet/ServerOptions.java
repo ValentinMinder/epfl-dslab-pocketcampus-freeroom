@@ -2,7 +2,7 @@ package org.pocketcampus.core.communication.packet;
 
 import java.lang.reflect.Type;
 
-import org.pocketcampus.core.communication.Status;
+import org.pocketcampus.core.communication.PcpStatus;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -17,7 +17,7 @@ import com.google.gson.annotations.SerializedName;
 public class ServerOptions extends Options implements Cloneable {
 	@Expose
 	@SerializedName("Status")
-	private Status status;
+	private PcpStatus status;
 	
 	/**
 	 * Instance creator. Use it with the builder pattern
@@ -38,7 +38,7 @@ public class ServerOptions extends Options implements Cloneable {
 	 * @param status
 	 * @return this modified instance
 	 */
-	public ServerOptions setStatus(Status status) {
+	public ServerOptions setStatus(PcpStatus status) {
 		this.status = status;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class ServerOptions extends Options implements Cloneable {
 	 * Returns the value of the <i>Status</i> field.
 	 * @return
 	 */
-	public Status getStatus() {
+	public PcpStatus getStatus() {
 		return this.status;
 	}
 	

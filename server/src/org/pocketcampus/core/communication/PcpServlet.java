@@ -110,7 +110,7 @@ public abstract class PcpServlet extends HttpServlet {
 		} catch (IOException e) {
 			Logger.log(e);
 		} catch (JsonParseException e) {
-			PcpException pe = new PcpException(e, Status.BAD_REQUEST);
+			PcpException pe = new PcpException(e, PcpStatus.BAD_REQUEST);
 			sendPcpError(pe, resp);
 		} catch (PcpException e) {
 			// TODO Send a PCP Error
@@ -152,7 +152,7 @@ public abstract class PcpServlet extends HttpServlet {
 					/* Occurs when the action method was not found or when its
 					 * signature is not valid
 					 */
-					throw new PcpException(e, Status.ACTION_NOT_FOUND);
+					throw new PcpException(e, PcpStatus.ACTION_NOT_FOUND);
 					
 				} catch (IllegalArgumentException e) {
 					/* Should never occur since we already checked the method signature when
@@ -166,13 +166,13 @@ public abstract class PcpServlet extends HttpServlet {
 					 * Occurs if the invoked Method object enforces Java language access
 					 * control and the underlying method is inaccessible.
 					 */
-					throw new PcpException(e, Status.UNRECOVERABLE_MODULE_ERROR);
+					throw new PcpException(e, PcpStatus.UNRECOVERABLE_MODULE_ERROR);
 					
 				} catch (InvocationTargetException e) {
 					/* Occurs when the invoked method throws an exception
 					 */
 					Throwable cause = e.getCause();
-					throw new PcpException(cause, Status.UNRECOVERABLE_MODULE_ERROR);
+					throw new PcpException(cause, PcpStatus.UNRECOVERABLE_MODULE_ERROR);
 					
 				}
 			} catch (SecurityException e1) {
@@ -207,7 +207,7 @@ public abstract class PcpServlet extends HttpServlet {
 		Payload payload = new Payload(json, moduleId, interfaceVersion);
 		
 		Options options = new ServerOptions()
-				.setStatus(Status.OK);
+				.setStatus(PcpStatus.OK);
 		String generator = this.generatorName_;
 		Packet out = new Packet(payload, generator, options);
 		

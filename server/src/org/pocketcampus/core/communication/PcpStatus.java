@@ -18,7 +18,7 @@ package org.pocketcampus.core.communication;
  * 	<li>[5xx] Module Error</li>
  * </ul>
  */
-public enum Status {
+public enum PcpStatus {
 	/* Informational */
 	
 	/**
@@ -98,7 +98,7 @@ public enum Status {
 	private int code_;
 	private String explanation_;
 	
-	private Status(int code, String explanation) {
+	private PcpStatus(int code, String explanation) {
 		this.code_ = code;
 		this.explanation_ = explanation;
 	}

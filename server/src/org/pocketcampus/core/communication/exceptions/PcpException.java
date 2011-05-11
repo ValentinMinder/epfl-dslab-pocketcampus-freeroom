@@ -1,6 +1,6 @@
 package org.pocketcampus.core.communication.exceptions;
 
-import org.pocketcampus.core.communication.Status;
+import org.pocketcampus.core.communication.PcpStatus;
 
 /**
  * Indicates a problem at the communication service level
@@ -14,14 +14,14 @@ public class PcpException extends Exception {
 	/**
 	 * The status associated with this exception
 	 */
-	private Status status_;
+	private PcpStatus status_;
 	
 	/**
 	 * Constructs a new PcpException with specified cause and PCP Status
 	 * @param cause
 	 * @param status
 	 */
-	public PcpException(Throwable cause, Status status) {
+	public PcpException(Throwable cause, PcpStatus status) {
 		super(cause);
 		this.status_ = status;
 	}
@@ -31,7 +31,7 @@ public class PcpException extends Exception {
 	 * @param message
 	 * @param status
 	 */
-	public PcpException(String message, Status status) {
+	public PcpException(String message, PcpStatus status) {
 		super(status.toString() + " : " + message);
 		
 		this.status_ = status;
@@ -40,7 +40,7 @@ public class PcpException extends Exception {
 	/**
 	 * @return the PCP Status code associated with this PcpException
 	 */
-	public Status getStatus() {
+	public PcpStatus getStatus() {
 		return this.status_;
 	}
 }
