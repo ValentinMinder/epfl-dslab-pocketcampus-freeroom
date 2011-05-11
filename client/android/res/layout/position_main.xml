@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	style="@style/Theme.MainLayout">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+		
+	<org.osmdroid.views.MapView android:id="@+id/mapview" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_below="@+id/actionbar"></org.osmdroid.views.MapView>
+
+	<SeekBar
+		android:id="@+id/map_level_bar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/actionbar"
+		android:paddingLeft="15dip"
+		android:paddingRight="15dip"
+		android:progressDrawable="@drawable/level_bar_progress"
+		android:visibility="gone"/>
+
+</RelativeLayout>
