@@ -37,29 +37,30 @@ public class Grid implements IGrid {
 		List<Node> nodeList = new ArrayList<Node>();
 		CartesianPoint coordinates1,coordinates2,coordinates3;
 		int RL = getRowCell();
+		double CL = getCellLength();
 		//Node PMin = getPMin();
+		double size = RL+1;
 		coordinates1 = PMin_.getCoordinates();
-		double x = coordinates1.getX();
-		double y = coordinates1.getY();
-		double z = coordinates1.getZ();
+		double x1 = coordinates1.getX();
+		double y1 = coordinates1.getY();
+		double z1 = coordinates1.getZ();
 		//nodeList.add(PMin);
 		Node PNode ;
 		// to take into cnsideration PMin
 		Node PBuffer2 = PMin_; 
-		for(int i=0;i<RL+1;i++)
+		for(int i=0;i<size;i++)
 		{
-			y = PBuffer2.getCoordinates().getY();
-			for(int j=0;j<RL+1;j++)
+			for(int j=0;j<size;j++)
 			{
+				double x,y,z;
 				
-				x = x+RL;
+				x = x1+j*CL;
+				y = y1+i*CL;
 				coordinates2 = new CartesianPoint(x, y, 0);
 				PNode = new Node(coordinates2, 0);
 				nodeList.add(PNode);
 				
 			}
-			coordinates3 = new CartesianPoint(PMin_.getCoordinates().getX(), y+RL, 0);
-			PBuffer2 = new Node(coordinates3,0);
 		}
 		return nodeList;
 	}
@@ -72,14 +73,14 @@ public class Grid implements IGrid {
 	@Override
 	public double getDMax() {
 		AccessPoint ap ;
-		ap = wifiLocation_.getWeakestAP(APGrid_);
+		ap = wifiLocation_.getWeakestAP();
 		return ap.getEstimatedDistance();
 	}
 
 	@Override
 	public double getDMin() {
 		AccessPoint ap ;
-		ap = wifiLocation_.getStrongestAP(APGrid_);
+		ap = wifiLocation_.getStrongestAP();
 		return ap.getEstimatedDistance();
 	}
 
@@ -125,8 +126,10 @@ public class Grid implements IGrid {
 		RL=getRowCell();
 		CL=getCellLength();
 		P0 = convertPositionToCartesian(initialPosition_);
-		x=P0.getX()-CL*(RL/2);
-		y=P0.getY()-CL*(RL/2);
+//		x=P0.getX()-CL*(RL/2);
+//		y=P0.getY()-CL*(RL/2);
+		x=P0.getX()-getDMax();
+		y=P0.getY()-getDMax();
 		z=P0.getZ();
 		P1=new CartesianPoint(x, y, z);
 		PMin = new Node(P1,0);

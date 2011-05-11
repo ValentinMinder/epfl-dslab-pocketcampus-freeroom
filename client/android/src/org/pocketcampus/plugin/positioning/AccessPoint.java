@@ -115,7 +115,7 @@ public class AccessPoint {
 		int pathLoss = pathLoss_*(-1);
 		double distance;
 		int pathlossd0 = 30;
-		int n = 2;
+		double n = 1.65;
 		double expn = Math.pow(10, n);
 		distance = Math.pow(10,((pathLoss-pathlossd0)/expn));
 		

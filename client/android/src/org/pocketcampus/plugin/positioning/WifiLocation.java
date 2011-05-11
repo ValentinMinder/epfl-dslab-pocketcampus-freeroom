@@ -194,7 +194,9 @@ public class WifiLocation {
 	 * intensity of signal
 	 * 
 	 * */
-	public AccessPoint getStrongestAP(List<AccessPoint> listAP) {
+	public AccessPoint getStrongestAP() {
+		List<AccessPoint> listAP;
+		listAP = getAccessPoints();
 		AccessPoint Ap = null;
 		int lev = 0;
 		for (AccessPoint p : listAP) {
@@ -213,7 +215,9 @@ public class WifiLocation {
 	 * intensity of signal
 	 * 
 	 * */
-	public AccessPoint getWeakestAP(List<AccessPoint> listAP) {
+	public AccessPoint getWeakestAP() {
+		List<AccessPoint> listAP;
+		listAP = getAccessPoints();
 		AccessPoint Ap = null;
 		int lev = 100;
 		for (AccessPoint p : listAP) {
@@ -228,6 +232,8 @@ public class WifiLocation {
 		return Ap;
 	}
 	
+	
+	
 	/**
 	 * getMinNumberOfNodes() gives the number of Ap's limited to the weakestSignal
 	 * in other way limited to minmum distance 
@@ -236,7 +242,7 @@ public class WifiLocation {
 	public int getMinNumberOfnodes(List<AccessPoint> listAP) {
 		AccessPoint Ap = null;
 		int i =0;
-		int lev = getWeakestAP(listAP).getSignalLevel();
+		int lev = getWeakestAP().getSignalLevel();
 		for (AccessPoint p : listAP) {
 			if ((p.getSignalLevel() < lev)||(p.getSignalLevel() == lev)) {
 				i++;
@@ -264,7 +270,7 @@ public class WifiLocation {
 		for (Iterator<AccessPoint> iterator = treatedList.iterator(); iterator
 		.hasNext();) {
 			emitter = (AccessPoint) iterator.next();
-			System.out.println("Ap: coordinates ::"+emitter.position().toString());
+			System.out.println("Ap: lev :"+emitter.getPathLoss()+" Ap : distance :"+emitter.getDistance());
 			level = emitter.getSignalLevel();
 			
 
@@ -298,7 +304,7 @@ public class WifiLocation {
 		if(list == null){
 			return null;
 		}
-        AccessPoint acp = getStrongestAP(list);
+        AccessPoint acp = getStrongestAP();
 		int refLevel = (int) acp.position().getLatitude();
 		List<AccessPoint> myList = new ArrayList<AccessPoint>();
 

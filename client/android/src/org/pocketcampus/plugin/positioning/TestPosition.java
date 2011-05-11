@@ -90,8 +90,8 @@ public class TestPosition extends Activity {
       wifiLocation_ = new WifiLocation(ctx_);
       
       System.out.println("Wifi Position :"+ wifiLocation_.getWifiLocationPerCoefficient().toString());
-      
-     
+      wifiLocation_.getWeakestAP();
+      wifiLocation_.getStrongestAP();
       myLocation_ = new HybridLocation(ctx_, mapView_);
       
       //gpsLocation_ = myLocation_.getGpsLocation();
