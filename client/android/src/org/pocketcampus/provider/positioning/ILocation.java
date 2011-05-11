@@ -12,7 +12,7 @@ public interface ILocation {
 public Position getPosition();
 public GeoPoint getGsmLocation() throws IOException;
 public Position getGpsLocation();
-public Position getHybridLocation();
+//public Position getHybridLocation();
 public double getAccuracy();
 	
 }
