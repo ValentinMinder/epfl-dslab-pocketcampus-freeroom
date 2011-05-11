@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.positioning;
 
+import java.util.List;
+
 import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
@@ -10,11 +12,13 @@ public class HandOver {
 	private Position HORposition_;
 	private Context ctx_;
 	private boolean movement;
+	private Measure measure_;
 	
 	public HandOver(Context ctx){
 		this.movement = false;
 		this.ctx_ = ctx;
 		this.grid_ = new Grid(ctx_);
+		this.measure_ = new Measure(grid_.getApGrid());
 		this.HORposition_ = getHORPosition();
 	}
 	
@@ -22,16 +26,37 @@ public class HandOver {
 	
 	
 
-	private Position getHORPosition() {
+	public Position getHORPosition() {
 		if(movement==false){
-			
+			compareMeasure();
 			
 		}else return onCompute();
 		return HORposition_;
 	}
 
 	
-	private Position onCompute() {
+	
+	public void compareMeasure() {
+		List<AccessPoint> newApList = grid_.getApGrid(); 
+		Measure secondMeasure = new Measure(newApList);
+		Grid newGrid = new Grid(ctx_);
+		evaluateNodes(measure_,secondMeasure);
+	}
+
+
+
+
+
+	public void evaluateNodes(Measure measure_2, Measure secondMeasure) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+	public Position onCompute() {
 		// TODO Auto-generated method stub
 		return null;
 	}

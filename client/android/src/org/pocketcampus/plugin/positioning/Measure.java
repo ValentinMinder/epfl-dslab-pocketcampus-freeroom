@@ -31,7 +31,7 @@ import java.util.List;
 
 public class Measure {
 	
-	private HashMap<String,Integer> measureVector_;
+	private HashMap<AccessPoint,Integer> measureVector_;
 	private List<AccessPoint> APList_;
 	
 	public Measure(List<AccessPoint> _APList){
@@ -41,24 +41,20 @@ public class Measure {
 	
 	
 	
-	public HashMap<String,Integer> ApSignalHash(){
-		HashMap<String,Integer> hash = new HashMap<String,Integer>();
-		
-		int size = APList_.size();
-		AccessPoint currentAp = null;
-		
-		for(int i = 0;i<size;i++){
-			 
-			currentAp = APList_.get(i);
-			hash.put(currentAp.getSSID() , currentAp.getSignalLevel());
+	public HashMap<AccessPoint, Integer> ApSignalHash(){
+		HashMap<AccessPoint,Integer> hash = new HashMap<AccessPoint,Integer>();
+				
+		for(AccessPoint currentAp :APList_){
+			
+			hash.put(currentAp , currentAp.getSignalLevel());
 		}
-		
-		
+	
 		return hash;
 	}
 	
 	
-	public HashMap<String,Integer> getMeasure(){
+	
+	public HashMap<AccessPoint,Integer> getMeasure(){
 		return  measureVector_;
 	}
 
