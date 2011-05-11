@@ -39,10 +39,12 @@ import org.pocketcampus.plugin.map.cache.LayersCache;
 import org.pocketcampus.plugin.map.elements.MapElement;
 import org.pocketcampus.plugin.map.elements.MapElementsList;
 import org.pocketcampus.plugin.map.elements.MapPathOverlay;
+import org.pocketcampus.plugin.map.ui.HybridLocationOverlay;
 import org.pocketcampus.plugin.map.ui.ItemDialog;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.plugin.map.ui.LevelBar;
 import org.pocketcampus.plugin.map.ui.OnLevelBarChangeListener;
+import org.pocketcampus.plugin.map.utils.HybridLocationUpdater;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -88,7 +90,8 @@ public class MapPlugin extends PluginBase {
 	// Map UI
 	private MapView mapView_;
 	private MapController mapController_;
-	private MyLocationOverlay myLocationOverlay_;
+	//XXX private MyLocationOverlay myLocationOverlay_;
+	private HybridLocationOverlay myLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
 	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>> cachedOverlays_;
 	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays_;
@@ -129,6 +132,7 @@ public class MapPlugin extends PluginBase {
 
 	// Handler used to refresh the overlays 
 	private Handler overlaysHandler_ = new Handler();
+	private HybridLocationUpdater hybridLocationUpdater_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +155,8 @@ public class MapPlugin extends PluginBase {
 			incrementProgressCounter();
 			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
 		}
+		
+		hybridLocationUpdater_ = new HybridLocationUpdater(this, myLocationOverlay_);
 	}
 
 	private void initVariables() {
@@ -303,7 +309,8 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.add(0, tilesOverlay);
 
 		// Following the user
-		myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+		//XXX myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+		myLocationOverlay_ = new HybridLocationOverlay(this, mapView_);
 		constantOverlays_.add(myLocationOverlay_);
 
 		// Path overlay
@@ -352,6 +359,8 @@ public class MapPlugin extends PluginBase {
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		overlaysHandler_.post(overlaysRefreshTicker_);
 
+		hybridLocationUpdater_.startListening();
+		
 		super.onResume();
 	}
 
@@ -363,6 +372,8 @@ public class MapPlugin extends PluginBase {
 		myLocationOverlay_.disableMyLocation();
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
+		
+		hybridLocationUpdater_.stopListening();
 		
 		super.onPause();
 	}
