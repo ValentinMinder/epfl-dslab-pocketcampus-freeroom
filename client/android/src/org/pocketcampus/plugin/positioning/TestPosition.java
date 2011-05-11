@@ -96,7 +96,7 @@ public class TestPosition extends Activity {
       
       //gpsLocation_ = myLocation_.getGpsLocation();
       try {
-			gsmLocation_ = myLocation_.getGsmLocation();
+			gsmLocation_ = myLocation_.getGsmPosition();
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -130,7 +130,7 @@ public class TestPosition extends Activity {
 //      Log.d("Cell Id::::","Cell Id :"+myGsmLocation.getCellID());
 //      Log.d("Lac ::::::","Lac :"+myGsmLocation.getLac());
       try {
-			Log.d("GsmLocation:::",myLocation_.getGsmLocation() .toDoubleString());
+			Log.d("GsmLocation:::",myLocation_.getGsmPosition() .toDoubleString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

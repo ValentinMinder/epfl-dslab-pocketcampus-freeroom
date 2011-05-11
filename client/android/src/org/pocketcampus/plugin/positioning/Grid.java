@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.positioning;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.provider.positioning.IGrid;
 import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.pocketcampus.provider.positioning.ILocation;
+import org.pocketcampus.provider.positioning.IPositionProvider;
 //import org.pocketcampus.provider.positioning.Position;
 import org.pocketcampus.plugin.positioning.GpsLocation;
 import org.pocketcampus.plugin.positioning.GsmLocation;
@@ -13,7 +13,7 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
 
-public class HybridLocation implements ILocation{
+public class HybridLocation implements IPositionProvider{
 	
 	private GpsLocation gpsLocation_;
 	private GsmLocation gsmLocation_;
@@ -34,12 +34,12 @@ public class HybridLocation implements ILocation{
 	
 	
 	
-	public GeoPoint getGsmLocation() throws IOException{
+	public GeoPoint getGsmPosition() throws IOException{
 		return this.gsmLocation_.getGSMLocation();
 	}
 	
 	
-	public Position getGpsLocation(){
+	public Position getGpsPosition(){
 		return this.gpsLocation_.getGpsLocation();
 	}
 	

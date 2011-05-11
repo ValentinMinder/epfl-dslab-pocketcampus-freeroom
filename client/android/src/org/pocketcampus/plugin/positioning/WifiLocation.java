@@ -264,7 +264,9 @@ public class WifiLocation {
 		for (Iterator<AccessPoint> iterator = treatedList.iterator(); iterator
 		.hasNext();) {
 			emitter = (AccessPoint) iterator.next();
+			System.out.println("Ap: coordinates ::"+emitter.position().toString());
 			level = emitter.getSignalLevel();
+			
 
 			if(level>50){
 				return emitter.position();

@@ -1,10 +1,7 @@
-package org.pocketcampus.provider.positioning;
+package org.pocketcampus.plugin.positioning;
 
 import java.util.List;
 
-import org.pocketcampus.plugin.positioning.AccessPoint;
-import org.pocketcampus.plugin.positioning.CartesianPoint;
-import org.pocketcampus.plugin.positioning.Node;
 import org.pocketcampus.shared.plugin.map.Position;
 
 public interface IGrid {
