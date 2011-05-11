@@ -2,7 +2,6 @@ package org.pocketcampus.shared.plugin.social;
 
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
-
 public class User {
 	private final String firstName_;
 	private final String lastName_;
