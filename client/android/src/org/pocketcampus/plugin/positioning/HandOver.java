@@ -27,6 +27,7 @@ public class HandOver {
 			
 			
 		}else return onCompute();
+		return HORposition_;
 	}
 
 	
