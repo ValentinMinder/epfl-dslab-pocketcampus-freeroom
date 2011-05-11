@@ -15,7 +15,5 @@ public double getCellLength();
 public AccessPoint getPMax();
 public Node getPMin();
 public int getRowCell();
-public CartesianPoint convertPositionToCartesian(Position p);
-public Position convertCartesianToPosition(CartesianPoint cp);
 public List<Node> getNodesList();
 }

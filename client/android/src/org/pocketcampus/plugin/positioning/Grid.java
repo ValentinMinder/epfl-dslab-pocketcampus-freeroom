@@ -19,8 +19,10 @@ public class Grid implements IGrid {
 	private List<AccessPoint> APGrid_;
 	private WifiLocation wifiLocation_;
 	private Node PMin_;
+	private VirtualConvert conversion_;
+	
+	
 	public Grid(Context _ctx){
-		
 		this.wifiLocation_ = new WifiLocation(_ctx);
 		this.initialPosition_ = getInitialPosition();
 		this.APGrid_ = getApGrid();
@@ -74,14 +76,14 @@ public class Grid implements IGrid {
 	public double getDMax() {
 		AccessPoint ap ;
 		ap = wifiLocation_.getWeakestAP();
-		return ap.getEstimatedDistance();
+		return ap.getDistance();
 	}
 
 	@Override
 	public double getDMin() {
 		AccessPoint ap ;
 		ap = wifiLocation_.getStrongestAP();
-		return ap.getEstimatedDistance();
+		return ap.getDistance();
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class Grid implements IGrid {
 		double x,y,z,RL,CL;
 		RL=getRowCell();
 		CL=getCellLength();
-		P0 = convertPositionToCartesian(initialPosition_);
+		P0 = conversion_.convertPositionToCartesian(initialPosition_);
 //		x=P0.getX()-CL*(RL/2);
 //		y=P0.getY()-CL*(RL/2);
 		x=P0.getX()-getDMax();
@@ -137,63 +139,44 @@ public class Grid implements IGrid {
 		return PMin;
 	}
 
-	@Override
-	public CartesianPoint convertPositionToCartesian(Position p) {
-		CartesianPoint coordinates;
-		double x,y,z;
-		double lat = p.getLatitude();
-		double lon = p.getLongitude();
-		double alt = p.getAltitude();
-		
-		x = convertX(lat, lon, alt);
-		y = convertY(lat, lon, alt);
-		z = convertZ(lat, lon, alt);
-		coordinates = new CartesianPoint(x, y, z);
-		return coordinates;
-	}
 	
-	public double convertX(double lat,double lon,double alt){
-		double x = 0.0;
-		double a = 6378137.0; // SemiAxisMajor
-		double e2 = 0.00669438; // Eccentricity power2
-		double alpha = Math.sqrt(1-e2*(Math.sin(lat)*Math.sin(lat)));
-		double factor = (a/alpha)+alt;
-		x = factor * Math.cos(lat)*Math.cos(lon);
-		
-		return x;
-	}
-
-	public double convertY(double lat,double lon,double alt){
-		double y = 0.0;
-		double a = 6378137.0; // SemiAxisMajor
-		double e2 = 0.00669438; // Eccentricity power2
-		double alpha = Math.sqrt(1-e2*(Math.sin(lat)*Math.sin(lat)));
-		double factor = (a/alpha)+alt;
-		y = factor * Math.cos(lat)*Math.sin(lon);
-		
-		return y;
-	}
-	
-	public double convertZ(double lat,double lon,double alt){
-		double z = 0.0;
-		double a = 6378137.0; // SemiAxisMajor
-		double e2 = 0.00669438; // Eccentricity power2
-		double alpha = Math.sqrt(1-e2*(Math.sin(lat)*Math.sin(lat)));
-		double factor = (a/alpha)+alt;
-		z = factor * Math.sin(lat);
-		
-		return z;
-	}
-	
-	@Override
-	public Position convertCartesianToPosition(CartesianPoint cp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public List<AccessPoint> getApGrid(){
-		return wifiLocation_.getAccessPoints();
+		List<AccessPoint> ApListConvert = new ArrayList<AccessPoint>();
+		List<AccessPoint> ApList =  wifiLocation_.getAccessPoints();
+		List<Node> surroundNodeList = new ArrayList<Node>();
+		AccessPoint apBuffer = null;
+		for(AccessPoint ap : ApList){
+			surroundNodeList = getSurroundedNeighbor(ap.getCoordinates());
+			apBuffer = new AccessPoint(ap, surroundNodeList);
+			ApListConvert.add(apBuffer);
+		}
+		return ApListConvert;
+	}
+	
+	
+	
+	public List<Node> getSurroundedNeighbor(CartesianPoint point){
+		List<Node> nodeList = getNodesList();
+		List<Node> surroundedNodeList = new ArrayList<Node>();
+		int size = nodeList.size()-4;
+		Node node1 = null;//,node2,node3,node4;
+		int length = nodeList.size();
+		while(length >=size){
+		double limit = getDMax();	
+		for(Node node : nodeList){
+			double dist = node.getPlanDistance(point);
+			if(dist<limit){
+				limit = dist;
+				node1 = node;
+			}		
+		}
+		surroundedNodeList.add(node1);
+		nodeList.remove(node1);
+		length = nodeList.size();
+		}
+		
+		return surroundedNodeList; 
 	}
 
 }

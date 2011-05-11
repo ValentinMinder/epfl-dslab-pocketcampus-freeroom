@@ -40,6 +40,7 @@ public class AccessPoint {
 	private double estimatedDistance;
 	private int frequency_;
 	private List<Node> nodes_;
+	private CartesianPoint coordinates_;
 	
 	public AccessPoint(ScanResult sr, String apName, Position pos) {
 		SSID = sr.SSID;
@@ -52,6 +53,7 @@ public class AccessPoint {
 		distance = getDistance();
 		estimatedDistance = getEstimatedDistance();
 		nodes_ = null;
+		coordinates_ = new VirtualConvert(pos).convertPositionToCartesian(pos);
 	}
 	
 	public AccessPoint(AccessPoint _ap ,List<Node> _nodes) {
@@ -163,5 +165,13 @@ public class AccessPoint {
 	public void addNode(Node _node){
 		if (_node!=null) 
 		nodes_.add(_node);
+	}
+	
+	public CartesianPoint getCoordinates(){
+		return this.coordinates_;
+	}
+	
+	public void setNodeList(List<Node> list){
+		nodes_ = list; 
 	}
 }
