@@ -42,27 +42,21 @@ public class SocialDatabase {
 	}
 
 	public static boolean addFriend(final User a, final User b) throws ServerException {
-		String sqlRequest = "INSERT INTO `"+contactTable+"` (`from`, `to`)" + " VALUES (?, ?)";
+		String sqlRequest = "INSERT INTO `"+contactTable+"` (`from`, `to`) VALUES (?, ?), (?, ?)";
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf1 = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
 				stmt.setString(1, a.getIdFormat());
 				stmt.setString(2, b.getIdFormat());
+				
+				stmt.setString(3, b.getIdFormat());
+				stmt.setString(4, a.getIdFormat());
 			}
 		};
-		numAffectedRows += rf1.execute();
-
-		UpdateRequestHandler rf2 = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
-			@Override
-			public void prepareStatement(PreparedStatement stmt) throws SQLException {
-				stmt.setString(1, b.getIdFormat());
-				stmt.setString(2, a.getIdFormat());
-			}
-		};
-		numAffectedRows += rf2.execute();
-
+		numAffectedRows += rf.execute(); 
+		
 		return (numAffectedRows == 2) ? true : false;
 	}
 
@@ -262,5 +256,34 @@ public class SocialDatabase {
 		numAffectedRows += rf.execute();
 
 		return (numAffectedRows == 1) ? true : false;
+	}
+	
+	public static Collection<String> getPermissions(final User from, final User granted_to) throws ServerException {
+		String sqlRequest = "SELECT `service_id` FROM `"+permissionTable+"` WHERE `user` = ? AND `granted_to` = ? ";
+
+		QueryRequestHandler<Collection<String>> rf = new QueryRequestHandler<Collection<String>>(sqlRequest) {
+			
+			@Override
+			public void prepareStatement(PreparedStatement stmt) throws SQLException {
+				stmt.setString(1, from.getIdFormat());
+				stmt.setString(2, granted_to.getIdFormat());
+			}
+			
+			@Override
+			public Collection<String> processResult(ResultSet result)
+			throws SQLException {
+
+				HashSet<String> services = new HashSet<String>();
+				result.beforeFirst();
+
+				while (result.next()) {
+					services.add(result.getString("service_id"));
+				}
+
+				return services;
+			}
+		};
+
+		return rf.execute();
 	}
 }

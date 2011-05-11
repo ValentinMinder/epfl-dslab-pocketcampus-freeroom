@@ -1,17 +1,25 @@
 package org.pocketcampus.plugin.social;
 
 import java.awt.Toolkit;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.authentication.Authentication;
 import org.pocketcampus.plugin.authentication.AuthenticationSessions;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
+import org.pocketcampus.provider.permissions.IPermissionProvider;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
 import org.pocketcampus.shared.plugin.social.User;
+import org.pocketcampus.shared.plugin.social.exception.ConflictingPermissionException;
+import org.pocketcampus.shared.plugin.social.permissions.Permission;
 
 public class Social implements IPlugin {
 
@@ -133,15 +141,10 @@ public class Social implements IPlugin {
 			User user = Authentication.identify(username);
 
 			try {
-				
+
 				LinkedList<User> friends = new LinkedList<User>(SocialDatabase.getFriends(user));
 				LinkedList<User> pendings = new LinkedList<User>(SocialDatabase.getPending(user));
-				Toolkit.getDefaultToolkit().beep();
-				if(!friends.isEmpty()) {
-					Toolkit.getDefaultToolkit().beep();
-					Toolkit.getDefaultToolkit().beep();
-					Toolkit.getDefaultToolkit().beep();
-				}
+
 				friendsLists = new FriendsLists(friends, pendings);
 
 			} catch(ServerException e) {
@@ -149,6 +152,64 @@ public class Social implements IPlugin {
 				friendsLists = null;
 			}
 		}
+		Toolkit.getDefaultToolkit().beep(); //==============================================================================
 		return friendsLists;
+	}
+
+	/**
+	 * Returns the different permission types available
+	 * @param request
+	 * @return
+	 */
+	@PublicMethod
+	public Collection<Permission> permissions(HttpServletRequest request) {
+		LinkedList<Permission> permissions = new LinkedList<Permission>();
+
+		Iterator<IPlugin> iter = Core.getInstance().getProvidersOf(IPermissionProvider.class).iterator();
+		
+		while(iter.hasNext()) {
+			Collection<Permission> list = ((IPermissionProvider) iter.next()).getPermission();
+			for(Permission p : list) {
+				if(!permissions.contains(p)) {
+					permissions.add(p);
+				} else {
+					throw new ConflictingPermissionException("duplicate "+p+" permission.");
+				}
+			}
+		}
+
+		return permissions;
+	}
+	
+	/**
+	 * Returns the permissions that have been granted to a particular user
+	 * @param request
+	 * @return
+	 */
+	@PublicMethod
+	public Collection<Permission> getPermissions(HttpServletRequest request) {
+		LinkedList<Permission> permissions = null;
+		
+		String username = request.getParameter("username");
+		String sessionId = request.getParameter("sessionId");
+		String target = request.getParameter("granted_to");
+		
+		if(username != null && sessionId != null && target != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
+			User user = Authentication.identify(username);
+			User granted_to = new User(target);
+			
+			try {
+				permissions = new LinkedList<Permission>();
+			
+				for(String s : SocialDatabase.getPermissions(user, granted_to)) {
+					System.out.println("\n"+s);
+					permissions.add(new Permission(s));
+				}
+			} catch(ServerException e) {
+				permissions = null;
+			}
+		}
+		
+		return permissions;
 	}
 }
