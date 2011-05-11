@@ -59,9 +59,9 @@ public class HybridLocation implements ILocation{
 
 	@Override
 	public Position getPosition() {
-		if(wifiLocation_.getWifiLocationPerCoefficient()==null)
-			return getGpsLocation();
-		else return getWifiLocation();
+		if(wifiLocation_!=null)
+			 return getWifiLocation();
+		else return null;
 	}
 
 
