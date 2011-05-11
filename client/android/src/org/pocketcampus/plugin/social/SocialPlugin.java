@@ -57,28 +57,28 @@ public class SocialPlugin extends PluginBase {
 	}
 	
 	public static void sendRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || toStartNext == null || target == null)
+		if(context == null || target == null)
 			throw new IllegalArgumentException();
 		
 		request(context, toStartNext, target, "send");
 	}
 	
 	public static void deleteRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || toStartNext == null || target == null)
+		if(context == null || target == null)
 			throw new IllegalArgumentException();
 		
 		request(context, toStartNext, target, "delete");
 	}
 	
 	public static void acceptRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || toStartNext == null || target == null)
+		if(context == null || target == null)
 			throw new IllegalArgumentException();
 		
 		request(context, toStartNext, target, "accept");
 	}
 	
 	public static void ignoreRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || toStartNext == null || target == null)
+		if(context == null || target == null)
 			throw new IllegalArgumentException();
 		
 		request(context, toStartNext, target, "ignore");

@@ -187,7 +187,7 @@ public class AuthenticationPlugin extends PluginBase {
 					.putString("sciper", user_.getSciper())
 					.commit();
 				
-				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + username, Toast.LENGTH_LONG).show();
+				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
 				
 				//close login activity
 				thisActivity_.finish();

@@ -50,4 +50,7 @@
 	<string name="social_requesting_friend_confirm">confirm</string>
 	<string name="social_requesting_friend_ignore">ignore</string>
 	
+	<string name="social_permissions_title_a">Edit\u0020</string>
+	<string name="social_permissions_title_b">\'s permissions</string>
+	<string name="social_permissions_title_c">\u0020multiple permissions</string>
 </resources>

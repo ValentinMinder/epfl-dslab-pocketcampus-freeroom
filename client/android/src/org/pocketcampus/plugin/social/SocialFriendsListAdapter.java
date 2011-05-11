@@ -1,10 +1,14 @@
 package org.pocketcampus.plugin.social;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.shared.plugin.social.User;
+import org.pocketcampus.shared.plugin.social.permissions.Permission;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,7 +24,12 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 public class SocialFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
@@ -100,8 +110,37 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDialog(position);
+				
 				_selected.toggle();
+			}
+		});
+		
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(), "permissions", new RequestParameters());
+				return false;
+			}
+			
+			class PermissionRequest extends DataRequest {
+				@Override
+				protected void doInUiThread(String result) {
+					Collection<Permission> permissions;
+					
+					if(result != null) {
+						Gson gson = new Gson();
+						try{
+							permissions = gson.fromJson(result, new TypeToken<Collection<Permission>>(){}.getType());
+						} catch (JsonSyntaxException e) {
+							permissions = null;
+							e.printStackTrace();
+						}
+					} else {
+						permissions = null;
+					}
+					Toast.makeText(socialFriendsListActivity_, ""+permissions.size(), Toast.LENGTH_LONG).show();
+					if(permissions != null) showDialog(position, permissions);
+				}
 			}
 		});
 		
@@ -172,11 +211,13 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 		}
 	}
 	
-	private void showDialog(int pos){
-//		PermissionDialog r = new PermissionDialog(friendsListActivity_, friends_.get(pos), friendsListActivity_, true);
-//		r.show();
+	private void showDialog(int pos, Collection<Permission> permissions){
+		ArrayList<User> list = new ArrayList<User>();
+		list.add(friends_.get(pos));
+		SocialPermissionDialog r = new SocialPermissionDialog(socialFriendsListActivity_, list, new ArrayList<Permission>(permissions), socialFriendsListActivity_);
+		r.show();
 	}
-	
+	//(final Context context, Collection<User> selectedUsers, Collection<Permission> permissions)
 	private static class ViewHolder {
 		TextView username;
 		CheckBox selected;
