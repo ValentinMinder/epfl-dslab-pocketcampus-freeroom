@@ -10,7 +10,6 @@ public class Accelerometer {
 	private SensorManager sensorManager_;
 	private final Sensor accelerometer_;
 	private Context context_;
-	private String SENSOR_SERVICE;
 	private double xValue;
 	private double yValue;
 	private double zValue;
@@ -18,7 +17,7 @@ public class Accelerometer {
 	
 	public Accelerometer(Context context){
 		context_ = context;
-		sensorManager_ = (SensorManager)context.getSystemService(SENSOR_SERVICE);
+		sensorManager_ = (SensorManager)context.getSystemService(context_.SENSOR_SERVICE);
         accelerometer_ = sensorManager_.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
 	}
