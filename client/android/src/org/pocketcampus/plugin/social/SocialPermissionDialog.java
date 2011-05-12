@@ -91,6 +91,7 @@ public class SocialPermissionDialog extends Dialog {
 		Button okButton = (Button) findViewById(R.id.social_friends_ok);
 		okButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				AuthToken token = AuthenticationPlugin.getAuthToken(context_);
 				
 				int nbU = selectedUsers_.size();
 				int nbP = permissions_.size();
@@ -98,6 +99,8 @@ public class SocialPermissionDialog extends Dialog {
 				
 				//allows to send all the data in a single request
 				RequestParameters rp = new RequestParameters();
+				rp.addParameter("username", token.getUsername());
+				rp.addParameter("sessionId", token.getSessionId());
 				rp.addParameter("n", ""+n);
 				for(int i = 0; i < n; i++) {
 					rp.addParameter("user__"+i, selectedUsers_.get(i % nbU).getIdFormat());
