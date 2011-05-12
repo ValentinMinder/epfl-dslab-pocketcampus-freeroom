@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -137,11 +136,12 @@ public class SocialPermissionDialog extends Dialog {
 	class GetPermissionsRequest extends DataRequest {
 		@Override
 		protected void doInUiThread(String result) {
-			Collection<Permission> grantedPermissions = null;
+			ArrayList<Permission> grantedPermissions = null;
 			if(result != null) {
 				Gson gson = new Gson();
 				try{
-					grantedPermissions = gson.fromJson(result, new TypeToken<Collection<Permission>>(){}.getType());
+					Collection<Permission> collection = gson.fromJson(result, new TypeToken<Collection<Permission>>(){}.getType());
+					grantedPermissions = (collection != null) ? new ArrayList<Permission>(collection) : null;
 				} catch (JsonSyntaxException e) {
 					grantedPermissions = null;
 					e.printStackTrace();
@@ -149,7 +149,6 @@ public class SocialPermissionDialog extends Dialog {
 			}
 			
 			if(grantedPermissions != null) {
-				Toast.makeText(context_, grantedPermissions.iterator().next().getName(), Toast.LENGTH_LONG).show();
 				for(int i = 0; i < permissions_.size(); i++) {
 					if(grantedPermissions.contains(permissions_.get(i))) permissionBoxes_[i].toggle();
 				}
@@ -159,7 +158,7 @@ public class SocialPermissionDialog extends Dialog {
 	
 	private String getTitle() {
 		return context_.getString(R.string.social_permissions_title_a) + ((selectedUsers_.size() == 1) ? 
-			selectedUsers_.iterator().next().getFirstName() + context_.getString(R.string.social_permissions_title_b) : 
+			selectedUsers_.get(0).getFirstName() + context_.getString(R.string.social_permissions_title_b) : 
 			context_.getString(R.string.social_permissions_title_c));
 	}
 }
