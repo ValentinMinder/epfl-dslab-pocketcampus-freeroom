@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.content.Context;
@@ -81,6 +82,8 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 	}
 
 	public void toggle(int position) {
+		String restaurant = restaurants_.get(position).replace(" ", "");
+		Tracker.getInstance().trackPageView("food/menusListToggle"+restaurant);
 		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
 				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];

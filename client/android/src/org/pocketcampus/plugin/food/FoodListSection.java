@@ -2,10 +2,8 @@ package org.pocketcampus.plugin.food;
 
 import java.util.Vector;
 
-import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.food.Meal;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,7 +15,6 @@ import android.widget.Filterable;
  * 
  */
 public class FoodListSection extends BaseAdapter implements Filterable {
-	private LayoutInflater mInflater_;
 	private Vector<Meal> meal_;
 	private FoodPlugin menusActivity_;
 
@@ -31,7 +28,8 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 	 */
 	public FoodListSection(Vector<Meal> resto, FoodPlugin menus) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
-		mInflater_ = LayoutInflater.from(menus.getApplicationContext());
+		// LayoutInflater mInflater_ =
+		// LayoutInflater.from(menus.getApplicationContext());
 		this.meal_ = resto;
 		this.menusActivity_ = menus;
 	}
@@ -60,7 +58,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		// holder = (MenuView) convertView;
 		// }
 		holder = new MenuView(meal_.get(position), menusActivity_);
-		
+
 		return holder;
 	}
 

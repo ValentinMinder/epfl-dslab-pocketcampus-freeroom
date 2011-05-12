@@ -18,20 +18,18 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 import android.widget.TextView;
 
 public class FoodPreference extends PluginPreference {
 	private SharedPreferences restoPrefs_;
-	private Editor restoPrefsEditor_;
 
 	private final String RESTO_PREFS_NAME = "RestoPrefs";
 	private File menuFile_;
@@ -53,7 +51,7 @@ public class FoodPreference extends PluginPreference {
 		displayedRestaurants_ = new ArrayList<String>();
 
 		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
-		restoPrefsEditor_ = restoPrefs_.edit();
+//		Editor restoPrefsEditor_ = restoPrefs_.edit();
 
 		setPreferenceScreen(createPreferenceHierarchy());
 	}

@@ -11,19 +11,14 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.food.FoodPlugin;
-import org.pocketcampus.plugin.food.MenuView;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * This class is used to make each section of a list of sandwiches.

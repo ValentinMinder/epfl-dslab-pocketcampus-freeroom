@@ -8,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -18,7 +16,6 @@ import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.logging.Tracker;
-import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
 import android.util.Log;
