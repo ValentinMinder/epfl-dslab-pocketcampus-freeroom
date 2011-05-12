@@ -37,7 +37,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 	private Date lastImportDateS_;
 
 	private FoodDB database_;
-	private boolean noMealsToday_;
 
 	/**
 	 * Parse the menus on startup.
@@ -135,8 +134,8 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 	}
 
 	/**
-	 * Checks if the menus have been refreshed less than
-	 * an hour ago.
+	 * Checks if the menus have been refreshed less than an hour ago.
+	 * 
 	 * @param oldDate
 	 * @return
 	 */
@@ -334,7 +333,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				}
 			}
 			if (campusMeals_.isEmpty()) {
-				noMealsToday_ = true;
 				lastImportMenus_ = new Date();
 			}
 			for (Meal m : campusMeals_) {
@@ -373,7 +371,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 			}
 		}
 		if (campusMeals_.isEmpty()) {
-			noMealsToday_ = true;
 			lastImportMenus_ = new Date();
 		}
 		for (Meal m : campusMeals_) {

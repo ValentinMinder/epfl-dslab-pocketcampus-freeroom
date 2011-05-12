@@ -84,7 +84,6 @@ public class FoodDB {
 				+ " VALUES (?,?,?,?,?,?,?,?)";
 
 		try {
-			int count = 0;
 			String name = m.getName_();
 			String description = m.getDescription_();
 			String restaurant = m.getRestaurant_().getName();
@@ -205,7 +204,7 @@ public class FoodDB {
 	 * @return
 	 */
 	public List<Meal> getMeals(Connection connection_) {
-		if(connection_ == null){
+		if (connection_ == null) {
 			return null;
 		}
 		PreparedStatement getMeals = null;
@@ -268,7 +267,7 @@ public class FoodDB {
 	 * @return
 	 */
 	public boolean checkVotedDevice(Connection connection, String deviceID) {
-		if(connection == null){
+		if (connection == null) {
 			return false;
 		}
 		PreparedStatement checkVotedDevice = null;
@@ -325,7 +324,7 @@ public class FoodDB {
 	 * @param deviceId
 	 */
 	public void insertVotedDevice(Connection connection_, String deviceId) {
-		if(connection_ == null){
+		if (connection_ == null) {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
@@ -363,7 +362,7 @@ public class FoodDB {
 	}
 
 	public void insertRating(Connection connection_, int hashCode, Meal meal) {
-		if(connection_ == null){
+		if (connection_ == null) {
 			return;
 		}
 		System.out.println("Inserting rating.");
@@ -381,8 +380,8 @@ public class FoodDB {
 			}
 
 			Rating r = meal.getRating();
-			insertRating.setFloat(1, (float) Restaurant.starRatingToDouble(r
-					.getValue()));
+			insertRating.setFloat(1,
+					(float) Restaurant.starRatingToDouble(r.getValue()));
 			insertRating.setInt(2, r.getNumberOfVotes());
 			insertRating.setString(3, jsonObject);
 			insertRating.setInt(4, hashCode);
