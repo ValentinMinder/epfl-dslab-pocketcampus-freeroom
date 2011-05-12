@@ -13,9 +13,7 @@ import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.authentication.Authentication;
 import org.pocketcampus.plugin.authentication.AuthenticationSessions;
-import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.provider.permissions.IPermissionProvider;
-import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
 import org.pocketcampus.shared.plugin.social.User;
 import org.pocketcampus.shared.plugin.social.exception.ConflictingPermissionException;
@@ -166,7 +164,7 @@ public class Social implements IPlugin {
 		LinkedList<Permission> permissions = new LinkedList<Permission>();
 
 		Iterator<IPlugin> iter = Core.getInstance().getProvidersOf(IPermissionProvider.class).iterator();
-		
+
 		while(iter.hasNext()) {
 			Collection<Permission> list = ((IPermissionProvider) iter.next()).getPermission();
 			for(Permission p : list) {
@@ -180,7 +178,7 @@ public class Social implements IPlugin {
 
 		return permissions;
 	}
-	
+
 	/**
 	 * Returns the permissions that have been granted to a particular user
 	 * @param request
@@ -189,18 +187,18 @@ public class Social implements IPlugin {
 	@PublicMethod
 	public Collection<Permission> getPermissions(HttpServletRequest request) {
 		LinkedList<Permission> permissions = null;
-		
+
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
 		String target = request.getParameter("granted_to");
-		
+
 		if(username != null && sessionId != null && target != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
 			User user = Authentication.identify(username);
 			User granted_to = new User(target);
-			
+
 			try {
 				permissions = new LinkedList<Permission>();
-			
+
 				for(String s : SocialDatabase.getPermissions(user, granted_to)) {
 					System.out.println("\n"+s);
 					permissions.add(new Permission(s));
@@ -209,7 +207,42 @@ public class Social implements IPlugin {
 				permissions = null;
 			}
 		}
-		
+
 		return permissions;
+	}
+
+	@PublicMethod
+	public void updatePermissions(HttpServletRequest request) {
+		String username = request.getParameter("username");
+		String sessionId = request.getParameter("sessionId");
+		String sN = request.getParameter("n");
+
+		if(username != null && sessionId != null && sN != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
+			User user = Authentication.identify(username);
+			int n = 0;
+			try {
+				n = Integer.parseInt(sN);
+			} catch(Exception e) {
+				e.printStackTrace();
+				return;
+			}
+
+			for(int i = 0; i < n; i++) {
+				String service = request.getParameter("permission__"+i);
+				String target = request.getParameter("user__"+i);
+				String operation = request.getParameter("granted__"+i);
+				if(service != null && target != null && operation != null) {
+					try {
+						if(operation.equals("yes") && !SocialDatabase.testPermission(service, user, new User(target))) {
+							SocialDatabase.addPermission(service, user, new User(target));
+						} else if(operation.equals("no") && SocialDatabase.testPermission(service, user, new User(target))) {
+							SocialDatabase.removePermission(service, user, new User(target));
+						}
+					} catch(ServerException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 }
