@@ -80,11 +80,10 @@ public class HandOver {
 
 	public boolean onMove(){
 		Accelerometer accel = new Accelerometer(ctx_);
-		if(accel.onShake()){
+		if(accel.onShake())
 			this.movement = true;
-			return true;
-		}else
-		return false; 
+	
+	  return movement;
 	}
 	
 }
