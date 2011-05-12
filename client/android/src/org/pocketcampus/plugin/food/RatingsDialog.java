@@ -20,6 +20,7 @@ import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.core.parser.JsonException;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating.SubmitStatus;
 
@@ -70,6 +71,7 @@ public class RatingsDialog extends Dialog {
 			}
 		});
 
+		Tracker.getInstance().trackPageView("food/ratingsDialog");
 	}
 
 	/**

@@ -17,6 +17,7 @@ import java.util.Vector;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.FoodPlugin;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Sandwich;
 
@@ -45,6 +46,7 @@ public class SandwichList {
 	}
 
 	public void refreshSandwiches() {
+		Tracker.getInstance().trackPageView("food/refreshSandwiches");
 		Log.d("SERVER", "Refreshing.");
 		if (sandwichList_.isEmpty()) {
 			Log.d("SERVER", "Reloading sandwiches");

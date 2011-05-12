@@ -14,6 +14,7 @@ import org.pocketcampus.plugin.food.menu.FoodMenu;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.sandwiches.SandwichList;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Sandwich;
@@ -139,15 +140,19 @@ public class FoodDisplayHandler {
 		currentListAdapter_.removeSections();
 		switch (currentDisplayType_) {
 		case Restaurants:
+			Tracker.getInstance().trackPageView("food/restaurants");
 			showMenusByRestaurants();
 			break;
 		case Ratings:
+			Tracker.getInstance().trackPageView("food/ratings");
 			showMenusByRatings();
 			break;
 		case Sandwiches:
+			Tracker.getInstance().trackPageView("food/sandwiches");
 			showSandwiches();
 			break;
 		case Suggestions:
+			Tracker.getInstance().trackPageView("food/suggestions");
 			showMenusBySuggestions();
 			break;
 		}

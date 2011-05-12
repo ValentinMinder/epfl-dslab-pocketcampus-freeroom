@@ -13,6 +13,7 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Restaurant;
@@ -54,6 +55,8 @@ public class MenuDialog extends Dialog {
 		// Dialog box is closed when we touch outside.
 		setCanceledOnTouchOutside(true);
 
+		Tracker.getInstance().trackPageView("food/menuDialog");
+		
 		setDialogContent();
 	}
 

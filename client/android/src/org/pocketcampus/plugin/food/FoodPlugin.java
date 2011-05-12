@@ -14,6 +14,7 @@ import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.pictures.PictureTaker;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
+import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.app.Activity;
@@ -61,6 +62,8 @@ public class FoodPlugin extends PluginBase {
 		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
+
+		Tracker.getInstance().trackPageView("food/home");
 		
 		handleIntent();
 	}
@@ -69,7 +72,8 @@ public class FoodPlugin extends PluginBase {
 		// TODO Auto-generated method stub
 
 		try {
-			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID " + getIDFromIntent() : "Does not have ID");
+			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
+					+ getIDFromIntent() : "Does not have ID");
 		} catch (NoIDException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -259,7 +263,8 @@ public class FoodPlugin extends PluginBase {
 			}
 		} else {
 			foodDisplayHandler_
-					.setCurrentDisplayType(FoodDisplayType.Restaurants.getValue());
+					.setCurrentDisplayType(FoodDisplayType.Restaurants
+							.getValue());
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
