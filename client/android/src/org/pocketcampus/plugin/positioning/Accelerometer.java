@@ -20,6 +20,7 @@ public class Accelerometer implements SensorListener {
 		context_ = context;
 		sensorManager_ = (SensorManager)context.getSystemService(context_.SENSOR_SERVICE);
         accelerometer_ = sensorManager_.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        
 
 	}
 
@@ -37,9 +38,13 @@ public class Accelerometer implements SensorListener {
 	}
 
 	@Override
-	public void onSensorChanged(int arg0, float[] arg1) {
-		// TODO Auto-generated method stub
+	public void onSensorChanged(int arg0, float[] values) {
 		
+        xValue = values[0];
+
+        yValue = values[1];
+
+        zValue = values[2];		
 	}
 
 }
