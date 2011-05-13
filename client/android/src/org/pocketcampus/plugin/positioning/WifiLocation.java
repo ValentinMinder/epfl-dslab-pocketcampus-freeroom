@@ -270,7 +270,7 @@ public class WifiLocation {
 		for (Iterator<AccessPoint> iterator = treatedList.iterator(); iterator
 		.hasNext();) {
 			emitter = (AccessPoint) iterator.next();
-			System.out.println("Ap: lev :"+emitter.getPathLoss()+" Ap : distance :"+emitter.getDistance());
+			System.out.println("Ap: lev :"+emitter.getPathLoss()+" Ap : distance :"+emitter.getDistance()+"floor :"+emitter.position().toString());
 			level = emitter.getSignalLevel();
 			
 
