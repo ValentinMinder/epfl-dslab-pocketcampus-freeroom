@@ -12,7 +12,9 @@ import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
+import org.osmdroid.tileprovider.util.CloudmadeUtil;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -282,6 +284,11 @@ public class MapPlugin extends PluginBase {
 		mapView_ = (MapView) findViewById(R.id.mapview);
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
+		/* XXX This is done to allow zoom up to 22 (for epfl) but the tiles will not load because
+		 * the mapnik zoom is between 0 and 18 */
+		ITileSource aTileSource =  new XYTileSource("Mapnik",
+                ResourceProxy.string.mapnik, 0, 22, 256, ".png", "http://tile.openstreetmap.org/");
+		mapView_.setTileSource(aTileSource);
 		mapController_ = mapView_.getController();
 
 		// Display the level bar if needed
@@ -359,7 +366,12 @@ public class MapPlugin extends PluginBase {
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		overlaysHandler_.post(overlaysRefreshTicker_);
 
-		hybridLocationUpdater_.startListening();
+		try {
+			hybridLocationUpdater_.startListening();
+		} catch (Exception e) {
+			Log.e("MAP", "Error listening to hybrid position (start)");
+			e.printStackTrace();
+		}
 		
 		super.onResume();
 	}
@@ -373,7 +385,12 @@ public class MapPlugin extends PluginBase {
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		
-		hybridLocationUpdater_.stopListening();
+		try {
+			hybridLocationUpdater_.stopListening();
+		} catch (Exception e) {
+			Log.e("MAP", "Error listening to hybrid position (stop)");
+			e.printStackTrace();
+		}
 		
 		super.onPause();
 	}

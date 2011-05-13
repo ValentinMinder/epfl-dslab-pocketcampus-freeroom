@@ -17,7 +17,7 @@ public class HybridLocationUpdater {
 	/**
 	 * The number of ms between two updates
 	 */
-	private long updateTime_ = 2000;
+	private long updateTime_ = 10000;
 	
 	private boolean isRunning_ = false;
 	private LocationUpdater updater_;
@@ -66,7 +66,13 @@ class LocationUpdater extends Thread {
 			} catch (InterruptedException e) {
 				//nothing to do
 			}
-			Position p = hl.getPosition();
+			Position p = null;
+			try {
+				p = hl.getPosition();
+			} catch(Exception e) {
+				Log.e("HybridLocationUpdater", "error getting position");
+				e.printStackTrace();
+			}
 			if(p != null && p.getLatitude() != Double.NaN && p.getLongitude() != Double.NaN) {
 				p = CoordinateConverter.convertCH1903ToLatLong(p.getLatitude(), p.getLongitude(), p.getAltitude());
 				Location location = new Location("HybridLocation");
