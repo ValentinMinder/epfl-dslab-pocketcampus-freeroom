@@ -23,11 +23,15 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	abstract A loadFromServer(String url);
 	protected abstract String getUrl();
 	
+	public Request() {
+		cacheManager_ = CacheManager.getInstance();
+	}
+	
 	@Override
 	protected final void onPostExecute(A result) {
 		doInUiThread(result);
 	}
-	
+
 	/**
 	 * Method called to handle the content coming from the server.
 	 * Do not change the UI in this method.
@@ -44,58 +48,49 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	 * @param result Data from the server
 	 */
 	protected void doInUiThread(A result) {};
-	
-	public Request() {
-		cacheManager_ = CacheManager.getInstance();
-	}
 
 	void start(final RequestParameters... params) {
-		Runnable timedExecution = new Runnable() {
+		execute(params);
+	}
 
+	/**
+	 * Setups a FutureTask that'll cancel the Request after a given time (timeout).
+	 * The time before interruption is <code>timeoutDelay()</code> seconds.
+	 * @return
+	 */
+	private FutureTask<Void> setupTimeoutTimer() {
+		final FutureTask<Void> futureTask = new FutureTask<Void>(new Runnable() {
 			@Override
 			public void run() {
-				final FutureTask<Void> futureTask = new FutureTask<Void>(new Runnable() {
-
-					@Override
-					public void run() {
-						execute(params);
-						
-						try {
-							get();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							e.printStackTrace();
-						}
-					}
-				}, null);
-
 				try {
-					Executors.newSingleThreadExecutor().execute(futureTask);
-					futureTask.get(timeoutDelay(), TimeUnit.SECONDS);
-					
+					get(timeoutDelay(), TimeUnit.SECONDS);
 				} catch (TimeoutException e) {
-					Log.d("Request", "start -> timeout");
+					Log.d("Request", "Request timed out after "+timeoutDelay()+"s.");
 					cancel(true);
-				} catch (ExecutionException e) {
-					e.printStackTrace();
+
 				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
 			}
-		};
-		
-		Executors.newSingleThreadExecutor().execute(timedExecution);
-	}
+		}, null);
+
+		return futureTask;
+	}	
 
 	@Override
 	protected final A doInBackground(RequestParameters... params) {
+		FutureTask<Void> timeoutTimer = setupTimeoutTimer();
+		Executors.newSingleThreadExecutor().execute(timeoutTimer);
+
 		String url = getUrl();
 
 		if(params!=null && params[0]!=null) {
 			url += params[0].toString();
 		}
 
+		@SuppressWarnings("unchecked")
 		A cachedValue = (A) cacheManager_.getFromCache(url);
 		if(cachedValue != null) {
 			doInBackgroundThread(cachedValue);
@@ -107,20 +102,20 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 		if(result != null) {
 			cacheManager_.putInCache(url, result, expirationDelay());
 		}
-		
+
 		if(!isCancelled()) {
 			doInBackgroundThread(result);
 		}
 
 		return result;
 	}
-	
+
 	@Override
 	protected void onCancelled() {
 		super.onCancelled();
 		Log.d("Request", "The request has been canceled (command: " + this.command_ + ")");
 	}
-	
+
 	public final void setPluginInfo(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
 	}
