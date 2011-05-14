@@ -23,6 +23,9 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	abstract A loadFromServer(String url);
 	protected abstract String getUrl();
 	
+	/**
+	 * Public constructor.
+	 */
 	public Request() {
 		cacheManager_ = CacheManager.getInstance();
 	}
@@ -49,6 +52,10 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	 */
 	protected void doInUiThread(A result) {};
 
+	/**
+	 * Executes the Request.
+	 * @param params request parameters
+	 */
 	void start(final RequestParameters... params) {
 		execute(params);
 	}
@@ -58,8 +65,8 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 	 * The time before interruption is <code>timeoutDelay()</code> seconds.
 	 * @return
 	 */
-	private FutureTask<Void> setupTimeoutTimer() {
-		final FutureTask<Void> futureTask = new FutureTask<Void>(new Runnable() {
+	private void setupTimeout() {
+		final FutureTask<Void> timeoutTask = new FutureTask<Void>(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -76,13 +83,12 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 			}
 		}, null);
 
-		return futureTask;
+		Executors.newSingleThreadExecutor().execute(timeoutTask);
 	}	
 
 	@Override
 	protected final A doInBackground(RequestParameters... params) {
-		FutureTask<Void> timeoutTimer = setupTimeoutTimer();
-		Executors.newSingleThreadExecutor().execute(timeoutTimer);
+		setupTimeout();
 
 		String url = getUrl();
 
@@ -116,14 +122,23 @@ public abstract class Request<A> extends AsyncTask<RequestParameters, Integer, A
 		Log.d("Request", "The request has been canceled (command: " + this.command_ + ")");
 	}
 
+	/**
+	 * @param pluginInfo
+	 */
 	public final void setPluginInfo(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
 	}
 
+	/**
+	 * @param serverUrl
+	 */
 	public final void setServerUrl(String serverUrl) {
 		serverUrl_ = serverUrl;
 	}
 
+	/**
+	 * @param command
+	 */
 	public final void setCommand(String command) {
 		command_ = command;
 	}
