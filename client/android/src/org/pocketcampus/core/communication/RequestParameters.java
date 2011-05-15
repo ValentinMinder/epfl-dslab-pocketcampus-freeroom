@@ -1,6 +1,7 @@
 package org.pocketcampus.core.communication;
 
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -12,6 +13,10 @@ public class RequestParameters {
 		parameters_.put(key, value);
 	}
 	
+	/**
+	 * Returns a HTTP GET Query string, preceded by '?' and with each parameter separated by
+	 * '&'. The string is properly encoded for URL specifications.
+	 */
 	@Override
 	public String toString() {
 		String text = "?";
@@ -25,4 +30,7 @@ public class RequestParameters {
 		return text;
 	}
 	
+	public HashMap<String, String> getParameters() {
+		return parameters_;
+	}
 }

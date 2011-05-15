@@ -1,5 +1,6 @@
 package org.pocketcampus.core.communication;
 
+import org.pocketcampus.core.communication.pcp.PcpRequest;
 import org.pocketcampus.core.plugin.PluginInfo;
 
 public class RequestHandler {
@@ -36,6 +37,17 @@ public class RequestHandler {
 		req.setPluginInfo(pluginInfo_);
 		req.setServerUrl(serverUrl_);
 		req.setCommand(command);
+		req.start(params);
+	}
+	
+	/**
+	 * Executes the given PCP Request
+	 * @param req the PCP Request
+	 * @param action the remote target action
+	 * @param params parameters to be used in the request (see {@link PcpRequest#start(Object...)}).
+	 */
+	public void execute(PcpRequest<?> req, String action, Object... params) {
+		req.setTarget(serverUrl_, pluginInfo_, action);
 		req.start(params);
 	}
 
