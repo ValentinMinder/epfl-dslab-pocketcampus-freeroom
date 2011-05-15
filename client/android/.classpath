@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/gson-1.7.1.jar"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="lib/osmdroid-android-3.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/apache-mime4j-0.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpmime-4.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
