@@ -1,9 +1,9 @@
 package org.pocketcampus.core.communication;
 
 import org.pocketcampus.core.communication.annotations.Action;
-import org.pocketcampus.core.communication.packet.Payload;
 import org.pocketcampus.core.communication.pipes.IPipeWriter;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.shared.core.communication.packet.Payload;
 
 /**
  * This class provides a set of reference methods intended to be used with the
