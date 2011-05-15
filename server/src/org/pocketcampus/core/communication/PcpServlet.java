@@ -14,18 +14,19 @@ import org.pocketcampus.core.communication.SignatureChecker.ExceptionsPolicy;
 import org.pocketcampus.core.communication.SignatureChecker.ReturnTypePolicy;
 import org.pocketcampus.core.communication.exceptions.InternalError;
 import org.pocketcampus.core.communication.exceptions.PcpException;
-import org.pocketcampus.core.communication.packet.GsonTypeAdapters;
-import org.pocketcampus.core.communication.packet.GsonTypeAdapters.Side;
-import org.pocketcampus.core.communication.packet.ModuleInfo;
-import org.pocketcampus.core.communication.packet.Options;
-import org.pocketcampus.core.communication.packet.Packet;
-import org.pocketcampus.core.communication.packet.Payload;
-import org.pocketcampus.core.communication.packet.ServerOptions;
 import org.pocketcampus.core.communication.pipes.IPipe;
 import org.pocketcampus.core.communication.pipes.IPipeReader;
 import org.pocketcampus.core.communication.pipes.IPipeWriter;
 import org.pocketcampus.core.communication.pipes.SimpleBox;
 import org.pocketcampus.core.logging.Logger;
+import org.pocketcampus.shared.core.communication.PcpStatus;
+import org.pocketcampus.shared.core.communication.packet.GsonTypeAdapters;
+import org.pocketcampus.shared.core.communication.packet.GsonTypeAdapters.Side;
+import org.pocketcampus.shared.core.communication.packet.ModuleInfo;
+import org.pocketcampus.shared.core.communication.packet.Options;
+import org.pocketcampus.shared.core.communication.packet.Packet;
+import org.pocketcampus.shared.core.communication.packet.Payload;
+import org.pocketcampus.shared.core.communication.packet.ServerOptions;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -113,7 +114,6 @@ public abstract class PcpServlet extends HttpServlet {
 			PcpException pe = new PcpException(e, PcpStatus.BAD_REQUEST);
 			sendPcpError(pe, resp);
 		} catch (PcpException e) {
-			// TODO Send a PCP Error
 			sendPcpError(e, resp);
 		}
 	}

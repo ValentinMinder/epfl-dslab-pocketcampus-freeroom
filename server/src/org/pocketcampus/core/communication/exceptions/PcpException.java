@@ -1,6 +1,6 @@
 package org.pocketcampus.core.communication.exceptions;
 
-import org.pocketcampus.core.communication.PcpStatus;
+import org.pocketcampus.shared.core.communication.PcpStatus;
 
 /**
  * Indicates a problem at the communication service level
