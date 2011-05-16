@@ -24,10 +24,18 @@ public class HybridLocationUpdater {
 	
 	public HybridLocationUpdater(Context context, LocationListener listener) {
 		this.listener_ = listener;
-		hybridLocation_ = new HybridLocation(context, new MapView(context, 256));
+		try {
+			hybridLocation_ = new HybridLocation(context, new MapView(context, 256));
+		} catch (Exception e) {
+			Log.e("HybridLocationUpdater", "Error creating HybridLocation instance");
+			e.printStackTrace();
+		}
 	}
 	
 	public synchronized void startListening() {
+		if(hybridLocation_ == null)
+			return;
+		
 		if(!isRunning_) {
 			isRunning_ = true;
 			updater_ = new LocationUpdater(hybridLocation_, listener_, updateTime_);
