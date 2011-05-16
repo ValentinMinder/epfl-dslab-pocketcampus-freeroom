@@ -18,7 +18,6 @@ public class  Cercle {
 	
 	private double x_;
 	private double y_;
-	private int Level;
 	private double radius_;
 	
 	
