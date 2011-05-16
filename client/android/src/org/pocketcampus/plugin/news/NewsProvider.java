@@ -144,9 +144,16 @@ public class NewsProvider {
 		ArrayList<String> urlsToDownload = new ArrayList<String>();
 
 		// Take only the ones selected by the user in the preferences
-		for(String url: urls) {
-			if(prefs_.getBoolean(NewsPreference.LOAD_RSS + url, true)) {
-				urlsToDownload.add(url);
+		// If no preferences have been set, select only the first rss feed.
+		if(urls.length > 0) {
+			if(prefs_.getBoolean(NewsPreference.LOAD_RSS + urls[0], true)) {
+				urlsToDownload.add(urls[0]);
+			}	
+		}
+		
+		for(int i = 1; i < urls.length; i++) {
+			if(prefs_.getBoolean(NewsPreference.LOAD_RSS + urls[i], false)) {
+				urlsToDownload.add(urls[i]);
 			}
 		}
 

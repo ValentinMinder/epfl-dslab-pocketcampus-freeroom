@@ -2,8 +2,22 @@
 <resources>
     <string-array name="news_feeds_url">
         <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/enac/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/sb/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/ic/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/cdh/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/sti/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/sv/fr/</item>
+        <item>http://actu.epfl.ch/feeds/rss/cdm/fr/</item>      
     </string-array>
     <string-array name="news_feeds_name">
-        <item>EPFL</item>
+        <item>EPFL Toute l\'actualité</item>
+        <item>EPFL Environnement Naturel, Architectural et Construit</item>
+        <item>EPFL Sciences de Base</item>
+        <item>EPFL Informatique et Communications</item>
+        <item>EPFL Collège des Humanités</item>
+        <item>EPFL Sciences et Techniques de l\'Ingénieur</item>
+        <item>EPFL Sciences de la View</item>
+        <item>EPFL Collège du Management de la Technologie</item>
     </string-array>
 </resources>
