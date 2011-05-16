@@ -15,11 +15,20 @@ package org.pocketcampus.plugin.positioning;
 
 public class  Cercle {
 
-	
+	private AccessPoint Ap_;
 	private double x_;
 	private double y_;
 	private double radius_;
 	
+
+	
+	public Cercle(AccessPoint _ap){
+		
+		this.Ap_ = _ap;
+		this.x_=_ap.position().getLatitude();
+		this.y_=_ap.position().getLongitude();
+		this.radius_=_ap.getDistance();
+	}
 	
 	public Cercle(double x,double y,double radius){
 		
@@ -49,4 +58,6 @@ public class  Cercle {
 		return belongTo;
 	}
 
+	
+	
 }
