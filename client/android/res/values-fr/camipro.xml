@@ -3,9 +3,10 @@
 
     <string name="camipro_plugin_title">Camipro</string>
 
-    <string name="camipro_page">\?lang=0</string>
+    <string name="camipro_current_balance">Avoir actuel</string>
+    <string name="camipro_balance_placeholder">0.0</string>
     
-    <string name="camipro_alert_title">Avertissement de sécurité</string>
-    <string name="camipro_alert_text">Cette partie de l\'application provient directement du site Camipro. Les informations de connexion vont directement sur leurs serveurs en utilisant une connexion sécurisée. Nous ne les mémorisons pas.</string>
-    <string name="camipro_alert_ok">J\'ai compris</string>
+    <string name="camipro_unable_balance">Impossible de récupérer l\'avoir actuel.</string>
+    <string name="camipro_unable_transactions">Impossible de récupérer les dernières transactions.</string>
+    
 </resources>

@@ -1,26 +1,34 @@
 package org.pocketcampus.plugin.camipro;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.shared.plugin.camipro.BalanceBean;
+import org.pocketcampus.shared.plugin.camipro.TransactionBean;
+import org.pocketcampus.utils.Notification;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.gson.reflect.TypeToken;
 
 /**
  * PluginBase class for the Camipro plugin.
- * This is a first version to test if it is worth coding a plugin or just putting a WebView
- * that shows the mobile version of the Camipro website. 
+ * This uses the WebService provided by the Camipro team. 
  * 
  * @status WIP
  * 
@@ -28,106 +36,88 @@ import android.webkit.WebViewClient;
  *
  */
 public class CamiproPlugin extends PluginBase {
-	private WebView webView_;
 	private ActionBar actionBar_;
-	
-	private static final String FIRST_LOAD = "camipro_first_load";
-	
+	private RequestHandler requestHandler_;
+	private int progressCount_ = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camipro_main);
 		setupActionBar(true);
-		
+
+		requestHandler_ = getRequestHandler();
+
+		downloadData();
+	}
+
+
+	@Override
+	protected void setupActionBar(boolean addHomeButton) {
+		super.setupActionBar(addHomeButton);
+
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		
-		setupWebview();
-		
-		showAlertIfNeeded();
-	}
-	
-	/**
-	 * Setup the view directly to the correct URL
-	 */
-	private void setupWebview() {
-		webView_ = (WebView) findViewById(R.id.camipro_webview);
-	    webView_.setWebViewClient(new HelloWebViewClient());
-	    webView_.getSettings().setJavaScriptEnabled(true);
-	    
-	    String page = getResources().getString(R.string.camipro_page);
-	    webView_.loadUrl(getResources().getString(R.string.camipro_website_url) + page);
-	}
-	
-	/**
-	 * Show a security notice that says we do not store their credentials.
-	 * This is shown only once
-	 */
-	private void showAlertIfNeeded() {
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		// Check if we already shown the alert
-		boolean alreadyShown = prefs.getBoolean(FIRST_LOAD, false);
-		if(alreadyShown) {
-			return;
-		}
-		
-		// Create the alert
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getResources().getString(R.string.camipro_alert_title));
-		builder.setMessage(getResources().getString(R.string.camipro_alert_text));
-		builder.setCancelable(false);
-		
-		// "I understand" button, set the preference to true
-		builder.setPositiveButton(getResources().getString(R.string.camipro_alert_ok), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-				prefs.edit().putBoolean(FIRST_LOAD, true).commit();
+		actionBar_.addAction(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				downloadData();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.refresh;
 			}
 		});
-		
-		AlertDialog alert = builder.create();
-		alert.show();
 	}
 
-	/**
-	 * Allows to handle the back button on the browser
-	 * Otherwise do the normal behavior
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// -2 fixes the bug where you had to press back twice to go back to mainscreen:
-		// if only 1 page in history then it's the login page, which will redirect to the balance page...
-	    if ((keyCode == KeyEvent.KEYCODE_BACK) && webView_.canGoBackOrForward(-2)) {
-	        webView_.goBackOrForward(-2);
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
+
+	private void downloadData() {
+		downloadBalance();
+		downloadTransactions();
+	}
+
+	private void downloadBalance() {
+		incrementProgressCounter();
+		requestHandler_.execute(new BalanceRequest(), "getBalance", getRequestParameters());
+	}
+
+	private void downloadTransactions() {
+		incrementProgressCounter();
+		requestHandler_.execute(new TransactionsRequest(), "getTransactions", getRequestParameters());
 	}
 	
+	private RequestParameters getRequestParameters() {
+		RequestParameters parameters = new RequestParameters();
+		parameters.addParameter("username", getString(R.string.camipro_debug_username));
+		parameters.addParameter("password", getString(R.string.camipro_debug_password));
+		
+		return parameters;
+	}
+
 	/**
-	 * Custom WebBrowser to allow navigation inside the app
-	 * (Other wise it launches an Intent on the first click and
-	 * the user goes to the regular browser)
+	 * Increments the progressCounter. It displays the progress bar
+	 * of the action bar. It allows several parallel threads doing background
+	 * work.
 	 */
-	private class HelloWebViewClient extends WebViewClient {
-	    @Override
-	    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-	        view.loadUrl(url);
-	        return true;
-	    }
+	private synchronized void incrementProgressCounter() {
+		progressCount_++;
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
 
-		@Override
-		public void onPageFinished(WebView view, String url) {
+	/**
+	 * Decrements the progressCounter. Called when a thread has finished
+	 * doing some background work.
+	 */
+	private synchronized void decrementProgressCounter() {
+		progressCount_--;
+		if(progressCount_ < 0) { //Should never happen!
+			Log.e(this.getClass().toString(), "ERROR progresscount is negative!");
+		}
+
+		if(progressCount_ <= 0) {
 			actionBar_.setProgressBarVisibility(View.GONE);
-			super.onPageFinished(view, url);
 		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			actionBar_.setProgressBarVisibility(View.VISIBLE);
-			super.onPageStarted(view, url, favicon);
-		}
-	    
 	}
 
 	@Override
@@ -140,4 +130,66 @@ public class CamiproPlugin extends PluginBase {
 		return null;
 	}
 
+	private class BalanceRequest extends DataRequest {
+		BalanceBean bb_;
+
+		@Override
+		protected void doInBackgroundThread(String result) {
+			try {
+				bb_ = Json.fromJson(result, BalanceBean.class);
+			} catch (JsonException e) {
+				return;
+			}
+		}
+
+		@Override
+		protected void doInUiThread(String result) {
+			decrementProgressCounter();
+			
+			if(bb_ != null) {
+				TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
+				balance.setText(Float.toString(bb_.getCurrentBalance()));
+			} else {
+				Notification.showToast(getApplicationContext(), R.string.camipro_unable_balance);
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			decrementProgressCounter();
+		}
+	}
+
+	private class TransactionsRequest extends DataRequest {
+		List<TransactionBean> ltb_;
+
+		@Override
+		protected void doInBackgroundThread(String result) {
+			try {
+				Type transactionsType = new TypeToken<List<TransactionBean>>(){}.getType();
+				ltb_ = Json.fromJson(result, transactionsType);
+			} catch (JsonException e) {
+				return;
+			}
+		}
+
+		@Override
+		protected void doInUiThread(String result) {
+			decrementProgressCounter();
+			
+			if(ltb_ != null) {
+				ListView lv = (ListView) findViewById(R.id.camipro_list);
+				
+				lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb_));
+				
+			} else {
+				Notification.showToast(getApplicationContext(), R.string.camipro_unable_transactions);
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			decrementProgressCounter();
+		}
+	}
 }
