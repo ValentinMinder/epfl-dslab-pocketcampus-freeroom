@@ -323,12 +323,12 @@ public class FoodDB {
 	 * @param connection_
 	 * @param deviceId
 	 */
-	public void insertVotedDevice(Connection connection_, String deviceId) {
+	public void insertVotedDevice(Connection connection_, String deviceId, int hashCode, Double myRating) {
 		if (connection_ == null) {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
-		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created) VALUES (?, ?)";
+		String insertString = "INSERT INTO PEOPLEVOTES (DeviceId, stamp_created, Rating, HashCode) VALUES (?, ?, ?, ?)";
 		ResultSet rset = null;
 
 		try {
@@ -342,6 +342,8 @@ public class FoodDB {
 
 			insertVotedDevice.setString(1, deviceId);
 			insertVotedDevice.setString(2, dateString);
+			insertVotedDevice.setDouble(3, myRating);
+			insertVotedDevice.setInt(4, hashCode);
 
 			count = insertVotedDevice.executeUpdate();
 			System.out.println(count + " rows were inserted");

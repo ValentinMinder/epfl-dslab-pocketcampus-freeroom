@@ -216,7 +216,7 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				currentMeal.getRating().addRating(r);
 				// Update rating in the database
 				database_.insertRating(connection, mealHashCode, currentMeal);
-				database_.insertVotedDevice(connection, deviceId);
+				database_.insertVotedDevice(connection, deviceId, mealHashCode, r);
 				deviceIds_.add(deviceId);
 
 				// Update rating in the list
