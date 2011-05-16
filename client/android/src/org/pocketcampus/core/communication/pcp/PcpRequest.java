@@ -131,7 +131,12 @@ public abstract class PcpRequest<Result> extends AsyncTask<Object, Integer, Resu
 	
 	
 	
-	
+	/**
+	 * Creates a new instance of PcpRequest.
+	 */
+	public PcpRequest() {
+		
+	}
 	
 	/**
 	 * Creates a new instance of PcpRequest and configures it with the given parameters.
@@ -182,7 +187,7 @@ public abstract class PcpRequest<Result> extends AsyncTask<Object, Integer, Resu
 	/**
 	 * Called in the <b>UI thread</b> when the background thread finished all its
 	 * computations. Since this method is executed in the UI thread, it should be small and
-	 * quick in order to not freeze the user interface.<br />
+	 * fast in order to not freeze the user interface.<br />
 	 * This method should be implemented as AsyncTask#onPostExecute(Object) would be.<br />
 	 * <i>The default implementation does nothing.</i>
 	 * 
