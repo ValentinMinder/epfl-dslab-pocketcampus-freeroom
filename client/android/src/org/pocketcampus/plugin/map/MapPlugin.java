@@ -78,6 +78,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class MapPlugin extends PluginBase {
+	public static final String ITEM_GO_URL="go_url:";
 
 	// Used for the location
 	private static final float MAX_ACCURACY_FROM_DIRECTIONS = 100;

@@ -8,6 +8,8 @@ import org.pocketcampus.plugin.map.utils.GeoPointConverter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 
 /**
  * Show a dialog box when the user clicks on an item on the map
@@ -18,7 +20,7 @@ import android.content.DialogInterface;
  *
  */
 public class ItemDialog {
-
+	
 	private MapPlugin mp_;
 	private MapElement item_;
 
@@ -53,7 +55,12 @@ public class ItemDialog {
 		if(pluginId != null && !"".equals(pluginId)) {
 			builder.setNegativeButton(mp_.getResources().getString(R.string.map_open_plugin_button), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					Core.startPluginWithID(mp_, pluginId, item_.getItemId());				
+					if(pluginId.startsWith(MapPlugin.ITEM_GO_URL)) {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(pluginId.substring(MapPlugin.ITEM_GO_URL.length())));
+						mp_.startActivity(intent);
+					} else {
+						Core.startPluginWithID(mp_, pluginId, item_.getItemId());
+					}
 					dialog.dismiss();	
 				}
 			});
