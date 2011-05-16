@@ -30,6 +30,9 @@ import com.google.gson.reflect.TypeToken;
  * PluginBase class for the Camipro plugin.
  * This uses the WebService provided by the Camipro team. 
  * 
+ * Data is redownloaded every time the plugin launches.
+ * Data is really small and changes often.
+ * 
  * @status WIP
  * 
  * @author Jonas
@@ -57,6 +60,8 @@ public class CamiproPlugin extends PluginBase {
 		super.setupActionBar(addHomeButton);
 
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		
+		// Refresh the camipro data
 		actionBar_.addAction(new Action() {
 
 			@Override
@@ -71,22 +76,35 @@ public class CamiproPlugin extends PluginBase {
 		});
 	}
 
-
+	/**
+	 * Download both Balance and Transactions
+	 * Updated the UI
+	 */
 	private void downloadData() {
 		downloadBalance();
 		downloadTransactions();
 	}
 
+	/**
+	 * Download the Balance info
+	 */
 	private void downloadBalance() {
 		incrementProgressCounter();
 		requestHandler_.execute(new BalanceRequest(), "getBalance", getRequestParameters());
 	}
 
+	/**
+	 * Download the list of transactions
+	 */
 	private void downloadTransactions() {
 		incrementProgressCounter();
 		requestHandler_.execute(new TransactionsRequest(), "getTransactions", getRequestParameters());
 	}
 	
+	/**
+	 * Create a request to the Camipro server plugin using username/password
+	 * @return
+	 */
 	private RequestParameters getRequestParameters() {
 		RequestParameters parameters = new RequestParameters();
 		parameters.addParameter("username", getString(R.string.camipro_debug_username));
@@ -130,6 +148,12 @@ public class CamiproPlugin extends PluginBase {
 		return null;
 	}
 
+	/**
+	 * Server request for the camipro balance.
+	 * 
+	 * @author Jonas
+	 *
+	 */
 	private class BalanceRequest extends DataRequest {
 		BalanceBean bb_;
 
@@ -160,6 +184,12 @@ public class CamiproPlugin extends PluginBase {
 		}
 	}
 
+	/**
+	 * Server request for the transactions
+	 * 
+	 * @author Jonas
+	 *
+	 */
 	private class TransactionsRequest extends DataRequest {
 		List<TransactionBean> ltb_;
 
@@ -180,8 +210,8 @@ public class CamiproPlugin extends PluginBase {
 			if(ltb_ != null) {
 				ListView lv = (ListView) findViewById(R.id.camipro_list);
 				
+				// Create an adapter for the data
 				lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb_));
-				
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_transactions);
 			}

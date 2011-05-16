@@ -14,11 +14,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * Adapter for the list of transactions. 
+ * 
+ * @author Jonas
+ *
+ */
 public class TransactionAdapter extends ArrayAdapter<TransactionBean> {
 
 	LayoutInflater li_;
-	java.text.DateFormat df_;
+	java.text.DateFormat df_; // Used to format the date
 	
+	/**
+	 * Adapter constructor
+	 * @param context The Camipro plugin
+	 * @param textViewResourceId Layout for a row in the list
+	 * @param transactions List of transactions
+	 */
 	public TransactionAdapter(Context context, int textViewResourceId, List<TransactionBean> transactions) {
 		super(context, textViewResourceId, transactions);
 		li_ = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
