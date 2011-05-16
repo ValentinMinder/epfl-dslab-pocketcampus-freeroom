@@ -73,6 +73,7 @@ class LocationUpdater extends Thread {
 				Log.e("HybridLocationUpdater", "error getting position");
 				e.printStackTrace();
 			}
+			Log.d("HybridLocationUpdater", "Position: " + p);
 			if(p != null && p.getLatitude() != Double.NaN && p.getLongitude() != Double.NaN) {
 				p = CoordinateConverter.convertCH1903ToLatLong(p.getLatitude(), p.getLongitude(), p.getAltitude());
 				Location location = new Location("HybridLocation");
