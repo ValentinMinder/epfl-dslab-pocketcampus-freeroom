@@ -13,7 +13,7 @@ public class RequestHandler {
 	 * Plugins: Map, Food, Bikes, Transport
 	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
 	 */
-//	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha1/";
+	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha1/";
 	
 	/**
 	 * DEVELOPMENT SERVERS
@@ -31,7 +31,7 @@ public class RequestHandler {
 	//private String serverUrl_ = "http://192.168.1.46:8080/pocketcampus-server/";
 	//private String serverUrl_ = "http://128.178.244.121:8080/pocketcampus-server/";
 	
-	private static String serverUrl_ = "http://128.178.253.198:8080/pocketcampus-server/";
+//	private static String serverUrl_ = "http://128.178.253.198:8080/pocketcampus-server/";
 
 	public RequestHandler(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
