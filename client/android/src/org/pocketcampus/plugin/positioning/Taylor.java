@@ -31,6 +31,7 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	double b1,b2,b3;
 	double x1,x2,x3,x4;
 	double y1,y2,y3,y4;
+	double D1,D2,D3,D4;
 	x1 = ap1.position().getLatitude();
 	x2 = ap2.position().getLatitude();
 	x3 = ap3.position().getLatitude();
@@ -39,11 +40,17 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	y2 = ap2.position().getLongitude();
 	y3 = ap3.position().getLongitude();
 	y4 = ap4.position().getLongitude();
+	D1 = ap1.getDistance();
+	D2 = ap2.getDistance();
+	D3 = ap3.getDistance();
+	D4 = ap4.getDistance();
 	return null;
 }
 
 
 private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4) {
+	Matrix matrix;
+	double arrayA[][];
 	double a1,a2;
 	double b1,b2;
 	double c1,c2;
@@ -63,8 +70,8 @@ private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	b2 = y1-y3;
 	c1 = x1-x4;
 	c2 = y1-y4;
-	
-	
+	arrayA = new double[3][2];
+	matrix = new Matrix(arrayA);
 	
 	return null;
 }
