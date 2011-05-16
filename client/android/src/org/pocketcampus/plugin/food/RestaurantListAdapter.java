@@ -50,7 +50,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		this.mealHashMap_ = mealHashMap;
 		this.mExpanded_ = new boolean[resto.size()];
 		for (int i = 0; i < resto.size(); i++) {
-			mExpanded_[i] = false;
+			mExpanded_[i] = true;
 		}
 	}
 
@@ -69,12 +69,13 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 
 		String restaurant = restaurants_.get(position);
 
-		holder = new ViewHolder(menusActivity_, restaurant, mealHashMap_
-				.get(restaurant), mExpanded_[position]);
+		holder = new ViewHolder(menusActivity_, restaurant,
+				mealHashMap_.get(restaurant), mExpanded_[position]);
 
 		holder.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				toggle(position);
+				menusActivity_.setSelected(position);
 			}
 		});
 
@@ -83,13 +84,14 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 
 	public void toggle(int position) {
 		String restaurant = restaurants_.get(position).replace(" ", "");
-		Tracker.getInstance().trackPageView("food/menusListToggle"+restaurant);
+		Tracker.getInstance()
+				.trackPageView("food/menusListToggle" + restaurant);
 		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
 				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];
 		menusActivity_.notifyDataSetChanged();
 	}
-	
+
 	public void toggleAll(boolean toggle) {
 		for (int i = 0; i < mExpanded_.length; i++) {
 			mExpanded_[i] = toggle;
@@ -137,12 +139,14 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 
 			mImage = (ImageView) mView
 					.findViewById(R.id.food_restaurantentry_arrow);
-			if(expanded){
-				mImage.setImageDrawable(menusActivity_.getResources().getDrawable(R.drawable.food_restaurantlist_south));
+			if (expanded) {
+				mImage.setImageDrawable(menusActivity_.getResources()
+						.getDrawable(R.drawable.food_restaurantlist_south));
 			} else {
-				mImage.setImageDrawable(menusActivity_.getResources().getDrawable(R.drawable.food_restaurantlist_east));
+				mImage.setImageDrawable(menusActivity_.getResources()
+						.getDrawable(R.drawable.food_restaurantlist_east));
 			}
-				
+
 			addView(mView);
 
 			mMenus = new ArrayList<View>();

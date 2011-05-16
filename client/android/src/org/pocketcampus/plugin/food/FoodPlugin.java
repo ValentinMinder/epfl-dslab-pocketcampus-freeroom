@@ -36,18 +36,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase {
+	// Bar at the top of the application
 	private ActionBar actionBar_;
 
-	private ListView l_;
+	// Activity's menus list
+	private ListView listView_;
 	private static FoodDisplayHandler foodDisplayHandler_;
 	private static RequestHandler foodRequestHandler_;
-	private TextView txt_empty_;
-	private TextView empty;
+	private TextView empty_;
 	private TextView validityDate_;
 	private ImageView expandMenus_;
 
+	// Spinner to show while loading data.
 	private ProgressBar spinner_;
-	private RestaurantAction restaurantAction_;
+
+	private MenusShowByAction restaurantAction_;
 
 	private ArrayList<Meal> suggestionMenus_;
 	private boolean isSandwichDisplay_ = false;
@@ -57,14 +60,14 @@ public class FoodPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 
 		loadFirstScreen();
-		restaurantAction_ = new RestaurantAction();
+		restaurantAction_ = new MenusShowByAction();
 		// RequestHandler
 		foodRequestHandler_ = getRequestHandler();
 		// DisplayHandler
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
 
 		Tracker.getInstance().trackPageView("food/home");
-		
+
 		handleIntent();
 	}
 
@@ -80,18 +83,18 @@ public class FoodPlugin extends PluginBase {
 		}
 	}
 
+	/**
+	 * Food request handler for requests to the server from the food plugin
+	 * 
+	 * @return RequestHandler for this plugin.
+	 */
 	public static RequestHandler getFoodRequestHandler() {
 		return foodRequestHandler_;
 	}
 
-	public static ArrayList<String> getRestaurantList() {
-		if (foodDisplayHandler_ != null) {
-			return foodDisplayHandler_.getRestaurantList();
-		} else {
-			return new ArrayList<String>();
-		}
-	}
-
+	/**
+	 * Load the main screen of the food plugin.
+	 */
 	private void loadFirstScreen() {
 		setContentView(R.layout.food_main);
 
@@ -100,19 +103,25 @@ public class FoodPlugin extends PluginBase {
 
 		setupActionBar(true);
 		// ListView
-		l_ = (ListView) findViewById(R.id.food_list);
-		empty = (TextView) findViewById(R.id.food_empty);
+		listView_ = (ListView) findViewById(R.id.food_list);
+		empty_ = (TextView) findViewById(R.id.food_empty);
 
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
 		expandMenus_.setOnTouchListener(new ExpandListener());
 	}
 
+	/**
+	 * Put the screen back to its first state.
+	 */
 	private void resetScreen() {
 		loadFirstScreen();
 		displayView();
 	}
 
+	/**
+	 * Add home button to action bar or not.
+	 */
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
 
@@ -133,6 +142,13 @@ public class FoodPlugin extends PluginBase {
 		super.setupActionBar(addHomeButton);
 	}
 
+	/**
+	 * Checks whether the restaurant action should be shown (toggle show by
+	 * restaurants/by ratings)-
+	 * 
+	 * @param currentDisplayType
+	 *            the type of the display
+	 */
 	protected void refreshActionBar(FoodDisplayType currentDisplayType) {
 		if ((currentDisplayType == FoodDisplayType.Restaurants || currentDisplayType == FoodDisplayType.Ratings)
 				&& !restaurantAction_.isShown()) {
@@ -145,8 +161,20 @@ public class FoodPlugin extends PluginBase {
 		}
 	}
 
+	/**
+	 * Called when the menus are being reloaded.
+	 */
 	public void menuRefreshing() {
 		actionBar_.setProgressBarVisibility(View.VISIBLE);
+		if (listView_ != null) {
+			if (listView_.getAdapter() != null) {
+				if (listView_.getAdapter().getCount() == 0) {
+					spinner_ = (ProgressBar) findViewById(R.id.food_spinner);
+					spinner_.setVisibility(View.VISIBLE);
+					empty_.setText("");
+				}
+			}
+		}
 	}
 
 	public void menuRefreshed(boolean successful) {
@@ -160,7 +188,9 @@ public class FoodPlugin extends PluginBase {
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
-		spinner_.setVisibility(View.GONE);
+		if (spinner_ != null) {
+			spinner_.setVisibility(View.GONE);
+		}
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
@@ -173,9 +203,6 @@ public class FoodPlugin extends PluginBase {
 	 */
 	public void displayView() {
 		// List view ; works only for menus by rating & restaurant.
-		if (txt_empty_ != null) {
-			txt_empty_.setText("");
-		}
 
 		if (spinner_ != null) {
 			spinner_.setVisibility(View.GONE);
@@ -186,8 +213,8 @@ public class FoodPlugin extends PluginBase {
 
 		if (foodDisplayHandler_.getCurrentDisplayType() != FoodDisplayType.Sandwiches
 				&& foodDisplayHandler_.validMenus() && fla != null) {
-			l_.setAdapter(fla);
-			empty.setText("");
+			listView_.setAdapter(fla);
+			empty_.setText("");
 			expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
 			expandMenus_.setOnTouchListener(new ExpandListener());
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
@@ -209,24 +236,24 @@ public class FoodPlugin extends PluginBase {
 				}
 			}
 		} else if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Sandwiches) {
-			empty.setText("");
+			empty_.setText("");
 			if (foodDisplayHandler_.validSandwich()) {
-				l_.setAdapter(fla);
+				listView_.setAdapter(fla);
 				expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
 				expandMenus_.setOnTouchListener(new ExpandListener());
 				validityDate_.setText(getResources().getString(
 						R.string.food_today_sandwiches));
 				expandMenus_.setVisibility(View.VISIBLE);
-				empty.setText("");
+				empty_.setText("");
 			} else {
 				validityDate_.setText("");
-				empty.setText(getString(R.string.food_empty));
+				empty_.setText(getString(R.string.food_empty));
 				actionBar_.setProgressBarVisibility(View.GONE);
 			}
 		} else {
-			l_.setAdapter(fla);
+			listView_.setAdapter(fla);
 			validityDate_.setText("");
-			empty.setText(getString(R.string.food_empty));
+			empty_.setText(getString(R.string.food_empty));
 		}
 	}
 
@@ -235,11 +262,11 @@ public class FoodPlugin extends PluginBase {
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		// refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
 		restaurantAction_.setIsRestaurant(true);
-		empty.setText("");
+		empty_.setText("");
 
 		if (foodDisplayHandler_.validMenus()
 				&& foodDisplayHandler_.validSuggestions() && fla != null) {
-			l_.setAdapter(fla);
+			listView_.setAdapter(fla);
 			validityDate_.setText(getResources().getString(
 					R.string.food_today_suggestions));
 
@@ -316,6 +343,10 @@ public class FoodPlugin extends PluginBase {
 		return false;
 	}
 
+	public void setSelected(int position) {
+		listView_.setSelection(position + 1);
+	}
+
 	final int SUGGESTIONS_REQUEST_CODE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1337;
 
@@ -361,11 +392,11 @@ public class FoodPlugin extends PluginBase {
 		return new FoodPreference();
 	}
 
-	class RestaurantAction implements Action {
+	class MenusShowByAction implements Action {
 		private boolean isRestaurants_;
 		private boolean isShown_;
 
-		RestaurantAction() {
+		MenusShowByAction() {
 			isRestaurants_ = true;
 			isShown_ = false;
 		}
@@ -412,7 +443,7 @@ public class FoodPlugin extends PluginBase {
 	}
 
 	class ExpandListener implements OnTouchListener {
-		private boolean expanded = false;
+		private boolean expanded = true;
 		private Drawable expand_;
 		private Drawable unexpand_;
 
@@ -422,7 +453,7 @@ public class FoodPlugin extends PluginBase {
 			unexpand_ = FoodPlugin.this.getResources().getDrawable(
 					R.drawable.food_menus_remballe);
 
-			expandMenus_.setImageDrawable(expand_);
+			expandMenus_.setImageDrawable(unexpand_);
 		}
 
 		@Override

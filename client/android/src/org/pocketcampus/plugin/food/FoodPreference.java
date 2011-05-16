@@ -1,4 +1,3 @@
-
 package org.pocketcampus.plugin.food;
 
 import java.io.BufferedReader;
@@ -51,7 +50,7 @@ public class FoodPreference extends PluginPreference {
 		displayedRestaurants_ = new ArrayList<String>();
 
 		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
-//		Editor restoPrefsEditor_ = restoPrefs_.edit();
+		// Editor restoPrefsEditor_ = restoPrefs_.edit();
 
 		setPreferenceScreen(createPreferenceHierarchy());
 	}
@@ -69,12 +68,12 @@ public class FoodPreference extends PluginPreference {
 
 		/* Change to get the list from a permanent txt file. */
 		restaurants_ = getRestaurants();
-		//		restaurants_ = FoodPlugin.getRestaurantList();
+		// restaurants_ = FoodPlugin.getRestaurantList();
 		displayedRestaurants_ = readFromFile();
 
 		if (displayedRestaurants_ == null || displayedRestaurants_.isEmpty()) {
 			Log.d("PREFERENCES",
-			"displayedRestaurants_ was null or empty from file!");
+					"displayedRestaurants_ was null or empty from file!");
 			displayedRestaurants_ = restaurants_;
 		} else {
 		}
@@ -88,12 +87,11 @@ public class FoodPreference extends PluginPreference {
 				prefBox.setTitle(resto);
 				prefBox.setDefaultValue(true);
 
-				prefBox
-				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				prefBox.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
 					@Override
-					public boolean onPreferenceChange(
-							Preference preference, Object newValue) {
+					public boolean onPreferenceChange(Preference preference,
+							Object newValue) {
 						String r = preference.getKey();
 
 						if ((Boolean) newValue) {
@@ -102,9 +100,8 @@ public class FoodPreference extends PluginPreference {
 							displayedRestaurants_.remove(r);
 						}
 						writeToFile();
-						PreferenceManager.getDefaultSharedPreferences(
-								that).edit().putLong(cacheTime_, 0)
-								.commit();
+						PreferenceManager.getDefaultSharedPreferences(that)
+								.edit().putLong(cacheTime_, 0).commit();
 						return true;
 					}
 
@@ -163,20 +160,21 @@ public class FoodPreference extends PluginPreference {
 		return restosDisplayed;
 	}
 
-	private ArrayList<String> getRestaurants(){
+	private ArrayList<String> getRestaurants() {
 		ArrayList<String> list = new ArrayList<String>();
 
 		try {
-			InputStream instream = this.getClass().getResourceAsStream("restaurants_names.txt");
+			InputStream instream = this.getClass().getResourceAsStream(
+					"restaurants_names.txt");
 
-			if(instream != null){
+			if (instream != null) {
 
 				InputStreamReader inputreader = new InputStreamReader(instream);
 				BufferedReader input = new BufferedReader(inputreader);
 
 				try {
 					String line = null; // not declared within while loop
-					
+
 					while ((line = input.readLine()) != null) {
 						list.add(line);
 					}
