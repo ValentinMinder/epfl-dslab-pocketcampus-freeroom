@@ -28,6 +28,8 @@ public Taylor (AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4){
 
 
 private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4) {
+	Matrix vectorB;
+	double[][] arrayB;
 	double b1,b2,b3;
 	double x1,x2,x3,x4;
 	double y1,y2,y3,y4;
@@ -44,7 +46,18 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	D2 = ap2.getDistance();
 	D3 = ap3.getDistance();
 	D4 = ap4.getDistance();
-	return null;
+	arrayB = new double [3][1];
+	b1 = x1*x1-x2*x2+y1*y1-y2*y2+D2*D2-D1;
+	b2 = x1*x1-x3*x3+y1*y1-y3*y3+D3*D3-D1;
+	b3 = x1*x1-x4*x4+y1*y1-y4*y4+D4*D4-D1;
+		
+	arrayB [0][0]= b1/2;
+	arrayB [1][0]= b2/2;
+	arrayB [2][0]= b3/2;
+	
+	vectorB = new Matrix(arrayB);
+	
+	return vectorB;
 }
 
 
@@ -71,15 +84,41 @@ private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	c1 = x1-x4;
 	c2 = y1-y4;
 	arrayA = new double[3][2];
+	arrayA[0][0] = x1-x2;
+	arrayA[1][0] = x1-x3;
+	arrayA[2][0] = x1-x4;
+	arrayA[0][1] = y1-y2;
+	arrayA[1][1] = y1-y3;
+	arrayA[2][1] = y1-y4;
+	
 	matrix = new Matrix(arrayA);
 	
-	return null;
+	return matrix;
 }
 
 
 private Position taylorEquation() {
 	
-	return null;
+	Matrix transposeA;
+	Matrix inverseProduct;
+	Matrix productAT;
+	Matrix secondProductAT;
+	Matrix vectorB;
+	Matrix solutionVector;
+	
+	vectorB = this.vetcor_;
+	transposeA = this.matrix_.transpose();
+	productAT = transposeA.times(matrix_);
+	inverseProduct = productAT.inverse();
+	secondProductAT = inverseProduct.times(transposeA);
+	solutionVector = secondProductAT.times(vectorB);
+	
+	if(solutionVector.getColumnDimension()==1){
+	double lat = solutionVector.get(0,0);
+	double lon = solutionVector.get(1,0);
+	return new Position(lat, lon, 0.0);
+	}else return null;
+	
 }
 	
 }
