@@ -1,17 +1,25 @@
 package org.pocketcampus.plugin.food;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.joda.time.Period;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
@@ -216,7 +224,8 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				currentMeal.getRating().addRating(r);
 				// Update rating in the database
 				database_.insertRating(connection, mealHashCode, currentMeal);
-				database_.insertVotedDevice(connection, deviceId, mealHashCode, r);
+				database_.insertVotedDevice(connection, deviceId, mealHashCode,
+						r);
 				deviceIds_.add(deviceId);
 
 				// Update rating in the list
@@ -523,6 +532,61 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 		defaultSandwichList.add(new Sandwich(name, "Autres", true));
 
 		return defaultSandwichList;
+	}
+
+	@PublicMethod
+	public boolean uploadimage(HttpServletRequest request)
+			throws FileUploadException {
+
+		System.out.println("----- " + new Date() + " -----");
+
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		print("Multipart: " + isMultipart);
+		if (!isMultipart)
+			return false;
+		FileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		@SuppressWarnings("unchecked")
+		List<FileItem> items = upload.parseRequest(request);
+
+		Iterator<FileItem> it = items.iterator();
+		while (it.hasNext()) {
+			DiskFileItem item = (DiskFileItem) it.next();
+
+			String directory = "";
+			print("-FILE- " + item.toString());
+
+			System.out.println(item.getName()); // affiche le fichier
+			String fileName = item.getName();
+			File file = new File(fileName);
+
+			// Get the date the picture was uploaded on:
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "-"
+					+ cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.YEAR);
+
+			String currentdir = System.getProperty("user.dir")
+					+ "\\MealPictures\\" + date;
+			new File(currentdir).mkdirs();
+
+			file = new File(currentdir, file.getName());
+			// enregistrement dans /tmp/ si non vide
+			try {
+				if (item.getInputStream().read() > -1) {
+					item.write(file);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return true;
+	}
+
+	private <O> O print(O obj) {
+		System.out.println(obj);
+		return obj;
 	}
 
 	// @Override
