@@ -20,13 +20,20 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Permission panel
+ * @status ugly, but fine
+ * @author gldalmas@gmail.
+ */
 public class SocialPermissionDialog extends Dialog {
 	private Context context_;
 	private final SocialPermissionDialog this_;
@@ -34,6 +41,10 @@ public class SocialPermissionDialog extends Dialog {
 	private final ArrayList<Permission> permissions_;
 	private final ArrayList<User> selectedUsers_;
 	private final Activity parentActivity_;
+	private boolean updated_;
+	
+	private final Button chatButton;
+	private final Button okButton;
 
 	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, Activity parentActivity) {
 		super(context);
@@ -43,29 +54,37 @@ public class SocialPermissionDialog extends Dialog {
 		this.permissions_ = permissions;
 		this.parentActivity_ = parentActivity;
 		this.this_ = this;
+		this.updated_ = false;
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		setContentView(R.layout.social_permission_dialog);
-
-		// Make the dialog box fit the width of the phone.
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-
-		// Dialog box is closed when we touch outside.
 		setCanceledOnTouchOutside(true);
 		setDialogContent();
+		
+		chatButton = (Button) findViewById(R.id.social_friends_chat_button);
+		okButton = (Button) findViewById(R.id.social_friends_ok);
 	}
 
 	private void setDialogContent() {
-
-		TextView title = (TextView) findViewById(R.id.social_friends_title);
-		
-		title.setText(getTitle());
+		//Sets title accordingly
+		((TextView) findViewById(R.id.social_friends_title)).setText(getTitle());
 		
 		if(permissions_ != null) {
 			LinearLayout permissionHolder = (LinearLayout) findViewById(R.id.social_friends_permissions_holder);
 			int i = 0;
 			for(Permission permission : permissions_) {
 				permissionBoxes_[i] = new CheckBox(context_);
+				permissionBoxes_[i].setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(!updated_) {
+							updated_ = true;
+							okButton.setEnabled(true);
+						}
+					}
+				});
+				
 				TextView tv = new TextView(context_);
 				tv.setText(permission.getName());
 				
@@ -80,14 +99,12 @@ public class SocialPermissionDialog extends Dialog {
 		}
 		
 		// BOUTON chat
-		Button chatButton = (Button) findViewById(R.id.social_friends_chat_button);
 		chatButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				
 			}
 		});
 		
-		Button okButton = (Button) findViewById(R.id.social_friends_ok);
 		okButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				AuthToken token = AuthenticationPlugin.getAuthToken(context_);
@@ -122,6 +139,8 @@ public class SocialPermissionDialog extends Dialog {
 			}
 		});
 		
+		
+		//If only one user is selected, we try to get permissions that are already assigned to him
 		if(selectedUsers_.size() == 1) {
 			AuthToken token = AuthenticationPlugin.getAuthToken(context_);
 			RequestParameters rp = new RequestParameters();
@@ -150,8 +169,9 @@ public class SocialPermissionDialog extends Dialog {
 			
 			if(grantedPermissions != null) {
 				for(int i = 0; i < permissions_.size(); i++) {
-					if(grantedPermissions.contains(permissions_.get(i))) permissionBoxes_[i].toggle();
-				}
+					if(grantedPermissions.contains(permissions_.get(i))) permissionBoxes_[i].setChecked(true);
+					else permissionBoxes_[i].setChecked(false);
+				} 
 			}
 		}
 	}

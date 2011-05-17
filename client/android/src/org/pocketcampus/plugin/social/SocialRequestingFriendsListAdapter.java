@@ -18,6 +18,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+/**
+ * Adapter for the elements of the requesting friends sublist, in the friend list activity.
+ * @status ok
+ * @author gldalmas@gmail.com
+ */
 public class SocialRequestingFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
 	private LinkedList<User> requestingUsers_;
@@ -34,7 +39,6 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 	
 	@Override
 	public Filter getFilter() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -50,7 +54,6 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

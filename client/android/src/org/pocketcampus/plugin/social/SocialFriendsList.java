@@ -7,6 +7,7 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
 
 import android.app.Activity;
@@ -14,7 +15,6 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,6 +23,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Friends list
+ * @status ok
+ * @author gldalmas@gmail.com
+ */
 public class SocialFriendsList extends ListActivity {
 	private static Activity this_;
 	private static SocialListSeparator listSeparator_;
@@ -38,12 +43,16 @@ public class SocialFriendsList extends ListActivity {
 		
 		setupActionBar((ActionBar) findViewById(R.id.actionbar));
 		
+		//Session info
+		AuthToken token = AuthenticationPlugin.getAuthToken(this_);
 		RequestParameters rp = new RequestParameters();
-		rp.addParameter("username", PreferenceManager.getDefaultSharedPreferences(this).getString("username", null));
-		rp.addParameter("sessionId", PreferenceManager.getDefaultSharedPreferences(this).getString("sessionId", null));
+		rp.addParameter("username", token.getUsername());
+		rp.addParameter("sessionId", token.getSessionId());
 		
+		//Retrieve friends list
 		SocialPlugin.getSocialRequestHandler().execute(new FriendsListsRequest(), "friends", rp);
 		
+		//Button for toggling all check boxes at once
 		Button buttonSelect = (Button) findViewById(R.id.friendsListButtonToggle);
 		buttonSelect.setOnClickListener(new OnClickListener() {
 			@Override
@@ -52,16 +61,16 @@ public class SocialFriendsList extends ListActivity {
 			}
 		});
 
+		//Open permission panel for selected friends
 		Button buttonPermission = (Button) findViewById(R.id.friendsListButtonPerm);
 		buttonPermission.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				Intent friendsPremissionsIntent = new Intent(thisActivity_, FriendsPermissions.class);
-//				friendsPremissionsIntent.putExtra("usernames", friendsListAdapter_.getSelectedFriends());
-//				startActivity(friendsPremissionsIntent);
+				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(friendsListAdapter_), "permissions", new RequestParameters());
 			}
 		});
 
+		//Remove friends from contact list
 		Button buttonDelete = (Button) findViewById(R.id.friendsListButtonDel);
 		buttonDelete.setOnClickListener(new OnClickListener() {
 			@Override
@@ -110,15 +119,21 @@ public class SocialFriendsList extends ListActivity {
 				listSeparator_ = new SocialListSeparator(this_);
 				
 				if(!friendsLists.getRequesting().isEmpty()) {
+					//Starting adapter for requesting friends list
 					requestingFriendsListAdapter_ = new SocialRequestingFriendsListAdapter(this_, friendsLists.getRequesting(), this_);
 					listSeparator_.addSection(this_.getString(R.string.social_requesting_friends_list_separator), requestingFriendsListAdapter_);
 				}
 				if(!friendsLists.getFriends().isEmpty()) {
+					//Starting adapter for friends list
 					friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsLists.getFriends(), this_);
 					listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
 				}
 				setListAdapter(listSeparator_);
 				getListView().setTextFilterEnabled(true);
+			} else {
+				//If request fails, we close connection.
+				AuthenticationPlugin.logout(this_);
+				this_.finish();
 			}
 		}
 	}
@@ -134,6 +149,7 @@ public class SocialFriendsList extends ListActivity {
 
 			@Override
 			public int getDrawable() {
+				//TODO: logout icon
 				return R.drawable.refresh;
 			}
 		});

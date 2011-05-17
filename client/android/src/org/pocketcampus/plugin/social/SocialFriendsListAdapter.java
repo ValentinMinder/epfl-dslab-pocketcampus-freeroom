@@ -24,34 +24,40 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Adapter for the elements of the friends sublist, in the friend list activity.
+ * 
+ * @status ok
+ * @author gldalmas@gmail.com
+ */
 public class SocialFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
 	private LinkedList<User> friends_;
 	private Activity socialFriendsListActivity_;
 	private int checkCount_;
-	private LinkedList<User> selectedFriends;
+	private LinkedList<User> selectedFriends_;
 	private ArrayList<ViewHolder> holders_;
+	private SocialFriendsListAdapter this_;
 	
 	public SocialFriendsListAdapter(Context context, LinkedList<User> friends, Activity socialFriendsListActivity) {
 		this.mInflater_ = LayoutInflater.from(context);
 		this.friends_ = friends;
 		this.socialFriendsListActivity_ = socialFriendsListActivity;
 		this.checkCount_ = 0;
-		this.selectedFriends = new LinkedList<User>();
+		this.selectedFriends_ = new LinkedList<User>();
 		this.holders_ = new ArrayList<ViewHolder>();
+		this.this_ = this;
 	}
 	
 	
 	@Override
 	public Filter getFilter() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -67,7 +73,6 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -97,54 +102,38 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		final CheckBox _selected = holder.selected;
-		convertView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_selected.toggle();
-			}
-		});
-
+		//Sets the name
+		holder.username.setText(friends_.get(position).toString());
 		
+		
+		final CheckBox _selected = holder.selected;
+//		convertView.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				_selected.toggle();
+//			}
+//		});
+
 		final View _convertView = convertView;
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
 				_selected.toggle();
 			}
 		});
 		
+		//Open permission panel for a single friend if long click
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(), "permissions", new RequestParameters());
+				LinkedList<User> clickedFriend = new LinkedList<User>();
+				clickedFriend.add(friends_.get(position));
+				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(this_, clickedFriend), "permissions", new RequestParameters());
 				return false;
 			}
-			
-			class PermissionRequest extends DataRequest {
-				@Override
-				protected void doInUiThread(String result) {
-					Collection<Permission> permissions;
-					
-					if(result != null) {
-						Gson gson = new Gson();
-						try{
-							permissions = gson.fromJson(result, new TypeToken<Collection<Permission>>(){}.getType());
-						} catch (JsonSyntaxException e) {
-							permissions = null;
-							e.printStackTrace();
-						}
-					} else {
-						permissions = null;
-					}
-					Toast.makeText(socialFriendsListActivity_, ""+permissions.size(), Toast.LENGTH_LONG).show();
-					if(permissions != null) showDialog(position, permissions);
-				}
-			}
 		});
-		
-		// When you click on a menu description you'll get more info
+
+		//Updates button state and selected friends list on every status change
 		holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			Button buttonPermission = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonPerm);
 			Button buttonDelete = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonDel);
@@ -152,10 +141,9 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if(isChecked) {
-//					_convertView.setSelected(true);
 					_convertView.setPressed(true);
 					if(checkCount_ == 0) {
-						//buttons are disabled enabled if some friends are selected
+						//buttons are enabled if some friends are selected
 						if(socialFriendsListActivity_ instanceof SocialFriendsList) {
 							if(!buttonPermission.isEnabled())
 								buttonPermission.setEnabled(true);
@@ -164,10 +152,9 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 						}
 					}
 					
-					selectedFriends.add(friends_.get(position));
+					selectedFriends_.add(friends_.get(position));
 					++checkCount_;
 				} else {
-//					_convertView.setSelected(false);
 					_convertView.setPressed(false);
 					if(checkCount_ == 0) { //hum...
 					} else {
@@ -181,49 +168,84 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 							}
 						}
 						
-						selectedFriends.remove(friends_.get(position));
+						selectedFriends_.remove(friends_.get(position));
 						--checkCount_;
 					}
 				}
 			}
 		});
 
-		// Bind the data efficiently with the holder.
-		User currentUser = friends_.get(position);
-
-		holder.username.setText(currentUser.toString());
-
 		return convertView;
 	}
 	
 	public void toggleAll() {
-		boolean uncheckAll = true;
+		boolean checkAll = true;
+		int i = 0;
+		//We uncheck every checkbox...
 		for(ViewHolder holder : holders_) {
-			if(!holder.selected.isChecked()) {
-				holder.selected.toggle();
-				uncheckAll = false;
+			if(holder.selected.isChecked()) {
+				holder.selected.setChecked(false);
+				checkAll = false;
+				i++;
 			}
 		}
-		if(uncheckAll) {
+		//...except if every cb is already unchecked, in that case we check all.
+		if(checkAll) {
 			for(ViewHolder holder : holders_) {
-				holder.selected.toggle();
+				holder.selected.setChecked(true);
 			}
 		}
 	}
 	
-	private void showDialog(int pos, Collection<Permission> permissions){
-		ArrayList<User> list = new ArrayList<User>();
-		list.add(friends_.get(pos));
-		SocialPermissionDialog r = new SocialPermissionDialog(socialFriendsListActivity_, list, new ArrayList<Permission>(permissions), socialFriendsListActivity_);
+	//Displays permission panel
+	public void showDialog(Collection<User> users, Collection<Permission> permissions){
+		SocialPermissionDialog r = new SocialPermissionDialog(socialFriendsListActivity_, new ArrayList<User>(users), new ArrayList<Permission>(permissions), socialFriendsListActivity_);
 		r.show();
 	}
-	//(final Context context, Collection<User> selectedUsers, Collection<Permission> permissions)
+	
 	private static class ViewHolder {
 		TextView username;
 		CheckBox selected;
 	}
 	
 	public LinkedList<User> getSelectedFriends() {
-		return selectedFriends;
+		return selectedFriends_;
+	}
+}
+
+//Retrieve the list of permission ids available in the system
+class PermissionRequest extends DataRequest {
+	private final SocialFriendsListAdapter adapter_;
+	private final Collection<User> users_;
+	
+	//Constructor using selected friends list of the adapter (usual)
+	public PermissionRequest(SocialFriendsListAdapter adapter) {
+		adapter_ = adapter;
+		users_ = adapter.getSelectedFriends();
+	}
+	
+	//Constructor using particular selected friends list (for the long click listener)
+	public PermissionRequest(SocialFriendsListAdapter adapter, Collection<User> users) {
+		adapter_ = adapter;
+		users_ = users;
+	}
+	
+	@Override
+	protected void doInUiThread(String result) {
+		Collection<Permission> permissions;
+		
+		if(result != null) {
+			Gson gson = new Gson();
+			try{
+				permissions = gson.fromJson(result, new TypeToken<Collection<Permission>>(){}.getType());
+			} catch (JsonSyntaxException e) {
+				permissions = null;
+				e.printStackTrace();
+			}
+		} else {
+			permissions = null;
+		}
+		
+		if(permissions != null) adapter_.showDialog(users_, permissions);
 	}
 }
