@@ -376,9 +376,9 @@ public class FoodPlugin extends PluginBase {
 			}
 			break;
 		case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
-			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
-			break;
+//			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
+//			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
+//			break;
 		}
 	}
 

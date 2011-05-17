@@ -13,6 +13,7 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.food.pictures.PictureTypeDialog;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
@@ -22,6 +23,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.opengl.Visibility;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -106,22 +108,27 @@ public class MenuDialog extends Dialog {
 		 * meal -the queue (for the restaurant corresponding to this meal)
 		 */
 		// Take a picture of the meal
-//		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
-//		takePic.setEnabled(photoButtonsEnabled_);
-//		takePic.setOnClickListener(new View.OnClickListener() {
-//
-//			public void onClick(View v) {
-//				PictureTaker pictureTaker = new PictureTaker(context_,
-//						displayedMeal_, PictureType.Meal);
-//
-//				pictureTaker.takePicture();
-////				Intent seePicture = new Intent(getContext(),
-////						FoodPictureActivity.class);
-////				context_.startActivity(seePicture);
-////				PictureFetcher fetcher = new PictureFetcher(PictureType.Meal, displayedMeal_);
-////				Drawable[] pictures = fetcher.getPictures();
-//			}
-//		});
+		ImageButton takePic = (ImageButton) findViewById(R.id.food_menudialog_Pictures);
+		takePic.setVisibility(View.GONE);
+		takePic.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				PictureTypeDialog dialog = new PictureTypeDialog(context_,
+						displayedMeal_);
+				dialog.show();
+
+				// PictureTaker pictureTaker = new PictureTaker(context_,
+				// displayedMeal_, PictureType.Meal);
+				//
+				// pictureTaker.takePicture();
+				// Intent seePicture = new Intent(getContext(),
+				// FoodPictureActivity.class);
+				// context_.startActivity(seePicture);
+				// PictureFetcher fetcher = new PictureFetcher(PictureType.Meal,
+				// displayedMeal_);
+				// Drawable[] pictures = fetcher.getPictures();
+			}
+		});
 
 		progressDialog_.dismiss();
 

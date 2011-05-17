@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.pocketcampus.plugin.food.pictures.PictureTaker.PictureType;
+import org.pocketcampus.plugin.food.pictures.CameraCapture.PictureType;
 import org.pocketcampus.shared.plugin.food.Meal;
 
 import android.graphics.drawable.Drawable;

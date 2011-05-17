@@ -34,6 +34,7 @@
 		<activity android:name=".plugin.food.FoodPlugin" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.food.FoodPreference" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.food.Suggestions" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.food.pictures.CameraCapture" android:screenOrientation="portrait"></activity>
 		<!-- <activity android:name=".plugin.food.pictures.FoodPictureActivity" android:screenOrientation="portrait"></activity> -->
 
 		<!-- Map Plugin -->
