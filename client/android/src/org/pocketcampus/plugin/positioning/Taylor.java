@@ -97,7 +97,7 @@ private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 }
 
 
-private Position taylorEquation() {
+public Position taylorEquation() {
 	
 	Matrix transposeA;
 	Matrix inverseProduct;
@@ -120,5 +120,6 @@ private Position taylorEquation() {
 	}else return null;
 	
 }
+
 	
 }

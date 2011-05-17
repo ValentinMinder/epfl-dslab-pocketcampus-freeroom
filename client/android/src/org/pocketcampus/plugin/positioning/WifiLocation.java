@@ -211,6 +211,25 @@ public class WifiLocation {
 	}
 	
 	/**
+	 * getStronguestPosition(List<Accesspoint> list) gives the position of the Ap which gives the high
+	 * intensity of signal depending on the list
+	 * 
+	 * */
+	public AccessPoint getStrongestAP(List<AccessPoint> listAP) {
+		AccessPoint Ap = null;
+		int lev = 0;
+		for (AccessPoint p : listAP) {
+			if (p.getSignalLevel() > lev) {
+				lev = p.getSignalLevel();
+				Ap = p;
+			}
+		}
+		
+		//System.out.println("AP Nearest Distance:"+Ap.getDistance()+" Level : "+Ap.getSignalLevel()+" Name :"+Ap.getSSID());
+		return Ap;
+	}
+	
+	/**
 	 * getWeakestPosition() gives the position of the Ap which gives the low
 	 * intensity of signal
 	 * 
@@ -333,6 +352,27 @@ public class WifiLocation {
 	
 	
 	
+	/**
+	 * getTheBestFourth()
+	 * @return list containing 4 AccessPoints with the best signal
+	 */
+	
+	public List<AccessPoint> getTheBestFourth(){
+		List<AccessPoint> apList = getAccessPoints();
+		List<AccessPoint> best4List = new ArrayList<AccessPoint>();
+		
+		int i=4;
+		
+		while(i>0){
+			AccessPoint bestAp = getStrongestAP(apList);
+			best4List.add(bestAp);
+			apList.remove(bestAp);
+			i--;
+		}
+		return best4List;   
+	}
+	
+	
 
 	public Position adjustPosition(Position position){
 		Position result = null;
@@ -346,6 +386,22 @@ public class WifiLocation {
 
 
 
+		return result;
+	}
+	
+	
+	public Position getWifiLocationPerTaylorSerie(){
+		List<AccessPoint> apList = new ArrayList<AccessPoint>();
+		Taylor taylorEq;
+		apList = getTheBestFourth();
+		AccessPoint ap1 = apList.get(0);
+		AccessPoint ap2 = apList.get(1);
+		AccessPoint ap3 = apList.get(2);
+		AccessPoint ap4 = apList.get(3);
+		
+		taylorEq = new Taylor(ap1, ap2, ap3, ap4);
+		
+		Position result = taylorEq.taylorEquation();
 		return result;
 	}
 
