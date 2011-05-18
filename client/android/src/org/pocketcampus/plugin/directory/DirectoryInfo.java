@@ -30,7 +30,7 @@ public class DirectoryInfo extends PluginInfo {
 
 	@Override
 	public Icon getMiniIcon() {
-		return new Icon(R.drawable.directory_mini1);
+		return new Icon(R.drawable.directory_normal_mini);
 	}
 
 	@Override
