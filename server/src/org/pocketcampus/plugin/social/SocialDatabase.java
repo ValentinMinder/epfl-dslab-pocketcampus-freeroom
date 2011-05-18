@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.pocketcampus.core.database.handlers.exceptions.SQLIntegrityConstraintViolationExceptionHandler;
@@ -11,13 +12,14 @@ import org.pocketcampus.core.database.handlers.requests.CountRequestHandler;
 import org.pocketcampus.core.database.handlers.requests.QueryRequestHandler;
 import org.pocketcampus.core.database.handlers.requests.UpdateRequestHandler;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.plugin.social.User;
 
 public class SocialDatabase {
 	private static final String contactTable = "social_contact";
 	private static final String pendingTable = "social_pending";
 	private static final String permissionTable = "social_permissions";
-//	private static final String positionTable = "social_positions";
+	private static final String positionTable = "social_positions";
 
 	/**
 	 * @param a
@@ -285,5 +287,81 @@ public class SocialDatabase {
 		};
 
 		return rf.execute();
+	}
+	
+	public static void updatePosition(final User user, final double longitude, final double latitude, final double altitude) throws ServerException {
+		if (user == null) throw new IllegalArgumentException("null user");
+		
+		//works if user is primary key
+		String sqlRequest = "REPLACE INTO `"+positionTable+"` (`user`, `latitude`, `longitude`, `altitude`) VALUES (?, ?, ?, ?)";
+		
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+			
+			@Override
+			public void prepareStatement(PreparedStatement stmt) throws SQLException {
+				stmt.setString(1, user.getIdFormat());
+				stmt.setDouble(2, latitude);
+				stmt.setDouble(3, longitude);
+				stmt.setDouble(4, altitude);
+				
+				System.out.println("HEY HEY HEY - "+stmt.toString());
+			}
+		};
+		
+		rf.execute();
+	}
+	
+	public HashMap<User, Position> getPositions(final Collection<User> users, int timeout) throws ServerException {
+		if (users == null || users.size() == 0 || users.contains(null) || timeout < 0)
+			throw new IllegalArgumentException();
+		
+		StringBuilder requestBuilder = new StringBuilder("SELECT `user`, `latitude`, `longitude`, `altitude` FROM `"+positionTable+"` WHERE (");
+		for (int i = 0; i < users.size() - 1; i++) {
+			requestBuilder.append("`user` = ? OR ");
+		}
+		requestBuilder.append("`user` = ?) AND ");
+		requestBuilder.append("`last_update` > (SUBTIME(NOW(), SEC_TO_TIME(" + timeout + ")))");
+		
+		String sqlRequest = requestBuilder.toString();
+		
+		
+		QueryRequestHandler<HashMap<User, Position>> rf = new QueryRequestHandler<HashMap<User, Position>>(sqlRequest) {
+
+			@Override
+			public void prepareStatement(PreparedStatement stmt)
+					throws SQLException {
+				
+				int questionMarkIndex = 1;
+				for (User u : users) {
+					stmt.setString(questionMarkIndex, u.getIdFormat());
+					
+					questionMarkIndex++;
+				}
+			}
+
+			@Override
+			public HashMap<User, Position> processResult(ResultSet result) throws SQLException, ServerException {
+
+				HashMap<User, Position> out = new HashMap<User, Position>();
+				
+				result.beforeFirst();
+				while (result.next()) {
+					double latitude = result.getDouble("latitude");
+					double longitude = result.getDouble("longitude");
+					double altitude = result.getDouble("altitude");
+					User user = new User(result.getString("user"));
+					
+					Position position = new Position(latitude, longitude, altitude);
+					out.put(user, position);
+				}
+				
+				return out;
+			}
+			
+		};
+		
+		HashMap<User, Position> out = rf.execute();
+		
+		return out;
 	}
 }

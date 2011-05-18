@@ -245,4 +245,38 @@ public class Social implements IPlugin {
 			}
 		}
 	}
+	
+	@PublicMethod
+	public boolean updatePosition(HttpServletRequest request) {
+		boolean status = false;
+		
+		Toolkit.getDefaultToolkit().beep(); 
+		
+		String username = request.getParameter("username");
+		String sessionId = request.getParameter("sessionId");
+		
+		if(username != null && sessionId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
+			User user = Authentication.identify(username);
+			double longitude = 0; 
+			double latitude = 0;
+			double altitude = 0;
+			
+			try {
+				longitude = Double.parseDouble(request.getParameter("longitude"));
+				latitude = Double.parseDouble(request.getParameter("latitude"));
+				altitude = Double.parseDouble(request.getParameter("altitude"));
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				return false;
+			}
+			try {
+				SocialDatabase.updatePosition(user, longitude, latitude, altitude);
+			} catch(ServerException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		
+		return status;
+	}
 }
