@@ -407,7 +407,7 @@ public class WifiLocation {
 		List<AccessPoint> apList2 = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();
 		Taylor taylorEq;
-		apList =getAccessPoints();
+		apList =getDistinctApList();//getAccessPoints();
 			
 		apList2 = getTheBestFourth(apList);
 		AccessPoint ap1 = apList2.get(0);
@@ -457,6 +457,26 @@ public class WifiLocation {
 		result2 = new Position(x/positionList.size(),y/positionList.size(),0.0);
 		System.out.println("Position list size ::::::::::::"+positionList.size());
 		return result2;
+	}
+	
+	
+	
+	public List<AccessPoint> getDistinctApList(){
+		List<AccessPoint>  apList = new ArrayList<AccessPoint>();
+		List<AccessPoint>  distinctApList = new ArrayList<AccessPoint>();
+		List<Position> positionList = new ArrayList<Position>();
+		apList = getAccessPoints();
+		
+		for(AccessPoint currentAp : apList){
+			
+			if(!positionList.contains(currentAp.position())){
+				distinctApList.add(currentAp);
+				positionList.add(currentAp.position());
+			}
+		}
+		System.out.println("Distinct : "+distinctApList.size());
+		System.out.println("Aplist   : "+apList.size());
+		return distinctApList;
 	}
 
 }
