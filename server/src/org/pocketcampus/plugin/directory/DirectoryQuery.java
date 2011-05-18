@@ -1,24 +1,20 @@
 package org.pocketcampus.plugin.directory;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
 import org.pocketcampus.shared.plugin.directory.*;
 
 import com.unboundid.ldap.sdk.BindResult;
-import com.unboundid.ldap.sdk.ExtendedResult;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.ResultCode;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
 import com.unboundid.ldap.sdk.SearchScope;
-import com.unboundid.ldap.sdk.extensions.StartTLSExtendedRequest;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
 
@@ -36,38 +32,40 @@ public class DirectoryQuery {
 		
 		LDAPConnection ldap;
 		try {
-			//ldap = new LDAPConnection();
+			ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
 		
-			SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
-			SSLSocketFactory socketFactory = sslUtil.createSSLSocketFactory();
-			ldap = new LDAPConnection(socketFactory,
-			     "ldap.epfl.ch", 636);
+//			SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
+//			SSLSocketFactory socketFactory = sslUtil.createSSLSocketFactory();
+//			ldap = new LDAPConnection(socketFactory,
+//			     "ldap.epfl.ch", 636);
 		
 		
 					
 			//auth part
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(uid="+username+")");
-			
-
-			List<SearchResultEntry> lresults = searchResult.getSearchEntries();
-
-			if(lresults.isEmpty()) {
-				System.out.println("Wrong username.");
-				ldap.close();
-				return results;
-			}
-
-			String dn = lresults.get(0).getDN();
-
-			BindResult bResult = ldap.bind(dn, password);
-				
-			if(bResult.getResultCode().intValue() == ResultCode.SUCCESS.intValue()) {
-			}else{
-				//wrong password
-				System.out.println("Wrong password.");
-				ldap.close();
-				return results; 
-			}
+//			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(|(uid="+username+")(uniqueIdentifier="+username+"))");
+//			List<SearchResultEntry> lresults = searchResult.getSearchEntries();
+//
+//			if(lresults.isEmpty()) {
+//				System.out.println("Wrong username.");
+//				ldap.close();
+//				return results;
+//			}
+//
+//			String dn = lresults.get(0).getDN();
+//
+//			BindResult bResult = ldap.bind(dn, password);
+//				
+//			if(bResult.getResultCode().intValue() == ResultCode.SUCCESS.intValue()) {
+//				//
+//				System.out.println("+*+");
+//				
+//			}else{
+//				//wrong password
+//				System.out.println("Wrong password.");
+//				ldap.close();
+//				return results; 
+//			}
 				
 			//building the search query
 			String searchQuery;
@@ -88,17 +86,25 @@ public class DirectoryQuery {
 			
 			// search part			
 			// TODO add the sizeLimit param
-			searchResult = ldap.search("o=epfl,c=ch",
+			SearchResult searchResult = ldap.search("o=epfl,c=ch",
 										SearchScope.SUB,
 										searchQuery);
 			
+			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
+			String t[] = new String[2];
 			for (SearchResultEntry e : searchResult.getSearchEntries())
 			{
+				String web = e.getAttributeValue("labeledURI");
+				if(web != null){
+					t =  web.split(" ");
+					web = t[0];
+				}
+				
 				Person p = new Person(
 						  e.getAttributeValue("givenName"),
 						  e.getAttributeValue("sn"),
 						  e.getAttributeValue("mail"),
-						  e.getAttributeValue("labeledURI"),
+						  web,
 						  e.getAttributeValue("telephoneNumber"),
 						  e.getAttributeValue("roomNumber"),
 						  e.getAttributeValue("uniqueIdentifier"));
@@ -110,14 +116,15 @@ public class DirectoryQuery {
 			
 			ldap.close();
 			
-		} catch (GeneralSecurityException e1) {
-			// ssl problem
-			
-		} catch (LDAPException e) {
+		} 
+//		catch (GeneralSecurityException e1) {
+//			// ssl problem
+//			
+//		}
+		catch (LDAPException e) {
 			//ldap problem
-		}
-		
-		
+			System.out.println("ldap exception");
+		} 
 		return results;
 	}
 	

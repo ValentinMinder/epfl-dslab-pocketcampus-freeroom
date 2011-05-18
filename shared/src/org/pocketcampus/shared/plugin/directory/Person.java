@@ -12,13 +12,13 @@ public class Person implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3188824960701486209L;
-	String first_name;
-	String last_name;
-	String mail;
-	String web;
+	public String first_name;
+	public String last_name;
+	public String mail;
+	public String web;
 	public String phone_number;
-	String room;
-	String uid;
+	public String room;
+	public String uid;
 	//List<PersonStatus> status;
 	
 	public Person(String first_name, String last_name, String mail, String web, String phone_number, String room, String uid) {
@@ -32,18 +32,18 @@ public class Person implements Serializable {
 		this.uid = uid;
 	}
 	
-	public Person(String n){
-		first_name = n;
-		
-		
-		//status = new ArrayList<PersonStatus>();
-		//status.add(new PersonStatus("etudiant", randomString() ));
-		
-	}
-	
-	public Person(){
-		
-	}
+//	public Person(String n){
+//		first_name = n;
+//		
+//		
+//		//status = new ArrayList<PersonStatus>();
+//		//status.add(new PersonStatus("etudiant", randomString() ));
+//		
+//	}
+//	
+//	public Person(){
+//		
+//	}
 	
 	
 
@@ -65,7 +65,22 @@ public class Person implements Serializable {
 		"Room: " + room + "\n" ;
 	}
 	
-	private String randomString(){
-		return "no random value";
+
+	public boolean hasMail() {
+		return mail != null;
 	}
+
+	public boolean hasPhone() {
+		return phone_number != null;
+	}
+
+	public boolean hasWeb() {
+		return web != null;
+	}
+
+	public boolean hasOffice() {
+		return room != null;
+	}
+	
+	
 }

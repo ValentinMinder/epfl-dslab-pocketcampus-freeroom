@@ -1,35 +1,11 @@
 package org.pocketcampus.plugin.directory;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Type;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.unboundid.ldap.sdk.ExtendedResult;
-import com.unboundid.ldap.sdk.LDAPConnection;
-import com.unboundid.ldap.sdk.LDAPException;
-import com.unboundid.ldap.sdk.ResultCode;
-import com.unboundid.ldap.sdk.SearchResult;
-import com.unboundid.ldap.sdk.SearchResultEntry;
-import com.unboundid.ldap.sdk.SearchScope;
-import com.unboundid.ldap.sdk.extensions.StartTLSExtendedRequest;
-import com.unboundid.util.ssl.SSLUtil;
-import com.unboundid.util.ssl.TrustAllTrustManager;
-
-//import org.pocketcampus.core.router.IServerBase;
-//import org.pocketcampus.core.router.PublicMethod;
 import org.pocketcampus.shared.plugin.directory.*;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
@@ -38,74 +14,117 @@ import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.directory.DirectoryQuery;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 
+import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.LDAPSearchException;
+import com.unboundid.ldap.sdk.SearchResult;
+import com.unboundid.ldap.sdk.SearchResultEntry;
+import com.unboundid.ldap.sdk.SearchScope;
+
 
 /**
  * Servlet implementation class Directory
  */
-public class Directory implements IPlugin, IMapElementsProvider {
+public class Directory implements IPlugin{
 	private static final long serialVersionUID = 14545643453L;
-     
-
-
-	public void init() throws ServletException {
+    
+	LDAPConnection ldap;
+	
+	public Directory(){
+		try {
+			ldap = new LDAPConnection();
+			ldap.connect("ldap.epfl.ch", 389);
+		}catch (LDAPException e) {
+			System.out.println("Ldap exception");
+		}
 	}
 	
 	@PublicMethod
 	public LinkedList<Person> bla(HttpServletRequest request){
-		// Set a cookie for the user, so that the counter does not increate
-		// everytime the user press refresh
-//		HttpSession session = request.getSession(true);
-		// Set the session valid for 5 secs
-//		session.setMaxInactiveInterval(5);
-//		response.setContentType("text/plain");
-//		PrintWriter out = response.getWriter();
+
 		String firstName = request.getParameter("firstName");
     	String lastName = request.getParameter("lastName");
 		String sciper = request.getParameter("sciper");
-    	String username = request.getParameter("username");
-    	String pwd = request.getParameter("password");
     	
-    	LinkedList<Person> res;
-		if(sciper != null)
-			res = DirectoryQuery.searchBySciper(sciper, username, pwd);
-		else
-			res = DirectoryQuery.searchByName(firstName, lastName, username, pwd);
+//		only if we want the auth part
+//		String username = request.getParameter("username");
+//    	String pwd = request.getParameter("password");
+    	
+		
+		LinkedList<Person> res;
+//		if(sciper != null){
+////			res = DirectoryQuery.searchBySciper(sciper, username, pwd);
+//			res = DirectoryQuery.searchBySciper(sciper, null, null);
+//		}else{
+////			res = DirectoryQuery.searchByName(firstName, lastName, username, pwd);
+//			res = DirectoryQuery.searchByName(firstName, lastName, null, null);
+//		}
 		
 		
 //		Gson gson = new Gson();
 //		
 //		Type listType = new TypeToken<ArrayList<Person>>() {}.getType();
 //		System.out.println( gson.toJson(res, listType) );
-//		
-		
+
+		res = search(sciper, firstName, lastName);
 		
 		return res;
-		
-		
-		
-		
-		
-	}
-
-	public void destroy() {
-		
-	}
-
-	@Override
-	public List<MapElementBean> getLayerItems(int layerId) {
-		// TODO Auto-generated method stub
-		return new ArrayList<MapElementBean>();
-	}
-
-	@Override
-	public List<MapLayerBean> getLayers() {
-		// TODO Auto-generated method stub
-		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Person", "", this, 1, 3600, false));
-		return l;
 	}
 	
 	
+	private LinkedList<Person> search(String sciper, String first_name, String last_name){
+		LinkedList<Person> results = new LinkedList<Person>();
+		
+		String searchQuery;
+		if(sciper != null){
+			searchQuery = "(uniqueIdentifier="+sciper+")";
+		}else if(first_name != null && last_name != null){
+			searchQuery = "(&(sn="+last_name+ ")(givenName="+first_name+"))";
+		}else if(first_name != null){
+			searchQuery = "(givenName="+first_name+")";
+		}else if(last_name != null)
+			searchQuery = "(sn="+last_name+")";
+		else{
+			return results;
+			
+		}
+		
+		// search part			
+		// TODO add the sizeLimit param
+		SearchResult searchResult;
+		try {
+			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
 
-
+			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
+			String t[] = new String[2];
+			for (SearchResultEntry e : searchResult.getSearchEntries())
+			{
+				String web = e.getAttributeValue("labeledURI");
+				if(web != null){
+					t =  web.split(" ");
+					web = t[0];
+				}
+				
+				Person p = new Person(
+						e.getAttributeValue("givenName"),
+						e.getAttributeValue("sn"),
+						e.getAttributeValue("mail"),
+						web,
+						e.getAttributeValue("telephoneNumber"),
+						e.getAttributeValue("roomNumber"),
+						e.getAttributeValue("uniqueIdentifier"));
+				
+				if( !results.contains(p))
+					results.add(p);
+			}
+		} catch (LDAPSearchException e1) {
+			System.out.println("ldap search problem");
+		}
+		
+		return results;
+		
+		
+		
+		
+	}
 }
