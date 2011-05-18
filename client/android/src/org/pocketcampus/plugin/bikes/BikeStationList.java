@@ -7,19 +7,13 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.plugin.Core;
-import org.pocketcampus.plugin.mainscreen.IAllowsID;
-import org.pocketcampus.plugin.mainscreen.MainscreenAdapter;
-import org.pocketcampus.plugin.mainscreen.MainscreenNews;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class BikeStationList {
@@ -43,18 +37,28 @@ public class BikeStationList {
 			@Override
 			public void onCancelled() {
 				Log.d("BikeStationList", "Task cancelled");
-				
+				BikesPlugin.refreshed();
 			}
 
 			@Override
 			protected void doInUiThread(String result) {
 				Log.d("BikeStationList", "Loading bikes");
-
-				Type listType = new TypeToken<List<BikeStation>>() {}.getType();
-				Gson gson = new Gson();
-				
+			
+				if(result == null) {
+					cancel(true);
+					Toast.makeText(main_.getApplicationContext(),main_.getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
+					return;
+				}
 								
-				bikeStations_ = gson.fromJson(result, listType);
+				Type listType = new TypeToken<List<BikeStation>>() {}.getType();
+				
+				try {
+					bikeStations_ = Json.fromJson(result, listType);
+				} catch (JsonException e) {
+					cancel(true);
+					Toast.makeText(main_.getApplicationContext(),main_.getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
+					return;
+				}
 				
 				Log.d("BikeStationList","Bikes loaded");
 

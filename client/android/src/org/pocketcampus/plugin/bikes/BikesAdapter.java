@@ -24,7 +24,8 @@ public class BikesAdapter extends BaseAdapter {
 		private List<BikeStation> stations_;
 				
 		private int selected_;
-
+		private Context ctx_;
+		
 		/**
 		 * Adapter constructor
 		 * @param context Context of the application
@@ -32,7 +33,9 @@ public class BikesAdapter extends BaseAdapter {
 		 */
 		public BikesAdapter(Context context, int selected, List<BikeStation> bikeStations) {
 			super();
-						
+					
+			this.ctx_ = context;
+			
 			this.stations_ =  bikeStations;
 						
 			mInflater_ = LayoutInflater.from(context);
@@ -63,7 +66,7 @@ public class BikesAdapter extends BaseAdapter {
 				
 				tv = (TextView) v.findViewById(R.id.bikes_item_bikes);
 				
-				tv.setText("Free Bikes: " + item.getFreeBikes() + ", Empty Racks: " + item.getEmptyRacks());
+				tv.setText(ctx_.getText(R.string.bikes_plugin_free) + ": " + item.getFreeBikes() + ", " + ctx_.getText(R.string.bikes_plugin_empty) + ": " + item.getEmptyRacks());
 				if(selected_ == position) {
 					tv.setBackgroundColor(R.color.red);
 					tv.setTextColor(R.color.SnowWhite);
