@@ -263,15 +263,15 @@ public class MainscreenPlugin extends PluginBase {
 	
 	public void refresh() {		
 		Log.d("MainscreenPlugin", "Refreshing");
-		MainscreenNewsProvider.getNews(ctx_, this);
+		(new MainscreenNewsProvider(ctx_, this)).getNews();
 	}
 	
-	public static void refreshing() {
+	public void refreshing() {
 		actionBar_.setProgressBarVisibility(View.VISIBLE);
 	}
 
 
-	public static void refreshed() {
+	public void refreshed() {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 	
@@ -286,11 +286,13 @@ public class MainscreenPlugin extends PluginBase {
 	}
 	
 	
-	public static void addAll(List<MainscreenNews> list) {
+	public void addAll(List<MainscreenNews> list) {
 		news_.addAll(list);
+		sort();
+		displayNews();
 	}
 	
-	public static void clean() {
+	public void clean() {
 		news_ = new ArrayList<MainscreenNews>();
 	}
 

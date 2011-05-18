@@ -93,6 +93,7 @@ public class NewsProvider {
 
 	/**
 	 * Checks if the feeds must be redownloaded
+	 * @param callback 
 	 */
 	public void refreshIfNeeded() {
 

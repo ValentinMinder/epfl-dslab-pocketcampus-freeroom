@@ -2,21 +2,29 @@ package org.pocketcampus.plugin.mainscreen;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Core;
+import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.PluginBase;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class MainscreenNewsProvider {
+public class MainscreenNewsProvider implements ICallback {
+	private int nbLoading_ = 0;
+	private MainscreenPlugin main_;
+	private Context ctx_;
 	
-	public static void getNews(Context ctx, MainscreenPlugin main) {
+	public MainscreenNewsProvider(Context ctx, MainscreenPlugin main) {
+		main_ = main;
+		ctx_ = ctx;
+	}
+	
+	public void getNews() {
 		
-		MainscreenPlugin.refreshing();
+		main_.refreshing();
 		
-		MainscreenPlugin.clean();
+		main_.clean();
 		
 		Log.d("MainscreenNewsProvider", "Getting News");
 		
@@ -33,14 +41,44 @@ public class MainscreenNewsProvider {
 				
 				Log.d("MainscreenNewsProvider", "Plugin not null");
 				
-				if(PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(plug.getPluginInfo().getId().toString(), true)) {
+				if(PreferenceManager.getDefaultSharedPreferences(ctx_).getBoolean(plug.getPluginInfo().getId().toString(), true)) {
 					Log.d("MainscreenNewsProvider","New MainscreenNewsGetter created");
-					new MainscreenNewsGetter((IMainscreenNewsProvider)plug,ctx,main).execute();
+					//new MainscreenNewsGetter((IMainscreenNewsProvider)plug,ctx,main).execute();
+					
+					((IMainscreenNewsProvider)plug).getNews(ctx_, this);
+					nbLoading_++;
+					
 				}
 			}
 		}
 
 	}
 
+	@Override
+	public void callback(ArrayList<MainscreenNews> news) {
+		System.out.println("GOT NEWS!!!");
+		System.out.println(news.toArray());
+		
+		main_.addAll(news);
+		nbLoading_--;
+		
+		if(nbLoading_ <= 0) {
+			main_.refreshed();
+		}
+	}
+
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

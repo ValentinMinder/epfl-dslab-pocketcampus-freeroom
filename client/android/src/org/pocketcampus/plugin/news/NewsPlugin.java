@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -36,7 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Jonas
  *
  */
-public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, INewsListener, IAllowsID {
+public class NewsPlugin extends PluginBase implements /*IMainscreenNewsProvider,*/ INewsListener, IAllowsID {
 
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
@@ -180,27 +181,23 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
-	@Override
-	public List<MainscreenNews> getNews(Context ctx) {
-		List<MainscreenNews> l = new ArrayList<MainscreenNews>();
-		NewsProvider np = NewsProvider.getInstance(ctx);
-		
-
-		np.refreshIfNeeded();
-		
-		// Number of news to display
-		int min = np.getCount();
-		min = Math.min(min, NB_NEWS);
-		
-		NewsItem tmp;
-		for(int i = 0; i < min; ++i) {
-			tmp = np.getItem(i);
-			l.add(new MainscreenNews(tmp.getTitle(), tmp.getFormatedDescription().subSequence(0, 150).toString(), i, this, tmp.getPubDateDate()));
-		}
-		
-		return l;
-		
-	}
+//	@Override
+//	public void getNews(Context ctx, ICallback callback) {
+//		ArrayList<MainscreenNews> l = new ArrayList<MainscreenNews>();
+//		NewsProvider np = NewsProvider.getInstance(ctx);
+//
+//		// Number of news to display
+//		int min = np.getCount();
+//		min = Math.min(min, NB_NEWS);
+//		
+//		NewsItem tmp;
+//		for(int i = 0; i < min; ++i) {
+//			tmp = np.getItem(i);
+//			l.add(new MainscreenNews(tmp.getTitle(), tmp.getFormatedDescription().subSequence(0, 150).toString(), i, this, tmp.getPubDateDate()));
+//		}
+//		
+//		return l;
+//	}
 
 
 }

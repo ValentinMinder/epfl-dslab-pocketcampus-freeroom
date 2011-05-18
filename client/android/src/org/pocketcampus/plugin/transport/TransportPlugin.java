@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -132,12 +133,12 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 	}
 
 	@Override
-	public List<MainscreenNews> getNews(Context ctx) {
+	public void getNews(Context ctx, ICallback callback) {
 		SharedPreferences commonDestPrefs = ctx.getSharedPreferences("CommonDestPrefs", 0);
 		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		
 		if(commonDestPrefs == null) {
-			return news;
+			return;
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -150,7 +151,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			destNum++;
 		}
 		
-		return news;
+		callback.callback(news);
 	}
 	
 	public static void makeToast(int textId) {

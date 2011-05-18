@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.mainscreen;
 
 import java.util.List;
 
+import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.provider.IProvider;
 
 import android.content.Context;
@@ -16,6 +17,6 @@ import android.content.Context;
  */
 public interface IMainscreenNewsProvider extends IProvider {
 
-	public List<MainscreenNews> getNews(Context ctx);
+	public void getNews(Context ctx, ICallback callback);
 	
 }
