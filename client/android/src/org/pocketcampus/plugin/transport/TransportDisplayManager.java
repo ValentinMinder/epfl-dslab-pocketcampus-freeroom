@@ -170,8 +170,17 @@ public class TransportDisplayManager implements OnClickListener {
 		
 		adapter_.clearSections();
 		
+		
+		//////////////////////////////////////////////////////////////////
+		boolean whitinEPFL = true; //TODO insert Tarek's method here to know if we are at EPFL or not
+		
 		for(String destination : commonDestinations.values()) {
-			TransportSummaryAdapter adapter = new TransportSummaryAdapter(ownerActivity_, TransportPlugin.getReferenceDestination(), destination);
+			TransportSummaryAdapter adapter;
+			if (whitinEPFL)
+				adapter = new TransportSummaryAdapter(ownerActivity_, TransportPlugin.getReferenceDestination(), destination);
+			else
+				adapter = new TransportSummaryAdapter(ownerActivity_, destination, TransportPlugin.getReferenceDestination());
+			
 			adapter_.addSection(adapter.getCaption(), adapter);
 		}
 

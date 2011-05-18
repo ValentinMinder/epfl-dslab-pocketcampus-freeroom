@@ -31,6 +31,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private String arrival_;
 	private int nbMaxItems_ = 3;
 	private String to_StringRessource;
+	private String from_StringRessource;
 	private String lessThanAMinute_StringRessource;
 	private String inCapital_StringRessource;
 	private String atCapital_StringRessource;
@@ -46,6 +47,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		arrival_ = arrival;
 		
 		to_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_to);
+		from_StringRessource = 				(String) ctx.getResources().getText(R.string.transport_from);
 		lessThanAMinute_StringRessource = 	(String) ctx.getResources().getText(R.string.transport_lessThanAMinute);
 		departures_StringRessource = 		(String) ctx.getResources().getText(R.string.transport_departures);
 		arrival_StringRessource = 			(String) ctx.getResources().getText(R.string.transport_arrival);
@@ -166,7 +168,10 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	 */
 	public String getCaption() {
 		//return departure_ + " " + to_StringRessource + " " + arrival_;
-		return departures_StringRessource +" "+ to_StringRessource +" "+ arrival_;
+		if(!arrival_.equals(TransportPlugin.REFERENCE_DESTINATION))
+			return departures_StringRessource +" "+ to_StringRessource +" "+ arrival_;
+		else
+			return departures_StringRessource +" "+ from_StringRessource +" "+ departure_ +" "+ to_StringRessource +" "+ TransportPlugin.REFERENCE_DESTINATION_SHORTNAME;
 	}
 	
 	/**

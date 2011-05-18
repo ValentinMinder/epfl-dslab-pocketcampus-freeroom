@@ -36,6 +36,7 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 	 * Loads all the summaries.
 	 */
 	public void loadSummaryList() {
+		//TODO charger seulement celles qui sont utiles quand on est hors de l'epfl
 		for(Section section : sections_) {
 			TransportSummaryAdapter adapter = (TransportSummaryAdapter)section.adapter;
 			loadSummary(adapter);
@@ -92,8 +93,11 @@ public class TransportSummaryListAdapter extends SeparatedListAdapter {
 		} 
 
 		RequestParameters params = new RequestParameters();
+		
+		
 		params.addParameter("from", adapter.getDeparture());
 		params.addParameter("to", adapter.getArrival());
+		
 
 		requestHandler_.execute(new ConnectionsRequest(), "connections", params);
 	}
