@@ -12,6 +12,7 @@ import org.pocketcampus.plugin.positioning.WifiLocation;
 import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
+import android.widget.Toast;
 
 public class HybridLocation implements IPositionProvider{
 	

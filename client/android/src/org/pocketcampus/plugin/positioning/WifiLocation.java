@@ -42,6 +42,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WifiLocation {
 	
@@ -423,6 +424,7 @@ public class WifiLocation {
 	}
 	
 	public Position getWifiLocationPerTaylorSerieGlobal(){
+		//Toast.makeText(ctx_, "Waiting for positioning  !",Toast.LENGTH_LONG);
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();
 		Position result2 =null;
@@ -466,7 +468,7 @@ public class WifiLocation {
 
 		int i=0;
 		//int j=3;
-        while(i<apList.size()-3){
+        while(i<apList.size()-3){	
 		AccessPoint ap1 = apList.get(i);
 		AccessPoint ap2 = apList.get(i+1);
 		AccessPoint ap3 = apList.get(i+2);
