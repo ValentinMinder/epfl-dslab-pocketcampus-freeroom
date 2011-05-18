@@ -122,6 +122,9 @@ public class RatingsDialog extends Dialog {
 					} else if (status == SubmitStatus.Error) {
 						submitted = menusActivity_.getResources().getString(
 								R.string.food_rating_notsubmitted);
+					} else if (status == SubmitStatus.TooEarly) {
+						submitted = menusActivity_.getResources().getString(
+								R.string.food_rating_tooearly);
 					}
 				}
 				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT)

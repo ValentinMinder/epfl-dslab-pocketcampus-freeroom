@@ -27,7 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class FoodGalleryView extends Activity {
 	// Test pictures.
 	private Drawable[] pictures_ = {
-			getResources().getDrawable(R.drawable.antartica1),
+			/*getResources().getDrawable(R.drawable.antartica1),
 			getResources().getDrawable(R.drawable.antartica1),
 			getResources().getDrawable(R.drawable.antartica3),
 			getResources().getDrawable(R.drawable.antartica4),
@@ -36,7 +36,7 @@ public class FoodGalleryView extends Activity {
 			getResources().getDrawable(R.drawable.antartica7),
 			getResources().getDrawable(R.drawable.antartica8),
 			getResources().getDrawable(R.drawable.antartica9),
-			getResources().getDrawable(R.drawable.antartica10) };
+			getResources().getDrawable(R.drawable.antartica10) */};
 	private ImageView imageView_;
 
 	private PictureFetcher pictureFetcher_;

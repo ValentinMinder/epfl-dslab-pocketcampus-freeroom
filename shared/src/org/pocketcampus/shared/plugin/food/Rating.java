@@ -67,6 +67,7 @@ public class Rating implements Serializable {
 	public enum SubmitStatus {
 		AlreadyVoted,
 		Valid,
+		TooEarly,
 		Error;
 	}
 }
