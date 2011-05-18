@@ -197,6 +197,14 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				|| deviceId == null) {
 			return SubmitStatus.Error;
 		}
+		
+		Calendar now = Calendar.getInstance();
+		now.setTime(new Date());
+		
+		System.out.println(now.get(Calendar.HOUR_OF_DAY));
+		if(now.get(Calendar.HOUR_OF_DAY) < 11){
+			return SubmitStatus.TooEarly;
+		}
 
 		Connection connection = database_.createConnection();
 

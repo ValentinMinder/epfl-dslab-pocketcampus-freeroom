@@ -271,7 +271,7 @@ public class FoodDB {
 			return false;
 		}
 		PreparedStatement checkVotedDevice = null;
-		String getString = "SELECT count(DEVICEID) FROM DailyRatings WHERE DEVICEID = ? and STAMP_CREATED = ?";
+		String getString = "SELECT count(DEVICEID) FROM PEOPLEVOTES WHERE DEVICEID = ? and STAMP_CREATED = ?";
 		ResultSet rset = null;
 		boolean found = false;
 
