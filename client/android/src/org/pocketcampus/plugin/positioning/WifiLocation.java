@@ -424,36 +424,32 @@ public class WifiLocation {
 	
 	public Position getWifiLocationPerTaylorSerieGlobal(){
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
-		List<AccessPoint> apList2 = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();
 		Position result2 =null;
 		double x = 0,y = 0;
 		Taylor taylorEq;
 		apList =getAccessPoints();
-		List<AccessPoint> apList1 = apList;
-		apList2 = apList;
+
 		int i=0;
-		int j=apList.size()-1;
-		while(apList2.size()>3){
-		//List<AccessPoint> apList1 = apList;	
-		apList2 = getTheBestFourth(apList1);
-		AccessPoint ap1 = apList2.get(0);
-		AccessPoint ap2 = apList2.get(1);
-		AccessPoint ap3 = apList2.get(2);
-		AccessPoint ap4 = apList2.get(3);
+		//int j=3;
+        while(i<apList.size()-3){
+		AccessPoint ap1 = apList.get(i);
+		AccessPoint ap2 = apList.get(i+1);
+		AccessPoint ap3 = apList.get(i+2);
+		AccessPoint ap4 = apList.get(i+3);
 		
 		taylorEq = new Taylor(ap1, ap2, ap3, ap4);
 		
 		Position result = taylorEq.taylorEquation();
-		positionList.add(result);
+		if(validate(result)){
+			positionList.add(result);
 		x =x+result.getLatitude();
 		y =y+result.getLongitude();
+		}
 		System.out.println("X :" +x);
 		System.out.println("Y :" +y);
-		System.out.println("apList size ;"+apList.size());
-		apList1 = apList.subList(i+1, j);
-		System.out.println("apList size after::::::::;"+apList.size());
-		}
+		i++;
+        }
 		result2 = new Position(x/positionList.size(),y/positionList.size(),0.0);
 		System.out.println("Position list size ::::::::::::"+positionList.size());
 		return result2;
@@ -461,6 +457,12 @@ public class WifiLocation {
 	
 	
 	
+	private boolean validate(Position result) {
+		if((result.getLatitude()==0.0)||(result.getLongitude()==0.0))
+		return false;
+		else return true;
+	}
+
 	public List<AccessPoint> getDistinctApList(){
 		List<AccessPoint>  apList = new ArrayList<AccessPoint>();
 		List<AccessPoint>  distinctApList = new ArrayList<AccessPoint>();
