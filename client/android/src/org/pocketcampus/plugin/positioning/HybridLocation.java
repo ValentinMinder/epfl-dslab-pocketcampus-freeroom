@@ -73,6 +73,16 @@ public class HybridLocation implements IPositionProvider{
 		// TODO Auto-generated method stub
 		return (Double) null;
 	}
+
+
+
+
+	@Override
+	public boolean userInCampus() {
+		if(wifiLocation_.getAccessPoints().size()==0)
+		return false;
+		else return true;
+	}
 }
 
 
