@@ -45,7 +45,7 @@ public class HybridLocation implements IPositionProvider{
 	
 	public Position getWifiLocation(){
 		//return wifiLocation_.getWifiLocationPerCoefficient();
-		 return wifiLocation_.getWifiLocationPerTaylorSerie();
+		 return wifiLocation_.getWifiLocationPerTaylorSerieLocal();
 	}
 	
 	

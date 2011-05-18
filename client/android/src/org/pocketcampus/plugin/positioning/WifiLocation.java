@@ -391,7 +391,27 @@ public class WifiLocation {
 	}
 	
 	
-	public Position getWifiLocationPerTaylorSerie(){
+	public Position getWifiLocationPerTaylorSerieLocal(){
+		List<AccessPoint> apList = new ArrayList<AccessPoint>();
+		List<AccessPoint> apList2 = new ArrayList<AccessPoint>();
+		List<Position> positionList = new ArrayList<Position>();
+		Taylor taylorEq;
+		apList =getAccessPoints();
+			
+		apList2 = getTheBestFourth(apList);
+		AccessPoint ap1 = apList2.get(0);
+		AccessPoint ap2 = apList2.get(1);
+		AccessPoint ap3 = apList2.get(2);
+		AccessPoint ap4 = apList2.get(3);
+		
+		taylorEq = new Taylor(ap1, ap2, ap3, ap4);
+		
+		Position result = taylorEq.taylorEquation();
+
+		return result;
+	}
+	
+	public Position getWifiLocationPerTaylorSerieGlobal(){
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
 		List<AccessPoint> apList2 = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();

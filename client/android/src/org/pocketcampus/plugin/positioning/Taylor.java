@@ -57,6 +57,11 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	
 	vectorB = new Matrix(arrayB);
 	
+	System.out.println("Level :"+ ap1.getSignalLevel()+"Path Loss : "+ap1.getPathLoss()+" Distance :"+ap1.getDistance());
+	System.out.println("Level :"+ ap2.getSignalLevel()+"Path Loss : "+ap2.getPathLoss()+" Distance :"+ap2.getDistance());
+	System.out.println("Level :"+ ap3.getSignalLevel()+"Path Loss : "+ap3.getPathLoss()+" Distance :"+ap3.getDistance());
+	System.out.println("Level :"+ ap4.getSignalLevel()+"Path Loss : "+ap4.getPathLoss()+" Distance :"+ap4.getDistance());
+	
 	return vectorB;
 }
 
