@@ -10,7 +10,7 @@ package org.pocketcampus.plugin.positioning;
  * [     STATUS    ]    under developement
  *
  **************************[ C O M M E N T S ]**********************
- *   Naive version
+ *   
  *
  *******************************************************************
  */
@@ -361,14 +361,25 @@ public class WifiLocation {
 	public List<AccessPoint> getTheBestFourth(List<AccessPoint> apList){
 		//List<AccessPoint> apList = getAccessPoints();
 		List<AccessPoint> best4List = new ArrayList<AccessPoint>();
+		List<Position> best4position = new ArrayList<Position>();
 		
 		int i=4;
-		
+		AccessPoint bestAp = getStrongestAP(apList);
+		best4List.add(bestAp);
+		best4position.add(bestAp.position());
 		while(i>0){
-			AccessPoint bestAp = getStrongestAP(apList);
-			best4List.add(bestAp);
-			apList.remove(bestAp);
-			i--;
+			if(best4position.contains(bestAp.position())){
+				apList.remove(bestAp);
+				bestAp = getStrongestAP(apList);
+				System.out.println("apList :"+ apList.size());
+			}else{
+				best4List.add(bestAp);
+				best4position.add(bestAp.position());
+				apList.remove(bestAp);
+				bestAp = getStrongestAP(apList);
+				System.out.println("apList_best4 :"+ best4List.size());
+				i--;
+			}
 		}
 		return best4List;   
 	}
