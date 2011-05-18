@@ -25,7 +25,7 @@ public class BikesInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.bikes_normal_menu);
+		return new Icon(R.drawable.bikes_menu);
 	}
 
 	@Override

@@ -131,15 +131,6 @@ public class BikesPlugin extends PluginBase {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
 		adapter_ = new BikesAdapter(ctx_, selected_, bikeStations_);
 		l.setAdapter(adapter_);
-		l.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				MainscreenNews selected = (MainscreenNews) adapter_.getItem(position);
-				if(selected.getPlugin_() instanceof IAllowsID) {
-					Core.startPluginWithID(ctx_, selected.getPlugin_(), selected.getId_());
-				}
-			}
-		});
 	}
 	
 
