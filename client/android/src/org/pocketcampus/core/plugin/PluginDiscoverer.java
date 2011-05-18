@@ -42,7 +42,7 @@ public class PluginDiscoverer {
 		plugins.add(new NewsPlugin());
 		plugins.add(new TransportPlugin());
 //		plugins.add(new SocialPlugin());
-//		plugins.add(new BikesPlugin());
+		plugins.add(new BikesPlugin());
 		
 		////////////////////////////////
 		

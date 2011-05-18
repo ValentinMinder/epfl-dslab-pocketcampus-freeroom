@@ -1,9 +1,10 @@
 package org.pocketcampus.plugin.bikes;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -11,34 +12,49 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
+import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 public class BikesPlugin extends PluginBase {
 
-	private ActionBar actionBar_;
+	private static ActionBar actionBar_;
 
+	public static RequestHandler bikesRequestHandler;
+	
+	private BikesAdapter adapter_;
+	
+	private int selected_;
+	private List<BikeStation> bikeStations_;
+	private BikeStationList list_;
+	
+	
+	private Context ctx_;
+	
 	@Override
 	protected void onCreate(Bundle  savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bikes_list);
+		setContentView(R.layout.bikes_main);
 
-
+		bikesRequestHandler = getRequestHandler();
+		
+		list_ = new BikeStationList(this);
 		setupActionBar(true);
-
-		setLayout();
+		
+		selected_ = -1;
+		ctx_ = getApplicationContext();
 		
 		handleIntent();
 
+		
 		Tracker.getInstance().trackPageView("bikes/home");		
 	}
 
@@ -60,7 +76,7 @@ public class BikesPlugin extends PluginBase {
 
 			@Override
 			public void performAction(View view) {
-				//bikes_.forceRefresh();
+				refresh();
 			}
 
 			@Override
@@ -76,95 +92,55 @@ public class BikesPlugin extends PluginBase {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		//bikes_.refreshIfNeeded();
-	}
-
-	private void setLayout() {
-		final TableLayout table = (TableLayout) findViewById(R.id.bikes_table);
-
-		List<BikeStation> bikeStations = null;
-		try {
-			bikeStations = BikeStationParser.getBikeStations();
-		} catch (IOException e) {
-			Toast error = Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG);
-			error.show();
-			e.printStackTrace();
-		}
-
-
-
-		int index = 0;
-
-
-		Toast b = Toast.makeText(this, "" + (bikeStations == null), Toast.LENGTH_LONG);
-		b.show();
-		for (BikeStation station: bikeStations) {
-
-			// Create a TableRow and give it an ID
-			TableRow tr = new TableRow(this);
-			tr.setId(index);
-			tr.setLayoutParams(new LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));   
-
-			// Create a TextView to house the name of the stations
-			TextView stationName = new TextView(this);
-			stationName.setId(100+index);
-			stationName.setText(station.getName());
-			stationName.setTextColor(Color.BLACK);
-			stationName.setLayoutParams(new LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
-			tr.addView(stationName);
-
-			// Create a TextView for the available bikes
-			TextView available = new TextView(this);
-			available.setId(200+index);
-			available.setText(station.getFreeBikes() + "");
-			available.setTextColor(Color.GREEN);
-			available.setLayoutParams(new LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
-			tr.addView(available);
-
-			TextView empty = new TextView(this);
-			empty.setId(300+index);
-			empty.setText(station.getEmptyRacks() + "");
-			empty.setTextColor(Color.RED);
-			empty.setLayoutParams(new LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
-			tr.addView(empty);
-
-			// Add the TableRow to the TableLayout
-			table.addView(tr, new TableLayout.LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
-
-			index++;
-		}
-
+		refresh();
 	}
 
 	private void handleIntent() {
 		try {
 			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID " + getIDFromIntent() : "Does not have ID");
+			if(hasIDInIntent()) {
+				selected_ = getIDFromIntent();
+			}
 		} catch (NoIDException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	//
-	//		@Override
-	//		public void bikesRefreshing() {
-	//			actionBar_.setProgressBarVisibility(View.VISIBLE);
-	//		}
-	//
-	//		@Override
-	//		public void bikesRefreshed() {
-	//			actionBar_.setProgressBarVisibility(View.GONE);
-	//		}
+	public void refresh() {		
+		Log.d("MainscreenPlugin", "Refreshing");
+		list_.loadBikes();
+	}
+	
+	public void setBikeStationList(List<BikeStation> bikeStations) {
+		this.bikeStations_ = bikeStations;
+	}
+	
+	public static void refreshing() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+
+
+	public static void refreshed() {
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
+	
+	
+	protected void displayBikes() {
+		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
+		adapter_ = new BikesAdapter(ctx_, selected_, bikeStations_);
+		l.setAdapter(adapter_);
+		l.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				MainscreenNews selected = (MainscreenNews) adapter_.getItem(position);
+				if(selected.getPlugin_() instanceof IAllowsID) {
+					Core.startPluginWithID(ctx_, selected.getPlugin_(), selected.getId_());
+				}
+			}
+		});
+	}
+	
 
 }
