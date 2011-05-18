@@ -1,8 +1,10 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
@@ -80,7 +82,7 @@ public class MainscreenPluginPreference extends PluginPreference {
 		};
 
 		// Feeds to display
-		String[] plugins  = getResources().getStringArray(R.array.mainscreen_provider_plugins);
+		ArrayList<PluginBase> plugins = Core.getInstance().getProvidersOf(IMainscreenNewsProvider.class);
 		
 		CheckBoxPreference checkBoxPref;
 
@@ -88,16 +90,7 @@ public class MainscreenPluginPreference extends PluginPreference {
 		
 		int i = 0;
 		
-		for(String key : plugins) {
-
-			PluginBase plug = null;
-			try {
-				Class<?> cl = Class.forName(MainscreenPlugin.PACKAGE+key);
-				plug = (PluginBase) cl.newInstance();
-			} catch (ClassNotFoundException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InstantiationException e) {
-			}
+		for(PluginBase plug : plugins) {
 
 			if(plug != null) {
 				checkBoxPref = new CheckBoxPreference(this);

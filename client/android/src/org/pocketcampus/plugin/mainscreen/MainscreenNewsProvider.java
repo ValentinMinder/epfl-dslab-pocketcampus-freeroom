@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.mainscreen;
 
+import java.util.ArrayList;
+
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.PluginBase;
 
 import android.content.Context;
@@ -18,24 +21,13 @@ public class MainscreenNewsProvider {
 		Log.d("MainscreenNewsProvider", "Getting News");
 		
         // Feeds to display
-		String[] plugins  = ctx.getResources().getStringArray(R.array.mainscreen_provider_plugins);
+		ArrayList<PluginBase> plugins = Core.getInstance().getProvidersOf(IMainscreenNewsProvider.class);
 		
-		Log.d("MainscreenNewsProvider", "Array size: " + plugins.length);
+		Log.d("MainscreenNewsProvider", "Array size: " + plugins.size());
 
 
-        for(String key : plugins) {
-        	
-    		Log.d("MainscreenNewsProvider", "Current Plugin: " + key);
-
-        	
-        	PluginBase plug = null;
-			try {
-				Class<?> cl = Class.forName(MainscreenPlugin.PACKAGE+key);
-	        	plug = (PluginBase) cl.newInstance();
-			} catch (ClassNotFoundException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InstantiationException e) {
-			}
+        for(PluginBase plug : plugins) {
+    		Log.d("MainscreenNewsProvider", "Current Plugin: " + plug.getPluginInfo().getId());
         	
 			if(plug != null) {
 				
