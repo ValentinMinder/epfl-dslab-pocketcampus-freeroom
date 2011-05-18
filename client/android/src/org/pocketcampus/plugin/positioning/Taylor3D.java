@@ -5,7 +5,7 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 
 
-public class Taylor {
+public class Taylor3D {
 
 //private Cercle c1_,c2_,c3_,c4_;
 private AccessPoint ap1_,ap2_,ap3_,ap4_;	
@@ -15,7 +15,7 @@ private Matrix vetcor_;
 private Position position_;
 
 
-public Taylor (AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4){
+public Taylor3D (AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4){
 
     this.ap1_ = ap1;
     this.ap2_ = ap2;
@@ -33,6 +33,7 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	double b1,b2,b3;
 	double x1,x2,x3,x4;
 	double y1,y2,y3,y4;
+	double z1,z2,z3,z4;
 	double D1,D2,D3,D4;
 	x1 = ap1.position().getLatitude();
 	x2 = ap2.position().getLatitude();
@@ -42,14 +43,18 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	y2 = ap2.position().getLongitude();
 	y3 = ap3.position().getLongitude();
 	y4 = ap4.position().getLongitude();
+	z1 = ap1.position().getAltitude();
+	z2 = ap2.position().getAltitude();
+	z3 = ap3.position().getAltitude();
+	z4 = ap4.position().getAltitude();
 	D1 = ap1.getDistance();
 	D2 = ap2.getDistance();
 	D3 = ap3.getDistance();
 	D4 = ap4.getDistance();
 	arrayB = new double [3][1];
-	b1 = x1*x1-x2*x2+y1*y1-y2*y2+D2*D2-D1*D1;
-	b2 = x1*x1-x3*x3+y1*y1-y3*y3+D3*D3-D1*D1;
-	b3 = x1*x1-x4*x4+y1*y1-y4*y4+D4*D4-D1*D1;
+	b1 = x1*x1-x2*x2+y1*y1-y2*y2+z1*z1-z2*z2+D2*D2-D1*D1;
+	b2 = x1*x1-x3*x3+y1*y1-y3*y3+z1*z1-z3*z3+D3*D3-D1*D1;
+	b3 = x1*x1-x4*x4+y1*y1-y4*y4+z1*z1-z4*z4+D4*D4-D1*D1;
 		
 	arrayB [0][0]= b1/2;
 	arrayB [1][0]= b2/2;
@@ -62,6 +67,10 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	System.out.println("Level :"+ ap3.getSignalLevel()+"Path Loss : "+ap3.getPathLoss()+" Distance :"+ap3.getDistance());
 	System.out.println("Level :"+ ap4.getSignalLevel()+"Path Loss : "+ap4.getPathLoss()+" Distance :"+ap4.getDistance());
 	
+	System.out.println("Vector B  a::"+ vectorB.get(0, 0));
+	System.out.println("Vector B  b::"+ vectorB.get(1, 0));
+	System.out.println("Vector B  c::"+ vectorB.get(2, 0));
+	
 	return vectorB;
 }
 
@@ -69,11 +78,12 @@ private Matrix matrixB(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoint ap4) {
 	Matrix matrix;
 	double arrayA[][];
-	double a1,a2;
-	double b1,b2;
-	double c1,c2;
+	double a1,a2,a3;
+	double b1,b2,b3;
+	double c1,c2,c3;
 	double x1,x2,x3,x4;
 	double y1,y2,y3,y4;
+	double z1,z2,z3,z4;
 	x1 = ap1.position().getLatitude();
 	x2 = ap2.position().getLatitude();
 	x3 = ap3.position().getLatitude();
@@ -82,19 +92,29 @@ private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 	y2 = ap2.position().getLongitude();
 	y3 = ap3.position().getLongitude();
 	y4 = ap4.position().getLongitude();
+	z1 = ap1.position().getAltitude();
+	z2 = ap2.position().getAltitude();
+	z3 = ap3.position().getAltitude();
+	z4 = ap4.position().getAltitude();
 	a1 = x1-x2;
 	a2 = y1-y2;
+	a3 = z1-z2;
 	b1 = x1-x3;
 	b2 = y1-y3;
+	b3 = z1-z3;
 	c1 = x1-x4;
 	c2 = y1-y4;
-	arrayA = new double[3][2];
+	c3 = z1-z4;
+	arrayA = new double[3][3];
 	arrayA[0][0] = x1-x2;
 	arrayA[1][0] = x1-x3;
 	arrayA[2][0] = x1-x4;
 	arrayA[0][1] = y1-y2;
 	arrayA[1][1] = y1-y3;
 	arrayA[2][1] = y1-y4;
+	arrayA[0][2] = z1-z2;
+	arrayA[1][2] = z1-z3;
+	arrayA[2][2] = z1-z4;
 	
 	matrix = new Matrix(arrayA);
 	
@@ -121,8 +141,8 @@ public Position taylorEquation() {
 	if(solutionVector.getColumnDimension()==1){
 	double lat = solutionVector.get(0,0);
 	double lon = solutionVector.get(1,0);
-	
-	result = new Position(lat, lon, 0.0);
+	double alt = solutionVector.get(2,0);
+	result = new Position(lat, lon, alt);
 	System.out.println("Solution :"+ result.toString());
 	return result;
 	}else return null;

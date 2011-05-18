@@ -456,6 +456,43 @@ public class WifiLocation {
 	}
 	
 	
+	public Position getWifiLocationPerTaylor3DSerieGlobal(){
+		List<AccessPoint> apList = new ArrayList<AccessPoint>();
+		List<Position> positionList = new ArrayList<Position>();
+		Position result2 =null;
+		double x = 0.0,y = 0.0,z =0.0;
+		Taylor3D taylorEq3D;
+		apList =getAccessPoints();
+
+		int i=0;
+		//int j=3;
+        while(i<apList.size()-3){
+		AccessPoint ap1 = apList.get(i);
+		AccessPoint ap2 = apList.get(i+1);
+		AccessPoint ap3 = apList.get(i+2);
+		AccessPoint ap4 = apList.get(i+3);
+		
+		taylorEq3D = new Taylor3D(ap1, ap2, ap3, ap4);
+		
+		Position result = taylorEq3D.taylorEquation();
+		if(validate(result)){
+			positionList.add(result);
+		x =x+result.getLatitude();
+		y =y+result.getLongitude();
+		z =z+result.getAltitude();
+		}
+		System.out.println("X :" +x);
+		System.out.println("Y :" +y);
+		System.out.println("Z :" +z);
+		i++;
+        }
+		result2 = new Position(x/positionList.size(),y/positionList.size(),z/positionList.size());
+		System.out.println("Position list size ::::::::::::"+positionList.size());
+		return result2;
+	}
+	
+	
+	
 	
 	private boolean validate(Position result) {
 		if((result.getLatitude()==0.0)||(result.getLongitude()==0.0))
