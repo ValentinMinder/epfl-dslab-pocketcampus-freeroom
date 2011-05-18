@@ -61,7 +61,8 @@ public class DirectoryPlugin extends PluginBase{
 			public void onClick(View v) {
 				search(searchDial.first_name.getText().toString(), 
 						searchDial.last_name.getText().toString(),
-						searchDial.sciper.getText().toString());
+						searchDial.sciper.getText().toString(),
+						searchDial.accurateSearch);
 				
 				searchDial.dismiss();
 			}
@@ -81,7 +82,7 @@ public class DirectoryPlugin extends PluginBase{
 	}
 
 
-	private void search(String first_name, String last_name, String sciper) {
+	private void search(String first_name, String last_name, String sciper, boolean accurateSearch) {
 		
 		// Create a class for your request with...
 		incrementProgressCounter();
@@ -143,8 +144,10 @@ public class DirectoryPlugin extends PluginBase{
 //		reqParams.addParameter("username", "scheiben");
 //		reqParams.addParameter("password", "xxxxxxxx"); 
 //		// mettre vos userame pour test
-		
-		getRequestHandler().execute(new DirectoryRequest(), "bla", reqParams);
+		if(accurateSearch)
+			getRequestHandler().execute(new DirectoryRequest(), "bla", reqParams);
+		else
+			getRequestHandler().execute(new DirectoryRequest(), "idrkhn", reqParams);
 	}
 	
 	public void displayResultList(){

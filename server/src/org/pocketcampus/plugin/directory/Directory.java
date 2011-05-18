@@ -66,32 +66,30 @@ public class Directory implements IPlugin{
 //		Type listType = new TypeToken<ArrayList<Person>>() {}.getType();
 //		System.out.println( gson.toJson(res, listType) );
 
-		res = search(sciper, firstName, lastName);
+		res = search(sciper, firstName, lastName, true);
 		
 		return res;
 	}
 	
+	@PublicMethod
+	public LinkedList<Person> idrkhn(HttpServletRequest request){
+		String firstName = request.getParameter("firstName");
+    	String lastName = request.getParameter("lastName");
+		String sciper = request.getParameter("sciper");
+		
+		LinkedList<Person> res = search(sciper, firstName, lastName, false);
+		
+		return res;
+	}
 	
-	private LinkedList<Person> search(String sciper, String first_name, String last_name){
+	private LinkedList<Person> search(String sciper, String first_name, String last_name, boolean accurate){
 		LinkedList<Person> results = new LinkedList<Person>();
 		
-		String searchQuery;
-		if(sciper != null){
-			searchQuery = "(uniqueIdentifier="+sciper+")";
-		}else if(first_name != null && last_name != null){
-			searchQuery = "(&(sn="+last_name+ ")(givenName="+first_name+"))";
-		}else if(first_name != null){
-			searchQuery = "(givenName="+first_name+")";
-		}else if(last_name != null)
-			searchQuery = "(sn="+last_name+")";
-		else{
-			return results;
-			
-		}
 		
 		// search part			
 		// TODO add the sizeLimit param
 		SearchResult searchResult;
+		String searchQuery = buildSearchQuery(sciper, first_name, last_name, accurate);
 		try {
 			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
 
@@ -127,4 +125,30 @@ public class Directory implements IPlugin{
 		
 		
 	}
+	
+	
+	private String buildSearchQuery(String sciper, String first_name, String last_name, boolean accurate){
+		String searchQuery = null;
+		
+		String equal;
+		if(accurate)
+			equal = "=";
+		else
+			equal = "~=";
+		
+		if(sciper != null){
+			searchQuery = "(uniqueIdentifier="+sciper+")";
+		}else if(first_name != null && last_name != null){
+			searchQuery = "(&(sn" + equal +last_name+ ")(givenName" + equal +first_name+"))";
+		}else if(first_name != null){
+			searchQuery = "(givenName" + equal + first_name+")";
+		}else if(last_name != null)
+			searchQuery = "(sn" + equal + last_name+")";
+		else{
+			
+		}
+		System.out.println(searchQuery);
+		return searchQuery;
+	}
 }
+
