@@ -105,7 +105,7 @@ public Position taylorEquation() {
 	Matrix secondProductAT;
 	Matrix vectorB;
 	Matrix solutionVector;
-	
+	Position result;
 	vectorB = this.vetcor_;
 	transposeA = this.matrix_.transpose();
 	productAT = transposeA.times(matrix_);
@@ -116,7 +116,10 @@ public Position taylorEquation() {
 	if(solutionVector.getColumnDimension()==1){
 	double lat = solutionVector.get(0,0);
 	double lon = solutionVector.get(1,0);
-	return new Position(lat, lon, 0.0);
+	
+	result = new Position(lat, lon, 0.0);
+	System.out.println("Solution :"+ result.toString());
+	return result;
 	}else return null;
 	
 }
