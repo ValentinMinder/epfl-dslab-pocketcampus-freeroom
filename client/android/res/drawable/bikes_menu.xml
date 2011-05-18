@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bikes_pressed_menu"
+    <item android:drawable="@drawable/bikes_pressed_menubar"
           android:state_pressed="true" />
-    <item android:drawable="@drawable/bikes_pressed_menu"
+    <item android:drawable="@drawable/bikes_pressed_menubar"
           android:state_focused="true" />
-    <item android:drawable="@drawable/bikes_normal_menu" />
+    <item android:drawable="@drawable/bikes_normal_menubar" />
 </selector>
