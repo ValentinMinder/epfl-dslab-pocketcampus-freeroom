@@ -49,6 +49,7 @@ public class WifiLocation {
 	private WifiManager wifiManager;
 	private HashMap<String, String> ApBSSIDToName;
 	private HashMap<String, Position> ApNameToPosition;
+	
 
 	
 	
@@ -357,8 +358,8 @@ public class WifiLocation {
 	 * @return list containing 4 AccessPoints with the best signal
 	 */
 	
-	public List<AccessPoint> getTheBestFourth(){
-		List<AccessPoint> apList = getAccessPoints();
+	public List<AccessPoint> getTheBestFourth(List<AccessPoint> apList){
+		//List<AccessPoint> apList = getAccessPoints();
 		List<AccessPoint> best4List = new ArrayList<AccessPoint>();
 		
 		int i=4;
@@ -392,17 +393,39 @@ public class WifiLocation {
 	
 	public Position getWifiLocationPerTaylorSerie(){
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
+		List<AccessPoint> apList2 = new ArrayList<AccessPoint>();
+		List<Position> positionList = new ArrayList<Position>();
+		Position result2 =null;
+		double x = 0,y = 0;
 		Taylor taylorEq;
-		apList = getTheBestFourth();
-		AccessPoint ap1 = apList.get(0);
-		AccessPoint ap2 = apList.get(1);
-		AccessPoint ap3 = apList.get(2);
-		AccessPoint ap4 = apList.get(3);
+		apList =getAccessPoints();
+		List<AccessPoint> apList1 = apList;
+		apList2 = apList;
+		int i=0;
+		int j=apList.size()-1;
+		while(apList2.size()>3){
+		//List<AccessPoint> apList1 = apList;	
+		apList2 = getTheBestFourth(apList1);
+		AccessPoint ap1 = apList2.get(0);
+		AccessPoint ap2 = apList2.get(1);
+		AccessPoint ap3 = apList2.get(2);
+		AccessPoint ap4 = apList2.get(3);
 		
 		taylorEq = new Taylor(ap1, ap2, ap3, ap4);
 		
 		Position result = taylorEq.taylorEquation();
-		return result;
+		positionList.add(result);
+		x =x+result.getLatitude();
+		y =y+result.getLongitude();
+		System.out.println("X :" +x);
+		System.out.println("Y :" +y);
+		System.out.println("apList size ;"+apList.size());
+		apList1 = apList.subList(i+1, j);
+		System.out.println("apList size after::::::::;"+apList.size());
+		}
+		result2 = new Position(x/positionList.size(),y/positionList.size(),0.0);
+		System.out.println("Position list size ::::::::::::"+positionList.size());
+		return result2;
 	}
 
 }
