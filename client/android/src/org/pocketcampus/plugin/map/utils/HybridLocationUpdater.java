@@ -17,7 +17,7 @@ public class HybridLocationUpdater {
 	/**
 	 * The number of ms between two updates
 	 */
-	private long updateTime_ = 5000;
+	private long updateTime_ = 8000;
 	
 	private boolean isRunning_ = false;
 	private LocationUpdater updater_;
