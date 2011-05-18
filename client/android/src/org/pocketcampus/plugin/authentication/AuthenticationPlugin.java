@@ -7,6 +7,7 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
+import org.pocketcampus.plugin.social.SocialPositionUpdater;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.User;
 
@@ -76,7 +77,6 @@ public class AuthenticationPlugin extends PluginBase {
 
 			requestHandler_ = getRequestHandler();
 			requestHandler_.execute(new LoginRequest(), "login", parameters);
-		
 		}
 	}
 
@@ -104,6 +104,11 @@ public class AuthenticationPlugin extends PluginBase {
 			e.printStackTrace();
 		} finally {
 			requestHandler_ = null;
+			
+			//stops position updater
+			SocialPositionUpdater.stopPositionUpdater();
+			
+			//empty memory
 			PreferenceManager.getDefaultSharedPreferences(context).edit()
 				.putString("username", null)
 				.putString("sessionId", null)
@@ -178,7 +183,7 @@ public class AuthenticationPlugin extends PluginBase {
 			}
 
 			if(user_ != null) {
-				//update session data
+				//login successful - update session data
 				PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit()
 					.putString("username", username)
 					.putString("sessionId", user_.getSessionId())
@@ -187,18 +192,22 @@ public class AuthenticationPlugin extends PluginBase {
 					.putString("sciper", user_.getSciper())
 					.commit();
 				
+				//starts position updater
+				SocialPositionUpdater.startPositionUpdater(thisActivity_);
+				
 				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
 				
 				//close login activity
 				thisActivity_.finish();
 			} else {
+				//login failed
 				alert();
-
 				((EditText) thisActivity_.findViewById(R.id.socialLoginPasswordField)).setText("");
 			}
 		}
 
 		private void alert() {
+			//display error message
 			AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity_);
 			AlertDialog alert = builder.setMessage(thisActivity_.getString(R.string.authentication_wrong_password))
 			.setCancelable(true).create();
@@ -207,6 +216,7 @@ public class AuthenticationPlugin extends PluginBase {
 		}
 	}
 	
+	//retrieve session data
 	public static AuthToken getAuthToken(Context context) {
 		if(context == null) throw new IllegalArgumentException();
 		
@@ -222,6 +232,7 @@ public class AuthenticationPlugin extends PluginBase {
 		return token;
 	}
 	
+	//returns user that is currently logged on the phone
 	public static User getUser(Context context) {
 		if(context == null) throw new IllegalArgumentException();
 		

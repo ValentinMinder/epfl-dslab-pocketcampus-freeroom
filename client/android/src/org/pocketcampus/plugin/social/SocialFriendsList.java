@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
  * @status ok
  * @author gldalmas@gmail.com
  */
-public class SocialFriendsList extends ListActivity {
+public class SocialFriendsList extends ListActivity { 
 	private static Activity this_;
 	private static SocialListSeparator listSeparator_;
 	private SocialFriendsListAdapter friendsListAdapter_ = null;
