@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.pocketcampus.plugin.bikes.BikesPlugin;
 import org.pocketcampus.plugin.camipro.CamiproPlugin;
+import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
@@ -34,7 +35,7 @@ public class PluginDiscoverer {
 		// LIST OF REGISTERED PLUGINS //
 		// TODO scan for available plugins automatically
 //		plugins.add(new TestPlugin());
-//		plugins.add(new DirectoryPlugin());
+		plugins.add(new DirectoryPlugin());
 		plugins.add(new CamiproPlugin());
 		plugins.add(new FoodPlugin());
 		plugins.add(new MapPlugin());
