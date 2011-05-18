@@ -31,8 +31,13 @@ public class Directory implements IPlugin{
 	LDAPConnection ldap;
 	
 	public Directory(){
+		ldap = new LDAPConnection();
+		
+		connectLdap();
+	}
+	
+	private void connectLdap(){
 		try {
-			ldap = new LDAPConnection();
 			ldap.connect("ldap.epfl.ch", 389);
 		}catch (LDAPException e) {
 			System.out.println("Ldap exception");
@@ -46,6 +51,7 @@ public class Directory implements IPlugin{
     	String lastName = request.getParameter("lastName");
 		String sciper = request.getParameter("sciper");
     	
+		
 //		only if we want the auth part
 //		String username = request.getParameter("username");
 //    	String pwd = request.getParameter("password");
@@ -91,6 +97,9 @@ public class Directory implements IPlugin{
 		SearchResult searchResult;
 		String searchQuery = buildSearchQuery(sciper, first_name, last_name, accurate);
 		try {
+			if( !ldap.isConnected())
+				ldap.reconnect();
+			
 			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
 
 			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
@@ -117,6 +126,8 @@ public class Directory implements IPlugin{
 			}
 		} catch (LDAPSearchException e1) {
 			System.out.println("ldap search problem");
+		} catch (LDAPException e) {
+			System.out.println("ldap reconnection problem");
 		}
 		
 		return results;
