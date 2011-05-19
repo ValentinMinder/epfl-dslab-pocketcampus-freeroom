@@ -311,9 +311,9 @@ public class FoodMenu {
 
 	@SuppressWarnings("unchecked")
 	public List<String> restaurantsFromFile() {
-		String filename = "RestaurantsCache";
+		String filename = "RestaurantsPref";
 		List<String> restos = null;
-		File toGet = new File(ctx_.getCacheDir(), filename);
+		File toGet = new File(ctx_.getDir("preferences", 0), filename);
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 

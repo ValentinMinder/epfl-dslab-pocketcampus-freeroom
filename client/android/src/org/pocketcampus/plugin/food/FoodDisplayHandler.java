@@ -93,21 +93,6 @@ public class FoodDisplayHandler {
 	}
 
 	/**
-	 * Returns the Restaurant List
-	 */
-	public ArrayList<String> getRestaurantList() {
-		ArrayList<String> list = new ArrayList<String>();
-
-		for (Meal m : campusMenu_.getCampusMenu()) {
-			String resto = m.getRestaurant_().getName();
-			if (!list.contains(resto)) {
-				list.add(resto);
-			}
-		}
-		return list;
-	}
-
-	/**
 	 * Change display type
 	 * 
 	 * @param displayType

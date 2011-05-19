@@ -70,6 +70,12 @@ public class FoodPlugin extends PluginBase {
 
 		handleIntent();
 	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		foodDisplayHandler_.refreshView();
+	}
 
 	private void handleIntent() {
 		// TODO Auto-generated method stub

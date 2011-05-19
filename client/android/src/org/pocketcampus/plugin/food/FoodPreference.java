@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -17,18 +18,21 @@ import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import android.widget.TextView;
 
 public class FoodPreference extends PluginPreference {
 	private SharedPreferences restoPrefs_;
+	private Editor restoPrefsEditor_;
 
 	private final String RESTO_PREFS_NAME = "RestoPrefs";
 	private File menuFile_;
@@ -50,7 +54,7 @@ public class FoodPreference extends PluginPreference {
 		displayedRestaurants_ = new ArrayList<String>();
 
 		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
-		// Editor restoPrefsEditor_ = restoPrefs_.edit();
+		restoPrefsEditor_ = restoPrefs_.edit();
 
 		setPreferenceScreen(createPreferenceHierarchy());
 	}
@@ -65,10 +69,42 @@ public class FoodPreference extends PluginPreference {
 
 		final FoodPreference that = this;
 		CheckBoxPreference prefBox;
+		
+		/* Change to get the list from a permanent txt file. 
+		restaurants_ = getRestaurants();
 
+		Map<String, String> restos = (Map<String, String>) restoPrefs_.getAll();
+		
+		for(String resto : restaurants_){			
+			prefBox = new CheckBoxPreference(this);
+			prefBox.setKey(resto);
+			prefBox.setTitle(resto);
+			prefBox.setDefaultValue(true);
+
+			prefBox.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+				@Override
+				public boolean onPreferenceChange(Preference preference,
+						Object newValue) {
+					String r = preference.getKey();
+
+					restoPrefsEditor_.putBoolean(r, (Boolean)newValue);
+					restoPrefsEditor_.commit();
+					
+					return true;
+				}
+
+			});
+
+			foodPrefCat.addPreference(prefBox);
+		}
+		
+		*/
+		
+		
 		/* Change to get the list from a permanent txt file. */
 		restaurants_ = getRestaurants();
-		// restaurants_ = FoodPlugin.getRestaurantList();
+		
 		displayedRestaurants_ = readFromFile();
 
 		if (displayedRestaurants_ == null || displayedRestaurants_.isEmpty()) {
@@ -121,9 +157,9 @@ public class FoodPreference extends PluginPreference {
 	}
 
 	public void writeToFile() {
-		String filename = "RestaurantsCache";
+		String filename = "RestaurantsPref";
 
-		menuFile_ = new File(this.getCacheDir(), filename);
+		menuFile_ = new File(this.getDir("preferences", 0), filename);
 
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
@@ -139,9 +175,9 @@ public class FoodPreference extends PluginPreference {
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> readFromFile() {
-		String filename = "RestaurantsCache";
+		String filename = "RestaurantsPref";
 		ArrayList<String> restosDisplayed = null;
-		File toGet = new File(this.getCacheDir(), filename);
+		File toGet = new File(this.getDir("preferences", 0), filename);
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 
