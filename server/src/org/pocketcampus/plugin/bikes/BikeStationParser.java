@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.bikes;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +18,11 @@ public class BikeStationParser {
 	public ArrayList<BikeStation> parserBikes() throws IOException {
 		ArrayList<BikeStation> stations = new ArrayList<BikeStation>();
 		
-		
 		String source = URLLoader.getSource(URL);
+		
+		// Dirty fix for the "é" character.
+		// It's a problem on their side, we can't do anything cleaner on our side to fix it.
+		source = source.replace("ï¿½", "é");
 		
 		Pattern p = Pattern.compile("<sites>(.*)</sites>");
 		Matcher m = p.matcher(source);
