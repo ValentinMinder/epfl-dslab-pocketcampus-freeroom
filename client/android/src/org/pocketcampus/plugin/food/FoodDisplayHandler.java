@@ -15,6 +15,7 @@ import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.sandwiches.SandwichList;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 import org.pocketcampus.shared.plugin.food.Sandwich;
@@ -374,4 +375,8 @@ public class FoodDisplayHandler {
 			return this.value;
 		}
 	};
+	
+	public void setNews(ArrayList<MainscreenNews> news){
+		campusMenu_.setNews(news);
+	}
 }

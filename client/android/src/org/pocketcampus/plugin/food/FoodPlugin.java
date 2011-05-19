@@ -2,9 +2,14 @@ package org.pocketcampus.plugin.food;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -12,12 +17,18 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
-import org.pocketcampus.plugin.food.pictures.PictureTaker;
+import org.pocketcampus.plugin.food.menu.MenuSorter;
+import org.pocketcampus.plugin.food.request.MenusRequest;
+import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
+import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.food.Meal;
+import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -35,7 +46,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FoodPlugin extends PluginBase {
+public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 
@@ -70,7 +81,7 @@ public class FoodPlugin extends PluginBase {
 
 		handleIntent();
 	}
-	
+
 	@Override
 	public void onRestart(){
 		super.onRestart();
@@ -232,7 +243,7 @@ public class FoodPlugin extends PluginBase {
 				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
-						.getDateLastUpdatedMenus();
+				.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -283,7 +294,7 @@ public class FoodPlugin extends PluginBase {
 					public void performAction(View view) {
 						actionBar_.removeActionAt(0);
 						foodDisplayHandler_
-								.setCurrentDisplayType(R.id.food_menu_restaurants);
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 						foodDisplayHandler_.updateView();
 						displayView();
 					}
@@ -296,8 +307,8 @@ public class FoodPlugin extends PluginBase {
 			}
 		} else {
 			foodDisplayHandler_
-					.setCurrentDisplayType(FoodDisplayType.Restaurants
-							.getValue());
+			.setCurrentDisplayType(FoodDisplayType.Restaurants
+					.getValue());
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
@@ -366,13 +377,13 @@ public class FoodPlugin extends PluginBase {
 				if (extras != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
 					FoodDisplayType previous = foodDisplayHandler_
-							.getCurrentDisplayType();
+					.getCurrentDisplayType();
 					foodDisplayHandler_
-							.setCurrentDisplayType(R.id.food_menu_suggestions);
+					.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -382,9 +393,9 @@ public class FoodPlugin extends PluginBase {
 			}
 			break;
 		case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-//			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
-//			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
-//			break;
+			//			PictureTaker.onActivityResult(requestCode, resultCode, data, true);
+			//			Toast.makeText(this, "YOOOOOOOOOOOOO", Toast.LENGTH_SHORT).show();
+			//			break;
 		}
 	}
 
@@ -427,7 +438,7 @@ public class FoodPlugin extends PluginBase {
 					isSandwichDisplay_ = false;
 				}
 				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
+				.setCurrentDisplayType(R.id.food_menu_restaurants);
 			} else {
 				foodDisplayHandler_.setCurrentDisplayType(125);
 			}
@@ -473,9 +484,9 @@ public class FoodPlugin extends PluginBase {
 			expandMenus_.invalidate();
 
 			Adapter adapt = foodDisplayHandler_.getListAdapter()
-					.getExpandableList(
-							FoodPlugin.this
-									.getString(R.string.food_restaurants));
+			.getExpandableList(
+					FoodPlugin.this
+					.getString(R.string.food_restaurants));
 			if (adapt != null) {
 				if (adapt instanceof RestaurantListAdapter) {
 					((RestaurantListAdapter) adapt).toggleAll(expanded);
@@ -485,5 +496,59 @@ public class FoodPlugin extends PluginBase {
 			}
 			return false;
 		}
+	}
+
+	@Override
+	public void getNews(Context ctx, final ICallback callback) {
+		final ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
+		final FoodPlugin that = this;
+		
+		class MainscreenMenusRequest extends MenusRequest{
+
+			@Override
+			public void onCancelled() {
+				Log.d("SERVER", "Task cancelled");
+			}
+			
+			@Override
+			public void updateMenus(final List<Meal> campusMenuList) {
+
+				if (campusMenuList != null) {
+					if (!campusMenuList.isEmpty()) {
+						
+						class MainscreenRatingsRequest extends RatingsRequest{
+							Meal m_; 
+							
+							@Override
+							public void updateRatings(HashMap<Integer, Rating> ratings) {
+								
+								m_ = getBestMeal(ratings);
+								
+								if(m_ != null){					
+									MainscreenNews bestMeal = new MainscreenNews(m_.getName_() + " @ " + m_.getRestaurant_().getName(), m_.getDescription_(), 0, that, new Date());
+									news.add(bestMeal);
+									callback.callback(news);
+								}
+							}
+							
+							private Meal getBestMeal(HashMap<Integer, Rating> ratings){
+								Meal m = null;
+								MenuSorter sorter = new MenuSorter();
+								Vector<Meal> mealsVector = sorter.sortByRatings(campusMenuList);
+								
+								return mealsVector.get(0);
+							}
+						}		
+						Log.d("SERVER", "Requesting ratings (FoodPlugin)");
+						getRequestHandler().execute(new MainscreenRatingsRequest(),
+								"getRatings", (RequestParameters) null);
+					}
+				} 
+			}
+		}
+		
+		Log.d("SERVER", "Requesting menus (Mainscreen)");
+		getRequestHandler().execute(new MainscreenMenusRequest(),
+				"getMenus", (RequestParameters) null);
 	}
 }

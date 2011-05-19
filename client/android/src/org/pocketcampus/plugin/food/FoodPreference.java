@@ -111,7 +111,6 @@ public class FoodPreference extends PluginPreference {
 			Log.d("PREFERENCES",
 					"displayedRestaurants_ was null or empty from file!");
 			displayedRestaurants_ = restaurants_;
-		} else {
 		}
 
 		if (!displayedRestaurants_.isEmpty()) {
@@ -150,7 +149,6 @@ public class FoodPreference extends PluginPreference {
 			TextView text = new TextView(this);
 			text.setText(getResources().getString(
 					R.string.food_preferences_warning));
-
 		}
 
 		return root;
