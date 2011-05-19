@@ -22,12 +22,4 @@
 	<style name="Theme.ListView">
 		<item name="android:cacheColorHint">#00000000</item>
 	</style>
-
-	<!-- Granite Theme <style name="Theme" parent="android:Theme.Black"> <item 
-		name="android:layout_width">fill_parent</item> <item name="android:layout_height">wrap_content</item> 
-		<item name="android:textColor">#FFFFFFFF</item> <item name="android:fastScrollEnabled">true</item> 
-		</style> <style name="Theme.BottomBar"> <item name="android:background">#FFC40A0C</item> 
-		</style> <style name="Theme.MainLayout"> <item name="android:background">@drawable/food_background</item> 
-		</style> <style name="Theme.ListView"> <item name="android:cacheColorHint">#00000000</item> 
-		</style> -->
 </resources>

@@ -25,7 +25,7 @@ public class DirectoryInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(R.drawable.directory_normal_menu);
+		return new Icon(R.drawable.directory_menu);
 	}
 
 	@Override
