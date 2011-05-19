@@ -14,7 +14,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -57,7 +61,7 @@ public class SocialFriendsList extends ListActivity {
 		buttonSelect.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				friendsListAdapter_.toggleAll();
+				toggle();
 			}
 		});
 
@@ -66,7 +70,7 @@ public class SocialFriendsList extends ListActivity {
 		buttonPermission.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(friendsListAdapter_), "permissions", new RequestParameters());
+				permission();
 			}
 		});
 
@@ -75,30 +79,42 @@ public class SocialFriendsList extends ListActivity {
 		buttonDelete.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(this_);
-				builder.setMessage(this_.getString(R.string.social_delete_confirm))
-				.setCancelable(false)
-				.setPositiveButton(this_.getString(R.string.social_delete_confirm_yes), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						
-						for(int i = 0; i < friendsListAdapter_.getSelectedFriends().size()-1; i++) {
-							SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i));
-						}
-						
-						//last one reloads the page
-						SocialPlugin.deleteRequest(this_, SocialFriendsList.class, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1));
-					}
-				})
-				.setNegativeButton(this_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				AlertDialog alert = builder.create();
-				alert.setCanceledOnTouchOutside(true);
-				alert.show();
+				delete();
 			}
 		});
+	}
+	
+	private void toggle() {
+		friendsListAdapter_.toggleAll();
+	}
+	
+	private void permission() {
+		SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(friendsListAdapter_), "permissions", new RequestParameters());
+	}
+	
+	private void delete() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this_);
+		builder.setMessage(this_.getString(R.string.social_delete_confirm))
+		.setCancelable(false)
+		.setPositiveButton(this_.getString(R.string.social_delete_confirm_yes), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				
+				for(int i = 0; i < friendsListAdapter_.getSelectedFriends().size()-1; i++) {
+					SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i));
+				}
+				
+				//last one reloads the page
+				SocialPlugin.deleteRequest(this_, SocialFriendsList.class, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1));
+			}
+		})
+		.setNegativeButton(this_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
+		alert.show();
 	}
 	
 	private class FriendsListsRequest extends DataRequest {
@@ -154,5 +170,39 @@ public class SocialFriendsList extends ListActivity {
 			}
 		});
 		actionBar.addAction(new ActionBar.IntentAction(this_, MainscreenPlugin.createIntent(this_), R.drawable.mini_home));
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.social, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.social_friendslist_optionmenu_delete:
+			delete();
+			return true;
+
+		case R.id.social_friendslist_optionmenu_permission:
+			permission();
+			return true;
+			
+		case R.id.social_friendslist_optionmenu_toggle:
+			toggle();
+			return true;
+
+		case R.id.social_friendslist_optionmenu_preferences:
+			Intent intent = new Intent(this, SocialPreference.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			this.startActivity(intent);
+			this.finish();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

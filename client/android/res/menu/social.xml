@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:title="[HC] Toggle"
+		android:id="@+id/social_friendslist_optionmenu_toggle"
+		android:icon="@android:drawable/ic_menu_manage" />
+	<item
+		android:title="[HC] Permissions"
+		android:id="@+id/social_friendslist_optionmenu_permission"
+		android:icon="@android:drawable/ic_menu_manage" />
+	<item
+		android:title="[HC] Delete"
+		android:id="@+id/social_friendslist_optionmenu_delete"
+		android:icon="@android:drawable/ic_menu_manage" />
+	<item
+		android:title="[HC] Preferences"
+		android:id="@+id/social_friendslist_optionmenu_preferences"
+		android:icon="@android:drawable/ic_menu_manage"/>
+</menu>

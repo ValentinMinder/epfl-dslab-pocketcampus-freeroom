@@ -43,8 +43,8 @@ public class SocialPermissionDialog extends Dialog {
 	private final Activity parentActivity_;
 	private boolean updated_;
 	
-	private final Button chatButton;
-	private final Button okButton;
+	private final Button chatButton_;
+	private final Button okButton_;
 
 	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, Activity parentActivity) {
 		super(context);
@@ -56,14 +56,14 @@ public class SocialPermissionDialog extends Dialog {
 		this.this_ = this;
 		this.updated_ = false;
 		
+		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
+		okButton_ = (Button) findViewById(R.id.social_friends_ok);
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_permission_dialog);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
 		setDialogContent();
-		
-		chatButton = (Button) findViewById(R.id.social_friends_chat_button);
-		okButton = (Button) findViewById(R.id.social_friends_ok);
 	}
 
 	private void setDialogContent() {
@@ -80,7 +80,7 @@ public class SocialPermissionDialog extends Dialog {
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(!updated_) {
 							updated_ = true;
-							okButton.setEnabled(true);
+							okButton_.setEnabled(true);
 						}
 					}
 				});
@@ -99,13 +99,13 @@ public class SocialPermissionDialog extends Dialog {
 		}
 		
 		// BOUTON chat
-		chatButton.setOnClickListener(new View.OnClickListener() {
+		chatButton_.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				
 			}
 		});
 		
-		okButton.setOnClickListener(new View.OnClickListener() {
+		okButton_.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				AuthToken token = AuthenticationPlugin.getAuthToken(context_);
 				

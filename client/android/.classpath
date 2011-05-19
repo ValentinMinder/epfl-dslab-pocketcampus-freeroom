@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/osmdroid-android-3.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="lib/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Gianluca/workspace/pocketcampus-client/lib/fbrocket-0.1a.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

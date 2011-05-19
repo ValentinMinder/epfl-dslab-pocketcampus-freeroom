@@ -85,6 +85,7 @@
 		  </intent-filter>
 		</receiver>
 		<activity android:name=".plugin.social.SocialFriendsList"></activity>
+		<activity android:name=".plugin.social.SocialFacebookFinder"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />
