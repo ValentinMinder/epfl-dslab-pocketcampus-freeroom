@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.camipro;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -64,13 +66,13 @@ public class Camipro implements IPlugin {
 		}
 		
 		TransactionsServer tss = gson_.fromJson(result, TransactionsServer.class);
-
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		
 		List<TransactionBean> l = new ArrayList<TransactionBean>();
 		for(TransactionServer ts : tss.getLastTransactionsList().getLastTransactions()) {
 			Date d;
-			DateFormat df = DateFormat.getDateTimeInstance();
 			try {
-				d = df.parse(ts.getTransactionDate());
+				d = formatter.parse(ts.getTransactionDate());
 			} catch (ParseException e) {
 				d = new Date();
 			}
@@ -78,6 +80,16 @@ public class Camipro implements IPlugin {
 			l.add(new TransactionBean(ts.getTransactionType(), ts.getElementPrettyDescription(), d, ts.getTransactionAmount()));
 		}
 		
+		Collections.sort(l, c);
+		
 		return l;
 	}
+	
+	// Comparator used to sort the transactions
+	private static Comparator<TransactionBean> c = new Comparator<TransactionBean>() {
+		@Override
+		public int compare(TransactionBean o1, TransactionBean o2) {
+			return o2.getDate().compareTo(o1.getDate());
+		}
+	};
 }
