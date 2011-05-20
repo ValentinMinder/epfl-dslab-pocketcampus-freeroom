@@ -17,11 +17,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
@@ -33,6 +33,7 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.map.cache.ILayersCacheCallback;
 import org.pocketcampus.plugin.map.cache.LayersCache;
@@ -44,6 +45,7 @@ import org.pocketcampus.plugin.map.ui.ItemDialog;
 import org.pocketcampus.plugin.map.ui.LayerSelector;
 import org.pocketcampus.plugin.map.ui.LevelBar;
 import org.pocketcampus.plugin.map.ui.OnLevelBarChangeListener;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -150,8 +152,12 @@ public class MapPlugin extends PluginBase {
 		Bundle extras = getIntent().getExtras();
 		if(!handleIntent(extras)) {
 			// Download the available layers
+			
 			incrementProgressCounter();
-			getRequestHandler().execute(new LayersRequest(), "getLayers", (RequestParameters)null);
+			
+			RequestParameters params = new RequestParameters();
+			params.addParameter("token", getAuthToken());
+			getRequestHandler().execute(new LayersRequest(), "getLayers", params);
 		}
 	}
 
@@ -685,6 +691,7 @@ public class MapPlugin extends PluginBase {
 		incrementProgressCounter();
 		RequestParameters param = new RequestParameters();
 		param.addParameter("layer_id", String.valueOf(layer.getLayerId()));
+		param.addParameter("token", getAuthToken());
 		getRequestHandler().execute(new ItemsRequest(layer), "getItems", param);
 	}
 
@@ -715,6 +722,12 @@ public class MapPlugin extends PluginBase {
 		GeoPoint s = new GeoPoint(start.getLatitude(), start.getLongitude(), start.getAltitude());
 		GeoPoint e = new GeoPoint(end.getLatitude(), end.getLongitude(), end.getAltitude());
 		return s.distanceTo(e);
+	}
+	
+	private String getAuthToken() {
+		AuthToken t = AuthenticationPlugin.getAuthToken(this);
+		
+		return new Gson().toJson(t);
 	}
 
 	/**
