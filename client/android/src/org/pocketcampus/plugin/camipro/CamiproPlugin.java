@@ -57,8 +57,6 @@ public class CamiproPlugin extends PluginBase {
 
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
-		super.setupActionBar(addHomeButton);
-
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 		
 		// Refresh the camipro data
@@ -74,6 +72,8 @@ public class CamiproPlugin extends PluginBase {
 				return R.drawable.refresh;
 			}
 		});
+		
+		super.setupActionBar(addHomeButton);
 	}
 
 	/**
