@@ -29,7 +29,7 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 import android.net.wifi.ScanResult;
 
-public class AccessPoint {
+public class AccessPoint implements Comparable{
 	private Position position;
 	private String SSID;
 	private int signalLevel;
@@ -77,20 +77,26 @@ public class AccessPoint {
 		return signalLevel;
 	}
 	
+//	@Override
+//	public String toString() {
+//		String apName = "??";
+//		Position pos = new Position(0, 0, 0);
+//		
+//		if(name != null) {
+//			apName = name;
+//		}
+//		
+//		if(position != null) {
+//			pos = position;
+//		}
+//		
+//		return SSID + ", "+apName+": ("+ pos.getLatitude() + ";"+ pos.getLongitude() +";"+pos.getLatitude()+"), "+ signalLevel;
+//	}
+	
+	
 	@Override
-	public String toString() {
-		String apName = "??";
-		Position pos = new Position(0, 0, 0);
-		
-		if(name != null) {
-			apName = name;
-		}
-		
-		if(position != null) {
-			pos = position;
-		}
-		
-		return SSID + ", "+apName+": ("+ pos.getLatitude() + ";"+ pos.getLongitude() +";"+pos.getLatitude()+"), "+ signalLevel;
+	public String toString(){
+		return this.name;
 	}
 	
 	
@@ -186,5 +192,10 @@ public class AccessPoint {
 		if(nodes_!=null)
 			for(Node node : nodes_ )
 				node.decrease();
+	}
+
+	@Override
+	public int compareTo(Object obj) {
+		return this.name.compareTo(obj.toString());
 	}
 }

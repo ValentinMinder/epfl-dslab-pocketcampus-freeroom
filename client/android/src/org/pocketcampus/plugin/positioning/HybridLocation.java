@@ -35,8 +35,23 @@ public class HybridLocation implements IPositionProvider{
 	}
 	
 	public Position getWifiLocation(){
-		//return wifiLocation_.getWifiLocationPerCoefficient();
-		 return wifiLocation_.getWifiLocationPerTaylorSerieGlobal();
+		return wifiLocation_.getWifiLocationPerCoefficient();
+		// return wifiLocation_.getWifiLocationPerTaylorSerieGlobal();
+	}
+	
+	
+	
+	public Position getCombinedLocation(){
+		Position centroid = wifiLocation_.getWifiLocationPerCoefficient();
+		Position taylor = wifiLocation_.getWifiLocationPerTaylorSerieGlobal();
+		Position result = centroid;
+		if(taylor!=null){
+			if(Math.pow((centroid.getLatitude()-taylor.getLatitude()),2)+Math.pow((centroid.getLongitude()-taylor.getLongitude()), 2)<20)
+				result = new Position((centroid.getLatitude()+taylor.getLatitude())/2,(centroid.getLongitude()+taylor.getLongitude())/2,0.0);
+		        //result = taylor ;
+		       }
+		return result;
+		
 	}
 	
 	
