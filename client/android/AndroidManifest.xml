@@ -15,14 +15,6 @@
 		</activity>
 		<activity android:name=".plugin.mainscreen.MainscreenPreference" android:screenOrientation="portrait"></activity>
         <activity android:name=".plugin.mainscreen.MainscreenPluginPreference" android:screenOrientation="portrait"></activity>
-        
-		<activity android:name=".plugin.positioning.TestPosition">
-		    <intent-filter>
-		        <action android:name="android.intent.action.MAIN" />
-		        <category android:name="android.intent.category.LAUNCHER" />
-		    </intent-filter>
-		</activity>
-
 
 		<!-- News Plugin -->
 		<activity android:name=".plugin.news.NewsPlugin" android:screenOrientation="portrait"></activity>
