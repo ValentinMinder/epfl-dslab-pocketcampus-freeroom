@@ -194,6 +194,8 @@ public class NewsProvider {
 
 		Log.d(this.getClass().toString(), "Could not get news from file");
 
+		this.dataSetUpdated();
+		
 		return false;
 	}
 
