@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.bikes.BikeStation;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
@@ -51,21 +52,21 @@ public class Bikes implements IPlugin, IMapElementsProvider {
     }
 
 	@Override
-	public List<MapLayerBean> getLayers() {
+	public List<MapLayerBean> getLayers(AuthToken token) {
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
 		l.add(new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true));
 		return l;
 	}
 
 	@Override
-	public List<MapElementBean> getLayerItems(int layerId) {
+	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
 		ArrayList<BikeStation> b = bikes(null);
 		
 		List<MapElementBean> items = new ArrayList<MapElementBean>();
 		
 		for(BikeStation s : b) {
 			StringBuffer description = new StringBuffer();
-			description.append("Vélos libres: ");
+			description.append("VÃ©los libres: ");
 			description.append(String.valueOf(s.getFreeBikes()));
 			description.append("\n");
 			

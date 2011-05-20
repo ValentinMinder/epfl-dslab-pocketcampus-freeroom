@@ -21,9 +21,12 @@ import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.provider.mapelements.IMapElementsProvider;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
+
+import com.google.gson.Gson;
 
 
 /**
@@ -58,12 +61,13 @@ public class Map implements IPlugin, IMapElementsProvider {
 	 */
 	@PublicMethod
 	public List<MapLayerBean> getLayers(HttpServletRequest request) {
+		AuthToken token = getToken(request);
 
 		// Get the layers
 		// Do it only once
 		synchronized (layersList_) {
 			if(layersList_.size() == 0) {
-				getPluginsLayers();
+				getPluginsLayers(token);
 
 				// Sort the layers by alphabetic order
 				Collections.sort(layersList_, new Comparator<MapLayerBean>() {
@@ -92,12 +96,31 @@ public class Map implements IPlugin, IMapElementsProvider {
 		}
 
 		String layerId = request.getParameter("layer_id");
+		
+		AuthToken token = getToken(request);
 
 		// Does the parameter exist
 		if(layerId != null) {		
-			return getPluginItems(layerId);
+			return getPluginItems(layerId, token);
 		} else {
 			return new ArrayList<MapElementBean>();
+		}
+	}
+
+	/**
+	 * Get the token from the request
+	 * @param request
+	 * @return null if not token available
+	 */
+	private AuthToken getToken(HttpServletRequest request) {
+		String json = null;
+		try {
+			json = request.getParameter("token");
+			
+			return new Gson().fromJson(json, AuthToken.class);
+		} catch (Exception e) {
+			// The token stays empty
+			return null;
 		}
 	}
 
@@ -181,8 +204,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 	 * Fill the hashmaps with a list of layers
 	 * coming from the {@link IMapElementsProvider} plugins.
 	 */
-	private void getPluginsLayers() {
-
+	private void getPluginsLayers(AuthToken token) {
 		// Get the plugins with the "map" interface
 		HashSet<IPlugin> providers = Core.getInstance().getProvidersOf(IMapElementsProvider.class);
 
@@ -193,7 +215,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 			provider = (IMapElementsProvider)iter.next();
 
 			// For each layer of the current plugin, remember it
-			for(MapLayerBean mlb : provider.getLayers()) {
+			for(MapLayerBean mlb : provider.getLayers(token)) {
 				layersList_.add(mlb);
 				layerProviders_.put(mlb.getExternalId(), provider);
 				layerIds_.put(mlb.getExternalId(), mlb.getInternalId());
@@ -205,14 +227,15 @@ public class Map implements IPlugin, IMapElementsProvider {
 	 * Get a list of items coming from a {@link IMapElementsProvider} plugin
 	 * 
 	 * @param externalId ID of the layer to use
+	 * @param token Token from the user, if connected
 	 * @return List of items from the layer
 	 */
-	private List<MapElementBean> getPluginItems(String externalId) {
+	private List<MapElementBean> getPluginItems(String externalId, AuthToken token) {
 
 		IMapElementsProvider provider = layerProviders_.get(externalId);
 
 		if(provider != null) {
-			return provider.getLayerItems(layerIds_.get(externalId));
+			return provider.getLayerItems(token, layerIds_.get(externalId));
 		}
 
 		// Nothing found
@@ -224,12 +247,12 @@ public class Map implements IPlugin, IMapElementsProvider {
 	/***** Methods from the interface ****/
 
 	@Override
-	public List<MapLayerBean> getLayers() {
+	public List<MapLayerBean> getLayers(AuthToken token) {
 		return getInternalLayers();
 	}
 
 	@Override
-	public List<MapElementBean> getLayerItems(int layerId) {
+	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
 		return getInternalItems(layerId);
 	}
 
