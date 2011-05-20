@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.news;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.ICallback;
@@ -26,8 +25,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 /**
  * PluginBase class for the News plugin. 
@@ -37,12 +36,12 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Jonas
  *
  */
-public class NewsPlugin extends PluginBase implements /*IMainscreenNewsProvider,*/ INewsListener, IAllowsID {
+public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, INewsListener, IAllowsID {
 
 	private NewsAdapter adapter_;
 	private NewsProvider newsProvider_;
 	private ActionBar actionBar_;
-	private final static int NB_NEWS = 7;
+	private final static int NB_NEWS = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,7 @@ public class NewsPlugin extends PluginBase implements /*IMainscreenNewsProvider,
 		if(hasIDInIntent()) {
 			try {
 				showNews(getIDFromIntent());
-			} catch (NoIDException e) {
-				e.printStackTrace();
-			}
+			} catch (NoIDException e) {}
 		}
 		
 		Tracker.getInstance().trackPageView("news/home");
@@ -181,23 +178,45 @@ public class NewsPlugin extends PluginBase implements /*IMainscreenNewsProvider,
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
 
-//	@Override
-//	public void getNews(Context ctx, ICallback callback) {
-//		ArrayList<MainscreenNews> l = new ArrayList<MainscreenNews>();
-//		NewsProvider np = NewsProvider.getInstance(ctx);
-//
-//		// Number of news to display
-//		int min = np.getCount();
-//		min = Math.min(min, NB_NEWS);
-//		
-//		NewsItem tmp;
-//		for(int i = 0; i < min; ++i) {
-//			tmp = np.getItem(i);
-//			l.add(new MainscreenNews(tmp.getTitle(), tmp.getFormatedDescription().subSequence(0, 150).toString(), i, this, tmp.getPubDateDate()));
-//		}
-//		
-//		return l;
-//	}
+	@Override
+	public void getNews(Context ctx, final ICallback callback) {
+		final NewsProvider np = NewsProvider.getInstance(ctx);
+
+		// Number of news to display
+		int count = np.getCount();
+		
+		if(count < 1) {
+			np.addNewsListener(new INewsListener() {
+				@Override
+				public void newsRefreshing() {}
+				
+				@Override
+				public void newsRefreshed() {
+					callMainscreen(np, callback);
+					np.removeNewsListener(this);
+				}
+			});
+			
+			np.refreshIfNeeded();
+		} else {
+			callMainscreen(np, callback);
+		}
+	}
+	
+	private void callMainscreen(NewsProvider np, ICallback callback) {
+		ArrayList<MainscreenNews> l = new ArrayList<MainscreenNews>();
+		
+		int count = np.getCount();
+		int min = Math.min(count, NB_NEWS);
+		
+		NewsItem tmp;
+		for(int i = 0; i < min; ++i) {
+			tmp = np.getItem(i);
+			l.add(new MainscreenNews(tmp.getTitle(), tmp.getFormatedDescription().subSequence(0, 150).toString(), i, this, tmp.getPubDateDate()));
+		}
+		
+		callback.callback(l);
+	}
 
 
 }

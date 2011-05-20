@@ -179,6 +179,8 @@ public class NewsProvider {
 				items_ = (ArrayList<NewsItem>) o;
 
 				Log.d(this.getClass().toString(), "Got news from file");
+				
+				this.dataSetUpdated();
 
 				return true;
 			}

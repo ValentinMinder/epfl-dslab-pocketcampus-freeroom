@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.mainscreen;
 
-import java.util.List;
-
 import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.provider.IProvider;
 
