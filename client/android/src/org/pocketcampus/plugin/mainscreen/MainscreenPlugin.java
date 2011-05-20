@@ -7,15 +7,12 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Core;
-import org.pocketcampus.core.plugin.Icon;
-import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
-import org.pocketcampus.plugin.news.NewsProvider;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,20 +20,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class MainscreenPlugin extends PluginBase {
 	private Context ctx_;
@@ -53,6 +45,8 @@ public class MainscreenPlugin extends PluginBase {
 	private MainscreenAdapter adapter_;
 	
 	private static List<MainscreenNews> news_;
+	
+	private PluginsAdapter pluginsAdapter_;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,66 +66,19 @@ public class MainscreenPlugin extends PluginBase {
 		ctx_ = this.getApplicationContext();
 		core_ = Core.getInstance();
 		plugins_ = core_.getAvailablePlugins();
-				
-		
+			
 		refresh();
 
-		LinearLayout menuLayout = (LinearLayout) findViewById(R.id.MenuLayout);
-
-		for (final PluginBase plugin : plugins_) {
-			PluginInfo pluginInfo = plugin.getPluginInfo();
-
-			// MENU ICONS
-			if(pluginInfo.hasMenuIcon() == true) {
-				// layout
-				RelativeLayout relLayout = new RelativeLayout(ctx_);
-				RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-				relLayout.setLayoutParams(layoutParams);
-
-				// button
-				ImageButton button = new ImageButton(ctx_);
-
-				button.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						core_.displayPlugin(ctx_, plugin);
-					}
-				});
-
-				// icon
-				if(pluginInfo.getIcon() != null) {
-					button.setImageDrawable(pluginInfo.getIcon().getDrawable(ctx_));
-				} else {
-					button.setImageDrawable(Icon.getDefaultDrawable(ctx_));
-				}
-
-				RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-				button.setLayoutParams(buttonParams);
-				button.setBackgroundColor(0x00000000);
-				button.setId(1);
-				relLayout.addView(button);
-
-				// label
-				TextView text = new TextView(ctx_);
-				text.setText(pluginInfo.getNameResource());
-				//text.setText(getResources().getString(pluginInfo.getNameViaID()));
-
-				RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-				textParams.addRule(RelativeLayout.BELOW, 1);
-				textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-				text.setLayoutParams(textParams);
-				text.setTextColor(0xff444444);
-				text.setGravity(Gravity.TOP);
-				relLayout.addView(text);
-
-
-				// put it in
-				relLayout.setPadding(2, 5, 2, 10);
-				menuLayout.addView(relLayout);
+		GridView gv = (GridView) findViewById(R.id.gridview);
+		
+		pluginsAdapter_ = new PluginsAdapter(this, plugins_);
+		gv.setAdapter(pluginsAdapter_);
+		gv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				core_.displayPlugin(ctx_, pluginsAdapter_.getItem(position));
 			}
-		}
+		});
 
 	}
 
