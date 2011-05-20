@@ -64,8 +64,8 @@ public class Router extends HttpServlet {
 				"org.pocketcampus.plugin.food.Food",
 				"org.pocketcampus.plugin.map.Map",
 				"org.pocketcampus.plugin.transport.Transport",
-//				"org.pocketcampus.plugin.test.Test",
-				"org.pocketcampus.plugin.bikes.Bikes"
+				"org.pocketcampus.plugin.bikes.Bikes",
+				"org.pocketcampus.plugin.social.Social"
 		};
 		
 		// XXX
