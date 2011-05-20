@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +18,7 @@ import org.pocketcampus.core.debug.Reporter;
 import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.plugin.transport.DateSerializer;
 import org.pocketcampus.plugin.transport.PartSerializer;
-import org.pocketcampus.shared.plugin.transport.Connection.Footway;
 import org.pocketcampus.shared.plugin.transport.Connection.Part;
-import org.pocketcampus.shared.plugin.transport.Connection.Trip;
 import org.pocketcampus.shared.utils.StringUtils;
 
 import com.google.gson.Gson;
@@ -61,11 +58,15 @@ public class Router extends HttpServlet {
 		gson_ = builder.create();
 		
 		String[] plugins = new String[] {
+				"org.pocketcampus.plugin.authentication.Authentication",
+				"org.pocketcampus.plugin.bikes.Bikes",
+				"org.pocketcampus.plugin.camipro.Camipro",
+				"org.pocketcampus.plugin.directory.Directory",
 				"org.pocketcampus.plugin.food.Food",
 				"org.pocketcampus.plugin.map.Map",
-				"org.pocketcampus.plugin.transport.Transport",
-				"org.pocketcampus.plugin.bikes.Bikes",
-				"org.pocketcampus.plugin.social.Social"
+				"org.pocketcampus.plugin.positioning.Positioning",
+				"org.pocketcampus.plugin.social.Social",
+				"org.pocketcampus.plugin.transport.Transport"
 		};
 		
 		// XXX
