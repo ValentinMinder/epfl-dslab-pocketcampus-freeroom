@@ -8,4 +8,7 @@
     
     <string name="camipro_unable_balance">Unable to get the current balance.</string>
     <string name="camipro_unable_transactions">Unable to get the last transactions.</string>
+    
+    <color name="camipro_plus">#459900</color>
+    <color name="camipro_minus">#E30000</color>
 </resources>

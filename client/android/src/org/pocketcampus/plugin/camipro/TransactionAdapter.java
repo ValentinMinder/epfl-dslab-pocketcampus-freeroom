@@ -6,7 +6,6 @@ import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,13 @@ import android.widget.TextView;
  */
 public class TransactionAdapter extends ArrayAdapter<TransactionBean> {
 
-	LayoutInflater li_;
-	java.text.DateFormat df_; // Used to format the date
+	private LayoutInflater li_;
+	private java.text.DateFormat df_; // Used to format the date
+	private Context context_;
+
+	// Colors
+	private static int minus_;
+	private static int plus_;
 	
 	/**
 	 * Adapter constructor
@@ -35,6 +39,10 @@ public class TransactionAdapter extends ArrayAdapter<TransactionBean> {
 		super(context, textViewResourceId, transactions);
 		li_ = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		df_ = DateFormat.getDateFormat(context);
+		context_ = context;
+
+		minus_ = context_.getResources().getColor(R.color.camipro_minus);
+		plus_ = context_.getResources().getColor(R.color.camipro_plus);
 	}
 
 	@Override
@@ -56,7 +64,7 @@ public class TransactionAdapter extends ArrayAdapter<TransactionBean> {
         
         tv = (TextView)v.findViewById(R.id.camipro_item_amount);
         tv.setText(Float.toString(t.getAmount()));
-        tv.setTextColor(t.getAmount() < 0.0 ? Color.RED : Color.GREEN);
+        tv.setTextColor(t.getAmount() < 0.0 ? minus_ : plus_);
         
         return v;
 	}
