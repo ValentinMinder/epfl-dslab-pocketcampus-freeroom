@@ -89,13 +89,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 	}
 
 	private void handleIntent() {
-		// TODO Auto-generated method stub
 
 		try {
 			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
 					+ getIDFromIntent() : "Does not have ID");
 		} catch (NoIDException e) {
-			// TODO Auto-generated catch block
+			Log.d(this.getClass().toString(), "NoIDException");
 			e.printStackTrace();
 		}
 	}
@@ -507,7 +506,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 
 			@Override
 			public void onCancelled() {
-				Log.d("SERVER", "Task cancelled");
+				Log.d("SERVER", "Task cancelled (Mainscreen)");
 			}
 			
 			@Override
@@ -525,21 +524,24 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 								m_ = getBestMeal(ratings);
 								
 								if(m_ != null){					
-									MainscreenNews bestMeal = new MainscreenNews(m_.getName_() + " @ " + m_.getRestaurant_().getName(), m_.getDescription_(), 0, that, new Date());
+									MainscreenNews bestMeal = new MainscreenNews(m_.getName_() + "\n" + m_.getRestaurant_().getName(), m_.getDescription_(), 0, that, new Date());
 									news.add(bestMeal);
 									callback.callback(news);
 								}
 							}
 							
 							private Meal getBestMeal(HashMap<Integer, Rating> ratings){
-								Meal m = null;
 								MenuSorter sorter = new MenuSorter();
 								Vector<Meal> mealsVector = sorter.sortByRatings(campusMenuList);
+								if(mealsVector != null){
+									return mealsVector.get(0);									
+								}else{
+									return null;
+								}
 								
-								return mealsVector.get(0);
 							}
 						}		
-						Log.d("SERVER", "Requesting ratings (FoodPlugin)");
+						Log.d("SERVER", "Requesting ratings (Mainscreen)");
 						getRequestHandler().execute(new MainscreenRatingsRequest(),
 								"getRatings", (RequestParameters) null);
 					}

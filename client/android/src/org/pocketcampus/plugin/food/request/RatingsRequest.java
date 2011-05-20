@@ -19,9 +19,8 @@ public abstract class RatingsRequest extends DataRequest {
 	@Override
 	protected void doInUiThread(String result) {
 		campusMenuRatingsList = new HashMap<Integer, Rating>();
-		if (result != null) {
-			Log.d("SERVER", result);
-		}
+		
+		Log.d("SERVER", result == null ? "Result null" : "Result ok");
 		
 		Type menuType = new TypeToken<HashMap<Integer, Rating>>() {
 		}.getType();

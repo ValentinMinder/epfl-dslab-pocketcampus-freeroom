@@ -44,6 +44,7 @@ public class MealTagger {
 		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern vegetarianPatterns = Pattern.compile(".*v.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern pastaPatterns = Pattern.compile(".*(pâtes|pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern ricePatterns = Pattern.compile(".*(riz|risotto|cantonais|casimir).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern.compile(".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern chickenPatterns = Pattern.compile(".*(poulet|coq .?coquelet.?|dinde|volaille|nugget).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern beefPatterns = Pattern.compile(".*(boeuf|bœuf|burger).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
@@ -54,6 +55,7 @@ public class MealTagger {
 		addPattern(MealTag.FISH, fishPatterns);
 		addPattern(MealTag.VEGETARIAN, vegetarianPatterns);
 		addPattern(MealTag.PASTA, pastaPatterns);
+		addPattern(MealTag.RICE, ricePatterns);
 		addPattern(MealTag.PORC, porcPatterns);
 		addPattern(MealTag.CHICKEN, chickenPatterns);
 		addPattern(MealTag.BEEF, beefPatterns);

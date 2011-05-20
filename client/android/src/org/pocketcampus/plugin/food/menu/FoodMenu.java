@@ -167,14 +167,14 @@ public class FoodMenu {
 				if (campusMenuRatingsList != null) {
 					setCampusRatings(campusMenuRatingsList);
 				} else {
-					Log.d("SERVER", "null menu");
+					Log.d("SERVER", "null ratings");
 				}
 				pluginHandler_.menuRefreshed(true);
 				
 			}
 
 		}
-		Log.d("SERVER", "Requesting ratings.");
+		Log.d("SERVER", "Requesting ratings (FoodMenu)");
 		FoodPlugin.getFoodRequestHandler().execute(new RealRatingsRequest(),
 				"getRatings", (RequestParameters) null);
 
@@ -198,7 +198,6 @@ public class FoodMenu {
 				if (campusMenuList != null) {
 					if (campusMenuList.isEmpty()) {
 					} else {
-						Log.d("SERVER", "Là elle est pas vide ! (FoodMenu)");
 						setCampusMenu(campusMenuList);
 						Date currentDate = new Date();
 						setValidityDate(currentDate);
@@ -216,7 +215,7 @@ public class FoodMenu {
 			
 		}
 		
-		Log.d("SERVER", "Requesting menus.");
+		Log.d("SERVER", "Requesting menus (FoodMenu)");
 		FoodPlugin.getFoodRequestHandler().execute(new RealMenusRequest(),
 				"getMenus", (RequestParameters) null);
 	}

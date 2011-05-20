@@ -40,9 +40,6 @@ public class Suggestions extends Activity{
 	private Vector<MealTag> likes_ = new Vector<MealTag>();
 	private Vector<MealTag> dislikes_ = new Vector<MealTag>();
 
-//	private MealTag likeTag_;
-//	private MealTag dislikeTag_;
-	
 	private ImageButton likeExample_;
 	private ImageButton dislikeExample_;
 
@@ -83,7 +80,7 @@ public class Suggestions extends Activity{
 				likes_ = sls_.getLikeTags();
 				dislikes_ = sls_.getDislikeTags();
 				
-				finalizeSuggestions();				
+				finalizeSuggestions();			
 			}
 		});
 		
@@ -153,10 +150,6 @@ public class Suggestions extends Activity{
 		Intent menus = new Intent(context_, FoodPlugin.class);
 		menus.putExtra("org.pocketcampus.suggestions.meals", list);
 		setResult(Activity.RESULT_OK, menus);
-		finish();
-		
+		finish();	
 	}
-	
-	
-
 }

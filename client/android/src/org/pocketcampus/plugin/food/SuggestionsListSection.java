@@ -191,6 +191,9 @@ public class SuggestionsListSection extends BaseAdapter implements Filterable {
 		case PASTA :
 			string = r.getString(R.string.food_suggestions_pasta).concat("\n");
 			break;
+		case RICE :
+			string = r.getString(R.string.food_suggestions_rice).concat("\n");
+			break;
 		case PORC :
 			string = r.getString(R.string.food_suggestions_porc).concat("\n");
 			break;

@@ -20,8 +20,9 @@ public abstract class MenusRequest extends DataRequest {
 	@Override
 	protected void doInUiThread(String result) {
 		campusMenuList = new ArrayList<Meal>();
-		Log.d("SERVER", result);
-		
+
+		Log.d("SERVER", result == null ? "Result null" : "Result ok");
+
 		// Deserializes the response
 		Type menuType = new TypeToken<List<Meal>>() {
 		}.getType();
@@ -42,6 +43,6 @@ public abstract class MenusRequest extends DataRequest {
 			updateMenus(campusMenuList);
 		}
 	}
-	
+
 	public abstract void updateMenus(List<Meal> menus);
 }

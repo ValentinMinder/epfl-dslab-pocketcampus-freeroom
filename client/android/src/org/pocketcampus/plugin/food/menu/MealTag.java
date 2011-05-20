@@ -36,6 +36,12 @@ public enum MealTag {
 		}
 	},
 	
+	RICE {
+		public String toString() {        
+			return "Rice";    
+		}
+	},
+	
 	PORC {
 		public String toString() {        
 			return "Porc";    
