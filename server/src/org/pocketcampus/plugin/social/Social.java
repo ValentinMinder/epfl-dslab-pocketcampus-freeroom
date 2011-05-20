@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.social;
 
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,13 +15,17 @@ import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.authentication.Authentication;
 import org.pocketcampus.plugin.authentication.AuthenticationSessions;
+import org.pocketcampus.provider.mapelements.IMapElementsProvider;
 import org.pocketcampus.provider.permissions.IPermissionProvider;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
+import org.pocketcampus.shared.plugin.map.MapElementBean;
+import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
 import org.pocketcampus.shared.plugin.social.User;
 import org.pocketcampus.shared.plugin.social.exception.ConflictingPermissionException;
 import org.pocketcampus.shared.plugin.social.permissions.Permission;
 
-public class Social implements IPlugin {
+public class Social implements IPlugin, IMapElementsProvider {
 
 	@PublicMethod
 	public boolean send(HttpServletRequest request) {
@@ -278,5 +284,21 @@ public class Social implements IPlugin {
 		}
 		
 		return status;
+	}
+
+	@Override
+	public List<MapLayerBean> getLayers() {
+		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
+		l.add(new MapLayerBean("Amis", "data/map/map_marker.png", this, 1, 300, true));
+		return l;
+	}
+
+	@Override
+	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
+		List<MapElementBean> items = new ArrayList<MapElementBean>();
+		
+		items.add(new MapElementBean("Your token", token.getSessionId(), 46.520101, 6.565189, 0, 1, 0));
+		
+		return items;
 	}
 }

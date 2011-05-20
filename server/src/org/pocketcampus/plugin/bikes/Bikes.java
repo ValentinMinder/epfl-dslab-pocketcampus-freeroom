@@ -52,7 +52,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
     }
 
 	@Override
-	public List<MapLayerBean> getLayers(AuthToken token) {
+	public List<MapLayerBean> getLayers() {
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
 		l.add(new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true));
 		return l;

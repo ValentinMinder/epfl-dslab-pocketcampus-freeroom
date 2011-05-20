@@ -215,7 +215,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 			provider = (IMapElementsProvider)iter.next();
 
 			// For each layer of the current plugin, remember it
-			for(MapLayerBean mlb : provider.getLayers(token)) {
+			for(MapLayerBean mlb : provider.getLayers()) {
 				layersList_.add(mlb);
 				layerProviders_.put(mlb.getExternalId(), provider);
 				layerIds_.put(mlb.getExternalId(), mlb.getInternalId());
@@ -247,7 +247,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 	/***** Methods from the interface ****/
 
 	@Override
-	public List<MapLayerBean> getLayers(AuthToken token) {
+	public List<MapLayerBean> getLayers() {
 		return getInternalLayers();
 	}
 
