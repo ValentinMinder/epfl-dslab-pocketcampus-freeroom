@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.map.utils;
 
-import org.osmdroid.views.MapView;
 import org.pocketcampus.plugin.positioning.HybridLocation;
 import org.pocketcampus.shared.plugin.map.CoordinateConverter;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -25,7 +24,7 @@ public class HybridLocationUpdater {
 	public HybridLocationUpdater(Context context, LocationListener listener) {
 		this.listener_ = listener;
 		try {
-			hybridLocation_ = new HybridLocation(context, new MapView(context, 256));
+			hybridLocation_ = new HybridLocation(context);
 		} catch (Exception e) {
 			Log.e("HybridLocationUpdater", "Error creating HybridLocation instance");
 			e.printStackTrace();
@@ -40,6 +39,7 @@ public class HybridLocationUpdater {
 			isRunning_ = true;
 			updater_ = new LocationUpdater(hybridLocation_, listener_, updateTime_);
 			updater_.start();
+			hybridLocation_.startListening();
 		}
 	}
 	
@@ -48,6 +48,9 @@ public class HybridLocationUpdater {
 		if(updater_ != null) {
 			updater_.stopUpdating();
 			updater_ = null;
+		}
+		if(hybridLocation_ != null) {
+			hybridLocation_.stopListening();
 		}
 	}
 }
@@ -82,7 +85,7 @@ class LocationUpdater extends Thread {
 				e.printStackTrace();
 			}
 			Log.d("HybridLocationUpdater", "Position: " + p);
-			if(p != null && p.getLatitude() != Double.NaN && p.getLongitude() != Double.NaN) {
+			if(p != null && !Double.isNaN(p.getLatitude()) && !Double.isNaN(p.getLongitude())) {
 				p = CoordinateConverter.convertCH1903ToLatLong(p.getLatitude(), p.getLongitude(), p.getAltitude());
 				Location location = new Location("HybridLocation");
 				location.setLatitude(p.getLatitude());
@@ -91,6 +94,8 @@ class LocationUpdater extends Thread {
 				l.onLocationChanged(location);
 				Log.d("LOCATION", location + "");
 			}
+			Log.d("LOCATION", "GSM/WIFI: " + hl.getGsmPosition());
+			Log.d("LOCATION", "GPS:      " + hl.getGpsPosition());
 		}
 	}
 	

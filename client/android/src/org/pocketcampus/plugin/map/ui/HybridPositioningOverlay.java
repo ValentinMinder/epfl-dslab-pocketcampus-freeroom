@@ -6,6 +6,7 @@ import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.pocketcampus.plugin.map.utils.HybridLocationUpdater;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -25,6 +26,9 @@ public class HybridPositioningOverlay extends MyLocationOverlay {
 	
 	public HybridPositioningOverlay(final Context context, final MapView mapView) {
 		super(context, mapView);
+		
+		mCirclePaint.setColor(Color.RED);
+		
 		setLocationUpdateMinTime(LOCATION_UPDATE_MIN_TIME);
 		
 		locationManager_ = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

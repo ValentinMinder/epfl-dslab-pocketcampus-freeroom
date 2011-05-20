@@ -93,6 +93,7 @@ public class MapPlugin extends PluginBase {
 	private MapView mapView_;
 	private MapController mapController_;
 	private MyLocationOverlay myLocationOverlay_;
+	private MyLocationOverlay googleLocationOverlay_;
 	private MapPathOverlay mapPathOverlay_;
 	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>> cachedOverlays_;
 	private ConcurrentHashMap<MapElementsList, Long> lastRefreshedOverlays_;
@@ -317,7 +318,9 @@ public class MapPlugin extends PluginBase {
 		// Following the user
 		//XXX myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 		myLocationOverlay_ = new HybridPositioningOverlay(this, mapView_);
+		googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 		constantOverlays_.add(myLocationOverlay_);
+		constantOverlays_.add(googleLocationOverlay_);
 
 		// Path overlay
 		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
@@ -360,6 +363,7 @@ public class MapPlugin extends PluginBase {
 
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			myLocationOverlay_.enableMyLocation();
+			googleLocationOverlay_.enableMyLocation();
 		}
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
@@ -374,6 +378,7 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void onPause() {
 		myLocationOverlay_.disableMyLocation();
+		googleLocationOverlay_.disableMyLocation();
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		
@@ -513,9 +518,11 @@ public class MapPlugin extends PluginBase {
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			myLocationOverlay_.disableMyLocation();
 			myLocationOverlay_.disableFollowLocation();
+			googleLocationOverlay_.disableMyLocation();
 		} else {
 			myLocationOverlay_.enableMyLocation();
 			myLocationOverlay_.enableFollowLocation();
+			googleLocationOverlay_.enableMyLocation();
 		}
 	}
 
