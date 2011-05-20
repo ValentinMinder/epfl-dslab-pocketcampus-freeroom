@@ -156,7 +156,6 @@ public class MapPlugin extends PluginBase {
 			incrementProgressCounter();
 			
 			RequestParameters params = new RequestParameters();
-			params.addParameter("token", getAuthToken());
 			getRequestHandler().execute(new LayersRequest(), "getLayers", params);
 		}
 	}
@@ -967,7 +966,7 @@ public class MapPlugin extends PluginBase {
 	 */
 	private Runnable overlaysRefreshTicker_ = new Runnable() {
 		public void run() {
-			updateOverlays(false);			
+			updateOverlays(false);	
 			overlaysHandler_.postDelayed(this, LAYERS_REFRESH_TIMEOUT);
 		}
 	};
