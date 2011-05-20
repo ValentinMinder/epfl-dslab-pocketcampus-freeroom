@@ -56,13 +56,14 @@ public class SocialPermissionDialog extends Dialog {
 		this.this_ = this;
 		this.updated_ = false;
 		
-		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
-		okButton_ = (Button) findViewById(R.id.social_friends_ok);
-		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_permission_dialog);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
+		
+		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
+		okButton_ = (Button) findViewById(R.id.social_friends_ok);
+		
 		setDialogContent();
 	}
 

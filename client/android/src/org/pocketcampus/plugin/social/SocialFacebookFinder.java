@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-public class SocialFacebookFinder extends Activity {
+public class SocialFacebookFinder extends Activity { 
 	/** Called when the activity is first created. */
     private static ProgressDialog progressDialog;
     private static Activity this_;

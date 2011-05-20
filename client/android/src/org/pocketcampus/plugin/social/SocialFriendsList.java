@@ -38,6 +38,10 @@ public class SocialFriendsList extends ListActivity {
 	private SocialFriendsListAdapter friendsListAdapter_ = null;
 	private SocialRequestingFriendsListAdapter requestingFriendsListAdapter_ = null;
 	
+	private Button buttonSelect_;
+	private Button buttonPermission_;
+	private Button buttonDelete_;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,8 +61,8 @@ public class SocialFriendsList extends ListActivity {
 		SocialPlugin.getSocialRequestHandler().execute(new FriendsListsRequest(), "friends", rp);
 		
 		//Button for toggling all check boxes at once
-		Button buttonSelect = (Button) findViewById(R.id.friendsListButtonToggle);
-		buttonSelect.setOnClickListener(new OnClickListener() {
+		buttonSelect_ = (Button) findViewById(R.id.friendsListButtonToggle);
+		buttonSelect_.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				toggle();
@@ -66,8 +70,8 @@ public class SocialFriendsList extends ListActivity {
 		});
 
 		//Open permission panel for selected friends
-		Button buttonPermission = (Button) findViewById(R.id.friendsListButtonPerm);
-		buttonPermission.setOnClickListener(new OnClickListener() {
+		buttonPermission_ = (Button) findViewById(R.id.friendsListButtonPerm);
+		buttonPermission_.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				permission();
@@ -75,8 +79,8 @@ public class SocialFriendsList extends ListActivity {
 		});
 
 		//Remove friends from contact list
-		Button buttonDelete = (Button) findViewById(R.id.friendsListButtonDel);
-		buttonDelete.setOnClickListener(new OnClickListener() {
+		buttonDelete_ = (Button) findViewById(R.id.friendsListButtonDel);
+		buttonDelete_.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				delete();
@@ -85,7 +89,7 @@ public class SocialFriendsList extends ListActivity {
 	}
 	
 	private void toggle() {
-		friendsListAdapter_.toggleAll();
+		if(friendsListAdapter_ != null) friendsListAdapter_.toggleAll();
 	}
 	
 	private void permission() {
@@ -133,6 +137,7 @@ public class SocialFriendsList extends ListActivity {
 			
 			if(friendsLists != null) {
 				listSeparator_ = new SocialListSeparator(this_);
+				boolean allEmpty = true;
 				
 				if(!friendsLists.getRequesting().isEmpty()) {
 					//Starting adapter for requesting friends list
@@ -143,7 +148,13 @@ public class SocialFriendsList extends ListActivity {
 					//Starting adapter for friends list
 					friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsLists.getFriends(), this_);
 					listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
+					allEmpty = false;
 				}
+				
+				if(allEmpty) {
+					buttonSelect_.setEnabled(false);
+				}
+				
 				setListAdapter(listSeparator_);
 				getListView().setTextFilterEnabled(true);
 			} else {
@@ -176,6 +187,15 @@ public class SocialFriendsList extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.social, menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+//		menu.getItem(R.id.social_friendslist_optionmenu_delete).setEnabled(buttonDelete_.isEnabled());
+//		menu.getItem(R.id.social_friendslist_optionmenu_permission).setEnabled(buttonPermission_.isEnabled());
+//		menu.getItem(R.id.social_friendslist_optionmenu_toggle).setEnabled(buttonSelect_.isEnabled());
 		return true;
 	}
 	
