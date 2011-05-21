@@ -22,6 +22,7 @@ import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.food.Meal;
@@ -46,7 +47,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
+public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, IAllowsID{
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 
@@ -90,11 +91,17 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 
 	private void handleIntent() {
 
+		if(hasIDInIntent()) {
+			try {
+				showMenu(getIDFromIntent());
+			} catch (NoIDException e) {}
+		}
+		
 		try {
-			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
+			Log.d("FoodPlugin", hasIDInIntent() ? "Has ID "
 					+ getIDFromIntent() : "Does not have ID");
 		} catch (NoIDException e) {
-			Log.d(this.getClass().toString(), "NoIDException");
+			Log.d("FoodPlugin", "NoIDException");
 			e.printStackTrace();
 		}
 	}
@@ -208,6 +215,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 			spinner_.setVisibility(View.GONE);
 		}
 		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
+	private void showMenu(int id){
+		
+		Log.d("FoodPlugin", "Show menu with hashcode = " + id);
+		Tracker.getInstance().trackPageView("food/menusListToggle" + id);
 	}
 
 	public void notifyDataSetChanged() {
@@ -459,7 +472,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 	}
 
 	class ExpandListener implements OnTouchListener {
-		private boolean expanded = true;
+		private boolean expanded = false;
 		private Drawable expand_;
 		private Drawable unexpand_;
 
@@ -469,7 +482,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 			unexpand_ = FoodPlugin.this.getResources().getDrawable(
 					R.drawable.food_menus_remballe);
 
-			expandMenus_.setImageDrawable(unexpand_);
+			expandMenus_.setImageDrawable(expand_);
 		}
 
 		@Override
@@ -524,8 +537,9 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider{
 								m_ = getBestMeal(ratings);
 								
 								if(m_ != null){					
-									MainscreenNews bestMeal = new MainscreenNews(m_.getName_() + "\n" + m_.getRestaurant_().getName(), m_.getDescription_(), 0, that, new Date());
+									MainscreenNews bestMeal = new MainscreenNews(m_.getName_() + "\n" + m_.getRestaurant_().getName(), m_.getDescription_(), m_.hashCode(), that, new Date());
 									news.add(bestMeal);
+									
 									callback.callback(news);
 								}
 							}
