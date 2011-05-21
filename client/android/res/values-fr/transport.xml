@@ -7,6 +7,7 @@
 	<string name="transport_to">vers</string>
 	<string name="transport_from">de</string>
 	<string name="transport_in">dans</string>
+	<string name="transport_then">puis</string>
 	<string name="transport_at">à</string>
 	<string name="transport_lessThanAMinute">moins d\'une minute</string>
 	<string name="transport_departure">départ</string>
@@ -14,6 +15,7 @@
 	<string name="transport_timetables">Horaires</string>
 	<string name="transport_Destinations">Destinations</string>
 	<string name="transport_departures">Départs</string>
+	<string name="transport_departures_short">Dép.</string>
 	<string name="transport_change">changement</string>
 	<string name="transport_walk_in_min">min. à pied</string>
 	 

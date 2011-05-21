@@ -84,7 +84,7 @@
 				></ImageView>
 			
 			<TextView
-				android:text="Notifications"
+				android:text="@string/mainscreen_quickview"
 				android:textSize="20dip"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"

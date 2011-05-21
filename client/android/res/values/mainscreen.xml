@@ -17,10 +17,7 @@
     <string name="mainscreen_supervisors_names">Prof George Candea\nSilviu Andrica\n</string>
     <string name="mainscreen_developers_names">Mohamed Tarek Benoudina\nGianluca Dal Mas\nAndreas Kirchner\nFlorian Laurent\nJohan Leuenberger\nJeremiah Menétrey\nOriane Rodriguez\nPascal Scheiben\nJonas Schmid\nElodie Nilane Triponez\nGuillaume Ulrich</string>
 
-
-    <string-array name="mainscreen_provider_plugins">
-        <item>news.NewsPlugin</item>
-    </string-array>
+	<string name="mainscreen_quickview">Quick View</string>
 
     <string-array name="mainscreen_languages">
         <item>English</item>

@@ -7,6 +7,7 @@
 	<string name="transport_to">to</string>
 	<string name="transport_from">from</string>
 	<string name="transport_in">in</string>
+	<string name="transport_then">then</string>
 	<string name="transport_at">at</string>
 	<string name="transport_lessThanAMinute">less than a minute</string>
 	<string name="transport_departure">departure</string>
@@ -14,6 +15,7 @@
 	<string name="transport_timetables">Timetables</string>
 	<string name="transport_Destinations">Destinations</string>
 	<string name="transport_departures">Departures</string>
+	<string name="transport_departures_short">Dep.</string>
 	<string name="transport_change">change</string>
 	<string name="transport_walk_in_min">min. walk</string>
 	
@@ -27,3 +29,4 @@
 	<string name="transport_sentViaPCtransport">\n\nSent from PocketCampus.</string>
 
 </resources>
+

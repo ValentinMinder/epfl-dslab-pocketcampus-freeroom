@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.transport;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +10,7 @@ import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -14,6 +18,9 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
+import org.pocketcampus.plugin.transport.request.ConnectionsRequest;
+import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
+import org.pocketcampus.shared.utils.DateUtils;
 import org.pocketcampus.utils.Notification;
 
 import android.content.Context;
@@ -132,26 +139,56 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 		return REFERENCE_DESTINATION;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void getNews(Context ctx, ICallback callback) {
+	public void getNews(final Context ctx, final ICallback callback) {
 		SharedPreferences commonDestPrefs = ctx.getSharedPreferences("CommonDestPrefs", 0);
-		ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		
-		if(commonDestPrefs == null) {
+		if(commonDestPrefs == null)
 			return;
-		}
 		
-		@SuppressWarnings("unchecked")
+		final TransportPlugin that = this;
+		final int destNum = 0;
+		
 		Map<String, String> commonDestinations = (Map<String, String>) commonDestPrefs.getAll();
-		int destNum = 0;
-		
-		for(String destination : commonDestinations.values()) {
-			MainscreenNews newsObj = new MainscreenNews(destination, "Departures in 5 minutes.", destNum, this, new Date());
+		for(final String destination : commonDestinations.values()) {
+			
+			class SummaryConnectionsRequest extends ConnectionsRequest {
+				@Override
+				protected void handleConnections(QueryConnectionsResult connections) {
+					String lessThanAMinute = (String) ctx.getResources().getText(R.string.transport_lessThanAMinute);
+					String to = (String) ctx.getResources().getText(R.string.transport_to);
+					String departure = (String) ctx.getResources().getText(R.string.transport_departures_short);
+					String in = (String) ctx.getResources().getText(R.string.transport_in);
+					String then = (String) ctx.getResources().getText(R.string.transport_then);
+
+					Date departureTime = connections.connections.get(0).departureTime;
+					String nextDepartures = " "+in+" " + DateUtils.formatDateDelta(new Date(), departureTime, lessThanAMinute);
+					
+					String next1 = DateUtils.formatDateDelta(new Date(), connections.connections.get(1).departureTime, lessThanAMinute);
+					String next2 = DateUtils.formatDateDelta(new Date(), connections.connections.get(2).departureTime, lessThanAMinute);
+					String followingDepartures = then+" "+in+" " + next1 +", "+then+" "+in+" " + next2 + ".";
+					
+					MainscreenNews newsObj = new MainscreenNews(departure+" "+to+" "+destination + nextDepartures, followingDepartures, destNum, that, new Date());
+					
+					final ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
+					news.add(newsObj);
+					callback.callback(news);
+				}
+			} 
+
+			RequestParameters params = new RequestParameters();
+			params.addParameter("from", REFERENCE_DESTINATION);
+			params.addParameter("to", destination);
+
+			requestHandler_.execute(new SummaryConnectionsRequest(), "connections", params);
+			
+			/*MainscreenNews newsObj = new MainscreenNews(destination, "Departures in 5 minutes.", destNum, this, new Date());
 			news.add(newsObj);
-			destNum++;
+			destNum++;*/
 		}
 		
-		callback.callback(news);
+		//callback.callback(news);
 	}
 	
 	public static void makeToast(int textId) {

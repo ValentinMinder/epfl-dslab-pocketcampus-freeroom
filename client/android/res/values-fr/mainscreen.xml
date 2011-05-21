@@ -13,6 +13,8 @@
     <string name="mainscreen_supervisors">Superviseurs</string>
     <string name="mainscreen_developers">Développeurs</string>
     
+    <string name="mainscreen_quickview">Aperçu Rapide</string>
+    
     <string-array name="mainscreen_languages">
         <item>Anglais</item>
         <item>Français</item>
