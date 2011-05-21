@@ -1,7 +1,6 @@
 package org.pocketcampus.shared.plugin.food;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Sandwich implements Serializable {
 	/**
