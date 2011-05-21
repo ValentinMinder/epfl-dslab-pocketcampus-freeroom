@@ -122,6 +122,16 @@ public class FoodDisplayHandler {
 		return currentDisplayType_;
 	}
 
+	public Meal getUpdatedMeal(int hashCode) {
+		List<Meal> list = campusMenu_.getCampusMenu();
+		for (Meal m : list) {
+			if (m.hashCode() == hashCode) {
+				return m;
+			}
+		}
+		return null;
+	}
+
 	public void updateView() {
 		currentListAdapter_.removeSections();
 		switch (currentDisplayType_) {
@@ -157,6 +167,11 @@ public class FoodDisplayHandler {
 		case Suggestions:
 			break;
 		}
+	}
+
+	public void refreshRatings() {
+		campusMenu_.loadRatings(false);
+		ownerActivity_.notifyDataSetChanged();
 	}
 
 	public FoodListAdapter getListAdapter() {
@@ -259,7 +274,6 @@ public class FoodDisplayHandler {
 								activityContext_.getResources().getString(
 										R.string.food_show_ratings),
 								menuListSection);
-
 			}
 		}
 	}
@@ -313,9 +327,9 @@ public class FoodDisplayHandler {
 		if (suggestedMenus != null) {
 			HashMap<Meal, Rating> menus = new HashMap<Meal, Rating>();
 			for (Meal m : suggestedMenus) {
-				if(menusPrefered.contains(m)){
-					menus.put(m, new Rating());					
-				}	
+				if (menusPrefered.contains(m)) {
+					menus.put(m, new Rating());
+				}
 			}
 			this.suggestionsMenu_ = menus;
 		}
@@ -375,8 +389,8 @@ public class FoodDisplayHandler {
 			return this.value;
 		}
 	};
-	
-	public void setNews(ArrayList<MainscreenNews> news){
+
+	public void setNews(ArrayList<MainscreenNews> news) {
 		campusMenu_.setNews(news);
 	}
 }

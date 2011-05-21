@@ -107,20 +107,22 @@ public class MenuView extends LinearLayout {
 	}
 
 	private void setRating(Rating currentRating) {
-		ratingLine_.setRating((float) Restaurant
-				.starRatingToDouble(currentRating.getValue()));
+		if (currentRating != null) {
+			ratingLine_.setRating((float) Restaurant
+					.starRatingToDouble(currentRating.getValue()));
 
-		int numbVotes = currentRating.getNumberOfVotes();
-		if (numbVotes != 1) {
-			votesLine_.setText(numbVotes
-					+ " "
-					+ ctx_.getResources().getString(
-							R.string.food_menulist_votesPlural));
-		} else {
-			votesLine_.setText(numbVotes
-					+ " "
-					+ ctx_.getResources().getString(
-							R.string.food_menulist_votesSingular));
+			int numbVotes = currentRating.getNumberOfVotes();
+			if (numbVotes != 1) {
+				votesLine_.setText(numbVotes
+						+ " "
+						+ ctx_.getResources().getString(
+								R.string.food_menulist_votesPlural));
+			} else {
+				votesLine_.setText(numbVotes
+						+ " "
+						+ ctx_.getResources().getString(
+								R.string.food_menulist_votesSingular));
+			}
 		}
 	}
 }

@@ -15,7 +15,7 @@ import android.widget.Filterable;
  * 
  */
 public class FoodListSection extends BaseAdapter implements Filterable {
-	private Vector<Meal> meal_;
+	private Vector<Meal> meals_;
 	private FoodPlugin menusActivity_;
 
 	/**
@@ -30,8 +30,17 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		// LayoutInflater mInflater_ =
 		// LayoutInflater.from(menus.getApplicationContext());
-		this.meal_ = resto;
+		this.meals_ = resto;
 		this.menusActivity_ = menus;
+	}
+
+	public void repaint(Meal m) {
+		for (Meal meal : meals_) {
+			if (m.hashCode() == meal.hashCode()) {
+				meal.setRating(m.getRating());
+			}
+		}
+		menusActivity_.notifyDataSetChanged();
 	}
 
 	/**
@@ -46,18 +55,7 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 		 * calls to findViewById() on each row.
 		 */
 		MenuView holder;
-		// When convertView is not null, we can reuse it directly, there is
-		// no need to re-inflate it. We only inflate a new View when the
-		// convertView supplied by ListView is null.
-		// if (convertView == null) {
-		// convertView = mInflater_.inflate(R.layout.food_menuentry, null);
-		//
-		// // Creates a ViewHolder and store references to the two children
-		// // views we want to bind data to.
-		// } else {
-		// holder = (MenuView) convertView;
-		// }
-		holder = new MenuView(meal_.get(position), menusActivity_);
+		holder = new MenuView(meals_.get(position), menusActivity_);
 
 		return holder;
 	}
@@ -72,11 +70,11 @@ public class FoodListSection extends BaseAdapter implements Filterable {
 
 	// Returns the number of meals in that section.
 	public int getCount() {
-		return meal_.size();
+		return meals_.size();
 	}
 
 	// Returns the meal to be represented at that position.
 	public Object getItem(int position) {
-		return meal_.get(position);
+		return meals_.get(position);
 	}
 }

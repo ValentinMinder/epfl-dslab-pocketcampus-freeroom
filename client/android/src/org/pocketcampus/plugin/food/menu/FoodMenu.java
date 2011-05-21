@@ -14,19 +14,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.parser.Json;
-import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.ICallback;
+import org.pocketcampus.plugin.food.FoodDisplayHandler;
+import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.FoodPlugin;
+import org.pocketcampus.plugin.food.RestaurantListAdapter;
 import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.logging.Tracker;
@@ -36,10 +36,8 @@ import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.Toast;
-
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 public class FoodMenu {
 	private ICallback callback_;
@@ -121,7 +119,7 @@ public class FoodMenu {
 		} else {
 			// Refresh only ratings.
 			Log.d("SERVER", "Reloading ratings");
-			loadRatings();
+			loadRatings(true);
 		}
 	}
 
@@ -133,7 +131,7 @@ public class FoodMenu {
 				.get(Calendar.DAY_OF_MONTH)) {
 			if (cal.get(Calendar.MONTH) == validity.get(Calendar.MONTH)) {
 				if (cal.get(Calendar.YEAR) == validity.get(Calendar.YEAR)) {
-					if(getMinutes(validity.getTime(), cal.getTime()) < 10){
+					if (getMinutes(validity.getTime(), cal.getTime()) < 10) {
 						return true;
 					}
 				}
@@ -141,13 +139,13 @@ public class FoodMenu {
 		}
 		return false;
 	}
-	
-	private long getMinutes(Date then, Date now){
+
+	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();
 
-	    long diffMinutes = diff / (60 * 1000);
-	    
-	    System.out.println(diffMinutes);
+		long diffMinutes = diff / (60 * 1000);
+
+		System.out.println(diffMinutes);
 		return diffMinutes;
 	}
 
@@ -156,42 +154,59 @@ public class FoodMenu {
 	}
 
 	// Load ratings from server
-	private void loadRatings() {
+	public void loadRatings(final boolean isRefreshWholeMenu) {
 		pluginHandler_.menuRefreshing();
-		
+
 		class RealRatingsRequest extends RatingsRequest {
 
 			@Override
-			public void updateRatings(HashMap<Integer, Rating> campusMenuRatingsList) {
-				
+			public void updateRatings(
+					HashMap<Integer, Rating> campusMenuRatingsList) {
 				if (campusMenuRatingsList != null) {
 					setCampusRatings(campusMenuRatingsList);
 				} else {
 					Log.d("SERVER", "null ratings");
 				}
-				pluginHandler_.menuRefreshed(true);
-				
+				if (isRefreshWholeMenu) {
+					pluginHandler_.menuRefreshed(true);
+				} else {
+					FoodDisplayHandler fdh = pluginHandler_
+							.getFoodDisplayHandler();
+					if (fdh.getCurrentDisplayType() == FoodDisplayType.Restaurants) {
+						Adapter adapt = fdh.getListAdapter().getExpandableList(
+								pluginHandler_
+										.getString(R.string.food_restaurants));
+						if (adapt != null) {
+							if (adapt instanceof RestaurantListAdapter) {
+								for (Meal m : getCampusMenu()) {
+									((RestaurantListAdapter) adapt).repaint(m);
+								}
+							}
+						}
+					} else if (fdh.getCurrentDisplayType() == FoodDisplayType.Ratings) {
+						pluginHandler_.menuRefreshed(true);
+					}
+					pluginHandler_.refreshed();
+				}
 			}
-
 		}
 		Log.d("SERVER", "Requesting ratings (FoodMenu)");
 		FoodPlugin.getFoodRequestHandler().execute(new RealRatingsRequest(),
 				"getRatings", (RequestParameters) null);
-
 	}
 
 	// Load menu from server
 	private void loadCampusMenu() {
 		pluginHandler_.menuRefreshing();
-		
-		class RealMenusRequest extends MenusRequest{
+
+		class RealMenusRequest extends MenusRequest {
 
 			@Override
 			public void onCancelled() {
 				Log.d("SERVER", "Task cancelled");
 				pluginHandler_.menuRefreshed(false);
 			}
-			
+
 			@Override
 			public void updateMenus(List<Meal> campusMenuList) {
 
@@ -205,16 +220,16 @@ public class FoodMenu {
 					}
 				} else {
 					Log.d("SERVER", "null menu");
-					List<Meal> fromCache = restoreFromFile();	
+					List<Meal> fromCache = restoreFromFile();
 					if (fromCache != null) {
 						setCampusMenu(fromCache);
 					}
 				}
 				pluginHandler_.menuRefreshed(true);
 			}
-			
+
 		}
-		
+
 		Log.d("SERVER", "Requesting menus (FoodMenu)");
 		FoodPlugin.getFoodRequestHandler().execute(new RealMenusRequest(),
 				"getMenus", (RequestParameters) null);
@@ -294,7 +309,7 @@ public class FoodMenu {
 		return restos;
 	}
 
-	public void setNews(ArrayList<MainscreenNews> news){
+	public void setNews(ArrayList<MainscreenNews> news) {
 		news_ = news;
 	}
 }

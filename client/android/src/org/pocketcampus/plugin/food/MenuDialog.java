@@ -13,7 +13,9 @@
 package org.pocketcampus.plugin.food;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.food.pictures.PictureTypeDialog;
+import org.pocketcampus.plugin.food.request.RatingRequest;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
@@ -23,30 +25,30 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.opengl.Visibility;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuDialog extends Dialog {
-	private final Meal displayedMeal_;
+	private/* final */Meal displayedMeal_;
 	private RatingBar ratingBar_;
 	private TextView numbVotes_;
 	private ProgressDialog progressDialog_;
-	private FoodPlugin context_;
+	private FoodPlugin ctx_;
 
 	public MenuDialog(final Meal meal, final FoodPlugin menus) {
 		super(menus);
 		this.displayedMeal_ = meal;
-		this.context_ = menus;
+		this.ctx_ = menus;
 		/**
 		 * No title for dialog Else there is indeed space for the title.
 		 **/
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 
 		setContentView(R.layout.food_dialog_menu);
 
@@ -58,12 +60,12 @@ public class MenuDialog extends Dialog {
 		setCanceledOnTouchOutside(true);
 
 		Tracker.getInstance().trackPageView("food/menuDialog");
-		
+
 		setDialogContent();
 	}
 
 	private void setDialogContent() {
-		progressDialog_ = ProgressDialog.show(context_, "Please Wait",
+		progressDialog_ = ProgressDialog.show(ctx_, "Please Wait",
 				"Loading menus...", true, false);
 
 		// Set the title, description, rating and number of votes.
@@ -86,23 +88,12 @@ public class MenuDialog extends Dialog {
 		rateIt.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				RatingsDialog r = new RatingsDialog(displayedMeal_, context_);
+				RatingsDialog r = new RatingsDialog(displayedMeal_, ctx_);
 				r.setOnDismissListener(new OnDismissRatingsListener());
 				r.show();
 			}
-
 		});
 
-		// Route to the Restaurant
-//		ImageButton goThere = (ImageButton) findViewById(R.id.food_menudialog_goThere);
-//		goThere.setOnClickListener(new View.OnClickListener() {
-//
-//			public void onClick(View v) {
-//				// Restaurant resto = meal.getRestaurant();
-//				// callNavigationActivity(resto);
-//				// menusActivity.finish();
-//			}
-//		});
 		/**
 		 * Here is the pictures option, we can take and see pictures of -the
 		 * meal -the queue (for the restaurant corresponding to this meal)
@@ -113,25 +104,12 @@ public class MenuDialog extends Dialog {
 		takePic.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				PictureTypeDialog dialog = new PictureTypeDialog(context_,
+				PictureTypeDialog dialog = new PictureTypeDialog(ctx_,
 						displayedMeal_);
 				dialog.show();
-
-				// PictureTaker pictureTaker = new PictureTaker(context_,
-				// displayedMeal_, PictureType.Meal);
-				//
-				// pictureTaker.takePicture();
-				// Intent seePicture = new Intent(getContext(),
-				// FoodPictureActivity.class);
-				// context_.startActivity(seePicture);
-				// PictureFetcher fetcher = new PictureFetcher(PictureType.Meal,
-				// displayedMeal_);
-				// Drawable[] pictures = fetcher.getPictures();
 			}
 		});
-
 		progressDialog_.dismiss();
-
 	}
 
 	private String getVoteString(int numbVotes) {
@@ -142,29 +120,53 @@ public class MenuDialog extends Dialog {
 		return votes;
 	}
 
-	// private Meal getMeal() {
-	// return this.displayedMeal_;
-	// }
-
 	private class OnDismissRatingsListener implements
 			RatingsDialog.OnDismissListener {
 
 		@Override
 		public void onDismiss(DialogInterface dialogInt) {
-			paintRatingBar();
+			Toast.makeText(ctx_, "Dismissed ratings listener",
+					Toast.LENGTH_SHORT).show();
+			ctx_.getFoodDisplayHandler().refreshRatings();
+
+			class MenuRatingRequest extends RatingRequest {
+				@Override
+				public void updateRating(Rating newRating) {
+					if (newRating != null) {
+						MenuDialog.this.displayedMeal_.setRating(newRating);
+						paintRatingBar();
+						MenuDialog.this.show();
+					} else {
+						Log.d("SERVER", "null ratings");
+					}
+				}
+			}
+			Log.d("SERVER", "Requesting rating (MenuDialog)");
+
+			RequestParameters params = new RequestParameters();
+
+			params.addParameter("meal",
+					Integer.toString(displayedMeal_.hashCode()));
+
+			FoodPlugin.getFoodRequestHandler().execute(new MenuRatingRequest(),
+					"getRating", (RequestParameters) null);
 		}
 	}
 
 	private void paintRatingBar() {
-		ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
+		if (ratingBar_ == null) {
+			ratingBar_ = (RatingBar) findViewById(R.id.food_menudialog_ratingBarIndicator);
+		}
 
 		Rating rating = displayedMeal_.getRating();
 		ratingBar_.setRating((float) Restaurant.starRatingToDouble(rating
 				.getValue()));
 
+		ratingBar_.invalidate();
 		// Retrieve the number of votes from the server.
 		int numbVote = rating.getNumberOfVotes();
 		String votes = getVoteString(numbVote);
 		numbVotes_.setText("(" + numbVote + " " + votes + ")");
+		numbVotes_.invalidate();
 	}
 }

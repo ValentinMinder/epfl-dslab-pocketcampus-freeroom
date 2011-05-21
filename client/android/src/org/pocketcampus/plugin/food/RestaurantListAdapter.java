@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -13,8 +14,8 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -89,6 +90,18 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
 				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];
+		menusActivity_.notifyDataSetChanged();
+	}
+
+	public void repaint(Meal m) {
+		Set<String> restaurants = mealHashMap_.keySet();
+		for (String restaurant : restaurants) {
+			for (Meal meal : mealHashMap_.get(restaurant)) {
+				if (m.hashCode() == meal.hashCode()) {
+					meal.setRating(m.getRating());
+				}
+			}
+		}
 		menusActivity_.notifyDataSetChanged();
 	}
 

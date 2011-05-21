@@ -31,8 +31,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RatingBar;
-import android.widget.Toast;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -115,7 +115,7 @@ public class RatingsDialog extends Dialog {
 					if (status == SubmitStatus.Valid) {
 						submitted = menusActivity_.getResources().getString(
 								R.string.food_rating_submitted);
-						menusActivity_.notifyDataSetChanged();
+						menusActivity_.getFoodDisplayHandler().refreshRatings();
 					} else if (status == SubmitStatus.AlreadyVoted) {
 						submitted = menusActivity_.getResources().getString(
 								R.string.food_rating_alreadyvoted);
