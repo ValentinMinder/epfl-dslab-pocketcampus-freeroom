@@ -197,12 +197,12 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				|| deviceId == null) {
 			return SubmitStatus.Error;
 		}
-		
+
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-		
+
 		System.out.println(now.get(Calendar.HOUR_OF_DAY));
-		if(now.get(Calendar.HOUR_OF_DAY) < 11){
+		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
 			return SubmitStatus.TooEarly;
 		}
 
@@ -294,6 +294,23 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 
 		if (campusMealRatings_ != null) {
 			return campusMealRatings_;
+		}
+		return null;
+	}
+
+	@PublicMethod
+	public Rating getRating(HttpServletRequest request) {
+		updateMenu();
+		System.out.println("<getRating>: rating request.");
+
+		String stringMealHashCode = request.getParameter("meal");
+
+		if (stringMealHashCode == null) {
+			return null;
+		}
+		int mealHashCode = Integer.parseInt(stringMealHashCode);
+		if (campusMealRatings_ != null) {
+			return campusMealRatings_.get(mealHashCode);
 		}
 		return null;
 	}
@@ -546,6 +563,7 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 	public boolean uploadimage(HttpServletRequest request)
 			throws FileUploadException {
 
+		System.out.println(request.getServletPath());
 		System.out.println("----- " + new Date() + " -----");
 
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -561,7 +579,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 		while (it.hasNext()) {
 			DiskFileItem item = (DiskFileItem) it.next();
 
-			String directory = "";
 			print("-FILE- " + item.toString());
 
 			System.out.println(item.getName()); // affiche le fichier
@@ -574,9 +591,17 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 			String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "-"
 					+ cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.YEAR);
 
-			String currentdir = System.getProperty("user.dir")
-					+ "\\MealPictures\\" + date;
+			// String currentdir = System.getProperty("user.dir")
+			// + "\\MealPictures\\" + date;
+
+			String currentdir = "/food/mealpics/" + date;
+
+			// String configFilePath = getServletContext().getRealPath("/");
+			// configFilePath += File.separator + "some directory here" +
+			// File.separator + "myfile.txt";
 			new File(currentdir).mkdirs();
+			File f = new File("/");
+			System.out.println("Path: " + f.getAbsolutePath());
 
 			file = new File(currentdir, file.getName());
 			// enregistrement dans /tmp/ si non vide
