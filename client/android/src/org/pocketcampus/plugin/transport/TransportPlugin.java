@@ -16,6 +16,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.plugin.transport.request.ConnectionsRequest;
@@ -37,7 +38,7 @@ import android.view.MenuItem;
  * @author Florian
  *
  */
-public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider {
+public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider, IAllowsID  {
 	public static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
 	public static final String REFERENCE_DESTINATION_SHORTNAME = "EPFL";
 	
