@@ -125,8 +125,6 @@ public class MenuDialog extends Dialog {
 
 		@Override
 		public void onDismiss(DialogInterface dialogInt) {
-			Toast.makeText(ctx_, "Dismissed ratings listener",
-					Toast.LENGTH_SHORT).show();
 			ctx_.getFoodDisplayHandler().refreshRatings();
 
 			class MenuRatingRequest extends RatingRequest {

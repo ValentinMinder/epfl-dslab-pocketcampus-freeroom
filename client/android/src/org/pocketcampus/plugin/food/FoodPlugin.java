@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.food;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +54,7 @@ import android.widget.Toast;
 public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, IAllowsID {
 	// Bar at the top of the application
 	private ActionBar actionBar_;
+	public Context otherCtx_ ;
 
 	// Activity's menus list
 	private ListView listView_;
@@ -230,12 +235,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		
 		foodListAdapter_ = (FoodListAdapter)foodDisplayHandler_.getListAdapter();
 		if(foodListAdapter_ != null){
-			RestaurantListAdapter rla = (RestaurantListAdapter)foodListAdapter_.getExpandableList(getString(R.string.food_restaurants));
-			if(rla != null){
-				rla.toggle(4);		
-			}else{
-				Log.d("FoodPlugin", "rla was null !");
-			}
+//			RestaurantListAdapter rla = (RestaurantListAdapter)foodListAdapter_.getExpandableList(getString(R.string.food_restaurants));
+//			if(rla != null){
+//				rla.toggle(4);		
+//			}else{
+//				Log.d("FoodPlugin", "rla was null !");
+//			}
+			setSelected(4);
 		}else{
 			Log.d("FoodPlugin", "fla was null !");
 		}
@@ -495,7 +501,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	}
 
 	class ExpandListener implements OnTouchListener {
-		private boolean expanded = true;
+		private boolean expanded = false;
 		private Drawable expand_;
 		private Drawable unexpand_;
 
@@ -505,7 +511,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 			unexpand_ = FoodPlugin.this.getResources().getDrawable(
 					R.drawable.food_menus_remballe);
 
-			expandMenus_.setImageDrawable(unexpand_);
+			expandMenus_.setImageDrawable(expand_);
 		}
 
 		@Override
@@ -537,7 +543,8 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	public void getNews(Context ctx, final ICallback callback) {
 		final ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		final FoodPlugin that = this;
-
+		otherCtx_ = ctx;
+		
 		class MainscreenMenusRequest extends MenusRequest {
 
 			@Override
@@ -547,7 +554,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 
 			@Override
 			public void updateMenus(final List<Meal> campusMenuList) {
-
 				if (campusMenuList != null) {
 					if (!campusMenuList.isEmpty()) {
 
@@ -572,18 +578,26 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 								}
 							}
 
-							private Meal getBestMeal(
-									HashMap<Integer, Rating> ratings) {
+							private Meal getBestMeal(HashMap<Integer, Rating> ratings) {
+								ArrayList<String> restos = readFromFile();
+								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
-								Vector<Meal> mealsVector = sorter
-										.sortByRatings(campusMenuList);
+								
+								for(Meal m : campusMenuList){
+									if(restos.contains(m.getRestaurant_().getName())){
+										mealsVector.add(m);
+									}
+								}
+								
+								mealsVector = sorter.sortByRatings(mealsVector);
+								
 								if (mealsVector != null) {
 									return mealsVector.get(0);
 								} else {
 									return null;
 								}
-
 							}
+															
 						}
 						Log.d("SERVER", "Requesting ratings (Mainscreen)");
 						getRequestHandler().execute(
@@ -597,6 +611,30 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		Log.d("SERVER", "Requesting menus (Mainscreen)");
 		getRequestHandler().execute(new MainscreenMenusRequest(), "getMenus",
 				(RequestParameters) null);
+	}
+	
+	//Not to use, only works for the Mainscreen news !
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> readFromFile() {
+		String filename = "RestaurantsPref";
+		ArrayList<String> restosDisplayed = null;
+		File toGet = new File(otherCtx_.getDir("preferences", 0), filename);
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+
+		try {
+			fis = new FileInputStream(toGet);
+			in = new ObjectInputStream(fis);
+
+			restosDisplayed = (ArrayList<String>) in.readObject();
+
+			in.close();
+		} catch (IOException ex) {
+		} catch (ClassNotFoundException ex) {
+		} catch (ClassCastException cce) {
+		}
+
+		return restosDisplayed;
 	}
 
 }
