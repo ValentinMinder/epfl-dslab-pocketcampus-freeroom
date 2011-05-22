@@ -14,6 +14,8 @@ import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
+import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.camipro.BalanceBean;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 import org.pocketcampus.utils.Notification;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -107,10 +110,15 @@ public class CamiproPlugin extends PluginBase {
 	 */
 	private RequestParameters getRequestParameters() {
 		RequestParameters parameters = new RequestParameters();
-		parameters.addParameter("username", getString(R.string.camipro_debug_username));
-		parameters.addParameter("password", getString(R.string.camipro_debug_password));
+		parameters.addParameter("token", getAuthToken());
 		
 		return parameters;
+	}
+	
+	private String getAuthToken() {
+		AuthToken t = AuthenticationPlugin.getAuthToken(this);
+		
+		return new Gson().toJson(t);
 	}
 
 	/**
