@@ -390,7 +390,4 @@ public class FoodDisplayHandler {
 		}
 	};
 
-	public void setNews(ArrayList<MainscreenNews> news) {
-		campusMenu_.setNews(news);
-	}
 }

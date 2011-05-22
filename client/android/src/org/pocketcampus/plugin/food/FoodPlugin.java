@@ -22,6 +22,7 @@ import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.food.Meal;
@@ -46,13 +47,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider {
+public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, IAllowsID {
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 
 	// Activity's menus list
 	private ListView listView_;
 	private static FoodDisplayHandler foodDisplayHandler_;
+	private static FoodListAdapter foodListAdapter_;
 	private static RequestHandler foodRequestHandler_;
 	private TextView empty_;
 	private TextView validityDate_;
@@ -89,6 +91,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider {
 	}
 
 	private void handleIntent() {
+		
+		try {
+			showMenu(getIDFromIntent());
+		} catch (NoIDException e1) {
+			Log.d("FoodPlugin","Failed to get Intent's ID");
+		}
 
 		try {
 			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
@@ -217,8 +225,26 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider {
 		}
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
+	
+	private void showMenu(int id){
+		
+		foodListAdapter_ = (FoodListAdapter)foodDisplayHandler_.getListAdapter();
+		if(foodListAdapter_ != null){
+			RestaurantListAdapter rla = (RestaurantListAdapter)foodListAdapter_.getExpandableList(getString(R.string.food_restaurants));
+			if(rla != null){
+				rla.toggle(4);		
+			}else{
+				Log.d("FoodPlugin", "rla was null !");
+			}
+		}else{
+			Log.d("FoodPlugin", "fla was null !");
+		}
+		
+		Log.d("FoodPlugin", "Show menu with hashcode : " + id);
+//		Tracker.getInstance().trackPageView("food/menusListToggle" + String.valueOf(id));
+	}
 
-	public void notifyDataSetChanged() {
+	public void notifyDataSetChanged() {	
 		foodDisplayHandler_.getListAdapter().notifyDataSetChanged();
 	}
 
@@ -540,8 +566,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider {
 													+ "\n"
 													+ m_.getRestaurant_()
 															.getName(),
-											m_.getDescription_(), 0, that,
-											new Date());
+											m_.getDescription_(), m_.hashCode(), that, new Date());
 									news.add(bestMeal);
 									callback.callback(news);
 								}
@@ -573,4 +598,5 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider {
 		getRequestHandler().execute(new MainscreenMenusRequest(), "getMenus",
 				(RequestParameters) null);
 	}
+
 }

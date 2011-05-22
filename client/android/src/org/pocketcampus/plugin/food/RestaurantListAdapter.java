@@ -51,7 +51,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		this.mealHashMap_ = mealHashMap;
 		this.mExpanded_ = new boolean[resto.size()];
 		for (int i = 0; i < resto.size(); i++) {
-			mExpanded_[i] = true;
+			mExpanded_[i] = false;
 		}
 	}
 

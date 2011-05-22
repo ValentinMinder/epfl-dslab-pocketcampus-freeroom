@@ -24,9 +24,9 @@ import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.plugin.food.FoodDisplayHandler;
-import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.food.RestaurantListAdapter;
+import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.logging.Tracker;
@@ -37,11 +37,8 @@ import org.pocketcampus.shared.plugin.food.Rating;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Adapter;
-import android.widget.Toast;
 
 public class FoodMenu {
-	private ICallback callback_;
-	private ArrayList<MainscreenNews> news_;
 	private List<Meal> campusMenu_;
 	private FoodPlugin pluginHandler_;
 	private Context ctx_;
@@ -160,6 +157,11 @@ public class FoodMenu {
 		class RealRatingsRequest extends RatingsRequest {
 
 			@Override
+			public void onCancelled() {
+				Log.d("SERVER", "Task cancelled (FoodMenu)");
+			}
+			
+			@Override
 			public void updateRatings(
 					HashMap<Integer, Rating> campusMenuRatingsList) {
 				if (campusMenuRatingsList != null) {
@@ -203,7 +205,7 @@ public class FoodMenu {
 
 			@Override
 			public void onCancelled() {
-				Log.d("SERVER", "Task cancelled");
+				Log.d("SERVER", "Task cancelled (FoodMenu)");
 				pluginHandler_.menuRefreshed(false);
 			}
 
@@ -252,8 +254,7 @@ public class FoodMenu {
 			out.writeObject(campusMenu_);
 			out.close();
 		} catch (IOException ex) {
-			Toast.makeText(ctx_, "Writing IO Exception", Toast.LENGTH_SHORT)
-					.show();
+			Log.d("SERVER", "Writing IO Exception");
 		}
 	}
 
@@ -309,7 +310,4 @@ public class FoodMenu {
 		return restos;
 	}
 
-	public void setNews(ArrayList<MainscreenNews> news) {
-		news_ = news;
-	}
 }
