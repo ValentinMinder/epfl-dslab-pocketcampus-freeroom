@@ -306,8 +306,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 			while(pos.hasNext()) {
 				SocialPosition position = pos.next();
 				items.add(new MapElementBean(
-						position.getUser().getIdFormat(), 
-						toMinutes(position.getTimestamp()), 
+						position.getUser().toString(), 
+						"Mise à jour il y a " + toMinutes(position.getTimestamp()) + " minute(s)", 
 						position.getPosition().getLatitude(), 
 						position.getPosition().getLongitude(), 
 						position.getPosition().getAltitude(), 
