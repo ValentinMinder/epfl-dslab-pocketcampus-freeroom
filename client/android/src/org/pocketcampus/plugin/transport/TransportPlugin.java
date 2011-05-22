@@ -157,8 +157,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			class SummaryConnectionsRequest extends ConnectionsRequest {
 				@Override
 				protected void handleConnections(QueryConnectionsResult connections) {
-					if(connections == null) {
-						callback.callback(new ArrayList<MainscreenNews>());
+					if(connections==null || connections.connections.size()<3) {
 						return;
 					}
 					
