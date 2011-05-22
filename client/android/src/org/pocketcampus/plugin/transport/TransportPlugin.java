@@ -84,8 +84,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 	@SuppressWarnings("unchecked")
 	private void displaySummary() {
 		commonDestPrefs_ = getSharedPreferences("CommonDestPrefs", 0);
-		boolean noDestination = (commonDestPrefs_.getAll().size() == 0);
-		transportDisplayManager_.setupSummaryList((Map<String, String>) commonDestPrefs_.getAll(), noDestination);
+		transportDisplayManager_.setupSummaryList((Map<String, String>) commonDestPrefs_.getAll());
 	}
 
 	@Override
@@ -111,10 +110,8 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			startActivity(intent);
 			return true;
 
-		case R.id.transport_menu_detailed:
-//			intent = new Intent(this, TransportDetailed.class);
-//			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			startActivity(intent);
+		case R.id.transport_menu_revert:
+			transportDisplayManager_.switchDirection();
 			return true;
 
 		default:
@@ -187,13 +184,8 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			params.addParameter("to", destination);
 
 			requestHandler_.execute(new SummaryConnectionsRequest(), "connections", params);
-			
-			/*MainscreenNews newsObj = new MainscreenNews(destination, "Departures in 5 minutes.", destNum, this, new Date());
-			news.add(newsObj);
-			destNum++;*/
 		}
 		
-		//callback.callback(news);
 	}
 	
 	public static void makeToast(int textId) {

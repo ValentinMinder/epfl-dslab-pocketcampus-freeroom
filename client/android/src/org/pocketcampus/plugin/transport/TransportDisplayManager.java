@@ -36,6 +36,8 @@ public class TransportDisplayManager implements OnClickListener {
 	
 	
 	private TransportSummaryListAdapter adapter_;
+	private boolean fromReference_ = true;
+	private Map<String, String> commonDestinations_;
 	
 	
 	
@@ -132,18 +134,13 @@ public class TransportDisplayManager implements OnClickListener {
 //		
 	}
 	
-	private void afficheUnSuperTrajetTropCoolDeLaMort(QueryConnectionsResult summary){
-		Intent intent = new Intent(activityContext_, TransportResults.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		activityContext_.startActivity(intent);
-	}
-	
 	private void displayTravelPlan(final Connection connection) {
 		ConnectionDetailsDialog dialog = new ConnectionDetailsDialog(ownerActivity_, connection);
 		dialog.show();
 	}
 
-	protected void setupSummaryList(Map<String, String> commonDestinations, boolean noDestination) {
+	protected void setupSummaryList(Map<String, String> commonDestinations) {
+		boolean noDestination = (commonDestinations.size() == 0);
 		
 		mainList_.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -168,24 +165,28 @@ public class TransportDisplayManager implements OnClickListener {
 			msgEmpty.setVisibility(View.GONE);
 		}
 		
+		commonDestinations_ = commonDestinations;
+		populateSummaryList();
+	}
+
+	private void populateSummaryList() {
 		adapter_.clearSections();
 		
+		TransportSummaryAdapter sectionAdapter;
 		
-		//////////////////////////////////////////////////////////////////
-		boolean whitinEPFL = true; //TODO insert Tarek's method here to know if we are at EPFL or not
-		
-		for(String destination : commonDestinations.values()) {
-			TransportSummaryAdapter adapter;
-			if (whitinEPFL)
-				adapter = new TransportSummaryAdapter(ownerActivity_, TransportPlugin.getReferenceDestination(), destination);
-			else
-				adapter = new TransportSummaryAdapter(ownerActivity_, destination, TransportPlugin.getReferenceDestination());
+		for(String destination : commonDestinations_.values()) {
 			
-			adapter_.addSection(adapter.getCaption(), adapter);
+			if (fromReference_)
+				sectionAdapter = new TransportSummaryAdapter(ownerActivity_, TransportPlugin.getReferenceDestination(), destination);
+			else
+				sectionAdapter = new TransportSummaryAdapter(ownerActivity_, destination, TransportPlugin.getReferenceDestination());
+			
+			adapter_.addSection(sectionAdapter.getCaption(), sectionAdapter);
 		}
 
 		adapter_.loadSummaryList();
 	}
+
 
 	protected void setupActionBar(boolean addHomeButton) {
 
@@ -219,6 +220,13 @@ public class TransportDisplayManager implements OnClickListener {
 			r += " -> " + p.arrival;
 		}
 		return r;
+	}
+
+
+
+	public void switchDirection() {
+		fromReference_ = !fromReference_;
+		populateSummaryList();
 	}
 	
 }

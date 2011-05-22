@@ -163,15 +163,27 @@ public class TransportSummaryAdapter extends BaseAdapter {
 
 	
 	/**
-	 * Caption accessor.
+	 * Travel summary caption, replacing reference by its shortname.
 	 * @return
 	 */
 	public String getCaption() {
+		String referenceDest = TransportPlugin.REFERENCE_DESTINATION_SHORTNAME;
+		
+		if(arrival_.equals(TransportPlugin.REFERENCE_DESTINATION)) {
+			return departure_ +" "+  to_StringRessource +" "+ referenceDest;
+		}
+		
+		if(departure_.equals(TransportPlugin.REFERENCE_DESTINATION)) {
+			return referenceDest +" "+  to_StringRessource +" "+ arrival_;
+		}
+		
+		return departure_ +" "+  to_StringRessource +" "+ arrival_;
+		
 		//return departure_ + " " + to_StringRessource + " " + arrival_;
-		if(!arrival_.equals(TransportPlugin.REFERENCE_DESTINATION))
-			return departures_StringRessource +" "+ to_StringRessource +" "+ arrival_;
-		else
-			return departures_StringRessource +" "+ from_StringRessource +" "+ departure_ +" "+ to_StringRessource +" "+ TransportPlugin.REFERENCE_DESTINATION_SHORTNAME;
+//		if(!arrival_.equals(TransportPlugin.REFERENCE_DESTINATION))
+//			return departures_StringRessource +" "+ to_StringRessource +" "+ arrival_;
+//		else
+//			return departures_StringRessource +" "+ from_StringRessource +" "+ departure_ +" "+ to_StringRessource +" "+ TransportPlugin.REFERENCE_DESTINATION_SHORTNAME;
 	}
 	
 	/**

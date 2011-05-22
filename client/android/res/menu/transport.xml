@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
 		android:id="@+id/transport_menu_settings"
-		android:icon="@android:drawable/ic_menu_agenda" android:title="@string/transport_manage_destinations"/>
+		android:icon="@android:drawable/ic_menu_agenda" 
+		android:title="@string/transport_manage_destinations"
+		/>
+		
 	<item
-		android:id="@+id/transport_menu_detailed"
-		android:icon="@android:drawable/ic_menu_edit"
-		android:enabled="false" android:title="@string/transport_detailed_search"/>
+		android:id="@+id/transport_menu_revert"
+		android:icon="@android:drawable/ic_menu_revert"
+		android:title="@string/transport_return_trip"
+		android:enabled="true"
+		/>
 </menu>

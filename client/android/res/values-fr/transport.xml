@@ -20,6 +20,7 @@
 	<string name="transport_walk_in_min">min. à pied</string>
 	 
 	<string name="transport_manage_destinations">Gérer les destinations</string>
+	<string name="transport_return_trip">Trajet retour</string>
 	<string name="transport_detailed_search">Recherche détaillée</string>
 	
 	<string name="transport_destNotFound">Destination non trouvée.</string>
