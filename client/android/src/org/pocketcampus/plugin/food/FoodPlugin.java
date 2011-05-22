@@ -96,7 +96,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	}
 
 	private void handleIntent() {
-		
+
 		try {
 			showMenu(getIDFromIntent());
 		} catch (NoIDException e1) {
@@ -230,24 +230,38 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		}
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-	
+
 	private void showMenu(int id){
+
+		ArrayList<String> restos = readFromFile(getApplicationContext());
+		String r = findHashCode(restos, id);
+		Log.d("FoodPlugin", "Found restaurant : " + r);
+		int index = restos.indexOf(r);
 		
-		foodListAdapter_ = (FoodListAdapter)foodDisplayHandler_.getListAdapter();
-		if(foodListAdapter_ != null){
-//			RestaurantListAdapter rla = (RestaurantListAdapter)foodListAdapter_.getExpandableList(getString(R.string.food_restaurants));
-//			if(rla != null){
-//				rla.toggle(4);		
-//			}else{
-//				Log.d("FoodPlugin", "rla was null !");
-//			}
-			setSelected(4);
+		Adapter adapt = foodDisplayHandler_.getListAdapter()
+		.getExpandableList(this.getString(R.string.food_restaurants));	
+
+		if(adapt != null){
+			if (adapt instanceof RestaurantListAdapter) {
+				((RestaurantListAdapter) adapt).toggle(index);
+			}
 		}else{
-			Log.d("FoodPlugin", "fla was null !");
+			Log.d("FoodPlugin", "adapt is null");
 		}
 		
 		Log.d("FoodPlugin", "Show menu with hashcode : " + id);
-//		Tracker.getInstance().trackPageView("food/menusListToggle" + String.valueOf(id));
+		//		Tracker.getInstance().trackPageView("food/menusListToggle" + r);
+	}
+
+	private String findHashCode(ArrayList<String> restos, int hash){
+		String resto = "";
+
+		for(String r : restos){
+			if(r.hashCode() == hash){
+				resto = r;
+			}
+		}
+		return resto;
 	}
 
 	public void notifyDataSetChanged() {	
@@ -282,7 +296,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
-						.getDateLastUpdatedMenus();
+				.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -333,7 +347,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 					public void performAction(View view) {
 						actionBar_.removeActionAt(0);
 						foodDisplayHandler_
-								.setCurrentDisplayType(R.id.food_menu_restaurants);
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 						foodDisplayHandler_.updateView();
 						displayView();
 					}
@@ -346,8 +360,8 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 			}
 		} else {
 			foodDisplayHandler_
-					.setCurrentDisplayType(FoodDisplayType.Restaurants
-							.getValue());
+			.setCurrentDisplayType(FoodDisplayType.Restaurants
+					.getValue());
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
@@ -416,13 +430,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 				if (extras != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
 					FoodDisplayType previous = foodDisplayHandler_
-							.getCurrentDisplayType();
+					.getCurrentDisplayType();
 					foodDisplayHandler_
-							.setCurrentDisplayType(R.id.food_menu_suggestions);
+					.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -479,7 +493,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 					isSandwichDisplay_ = false;
 				}
 				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
+				.setCurrentDisplayType(R.id.food_menu_restaurants);
 			} else {
 				foodDisplayHandler_.setCurrentDisplayType(125);
 			}
@@ -525,9 +539,9 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 			expandMenus_.invalidate();
 
 			Adapter adapt = foodDisplayHandler_.getListAdapter()
-					.getExpandableList(
-							FoodPlugin.this
-									.getString(R.string.food_restaurants));
+			.getExpandableList(
+					FoodPlugin.this
+					.getString(R.string.food_restaurants));
 			if (adapt != null) {
 				if (adapt instanceof RestaurantListAdapter) {
 					((RestaurantListAdapter) adapt).toggleAll(expanded);
@@ -544,7 +558,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		final ArrayList<MainscreenNews> news = new ArrayList<MainscreenNews>();
 		final FoodPlugin that = this;
 		otherCtx_ = ctx;
-		
+
 		class MainscreenMenusRequest extends MenusRequest {
 
 			@Override
@@ -569,35 +583,35 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 								if (m_ != null) {
 									MainscreenNews bestMeal = new MainscreenNews(
 											m_.getName_()
-													+ "\n"
-													+ m_.getRestaurant_()
-															.getName(),
-											m_.getDescription_(), m_.hashCode(), that, new Date());
+											+ "\n"
+											+ m_.getRestaurant_()
+											.getName(),
+											m_.getDescription_(), m_.getRestaurant_().getName().hashCode(), that, new Date());
 									news.add(bestMeal);
 									callback.callback(news);
 								}
 							}
 
 							private Meal getBestMeal(HashMap<Integer, Rating> ratings) {
-								ArrayList<String> restos = readFromFile();
+								ArrayList<String> restos = readFromFile(otherCtx_);
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
-								
+
 								for(Meal m : campusMenuList){
 									if(restos.contains(m.getRestaurant_().getName())){
 										mealsVector.add(m);
 									}
 								}
-								
+
 								mealsVector = sorter.sortByRatings(mealsVector);
-								
+
 								if (mealsVector != null) {
 									return mealsVector.get(0);
 								} else {
 									return null;
 								}
 							}
-															
+
 						}
 						Log.d("SERVER", "Requesting ratings (Mainscreen)");
 						getRequestHandler().execute(
@@ -612,13 +626,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		getRequestHandler().execute(new MainscreenMenusRequest(), "getMenus",
 				(RequestParameters) null);
 	}
-	
-	//Not to use, only works for the Mainscreen news !
+
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> readFromFile() {
+	public ArrayList<String> readFromFile(Context ctx) {
 		String filename = "RestaurantsPref";
 		ArrayList<String> restosDisplayed = null;
-		File toGet = new File(otherCtx_.getDir("preferences", 0), filename);
+		File toGet = new File(ctx.getDir("preferences", 0), filename);
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 
