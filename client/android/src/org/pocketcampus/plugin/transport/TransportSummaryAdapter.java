@@ -167,17 +167,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	 * @return
 	 */
 	public String getCaption() {
-		String referenceDest = TransportPlugin.REFERENCE_DESTINATION_SHORTNAME;
-		
-		if(arrival_.equals(TransportPlugin.REFERENCE_DESTINATION)) {
-			return departure_ +" "+  to_StringRessource +" "+ referenceDest;
-		}
-		
-		if(departure_.equals(TransportPlugin.REFERENCE_DESTINATION)) {
-			return referenceDest +" "+  to_StringRessource +" "+ arrival_;
-		}
-		
-		return departure_ +" "+  to_StringRessource +" "+ arrival_;
+		return TransportFormatter.getNiceName(departure_) +" "+  to_StringRessource +" "+ TransportFormatter.getNiceName(arrival_);
 		
 		//return departure_ + " " + to_StringRessource + " " + arrival_;
 //		if(!arrival_.equals(TransportPlugin.REFERENCE_DESTINATION))

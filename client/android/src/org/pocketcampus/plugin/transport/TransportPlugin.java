@@ -1,11 +1,7 @@
 package org.pocketcampus.plugin.transport;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.R;
@@ -40,7 +36,6 @@ import android.view.MenuItem;
  */
 public class TransportPlugin extends PluginBase implements IMainscreenNewsProvider, IAllowsID  {
 	public static final String REFERENCE_DESTINATION = "Ecublens VD, EPFL";
-	public static final String REFERENCE_DESTINATION_SHORTNAME = "EPFL";
 	
 	private static RequestHandler requestHandler_;
 

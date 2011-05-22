@@ -100,7 +100,7 @@ public class ConnectionDetailsDialog extends Dialog{
 		list.setAdapter(mSchedule);
 
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
-		title.setText(TransportPlugin.REFERENCE_DESTINATION_SHORTNAME + " " + ctx_.getResources().getString(R.string.transport_to)+ " " + connection_.to.name); 
+		title.setText(TransportFormatter.getNiceName(connection_.from) + " " + ctx_.getResources().getString(R.string.transport_to)+ " " + TransportFormatter.getNiceName(connection_.to)); 
 
 
 	}
