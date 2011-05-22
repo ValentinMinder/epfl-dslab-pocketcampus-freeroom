@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.camipro;
+package org.pocketcampus.plugin.camipro.elements;
 
 /**
  * Class used to deserialize data from the camipro server

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
+
 public class AuthenticationSessions {
 	private static final int SESSION_ID_SIZE = 128;
 	private static final int SESSION_DURATION = 30 * 1000;
@@ -65,6 +67,10 @@ public class AuthenticationSessions {
 		}
 		
 		return password;
+	}
+	
+	public static String getPassword(AuthToken token) {
+		return getPassword(token.getUsername(), token.getSessionId());
 	}
 
 

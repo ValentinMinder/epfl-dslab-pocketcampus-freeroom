@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.plugin.authentication.AuthenticationSessions;
+import org.pocketcampus.plugin.camipro.elements.BalanceServer;
+import org.pocketcampus.plugin.camipro.elements.TransactionServer;
+import org.pocketcampus.plugin.camipro.elements.TransactionsServer;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.camipro.BalanceBean;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 import org.pocketcampus.shared.utils.URLLoader;
@@ -29,8 +34,9 @@ public class Camipro implements IPlugin {
 	@PublicMethod
 	public BalanceBean getBalance(HttpServletRequest request) {
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		AuthToken token = getToken(request);
+		String username = token.getUsername();
+		String password = AuthenticationSessions.getPassword(token);
 		
 		String result = null;
 		try {
@@ -50,9 +56,10 @@ public class Camipro implements IPlugin {
 	
 	@PublicMethod
 	public List<TransactionBean> getTransactions(HttpServletRequest request) {
-		
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+
+		AuthToken token = getToken(request);
+		String username = token.getUsername();
+		String password = AuthenticationSessions.getPassword(token);
 		
 		String result = null;
 		try {
@@ -83,6 +90,23 @@ public class Camipro implements IPlugin {
 		Collections.sort(l, c);
 		
 		return l;
+	}
+	
+	/**
+	 * Get the token from the request
+	 * @param request
+	 * @return null if not token available
+	 */
+	private AuthToken getToken(HttpServletRequest request) {
+		String json = null;
+		try {
+			json = request.getParameter("token");
+			
+			return new Gson().fromJson(json, AuthToken.class);
+		} catch (Exception e) {
+			// The token stays empty
+			return null;
+		}
 	}
 	
 	// Comparator used to sort the transactions
