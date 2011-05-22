@@ -71,10 +71,7 @@
 			android:layout_height="wrap_content"
 			android:background="@drawable/food_list_header_background"
 			android:gravity="center"
-			android:paddingLeft="12dip"
-			android:paddingRight="12dip"
-			android:paddingTop="7dip"
-			android:paddingBottom="7dip"
+			android:padding="2dip"
 			>
 			
 			<ImageView
@@ -102,11 +99,11 @@
 			android:background="#FFFFFFFF"
 			>
 			
-			<View
+			<!-- <View
 				android:background="@drawable/food_list_header_background"
 				android:layout_width="fill_parent"
 				android:layout_height="2dp"
-				></View>
+				></View> -->
 			
 			<ListView
 				xmlns:android="http://schemas.android.com/apk/res/android"

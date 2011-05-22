@@ -20,9 +20,10 @@ public class BikeStationParser {
 		
 		String source = URLLoader.getSource(URL);
 		
-		// Dirty fix for the "�" character.
+		// Dirty fix for the "é" character.
 		// It's a problem on their side, we can't do anything cleaner on our side to fix it.
-		source = source.replace("�", "�");
+		source = source.replace("ï¿½", "é");
+		source = source.replace("�", "é");
 		
 		Pattern p = Pattern.compile("<sites>(.*)</sites>");
 		Matcher m = p.matcher(source);
