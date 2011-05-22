@@ -176,8 +176,7 @@ public class SocialFriendsList extends ListActivity {
 
 			@Override
 			public int getDrawable() {
-				//TODO: logout icon
-				return R.drawable.refresh;
+				return R.drawable.logout;
 			}
 		});
 		actionBar.addAction(new ActionBar.IntentAction(this_, MainscreenPlugin.createIntent(this_), R.drawable.mini_home));
