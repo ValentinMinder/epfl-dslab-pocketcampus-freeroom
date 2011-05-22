@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.social;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import org.pocketcampus.core.database.handlers.exceptions.SQLIntegrityConstraintViolationExceptionHandler;
@@ -303,19 +303,17 @@ public class SocialDatabase {
 				stmt.setDouble(2, latitude);
 				stmt.setDouble(3, longitude);
 				stmt.setDouble(4, altitude);
-				
-				System.out.println("HEY HEY HEY - "+stmt.toString());
 			}
 		};
 		
 		rf.execute();
 	}
 	
-	public HashMap<User, Position> getPositions(final Collection<User> users, int timeout) throws ServerException {
+	public static Collection<SocialPosition> getPositions(final Collection<User> users, long timeout) throws ServerException {
 		if (users == null || users.size() == 0 || users.contains(null) || timeout < 0)
 			throw new IllegalArgumentException();
 		
-		StringBuilder requestBuilder = new StringBuilder("SELECT `user`, `latitude`, `longitude`, `altitude` FROM `"+positionTable+"` WHERE (");
+		StringBuilder requestBuilder = new StringBuilder("SELECT `user`, `latitude`, `longitude`, `altitude`, `last_update` FROM `"+positionTable+"` WHERE (");
 		for (int i = 0; i < users.size() - 1; i++) {
 			requestBuilder.append("`user` = ? OR ");
 		}
@@ -325,7 +323,7 @@ public class SocialDatabase {
 		String sqlRequest = requestBuilder.toString();
 		
 		
-		QueryRequestHandler<HashMap<User, Position>> rf = new QueryRequestHandler<HashMap<User, Position>>(sqlRequest) {
+		QueryRequestHandler<Collection<SocialPosition>> rf = new QueryRequestHandler<Collection<SocialPosition>>(sqlRequest) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt)
@@ -340,9 +338,9 @@ public class SocialDatabase {
 			}
 
 			@Override
-			public HashMap<User, Position> processResult(ResultSet result) throws SQLException, ServerException {
+			public Collection<SocialPosition> processResult(ResultSet result) throws SQLException, ServerException {
 
-				HashMap<User, Position> out = new HashMap<User, Position>();
+				HashSet<SocialPosition> out = new HashSet<SocialPosition>();
 				
 				result.beforeFirst();
 				while (result.next()) {
@@ -350,9 +348,10 @@ public class SocialDatabase {
 					double longitude = result.getDouble("longitude");
 					double altitude = result.getDouble("altitude");
 					User user = new User(result.getString("user"));
+					Timestamp timestamp = result.getTimestamp("last_update");
 					
 					Position position = new Position(latitude, longitude, altitude);
-					out.put(user, position);
+					out.add(new SocialPosition(user, position, timestamp));
 				}
 				
 				return out;
@@ -360,8 +359,38 @@ public class SocialDatabase {
 			
 		};
 		
-		HashMap<User, Position> out = rf.execute();
+		Collection<SocialPosition> out = rf.execute();
 		
 		return out;
+	}
+	
+	
+	public static Collection<User> getVisibleFriends(final User me, final String serviceId) throws ServerException {
+		String sqlRequest = "SELECT `user` FROM `"+permissionTable+"` WHERE `granted_to` = ? AND `service_id` = ? ";
+
+		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest) {
+			
+			@Override
+			public void prepareStatement(PreparedStatement stmt) throws SQLException {
+				stmt.setString(1, me.getIdFormat());
+				stmt.setString(2, serviceId);
+			}
+			
+			@Override
+			public Collection<User> processResult(ResultSet result)
+			throws SQLException {
+
+				HashSet<User> services = new HashSet<User>();
+				result.beforeFirst();
+
+				while (result.next()) {
+					services.add(new User(result.getString("user")));
+				}
+
+				return services;
+			}
+		};
+
+		return rf.execute();
 	}
 }

@@ -1,8 +1,11 @@
 package org.pocketcampus.plugin.social;
 
 import java.awt.Toolkit;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -156,7 +159,6 @@ public class Social implements IPlugin, IMapElementsProvider {
 				friendsLists = null;
 			}
 		}
-		Toolkit.getDefaultToolkit().beep(); //==============================================================================
 		return friendsLists;
 	}
 
@@ -251,22 +253,20 @@ public class Social implements IPlugin, IMapElementsProvider {
 			}
 		}
 	}
-	
+
 	@PublicMethod
 	public boolean updatePosition(HttpServletRequest request) {
 		boolean status = false;
-		
-		Toolkit.getDefaultToolkit().beep(); 
-		
+
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
-		
+
 		if(username != null && sessionId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
 			User user = Authentication.identify(username);
 			double longitude = 0; 
 			double latitude = 0;
 			double altitude = 0;
-			
+
 			try {
 				longitude = Double.parseDouble(request.getParameter("longitude"));
 				latitude = Double.parseDouble(request.getParameter("latitude"));
@@ -282,7 +282,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 				return false;
 			}
 		}
-		
+
 		return status;
 	}
 
@@ -292,13 +292,63 @@ public class Social implements IPlugin, IMapElementsProvider {
 		l.add(new MapLayerBean("Amis", "data/map/map_marker.png", this, 1, 300, true));
 		return l;
 	}
-
+	
 	@Override
 	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
 		List<MapElementBean> items = new ArrayList<MapElementBean>();
-		
-		items.add(new MapElementBean("Your token", token.getSessionId(), 46.520101, 6.565189, 0, 1, 0));
-		
+
+		User me = Authentication.identify(token.getUsername());
+		String serviceId = "positioning";
+		long timeout = 1000 * 60 * 60;
+
+		try {
+			Iterator<SocialPosition> pos = SocialDatabase.getPositions(SocialDatabase.getVisibleFriends(me, serviceId), timeout).iterator();
+			while(pos.hasNext()) {
+				SocialPosition position = pos.next();
+				items.add(new MapElementBean(
+						position.getUser().getIdFormat(), 
+						toMinutes(position.getTimestamp()), 
+						position.getPosition().getLatitude(), 
+						position.getPosition().getLongitude(), 
+						position.getPosition().getAltitude(), 
+						layerId,
+						position.getUser().getIdFormat().hashCode()));
+			}
+		} catch(ServerException e) {
+			e.printStackTrace();
+		}
 		return items;
+	}
+	
+	/**
+	 * approximate number of minutes elapsed since timestamp
+	 * @param timestamp
+	 * @return
+	 */
+	private String toMinutes(Timestamp timestamp) {
+		long stamp = timestamp.getTime();
+		long now = new Date().getTime();
+
+		long deltaInMinutes = (int)((now - stamp) / (1000 * 60));
+
+		return deltaInMinutes+"";
+	}
+	
+	/**
+	 * TEST
+	 * @param request
+	 * @return
+	 */
+	@PublicMethod
+	public Collection<String> hey(HttpServletRequest request) {
+		HashSet<String> hs = new HashSet<String>();
+		AuthToken x = new AuthToken("gdalmas", AuthenticationSessions.getSession("gdalmas"));
+		
+		Collection<MapElementBean> meb = getLayerItems(x, 1);
+		for(MapElementBean e : meb) {
+			hs.add(e.getTitle()+" --- "+e.getDescription()+" --- "+e.getLatitude()+" --- "+e.getLongitude()+" --- "+e.getAltitude()+"\n");
+		}
+		
+		return hs;
 	}
 }

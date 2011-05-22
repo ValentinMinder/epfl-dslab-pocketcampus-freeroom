@@ -35,10 +35,13 @@ public class Authentication implements IPlugin {
 		try {
 			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
 			ldap_ = new LDAPConnection(socketFactory, "ldap.epfl.ch", 636);
+			
+			//Get username entry in LDAP
 			SearchResult searchResult = ldap_.search("o=epfl,c=ch", SearchScope.SUB, "(uid="+username+")");
 			List<SearchResultEntry> entries = searchResult.getSearchEntries();
 
 			if(!entries.isEmpty()) {
+				//Try to match with password
 				String dn = entries.get(0).getDN();
 				BindResult bResult = ldap_.bind(dn, password);
 
@@ -47,8 +50,14 @@ public class Authentication implements IPlugin {
 					String lastName = entries.get(0).getAttribute("sn").getValue();
 					String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
 					
-					user = new User(firstName, lastName, sciper);
-					user.setSessionId(AuthenticationSessions.newSession(username));
+					//Open a session
+					String sessionId = AuthenticationSessions.newSession(username, password);
+					if(sessionId != null) {
+						user = new User(firstName, lastName, sciper);
+						user.setSessionId(sessionId);
+					} else {
+						user = null;
+					}
 				} else {
 					user = null;
 				}
@@ -71,13 +80,13 @@ public class Authentication implements IPlugin {
 	@PublicMethod
 	public String s(HttpServletRequest request) {
 		Toolkit.getDefaultToolkit().beep();
-		return AuthenticationSessions.newSession("tsouintsouin");
+		return AuthenticationSessions.newSession("tsouintsouin", "");
 	}
 	
-	@PublicMethod
-	public Collection<String> ss(HttpServletRequest request) {
-		return AuthenticationSessions.ss();
-	}
+//	@PublicMethod
+//	public Collection<String> ss(HttpServletRequest request) {
+//		return AuthenticationSessions.ss();
+//	}
 	
 	@PublicMethod
 	public boolean authenticate(HttpServletRequest request) {
