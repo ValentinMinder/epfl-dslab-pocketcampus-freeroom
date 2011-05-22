@@ -157,6 +157,11 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 			class SummaryConnectionsRequest extends ConnectionsRequest {
 				@Override
 				protected void handleConnections(QueryConnectionsResult connections) {
+					if(connections == null) {
+						callback.callback(new ArrayList<MainscreenNews>());
+						return;
+					}
+					
 					String lessThanAMinute = (String) ctx.getResources().getText(R.string.transport_lessThanAMinute);
 					String to = (String) ctx.getResources().getText(R.string.transport_to);
 					String departure = (String) ctx.getResources().getText(R.string.transport_departures_short);
