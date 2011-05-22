@@ -67,7 +67,7 @@
 		
 		<LinearLayout
 			android:id="@+id/slideHandleButton"
-			android:layout_width="wrap_content" 
+			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:background="@drawable/food_list_header_background"
 			android:gravity="center"
