@@ -13,7 +13,13 @@ public class RequestHandler {
 	 * Plugins: Map, Food, Bikes, Transport
 	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
 	 */
-	private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha1/";
+	//private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha2/";
+	
+	// DSLAB server
+	//private static final String serverUrl_ = "http://dslabpc15.epfl.ch:8080/alpha2/";
+	
+	// DSLAB secured server
+	private static final String serverUrl_ = "https://dslabpc15.epfl.ch:8443/alpha2/";
 	
 	/**
 	 * DEVELOPMENT SERVERS
