@@ -451,7 +451,9 @@ public class MapPlugin extends PluginBase {
 
 			// Enable the user following
 		case R.id.map_my_position:
-			Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
+			if(!myLocationOverlay_.isMyLocationEnabled()) {
+				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
+			}
 			toggleCenterOnUserPosition();
 
 			Tracker.getInstance().trackPageView("map/menu/togglPosition");

@@ -357,6 +357,9 @@ public class WifiLocation {
 	
 	
 	public int getnumberOfAP(){
+		if(ApList_ == null)
+			return 0;
+		
 		return this.ApList_.size();
 	}
 	
@@ -462,6 +465,7 @@ public class WifiLocation {
         }
 		result2 = new Position(x/positionList.size(),y/positionList.size(),0.0);
 		System.out.println("Position list size ::::::::::::"+positionList.size());
+		System.out.println("Taylor position: " + result2);
 		return result2;
 	}
 	
@@ -538,7 +542,9 @@ public class WifiLocation {
 	
 	
 	public int getSignificantAP(){
-		int num = ApList_.size();
+		if(ApList_ == null)
+			return 0;
+		
 		List<AccessPoint> goodAP = new ArrayList<AccessPoint>();
 		for(AccessPoint ap : ApList_){
 			if(ap.getSignalLevel()>35)
