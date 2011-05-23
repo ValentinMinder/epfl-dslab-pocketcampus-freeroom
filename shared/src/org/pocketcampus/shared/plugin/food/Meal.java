@@ -19,12 +19,14 @@ public class Meal implements Serializable {
 	private Restaurant restaurant_;
 	private boolean available_;
 	private Rating rating_;
-	
+
 	// private HashMap<UserStatus,Price> prices;
 
-	public Meal() {}
-	
-	public Meal(String name, String description, Restaurant restaurant, boolean available, Rating rating) {
+	public Meal() {
+	}
+
+	public Meal(String name, String description, Restaurant restaurant,
+			boolean available, Rating rating) {
 		this.name_ = name;
 		this.description_ = description;
 		this.restaurant_ = restaurant;
@@ -47,15 +49,14 @@ public class Meal implements Serializable {
 		 * IllegalArgumentException("Entry is null"); }
 		 */
 	}
-	
+
 	public boolean isAvailable() {
 		return available_;
 	}
 
 	@Override
 	public String toString() {
-		return restaurant_.getName() + " : " + name_
-				+ " " + description_;
+		return restaurant_.getName() + " : " + name_ + " " + description_;
 	}
 
 	@Override
@@ -63,7 +64,8 @@ public class Meal implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name_ == null) ? 0 : name_.hashCode());
-		result = prime * result + ((description_ == null) ? 0 : description_.hashCode());
+		result = prime * result
+				+ ((description_ == null) ? 0 : description_.hashCode());
 		result = prime * result
 				+ ((restaurant_ == null) ? 0 : restaurant_.hashCode());
 		return result;
@@ -103,16 +105,34 @@ public class Meal implements Serializable {
 	public Restaurant getRestaurant_() {
 		return restaurant_;
 	}
-	
-	public Rating getRating(){
+
+	public Rating getRating() {
 		return this.rating_;
 	}
-	
-	public void setRating(Rating r){
+
+	public void setRating(Rating r) {
 		rating_ = r;
 	}
 
 	public boolean isAvailable_() {
 		return available_;
+	}
+
+	public boolean containsAscii(int ascii) {
+		for (int i = 0; i < name_.length(); ++i) {
+			char c = name_.charAt(i);
+			int j = (int) c;
+			if (j == ascii) {
+				return true;
+			}
+		}
+		for (int i = 0; i < description_.length(); ++i) {
+			char c = description_.charAt(i);
+			int j = (int) c;
+			if (j == ascii) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
