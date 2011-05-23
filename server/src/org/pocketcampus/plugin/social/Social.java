@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -209,7 +208,6 @@ public class Social implements IPlugin, IMapElementsProvider {
 				permissions = new LinkedList<Permission>();
 
 				for(String s : SocialDatabase.getPermissions(user, granted_to)) {
-					System.out.println("\n"+s);
 					permissions.add(new Permission(s));
 				}
 			} catch(ServerException e) {
@@ -333,23 +331,5 @@ public class Social implements IPlugin, IMapElementsProvider {
 		long deltaInMinutes = (int)((now - stamp) / (1000 * 60));
 
 		return deltaInMinutes+"";
-	}
-	
-	/**
-	 * TEST
-	 * @param request
-	 * @return
-	 */
-	@PublicMethod
-	public Collection<String> hey(HttpServletRequest request) {
-		HashSet<String> hs = new HashSet<String>();
-		AuthToken x = new AuthToken("gdalmas", AuthenticationSessions.getSession("gdalmas"));
-		
-		Collection<MapElementBean> meb = getLayerItems(x, 1);
-		for(MapElementBean e : meb) {
-			hs.add(e.getTitle()+" --- "+e.getDescription()+" --- "+e.getLatitude()+" --- "+e.getLongitude()+" --- "+e.getAltitude()+"\n");
-		}
-		
-		return hs;
 	}
 }
