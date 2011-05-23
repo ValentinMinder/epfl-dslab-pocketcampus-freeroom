@@ -11,9 +11,9 @@ public class TransactionBean {
 	private String type;
 	private String description;
 	private Date date;
-	private float amount;
+	private double amount;
 	
-	public TransactionBean(String type, String description, Date date, float amount) {
+	public TransactionBean(String type, String description, Date date, double amount) {
 		this.type = type;
 		this.description = description;
 		this.date = date;
@@ -38,7 +38,7 @@ public class TransactionBean {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public float getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	public void setAmount(float amount) {
