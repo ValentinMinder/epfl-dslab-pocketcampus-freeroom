@@ -9,7 +9,6 @@
 	>
 	
 		<TextView 
-			android:text="From Paris to Berlin"
 			android:id="@+id/transport_title_dialog"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
@@ -21,7 +20,7 @@
         <ListView
         	style="@style/Theme.ListView"
         	android:layout_height="wrap_content" 
-        	android:layout_width="fill_parent" 
+        	android:layout_width="wrap_content" 
         	android:id="@+id/transport_details_dialog_list"
         	></ListView>
         

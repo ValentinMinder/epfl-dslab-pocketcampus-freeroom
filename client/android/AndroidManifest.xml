@@ -6,8 +6,7 @@
 	<application android:theme="@style/Theme" android:icon="@drawable/app_icon" android:label="@string/app_name">
 
 		<!-- Mainscreen Plugin -->
-		<activity android:name=".plugin.mainscreen.MainscreenPlugin"
-			android:screenOrientation="portrait">
+		<activity android:name=".plugin.mainscreen.MainscreenPlugin">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -17,10 +16,9 @@
         <activity android:name=".plugin.mainscreen.MainscreenPluginPreference" android:screenOrientation="portrait"></activity>
 
 		<!-- News Plugin -->
-		<activity android:name=".plugin.news.NewsPlugin" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.news.NewsPlugin"></activity>
 		<activity android:name=".plugin.news.NewsPreference"
-			android:configChanges="keyboardHidden|orientation"
-			android:screenOrientation="portrait"></activity>
+			android:configChanges="keyboardHidden|orientation"></activity>
 
 		<!-- Food Plugin -->
 		<activity android:name=".plugin.food.FoodPlugin" android:screenOrientation="portrait"></activity>
@@ -49,24 +47,26 @@
 		<!-- activity android:name="plugin.map.MapPreference"></activity> -->
 		
 		<!--  Directory (ldap) Plugin -->
-		<activity android:name=".plugin.directory.DirectoryPlugin"></activity>
-		<activity android:name=".plugin.directory.DirectoryPreference"></activity>
-		<activity android:name=".plugin.directory.DirectoryConfiguration"></activity>
+		<activity android:name=".plugin.directory.DirectoryPlugin" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.directory.DirectoryPreference" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.directory.DirectoryConfiguration" android:screenOrientation="portrait"></activity>
 		
 		<!--  Transport Plugin -->
-		<activity android:name=".plugin.transport.TransportPlugin" android:screenOrientation="portrait"></activity>
-		<activity android:name=".plugin.transport.TransportResults" android:screenOrientation="portrait"></activity>
-		<activity android:name=".plugin.transport.TransportPreference" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.transport.TransportPlugin"></activity>
+		<activity android:name=".plugin.transport.TransportPreference"></activity>
 
 		<!-- Social Plugin -->
-		<activity android:name=".plugin.social.SocialPlugin"></activity>
+		<activity android:name=".plugin.social.SocialPlugin" android:screenOrientation="portrait"></activity>
 		<activity android:name=".plugin.social.SocialPreference"></activity>
 			
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"></activity>
         <activity android:name=".plugin.camipro.TransactionsList" android:screenOrientation="portrait"></activity>
-            
-        <activity android:name=".plugin.bikes.BikesPlugin"></activity>
+		
+		<!-- Bikes Plugin -->
+        <activity android:name=".plugin.bikes.BikesPlugin" android:screenOrientation="portrait"></activity>
+		
+		<!-- AuthenticationPlugin -->
         <activity android:name=".plugin.authentication.AuthenticationPlugin"></activity>
         
         
@@ -88,7 +88,6 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-	
 	<uses-permission android:name="android.permission.CALL_PHONE" />
 	
 	<uses-sdk android:minSdkVersion="7" />

@@ -116,7 +116,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		Connection connection = (Connection) getItem(position);
 		
 		TextView timeTextView = (TextView) view.findViewById(R.id.travel_summary_time);
-		//TextView transpTextView = (TextView) view.findViewById(R.id.travel_summary_transporter);
+		TextView changesTextView = (TextView) view.findViewById(R.id.travel_summary_changes);
 		
 		// nb of changes
 		String changesD = "";
@@ -129,8 +129,15 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		formatter.applyPattern("k:mm");
 		
 		// fill in the views
-		String s1 = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
-		timeTextView.setText(s1);
+		String timeString = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
+		timeTextView.setText(timeString);
+		
+		int nbChanges = connection.parts.size()-1;
+		
+		if(nbChanges > 0) {
+			String changesString = "("+ nbChanges +" changes)";
+			changesTextView.setText(changesString);
+		}
 		
 		return view;
 	}

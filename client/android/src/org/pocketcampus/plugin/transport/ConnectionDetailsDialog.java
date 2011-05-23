@@ -12,7 +12,9 @@ import org.pocketcampus.shared.plugin.transport.Connection.Trip;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,7 +32,11 @@ public class ConnectionDetailsDialog extends Dialog{
 		// Setups dialog.
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.transport_details_dialog);
-		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		
+		LayoutParams params = getWindow().getAttributes(); 
+        params.width = 450;
+        getWindow().setAttributes((android.view.WindowManager.LayoutParams) params); 
+
 		setCanceledOnTouchOutside(true);
 		
 		Tracker.getInstance().trackPageView("transport/detail");

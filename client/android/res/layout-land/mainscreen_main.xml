@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	>
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar"
+		style="@style/ActionBar"
+		/>
+	
+	<!-- <RelativeLayout
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:background="@drawable/food_list_header_background"
+		android:orientation="horizontal"
+		android:padding="3dip"
+		android:gravity="right"
+		android:visibility="gone"
+		>
+		
+		<ImageView
+			android:id="@+id/status_lock"
+			android:src="@drawable/menu_loggedin"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:paddingLeft="2dip"
+			android:layout_centerVertical="true"
+			></ImageView>
+		
+		<TextView
+			android:text="Logged in as Peter Jackson"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="5dip"
+			android:textColor="@android:color/white"
+			android:layout_toRightOf="@+id/status_lock"
+			android:layout_centerVertical="true"
+			></TextView>
+			
+	</RelativeLayout> -->
+	
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="horizontal"
+		android:layout_below="@+id/actionbar"
+		>
+	
+		<ListView
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/mainscreen_news_list_list"
+			style="@style/Theme.ListView"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_weight="3"
+			/>
+		
+		<View
+			android:id="@+id/mainscreen_spacer"
+			android:background="@drawable/food_list_header_background"
+			android:layout_width="1dp"
+			android:layout_height="fill_parent"
+			></View>
+		
+		<GridView
+		    android:id="@+id/gridview"
+		    android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+		    android:numColumns="2"
+		    android:stretchMode="columnWidth"
+		    android:gravity="center"
+			android:background="#FFF"
+			android:visibility="visible"
+			android:layout_below="@+id/actionbar"
+			android:listSelector="#00000000"
+			android:layout_weight="6"
+			/>
+	 
+	 </LinearLayout>
+	 
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
