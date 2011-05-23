@@ -99,11 +99,19 @@ IAllowsID {
 		super.onRestart();
 		foodDisplayHandler_.refreshView();
 	}
+	
+	@Override
+	public void onBackPressed(){
+		super.onBackPressed();
+		Log.d("FoodPlugin", "OnBackPressed");
+		getIntent().removeExtra("id");
+	}
 
 	private void handleIntent() {
 
 		try {
 			showMenu(getIDFromIntent());
+			getIntent().removeExtra("id");
 		} catch (NoIDException e1) {
 			Log.d("FoodPlugin", "Failed to get Intent's ID");
 		}
@@ -217,9 +225,7 @@ IAllowsID {
 		if (foodDisplayHandler_ != null) {
 			this.notifyDataSetChanged();
 			foodDisplayHandler_.updateView();
-
 			handleIntent();
-
 			displayView();
 		}
 		refreshed();
