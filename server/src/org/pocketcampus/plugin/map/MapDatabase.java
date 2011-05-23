@@ -15,7 +15,7 @@ import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
 
 public class MapDatabase {
-	private static final String DB_URL = "jdbc:mysql:///pocketcampus";
+	private static final String DB_URL = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";
 	private static final String DB_USERNAME = "pocketbuddy";
 	private static final String DB_PASSWORD = "";
 	
