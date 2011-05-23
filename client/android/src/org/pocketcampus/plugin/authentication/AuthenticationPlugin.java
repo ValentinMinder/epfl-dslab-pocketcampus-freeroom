@@ -250,4 +250,8 @@ public class AuthenticationPlugin extends PluginBase {
 		
 		return user;
 	}
+	
+	public static RequestHandler getAuthenticationRequestHandler() {
+		return requestHandler_;
+	}
 }

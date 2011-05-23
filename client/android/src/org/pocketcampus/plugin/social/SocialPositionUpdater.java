@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.social;
 
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
@@ -49,7 +50,12 @@ public class SocialPositionUpdater {
 					rp.addParameter("latitude", p.getLatitude()+"");
 					rp.addParameter("altitude", p.getAltitude()+"");
 					
-					SocialPlugin.getSocialRequestHandler().execute(new UpdatePositionRequest(), "updatePosition", rp);
+					RequestHandler handler = AuthenticationPlugin.getAuthenticationRequestHandler();
+					if(handler != null) {
+						handler.execute(new UpdatePositionRequest(), "updatePosition", rp);
+					} else {
+						on_ = false;
+					}
 					
 					try {
 						Thread.sleep(UPDATE_PERIOD);
