@@ -1,22 +1,16 @@
 package org.pocketcampus.plugin.map;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
@@ -52,6 +46,12 @@ public class Map implements IPlugin, IMapElementsProvider {
 	private List<MapLayerBean> layersList_ = new ArrayList<MapLayerBean>();
 	private HashMap<String, IMapElementsProvider> layerProviders_ = new HashMap<String, IMapElementsProvider>();
 	private HashMap<String, Integer> layerIds_ = new HashMap<String, Integer>();
+	
+	private MapDatabase mapDB_;
+	
+	public Map() throws ServerException {
+		mapDB_ = new MapDatabase();
+	}
 
 	/**
 	 * Get a list of available layers
@@ -234,7 +234,7 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 		IMapElementsProvider provider = layerProviders_.get(externalId);
 
-		if(provider != null) {
+		if(provider != null && layerIds_ != null) {
 			return provider.getLayerItems(token, layerIds_.get(externalId));
 		}
 
@@ -248,102 +248,11 @@ public class Map implements IPlugin, IMapElementsProvider {
 
 	@Override
 	public List<MapLayerBean> getLayers() {
-		return getInternalLayers();
+		return mapDB_.getMapLayers();
 	}
 
 	@Override
 	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
-		return getInternalItems(layerId);
-	}
-
-	/**
-	 * Get a list of layers coming from the Map plugin itself, from the database
-	 * 
-	 * @return list of database layers
-	 */
-	private List<MapLayerBean> getInternalLayers() {
-		List<MapLayerBean> layers = new LinkedList<MapLayerBean>();
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Server error: unable to load jdbc Drivers");
-			e.printStackTrace();
-			return layers;
-		}
-
-		Connection dbConnection = null;
-		try {
-			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
-			Statement statement = dbConnection.createStatement();
-			ResultSet rs = statement.executeQuery("select * from MAP_LAYERS");
-
-			while (rs.next()) {
-				MapLayerBean mlb = new MapLayerBean(rs.getString("title"), 
-						rs.getString("image_url"),
-						this,
-						rs.getInt("id"),
-						rs.getInt("cache"),
-						rs.getBoolean("displayable"));
-				layers.add(mlb);
-			}
-
-			statement.close();
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
-		}
-
-		return layers;
-	}
-
-	/**
-	 * Get a list of items from a certain layer, coming from the Map plugin itself, from the database
-	 * 
-	 * @param layerId ID of the layer to use
-	 * @return List of items
-	 */
-	private List<MapElementBean> getInternalItems(int layerId) {
-		List<MapElementBean> elements = new LinkedList<MapElementBean>();
-
-		int id = layerId;
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Server error: unable to load jdbc Drivers");
-			e.printStackTrace();
-			return elements;
-		}
-
-		Connection dbConnection = null;
-		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
-			PreparedStatement statement = dbConnection.prepareStatement("select * from MAP_POIS where layer_id=?");
-			statement.setInt(1, id);
-			ResultSet rs = statement.executeQuery();
-
-			while (rs.next()) {
-				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), id, rs.getInt("id"));
-
-				// Check if this item wants to launch another plugin
-				String pluginPackage = rs.getString("plugin_package");
-				if(pluginPackage != null && !"".equals(pluginPackage)) {
-					meb.setPluginId(pluginPackage);
-				}
-				
-				elements.add(meb);
-			}
-
-			statement.close();
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
-		}
-
-		return elements;
+		return mapDB_.getMapElements(layerId);
 	}
 }

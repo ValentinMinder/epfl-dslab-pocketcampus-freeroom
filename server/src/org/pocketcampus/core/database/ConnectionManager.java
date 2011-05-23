@@ -18,7 +18,7 @@ public class ConnectionManager implements IConnectionManager {
 				"");
 	}
 	
-	private ConnectionManager(String url, String user, String password) throws ServerException {
+	public ConnectionManager(String url, String user, String password) throws ServerException {
 		this.url = url;		// Ex. for DB 'pocketbuddy' : "jdbc:mysql://localhost:3306/pocketbuddy"
 		this.user = user;
 		this.password = password;

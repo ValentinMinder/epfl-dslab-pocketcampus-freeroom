@@ -6,12 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,6 +33,7 @@ import com.google.gson.Gson;
  *
  */
 public class Search {
+	private static MapDatabase mapDB_ = new MapDatabase();
 
 	/**
 	 * Returns the POI ID closest to the given position
@@ -48,34 +43,7 @@ public class Search {
 	 */
 	public static int getClosestPOI(Position person) {
 
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Server error: unable to load jdbc Drivers");
-			e.printStackTrace();
-			return -1;
-		}
-		
-		String titleClosetPOI = "";
-
-		Connection dbConnection = null;
-		try {
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
-			Statement statement = dbConnection.createStatement();
-			ResultSet rs = statement.executeQuery("select *, 3956*2*asin(sqrt(power(sin((" + person.getLatitude() + "-abs(dest.centerX))*pi()/180/2),2)+cos(" + person.getLatitude() + "*pi()/180)*cos(abs(dest.centerX)*pi()/180)*power(sin((" + person.getLongitude() + "-dest.centerY)*pi()/180/2),2))) as distance from map_pois dest order by distance asc limit 1");
-
-			if(rs.next()) {
-				titleClosetPOI = rs.getString("title");
-			}
-			
-			statement.close();
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
-			return -1;
-		}
-		return getVertexId(titleClosetPOI);
+		return getVertexId(mapDB_.getTitleClosestPOI(person));
 	}
 	
 	/**
@@ -276,52 +244,6 @@ public class Search {
 		}
 		
 		return path.getPositionList();
-	}
-
-	/**
-	 * Searches the elements with a specific title or description
-	 * @param query the text query
-	 * @param maxResults the max number of results returned
-	 * @return the elements corresponding to the query (null if an error happened)
-	 */
-	public static List<MapElementBean> searchText(String query, int maxResults) {
-		if(query == null || query.length() <= 0 || maxResults <= 0)
-			return null;
-		
-		List<MapElementBean> elements = new LinkedList<MapElementBean>();
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Server error: unable to load jdbc Drivers");
-			e.printStackTrace();
-			return null;
-		}
-
-		Connection dbConnection = null;
-		try {
-			//dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "root", "fyInjhWO");
-			dbConnection = DriverManager.getConnection("jdbc:mysql:///pocketcampus", "pocketbuddy", "");
-			PreparedStatement statement = dbConnection.prepareStatement("select * from `MAP_POIS` where `title` like ? or `description` like ? order by `title`, `description` limit ?");
-			statement.setString(1, "%" + query + "%");
-			statement.setString(2, "%" + query + "%");
-			statement.setInt(3, maxResults);
-			ResultSet rs = statement.executeQuery();
-
-			while (rs.next()) {
-				MapElementBean meb = new MapElementBean(rs.getString("title"), rs.getString("description"), rs.getDouble("centerX"), rs.getDouble("centerY"), rs.getDouble("altitude"), rs.getInt("id"), rs.getInt("layer_id"));
-				elements.add(meb);
-			}
-			
-			statement.close();
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.err.println("Error with SQL");
-			e.printStackTrace();
-			return null;
-		}
-		
-		return elements;
 	}
 }
 

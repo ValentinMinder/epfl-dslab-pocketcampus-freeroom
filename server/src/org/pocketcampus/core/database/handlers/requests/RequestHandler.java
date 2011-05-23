@@ -112,7 +112,7 @@ public abstract class RequestHandler<R, O> {
 				if (stmt != null && !stmt.isClosed())
 					stmt.close();
 				disconnect();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				Logger.log(e, "Connection to DB not properly closed");
 			}
 		}
