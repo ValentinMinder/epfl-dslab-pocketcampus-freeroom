@@ -46,6 +46,7 @@ public class FoodMenu {
 	private Context ctx_;
 	private Date validityDate_;
 	private final String RESTO_PREFS_NAME = "RestoPrefs";
+	private boolean isMenus_;
 
 	/**
 	 * Food menu for the corresponding food plugin.
@@ -189,13 +190,15 @@ public class FoodMenu {
 			@Override
 			public void updateRatings(
 					HashMap<Integer, Rating> campusMenuRatingsList) {
+				isMenus_ = false;
+				
 				if (campusMenuRatingsList != null) {
 					setCampusRatings(campusMenuRatingsList);
 				} else {
 					Log.d("SERVER", "null ratings");
 				}
 				if (isRefreshWholeMenu) {
-					pluginHandler_.menuRefreshed(true);
+					pluginHandler_.menuRefreshed(true, isMenus_);
 				} else {
 					FoodDisplayHandler fdh = pluginHandler_
 							.getFoodDisplayHandler();
@@ -211,7 +214,7 @@ public class FoodMenu {
 							}
 						}
 					} else if (fdh.getCurrentDisplayType() == FoodDisplayType.Ratings) {
-						pluginHandler_.menuRefreshed(true);
+						pluginHandler_.menuRefreshed(true, isMenus_);
 					}
 					pluginHandler_.refreshed();
 				}
@@ -225,13 +228,14 @@ public class FoodMenu {
 	// Load menu from server
 	private void loadCampusMenu() {
 		pluginHandler_.menuRefreshing();
-
+		isMenus_ = true;
+		
 		class RealMenusRequest extends MenusRequest {
 
 			@Override
 			public void onCancelled() {
 				Log.d("SERVER", "Task cancelled (FoodMenu)");
-				pluginHandler_.menuRefreshed(false);
+				pluginHandler_.menuRefreshed(false, isMenus_);
 			}
 
 			@Override
@@ -251,7 +255,7 @@ public class FoodMenu {
 						setCampusMenu(fromCache);
 					}
 				}
-				pluginHandler_.menuRefreshed(true);
+				pluginHandler_.menuRefreshed(true, isMenus_);
 			}
 
 		}

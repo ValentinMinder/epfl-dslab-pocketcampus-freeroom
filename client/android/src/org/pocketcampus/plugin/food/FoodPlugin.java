@@ -111,7 +111,6 @@ IAllowsID {
 
 		try {
 			showMenu(getIDFromIntent());
-			getIntent().removeExtra("id");
 		} catch (NoIDException e1) {
 			Log.d("FoodPlugin", "Failed to get Intent's ID");
 		}
@@ -216,16 +215,20 @@ IAllowsID {
 		}
 	}
 
-	public void menuRefreshed(boolean successful) {
+	public void menuRefreshed(boolean successful, boolean isMenus) {
 		if (!successful) {
 			Toast.makeText(this,
 					this.getResources().getString(R.string.food_menucancelled),
 					Toast.LENGTH_SHORT).show();
 		}
+		Log.d("FoodPlugin","Passage");
 		if (foodDisplayHandler_ != null) {
 			this.notifyDataSetChanged();
 			foodDisplayHandler_.updateView();
-			handleIntent();
+			if(isMenus){
+				handleIntent();
+				removeExtrasFromIntent();
+			}
 			displayView();
 		}
 		refreshed();

@@ -61,4 +61,8 @@ public abstract class PluginBase extends Activity {
 		Bundle extras = getIntent().getExtras();
 		return extras != null && extras.containsKey("id");
 	}
+	
+	protected void removeExtrasFromIntent(){
+		getIntent().removeExtra("id");
+	}
 }

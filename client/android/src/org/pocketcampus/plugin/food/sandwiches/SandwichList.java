@@ -63,7 +63,7 @@ public class SandwichList {
 			@Override
 			public void onCancelled() {
 				Log.d("SANDWICHES", "Task cancelled");
-				pluginHandler_.menuRefreshed(false);
+				pluginHandler_.menuRefreshed(false, false);
 			}
 
 			@Override
@@ -95,7 +95,7 @@ public class SandwichList {
 				}
 				writeToFile();
 				Log.d("SANDWICHES", "Writing to file");
-				pluginHandler_.menuRefreshed(true);
+				pluginHandler_.menuRefreshed(true, false);
 			}
 		}
 		sandwichList_ = restoreFromFile();
@@ -104,7 +104,7 @@ public class SandwichList {
 			FoodPlugin.getFoodRequestHandler().execute(new SandwichRequest(),
 					"getSandwiches", (RequestParameters) null);
 		}else{
-			pluginHandler_.menuRefreshed(true);
+			pluginHandler_.menuRefreshed(true, false);
 		}
 		
 	}
