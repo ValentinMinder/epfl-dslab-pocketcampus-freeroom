@@ -15,22 +15,43 @@ import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.plugin.authentication.AuthenticationSessions;
 import org.pocketcampus.plugin.camipro.elements.BalanceServer;
+import org.pocketcampus.plugin.camipro.elements.EbankingServer;
 import org.pocketcampus.plugin.camipro.elements.TransactionServer;
 import org.pocketcampus.plugin.camipro.elements.TransactionsServer;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.camipro.BalanceBean;
+import org.pocketcampus.shared.plugin.camipro.EbankingBean;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 import org.pocketcampus.shared.utils.URLLoader;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
+/**
+ * IPlugin server class for the Camipro plugin.
+ * 
+ * Get the required data from the Camipro server.
+ * The client side has to provide the {@link AuthToken} when requesting any information.
+ * 
+ * @status Complete
+ * 
+ * @author Jonas, Johan
+ *
+ */
 public class Camipro implements IPlugin {
 
-	private static String urlBalance_ = "https://cmp2www.epfl.ch/servicesdev/ws/balance";
-	private static String urlTransactions_ = "https://cmp2www.epfl.ch/servicesdev/ws/transactions";
+	private static final String BASE_URL = "https://cmp2www.epfl.ch/ws/";
+	private static final String BALANCE_URL = BASE_URL + "balance";
+	private static final String TRANSACTIONS_URL = BASE_URL + "transactions";
+	private static final String EBANKING_URL = BASE_URL + "ebanking";
 
-	private Gson gson_ = new Gson();
+	private static final Gson gson_ = new Gson();
 	
+	/**
+	 * Get the current balance 
+	 * @param request
+	 * @return
+	 */
 	@PublicMethod
 	public BalanceBean getBalance(HttpServletRequest request) {
 
@@ -40,7 +61,7 @@ public class Camipro implements IPlugin {
 		
 		String result = null;
 		try {
-			result = URLLoader.getSource(urlBalance_, username, password);
+			result = URLLoader.getSource(BALANCE_URL, username, password);
 		} catch (IOException e) {
 			return null;
 		}
@@ -49,11 +70,20 @@ public class Camipro implements IPlugin {
 			return null;
 		}
 		
-		BalanceServer bs = gson_.fromJson(result, BalanceServer.class);
-		
-		return new BalanceBean(bs.getPersonalAccountBalance());
+		try {
+			BalanceServer bs = gson_.fromJson(result, BalanceServer.class);
+			return new BalanceBean(bs.getPersonalAccountBalance());
+		} catch (JsonSyntaxException e) {
+			return null;
+		}
 	}
 	
+	/**
+	 * Get the last transactions.
+	 * It is not possible to get old transactions, we can only get the last 10.
+	 * @param request
+	 * @return
+	 */
 	@PublicMethod
 	public List<TransactionBean> getTransactions(HttpServletRequest request) {
 
@@ -63,7 +93,7 @@ public class Camipro implements IPlugin {
 		
 		String result = null;
 		try {
-			result = URLLoader.getSource(urlTransactions_, username, password);
+			result = URLLoader.getSource(TRANSACTIONS_URL, username, password);
 		} catch (IOException e) {
 			return null;
 		}
@@ -72,7 +102,14 @@ public class Camipro implements IPlugin {
 			return null;
 		}
 		
-		TransactionsServer tss = gson_.fromJson(result, TransactionsServer.class);
+		TransactionsServer tss;
+		try {
+			tss = gson_.fromJson(result, TransactionsServer.class);
+		} catch (JsonSyntaxException e1) {
+			return null;
+		}
+		
+		// To parse the date
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		
 		List<TransactionBean> l = new ArrayList<TransactionBean>();
@@ -90,6 +127,38 @@ public class Camipro implements IPlugin {
 		Collections.sort(l, c);
 		
 		return l;
+	}
+
+	/**
+	 * Get all the ebanking info we could use.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@PublicMethod
+	public EbankingBean getEbanking(HttpServletRequest request) {
+		
+		AuthToken token = getToken(request);
+		String username = token.getUsername();
+		String password = AuthenticationSessions.getPassword(token);
+		
+		String result = null;
+		try {
+			result = URLLoader.getSource(EBANKING_URL, username, password);
+		} catch (IOException e) {
+			return null;
+		}
+		
+		if(result == null) {
+			return null;
+		}
+		
+		try {
+			EbankingServer ebs = gson_.fromJson(result, EbankingServer.class);
+			return new EbankingBean(ebs.getPaidNameTo(), ebs.getAccountNr(), ebs.getBvrReference(), ebs.getBvrReadableReference(), ebs.getTotalAmount1M(), ebs.getTotalAmount3M(), ebs.getAverageAmount3M());
+		} catch (JsonSyntaxException e) {
+			return null;
+		}
 	}
 	
 	/**
