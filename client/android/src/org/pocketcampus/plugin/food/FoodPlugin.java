@@ -24,7 +24,6 @@ import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
-import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
@@ -87,8 +86,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
 
 		Tracker.getInstance().trackPageView("food/home");
-
-		handleIntent();
 	}
 
 	@Override
@@ -240,7 +237,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		int index = restos.indexOf(r);
 
 		ArrayAdapter<String> adapt1 = foodDisplayHandler_.getListAdapter().headers_;
-		
+
 		Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
 				this.getString(R.string.food_restaurants));
 		if (adapt != null) {
@@ -448,12 +445,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 				Log.d("SUGGESTIONS", "RESULT_PAS_OK !");
 			}
 			break;
-		case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-			// PictureTaker.onActivityResult(requestCode, resultCode, data,
-			// true);
-			// Toast.makeText(this, "YOOOOOOOOOOOOO",
-			// Toast.LENGTH_SHORT).show();
-			// break;
 		}
 	}
 
@@ -541,17 +532,19 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			}
 			expandMenus_.invalidate();
 
-			Adapter adapt = foodDisplayHandler_.getListAdapter()
-					.getExpandableList(
-							FoodPlugin.this
-									.getString(R.string.food_restaurants));
-			if (adapt != null) {
-				if (adapt instanceof RestaurantListAdapter) {
-					((RestaurantListAdapter) adapt).toggleAll(expanded);
-				} else if (adapt instanceof SandwichListAdapter) {
-					((SandwichListAdapter) adapt).toggleAll(expanded);
-				}
-			}
+			// Adapter adapt = foodDisplayHandler_.getListAdapter()
+			// .getExpandableList(
+			// FoodPlugin.this
+			// .getString(R.string.food_restaurants));
+			// if (adapt != null) {
+			// if (adapt instanceof RestaurantListAdapter) {
+			// ((RestaurantListAdapter) adapt).toggleAll(expanded);
+			// } else if (adapt instanceof SandwichListAdapter) {
+			// ((SandwichListAdapter) adapt).toggleAll(expanded);
+			// }
+			// }
+			handleIntent();
+
 			return false;
 		}
 	}
@@ -604,22 +597,23 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
 
-								for (Meal m : campusMenuList) {
-									if (restos.contains(m.getRestaurant_()
-											.getName())) {
-										mealsVector.add(m);
+								if (restos != null) {
+									for (Meal m : campusMenuList) {
+										if (restos.contains(m.getRestaurant_()
+												.getName())) {
+											mealsVector.add(m);
+										}
 									}
+
+									mealsVector = sorter
+											.sortByRatings(mealsVector);
 								}
-
-								mealsVector = sorter.sortByRatings(mealsVector);
-
-								if (mealsVector != null) {
+								if (mealsVector != null && !mealsVector.isEmpty()) {
 									return mealsVector.get(0);
 								} else {
 									return null;
 								}
 							}
-
 						}
 						Log.d("SERVER", "Requesting ratings (Mainscreen)");
 						getRequestHandler().execute(
