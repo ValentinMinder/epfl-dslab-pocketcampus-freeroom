@@ -22,15 +22,13 @@ import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
-import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.plugin.food.FoodDisplayHandler;
+import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.food.RestaurantListAdapter;
-import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
 import org.pocketcampus.plugin.logging.Tracker;
-import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 
@@ -160,7 +158,7 @@ public class FoodMenu {
 			public void onCancelled() {
 				Log.d("SERVER", "Task cancelled (FoodMenu)");
 			}
-			
+
 			@Override
 			public void updateRatings(
 					HashMap<Integer, Rating> campusMenuRatingsList) {
@@ -211,7 +209,6 @@ public class FoodMenu {
 
 			@Override
 			public void updateMenus(List<Meal> campusMenuList) {
-
 				if (campusMenuList != null) {
 					if (campusMenuList.isEmpty()) {
 					} else {

@@ -87,10 +87,11 @@ public class RatingsDialog extends Dialog {
 
 	// Submit Rating to the server.
 	private void submitRating(double rating) {
+		menusActivity_.menuRefreshing();
 		class SubmitRatingRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
-
+				
 				String submitted = "";
 				if (result == null) {
 					submitted = menusActivity_.getResources().getString(
@@ -129,7 +130,7 @@ public class RatingsDialog extends Dialog {
 				}
 				Toast.makeText(menusActivity_, submitted, Toast.LENGTH_SHORT)
 						.show();
-
+				menusActivity_.refreshed();
 				ratingbar.invalidate();
 			}
 		}

@@ -32,7 +32,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MenuDialog extends Dialog {
 	private/* final */Meal displayedMeal_;

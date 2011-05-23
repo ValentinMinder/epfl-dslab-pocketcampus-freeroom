@@ -9,73 +9,56 @@ import android.app.Activity;
 import android.os.Bundle;
 
 /**
- * Base class for the display of plugins. The Display class is the main interface of the plugins and will be started 
- * when the app is launched from the mainscreen.
+ * Base class for the display of plugins. The Display class is the main
+ * interface of the plugins and will be started when the app is launched from
+ * the mainscreen.
  * 
  * @status incomplete
  * @author florian
  * @license
- *
+ * 
  */
 
 public abstract class PluginBase extends Activity {
 	/**
 	 * Access to the plugin infos.
+	 * 
 	 * @return
 	 */
 	public abstract PluginInfo getPluginInfo();
-	
+
 	/**
 	 * Access to the plugin preference activity.
+	 * 
 	 * @return
 	 */
 	public abstract PluginPreference getPluginPreference();
-	
+
 	protected RequestHandler getRequestHandler() {
 		return new RequestHandler(getPluginInfo());
 	}
-	
+
 	protected void setupActionBar(boolean addHomeButton) {
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.setTitle(getResources().getText(R.string.app_name));
-		
-		if(addHomeButton) {
-			actionBar.addAction(new ActionBar.IntentAction(this, MainscreenPlugin.createIntent(this), R.drawable.mini_home));
+
+		if (addHomeButton) {
+			actionBar.addAction(new ActionBar.IntentAction(this,
+					MainscreenPlugin.createIntent(this), R.drawable.mini_home));
 		}
 	}
-	
+
 	protected int getIDFromIntent() throws NoIDException {
 		Bundle extras = getIntent().getExtras();
-		if(!hasIDInIntent()) {
+		if (!hasIDInIntent()) {
 			throw new NoIDException();
 		}
-		
+
 		return extras.getInt("id");
 	}
 
 	protected boolean hasIDInIntent() {
-		Bundle extras = getIntent().getExtras(); 
+		Bundle extras = getIntent().getExtras();
 		return extras != null && extras.containsKey("id");
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

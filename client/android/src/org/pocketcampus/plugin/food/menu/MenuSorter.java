@@ -145,7 +145,11 @@ public class MenuSorter {
 			} else {
 				int n0 = thisMeal.getRating().getNumberOfVotes();
 				int n1 = thisMeal.getRating().getNumberOfVotes();
-				return (n0 < n1 ? -1 : 1);
+				if (n0 == n1) {
+					return 0;
+				} else {
+					return (n0 < n1 ? -1 : 1);
+				}
 			}
 		}
 	}
