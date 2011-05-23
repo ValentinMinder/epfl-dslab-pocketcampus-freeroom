@@ -82,6 +82,11 @@ public class MainscreenPlugin extends PluginBase {
 
 	}
 
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		refresh();
+	}
 
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
