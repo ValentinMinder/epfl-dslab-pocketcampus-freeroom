@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -43,7 +44,7 @@ public class SocialPermissionDialog extends Dialog {
 	private final Activity parentActivity_;
 	private boolean updated_;
 	
-	private final Button chatButton_;
+//	private final Button chatButton_;
 	private final Button okButton_;
 
 	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, Activity parentActivity) {
@@ -61,7 +62,7 @@ public class SocialPermissionDialog extends Dialog {
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
 		
-		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
+//		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
 		okButton_ = (Button) findViewById(R.id.social_friends_ok);
 		
 		setDialogContent();
@@ -85,12 +86,15 @@ public class SocialPermissionDialog extends Dialog {
 						}
 					}
 				});
+				permissionBoxes_[i].setGravity(Gravity.LEFT);
 				
 				TextView tv = new TextView(context_);
 				tv.setText(permission.getName());
+				tv.setGravity(Gravity.RIGHT);
 				
 				LinearLayout newPermission = new LinearLayout(context_);
-				newPermission.setOrientation(LinearLayout.VERTICAL);
+				newPermission.setOrientation(LinearLayout.HORIZONTAL);
+				newPermission.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 				newPermission.addView(permissionBoxes_[i]);
 				newPermission.addView(tv);
 				permissionHolder.addView(newPermission);
@@ -99,12 +103,12 @@ public class SocialPermissionDialog extends Dialog {
 			}
 		}
 		
-		// BOUTON chat
-		chatButton_.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				
-			}
-		});
+//		// BOUTON chat
+//		chatButton_.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
+//				
+//			}
+//		});
 		
 		okButton_.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
