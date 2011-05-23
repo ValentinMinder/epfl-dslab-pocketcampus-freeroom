@@ -3,6 +3,7 @@
 
     <string name="camipro_plugin_title">Camipro</string>
 
+    <string name="camipro_balance_date_title">Mise à jour</string>
     <string name="camipro_current_balance">Avoir actuel</string>
     <string name="camipro_balance_placeholder">0.0</string>
     
@@ -10,7 +11,7 @@
     <string name="camipro_unable_transactions">Impossible de récupérer les dernières transactions.</string>
     <string name="camipro_unable_ebanking">Impossible de récupérer les informations d\'ebanking.</string>
     
-    <string name="camipro_offline_transactions">Given no offline transactions have been made</string>
+    <string name="camipro_offline_transactions">Sous réserve de transactions effectuées offline</string>
     
     <string name="camipro_ebanking_button">Transfer par ebanking</string>
     

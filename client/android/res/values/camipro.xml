@@ -6,6 +6,7 @@
     <color name="camipro_plus">#459900</color>
     <color name="camipro_minus">#E30000</color>
 
+    <string name="camipro_balance_date_title">Last update</string>
     <string name="camipro_current_balance">Current balance</string>
     <string name="camipro_balance_placeholder">0.0</string>
     
@@ -13,7 +14,7 @@
     <string name="camipro_unable_transactions">Unable to get the last transactions.</string>
     <string name="camipro_unable_ebanking">Unable to get the ebanking informations.</string>
     
-    <string name="camipro_offline_transactions">Sous réserve de transactions effectuées offline</string>
+    <string name="camipro_offline_transactions">Given no offline transactions have been made</string>
     
     <string name="camipro_ebanking_button">Ebanking money transfer</string>
     

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.camipro;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -206,6 +207,7 @@ public class SecuredCamipro extends PluginBase {
 			decrementProgressCounter();
 			
 			if(bb_ != null) {
+				// Balance
 				String txt = formatMoney(bb_.getCurrentBalance());
 				
 				TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
@@ -213,6 +215,14 @@ public class SecuredCamipro extends PluginBase {
 				
 				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_number);
 				balance.setText(txt);
+				
+				// Last update
+				String date = new Date().toLocaleString();
+				balance = (TextView) findViewById(R.id.camipro_balance_date_text);
+				balance.setText(date);
+				
+				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_date_text);
+				balance.setText(date);
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_balance);
 			}

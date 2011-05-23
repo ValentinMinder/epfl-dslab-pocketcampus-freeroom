@@ -42,6 +42,24 @@
 	       	style="@style/Theme.BoldHeader" />
 	   
 	   </LinearLayout>
+			
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+	   	
+		<TextView
+			android:id="@+id/camipro_ebanking_balance_date_title"
+			android:text="@string/camipro_balance_date_title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Theme.BoldHeader" />
+		       	
+		<TextView
+			android:id="@+id/camipro_ebanking_balance_date_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
 	  
 	  <TextView
 	  	android:id="@+id/camipro_ebanking_paid_to_title"
