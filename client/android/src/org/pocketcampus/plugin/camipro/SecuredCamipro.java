@@ -173,6 +173,15 @@ public class SecuredCamipro extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return null;
 	}
+	
+	/**
+	 * Format a price into an human-readable form
+	 * @param money
+	 * @return
+	 */
+	static String formatMoney(double money) {
+		return String.format("CHF %.2f", money);
+	}
 
 	/**
 	 * Server request for the camipro balance.
@@ -197,11 +206,13 @@ public class SecuredCamipro extends PluginBase {
 			decrementProgressCounter();
 			
 			if(bb_ != null) {
+				String txt = formatMoney(bb_.getCurrentBalance());
+				
 				TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
-				balance.setText(Float.toString(bb_.getCurrentBalance()));
+				balance.setText(txt);
 				
 				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_number);
-				balance.setText(Float.toString(bb_.getCurrentBalance()));
+				balance.setText(txt);
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_balance);
 			}
@@ -284,13 +295,13 @@ public class SecuredCamipro extends PluginBase {
 				tv.setText(ebb_.getBvrReferenceReadable());
 
 				tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
-				tv.setText(String.format("%.2f", ebb_.getTotal1M()));
+				tv.setText(formatMoney(ebb_.getTotal1M()));
 
 				tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
-				tv.setText(String.format("%.2f", ebb_.getTotal3M()));
+				tv.setText(formatMoney(ebb_.getTotal3M()));
 
 				tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
-				tv.setText(String.format("%.2f", ebb_.getAverage3M()));
+				tv.setText(formatMoney(ebb_.getAverage3M()));
 
 				
 			} else {

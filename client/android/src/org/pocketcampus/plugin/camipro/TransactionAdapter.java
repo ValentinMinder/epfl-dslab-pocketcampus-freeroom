@@ -63,7 +63,7 @@ public class TransactionAdapter extends ArrayAdapter<TransactionBean> {
         tv.setText(t.getDescription());
         
         tv = (TextView)v.findViewById(R.id.camipro_item_amount);
-        tv.setText(Float.toString(t.getAmount()));
+        tv.setText(SecuredCamipro.formatMoney(t.getAmount()));
         tv.setTextColor(t.getAmount() < 0.0 ? minus_ : plus_);
         
         return v;

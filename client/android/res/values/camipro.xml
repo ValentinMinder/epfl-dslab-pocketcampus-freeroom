@@ -13,6 +13,8 @@
     <string name="camipro_unable_transactions">Unable to get the last transactions.</string>
     <string name="camipro_unable_ebanking">Unable to get the ebanking informations.</string>
     
+    <string name="camipro_offline_transactions">Sous réserve de transactions effectuées offline</string>
+    
     <string name="camipro_ebanking_button">Ebanking money transfer</string>
     
     <string name="camipro_ebanking_infos_title">Ebanking information</string>
@@ -21,7 +23,7 @@
     <string name="camipro_ebanking_account_number_title">Account number</string>
     <string name="camipro_ebanking_ref_number_title">Reference number</string>
     <string name="camipro_ebanking_amount_title">Amount</string>
-    <string name="camipro_ebanking_amount_text">Free (max. 300.-)</string>
+    <string name="camipro_ebanking_amount_text">Free (max. CHF 300.-)</string>
     
     <string name="camipro_ebanking_stats_title">Statistics</string>
     <string name="camipro_ebanking_1month_title">Last month</string>

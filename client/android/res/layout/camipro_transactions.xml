@@ -6,34 +6,39 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical" >
-		
-      <LinearLayout
-      	android:id="@+id/camipro_balance_layout"
-      	android:layout_height="wrap_content"
-      	android:layout_width="fill_parent">
-      	
-          <TextView
-          	android:id="@+id/camipro_balance_text"
-          	android:layout_width="wrap_content"
-          	android:layout_height="wrap_content"
-          	android:text="@string/camipro_current_balance"
-          	android:layout_weight="1"
+			
+	<LinearLayout
+		android:id="@+id/camipro_balance_layout"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+	   	
+		<TextView
+			android:id="@+id/camipro_balance_text"
+			android:text="@string/camipro_current_balance"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			style="@style/Theme.BoldHeader" />
-          	
-          <TextView
-          	android:id="@+id/camipro_balance_number"
-          	android:layout_width="wrap_content"
-          	android:layout_height="wrap_content"
-          	android:text="@string/camipro_balance_placeholder"
+		       	
+		<TextView
+			android:id="@+id/camipro_balance_number"
+			android:text="@string/camipro_balance_placeholder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
 			style="@style/Theme.BoldHeader" />
-      
-      </LinearLayout>
-      
-      <ListView
-      	android:id="@+id/camipro_list"
-      	android:layout_height="wrap_content"
-      	android:layout_width="fill_parent"
-      	android:dividerHeight="1dp"
-      	android:divider="#7D0000" />
-  
+	</LinearLayout>
+	   
+	<ListView
+		android:id="@+id/camipro_list"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:dividerHeight="1dp"
+		android:divider="#7D0000" />
+	
+	<TextView
+		android:id="@+id/camipro_offline_transactions"
+		android:text="@string/camipro_offline_transactions"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+
 </LinearLayout>
