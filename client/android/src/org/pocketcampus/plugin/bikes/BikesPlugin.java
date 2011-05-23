@@ -136,6 +136,8 @@ public class BikesPlugin extends PluginBase {
 	protected void displayBikes() {
 		
         final TableLayout t = (TableLayout) findViewById(R.id.bikes_table);
+        t.removeAllViews();
+        
         TableRow title = new TableRow(this);
         title.setBackgroundColor(Color.LTGRAY);
         title.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
