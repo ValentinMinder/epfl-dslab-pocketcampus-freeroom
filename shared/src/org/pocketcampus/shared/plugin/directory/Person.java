@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
-public class Person implements Serializable {
+public class Person implements Serializable, Comparable {
 	/**
 	 * 
 	 */
@@ -80,6 +81,20 @@ public class Person implements Serializable {
 
 	public boolean hasOffice() {
 		return room != null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Person a = this;
+		Person b = (Person)o;
+		int r = a.last_name.compareToIgnoreCase(b.last_name);
+		
+		if(r == 0 ){
+			return a.first_name.compareToIgnoreCase(b.first_name);
+		}else{
+			return r;
+		}
+			
 	}
 	
 	

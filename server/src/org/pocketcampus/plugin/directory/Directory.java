@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.directory;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -129,6 +131,9 @@ public class Directory implements IPlugin{
 		} catch (LDAPException e) {
 			System.out.println("ldap reconnection problem");
 		}
+		
+		//sorting the results alphabetatically
+		Collections.sort(results);		
 		
 		return results;
 		
