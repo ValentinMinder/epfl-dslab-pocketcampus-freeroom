@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class MainscreenNewsProvider implements ICallback {
-	private int nbLoading_ = 0;
+	private static int nbLoading_ = 0;
 	private MainscreenPlugin main_;
 	private Context ctx_;
 	
@@ -21,10 +21,10 @@ public class MainscreenNewsProvider implements ICallback {
 	}
 	
 	public void getNews() {
+				
+		main_.clean();
 		
 		main_.refreshing();
-		
-		main_.clean();
 		
 		Log.d("MainscreenNewsProvider", "Getting News");
 		
@@ -33,6 +33,7 @@ public class MainscreenNewsProvider implements ICallback {
 		
 		Log.d("MainscreenNewsProvider", "Array size: " + plugins.size());
 
+		nbLoading_ = plugins.size();
 
         for(PluginBase plug : plugins) {
     		Log.d("MainscreenNewsProvider", "Current Plugin: " + plug.getPluginInfo().getId());
@@ -42,13 +43,14 @@ public class MainscreenNewsProvider implements ICallback {
 				Log.d("MainscreenNewsProvider", "Plugin not null");
 				
 				if(PreferenceManager.getDefaultSharedPreferences(ctx_).getBoolean(plug.getPluginInfo().getId().toString(), true)) {
-					Log.d("MainscreenNewsProvider","New MainscreenNewsGetter created");
-					//new MainscreenNewsGetter((IMainscreenNewsProvider)plug,ctx,main).execute();
-					
+					Log.d("MainscreenNewsProvider","NbLoading++: " + nbLoading_);					
 					((IMainscreenNewsProvider)plug).getNews(ctx_, this);
-					nbLoading_++;
 					
+				} else {
+					nbLoading_--;
 				}
+			} else {
+				nbLoading_--;
 			}
 		}
 
@@ -61,8 +63,10 @@ public class MainscreenNewsProvider implements ICallback {
 		
 		main_.addAll(news);
 		nbLoading_--;
+		Log.d("MainscreenNewsProvider","NbLoading--: " + nbLoading_);					
 		
 		if(nbLoading_ <= 0) {
+			Log.d("MainscreenNewsProvider","refreshed");
 			main_.refreshed();
 		}
 	}

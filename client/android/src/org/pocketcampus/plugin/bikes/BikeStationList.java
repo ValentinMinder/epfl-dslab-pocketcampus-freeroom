@@ -37,6 +37,7 @@ public class BikeStationList {
 			@Override
 			public void onCancelled() {
 				Log.d("BikeStationList", "Task cancelled");
+				Toast.makeText(main_.getApplicationContext(),main_.getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
 				BikesPlugin.refreshed();
 			}
 
@@ -46,8 +47,6 @@ public class BikeStationList {
 			
 				if(result == null) {
 					cancel(true);
-					Toast.makeText(main_.getApplicationContext(),main_.getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
-					return;
 				}
 								
 				Type listType = new TypeToken<List<BikeStation>>() {}.getType();
@@ -56,8 +55,6 @@ public class BikeStationList {
 					bikeStations_ = Json.fromJson(result, listType);
 				} catch (JsonException e) {
 					cancel(true);
-					Toast.makeText(main_.getApplicationContext(),main_.getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
-					return;
 				}
 				
 				Log.d("BikeStationList","Bikes loaded");

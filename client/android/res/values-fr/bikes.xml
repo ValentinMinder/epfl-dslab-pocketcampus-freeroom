@@ -4,4 +4,5 @@
     <string name="bikes_plugin_cancel">L\'opération a été annulée. Verifiez votre accès à internet et essayez à nouveau.</string>
     <string name="bikes_plugin_empty">Places libres</string>
     <string name="bikes_plugin_free">Vélos libres</string>
+    <string name="bikes_plugin_station">Station</string>
 </resources>

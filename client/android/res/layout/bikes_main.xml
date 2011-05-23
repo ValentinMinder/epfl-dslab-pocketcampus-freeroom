@@ -12,14 +12,9 @@
 		android:layout_below="@+id/actionbar"
 		android:layout_height="fill_parent"
 		>
-		
-		<ListView
-			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/mainscreen_news_list_list"
-			style="@style/Theme.ListView"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			></ListView>
+		<TableLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/bikes_table" android:layout_alignParentRight="true">
+
+		</TableLayout>
 			
 	</RelativeLayout>
 

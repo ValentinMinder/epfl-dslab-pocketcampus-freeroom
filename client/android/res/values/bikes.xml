@@ -4,4 +4,5 @@
     <string name="bikes_plugin_cancel">Operation cancelled. Check you internet access and try again.</string>
     <string name="bikes_plugin_empty">Empty racks</string>
     <string name="bikes_plugin_free">Free bikes</string>   
+    <string name="bikes_plugin_station">Station</string>
 </resources>
