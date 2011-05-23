@@ -260,6 +260,24 @@ public class SocialDatabase {
 		return (numAffectedRows == 1) ? true : false;
 	}
 	
+	public static boolean removeAllPermissions(final User from, final User target) throws ServerException {
+		String sqlRequest = "DELETE FROM `"+permissionTable+"` WHERE `user` = ? AND `granted_to` = ?";
+		
+		int numAffectedRows = 0;
+		
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+
+			@Override
+			public void prepareStatement(PreparedStatement stmt) throws SQLException {
+				stmt.setString(1, from.getIdFormat());
+				stmt.setString(2, target.getIdFormat());
+			}
+		};
+		numAffectedRows += rf.execute();
+
+		return (numAffectedRows > 0) ? true : false;
+	}
+	
 	public static Collection<String> getPermissions(final User from, final User granted_to) throws ServerException {
 		String sqlRequest = "SELECT `service_id` FROM `"+permissionTable+"` WHERE `user` = ? AND `granted_to` = ? ";
 

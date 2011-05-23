@@ -74,6 +74,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 				if(
 						SocialDatabase.testFriend(user, target))
 				{
+					SocialDatabase.removeAllPermissions(user, target);
+					SocialDatabase.removeAllPermissions(target, user);
 					status = SocialDatabase.removeFriend(user, target);
 				}
 			} catch(ServerException e) {
