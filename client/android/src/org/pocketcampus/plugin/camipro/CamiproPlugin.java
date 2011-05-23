@@ -9,12 +9,11 @@ import android.os.Bundle;
 
 /**
  * PluginBase class for the Camipro plugin.
- * This uses the WebService provided by the Camipro team. 
  * 
- * Data is redownloaded every time the plugin launches.
- * Data is really small and changes often.
+ * This activity only takes care of checking if the user is already logged in.
+ * The user is then redirected to antoher activity.
  * 
- * @status WIP
+ * @status Complete
  * 
  * @author Jonas
  *
@@ -24,7 +23,7 @@ public class CamiproPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		AuthenticationPlugin.authenticate(this, TransactionsList.class);
+		AuthenticationPlugin.authenticate(this, SecuredCamipro.class);
 		finish();
 	}
 

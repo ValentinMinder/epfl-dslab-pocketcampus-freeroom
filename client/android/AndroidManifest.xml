@@ -61,7 +61,7 @@
 			
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"></activity>
-        <activity android:name=".plugin.camipro.TransactionsList" android:screenOrientation="portrait"></activity>
+        <activity android:name=".plugin.camipro.SecuredCamipro"></activity>
 		
 		<!-- Bikes Plugin -->
         <activity android:name=".plugin.bikes.BikesPlugin" android:screenOrientation="portrait"></activity>

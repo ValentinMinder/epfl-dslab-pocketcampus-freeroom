@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  style="@style/Theme.MainLayout">
+  
+  <LinearLayout
+	  android:orientation="vertical"
+	  android:padding="10dp">
+   
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_infos_title"
+	  	android:text="@string/camipro_ebanking_infos_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_infos_text"
+	  	android:text="@string/camipro_ebanking_infos_text"
+	  	android:layout_height="wrap_content"
+	  	android:layout_width="fill_parent" />
+	  
+	  <LinearLayout
+	   	android:layout_height="wrap_content"
+	   	android:layout_width="fill_parent">
+	   	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_balance_text"
+	       	android:text="@string/camipro_current_balance"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:layout_weight="1"
+	       	style="@style/Theme.BoldHeader" />
+	       	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_balance_number"
+	       	android:text="@string/camipro_balance_placeholder"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	style="@style/Theme.BoldHeader" />
+	   
+	   </LinearLayout>
+	  
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_paid_to_title"
+	  	android:text="@string/camipro_ebanking_paid_to_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_paid_to_text"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content" />
+	  	
+	  
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_account_number_title"
+	  	android:text="@string/camipro_ebanking_account_number_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_account_number_text"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content" />
+	  	
+	  
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_ref_number_title"
+	  	android:text="@string/camipro_ebanking_ref_number_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_ref_number_text"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content" />
+	  	
+	  
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_amount_title"
+	  	android:text="@string/camipro_ebanking_amount_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_amount_text"
+	  	android:text="@string/camipro_ebanking_amount_text"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content" />
+	  	
+	  
+	  <TextView
+	  	android:id="@+id/camipro_ebanking_stats_title"
+	  	android:text="@string/camipro_ebanking_stats_title"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	style="@style/Theme.BoldHeader" />
+	  	
+	  <LinearLayout
+	   	android:layout_height="wrap_content"
+	   	android:layout_width="fill_parent">
+	   	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_1month_title"
+	       	android:text="@string/camipro_ebanking_1month_title"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:layout_weight="1" />
+	       	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_1month_text"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:textStyle="bold" />
+	   
+	   </LinearLayout>
+	  	
+	  <LinearLayout
+	   	android:layout_height="wrap_content"
+	   	android:layout_width="fill_parent">
+	   	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_3months_title"
+	       	android:text="@string/camipro_ebanking_3months_title"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:layout_weight="1" />
+	       	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_3months_text"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:textStyle="bold" />
+	   
+	   </LinearLayout>
+	  	
+	  <LinearLayout
+	   	android:layout_height="wrap_content"
+	   	android:layout_width="fill_parent">
+	   	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_average_title"
+	       	android:text="@string/camipro_ebanking_average_title"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:layout_weight="1" />
+	       	
+	       <TextView
+	       	android:id="@+id/camipro_ebanking_average_text"
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:textStyle="bold" />
+	   
+	   </LinearLayout>
+  	
+  	
+   </LinearLayout>
+  
+</ScrollView>

@@ -17,6 +17,7 @@ import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.camipro.BalanceBean;
+import org.pocketcampus.shared.plugin.camipro.EbankingBean;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 import org.pocketcampus.utils.Notification;
 
@@ -29,10 +30,26 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class TransactionsList extends PluginBase {
+/**
+ * PluginBase class for the Camipro plugin.
+ * Should only be launched if the user is logged in. 
+ * 
+ * This uses the WebService provided by the Camipro team. 
+ * 
+ * Data is redownloaded every time the plugin launches.
+ * Data is really small and changes often.
+ * 
+ * @status WIP
+ * 
+ * @author Jonas
+ *
+ */
+public class SecuredCamipro extends PluginBase {
 	private ActionBar actionBar_;
 	private RequestHandler requestHandler_;
 	private int progressCount_ = 0;
+	
+	private static final Gson gson_ = new Gson();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +91,7 @@ public class TransactionsList extends PluginBase {
 	private void downloadData() {
 		downloadBalance();
 		downloadTransactions();
+		downloadEbanking();
 	}
 
 	/**
@@ -91,6 +109,14 @@ public class TransactionsList extends PluginBase {
 		incrementProgressCounter();
 		requestHandler_.execute(new TransactionsRequest(), "getTransactions", getRequestParameters());
 	}
+
+	/**
+	 * Download the ebanking infos
+	 */
+	private void downloadEbanking() {
+		incrementProgressCounter();
+		requestHandler_.execute(new EbankingRequest(), "getEbanking", getRequestParameters());
+	}
 	
 	/**
 	 * Create a request to the Camipro server plugin using username/password
@@ -103,10 +129,14 @@ public class TransactionsList extends PluginBase {
 		return parameters;
 	}
 	
+	/**
+	 * Get the user's token to identify him
+	 * @return
+	 */
 	private String getAuthToken() {
 		AuthToken t = AuthenticationPlugin.getAuthToken(this);
 		
-		return new Gson().toJson(t);
+		return gson_.toJson(t);
 	}
 
 	/**
@@ -169,6 +199,9 @@ public class TransactionsList extends PluginBase {
 			if(bb_ != null) {
 				TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
 				balance.setText(Float.toString(bb_.getCurrentBalance()));
+				
+				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_number);
+				balance.setText(Float.toString(bb_.getCurrentBalance()));
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_balance);
 			}
@@ -210,6 +243,58 @@ public class TransactionsList extends PluginBase {
 				lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb_));
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_transactions);
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			decrementProgressCounter();
+		}
+	}
+	/**
+	 * Server request for the ebanking part
+	 * 
+	 * @author Jonas
+	 *
+	 */
+	private class EbankingRequest extends DataRequest {
+		EbankingBean ebb_;
+
+		@Override
+		protected void doInBackgroundThread(String result) {
+			try {
+				ebb_ = Json.fromJson(result, EbankingBean.class);
+			} catch (JsonException e) {
+				return;
+			}
+		}
+
+		@Override
+		protected void doInUiThread(String result) {
+			decrementProgressCounter();
+			
+			if(ebb_ != null) {
+				TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
+				tv.setText(ebb_.getPaidNameTo());
+
+				tv = (TextView) findViewById(R.id.camipro_ebanking_account_number_text);
+				tv.setText(ebb_.getAccountNr());
+
+				tv = (TextView) findViewById(R.id.camipro_ebanking_ref_number_text);
+				tv.setText(ebb_.getBvrReferenceReadable());
+
+				tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
+				tv.setText(String.format("%.2f", ebb_.getTotal1M()));
+
+				tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
+				tv.setText(String.format("%.2f", ebb_.getTotal3M()));
+
+				tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
+				tv.setText(String.format("%.2f", ebb_.getAverage3M()));
+
+				
+			} else {
+				Notification.showToast(getApplicationContext(), R.string.camipro_unable_ebanking);
 			}
 		}
 

@@ -8,5 +8,20 @@
     
     <string name="camipro_unable_balance">Impossible de récupérer l\'avoir actuel.</string>
     <string name="camipro_unable_transactions">Impossible de récupérer les dernières transactions.</string>
+    <string name="camipro_unable_ebanking">Impossible de récupérer les informations d\'ebanking.</string>
     
+    <string name="camipro_ebanking_button">Transfer par ebanking</string>
+    
+    <string name="camipro_ebanking_infos_title">Information d\'ebanking</string>
+    <string name="camipro_ebanking_infos_text">Afin de recharger votre carte CAMIPRO, veuillez reporter les indications de paiement ci-dessous (no de compte, no de référence, etc.) dans l\'outil e-banking fourni par votre établissement financier. Le type de paiement à effectuer est un paiement par BVR orange.</string>
+    <string name="camipro_ebanking_paid_to_title">Versement pour</string>
+    <string name="camipro_ebanking_account_number_title">Compte</string>
+    <string name="camipro_ebanking_ref_number_title">Numéro de référence</string>
+    <string name="camipro_ebanking_amount_title">Montant</string>
+    <string name="camipro_ebanking_amount_text">Libre (max. 300.-)</string>
+    
+    <string name="camipro_ebanking_stats_title">Statistiques</string>
+    <string name="camipro_ebanking_1month_title">Dernier mois</string>
+    <string name="camipro_ebanking_3months_title">Trois derniers mois</string>
+    <string name="camipro_ebanking_average_title">Moyenne des trois derniers mois</string>
 </resources>
