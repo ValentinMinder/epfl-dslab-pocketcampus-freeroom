@@ -14,11 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -111,6 +107,9 @@ public class SocialFriendsList extends ListActivity {
 				
 				//last one reloads the page
 				SocialPlugin.deleteRequest(this_, SocialFriendsList.class, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1));
+				
+				//close previous
+				this_.finish();
 			}
 		})
 		.setNegativeButton(this_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
@@ -189,46 +188,46 @@ public class SocialFriendsList extends ListActivity {
 		actionBar.addAction(new ActionBar.IntentAction(this_, MainscreenPlugin.createIntent(this_), R.drawable.mini_home));
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.social, menu);
-		
-		return true;
-	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.social, menu);
+//		
+//		return true;
+//	}
+//	
+//	@Override
+//	public boolean onPrepareOptionsMenu(Menu menu) {
 //		menu.getItem(R.id.social_friendslist_optionmenu_delete).setEnabled(buttonDelete_.isEnabled());
 //		menu.getItem(R.id.social_friendslist_optionmenu_permission).setEnabled(buttonPermission_.isEnabled());
 //		menu.getItem(R.id.social_friendslist_optionmenu_toggle).setEnabled(buttonSelect_.isEnabled());
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.social_friendslist_optionmenu_delete:
-			delete();
-			return true;
-
-		case R.id.social_friendslist_optionmenu_permission:
-			permission();
-			return true;
-			
-		case R.id.social_friendslist_optionmenu_toggle:
-			toggle();
-			return true;
-
-		case R.id.social_friendslist_optionmenu_preferences:
-			Intent intent = new Intent(this, SocialPreference.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			this.startActivity(intent);
-			this.finish();
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+//		return true;
+//	}
+//	
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case R.id.social_friendslist_optionmenu_delete:
+//			delete();
+//			return true;
+//
+//		case R.id.social_friendslist_optionmenu_permission:
+//			permission();
+//			return true;
+//			
+//		case R.id.social_friendslist_optionmenu_toggle:
+//			toggle();
+//			return true;
+//
+//		case R.id.social_friendslist_optionmenu_preferences:
+//			Intent intent = new Intent(this, SocialPreference.class);
+//			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			this.startActivity(intent);
+//			this.finish();
+//			return true;
+//
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 }

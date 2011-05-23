@@ -22,6 +22,8 @@ public class SocialPositionUpdater {
 	private static Location location_;
 
 	private final static int UPDATE_PERIOD = 1 * 30 * 1000;
+	private final static int POSITION_TIMEOUT = 10 * 1000;
+	private final static int POSITION_ACURACY = 20;
 
 	public static void startPositionUpdater(Context context) {
 		if(context == null) throw new IllegalArgumentException();
@@ -68,7 +70,7 @@ public class SocialPositionUpdater {
 						public void userLocationReceived(Location location) {
 							location_ = location;
 						}
-					}, 10000, 20);
+					}, POSITION_TIMEOUT, POSITION_ACURACY);
 
 					try {
 						Thread.sleep(UPDATE_PERIOD);

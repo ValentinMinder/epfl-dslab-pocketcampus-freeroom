@@ -55,10 +55,8 @@ public class AuthenticationPlugin extends PluginBase {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_login);
+		
 		//		Tracker.getInstance().trackPageView("auth");
-
-		//		String username = getIntent().getExtras().getString("username");
-		//		String password = getIntent().getExtras().getString("password");
 
 		WindowManager.LayoutParams lp = getWindow().getAttributes();  
 		//lp.dimAmount = .7f;  
@@ -69,8 +67,10 @@ public class AuthenticationPlugin extends PluginBase {
 			public void onClick(View v) {
 				username = ((EditText) findViewById(R.id.socialLoginUsernameField)).getText().toString();
 				password = ((EditText) findViewById(R.id.socialLoginPasswordField)).getText().toString();
-
-				login(username, password);
+				
+				if(username != null && username != "" && password != null && password != "") {
+					login(username, password);
+				}
 			}
 		});
 	}
