@@ -138,9 +138,14 @@ public class HybridLocation implements IPositionProvider{
 
 	@Override
 	public boolean userInCampus() {
-		if(wifiLocation_.getAccessPoints().size()==0)
-		return false;
-		else return true;
+		// TODO test & implement properly
+		Location currentPosition = getPosition();
+		Location epflCenter = new Location("EPFL");
+		epflCenter.setLatitude(46.520013);
+		epflCenter.setLongitude(6.56682);
+		float distanceToEpflCenter = currentPosition.distanceTo(epflCenter );
+		
+		return (distanceToEpflCenter < 500.0);
 	}
 	
 	@Override

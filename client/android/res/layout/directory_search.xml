@@ -19,13 +19,14 @@
 			android:id="@+id/textView2" 
 			android:layout_height="wrap_content" 
 			android:text="First name:"
-			android:layout_width="80dip">
-			</TextView>
+			android:layout_width="80dip"
+			></TextView>
 		
 		<EditText 
 			android:layout_height="wrap_content" 
 			android:id="@+id/directory_first_name_input" 
 			android:layout_width="fill_parent"
+			android:singleLine="true"
 			></EditText>
 			
 	</LinearLayout>
@@ -53,6 +54,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/directory_last_name_input"
 	        android:layout_width="fill_parent"
+	        android:singleLine="true"
 	        ></EditText>
 	        
     </LinearLayout>
@@ -78,6 +80,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/directory_sciper_input"
+	        android:singleLine="true"
 	        ></EditText>
 	        
     </LinearLayout>

@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -79,20 +81,19 @@ public class DirectoryPlugin extends PluginBase{
 			return;
 		}
 		
-		// Create a class for your request with...
 		incrementProgressCounter();
 		class DirectoryRequest extends DataRequest {
 			
 			
 			@Override
 			protected int expirationDelay() {
-				// 5 minutes
-				return 100000;
+				// 24 hours
+				return 24 * 60 * 60;
 			}
 			
 			@Override
 			protected int timeoutDelay() {
-				return 3;
+				return 5;
 			}
 			
 			@Override
@@ -120,6 +121,7 @@ public class DirectoryPlugin extends PluginBase{
 			
 			@Override
 			protected void onCancelled() {
+				resultsList_ = null;
 				decrementProgressCounter();
 			}	
 			
@@ -143,20 +145,30 @@ public class DirectoryPlugin extends PluginBase{
 	}
 	
 	public void displayResultList(){
-		if(resultsList_.isEmpty()) {
+		if(resultsList_ == null) {
 			toast("An error occured.");
+			return;
 		}
+		
+		ListView resultListView = (ListView) findViewById(R.id.directory_result_list);
+		TextView emptyListTextView = (TextView) findViewById(R.id.directory_emptylist);
 		
 		if(resultsList_.isEmpty()) {
-			toast("No result found.");
+			resultListView.setVisibility(View.GONE);
+			emptyListTextView.setVisibility(View.VISIBLE);
+			
+		} else {
+			resultListView.setVisibility(View.VISIBLE);
+			emptyListTextView.setVisibility(View.GONE);
 		}
 		
-		ListView l = (ListView) findViewById(R.id.directory_result_list);
-		ArrayAdapter<Person> aadapter = new ArrayAdapter<Person>(this, R.layout.directory_peopleentry, resultsList_);
-		l.setAdapter(aadapter);
-		aadapter.notifyDataSetChanged();
 		
-		l.setOnItemClickListener(new OnItemClickListener() {
+		ArrayAdapter<Person> adapter = new ArrayAdapter<Person>(this, R.layout.directory_peopleentry, resultsList_);
+		resultListView.setAdapter(adapter);
+		
+		adapter.notifyDataSetChanged();
+		
+		resultListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
 				Person found = ((Person)(parent.getAdapter().getItem(position)));
@@ -168,9 +180,7 @@ public class DirectoryPlugin extends PluginBase{
 
 	public void displayResult(Person person){
 		PersonDetailsDialog detailDialog = new PersonDetailsDialog(this, person);
-		detailDialog.setCanceledOnTouchOutside(true);
 		detailDialog.show();
-		
 	}
 	
 	@Override
