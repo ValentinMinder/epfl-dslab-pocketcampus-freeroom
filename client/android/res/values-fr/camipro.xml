@@ -11,7 +11,7 @@
     <string name="camipro_unable_transactions">Impossible de récupérer les dernières transactions.</string>
     <string name="camipro_unable_ebanking">Impossible de récupérer les informations d\'ebanking.</string>
     
-    <string name="camipro_offline_transactions">Sous réserve de transactions effectuées offline</string>
+    <string name="camipro_offline_transactions">Sous réserve de transactions effectuées hors ligne.</string>
     
     <string name="camipro_ebanking_button">Transfer par ebanking</string>
     

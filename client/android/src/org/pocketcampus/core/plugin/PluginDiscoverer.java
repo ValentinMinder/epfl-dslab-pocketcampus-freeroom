@@ -45,7 +45,7 @@ public class PluginDiscoverer {
 		plugins.add(new TransportPlugin());
 		plugins.add(new SocialPlugin());
 		plugins.add(new BikesPlugin());
-		plugins.add(new PreferencesLauncherPlugin());
+		//plugins.add(new PreferencesLauncherPlugin());
 		
 		////////////////////////////////
 		

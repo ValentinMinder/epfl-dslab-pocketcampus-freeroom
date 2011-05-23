@@ -32,10 +32,6 @@ public class ConnectionDetailsDialog extends Dialog{
 		// Setups dialog.
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.transport_details_dialog);
-		
-		LayoutParams params = getWindow().getAttributes(); 
-        params.width = 450;
-        getWindow().setAttributes((android.view.WindowManager.LayoutParams) params); 
 
 		setCanceledOnTouchOutside(true);
 		

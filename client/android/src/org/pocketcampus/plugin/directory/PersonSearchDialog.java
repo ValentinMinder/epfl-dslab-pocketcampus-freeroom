@@ -14,68 +14,113 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class PersonSearchDialog extends Dialog {
-
-	Button search_button;
-	EditText first_name;
-	EditText last_name;
-	EditText sciper;
-	boolean accurateSearch;
+	private boolean accurateSearch_ = true;
+	private Button searchButton_;
+	private EditText firstNameEditText_;
+	private EditText lastNameEditText_;
+	private EditText sciperEditText_;
+	private LinearLayout firstNameLayout_;
+	private LinearLayout lastNameLayout_;
+	private LinearLayout sciperNameLayout_;
 	
 	public PersonSearchDialog(Context context) {
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.directory_search);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+		searchButton_ = (Button)findViewById(R.id.directory_search_button);
+		firstNameEditText_ = (EditText)findViewById(R.id.directory_first_name_input);
+		lastNameEditText_ = (EditText)findViewById(R.id.directory_last_name_input);
+		sciperEditText_ = (EditText)findViewById(R.id.directory_sciper_input);
+		firstNameLayout_ = (LinearLayout) findViewById(R.id.directory_ll1);
+		lastNameLayout_ = (LinearLayout) findViewById(R.id.directory_ll2);
+		sciperNameLayout_ = (LinearLayout) findViewById(R.id.directory_ll3);
 		
-		search_button = (Button)findViewById(R.id.directory_search_button);
-		first_name = (EditText)findViewById(R.id.directory_first_name_input);
-		last_name = (EditText)findViewById(R.id.directory_last_name_input);
-		sciper = (EditText)findViewById(R.id.directory_sciper_input);
-		
-		accurateSearch = true;
-	
+		setCanceledOnTouchOutside(true);
 	}
-	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 1, Menu.NONE, "Search via sciper").setIcon(R.drawable.directory_search);
+		menu.add(0, 1, Menu.NONE, "Search via sciper").setIcon(android.R.drawable.ic_menu_search);
 		menu.setGroupEnabled(0, true);
-		menu.add(1, 2, Menu.NONE, "approximative search");
+		
+		menu.add(1, 2, Menu.NONE, "Approximative search").setIcon(android.R.drawable.ic_menu_zoom);
 		menu.setGroupEnabled(1, true);
 
 		return true;
 	}
-	
+
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch(item.getItemId()){
-			case 1: if(first_name.isEnabled()) {
-						((LinearLayout) findViewById(R.id.directory_ll3)).setVisibility(View.VISIBLE);
-						first_name.setEnabled(false);
-						first_name.setText("");
-						last_name.setEnabled(false);
-						last_name.setText("");
-						item.setTitle("Search via name");
-					}else{
-						((LinearLayout) findViewById(R.id.directory_ll3)).setVisibility(View.INVISIBLE);
-						sciper.setText("");
-						first_name.setEnabled(true);
-						last_name.setEnabled(true);
-						item.setTitle("Search via sciper");
-					}
-					
-					break;
-				
-			case 2: if(accurateSearch){
-						search_button.setText("~ Search");
-					}else{
-						search_button.setText("Search");
-					}
-					accurateSearch = !accurateSearch;
-					break;
+			case 1: if(firstNameLayout_.getVisibility() == View.VISIBLE) {
+				firstNameLayout_.setVisibility(View.GONE);
+				lastNameLayout_.setVisibility(View.GONE);
+				sciperNameLayout_.setVisibility(View.VISIBLE);
+				sciperEditText_.setText("");
+				item.setTitle("Search by name");
+	
+			} else {
+				firstNameLayout_.setVisibility(View.VISIBLE);
+				lastNameLayout_.setVisibility(View.VISIBLE);
+				sciperNameLayout_.setVisibility(View.GONE);
+				firstNameEditText_.setText("");
+				lastNameEditText_.setText("");
+				item.setTitle("Search by Sciper");
+			}
+			break;
+	
+			case 2: if(accurateSearch_){
+				searchButton_.setText("~ Search");
+			}else{
+				searchButton_.setText("Search");
+			}
+			accurateSearch_ = !accurateSearch_;
+			break;
 		}
 		return true;
 	}
+	
+	public String getFirstName() {
+		return firstNameEditText_.getText().toString();
+	}
+	
+	public String getLastName() {
+		return lastNameEditText_.getText().toString();
+	}
+	
+	public String getSciper() {
+		return sciperEditText_.getText().toString();
+	}
 
+
+	public boolean isSearchAccurate() {
+		return accurateSearch_;
+	}
+
+
+	public void setOnClickListener(android.view.View.OnClickListener onClickListener) {
+		searchButton_.setOnClickListener((android.view.View.OnClickListener) onClickListener);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

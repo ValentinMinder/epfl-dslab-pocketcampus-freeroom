@@ -1,36 +1,111 @@
 <RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:background="@color/SnowWhite">
-  
-  <org.pocketcampus.core.ui.ActionBar
-		android:id="@+id/actionbar" style="@style/ActionBar" />
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:background="@android:color/white">
   
     <LinearLayout 
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/actionbar"
+	    android:id="@+id/directory_ll1"
+	    android:orientation="horizontal" 
+	    android:layout_marginTop="10dip"
+	    android:paddingLeft="10dip"
+	    android:paddingRight="10dip"
+	    android:paddingTop="10dip"
+	    android:gravity="center_vertical"
+	    >
+	       
+		<TextView 
+			android:id="@+id/textView2" 
+			android:layout_height="wrap_content" 
+			android:text="First name:"
+			android:layout_width="80dip">
+			</TextView>
+		
+		<EditText 
+			android:layout_height="wrap_content" 
+			android:id="@+id/directory_first_name_input" 
+			android:layout_width="fill_parent"
+			></EditText>
+			
+	</LinearLayout>
+    
+    <LinearLayout
+    	android:layout_height="wrap_content"
+    	android:id="@+id/directory_ll2"
+    	android:layout_below="@+id/directory_ll1"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="10dip"
+    	android:paddingLeft="10dip"
+    	android:paddingRight="10dip"
+    	android:paddingTop="10dip"
+    	android:gravity="center_vertical"
+    	>
+    	
+        <TextView
+	        android:id="@+id/textView1"
+	        android:layout_height="wrap_content"
+	        android:text="Last name:"
+	        android:layout_width="80dip"
+	        ></TextView>
+	        
+        <EditText
+	        android:layout_height="wrap_content"
+	        android:id="@+id/directory_last_name_input"
+	        android:layout_width="fill_parent"
+	        ></EditText>
+	        
+    </LinearLayout>
+    
+    <LinearLayout
+    android:visibility="gone"
+    android:id="@+id/directory_ll3"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/actionbar"
-    android:id="@+id/directory_ll1"
-    android:orientation="horizontal" 
-    android:layout_marginTop="10dip" android:paddingLeft="10dip" android:paddingRight="10dip" android:paddingTop="10dip" android:gravity="center_vertical">
-        <TextView 
-        android:id="@+id/textView2" 
-        android:layout_height="wrap_content" 
-        android:text="First name:" android:layout_width="80dip">
-        </TextView>
-        <EditText 
-        android:layout_height="wrap_content" 
-        android:id="@+id/directory_first_name_input" 
-        android:layout_width="fill_parent" android:text="george">
-        </EditText>
+    android:padding="10dip"
+    android:layout_below="@+id/directory_ll2"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+    
+        <TextView
+	        android:text="Sciper:"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/textView3"
+	        android:layout_width="80dip"
+	        ></TextView>
+        
+        <EditText
+	        android:inputType="number"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/directory_sciper_input"
+	        ></EditText>
+	        
     </LinearLayout>
     
-    <LinearLayout android:layout_height="wrap_content" android:id="@+id/directory_ll2" android:layout_below="@+id/directory_ll1" android:orientation="horizontal" android:layout_marginTop="10dip" android:paddingLeft="10dip" android:paddingRight="10dip" android:paddingTop="10dip" android:gravity="center_vertical">
-        <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:text="Last name:" android:layout_width="80dip"></TextView>
-        <EditText android:layout_height="wrap_content" android:id="@+id/directory_last_name_input" android:layout_width="fill_parent"></EditText>
-    </LinearLayout>
-    <LinearLayout android:visibility="invisible" android:id="@+id/directory_ll3" android:layout_height="wrap_content" android:layout_marginTop="10dip" android:paddingLeft="10dip" android:paddingRight="10dip" android:layout_below="@+id/directory_ll2" android:paddingTop="10dip" android:orientation="horizontal" android:gravity="center_vertical">
-        <TextView android:text="Sciper:" android:layout_height="wrap_content" android:id="@+id/textView3" android:layout_width="80dip"></TextView>
-        <EditText android:inputType="number" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/directory_sciper_input"></EditText>
-    </LinearLayout>
-    <Button android:text="Search" android:id="@+id/directory_search_button" android:layout_height="wrap_content" android:layout_marginTop="10dip" android:layout_below="@+id/directory_ll3" android:layout_width="wrap_content" android:layout_centerInParent="true" android:paddingLeft="30dip" android:paddingRight="30dip"></Button>
-    
+    <Button
+	    android:text="Search"
+	    android:id="@+id/directory_search_button"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:layout_marginTop="10dip"
+	    android:layout_below="@+id/directory_ll3"
+	    android:layout_centerInParent="true"
+	    android:paddingLeft="20dip"
+	    android:paddingRight="20dip"
+	    ></Button>
    
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

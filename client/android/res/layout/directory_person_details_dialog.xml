@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-
 <RelativeLayout android:layout_width="wrap_content" android:id="@+id/relativeLayout1" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center_horizontal" android:background="@color/SnowWhite">
     <TextView android:layout_width="wrap_content" android:id="@+id/directory_person_details_dialog_fname" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:paddingLeft="15dip" android:paddingTop="15dip" android:text="Henri"></TextView>
     <TextView android:text="dupont" android:layout_width="wrap_content" android:id="@+id/directory_person_details_dialog_lname" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_toRightOf="@+id/directory_person_details_dialog_fname" android:paddingTop="15dip"></TextView>
@@ -9,9 +7,6 @@
     <TextView android:text="+412345678102" android:id="@+id/directory_person_details_dialog_phone_number" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_below="@+id/directory_person_details_dialog_office" android:paddingRight="15dip"></TextView>
     <TextView android:text="inr 221" android:layout_width="wrap_content" android:id="@+id/directory_person_details_dialog_office" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_below="@+id/directory_person_details_dialog_mail" android:paddingRight="15dip"></TextView>
     <TextView android:text="http://www.perdu.com" android:id="@+id/directory_person_details_dialog_web" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_below="@+id/directory_person_details_dialog_phone_number" android:paddingRight="15dip" android:paddingBottom="15dip"></TextView>
-    
-    
-    
     
     <LinearLayout android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_centerInParent="true" android:layout_centerHorizontal="true" android:layout_below="@+id/directory_person_details_dialog_web" android:gravity="center_vertical" android:paddingBottom="15dip">
         <ImageView android:layout_width="40dip" android:layout_height="40dip" android:id="@+id/directory_imageButton_mail" android:src="@drawable/directory_mail" android:cropToPadding="true"></ImageView>

@@ -14,7 +14,7 @@
     <string name="camipro_unable_transactions">Unable to get the last transactions.</string>
     <string name="camipro_unable_ebanking">Unable to get the ebanking informations.</string>
     
-    <string name="camipro_offline_transactions">Given no offline transactions have been made</string>
+    <string name="camipro_offline_transactions">Given no offline transactions have been made.</string>
     
     <string name="camipro_ebanking_button">Ebanking money transfer</string>
     

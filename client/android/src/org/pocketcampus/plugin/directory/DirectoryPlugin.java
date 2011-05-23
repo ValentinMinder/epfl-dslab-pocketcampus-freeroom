@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
-import org.pocketcampus.core.parser.Json;
-import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -23,22 +21,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.pocketcampus.shared.plugin.directory.Person;
-import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
 import org.pocketcampus.utils.Notification;
 
 public class DirectoryPlugin extends PluginBase{
-
-	
-	
-	LinkedList<Person> resultsList;
-	PersonSearchDialog searchDial;
+	LinkedList<Person> resultsList_;
+	PersonSearchDialog searchDial_;
 	
 	private int progressCount_ = 0;
 	private ActionBar actionBar_;
@@ -54,17 +46,17 @@ public class DirectoryPlugin extends PluginBase{
 
 		
 		//creating search dialog
-		searchDial = new PersonSearchDialog(this);
-		searchDial.search_button.setOnClickListener(new OnClickListener() {
+		searchDial_ = new PersonSearchDialog(this);
+		searchDial_.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				search(searchDial.first_name.getText().toString(), 
-						searchDial.last_name.getText().toString(),
-						searchDial.sciper.getText().toString(),
-						searchDial.accurateSearch);
+				search(searchDial_.getFirstName(), 
+						searchDial_.getLastName(),
+						searchDial_.getSciper(),
+						searchDial_.isSearchAccurate());
 				
-				searchDial.dismiss();
+				searchDial_.dismiss();
 			}
 		});
 		
@@ -76,13 +68,16 @@ public class DirectoryPlugin extends PluginBase{
 //		if(fname != null || lname != null || sciper != null)
 //			search(fname, lname, sciper);
 //		else
-		resultsList = new LinkedList<Person>();
-			searchDial.show();
+		resultsList_ = new LinkedList<Person>();
+		searchDial_.show();
 
 	}
 
 
 	private void search(String first_name, String last_name, String sciper, boolean accurateSearch) {
+		if(first_name.equals("") && last_name.equals("") && sciper.equals("")) {
+			return;
+		}
 		
 		// Create a class for your request with...
 		incrementProgressCounter();
@@ -103,19 +98,17 @@ public class DirectoryPlugin extends PluginBase{
 			@Override
 			protected void doInBackgroundThread(String result) {
 				if(result != null) {
-					System.out.println(result);
 					Gson gson = new Gson();
 					
 					Type listType = new TypeToken<LinkedList<Person>>(){}.getType();
-					resultsList = new LinkedList<Person>();
+					resultsList_ = new LinkedList<Person>();
 					
 					try{
-						resultsList = gson.fromJson(result, listType);
+						resultsList_ = gson.fromJson(result, listType);
 					} catch (JsonSyntaxException e) {
-						return;
-					} catch(Exception e){
+						resultsList_ = null;
+						e.printStackTrace();
 					}
-					
 				}
 			}
 			
@@ -141,22 +134,25 @@ public class DirectoryPlugin extends PluginBase{
 		if(! sciper.equals(""))
 			reqParams.addParameter("sciper", sciper);
 		
-//		reqParams.addParameter("username", "scheiben");
-//		reqParams.addParameter("password", "xxxxxxxx"); 
 //		// mettre vos userame pour test
-		if(accurateSearch)
+		if(accurateSearch) {
 			getRequestHandler().execute(new DirectoryRequest(), "bla", reqParams);
-		else
+		} else {
 			getRequestHandler().execute(new DirectoryRequest(), "idrkhn", reqParams);
+		}
 	}
 	
 	public void displayResultList(){
-		if(resultsList.isEmpty())
-			toast("No one found");
-
+		if(resultsList_.isEmpty()) {
+			toast("An error occured.");
+		}
+		
+		if(resultsList_.isEmpty()) {
+			toast("No result found.");
+		}
 		
 		ListView l = (ListView) findViewById(R.id.directory_result_list);
-		ArrayAdapter<Person> aadapter = new ArrayAdapter<Person>(this, R.layout.directory_peopleentry, resultsList);
+		ArrayAdapter<Person> aadapter = new ArrayAdapter<Person>(this, R.layout.directory_peopleentry, resultsList_);
 		l.setAdapter(aadapter);
 		aadapter.notifyDataSetChanged();
 		
@@ -179,7 +175,7 @@ public class DirectoryPlugin extends PluginBase{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 1, Menu.NONE, "New Search").setIcon(R.drawable.directory_search);
+		menu.add(0, 1, Menu.NONE, "New Search").setIcon(android.R.drawable.ic_menu_search);
 		menu.setGroupEnabled(0, true);
 
 		return true;
@@ -188,7 +184,7 @@ public class DirectoryPlugin extends PluginBase{
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch(item.getItemId()){
-			case 1: searchDial.show();
+			case 1: searchDial_.show();
 					break;
 				
 			case 2:

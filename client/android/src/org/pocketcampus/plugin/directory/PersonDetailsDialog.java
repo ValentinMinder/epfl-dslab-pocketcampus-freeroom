@@ -48,7 +48,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	
 	private void build(){
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setTitle("Details");
 		setContentView(R.layout.directory_person_details_dialog);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
