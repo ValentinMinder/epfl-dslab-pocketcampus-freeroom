@@ -4,47 +4,45 @@ import java.util.Date;
 
 /**
  * Class used to transfer a list of transactions from the server to the client
- *  
  * @author Jonas
- *
  */
 public class TransactionBean {
 	
-	private String type_;
-	private String description_;
-	private Date date_;
-	private float amount_;
+	private String type;
+	private String description;
+	private Date date;
+	private float amount;
 	
 	public TransactionBean(String type, String description, Date date, float amount) {
-		this.type_ = type;
-		this.description_ = description;
-		this.date_ = date;
-		this.amount_ = amount;
+		this.type = type;
+		this.description = description;
+		this.date = date;
+		this.amount = amount;
 	}
 	
 	public String getType() {
-		return type_;
+		return type;
 	}
 	public void setType(String type) {
-		this.type_ = type;
+		this.type = type;
 	}
 	public String getDescription() {
-		return description_;
+		return description;
 	}
 	public void setDescription(String description) {
-		this.description_ = description;
+		this.description = description;
 	}
 	public Date getDate() {
-		return date_;
+		return date;
 	}
 	public void setDate(Date date) {
-		this.date_ = date;
+		this.date = date;
 	}
 	public float getAmount() {
-		return amount_;
+		return amount;
 	}
 	public void setAmount(float amount) {
-		this.amount_ = amount;
+		this.amount = amount;
 	}
 	
 	
