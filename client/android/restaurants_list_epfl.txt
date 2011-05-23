@@ -31,10 +31,6 @@
 	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=CAFETERIA%20MX</rssfeed>
 </Resto>
 <Resto>
-	<name>Le Giacometti</name>
-	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=LE%20GIACOMETTI</rssfeed>
-</Resto>
-<Resto>
 	<name>Atlantide</name>
 	<rssfeed>http://diidyn.epfl.ch/Restauration/IntExt/Rest/rss_display.php?restoname=ATLANTIDE</rssfeed>
 </Resto>

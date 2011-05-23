@@ -221,7 +221,7 @@ IAllowsID {
 					this.getResources().getString(R.string.food_menucancelled),
 					Toast.LENGTH_SHORT).show();
 		}
-		Log.d("FoodPlugin","Passage");
+
 		if (foodDisplayHandler_ != null) {
 			this.notifyDataSetChanged();
 			foodDisplayHandler_.updateView();
@@ -245,23 +245,36 @@ IAllowsID {
 		if(restos_ == null){
 			restos_ = getRestaurants();
 		}
+		//From the Maincreen
 		String r = findHashCode(restos_, id);
-		Log.d("FoodPlugin", "Found restaurant : " + r);
-
-		if(prefsRestos_ == null){
-			prefsRestos_ = initializePrefsRestos(prefsRestos_, getApplicationContext());
+		if(r.equals("")){
+			//From the Map
+			r = findIdFromMap(id);
+			Log.d("FoodPlugin", "From the Map : " + r);
+		}else{
+			Log.d("FoodPlugin", "From the Mainscreen : " + r);
 		}
-
-		int index = prefsRestos_.indexOf(r);
-
-		Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
-				this.getString(R.string.food_restaurants));
-		if (adapt != null) {
-			if (adapt instanceof RestaurantListAdapter) {
-				((RestaurantListAdapter) adapt).toggle(index);
+		//		Log.d("FoodPlugin", "Found restaurant : " + r);
+		if(!r.equals("")){
+			if(prefsRestos_ == null){
+				prefsRestos_ = initializePrefsRestos(prefsRestos_, getApplicationContext());
 			}
-		} else {
-			Log.d("FoodPlugin", "adapt is null");
+			int index = -1;
+			if(prefsRestos_.contains(r)){
+				index = prefsRestos_.indexOf(r);
+				Log.d("FoodPlugin", "Prefs Restos le contient à l'index " + index);
+			}
+			Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
+					this.getString(R.string.food_restaurants));
+			if (adapt != null) {
+				if(index >= 0 && index < adapt.getCount()){
+					if (adapt instanceof RestaurantListAdapter) {
+						((RestaurantListAdapter) adapt).toggle(index);
+					}
+				} 
+			}else {
+					Log.d("FoodPlugin", "adapt is null");
+			}
 		}
 
 		// Tracker.getInstance().trackPageView("food/menusListToggle" + r);
@@ -277,6 +290,50 @@ IAllowsID {
 			}
 		}
 		return resto;
+	}
+
+	private String findIdFromMap(int id){
+		String s = "";
+
+		switch (id){
+		case 39321 :
+			s = "Esplanade";
+			break;
+		case 39322 :
+			s = "Parmentier";
+			break;
+		case 39323 :
+			s = "Cafeteria Hodler";
+			break;
+		case 39324 :
+			s = "Cafeteria BC";
+			break;
+		case 39326 :
+			s = "Atlantide";
+			break;
+		case 39327 :
+			s = "La Table de Valotton";
+			break;
+		case 39330 :
+			s = "Ornithorynque";
+			break;
+		case 39333 :
+			s = "Le Copernic";
+			break;
+		case 39335 :
+			s = "Le Vinci";
+			break;
+		case 39337 :
+			s = "Cafeteria MX";
+			break;
+		case 39338 :
+			s = "Le Corbusier";
+			break;
+		default :
+			s = "";
+			break;
+		}
+		return s;
 	}
 
 	public void notifyDataSetChanged() {
@@ -595,7 +652,7 @@ IAllowsID {
 									for(Meal m : m_){
 
 										if(m.getRating().getTotalRating() > 3){
-											
+
 											MainscreenNews bestMeal = new MainscreenNews(m.getRestaurant_()
 													.getName()
 													+ "\n"
