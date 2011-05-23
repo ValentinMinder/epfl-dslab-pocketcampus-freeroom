@@ -68,11 +68,14 @@ public class MainscreenPluginPreference extends PluginPreference {
 				if(checked) {
 					PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
 				} else {
-					if(MainscreenPluginPreference.counter_ == 1) {
-						Toast.makeText(that, getResources().getString(R.string.mainscreen_news_plugins_message), Toast.LENGTH_SHORT).show();
-					} else {
-						PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
-					}
+//					The next lines are used if we want to force the user to display at least one plugin on the mainscreen.
+//					As decided during the meetings, we allow the user to display nothing on the mainscreen
+//					if(MainscreenPluginPreference.counter_ == 1) {
+//						Toast.makeText(that, getResources().getString(R.string.mainscreen_news_plugins_message), Toast.LENGTH_SHORT).show();
+//					} else {
+//						PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
+//					}
+					PreferenceManager.getDefaultSharedPreferences(that).edit().putBoolean(arg0.getKey(), checked).commit();
 				}
 
 				forceRefresh();
