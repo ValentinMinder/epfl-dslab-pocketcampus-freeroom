@@ -14,7 +14,7 @@ private AccessPoint ap1_,ap2_,ap3_,ap4_;
 private double D1_,D2_,D3_,D4_;
 private Matrix matrix_;
 private Matrix vetcor_;
-private Position position_;
+private Location position_;
 private float accuracy = 10;
 
 
@@ -125,7 +125,7 @@ private Matrix matrixA(AccessPoint ap1,AccessPoint ap2,AccessPoint ap3,AccessPoi
 }
 
 
-public Position taylorEquation() {
+public Location taylorEquation() {
 	
 	Matrix transposeA;
 	Matrix inverseProduct;
@@ -148,14 +148,14 @@ public Position taylorEquation() {
 	result = new Position(lat, lon, alt);
 	System.out.println("Solution :"+ result.toString());
 	
-	return result;
+	//return result;
 	
-//	Location loc = new Location("TaylorWifi");
-//	loc.setLatitude(lat);
-//	loc.setLongitude(lon);
-//	loc.setAltitude(alt);
-//	loc.setAccuracy(accuracy );
-//	return loc;
+	Location loc = new Location("TaylorWifi");
+	loc.setLatitude(lat);
+	loc.setLongitude(lon);
+	loc.setAltitude(alt);
+	loc.setAccuracy(accuracy );
+	return loc;
 
 	}else return null;
 	

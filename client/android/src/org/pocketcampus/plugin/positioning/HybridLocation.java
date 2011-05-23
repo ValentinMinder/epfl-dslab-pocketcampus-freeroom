@@ -19,17 +19,39 @@ public class HybridLocation implements IPositionProvider{
 	private GsmNetworkPosition gsmLocation_;
 	private WifiLocation wifiLocation_;
 	private Context ctx_;
+	private float accuracy_;
 	
 	public HybridLocation(Context _ctx){
 		this.ctx_ = _ctx;
 		this.gpsLocation_ = new GpsLocation(ctx_);
 		this.gsmLocation_ = new GsmNetworkPosition(ctx_);
 		this.wifiLocation_ = new WifiLocation(ctx_);
+		this.accuracy_ = getAccuracy();
 	}
 
 	
 	
 	
+	private float getAccuracy() {
+		int numberOfAP = wifiLocation_.getnumberOfAP();
+		int good = wifiLocation_.getSignificantAP();
+		int accuracy = 35;
+		if(good > 1){
+			accuracy = 8;
+		}else if (good==1){
+			accuracy = 10;
+		}else if((numberOfAP > 10)&&(good==0)){
+			accuracy = 20;
+		}else if((numberOfAP > 4)&&(good==0)){
+			accuracy = 25;
+		}
+			
+		return accuracy;
+	}
+
+
+
+
 	public Location getGsmPosition() {
 		return this.gsmLocation_.getLocation();
 	}
@@ -100,7 +122,7 @@ public class HybridLocation implements IPositionProvider{
 			wifi.setLatitude(w.getLatitude());
 			wifi.setLongitude(w.getLongitude());
 			wifi.setAltitude(w.getAltitude());
-			wifi.setAccuracy(15);
+			wifi.setAccuracy(accuracy_);
 		}
 		
 		gsm = getGsmPosition();

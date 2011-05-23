@@ -38,6 +38,7 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
@@ -50,7 +51,7 @@ public class WifiLocation {
 	private WifiManager wifiManager;
 	private HashMap<String, String> ApBSSIDToName;
 	private HashMap<String, Position> ApNameToPosition;
-	
+	private List<AccessPoint> ApList_;
 
 	
 	
@@ -59,6 +60,8 @@ public class WifiLocation {
 		wifiManager = (WifiManager) ctx_.getSystemService(Context.WIFI_SERVICE);
 		ApBSSIDToName = readApBSSIDToNameFile();
 		ApNameToPosition = readApNameToPositionFile();
+		ApList_ = getAccessPoints();
+		
 		
 	}
 
@@ -291,7 +294,7 @@ public class WifiLocation {
 		for (Iterator<AccessPoint> iterator = treatedList.iterator(); iterator
 		.hasNext();) {
 			emitter = (AccessPoint) iterator.next();
-			System.out.println("Ap: lev :"+emitter.getPathLoss()+" Ap : distance :"+emitter.getDistance()+"floor :"+emitter.position().toString());
+			System.out.println("Ap: lev :"+emitter.getSignalLevel()+" Ap : distance :"+emitter.getDistance()+"floor :"+emitter.position().toString());
 			level = emitter.getSignalLevel();
 			
 
@@ -350,6 +353,11 @@ public class WifiLocation {
 		}
 
 		return myList;
+	}
+	
+	
+	public int getnumberOfAP(){
+		return this.ApList_.size();
 	}
 	
 	
@@ -458,10 +466,10 @@ public class WifiLocation {
 	}
 	
 	
-	public Position getWifiLocationPerTaylor3DSerieGlobal(){
+	public Location getWifiLocationPerTaylor3DSerieGlobal(){
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();
-		Position result2 =null;
+		Location result2 =null;
 		double x = 0.0,y = 0.0,z =0.0;
 		Taylor3D taylorEq3D;
 		apList =getAccessPoints();
@@ -476,7 +484,8 @@ public class WifiLocation {
 		
 		taylorEq3D = new Taylor3D(ap1, ap2, ap3, ap4);
 		
-		Position result = taylorEq3D.taylorEquation();
+		Location resultloc = taylorEq3D.taylorEquation();
+		Position result = new Position(resultloc.getLatitude(),resultloc.getLongitude(),0.0);
 		if(validate(result)){
 			positionList.add(result);
 		x =x+result.getLatitude();
@@ -488,8 +497,14 @@ public class WifiLocation {
 		System.out.println("Z :" +z);
 		i++;
         }
-		result2 = new Position(x/positionList.size(),y/positionList.size(),z/positionList.size());
+        result2 = new Location("Wifi Taylor");
+        result2.setLatitude(x/positionList.size());
+        result2.setLongitude(y/positionList.size());
+        result2.setAltitude(0.0);
+        result2.setAccuracy(10);
+		//result2 = new Position(x/positionList.size(),y/positionList.size(),z/positionList.size());
 		System.out.println("Position list size ::::::::::::"+positionList.size());
+		
 		return result2;
 	}
 	
@@ -518,6 +533,18 @@ public class WifiLocation {
 		System.out.println("Distinct : "+distinctApList.size());
 		System.out.println("Aplist   : "+apList.size());
 		return distinctApList;
+	}
+	
+	
+	
+	public int getSignificantAP(){
+		int num = ApList_.size();
+		List<AccessPoint> goodAP = new ArrayList<AccessPoint>();
+		for(AccessPoint ap : ApList_){
+			if(ap.getSignalLevel()>35)
+				goodAP.add(ap);
+		}
+		return goodAP.size();
 	}
 
 }
