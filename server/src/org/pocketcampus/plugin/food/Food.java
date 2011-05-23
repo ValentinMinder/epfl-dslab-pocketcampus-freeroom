@@ -358,8 +358,10 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 						Meal newMeal = new Meal(feed.items.get(i).title,
 								feed.items.get(i).description, newResto, true,
 								mealRating);
-						campusMeals_.add(newMeal);
-						campusMealRatings_.put(newMeal.hashCode(), mealRating);
+						if (!newMeal.containsAscii(65533)) {
+							campusMeals_.add(newMeal);
+							campusMealRatings_.put(newMeal.hashCode(), mealRating);
+						}
 					}
 					lastImportMenus_ = new Date();
 				} else {
@@ -370,9 +372,11 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 				lastImportMenus_ = new Date();
 			}
 			for (Meal m : campusMeals_) {
-				database_.insertMeal(m);
-				System.out.println("<importMenus>: Inserting meal "
-						+ m.getName_() + ", " + m.getRestaurant_());
+				if (!m.containsAscii(65533)) {
+					database_.insertMeal(m);
+					System.out.println("<importMenus>: Inserting meal "
+							+ m.getName_() + ", " + m.getRestaurant_());
+				}
 			}
 		}
 	}
@@ -614,13 +618,13 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 			throws FileUploadException {
 		System.out.println("<getPictures>: images request.");
 
-//		String stringMealHashCode = request.getParameter("meal");
-//
-//		if (stringMealHashCode == null) {
-//			return null;
-//		}
-//
-//		int mealHashCode = Integer.parseInt(stringMealHashCode);
+		// String stringMealHashCode = request.getParameter("meal");
+		//
+		// if (stringMealHashCode == null) {
+		// return null;
+		// }
+		//
+		// int mealHashCode = Integer.parseInt(stringMealHashCode);
 
 		return new File("/food/mealpics/21-4-2011/237824368.jpg");
 
