@@ -29,4 +29,7 @@
         <item>fr</item>
     </string-array>
     
+    <string name="mainscreen_plugin_preference_title">Application Options</string>
+    
+    
 </resources>

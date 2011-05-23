@@ -38,12 +38,12 @@ public class MainscreenPreference extends PluginPreference {
 
 //		 mainscreen preferences
 		PreferenceCategory mainscreenPref = new PreferenceCategory(this);
-		mainscreenPref.setTitle(R.string.mainscreen_plugin_title);
+		mainscreenPref.setTitle(R.string.mainscreen_plugin_preference_title);
 		root.addPreference(mainscreenPref);
 		
 		Preference mainPref;
 		mainPref = new Preference(this);
-		mainPref.setTitle(R.string.mainscreen_plugin_title);
+		mainPref.setTitle(R.string.mainscreen_plugin_preference_title);
 		
 		OnPreferenceClickListener onMainPreferenceClickListener = new OnPreferenceClickListener() {
 			
