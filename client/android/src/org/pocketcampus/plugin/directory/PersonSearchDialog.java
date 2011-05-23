@@ -43,7 +43,7 @@ public class PersonSearchDialog extends Dialog {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 1, Menu.NONE, "Search via sciper").setIcon(android.R.drawable.ic_menu_search);
+		menu.add(0, 1, Menu.NONE, "Search by sciper").setIcon(android.R.drawable.ic_menu_search);
 		menu.setGroupEnabled(0, true);
 		
 		menu.add(1, 2, Menu.NONE, "Approximative search").setIcon(android.R.drawable.ic_menu_zoom);

@@ -18,7 +18,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:textSize="15dip"
-			android:text="No result found."
+			android:text="No one found."
 			></TextView>
 		
 		<ListView 

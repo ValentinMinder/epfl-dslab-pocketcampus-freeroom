@@ -122,6 +122,7 @@ public class DirectoryPlugin extends PluginBase{
 			@Override
 			protected void onCancelled() {
 				resultsList_ = null;
+				displayResultList();
 				decrementProgressCounter();
 			}	
 			
