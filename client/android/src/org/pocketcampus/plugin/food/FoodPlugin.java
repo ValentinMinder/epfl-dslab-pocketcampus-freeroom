@@ -1,8 +1,11 @@
 package org.pocketcampus.plugin.food;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +38,7 @@ import org.pocketcampus.shared.plugin.food.Rating;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +61,10 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 	public Context otherCtx_;
+	
+	private final String RESTO_PREFS_NAME = "RestoPrefs";
+	private ArrayList<String> restos_;
+	private ArrayList<String> prefsRestos_;
 
 	// Activity's menus list
 	private ListView listView_;
@@ -87,6 +95,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
 
 		Tracker.getInstance().trackPageView("food/home");
+		handleIntent();
 	}
 
 	@Override
@@ -103,13 +112,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			Log.d("FoodPlugin", "Failed to get Intent's ID");
 		}
 
-		try {
-			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
-					+ getIDFromIntent() : "Does not have ID");
-		} catch (NoIDException e) {
-			Log.d(this.getClass().toString(), "NoIDException");
-			e.printStackTrace();
-		}
+//		try {
+//			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
+//					+ getIDFromIntent() : "Does not have ID");
+//		} catch (NoIDException e) {
+//			Log.d(this.getClass().toString(), "NoIDException");
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
@@ -232,12 +241,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 	}
 
 	private void showMenu(int id) {
-		ArrayList<String> restos = readFromFile(getApplicationContext());
-		String r = findHashCode(restos, id);
+		if(restos_ == null){
+			restos_ = getRestaurants();
+		}
+		String r = findHashCode(restos_, id);
 		Log.d("FoodPlugin", "Found restaurant : " + r);
-		int index = restos.indexOf(r);
-
-		ArrayAdapter<String> adapt1 = foodDisplayHandler_.getListAdapter().headers_;
+		int index = restos_.indexOf(r);
 
 		Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
 				this.getString(R.string.food_restaurants));
@@ -594,13 +603,22 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 
 							private Meal getBestMeal(
 									HashMap<Integer, Rating> ratings) {
-								ArrayList<String> restos = readFromFile(otherCtx_);
+								SharedPreferences prefs = otherCtx_.getSharedPreferences(RESTO_PREFS_NAME, 0);
+								restos_ = getRestaurants();
+								prefsRestos_ = new ArrayList<String>();
+								
+								for(String r : restos_){
+									if(prefs.getBoolean(r, false)){
+										prefsRestos_.add(r);
+									}
+								}
+								
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
 
-								if (restos != null) {
+								if (!prefsRestos_.isEmpty()) {
 									for (Meal m : campusMenuList) {
-										if (restos.contains(m.getRestaurant_()
+										if (prefsRestos_.contains(m.getRestaurant_()
 												.getName())) {
 											mealsVector.add(m);
 										}
@@ -630,28 +648,33 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		getRequestHandler().execute(new MainscreenMenusRequest(), "getMenus",
 				(RequestParameters) null);
 	}
-
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> readFromFile(Context ctx) {
-		String filename = "RestaurantsPref";
-		ArrayList<String> restosDisplayed = null;
-		File toGet = new File(ctx.getDir("preferences", 0), filename);
-		FileInputStream fis = null;
-		ObjectInputStream in = null;
+	
+	private ArrayList<String> getRestaurants() {
+		ArrayList<String> list = new ArrayList<String>();
 
 		try {
-			fis = new FileInputStream(toGet);
-			in = new ObjectInputStream(fis);
+			InputStream instream = this.getClass().getResourceAsStream(
+					"restaurants_names.txt");
 
-			restosDisplayed = (ArrayList<String>) in.readObject();
+			if (instream != null) {
 
-			in.close();
+				InputStreamReader inputreader = new InputStreamReader(instream);
+				BufferedReader input = new BufferedReader(inputreader);
+
+				try {
+					String line = null; // not declared within while loop
+
+					while ((line = input.readLine()) != null) {
+						list.add(line);
+					}
+				} finally {
+					input.close();
+				}
+			}
 		} catch (IOException ex) {
-		} catch (ClassNotFoundException ex) {
-		} catch (ClassCastException cce) {
+			ex.printStackTrace();
 		}
 
-		return restosDisplayed;
+		return list;
 	}
-
 }

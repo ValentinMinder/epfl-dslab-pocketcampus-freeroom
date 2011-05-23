@@ -8,10 +8,13 @@
  */
 package org.pocketcampus.plugin.food.menu;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import org.pocketcampus.shared.plugin.food.Meal;
 import org.pocketcampus.shared.plugin.food.Rating;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Adapter;
 
@@ -41,6 +45,7 @@ public class FoodMenu {
 	private FoodPlugin pluginHandler_;
 	private Context ctx_;
 	private Date validityDate_;
+	private final String RESTO_PREFS_NAME = "RestoPrefs";
 
 	/**
 	 * Food menu for the corresponding food plugin.
@@ -66,11 +71,33 @@ public class FoodMenu {
 	}
 
 	private List<Meal> filterMenus(List<Meal> allMeals) {
-		List<String> restaurants = restaurantsFromFile();
+//		List<String> restaurants = restaurantsFromFile();
+		ArrayList<String> restaurants = getRestaurants();
+		if(restaurants.isEmpty()){
+			Log.d("PREFERENCES", "DAMN");
+		}
+		ArrayList<String> prefsRestaurants = new ArrayList<String>(); 
+		
+		SharedPreferences prefs = pluginHandler_.getSharedPreferences(RESTO_PREFS_NAME, 0);
+		
+		if(!prefs.getAll().isEmpty()){
+			Log.d("PREFERENCES", "Prefs wasn't empty");
+			for(String r : restaurants){
+				Log.d("PREFERENCES", "Ya ce restaurant dans le fichier : " + r);
+				if(prefs.getBoolean(r, false)){
+					Log.d("PREFERENCES","Il l'a ajouté");
+					prefsRestaurants.add(r);
+				}
+			}
+		}else{
+			Log.d("PREFERENCES", "Prefs was empty");
+			prefsRestaurants = restaurants;
+		}
+		
 		List<Meal> prefMeals = new ArrayList<Meal>();
-		if (restaurants != null) {
+		if (prefsRestaurants != null) {
 
-			for (String r : restaurants) {
+			for (String r : prefsRestaurants) {
 				Log.d("PREFERENCES", "Resto in the File : " + r);
 				for (Meal m : campusMenu_) {
 					if (m.getRestaurant_().getName().equals(r)) {
@@ -284,27 +311,56 @@ public class FoodMenu {
 		return menu;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<String> restaurantsFromFile() {
-		String filename = "RestaurantsPref";
-		List<String> restos = null;
-		File toGet = new File(ctx_.getDir("preferences", 0), filename);
-		FileInputStream fis = null;
-		ObjectInputStream in = null;
+//	@SuppressWarnings("unchecked")
+//	public List<String> restaurantsFromFile() {
+//		String filename = "RestaurantsPref";
+//		List<String> restos = null;
+//		File toGet = new File(ctx_.getDir("preferences", 0), filename);
+//		FileInputStream fis = null;
+//		ObjectInputStream in = null;
+//
+//		try {
+//			fis = new FileInputStream(toGet);
+//			in = new ObjectInputStream(fis);
+//
+//			restos = (List<String>) in.readObject();
+//
+//			in.close();
+//		} catch (IOException ex) {
+//		} catch (ClassNotFoundException ex) {
+//		} catch (ClassCastException cce) {
+//		}
+//
+//		return restos;
+//	}
+	
+	private ArrayList<String> getRestaurants() {
+		ArrayList<String> list = new ArrayList<String>();
 
 		try {
-			fis = new FileInputStream(toGet);
-			in = new ObjectInputStream(fis);
+			InputStream instream = this.getClass().getResourceAsStream(
+					"restaurants_names.txt");
 
-			restos = (List<String>) in.readObject();
+			if (instream != null) {
+				
+				InputStreamReader inputreader = new InputStreamReader(instream);
+				BufferedReader input = new BufferedReader(inputreader);
 
-			in.close();
+				try {
+					String line = null; // not declared within while loop
+
+					while ((line = input.readLine()) != null) {
+						list.add(line);
+					}
+				} finally {
+					input.close();
+				}
+			}
 		} catch (IOException ex) {
-		} catch (ClassNotFoundException ex) {
-		} catch (ClassCastException cce) {
+			ex.printStackTrace();
 		}
 
-		return restos;
+		return list;
 	}
 
 }

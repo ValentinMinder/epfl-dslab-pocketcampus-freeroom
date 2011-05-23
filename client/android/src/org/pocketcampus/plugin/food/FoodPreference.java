@@ -21,12 +21,11 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
-import android.widget.TextView;
 
 public class FoodPreference extends PluginPreference {
 	private SharedPreferences restoPrefs_;
@@ -49,10 +48,19 @@ public class FoodPreference extends PluginPreference {
 				.createIntent(this), R.drawable.mini_home));
 
 		restaurants_ = new ArrayList<String>();
+		restaurants_ = getRestaurants();
 		displayedRestaurants_ = new ArrayList<String>();
 
 		restoPrefs_ = getSharedPreferences(RESTO_PREFS_NAME, 0);
 		restoPrefsEditor_ = restoPrefs_.edit();
+		
+		if(restoPrefs_.getAll().isEmpty()){
+			Log.d("PREFERENCES","First time instanciatation.");
+			for(String r : restaurants_){
+				restoPrefsEditor_.putBoolean(r, true);
+			}
+			restoPrefsEditor_.commit();
+		}
 
 		setPreferenceScreen(createPreferenceHierarchy());
 	}
@@ -100,19 +108,23 @@ public class FoodPreference extends PluginPreference {
 		*/
 		
 		
-		/* Change to get the list from a permanent txt file. */
-		restaurants_ = getRestaurants();
+//		/* Change to get the list from a permanent txt file. */
+//		restaurants_ = getRestaurants();
 		
-		displayedRestaurants_ = readFromFile();
+//		displayedRestaurants_ = readFromFile();
+		
+		for(String r : restaurants_){	
+			if(restoPrefs_.getBoolean(r, false)){
+				displayedRestaurants_.add(r);
+			}
+		}
 
-		if (displayedRestaurants_ == null || displayedRestaurants_.isEmpty()) {
+		if (displayedRestaurants_.isEmpty()) {
 			Log.d("PREFERENCES",
 					"displayedRestaurants_ was null or empty from file!");
 			displayedRestaurants_ = restaurants_;
-		}
-
-		if (!displayedRestaurants_.isEmpty()) {
-
+		}else{
+			
 			for (String resto : restaurants_) {
 
 				prefBox = new CheckBoxPreference(this);
@@ -128,11 +140,17 @@ public class FoodPreference extends PluginPreference {
 						String r = preference.getKey();
 
 						if ((Boolean) newValue) {
+							Log.d("PREFERENCES", "If " + newValue.toString());
 							displayedRestaurants_.add(r);
+							restoPrefsEditor_.putBoolean(r, (Boolean)newValue);
+							restoPrefsEditor_.commit();
 						} else {
+							Log.d("PREFERENCES", "Else " + newValue.toString());
 							displayedRestaurants_.remove(r);
+							restoPrefsEditor_.putBoolean(r, false);
+							restoPrefsEditor_.commit();
 						}
-						writeToFile();
+//						writeToFile();
 						PreferenceManager.getDefaultSharedPreferences(that)
 								.edit().putLong(cacheTime_, 0).commit();
 						return true;
@@ -142,11 +160,6 @@ public class FoodPreference extends PluginPreference {
 
 				foodPrefCat.addPreference(prefBox);
 			}
-		} else {
-			Log.d("PREFERENCES", "There are no Restaurant List for now.");
-			TextView text = new TextView(this);
-			text.setText(getResources().getString(
-					R.string.food_preferences_warning));
 		}
 
 		return root;
