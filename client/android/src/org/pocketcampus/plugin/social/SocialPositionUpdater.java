@@ -4,74 +4,87 @@ import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
+import org.pocketcampus.plugin.positioning.IUserLocationListener;
+import org.pocketcampus.plugin.positioning.UserPosition;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
-import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 public class SocialPositionUpdater {
-	
+
 	private static PositionUpdater updater_;
-	
-	private final static int UPDATE_PERIOD = 5 * 60 * 1000;
+	private static Context context_;
+	private static Location location_;
+
+	private final static int UPDATE_PERIOD = 1 * 30 * 1000;
 
 	public static void startPositionUpdater(Context context) {
-		updater_ = new PositionUpdater(AuthenticationPlugin.getAuthToken(context));
+		if(context == null) throw new IllegalArgumentException();
+
+		context_ = context;
+		updater_ = new PositionUpdater(AuthenticationPlugin.getAuthToken(context_));
 		new Thread(updater_).start();
 	}
-	
+
 	public static void stopPositionUpdater() {
 		updater_.shutDown();
 	}
-	
+
 	private static class PositionUpdater implements Runnable {
 		private final AuthToken token_;
 		private boolean on_;
-		
+
 		public PositionUpdater(AuthToken token) {
 			token_ = token;
 			on_ = true;
 		}
-		
+
 		@Override
 		public void run() {
 			do {
 				if(token_ != null) {
-					Position p = new Position(1.00000123, 2.00000123, 3.00000123);
-					
-					RequestParameters rp = new RequestParameters();
-					rp.addParameter("username", token_.getUsername());
-					rp.addParameter("sessionId", token_.getSessionId());
-					rp.addParameter("longitude", p.getLongitude()+"");
-					rp.addParameter("latitude", p.getLatitude()+"");
-					rp.addParameter("altitude", p.getAltitude()+"");
-					
-					RequestHandler handler = AuthenticationPlugin.getAuthenticationRequestHandler();
-					if(handler != null) {
-						handler.execute(new UpdatePositionRequest(), "updatePosition", rp);
-					} else {
-						on_ = false;
+					if(location_ != null) {RequestParameters rp = new RequestParameters();
+						rp.addParameter("username", token_.getUsername());
+						rp.addParameter("sessionId", token_.getSessionId());
+						rp.addParameter("longitude", location_.getLongitude()+"");
+						rp.addParameter("latitude", location_.getLatitude()+"");
+						rp.addParameter("altitude", location_.getAltitude()+"");
+
+						RequestHandler handler = AuthenticationPlugin.getAuthenticationRequestHandler();
+						if(handler != null) {
+							handler.execute(new UpdatePositionRequest(), "updatePosition", rp);
+						} else {
+							on_ = false;
+						}
 					}
-					
+
+					new UserPosition(context_, new IUserLocationListener() {
+						@Override
+						public void userLocationReceived(Location location) {
+							location_ = location;
+						}
+					}, 10000, 20);
+
 					try {
 						Thread.sleep(UPDATE_PERIOD);
 					} catch(InterruptedException e) {
-						
+
 					}
 				} else {
 					on_ = false;
 				}
 			} while(on_);
 		}
-		
+
 		public void shutDown() {
 			on_ = false;
 		}
-		
+
 		private class UpdatePositionRequest extends DataRequest {
 			@Override
 			protected void doInUiThread(String result) {
@@ -85,13 +98,13 @@ public class SocialPositionUpdater {
 						e.printStackTrace();
 					}
 				}
-				
+
 				if(!status) {
-					//If request fails, we close connection.
-//					AuthenticationPlugin.logout(context_);
+//					If request fails, we close connection.
+					AuthenticationPlugin.logout(context_);
 				}
 			}
 		}
 	}
-	
+
 }
