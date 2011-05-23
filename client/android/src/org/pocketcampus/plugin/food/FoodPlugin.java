@@ -99,7 +99,7 @@ IAllowsID {
 		super.onRestart();
 		foodDisplayHandler_.refreshView();
 	}
-	
+
 	@Override
 	public void onBackPressed(){
 		super.onBackPressed();
@@ -583,31 +583,36 @@ IAllowsID {
 					if (!campusMenuList.isEmpty()) {
 
 						class MainscreenRatingsRequest extends RatingsRequest {
-							Meal m_;
+							Meal[] m_ = new Meal[3];
 
 							@Override
 							public void updateRatings(
 									HashMap<Integer, Rating> ratings) {
 
-								m_ = getBestMeal(ratings);
+								m_ = getBestMeal(ratings, m_);
 
 								if (m_ != null) {
-									MainscreenNews bestMeal = new MainscreenNews(
-											m_.getName_()
-											+ "\n"
-											+ m_.getRestaurant_()
-											.getName(),
-											m_.getDescription_(), m_
-											.getRestaurant_().getName()
-											.hashCode(), that,
-											new Date());
-									news.add(bestMeal);
+									for(Meal m : m_){
+
+										if(m.getRating().getTotalRating() > 3){
+											
+											MainscreenNews bestMeal = new MainscreenNews(m.getRestaurant_()
+													.getName()
+													+ "\n"
+													+ m.getName_(),
+													m.getDescription_(), m
+													.getRestaurant_().getName()
+													.hashCode(), that,
+													new Date());
+											news.add(bestMeal);
+										}
+									}
 									callback.callback(news);
 								}
 							}
 
-							private Meal getBestMeal(
-									HashMap<Integer, Rating> ratings) {
+							private Meal[] getBestMeal(
+									HashMap<Integer, Rating> ratings, Meal[] bestMeals) {
 								restos_ = getRestaurants();
 								if(restos_.isEmpty()){
 									Log.d("FoodPlugin", "Restaurants vides");
@@ -631,7 +636,10 @@ IAllowsID {
 								}
 								if (mealsVector != null
 										&& !mealsVector.isEmpty()) {
-									return mealsVector.get(0);
+									for(int i = 0; i<bestMeals.length; i++){
+										bestMeals[i] = mealsVector.get(i);
+									}
+									return bestMeals;
 								} else {
 									return null;
 								}
