@@ -21,9 +21,9 @@ public class SocialPositionUpdater {
 	private static Context context_;
 	private static Location location_;
 
-	private final static int UPDATE_PERIOD = 1 * 30 * 1000;
+	private final static int UPDATE_PERIOD = 5 * 60 * 1000; //5min
 	private final static int POSITION_TIMEOUT = 10 * 1000;
-	private final static int POSITION_ACURACY = 20;
+	private final static int POSITION_ACURACY = 20; //meters
 
 	public static void startPositionUpdater(Context context) {
 		if(context == null) throw new IllegalArgumentException();
@@ -68,7 +68,18 @@ public class SocialPositionUpdater {
 					new UserPosition(context_, new IUserLocationListener() {
 						@Override
 						public void userLocationReceived(Location location) {
-							location_ = location;
+							
+							/////////////////  TEMPORARY  /////////////////
+							Location epflCenter = new Location("EPFL");
+							epflCenter.setLatitude(46.520013);
+							epflCenter.setLongitude(6.56682);
+							float distanceToEpflCenter = location.distanceTo(epflCenter );
+							
+							if (distanceToEpflCenter < 500.0) {
+								location_ = location;
+							} else {
+								location_ = null;
+							}
 						}
 					}, POSITION_TIMEOUT, POSITION_ACURACY);
 
@@ -108,5 +119,4 @@ public class SocialPositionUpdater {
 			}
 		}
 	}
-
 }
