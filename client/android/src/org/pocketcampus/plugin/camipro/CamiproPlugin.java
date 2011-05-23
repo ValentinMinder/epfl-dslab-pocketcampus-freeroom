@@ -11,7 +11,7 @@ import android.os.Bundle;
  * PluginBase class for the Camipro plugin.
  * 
  * This activity only takes care of checking if the user is already logged in.
- * The user is then redirected to antoher activity.
+ * The user is then redirected to another activity.
  * 
  * @status Complete
  * 

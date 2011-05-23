@@ -3,7 +3,7 @@
     <string name="news_plugin_title">News</string>
     
     <string name="news_preferences_rss_title">RSS Options</string>
-    <string name="news_preferences_other_title">Other Options</string>
+    <string name="news_preferences_other_title">Options</string>
     
     <string name="news_refresh_title">Refresh time</string>
     <string name="news_refresh_summary">The pace at which the feeds get refreshed</string>
