@@ -210,8 +210,6 @@ public class AuthenticationPlugin extends PluginBase {
 				//starts secured activity if specified
 				if(toStartAfterLogin_ != null) {
 					thisActivity_.startActivity(new Intent(thisActivity_, toStartAfterLogin_));
-				} else {
-					Toast.makeText(thisActivity_, "HAAAA", Toast.LENGTH_LONG).show();
 				}
 				
 				//close login activity
