@@ -13,12 +13,15 @@ import org.pocketcampus.shared.plugin.social.User;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,12 +53,17 @@ public class AuthenticationPlugin extends PluginBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_login);
 		//		Tracker.getInstance().trackPageView("auth");
 
 		//		String username = getIntent().getExtras().getString("username");
 		//		String password = getIntent().getExtras().getString("password");
 
+		WindowManager.LayoutParams lp = getWindow().getAttributes();  
+		//lp.dimAmount = .7f;  
+		getWindow().setAttributes(lp); 
+		
 		Button button = (Button)findViewById(R.id.socialLoginButton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

@@ -67,7 +67,7 @@
         <activity android:name=".plugin.bikes.BikesPlugin" android:screenOrientation="portrait"></activity>
 		
 		<!-- AuthenticationPlugin -->
-        <activity android:name=".plugin.authentication.AuthenticationPlugin"></activity>
+        <activity android:name=".plugin.authentication.AuthenticationPlugin" android:theme="@android:style/Theme.Dialog" android:excludeFromRecents="true"></activity>
         
         
         <!-- Used for install referrer tracking -->
