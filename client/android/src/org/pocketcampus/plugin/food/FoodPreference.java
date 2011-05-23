@@ -55,7 +55,7 @@ public class FoodPreference extends PluginPreference {
 		restoPrefsEditor_ = restoPrefs_.edit();
 		
 		if(restoPrefs_.getAll().isEmpty()){
-			Log.d("PREFERENCES","First time instanciatation.");
+			Log.d("PREFERENCES","First time instanciatation (FoodPreference)");
 			for(String r : restaurants_){
 				restoPrefsEditor_.putBoolean(r, true);
 			}

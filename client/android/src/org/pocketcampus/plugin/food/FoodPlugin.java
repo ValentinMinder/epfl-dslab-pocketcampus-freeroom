@@ -1,12 +1,9 @@
 package org.pocketcampus.plugin.food;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +36,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +47,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -605,13 +602,28 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 									HashMap<Integer, Rating> ratings) {
 								SharedPreferences prefs = otherCtx_.getSharedPreferences(RESTO_PREFS_NAME, 0);
 								restos_ = getRestaurants();
+								if(restos_.isEmpty()){
+									Log.d("FoodPlugin", "Restaurants vides");
+								}
 								prefsRestos_ = new ArrayList<String>();
 								
-								for(String r : restos_){
-									if(prefs.getBoolean(r, false)){
+								if(prefs.getAll().isEmpty()){
+									Log.d("FoodPlugin","First time instanciatation (Mainscreen)");
+									Editor prefsEditor = prefs.edit();
+									
+									for(String r : restos_){
+										prefsEditor.putBoolean(r, true);
 										prefsRestos_.add(r);
 									}
+									prefsEditor.commit();
+								}else{							
+									for(String r : restos_){
+										if(prefs.getBoolean(r, false)){
+											prefsRestos_.add(r);
+										}
+									}
 								}
+								
 								
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
@@ -639,7 +651,11 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 						getRequestHandler().execute(
 								new MainscreenRatingsRequest(), "getRatings",
 								(RequestParameters) null);
+					}else{
+						Log.d("FoodPlugin", "Menus vides");
 					}
+				}else{
+					Log.d("FoodPlugin", "Menus null");
 				}
 			}
 		}
