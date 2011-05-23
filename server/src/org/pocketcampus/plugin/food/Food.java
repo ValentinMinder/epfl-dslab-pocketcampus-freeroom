@@ -563,7 +563,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 	public boolean uploadimage(HttpServletRequest request)
 			throws FileUploadException {
 
-		System.out.println(request.getServletPath());
 		System.out.println("----- " + new Date() + " -----");
 
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -581,7 +580,6 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 
 			print("-FILE- " + item.toString());
 
-			System.out.println(item.getName()); // affiche le fichier
 			String fileName = item.getName();
 			File file = new File(fileName);
 
@@ -591,19 +589,12 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 			String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "-"
 					+ cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.YEAR);
 
-			// String currentdir = System.getProperty("user.dir")
-			// + "\\MealPictures\\" + date;
-
 			String currentdir = "/food/mealpics/" + date;
 
-			// String configFilePath = getServletContext().getRealPath("/");
-			// configFilePath += File.separator + "some directory here" +
-			// File.separator + "myfile.txt";
 			new File(currentdir).mkdirs();
-			File f = new File("/");
-			System.out.println("Path: " + f.getAbsolutePath());
 
 			file = new File(currentdir, file.getName());
+			System.out.println(file.getAbsolutePath());
 			// enregistrement dans /tmp/ si non vide
 			try {
 				if (item.getInputStream().read() > -1) {
@@ -612,71 +603,31 @@ public class Food implements IPlugin/* , IMapElementsProvider */{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			item.delete();
 		}
 
 		return true;
+	}
+
+	@PublicMethod
+	public File getImages(HttpServletRequest request)
+			throws FileUploadException {
+		System.out.println("<getPictures>: images request.");
+
+//		String stringMealHashCode = request.getParameter("meal");
+//
+//		if (stringMealHashCode == null) {
+//			return null;
+//		}
+//
+//		int mealHashCode = Integer.parseInt(stringMealHashCode);
+
+		return new File("/food/mealpics/21-4-2011/237824368.jpg");
+
 	}
 
 	private <O> O print(O obj) {
 		System.out.println(obj);
 		return obj;
 	}
-
-	// @Override
-	// public List<MapElementBean> getLayerItems(int layerId) {
-	// // TODO Auto-generated method stub
-	// return new ArrayList<MapElementBean>();
-	// }
-	//
-	// @Override
-	// public List<MapLayerBean> getLayers() {
-	// // TODO Auto-generated method stub
-	// List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-	// l.add(new MapLayerBean("Restaurants", "", this, 1, -1, true));
-	// return l;
-	// }
-
-	// public void writeToFile() {
-	// lastImportDateM_ = new Date();
-	// String filename =
-	// "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
-	//
-	// File menuFile = new File(filename);
-	//
-	// FileOutputStream fos = null;
-	// ObjectOutputStream out = null;
-	// try {
-	// fos = new FileOutputStream(menuFile);
-	// out = new ObjectOutputStream(fos);
-	// out.writeObject(campusMeals_);
-	// out.close();
-	// } catch (IOException ex) {}
-	// }
-
-	// public List<Meal> restoreFromFile() {
-	// String filename =
-	// "c:/Users/Elodie/workspace/pocketcampus-server/MenusCache";
-	// List<Meal> menu = null;
-	//
-	// File toGet = new File(filename);
-	// FileInputStream fis = null;
-	// ObjectInputStream in = null;
-	// try {
-	// fis = new FileInputStream(toGet);
-	// in = new ObjectInputStream(fis);
-	// Object obj = in.readObject();
-	//
-	// if(obj instanceof List<?>){
-	// menu = (List<Meal>) obj;
-	// }
-	//
-	// in.close();
-	// } catch (IOException ex) {
-	// } catch (ClassNotFoundException ex) {
-	// } catch (ClassCastException cce) {
-	// }
-	//
-	// return menu;
-	// }
-
 }
