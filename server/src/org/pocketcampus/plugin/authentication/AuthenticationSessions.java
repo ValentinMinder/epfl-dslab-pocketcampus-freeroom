@@ -9,16 +9,12 @@ import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
 public class AuthenticationSessions {
 	private static final int SESSION_ID_SIZE = 128;
-	private static final int SESSION_DURATION = 30 * 1000;
+	private static final int SESSION_DURATION = 60 * 60 * 1000;
 
 	private static HashMap<String, UserSession> sessions_;
 	private static LinkedList<String> sessionIds_;
 	private static ReentrantLock lock_;
 	private static AuthenticationEncryption encrypter_;
-
-	//	public static Collection<String> ss() {
-	//		return sessions_.values();
-	//	}
 
 	public static String newSession(String username, String password) {
 		if(username == null && password == null)
