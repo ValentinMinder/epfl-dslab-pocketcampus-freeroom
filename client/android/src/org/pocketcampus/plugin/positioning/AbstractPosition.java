@@ -7,10 +7,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 public abstract class AbstractPosition implements LocationListener {
-
+	/**
+	 * The time (in ms) to wait before invalidating the last fix.
+	 */
+	private static final long INVALIDATE_TIME = 15000;
+	
 	private LocationManager locationManager_;
 	private Location location_;
 	private String provider_;
+	private long updateTime_;
 
 	public AbstractPosition(Context ctx, String provider) {
 		locationManager_ = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
@@ -20,6 +25,7 @@ public abstract class AbstractPosition implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		location_ = location;
+		updateTime_ = System.currentTimeMillis();
 	}
 
 	@Override
@@ -38,11 +44,14 @@ public abstract class AbstractPosition implements LocationListener {
 	}
 
 	public Location getLocation() {
+		if(System.currentTimeMillis() - updateTime_ > INVALIDATE_TIME) {
+			location_ = null;
+		}
 		return location_;
 	}
 	
 	public void startListening() {
-		locationManager_.requestLocationUpdates(provider_, 0, 0, this);
+		locationManager_.requestLocationUpdates(provider_, 1000, 0, this);
 	}
 	
 	public void stopListening() {

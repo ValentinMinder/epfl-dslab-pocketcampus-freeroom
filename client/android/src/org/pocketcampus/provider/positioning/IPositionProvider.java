@@ -1,20 +1,25 @@
 package org.pocketcampus.provider.positioning;
 
-import org.pocketcampus.shared.plugin.map.Position;
-
 import android.location.Location;
 
 
 public interface IPositionProvider {
-
-	
-public Position getPosition();
-public Location getGsmPosition();
-public Location getGpsPosition();
-public boolean  userInCampus();
-//public Position getHybridLocation();
-public double getAccuracy();
-public void startListening();
-public void stopListening();
-	
+	/**
+	 * Returns the best available location
+	 * @return the user position.
+	 */
+	public Location getPosition();
+	public Location getGsmPosition();
+	public Location getGpsPosition();
+	public boolean  userInCampus();
+	/**
+	 * Starts listening for new positions.
+	 * (It enables the GPS)
+	 */
+	public void startListening();
+	/**
+	 * Stops listening for position updates.
+	 * This method must me called in OnPause
+	 */
+	public void stopListening();
 }

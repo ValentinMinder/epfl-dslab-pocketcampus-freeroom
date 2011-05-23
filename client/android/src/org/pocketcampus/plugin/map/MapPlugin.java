@@ -88,6 +88,8 @@ public class MapPlugin extends PluginBase {
 	private static Position CAMPUS_CENTER_P;
 	private static GeoPoint CAMPUS_CENTER_G;
 	private static int CAMPUS_RADIUS;
+	
+	private static boolean DEBUG = false;
 
 	// Map UI
 	private MapView mapView_;
@@ -318,9 +320,11 @@ public class MapPlugin extends PluginBase {
 		// Following the user
 		//XXX myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 		myLocationOverlay_ = new HybridPositioningOverlay(this, mapView_);
-		googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 		constantOverlays_.add(myLocationOverlay_);
-		constantOverlays_.add(googleLocationOverlay_);
+		if(DEBUG) {
+			googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+			constantOverlays_.add(googleLocationOverlay_);
+		}
 
 		// Path overlay
 		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
@@ -363,7 +367,9 @@ public class MapPlugin extends PluginBase {
 
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			myLocationOverlay_.enableMyLocation();
-			googleLocationOverlay_.enableMyLocation();
+			if(DEBUG) {
+				googleLocationOverlay_.enableMyLocation();
+			}
 		}
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
@@ -378,7 +384,9 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void onPause() {
 		myLocationOverlay_.disableMyLocation();
-		googleLocationOverlay_.disableMyLocation();
+		if(DEBUG) {
+			googleLocationOverlay_.disableMyLocation();
+		}
 		
 		overlaysHandler_.removeCallbacks(overlaysRefreshTicker_);
 		
@@ -518,11 +526,13 @@ public class MapPlugin extends PluginBase {
 		if(myLocationOverlay_.isFollowLocationEnabled()) {
 			myLocationOverlay_.disableMyLocation();
 			myLocationOverlay_.disableFollowLocation();
-			googleLocationOverlay_.disableMyLocation();
+			if(DEBUG)
+				googleLocationOverlay_.disableMyLocation();
 		} else {
 			myLocationOverlay_.enableMyLocation();
 			myLocationOverlay_.enableFollowLocation();
-			googleLocationOverlay_.enableMyLocation();
+			if(DEBUG)
+				googleLocationOverlay_.enableMyLocation();
 		}
 	}
 

@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.map.utils;
 
 import org.pocketcampus.plugin.positioning.HybridLocation;
-import org.pocketcampus.shared.plugin.map.CoordinateConverter;
-import org.pocketcampus.shared.plugin.map.Position;
 
 import android.content.Context;
 import android.location.Location;
@@ -16,7 +14,7 @@ public class HybridLocationUpdater {
 	/**
 	 * The number of ms between two updates
 	 */
-	private long updateTime_ = 8500;
+	private long updateTime_ = 3000;//8500;
 	
 	private boolean isRunning_ = false;
 	private LocationUpdater updater_;
@@ -71,31 +69,22 @@ class LocationUpdater extends Thread {
 	public void run() {
 		isRunning = true;
 		while(isRunning) {
-			Log.d("LocationUpdater", "tick");
 			try{
 				Thread.sleep(t);
 			} catch (InterruptedException e) {
 				//nothing to do
 			}
-			Position p = null;
+			Location loc = null;
 			try {
-				p = hl.getPosition();
+				loc = hl.getPosition();
 			} catch(Exception e) {
 				Log.e("HybridLocationUpdater", "error getting position");
 				e.printStackTrace();
 			}
-			Log.d("HybridLocationUpdater", "Position: " + p);
-			if(p != null && !Double.isNaN(p.getLatitude()) && !Double.isNaN(p.getLongitude())) {
-				p = CoordinateConverter.convertCH1903ToLatLong(p.getLatitude(), p.getLongitude(), p.getAltitude());
-				Location location = new Location("HybridLocation");
-				location.setLatitude(p.getLatitude());
-				location.setLongitude(p.getLongitude());
-				location.setAltitude(p.getAltitude());
-				l.onLocationChanged(location);
-				Log.d("LOCATION", location + "");
+			Log.d("LocationUpdater", "New location: " + loc);
+			if(loc != null) {
+				l.onLocationChanged(loc);
 			}
-			Log.d("LOCATION", "GSM/WIFI: " + hl.getGsmPosition());
-			Log.d("LOCATION", "GPS:      " + hl.getGpsPosition());
 		}
 	}
 	
