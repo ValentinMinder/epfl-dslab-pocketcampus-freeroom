@@ -24,6 +24,7 @@ import org.pocketcampus.plugin.food.FoodDisplayHandler.FoodDisplayType;
 import org.pocketcampus.plugin.food.menu.MenuSorter;
 import org.pocketcampus.plugin.food.request.MenusRequest;
 import org.pocketcampus.plugin.food.request.RatingsRequest;
+import org.pocketcampus.plugin.food.sandwiches.SandwichListAdapter;
 import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
@@ -532,18 +533,18 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			}
 			expandMenus_.invalidate();
 
-			// Adapter adapt = foodDisplayHandler_.getListAdapter()
-			// .getExpandableList(
-			// FoodPlugin.this
-			// .getString(R.string.food_restaurants));
-			// if (adapt != null) {
-			// if (adapt instanceof RestaurantListAdapter) {
-			// ((RestaurantListAdapter) adapt).toggleAll(expanded);
-			// } else if (adapt instanceof SandwichListAdapter) {
-			// ((SandwichListAdapter) adapt).toggleAll(expanded);
-			// }
-			// }
-			handleIntent();
+			Adapter adapt = foodDisplayHandler_.getListAdapter()
+					.getExpandableList(
+							FoodPlugin.this
+									.getString(R.string.food_restaurants));
+			if (adapt != null) {
+				if (adapt instanceof RestaurantListAdapter) {
+					((RestaurantListAdapter) adapt).toggleAll(expanded);
+				} else if (adapt instanceof SandwichListAdapter) {
+					((SandwichListAdapter) adapt).toggleAll(expanded);
+				}
+			}
+			// handleIntent();
 
 			return false;
 		}
@@ -608,7 +609,8 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 									mealsVector = sorter
 											.sortByRatings(mealsVector);
 								}
-								if (mealsVector != null && !mealsVector.isEmpty()) {
+								if (mealsVector != null
+										&& !mealsVector.isEmpty()) {
 									return mealsVector.get(0);
 								} else {
 									return null;
