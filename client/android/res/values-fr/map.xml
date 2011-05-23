@@ -25,4 +25,6 @@
     <string name="map_take_me_there_button">Aller là</string>
     <string name="map_zoom_button">Centrer la carte</string>
     <string name="map_open_plugin_button">Ouvrir</string>
+    
+    <string name="map_compute_position">Votre position est en train d\'être calculée...</string>
 </resources>

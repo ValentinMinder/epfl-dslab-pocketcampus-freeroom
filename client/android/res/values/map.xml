@@ -25,4 +25,6 @@
     <string name="map_take_me_there_button">Take me there!</string>
     <string name="map_zoom_button">Center/zoom</string>
     <string name="map_open_plugin_button">More</string>
+    
+    <string name="map_compute_position">Your position is being computed...</string>
 </resources>

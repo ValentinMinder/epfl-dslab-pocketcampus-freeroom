@@ -29,14 +29,6 @@
 			>
 		</TextView>
 		
-		<Button
-			android:id="@+id/news_view_more"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_gravity="right|center_vertical"
-			android:drawableLeft="@drawable/ic_btn_search_go"
-			android:focusable="false"
-			/>
 		
 	</LinearLayout>
 
@@ -46,6 +38,14 @@
 		android:textColor="@color/dark_grey"
 		android:maxLines="2"></TextView>
 
+	<Button
+		android:id="@+id/news_view_more"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_gravity="center"
+		android:drawableLeft="@drawable/ic_btn_search_go"
+		android:focusable="false"
+		/>
 
 
 </LinearLayout>
