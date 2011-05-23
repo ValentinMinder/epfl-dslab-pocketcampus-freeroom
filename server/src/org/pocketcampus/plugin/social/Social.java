@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.social;
 
-import java.awt.Toolkit;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -289,7 +288,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 	@Override
 	public List<MapLayerBean> getLayers() {
 		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Amis", "data/map/map_marker.png", this, 1, 300, true));
+		l.add(new MapLayerBean("Amis", "data/map/map_marker_people.png", this, 1, 300, true));
 		return l;
 	}
 	
