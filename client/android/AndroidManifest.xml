@@ -69,6 +69,8 @@
 		<!-- AuthenticationPlugin -->
         <activity android:name=".plugin.authentication.AuthenticationPlugin" android:theme="@android:style/Theme.Dialog" android:excludeFromRecents="true"></activity>
         
+		<!-- PreferencesLauncher Plugin -->
+        <activity android:name=".plugin.preferenceslauncher.PreferencesLauncherPlugin"></activity>
         
         <!-- Used for install referrer tracking -->
 		<receiver android:name="com.google.android.apps.analytics.AnalyticsReceiver" android:exported="true">

@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
+import org.pocketcampus.plugin.preferenceslauncher.PreferencesLauncherPlugin;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.plugin.transport.TransportPlugin;
 
@@ -44,6 +45,7 @@ public class PluginDiscoverer {
 		plugins.add(new TransportPlugin());
 		plugins.add(new SocialPlugin());
 		plugins.add(new BikesPlugin());
+		plugins.add(new PreferencesLauncherPlugin());
 		
 		////////////////////////////////
 		
