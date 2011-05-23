@@ -1,6 +1,5 @@
-package org.pocketcampus.plugin.map.utils;
+package org.pocketcampus.plugin.positioning;
 
-import org.pocketcampus.plugin.positioning.HybridLocation;
 
 import android.content.Context;
 import android.location.Location;

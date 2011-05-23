@@ -3,10 +3,9 @@ package org.pocketcampus.plugin.map.ui;
 import org.osmdroid.LocationListenerProxy;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MyLocationOverlay;
-import org.pocketcampus.plugin.map.utils.HybridLocationUpdater;
+import org.pocketcampus.plugin.positioning.HybridLocationUpdater;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -27,7 +26,7 @@ public class HybridPositioningOverlay extends MyLocationOverlay {
 	public HybridPositioningOverlay(final Context context, final MapView mapView) {
 		super(context, mapView);
 		
-		mCirclePaint.setColor(Color.RED);
+		//mCirclePaint.setColor(Color.RED);
 		
 		setLocationUpdateMinTime(LOCATION_UPDATE_MIN_TIME);
 		
