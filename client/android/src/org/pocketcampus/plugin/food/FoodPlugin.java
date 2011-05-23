@@ -54,11 +54,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
-		IAllowsID {
+IAllowsID {
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 	public Context otherCtx_;
-	
+
 	private final String RESTO_PREFS_NAME = "RestoPrefs";
 	private ArrayList<String> restos_;
 	private ArrayList<String> prefsRestos_;
@@ -92,7 +92,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		foodDisplayHandler_ = new FoodDisplayHandler(this);
 
 		Tracker.getInstance().trackPageView("food/home");
-		handleIntent();
 	}
 
 	@Override
@@ -109,13 +108,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			Log.d("FoodPlugin", "Failed to get Intent's ID");
 		}
 
-//		try {
-//			Log.d(this.getClass().toString(), hasIDInIntent() ? "Has ID "
-//					+ getIDFromIntent() : "Does not have ID");
-//		} catch (NoIDException e) {
-//			Log.d(this.getClass().toString(), "NoIDException");
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -225,6 +217,9 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		if (foodDisplayHandler_ != null) {
 			this.notifyDataSetChanged();
 			foodDisplayHandler_.updateView();
+
+			handleIntent();
+
 			displayView();
 		}
 		refreshed();
@@ -243,7 +238,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		}
 		String r = findHashCode(restos_, id);
 		Log.d("FoodPlugin", "Found restaurant : " + r);
-		int index = restos_.indexOf(r);
+
+		if(prefsRestos_ == null){
+			prefsRestos_ = initializePrefsRestos(prefsRestos_, getApplicationContext());
+		}
+
+		int index = prefsRestos_.indexOf(r);
 
 		Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
 				this.getString(R.string.food_restaurants));
@@ -255,7 +255,6 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			Log.d("FoodPlugin", "adapt is null");
 		}
 
-		Log.d("FoodPlugin", "Show menu with hashcode : " + id);
 		// Tracker.getInstance().trackPageView("food/menusListToggle" + r);
 	}
 
@@ -303,7 +302,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
-						.getDateLastUpdatedMenus();
+				.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -354,7 +353,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 					public void performAction(View view) {
 						actionBar_.removeActionAt(0);
 						foodDisplayHandler_
-								.setCurrentDisplayType(R.id.food_menu_restaurants);
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 						foodDisplayHandler_.updateView();
 						displayView();
 					}
@@ -367,8 +366,8 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			}
 		} else {
 			foodDisplayHandler_
-					.setCurrentDisplayType(FoodDisplayType.Restaurants
-							.getValue());
+			.setCurrentDisplayType(FoodDisplayType.Restaurants
+					.getValue());
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
@@ -437,13 +436,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 				if (extras != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
 					FoodDisplayType previous = foodDisplayHandler_
-							.getCurrentDisplayType();
+					.getCurrentDisplayType();
 					foodDisplayHandler_
-							.setCurrentDisplayType(R.id.food_menu_suggestions);
+					.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -494,7 +493,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 					isSandwichDisplay_ = false;
 				}
 				foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
+				.setCurrentDisplayType(R.id.food_menu_restaurants);
 			} else {
 				foodDisplayHandler_.setCurrentDisplayType(125);
 			}
@@ -540,9 +539,9 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			expandMenus_.invalidate();
 
 			Adapter adapt = foodDisplayHandler_.getListAdapter()
-					.getExpandableList(
-							FoodPlugin.this
-									.getString(R.string.food_restaurants));
+			.getExpandableList(
+					FoodPlugin.this
+					.getString(R.string.food_restaurants));
 			if (adapt != null) {
 				if (adapt instanceof RestaurantListAdapter) {
 					((RestaurantListAdapter) adapt).toggleAll(expanded);
@@ -586,12 +585,12 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 								if (m_ != null) {
 									MainscreenNews bestMeal = new MainscreenNews(
 											m_.getName_()
-													+ "\n"
-													+ m_.getRestaurant_()
-															.getName(),
+											+ "\n"
+											+ m_.getRestaurant_()
+											.getName(),
 											m_.getDescription_(), m_
-													.getRestaurant_().getName()
-													.hashCode(), that,
+											.getRestaurant_().getName()
+											.hashCode(), that,
 											new Date());
 									news.add(bestMeal);
 									callback.callback(news);
@@ -600,31 +599,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 
 							private Meal getBestMeal(
 									HashMap<Integer, Rating> ratings) {
-								SharedPreferences prefs = otherCtx_.getSharedPreferences(RESTO_PREFS_NAME, 0);
 								restos_ = getRestaurants();
 								if(restos_.isEmpty()){
 									Log.d("FoodPlugin", "Restaurants vides");
 								}
-								prefsRestos_ = new ArrayList<String>();
-								
-								if(prefs.getAll().isEmpty()){
-									Log.d("FoodPlugin","First time instanciatation (Mainscreen)");
-									Editor prefsEditor = prefs.edit();
-									
-									for(String r : restos_){
-										prefsEditor.putBoolean(r, true);
-										prefsRestos_.add(r);
-									}
-									prefsEditor.commit();
-								}else{							
-									for(String r : restos_){
-										if(prefs.getBoolean(r, false)){
-											prefsRestos_.add(r);
-										}
-									}
-								}
-								
-								
+
+								prefsRestos_ = initializePrefsRestos(prefsRestos_, otherCtx_);
+
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
 
@@ -637,7 +618,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 									}
 
 									mealsVector = sorter
-											.sortByRatings(mealsVector);
+									.sortByRatings(mealsVector);
 								}
 								if (mealsVector != null
 										&& !mealsVector.isEmpty()) {
@@ -664,13 +645,13 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		getRequestHandler().execute(new MainscreenMenusRequest(), "getMenus",
 				(RequestParameters) null);
 	}
-	
+
 	private ArrayList<String> getRestaurants() {
 		ArrayList<String> list = new ArrayList<String>();
 
 		try {
 			InputStream instream = this.getClass().getResourceAsStream(
-					"restaurants_names.txt");
+			"restaurants_names.txt");
 
 			if (instream != null) {
 
@@ -692,5 +673,29 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 		}
 
 		return list;
+	}
+
+	public ArrayList<String> initializePrefsRestos(ArrayList<String> restos, Context ctx){
+		restos = new ArrayList<String>();
+		SharedPreferences prefs = ctx.getSharedPreferences(RESTO_PREFS_NAME, 0);
+
+		if(prefs.getAll().isEmpty()){
+			Log.d("FoodPlugin","First time instanciatation (Mainscreen)");
+			Editor prefsEditor = prefs.edit();
+
+			for(String r : restos_){
+				prefsEditor.putBoolean(r, true);
+				restos.add(r);
+			}
+			prefsEditor.commit();
+		}else{							
+			for(String r : restos_){
+				if(prefs.getBoolean(r, false)){
+					restos.add(r);
+				}
+			}
+		}
+
+		return restos;
 	}
 }
