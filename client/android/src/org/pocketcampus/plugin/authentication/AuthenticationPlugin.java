@@ -13,7 +13,6 @@ import org.pocketcampus.shared.plugin.social.User;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +38,7 @@ public class AuthenticationPlugin extends PluginBase {
 	private static String username = null;
 	private static String password = null;
 	private final Activity thisActivity_ = this;
+	private static Class<?> toStartAfterLogin_ = null;
 
 	@Override
 	public PluginInfo getPluginInfo() {
@@ -148,12 +148,13 @@ public class AuthenticationPlugin extends PluginBase {
 					status = false;
 				}
 				
-				
 				/*
 				 * If successful login, we launch toLaunchIfSuccess activity. Otherwise we open a login window.
 				 */
 				if(status) {
-					context.startActivity(new Intent(context, toStartIfSuccess));
+					if(toStartAfterLogin_ != null) {
+						context.startActivity(new Intent(context, toStartAfterLogin_));
+					}
 				} else {
 					context.startActivity(new Intent(context, AuthenticationPlugin.class));
 				}
@@ -162,6 +163,7 @@ public class AuthenticationPlugin extends PluginBase {
 		
 		String username = PreferenceManager.getDefaultSharedPreferences(context).getString("username", null);
 		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
+		toStartAfterLogin_ = toStartIfSuccess;
 
 		if(username == null || sessionId == null || requestHandler_ == null) {
 			context.startActivity(new Intent(context, AuthenticationPlugin.class));
@@ -204,6 +206,13 @@ public class AuthenticationPlugin extends PluginBase {
 				SocialPositionUpdater.startPositionUpdater(thisActivity_);
 				
 				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
+				
+				//starts secured activity if specified
+				if(toStartAfterLogin_ != null) {
+					thisActivity_.startActivity(new Intent(thisActivity_, toStartAfterLogin_));
+				} else {
+					Toast.makeText(thisActivity_, "HAAAA", Toast.LENGTH_LONG).show();
+				}
 				
 				//close login activity
 				thisActivity_.finish();
