@@ -32,12 +32,13 @@ import com.google.gson.reflect.TypeToken;
  * @status ok
  * @author gldalmas@gmail.com
  */
-public class SocialFriendsList extends ListActivity { 
+public class SocialFriendsList extends ListActivity {
 	private static Activity this_;
 	private static SocialListSeparator listSeparator_;
 	private SocialFriendsListAdapter friendsListAdapter_ = null;
 	private SocialRequestingFriendsListAdapter requestingFriendsListAdapter_ = null;
 	
+	private ActionBar actionBar_;
 	private Button buttonSelect_;
 	private Button buttonPermission_;
 	private Button buttonDelete_;
@@ -49,7 +50,8 @@ public class SocialFriendsList extends ListActivity {
 		
 		this_ = this;
 		
-		setupActionBar((ActionBar) findViewById(R.id.actionbar));
+		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
+		setupActionBar(actionBar_);
 		
 		//Session info
 		AuthToken token = AuthenticationPlugin.getAuthToken(this_);
@@ -155,7 +157,10 @@ public class SocialFriendsList extends ListActivity {
 					buttonSelect_.setEnabled(false);
 				}
 				
+				actionBar_.setProgressBarVisibility(View.GONE);
+				
 				setListAdapter(listSeparator_);
+				
 				getListView().setTextFilterEnabled(true);
 			} else {
 				//If request fails, we close connection.
@@ -167,6 +172,8 @@ public class SocialFriendsList extends ListActivity {
 	
 	private static void setupActionBar(ActionBar actionBar) {
 		actionBar.setTitle(R.string.app_name);
+		actionBar.setProgressBarVisibility(View.VISIBLE);
+		
 		actionBar.addAction(new Action() {
 			@Override
 			public void performAction(View view) {
