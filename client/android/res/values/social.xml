@@ -50,9 +50,12 @@
 	<string name="social_requesting_friend_confirm">confirm</string>
 	<string name="social_requesting_friend_ignore">ignore</string>
 	<string name="social_permission_dialog_button_ok">Update</string>
+	<string name="social_friendlist_empty_message">Your contact list is empty\nFind people using the directory !</string>
 	<string name="social_permissions_title_a">Edit\u0020</string>
 	<string name="social_permissions_title_b">\'s permissions</string>
 	<string name="social_permissions_title_c">multiple permissions</string>
+	
+	
 	
 	
 </resources>

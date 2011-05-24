@@ -16,16 +16,23 @@
 	android:orientation="vertical"
 	>
 			
-		<ListView 
-			style="@style/Theme.ListView"
-			android:id="@+id/android:list" 
-			android:paddingTop="0dip"
+		<LinearLayout
+			android:id="@+id/SocialFriendsListBodyHolder"
 			android:layout_width="fill_parent"
 			android:layout_height="0px"
-			android:layout_weight="0.88"
-			android:drawSelectorOnTop="false"
-			android:cacheColorHint="#00000000" />
+			android:layout_weight="0.88"> 
+		
+			<ListView 
+				style="@style/Theme.ListView"
+				android:id="@+id/android:list" 
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
 				
+				android:drawSelectorOnTop="false"
+				android:cacheColorHint="#00000000" />
+		
+		</LinearLayout>			
+		
 		<LinearLayout 
 				android:id="@+id/friendsListButtonsTableRow" 
 				android:orientation="horizontal" 
@@ -34,7 +41,7 @@
 				android:layout_height="0px" 
 				android:weightSum="1.0">
 				
-			<Button android:text="@string/friendsListButtonToggle" android:id="@+id/friendsListButtonToggle" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent"></Button>
+			<Button android:text="@string/friendsListButtonToggle" android:id="@+id/friendsListButtonToggle" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
 			<Button android:text="@string/friendsListButtonPerm" android:id="@+id/friendsListButtonPerm" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
 			<Button android:text="@string/friendsListButtonDel" android:id="@+id/friendsListButtonDel" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
 		

@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Permission panel
  * @status ugly, but fine
- * @author gldalmas@gmail.
+ * @author gldalmas@gmail.com
  */
 public class SocialPermissionDialog extends Dialog {
 	private Context context_;
@@ -124,7 +124,7 @@ public class SocialPermissionDialog extends Dialog {
 				rp.addParameter("sessionId", token.getSessionId());
 				rp.addParameter("n", ""+n);
 				for(int i = 0; i < n; i++) {
-					rp.addParameter("user__"+i, selectedUsers_.get(i % nbU).getIdFormat());
+					rp.addParameter("user__"+i, selectedUsers_.get(i % nbU).getSciper());
 					rp.addParameter("permission__"+i, permissions_.get(i % nbP).getName());
 					rp.addParameter("granted__"+i, permissionBoxes_[i % nbP].isChecked() ? "yes" : "no");
 				}
@@ -151,7 +151,7 @@ public class SocialPermissionDialog extends Dialog {
 			RequestParameters rp = new RequestParameters();
 			rp.addParameter("username", token.getUsername());
 			rp.addParameter("sessionId", token.getSessionId());
-			rp.addParameter("granted_to", selectedUsers_.get(0).getIdFormat());
+			rp.addParameter("granted_to", selectedUsers_.get(0).getSciper());
 			
 			SocialPlugin.getSocialRequestHandler().execute(new GetPermissionsRequest(), "getPermissions", rp);	
 		}

@@ -113,7 +113,7 @@ public class SocialPlugin extends PluginBase {
 		RequestParameters rp = new RequestParameters();
 		rp.addParameter("username", PreferenceManager.getDefaultSharedPreferences(context).getString("username", null));
 		rp.addParameter("sessionId", PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null));
-		rp.addParameter("target", target.getIdFormat());
+		rp.addParameter("target", target.getSciper());
 		
 		SocialPlugin.getSocialRequestHandler().execute(new SocialRequest(), type, rp);
 	}

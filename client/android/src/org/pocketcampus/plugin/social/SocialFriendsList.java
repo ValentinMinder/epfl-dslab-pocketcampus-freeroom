@@ -6,6 +6,8 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
+import org.pocketcampus.plugin.directory.DirectoryInfo;
+import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
@@ -14,10 +16,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -139,21 +147,28 @@ public class SocialFriendsList extends ListActivity {
 			if(friendsLists != null) {
 				listSeparator_ = new SocialListSeparator(this_);
 				boolean allEmpty = true;
+				boolean friendsEmpty = true;
 				
 				if(!friendsLists.getRequesting().isEmpty()) {
 					//Starting adapter for requesting friends list
 					requestingFriendsListAdapter_ = new SocialRequestingFriendsListAdapter(this_, friendsLists.getRequesting(), this_);
 					listSeparator_.addSection(this_.getString(R.string.social_requesting_friends_list_separator), requestingFriendsListAdapter_);
+					allEmpty = false;
 				}
 				if(!friendsLists.getFriends().isEmpty()) {
 					//Starting adapter for friends list
 					friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsLists.getFriends(), this_);
 					listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
 					allEmpty = false;
+					friendsEmpty = false;
+				}
+				
+				if(!friendsEmpty) {
+					buttonSelect_.setEnabled(true);
 				}
 				
 				if(allEmpty) {
-					buttonSelect_.setEnabled(false);
+					displayMessage();
 				}
 				
 				actionBar_.setProgressBarVisibility(View.GONE);
@@ -167,6 +182,49 @@ public class SocialFriendsList extends ListActivity {
 				this_.finish();
 			}
 		}
+	}
+	
+	private void displayMessage() {
+		LinearLayout ll = (LinearLayout) findViewById(R.id.SocialFriendsListBodyHolder);
+		
+		LinearLayout msgHolder = new LinearLayout(this);
+//		msgHolder.setGravity(Gravity.CENTER);
+		msgHolder.setOrientation(LinearLayout.VERTICAL);
+		
+		TextView tv = new TextView(this);
+		tv.setText(this.getResources().getString(R.string.social_friendlist_empty_message));
+//		tv.setGravity(Gravity.CENTER);
+		
+		LinearLayout buttonHolder = new LinearLayout(this);
+		buttonHolder.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		buttonHolder.setPadding(0, 10, 0, 0);
+//		buttonHolder.setGravity(Gravity.CENTER);
+		
+		ImageButton ib = new ImageButton(this);
+		ib.setImageDrawable(new DirectoryInfo().getIcon().getDrawable(this));
+		ib.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				this_.startActivity(new Intent(this_, DirectoryPlugin.class));
+				this_.finish();
+			}
+		});
+//		ib.setAdjustViewBounds(true);
+//		ib.setMaxWidth(new DirectoryInfo().getIcon().getDrawable(this).getIntrinsicWidth());
+//		ib.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		
+		buttonHolder.addView(ib);
+		
+		msgHolder.addView(tv);
+		msgHolder.addView(buttonHolder);
+		
+		LinearLayout newMsg = new LinearLayout(this);
+//		newMsg.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		newMsg.setGravity(Gravity.CENTER);
+		newMsg.addView(msgHolder);
+		
+		ll.removeAllViews();
+		ll.addView(newMsg);
 	}
 	
 	private static void setupActionBar(ActionBar actionBar) {
