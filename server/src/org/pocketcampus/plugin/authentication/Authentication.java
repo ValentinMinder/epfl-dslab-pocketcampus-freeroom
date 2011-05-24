@@ -119,7 +119,7 @@ public class Authentication implements IPlugin {
 		return status;
 	}
 	
-	public static User identify(String username) {
+	public static User identifyByUsername(String username) {
 		User user = null;
 		LDAPConnection ldap = null;
 		
@@ -136,6 +136,43 @@ public class Authentication implements IPlugin {
 					
 				user = new User(firstName, lastName, sciper);
 				user.setSessionId(AuthenticationSessions.getSession(username));
+			} else {
+				user = null;
+			}
+		} catch(LDAPException e) {
+			e.printStackTrace();
+			user = null;
+		} catch(GeneralSecurityException e) {
+			e.printStackTrace();
+			user = null;
+		} finally {
+			ldap.close();
+		}
+
+		return user;
+	}
+	
+	public static User identifyBySciper(String sciper) {
+		User user = null;
+		LDAPConnection ldap = null;
+		
+		try {
+			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
+			ldap = new LDAPConnection(socketFactory, "ldap.epfl.ch", 636);
+			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(uniqueIdentifier="+sciper+")");
+			List<SearchResultEntry> entries = searchResult.getSearchEntries();
+
+			if(!entries.isEmpty()) {
+				String firstName = entries.get(0).getAttribute("givenName").getValue();
+				String lastName = entries.get(0).getAttribute("sn").getValue();
+				String username = entries.get(0).getAttribute("uid").getValue();
+					
+				user = new User(firstName, lastName, sciper);
+				String sessionId = AuthenticationSessions.getSession(username);
+				if(sessionId != null) {
+					user.setSessionId(sessionId);
+				}
+				
 			} else {
 				user = null;
 			}

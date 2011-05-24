@@ -37,9 +37,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String targetId = request.getParameter("target");
 
 		if(username != null && sessionId != null && targetId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
-			User target = new User(targetId);
-
+			User user = Authentication.identifyByUsername(username);
+			User target = Authentication.identifyBySciper(targetId);
 			try {
 				if(
 						!user.equals(target) &&
@@ -66,8 +65,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String targetId = request.getParameter("target");
 
 		if(username != null && sessionId != null && targetId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
-			User target = new User(targetId);
+			User user = Authentication.identifyByUsername(username);
+			User target = Authentication.identifyBySciper(targetId);
 
 			try {
 				if(
@@ -94,8 +93,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String targetId = request.getParameter("target");
 
 		if(username != null && sessionId != null && targetId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
-			User target = new User(targetId);
+			User user = Authentication.identifyByUsername(username);
+			User target = Authentication.identifyBySciper(targetId);
 
 			try {
 				if(
@@ -120,8 +119,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String targetId = request.getParameter("target");
 
 		if(username != null && sessionId != null && targetId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
-			User target = new User(targetId);
+			User user = Authentication.identifyByUsername(username);
+			User target = Authentication.identifyBySciper(targetId);
 
 			try {
 				if(
@@ -145,7 +144,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String sessionId = request.getParameter("sessionId");
 
 		if(username != null && sessionId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
+			User user = Authentication.identifyByUsername(username);
 
 			try {
 
@@ -201,8 +200,8 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String target = request.getParameter("granted_to");
 
 		if(username != null && sessionId != null && target != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
-			User granted_to = new User(target);
+			User user = Authentication.identifyByUsername(username);
+			User granted_to = Authentication.identifyBySciper(target);
 
 			try {
 				permissions = new LinkedList<Permission>();
@@ -225,7 +224,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String sN = request.getParameter("n");
 
 		if(username != null && sessionId != null && sN != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
+			User user = Authentication.identifyByUsername(username);
 			int n = 0;
 			try {
 				n = Integer.parseInt(sN);
@@ -236,14 +235,15 @@ public class Social implements IPlugin, IMapElementsProvider {
 
 			for(int i = 0; i < n; i++) {
 				String service = request.getParameter("permission__"+i);
-				String target = request.getParameter("user__"+i);
+				String targetId = request.getParameter("user__"+i);
 				String operation = request.getParameter("granted__"+i);
-				if(service != null && target != null && operation != null) {
+				if(service != null && targetId != null && operation != null) {
+					User target = Authentication.identifyBySciper(targetId);
 					try {
-						if(operation.equals("yes") && !SocialDatabase.testPermission(service, user, new User(target))) {
-							SocialDatabase.addPermission(service, user, new User(target));
-						} else if(operation.equals("no") && SocialDatabase.testPermission(service, user, new User(target))) {
-							SocialDatabase.removePermission(service, user, new User(target));
+						if(operation.equals("yes") && !SocialDatabase.testPermission(service, user, target)) {
+							SocialDatabase.addPermission(service, user, target);
+						} else if(operation.equals("no") && SocialDatabase.testPermission(service, user, target)) {
+							SocialDatabase.removePermission(service, user, target);
 						}
 					} catch(ServerException e) {
 						e.printStackTrace();
@@ -261,7 +261,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 		String sessionId = request.getParameter("sessionId");
 
 		if(username != null && sessionId != null && AuthenticationSessions.authenticateSession(username, sessionId)) {
-			User user = Authentication.identify(username);
+			User user = Authentication.identifyByUsername(username);
 			double longitude = 0; 
 			double latitude = 0;
 			double altitude = 0;
@@ -296,7 +296,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 	public List<MapElementBean> getLayerItems(AuthToken token, int layerId) {
 		List<MapElementBean> items = new ArrayList<MapElementBean>();
 
-		User me = Authentication.identify(token.getUsername());
+		User me = Authentication.identifyByUsername(token.getUsername());
 		String serviceId = "positioning";
 		long timeout = 1000 * 60 * 60;
 
@@ -331,5 +331,13 @@ public class Social implements IPlugin, IMapElementsProvider {
 		long deltaInMinutes = (int)((now - stamp) / (1000 * 60));
 
 		return deltaInMinutes+"";
+	}
+	
+	/**
+	 * TEST
+	 */
+	@PublicMethod
+	public String lalala(HttpServletRequest request) {
+		return Authentication.identifyBySciper("178718").toString();
 	}
 }
