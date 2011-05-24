@@ -1,7 +1,5 @@
 package org.pocketcampus.shared.plugin.social;
 
-import java.io.UnsupportedEncodingException;
-
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
 public class User {
@@ -41,30 +39,18 @@ public class User {
 	}
 	
 	public void setSessionId(String sessionId) {
-		if(sessionId.length() != AuthToken.SESSION_ID_SIZE)
+		if(sessionId == null || sessionId.length() != AuthToken.SESSION_ID_SIZE)
 			throw new IllegalArgumentException();
 		
 		this.sessionId_ = sessionId;
 	}
 	
 	public String getFirstName() {
-		String out = null;
-		try {
-			out = new String(firstName_.getBytes("ISO-8859-1"));
-		} catch(UnsupportedEncodingException e) {
-			out = firstName_;
-		}
-		return out;
+		return firstName_;
 	}
 	
 	public String getLastName() {
-		String out = null;
-		try {
-			out = new String(lastName_.getBytes("ISO-8859-1"));
-		} catch(UnsupportedEncodingException e) {
-			out = lastName_;
-		}
-		return out;
+		return lastName_;
 	}
 	
 	public String getSciper() {
@@ -105,11 +91,11 @@ public class User {
 		String fullName = firstName_ + " " + lastName_;
 		String out = null;
 		
-		try {
-			out = new String(fullName.getBytes("ISO-8859-1"));
-		} catch(UnsupportedEncodingException e) {
+//		try {
+//			out = new String(fullName.getBytes("ISO-8859-1"));
+//		} catch(UnsupportedEncodingException e) {
 			out = fullName;
-		}
+//		}
 		return out;
 	}
 	
