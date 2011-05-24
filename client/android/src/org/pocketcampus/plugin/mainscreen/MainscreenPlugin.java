@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 
 public class MainscreenPlugin extends PluginBase {
 	private Context ctx_;
@@ -86,6 +87,19 @@ public class MainscreenPlugin extends PluginBase {
 	public void onRestart(){
 		super.onRestart();
 		refresh();
+	}
+
+	/**
+	 * Close the drawer is it is open. 
+	 */
+	@Override
+	public void onBackPressed() {
+		SlidingDrawer sd = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
+		if(sd != null && sd.isOpened()) {
+			sd.animateClose();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	private void showAbout() {
