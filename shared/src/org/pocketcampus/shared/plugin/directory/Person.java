@@ -1,14 +1,9 @@
 package org.pocketcampus.shared.plugin.directory;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 
-public class Person implements Serializable, Comparable {
+public class Person implements Serializable, Comparable<Person> {
 	/**
 	 * 
 	 */
@@ -84,7 +79,7 @@ public class Person implements Serializable, Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Person o) {
 		Person a = this;
 		Person b = (Person)o;
 		int r = a.last_name.compareToIgnoreCase(b.last_name);

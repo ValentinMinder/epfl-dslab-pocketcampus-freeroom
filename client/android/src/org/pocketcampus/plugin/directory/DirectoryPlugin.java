@@ -137,7 +137,6 @@ public class DirectoryPlugin extends PluginBase{
 		if(! sciper.equals(""))
 			reqParams.addParameter("sciper", sciper);
 		
-//		// mettre vos userame pour test
 		if(accurateSearch) {
 			getRequestHandler().execute(new DirectoryRequest(), "bla", reqParams);
 		} else {
