@@ -10,6 +10,7 @@ import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Looper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -48,6 +49,7 @@ public class SocialPositionUpdater {
 
 		@Override
 		public void run() {
+			Looper.prepare();
 			do {
 				if(token_ != null) {
 					if(location_ != null) {RequestParameters rp = new RequestParameters();
@@ -69,16 +71,18 @@ public class SocialPositionUpdater {
 						@Override
 						public void userLocationReceived(Location location) {
 							
-							/////////////////  TEMPORARY  /////////////////
-							Location epflCenter = new Location("EPFL");
-							epflCenter.setLatitude(46.520013);
-							epflCenter.setLongitude(6.56682);
-							float distanceToEpflCenter = location.distanceTo(epflCenter );
-							
-							if (distanceToEpflCenter < 500.0) {
-								location_ = location;
-							} else {
-								location_ = null;
+							if(location != null) {
+								/////////////////  TEMPORARY  /////////////////
+								Location epflCenter = new Location("EPFL");
+								epflCenter.setLatitude(46.520013);
+								epflCenter.setLongitude(6.56682);
+								float distanceToEpflCenter = location.distanceTo(epflCenter );
+								
+								if (distanceToEpflCenter < 500.0) {
+									location_ = location;
+								} else {
+									location_ = null;
+								}
 							}
 						}
 					}, POSITION_TIMEOUT, POSITION_ACURACY);
@@ -92,6 +96,7 @@ public class SocialPositionUpdater {
 					on_ = false;
 				}
 			} while(on_);
+			Looper.loop();
 		}
 
 		public void shutDown() {
