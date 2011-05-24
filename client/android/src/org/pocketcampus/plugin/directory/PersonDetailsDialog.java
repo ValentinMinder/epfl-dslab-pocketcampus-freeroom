@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.directory;
 
 import org.pocketcampus.R;
+import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.shared.plugin.social.User;
@@ -96,6 +97,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		//mapButton.setVisibility(visibility(displayedPerson_.hasOffice()));
 		mapButton.setVisibility(visibility(false)); // TODO call map Intent when ready
 		webButton.setVisibility(visibility(displayedPerson_.hasWeb()));
+		addFriendButton.setVisibility(visibility(AuthenticationPlugin.getUser(ctx_)!=null));
 		
 		mailButton.setOnClickListener(this);
 		phoneButton.setOnClickListener(this);
@@ -182,7 +184,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	private void addToSocialAsFriend(){
 		AlertDialog dialog = new AlertDialog.Builder(ctx_)
-		.setTitle("Add "+displayedPerson_.first_name+" "+displayedPerson_.last_name+" to your contacts?")
+		.setTitle("Add "+displayedPerson_.first_name+" as a friend?")
 		
 		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override

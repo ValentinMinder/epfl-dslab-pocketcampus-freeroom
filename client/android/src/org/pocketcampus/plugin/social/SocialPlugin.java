@@ -30,13 +30,15 @@ public class SocialPlugin extends PluginBase {
 	
 	private static RequestHandler socialRequestHandler_ = null;
 	
+	public SocialPlugin() {
+		socialRequestHandler_ = this.getRequestHandler();
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		tracker_ = Tracker.getInstance();
-		
-		socialRequestHandler_ = this.getRequestHandler();
 		
 		AuthenticationPlugin.authenticate(this, SocialFriendsList.class);
 		this.finish();
