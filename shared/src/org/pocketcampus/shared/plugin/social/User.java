@@ -1,5 +1,7 @@
 package org.pocketcampus.shared.plugin.social;
 
+import java.io.UnsupportedEncodingException;
+
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
 public class User {
@@ -46,11 +48,23 @@ public class User {
 	}
 	
 	public String getFirstName() {
-		return firstName_;
+		String out = null;
+		try {
+			out = new String(firstName_.getBytes("ISO-8859-1"));
+		} catch(UnsupportedEncodingException e) {
+			out = firstName_;
+		}
+		return out;
 	}
 	
 	public String getLastName() {
-		return lastName_;
+		String out = null;
+		try {
+			out = new String(lastName_.getBytes("ISO-8859-1"));
+		} catch(UnsupportedEncodingException e) {
+			out = lastName_;
+		}
+		return out;
 	}
 	
 	public String getSciper() {
@@ -88,7 +102,15 @@ public class User {
 	}
 	
 	private String getNiceFormat() {
-		return firstName_ + " " + lastName_;
+		String fullName = firstName_ + " " + lastName_;
+		String out = null;
+		
+		try {
+			out = new String(fullName.getBytes("ISO-8859-1"));
+		} catch(UnsupportedEncodingException e) {
+			out = fullName;
+		}
+		return out;
 	}
 	
 	@Override
