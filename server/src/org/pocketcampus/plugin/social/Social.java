@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.social;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -149,8 +150,11 @@ public class Social implements IPlugin, IMapElementsProvider {
 			try {
 
 				LinkedList<User> friends = new LinkedList<User>(SocialDatabase.getFriends(user));
+				Collections.sort(friends);
+				
 				LinkedList<User> pendings = new LinkedList<User>(SocialDatabase.getPending(user));
-
+				Collections.sort(pendings);
+				
 				friendsLists = new FriendsLists(friends, pendings);
 
 			} catch(ServerException e) {
