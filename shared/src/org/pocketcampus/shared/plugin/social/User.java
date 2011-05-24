@@ -2,7 +2,7 @@ package org.pocketcampus.shared.plugin.social;
 
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 
-public class User {
+public class User implements Comparable<User> {
 	private final String firstName_;
 	private final String lastName_;
 	private final String sciper_;
@@ -88,15 +88,7 @@ public class User {
 	}
 	
 	private String getNiceFormat() {
-		String fullName = firstName_ + " " + lastName_;
-		String out = null;
-		
-//		try {
-//			out = new String(fullName.getBytes("ISO-8859-1"));
-//		} catch(UnsupportedEncodingException e) {
-			out = fullName;
-//		}
-		return out;
+		return firstName_ + " " + lastName_;
 	}
 	
 	@Override
@@ -107,5 +99,10 @@ public class User {
 	@Override
 	public String toString() {
 		return getNiceFormat();
+	}
+
+	@Override
+	public int compareTo(User that) {
+		return this.getNiceFormat().compareToIgnoreCase(that.getNiceFormat());
 	}
 }
