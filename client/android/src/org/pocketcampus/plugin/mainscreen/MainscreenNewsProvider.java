@@ -58,9 +58,6 @@ public class MainscreenNewsProvider implements ICallback {
 
 	@Override
 	public void callback(ArrayList<MainscreenNews> news) {
-		System.out.println("GOT NEWS!!!");
-		System.out.println(news.toArray());
-		
 		main_.addAll(news);
 		nbLoading_--;
 		Log.d("MainscreenNewsProvider","NbLoading--: " + nbLoading_);					

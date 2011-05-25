@@ -83,17 +83,28 @@ public class MainscreenPlugin extends PluginBase {
 
 	}
 
+	/**
+	 * Closes the drawer when coming back from another plugin.
+	 */
 	@Override
 	public void onRestart(){
 		super.onRestart();
+		closeQuickView();
 		refresh();
 	}
 
 	/**
-	 * Close the drawer is it is open. 
+	 * Closes the drawer on back pressed if it is open.
 	 */
 	@Override
 	public void onBackPressed() {
+		closeQuickView();
+	}
+	
+	/**
+	 * Closes the quick view drawer.
+	 */
+	private void closeQuickView() {
 		SlidingDrawer sd = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
 		if(sd != null && sd.isOpened()) {
 			sd.animateClose();
@@ -101,7 +112,11 @@ public class MainscreenPlugin extends PluginBase {
 			super.onBackPressed();
 		}
 	}
-
+	
+	/**
+	 * Shows a dialog with informations about the application.
+	 * TODO add text for the licenses!
+	 */
 	private void showAbout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -129,6 +144,9 @@ public class MainscreenPlugin extends PluginBase {
 		alert.show();
 	}
 
+	/**
+	 * Shows the credits for the application.
+	 */
 	private void showCredits() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.credits);
@@ -154,13 +172,19 @@ public class MainscreenPlugin extends PluginBase {
 		return i;
 	}
 
+	/**
+	 * Shows the menu when the hardware button is pressed.
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.mainscreen, menu);
 		return true;
 	}
-
+	
+	/**
+	 * Handles clicks on the menu buttons.
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -188,7 +212,6 @@ public class MainscreenPlugin extends PluginBase {
 	public PluginInfo getPluginInfo() {
 		return new MainscreenInfo();
 	}
-	
 	
 	protected void displayNews() {
 		final ListView l = (ListView) findViewById(R.id.mainscreen_news_list_list);
