@@ -10,6 +10,7 @@
 	<string name="food_menucancelled">Could not connect to the server.</string>
 	<string name="food_reload_unsuccessful">Unable to refresh menu.</string>
 	<string name="food_check_connection">Unable to contact to server, please check your connection.</string>
+	<string name="food_no_additional_information">There is no additional information to display</string>
 		
 	<!--  Preferences -->
 	<string name="food_preferences_title">Restaurants you want to display</string>
