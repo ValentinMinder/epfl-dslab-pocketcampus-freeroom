@@ -92,7 +92,7 @@ public class MainscreenPlugin extends PluginBase {
 	public void onRestart(){
 		super.onRestart();
 		
-		if(quickView_.isOpened()) {
+		if(quickView_!=null && quickView_.isOpened()) {
 			quickView_.animateClose();
 		}
 		
@@ -104,7 +104,7 @@ public class MainscreenPlugin extends PluginBase {
 	 */
 	@Override
 	public void onBackPressed() {
-		if(quickView_.isOpened()) {
+		if(quickView_!=null && quickView_.isOpened()) {
 			quickView_.animateClose();
 		} else {
 			super.onBackPressed();
