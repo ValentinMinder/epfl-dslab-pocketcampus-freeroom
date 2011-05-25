@@ -30,6 +30,16 @@ public class MapElementsList extends ArrayList<MapElement> {
 		this.iconUrl_ = mlb.getDrawableUrl();
 		//XXX more?
 	}
+	
+	public MapElement getItemFromId(int id) {
+		for(MapElement me : this) {
+			if(me.getItemId() == id) {
+				return me;
+			}
+		}
+		
+		return null;
+	}
 		
 	public String getLayerId() {
 		return layerId_;

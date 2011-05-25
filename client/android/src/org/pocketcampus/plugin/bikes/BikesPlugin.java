@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
@@ -12,6 +13,7 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
 import android.content.Context;
@@ -19,7 +21,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -182,7 +183,7 @@ public class BikesPlugin extends PluginBase {
         return text;
 	}
 	
-	private TableRow createRow(BikeStation station, boolean isPair, LayoutParams layoutParams) {
+	private TableRow createRow(final BikeStation station, boolean isPair, LayoutParams layoutParams) {
 		
 		TableRow row = new TableRow(ctx_);
         row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
@@ -211,6 +212,16 @@ public class BikesPlugin extends PluginBase {
 		//Empty racks
 		row.addView(createTextView(station.getEmptyRacks() + "", Gravity.RIGHT));
 
+		row.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bundle b = new Bundle();
+				b.putSerializable("MapLayer", "E947267780DD3BC28FE75AA56DA18DC7");
+				b.putInt("MapItem", station.getId());
+				Core.startPluginWithBundle(getApplicationContext(), new MapPlugin(), b);
+			}
+		});
 
 		return row;
 	}

@@ -17,11 +17,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
@@ -136,6 +136,9 @@ public class MapPlugin extends PluginBase {
 
 	// Handler used to refresh the overlays 
 	private Handler overlaysHandler_ = new Handler();
+	
+	private String layerId_;
+	private int itemId_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,20 +150,14 @@ public class MapPlugin extends PluginBase {
 		Tracker.getInstance().trackPageView("map/home");
 
 		initVariables();
-
+		
 		// Setup view
 		setupMapView();
 
-		// Check if another activity wants to show something
-		Bundle extras = getIntent().getExtras();
-		if(!handleIntent(extras)) {
-			// Download the available layers
-			
-			incrementProgressCounter();
-			
-			RequestParameters params = new RequestParameters();
-			getRequestHandler().execute(new LayersRequest(), "getLayers", params);
-		}
+		// Download the available layers
+		incrementProgressCounter();
+		RequestParameters params = new RequestParameters();
+		getRequestHandler().execute(new LayersRequest(), "getLayers", params);
 	}
 
 	private void initVariables() {
@@ -184,9 +181,11 @@ public class MapPlugin extends PluginBase {
 		
 		layersCache_ = new LayersCache(this);
 		
-
-		// XXX Displays the overlay for live transport
-		//new TransportLiveOverlay(getApplicationContext()).requestOverlay(this);
+		Bundle extras = getIntent().getExtras();
+		if(extras != null) {
+			layerId_ = extras.getString("MapLayer");
+			itemId_ = extras.getInt("MapItem");
+		}
 	}
 
 	@Override
@@ -256,10 +255,12 @@ public class MapPlugin extends PluginBase {
 	 * @param extras the bundle containing the extras
 	 * @return Whether it handled the intent or not
 	 */
-	private boolean handleIntent(Bundle extras) {
+	private boolean handleSearchIntent(Bundle extras) {
+
 		if(extras == null) {
 			return false;
 		}
+		
 		if(extras.containsKey("MapElement")) {
 			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
 			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
@@ -396,7 +397,7 @@ public class MapPlugin extends PluginBase {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		handleIntent(intent.getExtras());
+		handleSearchIntent(intent.getExtras());
 	}
 
 	@Override
@@ -473,10 +474,6 @@ public class MapPlugin extends PluginBase {
 			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 			
-//		case R.id.map_toggle_mode:
-//			toggleMapMode();
-//			return true;
-
 		case R.id.map_clear_path:
 			clearPath();
 
@@ -556,11 +553,6 @@ public class MapPlugin extends PluginBase {
 		mapController_.setZoom(getResources().getInteger(R.integer.map_zoom_level)); 
 		mapController_.setCenter(point);
 	}
-	
-	
-//	private void toggleMapMode() {
-//		Notification.showToast(this, "Is it possible to show satellite images?");
-//	}
 
 	/**
 	 * Clear the displayed path
@@ -688,12 +680,6 @@ public class MapPlugin extends PluginBase {
 		mapView_.invalidate();
 	}
 
-	public void setRailwayOverlay(Overlay railwayOverlay) {
-		updateOverlays(false);
-		mapView_.getOverlays().add(railwayOverlay);
-		mapView_.invalidate();
-	}
-
 	/**
 	 * Adds corresponding MapElements into the list.
 	 * @param layer the layer (= list of items) where the item will be added
@@ -709,7 +695,7 @@ public class MapPlugin extends PluginBase {
 
 		incrementProgressCounter();
 		RequestParameters param = new RequestParameters();
-		param.addParameter("layer_id", String.valueOf(layer.getLayerId()));
+		param.addParameter("layer_id", layer.getLayerId());
 		param.addParameter("token", getAuthToken());
 		getRequestHandler().execute(new ItemsRequest(layer), "getItems", param);
 	}
@@ -743,6 +729,10 @@ public class MapPlugin extends PluginBase {
 		return s.distanceTo(e);
 	}
 	
+	/**
+	 * Get the AuthToken to give it with the requests
+	 * @return
+	 */
 	private String getAuthToken() {
 		AuthToken t = AuthenticationPlugin.getAuthToken(this);
 		
@@ -783,7 +773,7 @@ public class MapPlugin extends PluginBase {
 	 * Used to retreive the layers from the server
 	 */
 	class LayersRequest extends DataRequest {
-
+		
 		@Override
 		protected int expirationDelay() {
 			return 10;
@@ -927,6 +917,12 @@ public class MapPlugin extends PluginBase {
 			mapView_.invalidate();
 
 			decrementProgressCounter();
+			
+			if(layerId_ != null && layerId_.equals(layer_.getLayerId())) {
+				layerId_ = null;
+				centerOnPoint(layer_.getItemFromId(itemId_).getPoint());
+			}
+			
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.pocketcampus.plugin.mainscreen.IAllowsID;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 /**
  * Main Core class, creates the list of all plugins available and handles the launch of the new activities.
@@ -95,6 +96,13 @@ public class Core {
 		if(plugin instanceof IAllowsID) {
 			intent.putExtra("id", id);
 		}
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		ctx.startActivity(intent);
+	}
+
+	public static void startPluginWithBundle(Context ctx, PluginBase plugin, Bundle extras) {
+		Intent intent = new Intent(ctx, plugin.getClass());
+		intent.putExtras(extras);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
 	}

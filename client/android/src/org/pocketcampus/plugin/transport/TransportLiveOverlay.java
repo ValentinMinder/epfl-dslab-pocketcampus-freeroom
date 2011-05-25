@@ -115,7 +115,7 @@ public class TransportLiveOverlay {
 		@Override
 		protected void doInUiThread(String result) {
 			if(nbRunningReq_ == 0) {
-				mapPlugin_.setRailwayOverlay(pool_.crunch(0.0003, 3.2));
+				// XXX mapPlugin_.setRailwayOverlay(pool_.crunch(0.0003, 3.2));
 				
 				Timer timer = new Timer();
 				timer.schedule(new TimerTask() {
