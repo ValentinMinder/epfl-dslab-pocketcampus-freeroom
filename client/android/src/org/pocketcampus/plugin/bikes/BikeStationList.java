@@ -46,7 +46,8 @@ public class BikeStationList {
 				Log.d("BikeStationList", "Loading bikes");
 			
 				if(result == null) {
-					cancel(true);
+					onCancelled();
+					return;
 				}
 								
 				Type listType = new TypeToken<List<BikeStation>>() {}.getType();
@@ -54,7 +55,8 @@ public class BikeStationList {
 				try {
 					bikeStations_ = Json.fromJson(result, listType);
 				} catch (JsonException e) {
-					cancel(true);
+					onCancelled();
+					return;
 				}
 				
 				Log.d("BikeStationList","Bikes loaded");
