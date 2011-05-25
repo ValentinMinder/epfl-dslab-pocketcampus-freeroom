@@ -105,17 +105,20 @@ public class DirectoryPlugin extends PluginBase{
 			
 			@Override
 			protected void doInBackgroundThread(String result) {
-				if(result != null) {
-					Type listType = new TypeToken<LinkedList<Person>>(){}.getType();
-					resultsList_ = new LinkedList<Person>();
+				if(result == null) {
+					resultsList_ = null;
+					return;
+				}
 					
-					try{
-						resultsList_ = Json.fromJson(result, listType);
-					} catch (JsonSyntaxException e) {
-						resultsList_ = null;
-					} catch (JsonException e) {
-						resultsList_ = null;
-					}
+				Type listType = new TypeToken<LinkedList<Person>>(){}.getType();
+				resultsList_ = new LinkedList<Person>();
+				
+				try{
+					resultsList_ = Json.fromJson(result, listType);
+				} catch (JsonSyntaxException e) {
+					resultsList_ = null;
+				} catch (JsonException e) {
+					resultsList_ = null;
 				}
 			}
 			
