@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
@@ -23,7 +25,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,6 +32,9 @@ import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.utils.Notification;
 
 public class DirectoryPlugin extends PluginBase{
+	private ListView resultListView_;
+	private TextView errorTextView_;
+	
 	LinkedList<Person> resultsList_;
 	PersonSearchDialog searchDial_;
 	
@@ -46,6 +50,8 @@ public class DirectoryPlugin extends PluginBase{
 		setupActionBar(true);
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
 
+		resultListView_ = (ListView) findViewById(R.id.directory_result_list);
+		errorTextView_ = (TextView) findViewById(R.id.directory_emptylist);
 		
 		//creating search dialog
 		searchDial_ = new PersonSearchDialog(this);
@@ -81,9 +87,10 @@ public class DirectoryPlugin extends PluginBase{
 			return;
 		}
 		
+		showMessage("Searching...");
+		
 		incrementProgressCounter();
 		class DirectoryRequest extends DataRequest {
-			
 			
 			@Override
 			protected int expirationDelay() {
@@ -99,16 +106,15 @@ public class DirectoryPlugin extends PluginBase{
 			@Override
 			protected void doInBackgroundThread(String result) {
 				if(result != null) {
-					Gson gson = new Gson();
-					
 					Type listType = new TypeToken<LinkedList<Person>>(){}.getType();
 					resultsList_ = new LinkedList<Person>();
 					
 					try{
-						resultsList_ = gson.fromJson(result, listType);
+						resultsList_ = Json.fromJson(result, listType);
 					} catch (JsonSyntaxException e) {
 						resultsList_ = null;
-						e.printStackTrace();
+					} catch (JsonException e) {
+						resultsList_ = null;
 					}
 				}
 			}
@@ -146,29 +152,23 @@ public class DirectoryPlugin extends PluginBase{
 	
 	public void displayResultList(){
 		if(resultsList_ == null) {
-			toast("An error occured.");
+			showMessage("An error occured, please try again later.");
 			return;
 		}
 		
-		ListView resultListView = (ListView) findViewById(R.id.directory_result_list);
-		TextView emptyListTextView = (TextView) findViewById(R.id.directory_emptylist);
-		
 		if(resultsList_.isEmpty()) {
-			resultListView.setVisibility(View.GONE);
-			emptyListTextView.setVisibility(View.VISIBLE);
-			
-		} else {
-			resultListView.setVisibility(View.VISIBLE);
-			emptyListTextView.setVisibility(View.GONE);
+			showMessage("No one found.");
+			return;
 		}
 		
+		hideMessage();
 		
 		ArrayAdapter<Person> adapter = new ArrayAdapter<Person>(this, R.layout.directory_peopleentry, resultsList_);
-		resultListView.setAdapter(adapter);
+		resultListView_.setAdapter(adapter);
 		
 		adapter.notifyDataSetChanged();
 		
-		resultListView.setOnItemClickListener(new OnItemClickListener() {
+		resultListView_.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
 				Person found = ((Person)(parent.getAdapter().getItem(position)));
@@ -176,6 +176,19 @@ public class DirectoryPlugin extends PluginBase{
 
 			}
 		});
+	}
+
+	private void hideMessage() {
+		resultListView_.setVisibility(View.VISIBLE);
+		errorTextView_.setVisibility(View.GONE);
+	}
+
+
+	private void showMessage(String msg) {
+		errorTextView_.setVisibility(View.VISIBLE);
+		errorTextView_.setText(msg);
+		
+		resultListView_.setVisibility(View.GONE);
 	}
 
 	public void displayResult(Person person){

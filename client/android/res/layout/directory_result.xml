@@ -18,7 +18,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:textSize="15dip"
-			android:text="No one found."
+			android:text="Press Menu to perform a search."
 			></TextView>
 		
 		<ListView 
@@ -26,8 +26,8 @@
 			android:id="@+id/directory_result_list" 
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			style="@style/Theme.ListView">
-		</ListView>
+			style="@style/Theme.ListView"
+			></ListView>
 		
 	</RelativeLayout>
 

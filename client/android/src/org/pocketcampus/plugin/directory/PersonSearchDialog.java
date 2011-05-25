@@ -59,16 +59,15 @@ public class PersonSearchDialog extends Dialog {
 				firstNameLayout_.setVisibility(View.GONE);
 				lastNameLayout_.setVisibility(View.GONE);
 				sciperNameLayout_.setVisibility(View.VISIBLE);
-				sciperEditText_.setText("");
 				item.setTitle("Search by name");
+				clearEditTexts();
 	
 			} else {
 				firstNameLayout_.setVisibility(View.VISIBLE);
 				lastNameLayout_.setVisibility(View.VISIBLE);
 				sciperNameLayout_.setVisibility(View.GONE);
-				firstNameEditText_.setText("");
-				lastNameEditText_.setText("");
 				item.setTitle("Search by Sciper");
+				clearEditTexts();
 			}
 			break;
 	
@@ -83,6 +82,12 @@ public class PersonSearchDialog extends Dialog {
 		return true;
 	}
 	
+	private void clearEditTexts() {
+		firstNameEditText_.setText("");
+		lastNameEditText_.setText("");
+		sciperEditText_.setText("");
+	}
+
 	public String getFirstName() {
 		return firstNameEditText_.getText().toString();
 	}
