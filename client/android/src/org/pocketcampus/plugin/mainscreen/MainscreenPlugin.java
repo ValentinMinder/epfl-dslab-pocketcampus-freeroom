@@ -38,7 +38,8 @@ public class MainscreenPlugin extends PluginBase {
 	private Tracker tracker_;
 	
 	private static ActionBar actionBar_;
-
+	private SlidingDrawer quickView_;
+	
 	private static List<Class> readyNews_;
 	
 	public final static String PACKAGE = "org.pocketcampus.plugin.";
@@ -56,9 +57,10 @@ public class MainscreenPlugin extends PluginBase {
 		
 		setupActionBar(false);
 
+		quickView_ = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
+		
 		readyNews_ = new ArrayList<Class>();
 		news_ = new ArrayList<MainscreenNews>();
-		
 		
 		tracker_ = Tracker.getInstance();
 		tracker_.start(this);
@@ -89,7 +91,11 @@ public class MainscreenPlugin extends PluginBase {
 	@Override
 	public void onRestart(){
 		super.onRestart();
-		closeQuickView();
+		
+		if(quickView_.isOpened()) {
+			quickView_.animateClose();
+		}
+		
 		refresh();
 	}
 
@@ -98,16 +104,8 @@ public class MainscreenPlugin extends PluginBase {
 	 */
 	@Override
 	public void onBackPressed() {
-		closeQuickView();
-	}
-	
-	/**
-	 * Closes the quick view drawer.
-	 */
-	private void closeQuickView() {
-		SlidingDrawer sd = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
-		if(sd != null && sd.isOpened()) {
-			sd.animateClose();
+		if(quickView_.isOpened()) {
+			quickView_.animateClose();
 		} else {
 			super.onBackPressed();
 		}
