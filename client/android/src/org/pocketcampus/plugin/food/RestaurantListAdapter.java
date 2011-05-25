@@ -89,8 +89,8 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
 				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];
-		menusActivity_.notifyDataSetChanged();
 		menusActivity_.setSelected(position);
+		menusActivity_.notifyDataSetChanged();
 	}
 
 	public void repaint(Meal m) {

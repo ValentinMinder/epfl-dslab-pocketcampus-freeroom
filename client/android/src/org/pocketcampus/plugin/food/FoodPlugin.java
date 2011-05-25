@@ -45,16 +45,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
-IAllowsID {
+		IAllowsID {
 	// Bar at the top of the application
 	private ActionBar actionBar_;
 	public Context otherCtx_;
@@ -66,11 +67,11 @@ IAllowsID {
 	// Activity's menus list
 	private ListView listView_;
 	private static FoodDisplayHandler foodDisplayHandler_;
-	// private static FoodListAdapter foodListAdapter_;
 	private static RequestHandler foodRequestHandler_;
 	private TextView empty_;
 	private TextView validityDate_;
 	private ImageView expandMenus_;
+	private RelativeLayout food_dayselector_;
 
 	// Spinner to show while loading data.
 	private ProgressBar spinner_;
@@ -101,7 +102,7 @@ IAllowsID {
 	}
 
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		super.onBackPressed();
 		Log.d("FoodPlugin", "OnBackPressed");
 		getIntent().removeExtra("id");
@@ -142,7 +143,10 @@ IAllowsID {
 
 		validityDate_ = (TextView) findViewById(R.id.food_day_label);
 		expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
-		expandMenus_.setOnTouchListener(new ExpandListener());
+		// expandMenus_.setOnTouchListener(new ExpandListener());
+		food_dayselector_ = (RelativeLayout) findViewById(R.id.food_dayselector);
+		;
+		food_dayselector_.setOnClickListener(new ExpandListener());
 	}
 
 	/**
@@ -225,7 +229,7 @@ IAllowsID {
 		if (foodDisplayHandler_ != null) {
 			this.notifyDataSetChanged();
 			foodDisplayHandler_.updateView();
-			if(isMenus){
+			if (isMenus) {
 				handleIntent();
 				removeExtrasFromIntent();
 			}
@@ -242,38 +246,41 @@ IAllowsID {
 	}
 
 	private void showMenu(int id) {
-		if(restos_ == null){
+		if (restos_ == null) {
 			restos_ = getRestaurants();
 		}
-		//From the Maincreen
+		// From the Maincreen
 		String r = findHashCode(restos_, id);
-		if(r.equals("")){
-			//From the Map
+		if (r.equals("")) {
+			// From the Map
 			r = findIdFromMap(id);
 			Log.d("FoodPlugin", "From the Map : " + r);
-		}else{
+		} else {
 			Log.d("FoodPlugin", "From the Mainscreen : " + r);
 		}
-		//		Log.d("FoodPlugin", "Found restaurant : " + r);
-		if(!r.equals("")){
-			if(prefsRestos_ == null){
-				prefsRestos_ = initializePrefsRestos(prefsRestos_, getApplicationContext());
+		// Log.d("FoodPlugin", "Found restaurant : " + r);
+		if (!r.equals("")) {
+			if (prefsRestos_ == null) {
+				prefsRestos_ = initializePrefsRestos(prefsRestos_,
+						getApplicationContext());
 			}
 			int index = -1;
-			if(prefsRestos_.contains(r)){
+			if (prefsRestos_.contains(r)) {
 				index = prefsRestos_.indexOf(r);
-				Log.d("FoodPlugin", "Prefs Restos le contient à l'index " + index);
+				Log.d("FoodPlugin", "Prefs Restos le contient à l'index "
+						+ index);
 			}
-			Adapter adapt = foodDisplayHandler_.getListAdapter().getExpandableList(
-					this.getString(R.string.food_restaurants));
+			Adapter adapt = foodDisplayHandler_.getListAdapter()
+					.getExpandableList(
+							this.getString(R.string.food_restaurants));
 			if (adapt != null) {
-				if(index >= 0 && index < adapt.getCount()){
+				if (index >= 0 && index < adapt.getCount()) {
 					if (adapt instanceof RestaurantListAdapter) {
 						((RestaurantListAdapter) adapt).toggle(index);
 					}
-				} 
-			}else {
-					Log.d("FoodPlugin", "adapt is null");
+				}
+			} else {
+				Log.d("FoodPlugin", "adapt is null");
 			}
 		}
 
@@ -292,44 +299,44 @@ IAllowsID {
 		return resto;
 	}
 
-	private String findIdFromMap(int id){
+	private String findIdFromMap(int id) {
 		String s = "";
 
-		switch (id){
-		case 39321 :
+		switch (id) {
+		case 39321:
 			s = "Esplanade";
 			break;
-		case 39322 :
+		case 39322:
 			s = "Parmentier";
 			break;
-		case 39323 :
+		case 39323:
 			s = "Cafeteria Hodler";
 			break;
-		case 39324 :
+		case 39324:
 			s = "Cafeteria BC";
 			break;
-		case 39326 :
+		case 39326:
 			s = "Atlantide";
 			break;
-		case 39327 :
+		case 39327:
 			s = "La Table de Valotton";
 			break;
-		case 39330 :
+		case 39330:
 			s = "Ornithorynque";
 			break;
-		case 39333 :
+		case 39333:
 			s = "Le Copernic";
 			break;
-		case 39335 :
+		case 39335:
 			s = "Le Vinci";
 			break;
-		case 39337 :
+		case 39337:
 			s = "Cafeteria MX";
 			break;
-		case 39338 :
+		case 39338:
 			s = "Le Corbusier";
 			break;
-		default :
+		default:
 			s = "";
 			break;
 		}
@@ -352,23 +359,25 @@ IAllowsID {
 
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		expandMenus_.setVisibility(View.GONE);
+		food_dayselector_.setClickable(false);
 
 		if (foodDisplayHandler_.getCurrentDisplayType() != FoodDisplayType.Sandwiches
 				&& foodDisplayHandler_.validMenus() && fla != null) {
 			listView_.setAdapter(fla);
 			empty_.setText("");
-			expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
-			expandMenus_.setOnTouchListener(new ExpandListener());
+			food_dayselector_ = (RelativeLayout) findViewById(R.id.food_dayselector);
+			food_dayselector_.setOnClickListener(new ExpandListener());
 			if (foodDisplayHandler_.getDateLastUpdatedMenus() == null) {
 				validityDate_.setText("");
 			} else {
 				if (foodDisplayHandler_.getCurrentDisplayType() == FoodDisplayType.Ratings) {
 				} else {
 					expandMenus_.setVisibility(View.VISIBLE);
+					food_dayselector_.setClickable(true);
 				}
 				Date today = new Date();
 				Date lastUpdated = foodDisplayHandler_
-				.getDateLastUpdatedMenus();
+						.getDateLastUpdatedMenus();
 				if (today.getDay() == lastUpdated.getDay()
 						&& today.getMonth() == lastUpdated.getMonth()) {
 					validityDate_.setText(getResources().getString(
@@ -381,11 +390,12 @@ IAllowsID {
 			empty_.setText("");
 			if (foodDisplayHandler_.validSandwich()) {
 				listView_.setAdapter(fla);
-				expandMenus_ = (ImageView) findViewById(R.id.food_menus_expand);
-				expandMenus_.setOnTouchListener(new ExpandListener());
+				food_dayselector_ = (RelativeLayout) findViewById(R.id.food_dayselector);
+				food_dayselector_.setOnClickListener(new ExpandListener());
 				validityDate_.setText(getResources().getString(
 						R.string.food_today_sandwiches));
 				expandMenus_.setVisibility(View.VISIBLE);
+				food_dayselector_.setClickable(true);
 				empty_.setText("");
 			} else {
 				validityDate_.setText("");
@@ -401,6 +411,7 @@ IAllowsID {
 
 	public void displaySuggestions(FoodDisplayType previousDisplayType) {
 		expandMenus_.setVisibility(View.GONE);
+		food_dayselector_.setClickable(false);
 		FoodListAdapter fla = foodDisplayHandler_.getListAdapter();
 		// refreshActionBar(foodDisplayHandler_.getCurrentDisplayType());
 		restaurantAction_.setIsRestaurant(true);
@@ -419,7 +430,7 @@ IAllowsID {
 					public void performAction(View view) {
 						actionBar_.removeActionAt(0);
 						foodDisplayHandler_
-						.setCurrentDisplayType(R.id.food_menu_restaurants);
+								.setCurrentDisplayType(R.id.food_menu_restaurants);
 						foodDisplayHandler_.updateView();
 						displayView();
 					}
@@ -432,8 +443,8 @@ IAllowsID {
 			}
 		} else {
 			foodDisplayHandler_
-			.setCurrentDisplayType(FoodDisplayType.Restaurants
-					.getValue());
+					.setCurrentDisplayType(FoodDisplayType.Restaurants
+							.getValue());
 			foodDisplayHandler_.updateView();
 			displayView();
 		}
@@ -502,13 +513,13 @@ IAllowsID {
 				if (extras != null) {
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-					.getSerializable("org.pocketcampus.suggestions.meals");
+							.getSerializable("org.pocketcampus.suggestions.meals");
 
 					foodDisplayHandler_.updateSuggestions(list);
 					FoodDisplayType previous = foodDisplayHandler_
-					.getCurrentDisplayType();
+							.getCurrentDisplayType();
 					foodDisplayHandler_
-					.setCurrentDisplayType(R.id.food_menu_suggestions);
+							.setCurrentDisplayType(R.id.food_menu_suggestions);
 					displaySuggestions(previous);
 				} else {
 					Log.d("SUGGESTIONS", "Pas d'extras !");
@@ -559,7 +570,7 @@ IAllowsID {
 					isSandwichDisplay_ = false;
 				}
 				foodDisplayHandler_
-				.setCurrentDisplayType(R.id.food_menu_restaurants);
+						.setCurrentDisplayType(R.id.food_menu_restaurants);
 			} else {
 				foodDisplayHandler_.setCurrentDisplayType(125);
 			}
@@ -580,7 +591,7 @@ IAllowsID {
 		}
 	}
 
-	class ExpandListener implements OnTouchListener {
+	class ExpandListener implements OnClickListener {
 		private boolean expanded = false;
 		private Drawable expand_;
 		private Drawable unexpand_;
@@ -595,7 +606,7 @@ IAllowsID {
 		}
 
 		@Override
-		public boolean onTouch(View view, MotionEvent arg1) {
+		public void onClick(View arg0) {
 			expanded = (!expanded);
 			if (!expanded) {
 				expandMenus_.setImageDrawable(expand_);
@@ -605,9 +616,9 @@ IAllowsID {
 			expandMenus_.invalidate();
 
 			Adapter adapt = foodDisplayHandler_.getListAdapter()
-			.getExpandableList(
-					FoodPlugin.this
-					.getString(R.string.food_restaurants));
+					.getExpandableList(
+							FoodPlugin.this
+									.getString(R.string.food_restaurants));
 			if (adapt != null) {
 				if (adapt instanceof RestaurantListAdapter) {
 					((RestaurantListAdapter) adapt).toggleAll(expanded);
@@ -615,9 +626,6 @@ IAllowsID {
 					((SandwichListAdapter) adapt).toggleAll(expanded);
 				}
 			}
-			// handleIntent();
-
-			return false;
 		}
 	}
 
@@ -649,17 +657,19 @@ IAllowsID {
 								m_ = getBestMeal(ratings, m_);
 
 								if (m_ != null) {
-									for(Meal m : m_){
+									for (Meal m : m_) {
 
-										if(m.getRating().getTotalRating() > 3){
+										if (m.getRating().getTotalRating() > 3) {
 
-											MainscreenNews bestMeal = new MainscreenNews(m.getRestaurant_()
-													.getName()
-													+ "\n"
-													+ m.getName_(),
+											MainscreenNews bestMeal = new MainscreenNews(
+													m.getRestaurant_()
+															.getName()
+															+ "\n"
+															+ m.getName_(),
 													m.getDescription_(), m
-													.getRestaurant_().getName()
-													.hashCode(), that,
+															.getRestaurant_()
+															.getName()
+															.hashCode(), that,
 													new Date());
 											news.add(bestMeal);
 										}
@@ -669,31 +679,33 @@ IAllowsID {
 							}
 
 							private Meal[] getBestMeal(
-									HashMap<Integer, Rating> ratings, Meal[] bestMeals) {
+									HashMap<Integer, Rating> ratings,
+									Meal[] bestMeals) {
 								restos_ = getRestaurants();
-								if(restos_.isEmpty()){
+								if (restos_.isEmpty()) {
 									Log.d("FoodPlugin", "Restaurants vides");
 								}
 
-								prefsRestos_ = initializePrefsRestos(prefsRestos_, otherCtx_);
+								prefsRestos_ = initializePrefsRestos(
+										prefsRestos_, otherCtx_);
 
 								Vector<Meal> mealsVector = new Vector<Meal>();
 								MenuSorter sorter = new MenuSorter();
 
 								if (!prefsRestos_.isEmpty()) {
 									for (Meal m : campusMenuList) {
-										if (prefsRestos_.contains(m.getRestaurant_()
-												.getName())) {
+										if (prefsRestos_.contains(m
+												.getRestaurant_().getName())) {
 											mealsVector.add(m);
 										}
 									}
 
 									mealsVector = sorter
-									.sortByRatings(mealsVector);
+											.sortByRatings(mealsVector);
 								}
 								if (mealsVector != null
 										&& !mealsVector.isEmpty()) {
-									for(int i = 0; i<bestMeals.length; i++){
+									for (int i = 0; i < bestMeals.length; i++) {
 										bestMeals[i] = mealsVector.get(i);
 									}
 									return bestMeals;
@@ -706,10 +718,10 @@ IAllowsID {
 						getRequestHandler().execute(
 								new MainscreenRatingsRequest(), "getRatings",
 								(RequestParameters) null);
-					}else{
+					} else {
 						Log.d("FoodPlugin", "Menus vides");
 					}
-				}else{
+				} else {
 					Log.d("FoodPlugin", "Menus null");
 				}
 			}
@@ -725,7 +737,7 @@ IAllowsID {
 
 		try {
 			InputStream instream = this.getClass().getResourceAsStream(
-			"restaurants_names.txt");
+					"restaurants_names.txt");
 
 			if (instream != null) {
 
@@ -749,22 +761,23 @@ IAllowsID {
 		return list;
 	}
 
-	public ArrayList<String> initializePrefsRestos(ArrayList<String> restos, Context ctx){
+	public ArrayList<String> initializePrefsRestos(ArrayList<String> restos,
+			Context ctx) {
 		restos = new ArrayList<String>();
 		SharedPreferences prefs = ctx.getSharedPreferences(RESTO_PREFS_NAME, 0);
 
-		if(prefs.getAll().isEmpty()){
-			Log.d("FoodPlugin","First time instanciatation (Mainscreen)");
+		if (prefs.getAll().isEmpty()) {
+			Log.d("FoodPlugin", "First time instanciatation (Mainscreen)");
 			Editor prefsEditor = prefs.edit();
 
-			for(String r : restos_){
+			for (String r : restos_) {
 				prefsEditor.putBoolean(r, true);
 				restos.add(r);
 			}
 			prefsEditor.commit();
-		}else{							
-			for(String r : restos_){
-				if(prefs.getBoolean(r, false)){
+		} else {
+			for (String r : restos_) {
+				if (prefs.getBoolean(r, false)) {
 					restos.add(r);
 				}
 			}

@@ -50,11 +50,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:background="#C40A0C">
-		<!-- <ImageView android:id="@+id/food_day_left"
-			android:src="@drawable/food_day_left"
-			android:layout_width="wrap_content"
-  			android:layout_height="wrap_content"
-  			android:layout_alignParentLeft="true"/> -->
  		<TextView android:id="@+id/food_day_label"
 			android:gravity="center"
 			android:layout_centerInParent="true"
