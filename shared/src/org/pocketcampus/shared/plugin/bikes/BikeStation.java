@@ -44,6 +44,10 @@ public class BikeStation {
 	public String getName() {
 		return name_;
 	}
+	
+	public int getId() {
+		return name_.hashCode();
+	}
 
 
 	@Override
