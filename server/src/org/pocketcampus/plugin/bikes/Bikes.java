@@ -21,6 +21,9 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 	private ArrayList<BikeStation> bikes_;
 	private Date lastRequest_;
 	
+	private MapLayerBean mlb_;
+	private List<MapLayerBean> mlbs_;
+	
 	private final static long REFRESH_TIME = 5*60*1000;
 	
 	public Bikes() {
@@ -31,8 +34,12 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 			bikes_ = null;
 			lastRequest_ = null;
 		}
+
+		mlb_ = new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true);
+		mlbs_ = new ArrayList<MapLayerBean>();
+		mlbs_.add(mlb_);
 	}
-	
+
 	
 	@PublicMethod
 	public ArrayList<BikeStation> bikes(HttpServletRequest request) {
@@ -50,12 +57,15 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		}
 		return bikes_;
     }
+	
+	@PublicMethod
+	public String getLayerId(HttpServletRequest request) {
+		return mlb_.getExternalId();
+    }
 
 	@Override
 	public List<MapLayerBean> getLayers() {
-		List<MapLayerBean> l = new ArrayList<MapLayerBean>();
-		l.add(new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true));
-		return l;
+		return mlbs_;
 	}
 
 	@Override
@@ -73,7 +83,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 			description.append("Places libres: ");
 			description.append(String.valueOf(s.getEmptyRacks()));
 			
-			items.add(new MapElementBean(s.getName(), description.toString(), s.getGeoLat(), s.getGeoLng(), 0, 1, s.getName().hashCode(), "org.pocketcampus.plugin.bikes.BikesPlugin"));
+			items.add(new MapElementBean(s.getName(), description.toString(), s.getGeoLat(), s.getGeoLng(), 0, 1, s.getId(), "org.pocketcampus.plugin.bikes.BikesPlugin"));
 		}
 		
 		return items;
