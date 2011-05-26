@@ -86,6 +86,17 @@ public abstract class RequestHandler<R, O> {
 	}
 	
 	/**
+	 * <b>DO NOT USE</b> (Temporary fix)
+	 * @throws ServerException
+	 */
+	@Deprecated
+	protected RequestHandler(String sqlRequest, SQLExceptionHandler<O> exceptionHandler, IConnectionManager dbManager) throws ServerException {
+		this.request = sqlRequest;
+		this.exceptionHandler = exceptionHandler;
+		this.dbManager = dbManager;
+	}
+	
+	/**
 	 * Execute the prepared statement
 	 * @return
 	 * @throws ServerException
