@@ -83,7 +83,6 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 		});
 		
 		super.setupActionBar(addHomeButton);
-
 	}
 
 	@Override
@@ -176,6 +175,8 @@ public class NewsPlugin extends PluginBase implements IMainscreenNewsProvider, I
 	@Override
 	public void newsRefreshed() {
 		actionBar_.setProgressBarVisibility(View.GONE);
+
+		findViewById(R.id.news_no_news).setVisibility(newsProvider_.getCount() == 0 ? View.VISIBLE : View.GONE);
 	}
 
 	@Override

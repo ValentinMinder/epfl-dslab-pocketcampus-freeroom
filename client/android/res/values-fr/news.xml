@@ -10,6 +10,8 @@
     <string name="news_show_image_title">Afficher une miniature</string>
     <string name="news_show_image_summary">Affiche une image miniature (si disponible)</string>
     
+    <string name="news_no_news">Aucune news à afficher</string>
+    
     <string-array name="news_refresh_entries">
         <item>A chaque chargement</item>
         <item>10 minutes</item>

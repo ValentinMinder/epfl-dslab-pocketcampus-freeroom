@@ -79,7 +79,9 @@ public class NewsProvider {
 	 * @param listener
 	 */
 	public void addNewsListener(INewsListener listener) {
-		newsListeners_.add(listener);
+		synchronized (newsListeners_) {
+			newsListeners_.add(listener);
+		}
 	}
 	
 	/**
@@ -87,7 +89,9 @@ public class NewsProvider {
 	 * @param listener
 	 */
 	public void removeNewsListener(INewsListener listener) {
-		newsListeners_.remove(listener);
+		synchronized (newsListeners_) {
+			newsListeners_.remove(listener);
+		}
 	}
 	
 

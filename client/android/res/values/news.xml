@@ -10,6 +10,8 @@
     <string name="news_show_image_title">Show a thumbnail</string>
     <string name="news_show_image_summary">Shows an image according to the news</string>
     
+    <string name="news_no_news">No news to display</string>
+    
     <string-array name="news_refresh_entries">
         <item>At each load</item>
         <item>10 minutes</item>
