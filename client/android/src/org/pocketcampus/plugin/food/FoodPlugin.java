@@ -277,6 +277,8 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 				if (index >= 0 && index < adapt.getCount()) {
 					if (adapt instanceof RestaurantListAdapter) {
 						((RestaurantListAdapter) adapt).toggle(index);
+						this.setSelected(index);
+						((RestaurantListAdapter) adapt).setSelected(index);
 					}
 				}
 			} else {

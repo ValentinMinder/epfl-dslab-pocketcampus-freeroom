@@ -76,7 +76,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		holder.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				toggle(position);
-				menusActivity_.setSelected(position);
+				setSelected(position);
 			}
 		});
 
@@ -90,8 +90,12 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		Log.d("List", "Toggling " + position + ", old: " + mExpanded_[position]
 				+ ", new: " + !mExpanded_[position]);
 		mExpanded_[position] = !mExpanded_[position];
-		menusActivity_.setSelected(position);
+		setSelected(position);
 		menusActivity_.notifyDataSetChanged();
+	}
+	
+	public void setSelected(int position){
+		menusActivity_.setSelected(position);
 	}
 
 	public void repaint(Meal m) {
