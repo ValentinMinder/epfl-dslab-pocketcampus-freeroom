@@ -49,7 +49,7 @@ public class SecuredCamipro extends PluginBase {
 	private ActionBar actionBar_;
 	private RequestHandler requestHandler_;
 	private int progressCount_ = 0;
-	
+
 	private static final Gson gson_ = new Gson();
 
 	@Override
@@ -67,7 +67,7 @@ public class SecuredCamipro extends PluginBase {
 	@Override
 	protected void setupActionBar(boolean addHomeButton) {
 		actionBar_ = (ActionBar) findViewById(R.id.actionbar);
-		
+
 		// Refresh the camipro data
 		actionBar_.addAction(new Action() {
 
@@ -81,7 +81,7 @@ public class SecuredCamipro extends PluginBase {
 				return R.drawable.refresh;
 			}
 		});
-		
+
 		super.setupActionBar(addHomeButton);
 	}
 
@@ -118,7 +118,7 @@ public class SecuredCamipro extends PluginBase {
 		incrementProgressCounter();
 		requestHandler_.execute(new EbankingRequest(), "getEbanking", getRequestParameters());
 	}
-	
+
 	/**
 	 * Create a request to the Camipro server plugin using username/password
 	 * @return
@@ -126,17 +126,17 @@ public class SecuredCamipro extends PluginBase {
 	private RequestParameters getRequestParameters() {
 		RequestParameters parameters = new RequestParameters();
 		parameters.addParameter("token", getAuthToken());
-		
+
 		return parameters;
 	}
-	
+
 	/**
 	 * Get the user's token to identify him
 	 * @return
 	 */
 	private String getAuthToken() {
 		AuthToken t = AuthenticationPlugin.getAuthToken(this);
-		
+
 		return gson_.toJson(t);
 	}
 
@@ -174,7 +174,7 @@ public class SecuredCamipro extends PluginBase {
 	public PluginPreference getPluginPreference() {
 		return null;
 	}
-	
+
 	/**
 	 * Format a price into an human-readable form
 	 * @param money
@@ -205,23 +205,17 @@ public class SecuredCamipro extends PluginBase {
 		@Override
 		protected void doInUiThread(String result) {
 			decrementProgressCounter();
-			
+
 			if(bb_ != null) {
 				// Balance
 				String txt = formatMoney(bb_.getCurrentBalance());
-				
+
 				TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
 				balance.setText(txt);
-				
-				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_number);
-				balance.setText(txt);
-				
+
 				// Last update
 				String date = new Date().toLocaleString();
 				balance = (TextView) findViewById(R.id.camipro_balance_date_text);
-				balance.setText(date);
-				
-				balance = (TextView) findViewById(R.id.camipro_ebanking_balance_date_text);
 				balance.setText(date);
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_balance);
@@ -256,10 +250,10 @@ public class SecuredCamipro extends PluginBase {
 		@Override
 		protected void doInUiThread(String result) {
 			decrementProgressCounter();
-			
+
 			if(ltb_ != null) {
 				ListView lv = (ListView) findViewById(R.id.camipro_list);
-				
+
 				// Create an adapter for the data
 				lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb_));
 			} else {
@@ -293,7 +287,7 @@ public class SecuredCamipro extends PluginBase {
 		@Override
 		protected void doInUiThread(String result) {
 			decrementProgressCounter();
-			
+
 			if(ebb_ != null) {
 				TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
 				tv.setText(ebb_.getPaidNameTo());
@@ -313,7 +307,7 @@ public class SecuredCamipro extends PluginBase {
 				tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
 				tv.setText(formatMoney(ebb_.getAverage3M()));
 
-				
+
 			} else {
 				Notification.showToast(getApplicationContext(), R.string.camipro_unable_ebanking);
 			}
