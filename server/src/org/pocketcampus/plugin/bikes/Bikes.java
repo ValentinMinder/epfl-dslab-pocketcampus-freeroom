@@ -76,7 +76,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		
 		for(BikeStation s : b) {
 			StringBuffer description = new StringBuffer();
-			description.append("VÃ©los libres: ");
+			description.append("Vélos libres: ");
 			description.append(String.valueOf(s.getFreeBikes()));
 			description.append("\n");
 			

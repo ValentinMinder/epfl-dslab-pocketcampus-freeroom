@@ -1,10 +1,23 @@
 package org.pocketcampus.plugin.directory;
 
+import java.lang.reflect.Type;
+import java.util.LinkedList;
+
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
+import org.pocketcampus.plugin.news.LoaderNewsImageView;
+import org.pocketcampus.plugin.news.NewsItem;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.shared.plugin.social.User;
+
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -33,16 +46,61 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	TextView office_;
 	TextView phone_;
 	TextView web_;
+
+	private RequestHandler requestHandler_;
 	
-	public PersonDetailsDialog(Context context, Person person) {
+	public PersonDetailsDialog(Context context, RequestHandler requestHandler, Person person) {
 		super(context);
+		
 		ctx_ = context;
+		requestHandler_ = requestHandler;
 		displayedPerson_ = person;
+		
+		loadImage();
 		build();
 		setContent(person);
 		setClickListener();
+		
 	}
 	
+	private void loadImage() {
+		class ImageRequest extends DataRequest {
+			
+			@Override
+			protected void doInUiThread(String result) {
+				if(result == null) {
+					return;
+				}
+					
+				Type listType = new TypeToken<String>(){}.getType();
+				String pictureUrl = null;
+				
+				try{
+					pictureUrl = Json.fromJson(result, listType);
+				} catch (JsonSyntaxException e) {
+				} catch (JsonException e) {
+				}
+				
+				if(pictureUrl == null) {
+					return;
+				}
+				
+				System.out.println(pictureUrl);
+				
+				LoaderNewsImageView liv = (LoaderNewsImageView) findViewById(R.id.directory_person_details_dialog_photo);
+				NewsItem item = new NewsItem("", "", "", "", pictureUrl);
+				liv.setNewItem(item);
+				liv.setTag(item);
+				
+				liv.setVisibility(View.VISIBLE);
+			}
+		}
+		
+		RequestParameters reqParams = new RequestParameters();
+		reqParams.addParameter("sciper", displayedPerson_.uid);
+		requestHandler_.execute(new ImageRequest(), "photo", reqParams);
+	}
+
 	private void build(){
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setTitle("Details");
@@ -85,12 +143,6 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ImageView mapButton = (ImageView) findViewById(R.id.directory_imageButton_room);
 		ImageView webButton = (ImageView) findViewById(R.id.directory_imageButton_web);
 		ImageView addFriendButton = (ImageView) findViewById(R.id.directory_imageButton_save);
-		
-//		a.setEnabled(displayedPerson_.hasMail());
-//		b.setEnabled(displayedPerson_.hasPhone());
-//		c.setEnabled(displayedPerson_.hasOffice());
-//		d.setEnabled(displayedPerson_.hasWeb());
-//		e.setEnabled(true);
 		
 		mailButton.setVisibility(visibility(displayedPerson_.hasMail()));
 		phoneButton.setVisibility(visibility(displayedPerson_.hasPhone()));

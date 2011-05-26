@@ -195,7 +195,7 @@ public class DirectoryPlugin extends PluginBase{
 	}
 
 	public void displayResult(Person person){
-		PersonDetailsDialog detailDialog = new PersonDetailsDialog(this, person);
+		PersonDetailsDialog detailDialog = new PersonDetailsDialog(this, getRequestHandler(), person);
 		detailDialog.show();
 	}
 	

@@ -3,58 +3,79 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/relativeLayout1"
-	android:layout_width="wrap_content"
+	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:gravity="center_horizontal"
 	android:background="@color/SnowWhite"
 	android:padding="15dip"
 	>
+	
+	<RelativeLayout
+		android:id="@+id/directory_person_details_dialog_allinfos"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		>
+	
+		<org.pocketcampus.plugin.news.LoaderNewsImageView
+			android:id="@+id/directory_person_details_dialog_photo"
+			android:layout_width="85dip"
+			android:layout_height="90dip"
+			android:visibility="gone"
+			android:paddingRight="5dip"
+			android:layout_alignParentTop="true"
+			></org.pocketcampus.plugin.news.LoaderNewsImageView>
+		
+		<TextView
+			android:id="@+id/directory_person_details_dialog_fname"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+			android:textStyle="bold"
+			></TextView>
 
-	<TextView
-		android:id="@+id/directory_person_details_dialog_fname"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_alignParentTop="true"
-		></TextView>
+		<TextView
+			android:id="@+id/directory_person_details_dialog_lname"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/directory_person_details_dialog_fname"
+			android:textStyle="bold"
+			></TextView>
 		
-	<TextView
-		android:id="@+id/directory_person_details_dialog_lname"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/directory_person_details_dialog_fname"
-		></TextView>
-	
-	<TextView
-		android:id="@+id/directory_person_details_dialog_mail"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/directory_person_details_dialog_fname"
-		></TextView>
+		<TextView
+			android:id="@+id/directory_person_details_dialog_mail"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/directory_person_details_dialog_fname"
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+			></TextView>
 		
-	<TextView
-		android:id="@+id/directory_person_details_dialog_phone_number"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@+id/directory_person_details_dialog_office"
-		></TextView>
-	
-	<TextView
-		android:id="@+id/directory_person_details_dialog_office"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@+id/directory_person_details_dialog_mail"
-		></TextView>
-	
+		<TextView
+			android:id="@+id/directory_person_details_dialog_phone_number"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/directory_person_details_dialog_mail"
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+			></TextView>
+			
+		<TextView
+			android:id="@+id/directory_person_details_dialog_office"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/directory_person_details_dialog_phone_number"
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+			></TextView>
+	</RelativeLayout>
+		
 	<TextView
 		android:id="@+id/directory_person_details_dialog_web"
-		android:text="http://www.perdu.com"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_below="@+id/directory_person_details_dialog_phone_number"
+		android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+		android:visibility="gone"
 		></TextView>
 	
 	<LinearLayout
@@ -64,7 +85,7 @@
 		android:orientation="horizontal"
 		android:layout_centerInParent="true"
 		android:layout_centerHorizontal="true"
-		android:layout_below="@+id/directory_person_details_dialog_web"
+		android:layout_below="@+id/directory_person_details_dialog_allinfos"
 		android:gravity="center_vertical"
 		android:paddingTop="15dip"
 		>

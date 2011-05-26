@@ -1,21 +1,17 @@
 package org.pocketcampus.plugin.directory;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.shared.plugin.directory.*;
-import org.pocketcampus.shared.plugin.map.MapElementBean;
-import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
-import org.pocketcampus.plugin.directory.DirectoryQuery;
-import org.pocketcampus.provider.mapelements.IMapElementsProvider;
-
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.LDAPSearchException;
@@ -30,6 +26,10 @@ import com.unboundid.ldap.sdk.SearchScope;
 public class Directory implements IPlugin{
 	private static final long serialVersionUID = 14545643453L;
     
+	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
+	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
+	private static final String pictureExtension = ".jpg";
+	
 	LDAPConnection ldap;
 	
 	public Directory(){
@@ -46,6 +46,67 @@ public class Directory implements IPlugin{
 		}
 	}
 	
+	@PublicMethod
+	public String photo(HttpServletRequest request){
+		String sciper = request.getParameter("sciper");
+		byte[] sciperBytes = null;
+		byte[] digest = null;
+		
+		try {
+			sciperBytes = sciper.getBytes("UTF-8");
+			
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			digest = md.digest(sciperBytes);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		BigInteger bigInt = new BigInteger(1, digest);
+		String hashedSciper = bigInt.toString(16);
+		
+		while(hashedSciper.length() < 32 ){
+		  hashedSciper = "0"+hashedSciper;
+		}
+		
+		String pictureCamiproUrl = pictureCamiproBase + hashedSciper + pictureExtension;
+		String pictureExtUrl = pictureExtBase + hashedSciper + pictureExtension;
+		
+		if(checkUrl(pictureCamiproUrl)) {
+			System.out.println(pictureCamiproUrl);
+			return pictureCamiproUrl;
+		}
+		
+		if(checkUrl(pictureExtUrl)) {
+			System.out.println(pictureExtUrl);
+			return pictureExtUrl;
+		}
+		
+		return null;
+	}
+	
+	private boolean checkUrl(String pictureUrl) {
+		URL u;
+		try {
+			u = new URL(pictureUrl);
+			HttpURLConnection huc =  (HttpURLConnection)  u.openConnection(); 
+			huc.setRequestMethod("GET"); 
+			huc.connect(); 
+			return (huc.getResponseCode()==200);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
 	@PublicMethod
 	public LinkedList<Person> bla(HttpServletRequest request){
 
