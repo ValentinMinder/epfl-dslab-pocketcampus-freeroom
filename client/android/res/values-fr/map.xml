@@ -17,7 +17,7 @@
     
     <string name="map_directions_not_accurate">Impossible de vous localisez assez précisément pour vous fournir un itinéraire</string>
     <string name="map_directions_not_on_campus">Vous êtes en dehors du campus, impossible de fournir un itinéraire</string>
-    <string name="map_directions_not_found">Impossible de rtouver une route depuis votre position.</string>
+    <string name="map_directions_not_found">Impossible de trouver une route depuis votre position.</string>
     
     <string name="map_search">Chercher sur la carte</string>
     <string name="map_searching">Recherche en cours</string>
@@ -27,4 +27,6 @@
     <string name="map_open_plugin_button">Ouvrir</string>
     
     <string name="map_compute_position">Votre position est en train d\'être calculée...</string>
+    
+    <string name="map_layer_not_found">Impossible de trouver le point recherché</string>
 </resources>

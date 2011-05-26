@@ -26,8 +26,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+import android.widget.TableRow.LayoutParams;
 
 public class BikesPlugin extends PluginBase {
 

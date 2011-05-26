@@ -27,4 +27,6 @@
     <string name="map_open_plugin_button">More</string>
     
     <string name="map_compute_position">Your position is being computed...</string>
+    
+    <string name="map_layer_not_found">Impossible to find the requested item.</string>
 </resources>

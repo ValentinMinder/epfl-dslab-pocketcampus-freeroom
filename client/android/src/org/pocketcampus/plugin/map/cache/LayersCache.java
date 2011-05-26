@@ -141,13 +141,12 @@ public class LayersCache {
 			}
 
 			/**
-			 * Call the callback if everything went fine
+			 * Call the callback
+			 * The list is empty if there was a problem.
 			 */
 			@Override
 			protected void onPostExecute(Boolean result) {
-				if(result) {
-					callback.onLayersLoadedFromFile(selected);
-				}
+				callback.onLayersLoadedFromFile(selected);
 			}
 			
 		}.execute(new Void[]{});

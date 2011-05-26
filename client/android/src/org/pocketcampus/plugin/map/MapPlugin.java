@@ -137,8 +137,10 @@ public class MapPlugin extends PluginBase {
 	// Handler used to refresh the overlays 
 	private Handler overlaysHandler_ = new Handler();
 	
-	private String layerId_;
-	private int itemId_;
+	// Variables used when the plugin is launched by another plugin.
+	// to remember which item to show once they are loaded.
+	private String intentLayerId_;
+	private int intentItemId_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -181,10 +183,11 @@ public class MapPlugin extends PluginBase {
 		
 		layersCache_ = new LayersCache(this);
 		
+		// Get extras from the intent
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-			layerId_ = extras.getString("MapLayer");
-			itemId_ = extras.getInt("MapItem");
+			intentLayerId_ = extras.getString("MapLayer");
+			intentItemId_ = extras.getInt("MapItem");
 		}
 	}
 
@@ -595,9 +598,7 @@ public class MapPlugin extends PluginBase {
 	 * @param to where to go
 	 */
 	private void showDirectionFromTo(Location fix, Position to) {
-		Log.d("DIRECTION", "from " + fix);
-		Log.d("DIRECTION", "to " + to);
-
+		
 		// Check if the user is located and has a good accuracy
 		if(fix.hasAccuracy() && fix.getAccuracy() > MAX_ACCURACY_FROM_DIRECTIONS) {
 			Notification.showToast(getApplicationContext(), R.string.map_directions_not_accurate);
@@ -692,7 +693,7 @@ public class MapPlugin extends PluginBase {
 		}
 
 		/* The idea is to add MapElements (=item) into the MapElementsList.
-		 * The data comes from the cache (local file?) or from the server
+		 * The data comes from the cache (local file) or from the server
 		 */
 
 		incrementProgressCounter();
@@ -772,6 +773,37 @@ public class MapPlugin extends PluginBase {
 	}
 
 	/**
+	 * Called when the map plugin is launched from another plugin. 
+	 * We have to check that the layer asked by the other plugin is selected,
+	 * otherwise, we select it.
+	 */
+	private void checkSelectedLayersFromIntent() {
+		
+		// Not comming from another plugin
+		if(intentLayerId_ == null) {
+			return;
+		}
+		
+		// Is the layer already selected?
+		for(MapElementsList mel : selectedLayers_) {
+			if(mel.getLayerId().equals(intentLayerId_)) {
+				return;
+			}
+		}
+		
+		// Find the corresponding layer from all the available layers and add it to the selection
+		for(MapElementsList mel : allLayers_) {
+			if(mel.getLayerId().equals(intentLayerId_)) {
+				selectedLayers_.add(mel);
+				return;
+			}
+		}
+		
+		// If the layer was not found... bad luck, the other plugin made something wrong
+		Notification.showToast(this, R.string.map_layer_not_found);
+	}
+	
+	/**
 	 * Used to retreive the layers from the server
 	 */
 	class LayersRequest extends DataRequest {
@@ -818,6 +850,7 @@ public class MapPlugin extends PluginBase {
 				@Override
 				public void onLayersLoadedFromFile(List<MapElementsList> selected) {
 					selectedLayers_ = selected;
+					checkSelectedLayersFromIntent();
 					updateOverlays(false);
 				}
 			});
@@ -920,9 +953,9 @@ public class MapPlugin extends PluginBase {
 
 			decrementProgressCounter();
 			
-			if(layerId_ != null && layerId_.equals(layer_.getLayerId())) {
-				layerId_ = null;
-				centerOnPoint(layer_.getItemFromId(itemId_).getPoint());
+			if(intentLayerId_ != null && intentLayerId_.equals(layer_.getLayerId())) {
+				intentLayerId_ = null;
+				centerOnPoint(layer_.getItemFromId(intentItemId_).getPoint());
 			}
 			
 		}
