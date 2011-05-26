@@ -3,6 +3,7 @@ package org.pocketcampus.core.database.handlers.requests;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.pocketcampus.core.database.IConnectionManager;
 import org.pocketcampus.core.database.handlers.exceptions.SQLExceptionHandler;
 import org.pocketcampus.core.exception.ServerException;
 
@@ -28,6 +29,12 @@ public abstract class UpdateRequestHandler extends RequestHandler<Integer, Integ
 		super(sqlRequest);
 	}
 	
+	//Temp
+	@Deprecated
+	public UpdateRequestHandler(String sqlRequest, IConnectionManager dbManager) throws ServerException {
+		super(sqlRequest, new SQLExceptionHandler<Integer>(), dbManager);
+	}
+	
 	
 	/**
 	 * Prepare an SQL statement, which must be an SQL Data Manipulation Language (DML) statement,
@@ -44,6 +51,12 @@ public abstract class UpdateRequestHandler extends RequestHandler<Integer, Integ
 	 */
 	public UpdateRequestHandler(String sqlRequest, SQLExceptionHandler<Integer> exceptionHandler) throws ServerException {
 		super(sqlRequest, exceptionHandler);
+	}
+	
+	//Temp
+	@Deprecated
+	public UpdateRequestHandler(String sqlRequest, SQLExceptionHandler<Integer> exceptionHandler, IConnectionManager dbManager) throws ServerException {
+		super(sqlRequest, exceptionHandler, dbManager);
 	}
 	
 	/* (non-Javadoc)

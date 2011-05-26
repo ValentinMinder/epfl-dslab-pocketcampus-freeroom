@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.pocketcampus.core.database.IConnectionManager;
 import org.pocketcampus.core.database.handlers.exceptions.SQLExceptionHandler;
 import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.core.logging.Logger;
@@ -37,6 +38,12 @@ public abstract class QueryRequestHandler<T> extends RequestHandler<ResultSet, T
 	 */
 	public QueryRequestHandler(String sqlRequest) throws ServerException {
 		super(sqlRequest);
+	}
+	
+	//TEMP
+	@Deprecated
+	public QueryRequestHandler(String sqlRequest, IConnectionManager connectionManager) throws ServerException {
+		super(sqlRequest, new SQLExceptionHandler<T>(), connectionManager);
 	}
 	
 	/**

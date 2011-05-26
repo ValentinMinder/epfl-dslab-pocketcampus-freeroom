@@ -30,8 +30,8 @@ import org.pocketcampus.shared.plugin.social.permissions.Permission;
 public class Social implements IPlugin, IMapElementsProvider {
 
 	@PublicMethod
-	public boolean send(HttpServletRequest request) {
-		boolean status = false;
+	public FriendsLists send(HttpServletRequest request) {
+		FriendsLists lists = null;
 
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
@@ -47,19 +47,21 @@ public class Social implements IPlugin, IMapElementsProvider {
 						!SocialDatabase.testPending(user, target) &&
 						!SocialDatabase.testPending(target, user))
 				{
-					status = SocialDatabase.addPending(user, target);
+					SocialDatabase.addPending(user, target);
 				}
+				
+				lists = new FriendsLists(SocialDatabase.getFriends(user), SocialDatabase.getPending(user));
+				
 			} catch(ServerException e) {
 				e.printStackTrace();
-				status = false;
 			}
 		}
-		return status;
+		return lists;
 	}
 
 	@PublicMethod
-	public boolean delete(HttpServletRequest request) {
-		boolean status = false;
+	public FriendsLists delete(HttpServletRequest request) {
+		FriendsLists lists = null;
 
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
@@ -75,19 +77,21 @@ public class Social implements IPlugin, IMapElementsProvider {
 				{
 					SocialDatabase.removeAllPermissions(user, target);
 					SocialDatabase.removeAllPermissions(target, user);
-					status = SocialDatabase.removeFriend(user, target);
+					SocialDatabase.removeFriend(user, target);
 				}
+				
+				lists = new FriendsLists(SocialDatabase.getFriends(user), SocialDatabase.getPending(user));
+				
 			} catch(ServerException e) {
 				e.printStackTrace();
-				status = false;
 			}
 		}
-		return status;
+		return lists;
 	}
 
 	@PublicMethod
-	public boolean accept(HttpServletRequest request) {
-		boolean status = false;
+	public FriendsLists accept(HttpServletRequest request) {
+		FriendsLists lists = null;
 
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
@@ -101,19 +105,23 @@ public class Social implements IPlugin, IMapElementsProvider {
 				if(
 						SocialDatabase.testPending(target, user))
 				{
-					status = SocialDatabase.removePending(target, user) && SocialDatabase.addFriend(user, target);
+					SocialDatabase.removePending(target, user);
+					SocialDatabase.addFriend(user, target);
 				}
+				
+				lists = new FriendsLists(SocialDatabase.getFriends(user), SocialDatabase.getPending(user));
+				
 			} catch(ServerException e) {
 				e.printStackTrace();
-				status = false;
 			}
 		}
-		return status;
+		
+		return lists;
 	}
 
 	@PublicMethod
-	public boolean ignore(HttpServletRequest request) {
-		boolean status = false;
+	public FriendsLists ignore(HttpServletRequest request) {
+		FriendsLists lists = null;
 
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
@@ -127,14 +135,16 @@ public class Social implements IPlugin, IMapElementsProvider {
 				if(
 						SocialDatabase.testPending(target, user))
 				{
-					status = SocialDatabase.removePending(target, user);
+					SocialDatabase.removePending(target, user);
 				}
+				
+				lists = new FriendsLists(SocialDatabase.getFriends(user), SocialDatabase.getPending(user));
+				
 			} catch(ServerException e) {
 				e.printStackTrace();
-				status = false;
 			}
 		}
-		return status;
+		return lists;
 	}
 
 	@PublicMethod
@@ -222,7 +232,9 @@ public class Social implements IPlugin, IMapElementsProvider {
 	}
 
 	@PublicMethod
-	public void updatePermissions(HttpServletRequest request) {
+	public FriendsLists updatePermissions(HttpServletRequest request) throws ServerException {
+		FriendsLists lists = null;
+		
 		String username = request.getParameter("username");
 		String sessionId = request.getParameter("sessionId");
 		String sN = request.getParameter("n");
@@ -234,7 +246,7 @@ public class Social implements IPlugin, IMapElementsProvider {
 				n = Integer.parseInt(sN);
 			} catch(Exception e) {
 				e.printStackTrace();
-				return;
+				return null;
 			}
 
 			for(int i = 0; i < n; i++) {
@@ -254,7 +266,11 @@ public class Social implements IPlugin, IMapElementsProvider {
 					}
 				}
 			}
+			
+			lists = new FriendsLists(SocialDatabase.getFriends(user), SocialDatabase.getPending(user));
 		}
+		
+		return lists;
 	}
 
 	@PublicMethod

@@ -3,6 +3,7 @@ package org.pocketcampus.core.database.handlers.requests;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.pocketcampus.core.database.IConnectionManager;
 import org.pocketcampus.core.exception.ServerException;
 
 /**
@@ -23,6 +24,13 @@ public abstract class CountRequestHandler extends QueryRequestHandler<Integer> {
 	 */
 	public CountRequestHandler(String sqlRequest, String countColName) throws ServerException {
 		super(sqlRequest);
+		this.countColName = countColName;
+	}
+	
+	//TEMP
+	@Deprecated
+	public CountRequestHandler(String sqlRequest, IConnectionManager dbManager, String countColName) throws ServerException {
+		super(sqlRequest, dbManager);
 		this.countColName = countColName;
 	}
 	

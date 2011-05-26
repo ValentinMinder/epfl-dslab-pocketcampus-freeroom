@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.pocketcampus.core.database.ConnectionManager;
 import org.pocketcampus.core.database.handlers.exceptions.SQLIntegrityConstraintViolationExceptionHandler;
 import org.pocketcampus.core.database.handlers.requests.CountRequestHandler;
 import org.pocketcampus.core.database.handlers.requests.QueryRequestHandler;
@@ -16,6 +17,10 @@ import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.plugin.social.User;
 
 public class SocialDatabase {
+	private final static String dbHost = "jdbc:mysql://localhost:3306/pocketcampus";
+	private final static String dbUser = "root";
+	private final static String dbPass = "pocketcampus";
+	
 	private static final String contactTable = "social_contact";
 	private static final String pendingTable = "social_pending";
 	private static final String permissionTable = "social_permissions";
@@ -28,8 +33,8 @@ public class SocialDatabase {
 	 */
 	public static boolean testFriend(final User a, final User b) throws ServerException {
 		String sqlRequest = "SELECT COUNT(*) AS `count` FROM `"+contactTable+"` WHERE `from` = ? AND `to` = ?";
-
-		CountRequestHandler rf = new CountRequestHandler(sqlRequest, "count") {
+		
+		CountRequestHandler rf = new CountRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass), "count") {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -47,7 +52,7 @@ public class SocialDatabase {
 		String sqlRequest = "INSERT INTO `"+contactTable+"` (`from`, `to`) VALUES (?, ?), (?, ?)";
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0), new ConnectionManager(dbHost, dbUser, dbPass)) {
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
 				stmt.setString(1, a.getIdFormat());
@@ -57,7 +62,7 @@ public class SocialDatabase {
 				stmt.setString(4, a.getIdFormat());
 			}
 		};
-		numAffectedRows += rf.execute(); 
+		numAffectedRows += rf.execute();
 		
 		return (numAffectedRows == 2) ? true : false;
 	}
@@ -67,7 +72,7 @@ public class SocialDatabase {
 
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf1 = new UpdateRequestHandler(sqlRequest) {
+		UpdateRequestHandler rf1 = new UpdateRequestHandler(sqlRequest,new ConnectionManager(dbHost, dbUser, dbPass)) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -93,7 +98,7 @@ public class SocialDatabase {
 	public static Collection<User> getFriends(final User user) throws ServerException {
 		String sqlRequest = "SELECT `to` FROM `"+contactTable+"` WHERE `from` = ?";
 
-		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest) {
+		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -128,7 +133,7 @@ public class SocialDatabase {
 	public static boolean testPending(final User from, final User to) throws ServerException {
 		String sqlRequest = "SELECT COUNT(*) AS `count` FROM `"+pendingTable+"` WHERE `from` = ? AND `to` = ?";
 
-		CountRequestHandler rf = new CountRequestHandler(sqlRequest, "count") {
+		CountRequestHandler rf = new CountRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass), "count") {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -146,7 +151,7 @@ public class SocialDatabase {
 		String sqlRequest = "INSERT INTO `"+pendingTable+"` (`from`, `to`)" + " VALUES (?, ?)";
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0), new ConnectionManager(dbHost, dbUser, dbPass)) {
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
 				stmt.setString(1, from.getIdFormat());
@@ -163,7 +168,7 @@ public class SocialDatabase {
 
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -179,7 +184,7 @@ public class SocialDatabase {
 	public static Collection<User> getPending(final User user) throws ServerException {
 		String sqlRequest = "SELECT `from` FROM `"+pendingTable+"` WHERE `to` = ?";
 
-		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest) {
+		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -209,7 +214,7 @@ public class SocialDatabase {
 	public static boolean testPermission(final String service, final User user, final User target) throws ServerException {
 		String sqlRequest = "SELECT COUNT(*) AS `count` FROM `"+permissionTable+"` WHERE `service_id` = ? AND `user` = ? AND `granted_to` = ?";
 
-		CountRequestHandler rf = new CountRequestHandler(sqlRequest, "count") {
+		CountRequestHandler rf = new CountRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass), "count") {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -228,7 +233,7 @@ public class SocialDatabase {
 		String sqlRequest = "INSERT INTO `"+permissionTable+"` (`service_id`, `user`, `granted_to`)" + " VALUES (?, ?, ?)";
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0)) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0), new ConnectionManager(dbHost, dbUser, dbPass)) {
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
 				stmt.setString(1, service);
@@ -246,7 +251,7 @@ public class SocialDatabase {
 
 		int numAffectedRows = 0;
 
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -265,7 +270,7 @@ public class SocialDatabase {
 		
 		int numAffectedRows = 0;
 		
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -281,7 +286,7 @@ public class SocialDatabase {
 	public static Collection<String> getPermissions(final User from, final User granted_to) throws ServerException {
 		String sqlRequest = "SELECT `service_id` FROM `"+permissionTable+"` WHERE `user` = ? AND `granted_to` = ? ";
 
-		QueryRequestHandler<Collection<String>> rf = new QueryRequestHandler<Collection<String>>(sqlRequest) {
+		QueryRequestHandler<Collection<String>> rf = new QueryRequestHandler<Collection<String>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -313,7 +318,7 @@ public class SocialDatabase {
 		//works if user is primary key
 		String sqlRequest = "REPLACE INTO `"+positionTable+"` (`user`, `latitude`, `longitude`, `altitude`) VALUES (?, ?, ?, ?)";
 		
-		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest) {
+		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
@@ -341,7 +346,7 @@ public class SocialDatabase {
 		String sqlRequest = requestBuilder.toString();
 		
 		
-		QueryRequestHandler<Collection<SocialPosition>> rf = new QueryRequestHandler<Collection<SocialPosition>>(sqlRequest) {
+		QueryRequestHandler<Collection<SocialPosition>> rf = new QueryRequestHandler<Collection<SocialPosition>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt)
@@ -386,7 +391,7 @@ public class SocialDatabase {
 	public static Collection<User> getVisibleFriends(final User me, final String serviceId) throws ServerException {
 		String sqlRequest = "SELECT `user` FROM `"+permissionTable+"` WHERE `granted_to` = ? AND `service_id` = ? ";
 
-		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest) {
+		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
