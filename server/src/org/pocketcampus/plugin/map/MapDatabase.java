@@ -125,7 +125,7 @@ public class MapDatabase {
 			if(rs.next()) {
 				titleClosetPOI = rs.getString(POI_TITLE);
 			}
-			
+			System.out.println("Closest POI title: " + titleClosetPOI);
 			statement.close();
 			connectionManager_.disconnect();
 		} catch (SQLException e) {

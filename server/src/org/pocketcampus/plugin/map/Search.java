@@ -69,11 +69,13 @@ public class Search {
 		try {
 			InputStreamReader reader = new InputStreamReader(searchUrl.openStream());
 			BasicSearchResponse response = gson.fromJson(reader, BasicSearchResponse.class);
-			String vid = response.features[0].properties.vertex_id;
-			if(vid != null && !vid.equals("null"))
-				vertexId = Integer.parseInt(response.features[0].properties.vertex_id);
+			if(response != null && response.features != null && response.features.length > 0) {
+				String vid = response.features[0].properties.vertex_id;
+				if(vid != null && !vid.equals("null"))
+					vertexId = Integer.parseInt(response.features[0].properties.vertex_id);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(e.toString());
 			return -1;
 		}
 		return vertexId;
@@ -158,9 +160,10 @@ public class Search {
 		
 		List<Position> path = searchPathBetween(startPoi, endPoi, bike);
 		
-		path.add(0, userPosition);
-		path.add(endPosition);
-		
+		if(path != null) {
+			path.add(0, userPosition);
+			path.add(endPosition);
+		}
 		return path;
 	}
 
