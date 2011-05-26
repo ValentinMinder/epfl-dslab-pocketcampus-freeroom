@@ -1,21 +1,21 @@
 package org.pocketcampus.shared.plugin.social;
 
-import java.util.LinkedList;
+import java.util.Collection;
 
 public class FriendsLists {
-	private LinkedList<User> friends_;
-	private LinkedList<User> requesting_;
+	private Collection<User> friends_;
+	private Collection<User> requesting_;
 	
-	public FriendsLists(LinkedList<User> friends, LinkedList<User> requesting) {
+	public FriendsLists(Collection<User> friends, Collection<User> requesting) {
 		friends_ = friends;
 		requesting_ = requesting;
 	}
 	
-	public LinkedList<User> getFriends() {
+	public Collection<User> getFriends() {
 		return friends_;
 	}
 	
-	public LinkedList<User> getRequesting() {
+	public Collection<User> getRequesting() {
 		return requesting_;
 	}
 }
