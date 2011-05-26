@@ -1,11 +1,14 @@
 package org.pocketcampus.plugin.map.ui;
 
 import org.osmdroid.LocationListenerProxy;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.util.LocationUtils;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MyLocationOverlay;
 import org.pocketcampus.plugin.positioning.HybridLocationUpdater;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -66,6 +69,30 @@ public class HybridPositioningOverlay extends MyLocationOverlay {
 		if(mMapView != null) {
 			mMapView.postInvalidate();
 		}
+	}
+	
+	@Override
+	public void enableFollowLocation() {
+		 mFollow = true;
+
+         // set initial location when enabled
+         if (isMyLocationEnabled()) {
+        	 Location currentLocation = getLastFix();
+        	 if(currentLocation == null) {
+        		 try {
+        			 currentLocation = LocationUtils.getLastKnownLocation(locationManager_);
+        		 } catch(Exception e) { }
+        	 }
+             if (currentLocation != null) {
+            	 mMapView.getController().animateTo(new GeoPoint(currentLocation));
+             }
+         }
+
+         // Update the screen to see changes take effect
+         if (mMapView != null) {
+                 mMapView.postInvalidate();
+         }
+
 	}
 	
 	
