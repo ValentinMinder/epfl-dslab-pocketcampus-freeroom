@@ -53,7 +53,7 @@ public class Directory implements IPlugin{
 	}
 	
 	@PublicMethod
-	public String photo(HttpServletRequest request){
+	public String profilePicture(HttpServletRequest request){
 		String sciper = request.getParameter("sciper");
 		byte[] sciperBytes = null;
 		byte[] digest = null;

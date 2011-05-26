@@ -16,14 +16,14 @@
 		android:layout_height="wrap_content"
 		>
 	
-		<org.pocketcampus.plugin.news.LoaderNewsImageView
+		<org.pocketcampus.utils.LoaderImageView
 			android:id="@+id/directory_person_details_dialog_photo"
 			android:layout_width="85dip"
 			android:layout_height="90dip"
 			android:visibility="gone"
 			android:paddingRight="5dip"
 			android:layout_alignParentTop="true"
-			></org.pocketcampus.plugin.news.LoaderNewsImageView>
+			></org.pocketcampus.utils.LoaderImageView>
 		
 		<TextView
 			android:id="@+id/directory_person_details_dialog_fname"

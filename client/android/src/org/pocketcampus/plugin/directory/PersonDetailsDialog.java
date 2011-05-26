@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.directory;
 
 import java.lang.reflect.Type;
-import java.util.LinkedList;
-
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
@@ -10,11 +8,10 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
-import org.pocketcampus.plugin.news.LoaderNewsImageView;
-import org.pocketcampus.plugin.news.NewsItem;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.shared.plugin.social.User;
+import org.pocketcampus.utils.LoaderImageView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -87,10 +84,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 				
 				System.out.println(pictureUrl);
 				
-				LoaderNewsImageView liv = (LoaderNewsImageView) findViewById(R.id.directory_person_details_dialog_photo);
-				NewsItem item = new NewsItem("", "", "", "", pictureUrl);
-				liv.setNewItem(item);
-				liv.setTag(item);
+				LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
+				liv.setImageDrawable(pictureUrl);
 				
 				liv.setVisibility(View.VISIBLE);
 			}
@@ -98,7 +93,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		
 		RequestParameters reqParams = new RequestParameters();
 		reqParams.addParameter("sciper", displayedPerson_.uid);
-		requestHandler_.execute(new ImageRequest(), "photo", reqParams);
+		requestHandler_.execute(new ImageRequest(), "profilePicture", reqParams);
 	}
 
 	private void build(){

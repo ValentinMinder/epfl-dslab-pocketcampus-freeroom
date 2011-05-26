@@ -100,7 +100,7 @@ public class LoaderNewsImageView extends LinearLayout {
 		mDrawable_ = null;
 		mSpinner_.setVisibility(View.VISIBLE);
 		mImage_.setVisibility(View.GONE);
-		
+
 		// Download the image on a new thread
 		new Thread(){
 			public void run() {
