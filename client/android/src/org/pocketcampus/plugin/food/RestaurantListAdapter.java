@@ -76,6 +76,7 @@ public class RestaurantListAdapter extends BaseAdapter implements Filterable {
 		holder.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				toggle(position);
+				menusActivity_.setSelected(position);
 			}
 		});
 
