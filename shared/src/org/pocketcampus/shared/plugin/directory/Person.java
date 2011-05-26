@@ -48,10 +48,14 @@ public class Person implements Serializable, Comparable<Person> {
 	}
 	
 	public boolean equals(Object p){
-		if(uid.compareTo( ((Person)p ).uid) == 0)
-			return true;
-		else
+		if(uid != null && ((Person)p ).uid != null){
+			if(uid.compareTo( ((Person)p ).uid) == 0)
+				return true;
+			else
+				return false;
+		}else{
 			return false;
+		}
 	}
 	
 	public String fullInfoToString(){

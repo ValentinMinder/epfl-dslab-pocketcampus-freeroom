@@ -8,10 +8,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.LinkedList;
+
+import javax.naming.directory.SearchControls;
 import javax.servlet.http.HttpServletRequest;
-import org.pocketcampus.shared.plugin.directory.*;
+
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.shared.plugin.directory.Person;
+
+import com.unboundid.ldap.sdk.DereferencePolicy;
+import com.unboundid.ldap.sdk.Filter;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.LDAPSearchException;
@@ -163,9 +169,13 @@ public class Directory implements IPlugin{
 			if( !ldap.isConnected())
 				ldap.reconnect();
 			
-			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
-
+			
+			//searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
+			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier" };
+			int sizeLimit = 150;
+			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, sizeLimit, 0, false, searchQuery, attWanted); 
 			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
+			
 			String t[] = new String[2];
 			for (SearchResultEntry e : searchResult.getSearchEntries())
 			{
@@ -183,18 +193,20 @@ public class Directory implements IPlugin{
 						e.getAttributeValue("telephoneNumber"),
 						e.getAttributeValue("roomNumber"),
 						e.getAttributeValue("uniqueIdentifier"));
+				System.out.println(p);
 				
 				if( !results.contains(p))
 					results.add(p);
+				
+				//sorting the results alphabetatically
+				Collections.sort(results);		
 			}
 		} catch (LDAPSearchException e1) {
-			System.out.println("ldap search problem");
+			System.out.println("ldap search problem: " + e1.getMessage());
 		} catch (LDAPException e) {
 			System.out.println("ldap reconnection problem");
 		}
 		
-		//sorting the results alphabetatically
-		Collections.sort(results);		
 		
 		return results;
 		
