@@ -40,6 +40,12 @@ public class HybridPositioningOverlay extends MyLocationOverlay {
 	
 	@Override
 	public boolean enableMyLocation() {
+		if(getLastFix() == null) {
+			Location firstLocation = LocationUtils.getLastKnownLocation(locationManager_);
+			if(firstLocation != null) {
+				onLocationChanged(firstLocation);
+			}
+		}
 		try {
 			locationUpdater_.startListening();
 		} catch (Exception e) {

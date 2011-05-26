@@ -595,6 +595,8 @@ public class MapPlugin extends PluginBase {
 	 * @param to where to go
 	 */
 	private void showDirectionFromTo(Location fix, Position to) {
+		Log.d("DIRECTION", "from " + fix);
+		Log.d("DIRECTION", "to " + to);
 
 		// Check if the user is located and has a good accuracy
 		if(fix.hasAccuracy() && fix.getAccuracy() > MAX_ACCURACY_FROM_DIRECTIONS) {
