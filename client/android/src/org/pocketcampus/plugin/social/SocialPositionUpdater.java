@@ -119,7 +119,7 @@ public class SocialPositionUpdater {
 
 				if(!status) {
 //					If request fails, we close connection.
-					AuthenticationPlugin.logout(context_);
+//					AuthenticationPlugin.logout(context_);
 				}
 			}
 		}

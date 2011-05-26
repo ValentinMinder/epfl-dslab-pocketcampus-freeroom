@@ -10,7 +10,6 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.shared.plugin.social.User;
 import org.pocketcampus.shared.plugin.social.permissions.Permission;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,15 +38,15 @@ import com.google.gson.reflect.TypeToken;
 public class SocialFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
 	private LinkedList<User> friends_;
-	private Activity socialFriendsListActivity_;
+	private SocialFriendsList socialFriendsListActivity_;
 	private int checkCount_;
 	private LinkedList<User> selectedFriends_;
 	private ArrayList<ViewHolder> holders_;
 	private SocialFriendsListAdapter this_;
 	
-	public SocialFriendsListAdapter(Context context, LinkedList<User> friends, Activity socialFriendsListActivity) {
+	public SocialFriendsListAdapter(Context context, Collection<User> friends, SocialFriendsList socialFriendsListActivity) {
 		this.mInflater_ = LayoutInflater.from(context);
-		this.friends_ = friends;
+		this.friends_ = new LinkedList<User>(friends);
 		this.socialFriendsListActivity_ = socialFriendsListActivity;
 		this.checkCount_ = 0;
 		this.selectedFriends_ = new LinkedList<User>();

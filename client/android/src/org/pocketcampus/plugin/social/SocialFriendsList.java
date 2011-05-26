@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.social;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
@@ -11,8 +14,8 @@ import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
+import org.pocketcampus.shared.plugin.social.User;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -37,10 +40,12 @@ import com.google.gson.reflect.TypeToken;
  * @author gldalmas@gmail.com
  */
 public class SocialFriendsList extends ListActivity {
-	private static Activity this_;
+	private static SocialFriendsList this_;
 	private static SocialListSeparator listSeparator_;
 	private SocialFriendsListAdapter friendsListAdapter_ = null;
 	private SocialRequestingFriendsListAdapter requestingFriendsListAdapter_ = null;
+	private Collection<User> friendsList_ = null;
+	private Collection<User> requestingList_ = null;
 	
 	private ActionBar actionBar_;
 	private Button buttonSelect_;
@@ -110,14 +115,11 @@ public class SocialFriendsList extends ListActivity {
 			public void onClick(DialogInterface dialog, int id) {
 				
 				for(int i = 0; i < friendsListAdapter_.getSelectedFriends().size()-1; i++) {
-					SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i));
+					SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i), null);
 				}
 				
 				//last one reloads the page
-				SocialPlugin.deleteRequest(this_, SocialFriendsList.class, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1));
-				
-				//close previous
-				this_.finish();
+				SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1), this_);
 			}
 		})
 		.setNegativeButton(this_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
@@ -150,18 +152,15 @@ public class SocialFriendsList extends ListActivity {
 				boolean friendsEmpty = true;
 				
 				if(!friendsLists.getRequesting().isEmpty()) {
-					//Starting adapter for requesting friends list
-					requestingFriendsListAdapter_ = new SocialRequestingFriendsListAdapter(this_, friendsLists.getRequesting(), this_);
-					listSeparator_.addSection(this_.getString(R.string.social_requesting_friends_list_separator), requestingFriendsListAdapter_);
 					allEmpty = false;
 				}
 				if(!friendsLists.getFriends().isEmpty()) {
-					//Starting adapter for friends list
-					friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsLists.getFriends(), this_);
-					listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
 					allEmpty = false;
 					friendsEmpty = false;
 				}
+				
+				//Refresh content
+				updateFriendsLists(friendsLists);
 				
 				if(!friendsEmpty) {
 					buttonSelect_.setEnabled(true);
@@ -244,6 +243,30 @@ public class SocialFriendsList extends ListActivity {
 			}
 		});
 		actionBar.addAction(new ActionBar.IntentAction(this_, MainscreenPlugin.createIntent(this_), R.drawable.mini_home));
+	}
+	
+	/**
+	 * Refresh the content of the adapters
+	 * @param newFriends
+	 */
+	public void updateFriendsLists(FriendsLists newFriends) {
+		listSeparator_.removeSections();
+		
+		requestingList_ = newFriends.getRequesting();
+		requestingFriendsListAdapter_ = new SocialRequestingFriendsListAdapter(this_, requestingList_, this_);
+		
+		if(!requestingList_.isEmpty()) {
+			listSeparator_.addSection(this_.getString(R.string.social_requesting_friends_list_separator), requestingFriendsListAdapter_);
+		}
+		
+		friendsList_ = newFriends.getFriends();
+		friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsList_, this_);
+		
+		if(!friendsList_.isEmpty()) {
+			listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
+		}
+		
+		listSeparator_.notifyDataSetChanged();
 	}
 	
 //	@Override

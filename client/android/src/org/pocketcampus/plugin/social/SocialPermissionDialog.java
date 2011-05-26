@@ -8,13 +8,12 @@ import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
+import org.pocketcampus.shared.plugin.social.FriendsLists;
 import org.pocketcampus.shared.plugin.social.User;
 import org.pocketcampus.shared.plugin.social.permissions.Permission;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -41,13 +40,13 @@ public class SocialPermissionDialog extends Dialog {
 	private final CheckBox[] permissionBoxes_;
 	private final ArrayList<Permission> permissions_;
 	private final ArrayList<User> selectedUsers_;
-	private final Activity parentActivity_;
+	private final SocialFriendsList parentActivity_;
 	private boolean updated_;
 	
 //	private final Button chatButton_;
 	private final Button okButton_;
 
-	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, Activity parentActivity) {
+	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, SocialFriendsList parentActivity) {
 		super(context);
 		this.context_ = context;
 		this.selectedUsers_ = selectedUsers;
@@ -130,16 +129,24 @@ public class SocialPermissionDialog extends Dialog {
 				}
 				
 				SocialPlugin.getSocialRequestHandler().execute(new UpdatePermissionsRequest(), "updatePermissions", rp);
-				
-				this_.dismiss();
 			}
-			
 			class UpdatePermissionsRequest extends DataRequest {
 				@Override
 				protected void doInUiThread(String result) {
-					this_.dismiss();
-					parentActivity_.startActivity(new Intent(parentActivity_, SocialFriendsList.class));
-					parentActivity_.finish();
+					FriendsLists lists = null;
+					if(result != null) {
+						Gson gson = new Gson();
+						try{
+							lists = gson.fromJson(result, new TypeToken<FriendsLists>(){}.getType());
+						} catch (JsonSyntaxException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					if(lists != null) {
+						parentActivity_.updateFriendsLists(lists);
+						this_.dismiss();
+					}
 				}
 			}
 		});

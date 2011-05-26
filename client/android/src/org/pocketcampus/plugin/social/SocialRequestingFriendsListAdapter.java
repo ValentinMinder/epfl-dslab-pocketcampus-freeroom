@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.social;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.pocketcampus.R;
@@ -27,14 +28,13 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 	private LayoutInflater mInflater_;
 	private LinkedList<User> requestingUsers_;
 	private Context context_;
-	private Activity this_;
+	private SocialFriendsList this_;
 	
-	public SocialRequestingFriendsListAdapter(Context context, LinkedList<User> requestingUsers, Activity activity) {
+	public SocialRequestingFriendsListAdapter(Context context, Collection<User> requestingUsers, SocialFriendsList activity) {
 		this.mInflater_ = LayoutInflater.from(context);
-		this.requestingUsers_ = requestingUsers;
+		this.requestingUsers_ = new LinkedList<User>(requestingUsers);
 		this.context_ = context;
 		this.this_ = activity;
-		
 	}
 	
 	@Override
@@ -83,14 +83,12 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 				.setCancelable(false)
 				.setPositiveButton(context_.getString(R.string.social_requesting_friend_confirm), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						SocialPlugin.acceptRequest(context_, SocialFriendsList.class, requestingUsers_.get(position));
-						this_.finish();
+						SocialPlugin.acceptRequest(context_, null, requestingUsers_.get(position), this_);
 					}
 				})
 				.setNegativeButton(context_.getString(R.string.social_requesting_friend_ignore), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						SocialPlugin.ignoreRequest(context_, SocialFriendsList.class, requestingUsers_.get(position));
-						this_.finish();
+						SocialPlugin.ignoreRequest(context_, null, requestingUsers_.get(position), this_);
 					}
 				});
 				AlertDialog alert = builder.create();
