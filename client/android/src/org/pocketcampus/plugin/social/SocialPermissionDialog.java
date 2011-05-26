@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -42,6 +43,9 @@ public class SocialPermissionDialog extends Dialog {
 	private final ArrayList<User> selectedUsers_;
 	private final SocialFriendsList parentActivity_;
 	private boolean updated_;
+	private final LinearLayout permissionHolder_;
+	private final LinearLayout permissionCheckboxesLayout_;
+	private final LinearLayout progressBarLayout_;
 	
 //	private final Button chatButton_;
 	private final Button okButton_;
@@ -55,6 +59,8 @@ public class SocialPermissionDialog extends Dialog {
 		this.parentActivity_ = parentActivity;
 		this.this_ = this;
 		this.updated_ = false;
+		this.permissionCheckboxesLayout_ = new LinearLayout(context_);
+		this.progressBarLayout_ = new LinearLayout(context_);
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_permission_dialog);
@@ -62,7 +68,8 @@ public class SocialPermissionDialog extends Dialog {
 		setCanceledOnTouchOutside(true);
 		
 //		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
-		okButton_ = (Button) findViewById(R.id.social_friends_ok);
+		this.okButton_ = (Button) findViewById(R.id.social_friends_ok);
+		this.permissionHolder_ = (LinearLayout) findViewById(R.id.social_friends_permissions_holder);
 		
 		setDialogContent();
 	}
@@ -72,7 +79,7 @@ public class SocialPermissionDialog extends Dialog {
 		((TextView) findViewById(R.id.social_friends_title)).setText(getTitle());
 		
 		if(permissions_ != null) {
-			LinearLayout permissionHolder = (LinearLayout) findViewById(R.id.social_friends_permissions_holder);
+			
 			int i = 0;
 			for(Permission permission : permissions_) {
 				permissionBoxes_[i] = new CheckBox(context_);
@@ -90,13 +97,13 @@ public class SocialPermissionDialog extends Dialog {
 				TextView tv = new TextView(context_);
 				tv.setText(permission.getName());
 				tv.setGravity(Gravity.RIGHT);
-				
-				LinearLayout newPermission = new LinearLayout(context_);
-				newPermission.setOrientation(LinearLayout.HORIZONTAL);
-				newPermission.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-				newPermission.addView(permissionBoxes_[i]);
-				newPermission.addView(tv);
-				permissionHolder.addView(newPermission);
+
+				permissionCheckboxesLayout_.setOrientation(LinearLayout.HORIZONTAL);
+				permissionCheckboxesLayout_.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+				permissionCheckboxesLayout_.addView(permissionBoxes_[i]);
+				permissionCheckboxesLayout_.addView(tv);
+				permissionCheckboxesLayout_.setVisibility(View.GONE);
+				permissionHolder_.addView(permissionCheckboxesLayout_);
 				
 				++i;
 			}
@@ -151,9 +158,21 @@ public class SocialPermissionDialog extends Dialog {
 			}
 		});
 		
-		
 		//If only one user is selected, we try to get permissions that are already assigned to him
 		if(selectedUsers_.size() == 1) {
+			progressBarLayout_.setOrientation(LinearLayout.HORIZONTAL);
+			
+			ProgressBar progressBar = new ProgressBar(context_);
+			
+			TextView tv = new TextView(context_);
+			tv.setGravity(Gravity.CENTER_VERTICAL);
+			tv.setText(context_.getResources().getString(R.string.social_loading));
+			
+			progressBarLayout_.addView(progressBar);
+			progressBarLayout_.addView(tv);
+			
+			permissionHolder_.addView(progressBarLayout_);
+			
 			AuthToken token = AuthenticationPlugin.getAuthToken(context_);
 			RequestParameters rp = new RequestParameters();
 			rp.addParameter("username", token.getUsername());
@@ -183,8 +202,11 @@ public class SocialPermissionDialog extends Dialog {
 				for(int i = 0; i < permissions_.size(); i++) {
 					if(grantedPermissions.contains(permissions_.get(i))) permissionBoxes_[i].setChecked(true);
 					else permissionBoxes_[i].setChecked(false);
-				} 
+				}
 			}
+			
+			progressBarLayout_.setVisibility(View.GONE);
+			permissionCheckboxesLayout_.setVisibility(View.VISIBLE);
 		}
 	}
 	

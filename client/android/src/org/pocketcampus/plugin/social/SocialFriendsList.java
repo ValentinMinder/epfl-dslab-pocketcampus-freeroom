@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.social;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
