@@ -54,12 +54,11 @@ public class AuthenticationPlugin extends PluginBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.social_login);
+		setContentView(R.layout.authentication_login);
 		
 		//		Tracker.getInstance().trackPageView("auth");
 
 		WindowManager.LayoutParams lp = getWindow().getAttributes();  
-		//lp.dimAmount = .7f;  
 		getWindow().setAttributes(lp); 
 		
 		Button button = (Button)findViewById(R.id.socialLoginButton);

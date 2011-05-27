@@ -31,7 +31,7 @@ public class SocialFacebookFinder extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-		setContentView(R.layout.social_login);
+		setContentView(R.layout.authentication_login);
 		
 		this_ = this;
 		

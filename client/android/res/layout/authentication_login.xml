@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/Theme.MainLayout"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	>
+	
+	<LinearLayout
+		android:layout_below="@+id/actionbar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="10dip"
+		android:orientation="vertical"
+		android:layout_gravity="center_horizontal"
+		>
+		
+		<EditText
+			android:id="@+id/socialLoginUsernameField"
+			android:hint="@string/social_login_username_text"
+			android:text="@string/social_login_username_field"
+			android:paddingLeft="10dip"
+			android:singleLine="true"
+			android:maxLines="1"
+			android:ems="10"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			></EditText>
+				
+		<EditText
+			android:id="@+id/socialLoginPasswordField"
+			android:hint="@string/social_login_password_text"
+			android:text="@string/social_login_password_field"
+			android:paddingLeft="10dip"
+			android:layout_width="fill_parent"
+			android:singleLine="true"
+			android:maxLines="1"
+			android:ems="10"
+			android:password="true"
+			android:layout_height="wrap_content"
+			></EditText>
+				
+		<Button
+			android:id="@+id/socialLoginButton"
+			android:layout_gravity="center_horizontal"
+			android:drawableLeft="@android:drawable/ic_secure"
+			android:text="@string/social_login_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingRight="20dip"
+			android:paddingLeft="20dip"
+			></Button>
+			
+	</LinearLayout>
+	
+</RelativeLayout>
+
+
+
+
+
+
+
+
