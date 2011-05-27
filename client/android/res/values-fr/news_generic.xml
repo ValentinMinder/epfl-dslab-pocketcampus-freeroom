@@ -2,6 +2,7 @@
 <resources>
     <string-array name="news_feeds_url">
         <item>http://actu.epfl.ch/feeds/rss/mediacom/fr/</item>
+        <item>http://www.pocketcampus.org/feed/</item>
         <item>http://actu.epfl.ch/feeds/rss/enac/fr/</item>
         <item>http://actu.epfl.ch/feeds/rss/sb/fr/</item>
         <item>http://actu.epfl.ch/feeds/rss/ic/fr/</item>
@@ -12,6 +13,7 @@
     </string-array>
     <string-array name="news_feeds_name">
         <item>EPFL Toute l\'actualité</item>
+        <item>PocketCampus</item>
         <item>EPFL Environnement Naturel, Architectural et Construit</item>
         <item>EPFL Sciences de Base</item>
         <item>EPFL Informatique et Communications</item>
