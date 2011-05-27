@@ -12,10 +12,7 @@ import org.pocketcampus.shared.plugin.transport.Connection.Trip;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -49,32 +46,32 @@ public class ConnectionDetailsDialog extends Dialog{
 		HashMap<String, String> partRow;
 		for(Connection.Part part : connection_.parts){
 			partRow = new HashMap<String, String>();
-			String departure = "";
-			String arrival = "";
+			String departureTime = "";
+			String departurePlace = part.departure.name;
+			String arrivalTime = "";
+			String arrivalPlace = part.arrival.name;
 			
 			if(part instanceof Trip) {
-				departure = formatter.format(((Trip)part).departureTime);
-				arrival = formatter.format(((Trip)part).arrivalTime);
+				// Part is a Trip
+				departureTime = LineNameFormatter.getNiceName(((Trip)part).line.label) + ", " + formatter.format(((Trip)part).departureTime);
+				arrivalTime = formatter.format(((Trip)part).arrivalTime);
+				departurePlace = part.departure.name;
 				
-			} else if(part instanceof Footway) {
-				departure = ((Footway)part).min + " " + ctx_.getResources().getString(R.string.transport_walk_in_min);
+			} else {
+				// Part is a Footway
+				departureTime = ((Footway)part).min + " " + ctx_.getResources().getString(R.string.transport_walk_in_min);
 			}
 			
-//			if(((Trip)part).departureTime != null) {
-//				departure = formatter.format(((Trip)part).departureTime);
-//				arrival = formatter.format(((Trip)part).arrivalTime);
-//			}
-			
-			partRow.put("dept", departure);
-			partRow.put("from", part.departure.name);
+			partRow.put("departureTime", departureTime);
+			partRow.put("departurePlace", departurePlace);
 
-			partRow.put("arrt", arrival);
-			partRow.put("to", part.arrival.name);
+			partRow.put("arrivalTime", arrivalTime);
+			partRow.put("arrivalPlace", arrivalPlace);
 
 			connectionParts.add(partRow);
 		}
 
-		String[] keys = {"dept", "from", "arrt", "to"};
+		String[] keys = {"departureTime", "departurePlace", "arrivalTime", "arrivalPlace"};
 
 		int[] ids = {
 				R.id.transport_details_dialog_dep_time, 
