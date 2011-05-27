@@ -37,7 +37,17 @@
 		android:id="@+id/news_item_description" android:layout_margin="5dp"
 		android:textColor="@color/dark_grey"
 		android:maxLines="2"></TextView>
-
+		
+	<TextView android:text="@string/news_readmore"
+		android:id="@+id/news_readmore"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right"
+		android:textColor="#0000FF"
+		android:textSize="17sp"
+		android:padding="7dp"
+	 />
+<!-- 
 	<Button
 		android:id="@+id/news_view_more"
 		android:layout_height="wrap_content"
@@ -46,6 +56,6 @@
 		android:drawableLeft="@drawable/ic_btn_search_go"
 		android:focusable="false"
 		/>
-
+ -->
 
 </LinearLayout>

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -84,14 +83,14 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 				liv.setNewItem(newsItem);
 			}
 
-			// "View more" button, shown only on the selected item
-			Button b = (Button) v.findViewById(R.id.news_view_more);
+			// "Read more" textview, shown only on the selected item
+			TextView more = (TextView) v.findViewById(R.id.news_readmore);
 			
 			if(selectedItem_ == position) {
 				
-				b.setVisibility(View.VISIBLE);
+				more.setVisibility(View.VISIBLE);
 
-				b.setOnClickListener(new OnClickListener() {
+				more.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 
@@ -103,7 +102,7 @@ public class NewsAdapter extends BaseAdapter implements INewsListener {
 				});
 
 			} else {
-				b.setVisibility(View.GONE);
+				more.setVisibility(View.GONE);
 			}
 
 		}

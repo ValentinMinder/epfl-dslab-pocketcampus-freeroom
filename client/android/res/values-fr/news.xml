@@ -11,6 +11,7 @@
     <string name="news_show_image_summary">Affiche une image miniature (si disponible)</string>
     
     <string name="news_no_news">Aucune news à afficher</string>
+    <string name="news_readmore"><u>Lire plus...</u></string>
     
     <string-array name="news_refresh_entries">
         <item>A chaque chargement</item>
