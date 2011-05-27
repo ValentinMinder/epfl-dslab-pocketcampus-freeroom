@@ -160,6 +160,8 @@ public class MapPlugin extends PluginBase {
 		incrementProgressCounter();
 		RequestParameters params = new RequestParameters();
 		getRequestHandler().execute(new LayersRequest(), "getLayers", params);
+		
+		handleSearchIntent(getIntent().getExtras());
 	}
 
 	private void initVariables() {
