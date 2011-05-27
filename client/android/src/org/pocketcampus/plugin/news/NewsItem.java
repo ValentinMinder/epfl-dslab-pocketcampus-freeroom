@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,7 +115,7 @@ public class NewsItem implements Serializable, Comparable<NewsItem> {
 		if(pubDateDate_ == null) {
 			//Try to parse the following format: Thu, 24 Mar 2011 06:17:28 +0100
 			//Date and time specification RFC 822
-			SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
 			try {
 				this.pubDateDate_ = sdf.parse(pubDate_);
 			} catch (ParseException e) {
