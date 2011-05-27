@@ -9,6 +9,7 @@ import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.plugin.map.MapInfo;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.map.MapElementBean;
@@ -43,8 +44,14 @@ public class MapSearchActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setContentView(R.layout.map_search_result);
+		setupActionBar();
 	    handleIntent(getIntent());
+	}
+	
+	private void setupActionBar() {
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		actionBar.setTitle(getResources().getText(R.string.app_name));
 	}
 	
 	/**
