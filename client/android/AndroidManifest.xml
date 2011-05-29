@@ -80,6 +80,7 @@
 		</receiver>
 		<activity android:name=".plugin.social.SocialFriendsList"></activity>
 		<activity android:name=".plugin.social.SocialFacebookFinder"></activity>
+		<activity android:name=".plugin.mainscreen.ApplicationPreference"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

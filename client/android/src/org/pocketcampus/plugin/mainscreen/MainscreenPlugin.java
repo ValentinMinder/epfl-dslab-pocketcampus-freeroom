@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Core;
+import org.pocketcampus.core.plugin.IAllowsID;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;

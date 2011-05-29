@@ -29,7 +29,9 @@
         <item>fr</item>
     </string-array>
     
-    <string name="mainscreen_plugin_preference_title">Application Options</string>
+    <string name="mainscreen_plugin_preference_title">Mainscreen</string>
+    <string name="application_preference">Application Options</string>
+    
     
     
 </resources>

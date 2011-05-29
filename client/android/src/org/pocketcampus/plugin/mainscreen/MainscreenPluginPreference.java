@@ -9,10 +9,7 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 
-import android.app.Application;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -20,9 +17,14 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.widget.Toast;
 
-
+/**
+ * 
+ * Correspond to the mainscreen preferences, that is the selection of plugin from which we want to display news
+ * 
+ * @author Guillaume
+ *
+ */
 public class MainscreenPluginPreference extends PluginPreference {
 
 	protected static int counter_ = 0;
@@ -113,57 +115,7 @@ public class MainscreenPluginPreference extends PluginPreference {
 			
 			i++;
 		}
-		
-		
-		//Language selection
-		PreferenceCategory language = new PreferenceCategory(this);
-		language.setTitle(R.string.mainscreen_language);
-		root.addPreference(language);
-
-        final Configuration config = getBaseContext().getResources().getConfiguration();
-
-        final String[] lang  = getResources().getStringArray(R.array.mainscreen_languages);
-        
-		OnPreferenceChangeListener langListener = new OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(Preference arg0, Object arg1) {
-
-				currLang_ = arg0.getKey();
-				
-	            locale_ = new Locale(currLang_);
-	            Locale.setDefault(locale_);
-	            config.locale = locale_;
-	            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-					            
-				forceRefresh();
-
-				return false;
-			}
-		};
-		
-		// Feeds to display
-		String[] langAbr  = getResources().getStringArray(R.array.mainscreen_languages_abr);
-
-
-		int j = 0;
-				
-		for(String str : lang) {
-
-			checkBoxPref = new CheckBoxPreference(this);
-			checkBoxPref.setKey(langAbr[j]);
-			checkBoxPref.setTitle(str);
-
 			
-			boolean checked = currLang_.equals(langAbr[j]) ;
-
-			checkBoxPref.setChecked(checked);
-			checkBoxPref.setOnPreferenceChangeListener(langListener);
-
-			language.addPreference(checkBoxPref);
-			
-			j++;
-		}
-		
 		
 		return root;
 	}
@@ -173,19 +125,6 @@ public class MainscreenPluginPreference extends PluginPreference {
 		setPreferenceScreen(createPreferenceHierarchy());
 
 	}
-	
 
-
-//	    @Override
-//	    public void onConfigurationChanged(Configuration newConfig)
-//	    {
-//	        super.onConfigurationChanged(newConfig);
-//	        if (locale != null)
-//	        {
-//	            newConfig.locale = locale;
-//	            Locale.setDefault(locale);
-//	            getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-//	        }
-//	    }
 
 }

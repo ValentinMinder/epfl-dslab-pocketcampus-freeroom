@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bikes_plugin_title">Bikes</string>
-    <string name="bikes_plugin_cancel">Operation cancelled. Check you internet access and try again.</string>
+    <string name="bikes_plugin_cancel">Operation cancelled. Check your internet access and try again.</string>
     <string name="bikes_plugin_empty">Empty racks</string>
     <string name="bikes_plugin_free">Free bikes</string>   
     <string name="bikes_plugin_station">Station</string>

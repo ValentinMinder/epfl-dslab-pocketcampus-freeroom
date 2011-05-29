@@ -54,7 +54,19 @@ public class MainscreenNews implements Comparable<MainscreenNews> {
 		if(another == null) return 1;
 		if(another.date_ == null ) return 1;
 		if(this.date_ == null) return -1;
-		return -(another.date_.compareTo(date_)); //-(...) beacuse we want it in desc order
+		if(this.equals(another)) return 0;
+		int signum = (int) Math.signum((this.date_.getTime()-another.date_.getTime()));
+		return (signum != 0) ? signum : -1; //Because two items may have the same date, but are different and as we use SortedSet, 0 means the items are equal
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(o instanceof MainscreenNews) {
+			MainscreenNews other = (MainscreenNews) o;
+			return content_.equals(other.content_) && id_ == other.id_ && title_.equals(other.title_) && date_.equals(other.date_);
+		}
+		return super.equals(o);
 	}
 	
 }

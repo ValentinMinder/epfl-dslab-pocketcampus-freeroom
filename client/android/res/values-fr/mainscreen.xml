@@ -20,6 +20,7 @@
         <item>Français</item>
     </string-array>
     
-    <string name="mainscreen_plugin_preference_title">Options de l\'application</string>
-    
+    <string name="mainscreen_plugin_preference_title">Ecran d\'accueil</string>
+    <string name="application_preference">Options de l\'application</string>
+        
 </resources>

@@ -36,11 +36,31 @@ public class MainscreenPreference extends PluginPreference {
 		// root
 		PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
-//		 mainscreen preferences
+//		 language preferences
 		PreferenceCategory mainscreenPref = new PreferenceCategory(this);
-		mainscreenPref.setTitle(R.string.mainscreen_plugin_preference_title);
+		mainscreenPref.setTitle(R.string.application_preference);
 		root.addPreference(mainscreenPref);
 		
+		Preference appPref;
+		appPref = new Preference(this);
+		appPref.setTitle(R.string.mainscreen_language);
+		
+		OnPreferenceClickListener onAppPreferenceClickListener = new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Intent intent = new Intent(ctx_, new ApplicationPreference().getClass());
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				return false;
+			}
+		};
+		
+		appPref.setOnPreferenceClickListener(onAppPreferenceClickListener);
+		
+		mainscreenPref.addPreference(appPref);
+		
+		//add the mainscreen preferences
 		Preference mainPref;
 		mainPref = new Preference(this);
 		mainPref.setTitle(R.string.mainscreen_plugin_preference_title);
@@ -57,7 +77,6 @@ public class MainscreenPreference extends PluginPreference {
 		};
 		
 		mainPref.setOnPreferenceClickListener(onMainPreferenceClickListener);
-		
 		mainscreenPref.addPreference(mainPref);
 		
 		// TODO
@@ -66,6 +85,7 @@ public class MainscreenPreference extends PluginPreference {
 		PreferenceCategory pluginPrefCat = new PreferenceCategory(this);
 		pluginPrefCat.setTitle(R.string.mainscreen_plugins_options);
 		root.addPreference(pluginPrefCat);
+		
 		
 		Vector<PluginBase> plugins = Core.getInstance().getAvailablePlugins();
 		

@@ -14,7 +14,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 import org.pocketcampus.core.provider.IProvider;
-import org.pocketcampus.plugin.mainscreen.IAllowsID;
 
 import android.content.Context;
 import android.content.Intent;

@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.news;
 import java.util.ArrayList;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.plugin.IAllowsID;
 import org.pocketcampus.core.plugin.ICallback;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
@@ -11,7 +12,6 @@ import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
 import org.pocketcampus.plugin.logging.Tracker;
-import org.pocketcampus.plugin.mainscreen.IAllowsID;
 import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 
