@@ -50,7 +50,6 @@
 	    android:stretchMode="columnWidth"
 	    android:gravity="center"
 		android:background="#FFF"
-		android:visibility="visible"
 		android:layout_below="@+id/actionbar"
 		android:listSelector="#00000000"
 		/>
