@@ -17,7 +17,7 @@ import org.pocketcampus.plugin.mainscreen.IMainscreenNewsProvider;
 import org.pocketcampus.plugin.mainscreen.MainscreenNews;
 import org.pocketcampus.plugin.transport.request.ConnectionsRequest;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
-import org.pocketcampus.shared.utils.DateUtils;
+import org.pocketcampus.utils.DateUtils;
 import org.pocketcampus.utils.Notification;
 
 import android.content.Context;
@@ -161,10 +161,10 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 					String then = (String) ctx.getResources().getText(R.string.transport_then);
 
 					Date departureTime = connections.connections.get(0).departureTime;
-					String nextDepartures = " "+in+" " + DateUtils.formatDateDelta(new Date(), departureTime, lessThanAMinute);
+					String nextDepartures = " "+in+" " + DateUtils.formatDateDelta(ctx, new Date(), departureTime, lessThanAMinute);
 					
-					String next1 = DateUtils.formatDateDelta(new Date(), connections.connections.get(1).departureTime, lessThanAMinute);
-					String next2 = DateUtils.formatDateDelta(new Date(), connections.connections.get(2).departureTime, lessThanAMinute);
+					String next1 = DateUtils.formatDateDelta(ctx, new Date(), connections.connections.get(1).departureTime, lessThanAMinute);
+					String next2 = DateUtils.formatDateDelta(ctx, new Date(), connections.connections.get(2).departureTime, lessThanAMinute);
 					String followingDepartures = nextOne+" "+in+" " + next1 +", "+then+" "+in+" " + next2 + ".";
 					
 					MainscreenNews newsObj = new MainscreenNews(departure+" "+to+" "+destination + nextDepartures, followingDepartures, destNum, that, new Date());

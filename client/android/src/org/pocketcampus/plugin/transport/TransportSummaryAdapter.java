@@ -6,8 +6,8 @@ import java.util.Date;
 import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.transport.Connection;
 import org.pocketcampus.shared.plugin.transport.QueryConnectionsResult;
-import org.pocketcampus.shared.utils.DateUtils;
 import org.pocketcampus.shared.utils.StringUtils;
+import org.pocketcampus.utils.DateUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,6 +24,7 @@ import android.widget.TextView;
 public class TransportSummaryAdapter extends BaseAdapter {
 	private enum SummaryState {EMPTY, VALID, ERROR};
 	
+	private Context ctx_;
 	private QueryConnectionsResult summary_;
 	private SummaryState state_;
 	private LayoutInflater inflater_;
@@ -41,6 +42,8 @@ public class TransportSummaryAdapter extends BaseAdapter {
 	private String change_StringRessource;
 
 	public TransportSummaryAdapter(Context ctx, String departure, String arrival) {
+		ctx_ = ctx;
+		
 		state_ = SummaryState.EMPTY;
 		inflater_ = LayoutInflater.from(ctx);
 		departure_ = departure;
@@ -129,7 +132,7 @@ public class TransportSummaryAdapter extends BaseAdapter {
 		formatter.applyPattern("k:mm");
 		
 		// fill in the views
-		String timeString = inCapital_StringRessource + " " + DateUtils.formatDateDelta(new Date(), connection.departureTime, lessThanAMinute_StringRessource);
+		String timeString = inCapital_StringRessource + " " + DateUtils.formatDateDelta(ctx_, new Date(), connection.departureTime, lessThanAMinute_StringRessource);
 		timeTextView.setText(timeString);
 		
 		int nbChanges = connection.parts.size()-1;

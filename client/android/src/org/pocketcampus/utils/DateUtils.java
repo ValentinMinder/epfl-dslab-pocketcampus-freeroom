@@ -1,6 +1,10 @@
-package org.pocketcampus.shared.utils;
+package org.pocketcampus.utils;
 
 import java.util.Date;
+
+import org.pocketcampus.R;
+
+import android.content.Context;
 
 public class DateUtils {
 	private final static int NB_SECONDS_IN_DAY = 60 * 60 * 24;
@@ -15,12 +19,17 @@ public class DateUtils {
 	 * @param simultanateDates Text if the dates are the same
 	 * @return
 	 */
-	public static String formatDateDelta(Date startDate, Date endDate, String simultanateDates) {
+	public static String formatDateDelta(Context ctx, Date startDate, Date endDate, String simultaneousDates) {
 		int delta = (int) ((endDate.getTime() - startDate.getTime()) / 1000);
 		
 		if(delta <= NB_SECONDS_IN_MINUTE) {
-			return simultanateDates;
+			return simultaneousDates;
 		}
+		
+		String day = ctx.getString(R.string.day);
+		String hour = ctx.getString(R.string.hour);
+		String minute = ctx.getString(R.string.minute);
+		String and = ctx.getString(R.string.and);
 		
 		int nbDays = 0;
 		int nbHours = 0;
@@ -44,33 +53,33 @@ public class DateUtils {
 		String formattedDateDelta = "";
 		
 		if(nbDays > 0) {
-			formattedDateDelta += nbDays + " day" + plural(nbDays);
+			formattedDateDelta += nbDays + " " + day + plural(nbDays);
 		}
 		
 		if(nbHours > 0) {
 			if(nbDays > 0) {
 				if(nbMinutes==0 || nbDays>0) {
-					formattedDateDelta += " and ";
+					formattedDateDelta += " " + and + " ";
 				} else {
 					formattedDateDelta += ", ";
 				}
 				
 			}
 			
-			formattedDateDelta += nbHours + " hour" + plural(nbHours);
+			formattedDateDelta += nbHours + " " + hour + plural(nbHours);
 		}
 		
 		// skip the minutes if more than a day
 		if(nbMinutes > 0 && nbDays == 0) {
 			if(nbHours > 0) {
 				if(nbDays == 0) {
-					formattedDateDelta += " and ";
+					formattedDateDelta += " "+and+" ";
 				} else {
 					formattedDateDelta += ", ";
 				}
 			}
 			
-			formattedDateDelta += nbMinutes + " minute" + plural(nbMinutes);
+			formattedDateDelta += nbMinutes + " " + minute + plural(nbMinutes);
 		}
 		
 		return formattedDateDelta;

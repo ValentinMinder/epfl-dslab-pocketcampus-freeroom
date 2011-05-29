@@ -35,4 +35,19 @@
 	<string name="authentication_wrong_password">Wrong username or password</string>
 	<string name="authentication_hitosomeone">Hi, </string>
 	
+	<string name="day">day</string>
+	<string name="hour">hour</string>
+	<string name="minute">minute</string>
+	<string name="and">and</string>
 </resources>
+
+
+
+
+
+
+
+
+
+
+

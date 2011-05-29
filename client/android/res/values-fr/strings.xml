@@ -31,4 +31,9 @@
 	
 	<string name="authentication_wrong_password">Mauvais nom d\'utilisateur ou mot de passe</string>
 	<string name="authentication_hitosomeone">Bonjour, </string>
+	
+	<string name="day">jour</string>
+	<string name="hour">heure</string>
+	<string name="minute">minute</string>
+	<string name="and">et</string>
 </resources>
