@@ -7,6 +7,7 @@
 	<string name="transport_to">to</string>
 	<string name="transport_from">from</string>
 	<string name="transport_in">in</string>
+	<string name="transport_nextone">next one</string>
 	<string name="transport_then">then</string>
 	<string name="transport_at">at</string>
 	<string name="transport_lessThanAMinute">less than a minute</string>

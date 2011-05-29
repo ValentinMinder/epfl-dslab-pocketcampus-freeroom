@@ -157,6 +157,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 					String to = (String) ctx.getResources().getText(R.string.transport_to);
 					String departure = (String) ctx.getResources().getText(R.string.transport_departures_short);
 					String in = (String) ctx.getResources().getText(R.string.transport_in);
+					String nextOne = (String) ctx.getResources().getText(R.string.transport_nextone);
 					String then = (String) ctx.getResources().getText(R.string.transport_then);
 
 					Date departureTime = connections.connections.get(0).departureTime;
@@ -164,7 +165,7 @@ public class TransportPlugin extends PluginBase implements IMainscreenNewsProvid
 					
 					String next1 = DateUtils.formatDateDelta(new Date(), connections.connections.get(1).departureTime, lessThanAMinute);
 					String next2 = DateUtils.formatDateDelta(new Date(), connections.connections.get(2).departureTime, lessThanAMinute);
-					String followingDepartures = then+" "+in+" " + next1 +", "+then+" "+in+" " + next2 + ".";
+					String followingDepartures = nextOne+" "+in+" " + next1 +", "+then+" "+in+" " + next2 + ".";
 					
 					MainscreenNews newsObj = new MainscreenNews(departure+" "+to+" "+destination + nextDepartures, followingDepartures, destNum, that, new Date());
 					

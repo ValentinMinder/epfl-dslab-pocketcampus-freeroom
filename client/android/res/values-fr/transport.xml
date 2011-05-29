@@ -7,6 +7,7 @@
 	<string name="transport_to">vers</string>
 	<string name="transport_from">de</string>
 	<string name="transport_in">dans</string>
+	<string name="transport_nextone">le suivant</string>
 	<string name="transport_then">puis</string>
 	<string name="transport_at">à</string>
 	<string name="transport_lessThanAMinute">moins d\'une minute</string>
