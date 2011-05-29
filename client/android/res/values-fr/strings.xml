@@ -21,14 +21,13 @@
     
     <string name="actionbar_activity_not_found">Impossible d\'effectuer cette action...</string>
     
-	<string name="directory_friendly_name">Annuaire</string>
-	<string name="directory_search">Recherche</string>
-	<string name="directory_pluginName">Annuaire</string>
+	<string name="search">Chercher</string>
 	
 	<string name="server_connection_error">Erreur de connexion au serveur</string>
 	<string name="please_wait">Veuillez attendre...</string>
 	<string name="unexpected_response">Réponse innatendue du serveur</string>
-	<string name="search_no_results">Votre recherche n\'a retourné aucun élément</string>
+	<string name="generic_error">Une erreur est survenue, merci de réessayer plus tard.</string>
+	<string name="search_no_results">Votre recherche n\'a retourné aucun élément.</string>
 	
 	<string name="authentication_wrong_password">Mauvais nom d\'utilisateur ou mot de passe</string>
 	<string name="authentication_hitosomeone">Bonjour, </string>

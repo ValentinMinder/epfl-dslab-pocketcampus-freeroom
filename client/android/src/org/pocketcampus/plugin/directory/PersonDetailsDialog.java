@@ -188,16 +188,17 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	private void performDial() {
 		AlertDialog dialog = new AlertDialog.Builder(ctx_)
-		.setTitle("Call "+displayedPerson_.first_name+" "+displayedPerson_.last_name+"?")
+		.setTitle(getString(R.string.directory_call) + " "+displayedPerson_.first_name+" "+displayedPerson_.last_name+"?")
 		
 		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + displayedPerson_.phone_number));
+				
 				try{
 					ctx_.startActivity(dialIntent);
 				}catch (Exception e){
-					Toast.makeText(ctx_, "Couldn't make the call.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx_, getString(R.string.directory_couldnt_call), Toast.LENGTH_SHORT).show();
 				}
 			}
 		})
@@ -209,12 +210,12 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	
 	private void performMail(){
-		Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"
-				+ displayedPerson_.mail));
+		Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + displayedPerson_.mail));
+		
 		try {
 		    ctx_.startActivity(Intent.createChooser(emailIntent, "Send email..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-		    Toast.makeText(ctx_, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+		    Toast.makeText(ctx_, getString(R.string.directory_couldnt_email), Toast.LENGTH_SHORT).show();
 		}
 		
 	}
@@ -224,14 +225,13 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	
 	private void performWeb(){
-		Intent WebIntent = new Intent(Intent.ACTION_VIEW, 
-				Uri.parse(displayedPerson_.web)); 
+		Intent WebIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(displayedPerson_.web)); 
 		ctx_.startActivity(WebIntent);
 	}
 	
 	private void addToSocialAsFriend(){
 		AlertDialog dialog = new AlertDialog.Builder(ctx_)
-		.setTitle("Add "+displayedPerson_.first_name+" as a friend?")
+		.setTitle(getString(R.string.directory_add)+" "+displayedPerson_.first_name+" "+getString(R.string.directory_as_a_friend)+"?")
 		
 		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override
@@ -246,6 +246,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		
 		dialog.setCanceledOnTouchOutside(true);
 	}
-
-
+	
+	private CharSequence getString(int resId) {
+		return ctx_.getString(resId);
+	}
 }

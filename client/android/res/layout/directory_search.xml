@@ -14,19 +14,12 @@
 	    android:gravity="center_vertical"
 	    >
 	       
-		<!-- <TextView 
-			android:id="@+id/textView2" 
-			android:layout_height="wrap_content" 
-			android:text="First name:"
-			android:layout_width="80dip"
-			></TextView> -->
-		
 		<EditText 
 			android:layout_height="wrap_content" 
 			android:id="@+id/directory_first_name_input" 
 			android:layout_width="fill_parent"
 			android:singleLine="true"
-			android:hint="First name"
+			android:hint="@string/directory_first_name"
 			></EditText>
 			
 	</LinearLayout>
@@ -40,19 +33,12 @@
     	android:gravity="center_vertical"
     	>
     	
-		<!-- <TextView
-	        android:id="@+id/textView1"
-	        android:layout_height="wrap_content"
-	        android:text="Last name:"
-	        android:layout_width="80dip"
-	        ></TextView> -->
-	        
         <EditText
         	android:id="@+id/directory_last_name_input"
 	        android:layout_height="wrap_content"
 	        android:layout_width="fill_parent"
 	        android:singleLine="true"
-	        android:hint="Last name"
+	        android:hint="@string/directory_last_name"
 	        ></EditText>
 	        
     </LinearLayout>
@@ -65,27 +51,20 @@
 	    android:orientation="horizontal"
 	    >
     
-        <!-- <TextView
-	        android:text="Sciper:"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/textView3"
-	        android:layout_width="80dip"
-	        ></TextView> -->
-        
         <EditText
 	        android:inputType="number"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/directory_sciper_input"
 	        android:singleLine="true"
-	        android:hint="Sciper"
+	        android:hint="@string/directory_sciper"
 	        ></EditText>
 	        
     </LinearLayout>
     
     <Button
     	android:id="@+id/directory_search_button"
-	    android:text="Search"
+	    android:text="@string/search"
 	    android:layout_height="wrap_content"
 	    android:layout_width="wrap_content"
 	    android:layout_below="@+id/directory_ll3"

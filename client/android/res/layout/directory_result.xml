@@ -18,7 +18,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:textSize="15dip"
-			android:text="Press Menu to perform a search."
+			android:text="@string/directory_press_menu_to_search"
 			></TextView>
 		
 		<ListView 

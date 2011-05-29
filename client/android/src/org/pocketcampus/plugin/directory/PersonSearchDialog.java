@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class PersonSearchDialog extends Dialog {
+	private Context context_;
+	
 	private boolean accurateSearch_ = true;
 	private Button searchButton_;
 	private EditText firstNameEditText_;
@@ -29,6 +31,8 @@ public class PersonSearchDialog extends Dialog {
 		setContentView(R.layout.directory_search);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
+		context_ = context;
+		
 		searchButton_ = (Button)findViewById(R.id.directory_search_button);
 		firstNameEditText_ = (EditText)findViewById(R.id.directory_first_name_input);
 		lastNameEditText_ = (EditText)findViewById(R.id.directory_last_name_input);
@@ -43,10 +47,10 @@ public class PersonSearchDialog extends Dialog {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 1, Menu.NONE, "Search by sciper").setIcon(android.R.drawable.ic_menu_search);
+		menu.add(0, 1, Menu.NONE, getString(R.string.directory_search_by_sciper)).setIcon(android.R.drawable.ic_menu_search);
 		menu.setGroupEnabled(0, true);
 		
-		menu.add(1, 2, Menu.NONE, "Approximative search").setIcon(android.R.drawable.ic_menu_zoom);
+		menu.add(1, 2, Menu.NONE, getString(R.string.directory_approximative_search)).setIcon(android.R.drawable.ic_menu_zoom);
 		menu.setGroupEnabled(1, true);
 
 		return true;
@@ -59,22 +63,22 @@ public class PersonSearchDialog extends Dialog {
 				firstNameLayout_.setVisibility(View.GONE);
 				lastNameLayout_.setVisibility(View.GONE);
 				sciperNameLayout_.setVisibility(View.VISIBLE);
-				item.setTitle("Search by name");
+				item.setTitle(getString(R.string.directory_search_by_name));
 				clearEditTexts();
 	
 			} else {
 				firstNameLayout_.setVisibility(View.VISIBLE);
 				lastNameLayout_.setVisibility(View.VISIBLE);
 				sciperNameLayout_.setVisibility(View.GONE);
-				item.setTitle("Search by Sciper");
+				item.setTitle(getString(R.string.directory_search_by_sciper));
 				clearEditTexts();
 			}
 			break;
 	
 			case 2: if(accurateSearch_){
-				searchButton_.setText("~ Search");
+				searchButton_.setText("~ "+getString(R.string.search));
 			}else{
-				searchButton_.setText("Search");
+				searchButton_.setText(getString(R.string.search));
 			}
 			accurateSearch_ = !accurateSearch_;
 			break;
@@ -108,6 +112,10 @@ public class PersonSearchDialog extends Dialog {
 
 	public void setOnClickListener(android.view.View.OnClickListener onClickListener) {
 		searchButton_.setOnClickListener((android.view.View.OnClickListener) onClickListener);
+	}
+	
+	private CharSequence getString(int resId) {
+		return context_.getString(resId);
 	}
 }
 

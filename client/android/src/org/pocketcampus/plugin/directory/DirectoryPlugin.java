@@ -4,14 +4,15 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.parser.Json;
 import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
+import org.pocketcampus.shared.plugin.directory.Person;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,9 +28,6 @@ import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
-import org.pocketcampus.shared.plugin.directory.Person;
-import org.pocketcampus.utils.Notification;
 
 public class DirectoryPlugin extends PluginBase{
 	private ListView resultListView_;
@@ -87,7 +85,7 @@ public class DirectoryPlugin extends PluginBase{
 			return;
 		}
 		
-		showMessage("Searching...");
+		showMessage(getString(R.string.searching));
 		
 		incrementProgressCounter();
 		class DirectoryRequest extends DataRequest {
@@ -155,12 +153,12 @@ public class DirectoryPlugin extends PluginBase{
 	
 	public void displayResultList(){
 		if(resultsList_ == null) {
-			showMessage("An error occured, please try again later.");
+			showMessage(getString(R.string.generic_error));
 			return;
 		}
 		
 		if(resultsList_.isEmpty()) {
-			showMessage("No one found.");
+			showMessage(getString(R.string.directory_no_one_found));
 			return;
 		}
 		
@@ -201,7 +199,7 @@ public class DirectoryPlugin extends PluginBase{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 1, Menu.NONE, "New Search").setIcon(android.R.drawable.ic_menu_search);
+		menu.add(0, 1, Menu.NONE, getString(R.string.directory_new_search)).setIcon(android.R.drawable.ic_menu_search);
 		menu.setGroupEnabled(0, true);
 
 		return true;
@@ -239,14 +237,6 @@ public class DirectoryPlugin extends PluginBase{
 		}
 	}
 	
-	
-	
-	
-	
-	private void toast(String message){
-		Notification.showToast(getApplicationContext(), message);
-	}
-
 	@Override
 	public PluginInfo getPluginInfo() {
 		return new DirectoryInfo();
