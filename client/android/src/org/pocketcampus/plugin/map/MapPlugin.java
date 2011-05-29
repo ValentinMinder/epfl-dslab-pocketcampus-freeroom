@@ -51,6 +51,7 @@ import org.pocketcampus.shared.plugin.map.MapLayerBean;
 import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.utils.ImageUtil;
 import org.pocketcampus.utils.Notification;
+import org.pocketcampus.utils.PositionUtil;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -87,7 +88,6 @@ public class MapPlugin extends PluginBase {
 	private static final long LAYERS_REFRESH_TIMEOUT = 30000;
 	private static Position CAMPUS_CENTER_P;
 	private static GeoPoint CAMPUS_CENTER_G;
-	private static int CAMPUS_RADIUS;
 	
 	private static boolean DEBUG = false;
 
@@ -181,7 +181,6 @@ public class MapPlugin extends PluginBase {
 		double alt = Double.parseDouble(getResources().getString(R.string.map_campus_altitude));
 		CAMPUS_CENTER_P = new Position(lat, lon, alt);
 		CAMPUS_CENTER_G = new GeoPoint(CAMPUS_CENTER_P.getLatitude(), CAMPUS_CENTER_P.getLongitude(), CAMPUS_CENTER_P.getAltitude());
-		CAMPUS_RADIUS = getResources().getInteger(R.integer.map_campus_radius);
 		
 		layersCache_ = new LayersCache(this);
 		
@@ -324,7 +323,7 @@ public class MapPlugin extends PluginBase {
 		constantOverlays_.add(0, tilesOverlay);
 
 		// Following the user
-		//XXX myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+		// myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 		myLocationOverlay_ = new HybridPositioningOverlay(this, mapView_);
 		constantOverlays_.add(myLocationOverlay_);
 		if(DEBUG) {
@@ -608,17 +607,15 @@ public class MapPlugin extends PluginBase {
 		}
 
 		// Check if the user is on campus
-		Position startPos = new Position(fix.getLatitude(), fix.getLongitude(), fix.getAltitude());
-		double distanceToCenter = directDistanceBetween(startPos, CAMPUS_CENTER_P);
-		if(distanceToCenter > CAMPUS_RADIUS) {
+		if(!PositionUtil.isLocationOnCampus(this, fix)) {
 			Notification.showToast(getApplicationContext(), R.string.map_directions_not_on_campus);
 			return;
 		}
 
 		// Parameters 
 		RequestParameters params = new RequestParameters();
-		params.addParameter("startLatitude", Double.toString(startPos.getLatitude()));
-		params.addParameter("startLongitude", Double.toString(startPos.getLongitude()));
+		params.addParameter("startLatitude", Double.toString(fix.getLatitude()));
+		params.addParameter("startLongitude", Double.toString(fix.getLongitude()));
 		params.addParameter("endLatitude", Double.toString(to.getLatitude()));
 		params.addParameter("endLongitude", Double.toString(to.getLongitude()));
 
@@ -719,19 +716,6 @@ public class MapPlugin extends PluginBase {
 		cacheTime *= 1000;
 
 		return lastRefresh + cacheTime < System.currentTimeMillis();
-	}
-
-	/**
-	 * Get the distance between two points
-	 * 
-	 * @param start Start position
-	 * @param end End position
-	 * @return distance in meters
-	 */
-	private static double directDistanceBetween(Position start, Position end) {
-		GeoPoint s = new GeoPoint(start.getLatitude(), start.getLongitude(), start.getAltitude());
-		GeoPoint e = new GeoPoint(end.getLatitude(), end.getLongitude(), end.getAltitude());
-		return s.distanceTo(e);
 	}
 	
 	/**

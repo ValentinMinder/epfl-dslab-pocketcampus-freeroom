@@ -3,7 +3,6 @@
     <string name="map_campus_latitude">46.520101</string>
     <string name="map_campus_longitude">6.565189</string>
     <string name="map_campus_altitude">0</string>
-    <integer name="map_campus_radius">350</integer>
     
     <string name="map_campus_min_latitude">46.51528</string>
     <string name="map_campus_max_latitude">46.52569</string>
