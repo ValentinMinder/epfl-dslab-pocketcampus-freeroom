@@ -3,6 +3,8 @@ package org.pocketcampus.plugin.mainscreen;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -39,14 +41,12 @@ public class MainscreenPlugin extends PluginBase {
 	
 	private static ActionBar actionBar_;
 	private SlidingDrawer quickView_;
-	
-	private static List<Class> readyNews_;
-	
+		
 	public final static String PACKAGE = "org.pocketcampus.plugin.";
 	
 	private MainscreenAdapter adapter_;
 	
-	private static List<MainscreenNews> news_;
+	private static SortedSet<MainscreenNews> news_;
 	
 	private PluginsAdapter pluginsAdapter_;
 	
@@ -59,8 +59,7 @@ public class MainscreenPlugin extends PluginBase {
 
 		quickView_ = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
 		
-		readyNews_ = new ArrayList<Class>();
-		news_ = new ArrayList<MainscreenNews>();
+		news_ = new TreeSet<MainscreenNews>();
 		
 		tracker_ = Tracker.getInstance();
 		tracker_.start(this);
@@ -261,31 +260,12 @@ public class MainscreenPlugin extends PluginBase {
 	public void refreshed() {
 		actionBar_.setProgressBarVisibility(View.GONE);
 	}
-	
-	public static void notifyMainscreen(Class cl) {
-		Log.d("MainscreenPlugin", "Notification added for plugin " + cl);
-		readyNews_.add(cl);
-	}
-	
-	public static boolean hasNotification(Class cl) {
-		Log.d("MainscreenPlugin","Notification requested for plugin " + cl);
-		return readyNews_.contains(cl);
-	}
+
 	
 	
 	public void addAll(List<MainscreenNews> list) {
 		news_.addAll(list);
-		sort();
 		displayNews();
 	}
-	
-	public void clean() {
-		news_ = new ArrayList<MainscreenNews>();
-	}
-
-	public static void sort() {
-		Collections.sort(news_);
-	}
-	
 
 }

@@ -21,8 +21,6 @@ public class MainscreenNewsProvider implements ICallback {
 	}
 	
 	public void getNews() {
-				
-		main_.clean();
 		
 		main_.refreshing();
 		
