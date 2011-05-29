@@ -22,6 +22,6 @@ public class PositionUtil {
 		return (location.getLatitude() > minLat &&
 				location.getLatitude() < maxLat &&
 				location.getLongitude() > minLon &&
-				location.getLatitude() < maxLon);
+				location.getLongitude() < maxLon);
 	}
 }
