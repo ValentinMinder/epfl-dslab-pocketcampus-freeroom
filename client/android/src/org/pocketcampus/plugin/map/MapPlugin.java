@@ -485,6 +485,7 @@ public class MapPlugin extends PluginBase {
 			return true;
 			
 		case R.id.map_menu_clear_layers_button:
+			temporaryOverlays_.clear();
 			setSelectedLayers(new ArrayList<MapElementsList>());
 			
 			Tracker.getInstance().trackPageView("map/menu/clearLayers");
