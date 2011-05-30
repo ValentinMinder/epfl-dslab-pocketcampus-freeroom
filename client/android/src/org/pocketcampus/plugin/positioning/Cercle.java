@@ -7,11 +7,17 @@
  *
  */
 
+package org.pocketcampus.plugin.positioning;
+
 /**
- * Cercle Class for triangulation 
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Cercle class (triangulation)
+ * 
+ * returns intersection point 
  * 
  */
-package org.pocketcampus.plugin.positioning;
 
 public class  Cercle {
 

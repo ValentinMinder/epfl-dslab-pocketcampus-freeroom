@@ -1,5 +1,14 @@
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Cartesian Point
+ * 
+ * returns : cartesians x,y,z on virtual plan.
+ * 
+ */
 public class CartesianPoint {
 	
 	private double x_;

@@ -24,7 +24,7 @@ import android.net.wifi.WifiManager;
  * Author : Tarek
  *          Benoudina
  *          
- * FingerPrint for wifi location,
+ * Data Collector for FingerPrint,
  * 
  * returns : aproximative userPosition according to stored data.
  * 

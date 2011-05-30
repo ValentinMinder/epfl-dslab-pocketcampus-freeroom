@@ -1,4 +1,27 @@
+/*
+ ********************* [ P O C K E T C A M P U S ] *****************
+ * [    LICENCE    ] 	see "licence"-file in the root directory
+ * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
+ * [     STATUS    ]    stable
+ *
+ **************************[ C O M M E N T S ]**********************
+ *
+ * Represents an Accelerometer.
+ *
+ *******************************************************************
+ */
+
 package org.pocketcampus.plugin.positioning;
+
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Accelerometer,
+ * 
+ * returns : x,y,z values , Onshake state .
+ * 
+ */
 
 import android.app.Service;
 import android.content.Context;

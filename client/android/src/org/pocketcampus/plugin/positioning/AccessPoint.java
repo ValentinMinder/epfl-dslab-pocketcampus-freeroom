@@ -6,8 +6,7 @@
  *
  **************************[ C O M M E N T S ]**********************
  *
- * Class reused from V1
- * Represents an Acess Point.
+ * Represents an Access Point.
  *
  *******************************************************************
  */

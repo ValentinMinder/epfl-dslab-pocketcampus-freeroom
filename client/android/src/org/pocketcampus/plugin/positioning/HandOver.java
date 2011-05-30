@@ -33,6 +33,7 @@ public class HandOver {
 			compareMeasure();
 			
 		}else return onCompute();
+		// just for test
 		return HORposition_;
 	}
 
