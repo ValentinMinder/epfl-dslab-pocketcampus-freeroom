@@ -35,15 +35,15 @@ public class HybridLocation implements IPositionProvider{
 	private float getAccuracy() {
 		int numberOfAP = wifiLocation_.getnumberOfAP();
 		int good = wifiLocation_.getSignificantAP();
-		int accuracy = 35;
+		int accuracy = 40;
 		if(good > 1){
 			accuracy = 8;
 		}else if (good==1){
 			accuracy = 10;
 		}else if((numberOfAP > 10)&&(good==0)){
-			accuracy = 20;
-		}else if((numberOfAP > 4)&&(good==0)){
 			accuracy = 25;
+		}else if((numberOfAP < 10)&&(good==0)){
+			accuracy = 35;
 		}
 			
 		return accuracy;
