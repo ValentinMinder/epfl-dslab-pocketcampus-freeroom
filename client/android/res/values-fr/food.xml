@@ -5,7 +5,7 @@
 	<!-- Food Plugin -->
     <string name="food_plugin_title">Menus</string>
 	<string name="food_display_title">Food Service</string>
-	<string name="food_empty">Aucun élément à afficher</string>
+	<string name="food_empty">Aucun menu à afficher</string>
 	<string name="food_restaurants">Restaurants</string>
 	<string name="food_menucancelled">Connection au serveur impossible.</string>
 	<string name="food_reload_unsuccessful">Rafraîchissement des menus impossible.</string>
@@ -41,7 +41,7 @@
 	<string name="food_show_ratings">Menus triés par note</string>
 	<string name="food_show_sandwiches">Sandwiches</string>
 	<string name="food_show_suggestions">Suggestions</string>
-	<string name="food_show_settings">Paramètres</string>
+	<string name="food_show_settings">Sélection des Restaurants</string>
 
 	<!-- Menu dialog -->
 	<string name="food_menudialog_rateittext">Notez le!</string>
