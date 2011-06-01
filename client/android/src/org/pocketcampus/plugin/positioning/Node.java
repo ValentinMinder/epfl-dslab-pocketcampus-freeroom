@@ -1,5 +1,15 @@
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Node class ,
+ * 
+ * surround AccessPoints and used
+ * as references for the HandOver Algorithm
+ * 
+ */
 import java.util.ArrayList;
 import java.util.List;
 

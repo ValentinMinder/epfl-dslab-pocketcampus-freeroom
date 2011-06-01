@@ -1,5 +1,16 @@
 package org.pocketcampus.plugin.positioning;
 
+
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * HibridLocation,
+ * 
+ * combines several algorithms ,
+ * and returns a location
+ * 
+ */
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,16 @@
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * HandOver,
+ * 
+ * HandOver uses a virtual grid and nodes , 
+ * to compute the user position
+ * 
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

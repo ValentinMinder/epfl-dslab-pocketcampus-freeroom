@@ -14,6 +14,15 @@
  */
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Sphere class ,
+ * 
+ * models the wifi signal sphere.
+ * 
+ */
 public class Sphere {
 
 	
