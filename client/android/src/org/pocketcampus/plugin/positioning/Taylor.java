@@ -1,5 +1,14 @@
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * Taylor class,
+ * uses taylor development for series in order to 
+ * solve matrix systems for wifi positioning in 2D
+ * 
+ */
 import org.pocketcampus.plugin.positioning.utils.Matrix;
 import org.pocketcampus.shared.plugin.map.Position;
 
