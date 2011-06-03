@@ -1,5 +1,25 @@
+
+/*
+ ********************* [ P O C K E T C A M P U S ] *****************
+ * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
+ * [     STATUS    ]    under developement
+ *
+ **************************[ C O M M E N T S ]**********************
+ *   
+ *
+ *******************************************************************
+ */
 package org.pocketcampus.plugin.positioning;
 
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * VirtualConvert
+ * convert gps coordinates into cartesian coordinates
+ * needed for HandOver algorithm
+ * 
+ */
 import org.pocketcampus.shared.plugin.map.Position;
 
 public class VirtualConvert {

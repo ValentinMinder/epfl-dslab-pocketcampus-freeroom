@@ -1,11 +1,5 @@
-package org.pocketcampus.plugin.positioning;
-
-
-
-
 /*
  ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ] 	see "licence"-file in the root directory
  * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
  * [     STATUS    ]    under developement
  *
@@ -14,8 +8,21 @@ package org.pocketcampus.plugin.positioning;
  *
  *******************************************************************
  */
+package org.pocketcampus.plugin.positioning;
 
 
+
+
+/**
+ * Author : Tarek
+ *          Benoudina
+ *          
+ * WifiLocation,
+ * 
+ * Scan Wifi signals and compute the user position using triangulation,
+ * centroid , and weighted centroid algorithms .
+ * 
+ */
 
 import java.io.File;
 import java.io.FileInputStream;
