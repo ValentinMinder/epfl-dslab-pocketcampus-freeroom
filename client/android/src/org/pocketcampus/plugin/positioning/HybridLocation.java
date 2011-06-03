@@ -43,7 +43,7 @@ public class HybridLocation implements IPositionProvider{
 	
 	
 	
-	private float getAccuracy() {
+	public float getAccuracy() {
 		int numberOfAP = wifiLocation_.getnumberOfAP();
 		int good = wifiLocation_.getSignificantAP();
 		int accuracy = 40;
