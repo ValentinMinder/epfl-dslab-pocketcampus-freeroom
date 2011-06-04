@@ -1,6 +1,5 @@
 /*
  ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ] 	see "licence"-file in the root directory
  * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
  * [     STATUS    ]    in progress
  *

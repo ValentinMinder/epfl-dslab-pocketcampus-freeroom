@@ -1,4 +1,24 @@
+/*
+ ********************* [ P O C K E T C A M P U S ] *****************
+ * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
+ * [     STATUS    ]    stable
+ *
+ **************************[ C O M M E N T S ]**********************
+ *
+ * Represents a virtual Grid for HandOver algorithm
+ *
+ *******************************************************************
+ */
 package org.pocketcampus.plugin.positioning;
+
+/**
+ * Author:
+ * Tarek Benoudina
+ * 
+ * Grid class 
+ * contains nodes surrounding the access points 
+ * to handle the user position
+ */
 
 import java.util.ArrayList;
 import java.util.List;

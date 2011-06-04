@@ -1,13 +1,11 @@
 /*
  ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ] 	see "licence"-file in the root directory
+
  * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
  * [     STATUS    ]    stable
  *
  **************************[ C O M M E N T S ]**********************
  *
- * Class reused from V1
- * Represents an Acess Point.
  *
  *******************************************************************
  */

@@ -1,17 +1,17 @@
 
 /*
  ********************* [ P O C K E T C A M P U S ] *****************
- * [    LICENCE    ] 	see "licence"-file in the root directory
  * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
  * [     STATUS    ]    stable
  *
- */
-
-/**
- * Sphere Class represents the area where the Wifi signal 
+ **********************[ COMMENTS ] **************************
+ *
+ * Sphere represents the area where the Wifi signal 
  * is detected 
  * 
- */
+ *********************************************************/
+
+
 package org.pocketcampus.plugin.positioning;
 
 /**

@@ -88,7 +88,7 @@ class LocationUpdater extends Thread {
 			Location loc = null;
 			for(Location locat:getIntermediateLocations()){
 			try {
-				Thread.sleep(t/4);
+				Thread.sleep(t/5);
 				loc = locat;
 			} catch(Exception e) {
 				Log.e("HybridLocationUpdater", "error getting position");
@@ -130,7 +130,7 @@ class LocationUpdater extends Thread {
 		
 		System.out.println(" x "+x+" y "+y);
 		System.out.println(" x2 "+x2+" y2 "+y2);
-		for(int i=1;i<5;i++){
+		for(int i=0;i<5;i++){
 			intermediateResult = new Location("Wifi");
 			double x3 = x+(i*(x2-x)/4);
 			double y3 = y+(i*(y2-y)/4);
@@ -148,7 +148,7 @@ class LocationUpdater extends Thread {
 			System.out.println("Intermediate Location : "+loc.getLongitude());
 			System.out.println("Intermediate Location : "+loc.getAltitude());
 		}
-		this.firstLocation = intermediateLocation.get(3);
+		this.firstLocation = locationsStack.pop();
 		return intermediateLocation;
 	}
 }

@@ -1,7 +1,7 @@
 //
 ///*
 // ********************* [ P O C K E T C A M P U S ] *****************
-// * [    LICENCE    ] 	see "licence"-file in the root directory
+
 // * [   MAINTAINER  ]	tarek.benoudina@epfl.ch
 // * [     STATUS    ]    under developement
 // *
@@ -73,7 +73,7 @@
 //		double a3 = (x1-x3);
 //		double b3 = (y1-y3);
 //		double c3 = (z1-z3);
-//		
+		
 //		double D1 = Math.pow(d1, 2);
 //		double D2 = Math.pow(d2, 2);
 //		double D3 = Math.pow(d3, 2);
