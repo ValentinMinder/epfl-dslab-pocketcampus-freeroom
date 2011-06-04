@@ -6,6 +6,7 @@ import org.pocketcampus.plugin.bikes.BikesPlugin;
 import org.pocketcampus.plugin.camipro.CamiproPlugin;
 import org.pocketcampus.plugin.directory.DirectoryPlugin;
 import org.pocketcampus.plugin.food.FoodPlugin;
+import org.pocketcampus.plugin.library.LibraryPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
 import org.pocketcampus.plugin.preferenceslauncher.PreferencesLauncherPlugin;
@@ -45,6 +46,7 @@ public class PluginDiscoverer {
 		plugins.add(new TransportPlugin());
 		plugins.add(new SocialPlugin());
 		plugins.add(new BikesPlugin());
+		plugins.add(new LibraryPlugin());
 		//plugins.add(new PreferencesLauncherPlugin());
 		
 		////////////////////////////////

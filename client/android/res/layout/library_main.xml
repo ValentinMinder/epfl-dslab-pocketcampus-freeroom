@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_height="fill_parent">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+		
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_below="@+id/actionbar"
+		android:layout_height="fill_parent" 
+		android:id="@+id/transport_mainRelLayout"
+		>
+		
+		
+		<RelativeLayout
+			android:id="@+id/library_form" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/actionbar"
+			>
+			
+			<Button
+				android:id="@+id/library_search_button"
+				android:layout_width="wrap_content"
+				android:text="Search"
+				android:layout_alignParentRight="true"
+				></Button>
+			
+			<EditText
+				android:id="@+id/library_search_input" 
+				android:layout_width="fill_parent"
+				android:hint="Title, author, subject..."
+				android:layout_toLeftOf="@+id/library_search_button"
+				android:singleLine="true"
+				></EditText>
+			
+			<!-- <EditText
+				android:id="@+id/library_search_input" 
+				android:layout_width="wrap_content"
+				android:hint="Title, author, subject..."
+				android:layout_weight="1"
+				></EditText>
+			
+			<Button
+				android:id="@+id/library_search_button"
+				android:layout_width="wrap_content"
+				android:layout_weight="5"
+				android:text="Search"
+				></Button>
+			 -->
+				
+		</RelativeLayout>
+			
+		<ListView
+			android:layout_below="@+id/library_form"
+			android:id="@+id/library_mainlist" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			></ListView>
+
+		<TextView
+			android:id="@+id/library_centered_msg"
+			android:layout_below="@+id/library_form"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:gravity="center"
+			android:textSize="15dip"
+			></TextView>
+
+	</RelativeLayout>
+
+</RelativeLayout>
+

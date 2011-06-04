@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:padding="3dp"
+	>
+		
+	<TextView 
+		android:id="@+id/library_book_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:textColor="@android:color/black"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:singleLine="true"
+		/>
+		
+	<TextView 
+		android:id="@+id/library_book_author"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:layout_below="@+id/library_book_title"
+		android:textColor="@android:color/darker_gray"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:singleLine="true"
+		/>
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
 import org.pocketcampus.shared.plugin.directory.Person;
+import org.pocketcampus.shared.utils.NetworkUtil;
 
 import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.Filter;
@@ -84,33 +85,17 @@ public class Directory implements IPlugin{
 		String pictureCamiproUrl = pictureCamiproBase + hashedSciper + pictureExtension;
 		String pictureExtUrl = pictureExtBase + hashedSciper + pictureExtension;
 		
-		if(checkUrl(pictureCamiproUrl)) {
+		if(NetworkUtil.checkUrlStatus(pictureCamiproUrl)) {
 			System.out.println(pictureCamiproUrl);
 			return pictureCamiproUrl;
 		}
 		
-		if(checkUrl(pictureExtUrl)) {
+		if(NetworkUtil.checkUrlStatus(pictureExtUrl)) {
 			System.out.println(pictureExtUrl);
 			return pictureExtUrl;
 		}
 		
 		return null;
-	}
-	
-	private boolean checkUrl(String pictureUrl) {
-		URL u;
-		try {
-			u = new URL(pictureUrl);
-			HttpURLConnection huc =  (HttpURLConnection)  u.openConnection(); 
-			huc.setRequestMethod("GET"); 
-			huc.connect(); 
-			return (huc.getResponseCode()==200);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return false;
 	}
 
 	@PublicMethod

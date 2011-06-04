@@ -54,6 +54,9 @@
 		<!--  Transport Plugin -->
 		<activity android:name=".plugin.transport.TransportPlugin"></activity>
 		<activity android:name=".plugin.transport.TransportPreference"></activity>
+		
+		<!--  Library Plugin -->
+		<activity android:name=".plugin.library.LibraryPlugin" android:screenOrientation="portrait"></activity>
 
 		<!-- Social Plugin -->
 		<activity android:name=".plugin.social.SocialPlugin" android:screenOrientation="portrait"></activity>

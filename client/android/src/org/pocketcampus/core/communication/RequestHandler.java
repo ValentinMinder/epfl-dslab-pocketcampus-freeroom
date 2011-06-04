@@ -1,7 +1,5 @@
 package org.pocketcampus.core.communication;
 
-import java.io.File;
-
 import org.pocketcampus.core.communication.pcp.PcpRequest;
 import org.pocketcampus.core.plugin.PluginInfo;
 
@@ -13,22 +11,34 @@ public class RequestHandler {
 	 * Plugins: Map, Food, Bikes, Transport
 	 * Public DNS: http://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/
 	 */
-	//private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha2/";
+	//private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha1/";
+
 	
-	// DSLAB server
-	//private static final String serverUrl_ = "http://dslabpc15.epfl.ch:8080/alpha2/";
-	
-	// DSLAB secured server
-	private static final String serverUrl_ = "https://dslabpc15.epfl.ch:8443/alpha2/";
 	
 	/**
-	 * DEVELOPMENT SERVERS
+	 * ONLINE DEVELOPMENT SERVERS
 	 */
+	
+	// DSLAB secured server, updated regularly with latest SVN version, use this one.
+	private static final String serverUrl_ = "https://dslabpc15.epfl.ch:8443/alpha2/";
+	
+	// DSLAB server. Unsecured!
+	//private static final String serverUrl_ = "http://dslabpc15.epfl.ch:8080/alpha2/";
+	
+	// AWS test server, outdated.
+	//private static final String serverUrl_ = "http://epflserv.pocketcampus.org/alpha2/";
+	
+	
+	
+	/**
+	 * LOCAL DEVELOPMENT SERVERS
+	 */
+	
 	// EMULATOR URL
-	//private String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
+	//private static String serverUrl_ = "http://10.0.0.2:8080/pocketcampus-server/";
 
 	// ELODIE LOCAL SERVER URL
-	//private String serverUrl_ = "http://128.178.240.75:8080/pocketcampus-server/";
+	//private static String serverUrl_ = "http://128.178.251.168:8080/pocketcampus-server/";
 
 	// FLORIAN LOCAL SERVER URL
 	//private static final String serverUrl_ = "http://10.0.0.157:8080/pocketcampus-server/";
@@ -37,8 +47,8 @@ public class RequestHandler {
 	//private String serverUrl_ = "http://192.168.1.46:8080/pocketcampus-server/";
 	//private String serverUrl_ = "http://128.178.244.121:8080/pocketcampus-server/";
 	
-//	private static String serverUrl_ = "http://128.178.253.198:8080/pocketcampus-server/";
 
+	
 	public RequestHandler(PluginInfo pluginInfo) {
 		pluginInfo_ = pluginInfo;
 	}

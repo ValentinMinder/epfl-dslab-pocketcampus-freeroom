@@ -4,31 +4,32 @@ import java.util.HashMap;
 
 public class StringUtils {
 	private static HashMap<String,String> htmlEntities_;
+	
 	static {
 		htmlEntities_ = new HashMap<String,String>();
-		htmlEntities_.put("&lt;","<")    ; htmlEntities_.put("&gt;",">");
-		htmlEntities_.put("&amp;","&")   ; htmlEntities_.put("&quot;","\"");
-		htmlEntities_.put("&agrave;","à"); htmlEntities_.put("&Agrave;","À");
-		htmlEntities_.put("&acirc;","â") ; htmlEntities_.put("&auml;","ä");
-		htmlEntities_.put("&Auml;","Ä")  ; htmlEntities_.put("&Acirc;","Â");
-		htmlEntities_.put("&aring;","å") ; htmlEntities_.put("&Aring;","Å");
-		htmlEntities_.put("&aelig;","æ") ; htmlEntities_.put("&AElig;","Æ" );
-		htmlEntities_.put("&ccedil;","ç"); htmlEntities_.put("&Ccedil;","Ç");
-		htmlEntities_.put("&eacute;","é"); htmlEntities_.put("&Eacute;","É" );
-		htmlEntities_.put("&egrave;","è"); htmlEntities_.put("&Egrave;","È");
-		htmlEntities_.put("&ecirc;","ê") ; htmlEntities_.put("&Ecirc;","Ê");
-		htmlEntities_.put("&euml;","ë")  ; htmlEntities_.put("&Euml;","Ë");
-		htmlEntities_.put("&iuml;","ï")  ; htmlEntities_.put("&Iuml;","Ï");
-		htmlEntities_.put("&ocirc;","ô") ; htmlEntities_.put("&Ocirc;","Ô");
-		htmlEntities_.put("&ouml;","ö")  ; htmlEntities_.put("&Ouml;","Ö");
-		htmlEntities_.put("&oslash;","ø"); htmlEntities_.put("&Oslash;","Ø");
-		htmlEntities_.put("&szlig;","ß") ; htmlEntities_.put("&ugrave;","ù");
-		htmlEntities_.put("&Ugrave;","Ù"); htmlEntities_.put("&ucirc;","û");
-		htmlEntities_.put("&Ucirc;","Û") ; htmlEntities_.put("&uuml;","ü");
-		htmlEntities_.put("&Uuml;","Ü")  ; htmlEntities_.put("&nbsp;"," ");
-		htmlEntities_.put("&copy;","\u00a9");
-		htmlEntities_.put("&reg;","\u00ae");
-		htmlEntities_.put("&euro;","\u20a0");
+	    htmlEntities_.put("&lt;","<")    ; htmlEntities_.put("&gt;",">");
+	    htmlEntities_.put("&amp;","&")   ; htmlEntities_.put("&quot;","\"");
+	    htmlEntities_.put("&agrave;","Ã "); htmlEntities_.put("&Agrave;","Ã€");
+	    htmlEntities_.put("&acirc;","Ã¢") ; htmlEntities_.put("&auml;","Ã¤");
+	    htmlEntities_.put("&Auml;","Ã„")  ; htmlEntities_.put("&Acirc;","Ã‚");
+	    htmlEntities_.put("&aring;","Ã¥") ; htmlEntities_.put("&Aring;","Ã…");
+	    htmlEntities_.put("&aelig;","Ã¦") ; htmlEntities_.put("&AElig;","Ã†" );
+	    htmlEntities_.put("&ccedil;","Ã§"); htmlEntities_.put("&Ccedil;","Ã‡");
+	    htmlEntities_.put("&eacute;","Ã©"); htmlEntities_.put("&Eacute;","Ã‰" );
+	    htmlEntities_.put("&egrave;","Ã¨"); htmlEntities_.put("&Egrave;","Ãˆ");
+	    htmlEntities_.put("&ecirc;","Ãª") ; htmlEntities_.put("&Ecirc;","ÃŠ");
+	    htmlEntities_.put("&euml;","Ã«")  ; htmlEntities_.put("&Euml;","Ã‹");
+	    htmlEntities_.put("&iuml;","Ã¯")  ; htmlEntities_.put("&Iuml;","Ã");
+	    htmlEntities_.put("&ocirc;","Ã´") ; htmlEntities_.put("&Ocirc;","Ã”");
+	    htmlEntities_.put("&ouml;","Ã¶")  ; htmlEntities_.put("&Ouml;","Ã–");
+	    htmlEntities_.put("&oslash;","Ã¸") ; htmlEntities_.put("&Oslash;","Ã˜");
+	    htmlEntities_.put("&szlig;","ÃŸ") ; htmlEntities_.put("&ugrave;","Ã¹");
+	    htmlEntities_.put("&Ugrave;","Ã™"); htmlEntities_.put("&ucirc;","Ã»");
+	    htmlEntities_.put("&Ucirc;","Ã›") ; htmlEntities_.put("&uuml;","Ã¼");
+	    htmlEntities_.put("&Uuml;","Ãœ")  ; htmlEntities_.put("&nbsp;"," ");
+	    htmlEntities_.put("&copy;","\u00a9");
+	    htmlEntities_.put("&reg;","\u00ae");
+	    htmlEntities_.put("&euro;","\u20a0");
 	}
 
 
@@ -87,7 +88,7 @@ public class StringUtils {
 	}
 	
 	/**
-	 * Unescape the the HTML characters from a String, eg "&agrave;" to "à".
+	 * Unescape the the HTML characters from a String, eg "&agrave;" to "Ã ".
 	 * @param source
 	 * @return
 	 */
@@ -117,6 +118,25 @@ public class StringUtils {
 			}
 		} while (continueLoop);
 		return source;
+	}
+	
+	/**
+	 * Returns the first substring from <code>text</code> start with <code>start</code> and
+	 * ending with <code>end</code>, both excluded.
+	 * @param text
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static String stringBetween(String text, String start, String end) {
+		int startIndex = text.indexOf(start) + start.length();
+		int endIndex = text.indexOf(end);
+		
+		if(startIndex>0 && endIndex>0 && startIndex<endIndex) {
+			return text.substring(startIndex, endIndex);
+		}
+		
+		return "";
 	}
 }
 
