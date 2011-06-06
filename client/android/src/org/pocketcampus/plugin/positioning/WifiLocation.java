@@ -37,8 +37,6 @@ import java.util.List;
 
 
 import org.osmdroid.util.GeoPoint;
-//import org.pocketcampus.map.element.MapElement;
-//import org.pocketcampus.map.util.CoordinateConverter;
 
 import org.pocketcampus.R;
 import org.pocketcampus.shared.plugin.map.Position;
@@ -127,16 +125,11 @@ public class WifiLocation {
 		for (Iterator<ScanResult> iterator = visibleAP.iterator(); iterator
 		.hasNext();) {
 			ScanResult ap = (ScanResult) iterator.next();
-			// System.out.println(ap.SSID);
-			// System.out.println(ap.level);
 
 			if (ap.SSID.equals("epfl") || ap.SSID.equals("public-epfl")) {
-				// if(ap.level > -99) {
 				String name = ApBSSIDToName.get(ap.BSSID);
 				Position pos = ApNameToPosition.get(name);
 				if (pos != null) {
-//					pos = CoordinateConverter.convertCH1903ToLatLong(pos
-//							.getLon(), pos.getLat(), pos.getLevel());
 					Position geoPos = new Position(pos.getLongitude(),pos.getLatitude(),pos.getLatitude());
 					
 					usableAP.add(new AccessPoint(ap, name, geoPos));
@@ -163,8 +156,8 @@ public class WifiLocation {
 		AccessPoint Ap = null;
 		int lev = 0;
 		for (AccessPoint p : listAP) {
-			System.out.println("DISTANCE !!!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.out.println(p.getDistance() + "  " + p.getSignalLevel());
+//			System.out.println("DISTANCE !!!!!!!!!!!!!!!!!!!!!!!!!!");
+//			System.out.println(p.getDistance() + "  " + p.getSignalLevel());
 			if (p.getSignalLevel() > lev) {
 				lev = p.getSignalLevel();
 				Ap = p;
@@ -172,9 +165,8 @@ public class WifiLocation {
 		}
 		po = new Position(Ap.position().getLatitude(), Ap.position().getLongitude(), Ap
 				.position().getLatitude());
-		System.out.println("The Nearest!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println("Level" + Ap.getSignalLevel() + "Distance"
-				+ Ap.getDistance());
+//		System.out.println("The Nearest!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		System.out.println("Level" + Ap.getSignalLevel() + "Distance"+ Ap.getDistance());
 		return po;
 	}
 
@@ -237,7 +229,6 @@ public class WifiLocation {
 			}
 		}
 		
-		//System.out.println("AP Nearest Distance:"+Ap.getDistance()+" Level : "+Ap.getSignalLevel()+" Name :"+Ap.getSSID());
 		return Ap;
 	}
 	
@@ -322,7 +313,6 @@ public class WifiLocation {
 				total += level;
 				posXAvg += emitter.position().getLatitude() * level;
 				posYAvg += emitter.position().getLongitude() * level;
-				//levelAvg += emitter.position().getLevel() * level;
 			}
 		}
 		
@@ -340,8 +330,6 @@ public class WifiLocation {
 		List<AccessPoint> myList = new ArrayList<AccessPoint>();
 
 		for(AccessPoint ap : list){
-
-			//System.out.println("Valuuuuuuuuuuuuuuues:::::::::"+ap.getSignalLevel());
 			if((ap.position().getAltitude()==refLevel)||
 					(ap.position().getAltitude()==refLevel+1)||
 					(ap.position().getAltitude()==refLevel-1)){	
@@ -390,13 +378,13 @@ public class WifiLocation {
 			if(best4position.contains(bestAp.position())){
 				apList.remove(bestAp);
 				bestAp = getStrongestAP(apList);
-				System.out.println("apList :"+ apList.size());
+				//System.out.println("apList :"+ apList.size());
 			}else{
 				best4List.add(bestAp);
 				best4position.add(bestAp.position());
 				apList.remove(bestAp);
 				bestAp = getStrongestAP(apList);
-				System.out.println("apList_best4 :"+ best4List.size());
+				//System.out.println("apList_best4 :"+ best4List.size());
 				i--;
 			}
 		}
@@ -411,7 +399,7 @@ public class WifiLocation {
 		if(position == null){
 			return null;
 		}
-		System.out.println("Adjusted result :::"+position.toString());
+		//System.out.println("Adjusted result :::"+position.toString());
 
 		result = new Position((double)position.getLatitude()-0.000090,(double)position.getLongitude()+0.000020,position.getAltitude());
 
@@ -442,7 +430,6 @@ public class WifiLocation {
 	}
 	
 	public Position getWifiLocationPerTaylorSerieGlobal(){
-		//Toast.makeText(ctx_, "Waiting for positioning  !",Toast.LENGTH_LONG);
 		List<AccessPoint> apList = new ArrayList<AccessPoint>();
 		List<Position> positionList = new ArrayList<Position>();
 		Position result2 =null;
@@ -451,7 +438,6 @@ public class WifiLocation {
 		apList =getAccessPoints();
 
 		int i=0;
-		//int j=3;
         while(i<apList.size()-3){
 		AccessPoint ap1 = apList.get(i);
 		AccessPoint ap2 = apList.get(i+1);
@@ -466,13 +452,9 @@ public class WifiLocation {
 		x =x+result.getLatitude();
 		y =y+result.getLongitude();
 		}
-		System.out.println("X :" +x);
-		System.out.println("Y :" +y);
 		i++;
         }
 		result2 = new Position(x/positionList.size(),y/positionList.size(),0.0);
-		System.out.println("Position list size ::::::::::::"+positionList.size());
-		System.out.println("Taylor position: " + result2);
 		return result2;
 	}
 	
@@ -486,7 +468,6 @@ public class WifiLocation {
 		apList =getAccessPoints();
 
 		int i=0;
-		//int j=3;
         while(i<apList.size()-3){	
 		AccessPoint ap1 = apList.get(i);
 		AccessPoint ap2 = apList.get(i+1);
@@ -503,9 +484,9 @@ public class WifiLocation {
 		y =y+result.getLongitude();
 		z =z+result.getAltitude();
 		}
-		System.out.println("X :" +x);
-		System.out.println("Y :" +y);
-		System.out.println("Z :" +z);
+//		System.out.println("X :" +x);
+//		System.out.println("Y :" +y);
+//		System.out.println("Z :" +z);
 		i++;
         }
         result2 = new Location("Wifi Taylor");
@@ -514,7 +495,7 @@ public class WifiLocation {
         result2.setAltitude(0.0);
         result2.setAccuracy(10);
 		//result2 = new Position(x/positionList.size(),y/positionList.size(),z/positionList.size());
-		System.out.println("Position list size ::::::::::::"+positionList.size());
+//		System.out.println("Position list size ::::::::::::"+positionList.size());
 		
 		return result2;
 	}
@@ -541,8 +522,8 @@ public class WifiLocation {
 				positionList.add(currentAp.position());
 			}
 		}
-		System.out.println("Distinct : "+distinctApList.size());
-		System.out.println("Aplist   : "+apList.size());
+//		System.out.println("Distinct : "+distinctApList.size());
+//		System.out.println("Aplist   : "+apList.size());
 		return distinctApList;
 	}
 	
