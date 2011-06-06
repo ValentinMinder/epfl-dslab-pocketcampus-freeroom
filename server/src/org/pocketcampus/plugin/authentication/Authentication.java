@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.authentication;
 
 import java.awt.Toolkit;
 import java.security.GeneralSecurityException;
-import java.util.Collection;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -93,6 +92,7 @@ public class Router extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Request: " + request.getRequestURL());
+		@SuppressWarnings("unchecked")
 		Enumeration<String> ps = request.getParameterNames();
 		while(ps.hasMoreElements()) {
 			String s = ps.nextElement();
@@ -173,10 +173,7 @@ public class Router extends HttpServlet {
 	private void invoke(HttpServletRequest request, HttpServletResponse response, IPlugin obj, Method m) throws IOException {
 		// Create the arguments to pass to the method
 		Object arglist[] = new Object[1];
-		//request.setCharacterEncoding("iso-8859-15");
 		request.setCharacterEncoding("UTF-8");
-		
-		Charset charset = Charset.forName("UTF-8");
 		
 		arglist[0] = request;
 		try {			
@@ -188,9 +185,6 @@ public class Router extends HttpServlet {
 			Object ret = m.invoke(obj, arglist);
 			
 			String json = gson_.toJson(ret);
-			
-			// Fixes the damn encoding
-			//json = charset.encode(json).toString();
 			
 			// Puts the method content into the response
 			response.getWriter().println(json);

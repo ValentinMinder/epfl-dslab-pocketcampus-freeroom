@@ -34,7 +34,8 @@ public class Reporter {
 			
 			out.println("<div id=\"wrapper\">");
 			
-			out.println("<div class=\"vcard\" id=\"header\"><h1 id=\"name\">PocketCampus Server</h1><p class=\"title\">"+Core.getInstance().INSTANCE_NAME+"</p><div class=\"clear\"></div></div><div class=\"clear\"></div>"); 
+			Core.getInstance();
+			out.println("<div class=\"vcard\" id=\"header\"><h1 id=\"name\">PocketCampus Server</h1><p class=\"title\">"+Core.INSTANCE_NAME+"</p><div class=\"clear\"></div></div><div class=\"clear\"></div>"); 
 			
 			out.println("<div id=\"content_wrapper\"><div id=\"content\"><div class=\"inner\"><div id=\"mainContent\"><div class=\"post\"\">");
 			out.println(content);

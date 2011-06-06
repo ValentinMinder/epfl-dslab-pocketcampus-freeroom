@@ -51,6 +51,7 @@ public class Test implements IPlugin, INewsFeedProvider {
 			return "Must upload as HTTP multipart POST";
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
+		@SuppressWarnings("unchecked")
 		List<FileItem> items = upload.parseRequest(request);
 		
 		Iterator<FileItem> it = items.iterator();

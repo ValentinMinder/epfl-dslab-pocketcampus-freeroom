@@ -2,14 +2,11 @@ package org.pocketcampus.plugin.directory;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import javax.naming.directory.SearchControls;
 import javax.servlet.http.HttpServletRequest;
 
 import org.pocketcampus.core.plugin.IPlugin;
@@ -18,7 +15,6 @@ import org.pocketcampus.shared.plugin.directory.Person;
 import org.pocketcampus.shared.utils.NetworkUtil;
 
 import com.unboundid.ldap.sdk.DereferencePolicy;
-import com.unboundid.ldap.sdk.Filter;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.LDAPSearchException;
