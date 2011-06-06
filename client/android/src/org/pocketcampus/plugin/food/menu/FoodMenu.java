@@ -86,7 +86,7 @@ public class FoodMenu {
 			for(String r : restaurants){
 				Log.d("PREFERENCES", "Ya ce restaurant dans le fichier : " + r);
 				if(prefs.getBoolean(r, false)){
-					Log.d("PREFERENCES","Il l'a ajouté");
+					Log.d("PREFERENCES","Il l'a ajoutï¿½");
 					prefsRestaurants.add(r);
 				}
 			}
@@ -106,8 +106,6 @@ public class FoodMenu {
 					}
 				}
 			}
-		} else {
-			prefMeals = campusMenu_;
 		}
 
 		return prefMeals;

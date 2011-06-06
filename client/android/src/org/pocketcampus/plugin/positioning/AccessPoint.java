@@ -27,7 +27,7 @@ import org.pocketcampus.shared.plugin.map.Position;
 
 import android.net.wifi.ScanResult;
 
-public class AccessPoint implements Comparable{
+public class AccessPoint implements Comparable<AccessPoint> {
 	private Position position;
 	private String SSID;
 	private int signalLevel;
@@ -193,7 +193,7 @@ public class AccessPoint implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object obj) {
+	public int compareTo(AccessPoint obj) {
 		return this.name.compareTo(obj.toString());
 	}
 }

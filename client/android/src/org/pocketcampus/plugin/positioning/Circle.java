@@ -14,13 +14,13 @@ package org.pocketcampus.plugin.positioning;
  * Author : Tarek
  *          Benoudina
  *          
- * Cercle class (triangulation)
+ * Circle class (triangulation)
  * 
  * returns intersection point 
  * 
  */
 
-public class  Cercle {
+public class Circle {
 
 	private AccessPoint Ap_;
 	private double x_;
@@ -29,7 +29,7 @@ public class  Cercle {
 	
 
 	
-	public Cercle(AccessPoint _ap){
+	public Circle(AccessPoint _ap){
 		
 		this.Ap_ = _ap;
 		this.x_=_ap.position().getLatitude();
@@ -37,7 +37,7 @@ public class  Cercle {
 		this.radius_=_ap.getDistance();
 	}
 	
-	public Cercle(double x,double y,double radius){
+	public Circle(double x,double y,double radius){
 		
 		this.x_=x;
 		this.y_=y;

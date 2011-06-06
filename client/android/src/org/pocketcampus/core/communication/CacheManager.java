@@ -2,9 +2,6 @@ package org.pocketcampus.core.communication;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
-import android.util.Log;
 
 // TODO way to save the cache when closing the application
 // TODO way to purge the cache to save memory
@@ -16,8 +13,7 @@ import android.util.Log;
  * @param <A>
  */
 public class CacheManager<A> {
-	private static final String TAG = "CacheManager";
-	private static CacheManager instance_;
+	private static CacheManager<?> instance_;
 	HashMap<String, Date> expirationMap_;
 	HashMap<String, A> cacheMap_;
 	

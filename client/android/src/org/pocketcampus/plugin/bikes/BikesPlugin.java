@@ -26,16 +26,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
 
 public class BikesPlugin extends PluginBase {
 
 	private static ActionBar actionBar_;
 
 	public static RequestHandler bikesRequestHandler;
-
-	private BikesAdapter adapter_;
 
 	private int selected_;
 	private List<BikeStation> bikeStations_;
@@ -108,8 +106,6 @@ public class BikesPlugin extends PluginBase {
 				selected_ = getIDFromIntent();
 			}
 		} catch (NoIDException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 

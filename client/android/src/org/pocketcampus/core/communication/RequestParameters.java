@@ -1,7 +1,6 @@
 package org.pocketcampus.core.communication;
 
 import java.net.URLEncoder;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
