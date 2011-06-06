@@ -75,23 +75,7 @@ public class AccessPoint implements Comparable<AccessPoint> {
 		return signalLevel;
 	}
 	
-//	@Override
-//	public String toString() {
-//		String apName = "??";
-//		Position pos = new Position(0, 0, 0);
-//		
-//		if(name != null) {
-//			apName = name;
-//		}
-//		
-//		if(position != null) {
-//			pos = position;
-//		}
-//		
-//		return SSID + ", "+apName+": ("+ pos.getLatitude() + ";"+ pos.getLongitude() +";"+pos.getLatitude()+"), "+ signalLevel;
-//	}
-	
-	
+		
 	@Override
 	public String toString(){
 		return this.name;
@@ -107,15 +91,7 @@ public class AccessPoint implements Comparable<AccessPoint> {
  *	supposing ours APs are Isotrop Antenna.
  *	so RSS = Power/4*PI*R^2 (R is the distance)
  */
-	
-//	public double getDistance(){
-//		double distance = 0;
-//		double pi = Math.PI;
-//		int power = this.radiatedPower;
-//		int lev = this.getSignalLevel();
-//		distance = Math.sqrt((power/4*pi*lev));	
-//		return distance;
-//	}
+
 	
 	public double getDistance(){
 		int pathLoss = pathLoss_*(-1);
@@ -128,6 +104,21 @@ public class AccessPoint implements Comparable<AccessPoint> {
 		return distance;
 	}
 	
+	
+//	public double getDistance(){
+//		double distance = 0;
+//		double pi = Math.PI;
+//		int power = this.radiatedPower;
+//		int lev = this.getSignalLevel();
+//		distance = Math.sqrt((power/4*pi*lev));	
+//		return distance;
+//	}
+	
+	/**
+	 * returns an estimated distance between device and
+	 * wifi antenna basing on reals distances test
+	 * 
+	 * */
 	
 	public int getEstimatedDistance(){
 		int distance = 0;
@@ -179,6 +170,11 @@ public class AccessPoint implements Comparable<AccessPoint> {
 		nodes_ = list; 
 	}
 
+	/**
+	 * add (+1) to all nodes surrounding the AP which the user 
+	 * is moving toward.
+	 * 
+	 * */
 	public void increaseNode() {
 		if(nodes_!=null)
 			for(Node node : nodes_ )
@@ -186,6 +182,11 @@ public class AccessPoint implements Comparable<AccessPoint> {
 		
 	}
 
+	/**
+	 * add (-1) to all nodes surrounding the AP which the user 
+	 * is moving away.
+	 * 
+	 * */
 	public void decreaseNode() {
 		if(nodes_!=null)
 			for(Node node : nodes_ )
