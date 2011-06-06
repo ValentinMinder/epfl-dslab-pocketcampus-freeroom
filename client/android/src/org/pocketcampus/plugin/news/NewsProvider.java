@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -31,12 +32,12 @@ public class NewsProvider {
 
 	private Context context_;
 	private SharedPreferences prefs_;
-	
+
 	// Singleton
 	private static NewsProvider instance_;
-	
+
 	private FeedDownloader downloader_;
-	
+
 	private List<INewsListener> newsListeners_;
 
 	// Data used to cache the feeds 
@@ -46,7 +47,7 @@ public class NewsProvider {
 
 	// Items  from the feeds (merged)
 	private List<NewsItem> items_;
-	
+
 	/**
 	 * Create a NewsProvider with an empty list of news.
 	 * Call refreshIfNeeded to load the news.
@@ -54,14 +55,14 @@ public class NewsProvider {
 	 */
 	private NewsProvider(Context context) {
 		this.context_ = context;
-		
+
 		this.items_ = new ArrayList<NewsItem>();
-		this.newsListeners_ = new ArrayList<INewsListener>();
-		
+		this.newsListeners_ = Collections.synchronizedList(new ArrayList<INewsListener>());
+
 		prefs_ = PreferenceManager.getDefaultSharedPreferences(context);
 		defaultRefreshRate_ = context.getResources().getStringArray(R.array.news_refresh_values)[context.getResources().getInteger(R.integer.news_default_refresh)];
 	}
-	
+
 	/**
 	 * Get the singleton instance of the news provider
 	 * @context The context that is used when creating the singleton
@@ -70,7 +71,7 @@ public class NewsProvider {
 		if(instance_ == null) {
 			instance_ = new NewsProvider(context);
 		}
-		
+
 		return instance_;
 	}
 
@@ -79,21 +80,17 @@ public class NewsProvider {
 	 * @param listener
 	 */
 	public void addNewsListener(INewsListener listener) {
-		synchronized (newsListeners_) {
-			newsListeners_.add(listener);
-		}
+		newsListeners_.add(listener);
 	}
-	
+
 	/**
 	 * Remove a listener
 	 * @param listener
 	 */
 	public void removeNewsListener(INewsListener listener) {
-		synchronized (newsListeners_) {
-			newsListeners_.remove(listener);
-		}
+		newsListeners_.remove(listener);
 	}
-	
+
 
 	/**
 	 * Checks if the feeds must be redownloaded
@@ -117,11 +114,11 @@ public class NewsProvider {
 	 * Refresh the feeds (and handles the cache)
 	 */
 	public void forceRefresh() {
-		
+
 		for (INewsListener listener : newsListeners_) {
 			listener.newsRefreshing();
 		}
-		
+
 		downloadFeeds();
 		prefs_.edit().putLong(NewsPreference.CACHE_TIME, System.currentTimeMillis()).commit();
 
@@ -135,7 +132,7 @@ public class NewsProvider {
 		for (INewsListener listener : newsListeners_) {
 			listener.newsRefreshed();
 		}
-		
+
 		this.saveNewsToFile();
 	}
 
@@ -155,7 +152,7 @@ public class NewsProvider {
 				urlsToDownload.add(urls[0]);
 			}	
 		}
-		
+
 		for(int i = 1; i < urls.length; i++) {
 			if(prefs_.getBoolean(NewsPreference.LOAD_RSS + urls[i], false)) {
 				urlsToDownload.add(urls[i]);
@@ -183,7 +180,7 @@ public class NewsProvider {
 				items_ = (ArrayList<NewsItem>) o;
 
 				Log.d(this.getClass().toString(), "Got news from file");
-				
+
 				this.dataSetUpdated();
 
 				return true;
@@ -199,7 +196,7 @@ public class NewsProvider {
 		Log.d(this.getClass().toString(), "Could not get news from file");
 
 		this.dataSetUpdated();
-		
+
 		return false;
 	}
 
@@ -236,16 +233,16 @@ public class NewsProvider {
 	 * @return Too old or not
 	 */
 	private boolean cacheTooOld() {
-		
+
 		refreshRate_ = Integer.parseInt(prefs_.getString("news_refresh_rate", defaultRefreshRate_));
 
 		Log.d(this.getClass().toString(), "Last cached: " + prefs_.getLong(NewsPreference.CACHE_TIME, 0));
 		Log.d(this.getClass().toString(), "Current time: " + System.currentTimeMillis());
 		Log.d(this.getClass().toString(), "Refresh rate: " + refreshRate_);
-		
+
 		return prefs_.getLong(NewsPreference.CACHE_TIME, 0) + refreshRate_ < System.currentTimeMillis();
 	}
-	
+
 
 	public int getCount() {
 		return items_.size();
@@ -271,6 +268,6 @@ public class NewsProvider {
 		if(items_ != null && items != null)
 			items_.addAll(items);
 	}
-	
-	
+
+
 }

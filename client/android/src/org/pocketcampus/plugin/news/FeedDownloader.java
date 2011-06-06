@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
-
 import android.os.AsyncTask;
 
 /**
