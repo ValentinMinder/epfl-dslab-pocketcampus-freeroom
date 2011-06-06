@@ -97,6 +97,7 @@ public class Suggestions extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
 		if(extras != null){
+			@SuppressWarnings("unchecked")
 			ArrayList<Meal> m = (ArrayList<Meal>)extras.getSerializable("org.pocketcampus.suggestions.meals");
 			if(m != null && !m.isEmpty()){
 				for(Meal meal : m){
@@ -104,7 +105,7 @@ public class Suggestions extends Activity{
 				}
 			}
 		}else{
-			Log.d("SUGGESTIONS", "Pas reçu d'extras à l'aller !");
+			Log.d("SUGGESTIONS", "Pas reï¿½u d'extras ï¿½ l'aller !");
 		}
 	}
 	

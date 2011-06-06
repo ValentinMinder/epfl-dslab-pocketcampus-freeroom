@@ -4,10 +4,8 @@ import org.pocketcampus.R;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 
 public class AboutDialog extends Dialog {
 

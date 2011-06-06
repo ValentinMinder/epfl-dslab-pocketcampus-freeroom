@@ -9,7 +9,6 @@ import org.pocketcampus.plugin.food.FoodPlugin;
 import org.pocketcampus.plugin.library.LibraryPlugin;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.plugin.news.NewsPlugin;
-import org.pocketcampus.plugin.preferenceslauncher.PreferencesLauncherPlugin;
 import org.pocketcampus.plugin.social.SocialPlugin;
 import org.pocketcampus.plugin.transport.TransportPlugin;
 

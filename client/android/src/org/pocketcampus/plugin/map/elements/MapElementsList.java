@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
-import android.graphics.drawable.Drawable;
-
 public class MapElementsList extends ArrayList<MapElement> {
 
 	private static final long serialVersionUID = 1054957477020550085L;
@@ -28,7 +26,6 @@ public class MapElementsList extends ArrayList<MapElement> {
 		this.cacheTimeInSeconds_ = mlb.getCacheInSeconds();
 		this.layerId_ = mlb.getExternalId();
 		this.iconUrl_ = mlb.getDrawableUrl();
-		//XXX more?
 	}
 	
 	public MapElement getItemFromId(int id) {

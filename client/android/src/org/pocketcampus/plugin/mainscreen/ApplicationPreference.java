@@ -1,26 +1,18 @@
 package org.pocketcampus.plugin.mainscreen;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import org.pocketcampus.R;
-import org.pocketcampus.core.plugin.Core;
-import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 
-import android.app.Application;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.widget.Toast;
 
 /**
  * The general application preferences. Now it is just about switching the language.
@@ -110,17 +102,6 @@ public class ApplicationPreference extends PluginPreference {
 	}
 
 	private void forceRefresh() {
-
 		setPreferenceScreen(createPreferenceHierarchy());
-
 	}
-
-	
-//	@Override
-//	public void onBackPressed() {
-//		Intent intent = new Intent(this, new MainscreenPreference().getClass());
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		this.getApplicationContext().startActivity(intent);
-//	}
-	
 }

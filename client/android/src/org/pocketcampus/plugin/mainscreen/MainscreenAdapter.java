@@ -1,8 +1,5 @@
 package org.pocketcampus.plugin.mainscreen;
 
-
-
-import java.util.List;
 import java.util.SortedSet;
 
 import org.pocketcampus.R;
@@ -14,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 public class MainscreenAdapter extends BaseAdapter {
 	

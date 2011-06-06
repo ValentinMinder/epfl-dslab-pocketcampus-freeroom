@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.mainscreen;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Core;
@@ -9,7 +8,6 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.core.ui.ActionBar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -28,7 +26,6 @@ import android.preference.PreferenceScreen;
 public class MainscreenPluginPreference extends PluginPreference {
 
 	protected static int counter_ = 0;
-    private Locale locale_ = null;
     protected static String currLang_;
     
 	@Override

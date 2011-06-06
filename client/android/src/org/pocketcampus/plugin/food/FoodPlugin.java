@@ -43,7 +43,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
@@ -267,7 +266,7 @@ public class FoodPlugin extends PluginBase implements IMainscreenNewsProvider,
 			int index = -1;
 			if (prefsRestos_.contains(r)) {
 				index = prefsRestos_.indexOf(r);
-				Log.d("FoodPlugin", "Prefs Restos le contient à l'index "
+				Log.d("FoodPlugin", "Prefs Restos le contient ï¿½ l'index "
 						+ index);
 			}
 			Adapter adapt = foodDisplayHandler_.getListAdapter()

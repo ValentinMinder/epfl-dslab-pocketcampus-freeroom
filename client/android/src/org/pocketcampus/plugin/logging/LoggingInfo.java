@@ -8,11 +8,9 @@ import org.pocketcampus.core.plugin.VersionNumber;
 
 public class LoggingInfo extends PluginInfo {
 	private final Id id_ = new Id("logging");
-	private final String name_ = "Logging";
 	
 	@Override
 	public Icon getIcon() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
@@ -21,7 +19,6 @@ public class LoggingInfo extends PluginInfo {
 	}
 	@Override
 	public Icon getMiniIcon() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -36,7 +33,6 @@ public class LoggingInfo extends PluginInfo {
 	}
 	@Override
 	public boolean hasMenuIcon() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
