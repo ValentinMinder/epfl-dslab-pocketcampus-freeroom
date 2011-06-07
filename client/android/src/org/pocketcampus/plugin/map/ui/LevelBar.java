@@ -46,6 +46,7 @@ public class LevelBar implements OnSeekBarChangeListener{
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		currentLevel_ = progress + minLevel_;
+		listener_.onLevelChanging(currentLevel_);
 	}
 	
 	@Override

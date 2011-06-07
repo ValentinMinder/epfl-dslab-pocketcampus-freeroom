@@ -8,4 +8,10 @@ public interface OnLevelBarChangeListener {
 	 */
 	public void onLevelChanged(int level);
 	
+	/**
+	 * Called when the level bar is being seek.
+	 * @param level the current level
+	 */
+	public void onLevelChanging(int level);
+	
 }

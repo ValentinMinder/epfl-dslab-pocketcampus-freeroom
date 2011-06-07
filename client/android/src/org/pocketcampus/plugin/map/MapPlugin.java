@@ -67,6 +67,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -303,12 +304,20 @@ public class MapPlugin extends PluginBase {
 			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
 			int max = getResources().getInteger(R.integer.map_level_max);
 			int min = getResources().getInteger(R.integer.map_level_min);
+			final TextView levelTextView = (TextView) findViewById(R.id.map_level_textview);
 			new LevelBar(seekBar, new OnLevelBarChangeListener() {
 				@Override
 				public void onLevelChanged(int level) {
+					levelTextView.setVisibility(View.INVISIBLE);
 					changeLevel(level);
 					String slevel = getResources().getString(R.string.map_level);
 					Toast.makeText(getApplicationContext(), slevel + " " + level, Toast.LENGTH_SHORT).show();
+				}
+				@Override
+				public void onLevelChanging(int level) {
+					levelTextView.setVisibility(View.VISIBLE);
+					levelTextView.setText(level + "");
+					
 				}
 			}, max, min, max);
 		}
