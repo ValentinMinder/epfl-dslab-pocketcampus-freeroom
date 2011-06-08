@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.positioning.utils;
 
 /**
- * Author : Jama package
  * 
- * modified by Tarek
+ * Author : Jama package  * modified by Tarek Benoudina
  * 
  * */
 
