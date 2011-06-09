@@ -14,8 +14,8 @@
 	<string name="directory_couldnt_email">Pas de client mail installé.</string>
 	<string name="directory_couldnt_call">Impossible d\'effectuer l\'appel.</string>
 	
-	<string name="directory_first_name">Nom</string>
-	<string name="directory_last_name">Prénom</string>
+	<string name="directory_first_name">Prénom</string>
+	<string name="directory_last_name">Nom</string>
 	<string name="directory_sciper">Sciper</string>
 	
 	<string name="directory_press_menu_to_search">Presez Menu pour effectuer une nouvelle recherche.</string>
