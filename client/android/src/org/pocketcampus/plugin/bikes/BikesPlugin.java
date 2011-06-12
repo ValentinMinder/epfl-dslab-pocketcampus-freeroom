@@ -1,10 +1,15 @@
 package org.pocketcampus.plugin.bikes;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.R;
+import org.pocketcampus.core.communication.DataRequest;
 import org.pocketcampus.core.communication.RequestHandler;
+import org.pocketcampus.core.communication.RequestParameters;
+import org.pocketcampus.core.parser.Json;
+import org.pocketcampus.core.parser.JsonException;
 import org.pocketcampus.core.plugin.Core;
 import org.pocketcampus.core.plugin.NoIDException;
 import org.pocketcampus.core.plugin.PluginBase;
@@ -16,6 +21,8 @@ import org.pocketcampus.plugin.logging.Tracker;
 import org.pocketcampus.plugin.map.MapPlugin;
 import org.pocketcampus.shared.plugin.bikes.BikeStation;
 
+import com.google.gson.reflect.TypeToken;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -26,6 +33,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
@@ -40,6 +48,8 @@ public class BikesPlugin extends PluginBase {
 	private BikeStationList list_;
 
 
+	private String layer_;
+	
 	private Context ctx_;
 
 	@Override
@@ -53,6 +63,8 @@ public class BikesPlugin extends PluginBase {
 
 		list_ = new BikeStationList(this);
 		setupActionBar(true);
+		
+		loadBikesLayer();
 
 		selected_ = -1;
 		ctx_ = getApplicationContext();
@@ -166,6 +178,16 @@ public class BikesPlugin extends PluginBase {
 			t.addView(tr, layoutParams);
 			index++;
 		}
+		
+		TextView msgEmpty = (TextView) findViewById(R.id.msg_empty);
+		
+		if(bikeStations_.isEmpty()) {
+			t.setVisibility(View.GONE);
+			msgEmpty.setVisibility(View.VISIBLE);
+		} else {
+			t.setVisibility(View.VISIBLE);
+			msgEmpty.setVisibility(View.GONE);
+		}
 
 	}
 
@@ -213,13 +235,45 @@ public class BikesPlugin extends PluginBase {
 			@Override
 			public void onClick(View v) {
 				Bundle b = new Bundle();
-				b.putSerializable("MapLayer", "E947267780DD3BC28FE75AA56DA18DC7");
+				b.putSerializable("MapLayer", layer_);
 				b.putInt("MapItem", station.getId());
 				Core.startPluginWithBundle(getApplicationContext(), new MapPlugin(), b);
 			}
 		});
 
 		return row;
+	}
+	
+	public void loadBikesLayer() {
+
+		BikesPlugin.refreshing();
+		
+		class BikesLayerRequest extends DataRequest {
+
+			@Override
+			public void onCancelled() {
+				Log.d("BikeLayer", "Task cancelled");
+				Toast.makeText(getApplicationContext(),getApplicationContext().getText(R.string.bikes_plugin_cancel), Toast.LENGTH_SHORT);
+				BikesPlugin.refreshed();
+			}
+
+			@Override
+			protected void doInUiThread(String result) {
+				Log.d("BikeLayer", "Loading layer");
+			
+				Log.d("BikeLayer", "Result :"+result);
+				
+				layer_ = result;
+				
+				Log.d("BikeLayer","Layer loaded");
+
+				BikesPlugin.refreshed();
+				
+			}
+		}
+		
+		BikesPlugin.bikesRequestHandler.execute(new BikesLayerRequest(), "/getLayerId", (RequestParameters) null);
+		
 	}
 
 

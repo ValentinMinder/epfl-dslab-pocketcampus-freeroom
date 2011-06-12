@@ -15,6 +15,14 @@
 		<TableLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/bikes_table" android:layout_alignParentRight="true">
 
 		</TableLayout>
+		
+		<TextView
+				android:gravity="center"
+				android:id="@+id/msg_empty"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:textSize="15dip"
+				android:text="@string/bikes_empty"></TextView>
 			
 	</RelativeLayout>
 
