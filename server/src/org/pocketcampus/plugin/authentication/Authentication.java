@@ -1,14 +1,15 @@
 package org.pocketcampus.plugin.authentication;
 
-import java.awt.Toolkit;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 
+import org.pocketcampus.core.exception.ServerException;
 import org.pocketcampus.core.plugin.IPlugin;
 import org.pocketcampus.core.plugin.PublicMethod;
+import org.pocketcampus.plugin.social.Social;
 import org.pocketcampus.shared.plugin.social.User;
 
 import com.unboundid.ldap.sdk.BindResult;
@@ -50,7 +51,7 @@ public class Authentication implements IPlugin {
 					String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
 					
 					//Open a session
-					String sessionId = AuthenticationSessions.newSession(username, password);
+					String sessionId = AuthenticationSessions.newSession(sciper, password);
 					if(sessionId != null) {
 						user = new User(firstName, lastName, sciper);
 						user.setSessionId(sessionId);
@@ -77,25 +78,14 @@ public class Authentication implements IPlugin {
 	}
 	
 	@PublicMethod
-	public String s(HttpServletRequest request) {
-		Toolkit.getDefaultToolkit().beep();
-		return AuthenticationSessions.newSession("tsouintsouin", "");
-	}
-	
-//	@PublicMethod
-//	public Collection<String> ss(HttpServletRequest request) {
-//		return AuthenticationSessions.ss();
-//	}
-	
-	@PublicMethod
 	public boolean authenticate(HttpServletRequest request) {
-		String username = request.getParameter("username");
+		String sciper = request.getParameter("sciper");
 		String sessionId = request.getParameter("sessionId");
 		
 		boolean authed = false;
 		
-		if(username != null && sessionId != null) {
-			authed = AuthenticationSessions.authenticateSession(username, sessionId);
+		if(sciper != null && sessionId != null) {
+			authed = AuthenticationSessions.authenticateSession(sciper, sessionId);
 		}
 		
 		return authed;
@@ -103,14 +93,21 @@ public class Authentication implements IPlugin {
 	
 	@PublicMethod
 	public boolean logout(HttpServletRequest request) {
-		String username = request.getParameter("username");
+		String sciper = request.getParameter("sciper");
 		String sessionId = request.getParameter("sessionId");
 		
 		boolean status = false;
 		
-		if(username != null && sessionId != null) {
-			if(AuthenticationSessions.authenticateSession(username, sessionId)) {
-				AuthenticationSessions.freeSession(username);
+		if(sciper != null && sessionId != null) {
+			if(AuthenticationSessions.authenticateSession(sciper, sessionId)) {
+				try {
+					Social.clearPositionRequests(identifyBySciper(sciper));
+				} catch(ServerException e) {
+					e.printStackTrace();
+				}
+				
+				AuthenticationSessions.freeSession(sciper);
+				
 				status = true;
 			}
 		}
@@ -118,38 +115,38 @@ public class Authentication implements IPlugin {
 		return status;
 	}
 	
-	public static User identifyByUsername(String username) {
-		User user = null;
-		LDAPConnection ldap = null;
-		
-		try {
-			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
-			ldap = new LDAPConnection(socketFactory, "ldap.epfl.ch", 636);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(uid="+username+")");
-			List<SearchResultEntry> entries = searchResult.getSearchEntries();
-
-			if(!entries.isEmpty()) {
-				String firstName = entries.get(0).getAttribute("givenName").getValue();
-				String lastName = entries.get(0).getAttribute("sn").getValue();
-				String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
-					
-				user = new User(firstName, lastName, sciper);
-				user.setSessionId(AuthenticationSessions.getSession(username));
-			} else {
-				user = null;
-			}
-		} catch(LDAPException e) {
-			e.printStackTrace();
-			user = null;
-		} catch(GeneralSecurityException e) {
-			e.printStackTrace();
-			user = null;
-		} finally {
-			ldap.close();
-		}
-
-		return user;
-	}
+//	public static User identifyByUsername(String username) {
+//		User user = null;
+//		LDAPConnection ldap = null;
+//		
+//		try {
+//			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
+//			ldap = new LDAPConnection(socketFactory, "ldap.epfl.ch", 636);
+//			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, "(uid="+username+")");
+//			List<SearchResultEntry> entries = searchResult.getSearchEntries();
+//
+//			if(!entries.isEmpty()) {
+//				String firstName = entries.get(0).getAttribute("givenName").getValue();
+//				String lastName = entries.get(0).getAttribute("sn").getValue();
+//				String sciper = entries.get(0).getAttribute("uniqueIdentifier").getValue();
+//					
+//				user = new User(firstName, lastName, sciper);
+//				user.setSessionId(AuthenticationSessions.getSession(username));
+//			} else {
+//				user = null;
+//			}
+//		} catch(LDAPException e) {
+//			e.printStackTrace();
+//			user = null;
+//		} catch(GeneralSecurityException e) {
+//			e.printStackTrace();
+//			user = null;
+//		} finally {
+//			ldap.close();
+//		}
+//
+//		return user;
+//	}
 	
 	public static User identifyBySciper(String sciper) {
 		User user = null;

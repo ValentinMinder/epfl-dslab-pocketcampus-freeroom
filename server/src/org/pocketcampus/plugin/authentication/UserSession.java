@@ -4,13 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class UserSession {
-	private final String username_;
+	private final String sciper_;
 	private final String password_;
 	private final String sessionId_;
 	private Date timestamp_;
 	
-	public UserSession(String username, String password, String sessionId) {
-		username_ = username;
+	public UserSession(String sciper, String password, String sessionId) {
+		sciper_ = sciper;
 		password_ = password;
 		sessionId_ = sessionId;
 		timestamp_ = Calendar.getInstance().getTime();
@@ -20,8 +20,8 @@ public class UserSession {
 		timestamp_ = Calendar.getInstance().getTime();
 	}
 
-	public String getUsername() {
-		return username_;
+	public String getSciper() {
+		return sciper_;
 	}
 
 	public String getPassword() {

@@ -16,8 +16,8 @@ public class AuthenticationSessions {
 	private static ReentrantLock lock_;
 	private static AuthenticationEncryption encrypter_;
 
-	public static String newSession(String username, String password) {
-		if(username == null && password == null)
+	public static String newSession(String sciper, String password) {
+		if(sciper == null && password == null)
 			throw new IllegalArgumentException();
 		if(!valid())
 			init();
@@ -30,10 +30,10 @@ public class AuthenticationSessions {
 
 		try {
 			String sPassword = encrypter_.encrypt(password, sessionId);
-			sessions_.put(username, new UserSession(username, sPassword, sessionId));
+			sessions_.put(sciper, new UserSession(sciper, sPassword, sessionId));
 			sessionIds_.add(sessionId);
 		} catch(Exception e) {
-			if(sessions_.containsKey(username)) sessions_.remove(username);
+			if(sessions_.containsKey(sciper)) sessions_.remove(sciper);
 			if(sessionIds_.contains(sessionId)) sessionIds_.remove(sessionId);
 			sessionId = null;
 		} finally {
@@ -43,8 +43,8 @@ public class AuthenticationSessions {
 		return sessionId;
 	}
 
-	public static String getPassword(String username, String sessionId) {
-		if(username == null && sessionId == null)
+	public static String getPassword(String sciper, String sessionId) {
+		if(sciper == null && sessionId == null)
 			throw new IllegalArgumentException();
 		if(!valid())
 			init();
@@ -53,8 +53,8 @@ public class AuthenticationSessions {
 
 		lock_.lock();
 		try {
-			if(sessions_.containsKey(username)) {
-				password = encrypter_.decrypt(sessions_.get(username).getPassword(), sessionId);
+			if(sessions_.containsKey(sciper)) {
+				password = encrypter_.decrypt(sessions_.get(sciper).getPassword(), sessionId);
 			}
 		} catch(Exception e) {
 			password = null;
@@ -66,41 +66,43 @@ public class AuthenticationSessions {
 	}
 	
 	public static String getPassword(AuthToken token) {
-		return getPassword(token.getUsername(), token.getSessionId());
+		return getPassword(token.getSciper(), token.getSessionId());
 	}
 
-
-	public static boolean authenticateSession(String username, String sessionId) {
-		if(username == null || sessionId == null)
+	public static boolean authenticateSession(String sciper, String sessionId) {
+		if(sciper == null || sessionId == null)
 			throw new IllegalArgumentException();
 		if(!valid())
 			init();
 
 		boolean authed = false;
+		boolean free = false;
 		
 		long now = new Date().getTime();
 
 		lock_.lock();
 
-		if(sessions_.containsKey(username)) {
-			UserSession session = sessions_.get(username);
+		if(sessions_.containsKey(sciper)) {
+			UserSession session = sessions_.get(sciper);
 			
-			long timestamp = sessions_.get(username).getTimestamp().getTime();
+			long timestamp = sessions_.get(sciper).getTimestamp().getTime();
 			if(session.getSessionId().equals(sessionId) && (now - timestamp) < SESSION_DURATION) {
 				authed = true;
 				session.updateTimestamp();
 			} else {
-				freeSession(username);
+				free = true;
 			}
 		}
 
 		lock_.unlock();
 
+		if(free) freeSession(sciper);
+		
 		return authed;
 	}
 
-	public static String getSession(String username) {
-		if(username == null)
+	public static String getSession(String sciper) {
+		if(sciper == null)
 			throw new IllegalArgumentException();
 		if(!valid())
 			init();
@@ -109,8 +111,8 @@ public class AuthenticationSessions {
 
 		lock_.lock();
 
-		if(sessions_.containsKey(username)) {
-			session = sessions_.get(username).getSessionId();
+		if(sessions_.containsKey(sciper)) {
+			session = sessions_.get(sciper).getSessionId();
 		}
 
 		lock_.unlock();
@@ -118,8 +120,8 @@ public class AuthenticationSessions {
 		return session;
 	}
 
-	public static boolean freeSession(String username) {
-		if(username == null)
+	public static boolean freeSession(String sciper) {
+		if(sciper == null)
 			throw new IllegalArgumentException();
 		if(!valid())
 			init();
@@ -128,13 +130,29 @@ public class AuthenticationSessions {
 
 		lock_.lock();
 
-		if(sessions_.containsKey(username)) {
-			String sessionId = sessions_.get(username).getSessionId();
-			sessions_.remove(username);
+		if(sessions_.containsKey(sciper)) {
+			String sessionId = sessions_.get(sciper).getSessionId();
+			sessions_.remove(sciper);
 			if(sessionIds_.contains(sessionId)) sessionIds_.remove(sessionId);
 			status = true;
 		}
 
+		lock_.unlock();
+
+		return status;
+	}
+	
+	//Hmm..
+	public static boolean isOnline(String sciper) {
+		if(sciper == null)
+			throw new IllegalArgumentException();
+		if(!valid())
+			init();
+		
+		boolean status = false;
+
+		lock_.lock();
+		status = sessions_.containsKey(sciper);
 		lock_.unlock();
 
 		return status;

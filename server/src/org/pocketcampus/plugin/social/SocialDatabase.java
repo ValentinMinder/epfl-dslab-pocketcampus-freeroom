@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.pocketcampus.core.database.ConnectionManager;
@@ -13,6 +14,7 @@ import org.pocketcampus.core.database.handlers.requests.CountRequestHandler;
 import org.pocketcampus.core.database.handlers.requests.QueryRequestHandler;
 import org.pocketcampus.core.database.handlers.requests.UpdateRequestHandler;
 import org.pocketcampus.core.exception.ServerException;
+import org.pocketcampus.plugin.authentication.AuthenticationSessions;
 import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.plugin.social.User;
 
@@ -130,15 +132,16 @@ public class SocialDatabase {
 	 * @param to
 	 * @return true if there's a request pending from from to to.
 	 */
-	public static boolean testPending(final User from, final User to) throws ServerException {
-		String sqlRequest = "SELECT COUNT(*) AS `count` FROM `"+pendingTable+"` WHERE `from` = ? AND `to` = ?";
+	public static boolean testPending(final String id, final User from, final User to) throws ServerException {
+		String sqlRequest = "SELECT COUNT(*) AS `count` FROM `"+pendingTable+"` WHERE `id` = ? AND `from` = ? AND `to` = ?";
 
 		CountRequestHandler rf = new CountRequestHandler(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass), "count") {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
-				stmt.setString(1, from.getIdFormat());
-				stmt.setString(2, to.getIdFormat());
+				stmt.setString(1, id);
+				stmt.setString(2, from.getIdFormat());
+				stmt.setString(3, to.getIdFormat());
 			}
 		};
 
@@ -147,15 +150,16 @@ public class SocialDatabase {
 		return (count == 1) ? true : false;
 	}
 
-	public static boolean addPending(final User from, final User to) throws ServerException {
-		String sqlRequest = "INSERT INTO `"+pendingTable+"` (`from`, `to`)" + " VALUES (?, ?)";
+	public static boolean addPending(final String id, final User from, final User to) throws ServerException {
+		String sqlRequest = "INSERT INTO `"+pendingTable+"` (`id`, `from`, `to`)" + " VALUES (?, ?, ?)";
 		int numAffectedRows = 0;
 
 		UpdateRequestHandler rf = new UpdateRequestHandler(sqlRequest, new SQLIntegrityConstraintViolationExceptionHandler(0), new ConnectionManager(dbHost, dbUser, dbPass)) {
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
-				stmt.setString(1, from.getIdFormat());
-				stmt.setString(2, to.getIdFormat());
+				stmt.setString(1, id);
+				stmt.setString(2, from.getIdFormat());
+				stmt.setString(3, to.getIdFormat());
 			}
 		};
 		numAffectedRows += rf.execute();
@@ -163,8 +167,8 @@ public class SocialDatabase {
 		return (numAffectedRows == 1) ? true : false;
 	}
 
-	public static boolean removePending(final User from, final User to) throws ServerException {
-		String sqlRequest = "DELETE FROM `"+pendingTable+"` WHERE `from` = ? AND `to` = ? LIMIT 1";
+	public static boolean removePending(final String id, final User from, final User to) throws ServerException {
+		String sqlRequest = "DELETE FROM `"+pendingTable+"` WHERE `id` = ? AND `from` = ? AND `to` = ? LIMIT 1";
 
 		int numAffectedRows = 0;
 
@@ -172,8 +176,9 @@ public class SocialDatabase {
 
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
-				stmt.setString(1, from.getIdFormat());
-				stmt.setString(2, to.getIdFormat());
+				stmt.setString(1, id);
+				stmt.setString(2, from.getIdFormat());
+				stmt.setString(3, to.getIdFormat());
 			}
 		};
 		numAffectedRows += rf.execute();
@@ -181,14 +186,15 @@ public class SocialDatabase {
 		return (numAffectedRows == 1) ? true : false;
 	}
 
-	public static Collection<User> getPending(final User user) throws ServerException {
-		String sqlRequest = "SELECT `from` FROM `"+pendingTable+"` WHERE `to` = ?";
+	public static Collection<User> getPending(final String id, final User user) throws ServerException {
+		String sqlRequest = "SELECT `from` FROM `"+pendingTable+"` WHERE `id` = ? AND `to` = ?";
 
 		QueryRequestHandler<Collection<User>> rf = new QueryRequestHandler<Collection<User>>(sqlRequest, new ConnectionManager(dbHost, dbUser, dbPass)) {
 			
 			@Override
 			public void prepareStatement(PreparedStatement stmt) throws SQLException {
-				stmt.setString(1, user.getIdFormat());
+				stmt.setString(1, id);
+				stmt.setString(2, user.getIdFormat());
 			}
 			
 			@Override
@@ -415,5 +421,24 @@ public class SocialDatabase {
 		};
 
 		return rf.execute();
+	}
+	
+	public static HashMap<User, Boolean> getFriendsWithStatus(User user) throws ServerException {
+		String service = "connection status";
+		
+		Collection<User> friends = getFriends(user);
+		Collection<User> visibleFriends = getVisibleFriends(user, service);
+		
+		HashMap<User, Boolean> out = new HashMap<User, Boolean>();
+		for(User u : friends) {
+			boolean online = false;
+			if(visibleFriends.contains(u)) {
+				online = AuthenticationSessions.isOnline(u.getSciper());
+			}
+			
+			out.put(u, online);
+		}
+		
+		return out;
 	}
 }
