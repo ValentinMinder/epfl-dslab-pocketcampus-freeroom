@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.gson.Gson;
@@ -46,11 +47,12 @@ public class SocialPermissionDialog extends Dialog {
 	private final LinearLayout permissionHolder_;
 	private final LinearLayout permissionCheckboxesLayout_;
 	private final LinearLayout progressBarLayout_;
+	private final boolean connectionStatus_;
 	
-//	private final Button chatButton_;
+	private final Button requestPositionButton_;
 	private final Button okButton_;
 
-	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, SocialFriendsList parentActivity) {
+	public SocialPermissionDialog(final Context context, ArrayList<User> selectedUsers, ArrayList<Permission> permissions, SocialFriendsList parentActivity, boolean connectionStatus) {
 		super(context);
 		this.context_ = context;
 		this.selectedUsers_ = selectedUsers;
@@ -61,13 +63,14 @@ public class SocialPermissionDialog extends Dialog {
 		this.updated_ = false;
 		this.permissionCheckboxesLayout_ = new LinearLayout(context_);
 		this.progressBarLayout_ = new LinearLayout(context_);
+		this.connectionStatus_ = connectionStatus;
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.social_permission_dialog);
 		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
 		
-//		chatButton_ = (Button) findViewById(R.id.social_friends_chat_button);
+		this.requestPositionButton_ = (Button) findViewById(R.id.social_friends_request_position_button);
 		this.okButton_ = (Button) findViewById(R.id.social_friends_ok);
 		this.permissionHolder_ = (LinearLayout) findViewById(R.id.social_friends_permissions_holder);
 		
@@ -80,16 +83,29 @@ public class SocialPermissionDialog extends Dialog {
 		
 		if(permissions_ != null) {
 			
+			permissionCheckboxesLayout_.setOrientation(LinearLayout.VERTICAL);
+			permissionCheckboxesLayout_.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			permissionCheckboxesLayout_.setVisibility(View.GONE);
+			
 			int i = 0;
 			for(Permission permission : permissions_) {
 				permissionBoxes_[i] = new CheckBox(context_);
 				permissionBoxes_[i].setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//						if(!updated_) {
+//							updated_ = true;
+//							okButton_.setEnabled(true);
+//						}
+					}
+				});
+				permissionBoxes_[i].setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
 						if(!updated_) {
 							updated_ = true;
 							okButton_.setEnabled(true);
-						}
+						}	
 					}
 				});
 				permissionBoxes_[i].setGravity(Gravity.LEFT);
@@ -98,23 +114,50 @@ public class SocialPermissionDialog extends Dialog {
 				tv.setText(permission.getName());
 				tv.setGravity(Gravity.RIGHT);
 
-				permissionCheckboxesLayout_.setOrientation(LinearLayout.HORIZONTAL);
-				permissionCheckboxesLayout_.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-				permissionCheckboxesLayout_.addView(permissionBoxes_[i]);
-				permissionCheckboxesLayout_.addView(tv);
-				permissionCheckboxesLayout_.setVisibility(View.GONE);
-				permissionHolder_.addView(permissionCheckboxesLayout_);
+				LinearLayout ll = new LinearLayout(context_);
+				ll.setOrientation(LinearLayout.HORIZONTAL);
+				ll.addView(permissionBoxes_[i]);
+				ll.addView(tv);
+				
+				permissionCheckboxesLayout_.addView(ll);
+//				permissionCheckboxesLayout_.addView(tv);
 				
 				++i;
 			}
+			
+			permissionHolder_.addView(permissionCheckboxesLayout_);
 		}
 		
-//		// BOUTON chat
-//		chatButton_.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View v) {
-//				
-//			}
-//		});
+		requestPositionButton_.setEnabled(connectionStatus_);// if friend offline, button disabled
+		requestPositionButton_.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				AuthToken token = AuthenticationPlugin.getAuthToken(context_);
+				
+				RequestParameters rp = new RequestParameters();
+				rp.addParameter("sciper", token.getSciper());
+				rp.addParameter("sessionId", token.getSessionId());
+				
+				int n = selectedUsers_.size();
+				rp.addParameter("n", n+"");
+				
+				for(int i = 0; i < n; i++) {
+					rp.addParameter("target__"+i, selectedUsers_.get(i).getSciper());
+				}
+				
+				parentActivity_.setProgressBarVisible();
+				SocialPlugin.getSocialRequestHandler().execute(new RequestPositionRequest(), "requestPositions", rp);
+			}
+			
+			class RequestPositionRequest extends DataRequest {
+				@Override
+				protected void doInUiThread(String result) {
+					parentActivity_.setProgressBarGone();
+					Toast toast = Toast.makeText(parentActivity_, parentActivity_.getResources().getString(R.string.social_permission_dialog_request_sent), Toast.LENGTH_LONG);
+					toast.show();
+					this_.dismiss();
+				}
+			}
+		});
 		
 		okButton_.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -126,7 +169,7 @@ public class SocialPermissionDialog extends Dialog {
 				
 				//allows to send all the data in a single request
 				RequestParameters rp = new RequestParameters();
-				rp.addParameter("username", token.getUsername());
+				rp.addParameter("sciper", token.getSciper());
 				rp.addParameter("sessionId", token.getSessionId());
 				rp.addParameter("n", ""+n);
 				for(int i = 0; i < n; i++) {
@@ -135,6 +178,7 @@ public class SocialPermissionDialog extends Dialog {
 					rp.addParameter("granted__"+i, permissionBoxes_[i % nbP].isChecked() ? "yes" : "no");
 				}
 				
+				parentActivity_.setProgressBarVisible();
 				SocialPlugin.getSocialRequestHandler().execute(new UpdatePermissionsRequest(), "updatePermissions", rp);
 			}
 			class UpdatePermissionsRequest extends DataRequest {
@@ -152,6 +196,7 @@ public class SocialPermissionDialog extends Dialog {
 					
 					if(lists != null) {
 						parentActivity_.updateFriendsLists(lists);
+						parentActivity_.setProgressBarGone();
 						this_.dismiss();
 					}
 				}
@@ -175,11 +220,13 @@ public class SocialPermissionDialog extends Dialog {
 			
 			AuthToken token = AuthenticationPlugin.getAuthToken(context_);
 			RequestParameters rp = new RequestParameters();
-			rp.addParameter("username", token.getUsername());
+			rp.addParameter("sciper", token.getSciper());
 			rp.addParameter("sessionId", token.getSessionId());
 			rp.addParameter("granted_to", selectedUsers_.get(0).getSciper());
 			
 			SocialPlugin.getSocialRequestHandler().execute(new GetPermissionsRequest(), "getPermissions", rp);	
+		} else {
+			permissionCheckboxesLayout_.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -200,8 +247,7 @@ public class SocialPermissionDialog extends Dialog {
 			
 			if(grantedPermissions != null) {
 				for(int i = 0; i < permissions_.size(); i++) {
-					if(grantedPermissions.contains(permissions_.get(i))) permissionBoxes_[i].setChecked(true);
-					else permissionBoxes_[i].setChecked(false);
+					permissionBoxes_[i].setChecked(grantedPermissions.contains(permissions_.get(i)));
 				}
 			}
 			

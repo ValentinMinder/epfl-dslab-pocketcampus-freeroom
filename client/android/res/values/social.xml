@@ -55,8 +55,21 @@
 	<string name="social_permissions_title_a">Edit\u0020</string>
 	<string name="social_permissions_title_b">\'s permissions</string>
 	<string name="social_permissions_title_c">multiple permissions</string>
+	<string name="social_permission_dialog_button_position">Ask position</string>
+	<string name="social_permission_dialog_request_sent">Request sent</string>
 	
+	<!-- FRIENDS LIST -->
+	<string name="social_friendlist_section_friends">Friends</string>
+	<string name="social_friendlist_section_requestingfriends">Requesting Friends</string>
 	
+	<!-- POSITIONING REQUEST ALERT -->
+	<string name="social_positionalert_title_before"></string>
+	<string name="social_positionalert_title_before_plural">There are\u0020</string>
+	<string name="social_positionalert_title_after">\u0020wants to see your position</string>
+	<string name="social_positionalert_title_after_plural">\u0020people who want you on their map</string>
+	<string name="social_positionalert_button_update">Track me</string>
+	<string name="social_positionalert_button_ignore">Ignore</string>
 	
-	
+	<!-- POSITIONING -->
+	<string name="social_positioning_notification_content">Your position has been uploaded.</string>
 </resources>

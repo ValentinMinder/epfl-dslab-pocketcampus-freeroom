@@ -7,7 +7,6 @@ import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
-import org.pocketcampus.plugin.social.SocialPositionUpdater;
 import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.User;
 
@@ -35,8 +34,6 @@ public class AuthenticationPlugin extends PluginBase {
 
 	private static User user_ = null;
 	
-	private static String username = null;
-	private static String password = null;
 	private final Activity thisActivity_ = this;
 	private static Class<?> toStartAfterLogin_ = null;
 
@@ -64,8 +61,8 @@ public class AuthenticationPlugin extends PluginBase {
 		Button button = (Button)findViewById(R.id.socialLoginButton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				username = ((EditText) findViewById(R.id.socialLoginUsernameField)).getText().toString();
-				password = ((EditText) findViewById(R.id.socialLoginPasswordField)).getText().toString();
+				String username = ((EditText) findViewById(R.id.socialLoginUsernameField)).getText().toString();
+				String password = ((EditText) findViewById(R.id.socialLoginPasswordField)).getText().toString();
 				
 				if(username != null && username != "" && password != null && password != "") {
 					login(username, password);
@@ -96,13 +93,13 @@ public class AuthenticationPlugin extends PluginBase {
 			}
 		}
 
-		String username = PreferenceManager.getDefaultSharedPreferences(context).getString("username", null);
+		String sciper = PreferenceManager.getDefaultSharedPreferences(context).getString("sciper", null);
 		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
 
 		try {
-			if(username != null && sessionId != null && requestHandler_ != null) {
+			if(sciper != null && sessionId != null && requestHandler_ != null) {
 				RequestParameters parameters = new RequestParameters();
-				parameters.addParameter("username", username.toString());
+				parameters.addParameter("sciper", sciper.toString());
 				parameters.addParameter("sessionId", sessionId.toString());
 
 				requestHandler_.execute(new LogoutRequest(), "logout", parameters);
@@ -112,12 +109,9 @@ public class AuthenticationPlugin extends PluginBase {
 		} finally {
 			requestHandler_ = null;
 			
-			//stops position updater
-			SocialPositionUpdater.stopPositionUpdater();
-			
 			//empty memory
 			PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putString("username", null)
+				.putString("sciper", null)
 				.putString("sessionId", null)
 				.putString("first", null)
 				.putString("last", null)
@@ -160,16 +154,16 @@ public class AuthenticationPlugin extends PluginBase {
 			}
 		}
 		
-		String username = PreferenceManager.getDefaultSharedPreferences(context).getString("username", null);
+		String sciper = PreferenceManager.getDefaultSharedPreferences(context).getString("sciper", null);
 		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
 		toStartAfterLogin_ = toStartIfSuccess;
 
-		if(username == null || sessionId == null || requestHandler_ == null) {
+		if(sciper == null || sessionId == null || requestHandler_ == null) {
 			context.startActivity(new Intent(context, AuthenticationPlugin.class));
 		} else {
 			RequestParameters parameters = new RequestParameters();
-			parameters.addParameter("username", username.toString());
-			parameters.addParameter("sessionId", sessionId.toString());
+			parameters.addParameter("sciper", sciper);
+			parameters.addParameter("sessionId", sessionId);
 
 			requestHandler_.execute(new AuthRequest(), "authenticate", parameters);
 		}
@@ -194,15 +188,11 @@ public class AuthenticationPlugin extends PluginBase {
 			if(user_ != null) {
 				//login successful - update session data
 				PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit()
-					.putString("username", username)
+					.putString("sciper", user_.getSciper())
 					.putString("sessionId", user_.getSessionId())
 					.putString("first", user_.getFirstName())
 					.putString("last", user_.getLastName())
-					.putString("sciper", user_.getSciper())
 					.commit();
-				
-				//starts position updater
-				SocialPositionUpdater.startPositionUpdater(thisActivity_);
 				
 				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
 				
@@ -236,11 +226,11 @@ public class AuthenticationPlugin extends PluginBase {
 		
 		AuthToken token = null;
 		
-		String username = PreferenceManager.getDefaultSharedPreferences(context).getString("username", null);
+		String sciper = PreferenceManager.getDefaultSharedPreferences(context).getString("sciper", null);
 		String sessionId = PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null);
 		
-		if(username != null && sessionId != null) {
-			token = new AuthToken(username, sessionId);
+		if(sciper != null && sessionId != null) {
+			token = new AuthToken(sciper, sessionId);
 		}
 		
 		return token;

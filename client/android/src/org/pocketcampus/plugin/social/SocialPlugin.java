@@ -8,14 +8,13 @@ import org.pocketcampus.core.plugin.PluginBase;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.PluginPreference;
 import org.pocketcampus.plugin.authentication.AuthenticationPlugin;
-import org.pocketcampus.plugin.logging.Tracker;
+import org.pocketcampus.shared.plugin.authentication.AuthToken;
 import org.pocketcampus.shared.plugin.social.FriendsLists;
 import org.pocketcampus.shared.plugin.social.User;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,10 +23,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class SocialPlugin extends PluginBase {
 
-	SocialPreference preferences_;
-	boolean logged_ = true;
-	SocialPlugin thisActivity_ = this;
-	Tracker tracker_;
+	private SocialPreference preferences_;
 	
 	private static RequestHandler socialRequestHandler_ = null;
 	
@@ -38,8 +34,6 @@ public class SocialPlugin extends PluginBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		tracker_ = Tracker.getInstance();
 		
 		AuthenticationPlugin.authenticate(this, SocialFriendsList.class);
 		this.finish();
@@ -66,19 +60,19 @@ public class SocialPlugin extends PluginBase {
 		request(context, toStartNext, target, "send", null);
 	}
 	
-	public static void sendRequest(Context context, Class<?> toStartNext, User target, SocialFriendsList listActivity) {
-		if(context == null || target == null)
-			throw new IllegalArgumentException();
-		
-		request(context, toStartNext, target, "send", listActivity);
-	}
+//	public static void sendRequest(Context context, Class<?> toStartNext, User target, SocialFriendsList listActivity) {
+//		if(context == null || target == null)
+//			throw new IllegalArgumentException();
+//		
+//		request(context, toStartNext, target, "send", listActivity);
+//	}
 	
-	public static void deleteRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || target == null)
-			throw new IllegalArgumentException();
-		
-		request(context, toStartNext, target, "delete", null);
-	}
+//	public static void deleteRequest(Context context, Class<?> toStartNext, User target) {
+//		if(context == null || target == null)
+//			throw new IllegalArgumentException();
+//		
+//		request(context, toStartNext, target, "delete", null);
+//	}
 	
 	public static void deleteRequest(Context context, Class<?> toStartNext, User target, SocialFriendsList listActivity) {
 		if(context == null || target == null)
@@ -87,12 +81,12 @@ public class SocialPlugin extends PluginBase {
 		request(context, toStartNext, target, "delete", listActivity);
 	}
 	
-	public static void acceptRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || target == null)
-			throw new IllegalArgumentException();
-		
-		request(context, toStartNext, target, "accept", null);
-	}
+//	public static void acceptRequest(Context context, Class<?> toStartNext, User target) {
+//		if(context == null || target == null)
+//			throw new IllegalArgumentException();
+//		
+//		request(context, toStartNext, target, "accept", null);
+//	}
 	
 	public static void acceptRequest(Context context, Class<?> toStartNext, User target, SocialFriendsList listActivity) {
 		if(context == null || target == null)
@@ -101,12 +95,12 @@ public class SocialPlugin extends PluginBase {
 		request(context, toStartNext, target, "accept", listActivity);
 	}
 	
-	public static void ignoreRequest(Context context, Class<?> toStartNext, User target) {
-		if(context == null || target == null)
-			throw new IllegalArgumentException();
-		
-		request(context, toStartNext, target, "ignore", null);
-	}
+//	public static void ignoreRequest(Context context, Class<?> toStartNext, User target) {
+//		if(context == null || target == null)
+//			throw new IllegalArgumentException();
+//		
+//		request(context, toStartNext, target, "ignore", null);
+//	}
 	
 	public static void ignoreRequest(Context context, Class<?> toStartNext, User target, SocialFriendsList listActivity) {
 		if(context == null || target == null)
@@ -130,10 +124,11 @@ public class SocialPlugin extends PluginBase {
 				}
 				
 				if(lists != null) {
-					Toast.makeText(context, context.getResources().getString(R.string.social_operation_successful), Toast.LENGTH_LONG);
+					Toast.makeText(context, context.getResources().getString(R.string.social_operation_successful), Toast.LENGTH_LONG).show();
 					
 					if(listActivity != null) {
 						listActivity.updateFriendsLists(lists);
+						listActivity.setProgressBarGone();
 					}
 					
 				} else {
@@ -143,10 +138,14 @@ public class SocialPlugin extends PluginBase {
 			}
 		}
 		
+		AuthToken token = AuthenticationPlugin.getAuthToken(context);
+		
 		RequestParameters rp = new RequestParameters();
-		rp.addParameter("username", PreferenceManager.getDefaultSharedPreferences(context).getString("username", null));
-		rp.addParameter("sessionId", PreferenceManager.getDefaultSharedPreferences(context).getString("sessionId", null));
+		rp.addParameter("sciper", token.getSciper());
+		rp.addParameter("sessionId", token.getSessionId());
 		rp.addParameter("target", target.getSciper());
+		
+		if(listActivity != null) listActivity.setProgressBarVisible();
 		
 		SocialPlugin.getSocialRequestHandler().execute(new SocialRequest(), type, rp);
 	}

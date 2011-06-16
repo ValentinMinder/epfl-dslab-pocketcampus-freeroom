@@ -27,13 +27,13 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 	private LayoutInflater mInflater_;
 	private LinkedList<User> requestingUsers_;
 	private Context context_;
-	private SocialFriendsList this_;
+	private SocialFriendsList socialFriendsListActivity_;
 	
 	public SocialRequestingFriendsListAdapter(Context context, Collection<User> requestingUsers, SocialFriendsList activity) {
 		this.mInflater_ = LayoutInflater.from(context);
 		this.requestingUsers_ = new LinkedList<User>(requestingUsers);
 		this.context_ = context;
-		this.this_ = activity;
+		this.socialFriendsListActivity_ = activity;
 	}
 	
 	@Override
@@ -63,14 +63,6 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 			convertView = mInflater_.inflate(R.layout.social_requesting_friends_list_item, null);
 		}
 		
-		convertView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				
-			}
-		});
-
-		
 		final TextView _username = (TextView) convertView.findViewById(R.id.social_requesting_friend);
 		_username.setText(requestingUsers_.get(position).toString());
 		
@@ -82,12 +74,12 @@ public class SocialRequestingFriendsListAdapter extends BaseAdapter implements F
 				.setCancelable(false)
 				.setPositiveButton(context_.getString(R.string.social_requesting_friend_confirm), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						SocialPlugin.acceptRequest(context_, null, requestingUsers_.get(position), this_);
+						SocialPlugin.acceptRequest(context_, null, requestingUsers_.get(position), socialFriendsListActivity_);
 					}
 				})
 				.setNegativeButton(context_.getString(R.string.social_requesting_friend_ignore), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						SocialPlugin.ignoreRequest(context_, null, requestingUsers_.get(position), this_);
+						SocialPlugin.ignoreRequest(context_, null, requestingUsers_.get(position), socialFriendsListActivity_);
 					}
 				});
 				AlertDialog alert = builder.create();

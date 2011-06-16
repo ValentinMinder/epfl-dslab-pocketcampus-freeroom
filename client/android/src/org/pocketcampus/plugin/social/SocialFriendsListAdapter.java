@@ -41,19 +41,26 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 	private SocialFriendsList socialFriendsListActivity_;
 	private int checkCount_;
 	private LinkedList<User> selectedFriends_;
+	private int nbOnline_;
 	private ArrayList<ViewHolder> holders_;
 	private SocialFriendsListAdapter this_;
 	
-	public SocialFriendsListAdapter(Context context, Collection<User> friends, SocialFriendsList socialFriendsListActivity) {
+	private boolean allSelectedAreOnline_;
+	private LinkedList<Integer> selectedOffline_;
+	
+	public SocialFriendsListAdapter(Context context, Collection<User> friends, int nbOnline, SocialFriendsList socialFriendsListActivity) {
 		this.mInflater_ = LayoutInflater.from(context);
 		this.friends_ = new LinkedList<User>(friends);
 		this.socialFriendsListActivity_ = socialFriendsListActivity;
 		this.checkCount_ = 0;
 		this.selectedFriends_ = new LinkedList<User>();
+		this.nbOnline_ = nbOnline;
 		this.holders_ = new ArrayList<ViewHolder>();
 		this.this_ = this;
+		
+		this.allSelectedAreOnline_ = false;
+		this.selectedOffline_ = new LinkedList<Integer>();
 	}
-	
 	
 	@Override
 	public Filter getFilter() {
@@ -104,14 +111,7 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 		//Sets the name
 		holder.username.setText(friends_.get(position).toString());
 		
-		
 		final CheckBox _selected = holder.selected;
-//		convertView.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				_selected.toggle();
-//			}
-//		});
 
 		final View _convertView = convertView;
 		convertView.setOnClickListener(new OnClickListener() {
@@ -127,10 +127,17 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 			public boolean onLongClick(View v) {
 				LinkedList<User> clickedFriend = new LinkedList<User>();
 				clickedFriend.add(friends_.get(position));
-				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(this_, clickedFriend), "permissions", new RequestParameters());
+				SocialPlugin.getSocialRequestHandler().execute(new PermissionRequest(this_, clickedFriend, position < nbOnline_), "permissions", new RequestParameters());
 				return false;
 			}
 		});
+		
+		//SET COLORRRRRRRRRRRRRRRRRRRRRRRR
+		if(position < nbOnline_) {
+			convertView.setBackgroundColor(0xff4dffc2);
+		} else {
+			convertView.setBackgroundColor(0xffffffff);
+		}
 
 		//Updates button state and selected friends list on every status change
 		holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -143,12 +150,15 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 					_convertView.setPressed(true);
 					if(checkCount_ == 0) {
 						//buttons are enabled if some friends are selected
-						if(socialFriendsListActivity_ instanceof SocialFriendsList) {
-							if(!buttonPermission.isEnabled())
-								buttonPermission.setEnabled(true);
-							if(!buttonDelete.isEnabled())
-								buttonDelete.setEnabled(true);
-						}
+						if(!buttonPermission.isEnabled()) buttonPermission.setEnabled(true);
+						if(!buttonDelete.isEnabled()) buttonDelete.setEnabled(true);
+						
+						allSelectedAreOnline_ = true;
+					}
+					
+					if(position >= nbOnline_) {
+						allSelectedAreOnline_ = false;
+						selectedOffline_.add(position);
 					}
 					
 					selectedFriends_.add(friends_.get(position));
@@ -159,12 +169,15 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 					} else {
 						if(checkCount_ == 1) {
 							//buttons are disabled if no friend is selected
-							if(socialFriendsListActivity_ instanceof SocialFriendsList) {
-								if(buttonPermission.isEnabled())
-									buttonPermission.setEnabled(false);
-								if(buttonDelete.isEnabled())
-									buttonDelete.setEnabled(false);
-							}
+							if(buttonPermission.isEnabled())
+								buttonPermission.setEnabled(false);
+							if(buttonDelete.isEnabled())
+								buttonDelete.setEnabled(false);
+						}
+						
+						if(selectedOffline_.contains(position)) {
+							selectedOffline_.remove((Integer) position);
+							if(selectedOffline_.isEmpty()) allSelectedAreOnline_ = true;
 						}
 						
 						selectedFriends_.remove(friends_.get(position));
@@ -197,8 +210,8 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 	}
 	
 	//Displays permission panel
-	public void showDialog(Collection<User> users, Collection<Permission> permissions){
-		SocialPermissionDialog r = new SocialPermissionDialog(socialFriendsListActivity_, new ArrayList<User>(users), new ArrayList<Permission>(permissions), socialFriendsListActivity_);
+	public void showDialog(Collection<User> users, Collection<Permission> permissions, boolean connectionStatus) {
+		SocialPermissionDialog r = new SocialPermissionDialog(socialFriendsListActivity_, new ArrayList<User>(users), new ArrayList<Permission>(permissions), socialFriendsListActivity_, connectionStatus);
 		r.show();
 	}
 	
@@ -210,23 +223,30 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 	public LinkedList<User> getSelectedFriends() {
 		return selectedFriends_;
 	}
+	
+	public boolean getAllSelectedAreOnline() {
+		return allSelectedAreOnline_;
+	}
 }
 
 //Retrieve the list of permission ids available in the system
 class PermissionRequest extends DataRequest {
 	private final SocialFriendsListAdapter adapter_;
 	private final Collection<User> users_;
+	private final boolean connectionStatus_;
 	
 	//Constructor using selected friends list of the adapter (usual)
 	public PermissionRequest(SocialFriendsListAdapter adapter) {
 		adapter_ = adapter;
 		users_ = adapter.getSelectedFriends();
+		connectionStatus_ = adapter.getAllSelectedAreOnline();
 	}
 	
 	//Constructor using particular selected friends list (for the long click listener)
-	public PermissionRequest(SocialFriendsListAdapter adapter, Collection<User> users) {
+	public PermissionRequest(SocialFriendsListAdapter adapter, Collection<User> users, boolean connectionStatus) {
 		adapter_ = adapter;
 		users_ = users;
+		connectionStatus_ = connectionStatus;
 	}
 	
 	@Override
@@ -245,6 +265,6 @@ class PermissionRequest extends DataRequest {
 			permissions = null;
 		}
 		
-		if(permissions != null) adapter_.showDialog(users_, permissions);
+		if(permissions != null) adapter_.showDialog(users_, permissions, connectionStatus_);
 	}
 }

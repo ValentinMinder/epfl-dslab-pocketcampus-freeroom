@@ -1,9 +1,12 @@
 package org.pocketcampus.plugin.social;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.communication.DataRequest;
+import org.pocketcampus.core.communication.RequestHandler;
 import org.pocketcampus.core.communication.RequestParameters;
 import org.pocketcampus.core.ui.ActionBar;
 import org.pocketcampus.core.ui.ActionBar.Action;
@@ -17,10 +20,17 @@ import org.pocketcampus.shared.plugin.social.User;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
@@ -38,9 +48,8 @@ import com.google.gson.reflect.TypeToken;
  * @status ok
  * @author gldalmas@gmail.com
  */
-public class SocialFriendsList extends ListActivity {
+public class SocialFriendsList extends ListActivity { 
 	private static SocialFriendsList this_;
-	private static SocialListSeparator listSeparator_;
 	private SocialFriendsListAdapter friendsListAdapter_ = null;
 	private SocialRequestingFriendsListAdapter requestingFriendsListAdapter_ = null;
 	private Collection<User> friendsList_ = null;
@@ -64,7 +73,7 @@ public class SocialFriendsList extends ListActivity {
 		//Session info
 		AuthToken token = AuthenticationPlugin.getAuthToken(this_);
 		RequestParameters rp = new RequestParameters();
-		rp.addParameter("username", token.getUsername());
+		rp.addParameter("sciper", token.getSciper());
 		rp.addParameter("sessionId", token.getSessionId());
 		
 		//Retrieve friends list
@@ -96,6 +105,11 @@ public class SocialFriendsList extends ListActivity {
 				delete();
 			}
 		});
+		
+		//TEMPORARY
+		buttonSelect_.setVisibility(View.GONE);
+		buttonPermission_.setVisibility(View.GONE);
+		buttonDelete_.setVisibility(View.GONE);
 	}
 	
 	private void toggle() {
@@ -113,16 +127,13 @@ public class SocialFriendsList extends ListActivity {
 		.setPositiveButton(this_.getString(R.string.social_delete_confirm_yes), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				
-				for(int i = 0; i < friendsListAdapter_.getSelectedFriends().size()-1; i++) {
-					SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i), null);
+				for(int i = 0; i < friendsListAdapter_.getSelectedFriends().size(); i++) {
+					SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(i), this_);
 				}
-				
-				//last one reloads the page
-				SocialPlugin.deleteRequest(this_, null, friendsListAdapter_.getSelectedFriends().get(friendsListAdapter_.getSelectedFriends().size()-1), this_);
 			}
 		})
 		.setNegativeButton(this_.getString(R.string.social_delete_confirm_no), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
+			public void onClick(DialogInterface dialog, int id) { 
 				dialog.cancel();
 			}
 		});
@@ -146,38 +157,72 @@ public class SocialFriendsList extends ListActivity {
 			}
 			
 			if(friendsLists != null) {
-				listSeparator_ = new SocialListSeparator(this_);
-				boolean allEmpty = true;
-				boolean friendsEmpty = true;
-				
-				if(!friendsLists.getRequesting().isEmpty()) {
-					allEmpty = false;
-				}
-				if(!friendsLists.getFriends().isEmpty()) {
-					allEmpty = false;
-					friendsEmpty = false;
-				}
-				
 				//Refresh content
 				updateFriendsLists(friendsLists);
 				
-				if(!friendsEmpty) {
-					buttonSelect_.setEnabled(true);
-				}
-				
-				if(allEmpty) {
-					displayMessage();
-				}
-				
 				actionBar_.setProgressBarVisibility(View.GONE);
-				
-				setListAdapter(listSeparator_);
-				
 				getListView().setTextFilterEnabled(true);
 			} else {
 				//If request fails, we close connection.
 				AuthenticationPlugin.logout(this_);
 				this_.finish();
+			}
+		}
+	}
+	
+	
+	private void updatePosition() {
+		AuthToken token = AuthenticationPlugin.getAuthToken(this);
+		
+		if(token != null) {
+			RequestParameters rp = new RequestParameters();
+			rp.addParameter("sciper", token.getSciper());
+			rp.addParameter("sessionId", token.getSessionId());
+			rp.addParameter("longitude", 6.56682+"");
+			rp.addParameter("latitude", 46.520013+"");
+			rp.addParameter("altitude", 0+"");
+
+			RequestHandler handler = SocialPlugin.getSocialRequestHandler();
+			if(handler != null) {
+				handler.execute(new UpdatePositionRequest(), "updatePosition", rp);
+			}
+		}
+		
+		NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		manager.cancel(R.string.app_name);
+
+		int icon = R.drawable.app_icon;
+
+		long when = System.currentTimeMillis();
+		// On définit le titre
+		CharSequence contentTitle = this.getResources().getString(R.string.app_name);
+
+		CharSequence contentText = this.getResources().getString(R.string.social_positioning_notification_content);
+		
+		Notification notificationActivity = new Notification(icon, contentTitle, when);
+		
+		PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0);
+		notificationActivity.setLatestEventInfo(this, contentTitle, contentText, contentIntent);
+		manager.notify(R.string.app_name, notificationActivity);
+	}
+	
+	class UpdatePositionRequest extends DataRequest {
+		@Override
+		protected void doInUiThread(String result) {
+			boolean status = false;
+			if(result != null) {
+				Gson gson = new Gson();
+				try{
+					status = gson.fromJson(result, new TypeToken<Boolean>(){}.getType());
+				} catch (JsonSyntaxException e) {
+					status = false;
+					e.printStackTrace();
+				}
+			}
+
+			if(!status) {
+//				If request fails, we close connection.
+				AuthenticationPlugin.logout(this_);
 			}
 		}
 	}
@@ -249,65 +294,146 @@ public class SocialFriendsList extends ListActivity {
 	 * @param newFriends
 	 */
 	public void updateFriendsLists(FriendsLists newFriends) {
-		listSeparator_.removeSections();
+		boolean allEmpty = true;
+		boolean friendsEmpty = true;
+		int nbOnline = 0;
 		
+		SocialListSeparator listSeparator = new SocialListSeparator(this);
+		
+		//get updated requesting friends list
 		requestingList_ = newFriends.getRequesting();
 		requestingFriendsListAdapter_ = new SocialRequestingFriendsListAdapter(this_, requestingList_, this_);
 		
+		//if not empty, update the View
 		if(!requestingList_.isEmpty()) {
-			listSeparator_.addSection(this_.getString(R.string.social_requesting_friends_list_separator), requestingFriendsListAdapter_);
+			listSeparator.addSection(this_.getString(R.string.social_friendlist_section_requestingfriends), requestingFriendsListAdapter_);
+			allEmpty = false;
 		}
 		
-		friendsList_ = newFriends.getFriends();
-		friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsList_, this_);
+		LinkedList<User> onlineFriends = new LinkedList<User>(newFriends.getOnlineFriends());
+		Collections.sort(onlineFriends);
+		LinkedList<User> offlineFriends = new LinkedList<User>(newFriends.getOfflineFriends());
+		Collections.sort(offlineFriends);
 		
+		nbOnline = onlineFriends.size();
+		
+		//get updated friends list
+		friendsList_ = onlineFriends;
+		for(User u : offlineFriends) {
+			friendsList_.add(u);
+		}
+		friendsListAdapter_ = new SocialFriendsListAdapter(this_, friendsList_, nbOnline, this_);
+		
+		//if not empty, update the View
 		if(!friendsList_.isEmpty()) {
-			listSeparator_.addSection(this_.getString(R.string.social_friends_list_separator), friendsListAdapter_);
+			listSeparator.addSection(this_.getString(R.string.social_friendlist_section_friends), friendsListAdapter_);
+			allEmpty = false;
+			friendsEmpty = false;
 		}
 		
-		listSeparator_.notifyDataSetChanged();
+		//apply changes
+		this.setListAdapter(listSeparator);
+		
+		//toggle button only if friends not empty
+		buttonSelect_.setEnabled(!friendsEmpty);
+		
+		Collection<User> requestingPositionFriends = newFriends.getRequestingPositionFriends();
+		if(!requestingPositionFriends.isEmpty()) showPositioningRequestAlert(requestingPositionFriends);
+		
+		//if nothing in both lists, display directory invitation
+		if(allEmpty) displayMessage();
 	}
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.social, menu);
-//		
-//		return true;
-//	}
-//	
-//	@Override
-//	public boolean onPrepareOptionsMenu(Menu menu) {
-//		menu.getItem(R.id.social_friendslist_optionmenu_delete).setEnabled(buttonDelete_.isEnabled());
-//		menu.getItem(R.id.social_friendslist_optionmenu_permission).setEnabled(buttonPermission_.isEnabled());
-//		menu.getItem(R.id.social_friendslist_optionmenu_toggle).setEnabled(buttonSelect_.isEnabled());
-//		return true;
-//	}
-//	
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.social_friendslist_optionmenu_delete:
-//			delete();
-//			return true;
-//
-//		case R.id.social_friendslist_optionmenu_permission:
-//			permission();
-//			return true;
-//			
-//		case R.id.social_friendslist_optionmenu_toggle:
-//			toggle();
-//			return true;
-//
-//		case R.id.social_friendslist_optionmenu_preferences:
-//			Intent intent = new Intent(this, SocialPreference.class);
-//			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			this.startActivity(intent);
-//			this.finish();
-//			return true;
-//
-//		default:
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
+	private void showPositioningRequestAlert(Collection<User> requesting) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this_);
+		
+		//Compose title
+		CharSequence title = (requesting.size() == 1) ? 
+				this.getString(R.string.social_positionalert_title_before)+requesting.iterator().next().getFirstName()+this.getString(R.string.social_positionalert_title_after) :
+				this.getString(R.string.social_positionalert_title_before_plural)+requesting.size()+this.getString(R.string.social_positionalert_title_after_plural);
+				
+		builder.setMessage(title)
+		.setCancelable(false)
+		.setPositiveButton(this.getString(R.string.social_positionalert_button_update), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				updatePosition();
+			}
+		})
+		.setNegativeButton(this.getString(R.string.social_positionalert_button_ignore), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		
+		AlertDialog alert = builder.create();
+		alert.setCanceledOnTouchOutside(true);
+		alert.show();
+	}
+	
+	public void setProgressBarVisible() {
+		actionBar_.setProgressBarVisibility(View.VISIBLE);
+	}
+	
+	public void setProgressBarGone() {
+		actionBar_.setProgressBarVisibility(View.GONE);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.social, menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		for(int i = 0; i < menu.size(); ++i) {
+			MenuItem mi =  menu.getItem(i);
+			boolean enabled = false;
+			
+			switch (menu.getItem(i).getItemId()) {
+			case R.id.social_friendslist_optionmenu_delete:
+				enabled = buttonDelete_.isEnabled();
+				break;
+			case R.id.social_friendslist_optionmenu_permission:
+				enabled = buttonPermission_.isEnabled();
+				break;
+			case R.id.social_friendslist_optionmenu_toggle:
+				enabled = buttonSelect_.isEnabled();
+				break;
+			case R.id.social_friendslist_optionmenu_preferences:
+				enabled = true;
+				break;
+			}
+			
+			mi.setEnabled(enabled);
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.social_friendslist_optionmenu_delete:
+			delete();
+			return true;
+
+		case R.id.social_friendslist_optionmenu_permission:
+			permission();
+			return true;
+			
+		case R.id.social_friendslist_optionmenu_toggle:
+			toggle();
+			return true;
+
+		case R.id.social_friendslist_optionmenu_preferences:
+			updatePosition();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }
