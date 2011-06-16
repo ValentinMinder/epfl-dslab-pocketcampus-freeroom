@@ -3,16 +3,16 @@ package org.pocketcampus.shared.plugin.authentication;
 public class AuthToken {
 	public final static int SESSION_ID_SIZE = 128;
 	
-	private final String username_;
+	private final String sciper_;
 	private final String sessionId_;
 	
-	public AuthToken(String username, String sessionId) {
-		this.username_ = username;
+	public AuthToken(String sciper, String sessionId) {
+		this.sciper_ = sciper;
 		this.sessionId_ = sessionId;
 	}
 	
-	public String getUsername() {
-		return username_;
+	public String getSciper() {
+		return sciper_;
 	}
 	
 	public String getSessionId() {

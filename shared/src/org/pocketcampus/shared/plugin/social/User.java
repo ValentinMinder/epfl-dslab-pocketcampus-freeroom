@@ -101,8 +101,19 @@ public class User implements Comparable<User> {
 		return getNiceFormat();
 	}
 
+	//'Nice' comparison for ordering names in the friends list
 	@Override
 	public int compareTo(User that) {
 		return this.getNiceFormat().compareToIgnoreCase(that.getNiceFormat());
+	}
+	
+	//'Hard' equality for other operations
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			User other = (User) o;
+			return this.getIdFormat().equals(other.getIdFormat());
+		}
+		return false;
 	}
 }
