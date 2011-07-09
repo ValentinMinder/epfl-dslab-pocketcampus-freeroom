@@ -16,56 +16,64 @@ import org.pocketcampus.shared.plugin.map.MapElementBean;
 import org.pocketcampus.shared.plugin.map.MapLayerBean;
 
 public class Bikes implements IPlugin, IMapElementsProvider {
-
+	private final static long REFRESH_TIME = 5 * 60 * 1000;
 	
-	private ArrayList<BikeStation> bikes_;
-	private Date lastRequest_;
-	
-	private MapLayerBean mlb_;
-	private List<MapLayerBean> mlbs_;
-	
-	private final static long REFRESH_TIME = 5*60*1000;
+	private ArrayList<BikeStation> bikeStationsCache_;
+	private Date bikeStationsCacheDate_;
+	private MapLayerBean mapLayerBean_;
 	
 	public Bikes() {
-		try {
-			bikes_ = new BikeStationParser().parserBikes();
-			lastRequest_ = new Date();
-		} catch (IOException e) {
-			bikes_ = null;
-			lastRequest_ = null;
-		}
-
-		mlb_ = new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true);
-		mlbs_ = new ArrayList<MapLayerBean>();
-		mlbs_.add(mlb_);
+		mapLayerBean_ = new MapLayerBean("Velopass", "data/map/map_marker_bike.png", this, 1, 300, true);
+		loadBikeStations();
 	}
 
-	
 	@PublicMethod
 	public ArrayList<BikeStation> bikes(HttpServletRequest request) {
-		
-		Date now = new Date();
-		if(bikes_ == null || lastRequest_ == null || (now.getTime()-lastRequest_.getTime()) > REFRESH_TIME) {
-			try {
-				bikes_ = new BikeStationParser().parserBikes();
-				lastRequest_ = now;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		if(isRefreshNeeded()) {
+			loadBikeStations();
 		}
-		return bikes_;
+		
+		return bikeStationsCache_;
     }
+	
+	private void loadBikeStations() {
+		try {
+			bikeStationsCache_ = new BikeStationParser().parserBikes();
+			bikeStationsCacheDate_ = new Date();
+			
+		} catch (IOException e) {
+			bikeStationsCache_ = null;
+			bikeStationsCacheDate_ = null;
+		}
+	}
+	
+	private boolean isRefreshNeeded() {
+		// data couldn't be loaded the previous time
+		if(bikeStationsCache_ == null || bikeStationsCacheDate_ == null) {
+			return true;
+		}
+		
+		// data is outdated
+		if(((new Date()).getTime() - bikeStationsCacheDate_.getTime()) > REFRESH_TIME) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	@PublicMethod
 	public String getLayerId(HttpServletRequest request) {
-		return mlb_.getExternalId();
+		// returns the only layer we have
+		return mapLayerBean_.getExternalId();
     }
 
 	@Override
 	public List<MapLayerBean> getLayers() {
-		return mlbs_;
+		// the list always contains the same lone layer
+		List<MapLayerBean> mapLayerBeans_ = new ArrayList<MapLayerBean>();
+		mapLayerBeans_.add(mapLayerBean_);
+		
+		return mapLayerBeans_;
 	}
 
 	@Override
@@ -76,7 +84,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		
 		for(BikeStation s : b) {
 			StringBuffer description = new StringBuffer();
-			description.append("Vélos libres: ");
+			description.append("VÃ©los libres: ");
 			description.append(String.valueOf(s.getFreeBikes()));
 			description.append("\n");
 			
@@ -87,7 +95,6 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 		}
 		
 		return items;
-		
 	}
 	
 
