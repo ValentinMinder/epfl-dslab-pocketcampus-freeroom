@@ -51,6 +51,9 @@ public class LayerSelector {
 		final CharSequence[] items = new CharSequence[layers_.size()];
 		final boolean[] checked = new boolean[layers_.size()];
 		for(MapElementsList e : layers_) {
+			if(!e.isDisplayable())
+				continue;
+			
 			items[i] = e.getLayerTitle();
 			checked[i] = selectedLayers_.contains(e);
 			++i;

@@ -12,7 +12,7 @@ public class BikeStationParser {
 
 	private static final String URL = "http://www.bicincitta.com/wsexchange/panoramica.aspx?city=2000&usr=polyright&pw=bv9y7t34b9je";	
 	
-	public ArrayList<BikeStation> parserBikes() throws IOException {
+	public ArrayList<BikeStation> parseBikesStations() throws IOException {
 		ArrayList<BikeStation> stations = new ArrayList<BikeStation>();
 		
 		String source = URLLoader.getSource(URL);

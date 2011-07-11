@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	>
+	
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar"
+		style="@style/ActionBar"
+		/>
+	
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@+id/actionbar"
+		android:gravity="center"
+		android:orientation="vertical"
+		>
+
+		<ImageButton
+			android:id="@+id/scanner_scan"
+			android:src="@drawable/scanner_normal_menubar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			></ImageButton>
+			
+		<TextView
+			android:id="@+id/scanner_status"
+			android:gravity="center"
+			android:textSize="17dip"
+			android:paddingTop="15dip"
+			></TextView>
+			
+		<TextView
+			android:id="@+id/scanner_status_detail"
+			android:gravity="center"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="17dip"
+			></TextView>
+
+	</LinearLayout>
+	
+</RelativeLayout>
+

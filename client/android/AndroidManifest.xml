@@ -6,7 +6,7 @@
 	<application android:theme="@style/Theme" android:icon="@drawable/app_icon" android:label="@string/app_name">
 
 		<!-- Mainscreen Plugin -->
-		<activity android:name=".plugin.mainscreen.MainscreenPlugin">
+		<activity android:name=".plugin.mainscreen.MainscreenPlugin" android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -57,6 +57,13 @@
 		
 		<!--  Library Plugin -->
 		<activity android:name=".plugin.library.LibraryPlugin" android:screenOrientation="portrait"></activity>
+		
+		<!--  Scanner Plugin -->
+		<activity android:name=".plugin.scanner.ScannerPlugin" android:screenOrientation="portrait"></activity>
+		<activity android:name=".plugin.scanner.ScannerRecorder" android:screenOrientation="portrait"></activity>
+
+		<!--  Labs Plugin -->
+		<activity android:name=".plugin.labs.LabsPlugin" android:screenOrientation="portrait"></activity>
 
 		<!-- Social Plugin -->
 		<activity android:name=".plugin.social.SocialPlugin" android:screenOrientation="portrait"></activity>
@@ -64,16 +71,13 @@
 			
 		<!-- Camipro Plugin -->
         <activity android:name=".plugin.camipro.CamiproPlugin"></activity>
-        <activity android:name=".plugin.camipro.SecuredCamipro"></activity>
+        <activity android:name=".plugin.camipro.SecuredCamipro" android:launchMode="singleTop"></activity>
 		
 		<!-- Bikes Plugin -->
         <activity android:name=".plugin.bikes.BikesPlugin" android:screenOrientation="portrait"></activity>
 		
 		<!-- AuthenticationPlugin -->
         <activity android:name=".plugin.authentication.AuthenticationPlugin" android:theme="@android:style/Theme.Dialog" android:excludeFromRecents="true"></activity>
-        
-		<!-- PreferencesLauncher Plugin -->
-        <activity android:name=".plugin.preferenceslauncher.PreferencesLauncherPlugin"></activity>
         
         <!-- Used for install referrer tracking -->
 		<receiver android:name="com.google.android.apps.analytics.AnalyticsReceiver" android:exported="true">
@@ -83,7 +87,7 @@
 		</receiver>
 		<activity android:name=".plugin.social.SocialFriendsList"></activity>
 		<activity android:name=".plugin.social.SocialFacebookFinder"></activity>
-		<activity android:name=".plugin.mainscreen.ApplicationPreference"></activity>
+		<activity android:name="plugin.mainscreen.ApplicationPreference"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

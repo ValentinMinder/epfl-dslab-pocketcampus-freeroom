@@ -82,7 +82,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class MapPlugin extends PluginBase {
-	public static final String ITEM_GO_URL="go_url:";
+	public static final String ITEM_GO_URL = "go_url:";
 
 	// Used for the location
 	private static final float MAX_ACCURACY_FROM_DIRECTIONS = 100;
@@ -655,7 +655,6 @@ public class MapPlugin extends PluginBase {
 		Tracker.getInstance().trackPageView("map/selectedLayers" + selected);
 	}
 
-
 	/**
 	 * Displays all selected overlay items (from layers).
 	 * 
@@ -837,9 +836,9 @@ public class MapPlugin extends PluginBase {
 
 			allLayers_ = new ArrayList<MapElementsList>(layers.size());
 			for(MapLayerBean mlb : layers) {
-				if(mlb.isDisplayable()) {
+				//if(mlb.isDisplayable()) {
 					allLayers_.add(new MapElementsList(mlb));
-				}
+				//}
 			}
 			
 			layersCache_.loadSelectedLayersFromFile(allLayers_, new ILayersCacheCallback() {
@@ -950,8 +949,11 @@ public class MapPlugin extends PluginBase {
 			decrementProgressCounter();
 			
 			if(intentLayerId_ != null && intentLayerId_.equals(layer_.getLayerId())) {
+				if(layer_.getItemFromId(intentItemId_) != null) {
+					centerOnPoint(layer_.getItemFromId(intentItemId_).getPoint());
+				}
+				
 				intentLayerId_ = null;
-				centerOnPoint(layer_.getItemFromId(intentItemId_).getPoint());
 			}
 			
 		}

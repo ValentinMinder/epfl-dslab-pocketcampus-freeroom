@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.preferenceslauncher;
+package org.pocketcampus.plugin.scanner;
 
 import org.pocketcampus.R;
 import org.pocketcampus.core.plugin.Icon;
@@ -6,16 +6,11 @@ import org.pocketcampus.core.plugin.Id;
 import org.pocketcampus.core.plugin.PluginInfo;
 import org.pocketcampus.core.plugin.VersionNumber;
 
-public class PreferencesLauncherInfo extends PluginInfo {
-
-	@Override
-	public int getNameResource() {
-		return R.string.preferenceslauncher_plugin_title;
-	}
+public class ScannerInfo extends PluginInfo {
 
 	@Override
 	public Id getId() {
-		return new Id("preferenceslauncher");
+		return new Id("scanner");
 	}
 
 	@Override
@@ -25,17 +20,22 @@ public class PreferencesLauncherInfo extends PluginInfo {
 
 	@Override
 	public Icon getIcon() {
-		return new Icon(android.R.drawable.ic_menu_manage);
+		return new Icon(R.drawable.scanner_menu);
 	}
 
 	@Override
 	public Icon getMiniIcon() {
-		return new Icon(android.R.drawable.ic_menu_manage);
+		return new Icon(R.drawable.scanner_normal_mini);
 	}
 
 	@Override
 	public boolean hasMenuIcon() {
 		return true;
+	}
+
+	@Override
+	public int getNameResource() {
+		return R.string.scanner_plugin_title;
 	}
 
 }

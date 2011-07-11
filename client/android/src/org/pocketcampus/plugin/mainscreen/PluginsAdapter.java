@@ -97,14 +97,10 @@ public class PluginsAdapter implements ListAdapter {
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void unregisterDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

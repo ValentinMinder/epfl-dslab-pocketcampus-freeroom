@@ -272,7 +272,7 @@ public class BikesPlugin extends PluginBase {
 			}
 		}
 		
-		BikesPlugin.bikesRequestHandler.execute(new BikesLayerRequest(), "/getLayerId", (RequestParameters) null);
+		BikesPlugin.bikesRequestHandler.execute(new BikesLayerRequest(), "getLayerId", (RequestParameters) null);
 		
 	}
 

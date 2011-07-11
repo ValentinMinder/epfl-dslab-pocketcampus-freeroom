@@ -15,17 +15,19 @@ public class MapElementsList extends ArrayList<MapElement> {
 	private int cacheTimeInSeconds_;
 	private String layerId_;
 	private String iconUrl_;
+	private boolean isDisplayable_;
 	
 	public MapElementsList(String title, int cache) {
-		this.layerTitle_ = title;
-		this.cacheTimeInSeconds_ = cache;
+		layerTitle_ = title;
+		cacheTimeInSeconds_ = cache;
 	}
 	
 	public MapElementsList(MapLayerBean mlb) {
-		this.layerTitle_ = mlb.getName();
-		this.cacheTimeInSeconds_ = mlb.getCacheInSeconds();
-		this.layerId_ = mlb.getExternalId();
-		this.iconUrl_ = mlb.getDrawableUrl();
+		layerTitle_ = mlb.getName();
+		cacheTimeInSeconds_ = mlb.getCacheInSeconds();
+		layerId_ = mlb.getExternalId();
+		iconUrl_ = mlb.getDrawableUrl();
+		isDisplayable_ = mlb.isDisplayable();
 	}
 	
 	public MapElement getItemFromId(int id) {
@@ -73,7 +75,10 @@ public class MapElementsList extends ArrayList<MapElement> {
 		this.iconUrl_ = iconUrl;
 	}
 
-
+	public boolean isDisplayable() {
+		return isDisplayable_;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

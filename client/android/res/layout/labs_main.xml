@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_height="fill_parent">
+
+	<org.pocketcampus.core.ui.ActionBar
+		android:id="@+id/actionbar" style="@style/ActionBar" />
+	
+	<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/actionbar"
+			>
+
+			<ListView
+				android:id="@+id/labs_mainlist" 
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				></ListView>
+
+			<TextView
+				android:gravity="center"
+				android:id="@+id/labs_central_msg"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:textSize="15dip"
+				android:text="@string/labs_noLabsPlugin"
+				></TextView>
+
+		</RelativeLayout>
+	
+	
+</RelativeLayout>
+

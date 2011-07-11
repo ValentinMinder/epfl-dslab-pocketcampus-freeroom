@@ -38,7 +38,7 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 	
 	private void loadBikeStations() {
 		try {
-			bikeStationsCache_ = new BikeStationParser().parserBikes();
+			bikeStationsCache_ = new BikeStationParser().parseBikesStations();
 			bikeStationsCacheDate_ = new Date();
 			
 		} catch (IOException e) {
@@ -63,7 +63,6 @@ public class Bikes implements IPlugin, IMapElementsProvider {
 	
 	@PublicMethod
 	public String getLayerId(HttpServletRequest request) {
-		// returns the only layer we have
 		return mapLayerBean_.getExternalId();
     }
 

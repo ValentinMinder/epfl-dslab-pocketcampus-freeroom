@@ -17,7 +17,8 @@ public class MapLayerBean implements Serializable {
 
 	private static final long serialVersionUID = -314236678555986755L;
 	
-	private String name, drawableUrl;
+	private String name;
+	private String drawableUrl;
 	private String externalId;
 	private transient int pluginInternalId; // Do not serialize it
 	private int cacheInSeconds;
@@ -47,6 +48,7 @@ public class MapLayerBean implements Serializable {
 		    m.update(s.getBytes(),0,s.length());
 		    BigInteger i = new BigInteger(1,m.digest());
 			this.externalId =  String.format("%1$032X", i);
+			
 		} catch (NoSuchAlgorithmException e) {
 			this.externalId = pluginInstance.getClass().getCanonicalName() + layerId;
 		}
@@ -85,5 +87,10 @@ public class MapLayerBean implements Serializable {
 	}
 	public void setCacheInSeconds(int cache) {
 		this.cacheInSeconds = cache;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 }
