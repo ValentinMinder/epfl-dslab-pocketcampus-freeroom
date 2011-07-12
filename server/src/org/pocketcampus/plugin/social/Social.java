@@ -301,6 +301,10 @@ public class Social implements IPlugin, IMapElementsProvider, IPermissionProvide
 				e.printStackTrace();
 				return false;
 			}
+			
+			status = true;
+		} else {
+			status = false;
 		}
 
 		return status;
