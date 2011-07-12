@@ -33,8 +33,8 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Permission panel
- * @status ugly, but fine
- * @author gldalmas@gmail.com
+ * @status ok
+ * @author Gianluca
  */
 public class SocialPermissionDialog extends Dialog {
 	private Context context_;
@@ -152,7 +152,7 @@ public class SocialPermissionDialog extends Dialog {
 				@Override
 				protected void doInUiThread(String result) {
 					parentActivity_.setProgressBarGone();
-					Toast toast = Toast.makeText(parentActivity_, parentActivity_.getResources().getString(R.string.social_permission_dialog_request_sent), Toast.LENGTH_LONG);
+					Toast toast = Toast.makeText(parentActivity_, parentActivity_.getResources().getString(R.string.social_permissions_dialog_request_sent), Toast.LENGTH_LONG);
 					toast.show();
 					this_.dismiss();
 				}
@@ -211,7 +211,7 @@ public class SocialPermissionDialog extends Dialog {
 			
 			TextView tv = new TextView(context_);
 			tv.setGravity(Gravity.CENTER_VERTICAL);
-			tv.setText(context_.getResources().getString(R.string.social_loading));
+			tv.setText(context_.getResources().getString(R.string.social_permissions_loading));
 			
 			progressBarLayout_.addView(progressBar);
 			progressBarLayout_.addView(tv);
@@ -257,8 +257,9 @@ public class SocialPermissionDialog extends Dialog {
 	}
 	
 	private String getTitle() {
-		return context_.getString(R.string.social_permissions_title_a) + ((selectedUsers_.size() == 1) ? 
-			selectedUsers_.get(0).getFirstName() + context_.getString(R.string.social_permissions_title_b) : 
-			context_.getString(R.string.social_permissions_title_c));
+		return ((selectedUsers_.size() == 1) ?
+				context_.getString(R.string.social_permissions_title_before) + selectedUsers_.get(0).getFirstName() + 
+					context_.getString(R.string.social_permissions_title_after) : 
+				context_.getString(R.string.social_permissions_title_plural));
 	}
 }

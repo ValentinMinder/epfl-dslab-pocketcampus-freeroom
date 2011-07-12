@@ -22,6 +22,7 @@ import org.pocketcampus.shared.plugin.camipro.EbankingBean;
 import org.pocketcampus.shared.plugin.camipro.TransactionBean;
 import org.pocketcampus.utils.Notification;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,14 +50,19 @@ public class SecuredCamipro extends PluginBase {
 	private ActionBar actionBar_;
 	private RequestHandler requestHandler_;
 	private int progressCount_ = 0;
+	private static Activity this_;
 
 	private static final Gson gson_ = new Gson();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		this_ = this;
+		
 		setContentView(R.layout.camipro_main);
 		setupActionBar(true);
+		
 
 		requestHandler_ = getRequestHandler();
 
@@ -82,6 +88,19 @@ public class SecuredCamipro extends PluginBase {
 			}
 		});
 
+		actionBar_.addAction(new Action() {
+			@Override
+			public void performAction(View view) {
+				AuthenticationPlugin.logout(this_);
+				this_.finish();
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.logout;
+			}
+		});
+		
 		super.setupActionBar(addHomeButton);
 	}
 

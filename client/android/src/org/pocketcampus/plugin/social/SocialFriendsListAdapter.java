@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
@@ -31,9 +30,8 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Adapter for the elements of the friends sublist, in the friend list activity.
- * 
  * @status ok
- * @author gldalmas@gmail.com
+ * @author Gianluca
  */
 public class SocialFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;
@@ -141,17 +139,14 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 
 		//Updates button state and selected friends list on every status change
 		holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			Button buttonPermission = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonPerm);
-			Button buttonDelete = (Button) socialFriendsListActivity_.findViewById(R.id.friendsListButtonDel);
-			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if(isChecked) {
 					_convertView.setPressed(true);
 					if(checkCount_ == 0) {
 						//buttons are enabled if some friends are selected
-						if(!buttonPermission.isEnabled()) buttonPermission.setEnabled(true);
-						if(!buttonDelete.isEnabled()) buttonDelete.setEnabled(true);
+						socialFriendsListActivity_.enablePermissionButton();//buttonPermission.setEnabled(true);
+						socialFriendsListActivity_.enableDeleteButton();//buttonDelete.setEnabled(true);
 						
 						allSelectedAreOnline_ = true;
 					}
@@ -169,10 +164,8 @@ public class SocialFriendsListAdapter extends BaseAdapter implements Filterable 
 					} else {
 						if(checkCount_ == 1) {
 							//buttons are disabled if no friend is selected
-							if(buttonPermission.isEnabled())
-								buttonPermission.setEnabled(false);
-							if(buttonDelete.isEnabled())
-								buttonDelete.setEnabled(false);
+							 socialFriendsListActivity_.disablePermissionButton();
+							 socialFriendsListActivity_.disableDeleteButton();
 						}
 						
 						if(selectedOffline_.contains(position)) {

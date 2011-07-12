@@ -2,65 +2,30 @@
 <resources>
 	<!-- SOCIAL NAMES -->
     <string name="social_plugin_title">Social</string>
-    <string name="authentication_plugin_title">Authentication</string>
-    <string name="social_login_username_text">Username</string>
-    <string name="social_login_username_field"></string>
-    <string name="social_login_password_text">Password</string>
-    <string name="social_login_password_field"></string>
-    <string name="social_login_button">Login</string>
-	<string name="friendsListButtonToggle">Toggle</string>
-	<string name="friendsListButtonPerm">Permissions</string>
-	<string name="friendsListButtonDel">Delete</string>
-	<string name="social_permission_radio_granted">Grant</string>
-	<string name="social_permission_radio_denied">Deny</string>
-	<string name="social_permission_ok">OK</string>
-	<string name="social_permission_cancel">Cancel</string>
-	<string name="social_permission_choose_service">Choose a service</string>
-	<string name="friendsRequestListField"></string>
-	<string name="social_create_username_text">Username</string>
-	<string name="social_create_username_field"></string>
-	<string name="social_create_password_text">Password</string>
-	<string name="social_create_password_field"></string>
-	<string name="social_delete_confirm">Are you sure?</string>
-	<string name="social_delete_confirm_yes">Yes</string>
-	<string name="social_delete_confirm_no">No</string>
-	<string name="social_friends_list_separator">Friends</string>
-	<string name="social_requesting_friends_list_separator">Requests</string>
-	<string name="social_create_title">Create a new account:</string>
-	<string name="social_create_button">Create an account</string>
-	<string name="friendsRequestsListButtonValid">Go</string>
-	<string name="social_friends_search_requesting_friends_separator">Requesting friends</string>
-	<string name="social_friends_search_request_sent">New request sent to</string>
-	<string name="social_friends_search_request_not_sent">Request not sent to</string>
-	<string name="social_friends_search_request_accepted">friendships confirmed !</string>
-	<string name="social_account_new_created">New account created</string>
-	<string name="social_account_existing_already">This nickname is not available</string>
-	<string name="social_ok">OK</string>
-	<string name="social_login">Connection problem, please log in</string>
-	<string name="social_unable_to_login">Connection problem, unable to log in</string>
-	<string name="social_no_internet">You are not connected to the Internet</string>
-	<string name="social_edit_permissions">Edit permissions</string>
-	<string name="social_permissions_gps_localization">GPS Localization</string>
-	<string name="social_permissions_updated">Permissions updated !</string>
-	<string name="social_login_title">Please log in with a previously created account.</string>
-	<string name="social_login_createAccount">If you do not have an account yet, please create one in the main menu of the preferences.</string>
 	<string name="social_operation_successful">Operation was successful</string>
-	<string name="social_operation_failure">Operation failed</string>
-	<string name="social_requesting_friend_notice">wants to be your friend</string>
-	<string name="social_requesting_friend_confirm">confirm</string>
-	<string name="social_requesting_friend_ignore">ignore</string>
-	<string name="social_permission_dialog_button_ok">Update</string>
-	<string name="social_friendlist_empty_message">Your contact list is empty\nFind people using the directory !</string>
-	<string name="social_loading">Loading...</string>
-	<string name="social_permissions_title_a">Edit\u0020</string>
-	<string name="social_permissions_title_b">\'s permissions</string>
-	<string name="social_permissions_title_c">multiple permissions</string>
-	<string name="social_permission_dialog_button_position">Ask position</string>
-	<string name="social_permission_dialog_request_sent">Request sent</string>
+	<string name="social_operation_failure">Failure</string>
 	
 	<!-- FRIENDS LIST -->
 	<string name="social_friendlist_section_friends">Friends</string>
-	<string name="social_friendlist_section_requestingfriends">Requesting Friends</string>
+	<string name="social_friendlist_section_requests">Requests</string>
+	<string name="social_friendlist_empty_message">Your contact list is empty\nFind people using the directory !</string>
+	
+	<!-- PERMISSIONS PANEL -->
+	<string name="social_permissions_loading">Loading...</string>
+	<string name="social_permissions_title_before">Edit\u0020</string>
+	<string name="social_permissions_title_after">\'s permissions</string>
+	<string name="social_permissions_title_plural">Edit multiple permissions</string>
+	<string name="social_permissions_dialog_button_position">Ask position</string>
+	<string name="social_permissions_dialog_request_sent">Request sent</string>
+	<string name="social_permissions_dialog_button_ok">Update</string>
+	
+	<!-- REQUESTING FRIEND ALERT -->
+	<string name="social_requesting_friend_notice">wants to be your friend</string>
+	<string name="social_requesting_friend_confirm">confirm</string>
+	<string name="social_requesting_friend_ignore">ignore</string>
+	
+	<!-- DELETE ALERT -->
+	<string name="social_delete_confirm">Are you sure?</string>
 	
 	<!-- POSITIONING REQUEST ALERT -->
 	<string name="social_positionalert_title_before"></string>
@@ -69,6 +34,12 @@
 	<string name="social_positionalert_title_after_plural">\u0020people who want you on their map</string>
 	<string name="social_positionalert_button_update">Track me</string>
 	<string name="social_positionalert_button_ignore">Ignore</string>
+	
+	<!--  MENU -->
+	<string name="social_menu_button_toggle">Toggle</string>
+	<string name="social_menu_button_permissions">Permissions</string>
+	<string name="social_menu_button_delete">Delete</string>
+	<string name="social_menu_button_track">Track Me</string>
 	
 	<!-- POSITIONING -->
 	<string name="social_positioning_notification_content">Your position has been uploaded.</string>

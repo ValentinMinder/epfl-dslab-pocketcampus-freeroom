@@ -59,7 +59,7 @@
 			
 			<Button 
 				android:id="@+id/social_friends_request_position_button" 
-				android:text="@string/social_permission_dialog_button_position"
+				android:text="@string/social_permissions_dialog_button_position"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:layout_weight="0.5">
@@ -67,7 +67,7 @@
 			
 			<Button
 				android:id="@+id/social_friends_ok" 
-				android:text="@string/social_permission_dialog_button_ok"
+				android:text="@string/social_permissions_dialog_button_ok"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:layout_weight="0.5"

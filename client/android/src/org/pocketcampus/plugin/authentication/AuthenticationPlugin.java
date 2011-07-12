@@ -18,8 +18,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,6 +28,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Authentication base class
+ * @status ok
+ * @author Gianluca
+ */
 public class AuthenticationPlugin extends PluginBase {
 	private AuthenticationPreference preferences_;
 	private static RequestHandler requestHandler_ = null;
@@ -60,6 +65,7 @@ public class AuthenticationPlugin extends PluginBase {
 		
 		Button button = (Button)findViewById(R.id.socialLoginButton);
 		button.setOnClickListener(new OnClickListener() {
+			
 			public void onClick(View v) {
 				String username = ((EditText) findViewById(R.id.socialLoginUsernameField)).getText().toString();
 				String password = ((EditText) findViewById(R.id.socialLoginPasswordField)).getText().toString();
@@ -194,7 +200,7 @@ public class AuthenticationPlugin extends PluginBase {
 					.putString("last", user_.getLastName())
 					.commit();
 				
-				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_hitosomeone) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
+				Toast.makeText(thisActivity_, thisActivity_.getString(R.string.authentication_login_hi) + " " + user_.getFirstName(), Toast.LENGTH_LONG).show();
 				
 				//starts secured activity if specified
 				if(toStartAfterLogin_ != null) {
@@ -213,7 +219,7 @@ public class AuthenticationPlugin extends PluginBase {
 		private void alert() {
 			//display error message
 			AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity_);
-			AlertDialog alert = builder.setMessage(thisActivity_.getString(R.string.authentication_wrong_password))
+			AlertDialog alert = builder.setMessage(thisActivity_.getString(R.string.authentication_login_failure))
 			.setCancelable(true).create();
 			alert.setCanceledOnTouchOutside(true);
 			alert.show();

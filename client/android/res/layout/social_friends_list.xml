@@ -20,7 +20,7 @@
 			android:id="@+id/SocialFriendsListBodyHolder"
 			android:layout_width="fill_parent"
 			android:layout_height="0px"
-			android:layout_weight="0.88"> 
+			android:layout_weight="1"> 
 		
 			<ListView 
 				style="@style/Theme.ListView"
@@ -33,19 +33,6 @@
 		
 		</LinearLayout>			
 		
-		<LinearLayout 
-				android:id="@+id/friendsListButtonsTableRow" 
-				android:orientation="horizontal" 
-				android:layout_weight="0.12" 
-				android:layout_width="fill_parent" 
-				android:layout_height="0px" 
-				android:weightSum="1.0">
-				
-			<Button android:text="@string/friendsListButtonToggle" android:id="@+id/friendsListButtonToggle" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
-			<Button android:text="@string/friendsListButtonPerm" android:id="@+id/friendsListButtonPerm" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
-			<Button android:text="@string/friendsListButtonDel" android:id="@+id/friendsListButtonDel" android:layout_weight="0.33" android:layout_width="0px" android:layout_height="fill_parent" android:enabled="false"></Button>
-		
-		</LinearLayout>
 
 </LinearLayout>
 

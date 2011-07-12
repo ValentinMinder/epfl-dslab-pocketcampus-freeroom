@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- AUTHENTICATION PLUGIN -->
+	<string name="authentication_plugin_title">Authentication</string>
+	
+	<!-- LOGIN SCREEN -->
+	<string name="authentication_login_hint_username">Username</string>
+    <string name="authentication_login_hint_password">Password</string>
+    <string name="authentication_login_button">Login</string>
+	<string name="authentication_login_failure">Wrong username or password</string>
+	<string name="authentication_login_hi">Hi,\u0020</string>
+</resources>

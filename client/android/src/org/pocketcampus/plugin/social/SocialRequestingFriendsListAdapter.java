@@ -21,7 +21,7 @@ import android.widget.TextView;
 /**
  * Adapter for the elements of the requesting friends sublist, in the friend list activity.
  * @status ok
- * @author gldalmas@gmail.com
+ * @author Gianluca
  */
 public class SocialRequestingFriendsListAdapter extends BaseAdapter implements Filterable {
 	private LayoutInflater mInflater_;

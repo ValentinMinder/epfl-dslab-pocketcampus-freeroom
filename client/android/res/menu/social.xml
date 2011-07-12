@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
-		android:title="[HC] Toggle"
+		android:title="@string/social_menu_button_toggle"
 		android:id="@+id/social_friendslist_optionmenu_toggle"
-		android:icon="@android:drawable/ic_menu_manage"
+		android:icon="@drawable/social_select"
 		android:enabled="false"/>
 	<item
-		android:title="[HC] Permissions"
+		android:title="@string/social_menu_button_permissions"
 		android:id="@+id/social_friendslist_optionmenu_permission"
-		android:icon="@android:drawable/ic_menu_manage"
+		android:icon="@drawable/social_permissions"
 		android:enabled="false"/>
 	<item
-		android:title="[HC] Delete"
+		android:title="@string/social_menu_button_delete"
 		android:id="@+id/social_friendslist_optionmenu_delete"
-		android:icon="@android:drawable/ic_menu_manage"
+		android:icon="@drawable/social_delete"
 		android:enabled="false"/>
 	<item
-		android:title="[HC] Preferences"
-		android:id="@+id/social_friendslist_optionmenu_preferences"
-		android:icon="@android:drawable/ic_menu_manage"
+		android:title="@string/social_menu_button_track"
+		android:id="@+id/social_friendslist_optionmenu_tracking"
+		android:icon="@drawable/social_menu"
 		android:enabled="false"/>
 </menu>
