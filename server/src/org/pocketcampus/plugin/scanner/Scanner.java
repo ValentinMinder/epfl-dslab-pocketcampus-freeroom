@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,6 +78,76 @@ public class Scanner implements IMapElementsProvider, IPlugin {
 			return saveRecordInDb(record);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    }
+	
+	@PublicMethod
+	public boolean createScanningPoints(HttpServletRequest request) {
+		/*
+		 * CO1
+		 * 
+		int group = 1;
+		int level = 1;
+		double startLatitude = 46.520092;
+		double startLongitude = 6.565087;
+		double stopLatitude = 46.519826;
+		double stopLongitude = 6.565527;
+		int nbStepLatitude = 5;
+		int nbStepsLongitude = 17;
+		*/
+		
+		/*
+		 * BC
+		int group = 0;
+		int level = 0;
+		double startLatitude = 46.518913;
+		double startLongitude = 6.561593;
+		double stopLatitude = 46.518189;
+		double stopLongitude = 6.56225;
+		int nbStepLatitude = 5;
+		int nbStepsLongitude = 15;*/
+		
+		
+		/*
+		 * INM*/
+		int group = 1;
+		int level = 1; 
+		double startLatitude = 46.518968;
+		double startLongitude = 6.562896;
+		double stopLatitude = 46.518372;
+		double stopLongitude = 6.56343;
+		int nbStepLatitude = 5;
+		int nbStepsLongitude = 14;
+		
+		
+		Connection connection_ = createConnection();
+		
+		PreparedStatement insertRecordStatement = null;
+		String insertRecordString = "INSERT INTO `location_points` (`group`, `latitude`, `longitude`, `level`) VALUES (?,?,?,?)";
+		
+		try {
+			connection_.setAutoCommit(false);
+			insertRecordStatement = connection_.prepareStatement(insertRecordString);
+			
+			for (int i = 0; i <= nbStepLatitude; i++) {
+				for (int j = 0; j <= nbStepsLongitude; j++) {
+					double longitude = startLongitude + ((stopLongitude - startLongitude)*(double)i)/nbStepLatitude;
+					double latitude = startLatitude + ((stopLatitude - startLatitude)*(double)j)/nbStepsLongitude;
+					
+					insertRecordStatement.setInt(1, group);
+					insertRecordStatement.setFloat(2, (float) latitude);
+					insertRecordStatement.setFloat(3, (float) longitude);
+					insertRecordStatement.setInt(4, level);
+					insertRecordStatement.execute();
+				}
+			}
+			
+			connection_.commit();
+			return true;
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

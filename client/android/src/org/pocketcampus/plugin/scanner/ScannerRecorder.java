@@ -139,6 +139,7 @@ public class ScannerRecorder extends Activity {
 				} else {
 					setStatus("Upload impossible for now.");
 					saveRecordInBuffer();
+					scanFinished();
 				}
 			}
 
@@ -157,9 +158,13 @@ public class ScannerRecorder extends Activity {
 			uploader_.uploadRecord(recordBuffer_.getOldestBuffered());
 			
 		} else {
-			scanInProgress_ = false;
-			scanButton_.setEnabled(true);
+			scanFinished();
 		}
+	}
+	
+	private void scanFinished() {
+		scanInProgress_ = false;
+		scanButton_.setEnabled(true);
 	}
 	
 	private void saveRecordInBuffer() {

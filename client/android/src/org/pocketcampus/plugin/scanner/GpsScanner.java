@@ -11,7 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public class GpsScanner extends Handler implements LocationListener {
-	private static final int SCAN_DURATION = 15;
+	private static final int SCAN_DURATION = 12;
 
 	private ArrayList<Location> fixes_;
 
