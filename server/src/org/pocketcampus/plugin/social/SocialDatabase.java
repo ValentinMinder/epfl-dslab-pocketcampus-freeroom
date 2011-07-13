@@ -19,9 +19,9 @@ import org.pocketcampus.shared.plugin.map.Position;
 import org.pocketcampus.shared.plugin.social.User;
 
 public class SocialDatabase {
-	private final static String dbHost = "jdbc:mysql://localhost:3306/pocketcampus";
-	private final static String dbUser = "root";
-	private final static String dbPass = "pocketcampus";
+	private final static String dbHost = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/test";
+	private final static String dbUser = "pocketbuddy";
+	private final static String dbPass = "";
 	
 	private static final String contactTable = "social_contact";
 	private static final String pendingTable = "social_pending";
