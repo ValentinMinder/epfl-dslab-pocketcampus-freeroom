@@ -111,7 +111,7 @@ public class Scanner implements IMapElementsProvider, IPlugin {
 		
 		
 		/*
-		 * INM*/
+		 * INM
 		int group = 1;
 		int level = 1; 
 		double startLatitude = 46.518968;
@@ -119,8 +119,25 @@ public class Scanner implements IMapElementsProvider, IPlugin {
 		double stopLatitude = 46.518372;
 		double stopLongitude = 6.56343;
 		int nbStepLatitude = 5;
-		int nbStepsLongitude = 14;
+		int nbStepsLongitude = 14;*/
 		
+		/*int group = 0;
+		int level = 0; 
+		double startLatitude = 46.518863;
+		double startLongitude = 6.561676;
+		double stopLatitude = 46.51823;
+		double stopLongitude = 6.562199;
+		int nbStepLatitude = 5;
+		int nbStepsLongitude = 8;*/
+		
+		int group = Integer.parseInt(request.getParameter("group"));
+		int level = Integer.parseInt(request.getParameter("level"));
+		double startLatitude = Double.parseDouble(request.getParameter("startLatitude"));
+		double startLongitude = Double.parseDouble(request.getParameter("startLongitude"));
+		double stopLatitude = Double.parseDouble(request.getParameter("stopLatitude"));
+		double stopLongitude = Double.parseDouble(request.getParameter("stopLongitude"));
+		double nbStepLatitude = Double.parseDouble(request.getParameter("nbStepLatitude"));
+		double nbStepsLongitude = Double.parseDouble(request.getParameter("nbStepsLongitude"));
 		
 		Connection connection_ = createConnection();
 		
@@ -131,14 +148,14 @@ public class Scanner implements IMapElementsProvider, IPlugin {
 			connection_.setAutoCommit(false);
 			insertRecordStatement = connection_.prepareStatement(insertRecordString);
 			
-			for (int i = 0; i <= nbStepLatitude; i++) {
-				for (int j = 0; j <= nbStepsLongitude; j++) {
-					double longitude = startLongitude + ((stopLongitude - startLongitude)*(double)i)/nbStepLatitude;
-					double latitude = startLatitude + ((stopLatitude - startLatitude)*(double)j)/nbStepsLongitude;
+			for (double i = 0; i <= nbStepLatitude; i=i+1.0) {
+				for (double j = 0; j <= nbStepsLongitude; j=j+1.0) {
+					double longitude = startLongitude + (stopLongitude - startLongitude)*(j/nbStepsLongitude);
+					double latitude = startLatitude + (stopLatitude - startLatitude)*(i/nbStepLatitude);
 					
 					insertRecordStatement.setInt(1, group);
-					insertRecordStatement.setFloat(2, (float) latitude);
-					insertRecordStatement.setFloat(3, (float) longitude);
+					insertRecordStatement.setDouble(2, (float) latitude);
+					insertRecordStatement.setDouble(3, (float) longitude);
 					insertRecordStatement.setInt(4, level);
 					insertRecordStatement.execute();
 				}
