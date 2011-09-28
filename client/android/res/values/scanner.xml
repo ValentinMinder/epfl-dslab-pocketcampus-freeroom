@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="scanner_plugin_title">Wifi, GPS and GSM scanner</string>
-    
-    <string name="scanner_noRoute">No route available to be scanned.</string>
-</resources>

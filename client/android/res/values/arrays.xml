@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-	<string-array name="social_dialog_services">
-		<item>GPS Localization</item>
-	</string-array>
-
-</resources>

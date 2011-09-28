@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="labs_plugin_title">Labs</string>
-    
-    <string name="labs_noLabsPlugin">No labs plugin available.</string>
-</resources>
