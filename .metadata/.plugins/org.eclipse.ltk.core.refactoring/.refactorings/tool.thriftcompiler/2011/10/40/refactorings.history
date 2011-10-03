@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring accessors="true" comment="Delete 2 elements from project &apos;tool.thriftcompiler&apos;&#x0D;&#x0A;- Original project: &apos;tool.thriftcompiler&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     takeout.thrift&#x0D;&#x0A;     takeoutreceiver.thrift" description="Delete elements" element1="service/takeout.thrift" element2="service/takeoutreceiver.thrift" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="2" stamp="1317607761270" subPackages="false" version="1.0"/>
-</session>

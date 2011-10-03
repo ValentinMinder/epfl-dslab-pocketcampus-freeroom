@@ -1,0 +1,15 @@
+<project>
+
+	<target name="build-launcher">
+		<java jar="../../../tool/tool.builder/launcher.jar" fork="true">
+			<arg value="launcher"/>
+		</java>
+	</target>
+	
+	<target name="build-plugin">
+		<java jar="../../../tool/tool.builder/launcher.jar" fork="true">
+			<arg value="builder"/>
+		</java>
+	</target>
+
+</project>

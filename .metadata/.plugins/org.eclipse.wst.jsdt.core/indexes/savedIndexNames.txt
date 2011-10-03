@@ -1,2 +1,0 @@
-INDEX VERSION 1.122+C:\Users\Florian\Desktop\PocketCampus\svn\trunk\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-4232088012.index
