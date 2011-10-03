@@ -25,7 +25,7 @@ public abstract class PluginController extends Service {
 	
 	protected TServiceClient getHttpClient(TServiceClientFactory<? extends TServiceClient> clientFactory, String pluginName) {
 		TServiceClient client = null;
-		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT + "/platform.launcher.server/" + pluginName;
+		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT + "/" + pluginName;
 		
 		try {
 			HttpClient httpInitialClient = new DefaultHttpClient();

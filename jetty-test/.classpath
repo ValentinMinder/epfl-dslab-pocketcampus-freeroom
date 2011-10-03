@@ -2,13 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.test.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.test.shared"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/jetty-ajp-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/jetty-annotations-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/jetty-client-8.0.0.M3.jar"/>
@@ -31,5 +29,9 @@
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/jetty-websocket-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/jetty-xml-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Jetty/lib/servlet-api-3.0.jar"/>
+	<classpathentry kind="src" path="/platform.sdk.server"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.test.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.test.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

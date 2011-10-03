@@ -1,4 +1,5 @@
-package org.apache.thrift.server;
+package org.pocketcampus.platform.launcher.server;
+
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
