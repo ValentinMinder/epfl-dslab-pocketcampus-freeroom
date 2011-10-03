@@ -7,20 +7,9 @@ import java.io.InputStreamReader;
 /**
  * Tools to automatically compile all thrift file and put them in their respective locations.
  * 
- * TODO make preprocessor to include files 
- * 
  * @author florian
  */
 public class LibraryThriftCompiler {
-	// IF THIS SCRIPT ISN'T WORKING
-	// you probably need to fix Thrift path below.
-	
-	// if you're on Linux
-	//private static final String THRIFT_PATH = "/usr/local/bin/thrift";
-	
-	// if you're on Windows
-	private static final String THRIFT_PATH = "C:/thrift/thrift-0.7.0.exe";
-	
 	private static boolean modeVerbose = false;
 
 	public static void main(String argv[]) {
@@ -43,6 +32,8 @@ public class LibraryThriftCompiler {
 		if(errorOccured) {
 			System.out.println();
 			System.out.println("=== Error occured! ===");
+		} else {
+			System.out.println("Done.");
 		}
 	}
 	
@@ -69,7 +60,7 @@ public class LibraryThriftCompiler {
 				directoryOut = "../../plugin/"+pluginName+"/plugin."+pluginName+".shared/src";
 			}
 			
-			String command = THRIFT_PATH + " "+verbose+"--gen java -out "+directoryOut+" "+directoryIn+"/"+pluginName+".thrift";
+			String command = LocalConfig.THRIFT_PATH + " "+verbose+"--gen java -out "+directoryOut+" "+directoryIn+"/"+pluginName+".thrift";
 			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader inputInfo = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader inputError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
