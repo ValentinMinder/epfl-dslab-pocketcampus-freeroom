@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/sdk_popup_main"
+	android:gravity="center_horizontal"
+	style="@style/PocketCampusTheme.Secondary.MainLayout"
+	android:padding="15dip"
+	>
+	
+	<TextView 
+		android:id="@+id/sdk_popup_title"
+		style="@style/PocketCampusTheme.Secondary.Title"
+		android:layout_width="wrap_content"
+		android:layout_centerHorizontal="true"
+		/>
+		
+	<TextView 
+		android:id="@+id/sdk_popup_details"
+		style="@style/PocketCampusTheme.Secondary.Detail"
+		android:layout_below="@+id/sdk_popup_title"
+		android:layout_width="wrap_content"
+		android:layout_centerHorizontal="true"
+		/>
+	
+	<RelativeLayout
+		android:id="@+id/sdk_popup_content"
+		style="@style/PocketCampusTheme.Secondary"
+		android:layout_width="wrap_content"
+		android:layout_below="@+id/sdk_popup_details"
+		android:layout_centerHorizontal="true"
+		android:paddingTop="10dip"
+		/>
+	
+	<LinearLayout
+		android:id="@+id/sdk_popup_buttons"
+		style="@style/PocketCampusTheme.Secondary"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:layout_centerHorizontal="true"
+		android:layout_below="@+id/sdk_popup_content"
+		android:paddingTop="20dip"
+		/>
+
+</RelativeLayout>

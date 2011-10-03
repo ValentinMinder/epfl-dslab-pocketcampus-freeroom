@@ -1,0 +1,1779 @@
+!SESSION 2011-10-03 03:44:56.009 -----------------------------------------------
+eclipse.buildId=M20110210-1200
+java.version=1.6.0_26
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=fr_CH
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product -data C:\Users\Florian\Desktop\PocketCampus\svn\trunk -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.jface 2 0 2011-10-03 03:45:13.793
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-10-03 03:45:13.793
+!MESSAGE A conflict occurred for ALT+SHIFT+D R:
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug,Debug RAP Application,
+		Debug RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.debug,Debug on Server,
+		Debug the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-10-03 03:45:13.793
+!MESSAGE A conflict occurred for ALT+SHIFT+X R:
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.run,Run RAP Application,
+		Run RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.run,Run on Server,
+		Run the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-10-03 03:45:34.670
+!MESSAGE loadAndParseRClass: failed to find manifest package for project lib.actionbar.android
+
+!ENTRY org.eclipse.debug.core 4 2 2011-10-03 03:47:27.473
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.debug.core".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1225)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleTerminatedProcess(CodeCoverDebugListener.java:91)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleDebugEvents(CodeCoverDebugListener.java:78)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.run(DebugPlugin.java:1089)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.dispatch(DebugPlugin.java:1123)
+	at org.eclipse.debug.core.DebugPlugin$EventDispatchJob.run(DebugPlugin.java:390)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.debug.core 4 125 2011-10-03 03:47:27.473
+!MESSAGE An exception occurred while dispatching debug events.
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1225)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleTerminatedProcess(CodeCoverDebugListener.java:91)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleDebugEvents(CodeCoverDebugListener.java:78)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.run(DebugPlugin.java:1089)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.dispatch(DebugPlugin.java:1123)
+	at org.eclipse.debug.core.DebugPlugin$EventDispatchJob.run(DebugPlugin.java:390)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.debug.core 4 2 2011-10-03 03:47:27.754
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.debug.core".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1225)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleTerminatedProcess(CodeCoverDebugListener.java:91)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleDebugEvents(CodeCoverDebugListener.java:78)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.run(DebugPlugin.java:1089)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.dispatch(DebugPlugin.java:1123)
+	at org.eclipse.debug.core.DebugPlugin$EventDispatchJob.run(DebugPlugin.java:390)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.debug.core 4 125 2011-10-03 03:47:27.754
+!MESSAGE An exception occurred while dispatching debug events.
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.jdt.launching.JavaRuntime.getJavaProject(JavaRuntime.java:1225)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleTerminatedProcess(CodeCoverDebugListener.java:91)
+	at org.codecover.eclipse.builder.CodeCoverDebugListener.handleDebugEvents(CodeCoverDebugListener.java:78)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.run(DebugPlugin.java:1089)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.debug.core.DebugPlugin$EventNotifier.dispatch(DebugPlugin.java:1123)
+	at org.eclipse.debug.core.DebugPlugin$EventDispatchJob.run(DebugPlugin.java:390)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 2 2011-10-03 03:48:22.339
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: The builder launch configuration could not be found.
+	at org.eclipse.core.externaltools.internal.ExternalToolsCore.newError(ExternalToolsCore.java:114)
+	at org.eclipse.core.externaltools.internal.model.ExternalToolBuilder.build(ExternalToolBuilder.java:76)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:220)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:362)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:545)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:524)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:115)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$6.run(Sdk.java:1144)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.core.externaltools 4 0 2011-10-03 03:48:22.339
+!MESSAGE The builder launch configuration could not be found.
+!SUBENTRY 1 org.eclipse.core.externaltools 4 0 2011-10-03 03:48:22.339
+!MESSAGE The builder launch configuration could not be found.
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:48:22.417
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.sdk.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:211)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:220)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:362)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:545)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:524)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:115)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$6.run(Sdk.java:1144)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 2 2011-10-03 03:48:22.417
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.sdk.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:211)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:220)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:362)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:545)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:524)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:115)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$6.run(Sdk.java:1144)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: add_script_load_bp in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_conditional in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_conditonal in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_entry_and_exit in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_entry_only in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_exit_only in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_line_number in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: bp_suspend_vm in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: breakpoint_configuration in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: connect in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: connector in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.915
+!MESSAGE NLS unused message: connector_properties in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: creating_script_load_bp in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: enable_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: enter_new_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: exception_occurred_setting_bp_properties in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: hit_count_must_be_positive in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: no_description_provided in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: scripts in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: select_javascript_file in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: set_bp_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: suspend_target in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: suspend_thread in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: the_argument_0_is_not_valid in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:50:49.931
+!MESSAGE NLS unused message: osgi.nls.warnings in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.codehaus.groovy.eclipse.dsl 4 0 2011-10-03 03:50:52.614
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+!STACK 1
+Java Model Exception: Java Model Status [C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist]
+	at org.eclipse.jdt.internal.core.JavaElement.newJavaModelException(JavaElement.java:502)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:246)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:515)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:252)
+	at org.eclipse.jdt.internal.core.Openable.open(Openable.java:432)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findDSLDsInLibraries(RefreshDSLDJob.java:111)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findFiles(RefreshDSLDJob.java:84)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.refreshProject(RefreshDSLDJob.java:274)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.run(RefreshDSLDJob.java:222)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.jdt.core 4 969 2011-10-03 03:50:52.614
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+
+!ENTRY org.codehaus.groovy.eclipse.dsl 4 0 2011-10-03 03:50:52.614
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+!STACK 1
+Java Model Exception: Java Model Status [C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist]
+	at org.eclipse.jdt.internal.core.JavaElement.newJavaModelException(JavaElement.java:502)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:246)
+	at org.eclipse.jdt.internal.core.Openable.openAncestors(Openable.java:504)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:240)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:515)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:252)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:238)
+	at org.eclipse.jdt.internal.core.PackageFragment.getNonJavaResources(PackageFragment.java:323)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findDSLDsInLibraries(RefreshDSLDJob.java:137)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findFiles(RefreshDSLDJob.java:84)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.refreshProject(RefreshDSLDJob.java:274)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.run(RefreshDSLDJob.java:222)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.jdt.core 4 969 2011-10-03 03:50:52.614
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:51:00.866
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.launcher.android/plugin.dashboard.android_src/org/pocketcampus/android.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.codehaus.groovy.eclipse.dsl 4 0 2011-10-03 03:51:00.882
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+!STACK 1
+Java Model Exception: Java Model Status [C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist]
+	at org.eclipse.jdt.internal.core.JavaElement.newJavaModelException(JavaElement.java:502)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:246)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:515)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:252)
+	at org.eclipse.jdt.internal.core.Openable.open(Openable.java:432)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findDSLDsInLibraries(RefreshDSLDJob.java:111)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findFiles(RefreshDSLDJob.java:84)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.refreshProject(RefreshDSLDJob.java:274)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.run(RefreshDSLDJob.java:222)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.jdt.core 4 969 2011-10-03 03:51:00.882
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+
+!ENTRY org.codehaus.groovy.eclipse.dsl 4 0 2011-10-03 03:51:00.882
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+!STACK 1
+Java Model Exception: Java Model Status [C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist]
+	at org.eclipse.jdt.internal.core.JavaElement.newJavaModelException(JavaElement.java:502)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:246)
+	at org.eclipse.jdt.internal.core.Openable.openAncestors(Openable.java:504)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:240)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:515)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:252)
+	at org.eclipse.jdt.internal.core.JavaElement.getElementInfo(JavaElement.java:238)
+	at org.eclipse.jdt.internal.core.PackageFragment.getNonJavaResources(PackageFragment.java:323)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findDSLDsInLibraries(RefreshDSLDJob.java:137)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob$DSLDResourceVisitor.findFiles(RefreshDSLDJob.java:84)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.refreshProject(RefreshDSLDJob.java:274)
+	at org.codehaus.groovy.eclipse.dsl.RefreshDSLDJob.run(RefreshDSLDJob.java:222)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.jdt.core 4 969 2011-10-03 03:51:00.882
+!MESSAGE C:\Users\Florian\.groovy\greclipse\global_dsld_support does not exist
+
+!ENTRY org.eclipse.core.jobs 4 2 2011-10-03 03:51:01.022
+!MESSAGE An internal error occurred during: "Refreshing workspace".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.launcher.android/plugin.dashboard.android_src/org/pocketcampus/android.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:51:07.559
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.launcher.android/plugin.test.android_src/org/pocketcampus/plugin/test/android.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.jobs 4 2 2011-10-03 03:51:07.559
+!MESSAGE An internal error occurred during: "Refreshing workspace".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.launcher.android/plugin.test.android_src/org/pocketcampus/plugin/test/android.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:54:59.680
+!MESSAGE NLS unused message: editorAdd in: org.eclipse.jst.server.jetty.ui.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:54:59.681
+!MESSAGE NLS unused message: editorBrowse in: org.eclipse.jst.server.jetty.ui.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:54:59.682
+!MESSAGE NLS unused message: configurationEditorWebModuleDialogReloadEnabled in: org.eclipse.jst.server.jetty.ui.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.017
+!MESSAGE NLS unused message: errorVersionEmpty in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.018
+!MESSAGE NLS unused message: errorUnknownVersion in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.019
+!MESSAGE NLS unused message: errorInstallDirEmpty in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.020
+!MESSAGE NLS unused message: errorInstallDirWrongVersion in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.021
+!MESSAGE NLS unused message: errorInstallDirWrongVersion2 in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 03:55:15.022
+!MESSAGE NLS unused message: errorInstallDirDoesNotExist in: org.eclipse.jst.server.jetty.core.internal.Messages
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:58:19.301
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 03:58:19.302
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:58:20.998
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\sdk\platform.sdk.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\sdk\platform.sdk.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 03:58:20.999
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\sdk\platform.sdk.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\sdk\platform.sdk.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:58:23.547
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\dashboard\plugin.dashboard.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\dashboard\plugin.dashboard.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 03:58:23.547
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\dashboard\plugin.dashboard.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\dashboard\plugin.dashboard.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 03:58:24.446
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\test\plugin.test.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\test\plugin.test.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 03:58:24.447
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\test\plugin.test.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\test\plugin.test.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.wst.server.core 4 0 2011-10-03 03:58:29.822
+!MESSAGE Missing or failed server extension: ServerWorkingCopy Jetty v8.0 Server at localhost. Enable tracing for more information
+
+!ENTRY org.eclipse.jst.server.jetty.core 4 0 2011-10-03 03:58:29.824
+!MESSAGE The Jetty server configuration at \Servers\Jetty v8.0 Server at localhost-config is missing. Check the server for errors.
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-10-03 03:58:29.867
+!MESSAGE Failed to create library links: platform.sdk.android does not exist
+!STACK 1
+Java Model Exception: Java Model Status [platform.sdk.android does not exist]
+	at org.eclipse.jdt.internal.core.JavaElement.newNotPresentException(JavaElement.java:492)
+	at org.eclipse.jdt.internal.core.JavaModelManager.getPerProjectInfoCheckExistence(JavaModelManager.java:2163)
+	at org.eclipse.jdt.internal.core.JavaProject.getPerProjectInfo(JavaProject.java:1867)
+	at org.eclipse.jdt.internal.core.SetClasspathOperation.executeOperation(SetClasspathOperation.java:70)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:793)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3031)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:2993)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3046)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk.updateLibraryLinks(Sdk.java:1469)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk.access$13(Sdk.java:1308)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$6.run(Sdk.java:1136)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.jdt.core 4 969 2011-10-03 03:58:29.867
+!MESSAGE platform.sdk.android does not exist
+
+!ENTRY org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Task failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Publishing failed with multiple errors
+	at org.eclipse.jst.server.jetty.core.internal.PublishOperation2.throwException(PublishOperation2.java:316)
+	at org.eclipse.jst.server.jetty.core.internal.PublishOperation2.execute(PublishOperation2.java:137)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.performTasks(ServerBehaviourDelegate.java:1265)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publish(ServerBehaviourDelegate.java:930)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publish(ServerBehaviourDelegate.java:775)
+	at org.eclipse.wst.server.core.internal.Server.publishImpl(Server.java:2893)
+	at org.eclipse.wst.server.core.internal.Server$PublishJob.run(Server.java:337)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/libthrift-0.7.0-multiplex.jar. May be locked by another process.
+Contains: Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-api-1.6.2.jar. May be locked by another process.
+Contains: Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-simple-1.6.2.jar. May be locked by another process.
+Contains: Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib. May be locked by another process.
+Contains: Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF. May be locked by another process.
+!SUBENTRY 1 org.eclipse.jst.server.jetty.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Publishing failed with multiple errors
+!SUBENTRY 2 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/libthrift-0.7.0-multiplex.jar. May be locked by another process.
+!SUBENTRY 2 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-api-1.6.2.jar. May be locked by another process.
+!SUBENTRY 2 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-simple-1.6.2.jar. May be locked by another process.
+!SUBENTRY 2 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib. May be locked by another process.
+!SUBENTRY 2 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.844
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF. May be locked by another process.
+
+!ENTRY org.eclipse.jst.server.jetty.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Publishing failed with multiple errors
+!SUBENTRY 1 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/libthrift-0.7.0-multiplex.jar. May be locked by another process.
+!SUBENTRY 1 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-api-1.6.2.jar. May be locked by another process.
+!SUBENTRY 1 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib/slf4j-simple-1.6.2.jar. May be locked by another process.
+!SUBENTRY 1 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF/lib. May be locked by another process.
+!SUBENTRY 1 org.eclipse.wst.server.core 4 0 2011-10-03 03:58:30.863
+!MESSAGE Could not delete C:/Users/Florian/Desktop/PocketCampus/svn/trunk/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/platform.launcher.server/WEB-INF. May be locked by another process.
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:01:27.357
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /lib.actionbar.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.jobs 4 2 2011-10-03 04:01:27.357
+!MESSAGE An internal error occurred during: "Refreshing workspace".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /lib.actionbar.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:01:29.463
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.sdk.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.jobs 4 2 2011-10-03 04:01:29.463
+!MESSAGE An internal error occurred during: "Refreshing workspace".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /platform.sdk.android/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:01:38.542
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /android.lib.facebook/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:211)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 2 2011-10-03 04:01:38.620
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /android.lib.facebook/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:211)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 2 2011-10-03 04:01:40.352
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+java.lang.NullPointerException
+	at com.android.ide.eclipse.adt.internal.build.AaptParser.getResourceFromFullPath(AaptParser.java:700)
+	at com.android.ide.eclipse.adt.internal.build.AaptParser.checkAndMark(AaptParser.java:452)
+	at com.android.ide.eclipse.adt.internal.build.AaptParser.parseOutput(AaptParser.java:363)
+	at com.android.ide.eclipse.adt.internal.build.AaptParser.parseOutput(AaptParser.java:197)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.execAapt(PreCompilerBuilder.java:731)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.handleResources(PreCompilerBuilder.java:634)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.build(PreCompilerBuilder.java:493)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:01:50.690
+!MESSAGE Internal Error
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /android.plugin.preorderadmin/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.jobs 4 2 2011-10-03 04:01:50.697
+!MESSAGE An internal error occurred during: "Refreshing workspace".
+!STACK 0
+java.lang.IllegalArgumentException: Element not found: /android.plugin.preorderadmin/src.
+	at org.eclipse.core.internal.watson.ElementTree.elementNotFound(ElementTree.java:255)
+	at org.eclipse.core.internal.watson.ElementTree.createElement(ElementTree.java:183)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:1020)
+	at org.eclipse.core.internal.resources.Workspace.createResource(Workspace.java:973)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.createResource(RefreshLocalVisitor.java:80)
+	at org.eclipse.core.internal.localstore.RefreshLocalAliasVisitor.createResource(RefreshLocalAliasVisitor.java:38)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.synchronizeExistence(RefreshLocalVisitor.java:219)
+	at org.eclipse.core.internal.localstore.RefreshLocalVisitor.visit(RefreshLocalVisitor.java:293)
+	at org.eclipse.core.internal.localstore.UnifiedTree.accept(UnifiedTree.java:108)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refreshResource(FileSystemResourceManager.java:824)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.refresh(FileSystemResourceManager.java:808)
+	at org.eclipse.core.internal.resources.Resource.refreshLocal(Resource.java:1663)
+	at org.eclipse.core.internal.refresh.RefreshJob.runInWorkspace(RefreshJob.java:166)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 2 2011-10-03 04:01:50.727
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: The builder launch configuration could not be found.
+	at org.eclipse.core.externaltools.internal.ExternalToolsCore.newError(ExternalToolsCore.java:114)
+	at org.eclipse.core.externaltools.internal.model.ExternalToolBuilder.build(ExternalToolBuilder.java:76)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:220)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:362)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:545)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:524)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:115)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$6.run(Sdk.java:1144)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.core.externaltools 4 0 2011-10-03 04:01:50.727
+!MESSAGE The builder launch configuration could not be found.
+!SUBENTRY 1 org.eclipse.core.externaltools 4 0 2011-10-03 04:01:50.728
+!MESSAGE The builder launch configuration could not be found.
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:05:03.201
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\android.plugin.preorderadmin\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\android.plugin.preorderadmin\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 04:05:03.201
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\android.plugin.preorderadmin\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\android.plugin.preorderadmin\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:05:04.386
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\plugin.takeout.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\plugin.takeout.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 04:05:04.386
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\plugin.takeout.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeout\plugin.takeout.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:05:06.711
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeoutreceiver\plugin.takeoutreceiver.android\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeoutreceiver\plugin.takeoutreceiver.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 04:05:06.711
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeoutreceiver\plugin.takeoutreceiver.android\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\plugin\takeoutreceiver\plugin.takeoutreceiver.android\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.core.resources 4 1 2011-10-03 04:07:42.440
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android.bak\.project.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:371)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android.bak\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	... 31 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2011-10-03 04:07:42.440
+!MESSAGE File not found: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android.bak\.project.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Florian\Desktop\PocketCampus\svn\trunk\platform\launcher\platform.launcher.android.bak\.project (The system cannot find the path specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:362)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:702)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:293)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.descriptionChanged(FileSystemResourceManager.java:287)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:548)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1332)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1313)
+	at org.eclipse.core.internal.resources.Resource.deleteResource(Resource.java:871)
+	at org.eclipse.core.internal.resources.ResourceTree.deletedFolder(ResourceTree.java:146)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:339)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteProject(ResourceTree.java:387)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteProject(ResourceTree.java:837)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1944)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:331)
+	at org.eclipse.ui.actions.RefreshAction.checkLocationDeleted(RefreshAction.java:142)
+	at org.eclipse.ui.actions.RefreshAction.refreshResource(RefreshAction.java:289)
+	at org.eclipse.ui.actions.RefreshAction$3.execute(RefreshAction.java:248)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jdt.ui.actions.RefreshAction$WrappedWorkbenchRefreshAction.run(RefreshAction.java:112)
+	at org.eclipse.jdt.ui.actions.RefreshAction.performRefresh(RefreshAction.java:190)
+	at org.eclipse.jdt.ui.actions.RefreshAction.access$0(RefreshAction.java:185)
+	at org.eclipse.jdt.ui.actions.RefreshAction$1.run(RefreshAction.java:179)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:728)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1975)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:4777)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:106)
+	at org.eclipse.jdt.internal.ui.actions.WorkbenchRunnableAdapter$1.run(WorkbenchRunnableAdapter.java:121)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:10:36.105
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:10:36.106
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:10:36.107
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:10:36.108
+!MESSAGE WTF: null part?!?
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:48.681
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:48.890
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.084
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.271
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.272
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.273
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.472
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.473
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:49.669
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:55.137
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:55.623
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:55.821
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.043
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.337
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.338
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.338
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.808
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:56.809
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:57.054
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:57.928
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:57.962
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:57.995
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.027
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.060
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.061
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.062
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.094
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.095
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.127
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.225
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.259
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:58.563
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.063
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.096
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.097
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.098
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.129
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.130
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:10:59.162
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.014
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.048
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.080
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.385
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.615
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.616
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.617
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.813
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:00.814
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.313
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.412
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.445
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.478
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.511
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.544
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.577
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.578
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.579
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.580
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.820
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.821
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:01.822
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:02.320
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:02.321
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:02.353
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.109
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.607
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.640
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.708
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.709
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.710
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.711
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.732
+!MESSAGE AndroidManifest: Ignoring unknown 'category' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.733
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.735
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.758
+!MESSAGE AndroidManifest: Ignoring unknown 'action' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.759
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-10-03 04:11:05.778
+!MESSAGE AndroidManifest: Ignoring unknown 'intent-filter' XML element
+!SESSION 2011-10-03 04:16:54.657 -----------------------------------------------
+eclipse.buildId=M20110210-1200
+java.version=1.6.0_26
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=fr_CH
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.786
+!MESSAGE NLS unused message: add_script_load_bp in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.786
+!MESSAGE NLS unused message: bp_conditional in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_conditonal in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_entry_and_exit in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_entry_only in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_exit_only in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_line_number in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: bp_suspend_vm in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: breakpoint_configuration in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: connect in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: connector in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: connector_properties in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: creating_script_load_bp in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: enable_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: enter_new_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: exception_occurred_setting_bp_properties in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: hit_count_must_be_positive in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: no_description_provided in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: scripts in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: select_javascript_file in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: set_bp_hit_count in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.801
+!MESSAGE NLS unused message: suspend_target in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.817
+!MESSAGE NLS unused message: suspend_thread in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.817
+!MESSAGE NLS unused message: the_argument_0_is_not_valid in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.osgi 2 1 2011-10-03 04:17:11.817
+!MESSAGE NLS unused message: osgi.nls.warnings in: org.eclipse.wst.jsdt.debug.internal.ui.messages
+
+!ENTRY org.eclipse.jface 2 0 2011-10-03 04:17:13.330
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-10-03 04:17:13.330
+!MESSAGE A conflict occurred for ALT+SHIFT+D R:
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug,Debug RAP Application,
+		Debug RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.debug,Debug on Server,
+		Debug the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-10-03 04:17:13.330
+!MESSAGE A conflict occurred for ALT+SHIFT+X R:
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.run,Run RAP Application,
+		Run RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.run,Run on Server,
+		Run the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:17:16.128
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:17:16.128
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:17:16.128
+!MESSAGE WTF: null part?!?
+
+!ENTRY net.sourceforge.vrapper.eclipse 4 0 2011-10-03 04:17:16.128
+!MESSAGE WTF: null part?!?

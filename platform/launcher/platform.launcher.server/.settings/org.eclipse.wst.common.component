@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="platform.launcher.server">
+        <wb-resource deploy-path="/" source-path="/WebContent"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="platform.sdk.server.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/platform.sdk.server/platform.sdk.server">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="plugin.test.server.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/plugin.test.server/plugin.test.server">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="plugin.test.shared.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/plugin.test.shared/plugin.test.shared">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="platform.sdk.shared.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/platform.sdk.shared/platform.sdk.shared">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="platform.launcher.server"/>
+        <property name="java-output-path" value="/platform.launcher.server/build/classes"/>
+    </wb-module>
+</project-modules>

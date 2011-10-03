@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:id="@+id/sdk_actionbar_layout_main"
+	style="@style/PocketCampusTheme.Secondary.MainLayout">
+	
+	<com.markupartist.android.widget.ActionBar
+		android:id="@+id/sdk_actionbar_layout_actionbar"
+    	style="@style/ActionBar"
+    	/>
+	
+	<RelativeLayout
+		android:id="@+id/sdk_actionbar_layout"
+		android:layout_below="@+id/sdk_actionbar_layout_actionbar"
+		android:layout_height="fill_parent"
+		></RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<!-- Basic colors -->
+	<color name="red">#FFFF0000</color>
+	<color name="green">#FF00FF00</color>
+	<color name="blue">#FF0000FF</color>
+	
+	<!-- Custom cool colors -->
+	<color name="smoke">#4D4D4D</color>
+	
+	<!-- Redefining Android colors for consistency -->
+	<color name="black">@android:color/black</color>
+	<color name="white">@android:color/white</color>
+	<color name="transparent">@android:color/transparent</color>
+	<color name="darker_gray">@android:color/darker_gray</color>
+</resources>

@@ -1,0 +1,6 @@
+#Jetty publish data
+#Mon Oct 03 04:03:52 CEST 2011
+org.eclipse.jst.j2ee.server\:platform.sdk.shared=WEB-INF/lib/platform.sdk.shared.jar
+org.eclipse.jst.j2ee.server\:platform.sdk.server=WEB-INF/lib/platform.sdk.server.jar
+org.eclipse.jst.j2ee.server\:plugin.test.server=WEB-INF/lib/plugin.test.server.jar
+org.eclipse.jst.j2ee.server\:plugin.test.shared=WEB-INF/lib/plugin.test.shared.jar

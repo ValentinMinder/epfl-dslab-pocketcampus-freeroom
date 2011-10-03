@@ -1,0 +1,4 @@
+#Mon Oct 03 03:57:12 CEST 2011
+module-start-timeout=300000
+runtimes=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<runtimes>\r\n  <runtime id\="Jetty v8.x" location\="C\:/Program Files (x86)/Jetty" name\="Jetty v8.x" runtime-type-id\="org.eclipse.jst.server.jetty.runtime.80" timestamp\="0"/>\r\n</runtimes>\r\n
+eclipse.preferences.version=1
