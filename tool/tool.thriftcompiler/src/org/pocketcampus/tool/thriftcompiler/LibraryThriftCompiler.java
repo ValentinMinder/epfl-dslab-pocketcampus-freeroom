@@ -12,8 +12,15 @@ import java.io.InputStreamReader;
  * @author florian
  */
 public class LibraryThriftCompiler {
+	// IF THIS SCRIPT ISN'T WORKING
+	// you probably need to fix Thrift path below.
+	
+	// if you're on Linux
 	//private static final String THRIFT_PATH = "/usr/local/bin/thrift";
+	
+	// if you're on Windows
 	private static final String THRIFT_PATH = "C:/thrift/thrift-0.7.0.exe";
+	
 	private static boolean modeVerbose = false;
 
 	public static void main(String argv[]) {
