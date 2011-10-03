@@ -10,7 +10,9 @@ public class PocketCampusServer extends ServerBase {
 	protected ArrayList<Processor> getServiceProcessors() {
 		ArrayList<Processor> processors = new ArrayList<Processor>();
 		
-		// TODO add all the plugin server implementations here
+		// Add all the plugin server implementations here.
+		// The name must match the plugin name given in the plugin controller (and must be unique!)
+		// TODO create a unique idea directly in the thrift file when compiling the thrift files?
 		processors.add(new Processor(new TestService.Processor<TestServiceImpl>(new TestServiceImpl()), "test"));
 		
 		return processors;
