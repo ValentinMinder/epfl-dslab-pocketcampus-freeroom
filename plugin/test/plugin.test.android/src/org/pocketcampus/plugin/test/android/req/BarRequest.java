@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.test.android.req;
 
-import org.apache.thrift.TException;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.test.android.TestController;
 import org.pocketcampus.plugin.test.android.TestModel;
@@ -8,7 +7,7 @@ import org.pocketcampus.plugin.test.shared.TestService.Iface;
 
 public class BarRequest extends Request<TestController, Iface, Object, Integer> {
 	@Override
-	protected Integer run(Iface client, Object param) throws TException {
+	protected Integer runInBackground(Iface client, Object param) throws Exception {
 		System.out.println("run");
 		return client.getBar();
 	}
@@ -20,7 +19,7 @@ public class BarRequest extends Request<TestController, Iface, Object, Integer> 
 	}
 	
 	@Override
-	protected void onError(TestController controller, TException e) {
+	protected void onError(TestController controller, Exception e) {
 		System.out.println("onError");
 		((TestModel) controller.getModel()).notifyNetworkError();
 		e.printStackTrace();

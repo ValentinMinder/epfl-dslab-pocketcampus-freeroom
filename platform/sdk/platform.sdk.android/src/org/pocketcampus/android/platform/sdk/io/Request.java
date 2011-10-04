@@ -15,7 +15,7 @@ import android.os.AsyncTask;
  */
 public abstract class Request<ControllerType extends PluginController, ClientType, SentType, ResultType> extends AsyncTask<SentType, Integer, ResultType> {
 	GlobalContext mGlobalContext;
-	private TException mException = null;
+	private Exception mException = null;
 	private ClientType mClient;
 	private ControllerType mController;
 
@@ -39,11 +39,11 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		}
 		
 		try {
-			ResultType result = run(mClient, param);
+			ResultType result = runInBackground(mClient, param);
 			System.out.println("Received result: " + result);
 			return result;
 			
-		} catch (TException e) {
+		} catch (Exception e) {
 			// makes sure onResult is never called
 			mException = e;
 			return null;
@@ -61,9 +61,9 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		onResult(mController, result);
 	};
 	
-	protected abstract ResultType run(ClientType client, SentType param) throws TException;
+	protected abstract ResultType runInBackground(ClientType client, SentType param) throws Exception;
 	protected abstract void onResult(ControllerType controller, ResultType result);
-	protected abstract void onError(ControllerType controller, TException e);
+	protected abstract void onError(ControllerType controller, Exception e);
 }
 
 
