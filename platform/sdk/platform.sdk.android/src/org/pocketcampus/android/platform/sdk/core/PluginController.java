@@ -84,7 +84,7 @@ public abstract class PluginController extends Service {
 
 		super.onDestroy();
 	}
-
+	
 }
 
 

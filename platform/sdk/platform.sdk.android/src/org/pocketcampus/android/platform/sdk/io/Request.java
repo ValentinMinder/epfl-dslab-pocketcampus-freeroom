@@ -1,6 +1,8 @@
 package org.pocketcampus.android.platform.sdk.io;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.android.platform.sdk.core.GlobalContext;
+import org.pocketcampus.android.platform.sdk.core.PluginController;
 
 import android.os.AsyncTask;
 
@@ -11,7 +13,8 @@ import android.os.AsyncTask;
  * <li>the class of the sent object
  * <li>the class of the returned object
  */
-public abstract class Request<ControllerType, ClientType, SentType, ResultType> extends AsyncTask<SentType, Integer, ResultType> {
+public abstract class Request<ControllerType extends PluginController, ClientType, SentType, ResultType> extends AsyncTask<SentType, Integer, ResultType> {
+	GlobalContext mGlobalContext;
 	private TException mException = null;
 	private ClientType mClient;
 	private ControllerType mController;
@@ -19,6 +22,10 @@ public abstract class Request<ControllerType, ClientType, SentType, ResultType> 
 	public void start(ControllerType controller, ClientType client, SentType... params) {
 		mController = controller;
 		mClient = client;
+		
+		// increments the global request operation counter
+		mGlobalContext = (GlobalContext) mController.getApplicationContext();
+		mGlobalContext.incrementRequestCounter();
 		
 		execute(params);
 	}
@@ -44,6 +51,8 @@ public abstract class Request<ControllerType, ClientType, SentType, ResultType> 
 	}
 
 	protected final void onPostExecute(ResultType result) {
+		mGlobalContext.decrementRequestCounter();
+		
 		if(mException != null) {
 			onError(mController, mException);
 			return;

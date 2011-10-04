@@ -24,6 +24,9 @@ public class GlobalContext extends Application {
 	private HashMap<String, PluginInfo> mPluginInfoMap;
 	private HashMap<String, TServiceClient> mPluginClientMap;
 
+	private int mRequestCounter = 0;
+	private RequestActivityListener mRequestActivityListener;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -159,6 +162,30 @@ public class GlobalContext extends Application {
 		Intent intent = new Intent(ctx.getApplicationContext(), pluginClass);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ctx.startActivity(intent);
+	}
+
+	public void incrementRequestCounter() {
+		if(mRequestCounter == 0) {
+			mRequestActivityListener.activityStarted();
+		}
+		
+		mRequestCounter++;
+	}
+
+	public void decrementRequestCounter() {
+		mRequestCounter--;
+		
+		if(mRequestCounter == 0) {
+			mRequestActivityListener.activityStopped();
+		}
+		
+		if(mRequestCounter < 0) {
+			throw new RuntimeException("Negative number of queries running?!");
+		}
+	}
+
+	public void setRequestActivityListener(RequestActivityListener requestActivityListener) {
+		mRequestActivityListener = requestActivityListener;
 	}
 
 }

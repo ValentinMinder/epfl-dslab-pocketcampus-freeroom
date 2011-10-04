@@ -20,8 +20,8 @@ public class Config {
 	public final static int LOG_LEVEL = Log.VERBOSE;
 
 	/** Time before giving up HTTP connection (ms). */
-	public static final int HTTP_CONNECT_TIMEOUT = 5000;
+	public static final int HTTP_CONNECT_TIMEOUT = 3000;
 
 	/** Time before giving up HTTP read operation (ms). */
-	public static final int HTTP_READ_TIMEOUT = 5000;
+	public static final int HTTP_READ_TIMEOUT = 3000;
 }
