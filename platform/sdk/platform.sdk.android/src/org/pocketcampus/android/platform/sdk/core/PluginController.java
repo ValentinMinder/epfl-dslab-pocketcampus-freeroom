@@ -23,13 +23,17 @@ public abstract class PluginController extends Service {
 	/** Socket connection for this plugin. */
 	protected TSocket mSocket;
 	
-	protected TServiceClient getHttpClient(TServiceClientFactory<? extends TServiceClient> clientFactory, String pluginName) {
+	protected TServiceClient getClient(TServiceClientFactory<? extends TServiceClient> clientFactory, String pluginName) {
 		TServiceClient client = null;
 		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT + "/" + pluginName;
 		
 		try {
 			HttpClient httpInitialClient = new DefaultHttpClient();
+			
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
+			httpClient.setConnectTimeout(Config.HTTP_CONNECT_TIMEOUT);
+			httpClient.setReadTimeout(Config.HTTP_READ_TIMEOUT);
+			
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);
 			

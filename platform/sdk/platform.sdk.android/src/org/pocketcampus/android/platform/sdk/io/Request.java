@@ -12,13 +12,14 @@ import android.os.AsyncTask;
  * <li>the class of the returned object
  */
 public abstract class Request<ControllerType, ClientType, SentType, ResultType> extends AsyncTask<SentType, Integer, ResultType> {
-	private boolean errorOccured = false;
+	private TException mException = null;
 	private ClientType mClient;
 	private ControllerType mController;
 
 	public void start(ControllerType controller, ClientType client, SentType... params) {
 		mController = controller;
 		mClient = client;
+		
 		execute(params);
 	}
 	
@@ -36,17 +37,15 @@ public abstract class Request<ControllerType, ClientType, SentType, ResultType> 
 			return result;
 			
 		} catch (TException e) {
-			onError(e);
-			
 			// makes sure onResult is never called
-			errorOccured = true;
-			
+			mException = e;
 			return null;
 		}
 	}
 
 	protected final void onPostExecute(ResultType result) {
-		if(errorOccured) {
+		if(mException != null) {
+			onError(mController, mException);
 			return;
 		}
 		
@@ -55,7 +54,7 @@ public abstract class Request<ControllerType, ClientType, SentType, ResultType> 
 	
 	protected abstract ResultType run(ClientType client, SentType param) throws TException;
 	protected abstract void onResult(ControllerType controller, ResultType result);
-	protected abstract void onError(TException e);
+	protected abstract void onError(ControllerType controller, TException e);
 }
 
 

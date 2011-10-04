@@ -15,7 +15,7 @@ import android.content.pm.ResolveInfo;
 
 /**
  * Core PocketCampus class, handles the plugin discovery and initialization. 
- * This class extends Application and is therefore available in every <code>Activity</code>, using <code>getApplication()</code>. 
+ * This class extends Application and is therefore available in every <code>Activity</code> using <code>getApplication()</code>. 
  * 
  * @author Florian
  */

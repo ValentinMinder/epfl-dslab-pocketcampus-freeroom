@@ -25,7 +25,7 @@ public class TestController extends PluginController implements ITestController 
 		
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getHttpClient(new Client.Factory(), mPluginName);
+		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
 	/**

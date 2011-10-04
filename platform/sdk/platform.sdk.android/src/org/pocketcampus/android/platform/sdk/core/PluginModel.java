@@ -29,6 +29,10 @@ public abstract class PluginModel {
 	
 	abstract protected Class<? extends IView> getViewInterface();
 	
+	public void notifyNetworkError() {
+		getListeners().networkErrorHappened();
+	}
+	
 	/**
 	 * @param viewClass Class of the views that will be listening to this model.
 	 */

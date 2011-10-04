@@ -7,7 +7,6 @@ import org.pocketcampus.plugin.test.android.iface.ITestModel;
 import org.pocketcampus.plugin.test.android.iface.ITestView;
 
 import android.app.Service;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,14 +53,17 @@ public class TestOtherView extends PluginView implements ITestView {
 
 	@Override
 	public void fooUpdated() {
-		Context context = getApplicationContext();
 		CharSequence text = "foo changed to " + mModel.getFoo();
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(context, text, duration);
+		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
 	@Override
 	public void barUpdated() {}
+
+	@Override
+	public void networkErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		toast.show();
+	}
 }

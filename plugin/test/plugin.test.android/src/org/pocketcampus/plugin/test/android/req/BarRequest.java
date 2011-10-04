@@ -20,8 +20,9 @@ public class BarRequest extends Request<TestController, Iface, Object, Integer> 
 	}
 	
 	@Override
-	protected void onError(TException e) {
+	protected void onError(TestController controller, TException e) {
 		System.out.println("onError");
+		((TestModel) controller.getModel()).notifyNetworkError();
 		e.printStackTrace();
 	}
 }
