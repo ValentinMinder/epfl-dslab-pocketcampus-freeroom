@@ -42,6 +42,10 @@ public class LibraryThriftCompiler {
 		boolean outputOccured = false;
 		String verbose = modeVerbose ?"-v ":"";
 		
+		if(file.getName().equals(".svn")){
+			return false;
+		}
+		
 		System.out.print("Compiling " + file + "... ");
 		String pluginName = extractPluginName(file.getName());
 		
