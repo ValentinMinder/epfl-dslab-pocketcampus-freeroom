@@ -12,8 +12,8 @@ public class LocalConfig {
 	// you probably need to fix Thrift path below.
 	
 	// if you're on Linux
-	//private static final String THRIFT_PATH = "/usr/local/bin/thrift";
+	//public static final String THRIFT_PATH = "/usr/local/bin/thrift";
 	
 	// if you're on Windows
-	public static final String THRIFT_PATH = "C:/thrift/thrift-0.7.0.exe";
+	public static final String THRIFT_PATH = "/Users/oriane/Downloads/thrift-0.7.0/compiler/cpp/thrift";
 }

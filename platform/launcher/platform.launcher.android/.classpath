@@ -12,5 +12,6 @@
 	<classpathentry kind="src" path="plugin.test.android_src"/>
 	<classpathentry kind="src" path="platform.sdk.android_src"/>
 	<classpathentry kind="src" path="lib.actionbar.android_src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

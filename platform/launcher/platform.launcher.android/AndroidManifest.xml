@@ -22,6 +22,17 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name="org.pocketcampus.plugin.food.android.FoodMainView"
+			android:label="Food">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
+			</intent-filter>
+		</activity>
+		<service android:name="org.pocketcampus.plugin.food.android.FoodController"
+			xmlns:android="http://schemas.android.com/apk/res/android"></service>
+
 		<activity android:name="org.pocketcampus.plugin.test.android.TestMainView"
 			android:label="Test">
 			<intent-filter>
