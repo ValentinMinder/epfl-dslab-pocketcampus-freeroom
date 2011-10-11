@@ -24,6 +24,13 @@ enum RatingValue {
 	STAR_5_0;
 }
 
+enum SubmitStatus {
+	ALREADY_VOTED;
+	VALID;
+	TOOEARLY;
+	ERROR;
+}
+
 struct Rating {
 	1: required RatingValue value;
 	2: required int nbVotes;
