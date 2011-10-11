@@ -5,7 +5,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 
-public class FoodModel extends PluginModel implements IFoodModel{
+public class FoodModel extends PluginModel implements IFoodModel {
 
 	@Override
 	protected Class<? extends IView> getViewInterface() {
