@@ -22,6 +22,7 @@
 			</intent-filter>
 		</activity>
 
+		<!-- Food Plugin -->
 		<activity android:name="org.pocketcampus.plugin.food.android.FoodMainView"
 			android:label="Food">
 			<intent-filter>
@@ -33,6 +34,19 @@
 		<service android:name="org.pocketcampus.plugin.food.android.FoodController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 
+		<!-- News Plugin -->
+		<activity android:name="org.pocketcampus.plugin.news.android.NewsMainView"
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:label="News">
+			<intent-filter>
+				<category android:name="android.intent.category.DEFAULT" />
+				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
+			</intent-filter>
+		</activity>
+		<service android:name="org.pocketcampus.plugin.news.android.NewsController"
+			xmlns:android="http://schemas.android.com/apk/res/android"></service>
+		
+		<!-- Test Plugin -->
 		<activity android:name="org.pocketcampus.plugin.test.android.TestMainView"
 			android:label="Test">
 			<intent-filter>
@@ -41,6 +55,7 @@
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
+		
 		<activity android:name="org.pocketcampus.plugin.test.android.TestOtherView"></activity>
 		<service android:name="org.pocketcampus.plugin.test.android.TestController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
