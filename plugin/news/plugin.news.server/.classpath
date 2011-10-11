@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.shared"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.0-alpha1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.0_Beta_4.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-ajp-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-annotations-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-client-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-continuation-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-deploy-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-http-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-io-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-jmx-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-jndi-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-plus-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-policy-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-rewrite-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-security-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-server-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-servlet-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-servlets-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-util-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-webapp-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-websocket-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-xml-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
