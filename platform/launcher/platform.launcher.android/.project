@@ -72,6 +72,11 @@
 			<locationURI>_android_plugin_food_android_38e25bba/src</locationURI>
 		</link>
 		<link>
+			<name>plugin.news.android_src</name>
+			<type>2</type>
+			<locationURI>_android_plugin_news_android_f7ce952f/src</locationURI>
+		</link>
+		<link>
 			<name>plugin.test.android_src</name>
 			<type>2</type>
 			<locationURI>_android_plugin_test_android_e9171fee/src</locationURI>

@@ -39,5 +39,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
