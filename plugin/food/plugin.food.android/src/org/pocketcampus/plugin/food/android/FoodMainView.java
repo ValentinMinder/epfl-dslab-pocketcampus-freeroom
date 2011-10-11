@@ -7,6 +7,9 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.Toast;
 
 public class FoodMainView extends PluginView implements IFoodView {
 	private FoodController mController;
@@ -59,7 +62,36 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 	@Override
 	public void networkErrorHappened() {
-		// TODO Auto-generated method stub
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
+				Toast.LENGTH_SHORT);
+		toast.show();
+	}
 
+	/**
+	 * Main Food Options menu contains access to Sandwiches, Suggestions and
+	 * Settings
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.food_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.food_by_resto:
+			// mController.dosomething;
+			break;
+
+		case R.id.food_by_sandwiches:
+			// mController.dosomething;
+			break;
+		case R.id.food_by_suggestions:
+			// mController.dosomething;
+		}
+
+		return true;
 	}
 }

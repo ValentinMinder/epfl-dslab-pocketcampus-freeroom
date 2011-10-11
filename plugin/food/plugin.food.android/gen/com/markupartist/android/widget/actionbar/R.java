@@ -64,43 +64,50 @@ containing a value of this type.
         public static final int actionbar_btn=0x7f020002;
         public static final int actionbar_btn_normal=0x7f020003;
         public static final int actionbar_btn_pressed=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int sdk_list_smallarrow=0x7f020006;
-        public static final int sdk_missing_icon=0x7f020007;
+        public static final int food_opt_icon_ratings=0x7f020005;
+        public static final int food_opt_icon_resto=0x7f020006;
+        public static final int food_opt_icon_sandwich=0x7f020007;
+        public static final int food_opt_icon_suggestions=0x7f020008;
+        public static final int icon=0x7f020009;
+        public static final int sdk_list_smallarrow=0x7f02000a;
+        public static final int sdk_missing_icon=0x7f02000b;
     }
     public static final class id {
-        public static final int actionbar_actions=0x7f090006;
-        public static final int actionbar_home=0x7f090001;
-        public static final int actionbar_home_bg=0x7f090003;
-        public static final int actionbar_home_btn=0x7f090004;
-        public static final int actionbar_home_is_back=0x7f090005;
-        public static final int actionbar_home_logo=0x7f090002;
-        public static final int actionbar_item=0x7f090009;
-        public static final int actionbar_progress=0x7f090007;
-        public static final int actionbar_title=0x7f090008;
-        public static final int content=0x7f09001b;
-        public static final int list_header_title=0x7f090011;
-        public static final int message=0x7f09001c;
-        public static final int negativeButton=0x7f09001f;
-        public static final int neutralButton=0x7f09001e;
-        public static final int positiveButton=0x7f09001d;
-        public static final int screen=0x7f090000;
-        public static final int sdk_actionbar_layout=0x7f09000c;
-        public static final int sdk_actionbar_layout_actionbar=0x7f09000b;
-        public static final int sdk_actionbar_layout_main=0x7f09000a;
-        public static final int sdk_bottombar_layout_bottombar=0x7f09000e;
-        public static final int sdk_bottombar_layout_inner=0x7f09000d;
-        public static final int sdk_popup_buttons=0x7f090016;
-        public static final int sdk_popup_content=0x7f090015;
-        public static final int sdk_popup_details=0x7f090014;
-        public static final int sdk_popup_main=0x7f090012;
-        public static final int sdk_popup_title=0x7f090013;
-        public static final int standard_layout_main=0x7f090017;
-        public static final int standard_layout_msg=0x7f090018;
-        public static final int title=0x7f09001a;
-        public static final int title_layout=0x7f090019;
-        public static final int travel_summary_changes=0x7f090010;
-        public static final int travel_summary_time=0x7f09000f;
+        public static final int actionbar_actions=0x7f0a0006;
+        public static final int actionbar_home=0x7f0a0001;
+        public static final int actionbar_home_bg=0x7f0a0003;
+        public static final int actionbar_home_btn=0x7f0a0004;
+        public static final int actionbar_home_is_back=0x7f0a0005;
+        public static final int actionbar_home_logo=0x7f0a0002;
+        public static final int actionbar_item=0x7f0a0009;
+        public static final int actionbar_progress=0x7f0a0007;
+        public static final int actionbar_title=0x7f0a0008;
+        public static final int content=0x7f0a001b;
+        public static final int food_by_resto=0x7f0a0020;
+        public static final int food_by_sandwiches=0x7f0a0021;
+        public static final int food_by_suggestions=0x7f0a0022;
+        public static final int list_header_title=0x7f0a0011;
+        public static final int message=0x7f0a001c;
+        public static final int negativeButton=0x7f0a001f;
+        public static final int neutralButton=0x7f0a001e;
+        public static final int positiveButton=0x7f0a001d;
+        public static final int screen=0x7f0a0000;
+        public static final int sdk_actionbar_layout=0x7f0a000c;
+        public static final int sdk_actionbar_layout_actionbar=0x7f0a000b;
+        public static final int sdk_actionbar_layout_main=0x7f0a000a;
+        public static final int sdk_bottombar_layout_bottombar=0x7f0a000e;
+        public static final int sdk_bottombar_layout_inner=0x7f0a000d;
+        public static final int sdk_popup_buttons=0x7f0a0016;
+        public static final int sdk_popup_content=0x7f0a0015;
+        public static final int sdk_popup_details=0x7f0a0014;
+        public static final int sdk_popup_main=0x7f0a0012;
+        public static final int sdk_popup_title=0x7f0a0013;
+        public static final int standard_layout_main=0x7f0a0017;
+        public static final int standard_layout_msg=0x7f0a0018;
+        public static final int title=0x7f0a001a;
+        public static final int title_layout=0x7f0a0019;
+        public static final int travel_summary_changes=0x7f0a0010;
+        public static final int travel_summary_time=0x7f0a000f;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
@@ -113,6 +120,9 @@ containing a value of this type.
         public static final int sdk_popup_layout=0x7f030007;
         public static final int sdk_standard_layout=0x7f030008;
         public static final int sdk_styled_dialog=0x7f030009;
+    }
+    public static final class menu {
+        public static final int food_main=0x7f090000;
     }
     public static final class string {
         public static final int actionbar_activity_not_found=0x7f070000;
