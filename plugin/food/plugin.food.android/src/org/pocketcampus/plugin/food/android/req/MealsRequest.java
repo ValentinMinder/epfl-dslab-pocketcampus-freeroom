@@ -6,19 +6,20 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.android.FoodModel;
 
 public class MealsRequest extends Request<FoodController, Iface, Object, List<Meal>> {
 
 	@Override
 	protected List<Meal> runInBackground(Iface client, Object param)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Gettings meals");
+		return client.getMeals();
 	}
 
 	@Override
 	protected void onResult(FoodController controller, List<Meal> result) {
-		// TODO Auto-generated method stub
+		System.out.println("onResult");
 		
 	}
 
