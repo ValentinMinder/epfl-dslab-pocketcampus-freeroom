@@ -58,5 +58,5 @@ service FoodService {
 	list<Sandwich> getSandwiches();
 	Rating getRating(1: Meal meal);
 	map<int, Rating> getRatings();
-	void setRating(1: Rating rating);
+	SubmitStatus setRating(1: Rating rating);
 }

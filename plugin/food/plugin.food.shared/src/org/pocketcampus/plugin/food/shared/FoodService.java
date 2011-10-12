@@ -28,11 +28,13 @@ public class FoodService {
 
     public List<Restaurant> getRestaurants() throws org.apache.thrift.TException;
 
+    public List<Sandwich> getSandwiches() throws org.apache.thrift.TException;
+
     public Rating getRating(Meal meal) throws org.apache.thrift.TException;
 
     public Map<Integer,Rating> getRatings() throws org.apache.thrift.TException;
 
-    public void setRating(Rating rating) throws org.apache.thrift.TException;
+    public SubmitStatus setRating(Rating rating) throws org.apache.thrift.TException;
 
   }
 
@@ -41,6 +43,8 @@ public class FoodService {
     public void getMeals(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getMeals_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getRestaurants(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRestaurants_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getSandwiches(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSandwiches_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getRating(Meal meal, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRating_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -114,6 +118,28 @@ public class FoodService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRestaurants failed: unknown result");
     }
 
+    public List<Sandwich> getSandwiches() throws org.apache.thrift.TException
+    {
+      send_getSandwiches();
+      return recv_getSandwiches();
+    }
+
+    public void send_getSandwiches() throws org.apache.thrift.TException
+    {
+      getSandwiches_args args = new getSandwiches_args();
+      sendBase("getSandwiches", args);
+    }
+
+    public List<Sandwich> recv_getSandwiches() throws org.apache.thrift.TException
+    {
+      getSandwiches_result result = new getSandwiches_result();
+      receiveBase(result, "getSandwiches");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSandwiches failed: unknown result");
+    }
+
     public Rating getRating(Meal meal) throws org.apache.thrift.TException
     {
       send_getRating(meal);
@@ -159,10 +185,10 @@ public class FoodService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRatings failed: unknown result");
     }
 
-    public void setRating(Rating rating) throws org.apache.thrift.TException
+    public SubmitStatus setRating(Rating rating) throws org.apache.thrift.TException
     {
       send_setRating(rating);
-      recv_setRating();
+      return recv_setRating();
     }
 
     public void send_setRating(Rating rating) throws org.apache.thrift.TException
@@ -172,11 +198,14 @@ public class FoodService {
       sendBase("setRating", args);
     }
 
-    public void recv_setRating() throws org.apache.thrift.TException
+    public SubmitStatus recv_setRating() throws org.apache.thrift.TException
     {
       setRating_result result = new setRating_result();
       receiveBase(result, "setRating");
-      return;
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "setRating failed: unknown result");
     }
 
   }
@@ -252,6 +281,35 @@ public class FoodService {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getRestaurants();
+      }
+    }
+
+    public void getSandwiches(org.apache.thrift.async.AsyncMethodCallback<getSandwiches_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getSandwiches_call method_call = new getSandwiches_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getSandwiches_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getSandwiches_call(org.apache.thrift.async.AsyncMethodCallback<getSandwiches_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getSandwiches", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getSandwiches_args args = new getSandwiches_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Sandwich> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getSandwiches();
       }
     }
 
@@ -338,13 +396,13 @@ public class FoodService {
         prot.writeMessageEnd();
       }
 
-      public void getResult() throws org.apache.thrift.TException {
+      public SubmitStatus getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_setRating();
+        return (new Client(prot)).recv_setRating();
       }
     }
 
@@ -363,6 +421,7 @@ public class FoodService {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getMeals", new getMeals());
       processMap.put("getRestaurants", new getRestaurants());
+      processMap.put("getSandwiches", new getSandwiches());
       processMap.put("getRating", new getRating());
       processMap.put("getRatings", new getRatings());
       processMap.put("setRating", new setRating());
@@ -397,6 +456,22 @@ public class FoodService {
       protected getRestaurants_result getResult(I iface, getRestaurants_args args) throws org.apache.thrift.TException {
         getRestaurants_result result = new getRestaurants_result();
         result.success = iface.getRestaurants();
+        return result;
+      }
+    }
+
+    private static class getSandwiches<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getSandwiches_args> {
+      public getSandwiches() {
+        super("getSandwiches");
+      }
+
+      protected getSandwiches_args getEmptyArgsInstance() {
+        return new getSandwiches_args();
+      }
+
+      protected getSandwiches_result getResult(I iface, getSandwiches_args args) throws org.apache.thrift.TException {
+        getSandwiches_result result = new getSandwiches_result();
+        result.success = iface.getSandwiches();
         return result;
       }
     }
@@ -444,7 +519,7 @@ public class FoodService {
 
       protected setRating_result getResult(I iface, setRating_args args) throws org.apache.thrift.TException {
         setRating_result result = new setRating_result();
-        iface.setRating(args.rating);
+        result.success = iface.setRating(args.rating);
         return result;
       }
     }
@@ -1488,6 +1563,542 @@ public class FoodService {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder("getRestaurants_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getSandwiches_args implements org.apache.thrift.TBase<getSandwiches_args, getSandwiches_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSandwiches_args");
+
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSandwiches_args.class, metaDataMap);
+    }
+
+    public getSandwiches_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getSandwiches_args(getSandwiches_args other) {
+    }
+
+    public getSandwiches_args deepCopy() {
+      return new getSandwiches_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getSandwiches_args)
+        return this.equals((getSandwiches_args)that);
+      return false;
+    }
+
+    public boolean equals(getSandwiches_args that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getSandwiches_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getSandwiches_args typedOther = (getSandwiches_args)other;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getSandwiches_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getSandwiches_result implements org.apache.thrift.TBase<getSandwiches_result, getSandwiches_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSandwiches_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    public List<Sandwich> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Sandwich.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSandwiches_result.class, metaDataMap);
+    }
+
+    public getSandwiches_result() {
+    }
+
+    public getSandwiches_result(
+      List<Sandwich> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getSandwiches_result(getSandwiches_result other) {
+      if (other.isSetSuccess()) {
+        List<Sandwich> __this__success = new ArrayList<Sandwich>();
+        for (Sandwich other_element : other.success) {
+          __this__success.add(new Sandwich(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public getSandwiches_result deepCopy() {
+      return new getSandwiches_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Sandwich> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Sandwich elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Sandwich>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Sandwich> getSuccess() {
+      return this.success;
+    }
+
+    public getSandwiches_result setSuccess(List<Sandwich> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Sandwich>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getSandwiches_result)
+        return this.equals((getSandwiches_result)that);
+      return false;
+    }
+
+    public boolean equals(getSandwiches_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getSandwiches_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getSandwiches_result typedOther = (getSandwiches_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                this.success = new ArrayList<Sandwich>(_list8.size);
+                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                {
+                  Sandwich _elem10; // required
+                  _elem10 = new Sandwich();
+                  _elem10.read(iprot);
+                  this.success.add(_elem10);
+                }
+                iprot.readListEnd();
+              }
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
+          for (Sandwich _iter11 : this.success)
+          {
+            _iter11.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getSandwiches_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -2576,16 +3187,16 @@ public class FoodService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.MAP) {
               {
-                org.apache.thrift.protocol.TMap _map8 = iprot.readMapBegin();
-                this.success = new HashMap<Integer,Rating>(2*_map8.size);
-                for (int _i9 = 0; _i9 < _map8.size; ++_i9)
+                org.apache.thrift.protocol.TMap _map12 = iprot.readMapBegin();
+                this.success = new HashMap<Integer,Rating>(2*_map12.size);
+                for (int _i13 = 0; _i13 < _map12.size; ++_i13)
                 {
-                  int _key10; // required
-                  Rating _val11; // required
-                  _key10 = iprot.readI32();
-                  _val11 = new Rating();
-                  _val11.read(iprot);
-                  this.success.put(_key10, _val11);
+                  int _key14; // required
+                  Rating _val15; // required
+                  _key14 = iprot.readI32();
+                  _val15 = new Rating();
+                  _val15.read(iprot);
+                  this.success.put(_key14, _val15);
                 }
                 iprot.readMapEnd();
               }
@@ -2611,10 +3222,10 @@ public class FoodService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Map.Entry<Integer, Rating> _iter12 : this.success.entrySet())
+          for (Map.Entry<Integer, Rating> _iter16 : this.success.entrySet())
           {
-            oprot.writeI32(_iter12.getKey());
-            _iter12.getValue().write(oprot);
+            oprot.writeI32(_iter16.getKey());
+            _iter16.getValue().write(oprot);
           }
           oprot.writeMapEnd();
         }
@@ -2963,11 +3574,21 @@ public class FoodService {
   public static class setRating_result implements org.apache.thrift.TBase<setRating_result, setRating_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("setRating_result");
 
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
 
+    /**
+     * 
+     * @see SubmitStatus
+     */
+    public SubmitStatus success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      /**
+       * 
+       * @see SubmitStatus
+       */
+      SUCCESS((short)0, "success");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2982,6 +3603,8 @@ public class FoodService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
           default:
             return null;
         }
@@ -3020,9 +3643,14 @@ public class FoodService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SubmitStatus.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(setRating_result.class, metaDataMap);
     }
@@ -3030,10 +3658,20 @@ public class FoodService {
     public setRating_result() {
     }
 
+    public setRating_result(
+      SubmitStatus success)
+    {
+      this();
+      this.success = success;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public setRating_result(setRating_result other) {
+      if (other.isSetSuccess()) {
+        this.success = other.success;
+      }
     }
 
     public setRating_result deepCopy() {
@@ -3042,15 +3680,59 @@ public class FoodService {
 
     @Override
     public void clear() {
+      this.success = null;
+    }
+
+    /**
+     * 
+     * @see SubmitStatus
+     */
+    public SubmitStatus getSuccess() {
+      return this.success;
+    }
+
+    /**
+     * 
+     * @see SubmitStatus
+     */
+    public setRating_result setSuccess(SubmitStatus success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((SubmitStatus)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
       }
       throw new IllegalStateException();
     }
@@ -3062,6 +3744,8 @@ public class FoodService {
       }
 
       switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
       }
       throw new IllegalStateException();
     }
@@ -3079,6 +3763,15 @@ public class FoodService {
       if (that == null)
         return false;
 
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
       return true;
     }
 
@@ -3095,6 +3788,16 @@ public class FoodService {
       int lastComparison = 0;
       setRating_result typedOther = (setRating_result)other;
 
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -3112,6 +3815,13 @@ public class FoodService {
           break;
         }
         switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.I32) {
+              this.success = SubmitStatus.findByValue(iprot.readI32());
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -3126,6 +3836,11 @@ public class FoodService {
     public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
       oprot.writeStructBegin(STRUCT_DESC);
 
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        oprot.writeI32(this.success.getValue());
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -3135,6 +3850,13 @@ public class FoodService {
       StringBuilder sb = new StringBuilder("setRating_result(");
       boolean first = true;
 
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
