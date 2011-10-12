@@ -1,9 +1,13 @@
 package org.pocketcampus.plugin.food.android;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
+import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
+import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
 
@@ -30,6 +34,16 @@ public class FoodController extends PluginController implements IFoodController{
 	@Override
 	public PluginModel getModel() {
 		return mModel;
+	}
+
+	@Override
+	public List<Restaurant> getRestaurantsList() {
+		return mModel.getRestaurantsList();
+	}
+
+	@Override
+	public List<MealTag> getMealTags() {
+		return mModel.getMealTags();
 	}
 		
 }

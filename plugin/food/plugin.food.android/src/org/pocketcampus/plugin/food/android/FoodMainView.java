@@ -6,6 +6,7 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,7 +90,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 			// mController.dosomething;
 			break;
 		case R.id.food_by_suggestions:
-			// mController.dosomething;
+			startActivity(new Intent(this, FoodSuggestionsView.class));
+			break;
 		}
 
 		return true;

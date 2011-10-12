@@ -31,6 +31,7 @@
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
+		<activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView"></activity>
 		<service android:name="org.pocketcampus.plugin.food.android.FoodController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 
