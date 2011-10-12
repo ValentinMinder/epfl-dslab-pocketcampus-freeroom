@@ -55,6 +55,7 @@ struct Sandwich {
 service FoodService {
 	list<Meal> getMeals();
 	list<Restaurant> getRestaurants();
+	list<Sandwich> getSandwiches();
 	Rating getRating(1: Meal meal);
 	map<int, Rating> getRatings();
 	void setRating(1: Rating rating);
