@@ -5,9 +5,9 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
-import org.pocketcampus.plugin.camipro.shared.FoodService.Iface;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
+import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 
 public class CamiproController extends PluginController implements ICamiproController{
 

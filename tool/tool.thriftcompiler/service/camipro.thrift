@@ -19,7 +19,7 @@ struct Transaction {
 	4: required double amount;
 }
 
-service FoodService {
+service CamiproService {
 	double getBalance();
 	list<Transaction> getTransactions();
 	EbankingBean getEbankingBean();

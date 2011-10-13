@@ -54,5 +54,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.camipro.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.camipro.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.camipro.android"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
