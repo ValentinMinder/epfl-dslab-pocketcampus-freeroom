@@ -41,5 +41,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.directory.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.directory.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
