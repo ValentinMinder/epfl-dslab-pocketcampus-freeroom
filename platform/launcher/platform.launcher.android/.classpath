@@ -17,9 +17,9 @@
 	<classpathentry kind="src" path="plugin.takeoutreceiver.android_src"/>
 	<classpathentry kind="src" path="plugin.transport.android_src"/>
 	<classpathentry kind="src" path="platform.sdk.android_src"/>
-	<classpathentry kind="src" path="lib.actionbar.android_src"/>
 	<classpathentry kind="src" path="plugin.food.android_src"/>
 	<classpathentry kind="src" path="plugin.news.android_src"/>
 	<classpathentry kind="src" path="plugin.directory.android_src"/>
+	<classpathentry kind="src" path="lib.actionbar.android_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
