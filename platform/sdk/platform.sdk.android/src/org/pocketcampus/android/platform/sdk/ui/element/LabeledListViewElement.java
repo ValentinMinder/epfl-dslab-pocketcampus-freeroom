@@ -9,11 +9,24 @@ import android.widget.ListView;
 
 /**
  * Labeled list that displays a list of Item using the default style.
- * (Labeled means that it gets the text of its element from a <code>Labeler</code>.)
+ * Labeled means that it gets the text of its element from a <code>Labeler</code>.
  * @author Florian
  *
  */
 public class LabeledListViewElement extends ListView implements Element {
+	
+	private ElementDimension mDimension = ElementDimension.NORMAL;
+
+	public LabeledListViewElement(Context context) {
+		super(context);
+	}
+	
+	/**
+	 * Shortcut constructor that creates the <code>LabeledArrayAdapter</code> itself.
+	 * @param context
+	 * @param items
+	 * @param labeler
+	 */
 	public LabeledListViewElement(Context context, List<? extends Object> items, Labeler<? extends Object> labeler) {
 		super(context);
 		
@@ -21,11 +34,12 @@ public class LabeledListViewElement extends ListView implements Element {
 		setLayoutParams(params);
 		
 		LabeledArrayAdapter adapter = new LabeledArrayAdapter(context, items, labeler);
+		adapter.setDimension(mDimension);
 		setAdapter(adapter);
 	}
 
-	public LabeledListViewElement(Context context) {
-		super(context);
+	public void setDimension(ElementDimension dimension) {
+		mDimension = dimension;
 	}
 	
 }

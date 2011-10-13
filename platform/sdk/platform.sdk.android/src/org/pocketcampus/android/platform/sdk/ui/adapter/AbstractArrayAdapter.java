@@ -3,25 +3,27 @@ package org.pocketcampus.android.platform.sdk.ui.adapter;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
+/**
+ * TODO make customizable
+ * @author Florian
+ */
 public abstract class AbstractArrayAdapter extends ArrayAdapter<Object> {
-	// TODO make customizable
-	private static int mLayoutResourceId = R.layout.sdk_list_entry;
-	private static int mTextViewResourceId = R.id.travel_summary_time;
+	protected static int mLayoutResourceId = R.layout.sdk_list_entry;
+	protected static int mTextViewResourceId = R.id.sdk_list_entry_text;
 
+	private ElementDimension mDimension = ElementDimension.NORMAL;
+	
 	public AbstractArrayAdapter(Context context, List<? extends Object> items) {
 		super(context, mLayoutResourceId, mTextViewResourceId, items.toArray());
 	}
 	
-	protected int getLayoutResourceId() {
-		return mLayoutResourceId;
+	public void setDimension(ElementDimension dimension) {
+		mDimension = dimension;
 	}
 	
-	protected int getTextViewResourceId() {
-		return mTextViewResourceId;
-	}
-
 }
