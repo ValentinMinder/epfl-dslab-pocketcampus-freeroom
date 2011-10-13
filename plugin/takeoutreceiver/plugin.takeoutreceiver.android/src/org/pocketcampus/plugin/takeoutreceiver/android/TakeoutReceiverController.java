@@ -60,6 +60,7 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 	public void receivedUpdate(String newOrder) {
 		System.out.println("Update!");
 		fireNotification();
+		loadPendingOrders();
 	}
 
 	public void fireNotification() {

@@ -158,12 +158,12 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 					descString += "<br>" + item.comments;
 				}
 				
-				//descString += "<br>";
+				descString += "<br>";
 				
 				
 			}
 			
-			//descString = removeLastChars(descString, 4);
+			descString = removeLastChars(descString, 4);
 			descString += "<br><br><center><b>Total: " + order.getPrice() +  " francs</b></center>";
 		}
 		
