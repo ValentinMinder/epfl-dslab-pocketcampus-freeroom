@@ -82,9 +82,19 @@
 			<locationURI>_android_plugin_news_android_f7ce952f/src</locationURI>
 		</link>
 		<link>
+			<name>plugin.takeoutreceiver.android_src</name>
+			<type>2</type>
+			<locationURI>_android_plugin_takeoutreceiver_android_7ed8ef1c/src</locationURI>
+		</link>
+		<link>
 			<name>plugin.test.android_src</name>
 			<type>2</type>
 			<locationURI>_android_plugin_test_android_e9171fee/src</locationURI>
+		</link>
+		<link>
+			<name>plugin.transport.android_src</name>
+			<type>2</type>
+			<locationURI>_android_plugin_transport_android_6701ceaf/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
