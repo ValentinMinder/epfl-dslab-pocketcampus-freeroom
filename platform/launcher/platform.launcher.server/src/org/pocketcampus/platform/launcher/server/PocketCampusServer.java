@@ -5,6 +5,8 @@ import org.pocketcampus.plugin.foo.server.TestServiceImpl;
 import org.pocketcampus.plugin.test.shared.TestService;
 import org.pocketcampus.plugin.food.server.FoodServiceImpl;
 import org.pocketcampus.plugin.food.shared.FoodService;
+import org.pocketcampus.plugin.directory.server.DirectoryServiceImpl;
+import org.pocketcampus.plugin.directory.shared.DirectoryService;
 
 public class PocketCampusServer extends ServerBase {
 
@@ -17,6 +19,7 @@ public class PocketCampusServer extends ServerBase {
 		// TODO create a unique idea directly in the thrift file when compiling the thrift files?
 		processors.add(new Processor(new TestService.Processor<TestServiceImpl>(new TestServiceImpl()), "test"));
 		processors.add(new Processor(new FoodService.Processor<FoodServiceImpl>(new FoodServiceImpl()), "food"));
+		processors.add(new Processor(new DirectoryService.Processor<DirectoryServiceImpl>(new DirectoryServiceImpl()), "directory"));
 		
 		return processors;
 	}
