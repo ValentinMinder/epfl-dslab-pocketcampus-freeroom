@@ -62,6 +62,11 @@
 			<locationURI>_android_platform_sdk_android_3cce33c0/src</locationURI>
 		</link>
 		<link>
+			<name>plugin.camipro.android_src</name>
+			<type>2</type>
+			<locationURI>_android_plugin_camipro_android_50ad98b9/src</locationURI>
+		</link>
+		<link>
 			<name>plugin.dashboard.android_src</name>
 			<type>2</type>
 			<locationURI>_android_plugin_dashboard_android_20c1271a/src</locationURI>
