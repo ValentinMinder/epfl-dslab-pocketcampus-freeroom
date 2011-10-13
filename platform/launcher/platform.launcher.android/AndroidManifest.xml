@@ -21,6 +21,16 @@
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
+		
+		<activity android:name="org.pocketcampus.plugin.foo.android.DirectoryMainView"
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:label="Directory">
+			<intent-filter>
+				<category android:name="android.intent.category.DEFAULT" />
+				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
+			</intent-filter>
+		</activity>
+		
 
 		<!-- Food Plugin -->
 		<activity android:name="org.pocketcampus.plugin.food.android.FoodMainView"
