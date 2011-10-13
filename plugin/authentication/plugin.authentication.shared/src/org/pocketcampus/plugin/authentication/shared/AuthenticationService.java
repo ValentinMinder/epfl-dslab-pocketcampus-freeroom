@@ -24,7 +24,7 @@ public class AuthenticationService {
 
   public interface Iface {
 
-    public SessionToken login(String username, String password) throws org.apache.thrift.TException;
+    public SessionToken login(String username, String password) throws LoginException, org.apache.thrift.TException;
 
     public boolean authenticate(SessionToken token) throws org.apache.thrift.TException;
 
@@ -62,7 +62,7 @@ public class AuthenticationService {
       super(iprot, oprot);
     }
 
-    public SessionToken login(String username, String password) throws org.apache.thrift.TException
+    public SessionToken login(String username, String password) throws LoginException, org.apache.thrift.TException
     {
       send_login(username, password);
       return recv_login();
@@ -76,12 +76,15 @@ public class AuthenticationService {
       sendBase("login", args);
     }
 
-    public SessionToken recv_login() throws org.apache.thrift.TException
+    public SessionToken recv_login() throws LoginException, org.apache.thrift.TException
     {
       login_result result = new login_result();
       receiveBase(result, "login");
       if (result.isSetSuccess()) {
         return result.success;
+      }
+      if (result.le != null) {
+        throw result.le;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "login failed: unknown result");
     }
@@ -175,7 +178,7 @@ public class AuthenticationService {
         prot.writeMessageEnd();
       }
 
-      public SessionToken getResult() throws org.apache.thrift.TException {
+      public SessionToken getResult() throws LoginException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -279,7 +282,11 @@ public class AuthenticationService {
 
       protected login_result getResult(I iface, login_args args) throws org.apache.thrift.TException {
         login_result result = new login_result();
-        result.success = iface.login(args.username, args.password);
+        try {
+          result.success = iface.login(args.username, args.password);
+        } catch (LoginException le) {
+          result.le = le;
+        }
         return result;
       }
     }
@@ -710,12 +717,15 @@ public class AuthenticationService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("login_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField LE_FIELD_DESC = new org.apache.thrift.protocol.TField("le", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     public SessionToken success; // required
+    public LoginException le; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      LE((short)1, "le");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -732,6 +742,8 @@ public class AuthenticationService {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // LE
+            return LE;
           default:
             return null;
         }
@@ -778,6 +790,8 @@ public class AuthenticationService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionToken.class)));
+      tmpMap.put(_Fields.LE, new org.apache.thrift.meta_data.FieldMetaData("le", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(login_result.class, metaDataMap);
     }
@@ -786,10 +800,12 @@ public class AuthenticationService {
     }
 
     public login_result(
-      SessionToken success)
+      SessionToken success,
+      LoginException le)
     {
       this();
       this.success = success;
+      this.le = le;
     }
 
     /**
@@ -798,6 +814,9 @@ public class AuthenticationService {
     public login_result(login_result other) {
       if (other.isSetSuccess()) {
         this.success = new SessionToken(other.success);
+      }
+      if (other.isSetLe()) {
+        this.le = new LoginException(other.le);
       }
     }
 
@@ -808,6 +827,7 @@ public class AuthenticationService {
     @Override
     public void clear() {
       this.success = null;
+      this.le = null;
     }
 
     public SessionToken getSuccess() {
@@ -834,6 +854,30 @@ public class AuthenticationService {
       }
     }
 
+    public LoginException getLe() {
+      return this.le;
+    }
+
+    public login_result setLe(LoginException le) {
+      this.le = le;
+      return this;
+    }
+
+    public void unsetLe() {
+      this.le = null;
+    }
+
+    /** Returns true if field le is set (has been assigned a value) and false otherwise */
+    public boolean isSetLe() {
+      return this.le != null;
+    }
+
+    public void setLeIsSet(boolean value) {
+      if (!value) {
+        this.le = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case SUCCESS:
@@ -844,6 +888,14 @@ public class AuthenticationService {
         }
         break;
 
+      case LE:
+        if (value == null) {
+          unsetLe();
+        } else {
+          setLe((LoginException)value);
+        }
+        break;
+
       }
     }
 
@@ -851,6 +903,9 @@ public class AuthenticationService {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case LE:
+        return getLe();
 
       }
       throw new IllegalStateException();
@@ -865,6 +920,8 @@ public class AuthenticationService {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case LE:
+        return isSetLe();
       }
       throw new IllegalStateException();
     }
@@ -888,6 +945,15 @@ public class AuthenticationService {
         if (!(this_present_success && that_present_success))
           return false;
         if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_le = true && this.isSetLe();
+      boolean that_present_le = true && that.isSetLe();
+      if (this_present_le || that_present_le) {
+        if (!(this_present_le && that_present_le))
+          return false;
+        if (!this.le.equals(that.le))
           return false;
       }
 
@@ -917,6 +983,16 @@ public class AuthenticationService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetLe()).compareTo(typedOther.isSetLe());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetLe()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.le, typedOther.le);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -942,6 +1018,14 @@ public class AuthenticationService {
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case 1: // LE
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.le = new LoginException();
+              this.le.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -960,6 +1044,10 @@ public class AuthenticationService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         this.success.write(oprot);
         oprot.writeFieldEnd();
+      } else if (this.isSetLe()) {
+        oprot.writeFieldBegin(LE_FIELD_DESC);
+        this.le.write(oprot);
+        oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -975,6 +1063,14 @@ public class AuthenticationService {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("le:");
+      if (this.le == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.le);
       }
       first = false;
       sb.append(")");

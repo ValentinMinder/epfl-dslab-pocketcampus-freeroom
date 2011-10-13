@@ -20,16 +20,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SessionToken implements org.apache.thrift.TBase<SessionToken, SessionToken._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SessionToken");
+public class LoginException extends Exception implements org.apache.thrift.TBase<LoginException, LoginException._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("LoginException");
 
-  private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-  public String token; // required
+  public String message; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    TOKEN((short)1, "token");
+    MESSAGE((short)1, "message");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -44,8 +44,8 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // TOKEN
-          return TOKEN;
+        case 1: // MESSAGE
+          return MESSAGE;
         default:
           return null;
       }
@@ -90,71 +90,71 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SessionToken.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(LoginException.class, metaDataMap);
   }
 
-  public SessionToken() {
+  public LoginException() {
   }
 
-  public SessionToken(
-    String token)
+  public LoginException(
+    String message)
   {
     this();
-    this.token = token;
+    this.message = message;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public SessionToken(SessionToken other) {
-    if (other.isSetToken()) {
-      this.token = other.token;
+  public LoginException(LoginException other) {
+    if (other.isSetMessage()) {
+      this.message = other.message;
     }
   }
 
-  public SessionToken deepCopy() {
-    return new SessionToken(this);
+  public LoginException deepCopy() {
+    return new LoginException(this);
   }
 
   @Override
   public void clear() {
-    this.token = null;
+    this.message = null;
   }
 
-  public String getToken() {
-    return this.token;
+  public String getMessage() {
+    return this.message;
   }
 
-  public SessionToken setToken(String token) {
-    this.token = token;
+  public LoginException setMessage(String message) {
+    this.message = message;
     return this;
   }
 
-  public void unsetToken() {
-    this.token = null;
+  public void unsetMessage() {
+    this.message = null;
   }
 
-  /** Returns true if field token is set (has been assigned a value) and false otherwise */
-  public boolean isSetToken() {
-    return this.token != null;
+  /** Returns true if field message is set (has been assigned a value) and false otherwise */
+  public boolean isSetMessage() {
+    return this.message != null;
   }
 
-  public void setTokenIsSet(boolean value) {
+  public void setMessageIsSet(boolean value) {
     if (!value) {
-      this.token = null;
+      this.message = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case TOKEN:
+    case MESSAGE:
       if (value == null) {
-        unsetToken();
+        unsetMessage();
       } else {
-        setToken((String)value);
+        setMessage((String)value);
       }
       break;
 
@@ -163,8 +163,8 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case TOKEN:
-      return getToken();
+    case MESSAGE:
+      return getMessage();
 
     }
     throw new IllegalStateException();
@@ -177,8 +177,8 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
     }
 
     switch (field) {
-    case TOKEN:
-      return isSetToken();
+    case MESSAGE:
+      return isSetMessage();
     }
     throw new IllegalStateException();
   }
@@ -187,21 +187,21 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof SessionToken)
-      return this.equals((SessionToken)that);
+    if (that instanceof LoginException)
+      return this.equals((LoginException)that);
     return false;
   }
 
-  public boolean equals(SessionToken that) {
+  public boolean equals(LoginException that) {
     if (that == null)
       return false;
 
-    boolean this_present_token = true && this.isSetToken();
-    boolean that_present_token = true && that.isSetToken();
-    if (this_present_token || that_present_token) {
-      if (!(this_present_token && that_present_token))
+    boolean this_present_message = true && this.isSetMessage();
+    boolean that_present_message = true && that.isSetMessage();
+    if (this_present_message || that_present_message) {
+      if (!(this_present_message && that_present_message))
         return false;
-      if (!this.token.equals(that.token))
+      if (!this.message.equals(that.message))
         return false;
     }
 
@@ -213,20 +213,20 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
     return 0;
   }
 
-  public int compareTo(SessionToken other) {
+  public int compareTo(LoginException other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    SessionToken typedOther = (SessionToken)other;
+    LoginException typedOther = (LoginException)other;
 
-    lastComparison = Boolean.valueOf(isSetToken()).compareTo(typedOther.isSetToken());
+    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetToken()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, typedOther.token);
+    if (isSetMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -248,9 +248,9 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
         break;
       }
       switch (field.id) {
-        case 1: // TOKEN
+        case 1: // MESSAGE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.token = iprot.readString();
+            this.message = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -270,9 +270,9 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.token != null) {
-      oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-      oprot.writeString(this.token);
+    if (this.message != null) {
+      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+      oprot.writeString(this.message);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -281,14 +281,14 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("SessionToken(");
+    StringBuilder sb = new StringBuilder("LoginException(");
     boolean first = true;
 
-    sb.append("token:");
-    if (this.token == null) {
+    sb.append("message:");
+    if (this.message == null) {
       sb.append("null");
     } else {
-      sb.append(this.token);
+      sb.append(this.message);
     }
     first = false;
     sb.append(")");
@@ -297,9 +297,6 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (token == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'token' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

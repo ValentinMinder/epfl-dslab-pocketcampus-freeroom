@@ -2,6 +2,7 @@ package org.pocketcampus.authentication.server;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
+import org.pocketcampus.plugin.authentication.shared.LoginException;
 import org.pocketcampus.plugin.authentication.shared.SessionToken;
 
 /**
@@ -11,10 +12,12 @@ import org.pocketcampus.plugin.authentication.shared.SessionToken;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	private LdapAuthentication mLdapAuth = new LdapAuthentication(new EpflLdapConfig());
-	private SessionManager mSessionManager;
+	private SessionManager mSessionManager = new SessionManager();
 
 	@Override
-	public SessionToken login(String username, String password) throws TException {
+	public SessionToken login(String username, String password) throws TException, LoginException {
+		System.out.println("Trying to login using " + username + ", " + password);
+		
 		boolean authenticationResult = mLdapAuth.authenticate(username, password);
 
 		if(authenticationResult) {
@@ -24,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		}
 
 		System.out.println("Login failure.");
-		return (SessionToken)null;
+		throw new LoginException();
 	}
 
 	@Override

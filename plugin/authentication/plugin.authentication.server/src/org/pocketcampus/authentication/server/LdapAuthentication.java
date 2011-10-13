@@ -28,7 +28,7 @@ public class LdapAuthentication {
 			int port = mConfig.getPort();
 			SSLSocketFactory socketFactory = new SSLUtil(new TrustAllTrustManager()).createSSLSocketFactory();
 
-			LDAPConnection ldap = new LDAPConnection(socketFactory, baseDn, port);
+			LDAPConnection ldap = new LDAPConnection(socketFactory, mConfig.getHost(), port);
 
 			String filter = "(uid=" + username + ")";
 			SearchResult searchResult = ldap.search(baseDn, SearchScope.SUB, filter);
@@ -45,7 +45,9 @@ public class LdapAuthentication {
 			}
 
 		} catch (GeneralSecurityException e) {
+			e.printStackTrace();
 		} catch (LDAPException e) {
+			e.printStackTrace();
 		}
 
 		return false;
