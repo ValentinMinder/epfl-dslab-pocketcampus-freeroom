@@ -15,14 +15,15 @@
 		android:src="@drawable/sdk_list_smallarrow"
 		android:visibility="visible"
 		></ImageView>
-		
+
+	<!-- android:textAppearance="?android:attr/textAppearanceLarge" -->		
 	<TextView 
 		android:id="@+id/travel_summary_time"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="left"
 		android:textColor="@android:color/black"
-		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textSize="25dip"
 		android:padding="6dip"
 		/>
 		

@@ -35,7 +35,7 @@ public class C2DMessaging {
     public static final String LAST_REGISTRATION_CHANGE = "last_registration_change";
     public static final String BACKOFF = "backoff";
     public static final String GSF_PACKAGE = "com.google.android.gsf";
-    public static MessageReceiver app;
+    public static C2DMMessageReceiver app;
 
     // package
     static final String PREFERENCE = "com.google.android.c2dm";
@@ -46,7 +46,7 @@ public class C2DMessaging {
      * Initiate c2d messaging registration for the current application
      */
     public static void register(Context context, String senderId) {
-    	app = (MessageReceiver) context; // TODO should be a list of listeners
+    	app = (C2DMMessageReceiver) context; // TODO should be a list of listeners
     	
         Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
         registrationIntent.setPackage(GSF_PACKAGE);

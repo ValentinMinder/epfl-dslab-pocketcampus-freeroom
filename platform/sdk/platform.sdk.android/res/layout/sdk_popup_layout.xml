@@ -8,26 +8,34 @@
 	android:padding="15dip"
 	>
 	
+	<!-- style="@style/PocketCampusTheme.Secondary.Title" -->
 	<TextView 
 		android:id="@+id/sdk_popup_title"
 		style="@style/PocketCampusTheme.Secondary.Title"
+		android:textSize="27dip"
 		android:layout_width="wrap_content"
 		android:layout_centerHorizontal="true"
 		/>
 		
-	<TextView 
-		android:id="@+id/sdk_popup_details"
-		style="@style/PocketCampusTheme.Secondary.Detail"
+	<ScrollView 
+		android:id="@+id/sdk_popup_scrollview"
 		android:layout_below="@+id/sdk_popup_title"
 		android:layout_width="wrap_content"
 		android:layout_centerHorizontal="true"
-		/>
+		>
+		<TextView
+			android:id="@+id/sdk_popup_details"
+			style="@style/PocketCampusTheme.Secondary.Detail"
+			android:layout_width="wrap_content"
+			android:layout_centerHorizontal="true"
+			/>
+	</ScrollView>
 	
 	<RelativeLayout
 		android:id="@+id/sdk_popup_content"
 		style="@style/PocketCampusTheme.Secondary"
 		android:layout_width="wrap_content"
-		android:layout_below="@+id/sdk_popup_details"
+		android:layout_below="@+id/sdk_popup_scrollview"
 		android:layout_centerHorizontal="true"
 		android:paddingTop="10dip"
 		/>

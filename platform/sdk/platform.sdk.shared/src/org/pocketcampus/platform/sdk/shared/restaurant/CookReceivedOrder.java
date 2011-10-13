@@ -27,18 +27,21 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
   private static final org.apache.thrift.protocol.TField ORDERED_ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("orderedItems", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField USER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("userId", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("date", org.apache.thrift.protocol.TType.I64, (short)4);
+  private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
 
   public long orderId; // required
   public List<CookReceivedItem> orderedItems; // required
   public long userId; // required
   public long date; // required
+  public double price; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ORDER_ID((short)1, "orderId"),
     ORDERED_ITEMS((short)2, "orderedItems"),
     USER_ID((short)3, "userId"),
-    DATE((short)4, "date");
+    DATE((short)4, "date"),
+    PRICE((short)5, "price");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -61,6 +64,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
           return USER_ID;
         case 4: // DATE
           return DATE;
+        case 5: // PRICE
+          return PRICE;
         default:
           return null;
       }
@@ -104,7 +109,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
   private static final int __ORDERID_ISSET_ID = 0;
   private static final int __USERID_ISSET_ID = 1;
   private static final int __DATE_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private static final int __PRICE_ISSET_ID = 3;
+  private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -118,6 +124,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.DATE, new org.apache.thrift.meta_data.FieldMetaData("date", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Timestamp")));
+    tmpMap.put(_Fields.PRICE, new org.apache.thrift.meta_data.FieldMetaData("price", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CookReceivedOrder.class, metaDataMap);
   }
@@ -129,7 +137,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     long orderId,
     List<CookReceivedItem> orderedItems,
     long userId,
-    long date)
+    long date,
+    double price)
   {
     this();
     this.orderId = orderId;
@@ -139,6 +148,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     setUserIdIsSet(true);
     this.date = date;
     setDateIsSet(true);
+    this.price = price;
+    setPriceIsSet(true);
   }
 
   /**
@@ -157,6 +168,7 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     }
     this.userId = other.userId;
     this.date = other.date;
+    this.price = other.price;
   }
 
   public CookReceivedOrder deepCopy() {
@@ -172,6 +184,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     this.userId = 0;
     setDateIsSet(false);
     this.date = 0;
+    setPriceIsSet(false);
+    this.price = 0.0;
   }
 
   public long getOrderId() {
@@ -282,6 +296,29 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     __isset_bit_vector.set(__DATE_ISSET_ID, value);
   }
 
+  public double getPrice() {
+    return this.price;
+  }
+
+  public CookReceivedOrder setPrice(double price) {
+    this.price = price;
+    setPriceIsSet(true);
+    return this;
+  }
+
+  public void unsetPrice() {
+    __isset_bit_vector.clear(__PRICE_ISSET_ID);
+  }
+
+  /** Returns true if field price is set (has been assigned a value) and false otherwise */
+  public boolean isSetPrice() {
+    return __isset_bit_vector.get(__PRICE_ISSET_ID);
+  }
+
+  public void setPriceIsSet(boolean value) {
+    __isset_bit_vector.set(__PRICE_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ORDER_ID:
@@ -316,6 +353,14 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
       }
       break;
 
+    case PRICE:
+      if (value == null) {
+        unsetPrice();
+      } else {
+        setPrice((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -332,6 +377,9 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
 
     case DATE:
       return Long.valueOf(getDate());
+
+    case PRICE:
+      return Double.valueOf(getPrice());
 
     }
     throw new IllegalStateException();
@@ -352,6 +400,8 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
       return isSetUserId();
     case DATE:
       return isSetDate();
+    case PRICE:
+      return isSetPrice();
     }
     throw new IllegalStateException();
   }
@@ -402,6 +452,15 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
       if (!(this_present_date && that_present_date))
         return false;
       if (this.date != that.date)
+        return false;
+    }
+
+    boolean this_present_price = true;
+    boolean that_present_price = true;
+    if (this_present_price || that_present_price) {
+      if (!(this_present_price && that_present_price))
+        return false;
+      if (this.price != that.price)
         return false;
     }
 
@@ -457,6 +516,16 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     }
     if (isSetDate()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.date, typedOther.date);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetPrice()).compareTo(typedOther.isSetPrice());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPrice()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.price, typedOther.price);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -520,6 +589,14 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // PRICE
+          if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
+            this.price = iprot.readDouble();
+            setPriceIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -536,6 +613,9 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     }
     if (!isSetDate()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'date' was not found in serialized data! Struct: " + toString());
+    }
+    if (!isSetPrice()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'price' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -565,6 +645,9 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     oprot.writeFieldBegin(DATE_FIELD_DESC);
     oprot.writeI64(this.date);
     oprot.writeFieldEnd();
+    oprot.writeFieldBegin(PRICE_FIELD_DESC);
+    oprot.writeDouble(this.price);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -593,6 +676,10 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     sb.append("date:");
     sb.append(this.date);
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("price:");
+    sb.append(this.price);
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -605,6 +692,7 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
     }
     // alas, we cannot check 'userId' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'date' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'price' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

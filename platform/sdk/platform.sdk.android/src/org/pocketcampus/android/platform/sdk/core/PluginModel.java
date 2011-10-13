@@ -48,9 +48,6 @@ public abstract class PluginModel {
 		InvocationHandler invocationHandler = new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				System.out.println(method.getName());
-				System.out.println(args);
-				
 				for(PluginView pluginView : mListeners) {
 					try {
 						method.invoke(pluginView, args);
@@ -88,5 +85,7 @@ public abstract class PluginModel {
 		mListeners.remove(listener);
 	}
 
-
+	public int getNbListeners() {
+		return mListeners.size();
+	}
 }

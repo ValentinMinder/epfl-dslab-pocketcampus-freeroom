@@ -9,11 +9,13 @@ import android.util.Log;
  */
 public class Config {
 	/** Server IP. */
-	public final static String SERVER_IP = "10.0.0.157";
-//	public final static String SERVER_IP = "128.178.254.53";
+//	public final static String SERVER_IP = "10.0.0.157";
+//	public final static String SERVER_IP = "128.178.252.23";
+//	public final static String SERVER_IP = "128.178.254.164";
+	public final static String SERVER_IP = "ec2-79-125-29-79.eu-west-1.compute.amazonaws.com";
 	
 	/** Server port. */
-	public final static int SERVER_PORT = 8080;
+	public final static int SERVER_PORT = 9090;
 	
 	/** Level of information reported by the logger, a lower number mean more. */
 	// XXX not used for now
