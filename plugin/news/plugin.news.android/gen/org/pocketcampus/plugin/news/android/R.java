@@ -90,6 +90,8 @@ containing a value of this type.
         public static final int sdk_actionbar_layout_main=0x7f09000a;
         public static final int sdk_bottombar_layout_bottombar=0x7f09000e;
         public static final int sdk_bottombar_layout_inner=0x7f09000d;
+        public static final int sdk_list_entry_details=0x7f090010;
+        public static final int sdk_list_entry_text=0x7f09000f;
         public static final int sdk_popup_buttons=0x7f090017;
         public static final int sdk_popup_content=0x7f090016;
         public static final int sdk_popup_details=0x7f090015;
@@ -100,8 +102,6 @@ containing a value of this type.
         public static final int standard_layout_msg=0x7f090019;
         public static final int title=0x7f09001b;
         public static final int title_layout=0x7f09001a;
-        public static final int travel_summary_changes=0x7f090010;
-        public static final int travel_summary_time=0x7f09000f;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
