@@ -114,6 +114,7 @@ struct CookReceivedOrder{
 	2: required list<CookReceivedItem> orderedItems;
 	3: required common.Id userId;
 	4: required common.Timestamp date;
+	5: required double price;
 }
 
 struct PendingOrders {
