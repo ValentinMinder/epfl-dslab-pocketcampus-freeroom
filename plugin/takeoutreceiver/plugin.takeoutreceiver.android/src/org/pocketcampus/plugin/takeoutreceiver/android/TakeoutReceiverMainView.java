@@ -55,7 +55,7 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 	@Override
 	public void ordersUpdated() {
 		System.out.println("ordersUpdated from view");
-		
+
 		PendingOrders pendingOrders = mModel.getPendingOrders();
 
 		if(pendingOrders == null) {
@@ -67,7 +67,7 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 
 		if(orders==null || orders.size()==0) {
 			mMainLayout.setText("Pas de commande en attente.");
-			
+
 		} else {
 			mMainLayout.hideText();
 			//mController.fireNotification();
@@ -76,23 +76,29 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 		Labeler<CookReceivedOrder> labeler = new Labeler<CookReceivedOrder>() {
 			@Override
 			public String getLabel(CookReceivedOrder obj) {
-				System.out.println(obj);
-				
-				int nbItems = obj.orderedItems.size();
-				
-				int deltaMinutes = (int) ((new Date().getTime()/1000 - obj.date)/60);
-				String minutes = "<1 minute";
-				
-				if(deltaMinutes > 0) {
-					minutes = deltaMinutes + " minutes";
-				}
-				
-				String temps = "il y a " + minutes;
-				
-				String s = nbItems>1?"s":"";
-				String objects = nbItems + " objet" + s + ", ";
+				String orderDesc = "";
 
-				return objects + temps;
+				// summary of ordered item
+				for(CookReceivedItem item : obj.orderedItems) {
+					orderDesc += item.name + ", ";
+				}
+
+				// time since order
+				int deltaMinutes = (int) ((new Date().getTime()/1000 - obj.date)/60);
+				String timeSinceOrder = "";
+
+				if(deltaMinutes < 0) {
+					timeSinceOrder = "<1 minute";
+				} else if(deltaMinutes == 1) {
+					timeSinceOrder = "1 minute";
+				} else {
+					timeSinceOrder = deltaMinutes + " minutes";
+				}
+
+				timeSinceOrder = "il y a " + timeSinceOrder;
+				orderDesc += timeSinceOrder;
+
+				return orderDesc ;
 			}
 		};
 
@@ -121,7 +127,7 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 		desc.setTextSize((float) 19.0);
 
 		String descString ="";
-		
+
 		if(order.orderedItems!=null && order.orderedItems.size()!=0) {
 			for(CookReceivedItem item : order.orderedItems) {
 				descString += "<b>- " + item.name + "</b>";
@@ -137,14 +143,14 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 					descString = removeLastChars(descString, 2);
 				}
 
-				
+
 				if(item.multipleChoices!=null && item.multipleChoices.size()!=0) {
-					
+
 					for (Map.Entry<String, List<String>> entry : item.multipleChoices.entrySet()) {
-					    String key = entry.getKey();
-					    List<String> value = entry.getValue();
-					    
-					    descString += "<br>" + key + ": ";
+						String key = entry.getKey();
+						List<String> value = entry.getValue();
+
+						descString += "<br>" + key + ": ";
 
 						for(String option : value) {
 							descString += option + ", ";
@@ -157,16 +163,17 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 				if(!item.comments.equals("")) {
 					descString += "<br>" + item.comments;
 				}
-				
+
 				descString += "<br>";
-				
-				
+
+
 			}
-			
+
 			descString = removeLastChars(descString, 4);
-			descString += "<br><br><center><b>Total: " + order.getPrice() +  " francs</b></center>";
+			descString += "<br><br><b>Total: " + order.getPrice() +  " francs</b>";
+			descString += "<br>From " + order.getUserId() +  ".";
 		}
-		
+
 		desc.setText(Html.fromHtml(descString));
 
 		List<ButtonElement> buttons = new ArrayList<ButtonElement>();

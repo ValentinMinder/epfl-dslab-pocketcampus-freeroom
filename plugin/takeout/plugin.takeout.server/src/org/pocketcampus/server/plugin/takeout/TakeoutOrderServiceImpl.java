@@ -67,8 +67,6 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaRoulotte.setItemDescription("Jambon, salami, sudjuk, oignons, poivrons, champignons, olives.");
 			pizzaRoulotte.setPrice(10.0);
 			pizzaRoulotte.setStars(Rating.UNKNOWN);
-			pizzaRoulotte.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaRoulotte.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
 			pizzaRoulotte.setPricingUnit("pizza");
 			pizzaRoulotte.setMultiChoiceOptions(Arrays.asList(ingredients)); // add to all
 			pizzas.add(pizzaRoulotte);
@@ -80,8 +78,6 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaMozarella.setItemDescription("Tomate et Mozzarella");
 			pizzaMozarella.setPrice(8.0);
 			pizzaMozarella.setStars(Rating.UNKNOWN);
-			pizzaMozarella.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaMozarella.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
 			pizzaMozarella.setPricingUnit("pizza");
 			pizzaMozarella.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzas.add(pizzaMozarella);
@@ -93,7 +89,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaVege.setItemDescription("Oignons, poivrons, champignons, olives.");
 			pizzaVege.setPrice(8.5);
 			pizzaVege.setStars(Rating.UNKNOWN);
-			pizzaVege.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
+			pizzaVege.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaVege.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
 			pizzaVege.setPricingUnit("pizza");
 			pizzas.add(pizzaVege);
@@ -105,7 +101,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaMozz.setItemDescription("Tomate et Mozzarella");
 			pizzaMozz.setPrice(8.0);
 			pizzaMozz.setStars(Rating.UNKNOWN);
-			pizzaMozz.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
+			pizzaMozz.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaMozz.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
 			pizzaMozz.setPricingUnit("pizza");
 			pizzas.add(pizzaMozz);
@@ -117,8 +113,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaJambon.setItemDescription("Jambon, champignons, olives, oignons.");
 			pizzaJambon.setPrice(9.0);
 			pizzaJambon.setStars(Rating.UNKNOWN);
-			pizzaJambon.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaJambon.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
+			pizzaJambon.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaJambon.setPricingUnit("pizza");
 			pizzas.add(pizzaJambon);
 			
@@ -129,8 +124,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaSalami.setItemDescription("Salami, champignons, olives, oignons.");
 			pizzaSalami.setPrice(14.0);
 			pizzaSalami.setStars(Rating.UNKNOWN);
-			pizzaSalami.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaSalami.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
+			pizzaSalami.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaSalami.setPricingUnit("pizza");
 			pizzas.add(pizzaSalami);
 			
@@ -141,8 +135,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaSudjuk.setItemDescription("Sudjuk (chorizo de boeuf), poivrons, oignons, olives.");
 			pizzaSudjuk.setPrice(9.0);
 			pizzaSudjuk.setStars(Rating.UNKNOWN);
-			pizzaSudjuk.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaSudjuk.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
+			pizzaSudjuk.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaSudjuk.setPricingUnit("pizza");
 			pizzas.add(pizzaSudjuk);
 			
@@ -153,8 +146,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaThon.setItemDescription("Thon, oignons, olives, champignons.");
 			pizzaThon.setPrice(9.0);
 			pizzaThon.setStars(Rating.UNKNOWN);
-			pizzaThon.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-			pizzaThon.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
+			pizzaThon.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaThon.setPricingUnit("pizza");
 			pizzas.add(pizzaThon);
 			
