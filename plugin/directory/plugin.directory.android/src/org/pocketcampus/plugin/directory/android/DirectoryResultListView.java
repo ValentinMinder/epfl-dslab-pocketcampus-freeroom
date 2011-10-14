@@ -1,11 +1,14 @@
 package org.pocketcampus.plugin.directory.android;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.core.PluginView.ViewBoundCallback;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
+import org.pocketcampus.plugin.directory.shared.Person;
 
 
 import android.content.Intent;
@@ -14,12 +17,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
-public class DirectoryMainView extends PluginView implements IDirectoryView{
+public class DirectoryResultListView extends PluginView implements IDirectoryView{
 
 	private DirectoryController mController;
 	private IDirectoryModel mModel;
 	
-	private StandardLayout mLayout;
+	private ListViewElement mList;
+	private List<Person> mPersons;
 	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some view may not need
@@ -46,34 +50,21 @@ public class DirectoryMainView extends PluginView implements IDirectoryView{
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
 		
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
+		//FIXME TRY IT WITH NULL AND CHANGE LATER
+		mList = new ListViewElement(this, mPersons);
 		
 		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
+		setContentView(mList);
 
 		// We need to force the display before asking the controller for the data, 
 		// as the controller may take some time to get it.
 		displayData();
 	}
 
-	/**
-	 * Called automatically from the model as soon as the value of foo is changed.
-	 */
-	@Override
-	public void fooUpdated() {
-		System.out.println("foo changed to " + mModel.getFoo());
-		displayData();
-	}
 
-	@Override
-	public void barUpdated() {
-		System.out.println("bar changed to " + mModel.getBar());
-		displayData();
-	}
 	
 	private void displayData() {
-		mLayout.setText("foo = " + mModel.getFoo() + "; bar = " + mModel.getBar());
+		mPersons = mModel.getResults();
 	}
 
 	/**
@@ -91,7 +82,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView{
 			public void onViewBound(PluginController controller) {
 				mController = (DirectoryController) controller;
 				mModel = (DirectoryModel) mController.getModel();
-				System.out.println(mModel.getFoo());
+				System.out.println(mModel.getResults());
 				releaseController(mController);
 			}
 		};
@@ -99,16 +90,16 @@ public class DirectoryMainView extends PluginView implements IDirectoryView{
 		getController(DirectoryController.class, callback);
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		//inflater.inflate(R.menu.test_main, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//		//inflater.inflate(R.menu.test_main, menu);
+//		return true;
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
+//	@Override
+//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+//		switch (item.getItemId()) {
 //		case R.id.test_open:
 //			startActivity(new Intent(this, TestOtherView.class));
 //			break;
@@ -116,14 +107,35 @@ public class DirectoryMainView extends PluginView implements IDirectoryView{
 //		case R.id.test_request:
 //			mController.loadBar();
 //			break;
-		}		
-		return true;
-	}
+//		}		
+//		return true;
+//	}
 
 	@Override
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
 		toast.show();
+	}
+
+
+	@Override
+	public void resultsUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void personChoosed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void backToResultsAfterWrongPersonChoosed() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

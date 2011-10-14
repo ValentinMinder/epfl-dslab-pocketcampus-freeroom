@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.directory.android.iface;
 
+import java.util.List;
+
+import org.pocketcampus.plugin.directory.shared.Person;
+
 /**
  * Interface for the getters of the model.
  *
@@ -7,6 +11,6 @@ package org.pocketcampus.plugin.directory.android.iface;
  * and we're sure we'll never accidentally modify the model from there.
  */
 public interface IDirectoryModel {
-	public int getFoo();
-	public int getBar();
+	public List<Person> getResults();
+	public Person getSelectedPerson();
 }

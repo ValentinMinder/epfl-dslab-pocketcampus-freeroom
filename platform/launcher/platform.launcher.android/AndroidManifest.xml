@@ -80,15 +80,17 @@
 		<service android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 		
-		<!-- Test Plugin -->
-		<activity android:name="org.pocketcampus.plugin.test.android.TestMainView"
-			android:label="Test">
+		<!-- Directory Plugin -->
+		<activity android:name="org.pocketcampus.plugin.directory.android.DirectorySearchView"
+			android:label="Directory">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+				<category android:name="android.intent.category.DEFAULT" />
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
+		<service android:name="org.pocketcampus.plugin.directory.android.DirectoryController"
+			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 		
 		<activity android:name="org.pocketcampus.plugin.test.android.TestOtherView"></activity>
 		<service android:name="org.pocketcampus.plugin.test.android.TestController"

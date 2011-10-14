@@ -13,6 +13,8 @@ import org.pocketcampus.plugin.takeoutreceiver.shared.TakeoutReceiverService;
 import org.pocketcampus.plugin.test.shared.TestService;
 import org.pocketcampus.plugin.food.server.FoodServiceImpl;
 import org.pocketcampus.plugin.food.shared.FoodService;
+import org.pocketcampus.plugin.camipro.server.CamiproServiceImpl;
+import org.pocketcampus.plugin.camipro.shared.CamiproService;
 import org.pocketcampus.server.plugin.takeout.TakeoutGatewayImpl;
 import org.pocketcampus.server.plugin.takeout.TakeoutOrderServiceImpl;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
@@ -39,12 +41,13 @@ public class PocketCampusServer extends ServerBase {
 		// TODO create a unique id directly in the thrift file when compiling the thrift files?
 		processors.add(new Processor(new TestService.Processor<TestServiceImpl>(new TestServiceImpl()), "test"));
 		processors.add(new Processor(new TakeoutReceiverService.Processor<TakeoutReceiverServiceImpl>(new TakeoutReceiverServiceImpl()), "takeoutreceiver"));
-		processors.add(new Processor(new FoodService.Processor<FoodServiceImpl>(new FoodServiceImpl()), "food"));
+		//processors.add(new Processor(new FoodService.Processor<FoodServiceImpl>(new FoodServiceImpl()), "food"));
 		processors.add(new Processor(new TakeoutGateway.Processor<TakeoutGatewayImpl>(new TakeoutGatewayImpl()), "takeout-gateway"));
 		processors.add(new Processor(new DirectoryService.Processor<DirectoryServiceImpl>(new DirectoryServiceImpl()), "directory"));
 		processors.add(new Processor(new TakeoutOrderService.Processor<TakeoutOrderServiceImpl>(new TakeoutOrderServiceImpl()), "takeout-order"));
 		processors.add(new Processor(new AuthenticationService.Processor<AuthenticationServiceImpl>(new AuthenticationServiceImpl()), "authentication"));
 		//processors.add(new Processor(new CamiproService.Processor<CamiproServiceImpl>(new CamiproServiceImpl()), "camipro"));
+
 		
 		return processors;
 	}
