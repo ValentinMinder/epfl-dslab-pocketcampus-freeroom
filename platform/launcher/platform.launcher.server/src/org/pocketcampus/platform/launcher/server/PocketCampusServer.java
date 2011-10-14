@@ -13,7 +13,6 @@ import org.pocketcampus.plugin.takeoutreceiver.shared.TakeoutReceiverService;
 import org.pocketcampus.plugin.test.shared.TestService;
 import org.pocketcampus.plugin.food.server.FoodServiceImpl;
 import org.pocketcampus.plugin.food.shared.FoodService;
-import org.pocketcampus.plugin.camipro.server.CamiproServiceImpl;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
 import org.pocketcampus.server.plugin.takeout.TakeoutGatewayImpl;
 import org.pocketcampus.server.plugin.takeout.TakeoutOrderServiceImpl;
