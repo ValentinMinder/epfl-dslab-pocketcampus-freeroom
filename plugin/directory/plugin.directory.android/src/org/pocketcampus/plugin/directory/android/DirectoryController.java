@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.directory.android;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryController;
@@ -7,6 +9,7 @@ import org.pocketcampus.plugin.directory.android.req.*;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Client;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
+import org.pocketcampus.plugin.directory.shared.Person;
 
 
 public class DirectoryController extends PluginController implements IDirectoryController{
@@ -34,23 +37,21 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		return mModel;
 	}
 
+	
+
 	@Override
-	public void setFoo(int value) {
-		// TODO Auto-generated method stub
+	public void search(String name) {
+		new DirectorySearchNameRequest().start(this, mClient, name );
 		
 	}
 
 	@Override
-	public void search(String first_name, String last_name) {
-		String[] param = {first_name, last_name};
-		new DirectorySearchNameRequest().start(this, mClient, param );
+	public void setResults(List<Person> res) {
+		mModel.setResults(res);
 		
 	}
 
-	@Override
-	public void search(String sciper) {
-		new DirectorySearchSciperRequest().start(this, mClient, sciper );
-	}
+	
 
 
 

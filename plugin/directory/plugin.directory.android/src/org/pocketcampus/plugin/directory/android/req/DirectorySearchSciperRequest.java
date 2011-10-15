@@ -12,7 +12,7 @@ public class DirectorySearchSciperRequest extends Request<DirectoryController, I
 
 	@Override
 	protected List<Person> runInBackground(Iface client, Object param) throws Exception {
-		return client.searchBySciper((String) param);
+		return client.search((String) param);
 	}
 
 	@Override

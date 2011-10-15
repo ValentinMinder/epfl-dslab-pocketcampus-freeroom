@@ -25,29 +25,35 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
 
   private static final org.apache.thrift.protocol.TField FIRST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("firstName", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField LAST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("lastName", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField MAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("mail", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField UID_FIELD_DESC = new org.apache.thrift.protocol.TField("uid", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField SCIPER_FIELD_DESC = new org.apache.thrift.protocol.TField("sciper", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField MAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("mail", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField WEB_FIELD_DESC = new org.apache.thrift.protocol.TField("web", org.apache.thrift.protocol.TType.STRING, (short)5);
   private static final org.apache.thrift.protocol.TField PHONE_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("phone_number", org.apache.thrift.protocol.TType.STRING, (short)6);
   private static final org.apache.thrift.protocol.TField OFFICE_FIELD_DESC = new org.apache.thrift.protocol.TField("office", org.apache.thrift.protocol.TType.STRING, (short)7);
+  private static final org.apache.thrift.protocol.TField GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("gaspar", org.apache.thrift.protocol.TType.STRING, (short)8);
+  private static final org.apache.thrift.protocol.TField OU_FIELD_DESC = new org.apache.thrift.protocol.TField("ou", org.apache.thrift.protocol.TType.STRING, (short)9);
 
   public String firstName; // required
   public String lastName; // required
+  public String sciper; // required
   public String mail; // required
-  public String uid; // required
   public String web; // required
   public String phone_number; // required
   public String office; // required
+  public String gaspar; // required
+  public String ou; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     FIRST_NAME((short)1, "firstName"),
     LAST_NAME((short)2, "lastName"),
-    MAIL((short)3, "mail"),
-    UID((short)4, "uid"),
+    SCIPER((short)3, "sciper"),
+    MAIL((short)4, "mail"),
     WEB((short)5, "web"),
     PHONE_NUMBER((short)6, "phone_number"),
-    OFFICE((short)7, "office");
+    OFFICE((short)7, "office"),
+    GASPAR((short)8, "gaspar"),
+    OU((short)9, "ou");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,16 +72,20 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
           return FIRST_NAME;
         case 2: // LAST_NAME
           return LAST_NAME;
-        case 3: // MAIL
+        case 3: // SCIPER
+          return SCIPER;
+        case 4: // MAIL
           return MAIL;
-        case 4: // UID
-          return UID;
         case 5: // WEB
           return WEB;
         case 6: // PHONE_NUMBER
           return PHONE_NUMBER;
         case 7: // OFFICE
           return OFFICE;
+        case 8: // GASPAR
+          return GASPAR;
+        case 9: // OU
+          return OU;
         default:
           return null;
       }
@@ -124,15 +134,19 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LAST_NAME, new org.apache.thrift.meta_data.FieldMetaData("lastName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.MAIL, new org.apache.thrift.meta_data.FieldMetaData("mail", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.SCIPER, new org.apache.thrift.meta_data.FieldMetaData("sciper", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.UID, new org.apache.thrift.meta_data.FieldMetaData("uid", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MAIL, new org.apache.thrift.meta_data.FieldMetaData("mail", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.WEB, new org.apache.thrift.meta_data.FieldMetaData("web", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PHONE_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("phone_number", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.OFFICE, new org.apache.thrift.meta_data.FieldMetaData("office", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.GASPAR, new org.apache.thrift.meta_data.FieldMetaData("gaspar", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.OU, new org.apache.thrift.meta_data.FieldMetaData("ou", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Person.class, metaDataMap);
@@ -144,14 +158,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   public Person(
     String firstName,
     String lastName,
-    String mail,
-    String uid)
+    String sciper)
   {
     this();
     this.firstName = firstName;
     this.lastName = lastName;
-    this.mail = mail;
-    this.uid = uid;
+    this.sciper = sciper;
   }
 
   /**
@@ -164,11 +176,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (other.isSetLastName()) {
       this.lastName = other.lastName;
     }
+    if (other.isSetSciper()) {
+      this.sciper = other.sciper;
+    }
     if (other.isSetMail()) {
       this.mail = other.mail;
-    }
-    if (other.isSetUid()) {
-      this.uid = other.uid;
     }
     if (other.isSetWeb()) {
       this.web = other.web;
@@ -178,6 +190,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
     if (other.isSetOffice()) {
       this.office = other.office;
+    }
+    if (other.isSetGaspar()) {
+      this.gaspar = other.gaspar;
+    }
+    if (other.isSetOu()) {
+      this.ou = other.ou;
     }
   }
 
@@ -189,11 +207,13 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   public void clear() {
     this.firstName = null;
     this.lastName = null;
+    this.sciper = null;
     this.mail = null;
-    this.uid = null;
     this.web = null;
     this.phone_number = null;
     this.office = null;
+    this.gaspar = null;
+    this.ou = null;
   }
 
   public String getFirstName() {
@@ -244,6 +264,30 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
+  public String getSciper() {
+    return this.sciper;
+  }
+
+  public Person setSciper(String sciper) {
+    this.sciper = sciper;
+    return this;
+  }
+
+  public void unsetSciper() {
+    this.sciper = null;
+  }
+
+  /** Returns true if field sciper is set (has been assigned a value) and false otherwise */
+  public boolean isSetSciper() {
+    return this.sciper != null;
+  }
+
+  public void setSciperIsSet(boolean value) {
+    if (!value) {
+      this.sciper = null;
+    }
+  }
+
   public String getMail() {
     return this.mail;
   }
@@ -265,30 +309,6 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   public void setMailIsSet(boolean value) {
     if (!value) {
       this.mail = null;
-    }
-  }
-
-  public String getUid() {
-    return this.uid;
-  }
-
-  public Person setUid(String uid) {
-    this.uid = uid;
-    return this;
-  }
-
-  public void unsetUid() {
-    this.uid = null;
-  }
-
-  /** Returns true if field uid is set (has been assigned a value) and false otherwise */
-  public boolean isSetUid() {
-    return this.uid != null;
-  }
-
-  public void setUidIsSet(boolean value) {
-    if (!value) {
-      this.uid = null;
     }
   }
 
@@ -364,6 +384,54 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
+  public String getGaspar() {
+    return this.gaspar;
+  }
+
+  public Person setGaspar(String gaspar) {
+    this.gaspar = gaspar;
+    return this;
+  }
+
+  public void unsetGaspar() {
+    this.gaspar = null;
+  }
+
+  /** Returns true if field gaspar is set (has been assigned a value) and false otherwise */
+  public boolean isSetGaspar() {
+    return this.gaspar != null;
+  }
+
+  public void setGasparIsSet(boolean value) {
+    if (!value) {
+      this.gaspar = null;
+    }
+  }
+
+  public String getOu() {
+    return this.ou;
+  }
+
+  public Person setOu(String ou) {
+    this.ou = ou;
+    return this;
+  }
+
+  public void unsetOu() {
+    this.ou = null;
+  }
+
+  /** Returns true if field ou is set (has been assigned a value) and false otherwise */
+  public boolean isSetOu() {
+    return this.ou != null;
+  }
+
+  public void setOuIsSet(boolean value) {
+    if (!value) {
+      this.ou = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case FIRST_NAME:
@@ -382,19 +450,19 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
+    case SCIPER:
+      if (value == null) {
+        unsetSciper();
+      } else {
+        setSciper((String)value);
+      }
+      break;
+
     case MAIL:
       if (value == null) {
         unsetMail();
       } else {
         setMail((String)value);
-      }
-      break;
-
-    case UID:
-      if (value == null) {
-        unsetUid();
-      } else {
-        setUid((String)value);
       }
       break;
 
@@ -422,6 +490,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
+    case GASPAR:
+      if (value == null) {
+        unsetGaspar();
+      } else {
+        setGaspar((String)value);
+      }
+      break;
+
+    case OU:
+      if (value == null) {
+        unsetOu();
+      } else {
+        setOu((String)value);
+      }
+      break;
+
     }
   }
 
@@ -433,11 +517,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     case LAST_NAME:
       return getLastName();
 
+    case SCIPER:
+      return getSciper();
+
     case MAIL:
       return getMail();
-
-    case UID:
-      return getUid();
 
     case WEB:
       return getWeb();
@@ -447,6 +531,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
 
     case OFFICE:
       return getOffice();
+
+    case GASPAR:
+      return getGaspar();
+
+    case OU:
+      return getOu();
 
     }
     throw new IllegalStateException();
@@ -463,16 +553,20 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       return isSetFirstName();
     case LAST_NAME:
       return isSetLastName();
+    case SCIPER:
+      return isSetSciper();
     case MAIL:
       return isSetMail();
-    case UID:
-      return isSetUid();
     case WEB:
       return isSetWeb();
     case PHONE_NUMBER:
       return isSetPhone_number();
     case OFFICE:
       return isSetOffice();
+    case GASPAR:
+      return isSetGaspar();
+    case OU:
+      return isSetOu();
     }
     throw new IllegalStateException();
   }
@@ -508,21 +602,21 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return false;
     }
 
+    boolean this_present_sciper = true && this.isSetSciper();
+    boolean that_present_sciper = true && that.isSetSciper();
+    if (this_present_sciper || that_present_sciper) {
+      if (!(this_present_sciper && that_present_sciper))
+        return false;
+      if (!this.sciper.equals(that.sciper))
+        return false;
+    }
+
     boolean this_present_mail = true && this.isSetMail();
     boolean that_present_mail = true && that.isSetMail();
     if (this_present_mail || that_present_mail) {
       if (!(this_present_mail && that_present_mail))
         return false;
       if (!this.mail.equals(that.mail))
-        return false;
-    }
-
-    boolean this_present_uid = true && this.isSetUid();
-    boolean that_present_uid = true && that.isSetUid();
-    if (this_present_uid || that_present_uid) {
-      if (!(this_present_uid && that_present_uid))
-        return false;
-      if (!this.uid.equals(that.uid))
         return false;
     }
 
@@ -550,6 +644,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (!(this_present_office && that_present_office))
         return false;
       if (!this.office.equals(that.office))
+        return false;
+    }
+
+    boolean this_present_gaspar = true && this.isSetGaspar();
+    boolean that_present_gaspar = true && that.isSetGaspar();
+    if (this_present_gaspar || that_present_gaspar) {
+      if (!(this_present_gaspar && that_present_gaspar))
+        return false;
+      if (!this.gaspar.equals(that.gaspar))
+        return false;
+    }
+
+    boolean this_present_ou = true && this.isSetOu();
+    boolean that_present_ou = true && that.isSetOu();
+    if (this_present_ou || that_present_ou) {
+      if (!(this_present_ou && that_present_ou))
+        return false;
+      if (!this.ou.equals(that.ou))
         return false;
     }
 
@@ -589,22 +701,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetSciper()).compareTo(typedOther.isSetSciper());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSciper()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sciper, typedOther.sciper);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetMail()).compareTo(typedOther.isSetMail());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetMail()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mail, typedOther.mail);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetUid()).compareTo(typedOther.isSetUid());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetUid()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.uid, typedOther.uid);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -635,6 +747,26 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
     if (isSetOffice()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.office, typedOther.office);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetGaspar()).compareTo(typedOther.isSetGaspar());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetGaspar()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.gaspar, typedOther.gaspar);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetOu()).compareTo(typedOther.isSetOu());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetOu()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ou, typedOther.ou);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -670,16 +802,16 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // MAIL
+        case 3: // SCIPER
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.mail = iprot.readString();
+            this.sciper = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // UID
+        case 4: // MAIL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.uid = iprot.readString();
+            this.mail = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -701,6 +833,20 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         case 7: // OFFICE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.office = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // GASPAR
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.gaspar = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 9: // OU
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.ou = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -730,15 +876,17 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       oprot.writeString(this.lastName);
       oprot.writeFieldEnd();
     }
-    if (this.mail != null) {
-      oprot.writeFieldBegin(MAIL_FIELD_DESC);
-      oprot.writeString(this.mail);
+    if (this.sciper != null) {
+      oprot.writeFieldBegin(SCIPER_FIELD_DESC);
+      oprot.writeString(this.sciper);
       oprot.writeFieldEnd();
     }
-    if (this.uid != null) {
-      oprot.writeFieldBegin(UID_FIELD_DESC);
-      oprot.writeString(this.uid);
-      oprot.writeFieldEnd();
+    if (this.mail != null) {
+      if (isSetMail()) {
+        oprot.writeFieldBegin(MAIL_FIELD_DESC);
+        oprot.writeString(this.mail);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.web != null) {
       if (isSetWeb()) {
@@ -758,6 +906,20 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (isSetOffice()) {
         oprot.writeFieldBegin(OFFICE_FIELD_DESC);
         oprot.writeString(this.office);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.gaspar != null) {
+      if (isSetGaspar()) {
+        oprot.writeFieldBegin(GASPAR_FIELD_DESC);
+        oprot.writeString(this.gaspar);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.ou != null) {
+      if (isSetOu()) {
+        oprot.writeFieldBegin(OU_FIELD_DESC);
+        oprot.writeString(this.ou);
         oprot.writeFieldEnd();
       }
     }
@@ -786,21 +948,23 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("mail:");
-    if (this.mail == null) {
+    sb.append("sciper:");
+    if (this.sciper == null) {
       sb.append("null");
     } else {
-      sb.append(this.mail);
+      sb.append(this.sciper);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("uid:");
-    if (this.uid == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.uid);
+    if (isSetMail()) {
+      if (!first) sb.append(", ");
+      sb.append("mail:");
+      if (this.mail == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.mail);
+      }
+      first = false;
     }
-    first = false;
     if (isSetWeb()) {
       if (!first) sb.append(", ");
       sb.append("web:");
@@ -831,6 +995,26 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       first = false;
     }
+    if (isSetGaspar()) {
+      if (!first) sb.append(", ");
+      sb.append("gaspar:");
+      if (this.gaspar == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.gaspar);
+      }
+      first = false;
+    }
+    if (isSetOu()) {
+      if (!first) sb.append(", ");
+      sb.append("ou:");
+      if (this.ou == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.ou);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -843,11 +1027,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (lastName == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'lastName' was not present! Struct: " + toString());
     }
-    if (mail == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mail' was not present! Struct: " + toString());
-    }
-    if (uid == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'uid' was not present! Struct: " + toString());
+    if (sciper == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'sciper' was not present! Struct: " + toString());
     }
   }
 

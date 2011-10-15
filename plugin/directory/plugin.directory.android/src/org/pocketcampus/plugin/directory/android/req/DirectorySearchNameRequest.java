@@ -8,7 +8,7 @@ import org.pocketcampus.plugin.directory.android.DirectoryModel;
 
 import java.util.*;
 
-public class DirectorySearchNameRequest extends Request<DirectoryController, Iface, String[], List<Person>> {
+public class DirectorySearchNameRequest extends Request<DirectoryController, Iface, String, List<Person>> {
 
 	@Override
 	protected void onResult(DirectoryController controller, List<Person> result) {
@@ -22,17 +22,10 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 		e.printStackTrace();
 	}
 
-	/**
-	 * first item of param array has to be the first name 
-	 * second item of param array has to be the last name
-	 * 
-	 * one item can be null, but both should not
-	 */
 	@Override
-	protected List<Person> runInBackground(Iface client, String[] param) throws Exception {
-		String firstName = param[0]; 
-		String lastName = param[1];
-		return client.searchByName(firstName, lastName);
+	protected List<Person> runInBackground(Iface client, String param) throws Exception {
+		return client.search(param);
 	}
+	
 
 }

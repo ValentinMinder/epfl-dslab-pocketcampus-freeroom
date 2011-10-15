@@ -28,6 +28,7 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	
 	public void setResults(List<Person> results){
 		mResult = results;
+		System.out.println("result set via the model");
 		mListeners.resultsUpdated();
 		
 	}

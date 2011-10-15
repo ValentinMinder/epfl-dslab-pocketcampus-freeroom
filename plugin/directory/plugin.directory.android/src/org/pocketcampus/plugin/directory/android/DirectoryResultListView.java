@@ -1,20 +1,33 @@
 package org.pocketcampus.plugin.directory.android;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.core.PluginView.ViewBoundCallback;
+import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.element.LabeledListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
 import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
+import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
+import org.pocketcampus.plugin.directory.android.R;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class DirectoryResultListView extends PluginView implements IDirectoryView{
@@ -22,8 +35,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	private DirectoryController mController;
 	private IDirectoryModel mModel;
 	
-	private ListViewElement mList;
+	private LabeledListViewElement mList;
 	private List<Person> mPersons;
+	private StandardLayout mMainLayout;
 	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some view may not need
@@ -50,15 +64,13 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
 		
-		//FIXME TRY IT WITH NULL AND CHANGE LATER
-		mList = new ListViewElement(this, mPersons);
+		mMainLayout = new StandardLayout(this); 
+		setContentView(mMainLayout);
 		
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mList);
-
-		// We need to force the display before asking the controller for the data, 
-		// as the controller may take some time to get it.
-		displayData();
+		mMainLayout.setText("Loading..");
+		
+		resultsUpdated();
+		
 	}
 
 
@@ -90,26 +102,40 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		getController(DirectoryController.class, callback);
 	}
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		//inflater.inflate(R.menu.test_main, menu);
-//		return true;
-//	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
+	    return true;
+	}
 
-//	@Override
-//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.test_open:
-//			startActivity(new Intent(this, TestOtherView.class));
-//			break;
-//			
-//		case R.id.test_request:
-//			mController.loadBar();
-//			break;
-//		}		
-//		return true;
-//	}
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		switch (item.getItemId()) {
+	    	case R.id.directory_resultList_filtre:
+		    	List<String> ouToKeep = new LinkedList<String>();
+				ouToKeep.add("IN-MA1");
+				Toast.makeText(this, "filtre!", Toast.LENGTH_SHORT).show();
+				filterResult(ouToKeep);
+		        return true;
+		}
+		return true;
+	}
+
+	private void filterResult(List<String> ouToKeep) {
+		Iterator<Person> i = mPersons.iterator();
+		int j=0;
+		while(i.hasNext()){
+			if(!ouToKeep.contains( i.next().ou)){
+				i.remove();
+				j++;
+			}
+		}
+		
+		Toast.makeText(this,j+ " removed", Toast.LENGTH_SHORT).show();
+		mController.setResults(mPersons);
+	}
+
 
 	@Override
 	public void networkErrorHappened() {
@@ -120,8 +146,39 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void resultsUpdated() {
-		// TODO Auto-generated method stub
+		mPersons = mModel.getResults();
 		
+		if(mList == null){
+			mList = new LabeledListViewElement(this, mPersons, labeler);
+			mList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
+					Person p = (Person) adapter.getItemAtPosition(pos);
+					System.out.println(p);
+					showPersonsDetails(p);
+				}
+			});
+			
+			mMainLayout.addView(mList);
+		}else{
+			mList.setAdapter(new LabeledArrayAdapter(this, mPersons, labeler));
+		}
+		
+		
+		if (mList.getAdapter().getCount() == 0)
+			mMainLayout.setText("No result found");
+		else{
+			mMainLayout.setText("");
+			Toast.makeText(this, mList.getAdapter().getCount() + "result(s) found", Toast.LENGTH_LONG).show();
+		}
+		
+	}
+
+
+	protected void showPersonsDetails(Person p) {
+		PersonDetailsDialog dialog = new PersonDetailsDialog(this, p);
+		dialog.show();
 	}
 
 
@@ -139,7 +196,18 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 	
 	
-	
+	Labeler<Person> labeler = new Labeler<Person>(){
+
+		@Override
+		public String getLabel(Person obj) {
+			String nice;
+			
+			nice = obj.getFirstName() + " " + obj.getLastName(); 
+			
+			return nice;
+		}
+		
+	};
 	
 	
 	

@@ -24,21 +24,13 @@ public class DirectoryService {
 
   public interface Iface {
 
-    public List<Person> searchBySciper(String sciper) throws org.apache.thrift.TException;
-
-    public List<Person> searchByName(String firstName, String lastName) throws org.apache.thrift.TException;
-
-    public List<Person> searchByApproxName(String firstName, String lastName) throws org.apache.thrift.TException;
+    public List<Person> search(String param) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void searchBySciper(String sciper, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.searchBySciper_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void searchByName(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.searchByName_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void searchByApproxName(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.searchByApproxName_call> resultHandler) throws org.apache.thrift.TException;
+    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -62,75 +54,27 @@ public class DirectoryService {
       super(iprot, oprot);
     }
 
-    public List<Person> searchBySciper(String sciper) throws org.apache.thrift.TException
+    public List<Person> search(String param) throws org.apache.thrift.TException
     {
-      send_searchBySciper(sciper);
-      return recv_searchBySciper();
+      send_search(param);
+      return recv_search();
     }
 
-    public void send_searchBySciper(String sciper) throws org.apache.thrift.TException
+    public void send_search(String param) throws org.apache.thrift.TException
     {
-      searchBySciper_args args = new searchBySciper_args();
-      args.setSciper(sciper);
-      sendBase("searchBySciper", args);
+      search_args args = new search_args();
+      args.setParam(param);
+      sendBase("search", args);
     }
 
-    public List<Person> recv_searchBySciper() throws org.apache.thrift.TException
+    public List<Person> recv_search() throws org.apache.thrift.TException
     {
-      searchBySciper_result result = new searchBySciper_result();
-      receiveBase(result, "searchBySciper");
+      search_result result = new search_result();
+      receiveBase(result, "search");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchBySciper failed: unknown result");
-    }
-
-    public List<Person> searchByName(String firstName, String lastName) throws org.apache.thrift.TException
-    {
-      send_searchByName(firstName, lastName);
-      return recv_searchByName();
-    }
-
-    public void send_searchByName(String firstName, String lastName) throws org.apache.thrift.TException
-    {
-      searchByName_args args = new searchByName_args();
-      args.setFirstName(firstName);
-      args.setLastName(lastName);
-      sendBase("searchByName", args);
-    }
-
-    public List<Person> recv_searchByName() throws org.apache.thrift.TException
-    {
-      searchByName_result result = new searchByName_result();
-      receiveBase(result, "searchByName");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchByName failed: unknown result");
-    }
-
-    public List<Person> searchByApproxName(String firstName, String lastName) throws org.apache.thrift.TException
-    {
-      send_searchByApproxName(firstName, lastName);
-      return recv_searchByApproxName();
-    }
-
-    public void send_searchByApproxName(String firstName, String lastName) throws org.apache.thrift.TException
-    {
-      searchByApproxName_args args = new searchByApproxName_args();
-      args.setFirstName(firstName);
-      args.setLastName(lastName);
-      sendBase("searchByApproxName", args);
-    }
-
-    public List<Person> recv_searchByApproxName() throws org.apache.thrift.TException
-    {
-      searchByApproxName_result result = new searchByApproxName_result();
-      receiveBase(result, "searchByApproxName");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchByApproxName failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "search failed: unknown result");
     }
 
   }
@@ -151,24 +95,24 @@ public class DirectoryService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void searchBySciper(String sciper, org.apache.thrift.async.AsyncMethodCallback<searchBySciper_call> resultHandler) throws org.apache.thrift.TException {
+    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      searchBySciper_call method_call = new searchBySciper_call(sciper, resultHandler, this, ___protocolFactory, ___transport);
+      search_call method_call = new search_call(param, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class searchBySciper_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String sciper;
-      public searchBySciper_call(String sciper, org.apache.thrift.async.AsyncMethodCallback<searchBySciper_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class search_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String param;
+      public search_call(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.sciper = sciper;
+        this.param = param;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchBySciper", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        searchBySciper_args args = new searchBySciper_args();
-        args.setSciper(sciper);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        search_args args = new search_args();
+        args.setParam(param);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -179,77 +123,7 @@ public class DirectoryService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_searchBySciper();
-      }
-    }
-
-    public void searchByName(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<searchByName_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      searchByName_call method_call = new searchByName_call(firstName, lastName, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class searchByName_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String firstName;
-      private String lastName;
-      public searchByName_call(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<searchByName_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.firstName = firstName;
-        this.lastName = lastName;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchByName", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        searchByName_args args = new searchByName_args();
-        args.setFirstName(firstName);
-        args.setLastName(lastName);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public List<Person> getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_searchByName();
-      }
-    }
-
-    public void searchByApproxName(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<searchByApproxName_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      searchByApproxName_call method_call = new searchByApproxName_call(firstName, lastName, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class searchByApproxName_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String firstName;
-      private String lastName;
-      public searchByApproxName_call(String firstName, String lastName, org.apache.thrift.async.AsyncMethodCallback<searchByApproxName_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.firstName = firstName;
-        this.lastName = lastName;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchByApproxName", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        searchByApproxName_args args = new searchByApproxName_args();
-        args.setFirstName(firstName);
-        args.setLastName(lastName);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public List<Person> getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_searchByApproxName();
+        return (new Client(prot)).recv_search();
       }
     }
 
@@ -266,72 +140,38 @@ public class DirectoryService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("searchBySciper", new searchBySciper());
-      processMap.put("searchByName", new searchByName());
-      processMap.put("searchByApproxName", new searchByApproxName());
+      processMap.put("search", new search());
       return processMap;
     }
 
-    private static class searchBySciper<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchBySciper_args> {
-      public searchBySciper() {
-        super("searchBySciper");
+    private static class search<I extends Iface> extends org.apache.thrift.ProcessFunction<I, search_args> {
+      public search() {
+        super("search");
       }
 
-      protected searchBySciper_args getEmptyArgsInstance() {
-        return new searchBySciper_args();
+      protected search_args getEmptyArgsInstance() {
+        return new search_args();
       }
 
-      protected searchBySciper_result getResult(I iface, searchBySciper_args args) throws org.apache.thrift.TException {
-        searchBySciper_result result = new searchBySciper_result();
-        result.success = iface.searchBySciper(args.sciper);
-        return result;
-      }
-    }
-
-    private static class searchByName<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchByName_args> {
-      public searchByName() {
-        super("searchByName");
-      }
-
-      protected searchByName_args getEmptyArgsInstance() {
-        return new searchByName_args();
-      }
-
-      protected searchByName_result getResult(I iface, searchByName_args args) throws org.apache.thrift.TException {
-        searchByName_result result = new searchByName_result();
-        result.success = iface.searchByName(args.firstName, args.lastName);
-        return result;
-      }
-    }
-
-    private static class searchByApproxName<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchByApproxName_args> {
-      public searchByApproxName() {
-        super("searchByApproxName");
-      }
-
-      protected searchByApproxName_args getEmptyArgsInstance() {
-        return new searchByApproxName_args();
-      }
-
-      protected searchByApproxName_result getResult(I iface, searchByApproxName_args args) throws org.apache.thrift.TException {
-        searchByApproxName_result result = new searchByApproxName_result();
-        result.success = iface.searchByApproxName(args.firstName, args.lastName);
+      protected search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
+        search_result result = new search_result();
+        result.success = iface.search(args.param);
         return result;
       }
     }
 
   }
 
-  public static class searchBySciper_args implements org.apache.thrift.TBase<searchBySciper_args, searchBySciper_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchBySciper_args");
+  public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
 
-    private static final org.apache.thrift.protocol.TField SCIPER_FIELD_DESC = new org.apache.thrift.protocol.TField("sciper", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField PARAM_FIELD_DESC = new org.apache.thrift.protocol.TField("param", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-    public String sciper; // required
+    public String param; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SCIPER((short)1, "sciper");
+      PARAM((short)1, "param");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -346,8 +186,8 @@ public class DirectoryService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // SCIPER
-            return SCIPER;
+          case 1: // PARAM
+            return PARAM;
           default:
             return null;
         }
@@ -392,71 +232,71 @@ public class DirectoryService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SCIPER, new org.apache.thrift.meta_data.FieldMetaData("sciper", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.PARAM, new org.apache.thrift.meta_data.FieldMetaData("param", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchBySciper_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_args.class, metaDataMap);
     }
 
-    public searchBySciper_args() {
+    public search_args() {
     }
 
-    public searchBySciper_args(
-      String sciper)
+    public search_args(
+      String param)
     {
       this();
-      this.sciper = sciper;
+      this.param = param;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public searchBySciper_args(searchBySciper_args other) {
-      if (other.isSetSciper()) {
-        this.sciper = other.sciper;
+    public search_args(search_args other) {
+      if (other.isSetParam()) {
+        this.param = other.param;
       }
     }
 
-    public searchBySciper_args deepCopy() {
-      return new searchBySciper_args(this);
+    public search_args deepCopy() {
+      return new search_args(this);
     }
 
     @Override
     public void clear() {
-      this.sciper = null;
+      this.param = null;
     }
 
-    public String getSciper() {
-      return this.sciper;
+    public String getParam() {
+      return this.param;
     }
 
-    public searchBySciper_args setSciper(String sciper) {
-      this.sciper = sciper;
+    public search_args setParam(String param) {
+      this.param = param;
       return this;
     }
 
-    public void unsetSciper() {
-      this.sciper = null;
+    public void unsetParam() {
+      this.param = null;
     }
 
-    /** Returns true if field sciper is set (has been assigned a value) and false otherwise */
-    public boolean isSetSciper() {
-      return this.sciper != null;
+    /** Returns true if field param is set (has been assigned a value) and false otherwise */
+    public boolean isSetParam() {
+      return this.param != null;
     }
 
-    public void setSciperIsSet(boolean value) {
+    public void setParamIsSet(boolean value) {
       if (!value) {
-        this.sciper = null;
+        this.param = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case SCIPER:
+      case PARAM:
         if (value == null) {
-          unsetSciper();
+          unsetParam();
         } else {
-          setSciper((String)value);
+          setParam((String)value);
         }
         break;
 
@@ -465,8 +305,8 @@ public class DirectoryService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case SCIPER:
-        return getSciper();
+      case PARAM:
+        return getParam();
 
       }
       throw new IllegalStateException();
@@ -479,8 +319,8 @@ public class DirectoryService {
       }
 
       switch (field) {
-      case SCIPER:
-        return isSetSciper();
+      case PARAM:
+        return isSetParam();
       }
       throw new IllegalStateException();
     }
@@ -489,21 +329,21 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof searchBySciper_args)
-        return this.equals((searchBySciper_args)that);
+      if (that instanceof search_args)
+        return this.equals((search_args)that);
       return false;
     }
 
-    public boolean equals(searchBySciper_args that) {
+    public boolean equals(search_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_sciper = true && this.isSetSciper();
-      boolean that_present_sciper = true && that.isSetSciper();
-      if (this_present_sciper || that_present_sciper) {
-        if (!(this_present_sciper && that_present_sciper))
+      boolean this_present_param = true && this.isSetParam();
+      boolean that_present_param = true && that.isSetParam();
+      if (this_present_param || that_present_param) {
+        if (!(this_present_param && that_present_param))
           return false;
-        if (!this.sciper.equals(that.sciper))
+        if (!this.param.equals(that.param))
           return false;
       }
 
@@ -515,20 +355,20 @@ public class DirectoryService {
       return 0;
     }
 
-    public int compareTo(searchBySciper_args other) {
+    public int compareTo(search_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      searchBySciper_args typedOther = (searchBySciper_args)other;
+      search_args typedOther = (search_args)other;
 
-      lastComparison = Boolean.valueOf(isSetSciper()).compareTo(typedOther.isSetSciper());
+      lastComparison = Boolean.valueOf(isSetParam()).compareTo(typedOther.isSetParam());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetSciper()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sciper, typedOther.sciper);
+      if (isSetParam()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.param, typedOther.param);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -550,9 +390,9 @@ public class DirectoryService {
           break;
         }
         switch (field.id) {
-          case 1: // SCIPER
+          case 1: // PARAM
             if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.sciper = iprot.readString();
+              this.param = iprot.readString();
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -572,9 +412,9 @@ public class DirectoryService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.sciper != null) {
-        oprot.writeFieldBegin(SCIPER_FIELD_DESC);
-        oprot.writeString(this.sciper);
+      if (this.param != null) {
+        oprot.writeFieldBegin(PARAM_FIELD_DESC);
+        oprot.writeString(this.param);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -583,14 +423,14 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("searchBySciper_args(");
+      StringBuilder sb = new StringBuilder("search_args(");
       boolean first = true;
 
-      sb.append("sciper:");
-      if (this.sciper == null) {
+      sb.append("param:");
+      if (this.param == null) {
         sb.append("null");
       } else {
-        sb.append(this.sciper);
+        sb.append(this.param);
       }
       first = false;
       sb.append(")");
@@ -619,8 +459,8 @@ public class DirectoryService {
 
   }
 
-  public static class searchBySciper_result implements org.apache.thrift.TBase<searchBySciper_result, searchBySciper_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchBySciper_result");
+  public static class search_result implements org.apache.thrift.TBase<search_result, search_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
@@ -693,13 +533,13 @@ public class DirectoryService {
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
               new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Person.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchBySciper_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_result.class, metaDataMap);
     }
 
-    public searchBySciper_result() {
+    public search_result() {
     }
 
-    public searchBySciper_result(
+    public search_result(
       List<Person> success)
     {
       this();
@@ -709,7 +549,7 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public searchBySciper_result(searchBySciper_result other) {
+    public search_result(search_result other) {
       if (other.isSetSuccess()) {
         List<Person> __this__success = new ArrayList<Person>();
         for (Person other_element : other.success) {
@@ -719,8 +559,8 @@ public class DirectoryService {
       }
     }
 
-    public searchBySciper_result deepCopy() {
-      return new searchBySciper_result(this);
+    public search_result deepCopy() {
+      return new search_result(this);
     }
 
     @Override
@@ -747,7 +587,7 @@ public class DirectoryService {
       return this.success;
     }
 
-    public searchBySciper_result setSuccess(List<Person> success) {
+    public search_result setSuccess(List<Person> success) {
       this.success = success;
       return this;
     }
@@ -806,12 +646,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof searchBySciper_result)
-        return this.equals((searchBySciper_result)that);
+      if (that instanceof search_result)
+        return this.equals((search_result)that);
       return false;
     }
 
-    public boolean equals(searchBySciper_result that) {
+    public boolean equals(search_result that) {
       if (that == null)
         return false;
 
@@ -832,13 +672,13 @@ public class DirectoryService {
       return 0;
     }
 
-    public int compareTo(searchBySciper_result other) {
+    public int compareTo(search_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      searchBySciper_result typedOther = (searchBySciper_result)other;
+      search_result typedOther = (search_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -917,1447 +757,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("searchBySciper_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class searchByName_args implements org.apache.thrift.TBase<searchByName_args, searchByName_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByName_args");
-
-    private static final org.apache.thrift.protocol.TField FIRST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("firstName", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField LAST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("lastName", org.apache.thrift.protocol.TType.STRING, (short)2);
-
-    public String firstName; // required
-    public String lastName; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      FIRST_NAME((short)1, "firstName"),
-      LAST_NAME((short)2, "lastName");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // FIRST_NAME
-            return FIRST_NAME;
-          case 2: // LAST_NAME
-            return LAST_NAME;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.FIRST_NAME, new org.apache.thrift.meta_data.FieldMetaData("firstName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.LAST_NAME, new org.apache.thrift.meta_data.FieldMetaData("lastName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByName_args.class, metaDataMap);
-    }
-
-    public searchByName_args() {
-    }
-
-    public searchByName_args(
-      String firstName,
-      String lastName)
-    {
-      this();
-      this.firstName = firstName;
-      this.lastName = lastName;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public searchByName_args(searchByName_args other) {
-      if (other.isSetFirstName()) {
-        this.firstName = other.firstName;
-      }
-      if (other.isSetLastName()) {
-        this.lastName = other.lastName;
-      }
-    }
-
-    public searchByName_args deepCopy() {
-      return new searchByName_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.firstName = null;
-      this.lastName = null;
-    }
-
-    public String getFirstName() {
-      return this.firstName;
-    }
-
-    public searchByName_args setFirstName(String firstName) {
-      this.firstName = firstName;
-      return this;
-    }
-
-    public void unsetFirstName() {
-      this.firstName = null;
-    }
-
-    /** Returns true if field firstName is set (has been assigned a value) and false otherwise */
-    public boolean isSetFirstName() {
-      return this.firstName != null;
-    }
-
-    public void setFirstNameIsSet(boolean value) {
-      if (!value) {
-        this.firstName = null;
-      }
-    }
-
-    public String getLastName() {
-      return this.lastName;
-    }
-
-    public searchByName_args setLastName(String lastName) {
-      this.lastName = lastName;
-      return this;
-    }
-
-    public void unsetLastName() {
-      this.lastName = null;
-    }
-
-    /** Returns true if field lastName is set (has been assigned a value) and false otherwise */
-    public boolean isSetLastName() {
-      return this.lastName != null;
-    }
-
-    public void setLastNameIsSet(boolean value) {
-      if (!value) {
-        this.lastName = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case FIRST_NAME:
-        if (value == null) {
-          unsetFirstName();
-        } else {
-          setFirstName((String)value);
-        }
-        break;
-
-      case LAST_NAME:
-        if (value == null) {
-          unsetLastName();
-        } else {
-          setLastName((String)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case FIRST_NAME:
-        return getFirstName();
-
-      case LAST_NAME:
-        return getLastName();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case FIRST_NAME:
-        return isSetFirstName();
-      case LAST_NAME:
-        return isSetLastName();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof searchByName_args)
-        return this.equals((searchByName_args)that);
-      return false;
-    }
-
-    public boolean equals(searchByName_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_firstName = true && this.isSetFirstName();
-      boolean that_present_firstName = true && that.isSetFirstName();
-      if (this_present_firstName || that_present_firstName) {
-        if (!(this_present_firstName && that_present_firstName))
-          return false;
-        if (!this.firstName.equals(that.firstName))
-          return false;
-      }
-
-      boolean this_present_lastName = true && this.isSetLastName();
-      boolean that_present_lastName = true && that.isSetLastName();
-      if (this_present_lastName || that_present_lastName) {
-        if (!(this_present_lastName && that_present_lastName))
-          return false;
-        if (!this.lastName.equals(that.lastName))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(searchByName_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      searchByName_args typedOther = (searchByName_args)other;
-
-      lastComparison = Boolean.valueOf(isSetFirstName()).compareTo(typedOther.isSetFirstName());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetFirstName()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.firstName, typedOther.firstName);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetLastName()).compareTo(typedOther.isSetLastName());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetLastName()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lastName, typedOther.lastName);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // FIRST_NAME
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.firstName = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          case 2: // LAST_NAME
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.lastName = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.firstName != null) {
-        oprot.writeFieldBegin(FIRST_NAME_FIELD_DESC);
-        oprot.writeString(this.firstName);
-        oprot.writeFieldEnd();
-      }
-      if (this.lastName != null) {
-        oprot.writeFieldBegin(LAST_NAME_FIELD_DESC);
-        oprot.writeString(this.lastName);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("searchByName_args(");
-      boolean first = true;
-
-      sb.append("firstName:");
-      if (this.firstName == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.firstName);
-      }
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("lastName:");
-      if (this.lastName == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.lastName);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class searchByName_result implements org.apache.thrift.TBase<searchByName_result, searchByName_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByName_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Person> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Person.class))));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByName_result.class, metaDataMap);
-    }
-
-    public searchByName_result() {
-    }
-
-    public searchByName_result(
-      List<Person> success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public searchByName_result(searchByName_result other) {
-      if (other.isSetSuccess()) {
-        List<Person> __this__success = new ArrayList<Person>();
-        for (Person other_element : other.success) {
-          __this__success.add(new Person(other_element));
-        }
-        this.success = __this__success;
-      }
-    }
-
-    public searchByName_result deepCopy() {
-      return new searchByName_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Person> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Person elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Person>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Person> getSuccess() {
-      return this.success;
-    }
-
-    public searchByName_result setSuccess(List<Person> success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((List<Person>)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof searchByName_result)
-        return this.equals((searchByName_result)that);
-      return false;
-    }
-
-    public boolean equals(searchByName_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(searchByName_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      searchByName_result typedOther = (searchByName_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<Person>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  Person _elem6; // required
-                  _elem6 = new Person();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Person _iter7 : this.success)
-          {
-            _iter7.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("searchByName_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class searchByApproxName_args implements org.apache.thrift.TBase<searchByApproxName_args, searchByApproxName_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByApproxName_args");
-
-    private static final org.apache.thrift.protocol.TField FIRST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("firstName", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField LAST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("lastName", org.apache.thrift.protocol.TType.STRING, (short)2);
-
-    public String firstName; // required
-    public String lastName; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      FIRST_NAME((short)1, "firstName"),
-      LAST_NAME((short)2, "lastName");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // FIRST_NAME
-            return FIRST_NAME;
-          case 2: // LAST_NAME
-            return LAST_NAME;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.FIRST_NAME, new org.apache.thrift.meta_data.FieldMetaData("firstName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.LAST_NAME, new org.apache.thrift.meta_data.FieldMetaData("lastName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByApproxName_args.class, metaDataMap);
-    }
-
-    public searchByApproxName_args() {
-    }
-
-    public searchByApproxName_args(
-      String firstName,
-      String lastName)
-    {
-      this();
-      this.firstName = firstName;
-      this.lastName = lastName;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public searchByApproxName_args(searchByApproxName_args other) {
-      if (other.isSetFirstName()) {
-        this.firstName = other.firstName;
-      }
-      if (other.isSetLastName()) {
-        this.lastName = other.lastName;
-      }
-    }
-
-    public searchByApproxName_args deepCopy() {
-      return new searchByApproxName_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.firstName = null;
-      this.lastName = null;
-    }
-
-    public String getFirstName() {
-      return this.firstName;
-    }
-
-    public searchByApproxName_args setFirstName(String firstName) {
-      this.firstName = firstName;
-      return this;
-    }
-
-    public void unsetFirstName() {
-      this.firstName = null;
-    }
-
-    /** Returns true if field firstName is set (has been assigned a value) and false otherwise */
-    public boolean isSetFirstName() {
-      return this.firstName != null;
-    }
-
-    public void setFirstNameIsSet(boolean value) {
-      if (!value) {
-        this.firstName = null;
-      }
-    }
-
-    public String getLastName() {
-      return this.lastName;
-    }
-
-    public searchByApproxName_args setLastName(String lastName) {
-      this.lastName = lastName;
-      return this;
-    }
-
-    public void unsetLastName() {
-      this.lastName = null;
-    }
-
-    /** Returns true if field lastName is set (has been assigned a value) and false otherwise */
-    public boolean isSetLastName() {
-      return this.lastName != null;
-    }
-
-    public void setLastNameIsSet(boolean value) {
-      if (!value) {
-        this.lastName = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case FIRST_NAME:
-        if (value == null) {
-          unsetFirstName();
-        } else {
-          setFirstName((String)value);
-        }
-        break;
-
-      case LAST_NAME:
-        if (value == null) {
-          unsetLastName();
-        } else {
-          setLastName((String)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case FIRST_NAME:
-        return getFirstName();
-
-      case LAST_NAME:
-        return getLastName();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case FIRST_NAME:
-        return isSetFirstName();
-      case LAST_NAME:
-        return isSetLastName();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof searchByApproxName_args)
-        return this.equals((searchByApproxName_args)that);
-      return false;
-    }
-
-    public boolean equals(searchByApproxName_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_firstName = true && this.isSetFirstName();
-      boolean that_present_firstName = true && that.isSetFirstName();
-      if (this_present_firstName || that_present_firstName) {
-        if (!(this_present_firstName && that_present_firstName))
-          return false;
-        if (!this.firstName.equals(that.firstName))
-          return false;
-      }
-
-      boolean this_present_lastName = true && this.isSetLastName();
-      boolean that_present_lastName = true && that.isSetLastName();
-      if (this_present_lastName || that_present_lastName) {
-        if (!(this_present_lastName && that_present_lastName))
-          return false;
-        if (!this.lastName.equals(that.lastName))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(searchByApproxName_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      searchByApproxName_args typedOther = (searchByApproxName_args)other;
-
-      lastComparison = Boolean.valueOf(isSetFirstName()).compareTo(typedOther.isSetFirstName());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetFirstName()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.firstName, typedOther.firstName);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetLastName()).compareTo(typedOther.isSetLastName());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetLastName()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lastName, typedOther.lastName);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // FIRST_NAME
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.firstName = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          case 2: // LAST_NAME
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.lastName = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.firstName != null) {
-        oprot.writeFieldBegin(FIRST_NAME_FIELD_DESC);
-        oprot.writeString(this.firstName);
-        oprot.writeFieldEnd();
-      }
-      if (this.lastName != null) {
-        oprot.writeFieldBegin(LAST_NAME_FIELD_DESC);
-        oprot.writeString(this.lastName);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("searchByApproxName_args(");
-      boolean first = true;
-
-      sb.append("firstName:");
-      if (this.firstName == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.firstName);
-      }
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("lastName:");
-      if (this.lastName == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.lastName);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class searchByApproxName_result implements org.apache.thrift.TBase<searchByApproxName_result, searchByApproxName_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByApproxName_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Person> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Person.class))));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByApproxName_result.class, metaDataMap);
-    }
-
-    public searchByApproxName_result() {
-    }
-
-    public searchByApproxName_result(
-      List<Person> success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public searchByApproxName_result(searchByApproxName_result other) {
-      if (other.isSetSuccess()) {
-        List<Person> __this__success = new ArrayList<Person>();
-        for (Person other_element : other.success) {
-          __this__success.add(new Person(other_element));
-        }
-        this.success = __this__success;
-      }
-    }
-
-    public searchByApproxName_result deepCopy() {
-      return new searchByApproxName_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Person> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Person elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Person>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Person> getSuccess() {
-      return this.success;
-    }
-
-    public searchByApproxName_result setSuccess(List<Person> success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((List<Person>)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof searchByApproxName_result)
-        return this.equals((searchByApproxName_result)that);
-      return false;
-    }
-
-    public boolean equals(searchByApproxName_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(searchByApproxName_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      searchByApproxName_result typedOther = (searchByApproxName_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<Person>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
-                {
-                  Person _elem10; // required
-                  _elem10 = new Person();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Person _iter11 : this.success)
-          {
-            _iter11.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("searchByApproxName_result(");
+      StringBuilder sb = new StringBuilder("search_result(");
       boolean first = true;
 
       sb.append("success:");

@@ -41,13 +41,12 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		OnClickListener listener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String fname = mLayout.getFirstName();
-				String lname = mLayout.getLastName();
+				String name = mLayout.getName();
 				
 				
 				// There's also a setFoo method in the model. Don't use it from here!
 				// The views should never modify the model directly.
-				mController.search(fname, lname);
+				mController.search(name);
 			}
 		};
 		

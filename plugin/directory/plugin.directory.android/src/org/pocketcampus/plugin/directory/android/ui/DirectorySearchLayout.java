@@ -20,9 +20,8 @@ import android.widget.TextView;
 public class DirectorySearchLayout extends RelativeLayout {
 	//private TextView mTextFName;
 	//private TextView mTextLName;
-	private EditText mEditFName;
-	private EditText mEditLName;
-	private LinearLayout mInnerLayout;
+	private EditText mEditName;
+	private RelativeLayout mInnerLayout;
 
 	public DirectorySearchLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -36,21 +35,20 @@ public class DirectorySearchLayout extends RelativeLayout {
 	
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		mInnerLayout = (LinearLayout) inflater.inflate(R.layout.directory_search_layout, null);
+		mInnerLayout = (RelativeLayout) inflater.inflate(R.layout.directory_search_layout, null);
 		
-		addView(mInnerLayout);
+		LayoutParams full = new LayoutParams(-1,-1);
+		addView(mInnerLayout, full);
 		
-		mEditFName = (EditText)findViewById(R.id.directory_fname);
-		mEditLName = (EditText)findViewById(R.id.directory_lname);
+		
+		//mEditFName = (EditText)findViewById(R.id.directory_fname);
+		mEditName = (EditText)findViewById(R.id.directory_lname);
 	}
 	
-	public String getFirstName(){
-		return mEditFName.getText().toString();
+	public String getName(){
+		return mEditName.getText().toString();
 	}
 	
-	public String getLastName(){
-		return mEditLName.getText().toString();
-	}
 
 //	/**
 //	 * Displays a centered message.

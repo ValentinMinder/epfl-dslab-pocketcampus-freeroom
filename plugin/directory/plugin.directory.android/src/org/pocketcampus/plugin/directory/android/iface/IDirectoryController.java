@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.directory.android.iface;
 
+import org.pocketcampus.plugin.directory.shared.Person;
+import java.util.List;
+
 public interface IDirectoryController {
-	public void setFoo(int value);
-	public void search(String first_name, String last_name);
-	public void search(String sciper);
+	public void setResults(List<Person> res);
+	public void search(String name);
 }

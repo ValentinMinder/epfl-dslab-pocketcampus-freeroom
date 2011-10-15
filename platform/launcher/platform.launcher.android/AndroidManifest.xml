@@ -92,8 +92,8 @@
 		<service android:name="org.pocketcampus.plugin.directory.android.DirectoryController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 		
-		<activity android:name="org.pocketcampus.plugin.test.android.TestOtherView"></activity>
-		<service android:name="org.pocketcampus.plugin.test.android.TestController"
+		<activity android:name="org.pocketcampus.plugin.directory.android.DirectoryResultListView"></activity>
+		<service android:name="org.pocketcampus.plugin.directory.android.DirectoryController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 
 		<!-- In order to use the c2dm library, an application must declare a class 
