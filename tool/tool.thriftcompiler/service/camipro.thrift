@@ -2,6 +2,8 @@ namespace java org.pocketcampus.plugin.camipro.shared
 
 include "../include/common.thrift"
 
+// refrain from using the following names in your Thrift files: int, id,  description, value, or any C/C++ keyword.
+
 struct EbankingBean {
 	1: required string paidNameTo;
 	2: required string accountNr;
@@ -13,10 +15,10 @@ struct EbankingBean {
 }
 
 struct Transaction {
-	1: required string type;
-	2: required string description;
-	3: required string date;
-	4: required double amount;
+	1: required string xType;
+	2: required string xDescription;
+	3: required string xDate;
+	4: required double xAmount;
 }
 
 service CamiproService {
