@@ -16,7 +16,7 @@ import org.pocketcampus.plugin.food.shared.FoodService;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
 import org.pocketcampus.server.plugin.takeout.TakeoutGatewayImpl;
 import org.pocketcampus.server.plugin.takeout.TakeoutOrderServiceImpl;
-import org.pocketcampus.plugin.camipro.shared.CamiproService;
+import org.pocketcampus.plugin.camipro.server.CamiproServiceImpl;
 import org.pocketcampus.plugin.directory.server.DirectoryServiceImpl;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
 import org.pocketcampus.server.plugin.takeoutreceiver.TakeoutReceiverServiceImpl;
@@ -45,7 +45,7 @@ public class PocketCampusServer extends ServerBase {
 		processors.add(new Processor(new DirectoryService.Processor<DirectoryServiceImpl>(new DirectoryServiceImpl()), "directory"));
 		processors.add(new Processor(new TakeoutOrderService.Processor<TakeoutOrderServiceImpl>(new TakeoutOrderServiceImpl()), "takeout-order"));
 		processors.add(new Processor(new AuthenticationService.Processor<AuthenticationServiceImpl>(new AuthenticationServiceImpl()), "authentication"));
-		//processors.add(new Processor(new CamiproService.Processor<CamiproServiceImpl>(new CamiproServiceImpl()), "camipro"));
+		processors.add(new Processor(new CamiproService.Processor<CamiproServiceImpl>(new CamiproServiceImpl()), "camipro"));
 
 		
 		return processors;
