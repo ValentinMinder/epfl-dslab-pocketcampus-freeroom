@@ -56,6 +56,12 @@ public class NewsMainView extends PluginView implements INewsView {
 	private void displayData() {
 		mLayout.setText("No news");
 	}
+	
+	@Override
+	public void newsUpdated() {
+		mLayout.setText("Downloaded news");
+		displayData();
+	}
 
 	@Override
 	public void networkErrorHappened() {

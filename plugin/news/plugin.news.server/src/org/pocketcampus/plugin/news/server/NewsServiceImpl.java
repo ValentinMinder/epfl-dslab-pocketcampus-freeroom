@@ -20,6 +20,25 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 	public NewsServiceImpl() {
 		System.out.println("Starting News plugin server...");
+		// List<String> feedUrls = new ArrayList<String>();
+		// feedUrls.add("http://www.pocketcampus.org/feed/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/mediacom/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/enac/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/sb/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/ic/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/cdh/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/sti/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/sv/en/");
+		// feedUrls.add("http://actu.epfl.ch/feeds/rss/cdm/en/");
+		// try {
+		// List<NewsItem> newsItems = getNewsItems(feedUrls);
+		// System.out.println(newsItems.size());
+		// for(int i = 0; i<newsItems.size(); i++){
+		// System.out.println(newsItems.get(i).getTitle());
+		// }
+		// } catch (TException e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	/**
