@@ -32,7 +32,7 @@
 
 		
 		<!-- Camipro Plugin -->
-		<activity android:name="org.pocketcampus.plugin.news.android.CamiproMainView"
+		<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:label="Camipro">
 			<intent-filter>
@@ -40,7 +40,7 @@
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
-		<service android:name="org.pocketcampus.plugin.Camipro.android.CamiproController"
+		<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
 			
 		<!-- Food Plugin -->
