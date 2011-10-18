@@ -1,4 +1,4 @@
-	package org.pocketcampus.plugin.food.server;
+package org.pocketcampus.plugin.food.server;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -27,34 +27,37 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
 public class FoodServiceImpl implements FoodService.Iface{
 	private Date mLastImportedMenus;
 	private Date mLastImportedSandwiches;
-	
+
 	private FoodDB mDB;
-	
+
 	private List<Meal> mCampusMeals;
+	private List<Restaurant> mCampusRestaurants;
 	private HashMap<Integer, Rating> mCampusMealRatings;
 	private List<Sandwich> mCampusSandwiches;
-	
+
 	private ArrayList<String> mDeviceIds;
-	
+
 	/**
 	 * Constructor
 	 * Instantiate all containers for meals, ratings, sandwiches, ... and the Database.
 	 * Also import menus and sandwiches since it's the first execution of the server.
 	 */
 	public FoodServiceImpl(){
+		System.out.println("Starting Food plugin server ...");
+
 		mDB = new FoodDB("PocketCampusDB");
-		
+
 		mCampusMeals = new ArrayList<Meal>();
 		mCampusSandwiches = new ArrayList<Sandwich>();
 		mCampusMealRatings = new HashMap<Integer, Rating>();
 		mDeviceIds = new ArrayList<String>();
-		
+
 		importMenus();
 		importSandwiches();
-
+		
 		mLastImportedSandwiches = new Date();
 	}
-	
+
 	/**
 	 * Get all menus for today
 	 * 
@@ -62,23 +65,23 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	@Override
 	public List<Meal> getMeals() throws TException {
-		
+
 		if(!isToday(mLastImportedMenus)) {
 			System.out.println("<getMeals>: Date not valid. Reimporting Meals.");
-			
+
 			mCampusMeals.clear();
 			mDeviceIds.clear();
 			mCampusMealRatings.clear();
-			
+
 			importMenus();
 		}else if(!isUpToDate(mLastImportedMenus)) {
 			System.out.println("<getMeals>: Time not valid. Reimporting Meals.");
-			
+
 			refreshMenus();
 		} else {
 			System.out.println("<getMeals>: " + mLastImportedMenus + ", not reimporting Meals.");
 		}
-		
+
 		return mCampusMeals;
 	}
 
@@ -90,9 +93,9 @@ public class FoodServiceImpl implements FoodService.Iface{
 	@Override
 	public List<Restaurant> getRestaurants() throws TException {
 		ArrayList<Restaurant> mRestaurantList = new ArrayList<Restaurant>();
-		
+
 		if(mCampusMeals != null) {
-			
+
 			for(Meal m : mCampusMeals) {
 				Restaurant r = m.getRestaurant();
 				if(!mRestaurantList.contains(r)) {
@@ -100,7 +103,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 				}
 			}
 		}
-		
+
 		return mRestaurantList;
 	}
 
@@ -114,13 +117,13 @@ public class FoodServiceImpl implements FoodService.Iface{
 	public Rating getRating(Meal meal) throws TException {
 		updateMenus();
 		System.out.println("<getRating>: Rating Request");
-		
+
 		int mealHashCode = meal.hashCode();
-		
+
 		if(mCampusMealRatings != null) {
 			return mCampusMealRatings.get(mealHashCode);
 		}
-		
+
 		return null;
 	}
 
@@ -136,11 +139,11 @@ public class FoodServiceImpl implements FoodService.Iface{
 		//Here is why we don't get the Ratings right?
 		updateMenus();
 		System.out.println("<getRatings>: Ratings Request.");
-		
+
 		if(mCampusMealRatings != null) {
 			return mCampusMealRatings;
 		}
-		
+
 		return null;
 	}
 
@@ -153,32 +156,31 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 * @return submitStatus the Status of Submission (Valid, Error, Already_Voted or Too_Early)
 	 */
 	@Override
-	public SubmitStatus setRating(Rating rating) throws TException {
+	public SubmitStatus setRating(Rating rating, Meal meal, String deviceId) throws TException {
 		updateMenus();
 		System.out.println("<setRating>: Rating Request");
-		
-		//How do we pass parameters when requesting for this?
-		String deviceId = "";
-		String stringMealHashCode = "";
-		String stringRating = "";
-		
-		if(stringMealHashCode == null || stringRating == null || deviceId == null) {
+
+		if(rating == null || meal == null || deviceId == null) {
 			return SubmitStatus.ERROR;
 		}
-		
+
+		//How do we pass parameters when requesting for this?
+		int mealHashCode = meal.hashCode();
+		Rating mealRating = meal.getRating();
+
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-		
+
 		System.out.println("<setRating>: Now : " + now.get(Calendar.HOUR_OF_DAY));
-		
+
 		if(now.get(Calendar.HOUR_OF_DAY) < 11) {
 			return SubmitStatus.TOOEARLY;
 		}
-		
+
 		Connection connection = mDB.createConnection();
-		
+
 		boolean voted = mDB.checkVotedDevice(connection, deviceId);
-		
+
 		if(mDeviceIds.contains(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");
 			mDB.closeConnection(connection);
@@ -188,48 +190,46 @@ public class FoodServiceImpl implements FoodService.Iface{
 			mDB.closeConnection(connection);
 			return SubmitStatus.ALREADY_VOTED;
 		}
-		
-		int mealHashCode = Integer.parseInt(stringMealHashCode);
-		
+
 		System.out.println("<setRating>: mealHashCode: " + mealHashCode);
-		
+
 		double ratingTotal;
 		RatingValue ratingValue;
 		int newNbVotes;
-		
+
 		for(int i = 0; i < mCampusMeals.size(); i++) {
 			Meal currentMeal = mCampusMeals.get(i);
 
 			ratingTotal = currentMeal.getRating().getTotalRating() + rating.getTotalRating();
 			newNbVotes = currentMeal.getRating().getNbVotes() + 1;
 			ratingValue = doubleToStarRating(ratingTotal / newNbVotes);
-			
+
 			System.out.println("<setRating>: Inside : " + currentMeal.hashCode());
-			
+
 			if(currentMeal.hashCode() == mealHashCode) {
 				//Update Rating for this meal
 				currentMeal.getRating().setNbVotes(newNbVotes);
 				currentMeal.getRating().setTotalRating(ratingTotal);
-				currentMeal.getRating().setValue(ratingValue);
-				
+				currentMeal.getRating().setRatingValue(ratingValue);
+
 				//Update Rating + deviceID on DB
 				mDB.insertRating(connection, mealHashCode, currentMeal);
-				mDB.insertVotedDevice(connection, deviceId, mealHashCode, starRatingToDouble(rating.getValue()));
-				
+				mDB.insertVotedDevice(connection, deviceId, mealHashCode, starRatingToDouble(rating.getRatingValue()));
+
 				//Add deviceID in the list
 				mDeviceIds.add(deviceId);
-				
+
 				//Update Rating in the MealList
 				mCampusMealRatings.put(mealHashCode, currentMeal.getRating());
 				mDB.closeConnection(connection);
 				return SubmitStatus.VALID;
 			}
 		}
-		
+
 		mDB.closeConnection(connection);
 		return SubmitStatus.ERROR;
 	}
-	
+
 	/**
 	 * Gets all sandwiches on campus
 	 * 
@@ -245,41 +245,41 @@ public class FoodServiceImpl implements FoodService.Iface{
 		}
 		return mCampusSandwiches;
 	}
-	
+
 	/**
 	 * Imports Menus from the RSS feed
 	 */
 	private void importMenus() {
-		Connection connection = mDB.createConnection();
-		List<Meal> mealsFromDB = mDB.getMeals(connection);
-		
-		if(mealsFromDB != null && !mealsFromDB.isEmpty()) {
-			mCampusMeals = mealsFromDB;
-			
-			for(Meal m : mCampusMeals) {
-				mCampusMealRatings.put(m.hashCode(), m.getRating());
-			}
-			mLastImportedMenus = new Date();
-			System.out.println("<importMenus>: Getting menus from DB");
-		} else {
+//		Connection connection = mDB.createConnection();
+//		List<Meal> mealsFromDB = mDB.getMeals(connection);
+//
+//		if(mealsFromDB != null && !mealsFromDB.isEmpty()) {
+//			mCampusMeals = mealsFromDB;
+//
+//			for(Meal m : mCampusMeals) {
+//				mCampusMealRatings.put(m.hashCode(), m.getRating());
+//			}
+//			mLastImportedMenus = new Date();
+//			System.out.println("<importMenus>: Getting menus from DB");
+//		} else {
 			RestaurantListParser rlp = new RestaurantListParser();
 			HashMap<String, String> restaurantsFeeds = rlp.getFeeds();
 			Set<String> restaurants = restaurantsFeeds.keySet();
-			
+
 			for(String r : restaurants) {
 				RssParser rp = new RssParser(restaurantsFeeds.get(r));
 				rp.parse();
 				RssFeed feed = rp.getFeed();
-				
+
 				Restaurant newResto = new Restaurant(r.hashCode(), r);
-				
+
 				if(feed != null && feed.items != null) {
 					for(int i = 0; i < feed.items.size(); i++) {
 						Rating mealRating = new Rating(RatingValue.STAR_0_0, 0, 0);
 						Meal newMeal = new Meal((r+feed.items.get(i).title).hashCode(), 
 								feed.items.get(i).title, feed.items.get(i).description, 
 								newResto, mealRating);
-						if(!Utils.containsSpecialAscii(newMeal.description, 65533) 
+						if(!Utils.containsSpecialAscii(newMeal.mealDescription, 65533) 
 								&& ! Utils.containsSpecialAscii(newMeal.name, 65533)) {
 							mCampusMeals.add(newMeal);
 							mCampusMealRatings.put(newMeal.hashCode(), mealRating);
@@ -287,23 +287,23 @@ public class FoodServiceImpl implements FoodService.Iface{
 					}
 					mLastImportedMenus = new Date();
 				} else {
-					System.out.println("<importMenus>: Empty Feed");
+					System.out.println("<importMenus>: Empty Feed for " + r);
 				}
 			}
 			if(mCampusMeals.isEmpty()) {
 				mLastImportedMenus = new Date();
 			}
 			for(Meal m : mCampusMeals) {
-				if(!Utils.containsSpecialAscii(m.description, 65533) 
+				if(!Utils.containsSpecialAscii(m.mealDescription, 65533) 
 						&& ! Utils.containsSpecialAscii(m.name, 65533)) {
-					mDB.insertMeal(m);
-					System.out.println("<importMenus>: Inserting Meal " + m.getName()
-							+ ", " + m.getRestaurant().getName() + " into DB");
+//					mDB.insertMeal(m);
+//					System.out.println("<importMenus>: Inserting Meal " + m.getName()
+//							+ ", " + m.getRestaurant().getName() + " into DB");
 				}
 			}
-		}
+//		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -311,14 +311,14 @@ public class FoodServiceImpl implements FoodService.Iface{
 		RestaurantListParser rlp = new RestaurantListParser();
 		HashMap<String, String> restaurantFeeds = rlp.getFeeds();
 		Set<String> restaurants = restaurantFeeds.keySet();
-		
+
 		for(String r : restaurants) {
 			RssParser rp = new RssParser(restaurantFeeds.get(r));
 			rp.parse();
 			RssFeed feed = rp.getFeed();
-			
+
 			Restaurant newResto = new Restaurant(r.hashCode(), r);
-			
+
 			if(feed != null && feed.items != null) {
 				for(int i = 0; i < feed.items.size(); i++) {
 					Rating mealRating = new Rating(RatingValue.STAR_0_0, 0, 0);
@@ -344,7 +344,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 					+ m.getRestaurant().getName() + " into DB" );
 		}
 	}
-	
+
 	/**
 	 * If meals are not up to date, imports them again
 	 */
@@ -356,7 +356,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 			importMenus();
 		}
 	}
-	
+
 	/**
 	 * Check if a particular Meal is already into the campus menus list
 	 * @param meal The Meal we want to check
@@ -370,7 +370,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Import all Sandwiches on campus from a hardCoded list
 	 */
@@ -541,7 +541,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 
 		mLastImportedSandwiches = new Date();
 	}
-	
+
 	/**
 	 * The default sandwich list
 	 * @param name The name of the list
@@ -562,7 +562,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 
 		return defaultSandwichList;
 	}
-	
+
 	/**
 	 * Checks whether the last date the user had is today
 	 * @param oldDate
@@ -570,16 +570,16 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	private boolean isToday(Date oldDate) {
 		if(oldDate == null) return false;
-		
+
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-		
+
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
-		
+
 		return (now.get(Calendar.DAY_OF_WEEK) == then.get(Calendar.DAY_OF_WEEK)) ? true : false;
 	}
-	
+
 	/**
 	 * Checks whether the date is up to date (according to today and this particular hour)
 	 * @param oldDate
@@ -587,13 +587,13 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	private boolean isUpToDate(Date oldDate) {
 		if(oldDate == null) return false;
-		
+
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-		
+
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
-		
+
 		if(now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
 		} else {
@@ -603,7 +603,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 		}
 		return true;
 	}
-	
+
 	/**
 	 * To get the minutes separating two different dates
 	 * 
@@ -613,9 +613,9 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();
-		
+
 		long realDiff = diff/60000;
-		
+
 		return realDiff;
 	}
 
@@ -650,7 +650,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 			return RatingValue.STAR_5_0;
 		}
 	}
-	
+
 	/**
 	 * Converts a RatingValue into its corresponding double value
 	 * @param rating
@@ -658,9 +658,9 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	private double starRatingToDouble(RatingValue rating) {
 		double value = 0;
-		
+
 		switch (rating) {	
-		
+
 		case STAR_0_0 :
 			break;
 		case STAR_0_5 :
@@ -696,8 +696,8 @@ public class FoodServiceImpl implements FoodService.Iface{
 		default :
 			break;
 		}
-		
+
 		return value;
 	}
-	
+
 }

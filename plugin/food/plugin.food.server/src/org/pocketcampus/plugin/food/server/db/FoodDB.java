@@ -81,7 +81,7 @@ public class FoodDB {
 
 		try {
 			String name = m.getName();
-			String description = m.getDescription();
+			String description = m.getMealDescription();
 			String restaurant = m.getRestaurant().getName();
 			double rating = m.getRating().getTotalRating();
 			int numberOfVotes = m.getRating().getNbVotes();
@@ -386,7 +386,7 @@ public class FoodDB {
 			insertRating.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Problem: could not insert rating:" + "Rating="
-					+ meal.getRating().getValue() + ", NumberOfVotes="
+					+ meal.getRating().getRatingValue() + ", NumberOfVotes="
 					+ meal.getRating().getNbVotes() + ", JsonObject="
 					+ jsonObject + "where hashcode=" + hashCode);
 			e.printStackTrace();
