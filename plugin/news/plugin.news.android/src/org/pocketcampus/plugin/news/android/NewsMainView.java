@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.news.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.SimpleListLayout;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
@@ -12,7 +12,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	private NewsController mController;
 	private INewsModel mModel;
 
-	private StandardLayout mLayout;
+	private SimpleListLayout mLayout;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -42,7 +42,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		mModel = (NewsModel) controller.getModel();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
+		mLayout = new SimpleListLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);

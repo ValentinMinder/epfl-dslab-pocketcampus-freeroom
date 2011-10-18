@@ -78,12 +78,12 @@ containing a value of this type.
         public static final int actionbar_item=0x7f090009;
         public static final int actionbar_progress=0x7f090007;
         public static final int actionbar_title=0x7f090008;
-        public static final int content=0x7f09001c;
+        public static final int content=0x7f09001e;
         public static final int list_header_title=0x7f090011;
-        public static final int message=0x7f09001d;
-        public static final int negativeButton=0x7f090020;
-        public static final int neutralButton=0x7f09001f;
-        public static final int positiveButton=0x7f09001e;
+        public static final int message=0x7f09001f;
+        public static final int negativeButton=0x7f090022;
+        public static final int neutralButton=0x7f090021;
+        public static final int positiveButton=0x7f090020;
         public static final int screen=0x7f090000;
         public static final int sdk_actionbar_layout=0x7f09000c;
         public static final int sdk_actionbar_layout_actionbar=0x7f09000b;
@@ -98,10 +98,12 @@ containing a value of this type.
         public static final int sdk_popup_main=0x7f090012;
         public static final int sdk_popup_scrollview=0x7f090014;
         public static final int sdk_popup_title=0x7f090013;
-        public static final int standard_layout_main=0x7f090018;
-        public static final int standard_layout_msg=0x7f090019;
-        public static final int title=0x7f09001b;
-        public static final int title_layout=0x7f09001a;
+        public static final int simple_list_empty_msg=0x7f090019;
+        public static final int simple_list_layout_main=0x7f090018;
+        public static final int standard_layout_main=0x7f09001a;
+        public static final int standard_layout_msg=0x7f09001b;
+        public static final int title=0x7f09001d;
+        public static final int title_layout=0x7f09001c;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
@@ -112,13 +114,16 @@ containing a value of this type.
         public static final int sdk_list_entry=0x7f030005;
         public static final int sdk_list_header=0x7f030006;
         public static final int sdk_popup_layout=0x7f030007;
-        public static final int sdk_standard_layout=0x7f030008;
-        public static final int sdk_styled_dialog=0x7f030009;
+        public static final int sdk_simple_list_layout=0x7f030008;
+        public static final int sdk_standard_layout=0x7f030009;
+        public static final int sdk_styled_dialog=0x7f03000a;
     }
     public static final class string {
         public static final int actionbar_activity_not_found=0x7f070000;
         public static final int app_name=0x7f070001;
-        public static final int hello=0x7f070002;
+        /**  News display strings 
+         */
+        public static final int news_empty_list=0x7f070002;
     }
     public static final class style {
         public static final int ActionBar=0x7f080000;
@@ -142,7 +147,8 @@ containing a value of this type.
  To be extended from the launcher. 
          */
         public static final int PocketCampusTheme=0x7f08000c;
-        /**  The Primary colors are used for the header and other elements that are visually "on top" of the interface 
+        /**  The Primary colors are used for the header and other elements that 
+		are visually "on top" of the interface 
          */
         public static final int PocketCampusTheme_Primary=0x7f08000d;
         public static final int PocketCampusTheme_Primary_Subtitle=0x7f08000f;
@@ -153,6 +159,7 @@ containing a value of this type.
         /**  <item name="android:textColor">@color/darker_gray</item> 
          */
         public static final int PocketCampusTheme_Secondary_Detail=0x7f080013;
+        public static final int PocketCampusTheme_Secondary_ListView=0x7f080014;
         public static final int PocketCampusTheme_Secondary_MainLayout=0x7f080011;
         public static final int PocketCampusTheme_Secondary_Title=0x7f080012;
         /**  Unmodifiable Style Elements 

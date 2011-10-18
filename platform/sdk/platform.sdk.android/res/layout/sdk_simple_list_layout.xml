@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:id="@+id/simple_list_layout_main"
+	style="@style/PocketCampusTheme.Secondary.MainLayout">
+
+	<TextView android:id="@+id/simple_list_empty_msg"
+		android:gravity="center" android:layout_height="fill_parent"
+		android:layout_width="fill_parent" android:textSize="@dimen/centered_message_size" />
+
+	<!-- <ListView android:id="@+id/simple_list_layout_list" android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" android:scrollingCache="true" style="@style/PocketCampusTheme.Secondary.ListView"> 
+		</ListView> -->
+
+	<!-- <TextView android:id="@+id/standard_layout_msg"
+		android:gravity="center" android:layout_height="fill_parent"
+		android:textSize="@dimen/centered_message_size" android:visibility="gone"></TextView> -->
+
+</RelativeLayout>
