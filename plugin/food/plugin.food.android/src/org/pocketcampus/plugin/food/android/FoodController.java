@@ -5,11 +5,12 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
+import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
-import org.pocketcampus.plugin.food.shared.FoodService.Iface;
-import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
+import org.pocketcampus.plugin.food.shared.FoodService.Iface;
+
+import android.util.Log;
 
 public class FoodController extends PluginController implements IFoodController{
 
@@ -37,8 +38,9 @@ public class FoodController extends PluginController implements IFoodController{
 	}
 
 	@Override
-	public List<Restaurant> getRestaurantsList() {
-		return mModel.getRestaurantsList();
+	public void getRestaurantsList() {
+		Log.d("RESTAURANT", "Sending Restaurants resquest");
+		new RestaurantsRequest().start(this, mClient, (Object)null);
 	}
 
 	@Override

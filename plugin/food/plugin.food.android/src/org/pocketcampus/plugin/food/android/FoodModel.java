@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 public class FoodModel extends PluginModel implements IFoodModel {
+	IFoodView mListeners = (IFoodView) getListeners();
 	private List<Restaurant> mRestaurantsList;
 	
 	@Override
@@ -34,22 +35,19 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 	
 	/**
-	 * get the list of all Restaurants proposing menus
+	 * Sets the list of all Restaurants proposing menus
 	 * */
 	@Override
-	public List<Restaurant> getRestaurantsList(){
-		return mRestaurantsList == null ? getRestaurants() : mRestaurantsList;
-	}
-
-	/**
-	 * get the list of all Restaurants on the server
-	 * */
-	private List<Restaurant> getRestaurants(){
-		List<Restaurant> list = new ArrayList<Restaurant>();
-		
-		//get all Restaurants from server
-		
-		return list;
+	public void setRestaurantsList(List<Restaurant> list){
+		mRestaurantsList = list;
+		mListeners.menusUpdated();
 	}
 	
+	/**
+	 * Gets the list of all Restaurants proposing menus
+	 */
+	@Override
+	public List<Restaurant> getRestaurantsList() {
+			return mRestaurantsList;
+	}
 }

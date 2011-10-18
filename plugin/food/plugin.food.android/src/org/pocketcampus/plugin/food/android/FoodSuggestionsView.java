@@ -55,5 +55,11 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
+
+	@Override
+	public void menusUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

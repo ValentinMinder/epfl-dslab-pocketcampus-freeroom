@@ -116,7 +116,7 @@ public class MealTagger {
 			return false;
 		}
 		
-		String mealDescription = meal.getDescription();
+		String mealDescription = meal.getMealDescription();
 		String mDescr = mealDescription.replaceAll("[\\r\\n]", " ");
 		mDescr = mDescr.toLowerCase();
 		String mealName = meal.getName();

@@ -7,6 +7,6 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
 
 public interface IFoodController {
 	
-	public List<Restaurant> getRestaurantsList();
+	public void getRestaurantsList();
 	public List<MealTag> getMealTags();
 }

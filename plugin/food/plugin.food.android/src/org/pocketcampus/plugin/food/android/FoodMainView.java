@@ -1,10 +1,15 @@
 package org.pocketcampus.plugin.food.android;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.shared.Restaurant;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,10 +60,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
+		
+		//Testing with Restaurants List
+		mController.getRestaurantsList();
 	}
 
 	private void displayData() {
 		mLayout.setText("No menus");
+		mController.getRestaurantsList();
 	}
 
 	@Override
@@ -95,5 +104,18 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 
 		return true;
+	}
+	
+	public void menusUpdated() {
+		List<Restaurant> haha = mModel.getRestaurantsList();
+		List<String> listeuh = new ArrayList<String>();
+		
+		for(Restaurant r : haha) {
+			listeuh.add(r.name);
+		}
+		
+		ListViewElement l = new ListViewElement(this, listeuh);
+		mLayout.removeAllViews();
+		mLayout.addView(l);
 	}
 }
