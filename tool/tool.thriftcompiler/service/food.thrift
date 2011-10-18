@@ -31,7 +31,7 @@ enum SubmitStatus {
 
 struct Rating {
 	1: required RatingValue ratingValue;
-	2: required int nbVotes;
+	2: required i32 nbVotes;
 	3: required double totalRating;
 }
 
