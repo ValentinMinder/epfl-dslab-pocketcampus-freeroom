@@ -2,10 +2,8 @@ namespace java org.pocketcampus.plugin.food.shared
 
 include "../include/common.thrift"
 
-typedef i32 int
-
 struct Restaurant {
-	1: required common.Id id;
+	1: required common.Id Id;
 	2: required string name;
 	3: optional common.Location location;
 }
@@ -32,22 +30,22 @@ enum SubmitStatus {
 }
 
 struct Rating {
-	1: required RatingValue value;
+	1: required RatingValue ratingValue;
 	2: required int nbVotes;
 	3: required double totalRating;
 }
 
 struct Meal {
-	1: required common.Id id;
+	1: required common.Id Id;
 	2: required string name;
-	3: required string description;
+	3: required string mealDescription;
 	4: required Restaurant restaurant;
 	5: required Rating rating;
 	6: optional double price;
 }
 
 struct Sandwich {
-	1: required common.Id id;
+	1: required common.Id Id;
 	2: required Restaurant restaurant;
 	3: required string name;
 }
@@ -57,6 +55,6 @@ service FoodService {
 	list<Restaurant> getRestaurants();
 	list<Sandwich> getSandwiches();
 	Rating getRating(1: Meal meal);
-	map<int, Rating> getRatings();
-	SubmitStatus setRating(1: Rating rating);
+	map<i32, Rating> getRatings();
+	SubmitStatus setRating(1: Rating rating, 2: Meal meal, 3: string deviceID);
 }
