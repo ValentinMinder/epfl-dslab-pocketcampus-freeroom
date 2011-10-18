@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Rating");
 
-  private static final org.apache.thrift.protocol.TField VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("value", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField RATING_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("ratingValue", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField NB_VOTES_FIELD_DESC = new org.apache.thrift.protocol.TField("nbVotes", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField TOTAL_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("totalRating", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
 
@@ -31,7 +31,7 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
    * 
    * @see RatingValue
    */
-  public RatingValue value; // required
+  public RatingValue ratingValue; // required
   public int nbVotes; // required
   public double totalRating; // required
 
@@ -41,7 +41,7 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
      * 
      * @see RatingValue
      */
-    VALUE((short)1, "value"),
+    RATING_VALUE((short)1, "ratingValue"),
     NB_VOTES((short)2, "nbVotes"),
     TOTAL_RATING((short)3, "totalRating");
 
@@ -58,8 +58,8 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // VALUE
-          return VALUE;
+        case 1: // RATING_VALUE
+          return RATING_VALUE;
         case 2: // NB_VOTES
           return NB_VOTES;
         case 3: // TOTAL_RATING
@@ -111,10 +111,10 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.VALUE, new org.apache.thrift.meta_data.FieldMetaData("value", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.RATING_VALUE, new org.apache.thrift.meta_data.FieldMetaData("ratingValue", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, RatingValue.class)));
     tmpMap.put(_Fields.NB_VOTES, new org.apache.thrift.meta_data.FieldMetaData("nbVotes", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TOTAL_RATING, new org.apache.thrift.meta_data.FieldMetaData("totalRating", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -125,12 +125,12 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
   }
 
   public Rating(
-    RatingValue value,
+    RatingValue ratingValue,
     int nbVotes,
     double totalRating)
   {
     this();
-    this.value = value;
+    this.ratingValue = ratingValue;
     this.nbVotes = nbVotes;
     setNbVotesIsSet(true);
     this.totalRating = totalRating;
@@ -143,8 +143,8 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
   public Rating(Rating other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetValue()) {
-      this.value = other.value;
+    if (other.isSetRatingValue()) {
+      this.ratingValue = other.ratingValue;
     }
     this.nbVotes = other.nbVotes;
     this.totalRating = other.totalRating;
@@ -156,7 +156,7 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
 
   @Override
   public void clear() {
-    this.value = null;
+    this.ratingValue = null;
     setNbVotesIsSet(false);
     this.nbVotes = 0;
     setTotalRatingIsSet(false);
@@ -167,31 +167,31 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
    * 
    * @see RatingValue
    */
-  public RatingValue getValue() {
-    return this.value;
+  public RatingValue getRatingValue() {
+    return this.ratingValue;
   }
 
   /**
    * 
    * @see RatingValue
    */
-  public Rating setValue(RatingValue value) {
-    this.value = value;
+  public Rating setRatingValue(RatingValue ratingValue) {
+    this.ratingValue = ratingValue;
     return this;
   }
 
-  public void unsetValue() {
-    this.value = null;
+  public void unsetRatingValue() {
+    this.ratingValue = null;
   }
 
-  /** Returns true if field value is set (has been assigned a value) and false otherwise */
-  public boolean isSetValue() {
-    return this.value != null;
+  /** Returns true if field ratingValue is set (has been assigned a value) and false otherwise */
+  public boolean isSetRatingValue() {
+    return this.ratingValue != null;
   }
 
-  public void setValueIsSet(boolean value) {
+  public void setRatingValueIsSet(boolean value) {
     if (!value) {
-      this.value = null;
+      this.ratingValue = null;
     }
   }
 
@@ -243,11 +243,11 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case VALUE:
+    case RATING_VALUE:
       if (value == null) {
-        unsetValue();
+        unsetRatingValue();
       } else {
-        setValue((RatingValue)value);
+        setRatingValue((RatingValue)value);
       }
       break;
 
@@ -272,8 +272,8 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case VALUE:
-      return getValue();
+    case RATING_VALUE:
+      return getRatingValue();
 
     case NB_VOTES:
       return Integer.valueOf(getNbVotes());
@@ -292,8 +292,8 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
     }
 
     switch (field) {
-    case VALUE:
-      return isSetValue();
+    case RATING_VALUE:
+      return isSetRatingValue();
     case NB_VOTES:
       return isSetNbVotes();
     case TOTAL_RATING:
@@ -315,12 +315,12 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
     if (that == null)
       return false;
 
-    boolean this_present_value = true && this.isSetValue();
-    boolean that_present_value = true && that.isSetValue();
-    if (this_present_value || that_present_value) {
-      if (!(this_present_value && that_present_value))
+    boolean this_present_ratingValue = true && this.isSetRatingValue();
+    boolean that_present_ratingValue = true && that.isSetRatingValue();
+    if (this_present_ratingValue || that_present_ratingValue) {
+      if (!(this_present_ratingValue && that_present_ratingValue))
         return false;
-      if (!this.value.equals(that.value))
+      if (!this.ratingValue.equals(that.ratingValue))
         return false;
     }
 
@@ -358,12 +358,12 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
     int lastComparison = 0;
     Rating typedOther = (Rating)other;
 
-    lastComparison = Boolean.valueOf(isSetValue()).compareTo(typedOther.isSetValue());
+    lastComparison = Boolean.valueOf(isSetRatingValue()).compareTo(typedOther.isSetRatingValue());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetValue()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.value, typedOther.value);
+    if (isSetRatingValue()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ratingValue, typedOther.ratingValue);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -405,9 +405,9 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
         break;
       }
       switch (field.id) {
-        case 1: // VALUE
+        case 1: // RATING_VALUE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.value = RatingValue.findByValue(iprot.readI32());
+            this.ratingValue = RatingValue.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -449,9 +449,9 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.value != null) {
-      oprot.writeFieldBegin(VALUE_FIELD_DESC);
-      oprot.writeI32(this.value.getValue());
+    if (this.ratingValue != null) {
+      oprot.writeFieldBegin(RATING_VALUE_FIELD_DESC);
+      oprot.writeI32(this.ratingValue.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(NB_VOTES_FIELD_DESC);
@@ -469,11 +469,11 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
     StringBuilder sb = new StringBuilder("Rating(");
     boolean first = true;
 
-    sb.append("value:");
-    if (this.value == null) {
+    sb.append("ratingValue:");
+    if (this.ratingValue == null) {
       sb.append("null");
     } else {
-      sb.append(this.value);
+      sb.append(this.ratingValue);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -490,8 +490,8 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (value == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'value' was not present! Struct: " + toString());
+    if (ratingValue == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'ratingValue' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'nbVotes' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'totalRating' because it's a primitive and you chose the non-beans generator.

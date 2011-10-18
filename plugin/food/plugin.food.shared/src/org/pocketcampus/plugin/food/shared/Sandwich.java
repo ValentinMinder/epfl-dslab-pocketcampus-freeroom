@@ -23,17 +23,17 @@ import org.slf4j.LoggerFactory;
 public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Sandwich");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("Id", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField RESTAURANT_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurant", org.apache.thrift.protocol.TType.STRUCT, (short)2);
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public long id; // required
+  public long Id; // required
   public Restaurant restaurant; // required
   public String name; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
+    ID((short)1, "Id"),
     RESTAURANT((short)2, "restaurant"),
     NAME((short)3, "name");
 
@@ -102,7 +102,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("Id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.RESTAURANT, new org.apache.thrift.meta_data.FieldMetaData("restaurant", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Restaurant.class)));
@@ -116,12 +116,12 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
   }
 
   public Sandwich(
-    long id,
+    long Id,
     Restaurant restaurant,
     String name)
   {
     this();
-    this.id = id;
+    this.Id = Id;
     setIdIsSet(true);
     this.restaurant = restaurant;
     this.name = name;
@@ -133,7 +133,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
   public Sandwich(Sandwich other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.id = other.id;
+    this.Id = other.Id;
     if (other.isSetRestaurant()) {
       this.restaurant = new Restaurant(other.restaurant);
     }
@@ -149,17 +149,17 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
   @Override
   public void clear() {
     setIdIsSet(false);
-    this.id = 0;
+    this.Id = 0;
     this.restaurant = null;
     this.name = null;
   }
 
   public long getId() {
-    return this.id;
+    return this.Id;
   }
 
-  public Sandwich setId(long id) {
-    this.id = id;
+  public Sandwich setId(long Id) {
+    this.Id = Id;
     setIdIsSet(true);
     return this;
   }
@@ -168,7 +168,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
     __isset_bit_vector.clear(__ID_ISSET_ID);
   }
 
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
+  /** Returns true if field Id is set (has been assigned a value) and false otherwise */
   public boolean isSetId() {
     return __isset_bit_vector.get(__ID_ISSET_ID);
   }
@@ -299,12 +299,12 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
     if (that == null)
       return false;
 
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
+    boolean this_present_Id = true;
+    boolean that_present_Id = true;
+    if (this_present_Id || that_present_Id) {
+      if (!(this_present_Id && that_present_Id))
         return false;
-      if (this.id != that.id)
+      if (this.Id != that.Id)
         return false;
     }
 
@@ -347,7 +347,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
       return lastComparison;
     }
     if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.Id, typedOther.Id);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -391,7 +391,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
       switch (field.id) {
         case 1: // ID
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.id = iprot.readI64();
+            this.Id = iprot.readI64();
             setIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -421,7 +421,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
 
     // check for required fields of primitive type, which can't be checked in the validate method
     if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not found in serialized data! Struct: " + toString());
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'Id' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -431,7 +431,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
 
     oprot.writeStructBegin(STRUCT_DESC);
     oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI64(this.id);
+    oprot.writeI64(this.Id);
     oprot.writeFieldEnd();
     if (this.restaurant != null) {
       oprot.writeFieldBegin(RESTAURANT_FIELD_DESC);
@@ -452,8 +452,8 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
     StringBuilder sb = new StringBuilder("Sandwich(");
     boolean first = true;
 
-    sb.append("id:");
-    sb.append(this.id);
+    sb.append("Id:");
+    sb.append(this.Id);
     first = false;
     if (!first) sb.append(", ");
     sb.append("restaurant:");
@@ -477,7 +477,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'id' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'Id' because it's a primitive and you chose the non-beans generator.
     if (restaurant == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'restaurant' was not present! Struct: " + toString());
     }

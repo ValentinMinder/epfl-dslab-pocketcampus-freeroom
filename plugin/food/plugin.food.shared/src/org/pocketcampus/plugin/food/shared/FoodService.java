@@ -34,7 +34,7 @@ public class FoodService {
 
     public Map<Integer,Rating> getRatings() throws org.apache.thrift.TException;
 
-    public SubmitStatus setRating(Rating rating) throws org.apache.thrift.TException;
+    public SubmitStatus setRating(Rating rating, Meal meal, String deviceID) throws org.apache.thrift.TException;
 
   }
 
@@ -50,7 +50,7 @@ public class FoodService {
 
     public void getRatings(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRatings_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void setRating(Rating rating, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.setRating_call> resultHandler) throws org.apache.thrift.TException;
+    public void setRating(Rating rating, Meal meal, String deviceID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.setRating_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -185,16 +185,18 @@ public class FoodService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRatings failed: unknown result");
     }
 
-    public SubmitStatus setRating(Rating rating) throws org.apache.thrift.TException
+    public SubmitStatus setRating(Rating rating, Meal meal, String deviceID) throws org.apache.thrift.TException
     {
-      send_setRating(rating);
+      send_setRating(rating, meal, deviceID);
       return recv_setRating();
     }
 
-    public void send_setRating(Rating rating) throws org.apache.thrift.TException
+    public void send_setRating(Rating rating, Meal meal, String deviceID) throws org.apache.thrift.TException
     {
       setRating_args args = new setRating_args();
       args.setRating(rating);
+      args.setMeal(meal);
+      args.setDeviceID(deviceID);
       sendBase("setRating", args);
     }
 
@@ -374,24 +376,30 @@ public class FoodService {
       }
     }
 
-    public void setRating(Rating rating, org.apache.thrift.async.AsyncMethodCallback<setRating_call> resultHandler) throws org.apache.thrift.TException {
+    public void setRating(Rating rating, Meal meal, String deviceID, org.apache.thrift.async.AsyncMethodCallback<setRating_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      setRating_call method_call = new setRating_call(rating, resultHandler, this, ___protocolFactory, ___transport);
+      setRating_call method_call = new setRating_call(rating, meal, deviceID, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class setRating_call extends org.apache.thrift.async.TAsyncMethodCall {
       private Rating rating;
-      public setRating_call(Rating rating, org.apache.thrift.async.AsyncMethodCallback<setRating_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private Meal meal;
+      private String deviceID;
+      public setRating_call(Rating rating, Meal meal, String deviceID, org.apache.thrift.async.AsyncMethodCallback<setRating_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.rating = rating;
+        this.meal = meal;
+        this.deviceID = deviceID;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("setRating", org.apache.thrift.protocol.TMessageType.CALL, 0));
         setRating_args args = new setRating_args();
         args.setRating(rating);
+        args.setMeal(meal);
+        args.setDeviceID(deviceID);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -519,7 +527,7 @@ public class FoodService {
 
       protected setRating_result getResult(I iface, setRating_args args) throws org.apache.thrift.TException {
         setRating_result result = new setRating_result();
-        result.success = iface.setRating(args.rating);
+        result.success = iface.setRating(args.rating, args.meal, args.deviceID);
         return result;
       }
     }
@@ -3003,7 +3011,7 @@ public class FoodService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32              , "int"), 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32), 
               new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Rating.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRatings_result.class, metaDataMap);
@@ -3277,12 +3285,18 @@ public class FoodService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("setRating_args");
 
     private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField MEAL_FIELD_DESC = new org.apache.thrift.protocol.TField("meal", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+    private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceID", org.apache.thrift.protocol.TType.STRING, (short)3);
 
     public Rating rating; // required
+    public Meal meal; // required
+    public String deviceID; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      RATING((short)1, "rating");
+      RATING((short)1, "rating"),
+      MEAL((short)2, "meal"),
+      DEVICE_ID((short)3, "deviceID");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -3299,6 +3313,10 @@ public class FoodService {
         switch(fieldId) {
           case 1: // RATING
             return RATING;
+          case 2: // MEAL
+            return MEAL;
+          case 3: // DEVICE_ID
+            return DEVICE_ID;
           default:
             return null;
         }
@@ -3345,6 +3363,10 @@ public class FoodService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.RATING, new org.apache.thrift.meta_data.FieldMetaData("rating", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Rating.class)));
+      tmpMap.put(_Fields.MEAL, new org.apache.thrift.meta_data.FieldMetaData("meal", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Meal.class)));
+      tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(setRating_args.class, metaDataMap);
     }
@@ -3353,10 +3375,14 @@ public class FoodService {
     }
 
     public setRating_args(
-      Rating rating)
+      Rating rating,
+      Meal meal,
+      String deviceID)
     {
       this();
       this.rating = rating;
+      this.meal = meal;
+      this.deviceID = deviceID;
     }
 
     /**
@@ -3365,6 +3391,12 @@ public class FoodService {
     public setRating_args(setRating_args other) {
       if (other.isSetRating()) {
         this.rating = new Rating(other.rating);
+      }
+      if (other.isSetMeal()) {
+        this.meal = new Meal(other.meal);
+      }
+      if (other.isSetDeviceID()) {
+        this.deviceID = other.deviceID;
       }
     }
 
@@ -3375,6 +3407,8 @@ public class FoodService {
     @Override
     public void clear() {
       this.rating = null;
+      this.meal = null;
+      this.deviceID = null;
     }
 
     public Rating getRating() {
@@ -3401,6 +3435,54 @@ public class FoodService {
       }
     }
 
+    public Meal getMeal() {
+      return this.meal;
+    }
+
+    public setRating_args setMeal(Meal meal) {
+      this.meal = meal;
+      return this;
+    }
+
+    public void unsetMeal() {
+      this.meal = null;
+    }
+
+    /** Returns true if field meal is set (has been assigned a value) and false otherwise */
+    public boolean isSetMeal() {
+      return this.meal != null;
+    }
+
+    public void setMealIsSet(boolean value) {
+      if (!value) {
+        this.meal = null;
+      }
+    }
+
+    public String getDeviceID() {
+      return this.deviceID;
+    }
+
+    public setRating_args setDeviceID(String deviceID) {
+      this.deviceID = deviceID;
+      return this;
+    }
+
+    public void unsetDeviceID() {
+      this.deviceID = null;
+    }
+
+    /** Returns true if field deviceID is set (has been assigned a value) and false otherwise */
+    public boolean isSetDeviceID() {
+      return this.deviceID != null;
+    }
+
+    public void setDeviceIDIsSet(boolean value) {
+      if (!value) {
+        this.deviceID = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case RATING:
@@ -3411,6 +3493,22 @@ public class FoodService {
         }
         break;
 
+      case MEAL:
+        if (value == null) {
+          unsetMeal();
+        } else {
+          setMeal((Meal)value);
+        }
+        break;
+
+      case DEVICE_ID:
+        if (value == null) {
+          unsetDeviceID();
+        } else {
+          setDeviceID((String)value);
+        }
+        break;
+
       }
     }
 
@@ -3418,6 +3516,12 @@ public class FoodService {
       switch (field) {
       case RATING:
         return getRating();
+
+      case MEAL:
+        return getMeal();
+
+      case DEVICE_ID:
+        return getDeviceID();
 
       }
       throw new IllegalStateException();
@@ -3432,6 +3536,10 @@ public class FoodService {
       switch (field) {
       case RATING:
         return isSetRating();
+      case MEAL:
+        return isSetMeal();
+      case DEVICE_ID:
+        return isSetDeviceID();
       }
       throw new IllegalStateException();
     }
@@ -3455,6 +3563,24 @@ public class FoodService {
         if (!(this_present_rating && that_present_rating))
           return false;
         if (!this.rating.equals(that.rating))
+          return false;
+      }
+
+      boolean this_present_meal = true && this.isSetMeal();
+      boolean that_present_meal = true && that.isSetMeal();
+      if (this_present_meal || that_present_meal) {
+        if (!(this_present_meal && that_present_meal))
+          return false;
+        if (!this.meal.equals(that.meal))
+          return false;
+      }
+
+      boolean this_present_deviceID = true && this.isSetDeviceID();
+      boolean that_present_deviceID = true && that.isSetDeviceID();
+      if (this_present_deviceID || that_present_deviceID) {
+        if (!(this_present_deviceID && that_present_deviceID))
+          return false;
+        if (!this.deviceID.equals(that.deviceID))
           return false;
       }
 
@@ -3484,6 +3610,26 @@ public class FoodService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetMeal()).compareTo(typedOther.isSetMeal());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetMeal()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.meal, typedOther.meal);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetDeviceID()).compareTo(typedOther.isSetDeviceID());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetDeviceID()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.deviceID, typedOther.deviceID);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -3509,6 +3655,21 @@ public class FoodService {
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case 2: // MEAL
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.meal = new Meal();
+              this.meal.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 3: // DEVICE_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.deviceID = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -3529,6 +3690,16 @@ public class FoodService {
         this.rating.write(oprot);
         oprot.writeFieldEnd();
       }
+      if (this.meal != null) {
+        oprot.writeFieldBegin(MEAL_FIELD_DESC);
+        this.meal.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.deviceID != null) {
+        oprot.writeFieldBegin(DEVICE_ID_FIELD_DESC);
+        oprot.writeString(this.deviceID);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -3543,6 +3714,22 @@ public class FoodService {
         sb.append("null");
       } else {
         sb.append(this.rating);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("meal:");
+      if (this.meal == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.meal);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("deviceID:");
+      if (this.deviceID == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.deviceID);
       }
       first = false;
       sb.append(")");
