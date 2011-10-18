@@ -104,21 +104,21 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
+		//MenuInflater inflater = getMenuInflater();
+	    //inflater.inflate(R.menu.directory_resultlist_menu, menu);
 	    return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-	    	case R.id.directory_resultList_filtre:
-		    	List<String> ouToKeep = new LinkedList<String>();
-				ouToKeep.add("IN-MA1");
-				Toast.makeText(this, "filtre!", Toast.LENGTH_SHORT).show();
-				filterResult(ouToKeep);
-		        return true;
-		}
+//		switch (item.getItemId()) {
+//	    	case R.id.directory_resultList_filtre:
+//		    	List<String> ouToKeep = new LinkedList<String>();
+//				ouToKeep.add("IN-MA1");
+//				Toast.makeText(this, "filtre!", Toast.LENGTH_SHORT).show();
+//				filterResult(ouToKeep);
+//		        return true;
+//		}
 		return true;
 	}
 
