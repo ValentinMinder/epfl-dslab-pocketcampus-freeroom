@@ -13,7 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.news.shared"/>
 	<classpathentry kind="src" path="/plugin.camipro.shared"/>
-	<classpathentry kind="src" path="/lib.actionbar.android"/>
 	<classpathentry kind="src" path="/plugin.directory.shared"/>
 	<classpathentry kind="src" path="lib.actionbar.android_src"/>
 	<classpathentry kind="src" path="plugin.news.android_src"/>
