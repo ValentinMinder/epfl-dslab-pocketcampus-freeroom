@@ -12,6 +12,7 @@
 		<groupId>org.pocketcampus</groupId>
 		<artifactId>pocketcampus</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
 	</parent>
 
 	<dependencies>
