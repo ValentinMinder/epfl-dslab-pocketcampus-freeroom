@@ -16,6 +16,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+			<relativePath>../../../</relativePath>
         </dependency>
         
         <dependency>
