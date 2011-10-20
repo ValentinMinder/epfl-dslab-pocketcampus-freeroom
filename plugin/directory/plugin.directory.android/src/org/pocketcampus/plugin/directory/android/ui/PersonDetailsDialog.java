@@ -110,23 +110,15 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()){
-			case R.id.directory_imageButton_mail:
-				performMail();
-				break;
-			case R.id.directory_imageButton_phone:
-				performDial();
-				break;
-			
-			case R.id.directory_imageButton_room:
-				performPath();
-				break;
-		
-			case R.id.directory_imageButton_web:
-				performWeb();
-				break;			
+		if (v.getId() == R.id.directory_imageButton_mail) {
+			performMail();
+		} else if (v.getId() == R.id.directory_imageButton_phone) {
+			performDial();
+		} else if (v.getId() == R.id.directory_imageButton_room) {
+			performPath();
+		} else if (v.getId() == R.id.directory_imageButton_web) {
+			performWeb();
 		}
-		//Toast.makeText(ctx, "image click", Toast.LENGTH_SHORT).show();
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -219,13 +219,10 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.takeoutreceiver_menu_refresh:
+		if (item.getItemId() == R.id.takeoutreceiver_menu_refresh) {
 			mController.loadPendingOrders();
-			break;
-		case R.id.takeoutreceiver_menu_add:
+		} else if (item.getItemId() == R.id.takeoutreceiver_menu_add) {
 			mController.addBogusOrder();
-			break;
 		}
 
 		return true;

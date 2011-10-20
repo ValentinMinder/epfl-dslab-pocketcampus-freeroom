@@ -104,14 +104,10 @@ public class TestMainView extends PluginView implements ITestView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.test_open:
+		if (item.getItemId() == R.id.test_open) {
 			startActivity(new Intent(this, TestOtherView.class));
-			break;
-			
-		case R.id.test_request:
+		} else if (item.getItemId() == R.id.test_request) {
 			mController.loadBar();
-			break;
 		}
 
 		return true;

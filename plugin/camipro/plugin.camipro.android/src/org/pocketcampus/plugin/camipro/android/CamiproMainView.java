@@ -63,11 +63,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.camipro_refresh:
+		
+		if(item.getItemId() == R.id.camipro_refresh) {			
 			mController.refreshBalance();
-			break;
 		}
+		
 
 		return true;
 	}

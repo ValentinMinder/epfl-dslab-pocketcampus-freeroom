@@ -92,6 +92,7 @@ public class FoodServiceImpl implements FoodService.Iface{
 	 */
 	@Override
 	public List<Restaurant> getRestaurants() throws TException {
+		System.out.println("<getRestaurants>: getting restaurants");
 		ArrayList<Restaurant> mRestaurantList = new ArrayList<Restaurant>();
 
 		if(mCampusMeals != null) {
