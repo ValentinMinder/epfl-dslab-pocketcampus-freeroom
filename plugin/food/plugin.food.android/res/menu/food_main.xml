@@ -9,4 +9,7 @@
 
 	<item android:id="@+id/food_by_suggestions" android:icon="@drawable/food_opt_icon_suggestions"
 		android:title="Suggestions" />
+	
+	<item android:id="@+id/food_by_settings" android:icon="@drawable/food_opt_icon_settings"
+		android:title="Settings" />
 </menu>

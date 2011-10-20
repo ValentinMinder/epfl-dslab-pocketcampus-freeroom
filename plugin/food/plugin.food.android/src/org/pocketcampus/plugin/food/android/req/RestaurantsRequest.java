@@ -16,7 +16,7 @@ public class RestaurantsRequest extends
 	@Override
 	protected List<Restaurant> runInBackground(Iface client, Object param)
 			throws Exception {
-		Log.d("<RestaurantsRequest>: ", "Run");
+		Log.d("<RestaurantsRequest>:", "Run");
 		return client.getRestaurants();
 	}
 
@@ -29,7 +29,7 @@ public class RestaurantsRequest extends
 	@Override
 	protected void onError(FoodController controller, Exception e) {
 		Log.d("<RestaurantsRequest>:", "onError");
-//		controller.getModel().notifyNetworkError();
+		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
 

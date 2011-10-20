@@ -5,6 +5,7 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
+import org.pocketcampus.plugin.food.android.req.MealsRequest;
 import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
@@ -43,6 +44,12 @@ public class FoodController extends PluginController implements IFoodController{
 		new RestaurantsRequest().start(this, mClient, (Object)null);
 	}
 
+	@Override
+	public void getMeals() {
+		Log.d("MEALS", "Sending Meals request");
+		new MealsRequest().start(this, mClient, (Object)null);
+	}
+	
 	@Override
 	public List<MealTag> getMealTags() {
 		return mModel.getMealTags();

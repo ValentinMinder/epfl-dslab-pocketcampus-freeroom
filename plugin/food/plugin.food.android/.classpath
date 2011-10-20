@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.food.shared"/>
@@ -40,5 +39,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="src" path="platform.sdk.android_src"/>
 	<classpathentry kind="src" path="lib.actionbar.android_src"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

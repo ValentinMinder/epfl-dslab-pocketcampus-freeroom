@@ -4,6 +4,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 
 public interface IFoodView extends IView {
 	
+	public void restaurantsUpdated();
 	public void menusUpdated();
 
 }

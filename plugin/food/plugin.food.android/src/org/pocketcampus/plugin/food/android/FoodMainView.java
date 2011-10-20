@@ -9,20 +9,30 @@ import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.Sandwich;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
 public class FoodMainView extends PluginView implements IFoodView {
+	/*MVC*/
 	private FoodController mController;
 	private IFoodModel mModel;
 
+	/*Layout*/
 	private StandardLayout mLayout;
 
+	/*Data*/
+	private List<Restaurant> mRestaurantList;
+	private List<Meal> mMealsList;
+	private List<Sandwich> mSandwichesList;
+	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
 	 * view may not need a controller (see for example the dashboard).
@@ -52,6 +62,11 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
+		
+		//initialize data
+		this.mMealsList = new ArrayList<Meal>();
+		this.mRestaurantList = new ArrayList<Restaurant>();
+		this.mSandwichesList = new ArrayList<Sandwich>();
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -60,11 +75,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
-		
-		//Testing with Restaurants List
-		mController.getRestaurantsList();
 	}
 
+	/**
+	 * Displays the data
+	 * For now testing with Restaurants
+	 */
 	private void displayData() {
 		mLayout.setText("No menus");
 		mController.getRestaurantsList();
@@ -90,32 +106,37 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.food_by_resto:
-			// mController.dosomething;
-			break;
-
-		case R.id.food_by_sandwiches:
-			// mController.dosomething;
-			break;
-		case R.id.food_by_suggestions:
+		if (item.getItemId() == R.id.food_by_resto) {
+			
+		} else if (item.getItemId() == R.id.food_by_sandwiches) {
+			
+		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			startActivity(new Intent(this, FoodSuggestionsView.class));
-			break;
+		} else if (item.getItemId() == R.id.food_by_settings) {
+			
 		}
 
 		return true;
 	}
 	
-	public void menusUpdated() {
-		List<Restaurant> haha = mModel.getRestaurantsList();
+	public void restaurantsUpdated() {
+		mRestaurantList = mModel.getRestaurantsList();
 		List<String> listeuh = new ArrayList<String>();
 		
-		for(Restaurant r : haha) {
+		for(Restaurant r : mRestaurantList) {
 			listeuh.add(r.name);
+			Log.d("RESTAURANT", "Restaurant : " + r.name);
 		}
 		
 		ListViewElement l = new ListViewElement(this, listeuh);
+		
 		mLayout.removeAllViews();
 		mLayout.addView(l);
+	}
+
+	@Override
+	public void menusUpdated() {
+		// Update meals
+		
 	}
 }

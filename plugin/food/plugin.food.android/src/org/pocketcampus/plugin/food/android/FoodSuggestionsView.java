@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.element.MinimalListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
@@ -54,6 +54,12 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
 				Toast.LENGTH_SHORT);
 		toast.show();
+	}
+
+	@Override
+	public void restaurantsUpdated() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

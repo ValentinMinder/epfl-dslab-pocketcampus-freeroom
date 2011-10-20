@@ -6,12 +6,14 @@ import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 
+import android.util.Log;
+
 public class SingleRatingRequest extends
 		Request<FoodController, Iface, Meal, Rating> {
 
 	@Override
 	protected Rating runInBackground(Iface client, Meal param) throws Exception {
-		System.out.println("Getting rating");
+		Log.d("<RatingRequest>:","run");
 		if (!param.getClass().equals(Meal.class)) {
 			throw new IllegalArgumentException();
 		}
@@ -20,14 +22,16 @@ public class SingleRatingRequest extends
 
 	@Override
 	protected void onResult(FoodController controller, Rating result) {
-		// TODO Auto-generated method stub
+		Log.d("<RatingRequest>:","onResult");
+		//Notifiy the model
 
 	}
 
 	@Override
 	protected void onError(FoodController controller, Exception e) {
-		// TODO Auto-generated method stub
-
+		Log.d("<RatingsRequest>:", "onError");
+		controller.getModel().notifyNetworkError();
+		e.printStackTrace();
 	}
 
 }
