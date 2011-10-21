@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.news.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -469,7 +470,34 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_id = true;
+    builder.append(present_id);
+    if (present_id)
+      builder.append(id);
+
+    boolean present_title = true && (isSetTitle());
+    builder.append(present_title);
+    if (present_title)
+      builder.append(title);
+
+    boolean present_link = true && (isSetLink());
+    builder.append(present_link);
+    if (present_link)
+      builder.append(link);
+
+    boolean present_description = true && (isSetDescription());
+    builder.append(present_description);
+    if (present_description)
+      builder.append(description);
+
+    boolean present_items = true && (isSetItems());
+    builder.append(present_items);
+    if (present_items)
+      builder.append(items);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(Feed other) {

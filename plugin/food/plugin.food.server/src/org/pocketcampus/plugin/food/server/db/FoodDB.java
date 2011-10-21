@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.food.server.db;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.plugin.food.shared.Meal;
@@ -29,7 +29,7 @@ public class FoodDB {
 	public FoodDB(String dbName) {
 		userName_ = "pocketbuddy";
 		passWord_ = "";
-		url_ = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/test";
+		url_ = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";
 	}
 
 	/**
@@ -45,6 +45,7 @@ public class FoodDB {
 					passWord_);
 			System.out.println("Database connection established");
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("Cannot connect to database server");
 		}
 		return connection_;
@@ -76,26 +77,18 @@ public class FoodDB {
 	public boolean insertMeal(Meal m) {
 		Connection connection_ = createConnection();
 		PreparedStatement insertMeal = null;
-		String insertString = "INSERT INTO MENUS (Title, Description, Restaurant, Rating, NumberOfVotes, hashcode, JsonObject, stamp_created)"
-				+ " VALUES (?,?,?,?,?,?,?,?)";
+		String insertString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
+				+ " VALUES (?,?,?,?,?,?,?)";
 
 		try {
 			String name = m.getName();
 			String description = m.getMealDescription();
 			String restaurant = m.getRestaurant().getName();
-			double rating = m.getRating().getTotalRating();
+			double totalRating = m.getRating().getTotalRating();
 			int numberOfVotes = m.getRating().getNbVotes();
 			int hashcode = m.hashCode();
 
-//			Gson gson = new Gson();
-
-			String jsonObject = "JsonObject";
-
-//			try {
-//				jsonObject = gson.toJson(m);
-//			} catch (JsonSyntaxException e) {
-//			}
-
+			// Get today's date
 			Calendar cal = Calendar.getInstance();
 			String dateString = cal.get(Calendar.YEAR) + "."
 					+ (cal.get(Calendar.MONTH) + 1) + "."
@@ -105,23 +98,24 @@ public class FoodDB {
 
 			insertMeal = connection_.prepareStatement(insertString);
 
+			// Insert values in corresponding fields
 			insertMeal.setString(1, name);
 			insertMeal.setString(2, description);
 			insertMeal.setString(3, restaurant);
-			insertMeal.setFloat(4, (float) rating);
+			insertMeal.setFloat(4, (float) totalRating);
 			insertMeal.setInt(5, numberOfVotes);
 			insertMeal.setInt(6, hashcode);
-			insertMeal.setString(7, jsonObject);
-			insertMeal.setString(8, dateString);
+			insertMeal.setString(7, dateString);
 
+			// Insert meal in database
 			insertMeal.execute();
 			connection_.commit();
 
-			System.out.println("inserted meal");
+			System.out.println("#Food Database: inserted meal");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Problem in insert meal.");
+			System.out.println("#Food Database: Problem in insert meal.");
 			return false;
 		} finally {
 			try {
@@ -138,7 +132,7 @@ public class FoodDB {
 	public Meal getMeal(int mealHashCode) {
 		PreparedStatement getMeal = null;
 		Connection connection_ = createConnection();
-		String getString = "SELECT * FROM MENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
+		String getString = "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
 		Meal newMeal = null;
 
 		try {
@@ -157,21 +151,25 @@ public class FoodDB {
 
 			connection_.commit();
 
-			System.out.println("<getMeal>: getting " + mealHashCode);
+			System.out.println("#Food database: <getMeal>: getting "
+					+ mealHashCode);
 
-//			Gson gson = new Gson();
-
-			String jsonObject = "";
-//			Type mealType = new TypeToken<Meal>() {
-//			}.getType();
+			String name;
+			String description;
+			String restaurant;
+			double totalRating;
+			int numberOfVotes;
+			int hashcode;
+			Date stamp_created;
 
 			while (rset.next()) {
-				jsonObject = rset.getString("JsonObject");
-//				try {
-//					newMeal = gson.fromJson(jsonObject, mealType);
-//				} catch (JsonSyntaxException e) {
-//					System.out.println("JsonSyntaxException");
-//				}
+				name = rset.getString("Title");
+				description = rset.getString("Description");
+				restaurant = rset.getString("Restaurant");
+				totalRating = rset.getFloat("TotalRating");
+				numberOfVotes = rset.getInt("NumberOfVotes");
+				hashcode = rset.getInt("HashCode");
+				stamp_created = rset.getDate("stamp_created");
 			}
 
 			return newMeal;
@@ -203,7 +201,7 @@ public class FoodDB {
 			return null;
 		}
 		PreparedStatement getMeals = null;
-		String getString = "SELECT * FROM MENUS WHERE STAMP_CREATED = ?";
+		String getString = "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ?";
 		try {
 			List<Meal> campusMeals = new ArrayList<Meal>();
 
@@ -222,20 +220,32 @@ public class FoodDB {
 
 			System.out.println("<getMeals>: getting " + dateString);
 
-//			Gson gson = new Gson();
+			String name = null;
+			String description = null;
+			String restaurant = null;
+			double totalRating = 0;
+			int numberOfVotes = 0;
+			int hashcode = 0;
+			Date stamp_created = null;
 
-			String jsonObject = "";
-//			Type mealType = new TypeToken<Meal>() {
-//			}.getType();
-
+			// Treat the answer from the database
 			while (rset.next()) {
-				jsonObject = rset.getString("JsonObject");
-//				try {
-//					Meal newMeal = gson.fromJson(jsonObject, mealType);
-//					campusMeals.add(newMeal);
-//				} catch (JsonSyntaxException e) {
-//					System.out.println("JsonSyntaxException");
-//				}
+				name = rset.getString("Title");
+				description = rset.getString("Description");
+				restaurant = rset.getString("Restaurant");
+				totalRating = rset.getFloat("TotalRating");
+				numberOfVotes = rset.getInt("NumberOfVotes");
+				hashcode = rset.getInt("HashCode");
+				stamp_created = rset.getDate("stamp_created");
+
+				Meal gottenMeal = new Meal();
+				gottenMeal.setId((long) restaurant.hashCode()
+						+ stamp_created.hashCode() + name.hashCode());
+				gottenMeal.setName(name);
+				gottenMeal.setRestaurant(new Restaurant(restaurant.hashCode(),
+						restaurant));
+
+				campusMeals.add(gottenMeal);
 			}
 
 			return campusMeals;
@@ -318,7 +328,8 @@ public class FoodDB {
 	 * @param connection_
 	 * @param deviceId
 	 */
-	public void insertVotedDevice(Connection connection_, String deviceId, int hashCode, Double myRating) {
+	public void insertVotedDevice(Connection connection_, String deviceId,
+			int hashCode, Double myRating) {
 		if (connection_ == null) {
 			return;
 		}
@@ -369,16 +380,15 @@ public class FoodDB {
 		String jsonObject = "";
 		try {
 			insertRating = connection_.prepareStatement(insertString);
-//			Gson gson = new Gson();
+			// Gson gson = new Gson();
 			jsonObject = "";
-//			try {
-//				jsonObject = gson.toJson(meal);
-//			} catch (JsonSyntaxException e) {
-//			}
+			// try {
+			// jsonObject = gson.toJson(meal);
+			// } catch (JsonSyntaxException e) {
+			// }
 
 			Rating r = meal.getRating();
-			insertRating.setFloat(1,
-					(float) r.getTotalRating());
+			insertRating.setFloat(1, (float) r.getTotalRating());
 			insertRating.setInt(2, r.getNbVotes());
 			insertRating.setString(3, jsonObject);
 			insertRating.setInt(4, hashCode);

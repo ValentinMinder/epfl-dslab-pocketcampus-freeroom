@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.authentication.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -576,7 +577,19 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_username = true && (isSetUsername());
+      builder.append(present_username);
+      if (present_username)
+        builder.append(username);
+
+      boolean present_password = true && (isSetPassword());
+      builder.append(present_password);
+      if (present_password)
+        builder.append(password);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(login_args other) {
@@ -962,7 +975,19 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      boolean present_le = true && (isSetLe());
+      builder.append(present_le);
+      if (present_le)
+        builder.append(le);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(login_result other) {
@@ -1289,7 +1314,14 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_token = true && (isSetToken());
+      builder.append(present_token);
+      if (present_token)
+        builder.append(token);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(authenticate_args other) {
@@ -1590,7 +1622,14 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true;
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(authenticate_result other) {
@@ -1883,7 +1922,14 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_token = true && (isSetToken());
+      builder.append(present_token);
+      if (present_token)
+        builder.append(token);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(logout_args other) {
@@ -2184,7 +2230,14 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true;
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(logout_result other) {

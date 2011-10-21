@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.news.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -567,7 +568,44 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_id = true;
+    builder.append(present_id);
+    if (present_id)
+      builder.append(id);
+
+    boolean present_title = true && (isSetTitle());
+    builder.append(present_title);
+    if (present_title)
+      builder.append(title);
+
+    boolean present_description = true && (isSetDescription());
+    builder.append(present_description);
+    if (present_description)
+      builder.append(description);
+
+    boolean present_link = true && (isSetLink());
+    builder.append(present_link);
+    if (present_link)
+      builder.append(link);
+
+    boolean present_pubDate = true && (isSetPubDate());
+    builder.append(present_pubDate);
+    if (present_pubDate)
+      builder.append(pubDate);
+
+    boolean present_pubDateDate = true;
+    builder.append(present_pubDateDate);
+    if (present_pubDateDate)
+      builder.append(pubDateDate);
+
+    boolean present_imageUrl = true && (isSetImageUrl());
+    builder.append(present_imageUrl);
+    if (present_imageUrl)
+      builder.append(imageUrl);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(NewsItem other) {

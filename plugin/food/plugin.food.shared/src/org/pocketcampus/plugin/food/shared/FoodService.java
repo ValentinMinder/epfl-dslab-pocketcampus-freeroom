@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -658,7 +659,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_args other) {
@@ -946,7 +949,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getMeals_result other) {
@@ -1194,7 +1204,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurants_args other) {
@@ -1482,7 +1494,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurants_result other) {
@@ -1730,7 +1749,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getSandwiches_args other) {
@@ -2018,7 +2039,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getSandwiches_result other) {
@@ -2332,7 +2360,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_meal = true && (isSetMeal());
+      builder.append(present_meal);
+      if (present_meal)
+        builder.append(meal);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRating_args other) {
@@ -2630,7 +2665,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRating_result other) {
@@ -2861,7 +2903,9 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_args other) {
@@ -3154,7 +3198,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRatings_result other) {
@@ -3589,7 +3640,24 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_rating = true && (isSetRating());
+      builder.append(present_rating);
+      if (present_rating)
+        builder.append(rating);
+
+      boolean present_meal = true && (isSetMeal());
+      builder.append(present_meal);
+      if (present_meal)
+        builder.append(meal);
+
+      boolean present_deviceID = true && (isSetDeviceID());
+      builder.append(present_deviceID);
+      if (present_deviceID)
+        builder.append(deviceID);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_args other) {
@@ -3964,7 +4032,14 @@ public class FoodService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success.getValue());
+
+      return builder.toHashCode();
     }
 
     public int compareTo(setRating_result other) {
