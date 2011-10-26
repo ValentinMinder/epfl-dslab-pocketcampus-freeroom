@@ -1,11 +1,11 @@
-package org.pocketcampus.tool.build
+package org.pocketcampus.tool.build.template
 
 class ManifestTemplate {
 	static def getText(String pluginManifests) {
 		return  """\
 <?xml version="1.0" encoding="utf-8"?>
-<!-- AUTO GENERATED POCKETCAMPUS MANIFEST FILE -->
-<!-- DO NOT EDIT MANUALLY -->
+<!-- AUTO-GENERATED POCKETCAMPUS MANIFEST FILE -->
+<!-- your changes to this file will be kindly disregarded -->
 
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"

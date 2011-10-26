@@ -1,4 +1,4 @@
-package org.pocketcampus.tool.build
+package org.pocketcampus.tool.build.format
 
 import java.io.File;
 
