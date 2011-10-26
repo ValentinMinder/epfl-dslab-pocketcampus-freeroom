@@ -3,8 +3,8 @@ package org.pocketcampus.tool.build
 import org.pocketcampus.tool.build.template.AndroidDotProjectTemplate;
 import org.pocketcampus.tool.build.template.JavaDotProjectTemplate;
 import org.pocketcampus.tool.build.utils.FileUtils;
-import org.pocketcampus.tool.build.format.Manifest;
-import org.pocketcampus.tool.build.format.DotClasspath;
+import org.pocketcampus.tool.build.parser.Manifest;
+import org.pocketcampus.tool.build.parser.DotClasspath;
 
 class Plugin {
 	def String mName
@@ -32,11 +32,14 @@ class Plugin {
 	public void parse() {
 		checkFiles()
 		
-		print "Parsing manifest... "
+		print "Parsing android manifest... "
 		mManifest = Manifest.fromFile(mManifestFile)
 		
-		print "Parsing .classpath"
+		print "Parsing android .classpath"
 		mDotClassPath = DotClasspath.fromFile(mDotClasspathFile)
+		
+//		print "Parsing shared .classpath"
+//		mDotClassPath = DotClasspath.fromFile(mDotClasspathFile)
 	}
 	
 	public void copyTo(String targetAndroidPath, String targetSharedPath, String targetServerPath) {
