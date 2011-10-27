@@ -1,7 +1,9 @@
 package org.pocketcampus.tool.build
 
-import org.apache.ivy.util.FileUtil;
+import org.pocketcampus.tool.build.parser.ClasspathEntry;
+import org.pocketcampus.tool.build.parser.DotClasspath;
 import org.pocketcampus.tool.build.template.ManifestTemplate;
+import org.pocketcampus.tool.build.template.ProjectDotProperties;
 
 class ApplicationBuilder {
 	def final public static APPLICATION_NAME = "PocketCampus"
@@ -32,16 +34,18 @@ class ApplicationBuilder {
 
 		println "=== MERGING PLUGINS ==="
 		String manifestBuffer = "";
-		ArrayList usedPackages = new ArrayList()
+		ArrayList classpathEntriesBuffer = new ArrayList()
 
 		for (Plugin plugin : plugins) {
 			println "=> " + plugin.mName.capitalize()
 
 			try {
 				plugin.parse()
+				manifestBuffer += plugin.getManifest().getText()
+				classpathEntriesBuffer.addAll(plugin.getDotClasspath().getClasspathEntries())
+				
 				plugin.copyTo(TARGET_DIRECTORY_ANDROID, TARGET_DIRECTORY_SHARED, TARGET_DIRECTORY_SERVER)
 				
-				manifestBuffer += plugin.mManifest.text
 				//println "Done."
 
 			} catch (IllegalArgumentException e) {
@@ -52,9 +56,17 @@ class ApplicationBuilder {
 		}
 
 		println "=== CREATING APPLICATION ==="
-		println "=> Manifest"
+		println "=> Android Manifest"
 		String finalManifest = ManifestTemplate.getText(manifestBuffer);
 		new File(TARGET_DIRECTORY_ANDROID + "AndroidManifest.xml").write(finalManifest);
+		
+		print "=> Android Classpath "
+		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
+		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
+		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
+		
+		println "=> Android Project Properties"
+		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 	}
 
 }

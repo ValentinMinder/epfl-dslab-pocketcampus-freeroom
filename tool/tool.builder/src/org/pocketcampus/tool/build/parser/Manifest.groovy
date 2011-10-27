@@ -3,13 +3,16 @@ package org.pocketcampus.tool.build.parser
 import java.io.File;
 
 class Manifest {
-	String text
-	String pkg
+	private String text
+	private String pkg
 	
 	private Manifest(pluginManifest, pluginPackage) {
 		this.text = pluginManifest;
 		this.pkg = pluginPackage;	
 	}
+	
+	public String getText() {return text}
+	public String getPkg() {return pkg}
 	
 	public static Manifest fromFile(File manifest) {
 		// reads Manifest

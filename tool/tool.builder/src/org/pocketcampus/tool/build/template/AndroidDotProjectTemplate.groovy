@@ -36,7 +36,6 @@ class AndroidDotProjectTemplate {
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
-
 		"""
 	}
 }

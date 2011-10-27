@@ -7,18 +7,18 @@ import org.pocketcampus.tool.build.parser.Manifest;
 import org.pocketcampus.tool.build.parser.DotClasspath;
 
 class Plugin {
-	def String mName
+	private String mName
 	
-	def File mDirectory
-	def File mAndroidDirectory
-	def File mSharedDirectory
-	def File mServerDirectory
-	def File mManifestFile
-	def File mDotClasspathFile
-	def File mProjectDotPropertiesFile
+	private File mDirectory
+	private File mAndroidDirectory
+	private File mSharedDirectory
+	private File mServerDirectory
+	private File mManifestFile
+	private File mDotClasspathFile
+	private File mProjectDotPropertiesFile
 	
-	def Manifest mManifest
-	def DotClasspath mDotClassPath
+	private Manifest mManifest
+	private DotClasspath mDotClassPath
 	
 	static Plugin fromDirectory(File directory) {
 		return new Plugin(directory)
@@ -42,6 +42,9 @@ class Plugin {
 //		mDotClassPath = DotClasspath.fromFile(mDotClasspathFile)
 	}
 	
+	public Manifest getManifest() {return mManifest}
+	public DotClasspath getDotClasspath() {return mDotClassPath}
+	
 	public void copyTo(String targetAndroidPath, String targetSharedPath, String targetServerPath) {
 		copyAndroidFilesTo(targetAndroidPath)
 		copySharedFilesTo(targetSharedPath)
@@ -64,10 +67,6 @@ class Plugin {
 		String dotProjectText = AndroidDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_ANDROID)
 		new File(targetPath + "/.project").write(dotProjectText)
 		
-//		// create merged .classpath
-		String dotClasspath = ""
-		new File(targetPath + "/.classpath").write(dotClasspath)
-		
 		println "done."
 	}
 	
@@ -77,15 +76,15 @@ class Plugin {
 		// copy source files
 		FileUtils.copyDirectory(new File(mSharedDirectory.getPath() + "/src"), new File(targetPath + "/src"))
 		
+		// copy jars
+		//FileUtils.copyDirectory(new File(mSharedDirectory.getPath() + "/lib"), new File(targetPath + "/lib"))
+		
 		// create bin directory
 		new File(targetPath + "/bin").mkdir()
 		
 		// create .project
 		String dotProjectText = JavaDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_SHARED)
 		new File(targetPath + "/.project").write(dotProjectText)
-		
-		// create merged .classpath
-		// TODO
 		
 		println "done."
 	}
