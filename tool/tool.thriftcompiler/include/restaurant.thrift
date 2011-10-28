@@ -73,6 +73,7 @@ struct OrderPlacedByClient {
 	9: optional common.Id tableId;
 	10: required common.PushNotificationPhoneId phoneId;
 	11: required common.Id orderId;
+	12: required string username;
 }
 
 // FROM SERVER TO CLIENT
