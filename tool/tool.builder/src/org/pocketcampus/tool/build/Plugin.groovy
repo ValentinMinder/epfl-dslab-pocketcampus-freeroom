@@ -12,7 +12,7 @@ class Plugin {
 	private File mDirectory
 	private File mAndroidDirectory
 	private File mSharedDirectory
-	private File mServerDirectory
+//	private File mServerDirectory
 	private File mManifestFile
 	private File mDotClasspathFile
 	private File mProjectDotPropertiesFile
@@ -48,7 +48,7 @@ class Plugin {
 	public void copyTo(String targetAndroidPath, String targetSharedPath, String targetServerPath) {
 		copyAndroidFilesTo(targetAndroidPath)
 		copySharedFilesTo(targetSharedPath)
-		copyServerFilesTo(targetServerPath)
+//		copyServerFilesTo(targetServerPath)
 	}
 	
 	private void copyAndroidFilesTo(String targetPath) {
@@ -102,8 +102,8 @@ class Plugin {
 		mSharedDirectory = new File(mDirectory.getPath() + "/plugin." + mName + ".shared")
 		checkFile(mSharedDirectory, "Shared directory")
 		
-		mServerDirectory = new File(mDirectory.getPath() + "/plugin." + mName + ".server")
-		checkFile(mServerDirectory, "Server directory")
+//		mServerDirectory = new File(mDirectory.getPath() + "/plugin." + mName + ".server")
+//		checkFile(mServerDirectory, "Server directory")
 		
 		mManifestFile = new File(mAndroidDirectory.getPath() + "/AndroidManifest.xml")
 		checkFile(mManifestFile, "Android Manifest")

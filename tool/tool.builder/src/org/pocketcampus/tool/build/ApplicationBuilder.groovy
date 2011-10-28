@@ -7,9 +7,9 @@ import org.pocketcampus.tool.build.template.ManifestTemplate;
 import org.pocketcampus.tool.build.template.ProjectDotProperties;
 
 class ApplicationBuilder {
-	def final public static APPLICATION_NAME = "PocketCampus"
-	def final public static APPLICATION_NAME_ANDROID = APPLICATION_NAME + " (android)"
-	def final public static APPLICATION_NAME_SHARED = APPLICATION_NAME + " (shared)"
+	def final public static APPLICATION_NAME = "pocketcampus"
+	def final public static APPLICATION_NAME_ANDROID = APPLICATION_NAME + "-android"
+	def final public static APPLICATION_NAME_SHARED = APPLICATION_NAME + "-shared"
 	
 	def final private static TARGET_DIRECTORY = "../../target/";
 	def final private static TARGET_DIRECTORY_ANDROID = TARGET_DIRECTORY + "android/";
