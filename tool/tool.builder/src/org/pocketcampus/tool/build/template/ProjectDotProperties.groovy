@@ -12,10 +12,12 @@ class ProjectDotProperties {
 # "ant.properties", and override values to adapt the script to your
 # project structure.
 
-android.library=false
-android.library.reference.1=../../platform/sdk/platform.sdk.android
+
 # Project target.
 target=android-8
+android.library=false
+android.library.reference.1=../../platform/sdk/platform.sdk.android
+
 		"""
 	}
 }

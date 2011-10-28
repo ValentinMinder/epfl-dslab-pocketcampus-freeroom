@@ -2,6 +2,7 @@ package org.pocketcampus.tool.build
 
 import org.pocketcampus.tool.build.parser.ClasspathEntry;
 import org.pocketcampus.tool.build.parser.DotClasspath;
+import org.pocketcampus.tool.build.template.JavaDotClasspathTemplate
 import org.pocketcampus.tool.build.template.ManifestTemplate;
 import org.pocketcampus.tool.build.template.ProjectDotProperties;
 
@@ -60,13 +61,16 @@ class ApplicationBuilder {
 		String finalManifest = ManifestTemplate.getText(manifestBuffer);
 		new File(TARGET_DIRECTORY_ANDROID + "AndroidManifest.xml").write(finalManifest);
 		
+		println "=> Android Project Properties"
+		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
+		
 		print "=> Android Classpath "
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
 		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
 		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
 		
-		println "=> Android Project Properties"
-		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
+		print "=> Shared Classpath "
+		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(JavaDotClasspathTemplate.getText());
 	}
 
 }

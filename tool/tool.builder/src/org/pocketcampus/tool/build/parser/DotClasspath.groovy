@@ -1,7 +1,7 @@
 package org.pocketcampus.tool.build.parser
 
 import java.io.File;
-import org.pocketcampus.tool.build.template.DotClasspathTemplate;
+import org.pocketcampus.tool.build.template.AndroidDotClasspathTemplate;
 import org.pocketcampus.tool.build.ApplicationBuilder
 
 public class DotClasspath {
@@ -54,7 +54,7 @@ public class DotClasspath {
 			classpathEntriesXml += "<classpathentry kind=\"" + it.getKind() + "\" path=\"" + it.getSrc() + "\"/>\n"
 		}
 		
-		return DotClasspathTemplate.getText(classpathEntriesXml)
+		return AndroidDotClasspathTemplate.getText(classpathEntriesXml)
 	}
 	
 	private DotClasspath(ArrayList classpathEntries) {

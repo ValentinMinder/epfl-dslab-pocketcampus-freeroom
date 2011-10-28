@@ -9,7 +9,7 @@ class ManifestTemplate {
 
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pocketcampus.android.plugin.dashboard">
+	package="org.pocketcampus">
 
 	<uses-sdk
 		android:minSdkVersion="8" />
