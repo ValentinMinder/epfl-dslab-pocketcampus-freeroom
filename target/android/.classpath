@@ -11,6 +11,6 @@
 <classpathentry kind="src" path="/plugin.test.shared"/>
 <classpathentry kind="src" path="/plugin.takeout.shared"/>
 
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
-		
