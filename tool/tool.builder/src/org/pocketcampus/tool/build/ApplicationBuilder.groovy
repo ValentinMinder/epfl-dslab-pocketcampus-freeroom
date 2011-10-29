@@ -35,12 +35,13 @@ class ApplicationBuilder {
 
 		println plugins.size() + " found."
 		
-		println "Cleaning directories..."
+		println "Cleaning up directories..."
 		new File(TARGET_DIRECTORY_ANDROID).delete();
 		new File(TARGET_DIRECTORY_SHARED).delete();
 		new File(TARGET_DIRECTORY_SERVER).delete();
 		
-		println "=== MERGING APPLICATION ==="
+		println ""
+		
 		String manifestBuffer = "";
 		ArrayList classpathEntriesBuffer = new ArrayList()
 
@@ -63,33 +64,34 @@ class ApplicationBuilder {
 			println ""
 		}
 
-		println "=== COMPLETING APPLICATION ==="
-		println "=> Android: Manifest"
+		println "Making Android Manifest"
 		String finalManifest = ManifestTemplate.getText(manifestBuffer);
 		new File(TARGET_DIRECTORY_ANDROID + "AndroidManifest.xml").write(finalManifest);
 		
-		println "=> Android: Proguard configuration"
+		println "Making Android Proguard configuration"
 		String proguardConf = ProguardTemplate.getText();
 		new File(TARGET_DIRECTORY_ANDROID + "proguard.cfg").write(proguardConf);
 		
-		println "=> Android: Project Properties"
+		println "Making  Android Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 		
-		print "=> Android: Classpath "
+		print "Making Android Classpath "
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
 		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
 		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
 		
-		println "=> Android: pom.xml"
+		println "Making Android pom.xml"
 		String androidPom = AndroidPomTemplate.getText()
 		new File(TARGET_DIRECTORY_ANDROID + "pom.xml").write(androidPom);
 		
-		println "=> Shared: pom.xml"
+		println "Making Shared pom.xml"
 		String sharedPom = SharedPomTemplate.getText()
 		new File(TARGET_DIRECTORY_SHARED + "pom.xml").write(sharedPom);
 		
-		println "=> Shared: Classpath "
+		println "Making Shared Classpath "
 		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(SharedDotClasspathTemplate.getText());
+		
+		println "\nApplication ready, generated in " + new File(TARGET_DIRECTORY).getAbsolutePath() + "."
 	}
 
 }
