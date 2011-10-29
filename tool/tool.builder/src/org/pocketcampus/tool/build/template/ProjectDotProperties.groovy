@@ -17,7 +17,6 @@ class ProjectDotProperties {
 target=android-8
 android.library=false
 android.library.reference.1=../../platform/sdk/platform.sdk.android
-
-		"""
+"""
 	}
 }

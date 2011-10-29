@@ -5,7 +5,7 @@ class ManifestTemplate {
 		return  """\
 <?xml version="1.0" encoding="utf-8"?>
 <!-- AUTO-GENERATED POCKETCAMPUS MANIFEST FILE -->
-<!-- your changes to this file will be kindly disregarded -->
+<!-- changes to this file will be kindly disregarded -->
 
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,6 +22,18 @@ class ManifestTemplate {
 		"""+ pluginManifests +"""\
 			
 	</application>
+
+	<permission
+        android:name="org.pocketcampus.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 	
 </manifest>
 		"""

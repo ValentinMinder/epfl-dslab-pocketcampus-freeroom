@@ -38,7 +38,7 @@ class Manifest {
 		app.service.each(makeNameFullyQualified).each(print)
 		app.receiver.each(makeNameFullyQualified).each(print)
 		
-		String manifestText = '\n<!-- PLUGIN ' + pkg.toUpperCase() + " -->\n" + writer.toString()
+		String manifestText = "\n<!-- PLUGIN -->\n" + writer.toString() + "<!-- /PLUGIN -->\n"
 		
 		// log
 		println app.activity.size() + " activity, " + app.service.size() + " service, " + app.receiver.size() + " receiver."
