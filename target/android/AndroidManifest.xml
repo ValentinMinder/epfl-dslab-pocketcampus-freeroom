@@ -43,6 +43,12 @@
     <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
   </intent-filter>
 </activity>
+<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestOtherView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
 <service android:name="org.pocketcampus.plugin.test.android.TestController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 			
