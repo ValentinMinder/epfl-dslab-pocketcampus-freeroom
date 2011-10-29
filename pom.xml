@@ -15,7 +15,8 @@
 		<module>lib/actionbar/lib.actionbar.android</module>
 		<module>platform/sdk/platform.sdk.android</module>
 		<module>platform/sdk/platform.sdk.shared</module>
-		<module>platform/launcher/platform.launcher.android</module>
+		<module>merged/shared</module>
+		<module>merged/android</module>
 	</modules>
 
 	<dependencyManagement>

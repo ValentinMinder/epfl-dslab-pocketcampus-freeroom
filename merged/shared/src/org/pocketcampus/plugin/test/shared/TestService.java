@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.test.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -284,9 +283,7 @@ public class TestService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getBar_args other) {
@@ -557,14 +554,7 @@ public class TestService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getBar_result other) {

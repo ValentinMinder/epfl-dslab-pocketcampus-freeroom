@@ -12,7 +12,7 @@ class ApplicationBuilder {
 	def final public static APPLICATION_NAME_ANDROID = APPLICATION_NAME + "-android"
 	def final public static APPLICATION_NAME_SHARED = APPLICATION_NAME + "-shared"
 	
-	def final private static TARGET_DIRECTORY = "../../target/";
+	def final private static TARGET_DIRECTORY = "../../merged/";
 	def final private static TARGET_DIRECTORY_ANDROID = TARGET_DIRECTORY + "android/";
 	def final private static TARGET_DIRECTORY_SHARED = TARGET_DIRECTORY + "shared/";
 	def final private static TARGET_DIRECTORY_SERVER = TARGET_DIRECTORY + "server/";

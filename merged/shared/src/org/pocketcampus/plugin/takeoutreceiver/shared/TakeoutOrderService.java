@@ -3,9 +3,8 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.camipro.shared;
+package org.pocketcampus.plugin.takeoutreceiver.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -21,25 +20,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CamiproService {
+public class TakeoutOrderService {
 
   public interface Iface {
 
-    public double getBalance() throws org.apache.thrift.TException;
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant() throws org.apache.thrift.TException;
 
-    public List<Transaction> getTransactions() throws org.apache.thrift.TException;
+    public boolean versionMatches(long version) throws org.apache.thrift.TException;
 
-    public EbankingBean getEbankingBean() throws org.apache.thrift.TException;
+    public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt placeOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getBalance(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalance_call> resultHandler) throws org.apache.thrift.TException;
+    public void getRestaurant(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRestaurant_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getTransactions(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTransactions_call> resultHandler) throws org.apache.thrift.TException;
+    public void versionMatches(long version, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.versionMatches_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getEbankingBean(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEbankingBean_call> resultHandler) throws org.apache.thrift.TException;
+    public void placeOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.placeOrder_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -63,70 +62,72 @@ public class CamiproService {
       super(iprot, oprot);
     }
 
-    public double getBalance() throws org.apache.thrift.TException
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant() throws org.apache.thrift.TException
     {
-      send_getBalance();
-      return recv_getBalance();
+      send_getRestaurant();
+      return recv_getRestaurant();
     }
 
-    public void send_getBalance() throws org.apache.thrift.TException
+    public void send_getRestaurant() throws org.apache.thrift.TException
     {
-      getBalance_args args = new getBalance_args();
-      sendBase("getBalance", args);
+      getRestaurant_args args = new getRestaurant_args();
+      sendBase("getRestaurant", args);
     }
 
-    public double recv_getBalance() throws org.apache.thrift.TException
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant recv_getRestaurant() throws org.apache.thrift.TException
     {
-      getBalance_result result = new getBalance_result();
-      receiveBase(result, "getBalance");
+      getRestaurant_result result = new getRestaurant_result();
+      receiveBase(result, "getRestaurant");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBalance failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRestaurant failed: unknown result");
     }
 
-    public List<Transaction> getTransactions() throws org.apache.thrift.TException
+    public boolean versionMatches(long version) throws org.apache.thrift.TException
     {
-      send_getTransactions();
-      return recv_getTransactions();
+      send_versionMatches(version);
+      return recv_versionMatches();
     }
 
-    public void send_getTransactions() throws org.apache.thrift.TException
+    public void send_versionMatches(long version) throws org.apache.thrift.TException
     {
-      getTransactions_args args = new getTransactions_args();
-      sendBase("getTransactions", args);
+      versionMatches_args args = new versionMatches_args();
+      args.setVersion(version);
+      sendBase("versionMatches", args);
     }
 
-    public List<Transaction> recv_getTransactions() throws org.apache.thrift.TException
+    public boolean recv_versionMatches() throws org.apache.thrift.TException
     {
-      getTransactions_result result = new getTransactions_result();
-      receiveBase(result, "getTransactions");
+      versionMatches_result result = new versionMatches_result();
+      receiveBase(result, "versionMatches");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTransactions failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "versionMatches failed: unknown result");
     }
 
-    public EbankingBean getEbankingBean() throws org.apache.thrift.TException
+    public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt placeOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order) throws org.apache.thrift.TException
     {
-      send_getEbankingBean();
-      return recv_getEbankingBean();
+      send_placeOrder(order);
+      return recv_placeOrder();
     }
 
-    public void send_getEbankingBean() throws org.apache.thrift.TException
+    public void send_placeOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order) throws org.apache.thrift.TException
     {
-      getEbankingBean_args args = new getEbankingBean_args();
-      sendBase("getEbankingBean", args);
+      placeOrder_args args = new placeOrder_args();
+      args.setOrder(order);
+      sendBase("placeOrder", args);
     }
 
-    public EbankingBean recv_getEbankingBean() throws org.apache.thrift.TException
+    public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt recv_placeOrder() throws org.apache.thrift.TException
     {
-      getEbankingBean_result result = new getEbankingBean_result();
-      receiveBase(result, "getEbankingBean");
+      placeOrder_result result = new placeOrder_result();
+      receiveBase(result, "placeOrder");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEbankingBean failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "placeOrder failed: unknown result");
     }
 
   }
@@ -147,90 +148,96 @@ public class CamiproService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getBalance(org.apache.thrift.async.AsyncMethodCallback<getBalance_call> resultHandler) throws org.apache.thrift.TException {
+    public void getRestaurant(org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getBalance_call method_call = new getBalance_call(resultHandler, this, ___protocolFactory, ___transport);
+      getRestaurant_call method_call = new getRestaurant_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getBalance_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getBalance_call(org.apache.thrift.async.AsyncMethodCallback<getBalance_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getRestaurant_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getRestaurant_call(org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBalance", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getBalance_args args = new getBalance_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getRestaurant", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getRestaurant_args args = new getRestaurant_args();
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public double getResult() throws org.apache.thrift.TException {
+      public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getBalance();
+        return (new Client(prot)).recv_getRestaurant();
       }
     }
 
-    public void getTransactions(org.apache.thrift.async.AsyncMethodCallback<getTransactions_call> resultHandler) throws org.apache.thrift.TException {
+    public void versionMatches(long version, org.apache.thrift.async.AsyncMethodCallback<versionMatches_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getTransactions_call method_call = new getTransactions_call(resultHandler, this, ___protocolFactory, ___transport);
+      versionMatches_call method_call = new versionMatches_call(version, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getTransactions_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getTransactions_call(org.apache.thrift.async.AsyncMethodCallback<getTransactions_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class versionMatches_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private long version;
+      public versionMatches_call(long version, org.apache.thrift.async.AsyncMethodCallback<versionMatches_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.version = version;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTransactions", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getTransactions_args args = new getTransactions_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("versionMatches", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        versionMatches_args args = new versionMatches_args();
+        args.setVersion(version);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Transaction> getResult() throws org.apache.thrift.TException {
+      public boolean getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getTransactions();
+        return (new Client(prot)).recv_versionMatches();
       }
     }
 
-    public void getEbankingBean(org.apache.thrift.async.AsyncMethodCallback<getEbankingBean_call> resultHandler) throws org.apache.thrift.TException {
+    public void placeOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order, org.apache.thrift.async.AsyncMethodCallback<placeOrder_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getEbankingBean_call method_call = new getEbankingBean_call(resultHandler, this, ___protocolFactory, ___transport);
+      placeOrder_call method_call = new placeOrder_call(order, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getEbankingBean_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getEbankingBean_call(org.apache.thrift.async.AsyncMethodCallback<getEbankingBean_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class placeOrder_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order;
+      public placeOrder_call(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order, org.apache.thrift.async.AsyncMethodCallback<placeOrder_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.order = order;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEbankingBean", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getEbankingBean_args args = new getEbankingBean_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("placeOrder", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        placeOrder_args args = new placeOrder_args();
+        args.setOrder(order);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public EbankingBean getResult() throws org.apache.thrift.TException {
+      public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getEbankingBean();
+        return (new Client(prot)).recv_placeOrder();
       }
     }
 
@@ -247,65 +254,65 @@ public class CamiproService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getBalance", new getBalance());
-      processMap.put("getTransactions", new getTransactions());
-      processMap.put("getEbankingBean", new getEbankingBean());
+      processMap.put("getRestaurant", new getRestaurant());
+      processMap.put("versionMatches", new versionMatches());
+      processMap.put("placeOrder", new placeOrder());
       return processMap;
     }
 
-    private static class getBalance<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBalance_args> {
-      public getBalance() {
-        super("getBalance");
+    private static class getRestaurant<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getRestaurant_args> {
+      public getRestaurant() {
+        super("getRestaurant");
       }
 
-      protected getBalance_args getEmptyArgsInstance() {
-        return new getBalance_args();
+      protected getRestaurant_args getEmptyArgsInstance() {
+        return new getRestaurant_args();
       }
 
-      protected getBalance_result getResult(I iface, getBalance_args args) throws org.apache.thrift.TException {
-        getBalance_result result = new getBalance_result();
-        result.success = iface.getBalance();
+      protected getRestaurant_result getResult(I iface, getRestaurant_args args) throws org.apache.thrift.TException {
+        getRestaurant_result result = new getRestaurant_result();
+        result.success = iface.getRestaurant();
+        return result;
+      }
+    }
+
+    private static class versionMatches<I extends Iface> extends org.apache.thrift.ProcessFunction<I, versionMatches_args> {
+      public versionMatches() {
+        super("versionMatches");
+      }
+
+      protected versionMatches_args getEmptyArgsInstance() {
+        return new versionMatches_args();
+      }
+
+      protected versionMatches_result getResult(I iface, versionMatches_args args) throws org.apache.thrift.TException {
+        versionMatches_result result = new versionMatches_result();
+        result.success = iface.versionMatches(args.version);
         result.setSuccessIsSet(true);
         return result;
       }
     }
 
-    private static class getTransactions<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTransactions_args> {
-      public getTransactions() {
-        super("getTransactions");
+    private static class placeOrder<I extends Iface> extends org.apache.thrift.ProcessFunction<I, placeOrder_args> {
+      public placeOrder() {
+        super("placeOrder");
       }
 
-      protected getTransactions_args getEmptyArgsInstance() {
-        return new getTransactions_args();
+      protected placeOrder_args getEmptyArgsInstance() {
+        return new placeOrder_args();
       }
 
-      protected getTransactions_result getResult(I iface, getTransactions_args args) throws org.apache.thrift.TException {
-        getTransactions_result result = new getTransactions_result();
-        result.success = iface.getTransactions();
-        return result;
-      }
-    }
-
-    private static class getEbankingBean<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEbankingBean_args> {
-      public getEbankingBean() {
-        super("getEbankingBean");
-      }
-
-      protected getEbankingBean_args getEmptyArgsInstance() {
-        return new getEbankingBean_args();
-      }
-
-      protected getEbankingBean_result getResult(I iface, getEbankingBean_args args) throws org.apache.thrift.TException {
-        getEbankingBean_result result = new getEbankingBean_result();
-        result.success = iface.getEbankingBean();
+      protected placeOrder_result getResult(I iface, placeOrder_args args) throws org.apache.thrift.TException {
+        placeOrder_result result = new placeOrder_result();
+        result.success = iface.placeOrder(args.order);
         return result;
       }
     }
 
   }
 
-  public static class getBalance_args implements org.apache.thrift.TBase<getBalance_args, getBalance_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalance_args");
+  public static class getRestaurant_args implements org.apache.thrift.TBase<getRestaurant_args, getRestaurant_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getRestaurant_args");
 
 
 
@@ -368,20 +375,20 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalance_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRestaurant_args.class, metaDataMap);
     }
 
-    public getBalance_args() {
+    public getRestaurant_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getBalance_args(getBalance_args other) {
+    public getRestaurant_args(getRestaurant_args other) {
     }
 
-    public getBalance_args deepCopy() {
-      return new getBalance_args(this);
+    public getRestaurant_args deepCopy() {
+      return new getRestaurant_args(this);
     }
 
     @Override
@@ -414,12 +421,12 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getBalance_args)
-        return this.equals((getBalance_args)that);
+      if (that instanceof getRestaurant_args)
+        return this.equals((getRestaurant_args)that);
       return false;
     }
 
-    public boolean equals(getBalance_args that) {
+    public boolean equals(getRestaurant_args that) {
       if (that == null)
         return false;
 
@@ -428,18 +435,16 @@ public class CamiproService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
-    public int compareTo(getBalance_args other) {
+    public int compareTo(getRestaurant_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getBalance_args typedOther = (getBalance_args)other;
+      getRestaurant_args typedOther = (getRestaurant_args)other;
 
       return 0;
     }
@@ -479,7 +484,7 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getBalance_args(");
+      StringBuilder sb = new StringBuilder("getRestaurant_args(");
       boolean first = true;
 
       sb.append(")");
@@ -508,12 +513,606 @@ public class CamiproService {
 
   }
 
-  public static class getBalance_result implements org.apache.thrift.TBase<getBalance_result, getBalance_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalance_result");
+  public static class getRestaurant_result implements org.apache.thrift.TBase<getRestaurant_result, getRestaurant_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getRestaurant_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.DOUBLE, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public double success; // required
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.platform.sdk.shared.restaurant.Restaurant.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRestaurant_result.class, metaDataMap);
+    }
+
+    public getRestaurant_result() {
+    }
+
+    public getRestaurant_result(
+      org.pocketcampus.platform.sdk.shared.restaurant.Restaurant success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getRestaurant_result(getRestaurant_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new org.pocketcampus.platform.sdk.shared.restaurant.Restaurant(other.success);
+      }
+    }
+
+    public getRestaurant_result deepCopy() {
+      return new getRestaurant_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getSuccess() {
+      return this.success;
+    }
+
+    public getRestaurant_result setSuccess(org.pocketcampus.platform.sdk.shared.restaurant.Restaurant success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((org.pocketcampus.platform.sdk.shared.restaurant.Restaurant)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getRestaurant_result)
+        return this.equals((getRestaurant_result)that);
+      return false;
+    }
+
+    public boolean equals(getRestaurant_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getRestaurant_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getRestaurant_result typedOther = (getRestaurant_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new org.pocketcampus.platform.sdk.shared.restaurant.Restaurant();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getRestaurant_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class versionMatches_args implements org.apache.thrift.TBase<versionMatches_args, versionMatches_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("versionMatches_args");
+
+    private static final org.apache.thrift.protocol.TField VERSION_FIELD_DESC = new org.apache.thrift.protocol.TField("version", org.apache.thrift.protocol.TType.I64, (short)1);
+
+    public long version; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      VERSION((short)1, "version");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // VERSION
+            return VERSION;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __VERSION_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.VERSION, new org.apache.thrift.meta_data.FieldMetaData("version", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64          , "Id")));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(versionMatches_args.class, metaDataMap);
+    }
+
+    public versionMatches_args() {
+    }
+
+    public versionMatches_args(
+      long version)
+    {
+      this();
+      this.version = version;
+      setVersionIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public versionMatches_args(versionMatches_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      this.version = other.version;
+    }
+
+    public versionMatches_args deepCopy() {
+      return new versionMatches_args(this);
+    }
+
+    @Override
+    public void clear() {
+      setVersionIsSet(false);
+      this.version = 0;
+    }
+
+    public long getVersion() {
+      return this.version;
+    }
+
+    public versionMatches_args setVersion(long version) {
+      this.version = version;
+      setVersionIsSet(true);
+      return this;
+    }
+
+    public void unsetVersion() {
+      __isset_bit_vector.clear(__VERSION_ISSET_ID);
+    }
+
+    /** Returns true if field version is set (has been assigned a value) and false otherwise */
+    public boolean isSetVersion() {
+      return __isset_bit_vector.get(__VERSION_ISSET_ID);
+    }
+
+    public void setVersionIsSet(boolean value) {
+      __isset_bit_vector.set(__VERSION_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case VERSION:
+        if (value == null) {
+          unsetVersion();
+        } else {
+          setVersion((Long)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case VERSION:
+        return Long.valueOf(getVersion());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case VERSION:
+        return isSetVersion();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof versionMatches_args)
+        return this.equals((versionMatches_args)that);
+      return false;
+    }
+
+    public boolean equals(versionMatches_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_version = true;
+      boolean that_present_version = true;
+      if (this_present_version || that_present_version) {
+        if (!(this_present_version && that_present_version))
+          return false;
+        if (this.version != that.version)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(versionMatches_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      versionMatches_args typedOther = (versionMatches_args)other;
+
+      lastComparison = Boolean.valueOf(isSetVersion()).compareTo(typedOther.isSetVersion());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetVersion()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.version, typedOther.version);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // VERSION
+            if (field.type == org.apache.thrift.protocol.TType.I64) {
+              this.version = iprot.readI64();
+              setVersionIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(VERSION_FIELD_DESC);
+      oprot.writeI64(this.version);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("versionMatches_args(");
+      boolean first = true;
+
+      sb.append("version:");
+      sb.append(this.version);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class versionMatches_result implements org.apache.thrift.TBase<versionMatches_result, versionMatches_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("versionMatches_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)0);
+
+    public boolean success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -581,16 +1180,16 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalance_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(versionMatches_result.class, metaDataMap);
     }
 
-    public getBalance_result() {
+    public versionMatches_result() {
     }
 
-    public getBalance_result(
-      double success)
+    public versionMatches_result(
+      boolean success)
     {
       this();
       this.success = success;
@@ -600,27 +1199,27 @@ public class CamiproService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getBalance_result(getBalance_result other) {
+    public versionMatches_result(versionMatches_result other) {
       __isset_bit_vector.clear();
       __isset_bit_vector.or(other.__isset_bit_vector);
       this.success = other.success;
     }
 
-    public getBalance_result deepCopy() {
-      return new getBalance_result(this);
+    public versionMatches_result deepCopy() {
+      return new versionMatches_result(this);
     }
 
     @Override
     public void clear() {
       setSuccessIsSet(false);
-      this.success = 0.0;
+      this.success = false;
     }
 
-    public double getSuccess() {
+    public boolean isSuccess() {
       return this.success;
     }
 
-    public getBalance_result setSuccess(double success) {
+    public versionMatches_result setSuccess(boolean success) {
       this.success = success;
       setSuccessIsSet(true);
       return this;
@@ -645,7 +1244,7 @@ public class CamiproService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Double)value);
+          setSuccess((Boolean)value);
         }
         break;
 
@@ -655,7 +1254,7 @@ public class CamiproService {
     public Object getFieldValue(_Fields field) {
       switch (field) {
       case SUCCESS:
-        return Double.valueOf(getSuccess());
+        return Boolean.valueOf(isSuccess());
 
       }
       throw new IllegalStateException();
@@ -678,12 +1277,12 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getBalance_result)
-        return this.equals((getBalance_result)that);
+      if (that instanceof versionMatches_result)
+        return this.equals((versionMatches_result)that);
       return false;
     }
 
-    public boolean equals(getBalance_result that) {
+    public boolean equals(versionMatches_result that) {
       if (that == null)
         return false;
 
@@ -701,23 +1300,16 @@ public class CamiproService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
-    public int compareTo(getBalance_result other) {
+    public int compareTo(versionMatches_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getBalance_result typedOther = (getBalance_result)other;
+      versionMatches_result typedOther = (versionMatches_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -747,8 +1339,8 @@ public class CamiproService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              this.success = iprot.readDouble();
+            if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+              this.success = iprot.readBool();
               setSuccessIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -770,7 +1362,7 @@ public class CamiproService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeDouble(this.success);
+        oprot.writeBool(this.success);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -779,7 +1371,7 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getBalance_result(");
+      StringBuilder sb = new StringBuilder("versionMatches_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -811,14 +1403,16 @@ public class CamiproService {
 
   }
 
-  public static class getTransactions_args implements org.apache.thrift.TBase<getTransactions_args, getTransactions_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTransactions_args");
+  public static class placeOrder_args implements org.apache.thrift.TBase<placeOrder_args, placeOrder_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("placeOrder_args");
 
+    private static final org.apache.thrift.protocol.TField ORDER_FIELD_DESC = new org.apache.thrift.protocol.TField("order", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
+    public org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      ORDER((short)1, "order");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -833,214 +1427,8 @@ public class CamiproService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTransactions_args.class, metaDataMap);
-    }
-
-    public getTransactions_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getTransactions_args(getTransactions_args other) {
-    }
-
-    public getTransactions_args deepCopy() {
-      return new getTransactions_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getTransactions_args)
-        return this.equals((getTransactions_args)that);
-      return false;
-    }
-
-    public boolean equals(getTransactions_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getTransactions_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getTransactions_args typedOther = (getTransactions_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getTransactions_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getTransactions_result implements org.apache.thrift.TBase<getTransactions_result, getTransactions_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTransactions_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Transaction> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
+          case 1: // ORDER
+            return ORDER;
           default:
             return null;
         }
@@ -1085,91 +1473,71 @@ public class CamiproService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Transaction.class))));
+      tmpMap.put(_Fields.ORDER, new org.apache.thrift.meta_data.FieldMetaData("order", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTransactions_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(placeOrder_args.class, metaDataMap);
     }
 
-    public getTransactions_result() {
+    public placeOrder_args() {
     }
 
-    public getTransactions_result(
-      List<Transaction> success)
+    public placeOrder_args(
+      org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order)
     {
       this();
-      this.success = success;
+      this.order = order;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getTransactions_result(getTransactions_result other) {
-      if (other.isSetSuccess()) {
-        List<Transaction> __this__success = new ArrayList<Transaction>();
-        for (Transaction other_element : other.success) {
-          __this__success.add(new Transaction(other_element));
-        }
-        this.success = __this__success;
+    public placeOrder_args(placeOrder_args other) {
+      if (other.isSetOrder()) {
+        this.order = new org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient(other.order);
       }
     }
 
-    public getTransactions_result deepCopy() {
-      return new getTransactions_result(this);
+    public placeOrder_args deepCopy() {
+      return new placeOrder_args(this);
     }
 
     @Override
     public void clear() {
-      this.success = null;
+      this.order = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
+    public org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient getOrder() {
+      return this.order;
     }
 
-    public java.util.Iterator<Transaction> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Transaction elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Transaction>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Transaction> getSuccess() {
-      return this.success;
-    }
-
-    public getTransactions_result setSuccess(List<Transaction> success) {
-      this.success = success;
+    public placeOrder_args setOrder(org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient order) {
+      this.order = order;
       return this;
     }
 
-    public void unsetSuccess() {
-      this.success = null;
+    public void unsetOrder() {
+      this.order = null;
     }
 
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
+    /** Returns true if field order is set (has been assigned a value) and false otherwise */
+    public boolean isSetOrder() {
+      return this.order != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
+    public void setOrderIsSet(boolean value) {
       if (!value) {
-        this.success = null;
+        this.order = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case SUCCESS:
+      case ORDER:
         if (value == null) {
-          unsetSuccess();
+          unsetOrder();
         } else {
-          setSuccess((List<Transaction>)value);
+          setOrder((org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient)value);
         }
         break;
 
@@ -1178,8 +1546,8 @@ public class CamiproService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case SUCCESS:
-        return getSuccess();
+      case ORDER:
+        return getOrder();
 
       }
       throw new IllegalStateException();
@@ -1192,8 +1560,8 @@ public class CamiproService {
       }
 
       switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
+      case ORDER:
+        return isSetOrder();
       }
       throw new IllegalStateException();
     }
@@ -1202,21 +1570,21 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getTransactions_result)
-        return this.equals((getTransactions_result)that);
+      if (that instanceof placeOrder_args)
+        return this.equals((placeOrder_args)that);
       return false;
     }
 
-    public boolean equals(getTransactions_result that) {
+    public boolean equals(placeOrder_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
+      boolean this_present_order = true && this.isSetOrder();
+      boolean that_present_order = true && that.isSetOrder();
+      if (this_present_order || that_present_order) {
+        if (!(this_present_order && that_present_order))
           return false;
-        if (!this.success.equals(that.success))
+        if (!this.order.equals(that.order))
           return false;
       }
 
@@ -1225,30 +1593,23 @@ public class CamiproService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
-    public int compareTo(getTransactions_result other) {
+    public int compareTo(placeOrder_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getTransactions_result typedOther = (getTransactions_result)other;
+      placeOrder_args typedOther = (placeOrder_args)other;
 
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      lastComparison = Boolean.valueOf(isSetOrder()).compareTo(typedOther.isSetOrder());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+      if (isSetOrder()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.order, typedOther.order);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1270,20 +1631,10 @@ public class CamiproService {
           break;
         }
         switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Transaction>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                {
-                  Transaction _elem2; // required
-                  _elem2 = new Transaction();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
-                }
-                iprot.readListEnd();
-              }
+          case 1: // ORDER
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.order = new org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient();
+              this.order.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1300,18 +1651,12 @@ public class CamiproService {
     }
 
     public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
+      validate();
 
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Transaction _iter3 : this.success)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.order != null) {
+        oprot.writeFieldBegin(ORDER_FIELD_DESC);
+        this.order.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1320,14 +1665,14 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getTransactions_result(");
+      StringBuilder sb = new StringBuilder("placeOrder_args(");
       boolean first = true;
 
-      sb.append("success:");
-      if (this.success == null) {
+      sb.append("order:");
+      if (this.order == null) {
         sb.append("null");
       } else {
-        sb.append(this.success);
+        sb.append(this.order);
       }
       first = false;
       sb.append(")");
@@ -1356,216 +1701,12 @@ public class CamiproService {
 
   }
 
-  public static class getEbankingBean_args implements org.apache.thrift.TBase<getEbankingBean_args, getEbankingBean_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEbankingBean_args");
-
-
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEbankingBean_args.class, metaDataMap);
-    }
-
-    public getEbankingBean_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getEbankingBean_args(getEbankingBean_args other) {
-    }
-
-    public getEbankingBean_args deepCopy() {
-      return new getEbankingBean_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getEbankingBean_args)
-        return this.equals((getEbankingBean_args)that);
-      return false;
-    }
-
-    public boolean equals(getEbankingBean_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getEbankingBean_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getEbankingBean_args typedOther = (getEbankingBean_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getEbankingBean_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getEbankingBean_result implements org.apache.thrift.TBase<getEbankingBean_result, getEbankingBean_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEbankingBean_result");
+  public static class placeOrder_result implements org.apache.thrift.TBase<placeOrder_result, placeOrder_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("placeOrder_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public EbankingBean success; // required
+    public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1631,16 +1772,16 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EbankingBean.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEbankingBean_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(placeOrder_result.class, metaDataMap);
     }
 
-    public getEbankingBean_result() {
+    public placeOrder_result() {
     }
 
-    public getEbankingBean_result(
-      EbankingBean success)
+    public placeOrder_result(
+      org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt success)
     {
       this();
       this.success = success;
@@ -1649,14 +1790,14 @@ public class CamiproService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getEbankingBean_result(getEbankingBean_result other) {
+    public placeOrder_result(placeOrder_result other) {
       if (other.isSetSuccess()) {
-        this.success = new EbankingBean(other.success);
+        this.success = new org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt(other.success);
       }
     }
 
-    public getEbankingBean_result deepCopy() {
-      return new getEbankingBean_result(this);
+    public placeOrder_result deepCopy() {
+      return new placeOrder_result(this);
     }
 
     @Override
@@ -1664,11 +1805,11 @@ public class CamiproService {
       this.success = null;
     }
 
-    public EbankingBean getSuccess() {
+    public org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt getSuccess() {
       return this.success;
     }
 
-    public getEbankingBean_result setSuccess(EbankingBean success) {
+    public placeOrder_result setSuccess(org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt success) {
       this.success = success;
       return this;
     }
@@ -1694,7 +1835,7 @@ public class CamiproService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((EbankingBean)value);
+          setSuccess((org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt)value);
         }
         break;
 
@@ -1727,12 +1868,12 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getEbankingBean_result)
-        return this.equals((getEbankingBean_result)that);
+      if (that instanceof placeOrder_result)
+        return this.equals((placeOrder_result)that);
       return false;
     }
 
-    public boolean equals(getEbankingBean_result that) {
+    public boolean equals(placeOrder_result that) {
       if (that == null)
         return false;
 
@@ -1750,23 +1891,16 @@ public class CamiproService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
-    public int compareTo(getEbankingBean_result other) {
+    public int compareTo(placeOrder_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getEbankingBean_result typedOther = (getEbankingBean_result)other;
+      placeOrder_result typedOther = (placeOrder_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1797,7 +1931,7 @@ public class CamiproService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new EbankingBean();
+              this.success = new org.pocketcampus.platform.sdk.shared.restaurant.ClientOrderReceipt();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1828,7 +1962,7 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getEbankingBean_result(");
+      StringBuilder sb = new StringBuilder("placeOrder_result(");
       boolean first = true;
 
       sb.append("success:");
