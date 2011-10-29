@@ -1,7 +1,7 @@
 package org.pocketcampus.tool.build
 
 import org.pocketcampus.tool.build.template.AndroidDotProjectTemplate;
-import org.pocketcampus.tool.build.template.JavaDotProjectTemplate;
+import org.pocketcampus.tool.build.template.SharedDotProjectTemplate;
 import org.pocketcampus.tool.build.utils.FileUtils;
 import org.pocketcampus.tool.build.parser.Manifest;
 import org.pocketcampus.tool.build.parser.DotClasspath;
@@ -86,7 +86,7 @@ class Plugin {
 		new File(targetPath + "/bin").mkdir()
 		
 		// create .project
-		String dotProjectText = JavaDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_SHARED)
+		String dotProjectText = SharedDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_SHARED)
 		new File(targetPath + "/.project").write(dotProjectText)
 		
 		println "done."

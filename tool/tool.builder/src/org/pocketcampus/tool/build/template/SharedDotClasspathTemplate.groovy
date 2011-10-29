@@ -1,6 +1,6 @@
 package org.pocketcampus.tool.build.template
 
-class JavaDotClasspathTemplate {
+class SharedDotClasspathTemplate {
 	static def getText() {
 		return  """\
 <?xml version="1.0" encoding="UTF-8"?>

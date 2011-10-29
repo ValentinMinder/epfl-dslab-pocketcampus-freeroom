@@ -2,7 +2,9 @@ package org.pocketcampus.tool.build
 
 import org.pocketcampus.tool.build.parser.ClasspathEntry;
 import org.pocketcampus.tool.build.parser.DotClasspath;
-import org.pocketcampus.tool.build.template.JavaDotClasspathTemplate
+import org.pocketcampus.tool.build.template.AndroidPomTemplate;
+import org.pocketcampus.tool.build.template.SharedPomTemplate;
+import org.pocketcampus.tool.build.template.SharedDotClasspathTemplate
 import org.pocketcampus.tool.build.template.ManifestTemplate;
 import org.pocketcampus.tool.build.template.ProguardTemplate;
 import org.pocketcampus.tool.build.template.ProjectDotProperties;
@@ -20,20 +22,24 @@ class ApplicationBuilder {
 	def static plugins = new ArrayList();
 
 	public static void main(String[] args) {
-		println "=== SCANNING FOR PLUGINS ==="
+		print "Listing plugins... "
 		new File('../../plugin').eachFile {
 			Plugin plugin = Plugin.fromDirectory(it)
 			plugins.add(plugin);
 		}
 
 		if(plugins.size() == 0) {
-			println "None found."
+			println "none found."
 			return;
 		}
 
 		println plugins.size() + " found."
-		println ""
-
+		
+		println "Cleaning directories..."
+		new File(TARGET_DIRECTORY_ANDROID).delete();
+		new File(TARGET_DIRECTORY_SHARED).delete();
+		new File(TARGET_DIRECTORY_SERVER).delete();
+		
 		println "=== MERGING APPLICATION ==="
 		String manifestBuffer = "";
 		ArrayList classpathEntriesBuffer = new ArrayList()
@@ -69,13 +75,21 @@ class ApplicationBuilder {
 		println "=> Android: Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 		
-		print "=> Android: Classpath "
+		print "=> Android: Classpath"
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
 		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
 		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
 		
-		print "=> Shared: Classpath "
-		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(JavaDotClasspathTemplate.getText());
+		println "=> Android: pom.xml"
+		String androidPom = AndroidPomTemplate.getText()
+		new File(TARGET_DIRECTORY_ANDROID + "pom.xml").write(androidPom);
+		
+		println "=> Shared: pom.xml"
+		String sharedPom = SharedPomTemplate.getText()
+		new File(TARGET_DIRECTORY_SHARED + "pom.xml").write(sharedPom);
+		
+		println "=> Shared: Classpath "
+		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(SharedDotClasspathTemplate.getText());
 	}
 
 }

@@ -1,6 +1,6 @@
 package org.pocketcampus.tool.build.template
 
-class JavaDotProjectTemplate {
+class SharedDotProjectTemplate {
 	static def getText(String applicationName) {
 		return  """\
 <?xml version="1.0" encoding="UTF-8"?>
