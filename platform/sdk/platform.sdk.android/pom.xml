@@ -36,6 +36,13 @@
 			<artifactId>platform.sdk.shared</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.pocketcampus</groupId>
+			<artifactId>merged.shared</artifactId>
+			<version>0.3-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

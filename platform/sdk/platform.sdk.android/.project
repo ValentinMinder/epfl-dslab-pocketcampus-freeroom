@@ -30,16 +30,4 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>android.lib.actionbar_src</name>
-			<type>2</type>
-			<locationURI>_android_android_lib_actionbar_12c320b5/src</locationURI>
-		</link>
-		<link>
-			<name>lib.actionbar.android_src</name>
-			<type>2</type>
-			<locationURI>_android_lib_actionbar_android_4c9f3075/src</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
