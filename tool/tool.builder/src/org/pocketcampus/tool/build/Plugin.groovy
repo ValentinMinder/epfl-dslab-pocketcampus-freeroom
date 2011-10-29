@@ -63,6 +63,9 @@ class Plugin {
 		// create gen directory
 		new File(targetPath + "/gen").mkdir()
 		
+		// create assets directory
+		new File(targetPath + "/assets").mkdir()
+		
 		// create .project
 		String dotProjectText = AndroidDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_ANDROID)
 		new File(targetPath + "/.project").write(dotProjectText)
