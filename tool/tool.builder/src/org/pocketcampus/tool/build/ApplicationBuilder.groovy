@@ -34,7 +34,7 @@ class ApplicationBuilder {
 		println plugins.size() + " found."
 		println ""
 
-		println "=== MERGING PLUGINS ==="
+		println "=== MERGING APPLICATION ==="
 		String manifestBuffer = "";
 		ArrayList classpathEntriesBuffer = new ArrayList()
 
@@ -57,25 +57,24 @@ class ApplicationBuilder {
 			println ""
 		}
 
-		println "=== CREATING ANDROID APPLICATION ==="
-		println "=> Android Manifest"
+		println "=== COMPLETING APPLICATION ==="
+		println "=> Android: Manifest"
 		String finalManifest = ManifestTemplate.getText(manifestBuffer);
 		new File(TARGET_DIRECTORY_ANDROID + "AndroidManifest.xml").write(finalManifest);
 		
-		println "=> Android Proguard configuration"
+		println "=> Android: Proguard configuration"
 		String proguardConf = ProguardTemplate.getText();
 		new File(TARGET_DIRECTORY_ANDROID + "proguard.cfg").write(proguardConf);
 		
-		println "=> Android Project Properties"
+		println "=> Android: Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 		
-		print "=> Android Classpath "
+		print "=> Android: Classpath "
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
 		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
 		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
 		
-		println "=== CREATING SHARED FILES ==="
-		print "=> Shared Classpath "
+		print "=> Shared: Classpath "
 		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(JavaDotClasspathTemplate.getText());
 	}
 

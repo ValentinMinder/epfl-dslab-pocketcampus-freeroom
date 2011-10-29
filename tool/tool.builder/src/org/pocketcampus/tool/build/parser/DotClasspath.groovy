@@ -40,7 +40,7 @@ public class DotClasspath {
 				println "Warning: server code is included in Android plugin! discarded."
 			}
 			
-			if(src.indexOf(".shared")!=-1 || src.indexOf(".jar")!=-1) {
+			if(src.indexOf(".jar") != -1) {
 				classpathToKeep.add(it)
 			}
 		}
