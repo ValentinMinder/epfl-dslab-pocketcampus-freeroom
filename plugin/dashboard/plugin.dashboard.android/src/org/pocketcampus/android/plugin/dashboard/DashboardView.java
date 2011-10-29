@@ -2,6 +2,7 @@ package org.pocketcampus.android.plugin.dashboard;
 
 import java.util.ArrayList;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginInfo;
