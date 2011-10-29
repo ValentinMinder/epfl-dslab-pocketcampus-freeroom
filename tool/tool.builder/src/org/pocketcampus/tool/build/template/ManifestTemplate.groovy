@@ -15,7 +15,7 @@ class ManifestTemplate {
 		android:minSdkVersion="8" />
 	
 	<application
-		android:label="@string/app_name"
+		android:label="PocketCampus"
 		android:theme="@style/PocketCampusTheme"
 		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
 	
