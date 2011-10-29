@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
   private static final org.apache.thrift.protocol.TField TABLE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("tableId", org.apache.thrift.protocol.TType.I64, (short)9);
   private static final org.apache.thrift.protocol.TField PHONE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("phoneId", org.apache.thrift.protocol.TType.STRING, (short)10);
   private static final org.apache.thrift.protocol.TField ORDER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("orderId", org.apache.thrift.protocol.TType.I64, (short)11);
+  private static final org.apache.thrift.protocol.TField USERNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("username", org.apache.thrift.protocol.TType.STRING, (short)12);
 
   public List<ChosenMenuItem> chosenItems; // required
   public double expectedPrice; // required
@@ -51,6 +51,7 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
   public long tableId; // required
   public String phoneId; // required
   public long orderId; // required
+  public String username; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -68,7 +69,8 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     TIMESTAMP((short)8, "timestamp"),
     TABLE_ID((short)9, "tableId"),
     PHONE_ID((short)10, "phoneId"),
-    ORDER_ID((short)11, "orderId");
+    ORDER_ID((short)11, "orderId"),
+    USERNAME((short)12, "username");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -105,6 +107,8 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
           return PHONE_ID;
         case 11: // ORDER_ID
           return ORDER_ID;
+        case 12: // USERNAME
+          return USERNAME;
         default:
           return null;
       }
@@ -179,6 +183,8 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING        , "PushNotificationPhoneId")));
     tmpMap.put(_Fields.ORDER_ID, new org.apache.thrift.meta_data.FieldMetaData("orderId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
+    tmpMap.put(_Fields.USERNAME, new org.apache.thrift.meta_data.FieldMetaData("username", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(OrderPlacedByClient.class, metaDataMap);
   }
@@ -194,7 +200,8 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     boolean pickUp,
     long timestamp,
     String phoneId,
-    long orderId)
+    long orderId,
+    String username)
   {
     this();
     this.chosenItems = chosenItems;
@@ -210,6 +217,7 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     this.phoneId = phoneId;
     this.orderId = orderId;
     setOrderIdIsSet(true);
+    this.username = username;
   }
 
   /**
@@ -243,6 +251,9 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
       this.phoneId = other.phoneId;
     }
     this.orderId = other.orderId;
+    if (other.isSetUsername()) {
+      this.username = other.username;
+    }
   }
 
   public OrderPlacedByClient deepCopy() {
@@ -268,6 +279,7 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     this.phoneId = null;
     setOrderIdIsSet(false);
     this.orderId = 0;
+    this.username = null;
   }
 
   public int getChosenItemsSize() {
@@ -551,6 +563,30 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     __isset_bit_vector.set(__ORDERID_ISSET_ID, value);
   }
 
+  public String getUsername() {
+    return this.username;
+  }
+
+  public OrderPlacedByClient setUsername(String username) {
+    this.username = username;
+    return this;
+  }
+
+  public void unsetUsername() {
+    this.username = null;
+  }
+
+  /** Returns true if field username is set (has been assigned a value) and false otherwise */
+  public boolean isSetUsername() {
+    return this.username != null;
+  }
+
+  public void setUsernameIsSet(boolean value) {
+    if (!value) {
+      this.username = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case CHOSEN_ITEMS:
@@ -641,6 +677,14 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
       }
       break;
 
+    case USERNAME:
+      if (value == null) {
+        unsetUsername();
+      } else {
+        setUsername((String)value);
+      }
+      break;
+
     }
   }
 
@@ -679,6 +723,9 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     case ORDER_ID:
       return Long.valueOf(getOrderId());
 
+    case USERNAME:
+      return getUsername();
+
     }
     throw new IllegalStateException();
   }
@@ -712,6 +759,8 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
       return isSetPhoneId();
     case ORDER_ID:
       return isSetOrderId();
+    case USERNAME:
+      return isSetUsername();
     }
     throw new IllegalStateException();
   }
@@ -828,69 +877,21 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
         return false;
     }
 
+    boolean this_present_username = true && this.isSetUsername();
+    boolean that_present_username = true && that.isSetUsername();
+    if (this_present_username || that_present_username) {
+      if (!(this_present_username && that_present_username))
+        return false;
+      if (!this.username.equals(that.username))
+        return false;
+    }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_chosenItems = true && (isSetChosenItems());
-    builder.append(present_chosenItems);
-    if (present_chosenItems)
-      builder.append(chosenItems);
-
-    boolean present_expectedPrice = true;
-    builder.append(present_expectedPrice);
-    if (present_expectedPrice)
-      builder.append(expectedPrice);
-
-    boolean present_userId = true;
-    builder.append(present_userId);
-    if (present_userId)
-      builder.append(userId);
-
-    boolean present_howWillPay = true && (isSetHowWillPay());
-    builder.append(present_howWillPay);
-    if (present_howWillPay)
-      builder.append(howWillPay.getValue());
-
-    boolean present_pickUp = true;
-    builder.append(present_pickUp);
-    if (present_pickUp)
-      builder.append(pickUp);
-
-    boolean present_address = true && (isSetAddress());
-    builder.append(present_address);
-    if (present_address)
-      builder.append(address);
-
-    boolean present_phoneNumber = true && (isSetPhoneNumber());
-    builder.append(present_phoneNumber);
-    if (present_phoneNumber)
-      builder.append(phoneNumber);
-
-    boolean present_timestamp = true;
-    builder.append(present_timestamp);
-    if (present_timestamp)
-      builder.append(timestamp);
-
-    boolean present_tableId = true && (isSetTableId());
-    builder.append(present_tableId);
-    if (present_tableId)
-      builder.append(tableId);
-
-    boolean present_phoneId = true && (isSetPhoneId());
-    builder.append(present_phoneId);
-    if (present_phoneId)
-      builder.append(phoneId);
-
-    boolean present_orderId = true;
-    builder.append(present_orderId);
-    if (present_orderId)
-      builder.append(orderId);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(OrderPlacedByClient other) {
@@ -1011,6 +1012,16 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetUsername()).compareTo(typedOther.isSetUsername());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUsername()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.username, typedOther.username);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1122,6 +1133,13 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 12: // USERNAME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.username = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -1208,6 +1226,11 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     oprot.writeFieldBegin(ORDER_ID_FIELD_DESC);
     oprot.writeI64(this.orderId);
     oprot.writeFieldEnd();
+    if (this.username != null) {
+      oprot.writeFieldBegin(USERNAME_FIELD_DESC);
+      oprot.writeString(this.username);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -1286,6 +1309,14 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
     sb.append("orderId:");
     sb.append(this.orderId);
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("username:");
+    if (this.username == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.username);
+    }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -1306,6 +1337,9 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'phoneId' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'orderId' because it's a primitive and you chose the non-beans generator.
+    if (username == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'username' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

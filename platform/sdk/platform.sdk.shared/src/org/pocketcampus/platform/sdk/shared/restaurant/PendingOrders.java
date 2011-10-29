@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -231,14 +230,7 @@ public class PendingOrders implements org.apache.thrift.TBase<PendingOrders, Pen
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_orders = true && (isSetOrders());
-    builder.append(present_orders);
-    if (present_orders)
-      builder.append(orders);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(PendingOrders other) {

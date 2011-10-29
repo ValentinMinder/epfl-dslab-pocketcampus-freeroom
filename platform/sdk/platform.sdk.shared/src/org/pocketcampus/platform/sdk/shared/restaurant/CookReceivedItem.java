@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -442,29 +441,7 @@ public class CookReceivedItem implements org.apache.thrift.TBase<CookReceivedIte
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_singleChoices = true && (isSetSingleChoices());
-    builder.append(present_singleChoices);
-    if (present_singleChoices)
-      builder.append(singleChoices);
-
-    boolean present_multipleChoices = true && (isSetMultipleChoices());
-    builder.append(present_multipleChoices);
-    if (present_multipleChoices)
-      builder.append(multipleChoices);
-
-    boolean present_comments = true && (isSetComments());
-    builder.append(present_comments);
-    if (present_comments)
-      builder.append(comments);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(CookReceivedItem other) {

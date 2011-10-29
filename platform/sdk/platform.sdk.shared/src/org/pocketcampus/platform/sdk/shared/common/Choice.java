@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -273,19 +272,7 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_choiceId = true;
-    builder.append(present_choiceId);
-    if (present_choiceId)
-      builder.append(choiceId);
-
-    boolean present_value = true && (isSetValue());
-    builder.append(present_value);
-    if (present_value)
-      builder.append(value);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Choice other) {

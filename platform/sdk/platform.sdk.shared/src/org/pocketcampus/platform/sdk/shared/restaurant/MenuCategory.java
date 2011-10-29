@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -409,29 +408,7 @@ public class MenuCategory implements org.apache.thrift.TBase<MenuCategory, MenuC
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_subCategories = true && (isSetSubCategories());
-    builder.append(present_subCategories);
-    if (present_subCategories)
-      builder.append(subCategories);
-
-    boolean present_categoryDescription = true && (isSetCategoryDescription());
-    builder.append(present_categoryDescription);
-    if (present_categoryDescription)
-      builder.append(categoryDescription);
-
-    boolean present_categoryId = true;
-    builder.append(present_categoryId);
-    if (present_categoryId)
-      builder.append(categoryId);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(MenuCategory other) {

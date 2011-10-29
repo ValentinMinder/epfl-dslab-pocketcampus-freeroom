@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -335,24 +334,7 @@ public class ClientOrderReceipt implements org.apache.thrift.TBase<ClientOrderRe
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_userId = true;
-    builder.append(present_userId);
-    if (present_userId)
-      builder.append(userId);
-
-    boolean present_nonce = true;
-    builder.append(present_nonce);
-    if (present_nonce)
-      builder.append(nonce);
-
-    boolean present_orderId = true;
-    builder.append(present_orderId);
-    if (present_orderId)
-      builder.append(orderId);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(ClientOrderReceipt other) {

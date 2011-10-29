@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -329,24 +328,7 @@ public class Location implements org.apache.thrift.TBase<Location, Location._Fie
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_latitude = true;
-    builder.append(present_latitude);
-    if (present_latitude)
-      builder.append(latitude);
-
-    boolean present_longitude = true;
-    builder.append(present_longitude);
-    if (present_longitude)
-      builder.append(longitude);
-
-    boolean present_altitude = true && (isSetAltitude());
-    builder.append(present_altitude);
-    if (present_altitude)
-      builder.append(altitude);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Location other) {
