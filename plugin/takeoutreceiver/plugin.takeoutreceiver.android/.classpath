@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.takeout.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.takeout.server"/>
-	<classpathentry kind="src" path="platform.sdk.android_src"/>
-	<classpathentry kind="src" path="lib.actionbar.android_src"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.platform.sdk.shared.restaurant.ChosenMenuItem;
 import org.pocketcampus.platform.sdk.shared.restaurant.OrderPlacedByClient;
 import org.pocketcampus.platform.sdk.shared.restaurant.PaymentMethod;
-import org.pocketcampus.plugin.takeoutreceiver.android.impl.R;
+import org.pocketcampus.R;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.LoadPendingOrdersRequest;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.RegisterCookTokenRequest;
 import org.pocketcampus.plugin.takeoutreceiver.android.request.SetOrderStatusRequest;
@@ -70,7 +70,7 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 
 		Context context = getApplicationContext();
 		CharSequence contentTitle = "Nouvelle commande";
-		CharSequence contentText = "Une nouvelle commande a été déposée.";
+		CharSequence contentText = "Une nouvelle commande a ï¿½tï¿½ dï¿½posï¿½e.";
 		Intent notificationIntent = new Intent(this, TakeoutReceiverMainView.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
@@ -102,7 +102,7 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 		long timestamp = new Date().getTime();
 		String phoneId = "079-694-2356";
 		long orderId = 0;
-		OrderPlacedByClient order = new OrderPlacedByClient(chosenItems, expectedPrice, userId, howWillPay, pickUp, timestamp, phoneId, orderId);
+		OrderPlacedByClient order = new OrderPlacedByClient(chosenItems, expectedPrice, userId, howWillPay, pickUp, timestamp, phoneId, orderId, "flaurent");
 
 		try {
 			client.placeOrder(order);

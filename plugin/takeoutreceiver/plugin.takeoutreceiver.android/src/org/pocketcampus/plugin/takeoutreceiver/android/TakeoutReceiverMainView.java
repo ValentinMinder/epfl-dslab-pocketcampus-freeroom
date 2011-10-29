@@ -19,7 +19,7 @@ import org.pocketcampus.platform.sdk.shared.restaurant.CookReceivedItem;
 import org.pocketcampus.platform.sdk.shared.restaurant.CookReceivedOrder;
 import org.pocketcampus.platform.sdk.shared.restaurant.PendingOrders;
 import org.pocketcampus.plugin.takeoutreceiver.android.iface.ITakeoutReceiverMainView;
-import org.pocketcampus.plugin.takeoutreceiver.android.impl.R;
+import org.pocketcampus.R;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -178,9 +178,9 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 
 		List<ButtonElement> buttons = new ArrayList<ButtonElement>();
 		buttons.add(new ButtonElement(this, "Fermer"));
-		buttons.add(new ButtonElement(this, "C'est prêt!"));
+		buttons.add(new ButtonElement(this, "C'est prï¿½t!"));
 
-		String title = "Commande n°" + Long.toString(order.getOrderId());
+		String title = "Commande nï¿½" + Long.toString(order.getOrderId());
 
 		final PopupDialog detailDialog = new PopupDialog(this, title, desc, buttons);
 
