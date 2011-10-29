@@ -116,6 +116,11 @@ class Plugin {
 		
 		mProjectDotPropertiesFile = new File(mAndroidDirectory.getPath() + "/project.properties")
 		checkFile(mProjectDotPropertiesFile, ".properties")
+		
+		mProjectDotPropertiesFile.eachLine {
+			if(it.indexOf("android.library=true") != -1)
+				throw new IllegalArgumentException("This plugin is an Android library, expected stand-alone plugin.");
+		}
 	}
 	
 	

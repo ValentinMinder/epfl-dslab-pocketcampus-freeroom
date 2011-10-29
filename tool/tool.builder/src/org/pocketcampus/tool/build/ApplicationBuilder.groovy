@@ -75,7 +75,7 @@ class ApplicationBuilder {
 		println "=> Android: Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 		
-		print "=> Android: Classpath"
+		print "=> Android: Classpath "
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()
 		println "(" + DotClasspath.fromEntries(classpathEntriesBuffer).getClasspathEntries().size() + " imports)"
 		new File(TARGET_DIRECTORY_ANDROID + ".classpath").write(finalClasspath);
