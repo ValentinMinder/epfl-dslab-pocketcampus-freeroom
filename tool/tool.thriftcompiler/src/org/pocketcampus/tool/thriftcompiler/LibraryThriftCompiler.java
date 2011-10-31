@@ -64,7 +64,7 @@ public class LibraryThriftCompiler {
 				directoryOut = "../../plugin/"+pluginName+"/plugin."+pluginName+".shared/src";
 			}
 			
-			String command = LocalConfig.THRIFT_PATH + " "+verbose+"--gen java -out "+directoryOut+" "+directoryIn+"/"+pluginName+".thrift";
+			String command = LocalConfig.THRIFT_PATH + " "+verbose+"--gen java:hashcode -out "+directoryOut+" "+directoryIn+"/"+pluginName+".thrift";
 			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader inputInfo = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader inputError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
