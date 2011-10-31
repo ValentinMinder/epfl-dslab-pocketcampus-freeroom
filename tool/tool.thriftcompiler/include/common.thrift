@@ -60,7 +60,7 @@ enum Rating {
 // Represents a possible choice.
 struct Choice { 
 	1: required Id choiceId;
-	2: required string value;
+	2: required string choiceValue;
 }
 
 // FROM SERVER TO CLIENT
