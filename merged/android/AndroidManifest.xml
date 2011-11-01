@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AUTO-GENERATED POCKETCAMPUS MANIFEST FILE -->
+<!-- changes to this file will be kindly disregarded -->
+
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="org.pocketcampus">
+
+	<uses-sdk
+		android:minSdkVersion="8" />
+	
+	<application
+		android:label="PocketCampus"
+		android:theme="@style/PocketCampusTheme"
+		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
+	
+		
+<!-- PLUGIN -->
+<activity android:name="org.pocketcampus.android.plugin.dashboard.DashboardView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="dashboard" android:icon="@drawable/dashboard_icon">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:name="org.pocketcampus.plugin.food.android.FoodMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Food">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Commandes de Pizza" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView">
+  <intent-filter>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestOtherView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.test.android.TestController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+			
+	</application>
+
+	<permission
+        android:name="org.pocketcampus.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+	
+</manifest>
+		

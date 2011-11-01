@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/food_by_resto" android:icon="@drawable/food_opt_icon_resto"
+		android:title="Meals" />
+
+	<item android:id="@+id/food_by_sandwiches" android:icon="@drawable/food_opt_icon_sandwich"
+		android:title="Sandwiches" />
+
+	<item android:id="@+id/food_by_suggestions" android:icon="@drawable/food_opt_icon_suggestions"
+		android:title="Suggestions" />
+	
+	<item android:id="@+id/food_by_settings" android:icon="@drawable/food_opt_icon_settings"
+		android:title="Settings" />
+</menu>
