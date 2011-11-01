@@ -138,4 +138,27 @@ public class FoodMainView extends PluginView implements IFoodView {
 		// mLayout.removeAllViews();
 		// mLayout.addView(l);
 	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case SUGGESTIONS_REQUEST_CODE: // Result from the Suggestions class
+			if (resultCode == Activity.RESULT_OK) {
+				Bundle extras = data.getExtras();
+				if (extras != null) {
+					
+					@SuppressWarnings("unchecked")
+					ArrayList<Meal> list = (ArrayList<Meal>) extras.getSerializable("org.pocketcampus.suggestions.meals");
+					Log.d("SUGGESTIONS", "Meals in return : " + list.size());
+					
+				} else {
+					Log.d("SUGGESTIONS", "No extras !");
+				}
+			} else {
+				Log.d("SUGGESTIONS", "RESULT_PAS_OK !");
+			}
+			break;
+		}
+	}
 }
