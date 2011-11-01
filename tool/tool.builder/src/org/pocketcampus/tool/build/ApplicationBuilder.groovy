@@ -99,7 +99,7 @@ class ApplicationBuilder {
 		
 		if(skippedPluginsCount != 0) {
 			println ""
-			println "Skipped " + skippedPluginsCount + " plugins. Check the log for more info"
+			println "Warning: Skipped " + skippedPluginsCount + " plugins. Check the log for more info"
 		}
 		
 		println ""
