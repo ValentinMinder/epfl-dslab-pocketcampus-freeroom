@@ -26,7 +26,7 @@ class Plugin {
 	
 	private Plugin(File directory) {
 		mDirectory = directory
-		mName = getName()
+		mName = mDirectory.getName()
 	}
 	
 	public void parse() {
@@ -131,10 +131,4 @@ class Plugin {
 		}
 	}
 	
-	private String getName() {
-		String path = mDirectory.getPath()
-		// Be cross-platform
-		Integer lastIndexOfSlash = Math.max(path.lastIndexOf("\\"), path.lastIndexOf("/"))
-		return path.subSequence(lastIndexOfSlash + 1, path.length())
-	}
 }

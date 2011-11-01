@@ -24,8 +24,11 @@ class ApplicationBuilder {
 	public static void main(String[] args) {
 		print "Listing plugins... "
 		new File('../../plugin').eachFile {
-			Plugin plugin = Plugin.fromDirectory(it)
-			plugins.add(plugin);
+			if(!it.getName().startsWith(".")) {
+				// skip the hidden directories directories such as ".svn"
+				Plugin plugin = Plugin.fromDirectory(it)
+				plugins.add(plugin);
+			}
 		}
 
 		if(plugins.size() == 0) {
@@ -44,6 +47,7 @@ class ApplicationBuilder {
 		
 		String manifestBuffer = "";
 		ArrayList classpathEntriesBuffer = new ArrayList()
+		int skippedPluginsCount = 0
 
 		for (Plugin plugin : plugins) {
 			println "=> " + plugin.mName.capitalize()
@@ -59,6 +63,8 @@ class ApplicationBuilder {
 
 			} catch (IllegalArgumentException e) {
 				println e
+				println "Skipping plugin: " + plugin.mName.capitalize()
+				skippedPluginsCount++
 			}
 
 			println ""
@@ -72,7 +78,7 @@ class ApplicationBuilder {
 		String proguardConf = ProguardTemplate.getText();
 		new File(TARGET_DIRECTORY_ANDROID + "proguard.cfg").write(proguardConf);
 		
-		println "Making  Android Project Properties"
+		println "Making Android Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
 		
 		print "Making Android Classpath "
@@ -91,7 +97,13 @@ class ApplicationBuilder {
 		println "Making Shared Classpath "
 		new File(TARGET_DIRECTORY_SHARED + ".classpath").write(SharedDotClasspathTemplate.getText());
 		
-		println "\nApplication ready, generated in " + new File(TARGET_DIRECTORY).getAbsolutePath() + "."
+		if(skippedPluginsCount != 0) {
+			println ""
+			println "Skipped " + skippedPluginsCount + " plugins. Check the log for more info"
+		}
+		
+		println ""
+		println "Merged " + (plugins.size() - skippedPluginsCount) + " plugins in " + new File(TARGET_DIRECTORY).getCanonicalPath()
 	}
 
 }
