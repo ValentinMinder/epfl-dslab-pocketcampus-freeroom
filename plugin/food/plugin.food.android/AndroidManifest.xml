@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.pocketcampus.plugin.food.android"
+      package="org.pocketcampus"
       android:versionCode="1"
       android:versionName="1.0">
       
@@ -11,7 +11,7 @@
         android:theme="@style/PocketCampusTheme"
 		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
         
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodMainView"
+        <activity android:name=".plugin.food.android.FoodMainView"
                   android:label="Food">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

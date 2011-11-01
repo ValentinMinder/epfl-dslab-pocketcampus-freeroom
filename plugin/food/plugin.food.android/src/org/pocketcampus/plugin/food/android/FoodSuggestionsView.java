@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.CheckBoxesListViewElement;
@@ -51,10 +52,6 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 	
 	private List<MealTag> mLikes;
 	private List<MealTag> mDislikes;
-//	private Vector<MealTag> mLikes = new Vector<MealTag>();
-//	private Vector<MealTag> mDislikes_ = new Vector<MealTag>();
-//	private MealTag mLikeTag;
-//	private MealTag dislikeTag_;
 
 	@Override
 	protected Class<? extends Service> getMainControllerClass() {
@@ -78,7 +75,6 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		
 		//Handle extras from MainView
 		handleExtras();
-		Log.d("SUGGESTIONS", "Extras size : " + mMeals.size());
 		
 		//Get the tags from the controller
 		mTagsList = mController.getMealTags();
@@ -103,8 +99,8 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		setOnComputeButtonClickListener();
 		
 		//Set the layout
-		mLayout.addView(mListView);
-		mLayout.addView(mButton);
+		mLayout.addView(mListView, 0);
+		mLayout.addView(mButton, 1);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);

@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.android;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
@@ -107,6 +108,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			Intent suggestions = new Intent(getApplicationContext(), FoodSuggestionsView.class);
 			ArrayList<Meal> meals = (ArrayList<Meal>)mModel.getMeals();
+			if(meals == null)
+				Log.d("SUGGESTIONS", "Pas de meals envoyés");
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivity(suggestions);
 		} else if (item.getItemId() == R.id.food_by_settings) {
