@@ -34,12 +34,17 @@
 		<link>
 			<name>lib.actionbar.android_src</name>
 			<type>2</type>
-			<locationURI>_android_lib_actionbar_android_4c9f3075/src</locationURI>
+			<locationURI>PARENT_LOC</locationURI>
+		</link>
+		<link>
+			<name>platform.sdk.android</name>
+			<type>2</type>
+			<locationURI>PARENT-3-PROJECT_LOC/platform/sdk/platform.sdk.android</locationURI>
 		</link>
 		<link>
 			<name>platform.sdk.android_src</name>
 			<type>2</type>
-			<locationURI>_android_platform_sdk_android_3cce33c0/src</locationURI>
+			<locationURI>PROJECT_LOC</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

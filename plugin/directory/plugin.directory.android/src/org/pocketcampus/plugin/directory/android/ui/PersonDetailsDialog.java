@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.directory.android.ui;
 
 
-import org.pocketcampus.plugin.directory.android.R;
+import org.pocketcampus.R;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.app.AlertDialog;

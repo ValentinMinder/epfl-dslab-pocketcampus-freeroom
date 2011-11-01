@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.directory.android;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -17,7 +19,7 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
-import org.pocketcampus.plugin.directory.android.R;
+import org.pocketcampus.R;
 
 
 import android.content.Intent;
@@ -104,37 +106,41 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//MenuInflater inflater = getMenuInflater();
-	    //inflater.inflate(R.menu.directory_resultlist_menu, menu);
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
 	    return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-//		switch (item.getItemId()) {
-//	    	case R.id.directory_resultList_filtre:
-//		    	List<String> ouToKeep = new LinkedList<String>();
-//				ouToKeep.add("IN-MA1");
-//				Toast.makeText(this, "filtre!", Toast.LENGTH_SHORT).show();
-//				filterResult(ouToKeep);
-//		        return true;
-//		}
+		switch (item.getItemId()) {
+	    	case R.id.directory_resultList_filtre:
+	    		
+	    		mController.filterResults();
+	    		
+	    		
+	    		
+	    		// = getOuSelection(allOU);
+		    	
+				//Toast.makeText(this, "filtre! " + toast, Toast.LENGTH_LONG).show();
+				
+				//filterResult(ouToKeep);
+		        return true;
+		}
 		return true;
 	}
 
-	private void filterResult(List<String> ouToKeep) {
-		Iterator<Person> i = mPersons.iterator();
-		int j=0;
-		while(i.hasNext()){
-			if(!ouToKeep.contains( i.next().ou)){
-				i.remove();
-				j++;
-			}
-		}
+	private HashSet<String> getOuSelection() {
+		HashSet<String> keeper = new HashSet<String>();
 		
-		Toast.makeText(this,j+ " removed", Toast.LENGTH_SHORT).show();
-		mController.setResults(mPersons);
+		
+		
+		
+		return keeper;
 	}
+
+
+
 
 
 	@Override
@@ -180,38 +186,21 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		PersonDetailsDialog dialog = new PersonDetailsDialog(this, p);
 		dialog.show();
 	}
-
-
-	@Override
-	public void personChoosed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void backToResultsAfterWrongPersonChoosed() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	Labeler<Person> labeler = new Labeler<Person>(){
-
 		@Override
 		public String getLabel(Person obj) {
 			String nice;
-			
 			nice = obj.getFirstName() + " " + obj.getLastName(); 
-			
 			return nice;
 		}
-		
 	};
-	
-	
-	
-	
-	
+
+	@Override
+	public void tooManyResults(int nb) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

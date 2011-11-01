@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.directory.android;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
@@ -75,11 +76,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	}
 
 	@Override
-	public void personChoosed() {}
-
-	@Override
-	public void backToResultsAfterWrongPersonChoosed() {}
-
-	
-
+	public void tooManyResults(int nb) {
+		Toast.makeText(this, "Too many results, try to be more specific", Toast.LENGTH_LONG).show();
+		
+	}
 }

@@ -17,8 +17,12 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 
 	@Override
 	protected void onError(DirectoryController controller, Exception e) {
-		System.out.println("onError");
-		controller.getModel().notifyNetworkError();
+		System.out.println("onError "+e.getMessage());
+		if(e.getMessage().equals("too many results"))
+			((DirectoryModel) controller.getModel()).notifyTooManyResults(1337);
+		else
+			controller.getModel().notifyNetworkError();
+		
 		e.printStackTrace();
 	}
 

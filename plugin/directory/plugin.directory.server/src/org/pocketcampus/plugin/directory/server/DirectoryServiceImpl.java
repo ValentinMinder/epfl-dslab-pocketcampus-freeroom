@@ -37,14 +37,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 	
 	@Override
-	public List<Person> search(String param) throws TException {
+	public List<Person> search(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		LinkedList<Person> results;
 		HashMap<String,Person> hashMap = new HashMap<String,Person>();
 		String sciper;
 		
 		
 		try{
-			int sciperVal = Integer.valueOf(param);
+			Integer.valueOf(param);
 			System.out.println("directory search via sciper:" + param);
 			sciper = param;
 			results = search(sciper, null, null, true);
@@ -99,7 +99,11 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 
 		
 		} catch (LDAPSearchException e1) {
-			System.out.println("ldap search problem: " + e1.getMessage());
+			if(e1.getMessage().equals("size limit exceeded")){
+				System.out.println("ldap search problem: " + e1.getMessage());
+				throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
+			}
+					
 		} catch (LDAPException e) {
 			System.out.println("ldap reconnection problem");
 		}
@@ -112,7 +116,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 	
 	
-	private LinkedList<Person> search(String sciper, String first_name, String last_name, boolean accurate){
+	private LinkedList<Person> search(String sciper, String first_name, String last_name, boolean accurate) throws org.pocketcampus.plugin.directory.shared.LDAPException{
 		LinkedList<Person> results = new LinkedList<Person>();
 		
 		
@@ -126,7 +130,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 			
 			//searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
-			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier" };
+			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
 			int sizeLimit = 150;
 			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, sizeLimit, 0, false, searchQuery, attWanted); 
 			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
@@ -139,15 +143,17 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					t =  web.split(" ");
 					web = t[0];
 				}
-				
+				sciper = e.getAttributeValue("uniqueIdentifier");
 				Person p = new Person(
 						e.getAttributeValue("givenName"),
 						e.getAttributeValue("sn"),
-						e.getAttributeValue("uniqueIdentifier"));
+						sciper);
+				p.setMail(e.getAttributeValue("mail"));
 				p.setWeb(web);
 				p.setPhone_number(e.getAttributeValue("telephoneNumber"));
 				p.setOffice(e.getAttributeValue("roomNumber"));
 				p.setGaspar(e.getAttributeValue("uid"));
+				p.setOu(e.getAttributeValue("ou"));
 				
 				System.out.println(p);
 				
@@ -159,7 +165,10 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			Collections.sort(results);
 		
 		} catch (LDAPSearchException e1) {
-			System.out.println("ldap search problem: " + e1.getMessage());
+			if(e1.getMessage().equals("size limit exceeded")){
+				System.out.println("ldap search problem: " + e1.getMessage());
+				throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
+			}
 		} catch (LDAPException e) {
 			System.out.println("ldap reconnection problem");
 		}

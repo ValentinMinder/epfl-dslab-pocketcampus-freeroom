@@ -8,17 +8,28 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
+import android.widget.Toast;
+
 public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	IDirectoryView mListeners = (IDirectoryView) getListeners();
 	
 	private List<Person> mResult;
 	private Person mSelectedPerson;
-	//TODO use this variable to come back at the same index in the list if the selected person isn't the good one
-	//private int indexOfList;
+
+	private List<String> organisationalUnitList;
+
 	
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return IDirectoryView.class;
+	}
+
+	public void setOUList(List<String> organisationalUnitList) {
+		this.organisationalUnitList = organisationalUnitList;
+	}
+
+	public List<String> getOUList() {
+		return organisationalUnitList;
 	}
 
 	@Override
@@ -40,7 +51,10 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	
 	public void selectPerson(Person choosen_one){
 		mSelectedPerson = choosen_one;
-		mListeners.personChoosed();
+	}
+	
+	public void notifyTooManyResults(int nb){
+		mListeners.tooManyResults(nb);
 	}
 
 
