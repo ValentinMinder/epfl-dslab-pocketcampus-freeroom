@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  General -->
     <string name="hello">Hello World, androidActivity!</string>
     <string name="app_name">Plugin.food.android</string>
+    
+    <!-- Suggestions -->
+    <string name="food_suggestions_nothing_found">No suggestions found</string>
+	<string name="food_suggestions_meat">Meat</string>
+	<string name="food_suggestions_fish">Fish</string>
+	<string name="food_suggestions_beef">Beef</string>
+	<string name="food_suggestions_pasta">Pasta</string>
+	<string name="food_suggestions_rice">Rice</string>
+	<string name="food_suggestions_horse">Horse</string>
+	<string name="food_suggestions_vege">Vegetarian</string>
+	<string name="food_suggestions_porc">Porc</string>
+	<string name="food_suggestions_chicken">Chicken</string>
+	
+	<string name="food_suggestions_ok">See Suggestions</string>
+	<string name="food_suggestions_test">Test</string>
+	
+	<string name="food_suggestions_notag">No existing Tag</string>
 </resources>

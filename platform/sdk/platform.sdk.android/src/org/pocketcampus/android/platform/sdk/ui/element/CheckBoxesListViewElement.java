@@ -37,4 +37,12 @@ public class CheckBoxesListViewElement extends ListView implements Element {
 	public void setOnItemClickListener(OnItemClickListener l) {
 		mAdapter.setOnItemClickListener(l);
 	}
+	
+	public List<String> getPositiveTags() {
+		return mAdapter.getPositiveTags();
+	}
+	
+	public List<String> getNegativeTags() {
+		return mAdapter.getNegativeTags();
+	}
 }
