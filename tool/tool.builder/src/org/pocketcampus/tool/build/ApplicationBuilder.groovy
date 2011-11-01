@@ -39,9 +39,9 @@ class ApplicationBuilder {
 		println plugins.size() + " found."
 		
 		println "Cleaning up directories..."
-		new File(TARGET_DIRECTORY_ANDROID).delete();
-		new File(TARGET_DIRECTORY_SHARED).delete();
-		new File(TARGET_DIRECTORY_SERVER).delete();
+		new File(TARGET_DIRECTORY_ANDROID).deleteDir()
+		new File(TARGET_DIRECTORY_SHARED).deleteDir()
+		new File(TARGET_DIRECTORY_SERVER).deleteDir()
 		
 		println ""
 		
