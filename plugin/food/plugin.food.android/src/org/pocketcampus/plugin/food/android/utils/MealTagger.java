@@ -32,9 +32,9 @@ public class MealTagger {
 		
 		Pattern meatPatterns = Pattern.compile(".*(boeuf|caille|kangourou|kebab|poulet|bouillis|veau|agneau|porc|cheval|cerf|chevreuil|chasse|coq .?coquelet.?|canard|lard .?lardons.?|dinde|volaille|pintade|autruche|jambon|saucisse|merguez|burger|nugget|cordon.?bleu|chipolatas|carne.?.?chili.?con|hachis.?.?parmentier|moussaka|osso.?buco).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 //		Pattern meatPatterns2 = Pattern.compile(".*(�minc�|roti|rago�t|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern fishPatterns = Pattern.compile(".*(poisson|carrelet|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|bar|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars|hoki).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern vegetarianPatterns = Pattern.compile(".*v.?g.?tarienne.*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		Pattern pastaPatterns = Pattern.compile(".*(p�tes|pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		Pattern pastaPatterns = Pattern.compile(".*(pÂtes|pasta|nouilles|gnocchi|raviolis|tortellinis|tortellis|cannellonis|triangolis|spaghettis|penne|cornettes|tagliatelle).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern ricePatterns = Pattern.compile(".*(riz|risotto|cantonais|casimir).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern.compile(".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern chickenPatterns = Pattern.compile(".*(poulet|coq .?coquelet.?|dinde|volaille|nugget).*", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);

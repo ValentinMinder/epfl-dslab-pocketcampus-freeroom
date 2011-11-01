@@ -10,6 +10,7 @@ import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.android.utils.SuggestionsListSection;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
@@ -77,7 +78,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void displayData() {
 		mLayout.setText("No menus");
-		mController.getRestaurantsList();
+//		mController.getRestaurantsList();
 		mController.getMeals();
 	}
 
@@ -108,10 +109,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			Intent suggestions = new Intent(getApplicationContext(), FoodSuggestionsView.class);
 			ArrayList<Meal> meals = (ArrayList<Meal>)mModel.getMeals();
+			
 			if(meals == null)
 				Log.d("SUGGESTIONS", "Pas de meals envoyés");
+			else
+				Log.d("SUGGESTIONS", "Extras : " + meals.size());
+			
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
-			startActivity(suggestions);
+			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 		} else if (item.getItemId() == R.id.food_by_settings) {
 			
 		}
@@ -154,6 +159,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 		switch (requestCode) {
 		case SUGGESTIONS_REQUEST_CODE: // Result from the Suggestions class
+			Log.d("SUGGESTIONS", "OnActivityResult");
+			
 			if (resultCode == Activity.RESULT_OK) {
 				Bundle extras = data.getExtras();
 				if (extras != null) {

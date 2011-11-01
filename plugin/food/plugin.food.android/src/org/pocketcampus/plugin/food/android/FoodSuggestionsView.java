@@ -99,8 +99,8 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		setOnComputeButtonClickListener();
 		
 		//Set the layout
-		mLayout.addView(mListView, 0);
-		mLayout.addView(mButton, 1);
+		mLayout.addView(mListView);
+		mLayout.addView(mButton);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
