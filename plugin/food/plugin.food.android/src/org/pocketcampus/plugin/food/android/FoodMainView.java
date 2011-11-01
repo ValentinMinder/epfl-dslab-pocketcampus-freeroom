@@ -105,7 +105,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 		} else if (item.getItemId() == R.id.food_by_sandwiches) {
 			
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
-			startActivity(new Intent(this, FoodSuggestionsView.class));
+			Intent suggestions = new Intent(getApplicationContext(), FoodSuggestionsView.class);
+			ArrayList<Meal> meals = (ArrayList<Meal>)mModel.getMeals();
+			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
+			startActivity(suggestions);
 		} else if (item.getItemId() == R.id.food_by_settings) {
 			
 		}
