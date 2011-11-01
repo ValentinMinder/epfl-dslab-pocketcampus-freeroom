@@ -126,12 +126,15 @@ class Plugin {
 	
 	private void checkFile(File file, String desc) {
 		if(!file.exists()) {
+			println file.getPath();
 			throw new IllegalArgumentException("Plugin's " + desc + " doesn't exist!");	
 		}
 	}
 	
 	private String getName() {
 		String path = mDirectory.getPath()
-		return path.subSequence(path.lastIndexOf("\\")+1, path.length())
+		// Be cross-platform
+		Integer lastIndexOfSlash = Math.max(path.lastIndexOf("\\"), path.lastIndexOf("/"))
+		return path.subSequence(lastIndexOfSlash + 1, path.length())
 	}
 }
