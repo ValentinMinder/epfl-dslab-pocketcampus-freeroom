@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server.db;
 
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
+import org.pocketcampus.plugin.food.shared.RatingValue;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 /**
@@ -129,66 +131,134 @@ public class FoodDB {
 		}
 	}
 
-	public Meal getMeal(int mealHashCode) {
-		PreparedStatement getMeal = null;
-		Connection connection_ = createConnection();
-		String getString = "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
-		Meal newMeal = null;
+	/**
+	 * Insert a meal into the database.
+	 * 
+	 * @param connection_
+	 * @param m
+	 * @return
+	 */
+	public boolean insertMeals(List<Meal> mCampusMeals) {
 
+		Connection connection = null;
+		PreparedStatement statement = null;
 		try {
-			Calendar cal = Calendar.getInstance();
-			String dateString = cal.get(Calendar.YEAR) + "."
-					+ (cal.get(Calendar.MONTH) + 1) + "."
-					+ (cal.get(Calendar.DAY_OF_MONTH));
+			connection = createConnection();
+			String statementString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
+					+ " VALUES (?,?,?,?,?,?,?)";
 
-			connection_.setAutoCommit(false);
+			statement = connection.prepareStatement(statementString);
+			for (Meal m : mCampusMeals) {
+				String name = m.getName();
+				String description = m.getMealDescription();
+				String restaurant = m.getRestaurant().getName();
+				double totalRating = m.getRating().getTotalRating();
+				int numberOfVotes = m.getRating().getNbVotes();
+				int hashcode = m.hashCode();
 
-			getMeal = connection_.prepareStatement(getString);
-			getMeal.setString(1, dateString);
-			getMeal.setInt(2, mealHashCode);
+				// Get today's date
+				Calendar cal = Calendar.getInstance();
+				String dateString = cal.get(Calendar.YEAR) + "."
+						+ (cal.get(Calendar.MONTH) + 1) + "."
+						+ cal.get(Calendar.DAY_OF_MONTH);
 
-			ResultSet rset = getMeal.executeQuery();
+				// Insert values in corresponding fields
+				statement.setString(1, name);
+				statement.setString(2, description);
+				statement.setString(3, restaurant);
+				statement.setFloat(4, (float) totalRating);
+				statement.setInt(5, numberOfVotes);
+				statement.setInt(6, hashcode);
+				statement.setString(7, dateString);
 
-			connection_.commit();
+				// System.out.println("<importMenus>: Inserting Meal "
+				// + m.getName() + ", " + m.getRestaurant().getName()
+				// + " into batch");
 
-			System.out.println("#Food database: <getMeal>: getting "
-					+ mealHashCode);
-
-			String name;
-			String description;
-			String restaurant;
-			double totalRating;
-			int numberOfVotes;
-			int hashcode;
-			Date stamp_created;
-
-			while (rset.next()) {
-				name = rset.getString("Title");
-				description = rset.getString("Description");
-				restaurant = rset.getString("Restaurant");
-				totalRating = rset.getFloat("TotalRating");
-				numberOfVotes = rset.getInt("NumberOfVotes");
-				hashcode = rset.getInt("HashCode");
-				stamp_created = rset.getDate("stamp_created");
+				statement.addBatch();
 			}
-
-			return newMeal;
+			statement.executeBatch();
+			System.out.println("#Food Database: inserted meals");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			System.out.println("#Food Database: Problem in insert meal.");
+			return false;
 		} finally {
-			try {
-				if (getMeal != null) {
-					getMeal.close();
+			if (statement != null)
+				try {
+					statement.close();
+				} catch (SQLException logOrIgnore) {
 				}
-				if (connection_ != null) {
-					connection_.close();
+			if (connection != null)
+				try {
+					connection.close();
+				} catch (SQLException logOrIgnore) {
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
+
+	// public Meal getMeal(int mealHashCode) {
+	// PreparedStatement getMeal = null;
+	// Connection connection_ = createConnection();
+	// String getString =
+	// "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
+	// Meal newMeal = null;
+	//
+	// try {
+	// Calendar cal = Calendar.getInstance();
+	// String dateString = cal.get(Calendar.YEAR) + "."
+	// + (cal.get(Calendar.MONTH) + 1) + "."
+	// + (cal.get(Calendar.DAY_OF_MONTH));
+	//
+	// connection_.setAutoCommit(false);
+	//
+	// getMeal = connection_.prepareStatement(getString);
+	// getMeal.setString(1, dateString);
+	// getMeal.setInt(2, mealHashCode);
+	//
+	// ResultSet rset = getMeal.executeQuery();
+	//
+	// connection_.commit();
+	//
+	// System.out.println("#Food database: <getMeal>: getting "
+	// + mealHashCode);
+	//
+	// String name;
+	// String description;
+	// String restaurant;
+	// double totalRating;
+	// int numberOfVotes;
+	// int hashcode;
+	// Date stamp_created;
+	//
+	// while (rset.next()) {
+	// name = rset.getString("Title");
+	// description = rset.getString("Description");
+	// restaurant = rset.getString("Restaurant");
+	// totalRating = rset.getFloat("TotalRating");
+	// numberOfVotes = rset.getInt("NumberOfVotes");
+	// hashcode = rset.getInt("HashCode");
+	// stamp_created = rset.getDate("stamp_created");
+	// }
+	//
+	// return newMeal;
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// return null;
+	// } finally {
+	// try {
+	// if (getMeal != null) {
+	// getMeal.close();
+	// }
+	// if (connection_ != null) {
+	// connection_.close();
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
 
 	/**
 	 * Get all meals for the day from the database.
@@ -238,12 +308,16 @@ public class FoodDB {
 				hashcode = rset.getInt("HashCode");
 				stamp_created = rset.getDate("stamp_created");
 
-				Meal gottenMeal = new Meal();
-				gottenMeal.setId((long) restaurant.hashCode()
-						+ stamp_created.hashCode() + name.hashCode());
-				gottenMeal.setName(name);
-				gottenMeal.setRestaurant(new Restaurant(restaurant.hashCode(),
-						restaurant));
+				// Create a new meal from the info we got in the database
+				long id = (long) restaurant.hashCode()
+						+ stamp_created.hashCode() + name.hashCode();
+				Rating mealRating = new Rating(FoodUtils.doubleToRatingValue(
+						totalRating, numberOfVotes), numberOfVotes, totalRating);
+				Restaurant mealResto = new Restaurant(restaurant.hashCode(),
+						restaurant);
+
+				Meal gottenMeal = new Meal(id, name, description, mealResto,
+						mealRating);
 
 				campusMeals.add(gottenMeal);
 			}

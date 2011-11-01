@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +35,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private HashMap<Integer, Rating> mCampusMealRatings;
 	private List<Sandwich> mCampusSandwiches;
 
+	// Character to filter because doesn't show right.
+	private final static int BAD_CHAR = 65533;
+
 	private ArrayList<String> mDeviceIds;
 
 	/**
@@ -54,10 +56,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mDeviceIds = new ArrayList<String>();
 
 		importMenus();
-		// Iterator it = mCampusMeals.iterator();
-		// while(it.hasNext()){
-		// System.out.println(it.next());
-		// }
 		importSandwiches();
 
 		mLastImportedSandwiches = new Date();
@@ -302,9 +300,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 								feed.items.get(i).description, newResto,
 								mealRating);
 						if (!Utils.containsSpecialAscii(
-								newMeal.mealDescription, 65533)
+								newMeal.mealDescription, BAD_CHAR)
 								&& !Utils.containsSpecialAscii(newMeal.name,
-										65533)) {
+										BAD_CHAR)) {
 							mCampusMeals.add(newMeal);
 							mCampusMealRatings.put(newMeal.hashCode(),
 									mealRating);
@@ -318,14 +316,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			if (mCampusMeals.isEmpty()) {
 				mLastImportedMenus = new Date();
 			}
-			for (Meal m : mCampusMeals) {
-				if (!Utils.containsSpecialAscii(m.mealDescription, 65533)
-						&& !Utils.containsSpecialAscii(m.name, 65533)) {
-					mDB.insertMeal(m);
-					System.out.println("<importMenus>: Inserting Meal "
-							+ m.getName() + ", " + m.getRestaurant().getName() + " into DB");
-				}
-			}
+			mDB.insertMeals(mCampusMeals);
 		}
 	}
 
@@ -351,7 +342,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 							(r + feed.items.get(i).title).hashCode(),
 							feed.items.get(i).title,
 							feed.items.get(i).description, newResto, mealRating);
-					if (!alreadyExist(newMeal)) {
+					if (!alreadyExist(newMeal)
+							&& !Utils.containsSpecialAscii(
+									newMeal.mealDescription, BAD_CHAR)
+							&& !Utils.containsSpecialAscii(newMeal.name,
+									BAD_CHAR)) {
 						mCampusMeals.add(newMeal);
 						mCampusMealRatings.put(newMeal.hashCode(), mealRating);
 					}
@@ -454,8 +449,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Jambon de dinde").hashCode(),
 				leGiacometti, "Jambon de dinde"));
-		mCampusSandwiches.add(new Sandwich((leGiacometti.getName() + "Gruy�re")
-				.hashCode(), leGiacometti, "Gruyi�re"));
+		mCampusSandwiches.add(new Sandwich(
+				(leGiacometti.getName() + "Gruy�re").hashCode(),
+				leGiacometti, "Gruyi�re"));
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Viande S�ch�e").hashCode(),
 				leGiacometti, "Viande S�ch�e"));
@@ -500,8 +496,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lEsplanade.getName() + "Viande S�ch�e").hashCode(),
 				lEsplanade, "Viande S�ch�e"));
 		mCampusSandwiches.add(new Sandwich(
-				(lEsplanade.getName() + "Saumon Fum�").hashCode(), lEsplanade,
-				"Saumon Fum�"));
+				(lEsplanade.getName() + "Saumon Fum�").hashCode(),
+				lEsplanade, "Saumon Fum�"));
 		mCampusSandwiches.add(new Sandwich((lEsplanade.getName() + "Autres")
 				.hashCode(), lEsplanade, "Autres"));
 
@@ -537,8 +533,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lAtlantide.getName() + "Mozzarella").hashCode(), lAtlantide,
 				"Mozzarella"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Saumon Fum�").hashCode(), lAtlantide,
-				"Saumon Fum�"));
+				(lAtlantide.getName() + "Saumon Fum�").hashCode(),
+				lAtlantide, "Saumon Fum�"));
 		mCampusSandwiches.add(new Sandwich(
 				(lAtlantide.getName() + "Viande S�ch�e").hashCode(),
 				lAtlantide, "Viande S�ch�e"));
@@ -577,8 +573,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(satellite.getName() + "Aubergine grill�e").hashCode(),
 				satellite, "Aubergine grill�e"));
 		mCampusSandwiches.add(new Sandwich(
-				(satellite.getName() + "Viande s�ch�e").hashCode(), satellite,
-				"Viande s�ch�e"));
+				(satellite.getName() + "Viande s�ch�e").hashCode(),
+				satellite, "Viande s�ch�e"));
 		mCampusSandwiches.add(new Sandwich((satellite.getName() + "Autres")
 				.hashCode(), satellite, "Autres"));
 
