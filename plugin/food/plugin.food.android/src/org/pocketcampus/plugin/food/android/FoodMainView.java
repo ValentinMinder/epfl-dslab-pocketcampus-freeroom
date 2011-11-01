@@ -12,6 +12,7 @@ import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 	/*Layout*/
 	private StandardLayout mLayout;
+	
+	/*Constants*/
+	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
