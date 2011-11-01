@@ -11,7 +11,6 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.shared.Sandwich;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,11 +27,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 	/*Layout*/
 	private StandardLayout mLayout;
 
-	/*Data*/
-	private List<Restaurant> mRestaurantList;
-	private List<Meal> mMealsList;
-	private List<Sandwich> mSandwichesList;
-	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
 	 * view may not need a controller (see for example the dashboard).
@@ -63,11 +57,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
 		
-		//initialize data
-		this.mMealsList = new ArrayList<Meal>();
-		this.mRestaurantList = new ArrayList<Restaurant>();
-		this.mSandwichesList = new ArrayList<Sandwich>();
-
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
@@ -84,6 +73,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	private void displayData() {
 		mLayout.setText("No menus");
 		mController.getRestaurantsList();
+		mController.getMeals();
 	}
 
 	@Override
@@ -120,15 +110,15 @@ public class FoodMainView extends PluginView implements IFoodView {
 	}
 	
 	public void restaurantsUpdated() {
-		mRestaurantList = mModel.getRestaurantsList();
-		List<String> listeuh = new ArrayList<String>();
+		List<Restaurant> mRestaurantList = mModel.getRestaurantsList();
+		List<String> mRestaurantStringList = new ArrayList<String>();
 		
 		for(Restaurant r : mRestaurantList) {
-			listeuh.add(r.name);
+			mRestaurantStringList.add(r.name);
 			Log.d("RESTAURANT", "Restaurant : " + r.name);
 		}
 		
-		ListViewElement l = new ListViewElement(this, listeuh);
+		ListViewElement l = new ListViewElement(this, mRestaurantStringList);
 		
 		mLayout.removeAllViews();
 		mLayout.addView(l);
@@ -137,6 +127,15 @@ public class FoodMainView extends PluginView implements IFoodView {
 	@Override
 	public void menusUpdated() {
 		// Update meals
+		List<Meal> mMealList = mModel.getMeals();
 		
+		for(Meal m : mMealList) {
+			Log.d("MEAL", "MEAL : " + m);
+		}
+		
+		// ListViewElement l = new ListViewElement(this, l);
+		//
+		// mLayout.removeAllViews();
+		// mLayout.addView(l);
 	}
 }

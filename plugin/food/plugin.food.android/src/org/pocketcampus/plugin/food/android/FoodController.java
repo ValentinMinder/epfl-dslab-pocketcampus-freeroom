@@ -40,7 +40,7 @@ public class FoodController extends PluginController implements IFoodController{
 
 	@Override
 	public void getRestaurantsList() {
-		Log.d("RESTAURANT", "Sending Restaurants resquest");
+		Log.d("RESTAURANT", "Sending Restaurants request");
 		new RestaurantsRequest().start(this, mClient, (Object)null);
 	}
 

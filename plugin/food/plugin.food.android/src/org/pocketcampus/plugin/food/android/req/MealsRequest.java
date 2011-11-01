@@ -15,19 +15,19 @@ public class MealsRequest extends Request<FoodController, Iface, Object, List<Me
 	@Override
 	protected List<Meal> runInBackground(Iface client, Object param)
 			throws Exception {
-		Log.d("<MealsRequest>:","run");
+		Log.d("MealsRequest","run");
 		return client.getMeals();
 	}
 
 	@Override
 	protected void onResult(FoodController controller, List<Meal> result) {
-		Log.d("<MealsRequest>:", "onResult");
+		Log.d("MealsRequest", "onResult");
 		((FoodModel) controller.getModel()).setMeals(result);
 	}
 
 	@Override
 	protected void onError(FoodController controller, Exception e) {
-		Log.d("<MealsRequest>:", "onError");
+		Log.d("NetworkError", "onError");
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
