@@ -37,23 +37,19 @@
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<extensions>true</extensions>
 				<artifactId>maven-android-plugin</artifactId>
-
+				<version>3.0.0-alpha-2</version>
 				<configuration>
 					<sdk>
-						<!-- platform or api level (api level 4 = platform 1.6) -->
 						<platform>8</platform>
 					</sdk>
-					<emulator>
-						<!-- the name of the avd device to use for starting the emulator -->
-						<avd>GoogleAPIs</avd>
-					</emulator>
-					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<dex>
+						<jvmArguments>
+							<jvmArgument>-Xms512m</jvmArgument>
+							<jvmArgument>-Xmx1024m</jvmArgument>
+						</jvmArguments>
+					</dex>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
-					<device>
-
-					</device>
 				</configuration>
 			</plugin>
 		</plugins>

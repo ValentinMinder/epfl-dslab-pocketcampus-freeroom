@@ -42,7 +42,7 @@
 			<artifactId>merged.shared</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -51,9 +51,21 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>maven-android-plugin</artifactId>
-				<extensions>true</extensions>
+				<version>3.0.0-alpha-2</version>
+				<configuration>
+					<sdk>
+						<platform>8</platform>
+					</sdk>
+					<dex>
+						<jvmArguments>
+							<jvmArgument>-Xms512m</jvmArgument>
+							<jvmArgument>-Xmx1024m</jvmArgument>
+						</jvmArguments>
+					</dex>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
