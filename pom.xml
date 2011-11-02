@@ -38,24 +38,30 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-					 
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3</version>
 				</plugin>
 
 				<plugin>
-                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                    <artifactId>maven-android-plugin</artifactId>
-                    <version>3.0.0-alpha-2</version>
-                    <configuration>
-                        <sdk>
-                            <platform>8</platform>
-                        </sdk>
-                        <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    </configuration>
-                </plugin>
-			
+					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<artifactId>maven-android-plugin</artifactId>
+					<version>3.0.0-alpha-2</version>
+					<configuration>
+						<sdk>
+							<platform>8</platform>
+						</sdk>
+						<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>-Xmx2048m</argLine>
+					</configuration>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
 	</build>
