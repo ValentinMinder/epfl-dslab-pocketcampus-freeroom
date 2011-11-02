@@ -16,13 +16,14 @@
 	</parent>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.pocketcampus</groupId>
 			<artifactId>platform.sdk.android</artifactId>
 			<version>0.3-SNAPSHOT</version>
 			<type>apklib</type>
-		</dependency>
-
+		</dependency>   
+		
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
@@ -33,26 +34,19 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<extensions>true</extensions>
+				
 				<artifactId>maven-android-plugin</artifactId>
-
+				
 				<configuration>
 					<sdk>
-						<!-- platform or api level (api level 4 = platform 1.6) -->
+						<!--  platform or api level (api level 4 = platform 1.6)-->
 						<platform>8</platform>
 					</sdk>
-					<dex>
-						<jvmArguments>
-							<jvmArgument>-Xms2048m</jvmArgument>
-							<jvmArgument>-Xmx3072m</jvmArgument>
-						</jvmArguments>
-					</dex>
 					<emulator>
-						<!-- the name of the avd device to use for starting the emulator -->
+						<!--  the name of the avd device to use for starting the emulator-->
 						<avd>GoogleAPIs</avd>
 					</emulator>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
@@ -61,13 +55,9 @@
 
 					</device>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Xmx3072m</argLine>
-				</configuration>
+				
+				<extensions>true</extensions>
+				
 			</plugin>
 		</plugins>
 	</build>
