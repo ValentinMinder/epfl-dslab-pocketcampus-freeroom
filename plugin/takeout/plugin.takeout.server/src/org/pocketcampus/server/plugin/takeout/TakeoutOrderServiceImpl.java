@@ -42,7 +42,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			ingredients.setMultiChoiceId(IdManager.getID(ingredients));
 			ingredients.setChoices(ingredientsChoices);
 			ingredients.setDefaultChoices(ingredientsChoices);
-			ingredients.setName("Ingrédients supplémentaires");
+			ingredients.setName("IngrÃ©dients supplÃ©mentaires");
 			
 			Choice oignons = new Choice(0, "Oignons");
 			oignons.setChoiceId(IdManager.getID(oignons));
@@ -82,9 +82,9 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaMozarella.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzas.add(pizzaMozarella);
 			
-			// Végétarienne
+			// VÃ©gÃ©tarienne
 			MenuItem pizzaVege = new MenuItem();
-			pizzaVege.setName("Pizza Végétarienne");
+			pizzaVege.setName("Pizza VÃ©gÃ©tarienne");
 			pizzaVege.setItemId(IdManager.getID(pizzaVege));
 			pizzaVege.setItemDescription("Oignons, poivrons, champignons, olives.");
 			pizzaVege.setPrice(8.5);
@@ -93,18 +93,6 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaVege.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
 			pizzaVege.setPricingUnit("pizza");
 			pizzas.add(pizzaVege);
-			
-			// Tomate Mozzarella
-			MenuItem pizzaMozz = new MenuItem();
-			pizzaMozz.setName("Pizza Tomate Mozzarella");
-			pizzaMozz.setItemId(IdManager.getID(pizzaMozz));
-			pizzaMozz.setItemDescription("Tomate et Mozzarella");
-			pizzaMozz.setPrice(8.0);
-			pizzaMozz.setStars(Rating.UNKNOWN);
-			pizzaMozz.setMultiChoiceOptions(Arrays.asList(ingredients));
-			pizzaMozz.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
-			pizzaMozz.setPricingUnit("pizza");
-			pizzas.add(pizzaMozz);
 			
 			// Jambon 
 			MenuItem pizzaJambon = new MenuItem();
@@ -122,7 +110,7 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			pizzaSalami.setName("Pizza Salami");
 			pizzaSalami.setItemId(IdManager.getID(pizzaSalami));
 			pizzaSalami.setItemDescription("Salami, champignons, olives, oignons.");
-			pizzaSalami.setPrice(14.0);
+			pizzaSalami.setPrice(9.0);
 			pizzaSalami.setStars(Rating.UNKNOWN);
 			pizzaSalami.setMultiChoiceOptions(Arrays.asList(ingredients));
 			pizzaSalami.setPricingUnit("pizza");
@@ -232,93 +220,6 @@ public class TakeoutOrderServiceImpl implements TakeoutOrderService.Iface {
 			restaurant.setStars(Rating.FIVE);
 			restaurant.setPayBeforeOrderIsPlacedIsSet(false);
 			restaurant.setRestaurantId(IdManager.getID(restaurant));
-			
-//			restaurant = new Restaurant();
-//			MenuItem item = new MenuItem();
-//			item.setName("J.P.Chenet");
-//			item.setItemId(IdManager.getID(item));
-//			item.setItemDescription("Chardonnay");
-//			item.setPrice(3.8);
-//			item.setStars(Rating.FIVE);
-//			item.setMultiChoiceOptions(new Vector<MultiChoiceOption>());
-//			item.setSingleChoiceOptions(new Vector<SingleChoiceOption>());
-//			item.setPricingUnit("1dl");
-//			List<MenuItem> wine = Arrays.asList(item);
-//			MenuSubCategory menuSubCategoryWine = new MenuSubCategory();
-//			menuSubCategoryWine.setName("Wine");
-//			menuSubCategoryWine
-//					.setSubCategoryDescription("A selection of wines");
-//			menuSubCategoryWine.setSubCategoryId(IdManager
-//					.getID(menuSubCategoryWine));
-//			menuSubCategoryWine.setItems(wine);
-//
-//			item = new MenuItem();
-//			item.setName("Martini");
-//			item.setItemId(IdManager.getID(item));
-//			item.setItemDescription("Yummy!");
-//			item.setPrice(5);
-//			item.setStars(Rating.FIVE);
-//			SingleChoiceOption options = new SingleChoiceOption();
-//			options.setName("Type of Martini");
-//			options.setSingleChoiceId(IdManager.getID(options));
-//			Choice dry = new Choice(0, "Dry");
-//			dry.setChoiceId(IdManager.getID(dry));
-//			Choice rosso = new Choice(0, "Rosso");
-//			rosso.setChoiceId(IdManager.getID(rosso));
-//			Choice bianco = new Choice(0, "Bianco");
-//			bianco.setChoiceId(IdManager.getID(bianco));
-//			options.setChoices(Arrays.asList(dry, bianco, rosso));
-//			options.setDefaultChoice(dry);
-//			item.setSingleChoiceOptions(Arrays.asList(options));
-//
-//			Choice ice = new Choice(0, "Ice");
-//			ice.setChoiceId(IdManager.getID(ice));
-//			Choice olive = new Choice(0, "Olive");
-//			olive.setChoiceId(IdManager.getID(olive));
-//			Choice lemon = new Choice(0, "Lemon");
-//			lemon.setChoiceId(IdManager.getID(lemon));
-//
-//			List<Choice> ingredientsChoices = Arrays.asList(ice, lemon, olive);
-//			MultiChoiceOption ingredients = new MultiChoiceOption();
-//			ingredients.setMultiChoiceId(IdManager.getID(ingredients));
-//			ingredients.setChoices(ingredientsChoices);
-//			ingredients.setDefaultChoices(ingredientsChoices);
-//			ingredients.setName("What to put inside the Martini");
-//			item.setMultiChoiceOptions(Arrays.asList(ingredients));
-//
-//			item.setPricingUnit("4dl");
-//
-//			List<MenuItem> vermuth = Arrays.asList(item);
-//			MenuSubCategory menuSubCategoryVermuth = new MenuSubCategory();
-//			menuSubCategoryVermuth.setName("Vermuth");
-//			menuSubCategoryVermuth.setSubCategoryId(0);
-//			menuSubCategoryVermuth.setItems(vermuth);
-//			menuSubCategoryVermuth.setSubCategoryId(IdManager
-//					.getID(menuSubCategoryVermuth));
-//
-//			Set<PaymentMethod> acceptedPaymentMethods = new HashSet<PaymentMethod>();
-//			acceptedPaymentMethods.add(PaymentMethod.PAY_BY_CASH);
-//
-//			List<MenuSubCategory> subCategories = Arrays.asList(
-//					menuSubCategoryVermuth, menuSubCategoryWine);
-//
-//			MenuCategory menuCategory = new MenuCategory();
-//			menuCategory.setName("Alcoholic Drinks");
-//			menuCategory.setSubCategories(subCategories);
-//			menuCategory.setCategoryId(IdManager.getID(menuCategory));
-//
-//			restaurant = new Restaurant();
-//			restaurant.setName("Silviu's");
-//			restaurant.setMenuCategories(Arrays.asList(menuCategory));
-//			restaurant.setAcceptedPaymentMethods(acceptedPaymentMethods);
-//			restaurant.setRestaurantDescription("The best restaurant. Ever!");
-//			restaurant.setCategory(RestaurantCategory.HIGHEST);
-//			restaurant.setCurrency(new Currency("Swiss Franc", "CHF"));
-//			restaurant.setAddress("inn 329");
-//			restaurant.setVersion(0);
-//			restaurant.setStars(Rating.FIVE);
-//			restaurant.setPayBeforeOrderIsPlacedIsSet(false);
-//			restaurant.setRestaurantId(IdManager.getID(restaurant));
 		}
 
 		System.out.println("Returning the restaurant  " + restaurant);
