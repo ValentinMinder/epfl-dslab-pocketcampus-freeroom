@@ -53,9 +53,9 @@
 						</sdk>
 						<dex>
 							<jvmArguments>
-								<jvmArgument>-Xms512m</jvmArgument>
-								<jvmArgument>-Xmx1024m</jvmArgument>
-							</jvmArguments>
+							<jvmArgument>-Xms2048m</jvmArgument>
+							<jvmArgument>-Xmx3072m</jvmArgument>
+						</jvmArguments>
 						</dex>
 						<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					</configuration>
@@ -64,7 +64,7 @@
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
-						<argLine>-Xmx2048m</argLine>
+						<argLine>-Xmx3072m</argLine>
 					</configuration>
 				</plugin>
 

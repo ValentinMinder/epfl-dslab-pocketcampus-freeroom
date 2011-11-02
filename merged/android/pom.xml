@@ -47,8 +47,8 @@
 					</sdk>
 					<dex>
 						<jvmArguments>
-							<jvmArgument>-Xms512m</jvmArgument>
-							<jvmArgument>-Xmx1024m</jvmArgument>
+							<jvmArgument>-Xms2048m</jvmArgument>
+							<jvmArgument>-Xmx3072m</jvmArgument>
 						</jvmArguments>
 					</dex>
 					<emulator>
@@ -60,6 +60,13 @@
 					<device>
 
 					</device>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx3072m</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
