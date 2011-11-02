@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.takeoutreceiver.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -705,24 +704,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_username = true && (isSetUsername());
-      builder.append(present_username);
-      if (present_username)
-        builder.append(username);
-
-      boolean present_password = true && (isSetPassword());
-      builder.append(present_password);
-      if (present_password)
-        builder.append(password);
-
-      boolean present_uid = true && (isSetUid());
-      builder.append(present_uid);
-      if (present_uid)
-        builder.append(uid);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(registerCookAndroid_args other) {
@@ -1082,14 +1064,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(registerCookAndroid_result other) {
@@ -1316,9 +1291,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getPendingOrders_args other) {
@@ -1586,14 +1559,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getPendingOrders_result other) {
@@ -1893,14 +1859,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_orderId = true;
-      builder.append(present_orderId);
-      if (present_orderId)
-        builder.append(orderId);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(setOrderReady_args other) {
@@ -2197,14 +2156,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(setOrderReady_result other) {
@@ -2500,14 +2452,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_orderId = true;
-      builder.append(present_orderId);
-      if (present_orderId)
-        builder.append(orderId);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getOrder_args other) {
@@ -2801,14 +2746,7 @@ public class TakeoutReceiverService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getOrder_result other) {
