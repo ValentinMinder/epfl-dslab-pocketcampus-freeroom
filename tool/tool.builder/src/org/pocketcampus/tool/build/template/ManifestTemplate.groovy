@@ -20,7 +20,19 @@ class ManifestTemplate {
 		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
 	
 		"""+ pluginManifests +"""\
-			
+				
+		<service android:name=".C2DMReceiver" />
+		<receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<category android:name="org.pocketcampus" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="org.pocketcampus" />
+			</intent-filter>
+		</receiver>
+	
 	</application>
 
 	<permission
