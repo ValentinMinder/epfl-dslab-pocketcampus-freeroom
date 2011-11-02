@@ -178,9 +178,9 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 
 		List<ButtonElement> buttons = new ArrayList<ButtonElement>();
 		buttons.add(new ButtonElement(this, "Fermer"));
-		buttons.add(new ButtonElement(this, "C'est pr�t!"));
+		buttons.add(new ButtonElement(this, "C'est prêt!"));
 
-		String title = "Commande n�" + Long.toString(order.getOrderId());
+		String title = "Commande n." + Long.toString(order.getOrderId());
 
 		final PopupDialog detailDialog = new PopupDialog(this, title, desc, buttons);
 
