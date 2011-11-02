@@ -51,16 +51,15 @@
 						<sdk>
 							<platform>8</platform>
 						</sdk>
+						<dex>
+							<jvmArguments>
+								<jvmArgument>-Xms512m</jvmArgument>
+								<jvmArgument>-Xmx1024m</jvmArgument>
+							</jvmArguments>
+						</dex>
 						<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					</configuration>
 				</plugin>
-
-				<dex>
-					<jvmArguments>
-						<jvmArgument>-Xms512m</jvmArgument>
-						<jvmArgument>-Xmx1024m</jvmArgument>
-					</jvmArguments>
-				</dex>
 
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
