@@ -70,7 +70,7 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 
 		Context context = getApplicationContext();
 		CharSequence contentTitle = "Nouvelle commande";
-		CharSequence contentText = "Une nouvelle commande a �t� d�pos�e.";
+		CharSequence contentText = "Une nouvelle commande a été déposée.";
 		Intent notificationIntent = new Intent(this, TakeoutReceiverMainView.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
