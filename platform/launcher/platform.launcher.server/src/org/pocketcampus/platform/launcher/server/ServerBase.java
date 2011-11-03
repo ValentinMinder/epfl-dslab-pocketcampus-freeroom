@@ -15,9 +15,14 @@ public abstract class ServerBase {
 	
 	public void start() throws Exception {
 		Server server = new Server(9090);
-
+		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		context.setContextPath("/");
+		
+		String locale = "en_US";
+		String encoding = "UTF-8";
+		context.addLocaleEncoding(locale, encoding);
+		
 		server.setHandler(context);
 
 		ArrayList<Processor> processors = getServiceProcessors();

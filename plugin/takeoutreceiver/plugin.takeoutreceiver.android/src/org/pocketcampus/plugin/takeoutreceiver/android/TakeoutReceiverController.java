@@ -106,6 +106,7 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 
 		try {
 			client.placeOrder(order);
+			client.getRestaurant();
 		} catch (TException e) {
 			e.printStackTrace();
 		}
