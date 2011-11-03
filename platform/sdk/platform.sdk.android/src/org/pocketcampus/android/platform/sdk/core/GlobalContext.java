@@ -166,7 +166,7 @@ public class GlobalContext extends Application {
 
 	public void incrementRequestCounter() {
 		if(mRequestCounter == 0) {
-			mRequestActivityListener.activityStarted();
+			mRequestActivityListener.requestStarted();
 		}
 		
 		mRequestCounter++;
@@ -176,7 +176,7 @@ public class GlobalContext extends Application {
 		mRequestCounter--;
 		
 		if(mRequestCounter == 0) {
-			mRequestActivityListener.activityStopped();
+			mRequestActivityListener.requestStopped();
 		}
 		
 		if(mRequestCounter < 0) {

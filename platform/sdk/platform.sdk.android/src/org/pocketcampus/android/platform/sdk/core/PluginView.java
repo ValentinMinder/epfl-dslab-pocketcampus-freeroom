@@ -97,7 +97,7 @@ public abstract class PluginView extends Activity {
 		// Register a request activity listener that shows a spinner in the ActionBar when a request is running.
 		RequestActivityListener activityListener = new RequestActivityListener() {
 			@Override
-			public void activityStarted() {
+			public void requestStarted() {
 				if(mActionBar == null) {
 					return;
 				}
@@ -106,7 +106,7 @@ public abstract class PluginView extends Activity {
 			}
 
 			@Override
-			public void activityStopped() {
+			public void requestStopped() {
 				if(mActionBar == null) {
 					return;
 				}
