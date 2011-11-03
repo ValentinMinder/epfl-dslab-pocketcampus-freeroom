@@ -52,8 +52,6 @@ public class TakeoutReceiverController extends PluginController implements C2DMM
 		new LoadPendingOrdersRequest().start(this, client, (Integer)null);
 	}
 
-	REMOVEME
-	
 	protected void setOrderStatus(long orderStatus) {
 		new SetOrderStatusRequest().start(this, mClient, orderStatus);
 	}
