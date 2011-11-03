@@ -94,15 +94,23 @@ public abstract class PluginView extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
-		// Register the request activity listener, ie show the spinner when a request is running.
+		// Register a request activity listener that shows a spinner in the ActionBar when a request is running.
 		RequestActivityListener activityListener = new RequestActivityListener() {
 			@Override
 			public void activityStarted() {
+				if(mActionBar == null) {
+					return;
+				}
+				
 				mActionBar.setProgressBarVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void activityStopped() {
+				if(mActionBar == null) {
+					return;
+				}
+				
 				mActionBar.setProgressBarVisibility(View.GONE);
 			}
 		};
