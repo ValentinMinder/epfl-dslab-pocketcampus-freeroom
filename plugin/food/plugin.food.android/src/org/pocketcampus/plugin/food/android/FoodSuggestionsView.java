@@ -30,6 +30,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -66,9 +67,9 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+//		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		mLayout.setLayoutParams(layoutParams);
-		mLayout.setGravity(Gravity.CENTER_VERTICAL);
 		
 		//Instantiate Objects
 		mLikes = new ArrayList<MealTag>();
@@ -89,12 +90,22 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		
 		//Create a button
 		mButton = new Button(this);
+		mButton.setId(1);
 		mButton.setText(R.string.food_suggestions_ok);
-		mButton.setClickable(true);
+		
+//		ImageButton b = new ImageButton(this);
+//		b.setBackgroundResource(R.drawable.food_suggestions_dislike);
+//		b.setClickable(false);
+//		b.setId(2);
+//		RelativeLayout.LayoutParams bParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		bParams.addRule(RelativeLayout.RIGHT_OF, mButton.getId());
+//		bParams.addRule(RelativeLayout.ABOVE, mListView.getId());
+//		b.setLayoutParams(bParams);
 		
 		//Parameters on the List and Button
-		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		listParams.addRule(RelativeLayout.BELOW, mButton.getId());
+//		listParams.addRule(RelativeLayout.BELOW, b.getId());
 		mListView.setLayoutParams(listParams);
 
 		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -108,6 +119,7 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		
 		//Set the layout
 		mLayout.addView(mButton);
+//		mLayout.addView(b);
 		mLayout.addView(mListView);
 
 		// The ActionBar is added automatically when you call setContentView

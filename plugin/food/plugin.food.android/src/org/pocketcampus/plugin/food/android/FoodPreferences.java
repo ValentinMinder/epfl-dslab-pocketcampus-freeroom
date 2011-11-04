@@ -25,7 +25,7 @@ public class FoodPreferences extends PluginView {
 	/*Layout*/
 	private StandardLayout mLayout;
 	private PreferencesListViewElement mListView;
-	
+
 	/*Preferences*/
 	private SharedPreferences mRestoPrefs;
 	private Editor mRestoPrefsEditor;
@@ -64,34 +64,36 @@ public class FoodPreferences extends PluginView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
-		
+
 		//List of Restaurants
 		mRestaurants = (ArrayList<Restaurant>)mModel.getRestaurantsList();
-		if(mRestaurants == null || mRestaurants.isEmpty()) {
-			mRestaurants = new ArrayList<Restaurant>();
-			mRestaurants.add(new Restaurant(0, "Essai"));
+
+		if(mRestaurants != null && !mRestaurants.isEmpty()) {
+
+			mDisplayedRestaurants = new ArrayList<String>();
+			for(Restaurant r : mRestaurants) {
+				mDisplayedRestaurants.add(r.getName());
+			}
+
+			mListView = new PreferencesListViewElement(this, mDisplayedRestaurants);
+
+			//ClickLIstener
+			//Set onClickListener
+			setOnListViewClickListener();
+
+			mLayout.addView(mListView);
+			
+			// We need to force the display before asking the controller for the
+			// data,
+			// as the controller may take some time to get it.
+			displayData();
+			
+		} else {
+			mLayout.setText("No Restaurants");
 		}
-		
-		mDisplayedRestaurants = new ArrayList<String>();
-		for(Restaurant r : mRestaurants) {
-			mDisplayedRestaurants.add(r.getName());
-		}
-		
-		mListView = new PreferencesListViewElement(this, mDisplayedRestaurants);
-		
-		//ClickLIstener
-		//Set onClickListener
-		setOnListViewClickListener();
-				
-		mLayout.addView(mListView);
 		
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-
-		// We need to force the display before asking the controller for the
-		// data,
-		// as the controller may take some time to get it.
-		displayData();
 	}
 
 	/**
@@ -99,47 +101,49 @@ public class FoodPreferences extends PluginView {
 	 * For now testing with Restaurants
 	 */
 	private void displayData() {
-		
+
 		mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
 		mRestoPrefsEditor = mRestoPrefs.edit();
-		
+
 		if(mRestoPrefs.getAll().isEmpty()){
 			Log.d("PREFERENCES","First time instanciatation (FoodPreference)");
 			for(Restaurant r : mRestaurants){
 				mRestoPrefsEditor.putBoolean(r.getName(), true);
+				
+				
 			}
 			mRestoPrefsEditor.commit();
 		} else {
 			for(Restaurant r : mRestaurants) {
-				
+
 				if(mRestoPrefs.getBoolean(r.getName(), false)) {
 					Log.d("PREFERENCES", r.getName() + " should be true");
 				}
-				
+
 				//Trouver un moyen de mettre la CheckBox checked!
-				
+
 			}
 		}
-	
+
 	}
-	
+
 	private void setOnListViewClickListener(){
-		
+
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View prefBox, int position,
 					long isChecked) {
-				
+
 				if(isChecked == 1) {
 					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, true);
 				} else {
 					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, false);
 				}
-				
+
 			}
-			
+
 		});
 	}
-	
+
 }
