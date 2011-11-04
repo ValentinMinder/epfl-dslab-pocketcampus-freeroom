@@ -104,7 +104,7 @@ public class TakeoutReceiverServiceImpl implements TakeoutReceiverService.Iface 
 						.getObjectForId(single.getSingleChoiceId());
 				Choice choice = (Choice) IdManager.getObjectForId(single
 						.getChosenId());
-				singleChoice.put(option.getName(), choice.getValue());
+				singleChoice.put(option.getName(), choice.getChoiceValue());
 			}
 			cookItem.setSingleChoices(singleChoice);
 
@@ -119,7 +119,7 @@ public class TakeoutReceiverServiceImpl implements TakeoutReceiverService.Iface 
 				multipleChoices.put(option.getName(), options);
 				for (long id : multiple.getChosenIds()) {
 					Choice choice = (Choice) IdManager.getObjectForId(id);
-					options.add(choice.getValue());
+					options.add(choice.getChoiceValue());
 				}
 			}
 			cookItem.setMultipleChoices(multipleChoices);
