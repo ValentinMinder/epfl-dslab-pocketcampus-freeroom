@@ -31,5 +31,5 @@ exception LDAPException {
 }
 
 service DirectoryService {
-	list<Person> search(1: string param) throws (1: LoginException le);
+	list<Person> search(1: string param) throws (1: LDAPException le);
 }
