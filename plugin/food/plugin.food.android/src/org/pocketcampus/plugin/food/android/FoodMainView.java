@@ -78,8 +78,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void displayData() {
 		mLayout.setText("No menus");
-//		mController.getRestaurantsList();
-		mController.getMeals();
+		mController.getRestaurantsList();
+//		mController.getMeals();
 	}
 
 	@Override

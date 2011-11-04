@@ -98,15 +98,17 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		mListView.setLayoutParams(listParams);
 
 		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		buttonParams.addRule(RelativeLayout.ABOVE, mListView.getId());
+//		buttonParams.addRule(RelativeLayout.ABOVE, mListView.getId());
+		buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		mButton.setLayoutParams(buttonParams);
 		
 		//Set onClickListener
 		setOnComputeButtonClickListener();
 		
 		//Set the layout
-		mLayout.addView(mListView);
 		mLayout.addView(mButton);
+		mLayout.addView(mListView);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
