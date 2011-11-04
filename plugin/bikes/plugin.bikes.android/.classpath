@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.bikes.shared"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>
