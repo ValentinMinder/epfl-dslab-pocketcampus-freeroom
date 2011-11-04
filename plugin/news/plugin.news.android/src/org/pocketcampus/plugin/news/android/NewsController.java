@@ -4,6 +4,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsController;
 import org.pocketcampus.plugin.news.android.req.NewsItemRequest;
+import org.pocketcampus.plugin.news.shared.NewsService.Client;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 
 //import org.pocketcampus.plugin.news.shared.NewsService.Client;
@@ -21,7 +22,7 @@ public class NewsController extends PluginController implements INewsController 
 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		// mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		 mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 
 	/**

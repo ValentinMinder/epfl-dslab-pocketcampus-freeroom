@@ -54,6 +54,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	private void displayData() {
+		mController.loadNews();
 		mLayout.setText("No news");
 	}
 	
