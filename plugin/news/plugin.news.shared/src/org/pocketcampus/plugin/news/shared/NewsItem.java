@@ -136,7 +136,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PUB_DATE_DATE, new org.apache.thrift.meta_data.FieldMetaData("pubDateDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
-    tmpMap.put(_Fields.IMAGE_URL, new org.apache.thrift.meta_data.FieldMetaData("imageUrl", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.IMAGE_URL, new org.apache.thrift.meta_data.FieldMetaData("imageUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NewsItem.class, metaDataMap);
@@ -151,8 +151,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     String description,
     String link,
     String pubDate,
-    long pubDateDate,
-    String imageUrl)
+    long pubDateDate)
   {
     this();
     this.id = id;
@@ -163,7 +162,6 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     this.pubDate = pubDate;
     this.pubDateDate = pubDateDate;
     setPubDateDateIsSet(true);
-    this.imageUrl = imageUrl;
   }
 
   /**
@@ -802,9 +800,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     oprot.writeI64(this.pubDateDate);
     oprot.writeFieldEnd();
     if (this.imageUrl != null) {
-      oprot.writeFieldBegin(IMAGE_URL_FIELD_DESC);
-      oprot.writeString(this.imageUrl);
-      oprot.writeFieldEnd();
+      if (isSetImageUrl()) {
+        oprot.writeFieldBegin(IMAGE_URL_FIELD_DESC);
+        oprot.writeString(this.imageUrl);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -854,14 +854,16 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     sb.append("pubDateDate:");
     sb.append(this.pubDateDate);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("imageUrl:");
-    if (this.imageUrl == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.imageUrl);
+    if (isSetImageUrl()) {
+      if (!first) sb.append(", ");
+      sb.append("imageUrl:");
+      if (this.imageUrl == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.imageUrl);
+      }
+      first = false;
     }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -882,9 +884,6 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'pubDate' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'pubDateDate' because it's a primitive and you chose the non-beans generator.
-    if (imageUrl == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'imageUrl' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
