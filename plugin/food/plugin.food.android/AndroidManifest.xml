@@ -21,6 +21,7 @@
         </activity>
         
        	<activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView"></activity>
+       	<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferences"></activity>
 
 		<service android:name="org.pocketcampus.plugin.food.android.FoodController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>

@@ -30,6 +30,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class FoodSuggestionsView extends PluginView implements IFoodView {
@@ -91,8 +92,13 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		mButton.setText(R.string.food_suggestions_ok);
 		mButton.setClickable(true);
 		
-		//Set the params
-		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		//Parameters on the List and Button
+		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		listParams.addRule(RelativeLayout.BELOW, mButton.getId());
+		mListView.setLayoutParams(listParams);
+
+		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		buttonParams.addRule(RelativeLayout.ABOVE, mListView.getId());
 		mButton.setLayoutParams(buttonParams);
 		
 		//Set onClickListener
