@@ -2,6 +2,20 @@ package org.pocketcampus.tool.build.template
 
 class AndroidDotProjectTemplate {
 	static def getText(String applicationName) {
+		
+		/* BuildCommand for the Merger Builder
+		<buildCommand>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/PocketCampus Merger.launch</value>
+				</dictionary>
+			</arguments>
+		</buildCommand> 
+		*/
+		
 		return  """\
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>

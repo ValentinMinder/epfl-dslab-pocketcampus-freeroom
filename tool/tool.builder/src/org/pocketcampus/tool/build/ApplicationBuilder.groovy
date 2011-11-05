@@ -4,6 +4,7 @@ import org.pocketcampus.tool.build.parser.ClasspathEntry;
 import org.pocketcampus.tool.build.parser.DotClasspath;
 import org.pocketcampus.tool.build.template.AndroidPomTemplate;
 import org.pocketcampus.tool.build.template.SharedPomTemplate;
+import org.pocketcampus.tool.build.template.MergerBuilderTemplate;
 import org.pocketcampus.tool.build.template.SharedDotClasspathTemplate
 import org.pocketcampus.tool.build.template.ManifestTemplate;
 import org.pocketcampus.tool.build.template.ProguardTemplate;
@@ -80,6 +81,9 @@ class ApplicationBuilder {
 		
 		println "Making Android Project Properties"
 		new File(TARGET_DIRECTORY_ANDROID + "project.properties").write(ProjectDotProperties.getText());
+		
+//		println "Making Android Project Builder List"
+//		new File(TARGET_DIRECTORY_ANDROID + ".externalToolBuilders/PocketCampus Merger.launch").write(MergerBuilderTemplate.getText());
 		
 		print "Making Android Classpath "
 		String finalClasspath = DotClasspath.fromEntries(classpathEntriesBuffer).getText()

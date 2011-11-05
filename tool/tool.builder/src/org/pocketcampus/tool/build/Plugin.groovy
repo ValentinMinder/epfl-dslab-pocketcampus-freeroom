@@ -65,7 +65,10 @@ class Plugin {
 		
 		// create assets directory
 		new File(targetPath + "/assets").mkdir()
-		
+
+		// create builder directory
+//		new File(targetPath + "/.externalToolBuilders").mkdir()
+				
 		// create .project
 		String dotProjectText = AndroidDotProjectTemplate.getText(ApplicationBuilder.APPLICATION_NAME_ANDROID)
 		new File(targetPath + "/.project").write(dotProjectText)
