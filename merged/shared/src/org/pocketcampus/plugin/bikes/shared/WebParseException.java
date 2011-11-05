@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.directory.shared;
+package org.pocketcampus.plugin.bikes.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LDAPException extends Exception implements org.apache.thrift.TBase<LDAPException, LDAPException._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("LDAPException");
+public class WebParseException extends Exception implements org.apache.thrift.TBase<WebParseException, WebParseException._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("WebParseException");
 
   private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
 
@@ -94,13 +94,13 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
     tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(LDAPException.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WebParseException.class, metaDataMap);
   }
 
-  public LDAPException() {
+  public WebParseException() {
   }
 
-  public LDAPException(
+  public WebParseException(
     String message)
   {
     this();
@@ -110,14 +110,14 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public LDAPException(LDAPException other) {
+  public WebParseException(WebParseException other) {
     if (other.isSetMessage()) {
       this.message = other.message;
     }
   }
 
-  public LDAPException deepCopy() {
-    return new LDAPException(this);
+  public WebParseException deepCopy() {
+    return new WebParseException(this);
   }
 
   @Override
@@ -129,7 +129,7 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
     return this.message;
   }
 
-  public LDAPException setMessage(String message) {
+  public WebParseException setMessage(String message) {
     this.message = message;
     return this;
   }
@@ -188,12 +188,12 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof LDAPException)
-      return this.equals((LDAPException)that);
+    if (that instanceof WebParseException)
+      return this.equals((WebParseException)that);
     return false;
   }
 
-  public boolean equals(LDAPException that) {
+  public boolean equals(WebParseException that) {
     if (that == null)
       return false;
 
@@ -221,13 +221,13 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
     return builder.toHashCode();
   }
 
-  public int compareTo(LDAPException other) {
+  public int compareTo(WebParseException other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    LDAPException typedOther = (LDAPException)other;
+    WebParseException typedOther = (WebParseException)other;
 
     lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
     if (lastComparison != 0) {
@@ -289,7 +289,7 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("LDAPException(");
+    StringBuilder sb = new StringBuilder("WebParseException(");
     boolean first = true;
 
     sb.append("message:");

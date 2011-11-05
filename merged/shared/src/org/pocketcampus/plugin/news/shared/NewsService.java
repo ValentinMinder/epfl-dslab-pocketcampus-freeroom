@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.directory.shared;
+package org.pocketcampus.plugin.news.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,17 +21,17 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DirectoryService {
+public class NewsService {
 
   public interface Iface {
 
-    public List<Person> search(String param) throws LDAPException, org.apache.thrift.TException;
+    public List<NewsItem> getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
+    public void getNewsItems(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -55,30 +55,27 @@ public class DirectoryService {
       super(iprot, oprot);
     }
 
-    public List<Person> search(String param) throws LDAPException, org.apache.thrift.TException
+    public List<NewsItem> getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException
     {
-      send_search(param);
-      return recv_search();
+      send_getNewsItems(feedUrls);
+      return recv_getNewsItems();
     }
 
-    public void send_search(String param) throws org.apache.thrift.TException
+    public void send_getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException
     {
-      search_args args = new search_args();
-      args.setParam(param);
-      sendBase("search", args);
+      getNewsItems_args args = new getNewsItems_args();
+      args.setFeedUrls(feedUrls);
+      sendBase("getNewsItems", args);
     }
 
-    public List<Person> recv_search() throws LDAPException, org.apache.thrift.TException
+    public List<NewsItem> recv_getNewsItems() throws org.apache.thrift.TException
     {
-      search_result result = new search_result();
-      receiveBase(result, "search");
+      getNewsItems_result result = new getNewsItems_result();
+      receiveBase(result, "getNewsItems");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      if (result.le != null) {
-        throw result.le;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "search failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNewsItems failed: unknown result");
     }
 
   }
@@ -99,35 +96,35 @@ public class DirectoryService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
+    public void getNewsItems(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      search_call method_call = new search_call(param, resultHandler, this, ___protocolFactory, ___transport);
+      getNewsItems_call method_call = new getNewsItems_call(feedUrls, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class search_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String param;
-      public search_call(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getNewsItems_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private List<String> feedUrls;
+      public getNewsItems_call(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.param = param;
+        this.feedUrls = feedUrls;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        search_args args = new search_args();
-        args.setParam(param);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNewsItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getNewsItems_args args = new getNewsItems_args();
+        args.setFeedUrls(feedUrls);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Person> getResult() throws LDAPException, org.apache.thrift.TException {
+      public List<NewsItem> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_search();
+        return (new Client(prot)).recv_getNewsItems();
       }
     }
 
@@ -144,42 +141,38 @@ public class DirectoryService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("search", new search());
+      processMap.put("getNewsItems", new getNewsItems());
       return processMap;
     }
 
-    private static class search<I extends Iface> extends org.apache.thrift.ProcessFunction<I, search_args> {
-      public search() {
-        super("search");
+    private static class getNewsItems<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getNewsItems_args> {
+      public getNewsItems() {
+        super("getNewsItems");
       }
 
-      protected search_args getEmptyArgsInstance() {
-        return new search_args();
+      protected getNewsItems_args getEmptyArgsInstance() {
+        return new getNewsItems_args();
       }
 
-      protected search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
-        search_result result = new search_result();
-        try {
-          result.success = iface.search(args.param);
-        } catch (LDAPException le) {
-          result.le = le;
-        }
+      protected getNewsItems_result getResult(I iface, getNewsItems_args args) throws org.apache.thrift.TException {
+        getNewsItems_result result = new getNewsItems_result();
+        result.success = iface.getNewsItems(args.feedUrls);
         return result;
       }
     }
 
   }
 
-  public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
+  public static class getNewsItems_args implements org.apache.thrift.TBase<getNewsItems_args, getNewsItems_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItems_args");
 
-    private static final org.apache.thrift.protocol.TField PARAM_FIELD_DESC = new org.apache.thrift.protocol.TField("param", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField FEED_URLS_FIELD_DESC = new org.apache.thrift.protocol.TField("feedUrls", org.apache.thrift.protocol.TType.LIST, (short)1);
 
-    public String param; // required
+    public List<String> feedUrls; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      PARAM((short)1, "param");
+      FEED_URLS((short)1, "feedUrls");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -194,8 +187,8 @@ public class DirectoryService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PARAM
-            return PARAM;
+          case 1: // FEED_URLS
+            return FEED_URLS;
           default:
             return null;
         }
@@ -240,71 +233,91 @@ public class DirectoryService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PARAM, new org.apache.thrift.meta_data.FieldMetaData("param", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.FEED_URLS, new org.apache.thrift.meta_data.FieldMetaData("feedUrls", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItems_args.class, metaDataMap);
     }
 
-    public search_args() {
+    public getNewsItems_args() {
     }
 
-    public search_args(
-      String param)
+    public getNewsItems_args(
+      List<String> feedUrls)
     {
       this();
-      this.param = param;
+      this.feedUrls = feedUrls;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_args(search_args other) {
-      if (other.isSetParam()) {
-        this.param = other.param;
+    public getNewsItems_args(getNewsItems_args other) {
+      if (other.isSetFeedUrls()) {
+        List<String> __this__feedUrls = new ArrayList<String>();
+        for (String other_element : other.feedUrls) {
+          __this__feedUrls.add(other_element);
+        }
+        this.feedUrls = __this__feedUrls;
       }
     }
 
-    public search_args deepCopy() {
-      return new search_args(this);
+    public getNewsItems_args deepCopy() {
+      return new getNewsItems_args(this);
     }
 
     @Override
     public void clear() {
-      this.param = null;
+      this.feedUrls = null;
     }
 
-    public String getParam() {
-      return this.param;
+    public int getFeedUrlsSize() {
+      return (this.feedUrls == null) ? 0 : this.feedUrls.size();
     }
 
-    public search_args setParam(String param) {
-      this.param = param;
+    public java.util.Iterator<String> getFeedUrlsIterator() {
+      return (this.feedUrls == null) ? null : this.feedUrls.iterator();
+    }
+
+    public void addToFeedUrls(String elem) {
+      if (this.feedUrls == null) {
+        this.feedUrls = new ArrayList<String>();
+      }
+      this.feedUrls.add(elem);
+    }
+
+    public List<String> getFeedUrls() {
+      return this.feedUrls;
+    }
+
+    public getNewsItems_args setFeedUrls(List<String> feedUrls) {
+      this.feedUrls = feedUrls;
       return this;
     }
 
-    public void unsetParam() {
-      this.param = null;
+    public void unsetFeedUrls() {
+      this.feedUrls = null;
     }
 
-    /** Returns true if field param is set (has been assigned a value) and false otherwise */
-    public boolean isSetParam() {
-      return this.param != null;
+    /** Returns true if field feedUrls is set (has been assigned a value) and false otherwise */
+    public boolean isSetFeedUrls() {
+      return this.feedUrls != null;
     }
 
-    public void setParamIsSet(boolean value) {
+    public void setFeedUrlsIsSet(boolean value) {
       if (!value) {
-        this.param = null;
+        this.feedUrls = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case PARAM:
+      case FEED_URLS:
         if (value == null) {
-          unsetParam();
+          unsetFeedUrls();
         } else {
-          setParam((String)value);
+          setFeedUrls((List<String>)value);
         }
         break;
 
@@ -313,8 +326,8 @@ public class DirectoryService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case PARAM:
-        return getParam();
+      case FEED_URLS:
+        return getFeedUrls();
 
       }
       throw new IllegalStateException();
@@ -327,8 +340,8 @@ public class DirectoryService {
       }
 
       switch (field) {
-      case PARAM:
-        return isSetParam();
+      case FEED_URLS:
+        return isSetFeedUrls();
       }
       throw new IllegalStateException();
     }
@@ -337,21 +350,21 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_args)
-        return this.equals((search_args)that);
+      if (that instanceof getNewsItems_args)
+        return this.equals((getNewsItems_args)that);
       return false;
     }
 
-    public boolean equals(search_args that) {
+    public boolean equals(getNewsItems_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_param = true && this.isSetParam();
-      boolean that_present_param = true && that.isSetParam();
-      if (this_present_param || that_present_param) {
-        if (!(this_present_param && that_present_param))
+      boolean this_present_feedUrls = true && this.isSetFeedUrls();
+      boolean that_present_feedUrls = true && that.isSetFeedUrls();
+      if (this_present_feedUrls || that_present_feedUrls) {
+        if (!(this_present_feedUrls && that_present_feedUrls))
           return false;
-        if (!this.param.equals(that.param))
+        if (!this.feedUrls.equals(that.feedUrls))
           return false;
       }
 
@@ -362,28 +375,28 @@ public class DirectoryService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_param = true && (isSetParam());
-      builder.append(present_param);
-      if (present_param)
-        builder.append(param);
+      boolean present_feedUrls = true && (isSetFeedUrls());
+      builder.append(present_feedUrls);
+      if (present_feedUrls)
+        builder.append(feedUrls);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(search_args other) {
+    public int compareTo(getNewsItems_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_args typedOther = (search_args)other;
+      getNewsItems_args typedOther = (getNewsItems_args)other;
 
-      lastComparison = Boolean.valueOf(isSetParam()).compareTo(typedOther.isSetParam());
+      lastComparison = Boolean.valueOf(isSetFeedUrls()).compareTo(typedOther.isSetFeedUrls());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetParam()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.param, typedOther.param);
+      if (isSetFeedUrls()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feedUrls, typedOther.feedUrls);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -405,9 +418,19 @@ public class DirectoryService {
           break;
         }
         switch (field.id) {
-          case 1: // PARAM
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.param = iprot.readString();
+          case 1: // FEED_URLS
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                this.feedUrls = new ArrayList<String>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                {
+                  String _elem6; // required
+                  _elem6 = iprot.readString();
+                  this.feedUrls.add(_elem6);
+                }
+                iprot.readListEnd();
+              }
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -427,9 +450,16 @@ public class DirectoryService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.param != null) {
-        oprot.writeFieldBegin(PARAM_FIELD_DESC);
-        oprot.writeString(this.param);
+      if (this.feedUrls != null) {
+        oprot.writeFieldBegin(FEED_URLS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.feedUrls.size()));
+          for (String _iter7 : this.feedUrls)
+          {
+            oprot.writeString(_iter7);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -438,14 +468,14 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_args(");
+      StringBuilder sb = new StringBuilder("getNewsItems_args(");
       boolean first = true;
 
-      sb.append("param:");
-      if (this.param == null) {
+      sb.append("feedUrls:");
+      if (this.feedUrls == null) {
         sb.append("null");
       } else {
-        sb.append(this.param);
+        sb.append(this.feedUrls);
       }
       first = false;
       sb.append(")");
@@ -474,19 +504,16 @@ public class DirectoryService {
 
   }
 
-  public static class search_result implements org.apache.thrift.TBase<search_result, search_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_result");
+  public static class getNewsItems_result implements org.apache.thrift.TBase<getNewsItems_result, getNewsItems_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItems_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-    private static final org.apache.thrift.protocol.TField LE_FIELD_DESC = new org.apache.thrift.protocol.TField("le", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public List<Person> success; // required
-    public LDAPException le; // required
+    public List<NewsItem> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success"),
-      LE((short)1, "le");
+      SUCCESS((short)0, "success");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -503,8 +530,6 @@ public class DirectoryService {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
-          case 1: // LE
-            return LE;
           default:
             return null;
         }
@@ -551,71 +576,63 @@ public class DirectoryService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Person.class))));
-      tmpMap.put(_Fields.LE, new org.apache.thrift.meta_data.FieldMetaData("le", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, NewsItem.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItems_result.class, metaDataMap);
     }
 
-    public search_result() {
+    public getNewsItems_result() {
     }
 
-    public search_result(
-      List<Person> success,
-      LDAPException le)
+    public getNewsItems_result(
+      List<NewsItem> success)
     {
       this();
       this.success = success;
-      this.le = le;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_result(search_result other) {
+    public getNewsItems_result(getNewsItems_result other) {
       if (other.isSetSuccess()) {
-        List<Person> __this__success = new ArrayList<Person>();
-        for (Person other_element : other.success) {
-          __this__success.add(new Person(other_element));
+        List<NewsItem> __this__success = new ArrayList<NewsItem>();
+        for (NewsItem other_element : other.success) {
+          __this__success.add(new NewsItem(other_element));
         }
         this.success = __this__success;
       }
-      if (other.isSetLe()) {
-        this.le = new LDAPException(other.le);
-      }
     }
 
-    public search_result deepCopy() {
-      return new search_result(this);
+    public getNewsItems_result deepCopy() {
+      return new getNewsItems_result(this);
     }
 
     @Override
     public void clear() {
       this.success = null;
-      this.le = null;
     }
 
     public int getSuccessSize() {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<Person> getSuccessIterator() {
+    public java.util.Iterator<NewsItem> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(Person elem) {
+    public void addToSuccess(NewsItem elem) {
       if (this.success == null) {
-        this.success = new ArrayList<Person>();
+        this.success = new ArrayList<NewsItem>();
       }
       this.success.add(elem);
     }
 
-    public List<Person> getSuccess() {
+    public List<NewsItem> getSuccess() {
       return this.success;
     }
 
-    public search_result setSuccess(List<Person> success) {
+    public getNewsItems_result setSuccess(List<NewsItem> success) {
       this.success = success;
       return this;
     }
@@ -635,45 +652,13 @@ public class DirectoryService {
       }
     }
 
-    public LDAPException getLe() {
-      return this.le;
-    }
-
-    public search_result setLe(LDAPException le) {
-      this.le = le;
-      return this;
-    }
-
-    public void unsetLe() {
-      this.le = null;
-    }
-
-    /** Returns true if field le is set (has been assigned a value) and false otherwise */
-    public boolean isSetLe() {
-      return this.le != null;
-    }
-
-    public void setLeIsSet(boolean value) {
-      if (!value) {
-        this.le = null;
-      }
-    }
-
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case SUCCESS:
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Person>)value);
-        }
-        break;
-
-      case LE:
-        if (value == null) {
-          unsetLe();
-        } else {
-          setLe((LDAPException)value);
+          setSuccess((List<NewsItem>)value);
         }
         break;
 
@@ -684,9 +669,6 @@ public class DirectoryService {
       switch (field) {
       case SUCCESS:
         return getSuccess();
-
-      case LE:
-        return getLe();
 
       }
       throw new IllegalStateException();
@@ -701,8 +683,6 @@ public class DirectoryService {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
-      case LE:
-        return isSetLe();
       }
       throw new IllegalStateException();
     }
@@ -711,12 +691,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_result)
-        return this.equals((search_result)that);
+      if (that instanceof getNewsItems_result)
+        return this.equals((getNewsItems_result)that);
       return false;
     }
 
-    public boolean equals(search_result that) {
+    public boolean equals(getNewsItems_result that) {
       if (that == null)
         return false;
 
@@ -726,15 +706,6 @@ public class DirectoryService {
         if (!(this_present_success && that_present_success))
           return false;
         if (!this.success.equals(that.success))
-          return false;
-      }
-
-      boolean this_present_le = true && this.isSetLe();
-      boolean that_present_le = true && that.isSetLe();
-      if (this_present_le || that_present_le) {
-        if (!(this_present_le && that_present_le))
-          return false;
-        if (!this.le.equals(that.le))
           return false;
       }
 
@@ -750,21 +721,16 @@ public class DirectoryService {
       if (present_success)
         builder.append(success);
 
-      boolean present_le = true && (isSetLe());
-      builder.append(present_le);
-      if (present_le)
-        builder.append(le);
-
       return builder.toHashCode();
     }
 
-    public int compareTo(search_result other) {
+    public int compareTo(getNewsItems_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_result typedOther = (search_result)other;
+      getNewsItems_result typedOther = (getNewsItems_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -772,16 +738,6 @@ public class DirectoryService {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetLe()).compareTo(typedOther.isSetLe());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetLe()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.le, typedOther.le);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -806,25 +762,17 @@ public class DirectoryService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Person>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                this.success = new ArrayList<NewsItem>(_list8.size);
+                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
                 {
-                  Person _elem2; // required
-                  _elem2 = new Person();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
+                  NewsItem _elem10; // required
+                  _elem10 = new NewsItem();
+                  _elem10.read(iprot);
+                  this.success.add(_elem10);
                 }
                 iprot.readListEnd();
               }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          case 1: // LE
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.le = new LDAPException();
-              this.le.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -847,16 +795,12 @@ public class DirectoryService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Person _iter3 : this.success)
+          for (NewsItem _iter11 : this.success)
           {
-            _iter3.write(oprot);
+            _iter11.write(oprot);
           }
           oprot.writeListEnd();
         }
-        oprot.writeFieldEnd();
-      } else if (this.isSetLe()) {
-        oprot.writeFieldBegin(LE_FIELD_DESC);
-        this.le.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -865,7 +809,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_result(");
+      StringBuilder sb = new StringBuilder("getNewsItems_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -873,14 +817,6 @@ public class DirectoryService {
         sb.append("null");
       } else {
         sb.append(this.success);
-      }
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("le:");
-      if (this.le == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.le);
       }
       first = false;
       sb.append(")");

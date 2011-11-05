@@ -16,6 +16,16 @@
 	
 		
 <!-- PLUGIN -->
+<activity android:name="org.pocketcampus.plugin.bikes.android.BikesMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Bikes">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.bikes.android.BikesController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
 <activity android:name="org.pocketcampus.plugin.camipro.android.CamiproMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/app_name">
   <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
@@ -26,7 +36,7 @@
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
-<activity android:name="org.pocketcampus.android.plugin.dashboard.DashboardView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="dashboard" android:icon="@drawable/dashboard_icon">
+<activity android:name="org.pocketcampus.android.plugin.dashboard.DashboardView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/dashboard_plugin_name" android:icon="@drawable/dashboard_icon">
   <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
     <category android:name="android.intent.category.LAUNCHER"/>
@@ -56,14 +66,26 @@
   </intent-filter>
 </activity>
 <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferences" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
+<activity android:name="org.pocketcampus.plugin.news.android.NewsMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="News">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.news.android.NewsController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
-<activity android:label="Commandes de Pizza" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView">
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Pizzas" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView">
   <intent-filter>
     <category android:name="android.intent.category.DEFAULT"/>
     <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>

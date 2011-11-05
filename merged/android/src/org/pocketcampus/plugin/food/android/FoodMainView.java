@@ -78,8 +78,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void displayData() {
 		mLayout.setText("No menus");
-//		mController.getRestaurantsList();
-		mController.getMeals();
+		mController.getRestaurantsList();
+//		mController.getMeals();
 	}
 
 	@Override
@@ -118,7 +118,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 		} else if (item.getItemId() == R.id.food_by_settings) {
-			
+			Intent settings = new Intent(getApplicationContext(), FoodPreferences.class);
+			startActivity(settings);
 		}
 
 		return true;
