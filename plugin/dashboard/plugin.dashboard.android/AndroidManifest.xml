@@ -14,7 +14,7 @@
 	
 		<activity
 			android:name="org.pocketcampus.android.plugin.dashboard.DashboardView"
-			android:label="dashboard"
+			android:label="@string/dashboard_plugin_name"
 			android:icon="@drawable/dashboard_icon">
 			<intent-filter>
 				<action
