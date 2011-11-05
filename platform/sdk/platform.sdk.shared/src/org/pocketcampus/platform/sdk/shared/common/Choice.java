@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,15 +25,15 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Choice");
 
   private static final org.apache.thrift.protocol.TField CHOICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("choiceId", org.apache.thrift.protocol.TType.I64, (short)1);
-  private static final org.apache.thrift.protocol.TField VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("value", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField CHOICE_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("choiceValue", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   public long choiceId; // required
-  public String value; // required
+  public String choiceValue; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     CHOICE_ID((short)1, "choiceId"),
-    VALUE((short)2, "value");
+    CHOICE_VALUE((short)2, "choiceValue");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -49,8 +50,8 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
       switch(fieldId) {
         case 1: // CHOICE_ID
           return CHOICE_ID;
-        case 2: // VALUE
-          return VALUE;
+        case 2: // CHOICE_VALUE
+          return CHOICE_VALUE;
         default:
           return null;
       }
@@ -99,7 +100,7 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.CHOICE_ID, new org.apache.thrift.meta_data.FieldMetaData("choiceId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
-    tmpMap.put(_Fields.VALUE, new org.apache.thrift.meta_data.FieldMetaData("value", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.CHOICE_VALUE, new org.apache.thrift.meta_data.FieldMetaData("choiceValue", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Choice.class, metaDataMap);
@@ -110,12 +111,12 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
 
   public Choice(
     long choiceId,
-    String value)
+    String choiceValue)
   {
     this();
     this.choiceId = choiceId;
     setChoiceIdIsSet(true);
-    this.value = value;
+    this.choiceValue = choiceValue;
   }
 
   /**
@@ -125,8 +126,8 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.choiceId = other.choiceId;
-    if (other.isSetValue()) {
-      this.value = other.value;
+    if (other.isSetChoiceValue()) {
+      this.choiceValue = other.choiceValue;
     }
   }
 
@@ -138,7 +139,7 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
   public void clear() {
     setChoiceIdIsSet(false);
     this.choiceId = 0;
-    this.value = null;
+    this.choiceValue = null;
   }
 
   public long getChoiceId() {
@@ -164,27 +165,27 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     __isset_bit_vector.set(__CHOICEID_ISSET_ID, value);
   }
 
-  public String getValue() {
-    return this.value;
+  public String getChoiceValue() {
+    return this.choiceValue;
   }
 
-  public Choice setValue(String value) {
-    this.value = value;
+  public Choice setChoiceValue(String choiceValue) {
+    this.choiceValue = choiceValue;
     return this;
   }
 
-  public void unsetValue() {
-    this.value = null;
+  public void unsetChoiceValue() {
+    this.choiceValue = null;
   }
 
-  /** Returns true if field value is set (has been assigned a value) and false otherwise */
-  public boolean isSetValue() {
-    return this.value != null;
+  /** Returns true if field choiceValue is set (has been assigned a value) and false otherwise */
+  public boolean isSetChoiceValue() {
+    return this.choiceValue != null;
   }
 
-  public void setValueIsSet(boolean value) {
+  public void setChoiceValueIsSet(boolean value) {
     if (!value) {
-      this.value = null;
+      this.choiceValue = null;
     }
   }
 
@@ -198,11 +199,11 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
       }
       break;
 
-    case VALUE:
+    case CHOICE_VALUE:
       if (value == null) {
-        unsetValue();
+        unsetChoiceValue();
       } else {
-        setValue((String)value);
+        setChoiceValue((String)value);
       }
       break;
 
@@ -214,8 +215,8 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     case CHOICE_ID:
       return Long.valueOf(getChoiceId());
 
-    case VALUE:
-      return getValue();
+    case CHOICE_VALUE:
+      return getChoiceValue();
 
     }
     throw new IllegalStateException();
@@ -230,8 +231,8 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     switch (field) {
     case CHOICE_ID:
       return isSetChoiceId();
-    case VALUE:
-      return isSetValue();
+    case CHOICE_VALUE:
+      return isSetChoiceValue();
     }
     throw new IllegalStateException();
   }
@@ -258,12 +259,12 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
         return false;
     }
 
-    boolean this_present_value = true && this.isSetValue();
-    boolean that_present_value = true && that.isSetValue();
-    if (this_present_value || that_present_value) {
-      if (!(this_present_value && that_present_value))
+    boolean this_present_choiceValue = true && this.isSetChoiceValue();
+    boolean that_present_choiceValue = true && that.isSetChoiceValue();
+    if (this_present_choiceValue || that_present_choiceValue) {
+      if (!(this_present_choiceValue && that_present_choiceValue))
         return false;
-      if (!this.value.equals(that.value))
+      if (!this.choiceValue.equals(that.choiceValue))
         return false;
     }
 
@@ -272,7 +273,19 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_choiceId = true;
+    builder.append(present_choiceId);
+    if (present_choiceId)
+      builder.append(choiceId);
+
+    boolean present_choiceValue = true && (isSetChoiceValue());
+    builder.append(present_choiceValue);
+    if (present_choiceValue)
+      builder.append(choiceValue);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(Choice other) {
@@ -293,12 +306,12 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetValue()).compareTo(typedOther.isSetValue());
+    lastComparison = Boolean.valueOf(isSetChoiceValue()).compareTo(typedOther.isSetChoiceValue());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetValue()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.value, typedOther.value);
+    if (isSetChoiceValue()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.choiceValue, typedOther.choiceValue);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -328,9 +341,9 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // VALUE
+        case 2: // CHOICE_VALUE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.value = iprot.readString();
+            this.choiceValue = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,9 +369,9 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     oprot.writeFieldBegin(CHOICE_ID_FIELD_DESC);
     oprot.writeI64(this.choiceId);
     oprot.writeFieldEnd();
-    if (this.value != null) {
-      oprot.writeFieldBegin(VALUE_FIELD_DESC);
-      oprot.writeString(this.value);
+    if (this.choiceValue != null) {
+      oprot.writeFieldBegin(CHOICE_VALUE_FIELD_DESC);
+      oprot.writeString(this.choiceValue);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -374,11 +387,11 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
     sb.append(this.choiceId);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("value:");
-    if (this.value == null) {
+    sb.append("choiceValue:");
+    if (this.choiceValue == null) {
       sb.append("null");
     } else {
-      sb.append(this.value);
+      sb.append(this.choiceValue);
     }
     first = false;
     sb.append(")");
@@ -388,8 +401,8 @@ public class Choice implements org.apache.thrift.TBase<Choice, Choice._Fields>, 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // alas, we cannot check 'choiceId' because it's a primitive and you chose the non-beans generator.
-    if (value == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'value' was not present! Struct: " + toString());
+    if (choiceValue == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'choiceValue' was not present! Struct: " + toString());
     }
   }
 

@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -272,7 +273,19 @@ public class TakeoutServerAddress implements org.apache.thrift.TBase<TakeoutServ
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_serverIP = true && (isSetServerIP());
+    builder.append(present_serverIP);
+    if (present_serverIP)
+      builder.append(serverIP);
+
+    boolean present_port = true;
+    builder.append(present_port);
+    if (present_port)
+      builder.append(port);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(TakeoutServerAddress other) {
