@@ -10,7 +10,8 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:label="Pizzas"
+            android:label="@string/takeoutreceiver_plugin_name"
+            android:icon="@drawable/takeoutreceiver_icon"
             android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView" >
             <intent-filter >
                 <category android:name="android.intent.category.DEFAULT" />
