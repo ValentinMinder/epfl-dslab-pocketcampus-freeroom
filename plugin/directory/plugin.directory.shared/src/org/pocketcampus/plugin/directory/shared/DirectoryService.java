@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.directory.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -359,7 +360,14 @@ public class DirectoryService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_param = true && (isSetParam());
+      builder.append(present_param);
+      if (present_param)
+        builder.append(param);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(search_args other) {
@@ -735,7 +743,19 @@ public class DirectoryService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      boolean present_le = true && (isSetLe());
+      builder.append(present_le);
+      if (present_le)
+        builder.append(le);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(search_result other) {

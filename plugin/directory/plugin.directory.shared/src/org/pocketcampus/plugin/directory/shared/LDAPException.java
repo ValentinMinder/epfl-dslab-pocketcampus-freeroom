@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.directory.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -210,7 +211,14 @@ public class LDAPException extends Exception implements org.apache.thrift.TBase<
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_message = true && (isSetMessage());
+    builder.append(present_message);
+    if (present_message)
+      builder.append(message);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(LDAPException other) {
