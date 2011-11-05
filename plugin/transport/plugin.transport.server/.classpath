@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lib.transport.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

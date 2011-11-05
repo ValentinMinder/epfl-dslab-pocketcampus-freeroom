@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.transport.android.iface;
 
-public interface ITransportView {
+import org.pocketcampus.android.platform.sdk.core.IView;
 
+public interface ITransportView extends IView {
+	void preferredDestinationsUpdated();
 }

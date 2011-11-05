@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.transport.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class TransportService {
 
   public interface Iface {
 
-    public String autocomplete(String constraint) throws org.apache.thrift.TException;
+    public List<Location> autocomplete(String constraint) throws org.apache.thrift.TException;
 
   }
 
@@ -54,7 +55,7 @@ public class TransportService {
       super(iprot, oprot);
     }
 
-    public String autocomplete(String constraint) throws org.apache.thrift.TException
+    public List<Location> autocomplete(String constraint) throws org.apache.thrift.TException
     {
       send_autocomplete(constraint);
       return recv_autocomplete();
@@ -67,7 +68,7 @@ public class TransportService {
       sendBase("autocomplete", args);
     }
 
-    public String recv_autocomplete() throws org.apache.thrift.TException
+    public List<Location> recv_autocomplete() throws org.apache.thrift.TException
     {
       autocomplete_result result = new autocomplete_result();
       receiveBase(result, "autocomplete");
@@ -117,7 +118,7 @@ public class TransportService {
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws org.apache.thrift.TException {
+      public List<Location> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -352,7 +353,14 @@ public class TransportService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_constraint = true && (isSetConstraint());
+      builder.append(present_constraint);
+      if (present_constraint)
+        builder.append(constraint);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(autocomplete_args other) {
@@ -462,9 +470,9 @@ public class TransportService {
   public static class autocomplete_result implements org.apache.thrift.TBase<autocomplete_result, autocomplete_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocomplete_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    public String success; // required
+    public List<Location> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -530,7 +538,8 @@ public class TransportService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocomplete_result.class, metaDataMap);
     }
@@ -539,7 +548,7 @@ public class TransportService {
     }
 
     public autocomplete_result(
-      String success)
+      List<Location> success)
     {
       this();
       this.success = success;
@@ -550,7 +559,11 @@ public class TransportService {
      */
     public autocomplete_result(autocomplete_result other) {
       if (other.isSetSuccess()) {
-        this.success = other.success;
+        List<Location> __this__success = new ArrayList<Location>();
+        for (Location other_element : other.success) {
+          __this__success.add(new Location(other_element));
+        }
+        this.success = __this__success;
       }
     }
 
@@ -563,11 +576,26 @@ public class TransportService {
       this.success = null;
     }
 
-    public String getSuccess() {
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Location> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Location elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Location>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Location> getSuccess() {
       return this.success;
     }
 
-    public autocomplete_result setSuccess(String success) {
+    public autocomplete_result setSuccess(List<Location> success) {
       this.success = success;
       return this;
     }
@@ -593,7 +621,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((List<Location>)value);
         }
         break;
 
@@ -649,7 +677,14 @@ public class TransportService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(autocomplete_result other) {
@@ -688,8 +723,19 @@ public class TransportService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.success = iprot.readString();
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                this.success = new ArrayList<Location>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                {
+                  Location _elem2; // required
+                  _elem2 = new Location();
+                  _elem2.read(iprot);
+                  this.success.add(_elem2);
+                }
+                iprot.readListEnd();
+              }
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -710,7 +756,14 @@ public class TransportService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeString(this.success);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
+          for (Location _iter3 : this.success)
+          {
+            _iter3.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
