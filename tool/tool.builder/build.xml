@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="run" name="tool.builder">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../../../../../Program Files/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="Groovy DSL Support.libraryclasspath">
+        <pathelement location="../../../../../../.groovy/greclipse/global_dsld_support"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/plugin_dsld_support/"/>
+    </path>
+    <path id="Groovy Libraries.libraryclasspath">
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/lib/groovy-all-1.7.10.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/lib/commons-cli-1.2.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/lib/ivy-2.2.0.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/lib/jline-0.9.94.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.codehaus.groovy_1.7.10.xx-20110929-1800-e37/lib/servlet-api-2.4.jar"/>
+    </path>
+    <path id="tool.builder.classpath">
+        <pathelement location="bin"/>
+        <path refid="Groovy DSL Support.libraryclasspath"/>
+        <path refid="Groovy Libraries.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="tool.builder.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="run">
+        <java classname="org.pocketcampus.tool.build.ApplicationBuilder" failonerror="true" fork="yes">
+            <classpath refid="tool.builder.classpath"/>
+        </java>
+    </target>
+</project>
