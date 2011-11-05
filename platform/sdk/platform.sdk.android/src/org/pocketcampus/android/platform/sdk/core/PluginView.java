@@ -2,7 +2,7 @@ package org.pocketcampus.android.platform.sdk.core;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController.ControllerBinder;
 
 import android.app.Activity;

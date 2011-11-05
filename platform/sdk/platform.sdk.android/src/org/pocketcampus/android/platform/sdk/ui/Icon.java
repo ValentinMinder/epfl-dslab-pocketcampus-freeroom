@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;

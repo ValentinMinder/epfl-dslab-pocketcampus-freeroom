@@ -3,7 +3,7 @@ package org.pocketcampus.android.platform.sdk.ui.dialog;
 import java.util.Arrays;
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 
 import android.app.Dialog;

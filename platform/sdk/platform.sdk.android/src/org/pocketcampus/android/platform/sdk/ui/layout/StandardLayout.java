@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.layout;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -32,7 +32,7 @@ public class StandardLayout extends RelativeLayout {
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mInnerLayout = (RelativeLayout) inflater.inflate(R.layout.sdk_standard_layout, null);
-		addView(mInnerLayout);
+		super.addView(mInnerLayout);
 		
 		mMessageTextView = (TextView) findViewById(R.id.standard_layout_msg);
 	}
@@ -51,6 +51,11 @@ public class StandardLayout extends RelativeLayout {
 	 */
 	public void hideText() {
 		mMessageTextView.setVisibility(View.GONE);
+	}
+	
+	@Override
+	public void addView(View child) {
+		mInnerLayout.addView(child);
 	}
 }
 

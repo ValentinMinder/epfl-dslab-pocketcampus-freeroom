@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.dialog;
 
-import org.pocketcampus.android.platform.sdk.R;
+import org.pocketcampus.R;
 
 import android.app.Dialog;
 import android.content.Context;
