@@ -12,7 +12,7 @@
 		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
         
         <activity android:name=".plugin.news.android.NewsMainView"
-                  android:label="NewsMain">
+                  android:label="News">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />

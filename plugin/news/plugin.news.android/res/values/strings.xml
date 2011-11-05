@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Plugin.news.android</string>
-
 	<!-- News display strings -->
 	<string name="news_empty_list">No news to display</string>
 </resources>
