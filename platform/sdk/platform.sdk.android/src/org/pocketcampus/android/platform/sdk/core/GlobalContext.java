@@ -74,7 +74,12 @@ public class GlobalContext extends Application {
 	}
 
 	private String getLabel(ActivityInfo activityInfo) {
-		String label = activityInfo.nonLocalizedLabel.toString();
+		String label = "";
+		
+		if(activityInfo.nonLocalizedLabel != null) {
+			label = activityInfo.nonLocalizedLabel.toString();
+		}
+		
 		if(activityInfo.labelRes != 0) {
 			label = getString(activityInfo.labelRes);
 		}
