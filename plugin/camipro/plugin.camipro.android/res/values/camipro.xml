@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Camipro</string>
-    
     <string name="camipro_plugin_title">Camipro</string>
     
     <color name="camipro_plus">#459900</color>
