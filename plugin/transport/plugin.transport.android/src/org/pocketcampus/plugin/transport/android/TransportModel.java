@@ -25,7 +25,8 @@ public class TransportModel extends PluginModel {
 		return mPreferredDestinations;
 	}
 
-	public void addPreferredDestinations(List<Location> destinations) {
+	public void setPreferredDestinations(List<Location> destinations) {
+		mPreferredDestinations.clear();
 		mPreferredDestinations.addAll(destinations);
 		mListeners.preferredDestinationsUpdated();
 	}

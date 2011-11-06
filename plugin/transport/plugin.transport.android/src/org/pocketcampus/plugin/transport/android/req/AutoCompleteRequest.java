@@ -19,7 +19,7 @@ public class AutoCompleteRequest extends Request<TransportController, Iface, Str
 	protected void onResult(TransportController controller, List<Location> result) {
 		System.out.println(result);
 		
-		((TransportModel) controller.getModel()).addPreferredDestinations(result);
+		((TransportModel) controller.getModel()).setPreferredDestinations(result);
 	}
 
 	@Override

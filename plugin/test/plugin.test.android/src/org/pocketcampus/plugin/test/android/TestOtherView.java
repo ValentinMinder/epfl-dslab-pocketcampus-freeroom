@@ -33,7 +33,7 @@ public class TestOtherView extends PluginView implements ITestView {
 				int value;
 				
 				try {
-					value = Integer.parseInt(mInputBar.getText());
+					value = Integer.parseInt(mInputBar.getInputText());
 				} catch (NumberFormatException e) {
 					return;
 				}
