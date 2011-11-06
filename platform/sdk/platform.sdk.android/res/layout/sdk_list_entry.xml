@@ -13,7 +13,7 @@
 		android:layout_height="wrap_content"
 		android:padding="5dip"
 		android:layout_gravity="center_vertical"
-		android:src="@drawable/sdk_list_smallarrow"
+		android:src="@drawable/sdk_arrow_mini_icon"
 		android:visibility="visible"
 		></ImageView>
 

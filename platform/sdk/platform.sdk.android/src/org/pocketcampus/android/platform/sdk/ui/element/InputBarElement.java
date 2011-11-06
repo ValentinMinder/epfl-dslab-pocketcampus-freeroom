@@ -1,6 +1,9 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
+import org.pocketcampus.R;
+
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -47,11 +50,15 @@ public class InputBarElement extends RelativeLayout {
 	private void initialize(Context context, String buttonText, String hintText) {
 		// EDIT TEXT
 		LayoutParams editTextParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		editTextParams.setMargins(8, 8, 8, 8);
+		
+		Drawable img = getContext().getResources().getDrawable(R.drawable.sdk_magnify_mini_icon);
 		
 		mEditText = new EditTextElement(context, hintText);
 		mEditText.setLayoutParams(editTextParams);
 		mEditText.setSingleLine();
 		mEditText.setId(1);
+		mEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
 		super.addView(mEditText);
 		
 		// BUTTON
