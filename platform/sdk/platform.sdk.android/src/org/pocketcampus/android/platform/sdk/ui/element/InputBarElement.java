@@ -70,6 +70,9 @@ public class InputBarElement extends RelativeLayout {
 		mInnerLayout = new RelativeLayout(context);
 		mInnerLayout.setLayoutParams(layoutParams);
 		super.addView(mInnerLayout);
+		
+		// gives focus to the EditText and shows the keyboard
+		mEditText.requestFocus();
 	}
 	
 	public void setOnButtonClickListener(OnClickListener listener) {
