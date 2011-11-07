@@ -30,6 +30,7 @@ public abstract class PluginView extends Activity {
 	private ActionBar mActionBar;
 	private ServiceConnection mServiceConnection;
 	private ArrayList<PluginController> mControllers = new ArrayList<PluginController>();
+	private boolean mActionBarDisabled = false;
 	
 	public interface ViewBoundCallback {
 		void onViewBound(PluginController controller);
@@ -180,23 +181,40 @@ public abstract class PluginView extends Activity {
 	public void setContentView(View view, LayoutParams params) {
 		setupActionBar(view);
 	}
-
+	
+	// TODO addContentView!!
+	
 	/**
 	 * Adds the given view as the Activity content, with the ActionBar at the top. 
 	 * @param view
 	 */
 	private void setupActionBar(View view) {
+		if(mActionBarDisabled) {
+			super.setContentView(view);
+			return;
+		}
+		
 		LayoutInflater inflater = getLayoutInflater();
 		View actionBarView = inflater.inflate(R.layout.sdk_actionbar_layout, null);
 		super.setContentView(actionBarView);
 
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		RelativeLayout actionBarLayout = (RelativeLayout) actionBarView.findViewById(R.id.sdk_actionbar_layout);
-		actionBarLayout.addView(view);
+		actionBarLayout.addView(view, layoutParams);
 
 		mActionBar = (ActionBar) actionBarView.findViewById(R.id.sdk_actionbar_layout_actionbar);
 		mActionBar.setTitle(getString(R.string.app_name));
 	}
 
+	/**
+	 * Do not setup the ActionBar for this Activity.
+	 * Must be called before <code>setContentView</code>.
+	 * @param enabled
+	 */
+	protected void disableActionBar() {
+		mActionBarDisabled  = true;
+	}
+	
 	/**
 	 * Returns the ActionBar, use it to add custom button to it.
 	 * @return
