@@ -5,8 +5,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.LabeledListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.Location;
 
@@ -23,7 +23,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private InputBarElement mLayout;
 	private LabeledListViewElement mListView;
 	
-	private Labeler<Location> mLocationLabeler = new Labeler<Location>() {
+	private ILabeler<Location> mLocationLabeler = new ILabeler<Location>() {
 		@Override
 		public String getLabel(Location obj) {
 			return obj.name;
