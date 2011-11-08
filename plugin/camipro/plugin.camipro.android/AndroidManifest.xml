@@ -14,8 +14,9 @@
 			android:icon="@drawable/camipro_icon"
 			android:label="@string/camipro_plugin_title">
 			<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
 		</activity>
