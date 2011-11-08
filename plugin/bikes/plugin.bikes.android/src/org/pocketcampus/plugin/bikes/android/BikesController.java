@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.bikes.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.bikes.android.BikesModel;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesController;
 import org.pocketcampus.plugin.bikes.android.req.BikesRequest;
 import org.pocketcampus.plugin.bikes.shared.BikeService.Client;

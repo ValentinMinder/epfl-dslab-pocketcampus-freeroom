@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.bikes.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.LabeledListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
@@ -85,7 +85,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		
 	}
 	
-	Labeler<BikeEmplacement> labeler = new Labeler<BikeEmplacement>(){
+	ILabeler<BikeEmplacement> labeler = new ILabeler<BikeEmplacement>(){
 		@Override
 		public String getLabel(BikeEmplacement obj) {
 			String nice;
