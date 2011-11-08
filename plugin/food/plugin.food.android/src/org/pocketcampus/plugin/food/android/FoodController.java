@@ -41,13 +41,13 @@ public class FoodController extends PluginController implements IFoodController{
 	@Override
 	public void getRestaurantsList() {
 		Log.d("RESTAURANT", "Sending Restaurants request");
-		new RestaurantsRequest().start(this, mClient, (Object)null);
+		new RestaurantsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
 	}
 
 	@Override
 	public void getMeals() {
 		Log.d("MEALS", "Sending Meals request");
-		new MealsRequest().start(this, mClient, (Object)null);
+		new MealsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
 	}
 	
 	@Override

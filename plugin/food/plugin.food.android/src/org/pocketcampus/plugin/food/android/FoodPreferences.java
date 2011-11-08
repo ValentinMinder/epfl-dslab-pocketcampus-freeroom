@@ -120,8 +120,6 @@ public class FoodPreferences extends PluginView {
 					Log.d("PREFERENCES", r.getName() + " should be true");
 				}
 
-				//Trouver un moyen de mettre la CheckBox checked!
-
 			}
 		}
 
