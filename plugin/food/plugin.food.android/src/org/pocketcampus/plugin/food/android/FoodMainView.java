@@ -10,7 +10,6 @@ import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
-import org.pocketcampus.plugin.food.android.utils.SuggestionsListSection;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
