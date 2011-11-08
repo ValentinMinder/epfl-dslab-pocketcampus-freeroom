@@ -2,7 +2,7 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.ui.adapter.StandardCheckBoxesArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.CheckBoxesArrayAdapter;
 
 import android.content.Context;
 import android.widget.ListView;
@@ -14,7 +14,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  *
  */
 public class CheckBoxesListViewElement extends ListView implements Element {
-	private StandardCheckBoxesArrayAdapter mAdapter;
+	private CheckBoxesArrayAdapter mAdapter;
 
 	public CheckBoxesListViewElement(Context context, List<? extends Object> items) {
 		super(context);
@@ -22,7 +22,7 @@ public class CheckBoxesListViewElement extends ListView implements Element {
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		setLayoutParams(params);
 		
-		mAdapter = new StandardCheckBoxesArrayAdapter(context, items);
+		mAdapter = new CheckBoxesArrayAdapter(context, items);
 		setAdapter(mAdapter);
 	}
 	

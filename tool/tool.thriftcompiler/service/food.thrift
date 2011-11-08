@@ -8,20 +8,6 @@ struct Restaurant {
 	3: optional common.Location location;
 }
 
-enum RatingValue {
-	STAR_0_0;
-	STAR_0_5;
-	STAR_1_0;
-	STAR_1_5;
-	STAR_2_0;
-	STAR_2_5;
-	STAR_3_0;
-	STAR_3_5;
-	STAR_4_0;
-	STAR_4_5;
-	STAR_5_0;
-}
-
 enum SubmitStatus {
 	ALREADY_VOTED;
 	VALID;
@@ -30,7 +16,7 @@ enum SubmitStatus {
 }
 
 struct Rating {
-	1: required RatingValue ratingValue;
+	1: required double ratingValue;
 	2: required i32 nbVotes;
 	3: required double totalRating;
 }

@@ -207,7 +207,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		System.out.println("<setRating>: mealHashCode: " + mealHashCode);
 
 		double ratingTotal;
-		RatingValue ratingValue;
+		double ratingValue;
 		int newNbVotes;
 
 		for (int i = 0; i < mCampusMeals.size(); i++) {
@@ -216,7 +216,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 			ratingTotal = currentMeal.getRating().getTotalRating()
 					+ rating.getTotalRating();
 			newNbVotes = currentMeal.getRating().getNbVotes() + 1;
-			ratingValue = doubleToStarRating(ratingTotal / newNbVotes);
+			if( newNbVotes != 0) {				
+				ratingValue = ratingTotal / newNbVotes;
+			} else {
+				ratingValue = 0;
+			}
 
 			System.out.println("<setRating>: Inside : "
 					+ currentMeal.hashCode());
@@ -230,7 +234,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 				// Update Rating + deviceID on DB
 				mDB.insertRating(connection, mealHashCode, currentMeal);
 				mDB.insertVotedDevice(connection, deviceId, mealHashCode,
-						starRatingToDouble(rating.getRatingValue()));
+						rating.getRatingValue());
 
 				// Add deviceID in the list
 				mDeviceIds.add(deviceId);
@@ -292,7 +296,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 				if (feed != null && feed.items != null) {
 					for (int i = 0; i < feed.items.size(); i++) {
-						Rating mealRating = new Rating(RatingValue.STAR_0_0, 0,
+						Rating mealRating = new Rating(0, 0,
 								0);
 						Meal newMeal = new Meal(
 								(r + feed.items.get(i).title).hashCode(),
@@ -337,7 +341,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 			if (feed != null && feed.items != null) {
 				for (int i = 0; i < feed.items.size(); i++) {
-					Rating mealRating = new Rating(RatingValue.STAR_0_0, 0, 0);
+					Rating mealRating = new Rating(0, 0, 0);
 					Meal newMeal = new Meal(
 							(r + feed.items.get(i).title).hashCode(),
 							feed.items.get(i).title,

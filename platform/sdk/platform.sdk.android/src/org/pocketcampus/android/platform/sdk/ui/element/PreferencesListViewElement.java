@@ -2,7 +2,7 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.ui.adapter.StandardPreferencesArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.PreferencesArrayAdapter;
 
 import android.content.Context;
 import android.widget.ListView;
@@ -13,7 +13,7 @@ import android.widget.ListView;
  *
  */
 public class PreferencesListViewElement extends ListView implements Element {
-	private StandardPreferencesArrayAdapter mAdapter;
+	private PreferencesArrayAdapter mAdapter;
 
 	public PreferencesListViewElement(Context context, List<? extends Object> items) {
 		super(context);
@@ -21,7 +21,7 @@ public class PreferencesListViewElement extends ListView implements Element {
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		setLayoutParams(params);
 		
-		mAdapter = new StandardPreferencesArrayAdapter(context, items);
+		mAdapter = new PreferencesArrayAdapter(context, items);
 		setAdapter(mAdapter);
 		
 	}

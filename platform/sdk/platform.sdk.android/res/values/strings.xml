@@ -2,7 +2,9 @@
 
 <resources>
 
-	<string
-		name="app_name">PocketCampus</string>
+	<string name="app_name">PocketCampus</string>
+	
+	<string name="nb_votes_singular">vote</string>
+	<string name="nb_votes_plural">votes</string>
 
 </resources>

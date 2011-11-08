@@ -6,7 +6,10 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.adapter.RatableAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.element.RatableListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
@@ -19,6 +22,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class FoodMainView extends PluginView implements IFoodView {
@@ -28,6 +34,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 	/*Layout*/
 	private StandardLayout mLayout;
+	private RatableListViewElement mList;
 	
 	/*Constants*/
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
@@ -77,8 +84,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void displayData() {
 		mLayout.setText("No menus");
-		mController.getRestaurantsList();
-//		mController.getMeals();
+//		mController.getRestaurantsList();
+		mController.getMeals();
 	}
 
 	@Override
@@ -148,10 +155,25 @@ public class FoodMainView extends PluginView implements IFoodView {
 			Log.d("MEAL", "MEAL : " + m);
 		}
 		
-		// ListViewElement l = new ListViewElement(this, l);
-		//
-		// mLayout.removeAllViews();
-		// mLayout.addView(l);
+//		RatableListViewElement mList /*= new RatableListViewElement(this, mMealList, mLabeler)*/;
+		
+		if(mList == null){
+			mList = new RatableListViewElement(this, mMealList, mLabeler);
+			mList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
+					Meal m = (Meal) adapter.getItemAtPosition(pos);
+					Log.d("MEAL", m.name);
+				}
+			});
+			
+			mLayout.setText("");
+			mLayout.addView(mList);
+		}else{
+			mList.setAdapter(new RatableAdapter(this, mMealList, mLabeler));
+		}
+		
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -178,4 +200,28 @@ public class FoodMainView extends PluginView implements IFoodView {
 			break;
 		}
 	}
+	
+	IRatableLabeler<Meal> mLabeler = new IRatableLabeler<Meal>() {
+
+		@Override
+		public String getTitle(Meal meal) {
+			return meal.getName();
+		}
+
+		@Override
+		public String getDescription(Meal meal) {
+			return meal.getMealDescription();
+		}
+
+		@Override
+		public float getRating(Meal meal) {
+			return (float)meal.getRating().getRatingValue();
+		}
+
+		@Override
+		public int getNbVotes(Meal meal) {
+			return meal.getRating().getNbVotes();
+		}
+	};
+	
 }
