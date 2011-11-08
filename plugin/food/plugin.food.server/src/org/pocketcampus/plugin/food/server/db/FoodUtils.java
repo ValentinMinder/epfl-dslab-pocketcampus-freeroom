@@ -17,9 +17,12 @@ public class FoodUtils {
 		if (totalRating < 0 || numberOfVotes < 0) {
 			return null;
 		}
-		
-		double rating = (totalRating / numberOfVotes);
-		
+
+		double rating = 0;
+		if (numberOfVotes != 0) {
+			rating = (totalRating / numberOfVotes);
+		}
+
 		if (rating < 0.25) {
 			return RatingValue.STAR_0_0;
 		} else if (rating < 0.75) {
