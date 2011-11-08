@@ -2,7 +2,7 @@ package org.pocketcampus.android.platform.sdk.ui.adapter;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 public class LabeledArrayAdapter extends AbstractArrayAdapter {
 	private LayoutInflater mInflater;
-	private Labeler mLabeler;
+	private ILabeler mLabeler;
 	
-	public LabeledArrayAdapter(Context context, List<? extends Object> items, Labeler<? extends Object> labeler) {
+	public LabeledArrayAdapter(Context context, List<? extends Object> items, ILabeler<? extends Object> labeler) {
 		super(context, items);
 		
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

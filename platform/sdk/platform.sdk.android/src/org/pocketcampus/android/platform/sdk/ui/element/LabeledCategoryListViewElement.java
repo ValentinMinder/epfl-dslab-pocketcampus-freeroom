@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.CategoryListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
@@ -33,7 +34,7 @@ public class LabeledCategoryListViewElement extends ListView implements Element 
 		setAdapter(mAdapter);
 	}
 
-	public void addSection(String label, List<? extends Object> items, Labeler labeler) {
+	public void addSection(String label, List<? extends Object> items, ILabeler labeler) {
 		ArrayAdapter<?> adapter = new LabeledArrayAdapter(mContext, items, labeler);
 		mAdapter.addSection(label, adapter);
 	}

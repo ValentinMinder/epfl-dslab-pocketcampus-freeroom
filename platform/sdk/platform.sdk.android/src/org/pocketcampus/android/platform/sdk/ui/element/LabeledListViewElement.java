@@ -3,6 +3,7 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.widget.ListView;
@@ -27,7 +28,7 @@ public class LabeledListViewElement extends ListView implements Element {
 	 * @param items
 	 * @param labeler
 	 */
-	public LabeledListViewElement(Context context, List<? extends Object> items, Labeler<? extends Object> labeler) {
+	public LabeledListViewElement(Context context, List<? extends Object> items, ILabeler<? extends Object> labeler) {
 		super(context);
 		
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
