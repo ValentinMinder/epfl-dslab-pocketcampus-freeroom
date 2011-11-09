@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>lib/actionbar/lib.actionbar.android</module>
+		<module>lib/touchlist/lib.touchlist.android</module>
 		<module>platform/sdk/platform.sdk.android</module>
 		<module>platform/sdk/platform.sdk.shared</module>
 		<module>merged/shared</module>
