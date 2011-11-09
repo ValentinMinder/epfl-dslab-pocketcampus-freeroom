@@ -52,5 +52,8 @@
 	<classpathentry kind="src" path="/plugin.takeoutreceiver.shared"/>
 	<classpathentry kind="src" path="/plugin.test.shared"/>
 	<classpathentry kind="src" path="/plugin.takeout.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.takeoutreceiver.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
