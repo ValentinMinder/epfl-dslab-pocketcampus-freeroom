@@ -22,7 +22,7 @@ public class NewsController extends PluginController implements INewsController 
 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		 mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 
 	/**

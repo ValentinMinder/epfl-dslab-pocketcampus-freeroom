@@ -26,7 +26,8 @@ public class NewsItemRequest extends
 		feedUrls.add("http://actu.epfl.ch/feeds/rss/sv/en/");
 		feedUrls.add("http://actu.epfl.ch/feeds/rss/cdm/en/");
 		
-		return client.getNewsItems(feedUrls);
+//		return client.getNewsItems();
+		return null;
 	}
 
 	@Override

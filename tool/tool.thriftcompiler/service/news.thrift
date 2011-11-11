@@ -24,5 +24,5 @@ struct Feed {
 }
 
 service NewsService {
-	list<NewsItem> getNewsItems(1: list<string> feedUrls);
+	list<NewsItem> getNewsItems();
 }
