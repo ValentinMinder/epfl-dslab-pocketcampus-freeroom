@@ -13,6 +13,7 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.android.req.SingleRatingRequest;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
@@ -149,22 +150,34 @@ public class FoodMainView extends PluginView implements IFoodView {
 	@Override
 	public void menusUpdated() {
 		// Update meals
-		List<Meal> mMealList = mModel.getMeals();
+		final List<Meal> mMealList = mModel.getMeals();
 		
 		for(Meal m : mMealList) {
 			Log.d("MEAL", "MEAL : " + m);
 		}
 		
-//		RatableListViewElement mList /*= new RatableListViewElement(this, mMealList, mLabeler)*/;
-		
 		if(mList == null){
 			mList = new RatableListViewElement(this, mMealList, mLabeler);
+			
 			mList.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
-				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
+				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long rating) {
 					Meal m = (Meal) adapter.getItemAtPosition(pos);
 					Log.d("MEAL", m.name);
+				}
+			});
+			
+			mList.setOnRatingClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View okButton, int position, long rating) {
+					Meal meal = mMealList.get(position);
+					
+					Log.d("RATING", "Rating is " + rating);
+					Log.d("RATING", "Meal : " + meal.getName());
+					
+					mController.setRating(rating, meal);
 				}
 			});
 			

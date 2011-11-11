@@ -9,12 +9,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class RatableAdapter extends AbstractArrayAdapter {
 	private LayoutInflater mInflater;
 	private IRatableLabeler mLabeler;
 	private Context mContext;
 	private List<? extends Object> mItems;
+	private OnItemClickListener mOnRatingClickListener;
 	
 	public RatableAdapter(Context context, List<? extends Object> items, IRatableLabeler<? extends Object> labeler) {
 		super(context, items);
@@ -26,17 +28,13 @@ public class RatableAdapter extends AbstractArrayAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-//		View view = convertView;
-//		if (view == null) {
-//			view = mInflater.inflate(mLayoutResourceId, null);
-//		}
-//		
-//		TextView textView = (TextView) view.findViewById(mTextViewResourceId);
-//		Object obj = getItem(position);
-//		textView.setText(mLabeler.getTitle(obj));
 		
-		RatableView rv = new RatableView(getItem(position), mContext, mLabeler);
+		RatableView rv = new RatableView(getItem(position), mContext, mLabeler, mOnRatingClickListener, position);
 		
 		return rv;
+	}
+	
+	public void setOnRatingClickListener(OnItemClickListener l) {
+		mOnRatingClickListener = l;
 	}
 }

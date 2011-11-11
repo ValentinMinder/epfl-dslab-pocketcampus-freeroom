@@ -5,6 +5,7 @@ import java.util.List;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 public interface IFoodModel {
 
@@ -15,5 +16,7 @@ public interface IFoodModel {
 	public List<Meal> getMeals();
 	
 	public List<MealTag> getMealTags();
+	
+	public void setRating(SubmitStatus status);
 	
 }

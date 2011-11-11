@@ -17,6 +17,7 @@ import android.widget.ListView;
 public class RatableListViewElement extends ListView implements Element {
 	
 	private ElementDimension mDimension = ElementDimension.NORMAL;
+	private RatableAdapter mAdapter;
 
 	public RatableListViewElement(Context context) {
 		super(context);
@@ -34,13 +35,17 @@ public class RatableListViewElement extends ListView implements Element {
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		setLayoutParams(params);
 		
-		RatableAdapter adapter = new RatableAdapter(context, items, labeler);
-		adapter.setDimension(mDimension);
-		setAdapter(adapter);
+		mAdapter = new RatableAdapter(context, items, labeler);
+		mAdapter.setDimension(mDimension);
+		setAdapter(mAdapter);
 	}
 
 	public void setDimension(ElementDimension dimension) {
 		mDimension = dimension;
+	}
+	
+	public void setOnRatingClickListener(OnItemClickListener l) {
+		mAdapter.setOnRatingClickListener(l);
 	}
 	
 }

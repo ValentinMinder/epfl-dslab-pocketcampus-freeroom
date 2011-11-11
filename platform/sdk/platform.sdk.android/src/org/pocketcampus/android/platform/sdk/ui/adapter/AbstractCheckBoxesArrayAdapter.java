@@ -65,7 +65,6 @@ public abstract class AbstractCheckBoxesArrayAdapter extends ArrayAdapter<Object
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				Log.d("TAG", "like " + tag);
 
 				if(isChecked) {		
 					mLikeTags.add(tag);
@@ -77,7 +76,7 @@ public abstract class AbstractCheckBoxesArrayAdapter extends ArrayAdapter<Object
 					mLikeTags.remove(tag);
 				}
 				
-				if(mListener != null){					
+				if(mListener != null){		
 					mListener.onItemClick(null, (View)buttonView, position, (long)1);
 				}
 					
@@ -89,7 +88,6 @@ public abstract class AbstractCheckBoxesArrayAdapter extends ArrayAdapter<Object
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				Log.d("TAG", "dislike " + tag);
 				
 				if(isChecked) {		
 					mDislikeTags.add(tag);

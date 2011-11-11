@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -10,8 +9,8 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.Meal;
-import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 public class FoodModel extends PluginModel implements IFoodModel {
 	IFoodView mListeners = (IFoodView) getListeners();
@@ -68,6 +67,14 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		}
 		
 		return tags;
+	}
+	
+	/**
+	 * set the Rating for a particular Meal
+	 * */
+	@Override
+	public void setRating(SubmitStatus status) {
+		//Toast suivant le status
 	}
 	
 }
