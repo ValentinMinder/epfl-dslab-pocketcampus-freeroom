@@ -1,4 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="280dip"
+    android:orientation="vertical" >
+
+    <!-- Title -->
+
+    <LinearLayout
+        android:id="@+id/sdk_dialog_rating_title_layout"
+        style="@style/Dialog.Top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sdk_dialog_rating_title"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip" />
+    </LinearLayout>
+
+    <!-- Rating Bar -->    
+        
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sdk_dialog_rating_rating_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <RatingBar
+        android:id="@+id/sdk_dialog_rating_ratingBarIndicator"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:numStars="5"
+        android:rating="1"
+        android:stepSize=".5" />
+        
+        <!--
+        <RatingBar
+            android:id="@+id/sdk_dialog_rating_ratingBarIndicator"
+            style="?android:attr/ratingBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="3dip"
+            android:isIndicator="true"
+            android:numStars="5" />
+        -->
+
+    </LinearLayout>
+
+    <!-- Buttons -->
+
+    <LinearLayout
+        style="@style/Dialog.Bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sdk_dialog_rating_okButton"
+            android:layout_width="145dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:layout_weight="1"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/sdk_dialog_rating_cancelButton"
+            android:layout_width="145dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:layout_weight="1"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -49,3 +139,4 @@
     </LinearLayout>
 
 </TableLayout>
+ -->

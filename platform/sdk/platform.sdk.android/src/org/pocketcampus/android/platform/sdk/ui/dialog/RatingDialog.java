@@ -4,78 +4,207 @@ import org.pocketcampus.R;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 
-/**
- * Class will represent a rating dialog, that will be opened when rating a meal.
- * 
- */
 public class RatingDialog extends Dialog {
-	private Button mOkButton;
-	private Button mCancelButton;
-	private RatingBar mRatingbar;
-	private Object mToRate;
-	private Context mContext;
-	private OnItemClickListener mOnRatingClickListener;
-	private int mPosition;
 
-	public RatingDialog(Object toRate, Context context, OnItemClickListener l, int position) {
+	public RatingDialog(Context context, int theme) {
+		super(context, theme);
+	}
+
+	public RatingDialog(Context context) {
 		super(context);
-		this.mToRate = toRate;
-		this.mContext = context;
-		this.mOnRatingClickListener = l;
-		mPosition = position;
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		/** Design the dialog in dialog.xml file */
-		setContentView(R.layout.sdk_dialog_rating);
-
-		mOkButton = (Button) findViewById(R.id.sdk_rating_submit);
-		mOkButton.setEnabled(false);
-		mOkButton.setOnClickListener(new OKListener());
-
-		mCancelButton = (Button) findViewById(R.id.sdk_rating_cancel);
-		mCancelButton.setOnClickListener(new CancelListener());
-
-		mRatingbar = (RatingBar) findViewById(R.id.sdk_rating_ratebar);
-		mRatingbar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
-			public void onRatingChanged(RatingBar ratingBar, float rating,
-					boolean fromUser) {
-				mOkButton.setEnabled(true);
-			}
-		});
 	}
 
-	/**
-	 * Called when OK button is clicked
-	 * 
-	 */
-	private class OKListener implements android.view.View.OnClickListener {
-		public void onClick(View v) {
-			
-			double rating = mRatingbar.getRating();
-			
-			if(mOnRatingClickListener != null) {				
-				mOnRatingClickListener.onItemClick(null, v, mPosition, (long)rating);
-			}else{
-				Log.d("RATING", "Listener was null");
-			}
-			RatingDialog.this.dismiss();
+	public static class Builder {
+		private Context mContext;
+		private View mContentView;
+		private boolean mCanceledOnTouchOutside;
+		
+		private String mTitle;
+		private float mMyRating;
+		
+		private Button mOkButton;
+		private Button mCancelButton;
+		private String mOkButtonText;
+		private String mCancelButtonText;
+		
+		private DialogInterface.OnClickListener mOkButtonClickListener;
+		private DialogInterface.OnClickListener mCancelButtonClickListener;
+
+		public Builder(Context context) {
+			mContext = context;
 		}
-	}
 
-	/**
-	 * Called when cancel button is clicked - simply dismiss the dialog.
-	 * 
-	 */
-	private class CancelListener implements android.view.View.OnClickListener {
-		public void onClick(View v) {
-			RatingDialog.this.dismiss();
+		/**
+		 * Sets the dialog title.
+		 * @param title
+		 * @return
+		 */
+		public Builder setTitle(String title) {
+			mTitle = title;
+			return this;
+		}
+
+		/**
+		 * Sets the dialog title from a resource.
+		 * @param title
+		 * @return
+		 */
+		public Builder setTitle(int title) {
+			mTitle = (String) mContext.getText(title);
+			return this;
+		}
+
+		/**
+		 * Sets a custom content view for the Dialog.
+		 * Only used if no message is set.
+		 * @param view
+		 * @return
+		 */
+		public Builder setContentView(View view) {
+			mContentView = view;
+			return this;
+		}
+
+		/**
+		 * Sets the first button text from a resource and its listener
+		 * @param fristButtonText
+		 * @param listener
+		 * @return
+		 */
+		public Builder setOkButton(int fristButtonText, DialogInterface.OnClickListener listener) {
+			mOkButtonText = (String) mContext.getText(fristButtonText);
+			mOkButtonClickListener = listener;
+			return this;
+		}
+
+		/**
+		 * Set the first button text and its listener
+		 * @param firstButtonText
+		 * @param listener
+		 * @return
+		 */
+		public Builder setOkButton(String firstButtonText, DialogInterface.OnClickListener listener) {
+			mOkButtonText = firstButtonText;
+			mOkButtonClickListener = listener;
+			return this;
+		}
+
+		/**
+		 * Set the second button text from a resource and its listener
+		 * @param secondButtonText
+		 * @param listener
+		 * @return
+		 */
+		public Builder setCancelButton(int secondButtonText, DialogInterface.OnClickListener listener) {
+			mCancelButtonText = (String) mContext.getText(secondButtonText);
+			mCancelButtonClickListener = listener;
+			return this;
+		}
+
+		/**
+		 * Set the second button text and its listener
+		 * @param secondButtonText
+		 * @param listener
+		 * @return
+		 */
+		public Builder setCancelButton(String secondButtonText, DialogInterface.OnClickListener listener) {
+			mCancelButtonText = secondButtonText;
+			mCancelButtonClickListener = listener;
+			return this;
+		}
+
+		public void setCanceledOnTouchOutside(boolean cancel) {
+			mCanceledOnTouchOutside = cancel;
+		}
+
+		/**
+		 * Creates the custom dialog.
+		 */
+		public RatingDialog create() {
+			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			// dialog
+			final RatingDialog dialog = new RatingDialog(mContext, R.style.Dialog);
+			final View layout = inflater.inflate(R.layout.sdk_dialog_rating, null);
+			dialog.addContentView(layout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+			dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
+
+			// title
+			if(mTitle != null) {
+				((TextView) layout.findViewById(R.id.sdk_dialog_rating_title)).setText(mTitle);
+			} else {
+				((LinearLayout) layout.findViewById(R.id.sdk_dialog_rating_title_layout)).setVisibility(View.GONE);
+			}
+
+			// set the confirm button
+			if (mOkButtonText != null) {
+				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
+				.setText(mOkButtonText);
+				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
+				.setEnabled(false);
+				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton)).setEnabled(false);
+				if (mOkButtonClickListener != null) {
+					((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
+					.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							mOkButtonClickListener.onClick(
+									dialog, DialogInterface.BUTTON_POSITIVE);
+						}
+					});
+				}
+			} else {
+				// if no confirm button just set the visibility to GONE
+				layout.findViewById(R.id.sdk_dialog_rating_okButton).setVisibility(
+						View.GONE);
+			}
+
+			// set the cancel button
+			if (mCancelButtonText != null) {
+				((Button) layout.findViewById(R.id.sdk_dialog_rating_cancelButton))
+				.setText(mCancelButtonText);
+				if (mCancelButtonClickListener != null) {
+					((Button) layout.findViewById(R.id.sdk_dialog_rating_cancelButton))
+					.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							mCancelButtonClickListener.onClick(dialog, DialogInterface.BUTTON_NEGATIVE);
+						}
+					});
+				}
+			} else {
+				// if no confirm button just set the visibility to GONE
+				layout.findViewById(R.id.sdk_dialog_rating_cancelButton).setVisibility(
+						View.GONE);
+			}
+
+			// rating bar and nb of votes
+			((RatingBar) layout.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator)).setRating(0);
+			((RatingBar) layout.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator)).setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+				public void onRatingChanged(RatingBar ratingBar, float rating,
+						boolean fromUser) {
+					((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton)).setEnabled(true);
+					mMyRating = rating;
+				}
+			});
+			
+			dialog.setContentView(layout);
+			return dialog;
+		}
+
+		public float getSubmittedRating() {
+			return mMyRating;
 		}
 	}
 }

@@ -19,4 +19,17 @@
 	<string name="food_suggestions_test">Test</string>
 	
 	<string name="food_suggestions_notag">No existing Tag</string>
+	
+	<!-- Menu Dialog -->
+	<string name="food_menu_dialog_firstButton">Rate it</string>
+	<string name="food_menu_dialog_secondButton">Pictures</string>
+	<string name="food_menu_dialog_thirdButton">Go there</string>
+	
+	<!-- Rating Dialog -->
+	<string name="nb_votes_singular">vote</string>
+	<string name="nb_votes_plural">votes</string>
+	
+	<string name="food_rating_dialog_title">Rate it</string>
+	<string name="food_rating_dialog_OK">Ok</string>
+	<string name="food_rating_dialog_cancel">Cancel</string>
 </resources>

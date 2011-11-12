@@ -7,17 +7,20 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.RatableAdapter;
+import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
+import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog.Builder;
+import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.element.RatableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
-import org.pocketcampus.plugin.food.android.req.SingleRatingRequest;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +32,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class FoodMainView extends PluginView implements IFoodView {
+	/*Activity*/
+	private Activity mActivity;
+
 	/*MVC*/
 	private FoodController mController;
 	private IFoodModel mModel;
@@ -36,7 +42,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	/*Layout*/
 	private StandardLayout mLayout;
 	private RatableListViewElement mList;
-	
+
 	/*Constants*/
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
@@ -63,13 +69,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		mActivity = this;
 		// Get and cast the controller and model
 		mController = (FoodController) controller;
 		mModel = (FoodModel) controller.getModel();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
-		
+
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
@@ -85,7 +92,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void displayData() {
 		mLayout.setText("No menus");
-//		mController.getRestaurantsList();
+		//		mController.getRestaurantsList();
 		mController.getMeals();
 	}
 
@@ -110,18 +117,18 @@ public class FoodMainView extends PluginView implements IFoodView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.food_by_resto) {
-			
+
 		} else if (item.getItemId() == R.id.food_by_sandwiches) {
-			
+
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			Intent suggestions = new Intent(getApplicationContext(), FoodSuggestionsView.class);
 			ArrayList<Meal> meals = (ArrayList<Meal>)mModel.getMeals();
-			
+
 			if(meals == null)
 				Log.d("SUGGESTIONS", "Pas de meals envoyés");
 			else
 				Log.d("SUGGESTIONS", "Extras : " + meals.size());
-			
+
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 		} else if (item.getItemId() == R.id.food_by_settings) {
@@ -131,18 +138,18 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 		return true;
 	}
-	
+
 	public void restaurantsUpdated() {
 		List<Restaurant> mRestaurantList = mModel.getRestaurantsList();
 		List<String> mRestaurantStringList = new ArrayList<String>();
-		
+
 		for(Restaurant r : mRestaurantList) {
 			mRestaurantStringList.add(r.name);
 			Log.d("RESTAURANT", "Restaurant : " + r.name);
 		}
-		
+
 		ListViewElement l = new ListViewElement(this, mRestaurantStringList);
-		
+
 		mLayout.removeAllViews();
 		mLayout.addView(l);
 	}
@@ -151,59 +158,161 @@ public class FoodMainView extends PluginView implements IFoodView {
 	public void menusUpdated() {
 		// Update meals
 		final List<Meal> mMealList = mModel.getMeals();
-		
-		for(Meal m : mMealList) {
-			Log.d("MEAL", "MEAL : " + m);
-		}
-		
+
 		if(mList == null){
 			mList = new RatableListViewElement(this, mMealList, mLabeler);
-			
-			mList.setOnItemClickListener(new OnItemClickListener() {
+
+			mList.setOnLineClickListener(new OnItemClickListener() {
 
 				@Override
-				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long rating) {
-					Meal m = (Meal) adapter.getItemAtPosition(pos);
-					Log.d("MEAL", m.name);
+				public void onItemClick(AdapterView<?> adapter, View arg1, int position, long rating) {
+					final Meal meal = mMealList.get(position);
+
+					if(meal != null) {
+						Log.d("MEAL", meal.getName());
+
+						MenuDialog.Builder b = new MenuDialog.Builder(mActivity);
+						b.setCanceledOnTouchOutside(true);
+
+						//Set different values for the dialog
+						b.setTitle(meal.getName());
+						b.setDescription(meal.getMealDescription());
+						b.setRating((float)0.0, meal.getRating().getNbVotes());
+
+						b.setFirstButton(R.string.food_menu_dialog_firstButton, new MenuDialogListener(b, meal));
+						b.setSecondButton(R.string.food_menu_dialog_secondButton, new MenuDialogListener(b, meal));
+						b.setThirdButton(R.string.food_menu_dialog_thirdButton, new MenuDialogListener(b, meal));
+
+						MenuDialog dialog = b.create();
+						dialog.show();
+					}
 				}
 			});
-			
+
 			mList.setOnRatingClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View okButton, int position, long rating) {
-					Meal meal = mMealList.get(position);
-					
-					Log.d("RATING", "Rating is " + rating);
-					Log.d("RATING", "Meal : " + meal.getName());
-					
-					mController.setRating(rating, meal);
+					final Meal meal = mMealList.get(position);
+
+					RatingDialog.Builder b = new RatingDialog.Builder(mActivity);
+
+					b.setTitle(R.string.food_rating_dialog_title);
+
+					b.setOkButton(R.string.food_rating_dialog_OK, new RatingDialogListener(b, meal, rating));
+					b.setCancelButton(R.string.food_rating_dialog_cancel, new RatingDialogListener());
+
+					RatingDialog dialog = b.create();
+					dialog.show();
+
 				}
 			});
-			
+
 			mLayout.setText("");
 			mLayout.addView(mList);
 		}else{
 			mList.setAdapter(new RatableAdapter(this, mMealList, mLabeler));
 		}
+
+	}
+
+	/**
+	 * Called when one of the Menu Dialog button is clicked.
+	 * 
+	 */
+	private class MenuDialogListener implements DialogInterface.OnClickListener {
+		private MenuDialog.Builder builder;
+		private Meal meal;
+		private float rating;
 		
+		public MenuDialogListener(MenuDialog.Builder b, Meal m) {
+			builder = b;
+			meal = m;
+		}
+		
+		@Override
+		public void onClick(DialogInterface dialog, int code) {
+			switch(code) {
+			case DialogInterface.BUTTON1 : 
+				rating = builder.getSubmittedRating();
+				Log.d("RATING", "Rating submitted : " + rating);
+				dialog.dismiss();
+				mController.setRating((float)rating, meal);
+				break;
+				
+			case DialogInterface.BUTTON2 :
+				//Pictures
+				Log.d("PICTURES", "Picture taken");
+				dialog.dismiss();
+				break;
+				
+			case DialogInterface.BUTTON3 :
+				//Go there
+				Log.d("MAP", "Go there clicked");
+				dialog.dismiss();
+				break;
+				
+			default : 
+				break;
+			}
+		}
+
 	}
 	
+	/**
+	 * Called when one of the Rating Dialog button is clicked.
+	 * 
+	 */
+	private class RatingDialogListener implements DialogInterface.OnClickListener {
+		private RatingDialog.Builder builder;
+		private Meal meal;
+		private float rating;
+		
+		public RatingDialogListener(){}
+		
+		public RatingDialogListener(RatingDialog.Builder b, Meal m, float r) {
+			builder = b;
+			meal = m;
+			rating = r;
+		}
+		
+		@Override
+		public void onClick(DialogInterface dialog, int code) {
+			switch(code) {
+			
+			case DialogInterface.BUTTON_POSITIVE : 
+				rating = builder.getSubmittedRating();
+				Log.d("RATING", "Rating submitted : " + rating);
+				dialog.dismiss();
+				mController.setRating((float)rating, meal);
+				break;
+				
+			case DialogInterface.BUTTON_NEGATIVE :
+				dialog.dismiss();
+				break;
+				
+			default : 
+				break;
+			}
+		}
+
+	}
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		switch (requestCode) {
 		case SUGGESTIONS_REQUEST_CODE: // Result from the Suggestions class
 			Log.d("SUGGESTIONS", "OnActivityResult");
-			
+
 			if (resultCode == Activity.RESULT_OK) {
 				Bundle extras = data.getExtras();
 				if (extras != null) {
-					
+
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras.getSerializable("org.pocketcampus.suggestions.meals");
 					Log.d("SUGGESTIONS", "Meals in return : " + list.size());
-					
+
 				} else {
 					Log.d("SUGGESTIONS", "No extras !");
 				}
@@ -213,7 +322,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 			break;
 		}
 	}
-	
+
 	IRatableLabeler<Meal> mLabeler = new IRatableLabeler<Meal>() {
 
 		@Override
@@ -236,5 +345,5 @@ public class FoodMainView extends PluginView implements IFoodView {
 			return meal.getRating().getNbVotes();
 		}
 	};
-	
+
 }

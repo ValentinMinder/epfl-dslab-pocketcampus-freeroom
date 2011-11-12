@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="280dip"
+    android:orientation="vertical" >
+
+    <!-- Title -->
+
+    <LinearLayout
+        android:id="@+id/sdk_dialog_menu_title_layout"
+        style="@style/Dialog.Top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sdk_dialog_menu_title"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip" />
+    </LinearLayout>
+
+    <!-- Rating Bar -->
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sdk_dialog_menu_rating_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <RatingBar
+            android:id="@+id/sdk_dialog_menu_ratingBarIndicator"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="3dip"
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize=".5" />
+
+        <!-- <RatingBar
+            android:id="@+id/sdk_dialog_menu_ratingBarIndicator"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="3dip"
+            android:isIndicator="true"
+            android:numStars="5" />
+        -->
+
+        <!-- <TextView
+            android:id="@+id/sdk_dialog_menu_nbvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dip"
+            android:layout_toRightOf="@+id/food_menudialog_ratingBarIndicator"
+            android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+    </LinearLayout>
+
+    <!-- Description -->
+
+    <LinearLayout
+        android:id="@+id/sdk_dialog_menu_description_layout"
+        style="@style/Dialog.Middle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sdk_dialog_menu_description"
+            style="@style/DialogText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip" />
+    </LinearLayout>
+
+    <!-- Buttons -->
+
+    <LinearLayout
+        style="@style/Dialog.Bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sdk_dialog_menu_firstButton"
+            android:layout_width="145dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:layout_weight="1"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/sdk_dialog_menu_secondButton"
+            android:layout_width="145dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:layout_weight="1"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/sdk_dialog_menu_thirdButton"
+            android:layout_width="145dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dip"
+            android:layout_weight="1"
+            android:singleLine="true" />
+    </LinearLayout>
+
+</LinearLayout>

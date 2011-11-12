@@ -7,8 +7,4 @@
 	<string name="nb_votes_singular">vote</string>
 	<string name="nb_votes_plural">votes</string>
 	
-	<string name="rating_title">Rate it!</string>
-	<string name="rating_OK">Ok</string>
-	<string name="rating_cancel">Cancel</string>
-
 </resources>

@@ -6,6 +6,7 @@ import org.pocketcampus.android.platform.sdk.ui.adapter.RatableAdapter;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
 
 import android.content.Context;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 /**
@@ -42,6 +43,10 @@ public class RatableListViewElement extends ListView implements Element {
 
 	public void setDimension(ElementDimension dimension) {
 		mDimension = dimension;
+	}
+	
+	public void setOnLineClickListener(OnItemClickListener l) {
+		mAdapter.setOnLineClickListener(l);
 	}
 	
 	public void setOnRatingClickListener(OnItemClickListener l) {
