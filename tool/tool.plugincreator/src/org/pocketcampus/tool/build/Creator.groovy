@@ -53,7 +53,7 @@ class Creator {
 
 		System.out.println("done");
 
-		if(!new File(tempDir).delete()) {
+		if(!new File(tempDir).deleteDir()) {
 			//			println "Warning: couldn't delete temp files."
 		}
 
