@@ -44,6 +44,11 @@ public class FileUtils {
 			throw new IllegalArgumentException( "Source directory (" + source.getPath() + ") doesn't exist." );
 		}
 
+		if(source.getPath().endsWith(".svn")) {
+			// skip .svn directories
+			return;
+		}
+		
 		if( destination.exists() ) {
 			throw new IllegalArgumentException( "Destination (" + destination.getPath() + ") exists." );
 		}
