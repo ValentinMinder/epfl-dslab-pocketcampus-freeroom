@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.bikes.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -449,7 +450,34 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_empty = true;
+    builder.append(present_empty);
+    if (present_empty)
+      builder.append(empty);
+
+    boolean present_availableQuantity = true;
+    builder.append(present_availableQuantity);
+    if (present_availableQuantity)
+      builder.append(availableQuantity);
+
+    boolean present_geoLat = true;
+    builder.append(present_geoLat);
+    if (present_geoLat)
+      builder.append(geoLat);
+
+    boolean present_geoLng = true;
+    builder.append(present_geoLng);
+    if (present_geoLng)
+      builder.append(geoLng);
+
+    boolean present_designation = true && (isSetDesignation());
+    builder.append(present_designation);
+    if (present_designation)
+      builder.append(designation);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(BikeEmplacement other) {

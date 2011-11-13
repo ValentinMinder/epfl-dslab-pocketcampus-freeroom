@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.camipro.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -567,7 +568,44 @@ public class EbankingBean implements org.apache.thrift.TBase<EbankingBean, Ebank
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_paidNameTo = true && (isSetPaidNameTo());
+    builder.append(present_paidNameTo);
+    if (present_paidNameTo)
+      builder.append(paidNameTo);
+
+    boolean present_accountNr = true && (isSetAccountNr());
+    builder.append(present_accountNr);
+    if (present_accountNr)
+      builder.append(accountNr);
+
+    boolean present_BvrReference = true && (isSetBvrReference());
+    builder.append(present_BvrReference);
+    if (present_BvrReference)
+      builder.append(BvrReference);
+
+    boolean present_BvrReferenceReadable = true && (isSetBvrReferenceReadable());
+    builder.append(present_BvrReferenceReadable);
+    if (present_BvrReferenceReadable)
+      builder.append(BvrReferenceReadable);
+
+    boolean present_total1M = true;
+    builder.append(present_total1M);
+    if (present_total1M)
+      builder.append(total1M);
+
+    boolean present_total3M = true;
+    builder.append(present_total3M);
+    if (present_total3M)
+      builder.append(total3M);
+
+    boolean present_average3M = true;
+    builder.append(present_average3M);
+    if (present_average3M)
+      builder.append(average3M);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(EbankingBean other) {

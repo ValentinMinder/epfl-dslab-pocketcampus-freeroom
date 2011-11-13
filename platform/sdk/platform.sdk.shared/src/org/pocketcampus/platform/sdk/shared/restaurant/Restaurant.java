@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -988,7 +989,74 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_name = true && (isSetName());
+    builder.append(present_name);
+    if (present_name)
+      builder.append(name);
+
+    boolean present_menuCategories = true && (isSetMenuCategories());
+    builder.append(present_menuCategories);
+    if (present_menuCategories)
+      builder.append(menuCategories);
+
+    boolean present_currency = true && (isSetCurrency());
+    builder.append(present_currency);
+    if (present_currency)
+      builder.append(currency);
+
+    boolean present_category = true && (isSetCategory());
+    builder.append(present_category);
+    if (present_category)
+      builder.append(category.getValue());
+
+    boolean present_restaurantDescription = true && (isSetRestaurantDescription());
+    builder.append(present_restaurantDescription);
+    if (present_restaurantDescription)
+      builder.append(restaurantDescription);
+
+    boolean present_version = true;
+    builder.append(present_version);
+    if (present_version)
+      builder.append(version);
+
+    boolean present_restaurantId = true;
+    builder.append(present_restaurantId);
+    if (present_restaurantId)
+      builder.append(restaurantId);
+
+    boolean present_stars = true && (isSetStars());
+    builder.append(present_stars);
+    if (present_stars)
+      builder.append(stars.getValue());
+
+    boolean present_location = true && (isSetLocation());
+    builder.append(present_location);
+    if (present_location)
+      builder.append(location);
+
+    boolean present_payBeforeOrderIsPlaced = true;
+    builder.append(present_payBeforeOrderIsPlaced);
+    if (present_payBeforeOrderIsPlaced)
+      builder.append(payBeforeOrderIsPlaced);
+
+    boolean present_acceptedPaymentMethods = true && (isSetAcceptedPaymentMethods());
+    builder.append(present_acceptedPaymentMethods);
+    if (present_acceptedPaymentMethods)
+      builder.append(acceptedPaymentMethods);
+
+    boolean present_phoneNumber = true && (isSetPhoneNumber());
+    builder.append(present_phoneNumber);
+    if (present_phoneNumber)
+      builder.append(phoneNumber);
+
+    boolean present_address = true && (isSetAddress());
+    builder.append(present_address);
+    if (present_address)
+      builder.append(address);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(Restaurant other) {

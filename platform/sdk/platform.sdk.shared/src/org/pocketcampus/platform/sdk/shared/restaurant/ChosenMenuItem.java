@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -424,7 +425,29 @@ public class ChosenMenuItem implements org.apache.thrift.TBase<ChosenMenuItem, C
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_menuItemId = true;
+    builder.append(present_menuItemId);
+    if (present_menuItemId)
+      builder.append(menuItemId);
+
+    boolean present_singleChoiceOptions = true && (isSetSingleChoiceOptions());
+    builder.append(present_singleChoiceOptions);
+    if (present_singleChoiceOptions)
+      builder.append(singleChoiceOptions);
+
+    boolean present_multiChoiceOptions = true && (isSetMultiChoiceOptions());
+    builder.append(present_multiChoiceOptions);
+    if (present_multiChoiceOptions)
+      builder.append(multiChoiceOptions);
+
+    boolean present_comments = true && (isSetComments());
+    builder.append(present_comments);
+    if (present_comments)
+      builder.append(comments);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(ChosenMenuItem other) {

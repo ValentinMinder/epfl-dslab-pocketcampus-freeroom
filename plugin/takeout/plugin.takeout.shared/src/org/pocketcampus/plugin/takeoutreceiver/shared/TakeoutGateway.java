@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.takeoutreceiver.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -358,7 +359,9 @@ public class TakeoutGateway {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurants_args other) {
@@ -626,7 +629,14 @@ public class TakeoutGateway {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurants_result other) {
@@ -923,7 +933,14 @@ public class TakeoutGateway {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_location = true && (isSetLocation());
+      builder.append(present_location);
+      if (present_location)
+        builder.append(location);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurantForLocation_args other) {
@@ -1221,7 +1238,14 @@ public class TakeoutGateway {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
     public int compareTo(getRestaurantForLocation_result other) {

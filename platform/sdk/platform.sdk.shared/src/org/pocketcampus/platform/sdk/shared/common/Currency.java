@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -269,7 +270,19 @@ public class Currency implements org.apache.thrift.TBase<Currency, Currency._Fie
 
   @Override
   public int hashCode() {
-    return 0;
+    HashCodeBuilder builder = new HashCodeBuilder();
+
+    boolean present_name = true && (isSetName());
+    builder.append(present_name);
+    if (present_name)
+      builder.append(name);
+
+    boolean present_symbol = true && (isSetSymbol());
+    builder.append(present_symbol);
+    if (present_symbol)
+      builder.append(symbol);
+
+    return builder.toHashCode();
   }
 
   public int compareTo(Currency other) {
