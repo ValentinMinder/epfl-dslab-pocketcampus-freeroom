@@ -1,10 +1,13 @@
-package org.pocketcampus.android.platform.sdk.ui.element;
+package org.pocketcampus.android.platform.sdk.ui.list;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.ExpandableListAdapter;
+import org.pocketcampus.android.platform.sdk.ui.element.Element;
+import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
@@ -17,13 +20,13 @@ import android.widget.ExpandableListView;
  * @author Elodie
  * 
  */
-public class SeparatedListViewElement extends ExpandableListView implements
+public class ExpandableListViewElement extends ExpandableListView implements
 		Element {
 
 	private ElementDimension mDimension = ElementDimension.NORMAL;
 	private ExpandableListAdapter mAdapter;
 
-	public SeparatedListViewElement(Context context) {
+	public ExpandableListViewElement(Context context) {
 		super(context);
 	}
 
@@ -35,7 +38,7 @@ public class SeparatedListViewElement extends ExpandableListView implements
 	 * @param items
 	 * @param labeler
 	 */
-	public SeparatedListViewElement(Context context,
+	public ExpandableListViewElement(Context context,
 			HashMap<String, ? extends Vector<? extends Object>> items,
 			IRatableViewLabeler<? extends Object> viewLabeler,
 			IRatableViewConstructor viewConstructor) {
@@ -45,7 +48,10 @@ public class SeparatedListViewElement extends ExpandableListView implements
 				LayoutParams.FILL_PARENT);
 		setLayoutParams(params);
 
-		Vector<String> headers = new Vector<String>(items.keySet());
+		// Sort the list of restaurants
+		SortedSet<String> sortedHeaders = new TreeSet<String>(items.keySet());
+
+		Vector<String> headers = new Vector<String>(sortedHeaders);
 		mAdapter = new ExpandableListAdapter(headers, items, viewConstructor,
 				viewLabeler, context);
 		// mAdapter.setDimension(mDimension);
@@ -56,11 +62,5 @@ public class SeparatedListViewElement extends ExpandableListView implements
 		mDimension = dimension;
 	}
 
-	public void setOnLineClickListener(OnItemClickListener l) {
-		// mAdapter.setOnLineClickListener(l);
-	}
 
-	public void setOnRatingClickListener(OnItemClickListener l) {
-		// mAdapter.setOnRatingClickListener(l);
-	}
 }

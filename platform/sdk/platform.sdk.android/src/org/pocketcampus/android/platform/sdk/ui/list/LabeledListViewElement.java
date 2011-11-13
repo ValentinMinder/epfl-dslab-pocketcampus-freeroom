@@ -1,8 +1,10 @@
-package org.pocketcampus.android.platform.sdk.ui.element;
+package org.pocketcampus.android.platform.sdk.ui.list;
 
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.element.Element;
+import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;

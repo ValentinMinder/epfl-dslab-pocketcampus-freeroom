@@ -1,8 +1,9 @@
-package org.pocketcampus.android.platform.sdk.ui.element;
+package org.pocketcampus.android.platform.sdk.ui.list;
 
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.PreferencesArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.element.Element;
 
 import android.content.Context;
 import android.widget.ListView;
