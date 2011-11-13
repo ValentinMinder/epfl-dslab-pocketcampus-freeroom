@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -332,24 +331,7 @@ public class Rating implements org.apache.thrift.TBase<Rating, Rating._Fields>, 
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_ratingValue = true;
-    builder.append(present_ratingValue);
-    if (present_ratingValue)
-      builder.append(ratingValue);
-
-    boolean present_nbVotes = true;
-    builder.append(present_nbVotes);
-    if (present_nbVotes)
-      builder.append(nbVotes);
-
-    boolean present_totalRating = true;
-    builder.append(present_totalRating);
-    if (present_totalRating)
-      builder.append(totalRating);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Rating other) {

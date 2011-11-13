@@ -3,10 +3,9 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.RatableAdapter;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
 import android.content.Context;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 /**
@@ -30,7 +29,7 @@ public class RatableListViewElement extends ListView implements Element {
 	 * @param items
 	 * @param labeler
 	 */
-	public RatableListViewElement(Context context, List<? extends Object> items, IRatableLabeler<? extends Object> labeler) {
+	public RatableListViewElement(Context context, List<? extends Object> items, IRatableViewLabeler<? extends Object> labeler) {
 		super(context);
 		
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);

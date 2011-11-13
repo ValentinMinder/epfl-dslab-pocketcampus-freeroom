@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -506,39 +505,7 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_Id = true;
-    builder.append(present_Id);
-    if (present_Id)
-      builder.append(Id);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_mealDescription = true && (isSetMealDescription());
-    builder.append(present_mealDescription);
-    if (present_mealDescription)
-      builder.append(mealDescription);
-
-    boolean present_restaurant = true && (isSetRestaurant());
-    builder.append(present_restaurant);
-    if (present_restaurant)
-      builder.append(restaurant);
-
-    boolean present_rating = true && (isSetRating());
-    builder.append(present_rating);
-    if (present_rating)
-      builder.append(rating);
-
-    boolean present_price = true && (isSetPrice());
-    builder.append(present_price);
-    if (present_price)
-      builder.append(price);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Meal other) {

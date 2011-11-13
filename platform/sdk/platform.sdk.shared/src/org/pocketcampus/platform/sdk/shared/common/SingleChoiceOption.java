@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -411,29 +410,7 @@ public class SingleChoiceOption implements org.apache.thrift.TBase<SingleChoiceO
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_singleChoiceId = true;
-    builder.append(present_singleChoiceId);
-    if (present_singleChoiceId)
-      builder.append(singleChoiceId);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_choices = true && (isSetChoices());
-    builder.append(present_choices);
-    if (present_choices)
-      builder.append(choices);
-
-    boolean present_defaultChoice = true && (isSetDefaultChoice());
-    builder.append(present_defaultChoice);
-    if (present_defaultChoice)
-      builder.append(defaultChoice);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(SingleChoiceOption other) {

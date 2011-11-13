@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.common;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -431,29 +430,7 @@ public class MultiChoiceOption implements org.apache.thrift.TBase<MultiChoiceOpt
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_multiChoiceId = true;
-    builder.append(present_multiChoiceId);
-    if (present_multiChoiceId)
-      builder.append(multiChoiceId);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_choices = true && (isSetChoices());
-    builder.append(present_choices);
-    if (present_choices)
-      builder.append(choices);
-
-    boolean present_defaultChoices = true && (isSetDefaultChoices());
-    builder.append(present_defaultChoices);
-    if (present_defaultChoices)
-      builder.append(defaultChoices);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(MultiChoiceOption other) {

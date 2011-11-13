@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  General -->
+
+    <!-- General -->
     <string name="hello">Hello World, androidActivity!</string>
-    
+
+    <!-- List by Restaurants -->
+    <string name="food_restaurants">Restaurants</string>
+
     <!-- Suggestions -->
     <string name="food_suggestions_nothing_found">No suggestions found</string>
-	<string name="food_suggestions_meat">Meat</string>
-	<string name="food_suggestions_fish">Fish</string>
-	<string name="food_suggestions_beef">Beef</string>
-	<string name="food_suggestions_pasta">Pasta</string>
-	<string name="food_suggestions_rice">Rice</string>
-	<string name="food_suggestions_horse">Horse</string>
-	<string name="food_suggestions_vege">Vegetarian</string>
-	<string name="food_suggestions_porc">Porc</string>
-	<string name="food_suggestions_chicken">Chicken</string>
-	
-	<string name="food_suggestions_ok">See Suggestions</string>
-	<string name="food_suggestions_test">Test</string>
-	
-	<string name="food_suggestions_notag">No existing Tag</string>
-	
-	<!-- Menu Dialog -->
-	<string name="food_menu_dialog_firstButton">Rate it</string>
-	<string name="food_menu_dialog_secondButton">Pictures</string>
-	<string name="food_menu_dialog_thirdButton">Go there</string>
-	
-	<!-- Rating Dialog -->
-	<string name="nb_votes_singular">vote</string>
-	<string name="nb_votes_plural">votes</string>
-	
-	<string name="food_rating_dialog_title">Rate it</string>
-	<string name="food_rating_dialog_OK">Ok</string>
-	<string name="food_rating_dialog_cancel">Cancel</string>
+    <string name="food_suggestions_meat">Meat</string>
+    <string name="food_suggestions_fish">Fish</string>
+    <string name="food_suggestions_beef">Beef</string>
+    <string name="food_suggestions_pasta">Pasta</string>
+    <string name="food_suggestions_rice">Rice</string>
+    <string name="food_suggestions_horse">Horse</string>
+    <string name="food_suggestions_vege">Vegetarian</string>
+    <string name="food_suggestions_porc">Porc</string>
+    <string name="food_suggestions_chicken">Chicken</string>
+    <string name="food_suggestions_ok">See Suggestions</string>
+    <string name="food_suggestions_test">Test</string>
+    <string name="food_suggestions_notag">No existing Tag</string>
+
+    <!-- Menu Dialog -->
+    <string name="food_menu_dialog_firstButton">Rate it</string>
+    <string name="food_menu_dialog_secondButton">Pictures</string>
+    <string name="food_menu_dialog_thirdButton">Go there</string>
+
+    <!-- Rating Dialog -->
+    <string name="nb_votes_singular">vote</string>
+    <string name="nb_votes_plural">votes</string>
+    <string name="food_rating_dialog_title">Rate it</string>
+    <string name="food_rating_dialog_OK">Ok</string>
+    <string name="food_rating_dialog_cancel">Cancel</string>
+
 </resources>

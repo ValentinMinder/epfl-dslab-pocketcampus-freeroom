@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.labeler;
 
-public interface IRatableLabeler<LabeledObjectType> {
+public interface IRatableViewLabeler<LabeledObjectType> {
 	
 	public String getTitle(LabeledObjectType obj);
 	public String getDescription(LabeledObjectType obj);

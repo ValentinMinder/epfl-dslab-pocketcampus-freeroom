@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.directory.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -671,54 +670,7 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_firstName = true && (isSetFirstName());
-    builder.append(present_firstName);
-    if (present_firstName)
-      builder.append(firstName);
-
-    boolean present_lastName = true && (isSetLastName());
-    builder.append(present_lastName);
-    if (present_lastName)
-      builder.append(lastName);
-
-    boolean present_sciper = true && (isSetSciper());
-    builder.append(present_sciper);
-    if (present_sciper)
-      builder.append(sciper);
-
-    boolean present_mail = true && (isSetMail());
-    builder.append(present_mail);
-    if (present_mail)
-      builder.append(mail);
-
-    boolean present_web = true && (isSetWeb());
-    builder.append(present_web);
-    if (present_web)
-      builder.append(web);
-
-    boolean present_phone_number = true && (isSetPhone_number());
-    builder.append(present_phone_number);
-    if (present_phone_number)
-      builder.append(phone_number);
-
-    boolean present_office = true && (isSetOffice());
-    builder.append(present_office);
-    if (present_office)
-      builder.append(office);
-
-    boolean present_gaspar = true && (isSetGaspar());
-    builder.append(present_gaspar);
-    if (present_gaspar)
-      builder.append(gaspar);
-
-    boolean present_ou = true && (isSetOu());
-    builder.append(present_ou);
-    if (present_ou)
-      builder.append(ou);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Person other) {

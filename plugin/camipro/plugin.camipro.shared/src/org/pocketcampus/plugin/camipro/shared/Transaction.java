@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.camipro.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -391,29 +390,7 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_xType = true && (isSetXType());
-    builder.append(present_xType);
-    if (present_xType)
-      builder.append(xType);
-
-    boolean present_xDescription = true && (isSetXDescription());
-    builder.append(present_xDescription);
-    if (present_xDescription)
-      builder.append(xDescription);
-
-    boolean present_xDate = true && (isSetXDate());
-    builder.append(present_xDate);
-    if (present_xDate)
-      builder.append(xDate);
-
-    boolean present_xAmount = true;
-    builder.append(present_xAmount);
-    if (present_xAmount)
-      builder.append(xAmount);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Transaction other) {

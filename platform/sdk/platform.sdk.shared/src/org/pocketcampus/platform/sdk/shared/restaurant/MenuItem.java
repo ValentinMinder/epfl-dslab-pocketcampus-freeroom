@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -736,54 +735,7 @@ public class MenuItem implements org.apache.thrift.TBase<MenuItem, MenuItem._Fie
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_itemId = true;
-    builder.append(present_itemId);
-    if (present_itemId)
-      builder.append(itemId);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    boolean present_price = true;
-    builder.append(present_price);
-    if (present_price)
-      builder.append(price);
-
-    boolean present_pricingUnit = true && (isSetPricingUnit());
-    builder.append(present_pricingUnit);
-    if (present_pricingUnit)
-      builder.append(pricingUnit);
-
-    boolean present_itemDescription = true && (isSetItemDescription());
-    builder.append(present_itemDescription);
-    if (present_itemDescription)
-      builder.append(itemDescription);
-
-    boolean present_preparationTime = true && (isSetPreparationTime());
-    builder.append(present_preparationTime);
-    if (present_preparationTime)
-      builder.append(preparationTime);
-
-    boolean present_singleChoiceOptions = true && (isSetSingleChoiceOptions());
-    builder.append(present_singleChoiceOptions);
-    if (present_singleChoiceOptions)
-      builder.append(singleChoiceOptions);
-
-    boolean present_multiChoiceOptions = true && (isSetMultiChoiceOptions());
-    builder.append(present_multiChoiceOptions);
-    if (present_multiChoiceOptions)
-      builder.append(multiChoiceOptions);
-
-    boolean present_stars = true && (isSetStars());
-    builder.append(present_stars);
-    if (present_stars)
-      builder.append(stars.getValue());
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(MenuItem other) {

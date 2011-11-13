@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.authentication.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -211,14 +210,7 @@ public class SessionToken implements org.apache.thrift.TBase<SessionToken, Sessi
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_token = true && (isSetToken());
-    builder.append(present_token);
-    if (present_token)
-      builder.append(token);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(SessionToken other) {

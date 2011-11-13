@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.food.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -332,24 +331,7 @@ public class Sandwich implements org.apache.thrift.TBase<Sandwich, Sandwich._Fie
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_Id = true;
-    builder.append(present_Id);
-    if (present_Id)
-      builder.append(Id);
-
-    boolean present_restaurant = true && (isSetRestaurant());
-    builder.append(present_restaurant);
-    if (present_restaurant)
-      builder.append(restaurant);
-
-    boolean present_name = true && (isSetName());
-    builder.append(present_name);
-    if (present_name)
-      builder.append(name);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Sandwich other) {

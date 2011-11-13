@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -415,29 +414,7 @@ public class Order implements org.apache.thrift.TBase<Order, Order._Fields>, jav
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_id = true;
-    builder.append(present_id);
-    if (present_id)
-      builder.append(id);
-
-    boolean present_chosenItems = true && (isSetChosenItems());
-    builder.append(present_chosenItems);
-    if (present_chosenItems)
-      builder.append(chosenItems);
-
-    boolean present_date = true;
-    builder.append(present_date);
-    if (present_date)
-      builder.append(date);
-
-    boolean present_userId = true;
-    builder.append(present_userId);
-    if (present_userId)
-      builder.append(userId);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(Order other) {

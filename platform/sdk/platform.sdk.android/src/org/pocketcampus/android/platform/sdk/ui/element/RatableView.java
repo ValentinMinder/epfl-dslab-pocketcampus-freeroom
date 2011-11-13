@@ -1,16 +1,13 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableLabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -18,7 +15,7 @@ import android.widget.TextView;
 
 public class RatableView extends LinearLayout {
 	private LinearLayout mLayout;
-	private IRatableLabeler mLabeler;
+	private IRatableViewLabeler mLabeler;
 	private TextView mTitleLine;
 	private TextView mDescriptionLine;
 	private RatingBar mRatingLine;
@@ -31,13 +28,16 @@ public class RatableView extends LinearLayout {
 	private OnItemClickListener mOnRatingClickListener;
 	private int mPosition;
 
-	public RatableView(Object currentMeal, Context context, IRatableLabeler<? extends Object> labeler, OnItemClickListener elementListener, OnItemClickListener ratingListener, int position) {
+	public RatableView(Object currentObject, Context context,
+			IRatableViewLabeler<? extends Object> labeler,
+			/*OnItemClickListener elementListener,
+			OnItemClickListener ratingListener, */int position) {
 		super(context);
 		mLabeler = labeler;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_ratable_view, null);
-		mOnElementClickLIstener = elementListener;
-		mOnRatingClickListener = ratingListener;
+//		mOnElementClickLIstener = elementListener;
+//		mOnRatingClickListener = ratingListener;
 		mPosition = position;
 
 		// Creates a ViewHolder and store references to the two children
@@ -52,19 +52,19 @@ public class RatableView extends LinearLayout {
 				.findViewById(R.id.food_menuentry_ratingIndicator);
 		this.mVotesLine = (TextView) mConvertView
 				.findViewById(R.id.food_menuentry_numberOfVotes);
-		this.mCurrentObject = currentMeal;
+		this.mCurrentObject = currentObject;
 		this.mContext = context;
 
 		initializeView();
 	}
 
 	public void initializeView() {
-		
+
 		mTitleLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Log.d("MENUDIALOG", "Click on the titleline");
-				
-				if(mOnElementClickLIstener != null) {
+
+				if (mOnElementClickLIstener != null) {
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -73,8 +73,8 @@ public class RatableView extends LinearLayout {
 		mDescriptionLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Log.d("MENUDIALOG", "Click on the menuline");
-				
-				if(mOnElementClickLIstener != null) {
+
+				if (mOnElementClickLIstener != null) {
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -84,9 +84,11 @@ public class RatableView extends LinearLayout {
 		mRatingLine.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP && mOnRatingClickListener != null) {
-//					ratingDialog();
-					mOnRatingClickListener.onItemClick(null, v, mPosition, (long)mLabeler.getRating(mCurrentObject));
+				if (event.getAction() == MotionEvent.ACTION_UP
+						&& mOnRatingClickListener != null) {
+					// ratingDialog();
+					mOnRatingClickListener.onItemClick(null, v, mPosition,
+							(long) mLabeler.getRating(mCurrentObject));
 				}
 				return true;
 			}
@@ -96,18 +98,20 @@ public class RatableView extends LinearLayout {
 		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
 		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 
-		setRating(mLabeler.getRating(mCurrentObject), mLabeler.getNbVotes(mCurrentObject));
+		setRating(mLabeler.getRating(mCurrentObject),
+				mLabeler.getNbVotes(mCurrentObject));
 		addView(mConvertView);
 	}
 
-//	private void ratingDialog() {
-//		RatingDialog r = new RatingDialog(mCurrentObject, mContext, mOnRatingClickListener, mPosition);
-//		r.show();
-//	}
+	// private void ratingDialog() {
+	// RatingDialog r = new RatingDialog(mCurrentObject, mContext,
+	// mOnRatingClickListener, mPosition);
+	// r.show();
+	// }
 
 	private void setRating(float currentRating, int numbVotes) {
 		mRatingLine.setRating(currentRating);
-		
+
 		if (numbVotes != 1) {
 			mVotesLine.setText(numbVotes
 					+ " "
@@ -120,5 +124,5 @@ public class RatableView extends LinearLayout {
 							R.string.nb_votes_singular));
 		}
 	}
-	
+
 }

@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.takeoutreceiver.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -436,9 +435,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getRestaurant_args other) {
@@ -706,14 +703,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getRestaurant_result other) {
@@ -1013,14 +1003,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_version = true;
-      builder.append(present_version);
-      if (present_version)
-        builder.append(version);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(versionMatches_args other) {
@@ -1317,14 +1300,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(versionMatches_result other) {
@@ -1419,8 +1395,6 @@ public class TakeoutOrderService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -1619,14 +1593,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_order = true && (isSetOrder());
-      builder.append(present_order);
-      if (present_order)
-        builder.append(order);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(placeOrder_args other) {
@@ -1924,14 +1891,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(placeOrder_result other) {

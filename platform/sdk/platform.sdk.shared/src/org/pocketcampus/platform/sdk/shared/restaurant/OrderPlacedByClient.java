@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -892,69 +891,7 @@ public class OrderPlacedByClient implements org.apache.thrift.TBase<OrderPlacedB
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_chosenItems = true && (isSetChosenItems());
-    builder.append(present_chosenItems);
-    if (present_chosenItems)
-      builder.append(chosenItems);
-
-    boolean present_expectedPrice = true;
-    builder.append(present_expectedPrice);
-    if (present_expectedPrice)
-      builder.append(expectedPrice);
-
-    boolean present_userId = true;
-    builder.append(present_userId);
-    if (present_userId)
-      builder.append(userId);
-
-    boolean present_howWillPay = true && (isSetHowWillPay());
-    builder.append(present_howWillPay);
-    if (present_howWillPay)
-      builder.append(howWillPay.getValue());
-
-    boolean present_pickUp = true;
-    builder.append(present_pickUp);
-    if (present_pickUp)
-      builder.append(pickUp);
-
-    boolean present_address = true && (isSetAddress());
-    builder.append(present_address);
-    if (present_address)
-      builder.append(address);
-
-    boolean present_phoneNumber = true && (isSetPhoneNumber());
-    builder.append(present_phoneNumber);
-    if (present_phoneNumber)
-      builder.append(phoneNumber);
-
-    boolean present_timestamp = true;
-    builder.append(present_timestamp);
-    if (present_timestamp)
-      builder.append(timestamp);
-
-    boolean present_tableId = true && (isSetTableId());
-    builder.append(present_tableId);
-    if (present_tableId)
-      builder.append(tableId);
-
-    boolean present_phoneId = true && (isSetPhoneId());
-    builder.append(present_phoneId);
-    if (present_phoneId)
-      builder.append(phoneId);
-
-    boolean present_orderId = true;
-    builder.append(present_orderId);
-    if (present_orderId)
-      builder.append(orderId);
-
-    boolean present_username = true && (isSetUsername());
-    builder.append(present_username);
-    if (present_username)
-      builder.append(username);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(OrderPlacedByClient other) {

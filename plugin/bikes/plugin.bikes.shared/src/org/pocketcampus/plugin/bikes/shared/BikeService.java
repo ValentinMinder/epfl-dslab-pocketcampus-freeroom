@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.bikes.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -290,9 +289,7 @@ public class BikeService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getAvailableBikes_args other) {
@@ -639,19 +636,7 @@ public class BikeService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      boolean present_wpe = true && (isSetWpe());
-      builder.append(present_wpe);
-      if (present_wpe)
-        builder.append(wpe);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getAvailableBikes_result other) {

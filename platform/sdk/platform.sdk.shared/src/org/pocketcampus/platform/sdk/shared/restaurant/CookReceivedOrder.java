@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.platform.sdk.shared.restaurant;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -470,34 +469,7 @@ public class CookReceivedOrder implements org.apache.thrift.TBase<CookReceivedOr
 
   @Override
   public int hashCode() {
-    HashCodeBuilder builder = new HashCodeBuilder();
-
-    boolean present_orderId = true;
-    builder.append(present_orderId);
-    if (present_orderId)
-      builder.append(orderId);
-
-    boolean present_orderedItems = true && (isSetOrderedItems());
-    builder.append(present_orderedItems);
-    if (present_orderedItems)
-      builder.append(orderedItems);
-
-    boolean present_userId = true;
-    builder.append(present_userId);
-    if (present_userId)
-      builder.append(userId);
-
-    boolean present_date = true;
-    builder.append(present_date);
-    if (present_date)
-      builder.append(date);
-
-    boolean present_price = true;
-    builder.append(present_price);
-    if (present_price)
-      builder.append(price);
-
-    return builder.toHashCode();
+    return 0;
   }
 
   public int compareTo(CookReceivedOrder other) {
