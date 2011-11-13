@@ -5,6 +5,7 @@
  */
 package org.pocketcampus.plugin.authentication.shared;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,21 +25,17 @@ public class AuthenticationService {
 
   public interface Iface {
 
-    public SessionToken login(String username, String password) throws LoginException, org.apache.thrift.TException;
+    public TequilaKey getTequilaKeyForService(TypeOfService aService) throws org.apache.thrift.TException;
 
-    public boolean authenticate(SessionToken token) throws org.apache.thrift.TException;
-
-    public boolean logout(SessionToken token) throws org.apache.thrift.TException;
+    public SessionId getSessionIdForService(TequilaKey aTequilaKey) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void login(String username, String password, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.login_call> resultHandler) throws org.apache.thrift.TException;
+    public void getTequilaKeyForService(TypeOfService aService, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTequilaKeyForService_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void authenticate(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.authenticate_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void logout(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.logout_call> resultHandler) throws org.apache.thrift.TException;
+    public void getSessionIdForService(TequilaKey aTequilaKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSessionIdForService_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -62,77 +59,50 @@ public class AuthenticationService {
       super(iprot, oprot);
     }
 
-    public SessionToken login(String username, String password) throws LoginException, org.apache.thrift.TException
+    public TequilaKey getTequilaKeyForService(TypeOfService aService) throws org.apache.thrift.TException
     {
-      send_login(username, password);
-      return recv_login();
+      send_getTequilaKeyForService(aService);
+      return recv_getTequilaKeyForService();
     }
 
-    public void send_login(String username, String password) throws org.apache.thrift.TException
+    public void send_getTequilaKeyForService(TypeOfService aService) throws org.apache.thrift.TException
     {
-      login_args args = new login_args();
-      args.setUsername(username);
-      args.setPassword(password);
-      sendBase("login", args);
+      getTequilaKeyForService_args args = new getTequilaKeyForService_args();
+      args.setAService(aService);
+      sendBase("getTequilaKeyForService", args);
     }
 
-    public SessionToken recv_login() throws LoginException, org.apache.thrift.TException
+    public TequilaKey recv_getTequilaKeyForService() throws org.apache.thrift.TException
     {
-      login_result result = new login_result();
-      receiveBase(result, "login");
+      getTequilaKeyForService_result result = new getTequilaKeyForService_result();
+      receiveBase(result, "getTequilaKeyForService");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      if (result.le != null) {
-        throw result.le;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "login failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTequilaKeyForService failed: unknown result");
     }
 
-    public boolean authenticate(SessionToken token) throws org.apache.thrift.TException
+    public SessionId getSessionIdForService(TequilaKey aTequilaKey) throws org.apache.thrift.TException
     {
-      send_authenticate(token);
-      return recv_authenticate();
+      send_getSessionIdForService(aTequilaKey);
+      return recv_getSessionIdForService();
     }
 
-    public void send_authenticate(SessionToken token) throws org.apache.thrift.TException
+    public void send_getSessionIdForService(TequilaKey aTequilaKey) throws org.apache.thrift.TException
     {
-      authenticate_args args = new authenticate_args();
-      args.setToken(token);
-      sendBase("authenticate", args);
+      getSessionIdForService_args args = new getSessionIdForService_args();
+      args.setATequilaKey(aTequilaKey);
+      sendBase("getSessionIdForService", args);
     }
 
-    public boolean recv_authenticate() throws org.apache.thrift.TException
+    public SessionId recv_getSessionIdForService() throws org.apache.thrift.TException
     {
-      authenticate_result result = new authenticate_result();
-      receiveBase(result, "authenticate");
+      getSessionIdForService_result result = new getSessionIdForService_result();
+      receiveBase(result, "getSessionIdForService");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticate failed: unknown result");
-    }
-
-    public boolean logout(SessionToken token) throws org.apache.thrift.TException
-    {
-      send_logout(token);
-      return recv_logout();
-    }
-
-    public void send_logout(SessionToken token) throws org.apache.thrift.TException
-    {
-      logout_args args = new logout_args();
-      args.setToken(token);
-      sendBase("logout", args);
-    }
-
-    public boolean recv_logout() throws org.apache.thrift.TException
-    {
-      logout_result result = new logout_result();
-      receiveBase(result, "logout");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "logout failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSessionIdForService failed: unknown result");
     }
 
   }
@@ -153,102 +123,67 @@ public class AuthenticationService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void login(String username, String password, org.apache.thrift.async.AsyncMethodCallback<login_call> resultHandler) throws org.apache.thrift.TException {
+    public void getTequilaKeyForService(TypeOfService aService, org.apache.thrift.async.AsyncMethodCallback<getTequilaKeyForService_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      login_call method_call = new login_call(username, password, resultHandler, this, ___protocolFactory, ___transport);
+      getTequilaKeyForService_call method_call = new getTequilaKeyForService_call(aService, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class login_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String username;
-      private String password;
-      public login_call(String username, String password, org.apache.thrift.async.AsyncMethodCallback<login_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getTequilaKeyForService_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private TypeOfService aService;
+      public getTequilaKeyForService_call(TypeOfService aService, org.apache.thrift.async.AsyncMethodCallback<getTequilaKeyForService_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.username = username;
-        this.password = password;
+        this.aService = aService;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("login", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        login_args args = new login_args();
-        args.setUsername(username);
-        args.setPassword(password);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTequilaKeyForService", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getTequilaKeyForService_args args = new getTequilaKeyForService_args();
+        args.setAService(aService);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public SessionToken getResult() throws LoginException, org.apache.thrift.TException {
+      public TequilaKey getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_login();
+        return (new Client(prot)).recv_getTequilaKeyForService();
       }
     }
 
-    public void authenticate(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<authenticate_call> resultHandler) throws org.apache.thrift.TException {
+    public void getSessionIdForService(TequilaKey aTequilaKey, org.apache.thrift.async.AsyncMethodCallback<getSessionIdForService_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      authenticate_call method_call = new authenticate_call(token, resultHandler, this, ___protocolFactory, ___transport);
+      getSessionIdForService_call method_call = new getSessionIdForService_call(aTequilaKey, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class authenticate_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private SessionToken token;
-      public authenticate_call(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<authenticate_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getSessionIdForService_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private TequilaKey aTequilaKey;
+      public getSessionIdForService_call(TequilaKey aTequilaKey, org.apache.thrift.async.AsyncMethodCallback<getSessionIdForService_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.token = token;
+        this.aTequilaKey = aTequilaKey;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("authenticate", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        authenticate_args args = new authenticate_args();
-        args.setToken(token);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getSessionIdForService", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getSessionIdForService_args args = new getSessionIdForService_args();
+        args.setATequilaKey(aTequilaKey);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public boolean getResult() throws org.apache.thrift.TException {
+      public SessionId getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_authenticate();
-      }
-    }
-
-    public void logout(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<logout_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      logout_call method_call = new logout_call(token, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class logout_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private SessionToken token;
-      public logout_call(SessionToken token, org.apache.thrift.async.AsyncMethodCallback<logout_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.token = token;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("logout", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        logout_args args = new logout_args();
-        args.setToken(token);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public boolean getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_logout();
+        return (new Client(prot)).recv_getSessionIdForService();
       }
     }
 
@@ -265,81 +200,63 @@ public class AuthenticationService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("login", new login());
-      processMap.put("authenticate", new authenticate());
-      processMap.put("logout", new logout());
+      processMap.put("getTequilaKeyForService", new getTequilaKeyForService());
+      processMap.put("getSessionIdForService", new getSessionIdForService());
       return processMap;
     }
 
-    private static class login<I extends Iface> extends org.apache.thrift.ProcessFunction<I, login_args> {
-      public login() {
-        super("login");
+    private static class getTequilaKeyForService<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTequilaKeyForService_args> {
+      public getTequilaKeyForService() {
+        super("getTequilaKeyForService");
       }
 
-      protected login_args getEmptyArgsInstance() {
-        return new login_args();
+      protected getTequilaKeyForService_args getEmptyArgsInstance() {
+        return new getTequilaKeyForService_args();
       }
 
-      protected login_result getResult(I iface, login_args args) throws org.apache.thrift.TException {
-        login_result result = new login_result();
-        try {
-          result.success = iface.login(args.username, args.password);
-        } catch (LoginException le) {
-          result.le = le;
-        }
+      protected getTequilaKeyForService_result getResult(I iface, getTequilaKeyForService_args args) throws org.apache.thrift.TException {
+        getTequilaKeyForService_result result = new getTequilaKeyForService_result();
+        result.success = iface.getTequilaKeyForService(args.aService);
         return result;
       }
     }
 
-    private static class authenticate<I extends Iface> extends org.apache.thrift.ProcessFunction<I, authenticate_args> {
-      public authenticate() {
-        super("authenticate");
+    private static class getSessionIdForService<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getSessionIdForService_args> {
+      public getSessionIdForService() {
+        super("getSessionIdForService");
       }
 
-      protected authenticate_args getEmptyArgsInstance() {
-        return new authenticate_args();
+      protected getSessionIdForService_args getEmptyArgsInstance() {
+        return new getSessionIdForService_args();
       }
 
-      protected authenticate_result getResult(I iface, authenticate_args args) throws org.apache.thrift.TException {
-        authenticate_result result = new authenticate_result();
-        result.success = iface.authenticate(args.token);
-        result.setSuccessIsSet(true);
-        return result;
-      }
-    }
-
-    private static class logout<I extends Iface> extends org.apache.thrift.ProcessFunction<I, logout_args> {
-      public logout() {
-        super("logout");
-      }
-
-      protected logout_args getEmptyArgsInstance() {
-        return new logout_args();
-      }
-
-      protected logout_result getResult(I iface, logout_args args) throws org.apache.thrift.TException {
-        logout_result result = new logout_result();
-        result.success = iface.logout(args.token);
-        result.setSuccessIsSet(true);
+      protected getSessionIdForService_result getResult(I iface, getSessionIdForService_args args) throws org.apache.thrift.TException {
+        getSessionIdForService_result result = new getSessionIdForService_result();
+        result.success = iface.getSessionIdForService(args.aTequilaKey);
         return result;
       }
     }
 
   }
 
-  public static class login_args implements org.apache.thrift.TBase<login_args, login_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("login_args");
+  public static class getTequilaKeyForService_args implements org.apache.thrift.TBase<getTequilaKeyForService_args, getTequilaKeyForService_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTequilaKeyForService_args");
 
-    private static final org.apache.thrift.protocol.TField USERNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("username", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField PASSWORD_FIELD_DESC = new org.apache.thrift.protocol.TField("password", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField A_SERVICE_FIELD_DESC = new org.apache.thrift.protocol.TField("aService", org.apache.thrift.protocol.TType.I32, (short)1);
 
-    public String username; // required
-    public String password; // required
+    /**
+     * 
+     * @see TypeOfService
+     */
+    public TypeOfService aService; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      USERNAME((short)1, "username"),
-      PASSWORD((short)2, "password");
+      /**
+       * 
+       * @see TypeOfService
+       */
+      A_SERVICE((short)1, "aService");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -354,10 +271,8 @@ public class AuthenticationService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // USERNAME
-            return USERNAME;
-          case 2: // PASSWORD
-            return PASSWORD;
+          case 1: // A_SERVICE
+            return A_SERVICE;
           default:
             return null;
         }
@@ -402,111 +317,79 @@ public class AuthenticationService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.USERNAME, new org.apache.thrift.meta_data.FieldMetaData("username", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.PASSWORD, new org.apache.thrift.meta_data.FieldMetaData("password", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.A_SERVICE, new org.apache.thrift.meta_data.FieldMetaData("aService", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, TypeOfService.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(login_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaKeyForService_args.class, metaDataMap);
     }
 
-    public login_args() {
+    public getTequilaKeyForService_args() {
     }
 
-    public login_args(
-      String username,
-      String password)
+    public getTequilaKeyForService_args(
+      TypeOfService aService)
     {
       this();
-      this.username = username;
-      this.password = password;
+      this.aService = aService;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public login_args(login_args other) {
-      if (other.isSetUsername()) {
-        this.username = other.username;
-      }
-      if (other.isSetPassword()) {
-        this.password = other.password;
+    public getTequilaKeyForService_args(getTequilaKeyForService_args other) {
+      if (other.isSetAService()) {
+        this.aService = other.aService;
       }
     }
 
-    public login_args deepCopy() {
-      return new login_args(this);
+    public getTequilaKeyForService_args deepCopy() {
+      return new getTequilaKeyForService_args(this);
     }
 
     @Override
     public void clear() {
-      this.username = null;
-      this.password = null;
+      this.aService = null;
     }
 
-    public String getUsername() {
-      return this.username;
+    /**
+     * 
+     * @see TypeOfService
+     */
+    public TypeOfService getAService() {
+      return this.aService;
     }
 
-    public login_args setUsername(String username) {
-      this.username = username;
+    /**
+     * 
+     * @see TypeOfService
+     */
+    public getTequilaKeyForService_args setAService(TypeOfService aService) {
+      this.aService = aService;
       return this;
     }
 
-    public void unsetUsername() {
-      this.username = null;
+    public void unsetAService() {
+      this.aService = null;
     }
 
-    /** Returns true if field username is set (has been assigned a value) and false otherwise */
-    public boolean isSetUsername() {
-      return this.username != null;
+    /** Returns true if field aService is set (has been assigned a value) and false otherwise */
+    public boolean isSetAService() {
+      return this.aService != null;
     }
 
-    public void setUsernameIsSet(boolean value) {
+    public void setAServiceIsSet(boolean value) {
       if (!value) {
-        this.username = null;
-      }
-    }
-
-    public String getPassword() {
-      return this.password;
-    }
-
-    public login_args setPassword(String password) {
-      this.password = password;
-      return this;
-    }
-
-    public void unsetPassword() {
-      this.password = null;
-    }
-
-    /** Returns true if field password is set (has been assigned a value) and false otherwise */
-    public boolean isSetPassword() {
-      return this.password != null;
-    }
-
-    public void setPasswordIsSet(boolean value) {
-      if (!value) {
-        this.password = null;
+        this.aService = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case USERNAME:
+      case A_SERVICE:
         if (value == null) {
-          unsetUsername();
+          unsetAService();
         } else {
-          setUsername((String)value);
-        }
-        break;
-
-      case PASSWORD:
-        if (value == null) {
-          unsetPassword();
-        } else {
-          setPassword((String)value);
+          setAService((TypeOfService)value);
         }
         break;
 
@@ -515,11 +398,8 @@ public class AuthenticationService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case USERNAME:
-        return getUsername();
-
-      case PASSWORD:
-        return getPassword();
+      case A_SERVICE:
+        return getAService();
 
       }
       throw new IllegalStateException();
@@ -532,10 +412,8 @@ public class AuthenticationService {
       }
 
       switch (field) {
-      case USERNAME:
-        return isSetUsername();
-      case PASSWORD:
-        return isSetPassword();
+      case A_SERVICE:
+        return isSetAService();
       }
       throw new IllegalStateException();
     }
@@ -544,30 +422,21 @@ public class AuthenticationService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof login_args)
-        return this.equals((login_args)that);
+      if (that instanceof getTequilaKeyForService_args)
+        return this.equals((getTequilaKeyForService_args)that);
       return false;
     }
 
-    public boolean equals(login_args that) {
+    public boolean equals(getTequilaKeyForService_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_username = true && this.isSetUsername();
-      boolean that_present_username = true && that.isSetUsername();
-      if (this_present_username || that_present_username) {
-        if (!(this_present_username && that_present_username))
+      boolean this_present_aService = true && this.isSetAService();
+      boolean that_present_aService = true && that.isSetAService();
+      if (this_present_aService || that_present_aService) {
+        if (!(this_present_aService && that_present_aService))
           return false;
-        if (!this.username.equals(that.username))
-          return false;
-      }
-
-      boolean this_present_password = true && this.isSetPassword();
-      boolean that_present_password = true && that.isSetPassword();
-      if (this_present_password || that_present_password) {
-        if (!(this_present_password && that_present_password))
-          return false;
-        if (!this.password.equals(that.password))
+        if (!this.aService.equals(that.aService))
           return false;
       }
 
@@ -576,33 +445,30 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_aService = true && (isSetAService());
+      builder.append(present_aService);
+      if (present_aService)
+        builder.append(aService.getValue());
+
+      return builder.toHashCode();
     }
 
-    public int compareTo(login_args other) {
+    public int compareTo(getTequilaKeyForService_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      login_args typedOther = (login_args)other;
+      getTequilaKeyForService_args typedOther = (getTequilaKeyForService_args)other;
 
-      lastComparison = Boolean.valueOf(isSetUsername()).compareTo(typedOther.isSetUsername());
+      lastComparison = Boolean.valueOf(isSetAService()).compareTo(typedOther.isSetAService());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetUsername()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.username, typedOther.username);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetPassword()).compareTo(typedOther.isSetPassword());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetPassword()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.password, typedOther.password);
+      if (isSetAService()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aService, typedOther.aService);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -624,16 +490,9 @@ public class AuthenticationService {
           break;
         }
         switch (field.id) {
-          case 1: // USERNAME
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.username = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          case 2: // PASSWORD
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.password = iprot.readString();
+          case 1: // A_SERVICE
+            if (field.type == org.apache.thrift.protocol.TType.I32) {
+              this.aService = TypeOfService.findByValue(iprot.readI32());
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -653,14 +512,9 @@ public class AuthenticationService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.username != null) {
-        oprot.writeFieldBegin(USERNAME_FIELD_DESC);
-        oprot.writeString(this.username);
-        oprot.writeFieldEnd();
-      }
-      if (this.password != null) {
-        oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
-        oprot.writeString(this.password);
+      if (this.aService != null) {
+        oprot.writeFieldBegin(A_SERVICE_FIELD_DESC);
+        oprot.writeI32(this.aService.getValue());
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -669,22 +523,14 @@ public class AuthenticationService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("login_args(");
+      StringBuilder sb = new StringBuilder("getTequilaKeyForService_args(");
       boolean first = true;
 
-      sb.append("username:");
-      if (this.username == null) {
+      sb.append("aService:");
+      if (this.aService == null) {
         sb.append("null");
       } else {
-        sb.append(this.username);
-      }
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("password:");
-      if (this.password == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.password);
+        sb.append(this.aService);
       }
       first = false;
       sb.append(")");
@@ -713,19 +559,16 @@ public class AuthenticationService {
 
   }
 
-  public static class login_result implements org.apache.thrift.TBase<login_result, login_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("login_result");
+  public static class getTequilaKeyForService_result implements org.apache.thrift.TBase<getTequilaKeyForService_result, getTequilaKeyForService_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTequilaKeyForService_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
-    private static final org.apache.thrift.protocol.TField LE_FIELD_DESC = new org.apache.thrift.protocol.TField("le", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public SessionToken success; // required
-    public LoginException le; // required
+    public TequilaKey success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success"),
-      LE((short)1, "le");
+      SUCCESS((short)0, "success");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -742,8 +585,6 @@ public class AuthenticationService {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
-          case 1: // LE
-            return LE;
           default:
             return null;
         }
@@ -789,52 +630,44 @@ public class AuthenticationService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionToken.class)));
-      tmpMap.put(_Fields.LE, new org.apache.thrift.meta_data.FieldMetaData("le", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaKey.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(login_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaKeyForService_result.class, metaDataMap);
     }
 
-    public login_result() {
+    public getTequilaKeyForService_result() {
     }
 
-    public login_result(
-      SessionToken success,
-      LoginException le)
+    public getTequilaKeyForService_result(
+      TequilaKey success)
     {
       this();
       this.success = success;
-      this.le = le;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public login_result(login_result other) {
+    public getTequilaKeyForService_result(getTequilaKeyForService_result other) {
       if (other.isSetSuccess()) {
-        this.success = new SessionToken(other.success);
-      }
-      if (other.isSetLe()) {
-        this.le = new LoginException(other.le);
+        this.success = new TequilaKey(other.success);
       }
     }
 
-    public login_result deepCopy() {
-      return new login_result(this);
+    public getTequilaKeyForService_result deepCopy() {
+      return new getTequilaKeyForService_result(this);
     }
 
     @Override
     public void clear() {
       this.success = null;
-      this.le = null;
     }
 
-    public SessionToken getSuccess() {
+    public TequilaKey getSuccess() {
       return this.success;
     }
 
-    public login_result setSuccess(SessionToken success) {
+    public getTequilaKeyForService_result setSuccess(TequilaKey success) {
       this.success = success;
       return this;
     }
@@ -854,45 +687,13 @@ public class AuthenticationService {
       }
     }
 
-    public LoginException getLe() {
-      return this.le;
-    }
-
-    public login_result setLe(LoginException le) {
-      this.le = le;
-      return this;
-    }
-
-    public void unsetLe() {
-      this.le = null;
-    }
-
-    /** Returns true if field le is set (has been assigned a value) and false otherwise */
-    public boolean isSetLe() {
-      return this.le != null;
-    }
-
-    public void setLeIsSet(boolean value) {
-      if (!value) {
-        this.le = null;
-      }
-    }
-
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case SUCCESS:
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((SessionToken)value);
-        }
-        break;
-
-      case LE:
-        if (value == null) {
-          unsetLe();
-        } else {
-          setLe((LoginException)value);
+          setSuccess((TequilaKey)value);
         }
         break;
 
@@ -903,9 +704,6 @@ public class AuthenticationService {
       switch (field) {
       case SUCCESS:
         return getSuccess();
-
-      case LE:
-        return getLe();
 
       }
       throw new IllegalStateException();
@@ -920,8 +718,6 @@ public class AuthenticationService {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
-      case LE:
-        return isSetLe();
       }
       throw new IllegalStateException();
     }
@@ -930,12 +726,12 @@ public class AuthenticationService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof login_result)
-        return this.equals((login_result)that);
+      if (that instanceof getTequilaKeyForService_result)
+        return this.equals((getTequilaKeyForService_result)that);
       return false;
     }
 
-    public boolean equals(login_result that) {
+    public boolean equals(getTequilaKeyForService_result that) {
       if (that == null)
         return false;
 
@@ -948,30 +744,28 @@ public class AuthenticationService {
           return false;
       }
 
-      boolean this_present_le = true && this.isSetLe();
-      boolean that_present_le = true && that.isSetLe();
-      if (this_present_le || that_present_le) {
-        if (!(this_present_le && that_present_le))
-          return false;
-        if (!this.le.equals(that.le))
-          return false;
-      }
-
       return true;
     }
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
-    public int compareTo(login_result other) {
+    public int compareTo(getTequilaKeyForService_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      login_result typedOther = (login_result)other;
+      getTequilaKeyForService_result typedOther = (getTequilaKeyForService_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -979,16 +773,6 @@ public class AuthenticationService {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetLe()).compareTo(typedOther.isSetLe());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetLe()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.le, typedOther.le);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1012,16 +796,8 @@ public class AuthenticationService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new SessionToken();
+              this.success = new TequilaKey();
               this.success.read(iprot);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          case 1: // LE
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.le = new LoginException();
-              this.le.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1044,10 +820,6 @@ public class AuthenticationService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         this.success.write(oprot);
         oprot.writeFieldEnd();
-      } else if (this.isSetLe()) {
-        oprot.writeFieldBegin(LE_FIELD_DESC);
-        this.le.write(oprot);
-        oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -1055,7 +827,7 @@ public class AuthenticationService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("login_result(");
+      StringBuilder sb = new StringBuilder("getTequilaKeyForService_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1065,14 +837,6 @@ public class AuthenticationService {
         sb.append(this.success);
       }
       first = false;
-      if (!first) sb.append(", ");
-      sb.append("le:");
-      if (this.le == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.le);
-      }
-      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -1099,16 +863,16 @@ public class AuthenticationService {
 
   }
 
-  public static class authenticate_args implements org.apache.thrift.TBase<authenticate_args, authenticate_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticate_args");
+  public static class getSessionIdForService_args implements org.apache.thrift.TBase<getSessionIdForService_args, getSessionIdForService_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSessionIdForService_args");
 
-    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField A_TEQUILA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("aTequilaKey", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public SessionToken token; // required
+    public TequilaKey aTequilaKey; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      TOKEN((short)1, "token");
+      A_TEQUILA_KEY((short)1, "aTequilaKey");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1123,8 +887,8 @@ public class AuthenticationService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // TOKEN
-            return TOKEN;
+          case 1: // A_TEQUILA_KEY
+            return A_TEQUILA_KEY;
           default:
             return null;
         }
@@ -1169,71 +933,71 @@ public class AuthenticationService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionToken.class)));
+      tmpMap.put(_Fields.A_TEQUILA_KEY, new org.apache.thrift.meta_data.FieldMetaData("aTequilaKey", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaKey.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticate_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSessionIdForService_args.class, metaDataMap);
     }
 
-    public authenticate_args() {
+    public getSessionIdForService_args() {
     }
 
-    public authenticate_args(
-      SessionToken token)
+    public getSessionIdForService_args(
+      TequilaKey aTequilaKey)
     {
       this();
-      this.token = token;
+      this.aTequilaKey = aTequilaKey;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public authenticate_args(authenticate_args other) {
-      if (other.isSetToken()) {
-        this.token = new SessionToken(other.token);
+    public getSessionIdForService_args(getSessionIdForService_args other) {
+      if (other.isSetATequilaKey()) {
+        this.aTequilaKey = new TequilaKey(other.aTequilaKey);
       }
     }
 
-    public authenticate_args deepCopy() {
-      return new authenticate_args(this);
+    public getSessionIdForService_args deepCopy() {
+      return new getSessionIdForService_args(this);
     }
 
     @Override
     public void clear() {
-      this.token = null;
+      this.aTequilaKey = null;
     }
 
-    public SessionToken getToken() {
-      return this.token;
+    public TequilaKey getATequilaKey() {
+      return this.aTequilaKey;
     }
 
-    public authenticate_args setToken(SessionToken token) {
-      this.token = token;
+    public getSessionIdForService_args setATequilaKey(TequilaKey aTequilaKey) {
+      this.aTequilaKey = aTequilaKey;
       return this;
     }
 
-    public void unsetToken() {
-      this.token = null;
+    public void unsetATequilaKey() {
+      this.aTequilaKey = null;
     }
 
-    /** Returns true if field token is set (has been assigned a value) and false otherwise */
-    public boolean isSetToken() {
-      return this.token != null;
+    /** Returns true if field aTequilaKey is set (has been assigned a value) and false otherwise */
+    public boolean isSetATequilaKey() {
+      return this.aTequilaKey != null;
     }
 
-    public void setTokenIsSet(boolean value) {
+    public void setATequilaKeyIsSet(boolean value) {
       if (!value) {
-        this.token = null;
+        this.aTequilaKey = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case TOKEN:
+      case A_TEQUILA_KEY:
         if (value == null) {
-          unsetToken();
+          unsetATequilaKey();
         } else {
-          setToken((SessionToken)value);
+          setATequilaKey((TequilaKey)value);
         }
         break;
 
@@ -1242,8 +1006,8 @@ public class AuthenticationService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case TOKEN:
-        return getToken();
+      case A_TEQUILA_KEY:
+        return getATequilaKey();
 
       }
       throw new IllegalStateException();
@@ -1256,8 +1020,8 @@ public class AuthenticationService {
       }
 
       switch (field) {
-      case TOKEN:
-        return isSetToken();
+      case A_TEQUILA_KEY:
+        return isSetATequilaKey();
       }
       throw new IllegalStateException();
     }
@@ -1266,21 +1030,21 @@ public class AuthenticationService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof authenticate_args)
-        return this.equals((authenticate_args)that);
+      if (that instanceof getSessionIdForService_args)
+        return this.equals((getSessionIdForService_args)that);
       return false;
     }
 
-    public boolean equals(authenticate_args that) {
+    public boolean equals(getSessionIdForService_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_token = true && this.isSetToken();
-      boolean that_present_token = true && that.isSetToken();
-      if (this_present_token || that_present_token) {
-        if (!(this_present_token && that_present_token))
+      boolean this_present_aTequilaKey = true && this.isSetATequilaKey();
+      boolean that_present_aTequilaKey = true && that.isSetATequilaKey();
+      if (this_present_aTequilaKey || that_present_aTequilaKey) {
+        if (!(this_present_aTequilaKey && that_present_aTequilaKey))
           return false;
-        if (!this.token.equals(that.token))
+        if (!this.aTequilaKey.equals(that.aTequilaKey))
           return false;
       }
 
@@ -1289,23 +1053,30 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_aTequilaKey = true && (isSetATequilaKey());
+      builder.append(present_aTequilaKey);
+      if (present_aTequilaKey)
+        builder.append(aTequilaKey);
+
+      return builder.toHashCode();
     }
 
-    public int compareTo(authenticate_args other) {
+    public int compareTo(getSessionIdForService_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      authenticate_args typedOther = (authenticate_args)other;
+      getSessionIdForService_args typedOther = (getSessionIdForService_args)other;
 
-      lastComparison = Boolean.valueOf(isSetToken()).compareTo(typedOther.isSetToken());
+      lastComparison = Boolean.valueOf(isSetATequilaKey()).compareTo(typedOther.isSetATequilaKey());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetToken()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, typedOther.token);
+      if (isSetATequilaKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aTequilaKey, typedOther.aTequilaKey);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1327,10 +1098,10 @@ public class AuthenticationService {
           break;
         }
         switch (field.id) {
-          case 1: // TOKEN
+          case 1: // A_TEQUILA_KEY
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.token = new SessionToken();
-              this.token.read(iprot);
+              this.aTequilaKey = new TequilaKey();
+              this.aTequilaKey.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1350,9 +1121,9 @@ public class AuthenticationService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.token != null) {
-        oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-        this.token.write(oprot);
+      if (this.aTequilaKey != null) {
+        oprot.writeFieldBegin(A_TEQUILA_KEY_FIELD_DESC);
+        this.aTequilaKey.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1361,14 +1132,14 @@ public class AuthenticationService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("authenticate_args(");
+      StringBuilder sb = new StringBuilder("getSessionIdForService_args(");
       boolean first = true;
 
-      sb.append("token:");
-      if (this.token == null) {
+      sb.append("aTequilaKey:");
+      if (this.aTequilaKey == null) {
         sb.append("null");
       } else {
-        sb.append(this.token);
+        sb.append(this.aTequilaKey);
       }
       first = false;
       sb.append(")");
@@ -1397,12 +1168,12 @@ public class AuthenticationService {
 
   }
 
-  public static class authenticate_result implements org.apache.thrift.TBase<authenticate_result, authenticate_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticate_result");
+  public static class getSessionIdForService_result implements org.apache.thrift.TBase<getSessionIdForService_result, getSessionIdForService_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSessionIdForService_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public boolean success; // required
+    public SessionId success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1463,69 +1234,66 @@ public class AuthenticationService {
     }
 
     // isset id assignments
-    private static final int __SUCCESS_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionId.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticate_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSessionIdForService_result.class, metaDataMap);
     }
 
-    public authenticate_result() {
+    public getSessionIdForService_result() {
     }
 
-    public authenticate_result(
-      boolean success)
+    public getSessionIdForService_result(
+      SessionId success)
     {
       this();
       this.success = success;
-      setSuccessIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public authenticate_result(authenticate_result other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
-      this.success = other.success;
+    public getSessionIdForService_result(getSessionIdForService_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new SessionId(other.success);
+      }
     }
 
-    public authenticate_result deepCopy() {
-      return new authenticate_result(this);
+    public getSessionIdForService_result deepCopy() {
+      return new getSessionIdForService_result(this);
     }
 
     @Override
     public void clear() {
-      setSuccessIsSet(false);
-      this.success = false;
+      this.success = null;
     }
 
-    public boolean isSuccess() {
+    public SessionId getSuccess() {
       return this.success;
     }
 
-    public authenticate_result setSuccess(boolean success) {
+    public getSessionIdForService_result setSuccess(SessionId success) {
       this.success = success;
-      setSuccessIsSet(true);
       return this;
     }
 
     public void unsetSuccess() {
-      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
+      this.success = null;
     }
 
     /** Returns true if field success is set (has been assigned a value) and false otherwise */
     public boolean isSetSuccess() {
-      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
+      return this.success != null;
     }
 
     public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+      if (!value) {
+        this.success = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
@@ -1534,7 +1302,7 @@ public class AuthenticationService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Boolean)value);
+          setSuccess((SessionId)value);
         }
         break;
 
@@ -1544,7 +1312,7 @@ public class AuthenticationService {
     public Object getFieldValue(_Fields field) {
       switch (field) {
       case SUCCESS:
-        return Boolean.valueOf(isSuccess());
+        return getSuccess();
 
       }
       throw new IllegalStateException();
@@ -1567,21 +1335,21 @@ public class AuthenticationService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof authenticate_result)
-        return this.equals((authenticate_result)that);
+      if (that instanceof getSessionIdForService_result)
+        return this.equals((getSessionIdForService_result)that);
       return false;
     }
 
-    public boolean equals(authenticate_result that) {
+    public boolean equals(getSessionIdForService_result that) {
       if (that == null)
         return false;
 
-      boolean this_present_success = true;
-      boolean that_present_success = true;
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
       if (this_present_success || that_present_success) {
         if (!(this_present_success && that_present_success))
           return false;
-        if (this.success != that.success)
+        if (!this.success.equals(that.success))
           return false;
       }
 
@@ -1590,16 +1358,23 @@ public class AuthenticationService {
 
     @Override
     public int hashCode() {
-      return 0;
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
     }
 
-    public int compareTo(authenticate_result other) {
+    public int compareTo(getSessionIdForService_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      authenticate_result typedOther = (authenticate_result)other;
+      getSessionIdForService_result typedOther = (getSessionIdForService_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1629,9 +1404,9 @@ public class AuthenticationService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-              this.success = iprot.readBool();
-              setSuccessIsSet(true);
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new SessionId();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1652,7 +1427,7 @@ public class AuthenticationService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeBool(this.success);
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1661,605 +1436,15 @@ public class AuthenticationService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("authenticate_result(");
+      StringBuilder sb = new StringBuilder("getSessionIdForService_result(");
       boolean first = true;
 
       sb.append("success:");
-      sb.append(this.success);
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class logout_args implements org.apache.thrift.TBase<logout_args, logout_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("logout_args");
-
-    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    public SessionToken token; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      TOKEN((short)1, "token");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // TOKEN
-            return TOKEN;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionToken.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(logout_args.class, metaDataMap);
-    }
-
-    public logout_args() {
-    }
-
-    public logout_args(
-      SessionToken token)
-    {
-      this();
-      this.token = token;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public logout_args(logout_args other) {
-      if (other.isSetToken()) {
-        this.token = new SessionToken(other.token);
-      }
-    }
-
-    public logout_args deepCopy() {
-      return new logout_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.token = null;
-    }
-
-    public SessionToken getToken() {
-      return this.token;
-    }
-
-    public logout_args setToken(SessionToken token) {
-      this.token = token;
-      return this;
-    }
-
-    public void unsetToken() {
-      this.token = null;
-    }
-
-    /** Returns true if field token is set (has been assigned a value) and false otherwise */
-    public boolean isSetToken() {
-      return this.token != null;
-    }
-
-    public void setTokenIsSet(boolean value) {
-      if (!value) {
-        this.token = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case TOKEN:
-        if (value == null) {
-          unsetToken();
-        } else {
-          setToken((SessionToken)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case TOKEN:
-        return getToken();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case TOKEN:
-        return isSetToken();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof logout_args)
-        return this.equals((logout_args)that);
-      return false;
-    }
-
-    public boolean equals(logout_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_token = true && this.isSetToken();
-      boolean that_present_token = true && that.isSetToken();
-      if (this_present_token || that_present_token) {
-        if (!(this_present_token && that_present_token))
-          return false;
-        if (!this.token.equals(that.token))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(logout_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      logout_args typedOther = (logout_args)other;
-
-      lastComparison = Boolean.valueOf(isSetToken()).compareTo(typedOther.isSetToken());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetToken()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, typedOther.token);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // TOKEN
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.token = new SessionToken();
-              this.token.read(iprot);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.token != null) {
-        oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-        this.token.write(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("logout_args(");
-      boolean first = true;
-
-      sb.append("token:");
-      if (this.token == null) {
+      if (this.success == null) {
         sb.append("null");
       } else {
-        sb.append(this.token);
+        sb.append(this.success);
       }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class logout_result implements org.apache.thrift.TBase<logout_result, logout_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("logout_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)0);
-
-    public boolean success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    private static final int __SUCCESS_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(logout_result.class, metaDataMap);
-    }
-
-    public logout_result() {
-    }
-
-    public logout_result(
-      boolean success)
-    {
-      this();
-      this.success = success;
-      setSuccessIsSet(true);
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public logout_result(logout_result other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
-      this.success = other.success;
-    }
-
-    public logout_result deepCopy() {
-      return new logout_result(this);
-    }
-
-    @Override
-    public void clear() {
-      setSuccessIsSet(false);
-      this.success = false;
-    }
-
-    public boolean isSuccess() {
-      return this.success;
-    }
-
-    public logout_result setSuccess(boolean success) {
-      this.success = success;
-      setSuccessIsSet(true);
-      return this;
-    }
-
-    public void unsetSuccess() {
-      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((Boolean)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return Boolean.valueOf(isSuccess());
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof logout_result)
-        return this.equals((logout_result)that);
-      return false;
-    }
-
-    public boolean equals(logout_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true;
-      boolean that_present_success = true;
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (this.success != that.success)
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(logout_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      logout_result typedOther = (logout_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.BOOL) {
-              this.success = iprot.readBool();
-              setSuccessIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeBool(this.success);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("logout_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      sb.append(this.success);
       first = false;
       sb.append(")");
       return sb.toString();

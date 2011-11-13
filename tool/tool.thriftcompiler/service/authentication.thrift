@@ -1,15 +1,26 @@
 namespace java org.pocketcampus.plugin.authentication.shared
 
-struct SessionToken {
-	1: required string token;
+enum TypeOfService {
+	SERVICE_POCKETCAMPUS;
+	SERVICE_MOODLE;
+	SERVICE_CAMIPRO;
 }
 
-exception LoginException {
-	1: string message;
+struct TequilaKey {
+	1: required TypeOfService tos;
+	2: required string iTequilaKey;
+}
+
+struct SessionId {
+	1: required TypeOfService tos;
+	2: optional string pocketCampusSessionId;
+	3: optional string moodleCookie;
+	4: optional string camiproCookie;
 }
 
 service AuthenticationService {
-	SessionToken login(1: string username, 2: string password) throws (1: LoginException le);
-	bool authenticate(1: SessionToken token);
-	bool logout(1: SessionToken token);
+
+	TequilaKey getTequilaKeyForService(1: TypeOfService aService);
+	SessionId getSessionIdForService(1: TequilaKey aTequilaKey);
+	
 }
