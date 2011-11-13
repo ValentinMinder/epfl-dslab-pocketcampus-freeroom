@@ -4,6 +4,9 @@
     <!-- General -->
     <string name="hello">Hello World, androidActivity!</string>
 
+    <!-- Menus -->    
+    <string name="food_no_menus">No Menus</string>
+    
     <!-- List by Restaurants -->
     <string name="food_restaurants">Restaurants</string>
 

@@ -27,8 +27,7 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		RatableView rv = new RatableView(getItem(position), mContext, mLabeler, /*mOnLineClickListener, mOnRatingClickListener, */position);
-		
+		RatableView rv = new RatableView(getItem(position), mContext, mLabeler, mOnLineClickListener, mOnRatingClickListener, position);
 		return rv;
 	}
 	

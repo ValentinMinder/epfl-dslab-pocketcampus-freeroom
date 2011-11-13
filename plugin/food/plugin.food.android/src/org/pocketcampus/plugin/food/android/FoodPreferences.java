@@ -109,20 +109,9 @@ public class FoodPreferences extends PluginView {
 			Log.d("PREFERENCES","First time instanciatation (FoodPreference)");
 			for(Restaurant r : mRestaurants){
 				mRestoPrefsEditor.putBoolean(r.getName(), true);
-				
-				
 			}
 			mRestoPrefsEditor.commit();
-		} else {
-			for(Restaurant r : mRestaurants) {
-
-				if(mRestoPrefs.getBoolean(r.getName(), false)) {
-					Log.d("PREFERENCES", r.getName() + " should be true");
-				}
-
-			}
-		}
-
+		} 
 	}
 
 	private void setOnListViewClickListener(){

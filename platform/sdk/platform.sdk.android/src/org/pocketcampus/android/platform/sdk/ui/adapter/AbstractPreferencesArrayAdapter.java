@@ -64,6 +64,10 @@ public abstract class AbstractPreferencesArrayAdapter extends ArrayAdapter<Objec
 		text = (TextView)v.findViewById(R.id.sdk_list_preferences_entry_text);
 		final String resto = text.getText().toString();
 		
+		if(mRestoPrefs.getBoolean(resto, false)){
+			prefBox.setChecked(true);
+		}
+		
 		prefBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override

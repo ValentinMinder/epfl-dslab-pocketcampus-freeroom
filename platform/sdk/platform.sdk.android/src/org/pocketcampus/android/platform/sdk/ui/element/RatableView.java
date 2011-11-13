@@ -30,14 +30,14 @@ public class RatableView extends LinearLayout {
 
 	public RatableView(Object currentObject, Context context,
 			IRatableViewLabeler<? extends Object> labeler,
-			/*OnItemClickListener elementListener,
-			OnItemClickListener ratingListener, */int position) {
+			OnItemClickListener elementListener,
+			OnItemClickListener ratingListener, int position) {
 		super(context);
 		mLabeler = labeler;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_ratable_view, null);
-//		mOnElementClickLIstener = elementListener;
-//		mOnRatingClickListener = ratingListener;
+		mOnElementClickLIstener = elementListener;
+		mOnRatingClickListener = ratingListener;
 		mPosition = position;
 
 		// Creates a ViewHolder and store references to the two children
@@ -62,9 +62,8 @@ public class RatableView extends LinearLayout {
 
 		mTitleLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Log.d("MENUDIALOG", "Click on the titleline");
-
 				if (mOnElementClickLIstener != null) {
+					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -72,9 +71,8 @@ public class RatableView extends LinearLayout {
 
 		mDescriptionLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Log.d("MENUDIALOG", "Click on the menuline");
-
 				if (mOnElementClickLIstener != null) {
+					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -86,7 +84,7 @@ public class RatableView extends LinearLayout {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP
 						&& mOnRatingClickListener != null) {
-					// ratingDialog();
+					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
 					mOnRatingClickListener.onItemClick(null, v, mPosition,
 							(long) mLabeler.getRating(mCurrentObject));
 				}
@@ -102,12 +100,6 @@ public class RatableView extends LinearLayout {
 				mLabeler.getNbVotes(mCurrentObject));
 		addView(mConvertView);
 	}
-
-	// private void ratingDialog() {
-	// RatingDialog r = new RatingDialog(mCurrentObject, mContext,
-	// mOnRatingClickListener, mPosition);
-	// r.show();
-	// }
 
 	private void setRating(float currentRating, int numbVotes) {
 		mRatingLine.setRating(currentRating);
