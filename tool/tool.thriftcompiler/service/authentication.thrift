@@ -9,6 +9,7 @@ enum TypeOfService {
 struct TequilaKey {
 	1: required TypeOfService tos;
 	2: required string iTequilaKey;
+	3: optional string loginCookie;
 }
 
 struct SessionId {

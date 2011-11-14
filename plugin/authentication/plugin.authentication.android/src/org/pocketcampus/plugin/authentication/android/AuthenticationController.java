@@ -51,17 +51,32 @@ public class AuthenticationController extends PluginController implements IAuthe
 		mModel.setTequilaKey(key);
 		openBrowserWithUrl(String.format(tequilaUrl, key.getITequilaKey()));
 	}
-	public void forwardTequilaKeyForService(String host, String key) {
+	public void forwardTequilaKeyForService(Uri aData) {
+		String pcService = aData.getHost();
+		//String teqKey = aData.getQueryParameter("key");
+		
+		TequilaKey storedTeqKey = mModel.getTequilaKey();
+		if(storedTeqKey == null) {
+			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: storedTeqKey is null");
+			return;
+		}
 		TequilaKey teqKey = new TequilaKey();
-		teqKey.setITequilaKey(key);
-		if("login.pocketcampus.org".equals(host)) {
+		//teqKey.setITequilaKey(key);
+		if("login.pocketcampus.org".equals(pcService)) {
 			teqKey.setTos(TypeOfService.SERVICE_POCKETCAMPUS);
-		} else if("moodle.epfl.ch".equals(host)) {
+		} else if("moodle.epfl.ch".equals(pcService)) {
 			teqKey.setTos(TypeOfService.SERVICE_MOODLE);
+		} else if("cmp2www.epfl.ch".equals(pcService)) {
+			teqKey.setTos(TypeOfService.SERVICE_CAMIPRO);
 		} else {
 			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: Cannot find corresponding TypeOfService");
+			return;
 		}
-		new GetSessionIdForServiceRequest().start(this, mClient, teqKey);
+		if(storedTeqKey.getTos() != teqKey.getTos()) {
+			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: TypeOfService did not match with stored value");
+			return;
+		}
+		new GetSessionIdForServiceRequest().start(this, mClient, storedTeqKey);
 	}
 	public void gotSessionIdForService(SessionId sessId) {
 		mModel.setSessionIdForService(sessId.getTos(), sessId);

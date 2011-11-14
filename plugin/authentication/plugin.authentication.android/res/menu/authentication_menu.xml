@@ -11,4 +11,9 @@
 		android:icon="@android:drawable/ic_menu_add"
 		android:title="Authenticate For Moodle"
 		/>
+	<item
+		android:id="@+id/authenticate_for_camipro"
+		android:icon="@android:drawable/ic_menu_add"
+		android:title="Authenticate For Camipro"
+		/>
 </menu>

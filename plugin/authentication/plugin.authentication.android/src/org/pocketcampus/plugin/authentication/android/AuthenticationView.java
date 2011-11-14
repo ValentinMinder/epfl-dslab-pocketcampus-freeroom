@@ -70,15 +70,18 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		// as the controller may take some time to get it.
 		displayData();
 		
-		
-		// When we get back from the browser
-		Intent aIntent = getIntent();
-		if("android.intent.action.VIEW".equals(aIntent.getAction())) {
-			Uri aData = aIntent.getData();
-			String pcService = aData.getHost();
-			String teqKey = aData.getQueryParameter("key");
-			mController.forwardTequilaKeyForService(pcService, teqKey);
-		}
+	}
+
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		if(aIntent == null)
+			return;
+		if(!"android.intent.action.VIEW".equals(aIntent.getAction()))
+		return;
+		Uri aData = aIntent.getData();
+		if(aData == null)
+			return;
+		mController.forwardTequilaKeyForService(aData);
 	}
 
 	@Override
@@ -102,10 +105,13 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.authenticate_for_pocketcampus) {
 			mController.authenticateUserForService(TypeOfService.SERVICE_POCKETCAMPUS);
-			finish();
+			//finish();
 		} else if (item.getItemId() == R.id.authenticate_for_moodle) {
 			mController.authenticateUserForService(TypeOfService.SERVICE_MOODLE);
-			finish();
+			//finish();
+		} else if (item.getItemId() == R.id.authenticate_for_camipro) {
+			mController.authenticateUserForService(TypeOfService.SERVICE_CAMIPRO);
+			//finish();
 		}
 
 		return true;

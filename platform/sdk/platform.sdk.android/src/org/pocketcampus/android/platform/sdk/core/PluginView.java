@@ -56,12 +56,15 @@ public abstract class PluginView extends Activity {
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		Class<? extends Service> controllerClass = getMainControllerClass();
+		
+		final Intent thisIntent = getIntent();
 
 		// no controller to connect to
 		if(controllerClass == null) {
 			onDisplay(savedInstanceState, null);
+			handleIntent(thisIntent);
 			return;
 		}
 
@@ -71,6 +74,7 @@ public abstract class PluginView extends Activity {
 			@Override
 			public void onViewBound(PluginController controller) {
 				onDisplay(savedInstanceState, controller);
+				handleIntent(thisIntent);
 			}
 		};
 
@@ -82,6 +86,15 @@ public abstract class PluginView extends Activity {
 			throw new RuntimeException("View couldn't bind to service! " + intent);
 		}
 	}
+	
+	/**
+	 * Handles the case when an activity receives an Intent while already started
+	 * and redirects the intent to handleIntent
+	 */
+	@Override
+	protected final void onNewIntent(Intent intent) {
+		handleIntent(intent);
+	}
 
 	/**
 	 * 
@@ -90,6 +103,12 @@ public abstract class PluginView extends Activity {
 	 * @param controller
 	 */
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {}
+
+	/**
+	 * Calling <code>super.handleIntent</code> is not necessary.
+	 * @param intent
+	 */
+	protected void handleIntent(Intent intent) {}
 
 	@Override
 	protected void onResume() {

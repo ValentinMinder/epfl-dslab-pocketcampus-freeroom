@@ -47,6 +47,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		return sessionIds.toString();
 	}
 	
+	// TODO store these in persistent storage, because on rotate the model is destroyed
 
 	private HashMap<TypeOfService, SessionId> sessionIds = new HashMap<TypeOfService, SessionId>();
 	
