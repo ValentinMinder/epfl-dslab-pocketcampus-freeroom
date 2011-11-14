@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 public interface IFoodModel {
@@ -19,6 +20,9 @@ public interface IFoodModel {
 	public HashMap<String, Vector<Meal>> getMealsByRestaurants();
 	public List<MealTag> getMealTags();
 	
+	public void setSandwiches(List<Sandwich> list);
+	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants();
+
 	public void setRating(SubmitStatus status);
 	
 }

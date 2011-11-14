@@ -2,17 +2,16 @@ package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.RatableAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
 import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
@@ -21,13 +20,13 @@ import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.Sandwich;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -189,10 +188,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 			if(mRestoPrefs.getAll().isEmpty()){
 				mList = new RatableExpandableListViewElement(this, mealHashMap,
-						mLabeler, mViewConstructor);
+						mMealLabeler, mViewConstructor);
 			}else {
 				mList = new RatableExpandableListViewElement(this, preferedRestaurants(mealHashMap), 
-						mLabeler, mViewConstructor);
+						mMealLabeler, mViewConstructor);
 			}
 
 			if(mOnLineClickListener == null) {
@@ -259,10 +258,19 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 * Shows the menus when suggestions are received
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> list) {
-		RatableListViewElement l = new RatableListViewElement(this, list, mLabeler);
+		RatableListViewElement l = new RatableListViewElement(this, list, mMealLabeler);
 		l.setOnLineClickListener(mOnLineClickListener);
 		l.setOnRatingClickListener(mOnRatingClickListener);
 		mLayout.addView(l);
+	}
+	
+	/**
+	 * Shows the sandwiches
+	 * @param 
+	 * @return
+	 */
+	public void showSandwiches() {
+		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel.getSandwichesByRestaurants();
 	}
 	
 	private HashMap<String, Vector<Meal>> preferedRestaurants(HashMap<String, Vector<Meal>> map){
@@ -390,7 +398,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		}
 	}
 
-	IRatableViewLabeler<Meal> mLabeler = new IRatableViewLabeler<Meal>() {
+	IRatableViewLabeler<Meal> mMealLabeler = new IRatableViewLabeler<Meal>() {
 
 		@Override
 		public String getTitle(Meal meal) {
@@ -416,6 +424,15 @@ public class FoodMainView extends PluginView implements IFoodView {
 		public String getRestaurantName(Meal meal) {
 			return meal.getRestaurant().getName();
 		}
+	};
+	
+	ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
+
+		@Override
+		public String getLabel(Sandwich sandwich) {
+			return sandwich.getName();
+		}
+		
 	};
 
 	IRatableViewConstructor mViewConstructor = new IRatableViewConstructor() {

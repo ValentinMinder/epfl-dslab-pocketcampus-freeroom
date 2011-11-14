@@ -13,12 +13,15 @@ import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 public class FoodModel extends PluginModel implements IFoodModel {
 	IFoodView mListeners = (IFoodView) getListeners();
 	private List<Restaurant> mRestaurantsList;
 	private List<Meal> mMeals;
+	private List<Sandwich> mSandwiches;
+	
 	// private HashMap<Meal, Rating> mCampusMeals;
 	private MenuSorter mSorter;
 
@@ -88,6 +91,19 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	@Override
 	public void setRating(SubmitStatus status) {
 		// Toast suivant le status
+	}
+
+	@Override
+	public void setSandwiches(List<Sandwich> list) {
+		mSandwiches = list;
+	}
+
+	@Override
+	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants() {
+		if (mSorter == null) {
+			mSorter = new MenuSorter();
+		}
+		return mSorter.sortByCafeterias(mSandwiches);
 	}
 
 }
