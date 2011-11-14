@@ -10,6 +10,7 @@ import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
+import org.pocketcampus.plugin.food.shared.Meal;
 
 import android.util.Log;
 
@@ -41,18 +42,24 @@ public class FoodController extends PluginController implements IFoodController{
 	@Override
 	public void getRestaurantsList() {
 		Log.d("RESTAURANT", "Sending Restaurants request");
-		new RestaurantsRequest().start(this, mClient, (Object)null);
+		new RestaurantsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
 	}
 
 	@Override
 	public void getMeals() {
 		Log.d("MEALS", "Sending Meals request");
-		new MealsRequest().start(this, mClient, (Object)null);
+		new MealsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
 	}
 	
 	@Override
 	public List<MealTag> getMealTags() {
 		return mModel.getMealTags();
+	}
+	
+	@Override
+	public void setRating(double rating, Meal meal) {
+//		Log.d("RATING", "Set Rating = " + rating + " for meal " + meal.getName());
+//		new SetRatingRequest().start(this, (Iface)getClient(new Client.Factory(), mPluginName), (Meal) meal);
 	}
 		
 }

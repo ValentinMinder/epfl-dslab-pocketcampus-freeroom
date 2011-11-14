@@ -55,5 +55,11 @@ public enum MealTag {
 		public String toString() {        
 			return "Horse";    
 		}
-	};
+	},
+	
+	PIZZA {
+		public String toString() {
+			return "Pizza";
+		}
+	}
 }

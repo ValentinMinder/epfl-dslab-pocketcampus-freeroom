@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.PopupDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
-import org.pocketcampus.android.platform.sdk.ui.element.LabeledListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.platform.sdk.shared.restaurant.CookReceivedItem;
 import org.pocketcampus.platform.sdk.shared.restaurant.CookReceivedOrder;
 import org.pocketcampus.platform.sdk.shared.restaurant.PendingOrders;
 import org.pocketcampus.plugin.takeoutreceiver.android.iface.ITakeoutReceiverMainView;
-import org.pocketcampus.R;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -73,7 +73,7 @@ public class TakeoutReceiverMainView extends PluginView implements ITakeoutRecei
 			//mController.fireNotification();
 		}
 
-		Labeler<CookReceivedOrder> labeler = new Labeler<CookReceivedOrder>() {
+		ILabeler<CookReceivedOrder> labeler = new ILabeler<CookReceivedOrder>() {
 			@Override
 			public String getLabel(CookReceivedOrder obj) {
 				String orderDesc = "";

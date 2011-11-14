@@ -1,32 +1,23 @@
 package org.pocketcampus.plugin.directory.android;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.core.PluginView.ViewBoundCallback;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
-import org.pocketcampus.android.platform.sdk.ui.element.LabeledListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.element.Labeler;
-import org.pocketcampus.android.platform.sdk.ui.element.ListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
-import org.pocketcampus.R;
 
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -188,7 +179,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 	
 	
-	Labeler<Person> labeler = new Labeler<Person>(){
+	ILabeler<Person> labeler = new ILabeler<Person>(){
 		@Override
 		public String getLabel(Person obj) {
 			String nice;

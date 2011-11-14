@@ -25,13 +25,13 @@ public class NewsService {
 
   public interface Iface {
 
-    public List<NewsItem> getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException;
+    public List<NewsItem> getNewsItems() throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getNewsItems(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
+    public void getNewsItems(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -55,16 +55,15 @@ public class NewsService {
       super(iprot, oprot);
     }
 
-    public List<NewsItem> getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException
+    public List<NewsItem> getNewsItems() throws org.apache.thrift.TException
     {
-      send_getNewsItems(feedUrls);
+      send_getNewsItems();
       return recv_getNewsItems();
     }
 
-    public void send_getNewsItems(List<String> feedUrls) throws org.apache.thrift.TException
+    public void send_getNewsItems() throws org.apache.thrift.TException
     {
       getNewsItems_args args = new getNewsItems_args();
-      args.setFeedUrls(feedUrls);
       sendBase("getNewsItems", args);
     }
 
@@ -96,24 +95,21 @@ public class NewsService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getNewsItems(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler) throws org.apache.thrift.TException {
+    public void getNewsItems(org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getNewsItems_call method_call = new getNewsItems_call(feedUrls, resultHandler, this, ___protocolFactory, ___transport);
+      getNewsItems_call method_call = new getNewsItems_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getNewsItems_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private List<String> feedUrls;
-      public getNewsItems_call(List<String> feedUrls, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public getNewsItems_call(org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.feedUrls = feedUrls;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNewsItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getNewsItems_args args = new getNewsItems_args();
-        args.setFeedUrls(feedUrls);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -156,7 +152,7 @@ public class NewsService {
 
       protected getNewsItems_result getResult(I iface, getNewsItems_args args) throws org.apache.thrift.TException {
         getNewsItems_result result = new getNewsItems_result();
-        result.success = iface.getNewsItems(args.feedUrls);
+        result.success = iface.getNewsItems();
         return result;
       }
     }
@@ -166,13 +162,11 @@ public class NewsService {
   public static class getNewsItems_args implements org.apache.thrift.TBase<getNewsItems_args, getNewsItems_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItems_args");
 
-    private static final org.apache.thrift.protocol.TField FEED_URLS_FIELD_DESC = new org.apache.thrift.protocol.TField("feedUrls", org.apache.thrift.protocol.TType.LIST, (short)1);
 
-    public List<String> feedUrls; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      FEED_URLS((short)1, "feedUrls");
+;
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -187,8 +181,6 @@ public class NewsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // FEED_URLS
-            return FEED_URLS;
           default:
             return null;
         }
@@ -227,15 +219,9 @@ public class NewsService {
         return _fieldName;
       }
     }
-
-    // isset id assignments
-
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.FEED_URLS, new org.apache.thrift.meta_data.FieldMetaData("feedUrls", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItems_args.class, metaDataMap);
     }
@@ -243,24 +229,10 @@ public class NewsService {
     public getNewsItems_args() {
     }
 
-    public getNewsItems_args(
-      List<String> feedUrls)
-    {
-      this();
-      this.feedUrls = feedUrls;
-    }
-
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getNewsItems_args(getNewsItems_args other) {
-      if (other.isSetFeedUrls()) {
-        List<String> __this__feedUrls = new ArrayList<String>();
-        for (String other_element : other.feedUrls) {
-          __this__feedUrls.add(other_element);
-        }
-        this.feedUrls = __this__feedUrls;
-      }
     }
 
     public getNewsItems_args deepCopy() {
@@ -269,66 +241,15 @@ public class NewsService {
 
     @Override
     public void clear() {
-      this.feedUrls = null;
-    }
-
-    public int getFeedUrlsSize() {
-      return (this.feedUrls == null) ? 0 : this.feedUrls.size();
-    }
-
-    public java.util.Iterator<String> getFeedUrlsIterator() {
-      return (this.feedUrls == null) ? null : this.feedUrls.iterator();
-    }
-
-    public void addToFeedUrls(String elem) {
-      if (this.feedUrls == null) {
-        this.feedUrls = new ArrayList<String>();
-      }
-      this.feedUrls.add(elem);
-    }
-
-    public List<String> getFeedUrls() {
-      return this.feedUrls;
-    }
-
-    public getNewsItems_args setFeedUrls(List<String> feedUrls) {
-      this.feedUrls = feedUrls;
-      return this;
-    }
-
-    public void unsetFeedUrls() {
-      this.feedUrls = null;
-    }
-
-    /** Returns true if field feedUrls is set (has been assigned a value) and false otherwise */
-    public boolean isSetFeedUrls() {
-      return this.feedUrls != null;
-    }
-
-    public void setFeedUrlsIsSet(boolean value) {
-      if (!value) {
-        this.feedUrls = null;
-      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case FEED_URLS:
-        if (value == null) {
-          unsetFeedUrls();
-        } else {
-          setFeedUrls((List<String>)value);
-        }
-        break;
-
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case FEED_URLS:
-        return getFeedUrls();
-
       }
       throw new IllegalStateException();
     }
@@ -340,8 +261,6 @@ public class NewsService {
       }
 
       switch (field) {
-      case FEED_URLS:
-        return isSetFeedUrls();
       }
       throw new IllegalStateException();
     }
@@ -359,26 +278,12 @@ public class NewsService {
       if (that == null)
         return false;
 
-      boolean this_present_feedUrls = true && this.isSetFeedUrls();
-      boolean that_present_feedUrls = true && that.isSetFeedUrls();
-      if (this_present_feedUrls || that_present_feedUrls) {
-        if (!(this_present_feedUrls && that_present_feedUrls))
-          return false;
-        if (!this.feedUrls.equals(that.feedUrls))
-          return false;
-      }
-
       return true;
     }
 
     @Override
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_feedUrls = true && (isSetFeedUrls());
-      builder.append(present_feedUrls);
-      if (present_feedUrls)
-        builder.append(feedUrls);
 
       return builder.toHashCode();
     }
@@ -391,16 +296,6 @@ public class NewsService {
       int lastComparison = 0;
       getNewsItems_args typedOther = (getNewsItems_args)other;
 
-      lastComparison = Boolean.valueOf(isSetFeedUrls()).compareTo(typedOther.isSetFeedUrls());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetFeedUrls()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feedUrls, typedOther.feedUrls);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
       return 0;
     }
 
@@ -418,23 +313,6 @@ public class NewsService {
           break;
         }
         switch (field.id) {
-          case 1: // FEED_URLS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.feedUrls = new ArrayList<String>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  String _elem6; // required
-                  _elem6 = iprot.readString();
-                  this.feedUrls.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -450,18 +328,6 @@ public class NewsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.feedUrls != null) {
-        oprot.writeFieldBegin(FEED_URLS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.feedUrls.size()));
-          for (String _iter7 : this.feedUrls)
-          {
-            oprot.writeString(_iter7);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -471,13 +337,6 @@ public class NewsService {
       StringBuilder sb = new StringBuilder("getNewsItems_args(");
       boolean first = true;
 
-      sb.append("feedUrls:");
-      if (this.feedUrls == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.feedUrls);
-      }
-      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -762,14 +621,14 @@ public class NewsService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<NewsItem>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                this.success = new ArrayList<NewsItem>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
                 {
-                  NewsItem _elem10; // required
-                  _elem10 = new NewsItem();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
+                  NewsItem _elem6; // required
+                  _elem6 = new NewsItem();
+                  _elem6.read(iprot);
+                  this.success.add(_elem6);
                 }
                 iprot.readListEnd();
               }
@@ -795,9 +654,9 @@ public class NewsService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (NewsItem _iter11 : this.success)
+          for (NewsItem _iter7 : this.success)
           {
-            _iter11.write(oprot);
+            _iter7.write(oprot);
           }
           oprot.writeListEnd();
         }

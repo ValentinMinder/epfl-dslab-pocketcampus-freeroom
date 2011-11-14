@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/authenticate_for_pocketcampus"
+		android:icon="@android:drawable/ic_menu_add"
+		android:title="Authenticate For PocketCampus"
+		/>
+	<item
+		android:id="@+id/authenticate_for_moodle"
+		android:icon="@android:drawable/ic_menu_add"
+		android:title="Authenticate For Moodle"
+		/>
+	<item
+		android:id="@+id/authenticate_for_camipro"
+		android:icon="@android:drawable/ic_menu_add"
+		android:title="Authenticate For Camipro"
+		/>
+</menu>

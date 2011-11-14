@@ -8,7 +8,10 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginInfo;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -31,4 +34,20 @@ public class DashboardView extends PluginView {
 		mainLayout.addView(mDashboard.getView(), layoutParams);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.dashboard_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		if (item.getItemId() == R.id.dashboard_about) {
+			startActivity(new Intent(this, AboutView.class));
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+		}
+
+		return true;
+	}
 }

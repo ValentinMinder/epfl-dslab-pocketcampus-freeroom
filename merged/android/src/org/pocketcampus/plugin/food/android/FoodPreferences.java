@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.element.PreferencesListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
@@ -109,22 +109,9 @@ public class FoodPreferences extends PluginView {
 			Log.d("PREFERENCES","First time instanciatation (FoodPreference)");
 			for(Restaurant r : mRestaurants){
 				mRestoPrefsEditor.putBoolean(r.getName(), true);
-				
-				
 			}
 			mRestoPrefsEditor.commit();
-		} else {
-			for(Restaurant r : mRestaurants) {
-
-				if(mRestoPrefs.getBoolean(r.getName(), false)) {
-					Log.d("PREFERENCES", r.getName() + " should be true");
-				}
-
-				//Trouver un moyen de mettre la CheckBox checked!
-
-			}
-		}
-
+		} 
 	}
 
 	private void setOnListViewClickListener(){
