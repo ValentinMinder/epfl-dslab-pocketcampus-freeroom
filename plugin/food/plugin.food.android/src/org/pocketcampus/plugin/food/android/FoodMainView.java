@@ -181,7 +181,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 	public void showMenusByRestaurants() {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
 				.getMealsByRestaurants();
-		final List<Meal> mMealList = mModel.getMeals();
 
 		/**
 		 * Iterate over the different restaurant menus
@@ -205,9 +204,8 @@ public class FoodMainView extends PluginView implements IFoodView {
 					public void onItemClick(AdapterView<?> adapter, View v,
 							int positionInSection, long arg3) {
 
-//						final Meal meal = mMealList.get(positionInSection);
 						final Meal meal = mealHashMap.get(v.getTag()).get(positionInSection);
-								
+						
 						MenuDialog.Builder b = new MenuDialog.Builder(mActivity);
 						b.setCanceledOnTouchOutside(true);
 
@@ -236,7 +234,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 					public void onItemClick(AdapterView<?> adapter, View okButton,
 							int positionInSection, long rating) {
 
-//						final Meal meal = mMealList.get(positionInSection);
 						final Meal meal = mealHashMap.get(okButton.getTag()).get(positionInSection);
 						
 						RatingDialog.Builder b = new

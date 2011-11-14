@@ -350,7 +350,7 @@ public class FoodDB {
 			return false;
 		}
 		PreparedStatement checkVotedDevice = null;
-		String getString = "SELECT count(DEVICEID) FROM PEOPLEVOTES WHERE DEVICEID = ? and STAMP_CREATED = ?";
+		String getString = "SELECT count(DEVICEID) FROM DAILYRATINGS WHERE DEVICEID = ? and STAMP_CREATED = ?";
 		ResultSet rset = null;
 		boolean found = false;
 
@@ -408,7 +408,7 @@ public class FoodDB {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
-		String insertString = "INSERT INTO PEOPLEVOTES (DeviceId, stamp_created, Rating, HashCode) VALUES (?, ?, ?, ?)";
+		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created, Rating, HashCode) VALUES (?, ?, ?, ?)";
 		ResultSet rset = null;
 
 		try {
@@ -449,7 +449,7 @@ public class FoodDB {
 		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
-		String insertString = "UPDATE Menus SET Rating = ?, NumberOfVotes=?, JsonObject=? where hashcode=?";
+		String insertString = "UPDATE CAMPUSMENUS SET TotalRating = ?, NumberOfVotes=? where hashcode=?";
 
 		String jsonObject = "";
 		try {
@@ -464,8 +464,7 @@ public class FoodDB {
 			Rating r = meal.getRating();
 			insertRating.setFloat(1, (float) r.getTotalRating());
 			insertRating.setInt(2, r.getNbVotes());
-			insertRating.setString(3, jsonObject);
-			insertRating.setInt(4, hashCode);
+			insertRating.setInt(3, hashCode);
 
 			insertRating.executeUpdate();
 		} catch (SQLException e) {

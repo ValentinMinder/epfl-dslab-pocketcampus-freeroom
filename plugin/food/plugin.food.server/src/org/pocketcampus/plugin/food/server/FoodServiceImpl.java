@@ -71,7 +71,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		if (!isToday(mLastImportedMenus)) {
 			System.out
-					.println("<getMeals>: Date not valid. Reimporting Meals.");
+			.println("<getMeals>: Date not valid. Reimporting Meals.");
 
 			mCampusMeals.clear();
 			mDeviceIds.clear();
@@ -80,7 +80,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			importMenus();
 		} else if (!isUpToDate(mLastImportedMenus)) {
 			System.out
-					.println("<getMeals>: Time not valid. Reimporting Meals.");
+			.println("<getMeals>: Time not valid. Reimporting Meals.");
 
 			refreshMenus();
 		} else {
@@ -176,10 +176,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return SubmitStatus.ERROR;
 		}
 
-		// How do we pass parameters when requesting for this?
-		int mealHashCode = meal.hashCode();
-		Rating mealRating = meal.getRating();
-
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
@@ -204,6 +200,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return SubmitStatus.ALREADY_VOTED;
 		}
 
+		int mealHashCode = meal.hashCode();
 		System.out.println("<setRating>: mealHashCode: " + mealHashCode);
 
 		double ratingTotal;
@@ -212,20 +209,21 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		for (int i = 0; i < mCampusMeals.size(); i++) {
 			Meal currentMeal = mCampusMeals.get(i);
-
-			ratingTotal = currentMeal.getRating().getTotalRating()
-					+ rating.getTotalRating();
-			newNbVotes = currentMeal.getRating().getNbVotes() + 1;
-			if( newNbVotes != 0) {				
-				ratingValue = ratingTotal / newNbVotes;
-			} else {
-				ratingValue = 0;
-			}
-
-			System.out.println("<setRating>: Inside : "
-					+ currentMeal.hashCode());
-
+			
 			if (currentMeal.hashCode() == mealHashCode) {
+
+				ratingTotal = currentMeal.getRating().getTotalRating()
+						+ rating.getRatingValue();
+				newNbVotes = currentMeal.getRating().getNbVotes() + 1;
+				if( newNbVotes != 0) {				
+					ratingValue = ratingTotal / newNbVotes;
+				} else {
+					ratingValue = 0;
+				}
+
+				System.out.println("<setRating>: Inside : "
+						+ currentMeal.hashCode());
+
 				// Update Rating for this meal
 				currentMeal.getRating().setNbVotes(newNbVotes);
 				currentMeal.getRating().setTotalRating(ratingTotal);
@@ -349,8 +347,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 					if (!alreadyExist(newMeal)
 							&& !Utils.containsSpecialAscii(
 									newMeal.mealDescription, BAD_CHAR)
-							&& !Utils.containsSpecialAscii(newMeal.name,
-									BAD_CHAR)) {
+									&& !Utils.containsSpecialAscii(newMeal.name,
+											BAD_CHAR)) {
 						mCampusMeals.add(newMeal);
 						mCampusMealRatings.put(newMeal.hashCode(), mealRating);
 					}
