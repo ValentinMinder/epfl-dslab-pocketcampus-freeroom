@@ -1,0 +1,126 @@
+package org.pocketcampus.plugin.authentication.android;
+
+import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.core.PluginController;
+import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
+import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
+import org.pocketcampus.plugin.authentication.shared.TypeOfService;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.Toast;
+
+public class AuthenticationView extends PluginView implements IAuthenticationView {
+	
+	private AuthenticationController mController;
+	private IAuthenticationModel mModel;
+	
+	private StandardLayout mLayout;
+
+	@Override
+	protected Class<? extends PluginController> getMainControllerClass() {
+		return AuthenticationController.class;
+	}
+	
+	/**
+	 * Called once the view is connected to the controller.
+	 * If you don't implement <code>getMainControllerClass()</code> 
+	 * then the controller given here will simply be <code>null</code>.
+	 */
+	@Override
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		/*Intent aIntent = getIntent();
+		String aAction = aIntent.getAction();
+		Uri aData = aIntent.getData();
+		Bundle aExtras = aIntent.getExtras();
+		Log.v("TEST", aAction);
+		Log.v("TEST", (aData == null ? "aData is null" : aData.toString()));
+		Log.v("TEST", (aExtras == null ? "aExtras is null" : aExtras.toString()));
+		// 11-08 21:50:05.975: V/TEST(10987): android.intent.action.VIEW
+		// 11-08 21:50:05.975: V/TEST(10987): pocketcampus-redirect://PocketCampus?key=fz4nqsgcp0wasiftzptwxbbcpz3xp7m3
+		Intent aIntent = getIntent();
+		if("android.intent.action.VIEW".equals(aIntent.getAction())) {
+			Uri aData = aIntent.getData();
+			Log.v("TEST", aData.getAuthority());
+			Log.v("TEST", aData.getHost());
+			Log.v("TEST", aData.getPath());
+			Log.v("TEST", aData.getQuery());
+			Log.v("TEST", aData.getQueryParameter("key"));
+			Log.v("TEST", aData.getScheme());
+		}
+		*/
+		
+		// Get and cast the controller and model
+		mController = (AuthenticationController) controller;
+		mModel = (AuthenticationModel) controller.getModel();
+		
+		// The StandardLayout is a RelativeLayout with a TextView in its center.
+		mLayout = new StandardLayout(this);
+		
+		// The ActionBar is added automatically when you call setContentView
+		setContentView(mLayout);
+
+		// We need to force the display before asking the controller for the data, 
+		// as the controller may take some time to get it.
+		displayData();
+		
+	}
+
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		if(aIntent == null)
+			return;
+		if(!"android.intent.action.VIEW".equals(aIntent.getAction()))
+		return;
+		Uri aData = aIntent.getData();
+		if(aData == null)
+			return;
+		mController.forwardTequilaKeyForService(aData);
+	}
+
+	@Override
+	public void somethingUpdated() {
+		displayData();
+	}
+
+	private void displayData() {
+		mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
+				+ "SessionIds:\n" + mModel.getSessionIds());
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.authentication_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		if (item.getItemId() == R.id.authenticate_for_pocketcampus) {
+			mController.authenticateUserForService(TypeOfService.SERVICE_POCKETCAMPUS);
+			//finish();
+		} else if (item.getItemId() == R.id.authenticate_for_moodle) {
+			mController.authenticateUserForService(TypeOfService.SERVICE_MOODLE);
+			//finish();
+		} else if (item.getItemId() == R.id.authenticate_for_camipro) {
+			mController.authenticateUserForService(TypeOfService.SERVICE_CAMIPRO);
+			//finish();
+		}
+
+		return true;
+	}
+
+	@Override
+	public void networkErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+}
