@@ -121,8 +121,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 * Refreshes the display after some changes, e.g. preferences or suggestions
 	 */
 	private void refreshDisplay() {
-		mLayout.removeAllViews();
-		//Nothing is displaaaaaaayed >< But it works, the contents is the right one.
 		showMenusByRestaurants();
 	}
 
@@ -261,9 +259,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 * Shows the menus when suggestions are received
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> list) {
-		mLayout.removeAllViews();
-//		Nothing is displaaaaaaayed >< But it works, the contents is the right one.
-		
 		RatableListViewElement l = new RatableListViewElement(this, list, mLabeler);
 		l.setOnLineClickListener(mOnLineClickListener);
 		l.setOnRatingClickListener(mOnRatingClickListener);
