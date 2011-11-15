@@ -178,7 +178,7 @@ public class RssParser extends DefaultHandler {
 
 		for(String s : words) {
 			System.out.println(s);
-			if(s.length() > 2) {				
+			if(s.length() > 3) {				
 				String begin = s.substring(0,1);
 				begin = begin.toUpperCase();
 				
