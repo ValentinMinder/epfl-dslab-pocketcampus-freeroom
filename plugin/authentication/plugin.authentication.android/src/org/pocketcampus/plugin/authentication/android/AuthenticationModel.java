@@ -26,6 +26,10 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		mListeners.somethingUpdated();
 	}
 	
+	public void setMustFinish() {
+		mListeners.mustFinish();
+	}
+	
 
 	@Override
 	protected Class<? extends IView> getViewInterface() {

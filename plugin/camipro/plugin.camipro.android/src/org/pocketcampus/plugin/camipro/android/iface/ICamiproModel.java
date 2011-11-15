@@ -9,5 +9,6 @@ public interface ICamiproModel {
 	public List<Transaction> getTransactions();
 	public Double getBalance();
 	public EbankingBean getEbanking();
+	public String getCamiproCookie();
 	
 }

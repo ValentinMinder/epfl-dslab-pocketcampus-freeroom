@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.pocketcampus"
+      package="org.pocketcampus.plugin.camipro"
       android:versionCode="1"
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="8" />
@@ -18,6 +18,34 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 			</intent-filter>
+			
+			    
+			    
+			    
+			    
+<!-- 			Communication with authentication plugin     -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="pocketcampus-authenticate" android:host="camipro.plugin.pocketcampus.org" />
+			</intent-filter>
+			
+			    			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
 		</activity>
 		<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>

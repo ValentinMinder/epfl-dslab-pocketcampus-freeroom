@@ -13,8 +13,11 @@ import org.pocketcampus.plugin.camipro.shared.EbankingBean;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +50,25 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		//mLayout.setText("Loading");
 		//refreshAll();
+	}
+	
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		// If we were pinged by auth plugin, then we must read the sessId
+		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
+			Uri aData = aIntent.getData();
+			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
+				String sessId = aData.getQueryParameter("sessid");
+				mController.setCamiproCookie(sessId);
+				refreshAll();
+			}
+		}
+		// Otherwise continue normal start-up
+		// Check if we are not signed in then ping the auth plugin
+		if(mController.getCamiproCookie() == null) {
+			Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+			startActivity(authIntent);
+		}
 	}
 
 	@Override
@@ -112,11 +134,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
 		if(item.getItemId() == R.id.camipro_refresh_ebanking) {			
-			mController.refreshEbanking();
+			//mController.refreshEbanking();
 		} else if(item.getItemId() == R.id.camipro_refresh_transactions) {			
-			mController.refreshTransactions();
+			//mController.refreshTransactions();
 		} else if(item.getItemId() == R.id.camipro_refresh_balance) {			
-			mController.refreshBalance();
+			//mController.refreshBalance();
 		}
 		
 

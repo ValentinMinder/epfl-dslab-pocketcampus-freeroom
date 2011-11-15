@@ -31,6 +31,11 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		return ebankingBean;
 	}
 	
+	@Override
+	public String getCamiproCookie() {
+		return camiproCookie;
+	}
+	
 	public void setTransactions(List<Transaction> trans) {
 		transactionsList = trans;
 		mListeners.transactionsUpdated();
@@ -46,7 +51,14 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		mListeners.ebankingUpdated();
 	}
 	
+	public void setCamiproCookie(String aCamiproCookie) {
+		camiproCookie = aCamiproCookie;
+	}
+	
 	ICamiproView mListeners = (ICamiproView) getListeners();
+	
+	//TODO have camipro cookie saved in storage
+	private String camiproCookie;
 	
 	private List<Transaction> transactionsList;
 	private Double balanceValue;

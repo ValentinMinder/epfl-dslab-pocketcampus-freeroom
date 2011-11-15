@@ -76,12 +76,30 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	protected void handleIntent(Intent aIntent) {
 		if(aIntent == null)
 			return;
-		if(!"android.intent.action.VIEW".equals(aIntent.getAction()))
-		return;
+		if(!Intent.ACTION_VIEW.equals(aIntent.getAction()))
+			return;
 		Uri aData = aIntent.getData();
 		if(aData == null)
 			return;
-		mController.forwardTequilaKeyForService(aData);
+		Log.v("DEBUG", aData.toString());
+		if("pocketcampus-redirect".equals(aData.getScheme())) {
+			mController.forwardTequilaKeyForService(aData);
+			//} else if("pocketcampus.intent.action.AUTHENTICATION_LAUNCH".equals(aIntent.getAction())) {
+		} else if("pocketcampus-authenticate".equals(aData.getScheme())) {
+			// pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle
+			String pcService = aData.getQueryParameter("service");
+			if("moodle".equals(pcService)) {
+				mController.authenticateUserForService(TypeOfService.SERVICE_MOODLE);
+			} else if("camipro".equals(pcService)) {
+				mController.authenticateUserForService(TypeOfService.SERVICE_CAMIPRO);
+			}
+		} else {
+			// TODO
+			// currently moodle and camipro redirect back to http and https respectively
+			// so we must capture them from here
+			// ultimately this part should be captured by the pocketcampus-redirect section
+			mController.forwardTequilaKeyForService(aData);
+		}
 	}
 
 	@Override
@@ -90,8 +108,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 
 	private void displayData() {
-		mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
-				+ "SessionIds:\n" + mModel.getSessionIds());
+		/*mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
+				+ "SessionIds:\n" + mModel.getSessionIds());*/
+		mLayout.setText("Redirecting..." + "\n\n"
+				+ "Please wait");
 	}
 	
 	@Override
@@ -121,6 +141,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
 		toast.show();
+	}
+
+	@Override
+	public void mustFinish() {
+		finish();
 	}
 
 }
