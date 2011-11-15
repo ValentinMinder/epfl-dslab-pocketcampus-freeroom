@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -17,10 +18,11 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableExpandableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
+import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
-import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Sandwich;
+import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.app.Activity;
 import android.content.Context;
@@ -36,7 +38,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class FoodMainView extends PluginView implements IFoodView {
+public class FoodMainView extends PluginView implements IFoodMainView {
 	/* Activity */
 	private Activity mActivity;
 
@@ -114,6 +116,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		mLayout.setText(getResources().getString(R.string.food_no_menus));
 		mController.getRestaurantsList();
 		mController.getMeals();
+		mController.getSandwiches();
 	}
 
 	/**
@@ -121,13 +124,6 @@ public class FoodMainView extends PluginView implements IFoodView {
 	 */
 	private void refreshDisplay() {
 		showMenusByRestaurants();
-	}
-
-	@Override
-	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
-				Toast.LENGTH_SHORT);
-		toast.show();
 	}
 
 	/**
@@ -146,7 +142,9 @@ public class FoodMainView extends PluginView implements IFoodView {
 		if (item.getItemId() == R.id.food_by_resto) {
 			showMenusByRestaurants();
 		} else if (item.getItemId() == R.id.food_by_sandwiches) {
-
+			showSandwiches();
+		} else if (item.getItemId() == R.id.food_by_ratings) {
+			showMenusByRatings();
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			//Extras to add to the Intent
 			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
@@ -158,13 +156,12 @@ public class FoodMainView extends PluginView implements IFoodView {
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 		} else if (item.getItemId() == R.id.food_by_settings) {
 			Intent settings = new Intent(getApplicationContext(),
-					FoodPreferences.class);
+					FoodPreferencesView.class);
 			startActivity(settings);
 		}
 
 		return true;
 	}
-
 
 	public void restaurantsUpdated() {
 		Log.d("RESTAURANT", "Restaurants updated");
@@ -174,16 +171,57 @@ public class FoodMainView extends PluginView implements IFoodView {
 	public void menusUpdated() {
 		showMenusByRestaurants();
 	}
+	
+	@Override
+	public void ratingsUpdated() {
+		Log.d("RATING", "All Ratings updated");
+		//Refresh View
+	}
+	
+	@Override
+	public void ratingsUpdated(SubmitStatus status) {
+		Log.d("RATING", "One Rating updated");
+		//Toast with the status
+		if(status.equals(SubmitStatus.VALID)) {
+			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT).show();
+		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
+			Toast.makeText(this, R.string.food_rating_already_voted, Toast.LENGTH_SHORT).show();
+		} else if (status.equals(SubmitStatus.TOOEARLY)) {
+			Toast.makeText(this, R.string.food_rating_too_early, Toast.LENGTH_SHORT).show();
+		} else if (status.equals(SubmitStatus.ERROR)) {
+			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT).show();
+		}
+		
+		//Refresh View
+	}
 
+	@Override
+	public void sandwichesUpdated() {
+		Log.d("SANDWICHES","Sandwiches updated");
+		showSandwiches();
+	}
+	
+	@Override
+	public void networkErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
+				Toast.LENGTH_SHORT);
+		toast.show();
+	}
+	
+	/**
+	 * Shows menus sorted by Restaurant
+	 */
 	public void showMenusByRestaurants() {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
 				.getMealsByRestaurants();
+		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
 
 		/**
 		 * Iterate over the different restaurant menus
 		 */
 		if (!mealHashMap.isEmpty()) {
 
+			//Filtering restaurant that the user doesn't want to display
 			mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
 
 			if(mRestoPrefs.getAll().isEmpty()){
@@ -194,6 +232,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 						mMealLabeler, mViewConstructor);
 			}
 
+			//Create Listeners
 			if(mOnLineClickListener == null) {
 				mOnLineClickListener = new OnItemClickListener() {
 
@@ -203,6 +242,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 						final Meal meal = mealHashMap.get(v.getTag()).get(positionInSection);
 						
+						//Create the Builder for the Menu dialog
 						MenuDialog.Builder b = new MenuDialog.Builder(mActivity);
 						b.setCanceledOnTouchOutside(true);
 
@@ -218,6 +258,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 						b.setThirdButton(R.string.food_menu_dialog_thirdButton,
 								new MenuDialogListener(b, meal));
 
+						//Create the dialog and display it
 						MenuDialog dialog = b.create();
 						dialog.show();
 					}
@@ -233,16 +274,18 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 						final Meal meal = mealHashMap.get(okButton.getTag()).get(positionInSection);
 						
+						//Create the Builder for the Rating dialog
 						RatingDialog.Builder b = new
 								RatingDialog.Builder(mActivity);
-
+						
+						//Set different values for the dialog
 						b.setTitle(R.string.food_rating_dialog_title);
-
 						b.setOkButton(R.string.food_rating_dialog_OK,
 								new RatingDialogListener(b, meal, rating));
 						b.setCancelButton(R.string.food_rating_dialog_cancel,
 								new RatingDialogListener());
 
+						//Create the dialog and display it
 						RatingDialog dialog = b.create();
 						dialog.show();
 					}
@@ -253,24 +296,40 @@ public class FoodMainView extends PluginView implements IFoodView {
 			mLayout.addView(mList);
 		}
 	}
+	
+	/**
+	 * Shows menus sorted by Ratings
+	 */
+	public void showMenusByRatings() {
+		List<Meal> mealsByRatings = mModel.getMealsByRatings();
+		Log.d("RATING", "Size of meals list : " + mealsByRatings.size());
+		
+//		RatableListViewElement l = new RatableListViewElement(this, mealsByRatings, mMealLabeler);
+//		l.setOnLineClickListener(mOnLineClickListener);
+//		l.setOnRatingClickListener(mOnRatingClickListener);
+//		mLayout.addView(l);
+	}
 
 	/**
 	 * Shows the menus when suggestions are received
 	 */
-	public void showMenusBySuggestions(ArrayList<Meal> list) {
-		RatableListViewElement l = new RatableListViewElement(this, list, mMealLabeler);
-		l.setOnLineClickListener(mOnLineClickListener);
-		l.setOnRatingClickListener(mOnRatingClickListener);
-		mLayout.addView(l);
+	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
+		Log.d("SUGGESTIONS", "Size of suggested meals : " + mealsBySuggestions.size());
+		
+//		RatableListViewElement l = new RatableListViewElement(this, mealsBySuggestions, mMealLabeler);
+//		l.setOnLineClickListener(mOnLineClickListener);
+//		l.setOnRatingClickListener(mOnRatingClickListener);
+//		mLayout.addView(l);
 	}
 	
 	/**
 	 * Shows the sandwiches
-	 * @param 
-	 * @return
 	 */
 	public void showSandwiches() {
 		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel.getSandwichesByRestaurants();
+		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
+		
+		//To be continued...
 	}
 	
 	private HashMap<String, Vector<Meal>> preferedRestaurants(HashMap<String, Vector<Meal>> map){

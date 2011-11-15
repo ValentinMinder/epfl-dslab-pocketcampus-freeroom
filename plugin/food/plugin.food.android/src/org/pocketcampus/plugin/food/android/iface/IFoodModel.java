@@ -20,6 +20,8 @@ public interface IFoodModel {
 	public HashMap<String, Vector<Meal>> getMealsByRestaurants();
 	public List<MealTag> getMealTags();
 	
+	public List<Meal> getMealsByRatings();
+	
 	public void setSandwiches(List<Sandwich> list);
 	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants();
 
