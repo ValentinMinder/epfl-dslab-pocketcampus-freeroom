@@ -11,14 +11,14 @@
         
 		<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:label="Authentication"
+			android:label="@string/authentication_plugin_title"
 			android:launchMode="singleTask"
 			android:screenOrientation="portrait">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-			</intent-filter>
+<!-- 			<intent-filter> -->
+<!-- 				<action android:name="android.intent.action.MAIN" /> -->
+<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
+<!-- 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
+<!-- 			</intent-filter> -->
 			
 			
 <!-- 			Communication with other plugins     -->

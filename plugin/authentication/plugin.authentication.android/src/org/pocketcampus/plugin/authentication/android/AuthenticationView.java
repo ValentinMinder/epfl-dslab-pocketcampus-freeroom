@@ -113,7 +113,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		mLayout.setText("Redirecting..." + "\n\n"
 				+ "Please wait");
 	}
-	
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -136,7 +136,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 
 		return true;
 	}
-
+*/
 	@Override
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
