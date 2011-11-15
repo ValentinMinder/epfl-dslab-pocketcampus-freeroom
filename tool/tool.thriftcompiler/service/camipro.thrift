@@ -1,28 +1,38 @@
 namespace java org.pocketcampus.plugin.camipro.shared
 
-include "../include/common.thrift"
+include "authentication.thrift"
 
-// refrain from using the following names in your Thrift files: int, id,  description, value, or any C/C++ keyword.
-
-struct EbankingBean {
-	1: required string paidNameTo;
-	2: required string accountNr;
-	3: required string BvrReference;
-	4: required string BvrReferenceReadable;
-	5: required double total1M;
-	6: required double total3M;
-	7: required double average3M;
-}
 
 struct Transaction {
-	1: required string xType;
-	2: required string xDescription;
-	3: required string xDate;
-	4: required double xAmount;
+	1: required string iDate;
+	2: required string iOperation;
+	3: required string iPlace;
+	4: required double iAmount;
+}
+
+struct BalanceAndTransactions {
+	1: required double iBalance; 
+	2: required list<Transaction> iTransactions;
+}
+
+
+struct CardStatistics {
+	1: required double iTotalPaymentsLastMonth;
+	2: required double iTotalPaymentsLastThreeMonths;
+}
+
+struct CardLoadingWithEbankingInfo {
+	1: required string iPaidTo;
+	2: required string iAccountNumber;
+	3: required string iReferenceNumber;
+}
+
+struct StatsAndLoadingInfo {
+	1: required CardStatistics iCardStatistics;
+	2: required CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
 }
 
 service CamiproService {
-	double getBalance();
-	list<Transaction> getTransactions();
-	EbankingBean getEbankingBean();
+	BalanceAndTransactions getBalanceAndTransactions(1: authentication.SessionId aSessionId);
+	StatsAndLoadingInfo getStatsAndLoadingInfo(1: authentication.SessionId aSessionId);
 }

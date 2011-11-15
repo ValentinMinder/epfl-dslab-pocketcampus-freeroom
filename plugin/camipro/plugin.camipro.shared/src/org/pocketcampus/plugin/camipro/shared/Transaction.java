@@ -24,22 +24,22 @@ import org.slf4j.LoggerFactory;
 public class Transaction implements org.apache.thrift.TBase<Transaction, Transaction._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Transaction");
 
-  private static final org.apache.thrift.protocol.TField X_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("xType", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField X_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("xDescription", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField X_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("xDate", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField X_AMOUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("xAmount", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
+  private static final org.apache.thrift.protocol.TField I_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iDate", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField I_OPERATION_FIELD_DESC = new org.apache.thrift.protocol.TField("iOperation", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_PLACE_FIELD_DESC = new org.apache.thrift.protocol.TField("iPlace", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField I_AMOUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("iAmount", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
 
-  public String xType; // required
-  public String xDescription; // required
-  public String xDate; // required
-  public double xAmount; // required
+  public String iDate; // required
+  public String iOperation; // required
+  public String iPlace; // required
+  public double iAmount; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    X_TYPE((short)1, "xType"),
-    X_DESCRIPTION((short)2, "xDescription"),
-    X_DATE((short)3, "xDate"),
-    X_AMOUNT((short)4, "xAmount");
+    I_DATE((short)1, "iDate"),
+    I_OPERATION((short)2, "iOperation"),
+    I_PLACE((short)3, "iPlace"),
+    I_AMOUNT((short)4, "iAmount");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -54,14 +54,14 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // X_TYPE
-          return X_TYPE;
-        case 2: // X_DESCRIPTION
-          return X_DESCRIPTION;
-        case 3: // X_DATE
-          return X_DATE;
-        case 4: // X_AMOUNT
-          return X_AMOUNT;
+        case 1: // I_DATE
+          return I_DATE;
+        case 2: // I_OPERATION
+          return I_OPERATION;
+        case 3: // I_PLACE
+          return I_PLACE;
+        case 4: // I_AMOUNT
+          return I_AMOUNT;
         default:
           return null;
       }
@@ -102,19 +102,19 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
   }
 
   // isset id assignments
-  private static final int __XAMOUNT_ISSET_ID = 0;
+  private static final int __IAMOUNT_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.X_TYPE, new org.apache.thrift.meta_data.FieldMetaData("xType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_DATE, new org.apache.thrift.meta_data.FieldMetaData("iDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.X_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("xDescription", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_OPERATION, new org.apache.thrift.meta_data.FieldMetaData("iOperation", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.X_DATE, new org.apache.thrift.meta_data.FieldMetaData("xDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_PLACE, new org.apache.thrift.meta_data.FieldMetaData("iPlace", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.X_AMOUNT, new org.apache.thrift.meta_data.FieldMetaData("xAmount", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_AMOUNT, new org.apache.thrift.meta_data.FieldMetaData("iAmount", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Transaction.class, metaDataMap);
@@ -124,17 +124,17 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
   }
 
   public Transaction(
-    String xType,
-    String xDescription,
-    String xDate,
-    double xAmount)
+    String iDate,
+    String iOperation,
+    String iPlace,
+    double iAmount)
   {
     this();
-    this.xType = xType;
-    this.xDescription = xDescription;
-    this.xDate = xDate;
-    this.xAmount = xAmount;
-    setXAmountIsSet(true);
+    this.iDate = iDate;
+    this.iOperation = iOperation;
+    this.iPlace = iPlace;
+    this.iAmount = iAmount;
+    setIAmountIsSet(true);
   }
 
   /**
@@ -143,16 +143,16 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
   public Transaction(Transaction other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetXType()) {
-      this.xType = other.xType;
+    if (other.isSetIDate()) {
+      this.iDate = other.iDate;
     }
-    if (other.isSetXDescription()) {
-      this.xDescription = other.xDescription;
+    if (other.isSetIOperation()) {
+      this.iOperation = other.iOperation;
     }
-    if (other.isSetXDate()) {
-      this.xDate = other.xDate;
+    if (other.isSetIPlace()) {
+      this.iPlace = other.iPlace;
     }
-    this.xAmount = other.xAmount;
+    this.iAmount = other.iAmount;
   }
 
   public Transaction deepCopy() {
@@ -161,139 +161,139 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
 
   @Override
   public void clear() {
-    this.xType = null;
-    this.xDescription = null;
-    this.xDate = null;
-    setXAmountIsSet(false);
-    this.xAmount = 0.0;
+    this.iDate = null;
+    this.iOperation = null;
+    this.iPlace = null;
+    setIAmountIsSet(false);
+    this.iAmount = 0.0;
   }
 
-  public String getXType() {
-    return this.xType;
+  public String getIDate() {
+    return this.iDate;
   }
 
-  public Transaction setXType(String xType) {
-    this.xType = xType;
+  public Transaction setIDate(String iDate) {
+    this.iDate = iDate;
     return this;
   }
 
-  public void unsetXType() {
-    this.xType = null;
+  public void unsetIDate() {
+    this.iDate = null;
   }
 
-  /** Returns true if field xType is set (has been assigned a value) and false otherwise */
-  public boolean isSetXType() {
-    return this.xType != null;
+  /** Returns true if field iDate is set (has been assigned a value) and false otherwise */
+  public boolean isSetIDate() {
+    return this.iDate != null;
   }
 
-  public void setXTypeIsSet(boolean value) {
+  public void setIDateIsSet(boolean value) {
     if (!value) {
-      this.xType = null;
+      this.iDate = null;
     }
   }
 
-  public String getXDescription() {
-    return this.xDescription;
+  public String getIOperation() {
+    return this.iOperation;
   }
 
-  public Transaction setXDescription(String xDescription) {
-    this.xDescription = xDescription;
+  public Transaction setIOperation(String iOperation) {
+    this.iOperation = iOperation;
     return this;
   }
 
-  public void unsetXDescription() {
-    this.xDescription = null;
+  public void unsetIOperation() {
+    this.iOperation = null;
   }
 
-  /** Returns true if field xDescription is set (has been assigned a value) and false otherwise */
-  public boolean isSetXDescription() {
-    return this.xDescription != null;
+  /** Returns true if field iOperation is set (has been assigned a value) and false otherwise */
+  public boolean isSetIOperation() {
+    return this.iOperation != null;
   }
 
-  public void setXDescriptionIsSet(boolean value) {
+  public void setIOperationIsSet(boolean value) {
     if (!value) {
-      this.xDescription = null;
+      this.iOperation = null;
     }
   }
 
-  public String getXDate() {
-    return this.xDate;
+  public String getIPlace() {
+    return this.iPlace;
   }
 
-  public Transaction setXDate(String xDate) {
-    this.xDate = xDate;
+  public Transaction setIPlace(String iPlace) {
+    this.iPlace = iPlace;
     return this;
   }
 
-  public void unsetXDate() {
-    this.xDate = null;
+  public void unsetIPlace() {
+    this.iPlace = null;
   }
 
-  /** Returns true if field xDate is set (has been assigned a value) and false otherwise */
-  public boolean isSetXDate() {
-    return this.xDate != null;
+  /** Returns true if field iPlace is set (has been assigned a value) and false otherwise */
+  public boolean isSetIPlace() {
+    return this.iPlace != null;
   }
 
-  public void setXDateIsSet(boolean value) {
+  public void setIPlaceIsSet(boolean value) {
     if (!value) {
-      this.xDate = null;
+      this.iPlace = null;
     }
   }
 
-  public double getXAmount() {
-    return this.xAmount;
+  public double getIAmount() {
+    return this.iAmount;
   }
 
-  public Transaction setXAmount(double xAmount) {
-    this.xAmount = xAmount;
-    setXAmountIsSet(true);
+  public Transaction setIAmount(double iAmount) {
+    this.iAmount = iAmount;
+    setIAmountIsSet(true);
     return this;
   }
 
-  public void unsetXAmount() {
-    __isset_bit_vector.clear(__XAMOUNT_ISSET_ID);
+  public void unsetIAmount() {
+    __isset_bit_vector.clear(__IAMOUNT_ISSET_ID);
   }
 
-  /** Returns true if field xAmount is set (has been assigned a value) and false otherwise */
-  public boolean isSetXAmount() {
-    return __isset_bit_vector.get(__XAMOUNT_ISSET_ID);
+  /** Returns true if field iAmount is set (has been assigned a value) and false otherwise */
+  public boolean isSetIAmount() {
+    return __isset_bit_vector.get(__IAMOUNT_ISSET_ID);
   }
 
-  public void setXAmountIsSet(boolean value) {
-    __isset_bit_vector.set(__XAMOUNT_ISSET_ID, value);
+  public void setIAmountIsSet(boolean value) {
+    __isset_bit_vector.set(__IAMOUNT_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case X_TYPE:
+    case I_DATE:
       if (value == null) {
-        unsetXType();
+        unsetIDate();
       } else {
-        setXType((String)value);
+        setIDate((String)value);
       }
       break;
 
-    case X_DESCRIPTION:
+    case I_OPERATION:
       if (value == null) {
-        unsetXDescription();
+        unsetIOperation();
       } else {
-        setXDescription((String)value);
+        setIOperation((String)value);
       }
       break;
 
-    case X_DATE:
+    case I_PLACE:
       if (value == null) {
-        unsetXDate();
+        unsetIPlace();
       } else {
-        setXDate((String)value);
+        setIPlace((String)value);
       }
       break;
 
-    case X_AMOUNT:
+    case I_AMOUNT:
       if (value == null) {
-        unsetXAmount();
+        unsetIAmount();
       } else {
-        setXAmount((Double)value);
+        setIAmount((Double)value);
       }
       break;
 
@@ -302,17 +302,17 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case X_TYPE:
-      return getXType();
+    case I_DATE:
+      return getIDate();
 
-    case X_DESCRIPTION:
-      return getXDescription();
+    case I_OPERATION:
+      return getIOperation();
 
-    case X_DATE:
-      return getXDate();
+    case I_PLACE:
+      return getIPlace();
 
-    case X_AMOUNT:
-      return Double.valueOf(getXAmount());
+    case I_AMOUNT:
+      return Double.valueOf(getIAmount());
 
     }
     throw new IllegalStateException();
@@ -325,14 +325,14 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     }
 
     switch (field) {
-    case X_TYPE:
-      return isSetXType();
-    case X_DESCRIPTION:
-      return isSetXDescription();
-    case X_DATE:
-      return isSetXDate();
-    case X_AMOUNT:
-      return isSetXAmount();
+    case I_DATE:
+      return isSetIDate();
+    case I_OPERATION:
+      return isSetIOperation();
+    case I_PLACE:
+      return isSetIPlace();
+    case I_AMOUNT:
+      return isSetIAmount();
     }
     throw new IllegalStateException();
   }
@@ -350,39 +350,39 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     if (that == null)
       return false;
 
-    boolean this_present_xType = true && this.isSetXType();
-    boolean that_present_xType = true && that.isSetXType();
-    if (this_present_xType || that_present_xType) {
-      if (!(this_present_xType && that_present_xType))
+    boolean this_present_iDate = true && this.isSetIDate();
+    boolean that_present_iDate = true && that.isSetIDate();
+    if (this_present_iDate || that_present_iDate) {
+      if (!(this_present_iDate && that_present_iDate))
         return false;
-      if (!this.xType.equals(that.xType))
-        return false;
-    }
-
-    boolean this_present_xDescription = true && this.isSetXDescription();
-    boolean that_present_xDescription = true && that.isSetXDescription();
-    if (this_present_xDescription || that_present_xDescription) {
-      if (!(this_present_xDescription && that_present_xDescription))
-        return false;
-      if (!this.xDescription.equals(that.xDescription))
+      if (!this.iDate.equals(that.iDate))
         return false;
     }
 
-    boolean this_present_xDate = true && this.isSetXDate();
-    boolean that_present_xDate = true && that.isSetXDate();
-    if (this_present_xDate || that_present_xDate) {
-      if (!(this_present_xDate && that_present_xDate))
+    boolean this_present_iOperation = true && this.isSetIOperation();
+    boolean that_present_iOperation = true && that.isSetIOperation();
+    if (this_present_iOperation || that_present_iOperation) {
+      if (!(this_present_iOperation && that_present_iOperation))
         return false;
-      if (!this.xDate.equals(that.xDate))
+      if (!this.iOperation.equals(that.iOperation))
         return false;
     }
 
-    boolean this_present_xAmount = true;
-    boolean that_present_xAmount = true;
-    if (this_present_xAmount || that_present_xAmount) {
-      if (!(this_present_xAmount && that_present_xAmount))
+    boolean this_present_iPlace = true && this.isSetIPlace();
+    boolean that_present_iPlace = true && that.isSetIPlace();
+    if (this_present_iPlace || that_present_iPlace) {
+      if (!(this_present_iPlace && that_present_iPlace))
         return false;
-      if (this.xAmount != that.xAmount)
+      if (!this.iPlace.equals(that.iPlace))
+        return false;
+    }
+
+    boolean this_present_iAmount = true;
+    boolean that_present_iAmount = true;
+    if (this_present_iAmount || that_present_iAmount) {
+      if (!(this_present_iAmount && that_present_iAmount))
+        return false;
+      if (this.iAmount != that.iAmount)
         return false;
     }
 
@@ -393,25 +393,25 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_xType = true && (isSetXType());
-    builder.append(present_xType);
-    if (present_xType)
-      builder.append(xType);
+    boolean present_iDate = true && (isSetIDate());
+    builder.append(present_iDate);
+    if (present_iDate)
+      builder.append(iDate);
 
-    boolean present_xDescription = true && (isSetXDescription());
-    builder.append(present_xDescription);
-    if (present_xDescription)
-      builder.append(xDescription);
+    boolean present_iOperation = true && (isSetIOperation());
+    builder.append(present_iOperation);
+    if (present_iOperation)
+      builder.append(iOperation);
 
-    boolean present_xDate = true && (isSetXDate());
-    builder.append(present_xDate);
-    if (present_xDate)
-      builder.append(xDate);
+    boolean present_iPlace = true && (isSetIPlace());
+    builder.append(present_iPlace);
+    if (present_iPlace)
+      builder.append(iPlace);
 
-    boolean present_xAmount = true;
-    builder.append(present_xAmount);
-    if (present_xAmount)
-      builder.append(xAmount);
+    boolean present_iAmount = true;
+    builder.append(present_iAmount);
+    if (present_iAmount)
+      builder.append(iAmount);
 
     return builder.toHashCode();
   }
@@ -424,42 +424,42 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     int lastComparison = 0;
     Transaction typedOther = (Transaction)other;
 
-    lastComparison = Boolean.valueOf(isSetXType()).compareTo(typedOther.isSetXType());
+    lastComparison = Boolean.valueOf(isSetIDate()).compareTo(typedOther.isSetIDate());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetXType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.xType, typedOther.xType);
+    if (isSetIDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iDate, typedOther.iDate);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetXDescription()).compareTo(typedOther.isSetXDescription());
+    lastComparison = Boolean.valueOf(isSetIOperation()).compareTo(typedOther.isSetIOperation());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetXDescription()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.xDescription, typedOther.xDescription);
+    if (isSetIOperation()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iOperation, typedOther.iOperation);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetXDate()).compareTo(typedOther.isSetXDate());
+    lastComparison = Boolean.valueOf(isSetIPlace()).compareTo(typedOther.isSetIPlace());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetXDate()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.xDate, typedOther.xDate);
+    if (isSetIPlace()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iPlace, typedOther.iPlace);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetXAmount()).compareTo(typedOther.isSetXAmount());
+    lastComparison = Boolean.valueOf(isSetIAmount()).compareTo(typedOther.isSetIAmount());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetXAmount()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.xAmount, typedOther.xAmount);
+    if (isSetIAmount()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iAmount, typedOther.iAmount);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -481,31 +481,31 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
         break;
       }
       switch (field.id) {
-        case 1: // X_TYPE
+        case 1: // I_DATE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.xType = iprot.readString();
+            this.iDate = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // X_DESCRIPTION
+        case 2: // I_OPERATION
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.xDescription = iprot.readString();
+            this.iOperation = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // X_DATE
+        case 3: // I_PLACE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.xDate = iprot.readString();
+            this.iPlace = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // X_AMOUNT
+        case 4: // I_AMOUNT
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-            this.xAmount = iprot.readDouble();
-            setXAmountIsSet(true);
+            this.iAmount = iprot.readDouble();
+            setIAmountIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -518,8 +518,8 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetXAmount()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'xAmount' was not found in serialized data! Struct: " + toString());
+    if (!isSetIAmount()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iAmount' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -528,23 +528,23 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.xType != null) {
-      oprot.writeFieldBegin(X_TYPE_FIELD_DESC);
-      oprot.writeString(this.xType);
+    if (this.iDate != null) {
+      oprot.writeFieldBegin(I_DATE_FIELD_DESC);
+      oprot.writeString(this.iDate);
       oprot.writeFieldEnd();
     }
-    if (this.xDescription != null) {
-      oprot.writeFieldBegin(X_DESCRIPTION_FIELD_DESC);
-      oprot.writeString(this.xDescription);
+    if (this.iOperation != null) {
+      oprot.writeFieldBegin(I_OPERATION_FIELD_DESC);
+      oprot.writeString(this.iOperation);
       oprot.writeFieldEnd();
     }
-    if (this.xDate != null) {
-      oprot.writeFieldBegin(X_DATE_FIELD_DESC);
-      oprot.writeString(this.xDate);
+    if (this.iPlace != null) {
+      oprot.writeFieldBegin(I_PLACE_FIELD_DESC);
+      oprot.writeString(this.iPlace);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(X_AMOUNT_FIELD_DESC);
-    oprot.writeDouble(this.xAmount);
+    oprot.writeFieldBegin(I_AMOUNT_FIELD_DESC);
+    oprot.writeDouble(this.iAmount);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -555,32 +555,32 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
     StringBuilder sb = new StringBuilder("Transaction(");
     boolean first = true;
 
-    sb.append("xType:");
-    if (this.xType == null) {
+    sb.append("iDate:");
+    if (this.iDate == null) {
       sb.append("null");
     } else {
-      sb.append(this.xType);
+      sb.append(this.iDate);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("xDescription:");
-    if (this.xDescription == null) {
+    sb.append("iOperation:");
+    if (this.iOperation == null) {
       sb.append("null");
     } else {
-      sb.append(this.xDescription);
+      sb.append(this.iOperation);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("xDate:");
-    if (this.xDate == null) {
+    sb.append("iPlace:");
+    if (this.iPlace == null) {
       sb.append("null");
     } else {
-      sb.append(this.xDate);
+      sb.append(this.iPlace);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("xAmount:");
-    sb.append(this.xAmount);
+    sb.append("iAmount:");
+    sb.append(this.iAmount);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -588,16 +588,16 @@ public class Transaction implements org.apache.thrift.TBase<Transaction, Transac
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (xType == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'xType' was not present! Struct: " + toString());
+    if (iDate == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iDate' was not present! Struct: " + toString());
     }
-    if (xDescription == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'xDescription' was not present! Struct: " + toString());
+    if (iOperation == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iOperation' was not present! Struct: " + toString());
     }
-    if (xDate == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'xDate' was not present! Struct: " + toString());
+    if (iPlace == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iPlace' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'xAmount' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'iAmount' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

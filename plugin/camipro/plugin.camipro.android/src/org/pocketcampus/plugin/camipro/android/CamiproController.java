@@ -2,10 +2,11 @@ package org.pocketcampus.plugin.camipro.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.authentication.shared.SessionId;
+import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
-import org.pocketcampus.plugin.camipro.android.req.BalanceRequest;
-import org.pocketcampus.plugin.camipro.android.req.EbankingRequest;
-import org.pocketcampus.plugin.camipro.android.req.TransactionsRequest;
+import org.pocketcampus.plugin.camipro.android.req.BalanceAndTransactionsRequest;
+import org.pocketcampus.plugin.camipro.android.req.StatsAndLoadingInfoRequest;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
@@ -22,7 +23,9 @@ public class CamiproController extends PluginController implements ICamiproContr
 		
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		//TODO for now, need two clients to be able to issue two concurrent server requests
+		mClientBT = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClientSL = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
 	@Override
@@ -38,19 +41,22 @@ public class CamiproController extends PluginController implements ICamiproContr
 		return mModel.getCamiproCookie();
 	}
 	
-	public void refreshBalance() {
-		new BalanceRequest().start(this, mClient, (Object)null);
+	public void refreshBalanceAndTransactions() {
+		new BalanceAndTransactionsRequest().start(this, mClientBT, buildSessionId());
 	}
 	
-	public void refreshEbanking() {
-		new EbankingRequest().start(this, mClient, (Object)null);
+	public void refreshStatsAndLoadingInfo() {
+		new StatsAndLoadingInfoRequest().start(this, mClientSL, buildSessionId());
 	}
 	
-	public void refreshTransactions() {
-		new TransactionsRequest().start(this, mClient, (Object)null);
+	private SessionId buildSessionId() {
+		SessionId sessId = new SessionId(TypeOfService.SERVICE_CAMIPRO);
+		sessId.setCamiproCookie(mModel.getCamiproCookie());
+		return sessId;
 	}
 	
 	private CamiproModel mModel;
-	private Iface mClient;
+	private Iface mClientBT;
+	private Iface mClientSL;
 	
 }

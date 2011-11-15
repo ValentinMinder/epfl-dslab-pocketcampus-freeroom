@@ -25,6 +25,7 @@ import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.SessionToken;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
+import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;

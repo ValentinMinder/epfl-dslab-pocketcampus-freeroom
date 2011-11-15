@@ -1,19 +1,30 @@
 package org.pocketcampus.plugin.camipro.server;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.URLLoader;
+import org.pocketcampus.plugin.authentication.shared.SessionId;
+import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 import org.pocketcampus.plugin.camipro.server.gsonobjects.BalanceObj;
 import org.pocketcampus.plugin.camipro.server.gsonobjects.EbankingObj;
 import org.pocketcampus.plugin.camipro.server.gsonobjects.TransactionsObj;
 import org.pocketcampus.plugin.camipro.server.gsonobjects.TransactionsObj.TransactionsList.TransactionObj;
+import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
-import org.pocketcampus.plugin.camipro.shared.EbankingBean;
+import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
+import org.pocketcampus.plugin.camipro.shared.CardStatistics;
+import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import com.google.gson.Gson;
@@ -32,7 +43,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	public CamiproServiceImpl() {
 		System.out.println("Starting Camipro plugin server ...");
 	}
-
+/*
 	@Override
 	public double getBalance() throws TException {
 		System.out.println("getBalance called");
@@ -80,6 +91,119 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
 	}
 
+	// Comparator used to sort the transactions
+	private static Comparator<Transaction> c = new Comparator<Transaction>() {
+		public int compare(Transaction o1, Transaction o2) {
+			return o2.xDate.compareTo(o1.xDate);
+		}
+	};*/
+
+	
+	
+	
+	@Override
+	public BalanceAndTransactions getBalanceAndTransactions(SessionId aSessionId) throws TException {
+		System.out.println("getBalanceAndTransactions");
+		String page = null;
+		Cookie cookie = new Cookie();
+		cookie.importFromString(aSessionId.getCamiproCookie());
+		
+		try {
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/sertrans", cookie);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("getBalanceAndTransactions: Failed to get data from Camipro upstream server");
+		}
+        
+		double tBalance = 0.0;
+		LinkedList<Transaction> tTransactions = new LinkedList<Transaction>();
+		
+		page = getSubstringBetween(page, "<table class='table' width='600px' style='margin-bottom: 10px;'>", "</table>");
+		for (String i : page.split("</tr>")) {
+			if(i.indexOf("<td></td><td></td>") != -1) {
+				tBalance = Double.parseDouble(getSubstringBetween(i, "<td style='text-align:right;vertical-align:bottom;'><b>", "</b></td>"));
+			} else if(i.startsWith("<td style='text-align:left'>")) {
+				String[] trans = i.split("</td>");
+				if(trans.length < 4)
+					continue;
+				tTransactions.add(new Transaction(
+						getSubstringBetween(trans[0], ">", "<").replace(" ", "\nat "),
+						getSubstringBetween(trans[1], ">", "<"),
+						getSubstringBetween(trans[2], ">", "<"),
+						Double.parseDouble(getSubstringBetween(trans[3], ">", "<"))));
+			}
+		}
+		
+		return new BalanceAndTransactions(tBalance, tTransactions);
+	}
+
+	@Override
+	public StatsAndLoadingInfo getStatsAndLoadingInfo(SessionId aSessionId) throws TException {
+		System.out.println("getStatsAndLoadingInfo");
+		String page = null;
+		Cookie cookie = new Cookie();
+		cookie.importFromString(aSessionId.getCamiproCookie());
+		
+		try {
+			page = getPageWithCookie("https://cmp2www.epfl.ch/client/ebanking", cookie);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("getStatsAndLoadingInfo: Failed to get data from Camipro upstream server");
+		}
+		
+		String PaymentFor = getSubstringBetween(page, "name=\"PaymentFor\">", "<");
+		String ReferenceNbr = getLastSubstringBetween(page, "\"", "\" name=\"ReferenceNr\"");
+		String AccountNbr = getLastSubstringBetween(page, "\"", "\" name=\"Account\"");
+		PaymentFor = StringEscapeUtils.unescapeHtml4(PaymentFor);
+		
+		String Total1M = getSubstringBetween(page, "<h5>", "</h5>");
+		String Total3M = getLastSubstringBetween(page, "<h5>", "</h5>");
+		double dTotal1M = Double.parseDouble(getSubstringBetween(Total1M, "CHF ", "<"));
+		double dTotal3M = Double.parseDouble(getSubstringBetween(Total3M, "CHF ", " "));
+		
+		CardStatistics tCardStatistics = new CardStatistics(dTotal1M, dTotal3M);
+		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(PaymentFor, AccountNbr, ReferenceNbr);
+		return new StatsAndLoadingInfo(tCardStatistics, tCardLoadingWithEbankingInfo);
+	}
+	
+	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
+		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+		conn.setRequestProperty("Cookie", cookie.cookie());
+		BufferedInputStream buffer = new BufferedInputStream(conn.getInputStream());
+		StringBuilder builder = new StringBuilder();
+		int byteRead;
+		while ((byteRead = buffer.read()) != -1)
+			builder.append((char) byteRead);
+		buffer.close();
+		return builder.toString();
+	}
+	
+	private String getSubstringBetween(String orig, String before, String after) {
+		int b = orig.indexOf(before);
+		if(b != -1) {
+			orig = orig.substring(b + before.length());
+		}
+		int a = orig.indexOf(after);
+		if(a != -1) {
+			orig = orig.substring(0, a);
+		}
+		return orig;
+	}
+	
+	private String getLastSubstringBetween(String orig, String before, String after) {
+		int a = orig.lastIndexOf(after);
+		if(a != -1) {
+			orig = orig.substring(0, a);
+		}
+		int b = orig.lastIndexOf(before);
+		if(b != -1) {
+			orig = orig.substring(b + before.length());
+		}
+		return orig;
+	}
+	
+	
+	
 	
 	/*private AuthToken getToken(HttpServletRequest request) {
 		String json = null;
@@ -93,10 +217,4 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
 	}*/
 	
-	// Comparator used to sort the transactions
-	private static Comparator<Transaction> c = new Comparator<Transaction>() {
-		public int compare(Transaction o1, Transaction o2) {
-			return o2.xDate.compareTo(o1.xDate);
-		}
-	};
 }

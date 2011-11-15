@@ -1,4 +1,4 @@
-package org.pocketcampus.authentication.server;
+package org.pocketcampus.plugin.authentication.shared.utils;
 
 import java.util.HashMap;
 import java.util.List;

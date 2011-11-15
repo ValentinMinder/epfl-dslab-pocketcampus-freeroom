@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.authentication.android;
 
-import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
@@ -12,8 +11,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
 public class AuthenticationView extends PluginView implements IAuthenticationView {
@@ -108,10 +105,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 
 	private void displayData() {
-		/*mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
-				+ "SessionIds:\n" + mModel.getSessionIds());*/
-		mLayout.setText("Redirecting..." + "\n\n"
-				+ "Please wait");
+		mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
+				+ "SessionIds:\n" + mModel.getSessionIds());
+		mLayout.setText("Tequila Authentication" + "\n\n\n"
+				+ "Redirecting... Please wait\n\n");
 	}
 	/*
 	@Override

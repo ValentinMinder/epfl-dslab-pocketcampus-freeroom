@@ -5,5 +5,6 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 public interface ICamiproView extends IView {
 	void transactionsUpdated();
 	void balanceUpdated();
-	void ebankingUpdated();
+	void cardLoadingWithEbankingInfoUpdated();
+	void cardStatisticsUpdated();
 }
