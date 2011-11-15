@@ -16,9 +16,14 @@ import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -33,6 +38,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	private StandardLayout mMainLayout;
 	
 	private PersonDetailsDialog dialog;
+	private int shownPersonIndex;
 	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some view may not need
@@ -155,6 +161,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
 					Person p = (Person) adapter.getItemAtPosition(pos);
 					mModel.selectPerson(p);
+					shownPersonIndex = pos;
 					mController.getProfilePicture(p.sciper);
 					System.out.println(p);
 					showPersonsDetails();
@@ -180,6 +187,8 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	protected void showPersonsDetails() {
 	
 		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
+		//TODO make fade in if necessary		
+		//http://stackoverflow.com/questions/4817014/animate-a-custom-dialog/5591827#5591827
 		dialog.show();
 	}
 	
@@ -204,6 +213,32 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	public void pictureUpdated() {
 		dialog.loadPicture();
 		
+	}
+	
+	public void showNextPerson(){
+		//TODO secure this
+		//todo try to fade out
+		dialog.dismiss();
+		
+		//SECURE THIS
+		shownPersonIndex++;
+		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
+		mModel.selectPerson(p);
+		mController.getProfilePicture(p.sciper);
+		showPersonsDetails();
+	}
+	
+	public void showPreviousPerson(){
+		//TODO secure this
+		//todo try to fade out
+		dialog.dismiss();
+		
+		//SECURE THIS
+		shownPersonIndex--;
+		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
+		mModel.selectPerson(p);
+		mController.getProfilePicture(p.sciper);
+		showPersonsDetails();
 	}
 	
 }
