@@ -8,23 +8,28 @@ import java.util.Vector;
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
-import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import android.widget.Toast;
+
 public class FoodModel extends PluginModel implements IFoodModel {
-	IFoodView mListeners = (IFoodView) getListeners();
+	IFoodMainView mListeners = (IFoodMainView) getListeners();
 	private List<Restaurant> mRestaurantsList;
 	private List<Meal> mMeals;
+	private List<Sandwich> mSandwiches;
+	
 	// private HashMap<Meal, Rating> mCampusMeals;
 	private MenuSorter mSorter;
 
 	@Override
 	protected Class<? extends IView> getViewInterface() {
-		return IFoodView.class;
+		return IFoodMainView.class;
 	}
 
 	/**
@@ -50,15 +55,21 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	@Override
 	public void setMeals(List<Meal> list) {
 		this.mMeals = list;
-		// Notify the view
+		// Notify the view(s)
 		this.mListeners.menusUpdated();
 	}
 
+	/**
+	 * Returns the list of Meals
+	 */
 	@Override
 	public List<Meal> getMeals() {
 		return this.mMeals;
 	}
 
+	/**
+	 * Returns the list of Meals sorted by Restaurant
+	 */
 	@Override
 	public HashMap<String, Vector<Meal>> getMealsByRestaurants(){
 		if(mSorter == null){
@@ -68,7 +79,32 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * get the list of all meal tags
+	 * Returns the list of Meals sorted by Ratings
+	 */
+	@Override
+	public List<Meal> getMealsByRatings() {
+		if(mSorter == null) {
+			mSorter = new MenuSorter();
+		}
+		return mSorter.sortByRatings(mMeals);
+	}
+
+	/**
+	 * Returns the list of Sandwiches sorted by Restaurant
+	 */
+	@Override
+	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants() {
+		if (mSorter == null) {
+			mSorter = new MenuSorter();
+		}
+		if(mSandwiches == null) {
+			mSandwiches = new ArrayList<Sandwich>();
+		}
+		return mSorter.sortByCafeterias(mSandwiches);
+	}
+	
+	/**
+	 * Returns the list of all meal tags
 	 * */
 	@Override
 	public List<MealTag> getMealTags() {
@@ -83,11 +119,22 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * set the Rating for a particular Meal
+	 * set the Rating for a particular Meal and notify the listeners
 	 * */
 	@Override
 	public void setRating(SubmitStatus status) {
-		// Toast suivant le status
+		//Notify the view(s)
+		mListeners.ratingsUpdated(status);
+	}
+
+	/**
+	 * Update the list of Sandwiches and update the View
+	 */
+	@Override
+	public void setSandwiches(List<Sandwich> list) {
+		mSandwiches = list;
+		//Notify the view(s)
+		mListeners.sandwichesUpdated();
 	}
 
 }

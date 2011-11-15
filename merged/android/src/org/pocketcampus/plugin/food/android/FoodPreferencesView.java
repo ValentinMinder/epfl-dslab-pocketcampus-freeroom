@@ -7,6 +7,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
+import org.pocketcampus.plugin.food.android.iface.IFoodSimpleView;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 import android.content.SharedPreferences;
@@ -17,7 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class FoodPreferences extends PluginView {
+public class FoodPreferencesView extends PluginView implements IFoodSimpleView {
 	/*MVC*/
 	private FoodController mController;
 	private IFoodModel mModel;
@@ -131,6 +132,11 @@ public class FoodPreferences extends PluginView {
 			}
 
 		});
+	}
+
+	@Override
+	public void networkErrorHappened() {
+		
 	}
 
 }

@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.directory.android.ui;
 
 
 import org.pocketcampus.R;
+//import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.plugin.directory.android.DirectoryResultListView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.app.AlertDialog;
@@ -40,15 +42,27 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ctx_ = context;
 		displayedPerson_ = person;
 		
-		loadImage();
 		build();
 		setContent(person);
 		setClickListener();
 		
 	}
 	
-	private void loadImage() {
-		//TODO
+	public void loadPicture() {
+		/*LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
+		if(liv == null){
+			System.out.println("liv is null");
+			return;
+		}
+		
+		if(displayedPerson_.picture_url != null){
+			liv.setImageDrawable(displayedPerson_.picture_url);
+		
+			liv.setVisibility(View.VISIBLE);
+		}else{
+			liv.setVisibility(View.GONE);
+		}*/
+
 	}
 
 	private void build(){
@@ -123,12 +137,23 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
-		if (keyCode == KeyEvent.KEYCODE_CALL) {
-			performDial();
-			return true;
-		}else{
-			return super.onKeyDown(keyCode, event);
+		switch(keyCode){
+			case KeyEvent.KEYCODE_VOLUME_UP:
+				((DirectoryResultListView)ctx_).showPreviousPerson();
+				return true;
+			
+			case KeyEvent.KEYCODE_VOLUME_DOWN:
+				((DirectoryResultListView)ctx_).showNextPerson();
+				return true;				
+				
+			case KeyEvent.KEYCODE_CALL:
+				performDial();
+				return true;
+			
+			default:
+				return super.onKeyDown(keyCode, event);
 		}
+		
 	}
 	
 	private void performDial() {
@@ -173,6 +198,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		Intent WebIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(displayedPerson_.web)); 
 		ctx_.startActivity(WebIntent);
 	}
+
+	
 	
 //	private CharSequence getString(int resId) {
 //		return ctx_.getString(resId);

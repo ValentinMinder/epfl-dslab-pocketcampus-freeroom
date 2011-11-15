@@ -6,7 +6,7 @@
     <color name="camipro_plus">#459900</color>
     <color name="camipro_minus">#E30000</color>
 
-    <string name="camipro_balance_date_title">Last update</string>
+    <string name="camipro_balance_date_title"></string>
     <string name="camipro_current_balance">Current balance</string>
     <string name="camipro_balance_placeholder">0.0</string>
     
@@ -16,7 +16,7 @@
     
     <string name="camipro_offline_transactions">Given no offline transactions have been made.</string>
     
-    <string name="camipro_ebanking_button">Ebanking money transfer</string>
+    <string name="camipro_ebanking_button">Card loading with e-banking</string>
     
     <string name="camipro_ebanking_infos_title">Ebanking information</string>
     <string name="camipro_ebanking_infos_text">In order to load your CAMIPRO card, please copy the payment details below (account number, reference number, etc.) in the e-banking tool provided by your financial institution. The payment to select is an orange payment slip.</string>
@@ -27,7 +27,7 @@
     <string name="camipro_ebanking_amount_text">Free (max. CHF 300.-)</string>
     
     <string name="camipro_ebanking_stats_title">Statistics</string>
-    <string name="camipro_ebanking_1month_title">Last month</string>
-    <string name="camipro_ebanking_3months_title">Last three months</string>
-    <string name="camipro_ebanking_average_title">Average in the last three months</string>
+    <string name="camipro_ebanking_1month_title">Total payments last month</string>
+    <string name="camipro_ebanking_3months_title">Total payments three months</string>
+    <string name="camipro_ebanking_average_title">Average per month</string>
 </resources>

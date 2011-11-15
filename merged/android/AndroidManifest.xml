@@ -24,7 +24,7 @@
   </intent-filter>
 </activity>
 <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferences" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 
@@ -33,7 +33,6 @@
   <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
     <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
   </intent-filter>
 </activity>
 <activity android:name="org.pocketcampus.android.plugin.dashboard.AboutView" xmlns:android="http://schemas.android.com/apk/res/android"/>
@@ -68,6 +67,7 @@
   <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
     <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
   </intent-filter>
 </activity>
 <service android:name="org.pocketcampus.plugin.bikes.android.BikesController" xmlns:android="http://schemas.android.com/apk/res/android"/>
@@ -99,6 +99,12 @@
     <category android:name="android.intent.category.LAUNCHER"/>
     <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
   </intent-filter>
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW"/>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data android:scheme="pocketcampus-authenticate" android:host="camipro.plugin.pocketcampus.org"/>
+  </intent-filter>
 </activity>
 <service android:name="org.pocketcampus.plugin.camipro.android.CamiproController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
@@ -115,11 +121,12 @@
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
-<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Authentication" android:launchMode="singleTask" android:screenOrientation="portrait">
+<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/authentication_plugin_title" android:launchMode="singleTask" android:screenOrientation="portrait">
   <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <action android:name="android.intent.action.VIEW"/>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org"/>
   </intent-filter>
   <intent-filter>
     <action android:name="android.intent.action.VIEW"/>

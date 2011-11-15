@@ -92,5 +92,11 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 		
 	}
 
+	@Override
+	public void pictureUpdated() {
+		// not used
+		
+	}
+
 	
 }

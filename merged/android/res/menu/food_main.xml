@@ -2,14 +2,17 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/food_by_resto" android:icon="@drawable/food_opt_icon_resto"
-		android:title="Meals" />
+		android:title="@+string/food_menu_" />
+	
+	<item android:id="@+id/food_by_ratings" android:icon="@drawable/food_opt_icon_ratings"
+		android:title="@+string/food_menu_ratings" />
 
 	<item android:id="@+id/food_by_sandwiches" android:icon="@drawable/food_opt_icon_sandwich"
-		android:title="Sandwiches" />
+		android:title="@+string/food_menu_sandwiches" />
 
 	<item android:id="@+id/food_by_suggestions" android:icon="@drawable/food_opt_icon_suggestions"
-		android:title="Suggestions" />
+		android:title="@+string/food_menu_suggestions" />
 	
 	<item android:id="@+id/food_by_settings" android:icon="@drawable/food_opt_icon_settings"
-		android:title="Settings" />
+		android:title="@+string/food_menu_settings" />
 </menu>

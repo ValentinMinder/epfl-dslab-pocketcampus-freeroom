@@ -57,6 +57,11 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 		mListeners.tooManyResults(nb);
 	}
 
+	public void setProfilePicture(String result) {
+		mSelectedPerson.picture_url = result;
+		mListeners.pictureUpdated();
+	}
+
 
 
 }

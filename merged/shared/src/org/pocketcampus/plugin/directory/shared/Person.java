@@ -33,6 +33,7 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   private static final org.apache.thrift.protocol.TField OFFICE_FIELD_DESC = new org.apache.thrift.protocol.TField("office", org.apache.thrift.protocol.TType.STRING, (short)7);
   private static final org.apache.thrift.protocol.TField GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("gaspar", org.apache.thrift.protocol.TType.STRING, (short)8);
   private static final org.apache.thrift.protocol.TField OU_FIELD_DESC = new org.apache.thrift.protocol.TField("ou", org.apache.thrift.protocol.TType.STRING, (short)9);
+  private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("picture_url", org.apache.thrift.protocol.TType.STRING, (short)10);
 
   public String firstName; // required
   public String lastName; // required
@@ -43,6 +44,7 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   public String office; // required
   public String gaspar; // required
   public String ou; // required
+  public String picture_url; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -54,7 +56,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     PHONE_NUMBER((short)6, "phone_number"),
     OFFICE((short)7, "office"),
     GASPAR((short)8, "gaspar"),
-    OU((short)9, "ou");
+    OU((short)9, "ou"),
+    PICTURE_URL((short)10, "picture_url");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -87,6 +90,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
           return GASPAR;
         case 9: // OU
           return OU;
+        case 10: // PICTURE_URL
+          return PICTURE_URL;
         default:
           return null;
       }
@@ -149,6 +154,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.OU, new org.apache.thrift.meta_data.FieldMetaData("ou", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("picture_url", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Person.class, metaDataMap);
   }
@@ -198,6 +205,9 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (other.isSetOu()) {
       this.ou = other.ou;
     }
+    if (other.isSetPicture_url()) {
+      this.picture_url = other.picture_url;
+    }
   }
 
   public Person deepCopy() {
@@ -215,6 +225,7 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     this.office = null;
     this.gaspar = null;
     this.ou = null;
+    this.picture_url = null;
   }
 
   public String getFirstName() {
@@ -433,6 +444,30 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
+  public String getPicture_url() {
+    return this.picture_url;
+  }
+
+  public Person setPicture_url(String picture_url) {
+    this.picture_url = picture_url;
+    return this;
+  }
+
+  public void unsetPicture_url() {
+    this.picture_url = null;
+  }
+
+  /** Returns true if field picture_url is set (has been assigned a value) and false otherwise */
+  public boolean isSetPicture_url() {
+    return this.picture_url != null;
+  }
+
+  public void setPicture_urlIsSet(boolean value) {
+    if (!value) {
+      this.picture_url = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case FIRST_NAME:
@@ -507,6 +542,14 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
+    case PICTURE_URL:
+      if (value == null) {
+        unsetPicture_url();
+      } else {
+        setPicture_url((String)value);
+      }
+      break;
+
     }
   }
 
@@ -539,6 +582,9 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     case OU:
       return getOu();
 
+    case PICTURE_URL:
+      return getPicture_url();
+
     }
     throw new IllegalStateException();
   }
@@ -568,6 +614,8 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       return isSetGaspar();
     case OU:
       return isSetOu();
+    case PICTURE_URL:
+      return isSetPicture_url();
     }
     throw new IllegalStateException();
   }
@@ -666,6 +714,15 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return false;
     }
 
+    boolean this_present_picture_url = true && this.isSetPicture_url();
+    boolean that_present_picture_url = true && that.isSetPicture_url();
+    if (this_present_picture_url || that_present_picture_url) {
+      if (!(this_present_picture_url && that_present_picture_url))
+        return false;
+      if (!this.picture_url.equals(that.picture_url))
+        return false;
+    }
+
     return true;
   }
 
@@ -717,6 +774,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     builder.append(present_ou);
     if (present_ou)
       builder.append(ou);
+
+    boolean present_picture_url = true && (isSetPicture_url());
+    builder.append(present_picture_url);
+    if (present_picture_url)
+      builder.append(picture_url);
 
     return builder.toHashCode();
   }
@@ -819,6 +881,16 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetPicture_url()).compareTo(typedOther.isSetPicture_url());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPicture_url()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.picture_url, typedOther.picture_url);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -899,6 +971,13 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 10: // PICTURE_URL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.picture_url = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -968,6 +1047,13 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (isSetOu()) {
         oprot.writeFieldBegin(OU_FIELD_DESC);
         oprot.writeString(this.ou);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.picture_url != null) {
+      if (isSetPicture_url()) {
+        oprot.writeFieldBegin(PICTURE_URL_FIELD_DESC);
+        oprot.writeString(this.picture_url);
         oprot.writeFieldEnd();
       }
     }
@@ -1060,6 +1146,16 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         sb.append("null");
       } else {
         sb.append(this.ou);
+      }
+      first = false;
+    }
+    if (isSetPicture_url()) {
+      if (!first) sb.append(", ");
+      sb.append("picture_url:");
+      if (this.picture_url == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.picture_url);
       }
       first = false;
     }

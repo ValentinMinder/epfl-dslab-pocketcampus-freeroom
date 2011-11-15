@@ -12,10 +12,12 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.CheckBoxesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
-import org.pocketcampus.plugin.food.android.iface.IFoodView;
+import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
+import org.pocketcampus.plugin.food.android.iface.IFoodSimpleView;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MealTagger;
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.app.Activity;
 import android.app.Service;
@@ -32,7 +34,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class FoodSuggestionsView extends PluginView implements IFoodView {
+public class FoodSuggestionsView extends PluginView implements IFoodSimpleView {
 	private FoodController mController;
 	private IFoodModel mModel;
 
@@ -122,21 +124,6 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-	}
-
-	@Override
-	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void restaurantsUpdated() {
-		// not used
-	}
-
-	@Override
-	public void menusUpdated() {
-		// not used
 	}
 
 	/*Sets the clickLIstener of the listView*/
@@ -299,6 +286,11 @@ public class FoodSuggestionsView extends PluginView implements IFoodView {
 		}
 
 		return string;
+	}
+
+	@Override
+	public void networkErrorHappened() {
+		
 	}
 	
 }

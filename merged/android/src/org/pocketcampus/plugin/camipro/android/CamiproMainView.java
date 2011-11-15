@@ -6,15 +6,16 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
-import org.pocketcampus.plugin.camipro.shared.EbankingBean;
+import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
+import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,6 +49,25 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		//mLayout.setText("Loading");
 		//refreshAll();
 	}
+	
+	@Override
+	protected void handleIntent(Intent aIntent) {
+		// If we were pinged by auth plugin, then we must read the sessId
+		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
+			Uri aData = aIntent.getData();
+			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
+				String sessId = aData.getQueryParameter("sessid");
+				mController.setCamiproCookie(sessId);
+				refreshAll();
+			}
+		}
+		// Otherwise continue normal start-up
+		// Check if we are not signed in then ping the auth plugin
+		if(mController.getCamiproCookie() == null) {
+			Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+			startActivity(authIntent);
+		}
+	}
 
 	@Override
 	public void transactionsUpdated() {
@@ -70,31 +90,37 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	}
 
 	@Override
-	public void ebankingUpdated() {
-		EbankingBean ebb = mModel.getEbanking();
+	public void cardLoadingWithEbankingInfoUpdated() {
+		CardLoadingWithEbankingInfo i = mModel.getCardLoadingWithEbankingInfo();
+		
 		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
-		tv.setText(ebb.getPaidNameTo());
+		tv.setText(i.getIPaidTo());
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_account_number_text);
-		tv.setText(ebb.getAccountNr());
+		tv.setText(i.getIAccountNumber());
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_ref_number_text);
-		tv.setText(ebb.getBvrReferenceReadable());
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
-		tv.setText(formatMoney(ebb.getTotal1M()));
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
-		tv.setText(formatMoney(ebb.getTotal3M()));
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
-		tv.setText(formatMoney(ebb.getAverage3M()));
+		tv.setText(i.getIReferenceNumber());
 	}
 
+	@Override
+	public void cardStatisticsUpdated() {
+		CardStatistics s = mModel.getCardStatistics();
+		
+		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
+		tv.setText(formatMoney(s.getITotalPaymentsLastMonth()));
+
+		tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
+		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths()));
+
+		tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
+		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths() / 3.0));
+	}
+
+	
 	private void refreshAll() {
-		mController.refreshBalance();
-		mController.refreshEbanking();
-		mController.refreshTransactions();
+		mController.refreshBalanceAndTransactions();
+		mController.refreshStatsAndLoadingInfo();
 	}
 	
 	private static String formatMoney(double money) {
@@ -111,12 +137,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
-		if(item.getItemId() == R.id.camipro_refresh_ebanking) {			
-			mController.refreshEbanking();
-		} else if(item.getItemId() == R.id.camipro_refresh_transactions) {			
-			mController.refreshTransactions();
-		} else if(item.getItemId() == R.id.camipro_refresh_balance) {			
-			mController.refreshBalance();
+		if(item.getItemId() == R.id.camipro_refresh) {			
+			refreshAll();
 		}
 		
 
@@ -143,7 +165,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	public class TransactionAdapter extends ArrayAdapter<Transaction> {
 		private LayoutInflater li_;
-		private java.text.DateFormat df_; // Used to format the date
+		//private java.text.DateFormat df_; // Used to format the date
 		private Context context_;
 	
 		// Colors
@@ -159,7 +181,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		public TransactionAdapter(Context context, int textViewResourceId, List<Transaction> transactions) {
 			super(context, textViewResourceId, transactions);
 			li_ = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			df_ = DateFormat.getDateFormat(context);
+			//df_ = DateFormat.getDateFormat(context);
 			context_ = context;
 	
 			minus_ = context_.getResources().getColor(R.color.camipro_minus);
@@ -177,18 +199,26 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	        TextView tv;
 	
 	        tv = (TextView)v.findViewById(R.id.camipro_item_date);
-	        tv.setText(t.xDate);
+	        tv.setText(t.getIDate());
 	        
 	        tv = (TextView)v.findViewById(R.id.camipro_item_description);
-	        tv.setText(t.xDescription);
+	        tv.setText(t.getIPlace());
 	        
 	        tv = (TextView)v.findViewById(R.id.camipro_item_amount);
-	        tv.setText(formatMoney(t.xAmount));
-	        tv.setTextColor(t.xAmount < 0.0 ? minus_ : plus_);
+	        tv.setText(formatMoney(t.getIAmount()));
+	        tv.setTextColor(t.getIAmount() < 0.0 ? minus_ : plus_);
 	        
 	        return v;
 		}
 	}
+
+
+
+
+
+
+
+
 
 	
 }

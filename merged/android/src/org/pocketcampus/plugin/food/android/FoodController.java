@@ -7,11 +7,16 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodController;
 import org.pocketcampus.plugin.food.android.req.MealsRequest;
 import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
+import org.pocketcampus.plugin.food.android.req.SandwichesRequest;
+import org.pocketcampus.plugin.food.android.req.SetRatingRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
+import org.pocketcampus.plugin.food.shared.FoodService.setRating_args;
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.Rating;
 
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class FoodController extends PluginController implements IFoodController{
@@ -58,8 +63,18 @@ public class FoodController extends PluginController implements IFoodController{
 	
 	@Override
 	public void setRating(double rating, Meal meal) {
-//		Log.d("RATING", "Set Rating = " + rating + " for meal " + meal.getName());
-//		new SetRatingRequest().start(this, (Iface)getClient(new Client.Factory(), mPluginName), (Meal) meal);
+		String deviceID = Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
+		Log.d("RATING", "Sending rating : " + rating + " for meal : " + meal.getName() + " and device with ID : " + deviceID);
+		
+		Rating toSend = new Rating(rating, 1, rating);
+		setRating_args ratingArgs = new setRating_args(toSend, meal, deviceID);
+
+		new SetRatingRequest().start(this, (Iface)getClient(new Client.Factory(), mPluginName), ratingArgs);
+	}
+
+	@Override
+	public void getSandwiches() {
+		new SandwichesRequest().start(this, (Iface)getClient(new Client.Factory(), mPluginName), (Object)null);
 	}
 		
 }

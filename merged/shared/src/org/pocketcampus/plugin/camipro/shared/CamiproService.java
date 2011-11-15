@@ -25,21 +25,17 @@ public class CamiproService {
 
   public interface Iface {
 
-    public double getBalance() throws org.apache.thrift.TException;
+    public BalanceAndTransactions getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
 
-    public List<Transaction> getTransactions() throws org.apache.thrift.TException;
-
-    public EbankingBean getEbankingBean() throws org.apache.thrift.TException;
+    public StatsAndLoadingInfo getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getBalance(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalance_call> resultHandler) throws org.apache.thrift.TException;
+    public void getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getTransactions(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTransactions_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void getEbankingBean(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEbankingBean_call> resultHandler) throws org.apache.thrift.TException;
+    public void getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -63,70 +59,50 @@ public class CamiproService {
       super(iprot, oprot);
     }
 
-    public double getBalance() throws org.apache.thrift.TException
+    public BalanceAndTransactions getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
     {
-      send_getBalance();
-      return recv_getBalance();
+      send_getBalanceAndTransactions(aSessionId);
+      return recv_getBalanceAndTransactions();
     }
 
-    public void send_getBalance() throws org.apache.thrift.TException
+    public void send_getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
     {
-      getBalance_args args = new getBalance_args();
-      sendBase("getBalance", args);
+      getBalanceAndTransactions_args args = new getBalanceAndTransactions_args();
+      args.setASessionId(aSessionId);
+      sendBase("getBalanceAndTransactions", args);
     }
 
-    public double recv_getBalance() throws org.apache.thrift.TException
+    public BalanceAndTransactions recv_getBalanceAndTransactions() throws org.apache.thrift.TException
     {
-      getBalance_result result = new getBalance_result();
-      receiveBase(result, "getBalance");
+      getBalanceAndTransactions_result result = new getBalanceAndTransactions_result();
+      receiveBase(result, "getBalanceAndTransactions");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBalance failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBalanceAndTransactions failed: unknown result");
     }
 
-    public List<Transaction> getTransactions() throws org.apache.thrift.TException
+    public StatsAndLoadingInfo getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
     {
-      send_getTransactions();
-      return recv_getTransactions();
+      send_getStatsAndLoadingInfo(aSessionId);
+      return recv_getStatsAndLoadingInfo();
     }
 
-    public void send_getTransactions() throws org.apache.thrift.TException
+    public void send_getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
     {
-      getTransactions_args args = new getTransactions_args();
-      sendBase("getTransactions", args);
+      getStatsAndLoadingInfo_args args = new getStatsAndLoadingInfo_args();
+      args.setASessionId(aSessionId);
+      sendBase("getStatsAndLoadingInfo", args);
     }
 
-    public List<Transaction> recv_getTransactions() throws org.apache.thrift.TException
+    public StatsAndLoadingInfo recv_getStatsAndLoadingInfo() throws org.apache.thrift.TException
     {
-      getTransactions_result result = new getTransactions_result();
-      receiveBase(result, "getTransactions");
+      getStatsAndLoadingInfo_result result = new getStatsAndLoadingInfo_result();
+      receiveBase(result, "getStatsAndLoadingInfo");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTransactions failed: unknown result");
-    }
-
-    public EbankingBean getEbankingBean() throws org.apache.thrift.TException
-    {
-      send_getEbankingBean();
-      return recv_getEbankingBean();
-    }
-
-    public void send_getEbankingBean() throws org.apache.thrift.TException
-    {
-      getEbankingBean_args args = new getEbankingBean_args();
-      sendBase("getEbankingBean", args);
-    }
-
-    public EbankingBean recv_getEbankingBean() throws org.apache.thrift.TException
-    {
-      getEbankingBean_result result = new getEbankingBean_result();
-      receiveBase(result, "getEbankingBean");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEbankingBean failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getStatsAndLoadingInfo failed: unknown result");
     }
 
   }
@@ -147,90 +123,67 @@ public class CamiproService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getBalance(org.apache.thrift.async.AsyncMethodCallback<getBalance_call> resultHandler) throws org.apache.thrift.TException {
+    public void getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getBalance_call method_call = new getBalance_call(resultHandler, this, ___protocolFactory, ___transport);
+      getBalanceAndTransactions_call method_call = new getBalanceAndTransactions_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getBalance_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getBalance_call(org.apache.thrift.async.AsyncMethodCallback<getBalance_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getBalanceAndTransactions_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
+      public getBalanceAndTransactions_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.aSessionId = aSessionId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBalance", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getBalance_args args = new getBalance_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBalanceAndTransactions", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBalanceAndTransactions_args args = new getBalanceAndTransactions_args();
+        args.setASessionId(aSessionId);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public double getResult() throws org.apache.thrift.TException {
+      public BalanceAndTransactions getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getBalance();
+        return (new Client(prot)).recv_getBalanceAndTransactions();
       }
     }
 
-    public void getTransactions(org.apache.thrift.async.AsyncMethodCallback<getTransactions_call> resultHandler) throws org.apache.thrift.TException {
+    public void getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getTransactions_call method_call = new getTransactions_call(resultHandler, this, ___protocolFactory, ___transport);
+      getStatsAndLoadingInfo_call method_call = new getStatsAndLoadingInfo_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getTransactions_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getTransactions_call(org.apache.thrift.async.AsyncMethodCallback<getTransactions_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getStatsAndLoadingInfo_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
+      public getStatsAndLoadingInfo_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.aSessionId = aSessionId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTransactions", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getTransactions_args args = new getTransactions_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getStatsAndLoadingInfo", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getStatsAndLoadingInfo_args args = new getStatsAndLoadingInfo_args();
+        args.setASessionId(aSessionId);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Transaction> getResult() throws org.apache.thrift.TException {
+      public StatsAndLoadingInfo getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getTransactions();
-      }
-    }
-
-    public void getEbankingBean(org.apache.thrift.async.AsyncMethodCallback<getEbankingBean_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      getEbankingBean_call method_call = new getEbankingBean_call(resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getEbankingBean_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getEbankingBean_call(org.apache.thrift.async.AsyncMethodCallback<getEbankingBean_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEbankingBean", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getEbankingBean_args args = new getEbankingBean_args();
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public EbankingBean getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getEbankingBean();
+        return (new Client(prot)).recv_getStatsAndLoadingInfo();
       }
     }
 
@@ -247,71 +200,55 @@ public class CamiproService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getBalance", new getBalance());
-      processMap.put("getTransactions", new getTransactions());
-      processMap.put("getEbankingBean", new getEbankingBean());
+      processMap.put("getBalanceAndTransactions", new getBalanceAndTransactions());
+      processMap.put("getStatsAndLoadingInfo", new getStatsAndLoadingInfo());
       return processMap;
     }
 
-    private static class getBalance<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBalance_args> {
-      public getBalance() {
-        super("getBalance");
+    private static class getBalanceAndTransactions<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBalanceAndTransactions_args> {
+      public getBalanceAndTransactions() {
+        super("getBalanceAndTransactions");
       }
 
-      protected getBalance_args getEmptyArgsInstance() {
-        return new getBalance_args();
+      protected getBalanceAndTransactions_args getEmptyArgsInstance() {
+        return new getBalanceAndTransactions_args();
       }
 
-      protected getBalance_result getResult(I iface, getBalance_args args) throws org.apache.thrift.TException {
-        getBalance_result result = new getBalance_result();
-        result.success = iface.getBalance();
-        result.setSuccessIsSet(true);
+      protected getBalanceAndTransactions_result getResult(I iface, getBalanceAndTransactions_args args) throws org.apache.thrift.TException {
+        getBalanceAndTransactions_result result = new getBalanceAndTransactions_result();
+        result.success = iface.getBalanceAndTransactions(args.aSessionId);
         return result;
       }
     }
 
-    private static class getTransactions<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTransactions_args> {
-      public getTransactions() {
-        super("getTransactions");
+    private static class getStatsAndLoadingInfo<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getStatsAndLoadingInfo_args> {
+      public getStatsAndLoadingInfo() {
+        super("getStatsAndLoadingInfo");
       }
 
-      protected getTransactions_args getEmptyArgsInstance() {
-        return new getTransactions_args();
+      protected getStatsAndLoadingInfo_args getEmptyArgsInstance() {
+        return new getStatsAndLoadingInfo_args();
       }
 
-      protected getTransactions_result getResult(I iface, getTransactions_args args) throws org.apache.thrift.TException {
-        getTransactions_result result = new getTransactions_result();
-        result.success = iface.getTransactions();
-        return result;
-      }
-    }
-
-    private static class getEbankingBean<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEbankingBean_args> {
-      public getEbankingBean() {
-        super("getEbankingBean");
-      }
-
-      protected getEbankingBean_args getEmptyArgsInstance() {
-        return new getEbankingBean_args();
-      }
-
-      protected getEbankingBean_result getResult(I iface, getEbankingBean_args args) throws org.apache.thrift.TException {
-        getEbankingBean_result result = new getEbankingBean_result();
-        result.success = iface.getEbankingBean();
+      protected getStatsAndLoadingInfo_result getResult(I iface, getStatsAndLoadingInfo_args args) throws org.apache.thrift.TException {
+        getStatsAndLoadingInfo_result result = new getStatsAndLoadingInfo_result();
+        result.success = iface.getStatsAndLoadingInfo(args.aSessionId);
         return result;
       }
     }
 
   }
 
-  public static class getBalance_args implements org.apache.thrift.TBase<getBalance_args, getBalance_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalance_args");
+  public static class getBalanceAndTransactions_args implements org.apache.thrift.TBase<getBalanceAndTransactions_args, getBalanceAndTransactions_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalanceAndTransactions_args");
 
+    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
+    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      A_SESSION_ID((short)1, "aSessionId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -326,214 +263,8 @@ public class CamiproService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalance_args.class, metaDataMap);
-    }
-
-    public getBalance_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getBalance_args(getBalance_args other) {
-    }
-
-    public getBalance_args deepCopy() {
-      return new getBalance_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getBalance_args)
-        return this.equals((getBalance_args)that);
-      return false;
-    }
-
-    public boolean equals(getBalance_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getBalance_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getBalance_args typedOther = (getBalance_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getBalance_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getBalance_result implements org.apache.thrift.TBase<getBalance_result, getBalance_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalance_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.DOUBLE, (short)0);
-
-    public double success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
+          case 1: // A_SESSION_ID
+            return A_SESSION_ID;
           default:
             return null;
         }
@@ -574,78 +305,75 @@ public class CamiproService {
     }
 
     // isset id assignments
-    private static final int __SUCCESS_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalance_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalanceAndTransactions_args.class, metaDataMap);
     }
 
-    public getBalance_result() {
+    public getBalanceAndTransactions_args() {
     }
 
-    public getBalance_result(
-      double success)
+    public getBalanceAndTransactions_args(
+      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
     {
       this();
-      this.success = success;
-      setSuccessIsSet(true);
+      this.aSessionId = aSessionId;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getBalance_result(getBalance_result other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
-      this.success = other.success;
+    public getBalanceAndTransactions_args(getBalanceAndTransactions_args other) {
+      if (other.isSetASessionId()) {
+        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      }
     }
 
-    public getBalance_result deepCopy() {
-      return new getBalance_result(this);
+    public getBalanceAndTransactions_args deepCopy() {
+      return new getBalanceAndTransactions_args(this);
     }
 
     @Override
     public void clear() {
-      setSuccessIsSet(false);
-      this.success = 0.0;
+      this.aSessionId = null;
     }
 
-    public double getSuccess() {
-      return this.success;
+    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
+      return this.aSessionId;
     }
 
-    public getBalance_result setSuccess(double success) {
-      this.success = success;
-      setSuccessIsSet(true);
+    public getBalanceAndTransactions_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
+      this.aSessionId = aSessionId;
       return this;
     }
 
-    public void unsetSuccess() {
-      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
+    public void unsetASessionId() {
+      this.aSessionId = null;
     }
 
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
+    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
+    public boolean isSetASessionId() {
+      return this.aSessionId != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+    public void setASessionIdIsSet(boolean value) {
+      if (!value) {
+        this.aSessionId = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case SUCCESS:
+      case A_SESSION_ID:
         if (value == null) {
-          unsetSuccess();
+          unsetASessionId();
         } else {
-          setSuccess((Double)value);
+          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
         }
         break;
 
@@ -654,8 +382,8 @@ public class CamiproService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case SUCCESS:
-        return Double.valueOf(getSuccess());
+      case A_SESSION_ID:
+        return getASessionId();
 
       }
       throw new IllegalStateException();
@@ -668,8 +396,8 @@ public class CamiproService {
       }
 
       switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
+      case A_SESSION_ID:
+        return isSetASessionId();
       }
       throw new IllegalStateException();
     }
@@ -678,21 +406,21 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getBalance_result)
-        return this.equals((getBalance_result)that);
+      if (that instanceof getBalanceAndTransactions_args)
+        return this.equals((getBalanceAndTransactions_args)that);
       return false;
     }
 
-    public boolean equals(getBalance_result that) {
+    public boolean equals(getBalanceAndTransactions_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_success = true;
-      boolean that_present_success = true;
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
+      boolean this_present_aSessionId = true && this.isSetASessionId();
+      boolean that_present_aSessionId = true && that.isSetASessionId();
+      if (this_present_aSessionId || that_present_aSessionId) {
+        if (!(this_present_aSessionId && that_present_aSessionId))
           return false;
-        if (this.success != that.success)
+        if (!this.aSessionId.equals(that.aSessionId))
           return false;
       }
 
@@ -703,28 +431,28 @@ public class CamiproService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
+      boolean present_aSessionId = true && (isSetASessionId());
+      builder.append(present_aSessionId);
+      if (present_aSessionId)
+        builder.append(aSessionId);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getBalance_result other) {
+    public int compareTo(getBalanceAndTransactions_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getBalance_result typedOther = (getBalance_result)other;
+      getBalanceAndTransactions_args typedOther = (getBalanceAndTransactions_args)other;
 
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+      if (isSetASessionId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -746,10 +474,10 @@ public class CamiproService {
           break;
         }
         switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              this.success = iprot.readDouble();
-              setSuccessIsSet(true);
+          case 1: // A_SESSION_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
+              this.aSessionId.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -766,11 +494,12 @@ public class CamiproService {
     }
 
     public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
+      validate();
 
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        oprot.writeDouble(this.success);
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.aSessionId != null) {
+        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
+        this.aSessionId.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -779,11 +508,15 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getBalance_result(");
+      StringBuilder sb = new StringBuilder("getBalanceAndTransactions_args(");
       boolean first = true;
 
-      sb.append("success:");
-      sb.append(this.success);
+      sb.append("aSessionId:");
+      if (this.aSessionId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aSessionId);
+      }
       first = false;
       sb.append(")");
       return sb.toString();
@@ -811,216 +544,12 @@ public class CamiproService {
 
   }
 
-  public static class getTransactions_args implements org.apache.thrift.TBase<getTransactions_args, getTransactions_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTransactions_args");
+  public static class getBalanceAndTransactions_result implements org.apache.thrift.TBase<getBalanceAndTransactions_result, getBalanceAndTransactions_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalanceAndTransactions_result");
 
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTransactions_args.class, metaDataMap);
-    }
-
-    public getTransactions_args() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getTransactions_args(getTransactions_args other) {
-    }
-
-    public getTransactions_args deepCopy() {
-      return new getTransactions_args(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getTransactions_args)
-        return this.equals((getTransactions_args)that);
-      return false;
-    }
-
-    public boolean equals(getTransactions_args that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(getTransactions_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getTransactions_args typedOther = (getTransactions_args)other;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getTransactions_args(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class getTransactions_result implements org.apache.thrift.TBase<getTransactions_result, getTransactions_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTransactions_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<Transaction> success; // required
+    public BalanceAndTransactions success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1086,17 +615,16 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Transaction.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BalanceAndTransactions.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTransactions_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalanceAndTransactions_result.class, metaDataMap);
     }
 
-    public getTransactions_result() {
+    public getBalanceAndTransactions_result() {
     }
 
-    public getTransactions_result(
-      List<Transaction> success)
+    public getBalanceAndTransactions_result(
+      BalanceAndTransactions success)
     {
       this();
       this.success = success;
@@ -1105,18 +633,14 @@ public class CamiproService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getTransactions_result(getTransactions_result other) {
+    public getBalanceAndTransactions_result(getBalanceAndTransactions_result other) {
       if (other.isSetSuccess()) {
-        List<Transaction> __this__success = new ArrayList<Transaction>();
-        for (Transaction other_element : other.success) {
-          __this__success.add(new Transaction(other_element));
-        }
-        this.success = __this__success;
+        this.success = new BalanceAndTransactions(other.success);
       }
     }
 
-    public getTransactions_result deepCopy() {
-      return new getTransactions_result(this);
+    public getBalanceAndTransactions_result deepCopy() {
+      return new getBalanceAndTransactions_result(this);
     }
 
     @Override
@@ -1124,26 +648,11 @@ public class CamiproService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Transaction> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Transaction elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Transaction>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Transaction> getSuccess() {
+    public BalanceAndTransactions getSuccess() {
       return this.success;
     }
 
-    public getTransactions_result setSuccess(List<Transaction> success) {
+    public getBalanceAndTransactions_result setSuccess(BalanceAndTransactions success) {
       this.success = success;
       return this;
     }
@@ -1169,7 +678,7 @@ public class CamiproService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Transaction>)value);
+          setSuccess((BalanceAndTransactions)value);
         }
         break;
 
@@ -1202,12 +711,12 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getTransactions_result)
-        return this.equals((getTransactions_result)that);
+      if (that instanceof getBalanceAndTransactions_result)
+        return this.equals((getBalanceAndTransactions_result)that);
       return false;
     }
 
-    public boolean equals(getTransactions_result that) {
+    public boolean equals(getBalanceAndTransactions_result that) {
       if (that == null)
         return false;
 
@@ -1235,13 +744,13 @@ public class CamiproService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getTransactions_result other) {
+    public int compareTo(getBalanceAndTransactions_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getTransactions_result typedOther = (getTransactions_result)other;
+      getBalanceAndTransactions_result typedOther = (getBalanceAndTransactions_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1271,19 +780,9 @@ public class CamiproService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Transaction>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                {
-                  Transaction _elem2; // required
-                  _elem2 = new Transaction();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new BalanceAndTransactions();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1304,14 +803,7 @@ public class CamiproService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Transaction _iter3 : this.success)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1320,7 +812,7 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getTransactions_result(");
+      StringBuilder sb = new StringBuilder("getBalanceAndTransactions_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1356,14 +848,16 @@ public class CamiproService {
 
   }
 
-  public static class getEbankingBean_args implements org.apache.thrift.TBase<getEbankingBean_args, getEbankingBean_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEbankingBean_args");
+  public static class getStatsAndLoadingInfo_args implements org.apache.thrift.TBase<getStatsAndLoadingInfo_args, getStatsAndLoadingInfo_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStatsAndLoadingInfo_args");
 
+    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
+    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      A_SESSION_ID((short)1, "aSessionId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1378,6 +872,8 @@ public class CamiproService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // A_SESSION_ID
+            return A_SESSION_ID;
           default:
             return null;
         }
@@ -1416,37 +912,88 @@ public class CamiproService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEbankingBean_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStatsAndLoadingInfo_args.class, metaDataMap);
     }
 
-    public getEbankingBean_args() {
+    public getStatsAndLoadingInfo_args() {
+    }
+
+    public getStatsAndLoadingInfo_args(
+      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+    {
+      this();
+      this.aSessionId = aSessionId;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getEbankingBean_args(getEbankingBean_args other) {
+    public getStatsAndLoadingInfo_args(getStatsAndLoadingInfo_args other) {
+      if (other.isSetASessionId()) {
+        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      }
     }
 
-    public getEbankingBean_args deepCopy() {
-      return new getEbankingBean_args(this);
+    public getStatsAndLoadingInfo_args deepCopy() {
+      return new getStatsAndLoadingInfo_args(this);
     }
 
     @Override
     public void clear() {
+      this.aSessionId = null;
+    }
+
+    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
+      return this.aSessionId;
+    }
+
+    public getStatsAndLoadingInfo_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
+      this.aSessionId = aSessionId;
+      return this;
+    }
+
+    public void unsetASessionId() {
+      this.aSessionId = null;
+    }
+
+    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
+    public boolean isSetASessionId() {
+      return this.aSessionId != null;
+    }
+
+    public void setASessionIdIsSet(boolean value) {
+      if (!value) {
+        this.aSessionId = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case A_SESSION_ID:
+        if (value == null) {
+          unsetASessionId();
+        } else {
+          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case A_SESSION_ID:
+        return getASessionId();
+
       }
       throw new IllegalStateException();
     }
@@ -1458,6 +1005,8 @@ public class CamiproService {
       }
 
       switch (field) {
+      case A_SESSION_ID:
+        return isSetASessionId();
       }
       throw new IllegalStateException();
     }
@@ -1466,14 +1015,23 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getEbankingBean_args)
-        return this.equals((getEbankingBean_args)that);
+      if (that instanceof getStatsAndLoadingInfo_args)
+        return this.equals((getStatsAndLoadingInfo_args)that);
       return false;
     }
 
-    public boolean equals(getEbankingBean_args that) {
+    public boolean equals(getStatsAndLoadingInfo_args that) {
       if (that == null)
         return false;
+
+      boolean this_present_aSessionId = true && this.isSetASessionId();
+      boolean that_present_aSessionId = true && that.isSetASessionId();
+      if (this_present_aSessionId || that_present_aSessionId) {
+        if (!(this_present_aSessionId && that_present_aSessionId))
+          return false;
+        if (!this.aSessionId.equals(that.aSessionId))
+          return false;
+      }
 
       return true;
     }
@@ -1482,17 +1040,32 @@ public class CamiproService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
+      boolean present_aSessionId = true && (isSetASessionId());
+      builder.append(present_aSessionId);
+      if (present_aSessionId)
+        builder.append(aSessionId);
+
       return builder.toHashCode();
     }
 
-    public int compareTo(getEbankingBean_args other) {
+    public int compareTo(getStatsAndLoadingInfo_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getEbankingBean_args typedOther = (getEbankingBean_args)other;
+      getStatsAndLoadingInfo_args typedOther = (getStatsAndLoadingInfo_args)other;
 
+      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetASessionId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -1510,6 +1083,14 @@ public class CamiproService {
           break;
         }
         switch (field.id) {
+          case 1: // A_SESSION_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
+              this.aSessionId.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -1525,15 +1106,27 @@ public class CamiproService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.aSessionId != null) {
+        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
+        this.aSessionId.write(oprot);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getEbankingBean_args(");
+      StringBuilder sb = new StringBuilder("getStatsAndLoadingInfo_args(");
       boolean first = true;
 
+      sb.append("aSessionId:");
+      if (this.aSessionId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aSessionId);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -1560,12 +1153,12 @@ public class CamiproService {
 
   }
 
-  public static class getEbankingBean_result implements org.apache.thrift.TBase<getEbankingBean_result, getEbankingBean_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEbankingBean_result");
+  public static class getStatsAndLoadingInfo_result implements org.apache.thrift.TBase<getStatsAndLoadingInfo_result, getStatsAndLoadingInfo_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStatsAndLoadingInfo_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public EbankingBean success; // required
+    public StatsAndLoadingInfo success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1631,16 +1224,16 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, EbankingBean.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StatsAndLoadingInfo.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEbankingBean_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStatsAndLoadingInfo_result.class, metaDataMap);
     }
 
-    public getEbankingBean_result() {
+    public getStatsAndLoadingInfo_result() {
     }
 
-    public getEbankingBean_result(
-      EbankingBean success)
+    public getStatsAndLoadingInfo_result(
+      StatsAndLoadingInfo success)
     {
       this();
       this.success = success;
@@ -1649,14 +1242,14 @@ public class CamiproService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getEbankingBean_result(getEbankingBean_result other) {
+    public getStatsAndLoadingInfo_result(getStatsAndLoadingInfo_result other) {
       if (other.isSetSuccess()) {
-        this.success = new EbankingBean(other.success);
+        this.success = new StatsAndLoadingInfo(other.success);
       }
     }
 
-    public getEbankingBean_result deepCopy() {
-      return new getEbankingBean_result(this);
+    public getStatsAndLoadingInfo_result deepCopy() {
+      return new getStatsAndLoadingInfo_result(this);
     }
 
     @Override
@@ -1664,11 +1257,11 @@ public class CamiproService {
       this.success = null;
     }
 
-    public EbankingBean getSuccess() {
+    public StatsAndLoadingInfo getSuccess() {
       return this.success;
     }
 
-    public getEbankingBean_result setSuccess(EbankingBean success) {
+    public getStatsAndLoadingInfo_result setSuccess(StatsAndLoadingInfo success) {
       this.success = success;
       return this;
     }
@@ -1694,7 +1287,7 @@ public class CamiproService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((EbankingBean)value);
+          setSuccess((StatsAndLoadingInfo)value);
         }
         break;
 
@@ -1727,12 +1320,12 @@ public class CamiproService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getEbankingBean_result)
-        return this.equals((getEbankingBean_result)that);
+      if (that instanceof getStatsAndLoadingInfo_result)
+        return this.equals((getStatsAndLoadingInfo_result)that);
       return false;
     }
 
-    public boolean equals(getEbankingBean_result that) {
+    public boolean equals(getStatsAndLoadingInfo_result that) {
       if (that == null)
         return false;
 
@@ -1760,13 +1353,13 @@ public class CamiproService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getEbankingBean_result other) {
+    public int compareTo(getStatsAndLoadingInfo_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getEbankingBean_result typedOther = (getEbankingBean_result)other;
+      getStatsAndLoadingInfo_result typedOther = (getStatsAndLoadingInfo_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1797,7 +1390,7 @@ public class CamiproService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new EbankingBean();
+              this.success = new StatsAndLoadingInfo();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -1828,7 +1421,7 @@ public class CamiproService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getEbankingBean_result(");
+      StringBuilder sb = new StringBuilder("getStatsAndLoadingInfo_result(");
       boolean first = true;
 
       sb.append("success:");

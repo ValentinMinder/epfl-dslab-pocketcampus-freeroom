@@ -52,6 +52,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 		openBrowserWithUrl(String.format(tequilaUrl, key.getITequilaKey()));
 	}
 	public void forwardTequilaKeyForService(Uri aData) {
+		if(aData == null)
+			return;
 		String pcService = aData.getHost();
 		//String teqKey = aData.getQueryParameter("key");
 		
@@ -80,6 +82,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	public void gotSessionIdForService(SessionId sessId) {
 		mModel.setSessionIdForService(sessId.getTos(), sessId);
+		forwardSessionIdToCaller(sessId);
 	}
 
 	
@@ -87,6 +90,28 @@ public class AuthenticationController extends PluginController implements IAuthe
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(browserIntent);
+	}
+
+	private void forwardSessionIdToCaller(SessionId sessId) {
+		String url = "pocketcampus-authenticate://%s.plugin.pocketcampus.org/auth_done?sessid=%s";
+		switch(sessId.getTos()) {
+		case SERVICE_POCKETCAMPUS:
+			url = String.format(url, "pocketcampus", Uri.encode(sessId.getPocketCampusSessionId()));
+			break;
+		case SERVICE_MOODLE:
+			url = String.format(url, "moodle", Uri.encode(sessId.getMoodleCookie()));
+			break;
+		case SERVICE_CAMIPRO:
+			url = String.format(url, "camipro", Uri.encode(sessId.getCamiproCookie()));
+			break;
+		default:
+			// error
+			return;
+		}
+		Intent callerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		callerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(callerIntent);
+		mModel.setMustFinish();
 	}
 
 }

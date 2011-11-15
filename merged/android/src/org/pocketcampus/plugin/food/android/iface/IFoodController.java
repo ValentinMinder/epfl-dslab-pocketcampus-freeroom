@@ -9,6 +9,7 @@ public interface IFoodController {
 	
 	public void getRestaurantsList();
 	public void getMeals();
+	public void getSandwiches();
 	
 	public List<MealTag> getMealTags();
 	
