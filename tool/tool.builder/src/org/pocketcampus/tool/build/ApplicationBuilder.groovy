@@ -21,6 +21,25 @@ class ApplicationBuilder {
 	def final private static TARGET_DIRECTORY_SERVER = TARGET_DIRECTORY + "server/";
 
 	def static plugins = new ArrayList();
+	
+	public static void deleteDirectory(String dirPath) {
+		if(!new File(dirPath).exists()) {
+			return
+		}
+		new File(dirPath).eachFile {
+			if(!it.getName().equals(".svn")) {
+				// skip the .svn directories
+				if(it.isDirectory()){
+					//println "recursing on " + it.absolutePath
+					deleteDirectory(it.absolutePath)
+					it.delete()
+				} else if(it.isFile()){
+					//println "deleting " + it.absolutePath
+					it.delete()
+				}
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		print "Listing plugins... "
@@ -40,10 +59,13 @@ class ApplicationBuilder {
 		println plugins.size() + " found."
 		
 		println "Cleaning up directories..."
-		new File(TARGET_DIRECTORY_ANDROID).deleteDir()
-		new File(TARGET_DIRECTORY_SHARED).deleteDir()
-		new File(TARGET_DIRECTORY_SERVER).deleteDir()
-		
+//		new File(TARGET_DIRECTORY_ANDROID).deleteDir()
+//		new File(TARGET_DIRECTORY_SHARED).deleteDir()
+//		new File(TARGET_DIRECTORY_SERVER).deleteDir()
+		deleteDirectory(TARGET_DIRECTORY_ANDROID)
+		deleteDirectory(TARGET_DIRECTORY_SHARED)
+		deleteDirectory(TARGET_DIRECTORY_SERVER)
+
 		println ""
 		
 		String manifestBuffer = "";
