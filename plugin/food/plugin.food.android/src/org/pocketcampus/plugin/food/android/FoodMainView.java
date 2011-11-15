@@ -123,7 +123,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Refreshes the display after some changes, e.g. preferences or suggestions
 	 */
 	private void refreshDisplay() {
-		showMenusByRestaurants();
+//		showMenusByRestaurants();
 	}
 
 	/**
@@ -183,12 +183,16 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		Log.d("RATING", "One Rating updated");
 		//Toast with the status
 		if(status.equals(SubmitStatus.VALID)) {
+			Log.d("RATING", "Valid");
 			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT).show();
 		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
+			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted, Toast.LENGTH_SHORT).show();
 		} else if (status.equals(SubmitStatus.TOOEARLY)) {
+			Log.d("RATING", "Too Early");
 			Toast.makeText(this, R.string.food_rating_too_early, Toast.LENGTH_SHORT).show();
 		} else if (status.equals(SubmitStatus.ERROR)) {
+			Log.d("RATING", "Error");
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT).show();
 		}
 		
@@ -491,7 +495,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		public String getLabel(Sandwich sandwich) {
 			return sandwich.getName();
 		}
-		
 	};
 
 	IRatableViewConstructor mViewConstructor = new IRatableViewConstructor() {
