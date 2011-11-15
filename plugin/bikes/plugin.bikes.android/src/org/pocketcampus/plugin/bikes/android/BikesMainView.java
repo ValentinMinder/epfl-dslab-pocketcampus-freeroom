@@ -11,7 +11,11 @@ import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BikesMainView extends PluginView implements IBikesView{
@@ -53,11 +57,17 @@ public class BikesMainView extends PluginView implements IBikesView{
 				else
 					ab = "availables bikes";
 				
+				String ep;
+				if(be.empty > 0)
+					ep = "empty bike slot";
+				else
+					ep = "empty bike slots";
+				
 				String msg = be.designation + " is at:\n" +
 							"Lat: " + be.geoLat + "\n" +
 							"Lon: " + be.geoLng + "\n" +
 							"and has " + be.availableQuantity + ab +"\n" +
-							"on " + (be.availableQuantity + be.empty) + " places";
+							"and " + be.empty + ep;
 				
 				Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
 				toast.show();
@@ -79,8 +89,25 @@ public class BikesMainView extends PluginView implements IBikesView{
 		if(mModel.getAvailablesBikes().size() > 0)
 			mLayout.setText("");
 		
+		
+		TextView mText = new TextView(this);
+		mText.setText("Place      available bikes");
+		mText.setId(42);
+		RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		textParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		mText.setLayoutParams(textParams);
+		
 		mList = new LabeledListViewElement(this, mModel.getAvailablesBikes(), labeler);
 		mList.setOnItemClickListener(oicl);
+		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		listParams.addRule(RelativeLayout.BELOW, mText.getId());
+		mList.setLayoutParams(listParams);
+		
+		
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		mLayout.setLayoutParams(layoutParams);
+		mLayout.addView(mText);
 		mLayout.addView(mList);
 		
 	}
@@ -104,8 +131,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 	@Override
 	public void bikeListUpdated() {
-		Toast toast = Toast.makeText(getApplicationContext(), mModel.getAvailablesBikes().get(0).toString(), Toast.LENGTH_SHORT);
-		toast.show();
+		//Toast toast = Toast.makeText(getApplicationContext(), mModel.getAvailablesBikes().get(0).toString(), Toast.LENGTH_SHORT);
+		//toast.show();
 		displayData();
 		
 	}
