@@ -56,9 +56,9 @@ public abstract class AbstractPreferencesArrayAdapter extends ArrayAdapter<Objec
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 
-		if(v == null) {
+//		if(v == null) {
 			v = super.getView(position, convertView, parent);
-		}
+//		}
 		
 		prefBox = (CheckBox)v.findViewById(R.id.sdk_list_preferences_entry_prefBox);
 		text = (TextView)v.findViewById(R.id.sdk_list_preferences_entry_text);
