@@ -6,4 +6,5 @@ import java.util.List;
 public interface IDirectoryController {
 	public void setResults(List<Person> res);
 	public void search(String name);
+	public void getProfilePicture(String sciper);
 }

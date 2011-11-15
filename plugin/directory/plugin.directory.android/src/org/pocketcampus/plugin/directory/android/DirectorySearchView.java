@@ -9,6 +9,7 @@ import org.pocketcampus.plugin.directory.android.ui.DirectorySearchLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -80,4 +81,24 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		Toast.makeText(this, "Too many results, try to be more specific", Toast.LENGTH_LONG).show();
 		
 	}
+	
+	@Override
+	public void pictureUpdated() {
+		//should not happen here
+		
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_SEARCH){
+			String name = mLayout.getName();
+			name = "ironman";
+			Toast.makeText(this, "looking for Ironman", Toast.LENGTH_SHORT).show();
+			mController.search(name);
+		}
+			
+		return super.onKeyDown(keyCode, event);
+	}
+
+	
 }

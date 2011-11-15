@@ -13,4 +13,5 @@ import org.pocketcampus.plugin.directory.shared.Person;
 public interface IDirectoryModel {
 	public List<Person> getResults();
 	public Person getSelectedPerson();
+	public void selectPerson(Person personToDisplay);
 }

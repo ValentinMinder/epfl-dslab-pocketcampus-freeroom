@@ -23,6 +23,7 @@ struct Person {
 	7: optional string office;
 	8: optional string gaspar;
 	9: optional string ou;
+	10: optional string picture_url;
 	
 }
 
@@ -30,6 +31,11 @@ exception LDAPException {
 	1: string message;
 }
 
+exception NoPictureFound{
+	1: string message;
+}
+
 service DirectoryService {
 	list<Person> search(1: string param) throws (1: LDAPException le);
+	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
 }

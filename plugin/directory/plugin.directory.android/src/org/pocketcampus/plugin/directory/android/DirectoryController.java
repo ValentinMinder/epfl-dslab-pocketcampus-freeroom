@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -61,6 +60,12 @@ public class DirectoryController extends PluginController implements IDirectoryC
 	}
 
 	@Override
+	public void getProfilePicture(String sciper) {
+		new DirectoryGetPictureRequest().start(this, mClient, sciper);
+		
+	}
+	
+	@Override
 	public void search(String name) {
 		new DirectorySearchNameRequest().start(this, mClient, name );
 		
@@ -111,6 +116,8 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		Toast.makeText(this,j+ " removed", Toast.LENGTH_SHORT).show();
 		setResults(mModel.getResults());
 	}
+
+	
 
 	
 

@@ -1,12 +1,18 @@
 package org.pocketcampus.plugin.directory.server;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.sdk.shared.utils.NetworkUtil;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
+import org.pocketcampus.plugin.directory.shared.NoPictureFound;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import com.unboundid.ldap.sdk.DereferencePolicy;
@@ -19,6 +25,12 @@ import com.unboundid.ldap.sdk.SearchScope;
 
 public class DirectoryServiceImpl implements DirectoryService.Iface {
 
+	private static final int NB_RESULT_LIMIT = 150;
+	
+	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
+	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
+	private static final String pictureExtension = ".jpg";
+	
 	private LDAPConnection ldap;
 	
 	public DirectoryServiceImpl(){
@@ -63,8 +75,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 			
 			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
-			int sizeLimit = 150;
-			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, sizeLimit, 0, false, searchQuery, attWanted); 
+			
+			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
 			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
 			
 			String t[] = new String[2];
@@ -96,6 +108,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 //					results.add(p);
 				
 			}
+			
+			if(param.equals("ironman"))hashMap.put(">9000",new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
+			
 
 		
 		} catch (LDAPSearchException e1) {
@@ -131,8 +146,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 			//searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
 			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
-			int sizeLimit = 150;
-			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, sizeLimit, 0, false, searchQuery, attWanted); 
+			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
 			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
 			
 			String t[] = new String[2];
@@ -203,6 +217,55 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	
 	private String buildGlobalSearch(String param){
 		return "(displayName~="+param+")";
+	}
+
+	@Override
+	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
+		byte[] sciperBytes = null;
+		byte[] digest = null;
+		
+		if(sciper.equals(">9000"))
+			return "http://1.bp.blogspot.com/_8GJbAAr1DY8/TLymwhZs-5I/AAAAAAAABzA/11t3g4HmSuI/s1600/ironman_movie.jpg";
+		
+		try {
+			sciperBytes = sciper.getBytes("UTF-8");
+			
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			digest = md.digest(sciperBytes);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		BigInteger bigInt = new BigInteger(1, digest);
+		String hashedSciper = bigInt.toString(16);
+		
+		while(hashedSciper.length() < 32 ){
+		  hashedSciper = "0"+hashedSciper;
+		}
+		
+		String pictureCamiproUrl = pictureCamiproBase + hashedSciper + pictureExtension;
+		String pictureExtUrl = pictureExtBase + hashedSciper + pictureExtension;
+		
+		if(NetworkUtil.checkUrlStatus(pictureCamiproUrl)) {
+			System.out.println(pictureCamiproUrl);
+			return pictureCamiproUrl;
+		}
+		
+		if(NetworkUtil.checkUrlStatus(pictureExtUrl)) {
+			System.out.println(pictureExtUrl);
+			return pictureExtUrl;
+		}
+		
+		System.out.println("sorry exception");
+		throw new org.pocketcampus.plugin.directory.shared.NoPictureFound().setMessage("sorry");
+		
 	}
 
 	

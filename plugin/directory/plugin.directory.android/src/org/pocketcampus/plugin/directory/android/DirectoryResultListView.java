@@ -32,6 +32,8 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	private List<Person> mPersons;
 	private StandardLayout mMainLayout;
 	
+	private PersonDetailsDialog dialog;
+	
 	/**
 	 * Defines what the main controller is for this view. This is optional, some view may not need
 	 * a controller (see for example the dashboard).
@@ -95,31 +97,31 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		getController(DirectoryController.class, callback);
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
-	    return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		switch (item.getItemId()) {
-	    	case R.id.directory_resultList_filtre:
-	    		
-	    		mController.filterResults();
-	    		
-	    		
-	    		
-	    		// = getOuSelection(allOU);
-		    	
-				//Toast.makeText(this, "filtre! " + toast, Toast.LENGTH_LONG).show();
-				
-				//filterResult(ouToKeep);
-		        return true;
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
+//	    return true;
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+//		switch (item.getItemId()) {
+//	    	case R.id.directory_resultList_filtre:
+//	    		
+//	    		mController.filterResults();
+//	    		
+//	    		
+//	    		
+//	    		// = getOuSelection(allOU);
+//		    	
+//				//Toast.makeText(this, "filtre! " + toast, Toast.LENGTH_LONG).show();
+//				
+//				//filterResult(ouToKeep);
+//		        return true;
+//		}
+//		return true;
+//	}
 
 	private HashSet<String> getOuSelection() {
 		HashSet<String> keeper = new HashSet<String>();
@@ -152,8 +154,10 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
 					Person p = (Person) adapter.getItemAtPosition(pos);
+					mModel.selectPerson(p);
+					mController.getProfilePicture(p.sciper);
 					System.out.println(p);
-					showPersonsDetails(p);
+					showPersonsDetails();
 				}
 			});
 			
@@ -173,8 +177,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 
 
-	protected void showPersonsDetails(Person p) {
-		PersonDetailsDialog dialog = new PersonDetailsDialog(this, p);
+	protected void showPersonsDetails() {
+	
+		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
 		dialog.show();
 	}
 	
@@ -190,7 +195,14 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void tooManyResults(int nb) {
-		// TODO Auto-generated method stub
+		System.out.println("oh aye");
+		
+	}
+
+
+	@Override
+	public void pictureUpdated() {
+		dialog.loadPicture();
 		
 	}
 	
