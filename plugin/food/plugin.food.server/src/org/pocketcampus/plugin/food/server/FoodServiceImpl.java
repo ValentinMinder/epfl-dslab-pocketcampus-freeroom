@@ -71,7 +71,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		if (!isToday(mLastImportedMenus)) {
 			System.out
-			.println("<getMeals>: Date not valid. Reimporting Meals.");
+					.println("<getMeals>: Date not valid. Reimporting Meals.");
 
 			mCampusMeals.clear();
 			mDeviceIds.clear();
@@ -80,7 +80,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			importMenus();
 		} else if (!isUpToDate(mLastImportedMenus)) {
 			System.out
-			.println("<getMeals>: Time not valid. Reimporting Meals.");
+					.println("<getMeals>: Time not valid. Reimporting Meals.");
 
 			refreshMenus();
 		} else {
@@ -186,16 +186,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return SubmitStatus.TOOEARLY;
 		}
 
+		if (mDeviceIds.contains(deviceId)) {
+			System.out.println("<setRating>: Already in mDeviceIds.");
+			return SubmitStatus.ALREADY_VOTED;
+		}
+
 		Connection connection = mDB.createConnection();
 
 		boolean voted = mDB.checkVotedDevice(connection, deviceId);
 
-		if (mDeviceIds.contains(deviceId)) {
-			System.out.println("<setRating>: Already in mDeviceIds.");
-			mDB.closeConnection(connection);
-			return SubmitStatus.ALREADY_VOTED;
-		} else if (voted) {
-			System.out.println("<setRating>: Already in ,DB Database.");
+		if (voted) {
+			System.out.println("<setRating>: Already in DB Database.");
 			mDB.closeConnection(connection);
 			return SubmitStatus.ALREADY_VOTED;
 		}
@@ -207,15 +208,13 @@ public class FoodServiceImpl implements FoodService.Iface {
 		double ratingValue;
 		int newNbVotes;
 
-		for (int i = 0; i < mCampusMeals.size(); i++) {
-			Meal currentMeal = mCampusMeals.get(i);
-			
+		for (Meal currentMeal : mCampusMeals) {
 			if (currentMeal.hashCode() == mealHashCode) {
 
 				ratingTotal = currentMeal.getRating().getTotalRating()
 						+ rating.getRatingValue();
 				newNbVotes = currentMeal.getRating().getNbVotes() + 1;
-				if( newNbVotes != 0) {				
+				if (newNbVotes != 0) {
 					ratingValue = ratingTotal / newNbVotes;
 				} else {
 					ratingValue = 0;
@@ -294,8 +293,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 				if (feed != null && feed.items != null) {
 					for (int i = 0; i < feed.items.size(); i++) {
-						Rating mealRating = new Rating(0, 0,
-								0);
+						Rating mealRating = new Rating(0, 0, 0);
 						Meal newMeal = new Meal(
 								(r + feed.items.get(i).title).hashCode(),
 								feed.items.get(i).title,
@@ -347,8 +345,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 					if (!alreadyExist(newMeal)
 							&& !Utils.containsSpecialAscii(
 									newMeal.mealDescription, BAD_CHAR)
-									&& !Utils.containsSpecialAscii(newMeal.name,
-											BAD_CHAR)) {
+							&& !Utils.containsSpecialAscii(newMeal.name,
+									BAD_CHAR)) {
 						mCampusMeals.add(newMeal);
 						mCampusMealRatings.put(newMeal.hashCode(), mealRating);
 					}
