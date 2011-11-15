@@ -17,7 +17,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
         </activity>
         <activity android:name="org.pocketcampus.android.plugin.dashboard.AboutView">
