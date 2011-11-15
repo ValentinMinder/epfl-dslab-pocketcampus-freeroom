@@ -27,11 +27,15 @@ public class DirectoryService {
 
     public List<Person> search(String param) throws LDAPException, org.apache.thrift.TException;
 
+    public String getProfilePicture(String sciper) throws NoPictureFound, org.apache.thrift.TException;
+
   }
 
   public interface AsyncIface {
 
     public void search(String param, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getProfilePicture(String sciper, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getProfilePicture_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -79,6 +83,32 @@ public class DirectoryService {
         throw result.le;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "search failed: unknown result");
+    }
+
+    public String getProfilePicture(String sciper) throws NoPictureFound, org.apache.thrift.TException
+    {
+      send_getProfilePicture(sciper);
+      return recv_getProfilePicture();
+    }
+
+    public void send_getProfilePicture(String sciper) throws org.apache.thrift.TException
+    {
+      getProfilePicture_args args = new getProfilePicture_args();
+      args.setSciper(sciper);
+      sendBase("getProfilePicture", args);
+    }
+
+    public String recv_getProfilePicture() throws NoPictureFound, org.apache.thrift.TException
+    {
+      getProfilePicture_result result = new getProfilePicture_result();
+      receiveBase(result, "getProfilePicture");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      if (result.npf != null) {
+        throw result.npf;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getProfilePicture failed: unknown result");
     }
 
   }
@@ -131,6 +161,38 @@ public class DirectoryService {
       }
     }
 
+    public void getProfilePicture(String sciper, org.apache.thrift.async.AsyncMethodCallback<getProfilePicture_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getProfilePicture_call method_call = new getProfilePicture_call(sciper, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getProfilePicture_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String sciper;
+      public getProfilePicture_call(String sciper, org.apache.thrift.async.AsyncMethodCallback<getProfilePicture_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.sciper = sciper;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getProfilePicture", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getProfilePicture_args args = new getProfilePicture_args();
+        args.setSciper(sciper);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public String getResult() throws NoPictureFound, org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getProfilePicture();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor implements org.apache.thrift.TProcessor {
@@ -145,6 +207,7 @@ public class DirectoryService {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("search", new search());
+      processMap.put("getProfilePicture", new getProfilePicture());
       return processMap;
     }
 
@@ -163,6 +226,26 @@ public class DirectoryService {
           result.success = iface.search(args.param);
         } catch (LDAPException le) {
           result.le = le;
+        }
+        return result;
+      }
+    }
+
+    private static class getProfilePicture<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getProfilePicture_args> {
+      public getProfilePicture() {
+        super("getProfilePicture");
+      }
+
+      protected getProfilePicture_args getEmptyArgsInstance() {
+        return new getProfilePicture_args();
+      }
+
+      protected getProfilePicture_result getResult(I iface, getProfilePicture_args args) throws org.apache.thrift.TException {
+        getProfilePicture_result result = new getProfilePicture_result();
+        try {
+          result.success = iface.getProfilePicture(args.sciper);
+        } catch (NoPictureFound npf) {
+          result.npf = npf;
         }
         return result;
       }
@@ -881,6 +964,707 @@ public class DirectoryService {
         sb.append("null");
       } else {
         sb.append(this.le);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getProfilePicture_args implements org.apache.thrift.TBase<getProfilePicture_args, getProfilePicture_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getProfilePicture_args");
+
+    private static final org.apache.thrift.protocol.TField SCIPER_FIELD_DESC = new org.apache.thrift.protocol.TField("sciper", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    public String sciper; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SCIPER((short)1, "sciper");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // SCIPER
+            return SCIPER;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SCIPER, new org.apache.thrift.meta_data.FieldMetaData("sciper", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getProfilePicture_args.class, metaDataMap);
+    }
+
+    public getProfilePicture_args() {
+    }
+
+    public getProfilePicture_args(
+      String sciper)
+    {
+      this();
+      this.sciper = sciper;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getProfilePicture_args(getProfilePicture_args other) {
+      if (other.isSetSciper()) {
+        this.sciper = other.sciper;
+      }
+    }
+
+    public getProfilePicture_args deepCopy() {
+      return new getProfilePicture_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.sciper = null;
+    }
+
+    public String getSciper() {
+      return this.sciper;
+    }
+
+    public getProfilePicture_args setSciper(String sciper) {
+      this.sciper = sciper;
+      return this;
+    }
+
+    public void unsetSciper() {
+      this.sciper = null;
+    }
+
+    /** Returns true if field sciper is set (has been assigned a value) and false otherwise */
+    public boolean isSetSciper() {
+      return this.sciper != null;
+    }
+
+    public void setSciperIsSet(boolean value) {
+      if (!value) {
+        this.sciper = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SCIPER:
+        if (value == null) {
+          unsetSciper();
+        } else {
+          setSciper((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SCIPER:
+        return getSciper();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SCIPER:
+        return isSetSciper();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getProfilePicture_args)
+        return this.equals((getProfilePicture_args)that);
+      return false;
+    }
+
+    public boolean equals(getProfilePicture_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_sciper = true && this.isSetSciper();
+      boolean that_present_sciper = true && that.isSetSciper();
+      if (this_present_sciper || that_present_sciper) {
+        if (!(this_present_sciper && that_present_sciper))
+          return false;
+        if (!this.sciper.equals(that.sciper))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_sciper = true && (isSetSciper());
+      builder.append(present_sciper);
+      if (present_sciper)
+        builder.append(sciper);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getProfilePicture_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getProfilePicture_args typedOther = (getProfilePicture_args)other;
+
+      lastComparison = Boolean.valueOf(isSetSciper()).compareTo(typedOther.isSetSciper());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSciper()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sciper, typedOther.sciper);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // SCIPER
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.sciper = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.sciper != null) {
+        oprot.writeFieldBegin(SCIPER_FIELD_DESC);
+        oprot.writeString(this.sciper);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getProfilePicture_args(");
+      boolean first = true;
+
+      sb.append("sciper:");
+      if (this.sciper == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.sciper);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getProfilePicture_result implements org.apache.thrift.TBase<getProfilePicture_result, getProfilePicture_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getProfilePicture_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
+    private static final org.apache.thrift.protocol.TField NPF_FIELD_DESC = new org.apache.thrift.protocol.TField("npf", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    public String success; // required
+    public NoPictureFound npf; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      NPF((short)1, "npf");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // NPF
+            return NPF;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.NPF, new org.apache.thrift.meta_data.FieldMetaData("npf", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getProfilePicture_result.class, metaDataMap);
+    }
+
+    public getProfilePicture_result() {
+    }
+
+    public getProfilePicture_result(
+      String success,
+      NoPictureFound npf)
+    {
+      this();
+      this.success = success;
+      this.npf = npf;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getProfilePicture_result(getProfilePicture_result other) {
+      if (other.isSetSuccess()) {
+        this.success = other.success;
+      }
+      if (other.isSetNpf()) {
+        this.npf = new NoPictureFound(other.npf);
+      }
+    }
+
+    public getProfilePicture_result deepCopy() {
+      return new getProfilePicture_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.npf = null;
+    }
+
+    public String getSuccess() {
+      return this.success;
+    }
+
+    public getProfilePicture_result setSuccess(String success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public NoPictureFound getNpf() {
+      return this.npf;
+    }
+
+    public getProfilePicture_result setNpf(NoPictureFound npf) {
+      this.npf = npf;
+      return this;
+    }
+
+    public void unsetNpf() {
+      this.npf = null;
+    }
+
+    /** Returns true if field npf is set (has been assigned a value) and false otherwise */
+    public boolean isSetNpf() {
+      return this.npf != null;
+    }
+
+    public void setNpfIsSet(boolean value) {
+      if (!value) {
+        this.npf = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((String)value);
+        }
+        break;
+
+      case NPF:
+        if (value == null) {
+          unsetNpf();
+        } else {
+          setNpf((NoPictureFound)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case NPF:
+        return getNpf();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case NPF:
+        return isSetNpf();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getProfilePicture_result)
+        return this.equals((getProfilePicture_result)that);
+      return false;
+    }
+
+    public boolean equals(getProfilePicture_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_npf = true && this.isSetNpf();
+      boolean that_present_npf = true && that.isSetNpf();
+      if (this_present_npf || that_present_npf) {
+        if (!(this_present_npf && that_present_npf))
+          return false;
+        if (!this.npf.equals(that.npf))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      boolean present_npf = true && (isSetNpf());
+      builder.append(present_npf);
+      if (present_npf)
+        builder.append(npf);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getProfilePicture_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getProfilePicture_result typedOther = (getProfilePicture_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetNpf()).compareTo(typedOther.isSetNpf());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetNpf()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.npf, typedOther.npf);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.success = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 1: // NPF
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.npf = new NoPictureFound();
+              this.npf.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        oprot.writeString(this.success);
+        oprot.writeFieldEnd();
+      } else if (this.isSetNpf()) {
+        oprot.writeFieldBegin(NPF_FIELD_DESC);
+        this.npf.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getProfilePicture_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("npf:");
+      if (this.npf == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.npf);
       }
       first = false;
       sb.append(")");
