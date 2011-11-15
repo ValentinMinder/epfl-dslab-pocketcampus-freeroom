@@ -91,8 +91,10 @@ public class RssParser extends DefaultHandler {
 
 		else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
-			if (this.item != null)
+			if (this.item != null) {				
 				this.item.title = removeBadStuff(this.text.toString().trim());
+				this.item.title = capitalize(this.item.title);
+			}
 			else if (this.imgStatus)
 				this.rssFeed.imageTitle = this.text.toString().trim();
 			else
@@ -111,9 +113,11 @@ public class RssParser extends DefaultHandler {
 
 		else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
-			if (this.item != null)
+			if (this.item != null){
 				this.item.description = removeBadStuff(this.text.toString()
 						.trim());
+				this.item.description = capitalize(this.item.description);
+			}
 			else
 				this.rssFeed.description = this.text.toString().trim();
 		}
@@ -152,7 +156,7 @@ public class RssParser extends DefaultHandler {
 		this.text.append(ch, start, length);
 	}
 
-	public String removeBadStuff(String s) {
+	private String removeBadStuff(String s) {
 		s = s.replace("′", "'");
 		s = s.replace("l?", "l'");
 		s = s.replace("Ã©", "é");
@@ -166,6 +170,29 @@ public class RssParser extends DefaultHandler {
 			s += "\n";
 		}
 		return s.trim();
+	}
+	
+	private static String capitalize(String string){
+		String[] words = string.split("\\s+");
+		String capString = "";
+
+		for(String s : words) {
+			System.out.println(s);
+			if(s.length() > 2) {				
+				String begin = s.substring(0,1);
+				begin = begin.toUpperCase();
+				
+				String sub = s.substring(1);
+				sub = sub.toLowerCase();
+
+				capString = capString.concat(begin+sub + " ");
+			} else {
+				s.toLowerCase();
+				capString = capString.concat(s + " ");
+			}
+		}
+
+		return capString;
 	}
 
 	public static class RssFeed {
