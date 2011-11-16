@@ -10,6 +10,7 @@ public interface IFoodController {
 	public void getRestaurantsList();
 	public void getMeals();
 	public void getSandwiches();
+	public void getHasVoted();
 	
 	public List<MealTag> getMealTags();
 	

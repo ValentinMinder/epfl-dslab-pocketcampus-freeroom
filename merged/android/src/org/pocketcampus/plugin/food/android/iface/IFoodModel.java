@@ -22,6 +22,9 @@ public interface IFoodModel {
 	
 	public List<Meal> getMealsByRatings();
 	
+	public void setHasVoted(boolean hasVoted);
+	public boolean getHasVoted();
+	
 	public void setSandwiches(List<Sandwich> list);
 	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants();
 
