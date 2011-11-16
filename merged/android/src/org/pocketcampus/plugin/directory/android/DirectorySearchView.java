@@ -12,7 +12,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class DirectorySearchView extends PluginView implements IDirectoryView{
@@ -43,12 +46,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		OnClickListener listener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String name = mLayout.getName();
-				
-				
-				// There's also a setFoo method in the model. Don't use it from here!
-				// The views should never modify the model directly.
-				mController.search(name);
+				search();
 			}
 		};
 		
@@ -58,6 +56,18 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 		Button searchButton = (Button) findViewById(R.id.directory_search_button);
 		searchButton.setOnClickListener(listener);
+		
+		OnEditorActionListener oeal = new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		            search();
+		            return true;
+		        }
+		        return false;
+			}
+		};
+		mLayout.setOnEditorActionListener(oeal);
 		
 		// We need to force the display before asking the controller for the data, 
 		// as the controller may take some time to get it.
@@ -91,13 +101,19 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_SEARCH){
-			String name = mLayout.getName();
-			name = "ironman";
-			Toast.makeText(this, "looking for Ironman", Toast.LENGTH_SHORT).show();
-			mController.search(name);
+			search();
+
+//			String name = "ironman";
+//			Toast.makeText(this, "looking for Ironman", Toast.LENGTH_SHORT).show();
+//			mController.search(name);
 		}
 			
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	private void search(){
+		String name = mLayout.getName();
+		mController.search(name);
 	}
 
 	

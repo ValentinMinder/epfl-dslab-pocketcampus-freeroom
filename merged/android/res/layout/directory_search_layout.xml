@@ -20,7 +20,8 @@ android:id="@+id/relativeLayout1" android:layout_height="match_parent">
     android:layout_centerVertical="true" 
     android:layout_marginLeft="10px" 
     android:layout_marginRight="10px" 
-    android:layout_marginBottom="10px"></EditText>
+    android:layout_marginBottom="10px"
+    android:imeOptions="actionSearch"></EditText>
     
     <Button 
     android:layout_height="wrap_content" 
