@@ -15,17 +15,18 @@ import android.widget.TextView;
  * @author Elodie
  *
  */
-public class TitledStandardLayout extends RelativeLayout {
+public class StandardTitledLayout extends RelativeLayout {
 	private TextView mTitleTextView;
 	private TextView mMessageTextView;
 	private RelativeLayout mInnerLayout;
+	private RelativeLayout mFillerLayout;
 
-	public TitledStandardLayout(Context context, AttributeSet attrs) {
+	public StandardTitledLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initialize(context);
 	}
 	
-	public TitledStandardLayout(Context context) {
+	public StandardTitledLayout(Context context) {
 		super(context);
 		initialize(context);
 	}
@@ -36,7 +37,9 @@ public class TitledStandardLayout extends RelativeLayout {
 		super.addView(mInnerLayout);
 		
 		mTitleTextView = (TextView) findViewById(R.id.standard_titled_layout_title);
+		mTitleTextView.setId(8756789);
 		mMessageTextView = (TextView) findViewById(R.id.standard_titled_layout_msg);
+		mFillerLayout = (RelativeLayout) findViewById(R.id.standard_titled_layout_filler);
 	}
 
 	/**
@@ -49,7 +52,7 @@ public class TitledStandardLayout extends RelativeLayout {
 	}
 	
 	/**
-	 * Displays a centered message.
+	 * Displays a title message.
 	 * @param text
 	 */
 	public void setTitle(String text) {
@@ -64,11 +67,33 @@ public class TitledStandardLayout extends RelativeLayout {
 		mMessageTextView.setVisibility(View.GONE);
 	}
 	
+	/**
+	 * Hides the centered message.
+	 */
+	public void hideTitle() {
+		mTitleTextView.setVisibility(View.GONE);
+	}
+	
 	@Override
 	public void addView(View child) {
 		mInnerLayout.addView(child);
 	}
 	
+	/**
+	 * Add a view to the inner layout, below the title
+	 * @param child
+	 */
+	public void addFillerView(View child){
+		mFillerLayout.addView(child);
+	}
+	
+	/**
+	 * Remove views from the inner layout, below the title
+	 * @return
+	 */
+	public void removeFillerView(){
+		mFillerLayout.removeAllViews();
+	}	
 	public int getMsgId(){
 		return mTitleTextView.getId();
 	}

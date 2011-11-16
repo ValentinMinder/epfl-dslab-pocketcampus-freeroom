@@ -8,14 +8,14 @@
         android:id="@+id/standard_titled_layout_title"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dip"
+        android:layout_alignParentTop="true"
         android:background="@color/smoke"
+        android:gravity="top"
         android:paddingBottom="2dip"
         android:paddingLeft="5dip"
         android:paddingTop="2dip"
-        android:textColor="@android:color/white" 
-        android:gravity="top"
-        />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/standard_titled_layout_msg"
@@ -24,5 +24,14 @@
         android:textSize="@dimen/centered_message_size"
         android:visibility="gone" >
     </TextView>
+
+    <RelativeLayout
+        android:id="@+id/standard_titled_layout_filler"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="25dip"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/standard_titled_layout_title"
+        android:gravity="bottom" >
+    </RelativeLayout>
 
 </RelativeLayout>

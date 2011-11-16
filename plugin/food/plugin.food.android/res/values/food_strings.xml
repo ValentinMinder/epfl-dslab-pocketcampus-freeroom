@@ -3,6 +3,7 @@
 
     <!-- General -->
     <string name="food_hello">Hello World, androidActivity!</string>
+    <string name="food_menu_restaurants">Restaurants</string>
     <string name="food_menu_meals">Meals</string>
     <string name="food_menu_ratings">Ratings</string>
     <string name="food_menu_sandwiches">Sandwiches</string>
@@ -10,21 +11,22 @@
     <string name="food_menu_settings">Settings</string>
 
     <!-- Restaurants -->
-    <string name="food_restaurants">Restaurants</string>
+    <string name="food_by_restaurants">Restaurants</string>
 
-    <!-- Meals -->    
+    <!-- Meals -->
     <string name="food_no_menus">No Menus</string>
 
     <!-- Menu Dialog -->
     <string name="food_menu_dialog_firstButton">Rate it!</string>
     <string name="food_menu_dialog_secondButton">Pictures</string>
     <string name="food_menu_dialog_thirdButton">Go there</string>
-    
+
     <!-- Ratings -->
     <string name="food_rating_valid">Rating submission successful!</string>
     <string name="food_rating_already_voted">You can only vote for one meal a day...</string>
     <string name="food_rating_too_early">Too early to vote!</string>
     <string name="food_rating_error">An error occurred while submitting the rating. Try again!</string>
+    <string name="food_by_ratings">Ratings</string>
 
     <!-- Rating Dialog -->
     <string name="food_rating_nb_votes_singular">vote</string>
@@ -47,5 +49,5 @@
     <string name="food_suggestions_ok">See Suggestions</string>
     <string name="food_suggestions_test">Test</string>
     <string name="food_suggestions_notag">No existing Tag</string>
-    
+
 </resources>
