@@ -33,6 +33,8 @@ public class FoodService {
 
     public Rating getRating(Meal meal) throws org.apache.thrift.TException;
 
+    public boolean hasVoted(String deviceId) throws org.apache.thrift.TException;
+
     public Map<Integer,Rating> getRatings() throws org.apache.thrift.TException;
 
     public SubmitStatus setRating(Rating rating, Meal meal, String deviceID) throws org.apache.thrift.TException;
@@ -48,6 +50,8 @@ public class FoodService {
     public void getSandwiches(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSandwiches_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getRating(Meal meal, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRating_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void hasVoted(String deviceId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.hasVoted_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getRatings(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRatings_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -162,6 +166,29 @@ public class FoodService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRating failed: unknown result");
+    }
+
+    public boolean hasVoted(String deviceId) throws org.apache.thrift.TException
+    {
+      send_hasVoted(deviceId);
+      return recv_hasVoted();
+    }
+
+    public void send_hasVoted(String deviceId) throws org.apache.thrift.TException
+    {
+      hasVoted_args args = new hasVoted_args();
+      args.setDeviceId(deviceId);
+      sendBase("hasVoted", args);
+    }
+
+    public boolean recv_hasVoted() throws org.apache.thrift.TException
+    {
+      hasVoted_result result = new hasVoted_result();
+      receiveBase(result, "hasVoted");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "hasVoted failed: unknown result");
     }
 
     public Map<Integer,Rating> getRatings() throws org.apache.thrift.TException
@@ -348,6 +375,38 @@ public class FoodService {
       }
     }
 
+    public void hasVoted(String deviceId, org.apache.thrift.async.AsyncMethodCallback<hasVoted_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      hasVoted_call method_call = new hasVoted_call(deviceId, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class hasVoted_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String deviceId;
+      public hasVoted_call(String deviceId, org.apache.thrift.async.AsyncMethodCallback<hasVoted_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.deviceId = deviceId;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("hasVoted", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        hasVoted_args args = new hasVoted_args();
+        args.setDeviceId(deviceId);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public boolean getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_hasVoted();
+      }
+    }
+
     public void getRatings(org.apache.thrift.async.AsyncMethodCallback<getRatings_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getRatings_call method_call = new getRatings_call(resultHandler, this, ___protocolFactory, ___transport);
@@ -432,6 +491,7 @@ public class FoodService {
       processMap.put("getRestaurants", new getRestaurants());
       processMap.put("getSandwiches", new getSandwiches());
       processMap.put("getRating", new getRating());
+      processMap.put("hasVoted", new hasVoted());
       processMap.put("getRatings", new getRatings());
       processMap.put("setRating", new setRating());
       return processMap;
@@ -497,6 +557,23 @@ public class FoodService {
       protected getRating_result getResult(I iface, getRating_args args) throws org.apache.thrift.TException {
         getRating_result result = new getRating_result();
         result.success = iface.getRating(args.meal);
+        return result;
+      }
+    }
+
+    private static class hasVoted<I extends Iface> extends org.apache.thrift.ProcessFunction<I, hasVoted_args> {
+      public hasVoted() {
+        super("hasVoted");
+      }
+
+      protected hasVoted_args getEmptyArgsInstance() {
+        return new hasVoted_args();
+      }
+
+      protected hasVoted_result getResult(I iface, hasVoted_args args) throws org.apache.thrift.TException {
+        hasVoted_result result = new hasVoted_result();
+        result.success = iface.hasVoted(args.deviceId);
+        result.setSuccessIsSet(true);
         return result;
       }
     }
@@ -2752,6 +2829,613 @@ public class FoodService {
       } else {
         sb.append(this.success);
       }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class hasVoted_args implements org.apache.thrift.TBase<hasVoted_args, hasVoted_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("hasVoted_args");
+
+    private static final org.apache.thrift.protocol.TField DEVICE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("deviceId", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    public String deviceId; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      DEVICE_ID((short)1, "deviceId");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // DEVICE_ID
+            return DEVICE_ID;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.DEVICE_ID, new org.apache.thrift.meta_data.FieldMetaData("deviceId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(hasVoted_args.class, metaDataMap);
+    }
+
+    public hasVoted_args() {
+    }
+
+    public hasVoted_args(
+      String deviceId)
+    {
+      this();
+      this.deviceId = deviceId;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public hasVoted_args(hasVoted_args other) {
+      if (other.isSetDeviceId()) {
+        this.deviceId = other.deviceId;
+      }
+    }
+
+    public hasVoted_args deepCopy() {
+      return new hasVoted_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.deviceId = null;
+    }
+
+    public String getDeviceId() {
+      return this.deviceId;
+    }
+
+    public hasVoted_args setDeviceId(String deviceId) {
+      this.deviceId = deviceId;
+      return this;
+    }
+
+    public void unsetDeviceId() {
+      this.deviceId = null;
+    }
+
+    /** Returns true if field deviceId is set (has been assigned a value) and false otherwise */
+    public boolean isSetDeviceId() {
+      return this.deviceId != null;
+    }
+
+    public void setDeviceIdIsSet(boolean value) {
+      if (!value) {
+        this.deviceId = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case DEVICE_ID:
+        if (value == null) {
+          unsetDeviceId();
+        } else {
+          setDeviceId((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case DEVICE_ID:
+        return getDeviceId();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case DEVICE_ID:
+        return isSetDeviceId();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof hasVoted_args)
+        return this.equals((hasVoted_args)that);
+      return false;
+    }
+
+    public boolean equals(hasVoted_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_deviceId = true && this.isSetDeviceId();
+      boolean that_present_deviceId = true && that.isSetDeviceId();
+      if (this_present_deviceId || that_present_deviceId) {
+        if (!(this_present_deviceId && that_present_deviceId))
+          return false;
+        if (!this.deviceId.equals(that.deviceId))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_deviceId = true && (isSetDeviceId());
+      builder.append(present_deviceId);
+      if (present_deviceId)
+        builder.append(deviceId);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(hasVoted_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      hasVoted_args typedOther = (hasVoted_args)other;
+
+      lastComparison = Boolean.valueOf(isSetDeviceId()).compareTo(typedOther.isSetDeviceId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetDeviceId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.deviceId, typedOther.deviceId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // DEVICE_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.deviceId = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.deviceId != null) {
+        oprot.writeFieldBegin(DEVICE_ID_FIELD_DESC);
+        oprot.writeString(this.deviceId);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("hasVoted_args(");
+      boolean first = true;
+
+      sb.append("deviceId:");
+      if (this.deviceId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.deviceId);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class hasVoted_result implements org.apache.thrift.TBase<hasVoted_result, hasVoted_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("hasVoted_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)0);
+
+    public boolean success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __SUCCESS_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(hasVoted_result.class, metaDataMap);
+    }
+
+    public hasVoted_result() {
+    }
+
+    public hasVoted_result(
+      boolean success)
+    {
+      this();
+      this.success = success;
+      setSuccessIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public hasVoted_result(hasVoted_result other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      this.success = other.success;
+    }
+
+    public hasVoted_result deepCopy() {
+      return new hasVoted_result(this);
+    }
+
+    @Override
+    public void clear() {
+      setSuccessIsSet(false);
+      this.success = false;
+    }
+
+    public boolean isSuccess() {
+      return this.success;
+    }
+
+    public hasVoted_result setSuccess(boolean success) {
+      this.success = success;
+      setSuccessIsSet(true);
+      return this;
+    }
+
+    public void unsetSuccess() {
+      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((Boolean)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return Boolean.valueOf(isSuccess());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof hasVoted_result)
+        return this.equals((hasVoted_result)that);
+      return false;
+    }
+
+    public boolean equals(hasVoted_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true;
+      boolean that_present_success = true;
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (this.success != that.success)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true;
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(hasVoted_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      hasVoted_result typedOther = (hasVoted_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+              this.success = iprot.readBool();
+              setSuccessIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        oprot.writeBool(this.success);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("hasVoted_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      sb.append(this.success);
       first = false;
       sb.append(")");
       return sb.toString();

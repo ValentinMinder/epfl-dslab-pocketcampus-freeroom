@@ -19,7 +19,6 @@ import org.pocketcampus.plugin.food.server.parse.RssParser.RssFeed;
 import org.pocketcampus.plugin.food.shared.FoodService;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
-import org.pocketcampus.plugin.food.shared.RatingValue;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
@@ -702,86 +701,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return realDiff;
 	}
 
-	/**
-	 * Converts a DOuble into its corresponding RatingValue
-	 * 
-	 * @param rating
-	 * @return ratingValue corresponding to double
-	 */
-	private RatingValue doubleToStarRating(Double rating) {
-		if (rating < 0.25) {
-			return RatingValue.STAR_0_0;
-		} else if (rating < 0.75) {
-			return RatingValue.STAR_0_5;
-		} else if (rating < 1.25) {
-			return RatingValue.STAR_1_0;
-		} else if (rating < 1.75) {
-			return RatingValue.STAR_1_5;
-		} else if (rating < 2.25) {
-			return RatingValue.STAR_2_0;
-		} else if (rating < 2.75) {
-			return RatingValue.STAR_2_5;
-		} else if (rating < 3.25) {
-			return RatingValue.STAR_3_0;
-		} else if (rating < 3.75) {
-			return RatingValue.STAR_3_5;
-		} else if (rating < 4.25) {
-			return RatingValue.STAR_4_0;
-		} else if (rating < 4.75) {
-			return RatingValue.STAR_4_5;
-		} else {
-			return RatingValue.STAR_5_0;
+	@Override
+	public boolean hasVoted(String deviceId) throws TException {
+		if (mDeviceIds.contains(deviceId)) {
+			System.out.println("<setRating>: Already in mDeviceIds.");
+			return true;
 		}
+		return false;
 	}
-
-	/**
-	 * Converts a RatingValue into its corresponding double value
-	 * 
-	 * @param rating
-	 * @return the double value of the rating
-	 */
-	private double starRatingToDouble(RatingValue rating) {
-		double value = 0;
-
-		switch (rating) {
-
-		case STAR_0_0:
-			break;
-		case STAR_0_5:
-			value = 0.5;
-			break;
-		case STAR_1_0:
-			value = 1.0;
-			break;
-		case STAR_1_5:
-			value = 1.5;
-			break;
-		case STAR_2_0:
-			value = 2.0;
-			break;
-		case STAR_2_5:
-			value = 2.5;
-			break;
-		case STAR_3_0:
-			value = 3.0;
-			break;
-		case STAR_3_5:
-			value = 3.5;
-			break;
-		case STAR_4_0:
-			value = 4.0;
-			break;
-		case STAR_4_5:
-			value = 4.5;
-			break;
-		case STAR_5_0:
-			value = 5.0;
-			break;
-		default:
-			break;
-		}
-
-		return value;
-	}
-
 }

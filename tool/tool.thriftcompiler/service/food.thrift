@@ -41,6 +41,7 @@ service FoodService {
 	list<Restaurant> getRestaurants();
 	list<Sandwich> getSandwiches();
 	Rating getRating(1: Meal meal);
+	bool hasVoted(1: string deviceId);
 	map<i32, Rating> getRatings();
 	SubmitStatus setRating(1: Rating rating, 2: Meal meal, 3: string deviceID);
 }
