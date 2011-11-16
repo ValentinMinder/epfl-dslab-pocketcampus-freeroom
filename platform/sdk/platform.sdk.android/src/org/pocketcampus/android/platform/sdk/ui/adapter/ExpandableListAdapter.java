@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
@@ -24,7 +23,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 	/* Layout Management */
 	private LayoutInflater mInflater;
-	private ElementDimension mDimension = ElementDimension.NORMAL;
 	private Vector<String> mHeaders;
 	private HashMap<String, ? extends Vector<? extends Object>> mChildren;
 
@@ -41,7 +39,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	 *            restaurant full menu represented in the list section.
 	 */
 	public ExpandableListAdapter(Vector<String> headers,
-			HashMap<String,? extends Vector<? extends Object>> items,
+			HashMap<String, ? extends Vector<? extends Object>> items,
 			IRatableViewConstructor viewConstructor,
 			IRatableViewLabeler<? extends Object> viewLabeler, Context context) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
@@ -73,7 +71,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		String section = mHeaders.get(groupPosition);
 		return mViewConstructor.getNewView(
 				mChildren.get(section).get(childPosition), mContext,
-				mViewLabeler, /*elementListener, ratingListener, */childPosition);
+				mViewLabeler, childPosition);
 	}
 
 	public int getChildrenCount(int groupPosition) {
@@ -124,15 +122,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		TextView mTitle;
 		ImageView mImage;
 
-		private List<View> mSectionContents;
-
-		public ViewHolder(Context context, String title, List<? extends Object> resto,
-				int position, boolean isExpanded) {
+		public ViewHolder(Context context, String title,
+				List<? extends Object> resto, int position, boolean isExpanded) {
 			super(context);
 
 			this.setOrientation(VERTICAL);
 
-			mView = mInflater.inflate(R.layout.sdk_separated_list_header_entry, null);
+			mView = mInflater.inflate(R.layout.sdk_separated_list_header_entry,
+					null);
 
 			mTitle = (TextView) mView
 					.findViewById(R.id.sdk_separated_list_header_title);

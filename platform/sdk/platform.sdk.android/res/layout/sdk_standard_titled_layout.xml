@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/standard_layout_main"
+    style="@style/PocketCampusTheme.Secondary.MainLayout"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/standard_titled_layout_title"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/smoke"
+        android:paddingBottom="2dip"
+        android:paddingLeft="5dip"
+        android:paddingTop="2dip"
+        android:textColor="@android:color/white" 
+        android:gravity="top"
+        />
+
+    <TextView
+        android:id="@+id/standard_titled_layout_msg"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textSize="@dimen/centered_message_size"
+        android:visibility="gone" >
+    </TextView>
+
+</RelativeLayout>

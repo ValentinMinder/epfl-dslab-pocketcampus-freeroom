@@ -5,7 +5,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.pocketcampus.android.platform.sdk.ui.adapter.ExpandableListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.adapter.RatableExpandableListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.Element;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
@@ -57,6 +56,11 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement 
 	
 	public void setOnRatingClickListener(OnItemClickListener l) {
 		mAdapter.setOnRatingClickListener(l);
+	}
+	
+	@Override
+	public RatableExpandableListAdapter getExpandableListAdapter() {
+		return mAdapter;
 	}
 
 }
