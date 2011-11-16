@@ -7,7 +7,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
-import org.pocketcampus.plugin.food.android.iface.IFoodSimpleView;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 import android.content.SharedPreferences;
@@ -18,9 +17,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class FoodPreferencesView extends PluginView implements IFoodSimpleView {
+public class FoodPreferencesView extends PluginView {
 	/*MVC*/
-	private FoodController mController;
 	private IFoodModel mModel;
 
 	/*Layout*/
@@ -30,7 +28,6 @@ public class FoodPreferencesView extends PluginView implements IFoodSimpleView {
 	/*Preferences*/
 	private SharedPreferences mRestoPrefs;
 	private Editor mRestoPrefsEditor;
-
 	private static final String RESTO_PREFS_NAME = "RestoPrefs";
 
 	/*Restaurants*/
@@ -59,8 +56,7 @@ public class FoodPreferencesView extends PluginView implements IFoodSimpleView {
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		// Get and cast the controller and model
-		mController = (FoodController) controller;
+		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
@@ -132,11 +128,6 @@ public class FoodPreferencesView extends PluginView implements IFoodSimpleView {
 			}
 
 		});
-	}
-
-	@Override
-	public void networkErrorHappened() {
-		
 	}
 
 }

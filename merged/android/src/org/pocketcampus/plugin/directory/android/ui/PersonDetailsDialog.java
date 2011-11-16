@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.directory.android.ui;
 
 
 import org.pocketcampus.R;
-//import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.directory.android.DirectoryResultListView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
@@ -49,19 +49,19 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	
 	public void loadPicture() {
-		//LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
-		//if(liv == null){
-		//	System.out.println("liv is null");
-		//	return;
-		//}
-		//
-		//if(displayedPerson_.picture_url != null){
-		//	liv.setImageDrawable(displayedPerson_.picture_url);
-		//
-		//	liv.setVisibility(View.VISIBLE);
-		//}else{
-		//	liv.setVisibility(View.GONE);
-		//}
+		LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
+		if(liv == null){
+			System.out.println("liv is null");
+			return;
+		}
+		
+		if(displayedPerson_.picture_url != null){
+			liv.setImageDrawable(displayedPerson_.picture_url);
+		
+			liv.setVisibility(View.VISIBLE);
+		}else{
+			liv.setVisibility(View.GONE);
+		}
 
 	}
 
