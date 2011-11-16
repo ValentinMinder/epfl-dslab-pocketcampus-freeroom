@@ -72,7 +72,6 @@ public class FoodPreferencesView extends PluginView {
 		mRestaurants = (ArrayList<Restaurant>)mModel.getRestaurantsList();
 
 		if(mRestaurants != null && !mRestaurants.isEmpty()) {
-
 			mListView = new PreferencesListViewElement(this, mRestaurants, restaurantLabeler);
 
 			//ClickLIstener
