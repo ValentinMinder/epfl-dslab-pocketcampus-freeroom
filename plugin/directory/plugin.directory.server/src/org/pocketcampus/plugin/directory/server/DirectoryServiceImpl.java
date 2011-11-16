@@ -25,7 +25,7 @@ import com.unboundid.ldap.sdk.SearchScope;
 
 public class DirectoryServiceImpl implements DirectoryService.Iface {
 
-	private static final int NB_RESULT_LIMIT = 150;
+	private static final int NB_RESULT_LIMIT = 500;
 	
 	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
 	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
@@ -50,8 +50,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	
 	@Override
 	public List<Person> search(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
-		LinkedList<Person> results;
-		HashMap<String,Person> hashMap = new HashMap<String,Person>();
+		LinkedList<Person> results = new LinkedList<Person>();
+//		HashMap<String,Person> hashMap = new HashMap<String,Person>();
 		String sciper;
 		
 		
@@ -68,7 +68,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		
 		SearchResult searchResult;
-		String searchQuery = buildGlobalSearch(param);
+		String searchQuery = buildExactSearch(param);
 		try {
 			if( !ldap.isConnected())
 				ldap.reconnect();
@@ -102,14 +102,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				
 //				System.out.println(p.ou);
 				
-				hashMap.put(sciper, p);
+//				hashMap.put(sciper, p);
 				
-//				if( !results.contains(p))
-//					results.add(p);
+				if( !results.contains(p))
+					results.add(p);
 				
 			}
 			
-			if(param.equals("ironman"))hashMap.put(">9000",new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
+			if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
 			
 
 		
@@ -123,9 +123,9 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			System.out.println("ldap reconnection problem");
 		}
 		
-		results = new LinkedList<Person>(hashMap.values());
+//		results = new LinkedList<Person>(hashMap.values());
 		//sorting the results alphabetatically
-		Collections.sort(results);
+		//Collections.sort(results);
 		System.out.println("Directory: " + results.size() + "persons found for query: " + searchQuery);
 		return results;
 	}
@@ -176,7 +176,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				
 			}
 			//sorting the results alphabetatically
-			Collections.sort(results);
+			//Collections.sort(results);
 		
 		} catch (LDAPSearchException e1) {
 			if(e1.getMessage().equals("size limit exceeded")){
@@ -214,10 +214,16 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		System.out.println(searchQuery);
 		return searchQuery;
 	}
-	
+
 	private String buildGlobalSearch(String param){
 		return "(displayName~="+param+")";
 	}
+	
+	private String buildExactSearch(String param){
+		return "(displayName=*"+param+"*)";
+	}
+	
+	
 
 	@Override
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {

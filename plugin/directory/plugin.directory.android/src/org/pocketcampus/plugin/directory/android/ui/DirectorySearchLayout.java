@@ -7,10 +7,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Standard <code>Layout</code> with a centered message.
@@ -44,10 +46,15 @@ public class DirectorySearchLayout extends RelativeLayout {
 		
 		//mEditFName = (EditText)findViewById(R.id.directory_fname);
 		mEditName = (EditText)findViewById(R.id.directory_lname);
+		
 	}
 	
 	public String getName(){
 		return mEditName.getText().toString();
+	}
+	
+	public void setOnEditorActionListener(OnEditorActionListener oeal){
+		mEditName.setOnEditorActionListener(oeal);
 	}
 	
 
