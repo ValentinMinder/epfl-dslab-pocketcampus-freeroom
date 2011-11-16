@@ -12,7 +12,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
 import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.element.TextViewElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -380,11 +380,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			if (mRestoPrefs.getAll().isEmpty()) {
 				mList = new RatableExpandableListViewElement(this, mealHashMap,
-						mMealLabeler, mViewConstructor);
+						mMealLabeler, mMealsViewConstructor);
 			} else {
 				mList = new RatableExpandableListViewElement(this,
 						preferedRestaurants(mealHashMap), mMealLabeler,
-						mViewConstructor);
+						mMealsViewConstructor);
 			}
 
 			setHashMapOnClickListeners(mealHashMap);
@@ -450,7 +450,19 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				.getSandwichesByRestaurants();
 		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
 
-		// To be continued...
+		mLayout.removeFillerView();
+
+		mList = new RatableExpandableListViewElement(this, mSandwiches,
+				mSandwichLabeler, mSandwichViewConstructor);
+
+		if (!mSandwiches.isEmpty()) {
+			mLayout.hideText();
+			mLayout.setTitle(this.getString(R.string.food_by_sandwiches));
+			mLayout.addFillerView(mList);
+		} else {
+			mLayout.setText(getString(R.string.food_no_sandwiches));
+			mLayout.hideTitle();
+		}
 	}
 
 	private HashMap<String, Vector<Meal>> preferedRestaurants(
@@ -607,15 +619,43 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	};
 
-	ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
+	IRatableViewLabeler<Sandwich> mSandwichLabeler = new IRatableViewLabeler<Sandwich>() {
 
 		@Override
-		public String getLabel(Sandwich sandwich) {
+		public String getTitle(Sandwich sandwich) {
 			return sandwich.getName();
+		}
+
+		@Override
+		public String getDescription(Sandwich sandwich) {
+			return "";
+		}
+
+		@Override
+		public float getRating(Sandwich sandwich) {
+			return (float) 0;
+		}
+
+		@Override
+		public int getNbVotes(Sandwich sandwich) {
+			return 0;
+		}
+
+		@Override
+		public String getRestaurantName(Sandwich sandwich) {
+			return sandwich.getRestaurant().getName();
 		}
 	};
 
-	IRatableViewConstructor mViewConstructor = new IRatableViewConstructor() {
+	// ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
+	//
+	// @Override
+	// public String getLabel(Sandwich sandwich) {
+	// return sandwich.getName();
+	// }
+	// };
+
+	IRatableViewConstructor mMealsViewConstructor = new IRatableViewConstructor() {
 
 		@Override
 		public View getNewView(Object currentObject, Context context,
@@ -623,6 +663,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			return new RatableView(currentObject, context, labeler,
 					mOnLineClickListener, mOnRatingClickListener, position);
+		}
+	};
+
+	IRatableViewConstructor mSandwichViewConstructor = new IRatableViewConstructor() {
+
+		@Override
+		public View getNewView(Object currentObject, Context context,
+				IRatableViewLabeler<? extends Object> labeler, int position) {
+
+			return new TextViewElement(currentObject, context, labeler, null,
+					null, position);
 		}
 	};
 
