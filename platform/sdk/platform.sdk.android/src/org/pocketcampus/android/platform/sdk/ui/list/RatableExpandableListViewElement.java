@@ -46,7 +46,6 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement 
 		Vector<String> headers = new Vector<String>(sortedHeaders);
 		mAdapter = new RatableExpandableListAdapter(headers, items, viewConstructor,
 				viewLabeler, context);
-		// mAdapter.setDimension(mDimension);
 		setAdapter(mAdapter);
 	}
 
@@ -61,6 +60,11 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement 
 	@Override
 	public RatableExpandableListAdapter getExpandableListAdapter() {
 		return mAdapter;
+	}
+	
+	public void notifyDataSetChanged() {
+		mAdapter.notifyDataSetChanged();
+		setAdapter(mAdapter);
 	}
 
 }

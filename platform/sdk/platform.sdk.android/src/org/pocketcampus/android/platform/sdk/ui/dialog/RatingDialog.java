@@ -33,6 +33,7 @@ public class RatingDialog extends Dialog {
 		
 		private String mTitle;
 		private float mMyRating;
+		private RatingBar mRatingBar;
 		
 		private Button mOkButton;
 		private Button mCancelButton;
@@ -151,14 +152,11 @@ public class RatingDialog extends Dialog {
 
 			// set the confirm button
 			if (mOkButtonText != null) {
-				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
-				.setText(mOkButtonText);
-				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
-				.setEnabled(false);
-				((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton)).setEnabled(false);
+				mOkButton = ((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton));
+				mOkButton.setText(mOkButtonText);
+				mOkButton.setEnabled(false);
 				if (mOkButtonClickListener != null) {
-					((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton))
-					.setOnClickListener(new View.OnClickListener() {
+					mOkButton.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
 							mOkButtonClickListener.onClick(
 									dialog, DialogInterface.BUTTON_POSITIVE);
@@ -190,8 +188,9 @@ public class RatingDialog extends Dialog {
 			}
 
 			// rating bar and nb of votes
-			((RatingBar) layout.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator)).setRating(0);
-			((RatingBar) layout.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator)).setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+			mRatingBar = ((RatingBar) layout.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator));
+			mRatingBar.setRating(0);
+			mRatingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 				public void onRatingChanged(RatingBar ratingBar, float rating,
 						boolean fromUser) {
 					((Button) layout.findViewById(R.id.sdk_dialog_rating_okButton)).setEnabled(true);
