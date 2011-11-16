@@ -13,7 +13,6 @@ import org.pocketcampus.plugin.food.android.req.VotedRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.shared.FoodService.Client;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
-import org.pocketcampus.plugin.food.shared.FoodService.hasVoted_args;
 import org.pocketcampus.plugin.food.shared.FoodService.setRating_args;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;

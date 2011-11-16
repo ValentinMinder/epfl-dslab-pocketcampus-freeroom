@@ -113,7 +113,6 @@ public class FoodDB {
 			insertMeal.execute();
 			connection_.commit();
 
-			System.out.println("#Food Database: inserted meal");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -174,7 +173,6 @@ public class FoodDB {
 				// System.out.println("<importMenus>: Inserting Meal "
 				// + m.getName() + ", " + m.getRestaurant().getName()
 				// + " into batch");
-
 				statement.addBatch();
 			}
 			statement.executeBatch();
@@ -449,7 +447,7 @@ public class FoodDB {
 		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
-		String insertString = "UPDATE CAMPUSMENUS SET TotalRating = ?, NumberOfVotes=? where hashcode=?";
+		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where hashcode=?";
 
 		String jsonObject = "";
 		try {
@@ -465,7 +463,7 @@ public class FoodDB {
 			insertRating.setFloat(1, (float) r.getTotalRating());
 			insertRating.setInt(2, r.getNbVotes());
 			insertRating.setInt(3, hashCode);
-
+			System.out.println(insertRating);
 			insertRating.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Problem: could not insert rating:" + "Rating="

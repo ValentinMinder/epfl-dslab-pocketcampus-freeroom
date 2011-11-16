@@ -178,9 +178,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
-		System.out.println("<setRating>: Now : "
-				+ now.get(Calendar.HOUR_OF_DAY));
-
 		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
 			return SubmitStatus.TOOEARLY;
 		}
@@ -201,7 +198,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		int mealHashCode = meal.hashCode();
-		System.out.println("<setRating>: mealHashCode: " + mealHashCode);
 
 		double ratingTotal;
 		double ratingValue;
@@ -218,9 +214,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 				} else {
 					ratingValue = 0;
 				}
-
-				System.out.println("<setRating>: Inside : "
-						+ currentMeal.hashCode());
 
 				// Update Rating for this meal
 				currentMeal.getRating().setNbVotes(newNbVotes);
@@ -449,11 +442,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(leGiacometti.getName() + "Jambon de dinde").hashCode(),
 				leGiacometti, "Jambon de dinde"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Gruyère").hashCode(),
-				leGiacometti, "Gruyière"));
+				(leGiacometti.getName() + "GruyÔøΩre").hashCode(),
+				leGiacometti, "GruyiÔøΩre"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Viande Séchée").hashCode(),
-				leGiacometti, "Viande Séchée"));
+				(leGiacometti.getName() + "Viande SÔøΩchÔøΩe").hashCode(),
+				leGiacometti, "Viande SÔøΩchÔøΩe"));
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Jambon Cru").hashCode(),
 				leGiacometti, "Jambon Cru"));
@@ -467,8 +460,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(leGiacometti.getName() + "Crevettes").hashCode(),
 				leGiacometti, "Crevettes"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Saumon Fumé").hashCode(),
-				leGiacometti, "Saumon Fumé"));
+				(leGiacometti.getName() + "Saumon FumÔøΩ").hashCode(),
+				leGiacometti, "Saumon FumÔøΩ"));
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Poulet au Curry").hashCode(),
 				leGiacometti, "Poulet au Curry"));
@@ -492,11 +485,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lEsplanade.getName() + "Jambon Cru").hashCode(), lEsplanade,
 				"Jambon Cru"));
 		mCampusSandwiches.add(new Sandwich(
-				(lEsplanade.getName() + "Viande Séchée").hashCode(),
-				lEsplanade, "Viande Séchée"));
+				(lEsplanade.getName() + "Viande SÔøΩchÔøΩe").hashCode(),
+				lEsplanade, "Viande SÔøΩchÔøΩe"));
 		mCampusSandwiches.add(new Sandwich(
-				(lEsplanade.getName() + "Saumon Fumé").hashCode(),
-				lEsplanade, "Saumon Fumé"));
+				(lEsplanade.getName() + "Saumon FumÔøΩ").hashCode(),
+				lEsplanade, "Saumon FumÔøΩ"));
 		mCampusSandwiches.add(new Sandwich((lEsplanade.getName() + "Autres")
 				.hashCode(), lEsplanade, "Autres"));
 
@@ -513,11 +506,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lAtlantide.getName() + "Sandwich au pavot").hashCode(),
 				lAtlantide, "Sandwich au pavot"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich intégral").hashCode(),
-				lAtlantide, "Sandwich intégral"));
+				(lAtlantide.getName() + "Sandwich intÔøΩgral").hashCode(),
+				lAtlantide, "Sandwich intÔøΩgral"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich provençal").hashCode(),
-				lAtlantide, "Sandwich provençal"));
+				(lAtlantide.getName() + "Sandwich provenÔøΩal").hashCode(),
+				lAtlantide, "Sandwich provenÔøΩal"));
 		mCampusSandwiches.add(new Sandwich((lAtlantide.getName() + "Parisette")
 				.hashCode(), lAtlantide, "Parisette"));
 		mCampusSandwiches.add(new Sandwich((lAtlantide.getName() + "Jambon")
@@ -532,11 +525,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lAtlantide.getName() + "Mozzarella").hashCode(), lAtlantide,
 				"Mozzarella"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Saumon Fumé").hashCode(),
-				lAtlantide, "Saumon Fumé"));
+				(lAtlantide.getName() + "Saumon FumÔøΩ").hashCode(),
+				lAtlantide, "Saumon FumÔøΩ"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Viande Séchée").hashCode(),
-				lAtlantide, "Viande Séchée"));
+				(lAtlantide.getName() + "Viande SÔøΩchÔøΩe").hashCode(),
+				lAtlantide, "Viande SÔøΩchÔøΩe"));
 		mCampusSandwiches.add(new Sandwich(
 				(lAtlantide.getName() + "Jambon Cru").hashCode(), lAtlantide,
 				"Jambon Cru"));
@@ -569,23 +562,23 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mCampusSandwiches.add(new Sandwich((satellite.getName() + "Parmesan")
 				.hashCode(), satellite, "Parmesan"));
 		mCampusSandwiches.add(new Sandwich(
-				(satellite.getName() + "Aubergine grillée").hashCode(),
-				satellite, "Aubergine grillée"));
+				(satellite.getName() + "Aubergine grillÔøΩe").hashCode(),
+				satellite, "Aubergine grillÔøΩe"));
 		mCampusSandwiches.add(new Sandwich(
-				(satellite.getName() + "Viande séchée").hashCode(),
-				satellite, "Viande séchée"));
+				(satellite.getName() + "Viande sÔøΩchÔøΩe").hashCode(),
+				satellite, "Viande sÔøΩchÔøΩe"));
 		mCampusSandwiches.add(new Sandwich((satellite.getName() + "Autres")
 				.hashCode(), satellite, "Autres"));
 
-		/* Négoce */
-		Restaurant negoce = new Restaurant(("Négoce").hashCode(), "Négoce");
+		/* NÔøΩgoce */
+		Restaurant negoce = new Restaurant(("NÔøΩgoce").hashCode(), "NÔøΩgoce");
 		mCampusSandwiches.add(new Sandwich((negoce.getName() + "Dinde")
 				.hashCode(), negoce, "Dinde"));
 		mCampusSandwiches.add(new Sandwich((negoce.getName() + "Thon")
 				.hashCode(), negoce, "Thon"));
 		mCampusSandwiches.add(new Sandwich(
-				(negoce.getName() + "Gratiné Jambon").hashCode(), negoce,
-				"Gratiné Jambon"));
+				(negoce.getName() + "GratinÔøΩ Jambon").hashCode(), negoce,
+				"GratinÔøΩ Jambon"));
 		mCampusSandwiches.add(new Sandwich(
 				(negoce.getName() + "Mozzarella Olives").hashCode(), negoce,
 				"Mozzarella Olives"));
@@ -701,7 +694,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return realDiff;
 	}
 
-	@Override
 	public boolean hasVoted(String deviceId) throws TException {
 		if (mDeviceIds.contains(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");

@@ -18,7 +18,7 @@
 
     <!-- Menu Dialog -->
     <string name="food_menu_dialog_firstButton">Rate it!</string>
-    <string name="food_menu_dialog_secondButton">Pictures</string>
+    <string name="food_menu_dialog_secondButton">Cancel</string>
     <string name="food_menu_dialog_thirdButton">Go there</string>
 
     <!-- Ratings -->

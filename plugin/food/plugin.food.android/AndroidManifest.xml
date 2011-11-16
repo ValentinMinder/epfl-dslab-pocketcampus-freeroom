@@ -23,9 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" >
+        <activity android:name=".plugin.food.android.FoodSuggestionsView" >
         </activity>
         <activity android:name=".plugin.food.android.FoodPreferencesView" >
+        </activity>
+        <activity android:name=".plugin.food.android.FoodSettings" >
         </activity>
 
         <service

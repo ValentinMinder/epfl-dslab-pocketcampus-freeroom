@@ -39,12 +39,10 @@ public abstract class AbstractPreferencesArrayAdapter extends ArrayAdapter<Objec
 	private SharedPreferences mRestoPrefs;
 	private Editor mRestoPrefsEditor;
 
-	private static final String RESTO_PREFS_NAME = "RestoPrefs";
-
-	public AbstractPreferencesArrayAdapter(Context context, List<? extends Object> items) {
+	public AbstractPreferencesArrayAdapter(Context context, List<? extends Object> items, String prefName) {
 		super(context, mLayoutResourceId, mTextViewResourceId, items.toArray());
 		this.mContext = context;
-		mRestoPrefs = mContext.getSharedPreferences(RESTO_PREFS_NAME, 0);
+		mRestoPrefs = mContext.getSharedPreferences(prefName, 0);
 		mRestoPrefsEditor = mRestoPrefs.edit();
 	}
 
@@ -56,9 +54,7 @@ public abstract class AbstractPreferencesArrayAdapter extends ArrayAdapter<Objec
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 
-//		if(v == null) {
-			v = super.getView(position, convertView, parent);
-//		}
+		v = super.getView(position, convertView, parent);
 		
 		prefBox = (CheckBox)v.findViewById(R.id.sdk_list_preferences_entry_prefBox);
 		text = (TextView)v.findViewById(R.id.sdk_list_preferences_entry_text);
@@ -72,22 +68,14 @@ public abstract class AbstractPreferencesArrayAdapter extends ArrayAdapter<Objec
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				
-				if(isChecked) {
-					Log.d("PREFERENCES", "want to display " + resto);
-					mRestoPrefsEditor.putBoolean(resto, true);
-					mRestoPrefsEditor.commit();
-				} else {
-					Log.d("PREFERENCES", "doesn't want to display " + resto);
-					mRestoPrefsEditor.putBoolean(resto, false);
-					mRestoPrefsEditor.commit();
-				}
 
 				if(mListener != null){
 					
 					if(isChecked) {
+						Log.d("PREFERENCES", "OnCheckedChanged "+ resto +" -> true (Adapter)");
 						mListener.onItemClick(null, (View)buttonView, position, (long)1);
 					} else {
+						Log.d("PREFERENCES", "OnCheckedChanged "+ resto +" -> false (Adapter)");
 						mListener.onItemClick(null, (View)buttonView, position, (long)0);
 					}
 					
