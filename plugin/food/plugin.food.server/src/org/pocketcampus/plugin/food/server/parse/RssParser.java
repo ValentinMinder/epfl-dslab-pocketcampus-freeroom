@@ -171,28 +171,56 @@ public class RssParser extends DefaultHandler {
 		}
 		return s.trim();
 	}
-	
-	private static String capitalize(String string){
-		String[] words = string.split("\\s+");
-		String capString = "";
 
-		for(String s : words) {
-			System.out.println(s);
-			if(s.length() > 3) {				
-				String begin = s.substring(0,1);
-				begin = begin.toUpperCase();
-				
-				String sub = s.substring(1);
-				sub = sub.toLowerCase();
+	private String capitalize(String string){
+		String[] lines = string.split("\n");
+		String result = "";
 
-				capString = capString.concat(begin+sub + " ");
+		for(int i=0; i<lines.length; i++) {
+
+			String[] words = lines[i].split("\\s+");
+			String capString = "";
+
+			for(int j=0; j < words.length; j++) {
+				String s = words[j];
+
+				if(s.length() > 3 || j == 0) {
+					String  begin = "";
+					String sub = "";
+
+					if (s.length() > 1){
+						begin = s.substring(0,1);
+						begin = begin.toUpperCase();
+
+						sub = s.substring(1);
+						sub = sub.toLowerCase();
+					}
+					else {
+						begin = s;
+						begin = begin.toUpperCase();
+					}
+
+					if (j == words.length-1)
+						capString = capString.concat(begin+sub);
+					else
+						capString = capString.concat(begin+sub + " ");
+				} else {
+					s = s.toLowerCase();
+					if(j == words.length-1)
+						capString = capString.concat(s);
+					else
+						capString = capString.concat(s + " ");
+				}
+			}
+
+			if(i == lines.length-1) {
+				result = result.concat(capString);
 			} else {
-				s.toLowerCase();
-				capString = capString.concat(s + " ");
+				result = result.concat(capString + "\n");
 			}
 		}
 
-		return capString;
+		return result;
 	}
 
 	public static class RssFeed {
