@@ -1,12 +1,9 @@
 package org.pocketcampus.plugin.food.android.req;
 
-import java.util.List;
-
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
-import org.pocketcampus.plugin.food.shared.Meal;
 
 import android.util.Log;
 

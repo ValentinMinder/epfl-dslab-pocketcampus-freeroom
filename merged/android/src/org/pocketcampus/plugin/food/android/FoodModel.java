@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.food.android;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -12,6 +13,7 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
@@ -144,6 +146,16 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	@Override
 	public boolean getHasVoted() {
 		return this.mHasVoted;
+	}
+
+	@Override
+	public void setRatings(Map<Integer, Rating> result) {
+		if(mMeals != null && !mMeals.isEmpty()) {
+			for (Meal m : mMeals) {
+				m.setRating(result.get(m.hashCode()));
+			}
+		}
+		mListeners.ratingsUpdated();
 	}
 
 }

@@ -21,9 +21,10 @@
         android:icon="@drawable/food_opt_icon_suggestions"
         android:title="@+string/food_menu_suggestions"/>
 
-    <item
+   <!-- <item
         android:id="@+id/food_by_settings"
         android:icon="@drawable/food_opt_icon_settings"
         android:title="@+string/food_menu_settings"/>
+        -->
 
 </menu>

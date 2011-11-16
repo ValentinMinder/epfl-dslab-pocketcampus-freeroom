@@ -60,6 +60,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	/* Preferences */
 	private SharedPreferences mRestoPrefs;
 	private static final String RESTO_PREFS_NAME = "RestoPrefs";
+	private boolean backFromPreferences;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -90,6 +91,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		mController = (FoodController) controller;
 		mModel = (FoodModel) controller.getModel();
 
+		// Ugly, but works for now
+		backFromPreferences = false;
+
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this);
 		mLayout.hideTitle();
@@ -98,12 +102,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		setContentView(mLayout);
 
 		mList = new RatableExpandableListViewElement(this);
-
-		// RelativeLayout.LayoutParams listParams = new
-		// RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
-		// LayoutParams.FILL_PARENT);
-		// listParams.addRule(RelativeLayout.BELOW, mLayout.getMsgId());
-		// mList.setLayoutParams(listParams);
 
 		// We need to force the display before asking the controller for the
 		// data,
@@ -115,7 +113,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	protected void onRestart() {
 		super.onRestart();
 		Log.d("ACTIVITY", "onRestart");
-		refreshDisplay();
+		if (backFromPreferences) {
+			refreshDisplay();
+		}
 	}
 
 	/**
@@ -133,6 +133,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	private void refreshDisplay() {
 		showMenusByRestaurants();
+		backFromPreferences = false;
 	}
 
 	/**
@@ -163,11 +164,13 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					FoodSuggestionsView.class);
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
-		} else if (item.getItemId() == R.id.food_by_settings) {
+		} /*else if (item.getItemId() == R.id.food_by_settings) {
+			backFromPreferences = true;
 			Intent settings = new Intent(getApplicationContext(),
 					FoodPreferencesView.class);
 			startActivity(settings);
-		}
+		 }*/
+		
 
 		return true;
 	}
@@ -200,8 +203,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				new MenuDialogListener(b, meal));
 		b.setSecondButton(R.string.food_menu_dialog_secondButton,
 				new MenuDialogListener(b, meal));
-		b.setThirdButton(R.string.food_menu_dialog_thirdButton,
-				new MenuDialogListener(b, meal));
+		// b.setThirdButton(R.string.food_menu_dialog_thirdButton,
+		// new MenuDialogListener(b, meal));
 
 		// Create the dialog and display it
 		MenuDialog dialog = b.create();
@@ -211,7 +214,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
-		// Refresh View
+		mList.notifyDataSetChanged();
 	}
 
 	/**
@@ -238,11 +241,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated(SubmitStatus status) {
 		Log.d("RATING", "One Rating updated");
+		
 		// Toast with the status
 		if (status.equals(SubmitStatus.VALID)) {
 			Log.d("RATING", "Valid");
 			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT)
 					.show();
+			//Update the Ratings
+			mController.getRatings();
+			
 		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
 			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted,
@@ -256,14 +263,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
 					.show();
 		}
-
-		// Refresh View
 	}
 
 	@Override
 	public void sandwichesUpdated() {
 		Log.d("SANDWICHES", "Sandwiches updated");
-		showSandwiches();
 	}
 
 	@Override
@@ -505,7 +509,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			case DialogInterface.BUTTON2:
 				// Pictures
-				Log.d("PICTURES", "Picture taken");
+				// Log.d("PICTURES", "Picture taken");
 				dialog.dismiss();
 				break;
 
@@ -646,14 +650,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			return sandwich.getRestaurant().getName();
 		}
 	};
-
-	// ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
-	//
-	// @Override
-	// public String getLabel(Sandwich sandwich) {
-	// return sandwich.getName();
-	// }
-	// };
 
 	IRatableViewConstructor mMealsViewConstructor = new IRatableViewConstructor() {
 

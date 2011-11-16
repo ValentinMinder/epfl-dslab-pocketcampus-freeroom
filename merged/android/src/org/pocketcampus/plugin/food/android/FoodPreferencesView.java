@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.PreferencesView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -32,7 +36,9 @@ public class FoodPreferencesView extends PluginView {
 
 	/*Restaurants*/
 	private ArrayList<Restaurant> mRestaurants;
-	private ArrayList<String> mDisplayedRestaurants;
+	
+	/*Listener*/
+	private OnItemClickListener mListener;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -66,13 +72,7 @@ public class FoodPreferencesView extends PluginView {
 		mRestaurants = (ArrayList<Restaurant>)mModel.getRestaurantsList();
 
 		if(mRestaurants != null && !mRestaurants.isEmpty()) {
-
-			mDisplayedRestaurants = new ArrayList<String>();
-			for(Restaurant r : mRestaurants) {
-				mDisplayedRestaurants.add(r.getName());
-			}
-
-			mListView = new PreferencesListViewElement(this, mDisplayedRestaurants);
+			mListView = new PreferencesListViewElement(this, mRestaurants, restaurantLabeler);
 
 			//ClickLIstener
 			//Set onClickListener
@@ -121,8 +121,10 @@ public class FoodPreferencesView extends PluginView {
 
 				if(isChecked == 1) {
 					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, true);
+					mRestoPrefsEditor.commit();
 				} else {
 					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, false);
+					mRestoPrefsEditor.commit();
 				}
 
 			}
@@ -130,4 +132,24 @@ public class FoodPreferencesView extends PluginView {
 		});
 	}
 
+	
+	ILabeler<Restaurant> restaurantLabeler = new ILabeler<Restaurant>() {
+
+		@Override
+		public String getLabel(Restaurant resto) {
+			return resto.getName();
+		}
+		
+	};
+	
+	IViewConstructor restaurantConstructor = new IViewConstructor() {
+
+		@Override
+		public View getNewView(Object currentObject, Context context,
+				ILabeler<? extends Object> labeler, int position) {
+			return new PreferencesView(currentObject, context, labeler, mListener, position);
+		}
+		
+	};
+	
 }

@@ -5,7 +5,6 @@ import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.FoodService.setRating_args;
-import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.util.Log;

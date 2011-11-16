@@ -16,111 +16,6 @@
 	
 		
 <!-- PLUGIN -->
-<activity android:icon="@drawable/food_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Food" android:name="org.pocketcampus.plugin.food.android.FoodMainView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-<activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:icon="@drawable/dashboard_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/dashboard_plugin_name" android:name="org.pocketcampus.android.plugin.dashboard.DashboardView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-<activity android:name="org.pocketcampus.android.plugin.dashboard.AboutView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:label="Directory" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/directory_icon" android:name="org.pocketcampus.plugin.directory.android.DirectorySearchView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-  </intent-filter>
-</activity>
-<activity android:name="org.pocketcampus.plugin.directory.android.DirectoryResultListView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<activity android:name="org.pocketcampus.plugin.directory.android.DirectoryFilterOUView" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<service android:name="org.pocketcampus.plugin.directory.android.DirectoryController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:label="News" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.news.android.NewsMainView" android:icon="@drawable/news_icon">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-<service android:name="org.pocketcampus.plugin.news.android.NewsController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:name="org.pocketcampus.plugin.bikes.android.BikesMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Bikes">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-  </intent-filter>
-</activity>
-<service android:name="org.pocketcampus.plugin.bikes.android.BikesController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestMainView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestOtherView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-<service android:name="org.pocketcampus.plugin.test.android.TestController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/camipro_icon" android:label="@string/camipro_plugin_title">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-  </intent-filter>
-  <intent-filter>
-    <action android:name="android.intent.action.VIEW"/>
-    <category android:name="android.intent.category.DEFAULT"/>
-    <category android:name="android.intent.category.BROWSABLE"/>
-    <data android:scheme="pocketcampus-authenticate" android:host="camipro.plugin.pocketcampus.org"/>
-  </intent-filter>
-</activity>
-<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
-<activity android:label="Transport" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/transport_icon" android:name="org.pocketcampus.plugin.transport.android.TransportMainView">
-  <intent-filter>
-    <action android:name="android.intent.action.MAIN"/>
-    <category android:name="android.intent.category.LAUNCHER"/>
-    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
-  </intent-filter>
-</activity>
-<service android:name="org.pocketcampus.plugin.transport.android.TransportController" xmlns:android="http://schemas.android.com/apk/res/android"/>
-<!-- /PLUGIN -->
-
-<!-- PLUGIN -->
 <activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/authentication_plugin_title" android:launchMode="singleTask" android:screenOrientation="portrait">
   <intent-filter>
     <action android:name="android.intent.action.VIEW"/>
@@ -151,13 +46,68 @@
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
-<activity android:label="@string/takeoutreceiver_plugin_name" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/takeoutreceiver_icon" android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView">
+<activity android:name="org.pocketcampus.plugin.bikes.android.BikesMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Bikes">
   <intent-filter>
-    <category android:name="android.intent.category.DEFAULT"/>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
     <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
   </intent-filter>
 </activity>
-<service android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<service android:name="org.pocketcampus.plugin.bikes.android.BikesController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/camipro_icon" android:label="@string/camipro_plugin_title">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW"/>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data android:scheme="pocketcampus-authenticate" android:host="camipro.plugin.pocketcampus.org"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:icon="@drawable/dashboard_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="@string/dashboard_plugin_name" android:name="org.pocketcampus.android.plugin.dashboard.DashboardView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<activity android:name="org.pocketcampus.android.plugin.dashboard.AboutView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Directory" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/directory_icon" android:name="org.pocketcampus.plugin.directory.android.DirectorySearchView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<activity android:name="org.pocketcampus.plugin.directory.android.DirectoryResultListView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<activity android:name="org.pocketcampus.plugin.directory.android.DirectoryFilterOUView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<service android:name="org.pocketcampus.plugin.directory.android.DirectoryController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:icon="@drawable/food_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Food" android:name="org.pocketcampus.plugin.food.android.FoodMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<activity android:name="org.pocketcampus.plugin.food.android.FoodSettings" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 				
 		<service android:name=".C2DMReceiver" />
