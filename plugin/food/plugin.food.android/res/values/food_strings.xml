@@ -22,11 +22,11 @@
     <string name="food_menu_dialog_thirdButton">Go there</string>
 
     <!-- Ratings -->
+    <string name="food_by_ratings">Ratings</string>
     <string name="food_rating_valid">Rating submission successful!</string>
     <string name="food_rating_already_voted">You can only vote for one meal a day...</string>
     <string name="food_rating_too_early">Too early to vote!</string>
     <string name="food_rating_error">An error occurred while submitting the rating. Try again!</string>
-    <string name="food_by_ratings">Ratings</string>
 
     <!-- Rating Dialog -->
     <string name="food_rating_nb_votes_singular">vote</string>
@@ -36,6 +36,7 @@
     <string name="food_rating_dialog_cancel">Cancel</string>
 
     <!-- Suggestions -->
+    <string name="food_by_suggestions">Suggestions</string>
     <string name="food_suggestions_nothing_found">No suggestions found</string>
     <string name="food_suggestions_meat">Meat</string>
     <string name="food_suggestions_fish">Fish</string>

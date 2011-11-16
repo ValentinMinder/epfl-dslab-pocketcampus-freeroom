@@ -132,7 +132,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Refreshes the display after some changes, e.g. preferences or suggestions
 	 */
 	private void refreshDisplay() {
-		// showMenusByRestaurants();
+		showMenusByRestaurants();
 	}
 
 	/**
@@ -421,17 +421,25 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows the menus when suggestions are received
+	 * Shows menus sorted by Suggestions
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
-		Log.d("SUGGESTIONS",
-				"Size of suggested meals : " + mealsBySuggestions.size());
+		Log.d("RATING", "Size of meals by suggestions list : "
+				+ mealsBySuggestions.size());
 
-		// RatableListViewElement l = new RatableListViewElement(this,
-		// mealsBySuggestions, mMealLabeler);
-		// l.setOnLineClickListener(mOnLineClickListener);
-		// l.setOnRatingClickListener(mOnRatingClickListener);
-		// mLayout.addView(l);
+		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
+			mLayout.removeFillerView();
+			RatableListViewElement l = new RatableListViewElement(this,
+					mealsBySuggestions, mMealLabeler);
+
+			setListOnClickListeners(mealsBySuggestions, l);
+
+			mLayout.setTitle(getString(R.string.food_by_suggestions));
+			mLayout.addFillerView(l);
+		} else {
+			mLayout.setText(getString(R.string.food_no_menus));
+			mLayout.hideTitle();
+		}
 	}
 
 	/**
