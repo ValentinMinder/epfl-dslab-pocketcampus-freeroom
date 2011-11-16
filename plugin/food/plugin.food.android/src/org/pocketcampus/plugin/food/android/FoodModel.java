@@ -7,8 +7,8 @@ import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
+import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
@@ -16,13 +16,12 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
-import android.widget.Toast;
-
 public class FoodModel extends PluginModel implements IFoodModel {
 	IFoodMainView mListeners = (IFoodMainView) getListeners();
 	private List<Restaurant> mRestaurantsList;
 	private List<Meal> mMeals;
 	private List<Sandwich> mSandwiches;
+	private boolean mHasVoted;
 	
 	// private HashMap<Meal, Rating> mCampusMeals;
 	private MenuSorter mSorter;
@@ -135,6 +134,16 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		mSandwiches = list;
 		//Notify the view(s)
 		mListeners.sandwichesUpdated();
+	}
+
+	@Override
+	public void setHasVoted(boolean hasVoted) {
+		this.mHasVoted = hasVoted;
+	}
+
+	@Override
+	public boolean getHasVoted() {
+		return this.mHasVoted;
 	}
 
 }
