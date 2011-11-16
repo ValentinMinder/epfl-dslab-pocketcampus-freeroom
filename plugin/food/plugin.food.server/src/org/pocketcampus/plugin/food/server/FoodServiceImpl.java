@@ -442,11 +442,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(leGiacometti.getName() + "Jambon de dinde").hashCode(),
 				leGiacometti, "Jambon de dinde"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Gruy�re").hashCode(),
-				leGiacometti, "Gruyi�re"));
+				(leGiacometti.getName() + "Gruyère").hashCode(),
+				leGiacometti, "Gruyière"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Viande S�ch�e").hashCode(),
-				leGiacometti, "Viande S�ch�e"));
+				(leGiacometti.getName() + "Viande Séchée").hashCode(),
+				leGiacometti, "Viande Séchée"));
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Jambon Cru").hashCode(),
 				leGiacometti, "Jambon Cru"));
@@ -460,8 +460,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(leGiacometti.getName() + "Crevettes").hashCode(),
 				leGiacometti, "Crevettes"));
 		mCampusSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Saumon Fum�").hashCode(),
-				leGiacometti, "Saumon Fum�"));
+				(leGiacometti.getName() + "Saumon Fumé").hashCode(),
+				leGiacometti, "Saumon Fumé"));
 		mCampusSandwiches.add(new Sandwich(
 				(leGiacometti.getName() + "Poulet au Curry").hashCode(),
 				leGiacometti, "Poulet au Curry"));
@@ -485,11 +485,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lEsplanade.getName() + "Jambon Cru").hashCode(), lEsplanade,
 				"Jambon Cru"));
 		mCampusSandwiches.add(new Sandwich(
-				(lEsplanade.getName() + "Viande S�ch�e").hashCode(),
-				lEsplanade, "Viande S�ch�e"));
+				(lEsplanade.getName() + "Viande Séchée").hashCode(),
+				lEsplanade, "Viande Séchée"));
 		mCampusSandwiches.add(new Sandwich(
-				(lEsplanade.getName() + "Saumon Fum�").hashCode(),
-				lEsplanade, "Saumon Fum�"));
+				(lEsplanade.getName() + "Saumon Fumé").hashCode(),
+				lEsplanade, "Saumon Fumé"));
 		mCampusSandwiches.add(new Sandwich((lEsplanade.getName() + "Autres")
 				.hashCode(), lEsplanade, "Autres"));
 
@@ -506,11 +506,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lAtlantide.getName() + "Sandwich au pavot").hashCode(),
 				lAtlantide, "Sandwich au pavot"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich int�gral").hashCode(),
-				lAtlantide, "Sandwich int�gral"));
+				(lAtlantide.getName() + "Sandwich intégral").hashCode(),
+				lAtlantide, "Sandwich intégral"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Sandwich proven�al").hashCode(),
-				lAtlantide, "Sandwich proven�al"));
+				(lAtlantide.getName() + "Sandwich provençal").hashCode(),
+				lAtlantide, "Sandwich provençal"));
 		mCampusSandwiches.add(new Sandwich((lAtlantide.getName() + "Parisette")
 				.hashCode(), lAtlantide, "Parisette"));
 		mCampusSandwiches.add(new Sandwich((lAtlantide.getName() + "Jambon")
@@ -525,11 +525,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				(lAtlantide.getName() + "Mozzarella").hashCode(), lAtlantide,
 				"Mozzarella"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Saumon Fum�").hashCode(),
-				lAtlantide, "Saumon Fum�"));
+				(lAtlantide.getName() + "Saumon Fumé").hashCode(),
+				lAtlantide, "Saumon Fumé"));
 		mCampusSandwiches.add(new Sandwich(
-				(lAtlantide.getName() + "Viande S�ch�e").hashCode(),
-				lAtlantide, "Viande S�ch�e"));
+				(lAtlantide.getName() + "Viande Séchée").hashCode(),
+				lAtlantide, "Viande Séchée"));
 		mCampusSandwiches.add(new Sandwich(
 				(lAtlantide.getName() + "Jambon Cru").hashCode(), lAtlantide,
 				"Jambon Cru"));
@@ -562,23 +562,23 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mCampusSandwiches.add(new Sandwich((satellite.getName() + "Parmesan")
 				.hashCode(), satellite, "Parmesan"));
 		mCampusSandwiches.add(new Sandwich(
-				(satellite.getName() + "Aubergine grill�e").hashCode(),
-				satellite, "Aubergine grill�e"));
+				(satellite.getName() + "Aubergine grillée").hashCode(),
+				satellite, "Aubergine grillée"));
 		mCampusSandwiches.add(new Sandwich(
-				(satellite.getName() + "Viande s�ch�e").hashCode(),
-				satellite, "Viande s�ch�e"));
+				(satellite.getName() + "Viande séchée").hashCode(),
+				satellite, "Viande séchée"));
 		mCampusSandwiches.add(new Sandwich((satellite.getName() + "Autres")
 				.hashCode(), satellite, "Autres"));
 
 		/* N�goce */
-		Restaurant negoce = new Restaurant(("N�goce").hashCode(), "N�goce");
+		Restaurant negoce = new Restaurant(("Négoce").hashCode(), "Négoce");
 		mCampusSandwiches.add(new Sandwich((negoce.getName() + "Dinde")
 				.hashCode(), negoce, "Dinde"));
 		mCampusSandwiches.add(new Sandwich((negoce.getName() + "Thon")
 				.hashCode(), negoce, "Thon"));
 		mCampusSandwiches.add(new Sandwich(
-				(negoce.getName() + "Gratin� Jambon").hashCode(), negoce,
-				"Gratin� Jambon"));
+				(negoce.getName() + "Gratiné Jambon").hashCode(), negoce,
+				"Gratiné Jambon"));
 		mCampusSandwiches.add(new Sandwich(
 				(negoce.getName() + "Mozzarella Olives").hashCode(), negoce,
 				"Mozzarella Olives"));
