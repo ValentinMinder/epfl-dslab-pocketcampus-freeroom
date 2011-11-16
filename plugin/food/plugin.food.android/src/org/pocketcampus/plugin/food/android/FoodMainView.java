@@ -103,12 +103,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		mList = new RatableExpandableListViewElement(this);
 
-		// RelativeLayout.LayoutParams listParams = new
-		// RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
-		// LayoutParams.FILL_PARENT);
-		// listParams.addRule(RelativeLayout.BELOW, mLayout.getMsgId());
-		// mList.setLayoutParams(listParams);
-
 		// We need to force the display before asking the controller for the
 		// data,
 		// as the controller may take some time to get it.
@@ -220,7 +214,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
-		// Refresh View
+		mList.notifyDataSetChanged();
 	}
 
 	/**
@@ -247,11 +241,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated(SubmitStatus status) {
 		Log.d("RATING", "One Rating updated");
+		
 		// Toast with the status
 		if (status.equals(SubmitStatus.VALID)) {
 			Log.d("RATING", "Valid");
 			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT)
 					.show();
+			//Update the Ratings
+			mController.getRatings();
+			
 		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
 			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted,
@@ -265,14 +263,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
 					.show();
 		}
-
-		// Refresh View
 	}
 
 	@Override
 	public void sandwichesUpdated() {
 		Log.d("SANDWICHES", "Sandwiches updated");
-		// showSandwiches();
 	}
 
 	@Override

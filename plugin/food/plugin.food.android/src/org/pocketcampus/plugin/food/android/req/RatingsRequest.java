@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.food.android.FoodController;
+import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.Rating;
 
@@ -23,7 +24,7 @@ public class RatingsRequest extends
 	protected void onResult(FoodController controller,
 			Map<Integer, Rating> result) {
 		Log.d("<RatingsRequest>:","onResult");
-		//Notifiy the model
+		((FoodModel) controller.getModel()).setRatings(result);
 	}
 
 	@Override
