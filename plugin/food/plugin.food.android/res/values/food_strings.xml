@@ -34,6 +34,10 @@
     <string name="food_rating_dialog_title">Rate it!</string>
     <string name="food_rating_dialog_OK">Ok</string>
     <string name="food_rating_dialog_cancel">Cancel</string>
+    
+    <!-- Sandwiches -->
+    <string name="food_by_sandwiches">Sandwiches</string>
+    <string name="food_no_sandwiches">No sandwiches</string>
 
     <!-- Suggestions -->
     <string name="food_by_suggestions">Suggestions</string>
