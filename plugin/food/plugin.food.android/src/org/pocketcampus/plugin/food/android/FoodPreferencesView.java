@@ -21,34 +21,43 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * The Preferences view of the food plugin, displayed when a user wants to
+ * filter what Restaurants to display in the different Food lists.
+ * 
+ * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Oriane (oriane.rodriguez@epfl.ch)
+ * 
+ */
 public class FoodPreferencesView extends PluginView {
-	/*MVC*/
+	/* MVC */
+	/** The model to which the view is linked */
 	private IFoodModel mModel;
 
-	/*Layout*/
+	/* Layout */
+	/** A simple full screen layout */
 	private StandardLayout mLayout;
+	/** The list to be displayed in the layout */
 	private PreferencesListViewElement mListView;
 
-	/*Preferences*/
+	/* Preferences */
+	/** The pointer to access and modify preferences stored on the phone */
 	private SharedPreferences mRestoPrefs;
+	/** Interface to modify values in SharedPreferences object */
 	private Editor mRestoPrefsEditor;
+	/** The name under which the preferences are stored on the phone */
 	private static final String RESTO_PREFS_NAME = "RestoPrefs";
 
-	/*Restaurants*/
+	/* Restaurants */
+	/** The list of Restaurants the preferences are made on */
 	private ArrayList<Restaurant> mRestaurants;
-	
-	/*Listener*/
+
+	/* Listener */
+	/** Callback for when an item is clicked in the list */
 	private OnItemClickListener mListener;
 
 	/**
-	 * Defines what the main controller is for this view. This is optional, some
-	 * view may not need a controller (see for example the dashboard).
-	 * 
-	 * This is only a shortcut for what is done in
-	 * <code>getOtherController()</code> below: if you know you'll need a
-	 * controller before doing anything else in this view, you can define it as
-	 * you're main controller so you know it'll be ready as soon as
-	 * <code>onDisplay()</code> is called.
+	 * Defines what the main controller is for this view.
 	 */
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -61,95 +70,101 @@ public class FoodPreferencesView extends PluginView {
 	 * here will simply be <code>null</code>.
 	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState,
+			PluginController controller) {
 		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
 
-		//List of Restaurants
-		mRestaurants = (ArrayList<Restaurant>)mModel.getRestaurantsList();
-
-		if(mRestaurants != null && !mRestaurants.isEmpty()) {
-			mListView = new PreferencesListViewElement(this, mRestaurants, restaurantLabeler);
-
-			//ClickLIstener
-			//Set onClickListener
-			setOnListViewClickListener();
-
-			mLayout.addView(mListView);
-			
-			// We need to force the display before asking the controller for the
-			// data,
-			// as the controller may take some time to get it.
-			displayData();
-			
-		} else {
-			mLayout.setText("No Restaurants");
-		}
-		
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
+
+		// We need to force the display before asking the controller for the
+		// data, as the controller may take some time to get it.
+		displayData();
 	}
 
 	/**
-	 * Displays the data
-	 * For now testing with Restaurants
+	 * Displays the list of Restaurants which the user can choose from
 	 */
 	private void displayData() {
+		// List of Restaurants
+		mRestaurants = (ArrayList<Restaurant>) mModel.getRestaurantsList();
+
+		if (mRestaurants != null && !mRestaurants.isEmpty()) {
+			mListView = new PreferencesListViewElement(this, mRestaurants,
+					restaurantLabeler);
+
+			// Set onClickListener
+			setOnListViewClickListener();
+
+			mLayout.addView(mListView);
+
+		} else {
+			mLayout.setText("No Restaurants");
+		}
 
 		mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
 		mRestoPrefsEditor = mRestoPrefs.edit();
 
-		if(mRestoPrefs.getAll().isEmpty()){
-			Log.d("PREFERENCES","First time instanciatation (FoodPreference)");
-			for(Restaurant r : mRestaurants){
+		if (mRestoPrefs.getAll().isEmpty()) {
+			Log.d("PREFERENCES", "First time instanciatation (FoodPreference)");
+			for (Restaurant r : mRestaurants) {
 				mRestoPrefsEditor.putBoolean(r.getName(), true);
 			}
 			mRestoPrefsEditor.commit();
-		} 
+		}
 	}
 
-	private void setOnListViewClickListener(){
+	/**
+	 * Sets what happens when the user clicks on an item in the list of
+	 * Restaurants
+	 */
+	private void setOnListViewClickListener() {
 
-		mListView.setOnItemClickListener(new OnItemClickListener(){
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View prefBox, int position,
-					long isChecked) {
+			public void onItemClick(AdapterView<?> arg0, View prefBox,
+					int position, long isChecked) {
 
-				if(isChecked == 1) {
-					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, true);
+				if (isChecked == 1) {
+					mRestoPrefsEditor.putBoolean(
+							mRestaurants.get(position).name, true);
 					mRestoPrefsEditor.commit();
 				} else {
-					mRestoPrefsEditor.putBoolean(mRestaurants.get(position).name, false);
+					mRestoPrefsEditor.putBoolean(
+							mRestaurants.get(position).name, false);
 					mRestoPrefsEditor.commit();
 				}
-
 			}
-
 		});
 	}
 
-	
+	/**
+	 * The labeler for a Restaurant, to tell how it has to be displayed in a
+	 * generic view.
+	 */
 	ILabeler<Restaurant> restaurantLabeler = new ILabeler<Restaurant>() {
 
 		@Override
 		public String getLabel(Restaurant resto) {
 			return resto.getName();
 		}
-		
 	};
-	
+
+	/**
+	 * The constructor for a Restaurant View to be displayed in the list
+	 */
 	IViewConstructor restaurantConstructor = new IViewConstructor() {
 
 		@Override
 		public View getNewView(Object currentObject, Context context,
 				ILabeler<? extends Object> labeler, int position) {
-			return new PreferencesView(currentObject, context, labeler, mListener, position);
+			return new PreferencesView(currentObject, context, labeler,
+					mListener, position);
 		}
-		
 	};
-	
 }
