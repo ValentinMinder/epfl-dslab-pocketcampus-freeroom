@@ -25,24 +25,41 @@ import com.unboundid.ldap.sdk.SearchScope;
 
 public class DirectoryServiceImpl implements DirectoryService.Iface {
 
-	private static final int NB_RESULT_LIMIT = 500;
+	private LDAPConnection ldap;
 	
+	//LDAP SETTINGS
+	private static final String LDAP_ADDRESS= "ldap.epfl.ch";
+	private static int LDAP_PORT = 389;
+	
+	//LDAP search params
+	private static final int NB_RESULT_LIMIT = 500;
+	private String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
+	
+	//stuff to get the picture
 	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
 	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
 	private static final String pictureExtension = ".jpg";
 	
-	private LDAPConnection ldap;
+	
+	
 	
 	public DirectoryServiceImpl(){
 		System.out.println("Starting Directory plugin server");
 		ldap = new LDAPConnection();
 		
 		connectLdap();
+//		//testing part
+//		try {
+//			List<Person> affichage = search("george");
+//			for(Person p : affichage){
+//				System.out.println(p.firstName + " " + p.lastName);
+//			}
+//		} catch (Exception e) {}
 	}
 	
 	private void connectLdap(){
 		try {
-			ldap.connect("ldap.epfl.ch", 389);
+			ldap.connect(LDAP_ADDRESS, LDAP_PORT);
 		}catch (LDAPException e) {
 			System.out.println("Ldap exception");
 		}
@@ -51,47 +68,75 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	@Override
 	public List<Person> search(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		LinkedList<Person> results = new LinkedList<Person>();
-//		HashMap<String,Person> hashMap = new HashMap<String,Person>();
 		String sciper;
 		
-		
+		//sciper search - only one (or no) result
 		try{
 			Integer.valueOf(param);
 			System.out.println("directory search via sciper:" + param);
 			sciper = param;
-			results = search(sciper, null, null, true);
+			results = searchSciper(sciper);
 			return results;
 		}catch (NumberFormatException e) {
-			//ok so the param wasn't just the sciper number
+			//so it's not a sciper, continuing
 		}
 		
 		
+		//exact first or last name search
+		String searchQuery = "(|(sn=" +param+ ")(givenName=" +param+ "))";
+		results = searchOnLDAP(searchQuery);
+		Collections.sort(results);
+		
+		//adding more people with *param* in their diplay name
+		searchQuery = "(displayName=*"+param+"*)";
+		LinkedList<Person> tmp = searchOnLDAP(searchQuery);
+		Collections.sort(tmp);
+		for(Person sup : tmp){
+			if(!results.contains(sup))
+				results.add(sup);
+		}
+		
+		//adding a test person
+		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
+					
+
+		System.out.println("Directory: " + results.size() + "persons found for param: " + param);
+		return results;
+	}
+	
+	private LinkedList<Person> searchSciper(String sciper) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+		return searchOnLDAP("(uniqueIdentifier="+sciper+")");
+	}
+	
+	private LinkedList<Person> searchOnLDAP(String searchQuery) throws org.pocketcampus.plugin.directory.shared.LDAPException{
+		LinkedList<Person> results = new LinkedList<Person>();
 		
 		SearchResult searchResult;
-		String searchQuery = buildExactSearch(param);
 		try {
 			if( !ldap.isConnected())
 				ldap.reconnect();
 			
-			
-			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
-			
+			//search the ldap
 			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
-			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
+			//if attWanted is null, this will print out all the info the ldap can give
+			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString()); 
 			
-			String t[] = new String[2];
+			//adding persons from the search to our result list
 			for (SearchResultEntry e : searchResult.getSearchEntries())
 			{
+				//getting the interessant part of the url
+				String t[] = new String[2];
 				String web = e.getAttributeValue("labeledURI");
 				if(web != null){
 					t =  web.split(" ");
 					web = t[0];
 				}
-				sciper = e.getAttributeValue("uniqueIdentifier");
+				
+				//creating the new person
 				Person p = new Person(
 						e.getAttributeValue("givenName"),
 						e.getAttributeValue("sn"),
-						sciper);
+						e.getAttributeValue("uniqueIdentifier"));
 				p.setMail(e.getAttributeValue("mail"));
 				p.setWeb(web);
 				p.setPhone_number(e.getAttributeValue("telephoneNumber"));
@@ -99,20 +144,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				p.setGaspar(e.getAttributeValue("uid"));
 				p.setOu(e.getAttributeValue("ou"));
 				
-				
-//				System.out.println(p.ou);
-				
-//				hashMap.put(sciper, p);
-				
+				//no duplicates!
 				if( !results.contains(p))
 					results.add(p);
 				
 			}
 			
-			if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
-			
-
-		
 		} catch (LDAPSearchException e1) {
 			if(e1.getMessage().equals("size limit exceeded")){
 				System.out.println("ldap search problem: " + e1.getMessage());
@@ -121,118 +158,24 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					
 		} catch (LDAPException e) {
 			System.out.println("ldap reconnection problem");
+			throw new org.pocketcampus.plugin.directory.shared.LDAPException("EPFL LDAP Problem, try again later");
 		}
 		
-//		results = new LinkedList<Person>(hashMap.values());
-		//sorting the results alphabetatically
-		//Collections.sort(results);
-		System.out.println("Directory: " + results.size() + "persons found for query: " + searchQuery);
-		return results;
-	}
-	
-	
-	private LinkedList<Person> search(String sciper, String first_name, String last_name, boolean accurate) throws org.pocketcampus.plugin.directory.shared.LDAPException{
-		LinkedList<Person> results = new LinkedList<Person>();
-		
-		
-		// search part			
-		// TODO add the sizeLimit param
-		SearchResult searchResult;
-		String searchQuery = buildSearchQuery(sciper, first_name, last_name, accurate);
-		try {
-			if( !ldap.isConnected())
-				ldap.reconnect();
-			
-			
-			//searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, searchQuery);
-			String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
-			searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, NB_RESULT_LIMIT, 0, false, searchQuery, attWanted); 
-			//System.out.println(searchResult.getSearchEntries().get(0).toLDIFString());
-			
-			String t[] = new String[2];
-			for (SearchResultEntry e : searchResult.getSearchEntries())
-			{
-				String web = e.getAttributeValue("labeledURI");
-				if(web != null){
-					t =  web.split(" ");
-					web = t[0];
-				}
-				sciper = e.getAttributeValue("uniqueIdentifier");
-				Person p = new Person(
-						e.getAttributeValue("givenName"),
-						e.getAttributeValue("sn"),
-						sciper);
-				p.setMail(e.getAttributeValue("mail"));
-				p.setWeb(web);
-				p.setPhone_number(e.getAttributeValue("telephoneNumber"));
-				p.setOffice(e.getAttributeValue("roomNumber"));
-				p.setGaspar(e.getAttributeValue("uid"));
-				p.setOu(e.getAttributeValue("ou"));
-				
-				System.out.println(p);
-				
-				if( !results.contains(p))
-					results.add(p);
-				
-			}
-			//sorting the results alphabetatically
-			//Collections.sort(results);
-		
-		} catch (LDAPSearchException e1) {
-			if(e1.getMessage().equals("size limit exceeded")){
-				System.out.println("ldap search problem: " + e1.getMessage());
-				throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
-			}
-		} catch (LDAPException e) {
-			System.out.println("ldap reconnection problem");
-		}
-		return results;
-		
-	}
-	
-	
-	private String buildSearchQuery(String sciper, String first_name, String last_name, boolean accurate){
-		String searchQuery = null;
-		
-		String equal;
-		if(accurate)
-			equal = "=";
-		else
-			equal = "~=";
-		
-		if(sciper != null){
-			searchQuery = "(uniqueIdentifier="+sciper+")";
-		}else if(first_name != null && last_name != null){
-			searchQuery = "(&(sn" + equal +last_name+ ")(givenName" + equal +first_name+"))";
-		}else if(first_name != null){
-			searchQuery = "(givenName" + equal + first_name+")";
-		}else if(last_name != null)
-			searchQuery = "(sn" + equal + last_name+")";
-		else{
-			
-		}
-		System.out.println(searchQuery);
-		return searchQuery;
-	}
 
-	private String buildGlobalSearch(String param){
-		return "(displayName~="+param+")";
+		return results;
+	
 	}
 	
-	private String buildExactSearch(String param){
-		return "(displayName=*"+param+"*)";
-	}
-	
-	
-
 	@Override
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
 		byte[] sciperBytes = null;
 		byte[] digest = null;
 		
+		//special case for ironman
 		if(sciper.equals(">9000"))
 			return "http://1.bp.blogspot.com/_8GJbAAr1DY8/TLymwhZs-5I/AAAAAAAABzA/11t3g4HmSuI/s1600/ironman_movie.jpg";
 		
+		//normal people part
 		try {
 			sciperBytes = sciper.getBytes("UTF-8");
 			
