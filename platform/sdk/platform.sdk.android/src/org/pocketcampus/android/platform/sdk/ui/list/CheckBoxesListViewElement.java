@@ -7,43 +7,38 @@ import org.pocketcampus.android.platform.sdk.ui.element.Element;
 
 import android.content.Context;
 import android.widget.ListView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
- * ListView that displays a list of Item using the default style.
- * @author Florian
- *
+ * ListView that displays a list of Item along with two CheckBoxes each, that
+ * allows the user to check one or none of them, which will express if he likes
+ * or dislike an item.
+ * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
+ * 
  */
 public class CheckBoxesListViewElement extends ListView implements Element {
 	private CheckBoxesArrayAdapter mAdapter;
 
-	public CheckBoxesListViewElement(Context context, List<? extends Object> items) {
+	public CheckBoxesListViewElement(Context context,
+			List<? extends Object> items) {
 		super(context);
-		
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+
+		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
 		setLayoutParams(params);
-		
+
 		mAdapter = new CheckBoxesArrayAdapter(context, items);
 		setAdapter(mAdapter);
 	}
-	
-	public void setOnPositiveBoxCheckedChangeListener(OnCheckedChangeListener l) {
-		mAdapter.setOnPositiveBoxClickListener(l);
+
+	/**
+	 * Sets the click listener for the CheckBoxes
+	 * 
+	 * @param clickListener
+	 *            The click listener created in the application
+	 */
+	public void setOnItemClickListener(OnItemClickListener clickListener) {
+		mAdapter.setOnItemClickListener(clickListener);
 	}
-	
-	public void setOnNegativeBoxCheckedChangeListener(OnCheckedChangeListener l) {
-		mAdapter.setOnNegativeBoxClickListener(l);
-	}
-	
-	public void setOnItemClickListener(OnItemClickListener l) {
-		mAdapter.setOnItemClickListener(l);
-	}
-	
-	public List<String> getPositiveTags() {
-		return mAdapter.getPositiveTags();
-	}
-	
-	public List<String> getNegativeTags() {
-		return mAdapter.getNegativeTags();
-	}
+
 }
