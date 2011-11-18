@@ -10,6 +10,7 @@
     <string name="food_menu_suggestions">Suggestions</string>
     <string name="food_menu_settings">Settings</string>
 	<string name="food_network_error">Network Error!</string>
+    
     <!-- Restaurants -->
     <string name="food_by_restaurants">Restaurants</string>
 

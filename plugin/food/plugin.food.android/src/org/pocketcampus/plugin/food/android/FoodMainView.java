@@ -180,12 +180,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					FoodSuggestionsView.class);
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
-		} /*
-		 * else if (item.getItemId() == R.id.food_by_settings) {
-		 * backFromPreferences = true; Intent settings = new
-		 * Intent(getApplicationContext(), FoodPreferencesView.class);
-		 * startActivity(settings); }
-		 */
+		} else if (item.getItemId() == R.id.food_by_settings) {
+			backFromPreferences = true; Intent settings = new
+					Intent(getApplicationContext(), FoodPreferencesView.class);
+			startActivity(settings); 
+		}
+
 
 		return true;
 	}
@@ -279,7 +279,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		if (status.equals(SubmitStatus.VALID)) {
 			Log.d("RATING", "Valid");
 			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT)
-					.show();
+			.show();
 			// Update the Ratings
 			mController.getRatings();
 
@@ -294,7 +294,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		} else if (status.equals(SubmitStatus.ERROR)) {
 			Log.d("RATING", "Error");
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
-					.show();
+			.show();
 		}
 	}
 
@@ -570,7 +570,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * 
 	 */
 	private class RatingDialogListener implements
-			DialogInterface.OnClickListener {
+	DialogInterface.OnClickListener {
 		private RatingDialog.Builder builder;
 		private Meal meal;
 		private float rating;
@@ -630,7 +630,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 					Log.d("SUGGESTIONS", "Meals in return : " + list.size());
 
 					showMenusBySuggestions(list);

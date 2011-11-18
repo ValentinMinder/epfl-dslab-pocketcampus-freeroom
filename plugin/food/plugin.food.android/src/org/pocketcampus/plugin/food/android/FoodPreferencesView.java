@@ -95,7 +95,7 @@ public class FoodPreferencesView extends PluginView {
 
 		if (mRestaurants != null && !mRestaurants.isEmpty()) {
 			mListView = new PreferencesListViewElement(this, mRestaurants,
-					restaurantLabeler);
+					restaurantLabeler, RESTO_PREFS_NAME);
 
 			// Set onClickListener
 			setOnListViewClickListener();
@@ -164,7 +164,7 @@ public class FoodPreferencesView extends PluginView {
 		public View getNewView(Object currentObject, Context context,
 				ILabeler<? extends Object> labeler, int position) {
 			return new PreferencesView(currentObject, context, labeler,
-					mListener, position);
+					RESTO_PREFS_NAME, mListener, position);
 		}
 	};
 }
