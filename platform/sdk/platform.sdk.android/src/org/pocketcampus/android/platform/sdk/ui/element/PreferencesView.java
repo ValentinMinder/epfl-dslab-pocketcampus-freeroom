@@ -4,6 +4,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,66 +15,89 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * A Labeled view to display a text and its correlated CheckBox to let the user choose
+ * preferences.
+ * 
+ * @author Oriane <oriane.rodriguez@epfl.ch
+ */
 public class PreferencesView extends LinearLayout {
-	// private LinearLayout mLayout;
-	private ILabeler mLabeler;
-	private TextView mTitleLine;
-	private CheckBox mBox;
+	/** The Application context */
+	private Context mContext;
+	/** The convert view */
 	private View mConvertView;
+	/** The LayoutInlfater to inflate the resources for the layout */
+	private LayoutInflater mInflater;
+	/** The Object for which we can set the preferences */
 	private Object mCurrentObject;
-	Context mContext;
-	LayoutInflater mInflater;
-	private OnItemClickListener mOnCheckedChangedListener;
+	/** The Labeler from the Application, to get the Object's attributes */
+	private ILabeler mLabeler;
+	/** The position of the Object in the ListView */
 	private int mPosition;
+	/** The Object's title */
+	private TextView mTitle;
+	/** The CheckBox to represent the preference for this Object */
+	private CheckBox mPrefBox;
+	/** The CheckBox listener */
+	private OnItemClickListener mOnChekcBoxClickListener;
+	/** The SharedPreferences to retrieve */
+	private SharedPreferences mPrefs;
 
 	public PreferencesView(Object currentObject, Context context,
-			ILabeler<? extends Object> labeler, OnItemClickListener listener,
-			int position) {
+			ILabeler<? extends Object> labeler, String prefName,
+			OnItemClickListener listener, int position) {
 		super(context);
-		mLabeler = labeler;
+		mContext = context;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_preferences, null);
-		mOnCheckedChangedListener = listener;
+
+		mCurrentObject = currentObject;
+		mLabeler = labeler;
 		mPosition = position;
 
-		// Creates a ViewHolder and store references to the two children
-		// views we want to bind data to.
-		this.mTitleLine = (TextView) mConvertView
+		mOnChekcBoxClickListener = listener;
+
+		mPrefs = mContext.getSharedPreferences(prefName, 0);
+
+		/** Creates the TextView and the CheckBox */
+		mTitle = (TextView) mConvertView
 				.findViewById(R.id.sdk_list_preferences_entry_text);
-		this.mBox = (CheckBox) mConvertView
+		mPrefBox = (CheckBox) mConvertView
 				.findViewById(R.id.sdk_list_preferences_entry_prefBox);
-		this.mCurrentObject = currentObject;
-		this.mContext = context;
 
 		initializeView();
 	}
 
+	/**
+	 * Initializes the View
+	 */
 	public void initializeView() {
 
-		// Bind the data efficiently with the holder.
-		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
+		/** Bind the data efficiently with the holder. */
 
-		mBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		/** TextView */
+		mTitle.setText(mLabeler.getLabel(mCurrentObject));
+
+		/** CheckBox */
+		if (mPrefs.getBoolean(mTitle.getText().toString(), false)) {
+			mPrefBox.setChecked(true);
+		}
+
+		/** CheckBox Listener */
+		mPrefBox.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				if (mOnCheckedChangedListener != null) {
+			public void onClick(View v) {
+				CheckBox b = (CheckBox) v;
 
-					if (isChecked) {
-						Log.d("PREFERENCES",
-								"OnCheckedChanged "
-										+ mLabeler.getLabel(mCurrentObject)
-										+ " -> true (Adapter)");
-						mOnCheckedChangedListener.onItemClick(null,
-								(View) buttonView, mPosition, (long) 1);
+				if (mOnChekcBoxClickListener != null) {
+
+					if (b.isChecked()) {
+						mOnChekcBoxClickListener.onItemClick(null, (View) b,
+								mPosition, (long) 1);
 					} else {
-						Log.d("PREFERENCES",
-								"OnCheckedChanged "
-										+ mLabeler.getLabel(mCurrentObject)
-										+ " -> false (Adapter)");
-						mOnCheckedChangedListener.onItemClick(null,
-								(View) buttonView, mPosition, (long) 0);
+						mOnChekcBoxClickListener.onItemClick(null, (View) b,
+								mPosition, (long) 0);
 					}
 
 				}

@@ -10,6 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 
+ * @author elodie
+ *
+ */
 public class RatableAdapter extends AbstractArrayAdapter {
 	private IRatableViewLabeler mLabeler;
 	private Context mContext;

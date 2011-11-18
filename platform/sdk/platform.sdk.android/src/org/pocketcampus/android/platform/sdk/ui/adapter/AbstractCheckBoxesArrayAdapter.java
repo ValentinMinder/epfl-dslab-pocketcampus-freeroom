@@ -7,7 +7,6 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +55,8 @@ public abstract class AbstractCheckBoxesArrayAdapter extends ArrayAdapter<Object
 		mLikeTags = new ArrayList<String>();
 		mDislikeTags = new ArrayList<String>();
 		
-		final CheckBox likeB = (CheckBox)v.findViewById(R.id.sdk_list_entry_checkbox1);
-		final CheckBox dislikeB = (CheckBox)v.findViewById(R.id.sdk_list_entry_checkbox2);
+		final CheckBox likeB = (CheckBox)v.findViewById(R.id.sdk_list_entry_positive_checkbox);
+		final CheckBox dislikeB = (CheckBox)v.findViewById(R.id.sdk_list_entry_negative_checkbox);
 		final TextView text = (TextView)v.findViewById(R.id.sdk_list_checkbox_entry_text);
 		final String tag = text.getText().toString();
 		

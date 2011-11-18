@@ -23,8 +23,8 @@
             android:paddingRight="8dip" />
     </LinearLayout>
 
-    <!-- Rating Bar -->    
-        
+    <!-- Rating Bar -->
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/sdk_dialog_rating_rating_layout"
@@ -36,26 +36,12 @@
         android:orientation="horizontal" >
 
         <RatingBar
-        android:id="@+id/sdk_dialog_rating_ratingBarIndicator"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:numStars="5"
-        android:rating="1"
-        android:stepSize=".5" />
-        
-        <!--
-        <RatingBar
             android:id="@+id/sdk_dialog_rating_ratingBarIndicator"
-            style="?android:attr/ratingBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="10dip"
-            android:layout_marginTop="3dip"
-            android:isIndicator="true"
-            android:numStars="5" />
-        -->
-
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize=".5" />
     </LinearLayout>
 
     <!-- Buttons -->
@@ -67,7 +53,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/sdk_dialog_rating_okButton"
+            android:id="@+id/sdk_dialog_rating_positiveButton"
             android:layout_width="145dip"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dip"
@@ -75,19 +61,15 @@
             android:singleLine="true" />
 
         <Button
-            android:id="@+id/sdk_dialog_rating_cancelButton"
+            android:id="@+id/sdk_dialog_rating_negativeButton"
             android:layout_width="145dip"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dip"
             android:layout_weight="1"
             android:singleLine="true" />
-
     </LinearLayout>
 
-</LinearLayout>
-
-
-<!--
+</LinearLayout><!--
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
@@ -139,4 +121,4 @@
     </LinearLayout>
 
 </TableLayout>
- -->
+-->

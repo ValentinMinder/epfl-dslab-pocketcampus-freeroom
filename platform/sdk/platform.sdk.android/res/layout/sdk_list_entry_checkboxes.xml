@@ -26,14 +26,14 @@
 
         
         <CheckBox
-            android:id="@+id/sdk_list_entry_checkbox1"
+            android:id="@+id/sdk_list_entry_positive_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="right" />
 
         <CheckBox
-            android:id="@+id/sdk_list_entry_checkbox2"
+            android:id="@+id/sdk_list_entry_negative_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -9,6 +9,11 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import android.content.Context;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 
+ * @author elodie <elodienilane.triponez@epfl.ch>
+ *
+ */
 public class RatableExpandableListAdapter extends ExpandableListAdapter {
 	private OnItemClickListener mOnLineClickListener;
 	private OnItemClickListener mOnRatingClickListener;

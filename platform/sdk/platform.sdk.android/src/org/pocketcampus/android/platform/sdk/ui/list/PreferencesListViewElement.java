@@ -11,19 +11,19 @@ import android.widget.ListView;
 
 /**
  * ListView that displays a list of Item using the default style.
- * @author Florian
+ * @author Oriane
  *
  */
 public class PreferencesListViewElement extends ListView implements Element {
 	private PreferencesAdapter mAdapter;
 
-	public PreferencesListViewElement(Context context, List<? extends Object> items, ILabeler labeler) {
+	public PreferencesListViewElement(Context context, List<? extends Object> items, ILabeler labeler, String prefName) {
 		super(context);
 		
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		setLayoutParams(params);
+		this.setLayoutParams(params);
 		
-		mAdapter = new PreferencesAdapter(context, items, labeler);
+		mAdapter = new PreferencesAdapter(context, items, labeler, prefName);
 		setAdapter(mAdapter);
 		
 	}

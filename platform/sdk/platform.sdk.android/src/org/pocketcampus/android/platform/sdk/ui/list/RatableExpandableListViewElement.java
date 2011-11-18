@@ -15,14 +15,14 @@ import android.content.Context;
 /**
  * Separated list that displays a list with different sections.
  * 
- * @author Elodie
+ * @author Elodie <elodienilane@epfl.ch>
  * 
  */
-public class RatableExpandableListViewElement extends ExpandableListViewElement implements
-		Element {
+public class RatableExpandableListViewElement extends ExpandableListViewElement
+		implements Element {
 
 	private RatableExpandableListAdapter mAdapter;
-	
+
 	public RatableExpandableListViewElement(Context context) {
 		super(context);
 	}
@@ -32,36 +32,52 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement 
 	 * itself.
 	 * 
 	 * @param context
+	 *            The Application Context
 	 * @param items
+	 *            The items to be displayed in the List
 	 * @param labeler
+	 *            The labeler to get the text of the items
 	 */
 	public RatableExpandableListViewElement(Context context,
 			HashMap<String, ? extends Vector<? extends Object>> items,
 			IRatableViewLabeler<? extends Object> viewLabeler,
 			IRatableViewConstructor viewConstructor) {
 		super(context, items, viewLabeler, viewConstructor);
-		// Sort the list of restaurants
+		
+		/** Sorts the list of restaurants */
 		SortedSet<String> sortedHeaders = new TreeSet<String>(items.keySet());
 
 		Vector<String> headers = new Vector<String>(sortedHeaders);
-		mAdapter = new RatableExpandableListAdapter(headers, items, viewConstructor,
-				viewLabeler, context);
+		mAdapter = new RatableExpandableListAdapter(headers, items,
+				viewConstructor, viewLabeler, context);
 		setAdapter(mAdapter);
 	}
 
-	public void setOnLineClickListener(OnItemClickListener l) {
-		mAdapter.setOnLineClickListener(l);
+	/**
+	 * Sets the click listener on the line
+	 * 
+	 * @param lineClickListener
+	 */
+	public void setOnLineClickListener(OnItemClickListener lineClickListener) {
+		mAdapter.setOnLineClickListener(lineClickListener);
 	}
-	
-	public void setOnRatingClickListener(OnItemClickListener l) {
-		mAdapter.setOnRatingClickListener(l);
+
+	/**
+	 * Sets the click listener on the rating
+	 * 
+	 * @param ratingListener
+	 */
+	public void setOnRatingClickListener(OnItemClickListener ratingListener) {
+		mAdapter.setOnRatingClickListener(ratingListener);
 	}
-	
+
+	/** To get the Adapter from the Application */
 	@Override
 	public RatableExpandableListAdapter getExpandableListAdapter() {
 		return mAdapter;
 	}
-	
+
+	/** Notifies the ListView that the Data set has changed */
 	public void notifyDataSetChanged() {
 		mAdapter.notifyDataSetChanged();
 		setAdapter(mAdapter);
