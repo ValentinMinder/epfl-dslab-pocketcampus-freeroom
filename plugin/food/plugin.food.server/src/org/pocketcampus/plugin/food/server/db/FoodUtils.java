@@ -2,6 +2,12 @@ package org.pocketcampus.plugin.food.server.db;
 
 import org.pocketcampus.plugin.food.shared.RatingValue;
 
+/**
+ * Class used for all Utils
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
+ */
 public class FoodUtils {
 	/**
 	 * Converts a rating to RatingValue

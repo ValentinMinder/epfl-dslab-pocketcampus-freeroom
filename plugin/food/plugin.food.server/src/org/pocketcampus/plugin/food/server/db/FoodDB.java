@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.food.server.db;
 
-import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,56 +12,81 @@ import java.util.List;
 
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
-import org.pocketcampus.plugin.food.shared.RatingValue;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 /**
  * Class that handles interactions with the test database to store and retrieve
- * meals, user id's and ratings
+ * meals, user ids and ratings
  * 
- * @author Elodie
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class FoodDB {
-	private String url_;
-	private String userName_;
-	private String passWord_;
+	/** The URL to the database */
+	private String mUrl;
 
-	public FoodDB(String dbName) {
-		userName_ = "pocketbuddy";
-		passWord_ = "";
-		url_ = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";
+	/** The user name to be used at the database */
+	private String mUserName;
+
+	/** The password to be used at the database */
+	private String mPassWord;
+
+	/** The connection to the database */
+	private Connection mConnection;
+
+	/**
+	 * Constructor for the Food Database Handler
+	 */
+	public FoodDB() {
+		mUserName = "pocketbuddy";
+		mPassWord = "";
+		mUrl = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";
+		createConnection();
 	}
 
 	/**
-	 * Creates a connection to the database.
+	 * Creates and returns a new connection to the database.
 	 * 
-	 * @return
+	 * @return the connection that was created
 	 */
-	public Connection createConnection() {
-		Connection connection_ = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connection_ = DriverManager.getConnection(url_, userName_,
-					passWord_);
-			System.out.println("Database connection established");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Cannot connect to database server");
+	public void createConnection() {
+		if (mConnection == null) {
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				mConnection = DriverManager.getConnection(mUrl, mUserName,
+						mPassWord);
+				System.out.println("Database connection established");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println("Cannot connect to database server");
+			}
 		}
-		return connection_;
+	}
+
+	/**
+	 * Check whether the connection is still valid
+	 * 
+	 * @return the status of the connection
+	 */
+	private boolean isValidConnection() {
+		createConnection();
+		if (mConnection == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
 	 * Closes the connection to the database.
 	 * 
-	 * @param connection_
+	 * @param connection
 	 *            the connection to close
 	 */
-	public void closeConnection(Connection connection_) {
-		if (connection_ != null) {
+	public void closeConnection() {
+		if (mConnection != null) {
 			try {
-				connection_.close();
+				mConnection.close();
 				System.out.println("Database connection terminated");
 			} catch (Exception e) { /* ignore close errors */
 			}
@@ -72,23 +96,25 @@ public class FoodDB {
 	/**
 	 * Insert a meal into the database.
 	 * 
-	 * @param connection_
-	 * @param m
+	 * @param meal
+	 *            the meal to insert
 	 * @return
 	 */
-	public boolean insertMeal(Meal m) {
-		Connection connection_ = createConnection();
+	public boolean insertMeal(Meal meal) {
+		if (!isValidConnection() || meal == null) {
+			return false;
+		}
 		PreparedStatement insertMeal = null;
 		String insertString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
 				+ " VALUES (?,?,?,?,?,?,?)";
 
 		try {
-			String name = m.getName();
-			String description = m.getMealDescription();
-			String restaurant = m.getRestaurant().getName();
-			double totalRating = m.getRating().getTotalRating();
-			int numberOfVotes = m.getRating().getNbVotes();
-			int hashcode = m.hashCode();
+			String name = meal.getName();
+			String description = meal.getMealDescription();
+			String restaurant = meal.getRestaurant().getName();
+			double totalRating = meal.getRating().getTotalRating();
+			int numberOfVotes = meal.getRating().getNbVotes();
+			int hashcode = meal.hashCode();
 
 			// Get today's date
 			Calendar cal = Calendar.getInstance();
@@ -96,9 +122,9 @@ public class FoodDB {
 					+ (cal.get(Calendar.MONTH) + 1) + "."
 					+ cal.get(Calendar.DAY_OF_MONTH);
 
-			connection_.setAutoCommit(false);
+			mConnection.setAutoCommit(false);
 
-			insertMeal = connection_.prepareStatement(insertString);
+			insertMeal = mConnection.prepareStatement(insertString);
 
 			// Insert values in corresponding fields
 			insertMeal.setString(1, name);
@@ -111,7 +137,7 @@ public class FoodDB {
 
 			// Insert meal in database
 			insertMeal.execute();
-			connection_.commit();
+			mConnection.commit();
 
 			return true;
 		} catch (SQLException e) {
@@ -123,7 +149,6 @@ public class FoodDB {
 				if (insertMeal != null) {
 					insertMeal.close();
 				}
-				connection_.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -131,23 +156,23 @@ public class FoodDB {
 	}
 
 	/**
-	 * Insert a meal into the database.
+	 * Insert a list of Meals into the database.
 	 * 
-	 * @param connection_
-	 * @param m
-	 * @return
+	 * @param mMeals
+	 *            the list of Meals to be inserted
+	 * @return the status of the insertion
 	 */
-	public boolean insertMeals(List<Meal> mCampusMeals) {
-
-		Connection connection = null;
+	public boolean insertMeals(List<Meal> mMeals) {
+		if (!isValidConnection() || mMeals == null) {
+			return false;
+		}
 		PreparedStatement statement = null;
 		try {
-			connection = createConnection();
 			String statementString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
 					+ " VALUES (?,?,?,?,?,?,?)";
 
-			statement = connection.prepareStatement(statementString);
-			for (Meal m : mCampusMeals) {
+			statement = mConnection.prepareStatement(statementString);
+			for (Meal m : mMeals) {
 				String name = m.getName();
 				String description = m.getMealDescription();
 				String restaurant = m.getRestaurant().getName();
@@ -170,9 +195,6 @@ public class FoodDB {
 				statement.setInt(6, hashcode);
 				statement.setString(7, dateString);
 
-				// System.out.println("<importMenus>: Inserting Meal "
-				// + m.getName() + ", " + m.getRestaurant().getName()
-				// + " into batch");
 				statement.addBatch();
 			}
 			statement.executeBatch();
@@ -188,84 +210,16 @@ public class FoodDB {
 					statement.close();
 				} catch (SQLException logOrIgnore) {
 				}
-			if (connection != null)
-				try {
-					connection.close();
-				} catch (SQLException logOrIgnore) {
-				}
 		}
 	}
-
-	// public Meal getMeal(int mealHashCode) {
-	// PreparedStatement getMeal = null;
-	// Connection connection_ = createConnection();
-	// String getString =
-	// "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ? and HASHCODE=?";
-	// Meal newMeal = null;
-	//
-	// try {
-	// Calendar cal = Calendar.getInstance();
-	// String dateString = cal.get(Calendar.YEAR) + "."
-	// + (cal.get(Calendar.MONTH) + 1) + "."
-	// + (cal.get(Calendar.DAY_OF_MONTH));
-	//
-	// connection_.setAutoCommit(false);
-	//
-	// getMeal = connection_.prepareStatement(getString);
-	// getMeal.setString(1, dateString);
-	// getMeal.setInt(2, mealHashCode);
-	//
-	// ResultSet rset = getMeal.executeQuery();
-	//
-	// connection_.commit();
-	//
-	// System.out.println("#Food database: <getMeal>: getting "
-	// + mealHashCode);
-	//
-	// String name;
-	// String description;
-	// String restaurant;
-	// double totalRating;
-	// int numberOfVotes;
-	// int hashcode;
-	// Date stamp_created;
-	//
-	// while (rset.next()) {
-	// name = rset.getString("Title");
-	// description = rset.getString("Description");
-	// restaurant = rset.getString("Restaurant");
-	// totalRating = rset.getFloat("TotalRating");
-	// numberOfVotes = rset.getInt("NumberOfVotes");
-	// hashcode = rset.getInt("HashCode");
-	// stamp_created = rset.getDate("stamp_created");
-	// }
-	//
-	// return newMeal;
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// return null;
-	// } finally {
-	// try {
-	// if (getMeal != null) {
-	// getMeal.close();
-	// }
-	// if (connection_ != null) {
-	// connection_.close();
-	// }
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
 
 	/**
 	 * Get all meals for the day from the database.
 	 * 
-	 * @param connection_
-	 * @return
+	 * @return the list of Meals
 	 */
-	public List<Meal> getMeals(Connection connection_) {
-		if (connection_ == null) {
+	public List<Meal> getMeals() {
+		if (!isValidConnection()) {
 			return null;
 		}
 		PreparedStatement getMeals = null;
@@ -278,13 +232,13 @@ public class FoodDB {
 					+ (cal.get(Calendar.MONTH) + 1) + "."
 					+ (cal.get(Calendar.DAY_OF_MONTH));
 
-			connection_.setAutoCommit(false);
+			mConnection.setAutoCommit(false);
 
-			getMeals = connection_.prepareStatement(getString);
+			getMeals = mConnection.prepareStatement(getString);
 			getMeals.setString(1, dateString);
 			ResultSet rset = getMeals.executeQuery();
 
-			connection_.commit();
+			mConnection.commit();
 
 			System.out.println("<getMeals>: getting " + dateString);
 
@@ -329,7 +283,7 @@ public class FoodDB {
 				if (getMeals != null) {
 					getMeals.close();
 				}
-				connection_.setAutoCommit(true);
+				mConnection.setAutoCommit(true);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -339,12 +293,12 @@ public class FoodDB {
 	/**
 	 * Check if a device has already submitted a vote during the day.
 	 * 
-	 * @param connection
 	 * @param deviceID
+	 *            the ID of the device that needs to be checked
 	 * @return
 	 */
-	public boolean checkVotedDevice(Connection connection, String deviceID) {
-		if (connection == null) {
+	public boolean checkVotedDevice(String deviceID) {
+		if (!isValidConnection() || deviceID == null) {
 			return false;
 		}
 		PreparedStatement checkVotedDevice = null;
@@ -358,8 +312,8 @@ public class FoodDB {
 					+ (cal.get(Calendar.MONTH) + 1) + "."
 					+ cal.get(Calendar.DAY_OF_MONTH);
 
-			checkVotedDevice = connection.prepareStatement(getString);
-			connection.setAutoCommit(false);
+			checkVotedDevice = mConnection.prepareStatement(getString);
+			mConnection.setAutoCommit(false);
 			checkVotedDevice.setString(1, deviceID);
 			System.out.println(deviceID + " " + dateString);
 			checkVotedDevice.setString(2, dateString);
@@ -384,8 +338,8 @@ public class FoodDB {
 				if (rset != null) {
 					rset.close();
 				}
-				if (connection != null) {
-					connection.setAutoCommit(true);
+				if (mConnection != null) {
+					mConnection.setAutoCommit(true);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -397,12 +351,11 @@ public class FoodDB {
 	/**
 	 * Inserts the id of a new voter.
 	 * 
-	 * @param connection_
 	 * @param deviceId
+	 *            the ID to be inserted
 	 */
-	public void insertVotedDevice(Connection connection_, String deviceId,
-			int hashCode, Double myRating) {
-		if (connection_ == null) {
+	public void insertVotedDevice(String deviceId, int hashCode, Double myRating) {
+		if (!isValidConnection() || myRating == null) {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
@@ -410,7 +363,7 @@ public class FoodDB {
 		ResultSet rset = null;
 
 		try {
-			insertVotedDevice = connection_.prepareStatement(insertString);
+			insertVotedDevice = mConnection.prepareStatement(insertString);
 			int count = 0;
 
 			Calendar cal = Calendar.getInstance();
@@ -424,9 +377,9 @@ public class FoodDB {
 			insertVotedDevice.setInt(4, hashCode);
 
 			count = insertVotedDevice.executeUpdate();
-			System.out.println(count + " rows were inserted");
+			System.out.println("<Food> " + count + " rows were inserted");
 		} catch (SQLException e) {
-			System.out.println("Problem in insert voted device.");
+			System.out.println("<Food> Problem in insert voted device.");
 		} finally {
 			try {
 				if (insertVotedDevice != null) {
@@ -441,35 +394,38 @@ public class FoodDB {
 		}
 	}
 
-	public void insertRating(Connection connection_, int hashCode, Meal meal) {
-		if (connection_ == null) {
+	/**
+	 * Insert a rating for a Meal
+	 * 
+	 * @param meal
+	 *            the Meal for which the rating was submitted
+	 */
+	public void insertRating(Meal meal) {
+		if (!isValidConnection() || meal == null) {
 			return;
 		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
 		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where hashcode=?";
 
-		String jsonObject = "";
+		int hashCode = meal.hashCode();
+
 		try {
-			insertRating = connection_.prepareStatement(insertString);
-			// Gson gson = new Gson();
-			jsonObject = "";
-			// try {
-			// jsonObject = gson.toJson(meal);
-			// } catch (JsonSyntaxException e) {
-			// }
+			insertRating = mConnection.prepareStatement(insertString);
 
 			Rating r = meal.getRating();
 			insertRating.setFloat(1, (float) r.getTotalRating());
 			insertRating.setInt(2, r.getNbVotes());
 			insertRating.setInt(3, hashCode);
+
 			System.out.println(insertRating);
+
 			insertRating.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Problem: could not insert rating:" + "Rating="
 					+ meal.getRating().getRatingValue() + ", NumberOfVotes="
-					+ meal.getRating().getNbVotes() + ", JsonObject="
-					+ jsonObject + "where hashcode=" + hashCode);
+					+ meal.getRating().getNbVotes() + "where hashcode="
+					+ hashCode);
 			e.printStackTrace();
 		} finally {
 			try {
@@ -482,10 +438,22 @@ public class FoodDB {
 		}
 	}
 
+	/**
+	 * Upload a picture to the database.
+	 * 
+	 * @param uploader
+	 *            the ID of the device that uploaded the picture
+	 * @param hashCode
+	 *            the hashcode of the Meal for which this picture was submitted
+	 * @param picture
+	 *            the Meal picture
+	 * @return
+	 */
 	public boolean uploadPicture(String uploader, int hashCode, byte[] picture) {
-
-		System.out.println("Inserting picture.");
-		Connection con = createConnection();
+		if (!isValidConnection() || picture == null) {
+			return false;
+		}
+		System.out.println("<Food> Inserting picture.");
 		PreparedStatement uploadPicture = null;
 
 		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealHashCode, stamp_created)"
@@ -497,8 +465,8 @@ public class FoodDB {
 				+ cal.get(Calendar.DAY_OF_MONTH);
 
 		try {
-			con.setAutoCommit(false);
-			uploadPicture = con.prepareStatement(insertString);
+			mConnection.setAutoCommit(false);
+			uploadPicture = mConnection.prepareStatement(insertString);
 
 			uploadPicture.setBytes(1, picture);
 			uploadPicture.setString(2, uploader);
@@ -507,13 +475,13 @@ public class FoodDB {
 
 			uploadPicture.executeUpdate();
 
-			con.commit();
+			mConnection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			if (con != null) {
+			if (mConnection != null) {
 				try {
 					System.err.print("Transaction is being rolled back");
-					con.rollback();
+					mConnection.rollback();
 				} catch (SQLException excep) {
 					excep.printStackTrace();
 				}
@@ -523,9 +491,6 @@ public class FoodDB {
 			try {
 				if (uploadPicture != null) {
 					uploadPicture.close();
-				}
-				if (con != null) {
-					con.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
