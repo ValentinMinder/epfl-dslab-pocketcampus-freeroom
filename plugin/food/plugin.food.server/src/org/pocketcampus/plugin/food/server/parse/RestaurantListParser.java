@@ -6,16 +6,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+/**
+ * Parses the contents of the Restaurant file which is stored on the server
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
+ */
 public class RestaurantListParser {
 
+	/** The list of feeds */
 	private HashMap<String, String> feeds;
+
+	/** The whole restaurant file in one String */
 	private String feedString;
 
+	/** Constructor for the RestaurantListParser */
 	public RestaurantListParser() {
 		feedString = getContents();
 		feeds = restaurantFeeds(feedString);
 	}
 
+	/** Returns the list of Strings and their corresponding Url */
 	public HashMap<String, String> getFeeds() {
 		return feeds;
 	}
@@ -24,8 +35,6 @@ public class RestaurantListParser {
 	 * Fetch the entire contents of a text file, and return it in a String. This
 	 * style of implementation does not throw Exceptions to the caller.
 	 * 
-	 * @param aFile
-	 *            is a file which already exists and can be read.
 	 */
 	private String getContents() {
 		// ...checks on aFile are elided
@@ -33,7 +42,8 @@ public class RestaurantListParser {
 
 		try {
 			// use buffering, reading one line at a time
-			InputStream instream = this.getClass().getResourceAsStream("restaurants_list.txt");
+			InputStream instream = this.getClass().getResourceAsStream(
+					"restaurants_list.txt");
 
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader input = new BufferedReader(inputreader);
@@ -59,6 +69,13 @@ public class RestaurantListParser {
 		return contents.toString();
 	}
 
+	/**
+	 * Constructs the list of restaurants and their corresponding feed url
+	 * 
+	 * @param restaurantList
+	 *            the path to the file to parse
+	 * @return a hashmap of Restaurant names and their String Url
+	 */
 	private HashMap<String, String> restaurantFeeds(String restaurantList) {
 		String tagRestaurant = "<Resto>";
 		String tagName = "<name>";

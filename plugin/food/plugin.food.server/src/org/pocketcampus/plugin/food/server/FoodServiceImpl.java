@@ -42,9 +42,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	/** The list of all Meals */
 	private List<Meal> mAllMeals;
 
-	/** The list of Restaurants for which Meals should be gotten */
-	private List<Restaurant> mRestaurants;
-
 	/** Ratings for all Meals, represents with their hashcode */
 	private HashMap<Integer, Rating> mMealRatings;
 
@@ -58,9 +55,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private ArrayList<String> mDeviceIds;
 
 	/**
-	 * Constructor Instantiate all containers for meals, ratings, sandwiches,
-	 * ... and the Database. Also import menus and sandwiches since it's the
-	 * first execution of the server.
+	 * Constructor instantiates all containers for meals, ratings, sandwiches,
+	 * and the Database. Also import menus and sandwiches since it's the first
+	 * execution of the server.
 	 */
 	public FoodServiceImpl() {
 		System.out.println("Starting Food plugin server ...");
@@ -284,41 +281,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			mLastImportedMeals = new Date();
 			System.out.println("<importMenus>: Getting menus from DB");
 		} else {
-			RestaurantListParser rlp = new RestaurantListParser();
-			HashMap<String, String> restaurantsFeeds = rlp.getFeeds();
-			Set<String> restaurants = restaurantsFeeds.keySet();
-
-			for (String r : restaurants) {
-				RssParser rp = new RssParser(restaurantsFeeds.get(r));
-				rp.parse();
-				RssFeed feed = rp.getFeed();
-
-				Restaurant newResto = new Restaurant(r.hashCode(), r);
-
-				if (feed != null && feed.items != null) {
-					for (int i = 0; i < feed.items.size(); i++) {
-						Rating mealRating = new Rating(0, 0, 0);
-						Meal newMeal = new Meal(
-								(r + feed.items.get(i).title).hashCode(),
-								feed.items.get(i).title,
-								feed.items.get(i).description, newResto,
-								mealRating);
-						if (!Utils.containsSpecialAscii(
-								newMeal.mealDescription, BAD_CHAR)
-								&& !Utils.containsSpecialAscii(newMeal.name,
-										BAD_CHAR)) {
-							mAllMeals.add(newMeal);
-							mMealRatings.put(newMeal.hashCode(), mealRating);
-						}
-					}
-					mLastImportedMeals = new Date();
-				} else {
-					System.out.println("<importMenus>: Empty Feed for " + r);
-				}
-			}
-			if (mAllMeals.isEmpty()) {
-				mLastImportedMeals = new Date();
-			}
+			parseMenus();
 			mDatabase.insertMeals(mAllMeals);
 		}
 	}
@@ -327,12 +290,20 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * Refresh menus because they have been imported too long ago
 	 */
 	private void refreshMenus() {
+		parseMenus();
+		mDatabase.insertMeals(mAllMeals);
+	}
+
+	/**
+	 * Parse the menus from the RSS feeds
+	 */
+	private void parseMenus() {
 		RestaurantListParser rlp = new RestaurantListParser();
-		HashMap<String, String> restaurantFeeds = rlp.getFeeds();
-		Set<String> restaurants = restaurantFeeds.keySet();
+		HashMap<String, String> restaurantsFeeds = rlp.getFeeds();
+		Set<String> restaurants = restaurantsFeeds.keySet();
 
 		for (String r : restaurants) {
-			RssParser rp = new RssParser(restaurantFeeds.get(r));
+			RssParser rp = new RssParser(restaurantsFeeds.get(r));
 			rp.parse();
 			RssFeed feed = rp.getFeed();
 
@@ -345,9 +316,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 							(r + feed.items.get(i).title).hashCode(),
 							feed.items.get(i).title,
 							feed.items.get(i).description, newResto, mealRating);
-					if (!alreadyExist(newMeal)
-							&& !Utils.containsSpecialAscii(
-									newMeal.mealDescription, BAD_CHAR)
+					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
+							BAD_CHAR)
 							&& !Utils.containsSpecialAscii(newMeal.name,
 									BAD_CHAR)) {
 						mAllMeals.add(newMeal);
@@ -356,16 +326,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 				}
 				mLastImportedMeals = new Date();
 			} else {
-				System.out.println("<refreshMenus>: Empty Feed");
+				System.out.println("<importMenus>: Empty Feed for " + r);
 			}
 		}
 		if (mAllMeals.isEmpty()) {
 			mLastImportedMeals = new Date();
-		}
-		for (Meal m : mAllMeals) {
-			mDatabase.insertMeal(m);
-			System.out.println("<refreshMenus>: Inserting meal " + m.getName()
-					+ ", " + m.getRestaurant().getName() + " into DB");
 		}
 	}
 

@@ -65,5 +65,4 @@ public class RestaurantsRequest extends
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-
 }
