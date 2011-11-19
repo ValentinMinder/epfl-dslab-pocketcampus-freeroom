@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.ui.adapter.ExpandableListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.Element;
-import org.pocketcampus.android.platform.sdk.ui.element.ElementDimension;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
@@ -17,15 +16,21 @@ import android.widget.ExpandableListView;
 /**
  * Separated list that displays a list with different sections.
  * 
- * @author Elodie
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class ExpandableListViewElement extends ExpandableListView implements
 		Element {
 
-	private ElementDimension mDimension = ElementDimension.NORMAL;
+	/** The Adapter for the ListView */
 	private ExpandableListAdapter mAdapter;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            the context of the calling Activity
+	 */
 	public ExpandableListViewElement(Context context) {
 		super(context);
 	}
@@ -54,13 +59,7 @@ public class ExpandableListViewElement extends ExpandableListView implements
 		Vector<String> headers = new Vector<String>(sortedHeaders);
 		mAdapter = new ExpandableListAdapter(headers, items, viewConstructor,
 				viewLabeler, context);
-		// mAdapter.setDimension(mDimension);
+
 		setAdapter(mAdapter);
 	}
-
-	public void setDimension(ElementDimension dimension) {
-		mDimension = dimension;
-	}
-
-
 }

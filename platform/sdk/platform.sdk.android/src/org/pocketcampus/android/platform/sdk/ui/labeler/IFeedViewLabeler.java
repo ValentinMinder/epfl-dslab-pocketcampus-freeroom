@@ -1,10 +1,11 @@
 package org.pocketcampus.android.platform.sdk.ui.labeler;
 
+import android.graphics.drawable.Drawable;
+
 /**
- * Interface to the methods provided by a RatableViewLabeler
+ * Interface to the methods provided by a FeedViewLabeler
  * 
- * A RatableView should have a title, a description, a rating and its
- * corresponding number of votes, and a place at which it can be purchased
+ * A FeedView should have a title, a description, and a picture
  * 
  * Defines where the information about an object that is to be displayed will be
  * fetched from
@@ -12,7 +13,7 @@ package org.pocketcampus.android.platform.sdk.ui.labeler;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
-public interface IRatableViewLabeler<LabeledObjectType> {
+public interface IFeedViewLabeler<LabeledObjectType> {
 
 	/**
 	 * Returns the title of the object passed in parameter
@@ -39,23 +40,5 @@ public interface IRatableViewLabeler<LabeledObjectType> {
 	 *            the object of which we want the rating
 	 * @return the rating
 	 */
-	public float getRating(LabeledObjectType obj);
-
-	/**
-	 * Returns the Number of Votes of the object passed in parameter
-	 * 
-	 * @param obj
-	 *            the object of which we want the Number of Votes
-	 */
-	public int getNbVotes(LabeledObjectType obj);
-
-	/**
-	 * Returns the Place at which the object passed in parameter is available
-	 * 
-	 * @param obj
-	 *            the object of which we want the place
-	 * @return the String place
-	 */
-	public String getPlaceName(LabeledObjectType obj);
-
+	public Drawable getPicture(LabeledObjectType obj);
 }

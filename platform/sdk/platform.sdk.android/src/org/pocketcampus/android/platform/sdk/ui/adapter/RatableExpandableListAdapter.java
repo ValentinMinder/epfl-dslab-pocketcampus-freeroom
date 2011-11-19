@@ -11,8 +11,10 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * 
- * @author elodie <elodienilane.triponez@epfl.ch>
- *
+ * An Ex
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
  */
 public class RatableExpandableListAdapter extends ExpandableListAdapter {
 	private OnItemClickListener mOnLineClickListener;
@@ -32,7 +34,7 @@ public class RatableExpandableListAdapter extends ExpandableListAdapter {
 			IRatableViewLabeler<? extends Object> viewLabeler, Context context) {
 		super(headers, items, viewConstructor, viewLabeler, context);
 	}
-	
+
 	public void setOnLineClickListener(OnItemClickListener l) {
 		mOnLineClickListener = l;
 	}

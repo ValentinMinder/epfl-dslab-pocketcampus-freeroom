@@ -1,3 +1,4 @@
+package org.pocketcampus.plugin.news.lastSemester;
 //package org.pocketcampus.plugin.news.android;
 //
 ////import org.pocketcampus.R;

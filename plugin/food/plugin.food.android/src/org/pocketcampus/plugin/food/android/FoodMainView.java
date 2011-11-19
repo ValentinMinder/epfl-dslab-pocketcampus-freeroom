@@ -185,8 +185,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					Intent(getApplicationContext(), FoodPreferencesView.class);
 			startActivity(settings); 
 		}
-
-
 		return true;
 	}
 
@@ -707,7 +705,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * @return
 		 */
 		@Override
-		public String getRestaurantName(Meal meal) {
+		public String getPlaceName(Meal meal) {
 			return meal.getRestaurant().getName();
 		}
 	};
@@ -739,7 +737,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 
 		@Override
-		public String getRestaurantName(Sandwich sandwich) {
+		public String getPlaceName(Sandwich sandwich) {
 			return sandwich.getRestaurant().getName();
 		}
 	};

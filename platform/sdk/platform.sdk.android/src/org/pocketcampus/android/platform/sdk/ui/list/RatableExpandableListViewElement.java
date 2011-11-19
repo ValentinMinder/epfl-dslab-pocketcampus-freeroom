@@ -15,14 +15,21 @@ import android.content.Context;
 /**
  * Separated list that displays a list with different sections.
  * 
- * @author Elodie <elodienilane@epfl.ch>
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class RatableExpandableListViewElement extends ExpandableListViewElement
 		implements Element {
 
+	/** The adapter for the ListView */
 	private RatableExpandableListAdapter mAdapter;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            the context of the calling Activity
+	 */
 	public RatableExpandableListViewElement(Context context) {
 		super(context);
 	}
@@ -43,7 +50,7 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement
 			IRatableViewLabeler<? extends Object> viewLabeler,
 			IRatableViewConstructor viewConstructor) {
 		super(context, items, viewLabeler, viewConstructor);
-		
+
 		/** Sorts the list of restaurants */
 		SortedSet<String> sortedHeaders = new TreeSet<String>(items.keySet());
 

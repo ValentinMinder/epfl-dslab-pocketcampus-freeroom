@@ -1,0 +1,36 @@
+<Feed>
+	<name>PocketCampus</name>
+	<rssfeed>http://www.pocketcampus.org/feed/</rssfeed>
+</Feed>
+<Feed>
+	<name>EPFL All news</name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/mediacom/en/</rssfeed>
+</Feed>
+<Feed>
+	<name>EPFL Architecture, Civil and Environmental Engineering</name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/enac/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/sb/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/ic/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/cdh/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/sti/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/sv/en/</rssfeed>
+</Feed>
+<Feed>
+	<name></name>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/cdm/en/</rssfeed>
+</Feed>

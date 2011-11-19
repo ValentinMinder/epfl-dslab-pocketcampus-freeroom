@@ -18,18 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
+ * Class used to provide Ratable data and Views from some data to an expandable
+ * list view.
  * 
- * @author elodie <elodienilane.triponez@epfl.ch>
- *
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	/** Application context */
 	private Context mContext;
 	/** Layout Management */
 	private LayoutInflater mInflater;
-	/** Headers of the List*/
+	/** Headers of the List */
 	private Vector<String> mHeaders;
-	/** Children of each header*/
+	/** Children of each header */
 	private HashMap<String, ? extends Vector<? extends Object>> mChildren;
 	/** View Handler */
 	private IRatableViewConstructor mViewConstructor;

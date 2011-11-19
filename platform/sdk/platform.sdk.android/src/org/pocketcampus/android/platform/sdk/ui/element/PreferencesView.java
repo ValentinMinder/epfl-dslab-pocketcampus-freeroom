@@ -5,19 +5,16 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A Labeled view to display a text and its correlated CheckBox to let the user choose
- * preferences.
+ * A Labeled view to display a text and its correlated CheckBox to let the user
+ * choose preferences.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch
  */

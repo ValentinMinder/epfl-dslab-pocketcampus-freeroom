@@ -24,13 +24,13 @@ import org.slf4j.LoggerFactory;
 public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Feed");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("Id", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("title", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField ITEMS_FIELD_DESC = new org.apache.thrift.protocol.TField("items", org.apache.thrift.protocol.TType.LIST, (short)5);
 
-  public long id; // required
+  public long Id; // required
   public String title; // required
   public String link; // required
   public String description; // required
@@ -38,7 +38,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
+    ID((short)1, "Id"),
     TITLE((short)2, "title"),
     LINK((short)3, "link"),
     DESCRIPTION((short)4, "description"),
@@ -113,7 +113,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("Id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.TITLE, new org.apache.thrift.meta_data.FieldMetaData("title", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -132,14 +132,14 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   }
 
   public Feed(
-    long id,
+    long Id,
     String title,
     String link,
     String description,
     List<NewsItem> items)
   {
     this();
-    this.id = id;
+    this.Id = Id;
     setIdIsSet(true);
     this.title = title;
     this.link = link;
@@ -153,7 +153,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   public Feed(Feed other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.id = other.id;
+    this.Id = other.Id;
     if (other.isSetTitle()) {
       this.title = other.title;
     }
@@ -179,7 +179,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   @Override
   public void clear() {
     setIdIsSet(false);
-    this.id = 0;
+    this.Id = 0;
     this.title = null;
     this.link = null;
     this.description = null;
@@ -187,11 +187,11 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   }
 
   public long getId() {
-    return this.id;
+    return this.Id;
   }
 
-  public Feed setId(long id) {
-    this.id = id;
+  public Feed setId(long Id) {
+    this.Id = Id;
     setIdIsSet(true);
     return this;
   }
@@ -200,7 +200,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
     __isset_bit_vector.clear(__ID_ISSET_ID);
   }
 
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
+  /** Returns true if field Id is set (has been assigned a value) and false otherwise */
   public boolean isSetId() {
     return __isset_bit_vector.get(__ID_ISSET_ID);
   }
@@ -420,12 +420,12 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
     if (that == null)
       return false;
 
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
+    boolean this_present_Id = true;
+    boolean that_present_Id = true;
+    if (this_present_Id || that_present_Id) {
+      if (!(this_present_Id && that_present_Id))
         return false;
-      if (this.id != that.id)
+      if (this.Id != that.Id)
         return false;
     }
 
@@ -472,10 +472,10 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_id = true;
-    builder.append(present_id);
-    if (present_id)
-      builder.append(id);
+    boolean present_Id = true;
+    builder.append(present_Id);
+    if (present_Id)
+      builder.append(Id);
 
     boolean present_title = true && (isSetTitle());
     builder.append(present_title);
@@ -513,7 +513,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
       return lastComparison;
     }
     if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.Id, typedOther.Id);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -577,7 +577,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
       switch (field.id) {
         case 1: // ID
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.id = iprot.readI64();
+            this.Id = iprot.readI64();
             setIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -631,7 +631,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
 
     // check for required fields of primitive type, which can't be checked in the validate method
     if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not found in serialized data! Struct: " + toString());
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'Id' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -641,7 +641,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
 
     oprot.writeStructBegin(STRUCT_DESC);
     oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI64(this.id);
+    oprot.writeI64(this.Id);
     oprot.writeFieldEnd();
     if (this.title != null) {
       oprot.writeFieldBegin(TITLE_FIELD_DESC);
@@ -679,8 +679,8 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
     StringBuilder sb = new StringBuilder("Feed(");
     boolean first = true;
 
-    sb.append("id:");
-    sb.append(this.id);
+    sb.append("Id:");
+    sb.append(this.Id);
     first = false;
     if (!first) sb.append(", ");
     sb.append("title:");
@@ -720,7 +720,7 @@ public class Feed implements org.apache.thrift.TBase<Feed, Feed._Fields>, java.i
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'id' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'Id' because it's a primitive and you chose the non-beans generator.
     if (title == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'title' was not present! Struct: " + toString());
     }

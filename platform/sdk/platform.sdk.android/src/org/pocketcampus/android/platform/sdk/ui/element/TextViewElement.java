@@ -5,14 +5,10 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class TextViewElement  extends LinearLayout{
 
@@ -59,7 +55,7 @@ public class TextViewElement  extends LinearLayout{
 		mTitleLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
-					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
+					v.setTag(mLabeler.getPlaceName(mCurrentObject));
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}

@@ -16,7 +16,7 @@ struct NewsItem {
 }
 
 struct Feed {
-	1: required common.Id id;
+	1: required common.Id Id;
 	2: required string title;
 	3: required string link;
 	4: required string description;
@@ -25,4 +25,5 @@ struct Feed {
 
 service NewsService {
 	list<NewsItem> getNewsItems();
+	list<Feed> getFeeds();
 }

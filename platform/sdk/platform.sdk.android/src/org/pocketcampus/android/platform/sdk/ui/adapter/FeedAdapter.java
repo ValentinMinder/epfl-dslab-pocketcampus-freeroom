@@ -2,8 +2,8 @@ package org.pocketcampus.android.platform.sdk.ui.adapter;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
+import org.pocketcampus.android.platform.sdk.ui.element.FeedView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 
 import android.content.Context;
 import android.view.View;
@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * An ArrayAdapter used to display a list of Ratable elements
+ * An ArrayAdapter used to display a list of Feed elements
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
-public class RatableAdapter extends AbstractArrayAdapter {
+public class FeedAdapter extends AbstractArrayAdapter {
 	/** The labeler that defines the information to display from the object */
-	private IRatableViewLabeler<? extends Object> mLabeler;
+	private IFeedViewLabeler mLabeler;
 
 	/** The context of the calling View */
 	private Context mContext;
@@ -26,11 +26,8 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	/** The listener used for callback when a line in the adapter is pressed */
 	private OnItemClickListener mOnLineClickListener;
 
-	/** The listener used for callback when a rating in a line is pressed */
-	private OnItemClickListener mOnRatingClickListener;
-
 	/**
-	 * Constructor for a RatableAdapter
+	 * Constructor for a FeedAdapter
 	 * 
 	 * @param context
 	 *            the context of the calling View
@@ -39,8 +36,8 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	 * @param labeler
 	 *            the labeler to get information from the object
 	 */
-	public RatableAdapter(Context context, List<? extends Object> items,
-			IRatableViewLabeler<? extends Object> labeler) {
+	public FeedAdapter(Context context, List<? extends Object> items,
+			IFeedViewLabeler<? extends Object> labeler) {
 		super(context, items);
 		mContext = context;
 		mLabeler = labeler;
@@ -59,8 +56,8 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		RatableView rv = new RatableView(getItem(position), mContext, mLabeler,
-				mOnLineClickListener, mOnRatingClickListener, position);
+		FeedView rv = new FeedView(getItem(position), mContext, mLabeler,
+				mOnLineClickListener, position);
 		return rv;
 	}
 
@@ -72,16 +69,6 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	 */
 	public void setOnLineClickListener(OnItemClickListener l) {
 		mOnLineClickListener = l;
-	}
-
-	/**
-	 * Sets the listener for rating clicks
-	 * 
-	 * @param l
-	 *            the listener for the ratings
-	 */
-	public void setOnRatingClickListener(OnItemClickListener l) {
-		mOnRatingClickListener = l;
 	}
 
 }

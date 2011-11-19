@@ -104,7 +104,7 @@ public class RatableView extends LinearLayout {
 		mTitleLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
-					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
+					v.setTag(mLabeler.getPlaceName(mCurrentObject));
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -114,7 +114,7 @@ public class RatableView extends LinearLayout {
 		mDescriptionLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
-					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
+					v.setTag(mLabeler.getPlaceName(mCurrentObject));
 					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
@@ -126,7 +126,7 @@ public class RatableView extends LinearLayout {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP
 						&& mOnRatingClickListener != null) {
-					v.setTag(mLabeler.getRestaurantName(mCurrentObject));
+					v.setTag(mLabeler.getPlaceName(mCurrentObject));
 					mOnRatingClickListener.onItemClick(null, v, mPosition,
 							(long) mLabeler.getRating(mCurrentObject));
 				}

@@ -240,6 +240,5 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	public void notifyMealsNetworkError() {
-
 	}
 }

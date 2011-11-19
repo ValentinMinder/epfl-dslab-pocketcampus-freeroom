@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.news.server;
+package org.pocketcampus.plugin.news.server.parse;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -107,38 +107,52 @@ public class RssParser extends DefaultHandler {
 
 		// Special cases image and textInput - not managed (yet)
 		if (this.inImage_) {
-			if (localName.equalsIgnoreCase("image") || qName.equalsIgnoreCase("image"))
+			if (localName.equalsIgnoreCase("image")
+					|| qName.equalsIgnoreCase("image"))
 				inImage_ = false;
 			return;
 		}
 		if (this.inTextInput_) {
-			if (localName.equalsIgnoreCase("textInput") || qName.equalsIgnoreCase("textInput"))
+			if (localName.equalsIgnoreCase("textInput")
+					|| qName.equalsIgnoreCase("textInput"))
 				inTextInput_ = false;
 			return;
 		}
 
-		if (localName.equalsIgnoreCase("item") || qName.equalsIgnoreCase("item")) {
+		if (localName.equalsIgnoreCase("item")
+				|| qName.equalsIgnoreCase("item")) {
 			this.inItem_ = false;
 			this.rssFeed_.addToItems(this.item_);
-		} else if (localName.equalsIgnoreCase("title")|| qName.equalsIgnoreCase("title")) {
+		} else if (localName.equalsIgnoreCase("title")
+				|| qName.equalsIgnoreCase("title")) {
 			if (this.inItem_ && this.item_ != null) {
 				this.item_.setTitle(this.text_.toString().trim());
 			} else {
 				this.rssFeed_.setTitle(this.text_.toString().trim());
+				System.out.println("Set RSS feed title to "
+						+ rssFeed_.getTitle());
 			}
-		} else if (localName.equalsIgnoreCase("link")|| qName.equalsIgnoreCase("link")) {
+		} else if (localName.equalsIgnoreCase("link")
+				|| qName.equalsIgnoreCase("link")) {
 			if (this.inItem_ && this.item_ != null) {
 				this.item_.setLink(text_.toString().trim());
 			} else {
 				this.rssFeed_.setLink(text_.toString().trim());
+				System.out
+						.println("Set RSS feed link to " + rssFeed_.getLink());
 			}
-		} else if (localName.equalsIgnoreCase("description")|| qName.equalsIgnoreCase("description")) {
+		} else if (localName.equalsIgnoreCase("description")
+				|| qName.equalsIgnoreCase("description")) {
 			if (this.inItem_ && this.item_ != null) {
 				this.item_.setDescription(text_.toString().trim());
 			} else {
 				this.rssFeed_.setDescription(text_.toString().trim());
+				System.out.println("Set RSS feed description to "
+						+ rssFeed_.getDescription());
+
 			}
-		} else if (localName.equalsIgnoreCase("pubDate")|| qName.equalsIgnoreCase("pubDate")) {
+		} else if (localName.equalsIgnoreCase("pubDate")
+				|| qName.equalsIgnoreCase("pubDate")) {
 			if (this.inItem_ && this.item_ != null) {
 				this.item_.setPubDate(text_.toString().trim());
 			}

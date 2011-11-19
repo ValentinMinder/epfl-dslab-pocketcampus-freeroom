@@ -1,9 +1,7 @@
+package org.pocketcampus.plugin.news.lastSemester;
 //package org.pocketcampus.plugin.news.android;
 //
 //import org.pocketcampus.R;
-//import org.pocketcampus.core.plugin.PluginPreference;
-//import org.pocketcampus.core.ui.ActionBar;
-//import org.pocketcampus.plugin.mainscreen.MainscreenPlugin;
 //
 //import android.os.Bundle;
 //import android.preference.CheckBoxPreference;
@@ -14,12 +12,15 @@
 //import android.preference.PreferenceManager;
 //import android.preference.PreferenceScreen;
 //
+//import com.markupartist.android.widget.ActionBar;
+//
 ///**
 // * PluginPreference class for the News plugin. 
 // * 
 // * @status complete
 // * 
 // * @author Jonas
+// * @author Elodie <elodienilane.triponez@epfl.ch>
 // *
 // */
 //public class NewsPreference extends PluginPreference {
