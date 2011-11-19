@@ -14,6 +14,9 @@ import java.util.HashMap;
  */
 public class RestaurantListParser {
 
+	/** The path to the file to parse */
+	private String mFile;
+
 	/** The list of feeds */
 	private HashMap<String, String> feeds;
 
@@ -21,7 +24,8 @@ public class RestaurantListParser {
 	private String feedString;
 
 	/** Constructor for the RestaurantListParser */
-	public RestaurantListParser() {
+	public RestaurantListParser(String file) {
+		mFile = file;
 		feedString = getContents();
 		feeds = restaurantFeeds(feedString);
 	}
@@ -42,8 +46,7 @@ public class RestaurantListParser {
 
 		try {
 			// use buffering, reading one line at a time
-			InputStream instream = this.getClass().getResourceAsStream(
-					"restaurants_list.txt");
+			InputStream instream = this.getClass().getResourceAsStream(mFile);
 
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader input = new BufferedReader(inputreader);

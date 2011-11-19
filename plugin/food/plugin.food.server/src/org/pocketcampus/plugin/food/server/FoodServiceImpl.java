@@ -39,11 +39,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 	/** Interface to the database */
 	private FoodDB mDatabase;
 
+	/** The list of Restaurants and the Url to their feeds */
+	private HashMap<String, String> mRestaurantsFeeds;
+
 	/** The list of all Meals */
 	private List<Meal> mAllMeals;
 
 	/** Ratings for all Meals, represents with their hashcode */
 	private HashMap<Integer, Rating> mMealRatings;
+
+	/** The list of DeviceIds that have already voted for a meal today */
+	private ArrayList<String> mDeviceIds;
 
 	/** The list of Sandwiches for all Cafeterias */
 	private List<Sandwich> mSandwiches;
@@ -51,8 +57,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 	// Character to filter because doesn't show right.
 	private final static int BAD_CHAR = 65533;
 
-	/** The list of DeviceIds that have already voted today */
-	private ArrayList<String> mDeviceIds;
+	/** The interval in minutes at which the news should be fetched */
+	private int REFRESH_INTERVAL = 60;
 
 	/**
 	 * Constructor instantiates all containers for meals, ratings, sandwiches,
@@ -68,6 +74,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mSandwiches = new ArrayList<Sandwich>();
 		mMealRatings = new HashMap<Integer, Rating>();
 		mDeviceIds = new ArrayList<String>();
+
+		getRestaurantsList();
 
 		importMenus();
 		importSandwiches();
@@ -126,6 +134,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 		}
 
 		return mRestaurantList;
+	}
+
+	/**
+	 * Checks whether the user has already voted today
+	 */
+	public boolean hasVoted(String deviceId) throws TException {
+		if (mDeviceIds.contains(deviceId)) {
+			System.out.println("<setRating>: Already in mDeviceIds.");
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -266,6 +285,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
+	 * Initiates parsing of the restaurant list from the file stored on the
+	 * server
+	 */
+	private void getRestaurantsList() {
+		RestaurantListParser rlp = new RestaurantListParser(
+				"restaurants_list.txt");
+		mRestaurantsFeeds = rlp.getFeeds();
+	}
+
+	/**
 	 * Imports Menus from the RSS feed
 	 */
 	private void importMenus() {
@@ -298,12 +327,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * Parse the menus from the RSS feeds
 	 */
 	private void parseMenus() {
-		RestaurantListParser rlp = new RestaurantListParser();
-		HashMap<String, String> restaurantsFeeds = rlp.getFeeds();
-		Set<String> restaurants = restaurantsFeeds.keySet();
+		Set<String> restaurants = mRestaurantsFeeds.keySet();
 
 		for (String r : restaurants) {
-			RssParser rp = new RssParser(restaurantsFeeds.get(r));
+			RssParser rp = new RssParser(mRestaurantsFeeds.get(r));
 			rp.parse();
 			RssFeed feed = rp.getFeed();
 
@@ -351,7 +378,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * 
 	 * @param meal
 	 *            The Meal we want to check
-	 * @return true if it's already in there
+	 * @return true if it's already in the list of Meals
 	 */
 	private boolean alreadyExist(Meal meal) {
 		for (Meal m : mAllMeals) {
@@ -627,7 +654,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
 		} else {
-			if (getMinutes(then.getTime(), now.getTime()) > 60) {
+			if (getMinutes(then.getTime(), now.getTime()) > REFRESH_INTERVAL) {
 				return false;
 			}
 		}
@@ -647,16 +674,5 @@ public class FoodServiceImpl implements FoodService.Iface {
 		long realDiff = diff / 60000;
 
 		return realDiff;
-	}
-
-	/**
-	 * Checks whether the user has already voted today
-	 */
-	public boolean hasVoted(String deviceId) throws TException {
-		if (mDeviceIds.contains(deviceId)) {
-			System.out.println("<setRating>: Already in mDeviceIds.");
-			return true;
-		}
-		return false;
 	}
 }
