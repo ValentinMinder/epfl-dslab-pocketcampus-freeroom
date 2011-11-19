@@ -503,6 +503,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		/* Satellite */
 		Restaurant satellite = new Restaurant(("Satellite").hashCode(),
 				"Satellite");
+		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon").hashCode(), satellite, "Jambon"));
 		mSandwiches.add(new Sandwich((satellite.getName() + "Thon").hashCode(),
 				satellite, "Thon"));
 		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon Fromage")
