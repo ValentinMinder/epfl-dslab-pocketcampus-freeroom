@@ -27,7 +27,7 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
  * plugin
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
- * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class FoodServiceImpl implements FoodService.Iface {
 	/** The last time the Meals were parsed from the web page */
