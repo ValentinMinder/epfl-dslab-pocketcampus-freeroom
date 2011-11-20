@@ -508,18 +508,21 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				.getSandwiches();
 		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
 
-		mLayout.removeFillerView();
+		if(mSandwiches != null) {
 
-		mList = new RatableExpandableListViewElement(this, mSandwiches,
-				mSandwichLabeler, mSandwichViewConstructor);
+			mLayout.removeFillerView();
 
-		if (!mSandwiches.isEmpty()) {
-			mLayout.hideText();
-			mLayout.setTitle(this.getString(R.string.food_by_sandwiches));
-			mLayout.addFillerView(mList);
-		} else {
-			mLayout.setText(getString(R.string.food_no_sandwiches));
-			mLayout.hideTitle();
+			mList = new RatableExpandableListViewElement(this, mSandwiches,
+					mSandwichLabeler, mSandwichViewConstructor);
+
+			if (!mSandwiches.isEmpty()) {
+				mLayout.hideText();
+				mLayout.setTitle(this.getString(R.string.food_by_sandwiches));
+				mLayout.addFillerView(mList);
+			} else {
+				mLayout.setText(getString(R.string.food_no_sandwiches));
+				mLayout.hideTitle();
+			}
 		}
 	}
 
