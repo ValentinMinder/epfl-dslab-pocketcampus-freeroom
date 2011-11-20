@@ -3,9 +3,8 @@
     android:id="@+id/sdk_list_preferences_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/green"
-    android:orientation="horizontal" 
-    android:gravity="right">
+    android:gravity="right"
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/sdk_list_preferences_entry_text"

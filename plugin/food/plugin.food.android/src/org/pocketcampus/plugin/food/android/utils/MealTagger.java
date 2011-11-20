@@ -61,7 +61,7 @@ public class MealTagger {
 						Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 		Pattern ricePatterns = Pattern.compile(
 				".*(riz|risotto|cantonais|casimir).*", Pattern.CASE_INSENSITIVE
-						| Pattern.MULTILINE);
+				| Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern
 				.compile(
 						".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*",
@@ -69,10 +69,10 @@ public class MealTagger {
 		Pattern chickenPatterns = Pattern.compile(
 				".*(poulet|coq .?coquelet.?|dinde|volaille|nugget).*",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-		Pattern beefPatterns = Pattern.compile(".*(boeuf|burger).*",
-				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-		Pattern horsePatterns = Pattern.compile(".*(cheval).*",
-				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+//		Pattern beefPatterns = Pattern.compile(".*(boeuf|burger).*",
+//				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+//		Pattern horsePatterns = Pattern.compile(".*(cheval).*",
+//				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 		Pattern pizzaPatterns = Pattern.compile(".*(pizza).*",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
@@ -82,8 +82,6 @@ public class MealTagger {
 		// addPattern(MealTag.MEAT, meatPatterns2);
 		addPattern(MealTag.PORC, porcPatterns);
 		addPattern(MealTag.CHICKEN, chickenPatterns);
-		addPattern(MealTag.BEEF, beefPatterns);
-		addPattern(MealTag.HORSE, horsePatterns);
 		addPattern(MealTag.PASTA, pastaPatterns);
 		addPattern(MealTag.RICE, ricePatterns);
 		addPattern(MealTag.PIZZA, pizzaPatterns);

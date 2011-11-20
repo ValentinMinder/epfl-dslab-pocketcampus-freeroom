@@ -7,6 +7,7 @@ import org.pocketcampus.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -72,47 +73,41 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 				.findViewById(R.id.sdk_list_entry_negative_checkbox);
 
 		/** Listener on the positive CheckBox */
-		likeB.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
+		likeB.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-
-				if (isChecked) {
+			public void onClick(View v) {
+				CheckBox b = (CheckBox) v;
+				
+				if (b.isChecked()) {
 					if (dislikeB.isChecked()) {
 						dislikeB.setChecked(false);
 					}
 				}
-
+				
 				if (mListener != null) {
-					mListener.onItemClick(null, (View) buttonView, position,
-							(long) 1);
+					mListener.onItemClick(null, (View) v, position, (long) 1);
 				}
-
 			}
-
 		});
-
+		
 		/** Listener on the negative CheckBox */
-		dislikeB.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		dislikeB.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onClick(View v) {
+				CheckBox b = (CheckBox) v;
 
-				if (isChecked) {
+				if (b.isChecked()) {
 					if (likeB.isChecked()) {
 						likeB.setChecked(false);
 					}
 				}
 
 				if (mListener != null) {
-					mListener.onItemClick(null, (View) buttonView, position,
-							(long) 0);
+					mListener.onItemClick(null, (View) v, position, (long) 0);
 				}
-
 			}
-
 		});
 
 		return v;

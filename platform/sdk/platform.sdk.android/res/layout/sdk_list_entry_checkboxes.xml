@@ -4,11 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <!--
-    android:textAppearance="?android:attr/textAppearanceLarge"
-	android:textSize="25dip"	
-    -->
-
     <TextView
         android:id="@+id/sdk_list_checkbox_entry_text"
         android:layout_width="wrap_content"
@@ -18,13 +13,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:gravity="right" >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
 
-        
         <CheckBox
             android:id="@+id/sdk_list_entry_positive_checkbox"
             android:layout_width="wrap_content"
@@ -38,8 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="right" />
-        
-        
     </LinearLayout>
 
 </LinearLayout>

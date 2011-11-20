@@ -52,18 +52,6 @@ public enum MealTag {
 		}
 	},
 
-	BEEF {
-		public String toString() {
-			return "Beef";
-		}
-	},
-
-	HORSE {
-		public String toString() {
-			return "Horse";
-		}
-	},
-
 	PIZZA {
 		public String toString() {
 			return "Pizza";

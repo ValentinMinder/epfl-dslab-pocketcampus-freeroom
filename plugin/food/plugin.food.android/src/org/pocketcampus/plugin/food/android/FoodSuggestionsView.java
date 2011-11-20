@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.CheckBoxesListViewElement;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
@@ -27,6 +28,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -53,6 +55,12 @@ public class FoodSuggestionsView extends PluginView {
 
 	/** The button to validate the choices */
 	private Button computeButton;
+
+	/** The ImageButton to represent "I like" */
+	private ImageButton mLikeButton;
+
+	/** The ImageButton to represent "I like" */
+	private ImageButton mDislikeButton;
 
 	/**
 	 * The Meals sent by the MainView, modified here and sent back filtered with
@@ -90,25 +98,6 @@ public class FoodSuggestionsView extends PluginView {
 
 		/* ===== LAYOUT, VIEWS & DATA ===== */
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
-
-		// Compute Suggestions Button
-		computeButton = new Button(this);
-		computeButton.setId(1);
-
-		// Like Button
-		ImageButton likeButton = new ImageButton(this);
-		likeButton.setId(2);
-
-		// Dislike Button
-		ImageButton dislikeButton = new ImageButton(this);
-		dislikeButton.setId(3);
-
-		// Instantiate Objects
-		mLikes = new ArrayList<MealTag>();
-		mDislikes = new ArrayList<MealTag>();
-
 		// Handle extras from MainView
 		handleExtras();
 
@@ -116,8 +105,49 @@ public class FoodSuggestionsView extends PluginView {
 		mTagsList = mController.getMealTags();
 		mTagsToDisplay = languageCompatible();
 
-		/* ===== PARAMETERS ===== */
+		// The StandardLayout is a RelativeLayout with a TextView in its center.
+		mLayout = new StandardLayout(this);
 
+		// List View
+		// Filling the ListView
+		mListView = new CheckBoxesListViewElement(this, mTagsToDisplay);
+
+		// Compute Suggestions Button
+		computeButton = new Button(this);
+		computeButton.setId(1);
+
+		// Like Button
+		mLikeButton = new ImageButton(this);
+		mLikeButton.setId(2);
+
+		// Dislike Button
+		mDislikeButton = new ImageButton(this);
+		mDislikeButton.setId(3);
+
+		// Instantiate Objects
+		mLikes = new ArrayList<MealTag>();
+		mDislikes = new ArrayList<MealTag>();
+
+		/* ===== PARAMETERS ===== */
+		setParameters();
+
+		// Set onClickListener
+		setOnListViewClickListener();
+
+		// Set the layout
+		mLayout.addView(computeButton);
+		mLayout.addView(mLikeButton);
+		mLayout.addView(mDislikeButton);
+		mLayout.addView(mListView);
+
+		// The ActionBar is added automatically when you call setContentView
+		setContentView(mLayout);
+	}
+
+	/**
+	 * Sets the parameters for the ListView and the Buttons
+	 */
+	private void setParameters() {
 		// Layout
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -136,49 +166,33 @@ public class FoodSuggestionsView extends PluginView {
 		setOnComputeButtonClickListener();
 
 		// Like Button
-		likeButton.setBackgroundResource(R.drawable.food_suggestions_like);
-		likeButton.setClickable(false);
-		likeButton.setMinimumHeight(computeButton.getHeight());
-		likeButton.setMinimumWidth(computeButton.getHeight());
+		mLikeButton.setBackgroundResource(R.drawable.food_suggestions_like);
+		mLikeButton.setClickable(false);
+		mLikeButton.setMinimumHeight(computeButton.getHeight());
+		mLikeButton.setMinimumWidth(computeButton.getHeight());
 		RelativeLayout.LayoutParams likeParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		likeParams.addRule(RelativeLayout.LEFT_OF, dislikeButton.getId());
+		likeParams.addRule(RelativeLayout.LEFT_OF, mDislikeButton.getId());
 		// likeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		likeButton.setLayoutParams(likeParams);
+		mLikeButton.setLayoutParams(likeParams);
 
 		// Dislike Button
-		dislikeButton
-				.setBackgroundResource(R.drawable.food_suggestions_dislike);
-		dislikeButton.setClickable(false);
+		mDislikeButton
+		.setBackgroundResource(R.drawable.food_suggestions_dislike);
+		mDislikeButton.setClickable(false);
 		RelativeLayout.LayoutParams dislikeParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT,
 				android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
 		// dislikeParams.addRule(RelativeLayout.RIGHT_OF, likeButton.getId());
 		// dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		dislikeButton.setLayoutParams(dislikeParams);
-
-		// List View
-		// Filling the ListView
-		mListView = new CheckBoxesListViewElement(this, mTagsToDisplay);
+		mDislikeButton.setLayoutParams(dislikeParams);
 
 		// List w.r.t. the Compute Button
 		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		listParams.addRule(RelativeLayout.BELOW, computeButton.getId());
 		mListView.setLayoutParams(listParams);
-
-		// Set onClickListener
-		setOnListViewClickListener();
-
-		// Set the layout
-		mLayout.addView(computeButton);
-		mLayout.addView(likeButton);
-		mLayout.addView(dislikeButton);
-		mLayout.addView(mListView);
-
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
 	}
 
 	/**
@@ -189,25 +203,42 @@ public class FoodSuggestionsView extends PluginView {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
+			public void onItemClick(AdapterView<?> arg0, View box,
 					int position, long boxId) {
 				// boxId = 1 : positiveBox
 				// boxId = 0 : negativeBox
 				MealTag tag = mTagsList.get(position);
+				CheckBox b = (CheckBox) box;
 
-				if (boxId == 1) {
-					Log.d("SUGGESTIONS", "Added " + tag);
-					if (!mLikes.contains(tag)) {
-						mLikes.add(tag);
+				if(b.isChecked()) {
+					if(boxId == 1) { // Added a likeTag
+
+						Log.d("SUGGESTIONS", "Added " + tag + " to likes");
+						if (!mLikes.contains(tag)) {
+							mLikes.add(tag);
+						} 
+						mDislikes.remove(tag);
+						
+					} else if (boxId == 0) { // Added a dislikeTag
+
+						Log.d("SUGGESTIONS", "Added " + tag + " to dislikes");
+						if (!mDislikes.contains(tag)) {
+							mDislikes.add(tag);
+						}
+						mLikes.remove(tag);
 					}
-					mDislikes.remove(tag);
-				} else if (boxId == 0) {
-					Log.d("SUGGESTIONS", "Removed " + tag);
-					if (!mDislikes.contains(tag)) {
-						mDislikes.add(tag);
+				} else {
+					if(boxId == 1) { // Removed a likeTag
+						
+						Log.d("SUGGESTIONS", "Removed " + tag + " from likes");
+						mLikes.remove(tag);
+					} else if (boxId == 0) { // Removed a dislikeTag
+						
+						Log.d("SUGGESTIONS", "Removed " + tag + " from dislikes");
+						mDislikes.remove(tag);
 					}
-					mLikes.remove(tag);
 				}
+
 			}
 
 		});
@@ -264,7 +295,7 @@ public class FoodSuggestionsView extends PluginView {
 		if (!mLikes.isEmpty() && mMeals != null) {
 			for (MealTag tag : mLikes) {
 				computeLikeMeals
-						.addAll(computeSuggestions(mMeals, tag, mTagger));
+				.addAll(computeSuggestions(mMeals, tag, mTagger));
 			}
 		} else if ((mLikes.isEmpty()) && (mMeals != null)) {
 			computeLikeMeals.addAll(mMeals);
@@ -301,7 +332,7 @@ public class FoodSuggestionsView extends PluginView {
 		if (extras != null) {
 			@SuppressWarnings("unchecked")
 			ArrayList<Meal> m = (ArrayList<Meal>) extras
-					.getSerializable("org.pocketcampus.suggestions.meals");
+			.getSerializable("org.pocketcampus.suggestions.meals");
 			if (m != null && !m.isEmpty()) {
 				for (Meal meal : m) {
 					mMeals.add(meal);
@@ -361,12 +392,6 @@ public class FoodSuggestionsView extends PluginView {
 		case CHICKEN:
 			string = r.getString(R.string.food_suggestions_chicken);
 			break;
-		case BEEF:
-			string = r.getString(R.string.food_suggestions_beef);
-			break;
-		case HORSE:
-			string = r.getString(R.string.food_suggestions_horse);
-			break;
 		case PIZZA:
 			string = r.getString(R.string.food_suggestions_pizza);
 			break;
@@ -376,5 +401,14 @@ public class FoodSuggestionsView extends PluginView {
 
 		return string;
 	}
+
+	ILabeler<MealTag> mTagLabeler = new ILabeler<MealTag>() {
+
+		@Override
+		public String getLabel(MealTag obj) {
+			return write(obj);
+		}
+
+	};
 
 }
