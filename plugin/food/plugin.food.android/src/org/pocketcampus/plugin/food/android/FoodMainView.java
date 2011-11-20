@@ -468,6 +468,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mLayout.setTitle(getString(R.string.food_by_ratings));
 			mLayout.addFillerView(l);
 		} else {
+			mLayout.removeFillerView();
 			mLayout.setText(getString(R.string.food_no_menus));
 			mLayout.hideTitle();
 		}
