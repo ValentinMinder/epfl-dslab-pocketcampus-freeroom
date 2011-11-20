@@ -1,13 +1,25 @@
 package org.pocketcampus.plugin.satellite.android;
 
+import java.util.Date;
+import java.util.List;
+
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
+import org.pocketcampus.plugin.satellite.shared.Affluence;
+import org.pocketcampus.plugin.satellite.shared.Beer;
+import org.pocketcampus.plugin.satellite.shared.Event;
+import org.pocketcampus.plugin.satellite.shared.Sandwich;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
@@ -59,7 +71,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		mLayout = new StandardLayout(this);
 		setContentView(mLayout);
 
-		displayData();
+		showMainPage();
 	}
 
 	/**
@@ -69,12 +81,25 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-
 	}
 
-	public void displayData() {
+	public void showMainPage() {
 		mLayout.setText(getResources().getString(
 				R.string.satellite_nothing_to_display));
+
+		mController.getAffluence();
+	}
+
+	public void showSandwiches() {
+		mController.getSandwiches();
+	}
+
+	public void showEvents() {
+		mController.getEvents();
+	}
+
+	public void showBeers() {
+
 	}
 
 	/**
@@ -95,15 +120,14 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.satellite_main_page) {
-
+			showMainPage();
 		} else if (item.getItemId() == R.id.satellite_beers) {
-
+			showBeers();
 		} else if (item.getItemId() == R.id.satellite_events) {
-
+			showEvents();
 		} else if (item.getItemId() == R.id.satellite_sandwiches) {
-
+			showSandwiches();
 		}
-
 		return true;
 	}
 
@@ -114,17 +138,42 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 
 	@Override
 	public void beersUpdated() {
+		Log.d("SATELLITE", "Beers updated (View)");
+		List<Beer> beers = mModel.getAllBeers();
+
+		if (beers != null && !beers.isEmpty()) {
+			RichLabeledListViewElement l = new RichLabeledListViewElement(this,
+					beers, mBeerLabeler);
+
+			mLayout.addView(l);
+		}
 
 	}
 
 	@Override
 	public void sandwichesUpdated() {
+		Log.d("SATELLITE", "Sandwiches updated (View)");
+		List<Sandwich> sandwiches = mModel.getSandwiches();
 
+		if (sandwiches != null && !sandwiches.isEmpty()) {
+			mLayout.setText("");
+
+			LabeledListViewElement l = new LabeledListViewElement(this,
+					sandwiches, mSandwichLabeler);
+
+			mLayout.addView(l);
+		}
 	}
 
 	@Override
 	public void affluenceUpdated() {
+		Affluence a = mModel.getAffluence();
 
+		if (a != null) {
+			mLayout.setText(getResources().getString(
+					R.string.satellite_affluence)
+					+ " : " + a.name());
+		}
 	}
 
 	@Override
@@ -137,9 +186,80 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(),
-				getString(R.string.satellite_network_error), Toast.LENGTH_SHORT);
+		Toast toast = Toast
+				.makeText(getApplicationContext(),
+						getString(R.string.satellite_network_error),
+						Toast.LENGTH_SHORT);
 		toast.show();
 	}
+
+	/**
+	 * The labeler for a Sandwich, to tell how it has to be displayed in a
+	 * generic view.
+	 */
+	ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
+
+		@Override
+		public String getLabel(Sandwich sandwich) {
+			return sandwich.getName();
+		}
+
+	};
+
+	/**
+	 * The labeler for a Beer, to tell how it has to be displayed in a generic
+	 * view.
+	 */
+	IRichLabeler<Beer> mBeerLabeler = new IRichLabeler<Beer>() {
+
+		@Override
+		public String getTitle(Beer beer) {
+			return beer.getName();
+		}
+
+		@Override
+		public String getDescription(Beer beer) {
+			return beer.getDescription();
+		}
+
+		@Override
+		public double getValue(Beer beer) {
+			return beer.getPrice();
+		}
+
+		@Override
+		public Date getDate(Beer beer) {
+			return null;
+		}
+
+	};
+
+	/**
+	 * The labeler for an Event, to tell how it has to be displayed in a generic
+	 * view.
+	 */
+	IRichLabeler<Event> mEventLabeler = new IRichLabeler<Event>() {
+
+		@Override
+		public String getTitle(Event event) {
+			return event.getTitle();
+		}
+
+		@Override
+		public String getDescription(Event event) {
+			return event.getDescription();
+		}
+
+		@Override
+		public double getValue(Event event) {
+			return event.getPrice();
+		}
+
+		@Override
+		public Date getDate(Event event) {
+			return new Date((long) event.getDate());
+		}
+
+	};
 
 }

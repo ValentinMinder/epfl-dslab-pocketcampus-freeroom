@@ -11,6 +11,8 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
 import org.pocketcampus.plugin.satellite.shared.Event;
 import org.pocketcampus.plugin.satellite.shared.Sandwich;
 
+import android.util.Log;
+
 /**
  * The Model of the satellite plugin, used to handle the information that is
  * going to be displayed in the views
@@ -91,6 +93,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	@Override
 	public void setSandwiches(List<Sandwich> list) {
 		if (list != null && !list.isEmpty()) {
+			Log.d("SANDWICHES", "Got " + list.size() + " sandwiches from the server");
 			mSandwiches = list;
 			mListeners.sandwichesUpdated();
 		}
