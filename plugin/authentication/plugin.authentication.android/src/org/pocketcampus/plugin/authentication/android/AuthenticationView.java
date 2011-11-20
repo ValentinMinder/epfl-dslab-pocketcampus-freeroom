@@ -71,6 +71,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 
 	@Override
 	protected void handleIntent(Intent aIntent) {
+		
+		if(mController == null) // resuming?
+			return;
+		
 		if(aIntent == null)
 			return;
 		if(!Intent.ACTION_VIEW.equals(aIntent.getAction()))
