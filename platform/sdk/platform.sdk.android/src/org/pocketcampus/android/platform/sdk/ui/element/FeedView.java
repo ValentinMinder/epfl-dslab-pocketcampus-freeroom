@@ -29,8 +29,6 @@ public class FeedView extends LinearLayout {
 	private int mPosition;
 	/** The Object's title */
 	private TextView mTitleLine;
-	/** The Object's description */
-	private TextView mDescriptionLine;
 	/** The click listener on the Object's title and description */
 	private OnItemClickListener mOnElementClickLIstener;
 
@@ -62,8 +60,8 @@ public class FeedView extends LinearLayout {
 
 		this.mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_list_entry_feed_title);
-		this.mDescriptionLine = (TextView) mConvertView
-				.findViewById(R.id.sdk_list_entry_feed_description);
+		// this.mDescriptionLine = (TextView) mConvertView
+		// .findViewById(R.id.sdk_list_entry_feed_description);
 
 		/** Listener */
 		this.mOnElementClickLIstener = elementListener;
@@ -85,19 +83,19 @@ public class FeedView extends LinearLayout {
 			}
 		});
 
-		/** description line click listener */
-		mDescriptionLine.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (mOnElementClickLIstener != null) {
-					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
-				}
-			}
-		});
+		// /** description line click listener */
+		// mDescriptionLine.setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// if (mOnElementClickLIstener != null) {
+		// mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
+		// }
+		// }
+		// });
 
 		/** Title */
 		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
-		/** Description */
-		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
+		// /** Description */
+		// mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 
 		addView(mConvertView);
 	}

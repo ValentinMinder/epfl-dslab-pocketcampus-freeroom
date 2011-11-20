@@ -2,6 +2,10 @@ package org.pocketcampus.plugin.news.server.parse;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -123,6 +127,7 @@ public class RssParser extends DefaultHandler {
 				|| qName.equalsIgnoreCase("item")) {
 			this.inItem_ = false;
 			this.rssFeed_.addToItems(this.item_);
+			System.out.println("Added " + item_.getPubDateDate());
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
 			if (this.inItem_ && this.item_ != null) {
@@ -154,11 +159,32 @@ public class RssParser extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("pubDate")
 				|| qName.equalsIgnoreCase("pubDate")) {
 			if (this.inItem_ && this.item_ != null) {
-				this.item_.setPubDate(text_.toString().trim());
+				String pubDate = text_.toString().trim();
+				this.item_.setPubDate(pubDate);
+				this.item_.setPubDateDate(getPubDateDate(pubDate));
 			}
 		}
 
 		this.text_ = new StringBuilder();
+	}
+
+	public static long getPubDateDate(String pubDate) {
+
+		Date pubDateDate = null;
+		// Try to parse the following format: Thu, 24 Mar 2011 06:17:28
+		// +0100
+		// Date and time specification RFC 822
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+		try {
+			pubDateDate = sdf.parse(pubDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if (pubDateDate != null) {
+			return pubDateDate.getTime();
+		}
+		return 0;
 	}
 
 	public void characters(char[] ch, int start, int length) {

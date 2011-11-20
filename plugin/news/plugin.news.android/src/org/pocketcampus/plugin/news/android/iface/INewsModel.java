@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.news.android.iface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.plugin.news.shared.Feed;

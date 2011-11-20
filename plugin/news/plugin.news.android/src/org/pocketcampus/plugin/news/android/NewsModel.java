@@ -33,6 +33,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 	public void setNews(List<NewsItem> newsItems) {
 		if (newsItems != null) {
 			mNewsItems = newsItems;
+
 			mListeners.newsUpdated();
 		}
 	}

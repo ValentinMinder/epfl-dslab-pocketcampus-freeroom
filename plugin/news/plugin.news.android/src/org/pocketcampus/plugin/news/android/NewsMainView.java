@@ -80,7 +80,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.news_no_news));
-		mController.getFeeds();
+		mController.getNewsItems();
 	}
 
 	@Override

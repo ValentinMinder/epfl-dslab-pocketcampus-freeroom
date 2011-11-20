@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.news.server;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +71,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 				return;
 			}
 
+			if (mNewsItemsList != null) {
+				mNewsItemsList.clear();
+			}
+			if (mFeedsList != null) {
+				mFeedsList.clear();
+			}
 			// Create a parser for each feed and put the items into the list
 			RssParser parser;
 			Feed feed;
@@ -98,12 +105,28 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public List<NewsItem> getNewsItems() throws TException {
 		importFeeds();
+		Collections.sort(mNewsItemsList, newsItemComparator);
 		return mNewsItemsList;
 	}
 
+	Comparator<NewsItem> newsItemComparator = new Comparator<NewsItem>() {
+		@Override
+		public int compare(NewsItem o1, NewsItem o2) {
+			try {
+				if (o2.getPubDateDate() < o1.getPubDateDate()) {
+					return -1;
+				} else if (o2.getPubDateDate() > o1.getPubDateDate()) {
+					return 1;
+				}
+				return 0;
+			} catch (NullPointerException e) {
+				return 0;
+			}
+		}
+	};
+
 	/**
-	 * Update the Feeds from the corresponding list of feeds and return
-	 * them.
+	 * Update the Feeds from the corresponding list of feeds and return them.
 	 */
 	@Override
 	public List<Feed> getFeeds() throws TException {
