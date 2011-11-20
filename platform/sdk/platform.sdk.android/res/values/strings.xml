@@ -2,8 +2,19 @@
 
 <resources>
 
+    <!-- General -->
 	<string name="app_name">PocketCampus</string>
 	
+	<!-- Day of week -->
+	<string name="sdk_day_monday">Monday</string>
+	<string name="sdk_day_tuesday">Tuesday</string>
+	<string name="sdk_day_wednesday">Wednesday</string>
+	<string name="sdk_day_thursday">Thursday</string>
+	<string name="sdk_day_friday">Friday</string>
+	<string name="sdk_day_saturday">Saturday</string>
+	<string name="sdk_day_sunday">Sunday</string>
+	    
+	<!-- Votes -->
 	<string name="nb_votes_singular">vote</string>
 	<string name="nb_votes_plural">votes</string>
 	
