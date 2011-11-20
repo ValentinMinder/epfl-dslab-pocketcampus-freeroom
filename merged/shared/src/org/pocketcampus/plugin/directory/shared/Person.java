@@ -629,27 +629,10 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     return false;
   }
 
+  //MODIFIED METHOD - COMPARES ONLY THE SCIPER
   public boolean equals(Person that) {
     if (that == null)
       return false;
-
-    boolean this_present_firstName = true && this.isSetFirstName();
-    boolean that_present_firstName = true && that.isSetFirstName();
-    if (this_present_firstName || that_present_firstName) {
-      if (!(this_present_firstName && that_present_firstName))
-        return false;
-      if (!this.firstName.equals(that.firstName))
-        return false;
-    }
-
-    boolean this_present_lastName = true && this.isSetLastName();
-    boolean that_present_lastName = true && that.isSetLastName();
-    if (this_present_lastName || that_present_lastName) {
-      if (!(this_present_lastName && that_present_lastName))
-        return false;
-      if (!this.lastName.equals(that.lastName))
-        return false;
-    }
 
     boolean this_present_sciper = true && this.isSetSciper();
     boolean that_present_sciper = true && that.isSetSciper();
@@ -657,69 +640,6 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       if (!(this_present_sciper && that_present_sciper))
         return false;
       if (!this.sciper.equals(that.sciper))
-        return false;
-    }
-
-    boolean this_present_mail = true && this.isSetMail();
-    boolean that_present_mail = true && that.isSetMail();
-    if (this_present_mail || that_present_mail) {
-      if (!(this_present_mail && that_present_mail))
-        return false;
-      if (!this.mail.equals(that.mail))
-        return false;
-    }
-
-    boolean this_present_web = true && this.isSetWeb();
-    boolean that_present_web = true && that.isSetWeb();
-    if (this_present_web || that_present_web) {
-      if (!(this_present_web && that_present_web))
-        return false;
-      if (!this.web.equals(that.web))
-        return false;
-    }
-
-    boolean this_present_phone_number = true && this.isSetPhone_number();
-    boolean that_present_phone_number = true && that.isSetPhone_number();
-    if (this_present_phone_number || that_present_phone_number) {
-      if (!(this_present_phone_number && that_present_phone_number))
-        return false;
-      if (!this.phone_number.equals(that.phone_number))
-        return false;
-    }
-
-    boolean this_present_office = true && this.isSetOffice();
-    boolean that_present_office = true && that.isSetOffice();
-    if (this_present_office || that_present_office) {
-      if (!(this_present_office && that_present_office))
-        return false;
-      if (!this.office.equals(that.office))
-        return false;
-    }
-
-    boolean this_present_gaspar = true && this.isSetGaspar();
-    boolean that_present_gaspar = true && that.isSetGaspar();
-    if (this_present_gaspar || that_present_gaspar) {
-      if (!(this_present_gaspar && that_present_gaspar))
-        return false;
-      if (!this.gaspar.equals(that.gaspar))
-        return false;
-    }
-
-    boolean this_present_ou = true && this.isSetOu();
-    boolean that_present_ou = true && that.isSetOu();
-    if (this_present_ou || that_present_ou) {
-      if (!(this_present_ou && that_present_ou))
-        return false;
-      if (!this.ou.equals(that.ou))
-        return false;
-    }
-
-    boolean this_present_picture_url = true && this.isSetPicture_url();
-    boolean that_present_picture_url = true && that.isSetPicture_url();
-    if (this_present_picture_url || that_present_picture_url) {
-      if (!(this_present_picture_url && that_present_picture_url))
-        return false;
-      if (!this.picture_url.equals(that.picture_url))
         return false;
     }
 
@@ -783,6 +703,7 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     return builder.toHashCode();
   }
 
+  //MODIFIED METHOD SO THE LAST NAME HAS MORE IMPORTANCE
   public int compareTo(Person other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
@@ -791,16 +712,6 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     int lastComparison = 0;
     Person typedOther = (Person)other;
 
-    lastComparison = Boolean.valueOf(isSetFirstName()).compareTo(typedOther.isSetFirstName());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFirstName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.firstName, typedOther.firstName);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetLastName()).compareTo(typedOther.isSetLastName());
     if (lastComparison != 0) {
       return lastComparison;
@@ -811,6 +722,18 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
+    
+    lastComparison = Boolean.valueOf(isSetFirstName()).compareTo(typedOther.isSetFirstName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFirstName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.firstName, typedOther.firstName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    
     lastComparison = Boolean.valueOf(isSetSciper()).compareTo(typedOther.isSetSciper());
     if (lastComparison != 0) {
       return lastComparison;

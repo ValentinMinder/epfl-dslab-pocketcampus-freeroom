@@ -16,13 +16,23 @@
 		android:layout_height="wrap_content"
 		>
 		
+		<org.pocketcampus.android.platform.sdk.utils.LoaderImageView
+			android:id="@+id/directory_person_details_dialog_photo"
+			android:layout_width="85dip"
+			android:layout_height="90dip"
+			android:paddingRight="5dip"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+
+			></org.pocketcampus.android.platform.sdk.utils.LoaderImageView>
+		
 		<TextView
 			android:id="@+id/directory_person_details_dialog_fname"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
 			android:layout_alignParentTop="true"
 			android:textStyle="bold"
-			android:layout_alignParentLeft="true"></TextView>
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
 
 		<TextView
 			android:id="@+id/directory_person_details_dialog_lname"
@@ -38,14 +48,14 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/directory_person_details_dialog_fname" 
-			android:layout_alignParentLeft="true"></TextView>
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
 		
 		<TextView
 			android:id="@+id/directory_person_details_dialog_phone_number"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/directory_person_details_dialog_mail" 
-			android:layout_alignParentLeft="true"></TextView>
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
 		
 		<TextView 
 			android:layout_height="wrap_content" 
@@ -53,7 +63,7 @@
 			android:id="@+id/directory_person_details_dialog_office" 
 			android:visibility="gone"
 			android:layout_below="@+id/directory_person_details_dialog_phone_number" 
-			android:layout_alignParentLeft="true"></TextView>
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
 		
 		<TextView 
 			android:layout_height="wrap_content" 
@@ -61,19 +71,11 @@
 			android:id="@+id/directory_person_details_dialog_web" 
 			android:visibility="gone"
 			android:layout_below="@+id/directory_person_details_dialog_office" 
-			android:layout_alignParentLeft="true"></TextView>
+			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
 			
 		
 		
-		<org.pocketcampus.android.platform.sdk.utils.LoaderImageView
-			android:id="@+id/directory_person_details_dialog_photo"
-			android:layout_width="85dip"
-			android:layout_height="90dip"
-			android:paddingRight="5dip"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentRight="true"
-
-			></org.pocketcampus.android.platform.sdk.utils.LoaderImageView>
+		
 		
 		<TextView 
 			android:layout_height="wrap_content" 
@@ -81,7 +83,7 @@
 			android:id="@+id/directory_person_details_dialog_ou" 
 			android:visibility="gone"
 			android:layout_alignParentRight="true"
-			android:layout_below="@+id/directory_person_details_dialog_photo"></TextView>
+			android:layout_alignParentTop="true"></TextView>
 			
 	</RelativeLayout>
 	

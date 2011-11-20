@@ -30,27 +30,49 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+/**
+ * The Suggestions View of the Food plugin
+ * 
+ * Displayed a list of choices the user can say he likes or dislikes, for the
+ * meals to be filtered
+ * 
+ * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Oriane (oriane.rodriguez@epfl.ch)
+ * 
+ */
 public class FoodSuggestionsView extends PluginView {
+	/** The controller that does the interface between model and view */
 	private FoodController mController;
 
 	/* GUI */
+	/** A simple full screen layout */
 	private StandardLayout mLayout;
+
+	/** The list to be displayed in the layout */
 	private CheckBoxesListViewElement mListView;
+
+	/** The button to validate the choices */
 	private Button computeButton;
 
-	/*
-	 * The Meals sent by the MainView, modififed here and sent back filtered
-	 * with the tags
+	/**
+	 * The Meals sent by the MainView, modified here and sent back filtered with
+	 * the tags
 	 */
 	private Collection<Meal> mMeals;
 
-	/* To compute Suggestions based on tags */
+	/** To compute Suggestions based on tags */
 	private MealTagger mTagger;
 
+	/** The list of available tags */
 	private List<MealTag> mTagsList;
+
+	/** The list of string tags to display in the list */
 	private List<String> mTagsToDisplay;
 
+	/** The list of things the user says he likes */
 	private List<MealTag> mLikes;
+
+	/** The list of things the user says he doesn't like */
 	private List<MealTag> mDislikes;
 
 	@Override
@@ -58,6 +80,9 @@ public class FoodSuggestionsView extends PluginView {
 		return FoodController.class;
 	}
 
+	/**
+	 * Initializes the view for the suggestions
+	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
@@ -156,7 +181,9 @@ public class FoodSuggestionsView extends PluginView {
 		setContentView(mLayout);
 	}
 
-	/* Sets the clickLIstener of the listView */
+	/**
+	 * Sets the clickListener of the ListView
+	 */
 	private void setOnListViewClickListener() {
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -187,7 +214,9 @@ public class FoodSuggestionsView extends PluginView {
 
 	}
 
-	/* Sets the clickLsitener on the Compute Button */
+	/**
+	 * Sets the clickListener on the Compute Button
+	 */
 	private void setOnComputeButtonClickListener() {
 
 		computeButton.setOnClickListener(new OnClickListener() {
@@ -200,7 +229,17 @@ public class FoodSuggestionsView extends PluginView {
 
 	}
 
-	/* Only keep Meals satisfying what the user checked */
+	/**
+	 * Compute the meals satisfying what the user checked
+	 * 
+	 * @param meals
+	 *            the list of all meals
+	 * @param tag
+	 *            one tag
+	 * @param tagger
+	 *            the parser for the meals according to one tag
+	 * @return
+	 */
 	private Collection<Meal> computeSuggestions(Collection<Meal> meals,
 			MealTag tag, MealTagger tagger) {
 
@@ -213,7 +252,9 @@ public class FoodSuggestionsView extends PluginView {
 		return returnedMeals;
 	}
 
-	/* Finalize and send back the Meals to the MainView */
+	/**
+	 * Finalize and send back the Meals to the MainView
+	 */
 	private void finalizeSuggestions() {
 
 		mTagger = new MealTagger();
@@ -250,7 +291,9 @@ public class FoodSuggestionsView extends PluginView {
 		finish();
 	}
 
-	/* Handle extras from the MainView */
+	/**
+	 * Handle extras from the MainView
+	 */
 	private void handleExtras() {
 		mMeals = new Vector<Meal>();
 
@@ -269,7 +312,11 @@ public class FoodSuggestionsView extends PluginView {
 		}
 	}
 
-	/* To display the right language and not english (as it is in the enum) */
+	/**
+	 * To display the right language and not english (as it is in the enum)
+	 * 
+	 * @return the list of tags depending on the language the phone is setup in
+	 */
 	private ArrayList<String> languageCompatible() {
 		ArrayList<String> list = new ArrayList<String>();
 
@@ -280,7 +327,13 @@ public class FoodSuggestionsView extends PluginView {
 		return list;
 	}
 
-	/* From MealTag to String */
+	/**
+	 * Convert from MealTag to String
+	 * 
+	 * @param tag
+	 *            the tag to convert
+	 * @return the corresponding string
+	 */
 	private String write(MealTag tag) {
 		Resources r = getApplicationContext().getResources();
 

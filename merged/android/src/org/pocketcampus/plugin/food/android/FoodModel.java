@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -18,31 +19,43 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+/**
+ * The Model of the food plugin, used to handle the information that is going to
+ * be displayed in the views
+ * 
+ * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Oriane (oriane.rodriguez@epfl.ch)
+ * 
+ */
 public class FoodModel extends PluginModel implements IFoodModel {
+	/** The listeners for the state of the view */
 	IFoodMainView mListeners = (IFoodMainView) getListeners();
+	/** The list of restaurants to display */
 	private List<Restaurant> mRestaurantsList;
+	/** The list of all meals for a day */
 	private List<Meal> mMeals;
+	/** The list of all sandwiches */
 	private List<Sandwich> mSandwiches;
+	/** Whether the user has already used his ability to vote */
 	private boolean mHasVoted;
-	
-	// private HashMap<Meal, Rating> mCampusMeals;
+
+	/** Object used to access and modify preferences on the phone */
+	private SharedPreferences mRestoPrefs;
+	/** The name of the preferences file on the phone */
+	private static final String RESTO_PREFS_NAME = "RestoPrefs";
+
+	/** Class used to sort the menus by restaurants/ratings */
 	private MenuSorter mSorter;
 
+	/**
+	 * Returns the interface of the linked view
+	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return IFoodMainView.class;
-	}
-
-	/**
-	 * Sets the list of all Restaurants proposing menus
-	 * */
-	@Override
-	public void setRestaurantsList(List<Restaurant> list) {
-		if (mListeners != null) {
-			this.mRestaurantsList = list;
-			// Notifiy the view
-			this.mListeners.restaurantsUpdated();
-		}
 	}
 
 	/**
@@ -53,6 +66,35 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		return this.mRestaurantsList;
 	}
 
+	/**
+	 * Sets the list of all Restaurants proposing menus
+	 * 
+	 * @param list
+	 *            the new list of restaurants
+	 */
+	@Override
+	public void setRestaurantsList(List<Restaurant> list) {
+		if (mListeners != null) {
+			this.mRestaurantsList = list;
+			// Notifiy the view
+			this.mListeners.restaurantsUpdated();
+		}
+	}
+
+	/**
+	 * Returns the list of all Meals
+	 */
+	@Override
+	public List<Meal> getMeals() {
+		return this.mMeals;
+	}
+
+	/**
+	 * Sets the list of all meals
+	 * 
+	 * @param list
+	 *            the new list of meals
+	 */
 	@Override
 	public void setMeals(List<Meal> list) {
 		this.mMeals = list;
@@ -61,22 +103,26 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Returns the list of Meals
-	 */
-	@Override
-	public List<Meal> getMeals() {
-		return this.mMeals;
-	}
-
-	/**
 	 * Returns the list of Meals sorted by Restaurant
+	 * 
+	 * @param ctx
+	 *            the context of the calling view, to get the preferences
 	 */
 	@Override
-	public HashMap<String, Vector<Meal>> getMealsByRestaurants(){
-		if(mSorter == null){
+	public HashMap<String, Vector<Meal>> getMealsByRestaurants(Context ctx) {
+		mRestoPrefs = ctx.getSharedPreferences(RESTO_PREFS_NAME, 0);
+
+		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
-		return mSorter.sortByRestaurant(mMeals);
+
+		HashMap<String, Vector<Meal>> allMeals = mSorter
+				.sortByRestaurant(mMeals);
+		if (mRestoPrefs.getAll().isEmpty()) {
+			return allMeals;
+		} else {
+			return filterPreferredRestaurants(allMeals);
+		}
 	}
 
 	/**
@@ -84,29 +130,15 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	 */
 	@Override
 	public List<Meal> getMealsByRatings() {
-		if(mSorter == null) {
+		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
 		return mSorter.sortByRatings(mMeals);
 	}
 
 	/**
-	 * Returns the list of Sandwiches sorted by Restaurant
-	 */
-	@Override
-	public HashMap<String, Vector<Sandwich>> getSandwichesByRestaurants() {
-		if (mSorter == null) {
-			mSorter = new MenuSorter();
-		}
-		if(mSandwiches == null) {
-			mSandwiches = new ArrayList<Sandwich>();
-		}
-		return mSorter.sortByCafeterias(mSandwiches);
-	}
-	
-	/**
 	 * Returns the list of all meal tags
-	 * */
+	 */
 	@Override
 	public List<MealTag> getMealTags() {
 		List<MealTag> tags = new ArrayList<MealTag>();
@@ -120,37 +152,69 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * set the Rating for a particular Meal and notify the listeners
-	 * */
-	@Override
-	public void setRating(SubmitStatus status) {
-		//Notify the view(s)
-		mListeners.ratingsUpdated(status);
+	 * Gets the preferred restaurants as defined by the user
+	 * 
+	 * @param mealMap
+	 *            the list of meals to filter
+	 */
+	public HashMap<String, Vector<Meal>> filterPreferredRestaurants(
+			HashMap<String, Vector<Meal>> mealMap) {
+		Set<String> set = mealMap.keySet();
+		HashMap<String, Vector<Meal>> toDisplay = new HashMap<String, Vector<Meal>>();
+
+		for (String r : set) {
+			if (mRestoPrefs.getBoolean(r, false)) {
+				toDisplay.put(r, mealMap.get(r));
+			}
+		}
+
+		return toDisplay;
 	}
 
 	/**
-	 * Update the list of Sandwiches and update the View
+	 * Returns the list of Sandwiches sorted by Restaurant
+	 */
+	@Override
+	public HashMap<String, Vector<Sandwich>> getSandwiches() {
+		if (mSorter == null) {
+			mSorter = new MenuSorter();
+		}
+		if (mSandwiches == null) {
+			mSandwiches = new ArrayList<Sandwich>();
+		}
+		return mSorter.sortByCafeterias(mSandwiches);
+	}
+
+	/**
+	 * Update the list of Sandwiches and notify the View
+	 * 
+	 * @param list
+	 *            the new list of sandwiches
 	 */
 	@Override
 	public void setSandwiches(List<Sandwich> list) {
 		mSandwiches = list;
-		//Notify the view(s)
+		// Notify the view(s)
 		mListeners.sandwichesUpdated();
 	}
 
+	/**
+	 * Set the <code>Rating</code> for a particular <code>Meal</code> and notify
+	 * the listeners
+	 */
 	@Override
-	public void setHasVoted(boolean hasVoted) {
-		this.mHasVoted = hasVoted;
+	public void setRating(SubmitStatus status) {
+		// Notify the view(s)
+		mListeners.ratingSubmitted(status);
 	}
 
-	@Override
-	public boolean getHasVoted() {
-		return this.mHasVoted;
-	}
-
+	/**
+	 * Set the <code>Ratings</code> for all meals <code>Meal</code> and notify
+	 * the listeners
+	 */
 	@Override
 	public void setRatings(Map<Integer, Rating> result) {
-		if(mMeals != null && !mMeals.isEmpty()) {
+		if (mMeals != null && !mMeals.isEmpty()) {
 			for (Meal m : mMeals) {
 				m.setRating(result.get(m.hashCode()));
 			}
@@ -158,4 +222,23 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		mListeners.ratingsUpdated();
 	}
 
+	/**
+	 * Returns whether the user has already voted or not
+	 */
+	@Override
+	public boolean getHasVoted() {
+		return this.mHasVoted;
+	}
+
+	/**
+	 * Changes the value for the current state of the hasVoted boolean, which
+	 * represents whether the user has voted yet
+	 */
+	@Override
+	public void setHasVoted(boolean hasVoted) {
+		this.mHasVoted = hasVoted;
+	}
+
+	public void notifyMealsNetworkError() {
+	}
 }

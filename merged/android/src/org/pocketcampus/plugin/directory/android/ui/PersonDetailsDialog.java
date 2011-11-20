@@ -92,9 +92,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		phone_.setVisibility(visibility(p.isSetPhone_number()));
 		phone_.setText(p.phone_number);
 		
-		web_ = (TextView) findViewById(R.id.directory_person_details_dialog_web);
-		web_.setVisibility(visibility(p.isSetWeb()));
-		web_.setText(p.web);
+//		web_ = (TextView) findViewById(R.id.directory_person_details_dialog_web);
+//		web_.setVisibility(visibility(p.isSetWeb()));
+//		web_.setText(p.web);
 		
 		ou_ = (TextView) findViewById(R.id.directory_person_details_dialog_ou);
 		ou_.setVisibility(visibility(p.isSetOu()));

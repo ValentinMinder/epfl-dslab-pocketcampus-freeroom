@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.food.android;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.R;
@@ -28,7 +27,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,39 +36,49 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
+/**
+ * The Main View of the Food plugin, first displayed when accessing Food.
+ * 
+ * Displays menus by restaurants, preferences, suggestions and ratings, as well
+ * as sandwiches
+ * 
+ * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Oriane (oriane.rodriguez@epfl.ch)
+ * 
+ */
 public class FoodMainView extends PluginView implements IFoodMainView {
-	/* Activity */
+	/** Main Activity */
 	private Activity mActivity;
 
 	/* MVC */
+	/** The controller that does the interface between model and view */
 	private FoodController mController;
+	/** The corresponding model */
 	private IFoodModel mModel;
 
 	/* Layout */
+	/** A simple full screen layout */
 	private StandardTitledLayout mLayout;
+	/** The main list with menus and sandwiches */
 	private RatableExpandableListViewElement mList;
 
 	/* Constants */
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
 	/* Listeners */
+	/** Listener for when you click on a line in the list */
 	private OnItemClickListener mOnLineClickListener;
+	/** Listener for when you click on a rating in the list */
 	private OnItemClickListener mOnRatingClickListener;
 
-	/* Preferences */
-	private SharedPreferences mRestoPrefs;
-	private static final String RESTO_PREFS_NAME = "RestoPrefs";
+	/**
+	 * Keeps in memory whether we are coming back from choosing restaurant
+	 * preferences
+	 */
 	private boolean backFromPreferences;
 
 	/**
-	 * Defines what the main controller is for this view. This is optional, some
-	 * view may not need a controller (see for example the dashboard).
-	 * 
-	 * This is only a shortcut for what is done in
-	 * <code>getOtherController()</code> below: if you know you'll need a
-	 * controller before doing anything else in this view, you can define it as
-	 * you're main controller so you know it'll be ready as soon as
-	 * <code>onDisplay()</code> is called.
+	 * Defines what the main controller is for this view.
 	 */
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -109,6 +117,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		displayData();
 	}
 
+	/**
+	 * Called when this view is accessed after already having been initialized
+	 * before
+	 */
 	@Override
 	protected void onRestart() {
 		super.onRestart();
@@ -119,11 +131,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Displays the data For now testing with Restaurants
+	 * Initiates request for the restaurant, meal and sandwich data
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.food_no_menus));
-		mController.getRestaurantsList();
+		mController.getRestaurants();
 		mController.getMeals();
 		mController.getSandwiches();
 	}
@@ -137,8 +149,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Main Food Options menu contains access to Sandwiches, Suggestions and
-	 * Settings
+	 * Main Food Options menu contains access to Meals by restaurants, ratings,
+	 * Sandwiches, Suggestions and Settings
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,6 +159,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		return true;
 	}
 
+	/**
+	 * Decides what happens when the options menu is opened and an option is
+	 * chosen (what view to display)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.food_by_resto) {
@@ -164,21 +180,25 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					FoodSuggestionsView.class);
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
-		} /*else if (item.getItemId() == R.id.food_by_settings) {
-			backFromPreferences = true;
-			Intent settings = new Intent(getApplicationContext(),
-					FoodPreferencesView.class);
-			startActivity(settings);
-		 }*/
-		
-
+		} else if (item.getItemId() == R.id.food_by_settings) {
+			backFromPreferences = true; Intent settings = new
+					Intent(getApplicationContext(), FoodPreferencesView.class);
+			startActivity(settings); 
+		}
 		return true;
 	}
 
+	/**
+	 * Called when the list of restaurants has been updated
+	 */
 	public void restaurantsUpdated() {
 		Log.d("RESTAURANT", "Restaurants updated");
 	}
 
+	/**
+	 * Called when the list of menus has been updated Displays the view by
+	 * restaurants.
+	 */
 	@Override
 	public void menusUpdated() {
 		showMenusByRestaurants();
@@ -211,6 +231,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		dialog.show();
 	}
 
+	/**
+	 * Called when the ratings have been updated Refreshes the view with the new
+	 * ratings
+	 */
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
@@ -238,18 +262,25 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		dialog.show();
 	}
 
+	/**
+	 * Called after a vote has been cast by a user to check whether it was
+	 * successful
+	 * 
+	 * @param status
+	 *            what the server returned upon submitting the rating
+	 */
 	@Override
-	public void ratingsUpdated(SubmitStatus status) {
+	public void ratingSubmitted(SubmitStatus status) {
 		Log.d("RATING", "One Rating updated");
-		
+
 		// Toast with the status
 		if (status.equals(SubmitStatus.VALID)) {
 			Log.d("RATING", "Valid");
 			Toast.makeText(this, R.string.food_rating_valid, Toast.LENGTH_SHORT)
-					.show();
-			//Update the Ratings
+			.show();
+			// Update the Ratings
 			mController.getRatings();
-			
+
 		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
 			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted,
@@ -261,22 +292,31 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		} else if (status.equals(SubmitStatus.ERROR)) {
 			Log.d("RATING", "Error");
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
-					.show();
+			.show();
 		}
 	}
 
+	/**
+	 * Called when the sandwiches list is updated
+	 */
 	@Override
 	public void sandwichesUpdated() {
 		Log.d("SANDWICHES", "Sandwiches updated");
 	}
 
+	/**
+	 * Displays a toast when an error happens upon contacting the server
+	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
-				Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(),
+				getString(R.string.food_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
+	/**
+	 * Updates the view with what has to be currently displayed
+	 */
 	public void updateView() {
 		// mList.getAdapter().removeSections();
 		// switch (currentDisplayType_) {
@@ -297,9 +337,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Set the listeners for when you click on a view.
+	 * Sets the listeners for when you click on a view, when you are displaying
+	 * menus by restaurants.
 	 * 
 	 * @param mealHashMap
+	 *            the <code>HashMap</code> containing the daily menus
 	 */
 	public void setHashMapOnClickListeners(
 			final HashMap<String, Vector<Meal>> mealHashMap) {
@@ -330,9 +372,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Set the listeners for when you click on a view.
+	 * Set the listeners for when you click on a view, when you are displaying a
+	 * simple list of menus.
 	 * 
-	 * @param mealHashMap
+	 * @param mealList
+	 *            the corresponding list of menus
 	 */
 	public void setListOnClickListeners(final List<Meal> mealList,
 			RatableListViewElement l) {
@@ -365,11 +409,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows menus sorted by Restaurant
+	 * Shows menus sorted by Restaurants
 	 */
 	public void showMenusByRestaurants() {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
-				.getMealsByRestaurants();
+				.getMealsByRestaurants(this);
 		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
 
 		/**
@@ -380,24 +424,21 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		if (!mealHashMap.isEmpty()) {
 
 			// Filtering restaurant that the user doesn't want to display
-			mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
-
-			if (mRestoPrefs.getAll().isEmpty()) {
-				mList = new RatableExpandableListViewElement(this, mealHashMap,
-						mMealLabeler, mMealsViewConstructor);
-			} else {
-				mList = new RatableExpandableListViewElement(this,
-						preferedRestaurants(mealHashMap), mMealLabeler,
-						mMealsViewConstructor);
-			}
+			mList = new RatableExpandableListViewElement(this, mealHashMap,
+					mMealLabeler, mMealsViewConstructor);
 
 			setHashMapOnClickListeners(mealHashMap);
 
+			// Hide the text that says the list is empty
 			mLayout.hideText();
+			// Set the title to Restaurants
 			mLayout.setTitle(this.getString(R.string.food_by_restaurants));
+			// Add the list containing the meals
 			mLayout.addFillerView(mList);
 		} else {
+			// Set the centered text to empty menus
 			mLayout.setText(getString(R.string.food_no_menus));
+			// Hide the title as there is no content
 			mLayout.hideTitle();
 		}
 	}
@@ -411,11 +452,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		if (mealsByRatings != null && !mealsByRatings.isEmpty()) {
 			mLayout.removeFillerView();
+
+			// Create a new list by ratings
 			RatableListViewElement l = new RatableListViewElement(this,
 					mealsByRatings, mMealLabeler);
 
 			setListOnClickListeners(mealsByRatings, l);
 
+			// Hide the text that says the list is empty
+			mLayout.hideText();
 			mLayout.setTitle(getString(R.string.food_by_ratings));
 			mLayout.addFillerView(l);
 		} else {
@@ -426,6 +471,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	/**
 	 * Shows menus sorted by Suggestions
+	 * 
+	 * @param mealsBySuggestions
+	 *            the list coming from the suggestions activity that has to be
+	 *            displayed
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
 		Log.d("RATING", "Size of meals by suggestions list : "
@@ -438,6 +487,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			setListOnClickListeners(mealsBySuggestions, l);
 
+			// Hide the text that says the list is empty
+			mLayout.hideText();
 			mLayout.setTitle(getString(R.string.food_by_suggestions));
 			mLayout.addFillerView(l);
 		} else {
@@ -447,11 +498,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows the sandwiches
+	 * Shows the list of Sandwiches by Restaurants
 	 */
 	public void showSandwiches() {
 		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel
-				.getSandwichesByRestaurants();
+				.getSandwiches();
 		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
 
 		mLayout.removeFillerView();
@@ -469,22 +520,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	}
 
-	private HashMap<String, Vector<Meal>> preferedRestaurants(
-			HashMap<String, Vector<Meal>> map) {
-		Set<String> set = map.keySet();
-		HashMap<String, Vector<Meal>> toDisplay = new HashMap<String, Vector<Meal>>();
-
-		for (String r : set) {
-			if (mRestoPrefs.getBoolean(r, false)) {
-				toDisplay.put(r, map.get(r));
-			}
-		}
-
-		return toDisplay;
-	}
-
 	/**
-	 * Called when one of the Menu Dialog button is clicked.
+	 * Called when one of the Menu Dialog buttons is clicked.
 	 * 
 	 */
 	private class MenuDialogListener implements DialogInterface.OnClickListener {
@@ -527,11 +564,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Called when one of the Rating Dialog button is clicked.
+	 * Called when one of the Rating Dialog buttons is clicked.
 	 * 
 	 */
 	private class RatingDialogListener implements
-			DialogInterface.OnClickListener {
+	DialogInterface.OnClickListener {
 		private RatingDialog.Builder builder;
 		private Meal meal;
 		private float rating;
@@ -567,6 +604,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	}
 
+	/**
+	 * Called when coming back from another activity that was called with an
+	 * intent and from which we are expecting a result
+	 * 
+	 * @param requestCode
+	 *            what request this result corresponds to
+	 * @param resultCode
+	 *            the status of the result
+	 * @param data
+	 *            the information gotten from the activity
+	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -580,7 +628,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 					@SuppressWarnings("unchecked")
 					ArrayList<Meal> list = (ArrayList<Meal>) extras
-							.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 					Log.d("SUGGESTIONS", "Meals in return : " + list.size());
 
 					showMenusBySuggestions(list);
@@ -595,34 +643,77 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	}
 
+	/**
+	 * The labeler for a meal, to tell how it has to be displayed in a generic
+	 * view.
+	 */
 	IRatableViewLabeler<Meal> mMealLabeler = new IRatableViewLabeler<Meal>() {
 
+		/**
+		 * Returns the title of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return
+		 */
 		@Override
 		public String getTitle(Meal meal) {
 			return meal.getName();
 		}
 
+		/**
+		 * Returns the description of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return
+		 */
 		@Override
 		public String getDescription(Meal meal) {
 			return meal.getMealDescription();
 		}
 
+		/**
+		 * Returns the Rating of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return
+		 */
 		@Override
 		public float getRating(Meal meal) {
 			return (float) meal.getRating().getRatingValue();
 		}
 
+		/**
+		 * Returns the Number Of Votes for a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return
+		 */
 		@Override
 		public int getNbVotes(Meal meal) {
 			return meal.getRating().getNbVotes();
 		}
 
+		/**
+		 * Returns the name of the Restaurant the meal is available at.
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return
+		 */
 		@Override
-		public String getRestaurantName(Meal meal) {
+		public String getPlaceName(Meal meal) {
 			return meal.getRestaurant().getName();
 		}
 	};
 
+	/**
+	 * The labeler for a Sandwich, to tell how it has to be displayed in a
+	 * generic view.
+	 */
 	IRatableViewLabeler<Sandwich> mSandwichLabeler = new IRatableViewLabeler<Sandwich>() {
 
 		@Override
@@ -646,11 +737,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 
 		@Override
-		public String getRestaurantName(Sandwich sandwich) {
+		public String getPlaceName(Sandwich sandwich) {
 			return sandwich.getRestaurant().getName();
 		}
 	};
 
+	/**
+	 * The constructor for a Meal View to be displayed in the list
+	 */
 	IRatableViewConstructor mMealsViewConstructor = new IRatableViewConstructor() {
 
 		@Override
@@ -662,6 +756,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	};
 
+	/**
+	 * The constructor for a Sandwich View to be displayed in the list
+	 */
 	IRatableViewConstructor mSandwichViewConstructor = new IRatableViewConstructor() {
 
 		@Override
@@ -672,5 +769,4 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					null, position);
 		}
 	};
-
 }

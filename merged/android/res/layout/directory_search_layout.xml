@@ -21,6 +21,8 @@ android:id="@+id/relativeLayout1" android:layout_height="match_parent">
     android:layout_marginLeft="10px" 
     android:layout_marginRight="10px" 
     android:layout_marginBottom="10px"
+    android:singleLine="true"
+    android:imeActionLabel="Search"
     android:imeOptions="actionSearch"></EditText>
     
     <Button 

@@ -46,7 +46,7 @@
 <!-- /PLUGIN -->
 
 <!-- PLUGIN -->
-<activity android:name="org.pocketcampus.plugin.bikes.android.BikesMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Bikes">
+<activity android:name="org.pocketcampus.plugin.bikes.android.BikesMainView" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Bikes" android:icon="@drawable/bike_icon">
   <intent-filter>
     <action android:name="android.intent.action.MAIN"/>
     <category android:name="android.intent.category.LAUNCHER"/>
@@ -108,6 +108,69 @@
 <activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <activity android:name="org.pocketcampus.plugin.food.android.FoodSettings" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <service android:name="org.pocketcampus.plugin.food.android.FoodController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:icon="@drawable/news_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="News" android:name="org.pocketcampus.plugin.news.android.NewsMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<activity android:name="org.pocketcampus.plugin.news.android.NewsPreferences" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<service android:name="org.pocketcampus.plugin.news.android.NewsController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:icon="@drawable/satellite_normal_icon" xmlns:android="http://schemas.android.com/apk/res/android" android:label="Satellite" android:name="org.pocketcampus.plugin.satellite.android.SatelliteMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.satellite.android.SatelliteController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="@string/takeoutreceiver_plugin_name" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/takeoutreceiver_icon" android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverMainView">
+  <intent-filter>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.takeoutreceiver.android.TakeoutReceiverController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<activity android:label="Test" xmlns:android="http://schemas.android.com/apk/res/android" android:name="org.pocketcampus.plugin.test.android.TestOtherView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.test.android.TestController" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<!-- /PLUGIN -->
+
+<!-- PLUGIN -->
+<activity android:label="Transport" xmlns:android="http://schemas.android.com/apk/res/android" android:icon="@drawable/transport_icon" android:name="org.pocketcampus.plugin.transport.android.TransportMainView">
+  <intent-filter>
+    <action android:name="android.intent.action.MAIN"/>
+    <category android:name="android.intent.category.LAUNCHER"/>
+    <action android:name="pocketcampus.intent.action.PLUGIN_MAIN"/>
+  </intent-filter>
+</activity>
+<service android:name="org.pocketcampus.plugin.transport.android.TransportController" xmlns:android="http://schemas.android.com/apk/res/android"/>
 <!-- /PLUGIN -->
 				
 		<service android:name=".C2DMReceiver" />

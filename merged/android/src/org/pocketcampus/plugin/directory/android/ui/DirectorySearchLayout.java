@@ -46,6 +46,7 @@ public class DirectorySearchLayout extends RelativeLayout {
 		
 		//mEditFName = (EditText)findViewById(R.id.directory_fname);
 		mEditName = (EditText)findViewById(R.id.directory_lname);
+		mEditName.setHint("");
 		
 	}
 	

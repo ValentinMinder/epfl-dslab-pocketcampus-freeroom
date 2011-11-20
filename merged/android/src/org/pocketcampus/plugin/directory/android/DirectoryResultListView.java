@@ -178,7 +178,12 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 			mMainLayout.setText("No result found");
 		else{
 			mMainLayout.setText("");
-			Toast.makeText(this, mList.getAdapter().getCount() + "result(s) found", Toast.LENGTH_LONG).show();
+			int count = mList.getAdapter().getCount() ;
+		
+			if(count > 1)
+				Toast.makeText(this,count + " results found", Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(this,count + " result found", Toast.LENGTH_LONG).show();
 		}
 		
 	}

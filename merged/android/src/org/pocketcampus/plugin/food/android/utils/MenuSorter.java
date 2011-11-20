@@ -1,10 +1,5 @@
 package org.pocketcampus.plugin.food.android.utils;
 
-/**
- * Sorts menus
- * 
- */
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,16 +11,28 @@ import java.util.Vector;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 
+/**
+ * 
+ * Used to sort the Meals according to their Restaurants or Ratings and sort
+ * Sandwiches according to their Cafeterias
+ * 
+ * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Oriane (oriane.rodriguez@epfl.ch)
+ * 
+ */
 public class MenuSorter {
 
+	/**
+	 * Empty Constructor
+	 */
 	public MenuSorter() {
 	}
 
 	/**
-	 * sorts the meals by Rating (best rates first)
+	 * Sorts the Meals by Rating (best rates first)
 	 * 
-	 * @param the
-	 *            collection of meals for the day
+	 * @param menus
+	 *            the collection of meals for the day
 	 * 
 	 * @return the sorted list of meals
 	 **/
@@ -48,10 +55,10 @@ public class MenuSorter {
 	}
 
 	/**
-	 * sorts the meals by Restaurant (Alphabetical order)
+	 * Sorts the Meals by Restaurant (Alphabetical order)
 	 * 
-	 * @param the
-	 *            collection of meals for the day
+	 * @param meals
+	 *            the collection of meals for the day
 	 * 
 	 * @return the sorted list of meals
 	 **/
@@ -94,16 +101,24 @@ public class MenuSorter {
 
 		return map;
 	}
-	
-	public HashMap<String, Vector<Sandwich>> sortByCafeterias(Collection<Sandwich> sandwiches) {
-		
+
+	/**
+	 * Sorts the sandwiches by Cafeteria, alphabetically
+	 * 
+	 * @param sandwiches
+	 *            the collection of Sandwiches to sort
+	 * @return a sorted list of Sandwiches
+	 */
+	public HashMap<String, Vector<Sandwich>> sortByCafeterias(
+			Collection<Sandwich> sandwiches) {
+
 		if (sandwiches == null) {
 			throw new IllegalArgumentException(
 					"The meals list cannot be null !");
 		}
 
 		HashMap<String, Vector<Sandwich>> map = new HashMap<String, Vector<Sandwich>>();
-		
+
 		for (Sandwich sandwich : sandwiches) {
 			String resto = sandwich.getRestaurant().getName();
 
@@ -117,7 +132,8 @@ public class MenuSorter {
 				}
 			} else {
 				System.out.println("SortingSanwiches: Skip empty - Name: "
-						+ sandwich.getName() + " Resto: " + sandwich.getRestaurant().getName());
+						+ sandwich.getName() + " Resto: "
+						+ sandwich.getRestaurant().getName());
 			}
 		}
 		Set<String> restos = map.keySet();
@@ -130,9 +146,9 @@ public class MenuSorter {
 				}
 			});
 		}
-		
+
 		return map;
-		
+
 	}
 
 	/**
