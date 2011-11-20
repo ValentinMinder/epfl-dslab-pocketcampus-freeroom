@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/satellite_main_page"
+        android:icon="@drawable/satellite_menu_main_page"
+        android:title="@+string/satellite_menu_main_page"/>
+    
+    <item
+        android:id="@+id/satellite_beers"
+        android:icon="@drawable/satellite_menu_beers"
+        android:title="@+string/satellite_menu_beers"/>
+
+    <item
+        android:id="@+id/satellite_sandwiches"
+        android:icon="@drawable/satellite_menu_sandwiches"
+        android:title="@+string/satellite_menu_sandwiches"/>
+    
+    <item
+        android:id="@+id/satellite_events"
+        android:icon="@drawable/satellite_menu_events"
+        android:title="@+string/satellite_menu_events"/>
+
+</menu>

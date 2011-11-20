@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+    <string name="satellite_app_name">Satellite</string>
+    <string name="satellite_nothing_to_display">Nothing to display</string>
+    <string name="satellite_menu_main_page">Main Page</string>
+    
+    <!-- Affluence -->
+    <string name="satellite_menu_affluence">Affluence</string>
+        
+	<!-- Beer(s) -->
+	<string name="satellite_menu_beers">Beers</string>
+	
+	<!-- Events -->
+	<string name="satellite_menu_events">Events</string>
+	
+	<!-- Sandwiches -->
+	<string name="satellite_menu_sandwiches">Sandwiches</string>
+	
+    <!-- Error -->
+   	<string name="satellite_network_error">Network Error!</string>
+
+</resources>
