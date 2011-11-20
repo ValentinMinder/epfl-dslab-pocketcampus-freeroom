@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.news.android.iface;
 
 import java.util.List;
 
+import org.pocketcampus.plugin.news.android.NewsItemWithImage;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
@@ -18,7 +19,7 @@ public interface INewsModel {
 	 * 
 	 * @return the list of news items
 	 */
-	public List<NewsItem> getNews();
+	public List<NewsItemWithImage> getNews();
 
 	/**
 	 * Update the list of NewsItems and notify the View

@@ -67,5 +67,4 @@ public class FeedListViewElement extends ListView implements Element {
 	public void setOnLineClickListener(OnItemClickListener lineClickListener) {
 		mAdapter.setOnLineClickListener(lineClickListener);
 	}
-
 }

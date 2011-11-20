@@ -1,6 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.labeler;
 
-import android.graphics.drawable.Drawable;
+import android.widget.LinearLayout;
 
 /**
  * Interface to the methods provided by a FeedViewLabeler
@@ -40,5 +40,6 @@ public interface IFeedViewLabeler<LabeledObjectType> {
 	 *            the object of which we want the rating
 	 * @return the rating
 	 */
-	public Drawable getPicture(LabeledObjectType obj);
+	public LinearLayout getPictureLayout(LabeledObjectType obj);
+
 }

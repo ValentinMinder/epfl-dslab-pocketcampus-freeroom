@@ -23,13 +23,13 @@ import org.pocketcampus.plugin.news.shared.NewsService;
  */
 public class NewsServiceImpl implements NewsService.Iface {
 
-	/** List of Feed Urls */
+	/** List of Feed Urls for English */
 	private List<String> mFeedUrls;
 
-	/** List of Feeds */
+	/** List of Feeds for English */
 	private List<Feed> mFeedsList;
-
-	/** List of NewsItems */
+	
+	/** List of NewsItems for English */
 	private List<NewsItem> mNewsItemsList;
 
 	/** Date of the last Feeds update */
@@ -56,7 +56,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * Initiates parsing of the feeds list from the file stored on the server
 	 */
 	private void getFeedsUrls() {
-		FeedsListParser flp = new FeedsListParser("feeds_list.txt");
+		FeedsListParser flp = new FeedsListParser("feeds_list_en.txt");
 		mFeedUrls = flp.getFeeds();
 	}
 
@@ -66,6 +66,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private void importFeeds() {
 		if (!isUpToDate(mLastImportedFeeds) || mNewsItemsList == null
 				|| mNewsItemsList.isEmpty()) {
+			System.out.println("Reimporting Feeds");
 			// There is no feed to download
 			if (mFeedUrls.isEmpty()) {
 				return;
@@ -93,7 +94,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 			}
 
 			// Sort the news (done asynchronously)
-			Collections.sort(mNewsItemsList);
+			Collections.sort(mNewsItemsList, newsItemComparator);
 			mLastImportedFeeds = new Date();
 		}
 	}
@@ -105,7 +106,6 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public List<NewsItem> getNewsItems() throws TException {
 		importFeeds();
-		Collections.sort(mNewsItemsList, newsItemComparator);
 		return mNewsItemsList;
 	}
 

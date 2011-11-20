@@ -24,7 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class NewsMainView extends PluginView implements INewsView {
+public class NewsItemView extends PluginView implements INewsView {
 	private NewsController mController;
 	private INewsModel mModel;
 
@@ -147,7 +147,7 @@ public class NewsMainView extends PluginView implements INewsView {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int position, long arg3) {
-				Toast.makeText(NewsMainView.this, "Hello", Toast.LENGTH_SHORT)
+				Toast.makeText(NewsItemView.this, "Hello", Toast.LENGTH_SHORT)
 						.show();
 				// final Meal meal = mealList.get(position);
 				// menuDialog(meal);
@@ -186,7 +186,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		@Override
 		public LinearLayout getPictureLayout(NewsItemWithImage obj) {
-			return new LoaderImageView(NewsMainView.this, obj.getNewsItem()
+			return new LoaderImageView(NewsItemView.this, obj.getNewsItem()
 					.getImageUrl());
 		}
 	};

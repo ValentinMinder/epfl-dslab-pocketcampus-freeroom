@@ -20,7 +20,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 	INewsView mListeners = (INewsView) getListeners();
 
 	/** List of news items to display. */
-	private List<NewsItem> mNewsItems;
+	private List<NewsItemWithImage> mNewsItems;
 
 	/** List of Feeds to display */
 	private List<Feed> mNewsFeeds;
@@ -32,14 +32,19 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 	public void setNews(List<NewsItem> newsItems) {
 		if (newsItems != null) {
-			mNewsItems = newsItems;
-
+			if (mNewsItems == null) {
+				mNewsItems = new ArrayList<NewsItemWithImage>();
+			}
+			for (NewsItem ni : newsItems) {
+				NewsItemWithImage newsItem = new NewsItemWithImage(ni);
+				mNewsItems.add(newsItem);
+			}
 			mListeners.newsUpdated();
 		}
 	}
 
 	@Override
-	public List<NewsItem> getNews() {
+	public List<NewsItemWithImage> getNews() {
 		return mNewsItems;
 	}
 
@@ -54,11 +59,14 @@ public class NewsModel extends PluginModel implements INewsModel {
 			mNewsFeeds = list;
 
 			if (mNewsItems == null) {
-				mNewsItems = new ArrayList<NewsItem>();
+				mNewsItems = new ArrayList<NewsItemWithImage>();
 			}
 
 			for (Feed f : mNewsFeeds) {
-				mNewsItems.addAll(f.getItems());
+				List<NewsItem> feedItems = f.getItems();
+				for (NewsItem ni : feedItems) {
+					mNewsItems.add(new NewsItemWithImage(ni));
+				}
 			}
 			mListeners.newsUpdated();
 		}
