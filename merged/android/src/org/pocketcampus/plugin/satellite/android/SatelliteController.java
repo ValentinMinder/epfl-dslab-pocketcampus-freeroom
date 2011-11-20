@@ -3,18 +3,23 @@ package org.pocketcampus.plugin.satellite.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteController;
+import org.pocketcampus.plugin.satellite.android.req.AffluenceRequest;
+import org.pocketcampus.plugin.satellite.android.req.SandwichRequest;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Client;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Iface;
 
+import android.util.Log;
+
 /**
- * Controller for the Satellite plugin. Takes care of interactions between the model
- * and the view and gets information from the server.
+ * Controller for the Satellite plugin. Takes care of interactions between the
+ * model and the view and gets information from the server.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
- *
+ * 
  */
-public class SatelliteController extends PluginController implements ISatelliteController {
-	
+public class SatelliteController extends PluginController implements
+ISatelliteController {
+
 	/** The plugin's model. */
 	private SatelliteModel mModel;
 
@@ -23,7 +28,7 @@ public class SatelliteController extends PluginController implements ISatelliteC
 
 	/** The name of the plugin */
 	private String mPluginName = "satellite";
-	
+
 	/**
 	 * Initializes the plugin with a model and a client.
 	 */
@@ -36,7 +41,7 @@ public class SatelliteController extends PluginController implements ISatelliteC
 		// The "client" is the connection we use to access the service.
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
-	
+
 	/**
 	 * Returns the model for which this controller works.
 	 */
@@ -50,7 +55,7 @@ public class SatelliteController extends PluginController implements ISatelliteC
 	 */
 	@Override
 	public void getBeerOfMonth() {
-		
+
 	}
 
 	/**
@@ -59,7 +64,7 @@ public class SatelliteController extends PluginController implements ISatelliteC
 	 */
 	@Override
 	public void getAllBeers() {
-		
+
 	}
 
 	/**
@@ -68,7 +73,11 @@ public class SatelliteController extends PluginController implements ISatelliteC
 	 */
 	@Override
 	public void getSandwiches() {
-		
+		Log.d("SATELLITE", "Sandwich request");
+
+		new SandwichRequest().start(this,
+				(Iface) getClient(new Client.Factory(), mPluginName),
+				(Object) null);
 	}
 
 	/**
@@ -77,7 +86,8 @@ public class SatelliteController extends PluginController implements ISatelliteC
 	 */
 	@Override
 	public void getEvents() {
-		
+		Log.d("SATELLITE", "Events request");
+
 	}
 
 	/**
@@ -85,7 +95,10 @@ public class SatelliteController extends PluginController implements ISatelliteC
 	 */
 	@Override
 	public void getAffluence() {
-		
+		Log.d("SATELLITE", "Affluence request");
+		new AffluenceRequest().start(this,
+				(Iface) getClient(new Client.Factory(), mPluginName),
+				(Object) null);
 	}
 
 }
