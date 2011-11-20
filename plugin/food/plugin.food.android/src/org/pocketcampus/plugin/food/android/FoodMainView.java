@@ -416,30 +416,33 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				.getMealsByRestaurants(this);
 		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
 
-		/**
-		 * Iterate over the different restaurant menus
-		 */
-		mLayout.removeFillerView();
+		if(mealHashMap != null) {
 
-		if (!mealHashMap.isEmpty()) {
+			/**
+			 * Iterate over the different restaurant menus
+			 */
+			mLayout.removeFillerView();
 
-			// Filtering restaurant that the user doesn't want to display
-			mList = new RatableExpandableListViewElement(this, mealHashMap,
-					mMealLabeler, mMealsViewConstructor);
+			if (!mealHashMap.isEmpty()) {
 
-			setHashMapOnClickListeners(mealHashMap);
+				// Filtering restaurant that the user doesn't want to display
+				mList = new RatableExpandableListViewElement(this, mealHashMap,
+						mMealLabeler, mMealsViewConstructor);
 
-			// Hide the text that says the list is empty
-			mLayout.hideText();
-			// Set the title to Restaurants
-			mLayout.setTitle(this.getString(R.string.food_by_restaurants));
-			// Add the list containing the meals
-			mLayout.addFillerView(mList);
-		} else {
-			// Set the centered text to empty menus
-			mLayout.setText(getString(R.string.food_no_menus));
-			// Hide the title as there is no content
-			mLayout.hideTitle();
+				setHashMapOnClickListeners(mealHashMap);
+
+				// Hide the text that says the list is empty
+				mLayout.hideText();
+				// Set the title to Restaurants
+				mLayout.setTitle(this.getString(R.string.food_by_restaurants));
+				// Add the list containing the meals
+				mLayout.addFillerView(mList);
+			} else {
+				// Set the centered text to empty menus
+				mLayout.setText(getString(R.string.food_no_menus));
+				// Hide the title as there is no content
+				mLayout.hideTitle();
+			}
 		}
 	}
 
