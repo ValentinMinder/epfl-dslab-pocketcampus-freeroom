@@ -33,13 +33,13 @@ public class BeerRequest extends
 	}
 
 	/**
-	 * Update the model with the Events gotten from the server.
+	 * Update the model with the Beer gotten from the server.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
 	 *            notify of the result
 	 * @param result
-	 *            the list of Events gotten from the server
+	 *            the Beer gotten from the server
 	 */
 	@Override
 	protected void onResult(SatelliteController controller, Beer result) {

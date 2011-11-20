@@ -102,20 +102,20 @@ public class FoodPreferencesView extends PluginView {
 
 			mLayout.addView(mListView);
 
+			mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
+			mRestoPrefsEditor = mRestoPrefs.edit();
+			
+			if (mRestoPrefs.getAll().isEmpty()) {
+				Log.d("PREFERENCES", "First time instanciatation (FoodPreference)");
+				for (Restaurant r : mRestaurants) {
+					mRestoPrefsEditor.putBoolean(r.getName(), true);
+				}
+				mRestoPrefsEditor.commit();
+			}
 		} else {
 			mLayout.setText("No Restaurants");
 		}
 
-		mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
-		mRestoPrefsEditor = mRestoPrefs.edit();
-
-		if (mRestoPrefs.getAll().isEmpty()) {
-			Log.d("PREFERENCES", "First time instanciatation (FoodPreference)");
-			for (Restaurant r : mRestaurants) {
-				mRestoPrefsEditor.putBoolean(r.getName(), true);
-			}
-			mRestoPrefsEditor.commit();
-		}
 	}
 
 	/**
@@ -155,16 +155,16 @@ public class FoodPreferencesView extends PluginView {
 		}
 	};
 
-	/**
-	 * The constructor for a Restaurant View to be displayed in the list
-	 */
-	IViewConstructor restaurantConstructor = new IViewConstructor() {
-
-		@Override
-		public View getNewView(Object currentObject, Context context,
-				ILabeler<? extends Object> labeler, int position) {
-			return new PreferencesView(currentObject, context, labeler,
-					RESTO_PREFS_NAME, mListener, position);
-		}
-	};
+//	/**
+//	 * The constructor for a Restaurant View to be displayed in the list
+//	 */
+//	IViewConstructor restaurantConstructor = new IViewConstructor() {
+//
+//		@Override
+//		public View getNewView(Object currentObject, Context context,
+//				ILabeler<? extends Object> labeler, int position) {
+//			return new PreferencesView(currentObject, context, labeler,
+//					RESTO_PREFS_NAME, mListener, position);
+//		}
+//	};
 }

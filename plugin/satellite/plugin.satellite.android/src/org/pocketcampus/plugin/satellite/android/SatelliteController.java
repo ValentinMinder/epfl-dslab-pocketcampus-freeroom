@@ -55,7 +55,7 @@ ISatelliteController {
 	 */
 	@Override
 	public void getBeerOfMonth() {
-
+		Log.d("SATELLITE", "Beer of month request");
 	}
 
 	/**
@@ -64,7 +64,7 @@ ISatelliteController {
 	 */
 	@Override
 	public void getAllBeers() {
-
+		Log.d("SATELLITE", "Beers request");
 	}
 
 	/**
@@ -74,7 +74,6 @@ ISatelliteController {
 	@Override
 	public void getSandwiches() {
 		Log.d("SATELLITE", "Sandwich request");
-
 		new SandwichRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				(Object) null);
