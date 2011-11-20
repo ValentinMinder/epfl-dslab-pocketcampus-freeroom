@@ -115,14 +115,17 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
+		if(mMeals != null) {
 
-		HashMap<String, Vector<Meal>> allMeals = mSorter
-				.sortByRestaurant(mMeals);
-		if (mRestoPrefs.getAll().isEmpty()) {
-			return allMeals;
-		} else {
-			return filterPreferredRestaurants(allMeals);
-		}
+			HashMap<String, Vector<Meal>> allMeals = mSorter
+					.sortByRestaurant(mMeals);
+			if (mRestoPrefs.getAll().isEmpty()) {
+				return allMeals;
+			} else {
+				return filterPreferredRestaurants(allMeals);
+			}
+			
+		} else return new HashMap<String, Vector<Meal>>();
 	}
 
 	/**
@@ -133,7 +136,11 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
-		return mSorter.sortByRatings(mMeals);
+		if(mMeals != null) {			
+			return mSorter.sortByRatings(mMeals);
+		} else {
+			return new ArrayList<Meal>();
+		}
 	}
 
 	/**
@@ -179,10 +186,11 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
-		if (mSandwiches == null) {
-			mSandwiches = new ArrayList<Sandwich>();
+		if (mSandwiches != null) {
+			return mSorter.sortByCafeterias(mSandwiches);
+		} else {
+			return new HashMap<String, Vector<Sandwich>>();
 		}
-		return mSorter.sortByCafeterias(mSandwiches);
 	}
 
 	/**
