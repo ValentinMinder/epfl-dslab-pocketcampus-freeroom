@@ -2,16 +2,22 @@ package org.pocketcampus.plugin.news.android;
 
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
-import org.pocketcampus.plugin.news.gui.FeedListViewElement;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
@@ -63,22 +69,28 @@ public class NewsMainView extends PluginView implements INewsView {
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
-		mController.loadNews();
-
 		// We need to force the display before asking the controller for the
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
 	}
 
+	/**
+	 * Initiates request for the restaurant, meal and sandwich data
+	 */
 	private void displayData() {
+		mLayout.setText(getResources().getString(R.string.news_no_news));
+		mController.getFeeds();
+	}
 
+	@Override
+	public void newsUpdated() {
 		List<NewsItem> newsList = mModel.getNews();
 		if (newsList != null) {
-			/** -----------StartCopy----------- **/
 
 			// Add them to the listView
-			mListView = new FeedListViewElement(this, newsList);
+			mListView = new FeedListViewElement(this, newsList,
+					mNewsItemLabeler);
 
 			// Set onClickListener
 			setOnListViewClickListener();
@@ -86,16 +98,37 @@ public class NewsMainView extends PluginView implements INewsView {
 			// Set the layout
 			mLayout.addView(mListView);
 
-			/** -----------End copy----------- */
 			mLayout.setText("");
 		} else {
-			mLayout.setText("No news");
+			mLayout.setText(getString(R.string.news_no_news));
 		}
 	}
 
+	/**
+	 * Main Food Options menu contains access to Meals by restaurants, ratings,
+	 * Sandwiches, Suggestions and Settings
+	 */
 	@Override
-	public void newsUpdated() {
-		displayData();
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.news_menu, menu);
+		return true;
+	}
+
+	/**
+	 * Decides what happens when the options menu is opened and an option is
+	 * chosen (what view to display)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		if (item.getItemId() == R.id.news_menu_settings) {
+			// backFromPreferences = true;
+			Intent settings = new Intent(getApplicationContext(),
+					NewsPreferences.class);
+			startActivity(settings);
+
+		}
+		return true;
 	}
 
 	@Override
@@ -118,4 +151,40 @@ public class NewsMainView extends PluginView implements INewsView {
 		});
 
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// newsProvider_.refreshIfNeeded();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		// newsProvider_.removeNewsListener(this);
+	}
+
+	/**
+	 * The labeler for a feed, to tell how it has to be displayed in a generic
+	 * view.
+	 */
+	IFeedViewLabeler<NewsItem> mNewsItemLabeler = new IFeedViewLabeler<NewsItem>() {
+
+		@Override
+		public String getTitle(NewsItem obj) {
+			// TODO Auto-generated method stub
+			return obj.getTitle();
+		}
+
+		@Override
+		public String getDescription(NewsItem obj) {
+			return obj.getDescription();
+		}
+
+		@Override
+		public Drawable getPicture(NewsItem obj) {
+			return null;
+		}
+	};
+
 }
