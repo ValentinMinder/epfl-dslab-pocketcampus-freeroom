@@ -127,15 +127,14 @@ public class RssParser extends DefaultHandler {
 				|| qName.equalsIgnoreCase("item")) {
 			this.inItem_ = false;
 			this.rssFeed_.addToItems(this.item_);
-			System.out.println("Added " + item_.getPubDateDate());
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
 			if (this.inItem_ && this.item_ != null) {
 				this.item_.setTitle(this.text_.toString().trim());
 			} else {
 				this.rssFeed_.setTitle(this.text_.toString().trim());
-				System.out.println("Set RSS feed title to "
-						+ rssFeed_.getTitle());
+				// System.out.println("Set RSS feed title to "
+				// + rssFeed_.getTitle());
 			}
 		} else if (localName.equalsIgnoreCase("link")
 				|| qName.equalsIgnoreCase("link")) {
@@ -143,8 +142,8 @@ public class RssParser extends DefaultHandler {
 				this.item_.setLink(text_.toString().trim());
 			} else {
 				this.rssFeed_.setLink(text_.toString().trim());
-				System.out
-						.println("Set RSS feed link to " + rssFeed_.getLink());
+				// System.out
+				// .println("Set RSS feed link to " + rssFeed_.getLink());
 			}
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
@@ -152,8 +151,8 @@ public class RssParser extends DefaultHandler {
 				this.item_.setDescription(text_.toString().trim());
 			} else {
 				this.rssFeed_.setDescription(text_.toString().trim());
-				System.out.println("Set RSS feed description to "
-						+ rssFeed_.getDescription());
+				// System.out.println("Set RSS feed description to "
+				// + rssFeed_.getDescription());
 
 			}
 		} else if (localName.equalsIgnoreCase("pubDate")
