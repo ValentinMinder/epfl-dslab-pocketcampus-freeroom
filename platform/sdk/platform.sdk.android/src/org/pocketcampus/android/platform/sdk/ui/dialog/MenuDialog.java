@@ -68,6 +68,8 @@ public class MenuDialog extends Dialog {
 		private float mRating;
 		/** The rating the user can set in the dialog */
 		private float mMyRating;
+		/** Whether the user can still vote */
+		private boolean mHasVoted;
 		/** The first button's text */
 		private String mFirstButtonText;
 		/** The second button's text */
@@ -141,7 +143,8 @@ public class MenuDialog extends Dialog {
 		 * @param rating
 		 * @return
 		 */
-		public Builder setRating(float rating, int nbVotes) {
+		public Builder setRating(boolean isVisible, float rating, int nbVotes) {
+			mHasVoted = isVisible;
 			mRating = rating;
 			return this;
 		}
@@ -367,28 +370,29 @@ public class MenuDialog extends Dialog {
 			}
 
 			/** Rating Bar */
-			((RatingBar) layout
-					.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator))
-					.setRating(mRating);
-			((RatingBar) layout
-					.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator))
-					.setOnTouchListener(new OnTouchListener() {
+			RatingBar ratingBar = ((RatingBar) layout
+					.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator));
+			if (!mHasVoted) {
+				ratingBar.setRating(mRating);
+				ratingBar.setOnTouchListener(new OnTouchListener() {
 
-						@Override
-						public boolean onTouch(View arg0, MotionEvent rating) {
-							if (rating.getAction() == MotionEvent.ACTION_UP) {
-								mMyRating = ((RatingBar) layout
-										.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator))
-										.getRating();
-								((Button) layout
-										.findViewById(R.id.sdk_dialog_menu_firstButton))
-										.setEnabled(true);
-								return true;
-							}
-							return false;
+					@Override
+					public boolean onTouch(View arg0, MotionEvent rating) {
+						if (rating.getAction() == MotionEvent.ACTION_UP) {
+							mMyRating = ((RatingBar) layout
+									.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator))
+									.getRating();
+							((Button) layout
+									.findViewById(R.id.sdk_dialog_menu_firstButton))
+									.setEnabled(true);
+							return true;
 						}
-					});
-
+						return false;
+					}
+				});
+			} else {
+				ratingBar.setVisibility(View.GONE);
+			}
 			dialog.setContentView(layout);
 			return dialog;
 		}

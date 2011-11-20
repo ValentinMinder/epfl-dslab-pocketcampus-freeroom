@@ -140,10 +140,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * Checks whether the user has already voted today
 	 */
 	public boolean hasVoted(String deviceId) throws TException {
-		if (mDeviceIds.contains(deviceId)) {
+		if (mDeviceIds.contains(deviceId)
+				|| mDatabase.checkVotedDevice(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");
 			return true;
 		}
+		System.out.println("<setRating>: Not yet in mDeviceIds.");
 		return false;
 	}
 
@@ -530,7 +532,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		/* Satellite */
 		Restaurant satellite = new Restaurant(("Satellite").hashCode(),
 				"Satellite");
-		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon").hashCode(), satellite, "Jambon"));
+		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon")
+				.hashCode(), satellite, "Jambon"));
 		mSandwiches.add(new Sandwich((satellite.getName() + "Thon").hashCode(),
 				satellite, "Thon"));
 		mSandwiches.add(new Sandwich((satellite.getName() + "Jambon Fromage")

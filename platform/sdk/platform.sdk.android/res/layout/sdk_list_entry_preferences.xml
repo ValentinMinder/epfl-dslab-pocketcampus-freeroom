@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sdk_list_preferences_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:gravity="right"
     android:orientation="horizontal" >
 
     <TextView
@@ -20,4 +19,4 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -40,7 +40,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	/** The list of all sandwiches */
 	private List<Sandwich> mSandwiches;
 	/** Whether the user has already used his ability to vote */
-	private boolean mHasVoted;
+	private boolean mHasVoted = false;
 
 	/** Object used to access and modify preferences on the phone */
 	private SharedPreferences mRestoPrefs;
@@ -115,7 +115,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
-		if(mMeals != null) {
+		if (mMeals != null) {
 
 			HashMap<String, Vector<Meal>> allMeals = mSorter
 					.sortByRestaurant(mMeals);
@@ -124,8 +124,9 @@ public class FoodModel extends PluginModel implements IFoodModel {
 			} else {
 				return filterPreferredRestaurants(allMeals);
 			}
-			
-		} else return new HashMap<String, Vector<Meal>>();
+
+		} else
+			return new HashMap<String, Vector<Meal>>();
 	}
 
 	/**
@@ -136,7 +137,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
-		if(mMeals != null) {			
+		if (mMeals != null) {
 			return mSorter.sortByRatings(mMeals);
 		} else {
 			return new ArrayList<Meal>();

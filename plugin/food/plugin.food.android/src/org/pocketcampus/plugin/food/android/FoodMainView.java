@@ -138,6 +138,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		mController.getRestaurants();
 		mController.getMeals();
 		mController.getSandwiches();
+		mController.getHasVoted();
 	}
 
 	/**
@@ -218,7 +219,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		// Set different values for the dialog
 		b.setTitle(meal.getRestaurant().getName() + " - " + meal.getName());
 		b.setDescription(meal.getMealDescription());
-		b.setRating((float) 0.0, meal.getRating().getNbVotes());
+		b.setRating(mModel.getHasVoted(), (float) 0.0, meal.getRating()
+				.getNbVotes());
 
 		b.setFirstButton(R.string.food_menu_dialog_firstButton,
 				new MenuDialogListener(b, meal));
@@ -248,19 +250,27 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * @param meal
 	 */
 	public void ratingDialog(Meal meal, long rating) {
-		// Create the Builder for the Rating dialog
-		RatingDialog.Builder b = new RatingDialog.Builder(mActivity);
+		if (!mModel.getHasVoted()) {
+			// Create the Builder for the Rating dialog
+			RatingDialog.Builder b = new RatingDialog.Builder(mActivity);
 
-		// Set different values for the dialog
-		b.setTitle(R.string.food_rating_dialog_title);
-		b.setOkButton(R.string.food_rating_dialog_OK, new RatingDialogListener(
-				b, meal, rating));
-		b.setCancelButton(R.string.food_rating_dialog_cancel,
-				new RatingDialogListener());
+			// Set different values for the dialog
+			b.setTitle(R.string.food_rating_dialog_title);
+			b.setOkButton(R.string.food_rating_dialog_OK,
+					new RatingDialogListener(b, meal, rating));
+			b.setCancelButton(R.string.food_rating_dialog_cancel,
+					new RatingDialogListener());
 
-		// Create the dialog and display it
-		RatingDialog dialog = b.create();
-		dialog.show();
+			// Create the dialog and display it
+			RatingDialog dialog = b.create();
+			dialog.show();
+		} else {
+			Toast.makeText(
+					this,
+					getResources()
+							.getString(R.string.food_rating_already_voted),
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
@@ -281,7 +291,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					.show();
 			// Update the Ratings
 			mController.getRatings();
-
+			mModel.setHasVoted(true);
 		} else if (status.equals(SubmitStatus.ALREADY_VOTED)) {
 			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted,
