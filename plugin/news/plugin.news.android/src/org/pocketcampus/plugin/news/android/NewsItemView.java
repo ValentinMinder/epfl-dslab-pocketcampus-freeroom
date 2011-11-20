@@ -1,37 +1,19 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.util.List;
-
-import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
-import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.android.platform.sdk.ui.layout.FeedInformationLayout;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
-import org.pocketcampus.plugin.news.android.iface.INewsView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.util.Log;
 
-public class NewsItemView extends PluginView implements INewsView {
+public class NewsItemView extends PluginView {
 	private NewsController mController;
 	private INewsModel mModel;
+	private NewsItemWithImage mNewsItem;
 
-	private StandardLayout mLayout;
-	private FeedListViewElement mListView;
-
-	private OnItemClickListener mOnItemClickListener;
+	private FeedInformationLayout mLayout;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -61,133 +43,33 @@ public class NewsItemView extends PluginView implements INewsView {
 		mController = (NewsController) controller;
 		mModel = (NewsModel) controller.getModel();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this, null);
-
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		mLayout.setLayoutParams(layoutParams);
-		mLayout.setGravity(Gravity.CENTER_VERTICAL);
+		mLayout = new FeedInformationLayout(this, null);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
-		// We need to force the display before asking the controller for the
-		// data,
-		// as the controller may take some time to get it.
-		displayData();
-	}
+		handleExtras();
 
-	/**
-	 * Initiates request for the restaurant, meal and sandwich data
-	 */
-	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.news_no_news));
-		mController.getNewsItems();
-	}
-
-	@Override
-	public void newsUpdated() {
-		List<NewsItemWithImage> newsList = mModel.getNews();
-		if (newsList != null) {
-
-			// Add them to the listView
-			mListView = new FeedListViewElement(this, newsList,
-					mNewsItemLabeler);
-
-			// Set onClickListener
-			setOnListViewClickListener();
-
-			// Set the layout
-			mLayout.addView(mListView);
-
-			mLayout.setText("");
+		if (mNewsItem != null) {
+			mLayout.setTitle(mNewsItem.getNewsItem().getTitle());
+			mLayout.setImage(mNewsItem.getDrawable());
+			mLayout.setDescription(mNewsItem.getNewsItem().getDescription());
 		} else {
-			mLayout.setText(getString(R.string.news_no_news));
+			mLayout.setTitle("I\'m not done yet!");
+			mLayout.setDescription("So why did you click on a news?");
 		}
 	}
 
 	/**
-	 * Main Food Options menu contains access to Meals by restaurants, ratings,
-	 * Sandwiches, Suggestions and Settings
+	 * Handle extras from the MainView
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.news_menu, menu);
-		return true;
-	}
-
-	/**
-	 * Decides what happens when the options menu is opened and an option is
-	 * chosen (what view to display)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.news_menu_settings) {
-			// backFromPreferences = true;
-			Intent settings = new Intent(getApplicationContext(),
-					NewsPreferences.class);
-			startActivity(settings);
-
+	private void handleExtras() {
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			mNewsItem = (NewsItemWithImage) extras
+					.getSerializable("org.pocketcampus.news.newsItem");
+		} else {
+			Log.d("NEWSITEMVIEW", "No extras received!");
 		}
-		return true;
 	}
-
-	@Override
-	public void networkErrorHappened() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* Sets the clickLIstener of the listView */
-	private void setOnListViewClickListener() {
-
-		mOnItemClickListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int position, long arg3) {
-				Toast.makeText(NewsItemView.this, "Hello", Toast.LENGTH_SHORT)
-						.show();
-				// final Meal meal = mealList.get(position);
-				// menuDialog(meal);
-			}
-		};
-		mListView.setOnLineClickListener(mOnItemClickListener);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// newsProvider_.refreshIfNeeded();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// newsProvider_.removeNewsListener(this);
-	}
-
-	/**
-	 * The labeler for a feed, to tell how it has to be displayed in a generic
-	 * view.
-	 */
-	IFeedViewLabeler<NewsItemWithImage> mNewsItemLabeler = new IFeedViewLabeler<NewsItemWithImage>() {
-
-		@Override
-		public String getTitle(NewsItemWithImage obj) {
-			return obj.getNewsItem().getTitle();
-		}
-
-		@Override
-		public String getDescription(NewsItemWithImage obj) {
-			return obj.getNewsItem().getDescription();
-		}
-
-		@Override
-		public LinearLayout getPictureLayout(NewsItemWithImage obj) {
-			return new LoaderImageView(NewsItemView.this, obj.getNewsItem()
-					.getImageUrl());
-		}
-	};
 }

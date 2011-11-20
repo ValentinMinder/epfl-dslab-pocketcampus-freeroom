@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".plugin.news.android.NewsPreferences" >
         </activity>
+        <activity android:name=".plugin.news.android.NewsItemView" >
+        </activity>
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"

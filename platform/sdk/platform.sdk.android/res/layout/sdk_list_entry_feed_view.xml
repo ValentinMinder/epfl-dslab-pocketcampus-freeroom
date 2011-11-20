@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sdk_list_entry_feed_view"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/sdk_list_entry_feed_view_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip" />
+
+    <TextView
+        android:id="@+id/sdk_list_entry_feed_view_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/sdk_list_entry_feed_view_image"
+        android:gravity="center_vertical"
+        android:text="Title" />
+
+    <TextView
+        android:id="@+id/sdk_list_entry_feed_view_description"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/sdk_list_entry_feed_view_image"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Second line" />
+
+</RelativeLayout>

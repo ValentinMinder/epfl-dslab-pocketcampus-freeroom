@@ -38,6 +38,9 @@ public interface IFoodController {
 
 	/**
 	 * Initiates a request to the server to get the ratings for all meals.
+	 * 
+	 * @param groupPosition
+	 *            the position of the currently selected group
 	 */
 	public void getRatings();
 

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.news.android;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +16,9 @@ import android.text.Spanned;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
-public class NewsItemWithImage {
+public class NewsItemWithImage implements Serializable {
+	/** Used to pass the NewsItem in an Intent */
+	private static final long serialVersionUID = 1L;
 	/** The NewsItem */
 	private NewsItem mNewsItem;
 	/** The Drawable image corresponding */

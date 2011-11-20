@@ -102,14 +102,14 @@ public class NewsPreferencesView extends PluginView {
 			mLayout.addView(mListView);
 
 		} else {
-			mLayout.setText("No Restaurants");
+			mLayout.setText("No Feeds");
 		}
 
 		mNewsPrefs = getSharedPreferences(NEWS_PREFS_NAME, 0);
 		mNewsPrefsEditor = mNewsPrefs.edit();
 
 		if (mNewsPrefs.getAll().isEmpty()) {
-			Log.d("PREFERENCES", "First time instanciatation (FoodPreference)");
+			Log.d("PREFERENCES", "First time instanciatation (NewsPreference)");
 			for (Feed f : mFeeds) {
 				mNewsPrefsEditor.putBoolean(f.getTitle(), true);
 			}

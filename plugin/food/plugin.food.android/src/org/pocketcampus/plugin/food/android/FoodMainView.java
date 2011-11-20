@@ -777,4 +777,5 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					null, position);
 		}
 	};
+
 }

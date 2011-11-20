@@ -149,8 +149,11 @@ public class NewsMainView extends PluginView implements INewsView {
 					int position, long arg3) {
 				Toast.makeText(NewsMainView.this, "Hello", Toast.LENGTH_SHORT)
 						.show();
-				// final Meal meal = mealList.get(position);
-				// menuDialog(meal);
+				 Intent news = new Intent(getApplicationContext(),
+				 NewsItemView.class);
+				// news.putExtra("org.pocketcampus.news.newsitem",
+				// mModel.getNews().get(position));
+				 startActivity(news);
 			}
 		};
 		mListView.setOnLineClickListener(mOnItemClickListener);

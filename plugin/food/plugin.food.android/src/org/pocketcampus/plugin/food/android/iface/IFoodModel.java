@@ -111,4 +111,5 @@ public interface IFoodModel {
 	 *            the new list of sandwiches
 	 */
 	public void setSandwiches(List<Sandwich> list);
+
 }

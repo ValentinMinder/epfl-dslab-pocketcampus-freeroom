@@ -33,7 +33,7 @@ public class FeedView extends LinearLayout {
 	/** The Object's image */
 	private LinearLayout mImage;
 	/** The click listener on the Object's title and description */
-	private OnItemClickListener mOnElementClickLIstener;
+	private OnItemClickListener mOnElementClickListener;
 
 	/**
 	 * The constructor
@@ -68,7 +68,7 @@ public class FeedView extends LinearLayout {
 				.findViewById(R.id.sdk_list_entry_feed_image);
 
 		/** Listener */
-		this.mOnElementClickLIstener = elementListener;
+		this.mOnElementClickListener = elementListener;
 
 		initializeView();
 	}
@@ -81,8 +81,8 @@ public class FeedView extends LinearLayout {
 		/** title line click listener */
 		mTitleLine.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (mOnElementClickLIstener != null) {
-					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
+				if (mOnElementClickListener != null) {
+					mOnElementClickListener.onItemClick(null, v, mPosition, 0);
 				}
 			}
 		});
@@ -90,8 +90,8 @@ public class FeedView extends LinearLayout {
 		/** description line click listener */
 		mImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (mOnElementClickLIstener != null) {
-					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
+				if (mOnElementClickListener != null) {
+					mOnElementClickListener.onItemClick(null, v, mPosition, 0);
 				}
 			}
 		});

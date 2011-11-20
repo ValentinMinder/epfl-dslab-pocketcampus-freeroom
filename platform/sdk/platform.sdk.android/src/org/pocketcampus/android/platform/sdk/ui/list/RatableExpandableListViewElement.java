@@ -87,7 +87,6 @@ public class RatableExpandableListViewElement extends ExpandableListViewElement
 	/** Notifies the ListView that the Data set has changed */
 	public void notifyDataSetChanged() {
 		mAdapter.notifyDataSetChanged();
-		setAdapter(mAdapter);
 	}
 
 }
