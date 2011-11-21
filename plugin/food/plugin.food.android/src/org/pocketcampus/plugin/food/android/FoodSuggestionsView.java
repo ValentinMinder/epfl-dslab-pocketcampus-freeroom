@@ -11,7 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.CheckBoxesListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.list.MultipleCheckBoxesListViewElement;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MealTagger;
 import org.pocketcampus.plugin.food.shared.Meal;
@@ -51,7 +51,7 @@ public class FoodSuggestionsView extends PluginView {
 	private StandardLayout mLayout;
 
 	/** The list to be displayed in the layout */
-	private CheckBoxesListViewElement mListView;
+	private MultipleCheckBoxesListViewElement mListView;
 
 	/** The button to validate the choices */
 	private Button computeButton;
@@ -110,7 +110,8 @@ public class FoodSuggestionsView extends PluginView {
 
 		// List View
 		// Filling the ListView
-		mListView = new CheckBoxesListViewElement(this, mTagsToDisplay);
+		mListView = new MultipleCheckBoxesListViewElement(this, mTagsList,
+				mTagLabeler);
 
 		// Compute Suggestions Button
 		computeButton = new Button(this);
@@ -178,7 +179,7 @@ public class FoodSuggestionsView extends PluginView {
 
 		// Dislike Button
 		mDislikeButton
-		.setBackgroundResource(R.drawable.food_suggestions_dislike);
+				.setBackgroundResource(R.drawable.food_suggestions_dislike);
 		mDislikeButton.setClickable(false);
 		RelativeLayout.LayoutParams dislikeParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT,
@@ -200,7 +201,7 @@ public class FoodSuggestionsView extends PluginView {
 	 */
 	private void setOnListViewClickListener() {
 
-		mListView.setOnItemClickListener(new OnItemClickListener() {
+		mListView.setOnCheckBoxClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View box,
@@ -210,15 +211,15 @@ public class FoodSuggestionsView extends PluginView {
 				MealTag tag = mTagsList.get(position);
 				CheckBox b = (CheckBox) box;
 
-				if(b.isChecked()) {
-					if(boxId == 1) { // Added a likeTag
+				if (b.isChecked()) {
+					if (boxId == 1) { // Added a likeTag
 
 						Log.d("SUGGESTIONS", "Added " + tag + " to likes");
 						if (!mLikes.contains(tag)) {
 							mLikes.add(tag);
-						} 
+						}
 						mDislikes.remove(tag);
-						
+
 					} else if (boxId == 0) { // Added a dislikeTag
 
 						Log.d("SUGGESTIONS", "Added " + tag + " to dislikes");
@@ -228,13 +229,14 @@ public class FoodSuggestionsView extends PluginView {
 						mLikes.remove(tag);
 					}
 				} else {
-					if(boxId == 1) { // Removed a likeTag
-						
+					if (boxId == 1) { // Removed a likeTag
+
 						Log.d("SUGGESTIONS", "Removed " + tag + " from likes");
 						mLikes.remove(tag);
 					} else if (boxId == 0) { // Removed a dislikeTag
-						
-						Log.d("SUGGESTIONS", "Removed " + tag + " from dislikes");
+
+						Log.d("SUGGESTIONS", "Removed " + tag
+								+ " from dislikes");
 						mDislikes.remove(tag);
 					}
 				}
@@ -295,7 +297,7 @@ public class FoodSuggestionsView extends PluginView {
 		if (!mLikes.isEmpty() && mMeals != null) {
 			for (MealTag tag : mLikes) {
 				computeLikeMeals
-				.addAll(computeSuggestions(mMeals, tag, mTagger));
+						.addAll(computeSuggestions(mMeals, tag, mTagger));
 			}
 		} else if ((mLikes.isEmpty()) && (mMeals != null)) {
 			computeLikeMeals.addAll(mMeals);
@@ -332,7 +334,7 @@ public class FoodSuggestionsView extends PluginView {
 		if (extras != null) {
 			@SuppressWarnings("unchecked")
 			ArrayList<Meal> m = (ArrayList<Meal>) extras
-			.getSerializable("org.pocketcampus.suggestions.meals");
+					.getSerializable("org.pocketcampus.suggestions.meals");
 			if (m != null && !m.isEmpty()) {
 				for (Meal meal : m) {
 					mMeals.add(meal);
@@ -402,6 +404,9 @@ public class FoodSuggestionsView extends PluginView {
 		return string;
 	}
 
+	/**
+	 * A Ilabeler to tell the View what to display for the MealTag
+	 */
 	ILabeler<MealTag> mTagLabeler = new ILabeler<MealTag>() {
 
 		@Override
