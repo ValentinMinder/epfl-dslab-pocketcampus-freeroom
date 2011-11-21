@@ -5,14 +5,16 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.FeedInformationLayout;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
 public class NewsItemView extends PluginView {
 	private NewsController mController;
 	private INewsModel mModel;
-	private NewsItemWithImage mNewsItem;
-
+	private String mTitle;
+	private String mDescription;
+	private Bitmap mBitmap;
 	private FeedInformationLayout mLayout;
 
 	/**
@@ -50,14 +52,18 @@ public class NewsItemView extends PluginView {
 
 		handleExtras();
 
-		if (mNewsItem != null) {
-			mLayout.setTitle(mNewsItem.getNewsItem().getTitle());
-			mLayout.setImage(mNewsItem.getDrawable());
-			mLayout.setDescription(mNewsItem.getNewsItem().getDescription());
-		} else {
-			mLayout.setTitle("I\'m not done yet!");
-			mLayout.setDescription("So why did you click on a news?");
+		if (mTitle != null) {
+			mLayout.setTitle(mTitle);
+		} if(mDescription != null){
+			mLayout.setDescription(mDescription
+					);}
+		if(mBitmap != null){
+			mLayout.setImage(mBitmap);
 		}
+		// } else {
+		// mLayout.setTitle("I\'m not done yet!");
+		// mLayout.setDescription("So why did you click on a news?");
+		// }
 	}
 
 	/**
@@ -65,9 +71,14 @@ public class NewsItemView extends PluginView {
 	 */
 	private void handleExtras() {
 		Bundle extras = getIntent().getExtras();
+		System.out.println("Handling extra: " + extras);
 		if (extras != null) {
-			mNewsItem = (NewsItemWithImage) extras
-					.getSerializable("org.pocketcampus.news.newsItem");
+			mTitle = (String) extras
+					.getSerializable("org.pocketcampus.news.newsitem.title");
+			mDescription = (String) extras
+					.getSerializable("org.pocketcampus.news.newsitem.description");
+			mBitmap = (Bitmap) this.getIntent().getParcelableExtra(
+					"org.pocketcampus.news.newsitem.bitmap");
 		} else {
 			Log.d("NEWSITEMVIEW", "No extras received!");
 		}

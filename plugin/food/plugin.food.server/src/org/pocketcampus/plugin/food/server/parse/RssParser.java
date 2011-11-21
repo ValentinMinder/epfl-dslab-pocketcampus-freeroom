@@ -212,17 +212,19 @@ public class RssParser extends DefaultHandler {
 	 * @return the formatted string
 	 */
 	private String removeBadStuff(String s) {
-		s = s.replace("′", "'");
-		s = s.replace("l?", "l'");
-		s = s.replace("Ã©", "é");
-		s = s.replace("<p>", "");
-		s = s.replace("<em>", "");
-		s = s.replace("</em>", "");
-		s = s.replace("</p>", "");
-		s = s.replace("<br>", "");
-		s = s.replace("<br />", "");
-		if (!(s.charAt(s.length() - 1) == ('\n'))) {
-			s += "\n";
+		if (s.length() > 0) {
+			s = s.replace("′", "'");
+			s = s.replace("l?", "l'");
+			s = s.replace("Ã©", "é");
+			s = s.replace("<p>", "");
+			s = s.replace("<em>", "");
+			s = s.replace("</em>", "");
+			s = s.replace("</p>", "");
+			s = s.replace("<br>", "");
+			s = s.replace("<br />", "");
+			if (!(s.charAt(s.length() - 1) == ('\n'))) {
+				s += "\n";
+			}
 		}
 		return s.trim();
 	}

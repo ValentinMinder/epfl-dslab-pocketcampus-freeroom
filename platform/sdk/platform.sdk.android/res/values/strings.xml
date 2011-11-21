@@ -15,7 +15,7 @@
 	<string name="sdk_day_sunday">Sunday</string>
 	    
 	<!-- Votes -->
-	<string name="nb_votes_singular">vote</string>
-	<string name="nb_votes_plural">votes</string>
+	<string name="sdk_nb_votes_singular">vote</string>
+	<string name="sdk_nb_votes_plural">votes</string>
 	
 </resources>

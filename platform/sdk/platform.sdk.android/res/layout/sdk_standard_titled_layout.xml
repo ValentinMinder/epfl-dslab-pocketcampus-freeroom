@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/standard_layout_main"
+    android:id="@+id/sdk_standard_layout_main"
     style="@style/PocketCampusTheme.Secondary.MainLayout"
     android:layout_height="fill_parent" >
 
     <TextView
-        android:id="@+id/standard_titled_layout_title"
+        android:id="@+id/sdk_standard_titled_layout_title"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="fill_parent"
         android:layout_height="25dip"
@@ -18,7 +18,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/standard_titled_layout_msg"
+        android:id="@+id/sdk_standard_titled_layout_msg"
         android:layout_height="fill_parent"
         android:gravity="center"
         android:textSize="@dimen/centered_message_size"
@@ -26,10 +26,10 @@
     </TextView>
 
     <RelativeLayout
-        android:id="@+id/standard_titled_layout_filler"
+        android:id="@+id/sdk_standard_titled_layout_filler"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/standard_titled_layout_title"
+        android:layout_below="@+id/sdk_standard_titled_layout_title"
         android:gravity="bottom" >
     </RelativeLayout>
 

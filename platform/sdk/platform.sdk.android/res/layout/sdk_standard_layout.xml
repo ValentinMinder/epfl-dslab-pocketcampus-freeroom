@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/standard_layout_main"
+    style="@style/PocketCampusTheme.Secondary.MainLayout"
+    android:layout_height="fill_parent" >
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent"
-	android:id="@+id/standard_layout_main"
-	style="@style/PocketCampusTheme.Secondary.MainLayout"
-	>
-
-	<TextView
-		android:id="@+id/standard_layout_msg"
-		android:gravity="center"
-		android:layout_height="fill_parent"
-		android:textSize="@dimen/centered_message_size"
-		android:visibility="gone"></TextView>
+    <TextView
+        android:id="@+id/standard_layout_msg"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textSize="@dimen/centered_message_size"
+        android:visibility="gone" >
+    </TextView>
 
 </RelativeLayout>

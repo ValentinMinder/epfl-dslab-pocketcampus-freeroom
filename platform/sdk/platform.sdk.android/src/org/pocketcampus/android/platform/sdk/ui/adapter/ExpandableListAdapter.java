@@ -136,22 +136,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 			this.setOrientation(VERTICAL);
 
-			mView = mInflater.inflate(R.layout.sdk_separated_list_header_entry,
-					null);
+			mView = mInflater.inflate(
+					R.layout.sdk_separated_list_separation_header, null);
 
 			mTitle = (TextView) mView
 					.findViewById(R.id.sdk_separated_list_header_title);
 			mTitle.setText(title);
-
-			mImage = (ImageView) mView
-					.findViewById(R.id.sdk_separated_list_header_arrow);
-			if (isExpanded) {
-				mImage.setImageDrawable(mContext.getResources().getDrawable(
-						R.drawable.sdk_separated_list_header_south_arrow));
-			} else {
-				mImage.setImageDrawable(mContext.getResources().getDrawable(
-						R.drawable.sdk_separated_list_header_east_arrow));
-			}
 
 			addView(mView);
 		}

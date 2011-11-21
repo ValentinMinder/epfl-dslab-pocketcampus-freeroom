@@ -64,9 +64,9 @@ public class StandardTitledLayout extends RelativeLayout {
 				R.layout.sdk_standard_titled_layout, null);
 		super.addView(mLayout);
 
-		mTitleTextView = (TextView) findViewById(R.id.standard_titled_layout_title);
-		mMessageTextView = (TextView) findViewById(R.id.standard_titled_layout_msg);
-		mFillerLayout = (RelativeLayout) findViewById(R.id.standard_titled_layout_filler);
+		mTitleTextView = (TextView) findViewById(R.id.sdk_standard_titled_layout_title);
+		mMessageTextView = (TextView) findViewById(R.id.sdk_standard_titled_layout_msg);
+		mFillerLayout = (RelativeLayout) findViewById(R.id.sdk_standard_titled_layout_filler);
 	}
 
 	/**

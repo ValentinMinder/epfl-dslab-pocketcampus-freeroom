@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent" >
 
-<RelativeLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent">
-	
-	<RelativeLayout
-		android:id="@+id/sdk_bottombar_layout_inner"
-		android:layout_height="fill_parent"
-		/>
-	
-	<RelativeLayout
-		android:layout_alignParentBottom="true"
-		style="@style/PocketCampusTheme.Primary"
-		>
-	
-			<TextView
-				android:orientation="horizontal" 
-				android:id="@+id/sdk_bottombar_layout_bottombar"
-				style="@style/PocketCampusTheme.Primary.Subtitle"
-				android:gravity="center"
-				/>
-	 			
-	</RelativeLayout>
-	
+    <RelativeLayout
+        android:id="@+id/sdk_bottombar_layout_inner"
+        android:layout_height="fill_parent" />
+
+    <RelativeLayout
+        style="@style/PocketCampusTheme.Primary"
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:id="@+id/sdk_bottombar_layout_bottombar"
+            style="@style/PocketCampusTheme.Primary.Subtitle"
+            android:gravity="center"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
 </RelativeLayout>

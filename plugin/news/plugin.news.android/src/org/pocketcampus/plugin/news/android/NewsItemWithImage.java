@@ -1,14 +1,18 @@
 package org.pocketcampus.plugin.news.android;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.text.Html;
-import android.text.Spanned;
 
 /**
  * Associates a NewsItem with its corresponding image.
@@ -22,9 +26,9 @@ public class NewsItemWithImage implements Serializable {
 	/** The NewsItem */
 	private NewsItem mNewsItem;
 	/** The Drawable image corresponding */
-	private Drawable mDrawable;
+	private Bitmap mBitmap;
 
-	private Spanned mSpannedDescription;
+	private String mSpannedDescription;
 
 	/** Used to get an image from the text */
 	private final static Pattern imagePattern_ = Pattern
@@ -38,7 +42,7 @@ public class NewsItemWithImage implements Serializable {
 	 */
 	public NewsItemWithImage(NewsItem newsItem) {
 		this.mNewsItem = newsItem;
-		this.mDrawable = null;
+		this.mBitmap = null;
 		setImageUri();
 		setFormattedDescription();
 	}
@@ -51,12 +55,12 @@ public class NewsItemWithImage implements Serializable {
 		this.mNewsItem = mNewsItem;
 	}
 
-	public Drawable getDrawable() {
-		return mDrawable;
+	public Bitmap getDrawable() {
+		return mBitmap;
 	}
 
-	public void setDrawable(Drawable mDrawable) {
-		this.mDrawable = mDrawable;
+	public void setDrawable(Bitmap mBitmap) {
+		this.mBitmap = mBitmap;
 	}
 
 	/**
@@ -99,11 +103,11 @@ public class NewsItemWithImage implements Serializable {
 					|| s.charAt(0) == '\n') {
 				s = s.substring(1);
 			}
-			mSpannedDescription = Html.fromHtml(s);
+			mSpannedDescription = Html.fromHtml(s).toString();
 		}
 	}
 
-	public Spanned getFormattedDescription() {
+	public String getFormattedDescription() {
 		return mSpannedDescription;
 	}
 }

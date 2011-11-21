@@ -3,7 +3,7 @@ package org.pocketcampus.android.platform.sdk.ui.layout;
 import org.pocketcampus.R;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +36,7 @@ public class FeedInformationLayout extends RelativeLayout {
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mLayout = (RelativeLayout) inflater.inflate(
-				R.layout.sdk_list_entry_feed_view, null);
+				R.layout.sdk_feed_information_layout, null);
 		super.addView(mLayout);
 
 		mTitle = (TextView) findViewById(R.id.sdk_list_entry_feed_view_title);
@@ -59,8 +59,8 @@ public class FeedInformationLayout extends RelativeLayout {
 	 * 
 	 * @param text
 	 */
-	public void setImage(Drawable d) {
-		mImage.setImageDrawable(d);
+	public void setImage(Bitmap b) {
+		mImage.setImageBitmap(b);
 		mImage.setVisibility(View.VISIBLE);
 	}
 

@@ -8,7 +8,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
-import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
@@ -149,11 +148,16 @@ public class NewsMainView extends PluginView implements INewsView {
 					int position, long arg3) {
 				Toast.makeText(NewsMainView.this, "Hello", Toast.LENGTH_SHORT)
 						.show();
-				 Intent news = new Intent(getApplicationContext(),
-				 NewsItemView.class);
-				// news.putExtra("org.pocketcampus.news.newsitem",
-				// mModel.getNews().get(position));
-				 startActivity(news);
+				Intent news = new Intent(getApplicationContext(),
+						NewsItemView.class);
+				NewsItemWithImage toPass = mModel.getNews().get(position);
+				news.putExtra("org.pocketcampus.news.newsitem.title", toPass
+						.getNewsItem().getTitle());
+				news.putExtra("org.pocketcampus.news.newsitem.description",
+						toPass.getFormattedDescription());
+				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
+						toPass.getDrawable());
+				startActivity(news);
 			}
 		};
 		mListView.setOnLineClickListener(mOnItemClickListener);
@@ -189,8 +193,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		@Override
 		public LinearLayout getPictureLayout(NewsItemWithImage obj) {
-			return new LoaderImageView(NewsMainView.this, obj.getNewsItem()
-					.getImageUrl());
+			return new LoaderNewsImageView(NewsMainView.this, obj);
 		}
 	};
 }

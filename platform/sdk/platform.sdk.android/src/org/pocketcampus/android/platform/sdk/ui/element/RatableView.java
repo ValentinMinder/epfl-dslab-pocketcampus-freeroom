@@ -164,12 +164,12 @@ public class RatableView extends LinearLayout {
 			mVotesLine.setText(numbVotes
 					+ " "
 					+ mContext.getResources().getString(
-							R.string.nb_votes_plural));
+							R.string.sdk_nb_votes_plural));
 		} else {
 			mVotesLine.setText(numbVotes
 					+ " "
 					+ mContext.getResources().getString(
-							R.string.nb_votes_singular));
+							R.string.sdk_nb_votes_singular));
 		}
 	}
 
