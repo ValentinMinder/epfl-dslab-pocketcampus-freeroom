@@ -9,6 +9,7 @@ import org.pocketcampus.tool.build.template.SharedDotClasspathTemplate
 import org.pocketcampus.tool.build.template.ManifestTemplate;
 import org.pocketcampus.tool.build.template.ProguardTemplate;
 import org.pocketcampus.tool.build.template.ProjectDotProperties;
+import org.pocketcampus.tool.build.utils.FileUtils;
 
 class ApplicationBuilder {
 	def final public static APPLICATION_NAME = "merged"
@@ -21,25 +22,6 @@ class ApplicationBuilder {
 	def final private static TARGET_DIRECTORY_SERVER = TARGET_DIRECTORY + "server/";
 
 	def static plugins = new ArrayList();
-	
-	public static void deleteDirectory(String dirPath) {
-		if(!new File(dirPath).exists()) {
-			return
-		}
-		new File(dirPath).eachFile {
-			if(!it.getName().equals(".svn")) {
-				// skip the .svn directories
-				if(it.isDirectory()){
-					//println "recursing on " + it.absolutePath
-					deleteDirectory(it.absolutePath)
-					it.delete()
-				} else if(it.isFile()){
-					//println "deleting " + it.absolutePath
-					it.delete()
-				}
-			}
-		}
-	}
 
 	public static void main(String[] args) {
 		print "Listing plugins... "
@@ -59,9 +41,9 @@ class ApplicationBuilder {
 		println plugins.size() + " found."
 		
 		println "Cleaning up directories..."
-		//deleteDirectory(TARGET_DIRECTORY_ANDROID)
-		//deleteDirectory(TARGET_DIRECTORY_SHARED)
-		//deleteDirectory(TARGET_DIRECTORY_SERVER)
+//		FileUtils.deleteDirectory(TARGET_DIRECTORY_ANDROID)
+//		FileUtils.deleteDirectory(TARGET_DIRECTORY_SHARED)
+//		FileUtils.deleteDirectory(TARGET_DIRECTORY_SERVER)
 
 		println ""
 		
