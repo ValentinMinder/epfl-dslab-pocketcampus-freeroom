@@ -1,10 +1,13 @@
 package org.pocketcampus.android.platform.sdk.io;
 
+import java.util.concurrent.RejectedExecutionException;
+
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Request parameters:
@@ -33,7 +36,13 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		    }
 		});
 		
-		execute(params);
+		try {
+			execute(params);
+		} catch (RejectedExecutionException e) {
+			// Requests are being fired too quickly. This request will be ignored.
+			// Mostly happens when using monkey...
+			Log.e(this.toString(), "Too many requests running, exectuion rejected.");
+		}
 	}
 
 	@Override
