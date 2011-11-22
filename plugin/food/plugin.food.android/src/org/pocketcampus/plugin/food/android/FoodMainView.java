@@ -492,10 +492,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 *            displayed
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
-		Log.d("RATING", "Size of meals by suggestions list : "
-				+ mealsBySuggestions.size());
 
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
+			Log.d("RATING", "Size of meals by suggestions list : "
+					+ mealsBySuggestions.size());
+			
 			mLayout.removeFillerView();
 			RatableListViewElement l = new RatableListViewElement(this,
 					mealsBySuggestions, mMealLabeler);
