@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.news.server.parse.FeedsListParser;
@@ -24,13 +26,22 @@ import org.pocketcampus.plugin.news.shared.NewsService;
 public class NewsServiceImpl implements NewsService.Iface {
 
 	/** List of Feed Urls for English */
-	private List<String> mFeedUrls;
+	private HashMap<String, String> mFeedUrls;
 
 	/** List of Feeds for English */
 	private List<Feed> mFeedsList;
-	
+
 	/** List of NewsItems for English */
 	private List<NewsItem> mNewsItemsList;
+
+	/** List of Feed Urls for French */
+	private HashMap<String, String> mFeedUrlsFr;
+
+	/** List of Feeds for French */
+	private List<Feed> mFeedsListFr;
+
+	/** List of NewsItems for French */
+	private List<NewsItem> mNewsItemsListFr;
 
 	/** Date of the last Feeds update */
 	private Date mLastImportedFeeds;
@@ -46,7 +57,9 @@ public class NewsServiceImpl implements NewsService.Iface {
 		System.out.println("Starting News plugin server...");
 
 		mFeedsList = new ArrayList<Feed>();
+		mFeedsListFr = new ArrayList<Feed>();
 		mNewsItemsList = new ArrayList<NewsItem>();
+		mNewsItemsListFr = new ArrayList<NewsItem>();
 
 		getFeedsUrls();
 		importFeeds();
@@ -58,6 +71,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private void getFeedsUrls() {
 		FeedsListParser flp = new FeedsListParser("feeds_list_en.txt");
 		mFeedUrls = flp.getFeeds();
+		FeedsListParser flpFr = new FeedsListParser("feeds_list_fr.txt");
+		mFeedUrlsFr = flp.getFeeds();
 	}
 
 	/**
@@ -66,37 +81,48 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private void importFeeds() {
 		if (!isUpToDate(mLastImportedFeeds) || mNewsItemsList == null
 				|| mNewsItemsList.isEmpty()) {
-			System.out.println("Reimporting Feeds");
-			// There is no feed to download
-			if (mFeedUrls.isEmpty()) {
-				return;
-			}
-
-			if (mNewsItemsList != null) {
-				mNewsItemsList.clear();
-			}
-			if (mFeedsList != null) {
-				mFeedsList.clear();
-			}
-			// Create a parser for each feed and put the items into the list
-			RssParser parser;
-			Feed feed;
-			for (String feedUrl : mFeedUrls) {
-				parser = new RssParser(feedUrl);
-
-				parser.parse();
-				feed = parser.getFeed();
-
-				if (feed != null) {
-					mNewsItemsList.addAll(feed.getItems());
-					mFeedsList.add(feed);
-				}
-			}
-
-			// Sort the news (done asynchronously)
-			Collections.sort(mNewsItemsList, newsItemComparator);
-			mLastImportedFeeds = new Date();
+			importFeedForLanguage(mFeedUrls, mNewsItemsList, mFeedsList);
 		}
+		if (!isUpToDate(mLastImportedFeeds) || mNewsItemsListFr == null
+				|| mNewsItemsListFr.isEmpty()) {
+			importFeedForLanguage(mFeedUrlsFr, mNewsItemsListFr, mFeedsListFr);
+		}
+		mLastImportedFeeds = new Date();
+	}
+
+	private void importFeedForLanguage(HashMap<String, String> mFeedUrls,
+			List<NewsItem> mNewsItemsList, List<Feed> mFeedsList) {
+		System.out.println("<News> Reimporting Feeds");
+		// There is no feed to download
+		if (mFeedUrls.isEmpty()) {
+			return;
+		}
+
+		if (mNewsItemsList != null) {
+			mNewsItemsList.clear();
+		}
+		if (mFeedsList != null) {
+			mFeedsList.clear();
+		}
+		// Create a parser for each feed and put the items into the list
+		RssParser parser;
+		Feed feed;
+		Set<String> feedNames = mFeedUrls.keySet();
+		for (String feedName : feedNames) {
+			parser = new RssParser(feedName, mFeedUrls.get(feedName));
+
+			parser.parse();
+			feed = parser.getFeed();
+
+			if (feed != null) {
+				mNewsItemsList.addAll(feed.getItems());
+				mFeedsList.add(feed);
+			}
+		}
+
+		// Sort the news (done asynchronously)
+		Collections.sort(mNewsItemsList, newsItemComparator);
+
 	}
 
 	/**

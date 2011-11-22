@@ -12,7 +12,9 @@ import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +33,8 @@ public class NewsMainView extends PluginView implements INewsView {
 	private FeedListViewElement mListView;
 
 	private OnItemClickListener mOnItemClickListener;
+
+	private SharedPreferences prefs_;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -68,6 +72,8 @@ public class NewsMainView extends PluginView implements INewsView {
 		mLayout.setLayoutParams(layoutParams);
 		mLayout.setGravity(Gravity.CENTER_VERTICAL);
 
+		prefs_ = PreferenceManager.getDefaultSharedPreferences(this);
+
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
@@ -91,7 +97,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		if (newsList != null) {
 
 			// Add them to the listView
-			mListView = new FeedListViewElement(this, newsList,
+			mListView = new FeedListViewElement(this, filterList(newsList),
 					mNewsItemLabeler);
 
 			// Set onClickListener
@@ -104,6 +110,15 @@ public class NewsMainView extends PluginView implements INewsView {
 		} else {
 			mLayout.setText(getString(R.string.news_no_news));
 		}
+	}
+
+	private List<NewsItemWithImage> filterList(List<NewsItemWithImage> newsList) {
+		// for(String url: urls) {
+		// if(prefs_.getBoolean(NewsPreference.LOAD_RSS + url, true)) {
+		// urlsToDownload.add(url);
+		// }
+		// }
+		return newsList;
 	}
 
 	/**

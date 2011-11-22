@@ -31,19 +31,20 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class RssParser extends DefaultHandler {
-	private static final String TAG = "RssParser";
 
-	private String urlString_;
-	private Feed rssFeed_;
-	private StringBuilder text_;
-	private NewsItem item_;
-	private boolean inItem_;
-	private boolean inImage_;
-	private boolean inTextInput_;
+	private String mUrlString;
+	private String mFeedName;
+	private Feed mRssFeed;
+	private StringBuilder mText;
+	private NewsItem mItem;
+	private boolean mInItem;
+	private boolean mInImage;
+	private boolean mInTextInput;
 
-	public RssParser(String url) {
-		this.urlString_ = url;
-		this.text_ = new StringBuilder();
+	public RssParser(String feedName, String url) {
+		this.mUrlString = url;
+		this.mFeedName = feedName;
+		this.mText = new StringBuilder();
 	}
 
 	/**
@@ -56,7 +57,7 @@ public class RssParser extends DefaultHandler {
 		SAXParser sp = null;
 
 		try {
-			URL url = new URL(this.urlString_);
+			URL url = new URL(this.mUrlString);
 			urlInputStream = url.openConnection().getInputStream();
 			spf = SAXParserFactory.newInstance();
 			if (spf != null) {
@@ -80,7 +81,7 @@ public class RssParser extends DefaultHandler {
 	 * @return the parsed feed.
 	 */
 	public Feed getFeed() {
-		return (this.rssFeed_);
+		return (this.mRssFeed);
 	}
 
 	public void startElement(String uri, String localName, String qName,
@@ -91,80 +92,75 @@ public class RssParser extends DefaultHandler {
 
 		if (localName.equalsIgnoreCase("channel")
 				|| qName.equalsIgnoreCase("channel")) {
-			this.rssFeed_ = new Feed();
+			this.mRssFeed = new Feed();
 		} else if (localName.equalsIgnoreCase("item")
-				&& (this.rssFeed_ != null) || qName.equalsIgnoreCase("item")) {
-			this.item_ = new NewsItem();
-			this.inItem_ = true;
+				&& (this.mRssFeed != null) || qName.equalsIgnoreCase("item")) {
+			this.mItem = new NewsItem();
+			this.mItem.setFeed(mFeedName);
+			this.mInItem = true;
 		} else if (localName.equalsIgnoreCase("image")
 				|| qName.equalsIgnoreCase("image")) {
-			inImage_ = true;
+			mInImage = true;
 		} else if (localName.equalsIgnoreCase("textInput")
 				|| qName.equalsIgnoreCase("textInput")) {
-			inTextInput_ = true;
+			mInTextInput = true;
 		}
 	}
 
 	public void endElement(String uri, String localName, String qName) {
-		if (this.rssFeed_ == null)
+		if (this.mRssFeed == null)
 			return;
 
 		// Special cases image and textInput - not managed (yet)
-		if (this.inImage_) {
+		if (this.mInImage) {
 			if (localName.equalsIgnoreCase("image")
 					|| qName.equalsIgnoreCase("image"))
-				inImage_ = false;
+				mInImage = false;
 			return;
 		}
-		if (this.inTextInput_) {
+		if (this.mInTextInput) {
 			if (localName.equalsIgnoreCase("textInput")
 					|| qName.equalsIgnoreCase("textInput"))
-				inTextInput_ = false;
+				mInTextInput = false;
 			return;
 		}
 
 		if (localName.equalsIgnoreCase("item")
 				|| qName.equalsIgnoreCase("item")) {
-			this.inItem_ = false;
-			this.rssFeed_.addToItems(this.item_);
+			this.mInItem = false;
+			this.mRssFeed.addToItems(this.mItem);
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
-			if (this.inItem_ && this.item_ != null) {
-				this.item_.setTitle(this.text_.toString().trim());
+			if (this.mInItem && this.mItem != null) {
+				this.mItem.setTitle(this.mText.toString().trim());
 			} else {
-				this.rssFeed_.setTitle(this.text_.toString().trim());
-				// System.out.println("Set RSS feed title to "
-				// + rssFeed_.getTitle());
+				this.mRssFeed.setTitle(this.mText.toString().trim());
+				this.mRssFeed.setTitle(mFeedName);
 			}
 		} else if (localName.equalsIgnoreCase("link")
 				|| qName.equalsIgnoreCase("link")) {
-			if (this.inItem_ && this.item_ != null) {
-				this.item_.setLink(text_.toString().trim());
+			if (this.mInItem && this.mItem != null) {
+				this.mItem.setLink(mText.toString().trim());
 			} else {
-				this.rssFeed_.setLink(text_.toString().trim());
-				// System.out
-				// .println("Set RSS feed link to " + rssFeed_.getLink());
+				this.mRssFeed.setLink(mText.toString().trim());
 			}
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
-			if (this.inItem_ && this.item_ != null) {
-				this.item_.setDescription(text_.toString().trim());
+			if (this.mInItem && this.mItem != null) {
+				this.mItem.setDescription(mText.toString().trim());
 			} else {
-				this.rssFeed_.setDescription(text_.toString().trim());
-				// System.out.println("Set RSS feed description to "
-				// + rssFeed_.getDescription());
-
+				this.mRssFeed.setDescription(mText.toString().trim());
 			}
 		} else if (localName.equalsIgnoreCase("pubDate")
 				|| qName.equalsIgnoreCase("pubDate")) {
-			if (this.inItem_ && this.item_ != null) {
-				String pubDate = text_.toString().trim();
-				this.item_.setPubDate(pubDate);
-				this.item_.setPubDateDate(getPubDateDate(pubDate));
+			if (this.mInItem && this.mItem != null) {
+				String pubDate = mText.toString().trim();
+				this.mItem.setPubDate(pubDate);
+				this.mItem.setPubDateDate(getPubDateDate(pubDate));
 			}
 		}
 
-		this.text_ = new StringBuilder();
+		this.mText = new StringBuilder();
 	}
 
 	public static long getPubDateDate(String pubDate) {
@@ -187,6 +183,6 @@ public class RssParser extends DefaultHandler {
 	}
 
 	public void characters(char[] ch, int start, int length) {
-		this.text_.append(ch, start, length);
+		this.mText.append(ch, start, length);
 	}
 }

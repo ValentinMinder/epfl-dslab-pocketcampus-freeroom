@@ -10,6 +10,9 @@ import org.pocketcampus.plugin.news.android.iface.INewsView;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
@@ -21,9 +24,14 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 	/** List of news items to display. */
 	private List<NewsItemWithImage> mNewsItems;
-
+	
+	/**Access to the preferences*/
+	private SharedPreferences prefs_;
+	
+	private List<NewsItemWithImage> filteredList;
 	/** List of Feeds to display */
 	private List<Feed> mNewsFeeds;
+
 
 	@Override
 	protected Class<? extends IView> getViewInterface() {
