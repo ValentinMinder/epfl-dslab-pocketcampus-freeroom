@@ -50,13 +50,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 			HashMap<String, ? extends Vector<? extends Object>> items,
 			IRatableViewConstructor viewConstructor,
 			IRatableViewLabeler<? extends Object> viewLabeler, Context context) {
-		/** Cache the LayoutInflate to avoid asking for a new one each time. */
-		this.mContext = context;
-		this.mInflater = LayoutInflater.from(context);
-		this.mHeaders = headers;
-		this.mChildren = items;
-		this.mViewConstructor = viewConstructor;
-		this.mViewLabeler = viewLabeler;
+		if (headers != null && items != null && viewConstructor != null
+				&& viewLabeler != null && context != null) {
+			/** Cache the LayoutInflate to avoid asking for a new one each time. */
+			this.mContext = context;
+			this.mInflater = LayoutInflater.from(context);
+			this.mHeaders = headers;
+			this.mChildren = items;
+			this.mViewConstructor = viewConstructor;
+			this.mViewLabeler = viewLabeler;
+		}
 	}
 
 	@Override
