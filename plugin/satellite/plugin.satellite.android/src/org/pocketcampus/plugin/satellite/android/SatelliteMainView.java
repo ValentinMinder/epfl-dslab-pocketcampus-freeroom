@@ -135,7 +135,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		Beer beer = mModel.getBeerOfMonth();
 		if (beer != null) {
 			TextView t = new TextView(this);
-			t.setText(beer.getPictureUrl());
+			t.setText(beer.getName() + "\n" + beer.getDescription() + "\n\n" + beer.getPictureUrl());
 			mLayout.removeFillerView();
 			mLayout.addFillerView(t);
 		}

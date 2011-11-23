@@ -71,15 +71,32 @@ public class BeerParser {
 									}
 									br = br.nextElementSibling();
 								}
-								mBeerDescription = mBeerDescription.trim();
+								mBeerDescription = mBeerDescription;
 							}
 						}
 					}
 				}
 			}
 		}
+		cleantexts();
 		mBeer = new Beer((mBeerName+mBeerDescription).hashCode(), mBeerName, mBeerDescription);
 		mBeer.setPictureUrl(mBeerPictureLink);
+	}
+	
+	private void cleantexts() {
+		mBeerName = mBeerName.replace("&agrave;", "à");
+		mBeerName = mBeerName.replace("&eacute", "é");
+		mBeerName = mBeerName.replace("&egrave;", "è");
+		mBeerName = mBeerName.replace("&ucirc;", "û");
+		mBeerName = mBeerName.replace("&deg", "°");
+		mBeerName = mBeerName.replace(";", "");
+		
+		mBeerDescription = mBeerDescription.replace("&agrave;", "à");
+		mBeerDescription = mBeerDescription.replace("&eacute", "é");
+		mBeerDescription = mBeerDescription.replace("&egrave;", "è");
+		mBeerDescription = mBeerDescription.replace("&ucirc;", "û");
+		mBeerDescription = mBeerDescription.replace("&deg", "°");
+		mBeerDescription = mBeerDescription.replace(";", "");
 	}
 	
 	public Beer getBeerOfMonth() {
