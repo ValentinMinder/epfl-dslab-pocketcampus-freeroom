@@ -15,7 +15,8 @@ public enum Affluence implements org.apache.thrift.TEnum {
   MEDIUM(1),
   CROWDED(2),
   FULL(3),
-  CLOSED(4);
+  CLOSED(4),
+  ERROR(5);
 
   private final int value;
 
@@ -46,6 +47,8 @@ public enum Affluence implements org.apache.thrift.TEnum {
         return FULL;
       case 4:
         return CLOSED;
+      case 5:
+        return ERROR;
       default:
         return null;
     }

@@ -1417,14 +1417,14 @@ public class SatelliteService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<Beer>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                this.success = new ArrayList<Beer>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
                 {
-                  Beer _elem6; // required
-                  _elem6 = new Beer();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
+                  Beer _elem2; // required
+                  _elem2 = new Beer();
+                  _elem2.read(iprot);
+                  this.success.add(_elem2);
                 }
                 iprot.readListEnd();
               }
@@ -1450,9 +1450,9 @@ public class SatelliteService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Beer _iter7 : this.success)
+          for (Beer _iter3 : this.success)
           {
-            _iter7.write(oprot);
+            _iter3.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1962,14 +1962,14 @@ public class SatelliteService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<Sandwich>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                this.success = new ArrayList<Sandwich>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
                 {
-                  Sandwich _elem10; // required
-                  _elem10 = new Sandwich();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
+                  Sandwich _elem6; // required
+                  _elem6 = new Sandwich();
+                  _elem6.read(iprot);
+                  this.success.add(_elem6);
                 }
                 iprot.readListEnd();
               }
@@ -1995,9 +1995,9 @@ public class SatelliteService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Sandwich _iter11 : this.success)
+          for (Sandwich _iter7 : this.success)
           {
-            _iter11.write(oprot);
+            _iter7.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -3030,14 +3030,14 @@ public class SatelliteService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-                this.success = new ArrayList<Event>(_list12.size);
-                for (int _i13 = 0; _i13 < _list12.size; ++_i13)
+                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                this.success = new ArrayList<Event>(_list8.size);
+                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
                 {
-                  Event _elem14; // required
-                  _elem14 = new Event();
-                  _elem14.read(iprot);
-                  this.success.add(_elem14);
+                  Event _elem10; // required
+                  _elem10 = new Event();
+                  _elem10.read(iprot);
+                  this.success.add(_elem10);
                 }
                 iprot.readListEnd();
               }
@@ -3063,9 +3063,9 @@ public class SatelliteService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Event _iter15 : this.success)
+          for (Event _iter11 : this.success)
           {
-            _iter15.write(oprot);
+            _iter11.write(oprot);
           }
           oprot.writeListEnd();
         }

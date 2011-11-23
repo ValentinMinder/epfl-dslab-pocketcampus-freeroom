@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.satellite.android.iface.ISatelliteEventsView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteModel;
+import org.pocketcampus.plugin.satellite.android.iface.ISatelliteSandwichesView;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 import org.pocketcampus.plugin.satellite.shared.Event;
@@ -24,7 +26,9 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 
 	/** The listeners for the state of the view */
 	ISatelliteMainView mListeners = (ISatelliteMainView) getListeners();
-	
+//	ISatelliteSandwichesView mSandwichesListeners = (ISatelliteSandwichesView) getListeners();
+//	ISatelliteEventsView mEventsListeners = (ISatelliteEventsView) getListeners();
+
 	private Beer mBeerOfMonth;
 	private List<Beer> mBeers;
 	private List<Sandwich> mSandwiches;
@@ -53,7 +57,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	 */
 	@Override
 	public void setBeerOfMonth(Beer beer) {
-		if(beer != null) {			
+		if (beer != null) {
 			mBeerOfMonth = beer;
 			mListeners.beerUpdated();
 		}
@@ -72,7 +76,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	 */
 	@Override
 	public void setAllBeers(List<Beer> list) {
-		if(list != null && !list.isEmpty()) {
+		if (list != null && !list.isEmpty()) {
 			mBeers = list;
 			mListeners.beersUpdated();
 		}
@@ -93,7 +97,8 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	@Override
 	public void setSandwiches(List<Sandwich> list) {
 		if (list != null && !list.isEmpty()) {
-			Log.d("SANDWICHES", "Got " + list.size() + " sandwiches from the server");
+			Log.d("SANDWICHES", "Got " + list.size()
+					+ " sandwiches from the server");
 			mSandwiches = list;
 			mListeners.sandwichesUpdated();
 		}
@@ -112,12 +117,12 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	 */
 	@Override
 	public void setEvents(List<Event> list) {
-		if(list != null && !list.isEmpty()) {
+		if (list != null && !list.isEmpty()) {
 			mEvents = list;
 			mListeners.eventsUpdated();
 		}
 	}
-	
+
 	/**
 	 * Returns the current affluence at Satellite
 	 */

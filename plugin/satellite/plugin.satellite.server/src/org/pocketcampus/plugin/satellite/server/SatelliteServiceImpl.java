@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.plugin.satellite.server.parse.AffluenceParser;
+import org.pocketcampus.plugin.satellite.server.parse.BeerParser;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 import org.pocketcampus.plugin.satellite.shared.Event;
@@ -26,8 +28,17 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	/** The list of next events at Satellite */
 	private List<Event> mEvents;
 
-	/** Last import date of sandwiches and beers (particularly the monthly beer) */
-	private Date mLastImported;
+	/** Last import date of events */
+	private Date mLastImportedEvents;
+	/** Last import date of beers */
+	private Date mLastImportedBeers;
+	/** Last import date of the beer of the month */
+	private Date mLastImportedBeer;
+	
+	/** The parser for the affluence */
+	private AffluenceParser mAffluenceParser;
+	/** The parser for the beer of the month */
+	private BeerParser mBeerParser;
 
 	/**
 	 * The Constructor. When first started, the Satellite server gets the Beers
@@ -40,7 +51,9 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 		mSandwiches = new ArrayList<Sandwich>();
 		mEvents = new ArrayList<Event>();
 
-		mLastImported = new Date();
+		mLastImportedEvents = new Date();
+		mLastImportedBeers = new Date();
+		mLastImportedBeer = new Date();
 	}
 
 	/**
@@ -50,9 +63,9 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	 */
 	@Override
 	public Beer getBeerOfTheMonth() throws TException {
-		Beer beer = null;
-
-		return beer;
+		mBeerParser = new BeerParser();
+		mBeerParser.parse();
+		return mBeerParser.getBeerOfMonth();
 	}
 
 	/**
@@ -90,7 +103,8 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	 */
 	@Override
 	public Affluence getAffluence() throws TException {
-		Affluence affluence = Affluence.CLOSED;
+		mAffluenceParser = new AffluenceParser();
+		Affluence affluence = mAffluenceParser.getAffluence();
 		return affluence;
 	}
 
@@ -130,7 +144,5 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 		mSandwiches.add(new Sandwich(("Aubergine grillée").hashCode(), "Aubergine grillée"));
 		mSandwiches.add(new Sandwich(("Viande séchée")
 				.hashCode(), "Viande séchée"));
-		mSandwiches.add(new Sandwich(("Autres")
-				.hashCode(), "Autres"));
 	}
 }

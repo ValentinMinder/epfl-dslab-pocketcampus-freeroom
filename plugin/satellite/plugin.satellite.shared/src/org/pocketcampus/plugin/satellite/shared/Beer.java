@@ -28,13 +28,13 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
-  private static final org.apache.thrift.protocol.TField PICTURE_FIELD_DESC = new org.apache.thrift.protocol.TField("picture", org.apache.thrift.protocol.TType.LIST, (short)5);
+  private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("pictureUrl", org.apache.thrift.protocol.TType.STRING, (short)5);
 
   public long Id; // required
   public String name; // required
   public String description; // required
   public double price; // required
-  public List<Byte> picture; // required
+  public String pictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -42,7 +42,7 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
     NAME((short)2, "name"),
     DESCRIPTION((short)3, "description"),
     PRICE((short)4, "price"),
-    PICTURE((short)5, "picture");
+    PICTURE_URL((short)5, "pictureUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,8 +65,8 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
           return DESCRIPTION;
         case 4: // PRICE
           return PRICE;
-        case 5: // PICTURE
-          return PICTURE;
+        case 5: // PICTURE_URL
+          return PICTURE_URL;
         default:
           return null;
       }
@@ -122,9 +122,8 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PRICE, new org.apache.thrift.meta_data.FieldMetaData("price", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.PICTURE, new org.apache.thrift.meta_data.FieldMetaData("picture", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BYTE))));
+    tmpMap.put(_Fields.PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("pictureUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Beer.class, metaDataMap);
   }
@@ -158,12 +157,8 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
       this.description = other.description;
     }
     this.price = other.price;
-    if (other.isSetPicture()) {
-      List<Byte> __this__picture = new ArrayList<Byte>();
-      for (Byte other_element : other.picture) {
-        __this__picture.add(other_element);
-      }
-      this.picture = __this__picture;
+    if (other.isSetPictureUrl()) {
+      this.pictureUrl = other.pictureUrl;
     }
   }
 
@@ -179,7 +174,7 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
     this.description = null;
     setPriceIsSet(false);
     this.price = 0.0;
-    this.picture = null;
+    this.pictureUrl = null;
   }
 
   public long getId() {
@@ -276,42 +271,27 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
     __isset_bit_vector.set(__PRICE_ISSET_ID, value);
   }
 
-  public int getPictureSize() {
-    return (this.picture == null) ? 0 : this.picture.size();
+  public String getPictureUrl() {
+    return this.pictureUrl;
   }
 
-  public java.util.Iterator<Byte> getPictureIterator() {
-    return (this.picture == null) ? null : this.picture.iterator();
-  }
-
-  public void addToPicture(byte elem) {
-    if (this.picture == null) {
-      this.picture = new ArrayList<Byte>();
-    }
-    this.picture.add(elem);
-  }
-
-  public List<Byte> getPicture() {
-    return this.picture;
-  }
-
-  public Beer setPicture(List<Byte> picture) {
-    this.picture = picture;
+  public Beer setPictureUrl(String pictureUrl) {
+    this.pictureUrl = pictureUrl;
     return this;
   }
 
-  public void unsetPicture() {
-    this.picture = null;
+  public void unsetPictureUrl() {
+    this.pictureUrl = null;
   }
 
-  /** Returns true if field picture is set (has been assigned a value) and false otherwise */
-  public boolean isSetPicture() {
-    return this.picture != null;
+  /** Returns true if field pictureUrl is set (has been assigned a value) and false otherwise */
+  public boolean isSetPictureUrl() {
+    return this.pictureUrl != null;
   }
 
-  public void setPictureIsSet(boolean value) {
+  public void setPictureUrlIsSet(boolean value) {
     if (!value) {
-      this.picture = null;
+      this.pictureUrl = null;
     }
   }
 
@@ -349,11 +329,11 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
       }
       break;
 
-    case PICTURE:
+    case PICTURE_URL:
       if (value == null) {
-        unsetPicture();
+        unsetPictureUrl();
       } else {
-        setPicture((List<Byte>)value);
+        setPictureUrl((String)value);
       }
       break;
 
@@ -374,8 +354,8 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
     case PRICE:
       return Double.valueOf(getPrice());
 
-    case PICTURE:
-      return getPicture();
+    case PICTURE_URL:
+      return getPictureUrl();
 
     }
     throw new IllegalStateException();
@@ -396,8 +376,8 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
       return isSetDescription();
     case PRICE:
       return isSetPrice();
-    case PICTURE:
-      return isSetPicture();
+    case PICTURE_URL:
+      return isSetPictureUrl();
     }
     throw new IllegalStateException();
   }
@@ -451,12 +431,12 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
         return false;
     }
 
-    boolean this_present_picture = true && this.isSetPicture();
-    boolean that_present_picture = true && that.isSetPicture();
-    if (this_present_picture || that_present_picture) {
-      if (!(this_present_picture && that_present_picture))
+    boolean this_present_pictureUrl = true && this.isSetPictureUrl();
+    boolean that_present_pictureUrl = true && that.isSetPictureUrl();
+    if (this_present_pictureUrl || that_present_pictureUrl) {
+      if (!(this_present_pictureUrl && that_present_pictureUrl))
         return false;
-      if (!this.picture.equals(that.picture))
+      if (!this.pictureUrl.equals(that.pictureUrl))
         return false;
     }
 
@@ -487,10 +467,10 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
     if (present_price)
       builder.append(price);
 
-    boolean present_picture = true && (isSetPicture());
-    builder.append(present_picture);
-    if (present_picture)
-      builder.append(picture);
+    boolean present_pictureUrl = true && (isSetPictureUrl());
+    builder.append(present_pictureUrl);
+    if (present_pictureUrl)
+      builder.append(pictureUrl);
 
     return builder.toHashCode();
   }
@@ -543,12 +523,12 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPicture()).compareTo(typedOther.isSetPicture());
+    lastComparison = Boolean.valueOf(isSetPictureUrl()).compareTo(typedOther.isSetPictureUrl());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetPicture()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.picture, typedOther.picture);
+    if (isSetPictureUrl()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pictureUrl, typedOther.pictureUrl);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -600,19 +580,9 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // PICTURE
-          if (field.type == org.apache.thrift.protocol.TType.LIST) {
-            {
-              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.picture = new ArrayList<Byte>(_list0.size);
-              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-              {
-                byte _elem2; // required
-                _elem2 = iprot.readByte();
-                this.picture.add(_elem2);
-              }
-              iprot.readListEnd();
-            }
+        case 5: // PICTURE_URL
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.pictureUrl = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -653,17 +623,10 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
       oprot.writeDouble(this.price);
       oprot.writeFieldEnd();
     }
-    if (this.picture != null) {
-      if (isSetPicture()) {
-        oprot.writeFieldBegin(PICTURE_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.BYTE, this.picture.size()));
-          for (byte _iter3 : this.picture)
-          {
-            oprot.writeByte(_iter3);
-          }
-          oprot.writeListEnd();
-        }
+    if (this.pictureUrl != null) {
+      if (isSetPictureUrl()) {
+        oprot.writeFieldBegin(PICTURE_URL_FIELD_DESC);
+        oprot.writeString(this.pictureUrl);
         oprot.writeFieldEnd();
       }
     }
@@ -701,13 +664,13 @@ public class Beer implements org.apache.thrift.TBase<Beer, Beer._Fields>, java.i
       sb.append(this.price);
       first = false;
     }
-    if (isSetPicture()) {
+    if (isSetPictureUrl()) {
       if (!first) sb.append(", ");
-      sb.append("picture:");
-      if (this.picture == null) {
+      sb.append("pictureUrl:");
+      if (this.pictureUrl == null) {
         sb.append("null");
       } else {
-        sb.append(this.picture);
+        sb.append(this.pictureUrl);
       }
       first = false;
     }

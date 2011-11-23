@@ -8,7 +8,7 @@ import java.util.Date;
  * 
  * @param <LabeledObjectType>
  */
-public interface IRichLabeler<LabeledObjectType> {
+public interface IRichLabeler<LabeledObjectType> extends ILabeler<LabeledObjectType>{
 
 	/** Returns the title of the Labeled Object */
 	public String getTitle(LabeledObjectType obj);

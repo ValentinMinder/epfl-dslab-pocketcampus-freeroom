@@ -10,7 +10,7 @@ struct Beer {
 	2: required string name;
 	3: required string description;
 	4: optional double price;
-	5: optional list<byte> picture;
+	5: optional string pictureUrl;
 }
 
 struct Sandwich {
@@ -24,6 +24,7 @@ enum Affluence {
 	CROWDED;
 	FULL;
 	CLOSED;
+	ERROR;
 }
 
 struct Event {
