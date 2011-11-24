@@ -24,7 +24,6 @@ public class DirectorySearchSciperRequest extends Request<DirectoryController, I
 	protected void onError(DirectoryController controller, Exception e) {
 		System.out.println("onError");
 		controller.getModel().notifyNetworkError();
-		e.printStackTrace();
 	}
 
 }

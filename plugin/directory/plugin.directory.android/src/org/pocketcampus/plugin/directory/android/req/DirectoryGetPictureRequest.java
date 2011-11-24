@@ -25,11 +25,12 @@ public class DirectoryGetPictureRequest extends Request<DirectoryController, Ifa
 
 	@Override
 	protected void onError(DirectoryController controller, Exception e) {
-		System.out.println("onError "+e.getMessage());
-		//if(e.getMessage().equals("sorry")){
-			((DirectoryModel) controller.getModel()).setProfilePicture(null);
-			System.out.println("no foto");
-		
+		if(e != null){
+			System.out.println("onError "+e.getMessage());
+			//if(e.getMessage().equals("sorry")){
+				((DirectoryModel) controller.getModel()).setProfilePicture(null);
+				System.out.println("no foto");
+		}
 	}
 
 }
