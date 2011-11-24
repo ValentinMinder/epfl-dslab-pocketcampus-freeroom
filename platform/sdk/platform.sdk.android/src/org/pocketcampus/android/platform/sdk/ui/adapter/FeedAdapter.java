@@ -39,8 +39,10 @@ public class FeedAdapter extends AbstractArrayAdapter {
 	public FeedAdapter(Context context, List<? extends Object> items,
 			IFeedViewLabeler<? extends Object> labeler) {
 		super(context, items);
-		mContext = context;
-		mLabeler = labeler;
+		if (items != null && labeler != null) {
+			mContext = context;
+			mLabeler = labeler;
+		}
 	}
 
 	/**

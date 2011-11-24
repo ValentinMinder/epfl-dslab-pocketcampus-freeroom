@@ -42,6 +42,9 @@ public class RatableAdapter extends AbstractArrayAdapter {
 	public RatableAdapter(Context context, List<? extends Object> items,
 			IRatableViewLabeler<? extends Object> labeler) {
 		super(context, items);
+		if (items == null || labeler == null) {
+			throw new IllegalArgumentException();
+		}
 		mContext = context;
 		mLabeler = labeler;
 	}

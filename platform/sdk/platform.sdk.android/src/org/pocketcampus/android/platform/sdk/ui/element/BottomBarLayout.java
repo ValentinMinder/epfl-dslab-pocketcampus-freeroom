@@ -18,7 +18,7 @@ public class BottomBarLayout extends RelativeLayout implements Element {
 		super(context, attrs);
 		initialize(context);
 	}
-	
+
 	public BottomBarLayout(Context context) {
 		super(context);
 		initialize(context);
@@ -26,13 +26,16 @@ public class BottomBarLayout extends RelativeLayout implements Element {
 
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		RelativeLayout bottomBarLayout = (RelativeLayout) inflater.inflate(R.layout.sdk_bottombar_layout, null);
+		RelativeLayout bottomBarLayout = (RelativeLayout) inflater.inflate(
+				R.layout.sdk_bottombar_layout, null);
 		super.addView(bottomBarLayout);
-		
-		mInnerLayout = (RelativeLayout) bottomBarLayout.findViewById(R.id.sdk_bottombar_layout_inner);
-		mBottomBarTextView = (TextView) bottomBarLayout.findViewById(R.id.sdk_bottombar_layout_bottombar);
+
+		mInnerLayout = (RelativeLayout) bottomBarLayout
+				.findViewById(R.id.sdk_bottombar_layout_inner);
+		mBottomBarTextView = (TextView) bottomBarLayout
+				.findViewById(R.id.sdk_bottombar_layout_bottombar);
 	}
-	
+
 	@Override
 	public void addView(View child) {
 		mInnerLayout.addView(child);

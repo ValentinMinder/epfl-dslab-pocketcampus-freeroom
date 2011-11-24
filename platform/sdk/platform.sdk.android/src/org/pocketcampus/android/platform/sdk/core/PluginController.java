@@ -20,15 +20,18 @@ import android.os.IBinder;
 
 /**
  * @author florian
- *
+ * 
  */
 public abstract class PluginController extends Service {
 	/** Socket connection for this plugin. */
 	protected TSocket mSocket;
 
-	protected TServiceClient getClient(TServiceClientFactory<? extends TServiceClient> clientFactory, String pluginName) {
+	protected TServiceClient getClient(
+			TServiceClientFactory<? extends TServiceClient> clientFactory,
+			String pluginName) {
 		TServiceClient client = null;
-		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT + "/" + pluginName;
+		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT
+				+ "/" + pluginName;
 
 		try {
 			HttpClient httpInitialClient = new DefaultHttpClient();
@@ -48,21 +51,24 @@ public abstract class PluginController extends Service {
 	}
 
 	/**
-	 * From http://foo.jasonhudgins.com/2009/08/http-connection-reuse-in-android.html
+	 * From
+	 * http://foo.jasonhudgins.com/2009/08/http-connection-reuse-in-android.html
+	 * 
 	 * @return
 	 */
 	public static DefaultHttpClient getThreadSafeClient() {
 		DefaultHttpClient client = new DefaultHttpClient();
 		ClientConnectionManager mgr = client.getConnectionManager();
 		HttpParams params = client.getParams();
-		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()), params);
+		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
+				mgr.getSchemeRegistry()), params);
 
 		return client;
 	}
 
 	/**
-	 * Returns the Binder used the connect the Model (the <code>Activity</code>s) to 
-	 * the Service (which runs the Controller and contains the Model). 
+	 * Returns the Binder used the connect the Model (the <code>Activity</code>
+	 * s) to the Service (which runs the Controller and contains the Model).
 	 */
 	public class ControllerBinder extends Binder {
 		public PluginController getController() {
@@ -80,13 +86,16 @@ public abstract class PluginController extends Service {
 
 	/**
 	 * Returns the application Model, used by the Views.
+	 * 
 	 * @return
 	 */
 	public abstract PluginModel getModel();
 
 	/**
-	 * Gets this plugin's client. May return an exception if connection to the server is impossible, but won't return null.
-	 * FIXME for now we'll try to connect multiple times in a row if the model calls getCLient every time...
+	 * Gets this plugin's client. May return an exception if connection to the
+	 * server is impossible, but won't return null. FIXME for now we'll try to
+	 * connect multiple times in a row if the model calls getCLient every
+	 * time...
 	 * 
 	 * @return
 	 * @throws TException
@@ -94,7 +103,7 @@ public abstract class PluginController extends Service {
 
 	@Override
 	public void onDestroy() {
-		if(mSocket != null) {
+		if (mSocket != null) {
 			mSocket.close();
 		}
 
@@ -102,21 +111,3 @@ public abstract class PluginController extends Service {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

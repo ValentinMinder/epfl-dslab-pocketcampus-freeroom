@@ -13,11 +13,13 @@ import android.widget.TextView;
 public class LabeledArrayAdapter extends AbstractArrayAdapter {
 	private LayoutInflater mInflater;
 	private ILabeler mLabeler;
-	
-	public LabeledArrayAdapter(Context context, List<? extends Object> items, ILabeler<? extends Object> labeler) {
+
+	public LabeledArrayAdapter(Context context, List<? extends Object> items,
+			ILabeler<? extends Object> labeler) {
 		super(context, items);
-		
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		mInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mLabeler = labeler;
 	}
 
@@ -27,11 +29,11 @@ public class LabeledArrayAdapter extends AbstractArrayAdapter {
 		if (view == null) {
 			view = mInflater.inflate(mLayoutResourceId, null);
 		}
-		
+
 		TextView textView = (TextView) view.findViewById(mTextViewResourceId);
 		Object obj = getItem(position);
 		textView.setText(mLabeler.getLabel(obj));
-		
+
 		return view;
 	}
 }
