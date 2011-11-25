@@ -15,8 +15,8 @@ import android.util.Log;
  * Takes care of tagging the meal according to the different patterns Used for
  * generating suggestions for meals
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class MealTagger {

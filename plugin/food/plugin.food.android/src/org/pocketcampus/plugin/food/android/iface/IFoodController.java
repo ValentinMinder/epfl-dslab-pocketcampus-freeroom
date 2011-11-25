@@ -8,8 +8,8 @@ import org.pocketcampus.plugin.food.shared.Meal;
 /**
  * The interface that defines the public methods of FoodController
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public interface IFoodController {

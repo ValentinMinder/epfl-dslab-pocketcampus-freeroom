@@ -14,8 +14,8 @@ import android.util.Log;
  * 
  * A request to the server for all Sandwiches
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class SandwichesRequest extends

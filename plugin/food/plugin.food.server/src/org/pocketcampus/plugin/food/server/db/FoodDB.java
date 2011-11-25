@@ -201,7 +201,6 @@ public class FoodDB {
 			System.out.println("#Food Database: inserted meals");
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("#Food Database: Problem in insert meal.");
 			return false;
 		} finally {

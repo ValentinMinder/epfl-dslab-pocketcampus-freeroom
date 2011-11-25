@@ -14,7 +14,7 @@ import android.util.Log;
  * Controller for the news plugin. Takes care of interactions between the model
  * and the view and gets information from the server.
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 public class NewsController extends PluginController implements INewsController {
 

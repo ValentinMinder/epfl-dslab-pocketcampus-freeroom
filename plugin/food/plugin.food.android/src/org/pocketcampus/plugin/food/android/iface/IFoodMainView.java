@@ -6,8 +6,8 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
 /**
  * The interface that defines the public methods of FoodMainView
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch) *
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public interface IFoodMainView extends IView {
 

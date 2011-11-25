@@ -1,11 +1,6 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.ByteBuffer;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

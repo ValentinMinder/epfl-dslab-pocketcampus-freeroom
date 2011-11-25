@@ -25,8 +25,8 @@ import android.util.Log;
  * Controller for the food plugin. Takes care of interactions between the model
  * and the view and gets information from the server.
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class FoodController extends PluginController implements IFoodController {
 

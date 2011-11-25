@@ -26,8 +26,8 @@ import android.content.SharedPreferences;
  * The Model of the food plugin, used to handle the information that is going to
  * be displayed in the views
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodModel extends PluginModel implements IFoodModel {

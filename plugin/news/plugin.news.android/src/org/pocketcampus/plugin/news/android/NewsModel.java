@@ -11,7 +11,6 @@ import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * 

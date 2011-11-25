@@ -38,8 +38,8 @@ import android.widget.RelativeLayout;
  * Displayed a list of choices the user can say he likes or dislikes, for the
  * meals to be filtered
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodSuggestionsView extends PluginView {

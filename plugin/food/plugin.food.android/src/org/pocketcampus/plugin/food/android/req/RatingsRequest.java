@@ -14,8 +14,8 @@ import android.util.Log;
  * 
  * A request to the server for all Ratings for all Meals
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class RatingsRequest extends

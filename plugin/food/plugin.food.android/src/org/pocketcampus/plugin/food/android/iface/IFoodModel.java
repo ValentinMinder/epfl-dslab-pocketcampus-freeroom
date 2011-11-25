@@ -17,8 +17,8 @@ import android.content.Context;
 /**
  * The interface that defines the public methods of FoodModel
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public interface IFoodModel {

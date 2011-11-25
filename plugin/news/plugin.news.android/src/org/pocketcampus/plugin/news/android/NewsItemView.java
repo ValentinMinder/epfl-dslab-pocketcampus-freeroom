@@ -9,6 +9,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
+/**
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ */
+
 public class NewsItemView extends PluginView {
 	private NewsController mController;
 	private INewsModel mModel;
@@ -54,10 +59,11 @@ public class NewsItemView extends PluginView {
 
 		if (mTitle != null) {
 			mLayout.setTitle(mTitle);
-		} if(mDescription != null){
-			mLayout.setDescription(mDescription
-					);}
-		if(mBitmap != null){
+		}
+		if (mDescription != null) {
+			mLayout.setDescription(mDescription);
+		}
+		if (mBitmap != null) {
 			mLayout.setImage(mBitmap);
 		}
 		// } else {

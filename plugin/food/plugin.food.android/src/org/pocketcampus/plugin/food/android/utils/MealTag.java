@@ -4,8 +4,8 @@ package org.pocketcampus.plugin.food.android.utils;
  * 
  * The enum representing all possible tags for suggestions
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public enum MealTag {

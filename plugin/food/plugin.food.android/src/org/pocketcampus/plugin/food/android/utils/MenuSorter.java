@@ -16,8 +16,8 @@ import org.pocketcampus.plugin.food.shared.Sandwich;
  * Used to sort the Meals according to their Restaurants or Ratings and sort
  * Sandwiches according to their Cafeterias
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class MenuSorter {

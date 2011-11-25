@@ -4,15 +4,12 @@ import java.util.ArrayList;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.element.PreferencesView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -25,8 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
  * The Preferences view of the food plugin, displayed when a user wants to
  * filter what Restaurants to display in the different Food lists.
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodPreferencesView extends PluginView {

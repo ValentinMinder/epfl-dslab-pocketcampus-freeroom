@@ -42,8 +42,8 @@ import android.widget.Toast;
  * Displays menus by restaurants, preferences, suggestions and ratings, as well
  * as sandwiches
  * 
- * @author Elodie (elodienilane.triponez@epfl.ch)
- * @author Oriane (oriane.rodriguez@epfl.ch)
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodMainView extends PluginView implements IFoodMainView {

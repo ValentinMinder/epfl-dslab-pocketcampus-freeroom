@@ -23,8 +23,11 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+/**
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ */
 public class NewsMainView extends PluginView implements INewsView {
 	private NewsController mController;
 	private INewsModel mModel;
@@ -161,8 +164,6 @@ public class NewsMainView extends PluginView implements INewsView {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int position, long arg3) {
-				Toast.makeText(NewsMainView.this, "Hello", Toast.LENGTH_SHORT)
-						.show();
 				Intent news = new Intent(getApplicationContext(),
 						NewsItemView.class);
 				NewsItemWithImage toPass = mModel.getNews().get(position);
