@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.news.android;
 
+import java.util.ArrayList;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsController;
@@ -8,6 +10,8 @@ import org.pocketcampus.plugin.news.android.req.NewsItemsRequest;
 import org.pocketcampus.plugin.news.shared.NewsService.Client;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -27,6 +31,9 @@ public class NewsController extends PluginController implements INewsController 
 	/** The name of the plugin */
 	private String mPluginName = "news";
 
+	/** Access to the Shared Preferences on the phone */
+	private SharedPreferences prefs_;
+
 	/**
 	 * Initializes the plugin with a model and a client.
 	 */
@@ -38,6 +45,7 @@ public class NewsController extends PluginController implements INewsController 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+
 	}
 
 	/**

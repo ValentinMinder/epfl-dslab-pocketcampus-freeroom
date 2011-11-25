@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.news.android;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 
 import android.content.Context;
@@ -131,8 +132,12 @@ public class LoaderNewsImageView extends LinearLayout {
 				break;
 			case FAILED:
 			default:
-				// Could change image here to a 'failed' image
-				// otherwise will just keep on spinning
+				mDrawable = getResources()
+						.getDrawable(R.drawable.news_no_image);
+				mImage.setImageDrawable(mDrawable);
+				mImage.setVisibility(View.VISIBLE);
+				mSpinner.setVisibility(View.GONE);
+				mNewsItem.setDrawable(((BitmapDrawable) mDrawable).getBitmap());
 				break;
 			}
 			return true;

@@ -10,7 +10,9 @@ import org.pocketcampus.plugin.news.android.iface.INewsView;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * 
@@ -23,14 +25,15 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 	/** List of news items to display. */
 	private List<NewsItemWithImage> mNewsItems;
-	
-	/**Access to the preferences*/
+
+	/** Access to the preferences */
 	private SharedPreferences prefs_;
-	
+
+	/** The list of items filtered according to what the user wants */
 	private List<NewsItemWithImage> filteredList;
+
 	/** List of Feeds to display */
 	private List<Feed> mNewsFeeds;
-
 
 	@Override
 	protected Class<? extends IView> getViewInterface() {
@@ -51,8 +54,20 @@ public class NewsModel extends PluginModel implements INewsModel {
 	}
 
 	@Override
-	public List<NewsItemWithImage> getNews() {
-		return mNewsItems;
+	public List<NewsItemWithImage> getNews(Context ctx) {
+		if (prefs_ == null) {
+			prefs_ = PreferenceManager.getDefaultSharedPreferences(ctx);
+		}
+
+		ArrayList<NewsItemWithImage> filteredList = new ArrayList<NewsItemWithImage>();
+		for (NewsItemWithImage newsItem : mNewsItems) {
+			if (prefs_.getBoolean(NewsPreferences.LOAD_RSS
+					+ newsItem.getNewsItem().getFeed(), true)) {
+				filteredList.add(newsItem);
+			}
+		}
+
+		return filteredList;
 	}
 
 	@Override

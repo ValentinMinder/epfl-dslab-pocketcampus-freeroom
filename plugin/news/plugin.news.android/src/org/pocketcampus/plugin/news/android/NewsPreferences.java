@@ -65,11 +65,11 @@ public class NewsPreferences extends PreferenceActivity {
 
         CheckBoxPreference checkBoxPref;
 		int i = 0;
-		for(String url : urls) {
+		for(String name : names) {
 	        checkBoxPref = new CheckBoxPreference(this);
-	        checkBoxPref.setKey(LOAD_RSS + url);
-	        checkBoxPref.setTitle(names[i++]);
-	        checkBoxPref.setSummary(url);
+	        checkBoxPref.setKey(LOAD_RSS + name);
+	        checkBoxPref.setTitle(name);
+	        checkBoxPref.setSummary(urls[i++]);
 	        checkBoxPref.setDefaultValue(true);
 	        checkBoxPref.setOnPreferenceChangeListener(listener);
 	        

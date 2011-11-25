@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.news.android.iface;
 
+import android.content.Context;
+
 /**
  * Interface to the public methods of the News Controller
  * 

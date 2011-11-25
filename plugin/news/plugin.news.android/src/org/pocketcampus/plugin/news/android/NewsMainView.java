@@ -6,7 +6,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +33,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	private NewsController mController;
 	private INewsModel mModel;
 
-	private StandardLayout mLayout;
+	private StandardTitledLayout mLayout;
 	private FeedListViewElement mListView;
 
 	private OnItemClickListener mOnItemClickListener;
@@ -68,7 +69,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		mModel = (NewsModel) controller.getModel();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this, null);
+		mLayout = new StandardTitledLayout(this, null);
 
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT);
@@ -87,41 +88,49 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	/**
+	 * Called when this view is accessed after already having been initialized
+	 * before
+	 */
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		Log.d("ACTIVITY", "onRestart");
+		newsUpdated();
+	}
+
+	/**
 	 * Initiates request for the restaurant, meal and sandwich data
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.news_no_news));
+		mLayout.hideTitle();
 		mController.getNewsItems();
 	}
 
 	@Override
 	public void newsUpdated() {
-		List<NewsItemWithImage> newsList = mModel.getNews();
+		List<NewsItemWithImage> newsList = mModel.getNews(this);
+		mLayout.removeFillerView();
+		mLayout.hideTitle();
 		if (newsList != null) {
+			if (!newsList.isEmpty()) {
+				// Add them to the listView
+				mListView = new FeedListViewElement(this, newsList,
+						mNewsItemLabeler);
 
-			// Add them to the listView
-			mListView = new FeedListViewElement(this, filterList(newsList),
-					mNewsItemLabeler);
+				// Set onClickListener
+				setOnListViewClickListener();
 
-			// Set onClickListener
-			setOnListViewClickListener();
+				// Set the layout
+				mLayout.addFillerView(mListView);
 
-			// Set the layout
-			mLayout.addView(mListView);
-
-			mLayout.setText("");
+				mLayout.setText("");
+			} else {
+				mLayout.setText(getString(R.string.news_no_feed_selected));
+			}
 		} else {
 			mLayout.setText(getString(R.string.news_no_news));
 		}
-	}
-
-	private List<NewsItemWithImage> filterList(List<NewsItemWithImage> newsList) {
-		// for(String url: urls) {
-		// if(prefs_.getBoolean(NewsPreference.LOAD_RSS + url, true)) {
-		// urlsToDownload.add(url);
-		// }
-		// }
-		return newsList;
 	}
 
 	/**
@@ -166,7 +175,8 @@ public class NewsMainView extends PluginView implements INewsView {
 					int position, long arg3) {
 				Intent news = new Intent(getApplicationContext(),
 						NewsItemView.class);
-				NewsItemWithImage toPass = mModel.getNews().get(position);
+				NewsItemWithImage toPass = mModel.getNews(NewsMainView.this)
+						.get(position);
 				news.putExtra("org.pocketcampus.news.newsitem.title", toPass
 						.getNewsItem().getTitle());
 				news.putExtra("org.pocketcampus.news.newsitem.description",

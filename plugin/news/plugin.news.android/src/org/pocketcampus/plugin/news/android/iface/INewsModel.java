@@ -6,6 +6,8 @@ import org.pocketcampus.plugin.news.android.NewsItemWithImage;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
+import android.content.Context;
+
 /**
  * Interface to the public methods of the News Model
  * 
@@ -19,7 +21,7 @@ public interface INewsModel {
 	 * 
 	 * @return the list of news items
 	 */
-	public List<NewsItemWithImage> getNews();
+	public List<NewsItemWithImage> getNews(Context ctx);
 
 	/**
 	 * Update the list of NewsItems and notify the View
