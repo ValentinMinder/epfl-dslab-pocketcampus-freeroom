@@ -15,10 +15,10 @@ public interface ISatelliteMainView extends IView {
 	 */
 	public void beerUpdated();
 	
-	/**
-	 * Called when the list of beers is updated in the SatelliteModel
-	 */
-	public void beersUpdated();
+//	/**
+//	 * Called when the list of beers is updated in the SatelliteModel
+//	 */
+//	public void beersUpdated();
 	
 	/**
 	 * Called when the affluence is updated in the SatelliteModel
@@ -30,9 +30,9 @@ public interface ISatelliteMainView extends IView {
 	 */
 	public void sandwichesUpdated();
 	
-	/**
-	 * Called when the list of events is updated in the SatelliteModel
-	 */
-	public void eventsUpdated();
+//	/**
+//	 * Called when the list of events is updated in the SatelliteModel
+//	 */
+//	public void eventsUpdated();
 	
 }

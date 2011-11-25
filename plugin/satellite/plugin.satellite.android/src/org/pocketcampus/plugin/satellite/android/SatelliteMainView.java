@@ -1,29 +1,24 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import java.util.Date;
-import java.util.List;
-
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
-import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
+import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
+import org.pocketcampus.plugin.satellite.android.display.AffluenceImageView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
-import org.pocketcampus.plugin.satellite.shared.Event;
-import org.pocketcampus.plugin.satellite.shared.Sandwich;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -43,7 +38,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	private SatelliteController mController;
 
 	/** A Standard Titled Layout */
-	private StandardTitledLayout mLayout;
+	private StandardTitledDoubleLayout mLayout;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -64,7 +59,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
 
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.satellite_menu_main_page));
 
@@ -134,27 +129,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		Log.d("SATELLITE", "Beer updated (View)");
 		Beer beer = mModel.getBeerOfMonth();
 		if (beer != null) {
-			TextView t = new TextView(this);
-			t.setText(beer.getName() + "\n" + beer.getDescription() + "\n\n" + beer.getPictureUrl());
-			mLayout.removeFillerView();
-			mLayout.addFillerView(t);
+			ImageTextView t = new ImageTextView(beer, getApplicationContext(), mBeerLabeler, 0);
+			mLayout.addSecondLayoutFillerView(t);
 		}
-	}
-
-	@Override
-	public void beersUpdated() {
-		Log.d("SATELLITE", "Beers updated (View)");
-
-		List<Beer> beers = mModel.getAllBeers();
-
-		if (beers != null && !beers.isEmpty()) {
-
-			RichLabeledListViewElement l = new RichLabeledListViewElement(this,
-					beers, mBeerLabeler);
-
-			mLayout.addFillerView(l);
-		}
-
 	}
 
 	@Override
@@ -164,9 +141,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		Affluence a = mModel.getAffluence();
 
 		if (a != null) {
-			mLayout.setText(getResources().getString(
-					R.string.satellite_affluence)
-					+ " : " + a.name());
+			AffluenceImageView view = new AffluenceImageView(a, this, mAffluenceLabeler);
+			mLayout.addFirstLayoutFillerView(view);
 		}
 	}
 
@@ -183,10 +159,22 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
+	 * The labeler for the affluence, to tell how it has to be displayed in a generic view
+	 */
+	ILabeler<Affluence> mAffluenceLabeler = new ILabeler<Affluence>() {
+
+		@Override
+		public String getLabel(Affluence obj) {
+			return obj.name();
+		}
+		
+	};
+	
+	/**
 	 * The labeler for a Beer, to tell how it has to be displayed in a generic
 	 * view.
 	 */
-	IRichLabeler<Beer> mBeerLabeler = new IRichLabeler<Beer>() {
+	IFeedViewLabeler<Beer> mBeerLabeler = new IFeedViewLabeler<Beer>() {
 
 		@Override
 		public String getTitle(Beer beer) {
@@ -199,18 +187,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		}
 
 		@Override
-		public double getValue(Beer beer) {
-			return beer.getPrice();
-		}
-
-		@Override
-		public Date getDate(Beer beer) {
-			return null;
-		}
-		
-		@Override
-		public String getLabel(Beer beer) {
-			return "";
+		public LinearLayout getPictureLayout(Beer beer) {
+			return new LoaderImageView(getApplicationContext(), beer.getPictureUrl());
 		}
 
 	};
@@ -221,10 +199,26 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		
 	}
 
-	@Override
-	public void eventsUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void eventsUpdated() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+	
+//	@Override
+//	public void beersUpdated() {
+//		Log.d("SATELLITE", "Beers updated (View)");
+//
+//		List<Beer> beers = mModel.getAllBeers();
+//
+//		if (beers != null && !beers.isEmpty()) {
+//
+//			RichLabeledListViewElement l = new RichLabeledListViewElement(this,
+//					beers, mBeerLabeler);
+//
+//			mLayout.addFillerView(l);
+//		}
+//
+//	}
 
 }

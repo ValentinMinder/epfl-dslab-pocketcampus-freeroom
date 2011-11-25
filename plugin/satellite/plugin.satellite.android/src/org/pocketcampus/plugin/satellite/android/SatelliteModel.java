@@ -78,7 +78,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	public void setAllBeers(List<Beer> list) {
 		if (list != null && !list.isEmpty()) {
 			mBeers = list;
-			mListeners.beersUpdated();
+//			mListeners.beersUpdated();
 		}
 	}
 
@@ -119,7 +119,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	public void setEvents(List<Event> list) {
 		if (list != null && !list.isEmpty()) {
 			mEvents = list;
-			mListeners.eventsUpdated();
+//			mListeners.eventsUpdated();
 		}
 	}
 

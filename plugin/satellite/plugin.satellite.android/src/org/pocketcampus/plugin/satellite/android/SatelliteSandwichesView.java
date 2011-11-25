@@ -110,11 +110,11 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 		
 	}
 
-	@Override
-	public void beersUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void beersUpdated() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void affluenceUpdated() {
@@ -122,11 +122,10 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 		
 	}
 
-	@Override
-	public void eventsUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
-
+//	@Override
+//	public void eventsUpdated() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

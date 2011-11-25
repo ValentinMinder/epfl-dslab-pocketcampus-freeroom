@@ -62,21 +62,21 @@ public class SatelliteEventsView extends PluginView implements
 		mController.getEvents();
 	}
 
-	@Override
-	public void eventsUpdated() {
-		Log.d("SATELLITE", "Events updated (View)");
-		mLayout.removeFillerView();
-		
-		List<Event> events = mModel.getEvents();
-
-		if (events != null && !events.isEmpty()) {
-			LabeledListViewElement l = new LabeledListViewElement(this,
-					events, mEventLabeler);
-
-			mLayout.hideText();
-			mLayout.addFillerView(l);
-		}
-	}
+//	@Override
+//	public void eventsUpdated() {
+//		Log.d("SATELLITE", "Events updated (View)");
+//		mLayout.removeFillerView();
+//		
+//		List<Event> events = mModel.getEvents();
+//
+//		if (events != null && !events.isEmpty()) {
+//			LabeledListViewElement l = new LabeledListViewElement(this,
+//					events, mEventLabeler);
+//
+//			mLayout.hideText();
+//			mLayout.addFillerView(l);
+//		}
+//	}
 
 	@Override
 	public void networkErrorHappened() {
@@ -124,11 +124,11 @@ public class SatelliteEventsView extends PluginView implements
 		
 	}
 
-	@Override
-	public void beersUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void beersUpdated() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void affluenceUpdated() {
