@@ -359,4 +359,8 @@ public class RssParser extends DefaultHandler {
 		}
 	}
 
+	public void characters(char[] ch, int start, int length) {
+		this.text.append(ch, start, length);
+	}
+
 }
