@@ -1,21 +1,17 @@
 package org.pocketcampus.plugin.satellite.android;
 
 import java.util.Date;
-import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
-import org.pocketcampus.plugin.satellite.android.iface.ISatelliteEventsView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.shared.Event;
 
 import android.app.Service;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -59,7 +55,7 @@ public class SatelliteEventsView extends PluginView implements
 	}
 
 	private void showEvents() {
-		mController.getEvents();
+//		mController.getEvents();
 	}
 
 //	@Override
@@ -136,11 +132,11 @@ public class SatelliteEventsView extends PluginView implements
 		
 	}
 
-	@Override
-	public void sandwichesUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void sandwichesUpdated() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 
 }

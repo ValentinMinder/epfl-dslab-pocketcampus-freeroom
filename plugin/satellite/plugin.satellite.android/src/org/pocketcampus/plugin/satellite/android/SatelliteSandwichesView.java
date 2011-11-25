@@ -59,27 +59,29 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 	 * Asks the controller for the sandwiches.
 	 */
 	private void showSandwiches() {
-		mController.getSandwiches();
+//		mController.getSandwiches();
 	}
 
 	/**
 	 * Called when the data was updated in the Plugin Model. Displays the
 	 * sandwichList in a LabeledListView.
 	 */
-	public void sandwichesUpdated() {
-		Log.d("SATELLITE", "Sandwiches updated (View)");
-		mLayout.removeFillerView();
-
-		List<Sandwich> sandwiches = mModel.getSandwiches();
-
-		if (sandwiches != null && !sandwiches.isEmpty()) {
-			LabeledListViewElement l = new LabeledListViewElement(this,
-					sandwiches, mSandwichLabeler);
-
-			mLayout.hideText();
-			mLayout.addFillerView(l);
-		}
-	}
+//	@Override
+//	public void sandwichesUpdated() {
+//		Log.d("SATELLITE", "Sandwiches updated (View)");
+//		mLayout.removeFillerView();
+//
+//		List<Sandwich> sandwiches = mModel.getSandwiches()null;
+//
+//		if (sandwiches != null && !sandwiches.isEmpty()) {
+//			LabeledListViewElement l = new LabeledListViewElement(this,
+//					sandwiches, mSandwichLabeler);
+//			l.setClickable(false);
+//			
+//			mLayout.hideText();
+//			mLayout.addFillerView(l);
+//		}
+//	}
 
 	/**
 	 * Display a toast when a network error happened.
@@ -109,18 +111,18 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void affluenceUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
 
 //	@Override
 //	public void beersUpdated() {
 //		// TODO Auto-generated method stub
 //		
 //	}
-
-	@Override
-	public void affluenceUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
 
 //	@Override
 //	public void eventsUpdated() {

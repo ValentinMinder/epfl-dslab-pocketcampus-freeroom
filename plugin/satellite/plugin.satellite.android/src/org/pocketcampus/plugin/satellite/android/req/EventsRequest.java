@@ -47,7 +47,7 @@ public class EventsRequest extends
 	@Override
 	protected void onResult(SatelliteController controller, List<Event> result) {
 		Log.d("<EventsRequest>:", "onResult");
-		((SatelliteModel) controller.getModel()).setEvents(result);
+//		((SatelliteModel) controller.getModel()).setEvents(result);
 	}
 
 	/**

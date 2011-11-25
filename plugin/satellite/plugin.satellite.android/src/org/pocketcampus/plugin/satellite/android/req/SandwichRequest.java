@@ -47,7 +47,7 @@ public class SandwichRequest extends
 	@Override
 	protected void onResult(SatelliteController controller, List<Sandwich> result) {
 		Log.d("<SandwichRequest>:", "onResult");
-		((SatelliteModel) controller.getModel()).setSandwiches(result);
+//		((SatelliteModel) controller.getModel()).setSandwiches(result);
 	}
 
 	/**

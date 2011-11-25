@@ -46,7 +46,7 @@ public class BeersRequest extends
 	@Override
 	protected void onResult(SatelliteController controller, List<Beer> result) {
 		Log.d("<BeersRequest>:", "onResult");
-		((SatelliteModel) controller.getModel()).setAllBeers(result);
+//		((SatelliteModel) controller.getModel()).setAllBeers(result);
 	}
 
 	/**

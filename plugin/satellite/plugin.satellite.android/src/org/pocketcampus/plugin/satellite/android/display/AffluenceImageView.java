@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.satellite.android.display;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A view to display an Object that represents a Feed entry. It represents a
@@ -23,9 +24,18 @@ public class AffluenceImageView extends LinearLayout {
 	private View mConvertView;
 	/** The Affluence to be displayed in the View */
 	private Affluence mAffluence;
+	/** The Labeler for the Affluence view */
+	private IFeedViewLabeler mLabeler;
+	/** The Object to display */
+	private Object mCurrentObject;
+	private int mImageResource;
 
+	/** Title : "Affluence" */
+	private TextView mTitle;
 	/** The Object's image */
 	private ImageView mImage;
+	/** Description of the current affluence's image */
+	private TextView mDescription;
 
 	/**
 	 * The constructor
@@ -34,17 +44,25 @@ public class AffluenceImageView extends LinearLayout {
 	 * @param context
 	 * @param labeler
 	 */
-	public AffluenceImageView(Affluence affluence, Context context,
-			ILabeler<? extends Object> labeler) {
+	public AffluenceImageView(Object object, int imageResource, Context context,
+			IFeedViewLabeler<? extends Object> labeler) {
 		super(context);
 		this.mConvertView = LayoutInflater
 				.from(context.getApplicationContext()).inflate(
 						R.layout.satellite_affluence_image_view, null);
+		mLabeler = labeler;
 
-		this.mAffluence = affluence;
+		mCurrentObject = object;
+		mImageResource = imageResource;
 
-		this.mImage = (ImageView) mConvertView
+		mTitle = (TextView) mConvertView
+				.findViewById(R.id.satellite_affluence_image_view_title);
+
+		mImage = (ImageView) mConvertView
 				.findViewById(R.id.satellite_affluence_image_view_image);
+
+		mDescription = (TextView) mConvertView
+				.findViewById(R.id.satellite_affluence_image_view_description);
 
 		initializeView();
 	}
@@ -54,35 +72,16 @@ public class AffluenceImageView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		switch (mAffluence) {
-		case EMPTY :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		case CLOSED :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		case FULL :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		case MEDIUM :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		case CROWDED :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		case ERROR :
-			mImage.setImageDrawable(getResources().getDrawable(
-					R.drawable.satellite_affluence_empty));
-			break;
-		default :
-			break;
-			
-		}
+		/** Title */
+		mTitle.setText(mLabeler.getTitle(mCurrentObject));
+
+		/** Description */
+		mDescription.setText(mLabeler.getDescription(mCurrentObject));
+
+		/** Image */
+		mImage.setImageDrawable(getResources().getDrawable(
+				mImageResource));
+
 
 		addView(mConvertView);
 	}

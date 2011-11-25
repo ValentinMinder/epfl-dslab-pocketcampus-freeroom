@@ -5,7 +5,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteController;
 import org.pocketcampus.plugin.satellite.android.req.AffluenceRequest;
 import org.pocketcampus.plugin.satellite.android.req.BeerRequest;
-import org.pocketcampus.plugin.satellite.android.req.SandwichRequest;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Client;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Iface;
 
@@ -61,38 +60,7 @@ ISatelliteController {
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				(Object) null);
 	}
-
-	/**
-	 * Initiates a request to the server to get the list of all beers Satellite
-	 * proposes
-	 */
-	@Override
-	public void getAllBeers() {
-		Log.d("SATELLITE", "Beers request");
-	}
-
-	/**
-	 * Initiates a request to the server to get the list of sandwiches Satellite
-	 * proposes
-	 */
-	@Override
-	public void getSandwiches() {
-		Log.d("SATELLITE", "Sandwich request");
-		new SandwichRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName),
-				(Object) null);
-	}
-
-	/**
-	 * Initiates a request to the server to get the list of next events at
-	 * Satellite
-	 */
-	@Override
-	public void getEvents() {
-		Log.d("SATELLITE", "Events request");
-
-	}
-
+	
 	/**
 	 * Initiates a request to the server to get the affluence at Satellite
 	 */
@@ -103,5 +71,36 @@ ISatelliteController {
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				(Object) null);
 	}
+
+	/**
+	 * Initiates a request to the server to get the list of all beers Satellite
+	 * proposes
+	 */
+//	@Override
+//	public void getAllBeers() {
+//		Log.d("SATELLITE", "Beers request");
+//	}
+
+	/**
+	 * Initiates a request to the server to get the list of sandwiches Satellite
+	 * proposes
+	 */
+//	@Override
+//	public void getSandwiches() {
+//		Log.d("SATELLITE", "Sandwich request");
+//		new SandwichRequest().start(this,
+//				(Iface) getClient(new Client.Factory(), mPluginName),
+//				(Object) null);
+//	}
+
+	/**
+	 * Initiates a request to the server to get the list of next events at
+	 * Satellite
+	 */
+//	@Override
+//	public void getEvents() {
+//		Log.d("SATELLITE", "Events request");
+//
+//	}
 
 }

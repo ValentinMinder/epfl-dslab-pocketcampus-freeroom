@@ -11,12 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display an Object that represents a Feed entry. It represents a
- * line of a ListView and contains the object's title and description along with
- * a picture. It's designed to be used with the FeedListView or an equivalent,
- * and can be created directly in the Application View.
+ * A view to display an Object represented as a title, an image and a
+ * description.
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class ImageTextView extends LinearLayout {
 	/** The convert view */
@@ -62,7 +60,7 @@ public class ImageTextView extends LinearLayout {
 
 		this.mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_title);
-		
+
 		this.mDescriptionLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_description);
 
@@ -79,7 +77,7 @@ public class ImageTextView extends LinearLayout {
 
 		/** Title */
 		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
-		
+
 		/** Description */
 		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 

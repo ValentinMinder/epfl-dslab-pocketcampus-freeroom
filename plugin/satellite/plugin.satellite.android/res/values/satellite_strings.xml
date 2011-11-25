@@ -9,6 +9,12 @@
     <!-- Affluence -->
     <string name="satellite_affluence">Affluence</string>
     <string name="satellite_menu_affluence">Affluence</string>
+    <string name="satellite_affluence_empty">Ça roule!</string>
+    <string name="satellite_affluence_medium">Ça se remplit...</string>
+    <string name="satellite_affluence_crowded">On y est presque...</string>
+    <string name="satellite_affluence_full">Ça y est, on est plein!</string>
+    <string name="satellite_affluence_closed">Cherche pas, c\'est fermé...</string>
+    <string name="satellite_affluence_error">Error</string>
         
 	<!-- Beer(s) -->
 	<string name="satellite_menu_beers">Beers</string>

@@ -12,28 +12,28 @@ public interface ISatelliteController {
 	 * Initiates a request to the server to get the beer of the month
 	 */
 	public void getBeerOfMonth();
+	
+	/**
+	 * Initiates a request to the server to get the affluence at Satellite
+	 */
+	public void getAffluence();
 
 	/**
 	 * Initiates a request to the server to get the list of all beers Satellite
 	 * proposes
 	 */
-	public void getAllBeers();
+//	public void getAllBeers();
 
 	/**
 	 * Initiates a request to the server to get the list of sandwiches Satellite
 	 * proposes
 	 */
-	public void getSandwiches();
+//	public void getSandwiches();
 
 	/**
 	 * Initiates a request to the server to get the list of next events at
 	 * Satellite
 	 */
-	public void getEvents();
-
-	/**
-	 * Initiates a request to the server to get the affluence at Satellite
-	 */
-	public void getAffluence();
+//	public void getEvents();
 
 }
