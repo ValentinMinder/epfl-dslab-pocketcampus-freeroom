@@ -112,8 +112,10 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	}
 	
 	private void search(){
-		String name = mLayout.getName();
-		mController.search(name);
+		if(mLayout != null){
+			String name = mLayout.getName();
+			mController.search(name);
+		}
 	}
 
 	
