@@ -71,7 +71,7 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 		mTitleTextView = (TextView) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_title);
 		mMessageTextView = (TextView) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_msg);
 		mFillerLayoutOne = (RelativeLayout) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_filler1);
-		mFillerLayoutTwo = (RelativeLayout) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_filler1);
+		mFillerLayoutTwo = (RelativeLayout) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_filler2);
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    
+    android:id="@+id/sdk_standard_scrollable_titled_double_layout_main"
     style="@style/PocketCampusTheme.Secondary.MainLayout"
-    android:layout_height="fill_parent" >
+    android:layout_width="fill_parent" >
 
     <TextView
         android:id="@+id/sdk_standard_scrollable_titled_double_layout_title"
@@ -25,6 +25,7 @@
                 android:visibility="gone" />
 
     <ScrollView
+        android:id="@+id/sdk_standard_scrollable_titled_double_layout_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/sdk_standard_scrollable_titled_double_layout_title" >
@@ -33,8 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:orientation="vertical">
-
-            
 
             <RelativeLayout
                 android:id="@+id/sdk_standard_scrollable_titled_double_layout_filler1"
