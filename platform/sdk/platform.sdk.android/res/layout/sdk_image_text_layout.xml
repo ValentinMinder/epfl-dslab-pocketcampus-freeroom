@@ -5,43 +5,52 @@
     android:layout_height="wrap_content"
     android:padding="6dip" >
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/sdk_image_text_layout_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_alignParentTop="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/sdk_image_text_layout_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_vertical"
-                android:text="Name"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+        <TextView
+            android:id="@+id/sdk_image_text_layout_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sdk_image_text_layout_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="Subtitle"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-            <LinearLayout
-                android:id="@+id/sdk_image_text_layout_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dip"
-                android:layout_below="@id/sdk_image_text_layout_title"
-                android:layout_centerHorizontal="true" />
+        <LinearLayout
+            android:id="@+id/sdk_image_text_layout_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sdk_image_text_layout_subtitle"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="5dip" />
 
-            <TextView
-                android:id="@+id/sdk_image_text_layout_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:layout_below="@id/sdk_image_text_layout_image"
-                android:padding="5dip"
-                android:text="Description"
-                android:textColor="@color/black" />
-        </RelativeLayout>
-
+        <TextView
+            android:id="@+id/sdk_image_text_layout_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/sdk_image_text_layout_image"
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="Description"
+            android:textColor="@color/black" />
+    </RelativeLayout>
 
 </RelativeLayout>

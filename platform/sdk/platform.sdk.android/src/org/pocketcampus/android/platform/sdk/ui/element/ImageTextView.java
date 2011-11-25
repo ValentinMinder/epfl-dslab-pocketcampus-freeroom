@@ -2,11 +2,11 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,11 +22,13 @@ public class ImageTextView extends LinearLayout {
 	/** The Object to be displayed in the View */
 	private Object mCurrentObject;
 	/** The Labeler from the Application to get the Obejct's attributes */
-	private IFeedViewLabeler mLabeler;
+	private ISubtitledFeedViewLabeler mLabeler;
 	/** The position of the Object in the ListView */
 	private int mPosition;
 	/** The Object's title */
 	private TextView mTitleLine;
+	/** The Object's subtitle */
+	private TextView mSubtitleLine;
 	/** The Object's description */
 	private TextView mDescriptionLine;
 
@@ -48,23 +50,25 @@ public class ImageTextView extends LinearLayout {
 	 *            the position of the Object in the List
 	 */
 	public ImageTextView(Object currentObject, Context context,
-			IFeedViewLabeler<? extends Object> labeler, int position) {
+			ISubtitledFeedViewLabeler<? extends Object> labeler, int position) {
 		super(context);
-		this.mConvertView = LayoutInflater
-				.from(context.getApplicationContext()).inflate(
-						R.layout.sdk_image_text_layout, null);
+		mConvertView = LayoutInflater.from(context.getApplicationContext())
+				.inflate(R.layout.sdk_image_text_layout, null);
 
-		this.mCurrentObject = currentObject;
-		this.mLabeler = labeler;
-		this.mPosition = position;
+		mCurrentObject = currentObject;
+		mLabeler = labeler;
+		mPosition = position;
 
-		this.mTitleLine = (TextView) mConvertView
+		mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_title);
 
-		this.mDescriptionLine = (TextView) mConvertView
+		mSubtitleLine = (TextView) mConvertView
+				.findViewById(R.id.sdk_image_text_layout_subtitle);
+
+		mDescriptionLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_description);
 
-		this.mImage = (LinearLayout) mConvertView
+		mImage = (LinearLayout) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_image);
 
 		initializeView();
@@ -78,6 +82,9 @@ public class ImageTextView extends LinearLayout {
 		/** Title */
 		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
 
+		/** Subtitle */
+		mSubtitleLine.setText(mLabeler.getSubtitle(mCurrentObject));
+		
 		/** Description */
 		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 

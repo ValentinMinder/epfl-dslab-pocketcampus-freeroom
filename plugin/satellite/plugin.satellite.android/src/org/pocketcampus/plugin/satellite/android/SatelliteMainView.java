@@ -5,6 +5,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.satellite.android.display.AffluenceImageView;
@@ -159,9 +160,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		Affluence a = mModel.getAffluence();
 
 		if (a != null) {
-			AffluenceImageView view = new AffluenceImageView(a,
-					R.drawable.satellite_affluence_empty, this,
-					mAffluenceLabeler);
+			AffluenceImageView view = new AffluenceImageView(a, chooseImage(a),
+					this, mAffluenceLabeler);
+
 			mLayout.addFirstLayoutFillerView(view);
 		}
 	}
@@ -218,6 +219,39 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
+	 * 
+	 */
+	private int chooseImage(Affluence affluence) {
+		int img = R.drawable.satellite_affluence_empty;
+
+		switch (affluence) {
+		case EMPTY:
+			img = R.drawable.satellite_affluence_empty;
+			break;
+		case MEDIUM:
+			img = R.drawable.satellite_affluence_empty;
+			break;
+		case CROWDED:
+			img = R.drawable.satellite_affluence_empty;
+			break;
+		case FULL:
+			img = R.drawable.satellite_affluence_empty;
+			break;
+		case CLOSED:
+			img = R.drawable.satellite_affluence_closed;
+			break;
+		case ERROR:
+			img = R.drawable.satellite_affluence_closed; 
+			break;
+		default:
+			img = R.drawable.satellite_affluence_closed;
+			break;
+		}
+
+		return img;
+	}
+
+	/**
 	 * The labeler for the affluence, to tell how it has to be displayed in a
 	 * generic view
 	 */
@@ -244,13 +278,18 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 * The labeler for a Beer, to tell how it has to be displayed in a generic
 	 * view.
 	 */
-	IFeedViewLabeler<Beer> mBeerLabeler = new IFeedViewLabeler<Beer>() {
+	ISubtitledFeedViewLabeler<Beer> mBeerLabeler = new ISubtitledFeedViewLabeler<Beer>() {
 
 		@Override
 		public String getTitle(Beer beer) {
-			return beer.getName();
+			return getResources().getString(R.string.satellite_beer_of_month);
 		}
 
+		@Override
+		public String getSubtitle(Beer beer) {
+			return beer.getName();
+		}
+		
 		@Override
 		public String getDescription(Beer beer) {
 			return beer.getDescription();

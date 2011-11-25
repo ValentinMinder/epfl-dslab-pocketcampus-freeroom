@@ -16,13 +16,13 @@
         android:paddingLeft="5dip"
         android:paddingTop="2dip"
         android:textColor="@android:color/white" />
-    
+
     <TextView
-                android:id="@+id/sdk_standard_scrollable_titled_double_layout_msg"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:textSize="@dimen/centered_message_size"
-                android:visibility="gone" />
+        android:id="@+id/sdk_standard_scrollable_titled_double_layout_msg"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textSize="@dimen/centered_message_size"
+        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/sdk_standard_scrollable_titled_double_layout_scroll_view"
@@ -30,10 +30,10 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/sdk_standard_scrollable_titled_double_layout_title" >
 
-        <LinearLayout 
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/sdk_standard_scrollable_titled_double_layout_filler1"
@@ -44,7 +44,6 @@
                 android:id="@+id/sdk_standard_scrollable_titled_double_layout_filler2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-            
         </LinearLayout>
     </ScrollView>
 

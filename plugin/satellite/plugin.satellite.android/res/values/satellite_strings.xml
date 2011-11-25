@@ -18,6 +18,7 @@
         
 	<!-- Beer(s) -->
 	<string name="satellite_menu_beers">Beers</string>
+	<string name="satellite_beer_of_month">Beer Of The Month</string>
 	
 	<!-- Events -->
 	<string name="satellite_menu_events">Events</string>
