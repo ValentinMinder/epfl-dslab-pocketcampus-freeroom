@@ -47,7 +47,7 @@ public interface IFoodModel {
 	 * @param list
 	 *            the new list of meals
 	 */
-	public void setMeals(List<Meal> list);
+	public void setMeals(List<Meal> list, Context ctx);
 
 	/**
 	 * Returns the list of Meals sorted by Restaurant

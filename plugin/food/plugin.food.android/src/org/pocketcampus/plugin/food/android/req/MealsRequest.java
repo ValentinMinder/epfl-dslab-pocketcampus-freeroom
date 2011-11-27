@@ -49,7 +49,7 @@ public class MealsRequest extends
 	@Override
 	protected void onResult(FoodController controller, List<Meal> result) {
 		Log.d("MealsRequest", "onResult");
-		((FoodModel) controller.getModel()).setMeals(result);
+		((FoodModel) controller.getModel()).setMeals(result, controller);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class MealsRequest extends
 	@Override
 	protected void onError(FoodController controller, Exception e) {
 		Log.d("NetworkError", "onError");
-		controller.getModel().notifyNetworkError();
+		((FoodModel) controller.getModel()).setMeals(null, controller);
 		e.printStackTrace();
 	}
 }

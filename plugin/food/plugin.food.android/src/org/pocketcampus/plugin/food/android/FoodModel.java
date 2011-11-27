@@ -11,6 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
+import org.pocketcampus.plugin.food.android.utils.FileCache;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
@@ -41,6 +42,9 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	private List<Sandwich> mSandwiches;
 	/** Whether the user has already used his ability to vote */
 	private boolean mHasVoted = false;
+
+	/** The cache for the meals list */
+	private FileCache mMealsCache;
 
 	/** Object used to access and modify preferences on the phone */
 	private SharedPreferences mRestoPrefs;
@@ -90,20 +94,28 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Sets the list of all meals
+	 * Sets the list of all meals. If the list if not null nor empty, it stores
+	 * it to the cache
 	 * 
 	 * @param list
 	 *            the new list of meals
 	 */
 	@Override
-	public void setMeals(List<Meal> list) {
+	public void setMeals(List<Meal> list, Context ctx) {
 		this.mMeals = list;
+		if (mMealsCache == null) {
+			mMealsCache = new FileCache(ctx);
+		}
+		if (list != null && !list.isEmpty()) {
+			mMealsCache.writeToFile(mMeals);
+		}
 		// Notify the view(s)
 		this.mListeners.menusUpdated();
 	}
 
 	/**
-	 * Returns the list of Meals sorted by Restaurant
+	 * Returns the list of Meals sorted by Restaurant. If the list is currently
+	 * null, it tries to restore the meals list from the cache
 	 * 
 	 * @param ctx
 	 *            the context of the calling view, to get the preferences
@@ -115,8 +127,13 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
+		if (mMeals == null || mMeals.isEmpty()) {
+			if (mMealsCache == null) {
+				mMealsCache = new FileCache(ctx);
+			}
+			mMeals = mMealsCache.restoreFromFile();
+		}
 		if (mMeals != null) {
-
 			HashMap<String, Vector<Meal>> allMeals = mSorter
 					.sortByRestaurant(mMeals);
 			if (mRestoPrefs.getAll().isEmpty()) {

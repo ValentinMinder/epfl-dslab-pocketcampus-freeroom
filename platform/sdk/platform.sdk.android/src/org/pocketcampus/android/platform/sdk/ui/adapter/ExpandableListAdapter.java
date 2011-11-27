@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -132,7 +131,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 		View mView;
 		TextView mTitle;
-		ImageView mImage;
 
 		public ViewHolder(Context context, String title,
 				List<? extends Object> resto, int position, boolean isExpanded) {

@@ -321,7 +321,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(),
-				getString(R.string.food_network_error), Toast.LENGTH_SHORT);
+				getString(R.string.food_network_error),
+				Toast.LENGTH_SHORT);
+		//TODO: DEPENDS ON THE REQUEST
 		toast.show();
 	}
 
@@ -492,15 +494,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 *            displayed
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
-		
-		if(mLayout == null) {
+
+		if (mLayout == null) {
 			mLayout = new StandardTitledLayout(this);
 		}
-		
+
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
 			Log.d("RATING", "Size of meals by suggestions list : "
 					+ mealsBySuggestions.size());
-			
+
 			mLayout.removeFillerView();
 			RatableListViewElement l = new RatableListViewElement(this,
 					mealsBySuggestions, mMealLabeler);
