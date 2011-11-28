@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="platform.launcher.server">
+    <property environment="env"/>
+    <property name="platform.sdk.shared.location" value="../../sdk/platform.sdk.shared"/>
+    <property name="platform.sdk.server.location" value="../../sdk/platform.sdk.server"/>
+    <property name="lib.transport.server.location" value="../../../lib/transport/lib.transport.server"/>
+    <property name="plugin.authentication.shared.location" value="../../../plugin/authentication/plugin.authentication.shared"/>
+    <property name="plugin.authentication.server.location" value="../../../plugin/authentication/plugin.authentication.server"/>
+    <property name="plugin.bikes.shared.location" value="../../../plugin/bikes/plugin.bikes.shared"/>
+    <property name="plugin.bikes.server.location" value="../../../plugin/bikes/plugin.bikes.server"/>
+    <property name="plugin.camipro.shared.location" value="../../../plugin/camipro/plugin.camipro.shared"/>
+    <property name="plugin.camipro.server.location" value="../../../plugin/camipro/plugin.camipro.server"/>
+    <property name="plugin.directory.shared.location" value="../../../plugin/directory/plugin.directory.shared"/>
+    <property name="plugin.directory.server.location" value="../../../plugin/directory/plugin.directory.server"/>
+    <property name="plugin.food.shared.location" value="../../../plugin/food/plugin.food.shared"/>
+    <property name="plugin.food.server.location" value="../../../plugin/food/plugin.food.server"/>
+    <property name="plugin.news.shared.location" value="../../../plugin/news/plugin.news.shared"/>
+    <property name="plugin.news.server.location" value="../../../plugin/news/plugin.news.server"/>
+    <property name="plugin.satellite.shared.location" value="../../../plugin/satellite/plugin.satellite.shared"/>
+    <property name="plugin.satellite.server.location" value="../../../plugin/satellite/plugin.satellite.server"/>
+    <property name="plugin.takeout.shared.location" value="../../../plugin/takeout/plugin.takeout.shared"/>
+    <property name="plugin.takeoutreceiver.shared.location" value="../../../plugin/takeoutreceiver/plugin.takeoutreceiver.shared"/>
+    <property name="plugin.takeoutreceiver.server.location" value="../../../plugin/takeoutreceiver/plugin.takeoutreceiver.server"/>
+    <property name="plugin.takeout.server.location" value="../../../plugin/takeout/plugin.takeout.server"/>
+    <property name="plugin.transport.shared.location" value="../../../plugin/transport/plugin.transport.shared"/>
+    <property name="plugin.transport.server.location" value="../../../plugin/transport/plugin.transport.server"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="plugin.authentication.shared.classpath">
+        <pathelement location="${plugin.authentication.shared.location}/bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.authentication.server.classpath">
+        <pathelement location="${plugin.authentication.server.location}/bin"/>
+        <path refid="plugin.authentication.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${plugin.authentication.server.location}/lib/unboundid-ldapsdk-se.jar"/>
+        <pathelement location="${plugin.authentication.server.location}/lib/src.zip"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+    </path>
+    <path id="org.eclipse.jst.j2ee.internal.module.container.libraryclasspath"/>
+    <path id="org.eclipse.jst.server.core.container/org.eclipse.jst.server.jetty.runtimeTarget/Jetty v8.x.libraryclasspath"/>
+    <path id="platform.sdk.shared.classpath">
+        <pathelement location="${platform.sdk.shared.location}/bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="platform.sdk.server.classpath">
+        <pathelement location="${platform.sdk.server.location}/bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <path refid="org.eclipse.jst.j2ee.internal.module.container.libraryclasspath"/>
+        <path refid="org.eclipse.jst.server.core.container/org.eclipse.jst.server.jetty.runtimeTarget/Jetty v8.x.libraryclasspath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="platform.sdk.shared.classpath"/>
+    </path>
+    <path id="plugin.bikes.shared.classpath">
+        <pathelement location="${plugin.bikes.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+    </path>
+    <path id="plugin.bikes.server.classpath">
+        <pathelement location="${plugin.bikes.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <path refid="plugin.bikes.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+    </path>
+    <path id="plugin.camipro.shared.classpath">
+        <pathelement location="${plugin.camipro.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <path refid="plugin.authentication.shared.classpath"/>
+    </path>
+    <path id="plugin.camipro.server.classpath">
+        <pathelement location="${plugin.camipro.server.location}/bin"/>
+        <path refid="plugin.camipro.shared.classpath"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/gson-1.7.1.jar"/>
+        <path refid="plugin.authentication.shared.classpath"/>
+    </path>
+    <path id="plugin.directory.shared.classpath">
+        <pathelement location="${plugin.directory.shared.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.directory.server.classpath">
+        <pathelement location="${plugin.directory.server.location}/bin"/>
+        <path refid="plugin.directory.shared.classpath"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${plugin.directory.server.location}/lib/unboundid-ldapsdk-se.jar"/>
+    </path>
+    <path id="plugin.food.shared.classpath">
+        <pathelement location="${plugin.food.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.news.shared.classpath">
+        <pathelement location="${plugin.news.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.news.server.classpath">
+        <pathelement location="${plugin.news.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <path refid="plugin.news.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+    </path>
+    <path id="plugin.food.server.classpath">
+        <pathelement location="${plugin.food.server.location}/bin"/>
+        <path refid="plugin.food.shared.classpath"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${plugin.food.server.location}/lib/mysql-connector-java-5.1.15-bin.jar"/>
+    </path>
+    <path id="plugin.takeout.shared.classpath">
+        <pathelement location="${plugin.takeout.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.takeoutreceiver.shared.classpath">
+        <pathelement location="${plugin.takeoutreceiver.shared.location}/bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="plugin.takeoutreceiver.server.classpath">
+        <pathelement location="${plugin.takeoutreceiver.server.location}/bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="plugin.takeoutreceiver.shared.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${plugin.takeoutreceiver.server.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+    </path>
+    <path id="plugin.takeout.server.classpath">
+        <pathelement location="${plugin.takeout.server.location}/bin"/>
+        <path refid="plugin.takeout.shared.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="plugin.takeoutreceiver.server.classpath"/>
+    </path>
+    <path id="plugin.transport.shared.classpath">
+        <pathelement location="${plugin.transport.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+    </path>
+    <path id="lib.transport.server.classpath">
+        <pathelement location="${lib.transport.server.location}/bin"/>
+        <pathelement location="${lib.transport.server.location}/lib/kxml2-2.3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+    </path>
+    <path id="plugin.transport.server.classpath">
+        <pathelement location="${plugin.transport.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <path refid="plugin.transport.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="lib.transport.server.classpath"/>
+    </path>
+    <path id="plugin.satellite.shared.classpath">
+        <pathelement location="${plugin.satellite.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/gson-1.7.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+    </path>
+    <path id="plugin.satellite.server.classpath">
+        <pathelement location="${plugin.satellite.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/gson-1.7.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <path refid="plugin.satellite.shared.classpath"/>
+        <pathelement location="${platform.sdk.server.location}/lib/jsoup-1.6.1.jar"/>
+    </path>
+    <path id="platform.launcher.server.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/servlet-api-3.0.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/httpclient-4.0-alpha1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/bcprov-jdk15-146.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/javapns_2.0_Beta_4.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-ajp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-annotations-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-client-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-continuation-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-deploy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-http-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-io-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jmx-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-jndi-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-overlay-deployer-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-plus-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-policy-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-rewrite-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-security-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-server-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlet-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-servlets-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-util-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-webapp-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-websocket-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/jetty-xml-8.0.0.M3.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2-sources.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
+        <path refid="plugin.authentication.server.classpath"/>
+        <path refid="plugin.authentication.shared.classpath"/>
+        <path refid="plugin.bikes.server.classpath"/>
+        <path refid="plugin.bikes.shared.classpath"/>
+        <path refid="plugin.camipro.server.classpath"/>
+        <path refid="plugin.camipro.shared.classpath"/>
+        <path refid="plugin.directory.server.classpath"/>
+        <path refid="plugin.directory.shared.classpath"/>
+        <path refid="plugin.food.shared.classpath"/>
+        <path refid="plugin.news.server.classpath"/>
+        <path refid="plugin.food.server.classpath"/>
+        <path refid="plugin.news.shared.classpath"/>
+        <path refid="plugin.takeout.shared.classpath"/>
+        <path refid="plugin.takeoutreceiver.shared.classpath"/>
+        <path refid="plugin.takeout.server.classpath"/>
+        <path refid="plugin.transport.server.classpath"/>
+        <path refid="plugin.transport.shared.classpath"/>
+        <path refid="plugin.takeoutreceiver.server.classpath"/>
+        <path refid="plugin.satellite.server.classpath"/>
+        <path refid="plugin.satellite.shared.classpath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${lib.transport.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${platform.sdk.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${platform.sdk.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.authentication.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.authentication.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.bikes.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.bikes.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.camipro.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.camipro.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.directory.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.directory.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.food.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.food.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.news.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.news.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.satellite.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.satellite.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.takeout.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.takeoutreceiver.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.takeoutreceiver.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.takeout.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.transport.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.transport.server.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${lib.transport.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${platform.sdk.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${platform.sdk.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.authentication.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.authentication.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.bikes.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.bikes.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.camipro.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.camipro.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.directory.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.directory.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.food.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.food.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.news.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.news.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.satellite.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.satellite.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.takeout.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.takeoutreceiver.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.takeoutreceiver.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.takeout.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.transport.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.transport.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="platform.launcher.server.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="ServerLauncher">
+        <java classname="org.pocketcampus.platform.launcher.server.ServerLauncher" failonerror="true" fork="yes">
+            <classpath refid="platform.launcher.server.classpath"/>
+        </java>
+    </target>
+</project>
