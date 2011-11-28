@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.news.shared.NewsItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 /**
  * 
@@ -63,11 +64,24 @@ public class NewsModel extends PluginModel implements INewsModel {
 		for (NewsItemWithImage newsItem : mNewsItems) {
 			if (prefs_.getBoolean(NewsPreferences.LOAD_RSS
 					+ newsItem.getNewsItem().getFeed(), true)) {
-				filteredList.add(newsItem);
+				if (!alreadyContains(filteredList, newsItem)) {
+					filteredList.add(newsItem);
+				}
 			}
 		}
 
 		return filteredList;
+	}
+
+	private boolean alreadyContains(List<NewsItemWithImage> filteredList,
+			NewsItemWithImage newsItemWithImage) {
+		for (NewsItemWithImage ni : filteredList) {
+			if (ni.getNewsItem().getTitle()
+					.equals(newsItemWithImage.getNewsItem().getTitle())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

@@ -112,6 +112,12 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		// Notify the view(s)
 		this.mListeners.menusUpdated();
 	}
+	
+	@Override
+	public void getMealsErrorHappened(){
+		this.mListeners.mealsNetworkErrorHappened();
+		this.mListeners.menusUpdated();
+	}
 
 	/**
 	 * Returns the list of Meals sorted by Restaurant. If the list is currently

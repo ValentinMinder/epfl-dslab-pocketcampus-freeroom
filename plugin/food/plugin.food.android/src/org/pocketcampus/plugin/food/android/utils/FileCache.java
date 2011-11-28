@@ -95,10 +95,13 @@ public class FileCache {
 			in.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
+			return new ArrayList<Meal>();
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
+			return new ArrayList<Meal>();
 		} catch (ClassCastException ex) {
 			ex.printStackTrace();
+			return new ArrayList<Meal>();
 		}
 		if (isValidMenu()) {
 			return menu;

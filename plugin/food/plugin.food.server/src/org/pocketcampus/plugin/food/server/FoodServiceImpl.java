@@ -254,7 +254,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 				currentMeal.getRating().setRatingValue(ratingValue);
 
 				// Update Rating + deviceID on DB
-				mDatabase.insertRating(currentMeal);
+				mDatabase.insertRating(currentMeal, mealHashCode);
 				mDatabase.insertVotedDevice(deviceId, mealHashCode,
 						rating.getRatingValue());
 
@@ -311,6 +311,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 			}
 			mLastImportedMeals = new Date();
 			System.out.println("<importMenus>: Getting menus from DB");
+
+			List<Meal> newlyParsedMeals = parseMenus();
+			mDatabase.insertMeals(newlyParsedMeals);
 		} else {
 			parseMenus();
 			mDatabase.insertMeals(mAllMeals);
@@ -321,15 +324,21 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * Refresh menus because they have been imported too long ago
 	 */
 	private void refreshMenus() {
-		parseMenus();
-		mDatabase.insertMeals(mAllMeals);
+		List<Meal> newlyParsedMeals = parseMenus();
+		if (newlyParsedMeals != null && !newlyParsedMeals.isEmpty()) {
+			mDatabase.insertMeals(newlyParsedMeals);
+		}
 	}
 
 	/**
 	 * Parse the menus from the RSS feeds
+	 * 
+	 * @return the list of meals that were just parsed and that were not in the
+	 *         list of meals previously on the server
 	 */
-	private void parseMenus() {
+	private List<Meal> parseMenus() {
 		Set<String> restaurants = mRestaurantsFeeds.keySet();
+		List<Meal> newlyParsedMeals = new ArrayList<Meal>();
 
 		for (String r : restaurants) {
 			RssParser rp = new RssParser(mRestaurantsFeeds.get(r));
@@ -340,17 +349,28 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 			if (feed != null && feed.items != null) {
 				for (int i = 0; i < feed.items.size(); i++) {
+					// New meal rating
 					Rating mealRating = new Rating(0, 0, 0);
-					Meal newMeal = new Meal(
-							(r + feed.items.get(i).title).hashCode(),
-							feed.items.get(i).title,
-							feed.items.get(i).description, newResto, mealRating);
+					// Meal name
+					String name = feed.items.get(i).title;
+					// Meal description
+					String description = feed.items.get(i).description;
+					// Meal id
+					long id = (r + name).hashCode();
+
+					Meal newMeal = new Meal(id, name, description, newResto,
+							mealRating);
 					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
 							BAD_CHAR)
 							&& !Utils.containsSpecialAscii(newMeal.name,
 									BAD_CHAR)) {
-						mAllMeals.add(newMeal);
-						mMealRatings.put(newMeal.hashCode(), mealRating);
+						if (!alreadyExist(newMeal)) {
+							mAllMeals.add(newMeal);
+							mMealRatings.put(newMeal.hashCode(), mealRating);
+							// Buffer list to then add to the database the new
+							// meals
+							newlyParsedMeals.add(newMeal);
+						}
 					}
 				}
 				mLastImportedMeals = new Date();
@@ -361,6 +381,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		if (mAllMeals.isEmpty()) {
 			mLastImportedMeals = new Date();
 		}
+		return newlyParsedMeals;
 	}
 
 	/**

@@ -28,6 +28,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_toRightOf="@id/sdk_list_entry_feed_view_image"
+                android:paddingBottom="6dip"
                 android:gravity="center_vertical"
                 android:text="Title" />
 

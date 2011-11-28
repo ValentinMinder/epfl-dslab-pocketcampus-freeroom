@@ -62,7 +62,7 @@ public class MealsRequest extends
 	@Override
 	protected void onError(FoodController controller, Exception e) {
 		Log.d("NetworkError", "onError");
-		((FoodModel) controller.getModel()).setMeals(null, controller);
+		((FoodModel) controller.getModel()).getMealsErrorHappened();
 		e.printStackTrace();
 	}
 }

@@ -795,4 +795,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	};
 
+	@Override
+	public void mealsNetworkErrorHappened() {
+		Toast.makeText(this, "Unable to update meals", Toast.LENGTH_SHORT).show();
+	}
+
 }

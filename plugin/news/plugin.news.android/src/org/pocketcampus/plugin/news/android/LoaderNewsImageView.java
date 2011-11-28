@@ -7,7 +7,6 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -48,7 +47,8 @@ public class LoaderNewsImageView extends LinearLayout {
 	 */
 	public LoaderNewsImageView(final Context context, NewsItemWithImage newsItem) {
 		super(context);
-		instantiate(context, newsItem.getNewsItem().getImageUrl());
+		instantiate(context, newsItem.getDrawable(), newsItem.getNewsItem()
+				.getImageUrl());
 		this.mNewsItem = newsItem;
 	}
 
@@ -56,7 +56,8 @@ public class LoaderNewsImageView extends LinearLayout {
 	 * First time loading of the LoaderImageView Sets up the LayoutParams of the
 	 * view, you can change these to get the required effects you want
 	 */
-	private void instantiate(final Context context, final String imageUrl) {
+	private void instantiate(final Context context,
+			final Drawable imageDrawable, final String imageUrl) {
 		mContext = context;
 
 		mImage = new ImageView(mContext);
@@ -73,9 +74,24 @@ public class LoaderNewsImageView extends LinearLayout {
 		addView(mSpinner);
 		addView(mImage);
 
+		// if (imageDrawable != null) {
+		// mImage.setImageDrawable(imageDrawable);
+		// mImage.setVisibility(View.VISIBLE);
+		// mSpinner.setVisibility(View.GONE);
+		// } else {
 		if (imageUrl != null) {
 			setImageDrawable(imageUrl);
+		} else {
+			mDrawable = mContext.getResources().getDrawable(
+					R.drawable.news_no_image);
+			mImage.setImageDrawable(mDrawable);
+			mImage.setVisibility(View.VISIBLE);
+			mSpinner.setVisibility(View.GONE);
+			if (mNewsItem != null) {
+				mNewsItem.setDrawable(mDrawable);
+			}
 		}
+		// }
 	}
 
 	/**
@@ -128,16 +144,10 @@ public class LoaderNewsImageView extends LinearLayout {
 				mImage.setImageDrawable(mDrawable);
 				mImage.setVisibility(View.VISIBLE);
 				mSpinner.setVisibility(View.GONE);
-				mNewsItem.setDrawable(((BitmapDrawable) mDrawable).getBitmap());
+				mNewsItem.setDrawable(mDrawable);
 				break;
 			case FAILED:
 			default:
-				mDrawable = getResources()
-						.getDrawable(R.drawable.news_no_image);
-				mImage.setImageDrawable(mDrawable);
-				mImage.setVisibility(View.VISIBLE);
-				mSpinner.setVisibility(View.GONE);
-				mNewsItem.setDrawable(((BitmapDrawable) mDrawable).getBitmap());
 				break;
 			}
 			return true;

@@ -163,7 +163,7 @@ public class FoodDB {
 	 * @return the status of the insertion
 	 */
 	public boolean insertMeals(List<Meal> mMeals) {
-		if (!isValidConnection() || mMeals == null) {
+		if (!isValidConnection() || mMeals == null || mMeals.isEmpty()) {
 			return false;
 		}
 		PreparedStatement statement = null;
@@ -261,8 +261,7 @@ public class FoodDB {
 				stamp_created = rset.getDate("stamp_created");
 
 				// Create a new meal from the info we got in the database
-				long id = (long) restaurant.hashCode()
-						+ stamp_created.hashCode() + name.hashCode();
+				long id = (restaurant + name).hashCode();
 				Rating mealRating = new Rating(FoodUtils.doubleToRatingValue(
 						totalRating, numberOfVotes), numberOfVotes, totalRating);
 				Restaurant mealResto = new Restaurant(restaurant.hashCode(),
@@ -400,7 +399,7 @@ public class FoodDB {
 	 * @param meal
 	 *            the Meal for which the rating was submitted
 	 */
-	public void insertRating(Meal meal) {
+	public void insertRating(Meal meal, int hashCode) {
 		if (!isValidConnection() || meal == null) {
 			return;
 		}
@@ -408,7 +407,7 @@ public class FoodDB {
 		PreparedStatement insertRating = null;
 		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where hashcode=?";
 
-		int hashCode = meal.hashCode();
+//		int hashCode = meal.hashCode();
 
 		try {
 			insertRating = mConnection.prepareStatement(insertString);

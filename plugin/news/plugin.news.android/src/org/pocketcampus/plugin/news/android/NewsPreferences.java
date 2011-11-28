@@ -81,22 +81,22 @@ public class NewsPreferences extends PreferenceActivity {
         root.addPreference(otherPrefsCat);
 		
 		// List of available refresh rates for the feeds
-		ListPreference lp = new ListPreference(this);
-		lp.setEntries(R.array.news_refresh_entries);
-		lp.setEntryValues(R.array.news_refresh_values);
-		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[getResources().getInteger(R.integer.news_default_refresh)]);
-		lp.setKey(REFRESH_RATE);
-		lp.setTitle(R.string.news_refresh_title);
-		lp.setSummary(R.string.news_refresh_summary);
-		lp.setDialogTitle(R.string.news_refresh_title);
-		otherPrefsCat.addPreference(lp);
+//		ListPreference lp = new ListPreference(this);
+//		lp.setEntries(R.array.news_refresh_entries);
+//		lp.setEntryValues(R.array.news_refresh_values);
+//		lp.setDefaultValue(getResources().getStringArray(R.array.news_refresh_values)[getResources().getInteger(R.integer.news_default_refresh)]);
+//		lp.setKey(REFRESH_RATE);
+//		lp.setTitle(R.string.news_refresh_title);
+//		lp.setSummary(R.string.news_refresh_summary);
+//		lp.setDialogTitle(R.string.news_refresh_title);
+//		otherPrefsCat.addPreference(lp);
 		
-		CheckBoxPreference showImgPref = new CheckBoxPreference(this);
-		showImgPref.setTitle(R.string.news_show_image_title);
-		showImgPref.setSummary(R.string.news_show_image_summary);
-		showImgPref.setDefaultValue(true);
-		showImgPref.setKey(SHOW_IMG);
-		otherPrefsCat.addPreference(showImgPref);
+//		CheckBoxPreference showImgPref = new CheckBoxPreference(this);
+//		showImgPref.setTitle(R.string.news_show_image_title);
+//		showImgPref.setSummary(R.string.news_show_image_summary);
+//		showImgPref.setDefaultValue(true);
+//		showImgPref.setKey(SHOW_IMG);
+//		otherPrefsCat.addPreference(showImgPref);
 		
         return root;
     }

@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 
 /**
@@ -21,7 +23,7 @@ public class NewsItemWithImage implements Serializable {
 	/** The NewsItem */
 	private NewsItem mNewsItem;
 	/** The Drawable image corresponding */
-	private Bitmap mBitmap;
+	private Drawable mDrawable;
 
 	private String mSpannedDescription;
 
@@ -37,7 +39,7 @@ public class NewsItemWithImage implements Serializable {
 	 */
 	public NewsItemWithImage(NewsItem newsItem) {
 		this.mNewsItem = newsItem;
-		this.mBitmap = null;
+		this.mDrawable = null;
 		setImageUri();
 		setFormattedDescription();
 	}
@@ -50,12 +52,19 @@ public class NewsItemWithImage implements Serializable {
 		this.mNewsItem = mNewsItem;
 	}
 
-	public Bitmap getDrawable() {
-		return mBitmap;
+	public Drawable getDrawable() {
+		return mDrawable;
 	}
 
-	public void setDrawable(Bitmap mBitmap) {
-		this.mBitmap = mBitmap;
+	public Bitmap getBitmapDrawable() {
+		if (mDrawable != null) {
+			return ((BitmapDrawable) mDrawable).getBitmap();
+		} else
+			return null;
+	}
+
+	public void setDrawable(Drawable mDrawable) {
+		this.mDrawable = mDrawable;
 	}
 
 	/**

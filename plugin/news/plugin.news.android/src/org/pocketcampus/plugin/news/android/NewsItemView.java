@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * 
@@ -19,6 +20,7 @@ public class NewsItemView extends PluginView {
 	private INewsModel mModel;
 	private String mTitle;
 	private String mDescription;
+	private String mFeed;
 	private Bitmap mBitmap;
 	private FeedInformationLayout mLayout;
 
@@ -63,6 +65,10 @@ public class NewsItemView extends PluginView {
 		if (mDescription != null) {
 			mLayout.setDescription(mDescription);
 		}
+		if (mFeed != null) {
+			Toast.makeText(this, mFeed, Toast.LENGTH_SHORT).show();
+			mLayout.setDescription(mDescription);
+		}
 		if (mBitmap != null) {
 			mLayout.setImage(mBitmap);
 		}
@@ -85,6 +91,9 @@ public class NewsItemView extends PluginView {
 					.getSerializable("org.pocketcampus.news.newsitem.description");
 			mBitmap = (Bitmap) this.getIntent().getParcelableExtra(
 					"org.pocketcampus.news.newsitem.bitmap");
+			mFeed = (String) extras
+					.getSerializable("org.pocketcampus.news.newsitem.feed");
+
 		} else {
 			Log.d("NEWSITEMVIEW", "No extras received!");
 		}

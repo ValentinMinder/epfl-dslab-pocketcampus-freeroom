@@ -181,8 +181,10 @@ public class NewsMainView extends PluginView implements INewsView {
 						.getNewsItem().getTitle());
 				news.putExtra("org.pocketcampus.news.newsitem.description",
 						toPass.getFormattedDescription());
+				news.putExtra("org.pocketcampus.news.newsitem.feed",
+						toPass.getNewsItem().getFeed());
 				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
-						toPass.getDrawable());
+						toPass.getBitmapDrawable());
 				startActivity(news);
 			}
 		};
