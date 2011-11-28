@@ -4,6 +4,8 @@ namespace java org.pocketcampus.platform.sdk.shared.common
 // MISC //
 //////////
 
+
+
 // Let's keep familiar names.
 typedef i64 integer // XXX remove? common.integer is too long...
 

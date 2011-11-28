@@ -10,15 +10,18 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum LocationType implements org.apache.thrift.TEnum {
-  ANY(0),
-  STATION(1),
-  POI(2),
-  ADDRESS(3);
+public enum FareType implements org.apache.thrift.TEnum {
+  ADULT(0),
+  CHILD(1),
+  YOUTH(2),
+  STUDENT(3),
+  MILITARY(4),
+  SENIOR(5),
+  DISABLED(6);
 
   private final int value;
 
-  private LocationType(int value) {
+  private FareType(int value) {
     this.value = value;
   }
 
@@ -33,16 +36,22 @@ public enum LocationType implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static LocationType findByValue(int value) { 
+  public static FareType findByValue(int value) { 
     switch (value) {
       case 0:
-        return ANY;
+        return ADULT;
       case 1:
-        return STATION;
+        return CHILD;
       case 2:
-        return POI;
+        return YOUTH;
       case 3:
-        return ADDRESS;
+        return STUDENT;
+      case 4:
+        return MILITARY;
+      case 5:
+        return SENIOR;
+      case 6:
+        return DISABLED;
       default:
         return null;
     }
