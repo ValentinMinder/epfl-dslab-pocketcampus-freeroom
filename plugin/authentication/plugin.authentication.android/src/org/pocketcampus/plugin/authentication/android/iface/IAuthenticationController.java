@@ -6,4 +6,6 @@ public interface IAuthenticationController {
 	
 	public void authenticateUserForService(TypeOfService tos);
 	
+	public void setLocalCredentials(String user, String pass);
+	
 }

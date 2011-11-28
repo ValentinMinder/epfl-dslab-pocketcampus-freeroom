@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
@@ -11,6 +12,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AuthenticationView extends PluginView implements IAuthenticationView {
@@ -93,6 +98,8 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 				mController.authenticateUserForService(TypeOfService.SERVICE_MOODLE);
 			} else if("camipro".equals(pcService)) {
 				mController.authenticateUserForService(TypeOfService.SERVICE_CAMIPRO);
+			} else if("isa".equals(pcService)) {
+				authenticateUserLocallyForService(TypeOfService.SERVICE_ISA); // similarly we can add other services which need local auth
 			}
 		} else {
 			// TODO
@@ -114,6 +121,21 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		mLayout.setText("Tequila Authentication" + "\n\n\n"
 				+ "Redirecting... Please wait\n\n");
 	}
+	
+	private void authenticateUserLocallyForService (TypeOfService tos) {
+		final TypeOfService finalTos = tos;
+		setContentView(R.layout.authentication_customloginpage);
+		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
+		loginButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+				mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
+				mController.authenticateUserForService(finalTos);
+			}
+		});
+	}
+	
 	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,6 +160,12 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		return true;
 	}
 */
+	
+	public void wrongCredentials() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Invalid credentials!", Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
 	@Override
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);

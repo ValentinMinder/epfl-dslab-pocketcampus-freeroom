@@ -13,7 +13,8 @@ import org.apache.thrift.TEnum;
 public enum TypeOfService implements org.apache.thrift.TEnum {
   SERVICE_POCKETCAMPUS(0),
   SERVICE_MOODLE(1),
-  SERVICE_CAMIPRO(2);
+  SERVICE_CAMIPRO(2),
+  SERVICE_ISA(3);
 
   private final int value;
 
@@ -40,6 +41,8 @@ public enum TypeOfService implements org.apache.thrift.TEnum {
         return SERVICE_MOODLE;
       case 2:
         return SERVICE_CAMIPRO;
+      case 3:
+        return SERVICE_ISA;
       default:
         return null;
     }

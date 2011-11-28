@@ -28,6 +28,7 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
   private static final org.apache.thrift.protocol.TField POCKET_CAMPUS_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("pocketCampusSessionId", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField MOODLE_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("moodleCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField CAMIPRO_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("camiproCookie", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField ISA_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("isaCookie", org.apache.thrift.protocol.TType.STRING, (short)5);
 
   /**
    * 
@@ -37,6 +38,7 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
   public String pocketCampusSessionId; // required
   public String moodleCookie; // required
   public String camiproCookie; // required
+  public String isaCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -47,7 +49,8 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
     TOS((short)1, "tos"),
     POCKET_CAMPUS_SESSION_ID((short)2, "pocketCampusSessionId"),
     MOODLE_COOKIE((short)3, "moodleCookie"),
-    CAMIPRO_COOKIE((short)4, "camiproCookie");
+    CAMIPRO_COOKIE((short)4, "camiproCookie"),
+    ISA_COOKIE((short)5, "isaCookie");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -70,6 +73,8 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
           return MOODLE_COOKIE;
         case 4: // CAMIPRO_COOKIE
           return CAMIPRO_COOKIE;
+        case 5: // ISA_COOKIE
+          return ISA_COOKIE;
         default:
           return null;
       }
@@ -122,6 +127,8 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CAMIPRO_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("camiproCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ISA_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("isaCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SessionId.class, metaDataMap);
   }
@@ -152,6 +159,9 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
     if (other.isSetCamiproCookie()) {
       this.camiproCookie = other.camiproCookie;
     }
+    if (other.isSetIsaCookie()) {
+      this.isaCookie = other.isaCookie;
+    }
   }
 
   public SessionId deepCopy() {
@@ -164,6 +174,7 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
     this.pocketCampusSessionId = null;
     this.moodleCookie = null;
     this.camiproCookie = null;
+    this.isaCookie = null;
   }
 
   /**
@@ -270,6 +281,30 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
     }
   }
 
+  public String getIsaCookie() {
+    return this.isaCookie;
+  }
+
+  public SessionId setIsaCookie(String isaCookie) {
+    this.isaCookie = isaCookie;
+    return this;
+  }
+
+  public void unsetIsaCookie() {
+    this.isaCookie = null;
+  }
+
+  /** Returns true if field isaCookie is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsaCookie() {
+    return this.isaCookie != null;
+  }
+
+  public void setIsaCookieIsSet(boolean value) {
+    if (!value) {
+      this.isaCookie = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case TOS:
@@ -304,6 +339,14 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
       }
       break;
 
+    case ISA_COOKIE:
+      if (value == null) {
+        unsetIsaCookie();
+      } else {
+        setIsaCookie((String)value);
+      }
+      break;
+
     }
   }
 
@@ -320,6 +363,9 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
 
     case CAMIPRO_COOKIE:
       return getCamiproCookie();
+
+    case ISA_COOKIE:
+      return getIsaCookie();
 
     }
     throw new IllegalStateException();
@@ -340,6 +386,8 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
       return isSetMoodleCookie();
     case CAMIPRO_COOKIE:
       return isSetCamiproCookie();
+    case ISA_COOKIE:
+      return isSetIsaCookie();
     }
     throw new IllegalStateException();
   }
@@ -393,6 +441,15 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
         return false;
     }
 
+    boolean this_present_isaCookie = true && this.isSetIsaCookie();
+    boolean that_present_isaCookie = true && that.isSetIsaCookie();
+    if (this_present_isaCookie || that_present_isaCookie) {
+      if (!(this_present_isaCookie && that_present_isaCookie))
+        return false;
+      if (!this.isaCookie.equals(that.isaCookie))
+        return false;
+    }
+
     return true;
   }
 
@@ -419,6 +476,11 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
     builder.append(present_camiproCookie);
     if (present_camiproCookie)
       builder.append(camiproCookie);
+
+    boolean present_isaCookie = true && (isSetIsaCookie());
+    builder.append(present_isaCookie);
+    if (present_isaCookie)
+      builder.append(isaCookie);
 
     return builder.toHashCode();
   }
@@ -471,6 +533,16 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetIsaCookie()).compareTo(typedOther.isSetIsaCookie());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIsaCookie()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isaCookie, typedOther.isaCookie);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -516,6 +588,13 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // ISA_COOKIE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.isaCookie = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -554,6 +633,13 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
       if (isSetCamiproCookie()) {
         oprot.writeFieldBegin(CAMIPRO_COOKIE_FIELD_DESC);
         oprot.writeString(this.camiproCookie);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.isaCookie != null) {
+      if (isSetIsaCookie()) {
+        oprot.writeFieldBegin(ISA_COOKIE_FIELD_DESC);
+        oprot.writeString(this.isaCookie);
         oprot.writeFieldEnd();
       }
     }
@@ -600,6 +686,16 @@ public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._
         sb.append("null");
       } else {
         sb.append(this.camiproCookie);
+      }
+      first = false;
+    }
+    if (isSetIsaCookie()) {
+      if (!first) sb.append(", ");
+      sb.append("isaCookie:");
+      if (this.isaCookie == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.isaCookie);
       }
       first = false;
     }

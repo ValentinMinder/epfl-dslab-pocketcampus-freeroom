@@ -4,6 +4,7 @@ enum TypeOfService {
 	SERVICE_POCKETCAMPUS;
 	SERVICE_MOODLE;
 	SERVICE_CAMIPRO;
+	SERVICE_ISA;
 }
 
 struct TequilaKey {
@@ -17,6 +18,7 @@ struct SessionId {
 	2: optional string pocketCampusSessionId;
 	3: optional string moodleCookie;
 	4: optional string camiproCookie;
+	5: optional string isaCookie;
 }
 
 service AuthenticationService {
