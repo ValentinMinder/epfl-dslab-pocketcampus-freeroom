@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project platform.launcher.server with Jar-in-Jar Loader">
+    <property name="PC_TRUNK" value="../../../.."/>
+    <target name="create_run_jar">
+        <jar destfile="pkg.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="org.pocketcampus.platform.launcher.server.ServerLauncher"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ libthrift-0.7.0-multiplex.jar slf4j-api-1.6.2.jar slf4j-simple-1.6.2.jar servlet-api-3.0.jar httpclient-4.0-alpha1.jar log4j-1.2.16.jar bcprov-jdk15-146.jar commons-io-2.0.1.jar commons-lang3-3.0.1.jar javapns_2.0_Beta_4.jar jetty-ajp-8.0.0.M3.jar jetty-annotations-8.0.0.M3.jar jetty-client-8.0.0.M3.jar jetty-continuation-8.0.0.M3.jar jetty-deploy-8.0.0.M3.jar jetty-http-8.0.0.M3.jar jetty-io-8.0.0.M3.jar jetty-jmx-8.0.0.M3.jar jetty-jndi-8.0.0.M3.jar jetty-overlay-deployer-8.0.0.M3.jar jetty-plus-8.0.0.M3.jar jetty-policy-8.0.0.M3.jar jetty-rewrite-8.0.0.M3.jar jetty-security-8.0.0.M3.jar jetty-server-8.0.0.M3.jar jetty-servlet-8.0.0.M3.jar jetty-servlets-8.0.0.M3.jar jetty-util-8.0.0.M3.jar jetty-webapp-8.0.0.M3.jar jetty-websocket-8.0.0.M3.jar jetty-xml-8.0.0.M3.jar slf4j-api-1.6.2-sources.jar slf4j-simple-1.6.2-sources.jar commons-lang-2.6.jar unboundid-ldapsdk-se.jar src.zip gson-1.7.1.jar unboundid-ldapsdk-se.jar mysql-connector-java-5.1.15-bin.jar bcprov-jdk15-146.jar kxml2-2.3.0.jar jsoup-1.6.1.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+	    
+            <zipfileset dir="${PC_TRUNK}/lib/transport/lib.transport.server/lib" includes="kxml2-2.3.0.jar"/>
+	    
+            <zipfileset dir="${PC_TRUNK}/platform/sdk/platform.sdk.shared/lib" includes="*.jar"/>
+            <zipfileset dir="${PC_TRUNK}/platform/sdk/platform.sdk.server/lib" includes="*.jar"/>
+	    
+            <zipfileset dir="${PC_TRUNK}/plugin/authentication/plugin.authentication.server/lib" includes="unboundid-ldapsdk-se.jar"/>
+            <zipfileset dir="${PC_TRUNK}/plugin/authentication/plugin.authentication.server/lib" includes="src.zip"/>
+            <zipfileset dir="${PC_TRUNK}/plugin/directory/plugin.directory.server/lib" includes="unboundid-ldapsdk-se.jar"/>
+            <zipfileset dir="${PC_TRUNK}/plugin/food/plugin.food.server/lib" includes="mysql-connector-java-5.1.15-bin.jar"/>
+            <zipfileset dir="${PC_TRUNK}/plugin/takeoutreceiver/plugin.takeoutreceiver.server/lib" includes="bcprov-jdk15-146.jar"/>
+	    
+	    
+            <fileset dir="${PC_TRUNK}/lib/transport/lib.transport.server/bin"/>
+	    
+            <fileset dir="${PC_TRUNK}/platform/launcher/platform.launcher.server/bin"/>
+	    
+            <fileset dir="${PC_TRUNK}/platform/sdk/platform.sdk.server/bin"/>
+            <fileset dir="${PC_TRUNK}/platform/sdk/platform.sdk.shared/bin"/>
+	    
+            <fileset dir="${PC_TRUNK}/plugin/authentication/plugin.authentication.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/authentication/plugin.authentication.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/bikes/plugin.bikes.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/bikes/plugin.bikes.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/camipro/plugin.camipro.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/camipro/plugin.camipro.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/directory/plugin.directory.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/directory/plugin.directory.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/food/plugin.food.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/food/plugin.food.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/news/plugin.news.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/news/plugin.news.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/takeout/plugin.takeout.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/takeout/plugin.takeout.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/takeoutreceiver/plugin.takeoutreceiver.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/takeoutreceiver/plugin.takeoutreceiver.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/transport/plugin.transport.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/transport/plugin.transport.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/satellite/plugin.satellite.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/satellite/plugin.satellite.shared/bin"/>
+	    
+        </jar>
+    </target>
+</project>
