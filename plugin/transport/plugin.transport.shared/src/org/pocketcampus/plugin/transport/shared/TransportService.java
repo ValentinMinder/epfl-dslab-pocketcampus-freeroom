@@ -29,6 +29,8 @@ public class TransportService {
 
     public List<Location> getLocationsFromIDs(List<Integer> ids) throws org.apache.thrift.TException;
 
+    public List<Location> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException;
+
     public QueryDepartureResult nextDepartures(String IDStation) throws org.apache.thrift.TException;
 
     public QueryConnectionsResult connections(String from, String to) throws org.apache.thrift.TException;
@@ -42,6 +44,8 @@ public class TransportService {
     public void autocomplete(String constraint, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autocomplete_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getLocationsFromIDs(List<Integer> ids, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLocationsFromIDs_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getLocationsFromNames(List<String> names, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLocationsFromNames_call> resultHandler) throws org.apache.thrift.TException;
 
     public void nextDepartures(String IDStation, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.nextDepartures_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -115,6 +119,29 @@ public class TransportService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getLocationsFromIDs failed: unknown result");
+    }
+
+    public List<Location> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException
+    {
+      send_getLocationsFromNames(names);
+      return recv_getLocationsFromNames();
+    }
+
+    public void send_getLocationsFromNames(List<String> names) throws org.apache.thrift.TException
+    {
+      getLocationsFromNames_args args = new getLocationsFromNames_args();
+      args.setNames(names);
+      sendBase("getLocationsFromNames", args);
+    }
+
+    public List<Location> recv_getLocationsFromNames() throws org.apache.thrift.TException
+    {
+      getLocationsFromNames_result result = new getLocationsFromNames_result();
+      receiveBase(result, "getLocationsFromNames");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getLocationsFromNames failed: unknown result");
     }
 
     public QueryDepartureResult nextDepartures(String IDStation) throws org.apache.thrift.TException
@@ -270,6 +297,38 @@ public class TransportService {
       }
     }
 
+    public void getLocationsFromNames(List<String> names, org.apache.thrift.async.AsyncMethodCallback<getLocationsFromNames_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getLocationsFromNames_call method_call = new getLocationsFromNames_call(names, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getLocationsFromNames_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private List<String> names;
+      public getLocationsFromNames_call(List<String> names, org.apache.thrift.async.AsyncMethodCallback<getLocationsFromNames_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.names = names;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getLocationsFromNames", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getLocationsFromNames_args args = new getLocationsFromNames_args();
+        args.setNames(names);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Location> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getLocationsFromNames();
+      }
+    }
+
     public void nextDepartures(String IDStation, org.apache.thrift.async.AsyncMethodCallback<nextDepartures_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       nextDepartures_call method_call = new nextDepartures_call(IDStation, resultHandler, this, ___protocolFactory, ___transport);
@@ -387,6 +446,7 @@ public class TransportService {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("autocomplete", new autocomplete());
       processMap.put("getLocationsFromIDs", new getLocationsFromIDs());
+      processMap.put("getLocationsFromNames", new getLocationsFromNames());
       processMap.put("nextDepartures", new nextDepartures());
       processMap.put("connections", new connections());
       processMap.put("connectionsFromStationsIDs", new connectionsFromStationsIDs());
@@ -421,6 +481,22 @@ public class TransportService {
       protected getLocationsFromIDs_result getResult(I iface, getLocationsFromIDs_args args) throws org.apache.thrift.TException {
         getLocationsFromIDs_result result = new getLocationsFromIDs_result();
         result.success = iface.getLocationsFromIDs(args.ids);
+        return result;
+      }
+    }
+
+    private static class getLocationsFromNames<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getLocationsFromNames_args> {
+      public getLocationsFromNames() {
+        super("getLocationsFromNames");
+      }
+
+      protected getLocationsFromNames_args getEmptyArgsInstance() {
+        return new getLocationsFromNames_args();
+      }
+
+      protected getLocationsFromNames_result getResult(I iface, getLocationsFromNames_args args) throws org.apache.thrift.TException {
+        getLocationsFromNames_result result = new getLocationsFromNames_result();
+        result.success = iface.getLocationsFromNames(args.names);
         return result;
       }
     }
@@ -1767,6 +1843,688 @@ public class TransportService {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder("getLocationsFromIDs_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getLocationsFromNames_args implements org.apache.thrift.TBase<getLocationsFromNames_args, getLocationsFromNames_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getLocationsFromNames_args");
+
+    private static final org.apache.thrift.protocol.TField NAMES_FIELD_DESC = new org.apache.thrift.protocol.TField("names", org.apache.thrift.protocol.TType.LIST, (short)1);
+
+    public List<String> names; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      NAMES((short)1, "names");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // NAMES
+            return NAMES;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.NAMES, new org.apache.thrift.meta_data.FieldMetaData("names", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getLocationsFromNames_args.class, metaDataMap);
+    }
+
+    public getLocationsFromNames_args() {
+    }
+
+    public getLocationsFromNames_args(
+      List<String> names)
+    {
+      this();
+      this.names = names;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getLocationsFromNames_args(getLocationsFromNames_args other) {
+      if (other.isSetNames()) {
+        List<String> __this__names = new ArrayList<String>();
+        for (String other_element : other.names) {
+          __this__names.add(other_element);
+        }
+        this.names = __this__names;
+      }
+    }
+
+    public getLocationsFromNames_args deepCopy() {
+      return new getLocationsFromNames_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.names = null;
+    }
+
+    public int getNamesSize() {
+      return (this.names == null) ? 0 : this.names.size();
+    }
+
+    public java.util.Iterator<String> getNamesIterator() {
+      return (this.names == null) ? null : this.names.iterator();
+    }
+
+    public void addToNames(String elem) {
+      if (this.names == null) {
+        this.names = new ArrayList<String>();
+      }
+      this.names.add(elem);
+    }
+
+    public List<String> getNames() {
+      return this.names;
+    }
+
+    public getLocationsFromNames_args setNames(List<String> names) {
+      this.names = names;
+      return this;
+    }
+
+    public void unsetNames() {
+      this.names = null;
+    }
+
+    /** Returns true if field names is set (has been assigned a value) and false otherwise */
+    public boolean isSetNames() {
+      return this.names != null;
+    }
+
+    public void setNamesIsSet(boolean value) {
+      if (!value) {
+        this.names = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case NAMES:
+        if (value == null) {
+          unsetNames();
+        } else {
+          setNames((List<String>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case NAMES:
+        return getNames();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case NAMES:
+        return isSetNames();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getLocationsFromNames_args)
+        return this.equals((getLocationsFromNames_args)that);
+      return false;
+    }
+
+    public boolean equals(getLocationsFromNames_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_names = true && this.isSetNames();
+      boolean that_present_names = true && that.isSetNames();
+      if (this_present_names || that_present_names) {
+        if (!(this_present_names && that_present_names))
+          return false;
+        if (!this.names.equals(that.names))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_names = true && (isSetNames());
+      builder.append(present_names);
+      if (present_names)
+        builder.append(names);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getLocationsFromNames_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getLocationsFromNames_args typedOther = (getLocationsFromNames_args)other;
+
+      lastComparison = Boolean.valueOf(isSetNames()).compareTo(typedOther.isSetNames());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetNames()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.names, typedOther.names);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // NAMES
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list104 = iprot.readListBegin();
+                this.names = new ArrayList<String>(_list104.size);
+                for (int _i105 = 0; _i105 < _list104.size; ++_i105)
+                {
+                  String _elem106; // required
+                  _elem106 = iprot.readString();
+                  this.names.add(_elem106);
+                }
+                iprot.readListEnd();
+              }
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.names != null) {
+        oprot.writeFieldBegin(NAMES_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.names.size()));
+          for (String _iter107 : this.names)
+          {
+            oprot.writeString(_iter107);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getLocationsFromNames_args(");
+      boolean first = true;
+
+      sb.append("names:");
+      if (this.names == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.names);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getLocationsFromNames_result implements org.apache.thrift.TBase<getLocationsFromNames_result, getLocationsFromNames_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getLocationsFromNames_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    public List<Location> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getLocationsFromNames_result.class, metaDataMap);
+    }
+
+    public getLocationsFromNames_result() {
+    }
+
+    public getLocationsFromNames_result(
+      List<Location> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getLocationsFromNames_result(getLocationsFromNames_result other) {
+      if (other.isSetSuccess()) {
+        List<Location> __this__success = new ArrayList<Location>();
+        for (Location other_element : other.success) {
+          __this__success.add(new Location(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public getLocationsFromNames_result deepCopy() {
+      return new getLocationsFromNames_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Location> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Location elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Location>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Location> getSuccess() {
+      return this.success;
+    }
+
+    public getLocationsFromNames_result setSuccess(List<Location> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Location>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getLocationsFromNames_result)
+        return this.equals((getLocationsFromNames_result)that);
+      return false;
+    }
+
+    public boolean equals(getLocationsFromNames_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getLocationsFromNames_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getLocationsFromNames_result typedOther = (getLocationsFromNames_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list108 = iprot.readListBegin();
+                this.success = new ArrayList<Location>(_list108.size);
+                for (int _i109 = 0; _i109 < _list108.size; ++_i109)
+                {
+                  Location _elem110; // required
+                  _elem110 = new Location();
+                  _elem110.read(iprot);
+                  this.success.add(_elem110);
+                }
+                iprot.readListEnd();
+              }
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
+          for (Location _iter111 : this.success)
+          {
+            _iter111.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getLocationsFromNames_result(");
       boolean first = true;
 
       sb.append("success:");

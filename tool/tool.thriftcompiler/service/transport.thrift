@@ -210,6 +210,7 @@ struct Railway{
 service TransportService {
 	list<Location> autocomplete(1:string constraint);
 	list<Location> getLocationsFromIDs(1: list<i32> ids);
+	list<Location> getLocationsFromNames(1: list<string> names);
 	QueryDepartureResult nextDepartures(2:string IDStation);
 	QueryConnectionsResult connections(1:string from; 2:string to);
 	QueryConnectionsResult connectionsFromStationsIDs(1: string fromID; 2:string toID);

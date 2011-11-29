@@ -140,15 +140,15 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
     tmpMap.put(_Fields.AMBIGUOUS_TO, new org.apache.thrift.meta_data.FieldMetaData("ambiguousTo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
-    tmpMap.put(_Fields.QUERY_URI, new org.apache.thrift.meta_data.FieldMetaData("queryUri", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.QUERY_URI, new org.apache.thrift.meta_data.FieldMetaData("queryUri", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.FROM, new org.apache.thrift.meta_data.FieldMetaData("from", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.VIA, new org.apache.thrift.meta_data.FieldMetaData("via", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.VIA, new org.apache.thrift.meta_data.FieldMetaData("via", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
     tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.CONTEXT, new org.apache.thrift.meta_data.FieldMetaData("context", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.CONTEXT, new org.apache.thrift.meta_data.FieldMetaData("context", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.CONNECTIONS, new org.apache.thrift.meta_data.FieldMetaData("connections", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
@@ -161,13 +161,19 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
   }
 
   public QueryConnectionsResult(
+    String queryUri,
     Location from,
+    Location via,
     Location to,
+    String context,
     List<Connection> connections)
   {
     this();
+    this.queryUri = queryUri;
     this.from = from;
+    this.via = via;
     this.to = to;
+    this.context = context;
     this.connections = connections;
   }
 
@@ -1084,11 +1090,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       }
     }
     if (this.queryUri != null) {
-      if (isSetQueryUri()) {
-        oprot.writeFieldBegin(QUERY_URI_FIELD_DESC);
-        oprot.writeString(this.queryUri);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(QUERY_URI_FIELD_DESC);
+      oprot.writeString(this.queryUri);
+      oprot.writeFieldEnd();
     }
     if (this.from != null) {
       oprot.writeFieldBegin(FROM_FIELD_DESC);
@@ -1096,11 +1100,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldEnd();
     }
     if (this.via != null) {
-      if (isSetVia()) {
-        oprot.writeFieldBegin(VIA_FIELD_DESC);
-        this.via.write(oprot);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(VIA_FIELD_DESC);
+      this.via.write(oprot);
+      oprot.writeFieldEnd();
     }
     if (this.to != null) {
       oprot.writeFieldBegin(TO_FIELD_DESC);
@@ -1108,11 +1110,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldEnd();
     }
     if (this.context != null) {
-      if (isSetContext()) {
-        oprot.writeFieldBegin(CONTEXT_FIELD_DESC);
-        oprot.writeString(this.context);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(CONTEXT_FIELD_DESC);
+      oprot.writeString(this.context);
+      oprot.writeFieldEnd();
     }
     if (this.connections != null) {
       oprot.writeFieldBegin(CONNECTIONS_FIELD_DESC);
@@ -1164,16 +1164,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       }
       first = false;
     }
-    if (isSetQueryUri()) {
-      if (!first) sb.append(", ");
-      sb.append("queryUri:");
-      if (this.queryUri == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.queryUri);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("queryUri:");
+    if (this.queryUri == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.queryUri);
     }
+    first = false;
     if (!first) sb.append(", ");
     sb.append("from:");
     if (this.from == null) {
@@ -1182,16 +1180,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       sb.append(this.from);
     }
     first = false;
-    if (isSetVia()) {
-      if (!first) sb.append(", ");
-      sb.append("via:");
-      if (this.via == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.via);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("via:");
+    if (this.via == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.via);
     }
+    first = false;
     if (!first) sb.append(", ");
     sb.append("to:");
     if (this.to == null) {
@@ -1200,16 +1196,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       sb.append(this.to);
     }
     first = false;
-    if (isSetContext()) {
-      if (!first) sb.append(", ");
-      sb.append("context:");
-      if (this.context == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.context);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("context:");
+    if (this.context == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.context);
     }
+    first = false;
     if (!first) sb.append(", ");
     sb.append("connections:");
     if (this.connections == null) {
@@ -1224,11 +1218,20 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (queryUri == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'queryUri' was not present! Struct: " + toString());
+    }
     if (from == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'from' was not present! Struct: " + toString());
     }
+    if (via == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'via' was not present! Struct: " + toString());
+    }
     if (to == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'to' was not present! Struct: " + toString());
+    }
+    if (context == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'context' was not present! Struct: " + toString());
     }
     if (connections == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'connections' was not present! Struct: " + toString());
