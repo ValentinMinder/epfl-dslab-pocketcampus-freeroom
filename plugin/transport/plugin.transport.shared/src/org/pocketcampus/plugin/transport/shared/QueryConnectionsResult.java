@@ -131,13 +131,13 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.AMBIGUOUS_FROM, new org.apache.thrift.meta_data.FieldMetaData("ambiguousFrom", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.AMBIGUOUS_FROM, new org.apache.thrift.meta_data.FieldMetaData("ambiguousFrom", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
-    tmpMap.put(_Fields.AMBIGUOUS_VIA, new org.apache.thrift.meta_data.FieldMetaData("ambiguousVia", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.AMBIGUOUS_VIA, new org.apache.thrift.meta_data.FieldMetaData("ambiguousVia", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
-    tmpMap.put(_Fields.AMBIGUOUS_TO, new org.apache.thrift.meta_data.FieldMetaData("ambiguousTo", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.AMBIGUOUS_TO, new org.apache.thrift.meta_data.FieldMetaData("ambiguousTo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
     tmpMap.put(_Fields.QUERY_URI, new org.apache.thrift.meta_data.FieldMetaData("queryUri", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -161,9 +161,6 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
   }
 
   public QueryConnectionsResult(
-    List<Location> ambiguousFrom,
-    List<Location> ambiguousVia,
-    List<Location> ambiguousTo,
     String queryUri,
     Location from,
     Location via,
@@ -172,9 +169,6 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
     List<Connection> connections)
   {
     this();
-    this.ambiguousFrom = ambiguousFrom;
-    this.ambiguousVia = ambiguousVia;
-    this.ambiguousTo = ambiguousTo;
     this.queryUri = queryUri;
     this.from = from;
     this.via = via;
@@ -1054,40 +1048,46 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.ambiguousFrom != null) {
-      oprot.writeFieldBegin(AMBIGUOUS_FROM_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousFrom.size()));
-        for (Location _iter44 : this.ambiguousFrom)
+      if (isSetAmbiguousFrom()) {
+        oprot.writeFieldBegin(AMBIGUOUS_FROM_FIELD_DESC);
         {
-          _iter44.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousFrom.size()));
+          for (Location _iter44 : this.ambiguousFrom)
+          {
+            _iter44.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     if (this.ambiguousVia != null) {
-      oprot.writeFieldBegin(AMBIGUOUS_VIA_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousVia.size()));
-        for (Location _iter45 : this.ambiguousVia)
+      if (isSetAmbiguousVia()) {
+        oprot.writeFieldBegin(AMBIGUOUS_VIA_FIELD_DESC);
         {
-          _iter45.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousVia.size()));
+          for (Location _iter45 : this.ambiguousVia)
+          {
+            _iter45.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     if (this.ambiguousTo != null) {
-      oprot.writeFieldBegin(AMBIGUOUS_TO_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousTo.size()));
-        for (Location _iter46 : this.ambiguousTo)
+      if (isSetAmbiguousTo()) {
+        oprot.writeFieldBegin(AMBIGUOUS_TO_FIELD_DESC);
         {
-          _iter46.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousTo.size()));
+          for (Location _iter46 : this.ambiguousTo)
+          {
+            _iter46.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     if (this.queryUri != null) {
       oprot.writeFieldBegin(QUERY_URI_FIELD_DESC);
@@ -1135,29 +1135,35 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
     StringBuilder sb = new StringBuilder("QueryConnectionsResult(");
     boolean first = true;
 
-    sb.append("ambiguousFrom:");
-    if (this.ambiguousFrom == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.ambiguousFrom);
+    if (isSetAmbiguousFrom()) {
+      sb.append("ambiguousFrom:");
+      if (this.ambiguousFrom == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.ambiguousFrom);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("ambiguousVia:");
-    if (this.ambiguousVia == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.ambiguousVia);
+    if (isSetAmbiguousVia()) {
+      if (!first) sb.append(", ");
+      sb.append("ambiguousVia:");
+      if (this.ambiguousVia == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.ambiguousVia);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("ambiguousTo:");
-    if (this.ambiguousTo == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.ambiguousTo);
+    if (isSetAmbiguousTo()) {
+      if (!first) sb.append(", ");
+      sb.append("ambiguousTo:");
+      if (this.ambiguousTo == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.ambiguousTo);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("queryUri:");
     if (this.queryUri == null) {
@@ -1212,15 +1218,6 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (ambiguousFrom == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'ambiguousFrom' was not present! Struct: " + toString());
-    }
-    if (ambiguousVia == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'ambiguousVia' was not present! Struct: " + toString());
-    }
-    if (ambiguousTo == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'ambiguousTo' was not present! Struct: " + toString());
-    }
     if (queryUri == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'queryUri' was not present! Struct: " + toString());
     }

@@ -185,16 +185,18 @@ public class TransportServiceImpl implements TransportService.Iface {
 	//////////////////////////////////////////////////
 	
 	private QueryConnectionsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
-		return new QueryConnectionsResult(convertSchToPC(s.ambiguousFrom),
-										convertSchToPC(s.ambiguousVia),
-										convertSchToPC(s.ambiguousTo),
-										s.queryUri,
-										convertSchToPC(s.from),
-										convertSchToPC(s.via),
-										convertSchToPC(s.to),
-										s.context,
-										convertSchConToPC(s.connections)
-				);
+		QueryConnectionsResult qcr = new QueryConnectionsResult(
+				s.queryUri,
+				convertSchToPC(s.from),
+				convertSchToPC(s.via),
+				convertSchToPC(s.to),
+				s.context,
+				convertSchConToPC(s.connections)
+		);
+		qcr.ambiguousFrom = convertSchToPC(s.ambiguousFrom);
+		qcr.ambiguousVia = convertSchToPC(s.ambiguousVia);
+		qcr.ambiguousTo = convertSchToPC(s.ambiguousTo);
+		return qcr;
 	}
 	
 	private QueryDepartureResult convertSchToPC(QueryDeparturesResult sq) {
