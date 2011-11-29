@@ -39,7 +39,13 @@ public interface IFoodMainView extends IView {
 	 * Called when the list of sandwiches has been updated from the server
 	 */
 	public void sandwichesUpdated();
-	
-	public void mealsNetworkErrorHappened();
+
+	/**
+	 * Called when an error happens while executing a request to the server
+	 * 
+	 * @param message
+	 *            the message to be displayed
+	 */
+	public void networkErrorHappened(String message);
 
 }

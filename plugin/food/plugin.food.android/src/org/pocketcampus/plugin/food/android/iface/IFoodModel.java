@@ -111,7 +111,11 @@ public interface IFoodModel {
 	 *            the new list of sandwiches
 	 */
 	public void setSandwiches(List<Sandwich> list);
-	
-	public void getMealsErrorHappened();
+
+	/**
+	 * Called when an error has happened in a server request, and a particular
+	 * message wants to be displayed.
+	 */
+	public void networkErrorHappened(String message);
 
 }

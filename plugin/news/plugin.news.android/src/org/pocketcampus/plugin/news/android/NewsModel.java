@@ -13,7 +13,6 @@ import org.pocketcampus.plugin.news.shared.NewsItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 /**
  * 

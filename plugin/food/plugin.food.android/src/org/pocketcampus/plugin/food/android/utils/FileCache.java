@@ -112,6 +112,9 @@ public class FileCache {
 	public boolean isValidMenu() {
 		Calendar cal = Calendar.getInstance();
 		Calendar validity = Calendar.getInstance();
+		if (mValidityDate == null) {
+			return false;
+		}
 		validity.setTime(mValidityDate);
 		if (cal.get(Calendar.DAY_OF_MONTH) == validity
 				.get(Calendar.DAY_OF_MONTH)) {

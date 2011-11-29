@@ -45,4 +45,9 @@ public interface INewsModel {
 	 *            the new list of Feeds
 	 */
 	public void setFeedsList(List<Feed> list);
+	
+	/**
+	 * Called when an error has happened while updating the news
+	 */
+	public void notifyNetworkError();
 }

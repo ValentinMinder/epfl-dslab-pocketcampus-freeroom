@@ -1,18 +1,13 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.util.ArrayList;
-
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsController;
-import org.pocketcampus.plugin.news.android.req.FeedsRequest;
 import org.pocketcampus.plugin.news.android.req.NewsItemsRequest;
 import org.pocketcampus.plugin.news.shared.NewsService.Client;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Controller for the news plugin. Takes care of interactions between the model
@@ -64,14 +59,14 @@ public class NewsController extends PluginController implements INewsController 
 		new NewsItemsRequest().start(this, mClient, (Object) null);
 	}
 
-	/**
-	 * Initiates a request to the server to get the news Feeds.
-	 */
-	@Override
-	public void getFeeds() {
-		Log.d("NEWS", "Sending feeds request");
-		new FeedsRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName),
-				(Object) null);
-	}
+//	/**
+//	 * Initiates a request to the server to get the news Feeds.
+//	 */
+//	@Override
+//	public void getFeeds() {
+//		Log.d("NEWS", "Sending feeds request");
+//		new FeedsRequest().start(this,
+//				(Iface) getClient(new Client.Factory(), mPluginName),
+//				(Object) null);
+//	}
 }

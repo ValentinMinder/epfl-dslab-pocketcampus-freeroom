@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
@@ -14,6 +15,7 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.utils.FileCache;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
+import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
@@ -22,6 +24,7 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 /**
  * The Model of the food plugin, used to handle the information that is going to
@@ -112,10 +115,10 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		// Notify the view(s)
 		this.mListeners.menusUpdated();
 	}
-	
+
 	@Override
-	public void getMealsErrorHappened(){
-		this.mListeners.mealsNetworkErrorHappened();
+	public void networkErrorHappened(String message) {
+		this.mListeners.networkErrorHappened(message);
 		this.mListeners.menusUpdated();
 	}
 
@@ -138,6 +141,11 @@ public class FoodModel extends PluginModel implements IFoodModel {
 				mMealsCache = new FileCache(ctx);
 			}
 			mMeals = mMealsCache.restoreFromFile();
+			if (mMeals != null) {
+				Toast.makeText(ctx,
+						ctx.getString(R.string.food_displaying_from_cache),
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 		if (mMeals != null) {
 			HashMap<String, Vector<Meal>> allMeals = mSorter
@@ -248,7 +256,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	public void setRatings(Map<Integer, Rating> result) {
 		if (mMeals != null && !mMeals.isEmpty()) {
 			for (Meal m : mMeals) {
-				m.setRating(result.get(m.hashCode()));
+				m.setRating(result.get(SharedFoodUtils.getMealHashCode(m)));
 			}
 		}
 		mListeners.ratingsUpdated();

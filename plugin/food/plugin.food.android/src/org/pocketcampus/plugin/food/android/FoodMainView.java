@@ -134,7 +134,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Initiates request for the restaurant, meal and sandwich data
 	 */
 	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.food_no_menus));
+		mLayout.setText(getResources().getString(R.string.food_loading));
 		mController.getRestaurants();
 		mController.getMeals();
 		mController.getSandwiches();
@@ -320,11 +320,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(),
-				getString(R.string.food_network_error),
-				Toast.LENGTH_SHORT);
-		//TODO: DEPENDS ON THE REQUEST
-		toast.show();
+		// Toast toast = Toast.makeText(getApplicationContext(),
+		// getString(R.string.food_network_error),
+		// Toast.LENGTH_SHORT);
+		// TODO: DEPENDS ON THE REQUEST
+		// toast.show();
 	}
 
 	/**
@@ -796,8 +796,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	};
 
 	@Override
-	public void mealsNetworkErrorHappened() {
-		Toast.makeText(this, "Unable to update meals", Toast.LENGTH_SHORT).show();
+	public void networkErrorHappened(String message) {
+		Toast.makeText(this, message, Toast.LENGTH_SHORT)
+				.show();
 	}
 
 }

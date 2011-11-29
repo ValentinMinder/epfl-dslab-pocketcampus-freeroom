@@ -13,6 +13,7 @@ import java.util.List;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
+import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 
 /**
  * Class that handles interactions with the test database to store and retrieve
@@ -114,7 +115,7 @@ public class FoodDB {
 			String restaurant = meal.getRestaurant().getName();
 			double totalRating = meal.getRating().getTotalRating();
 			int numberOfVotes = meal.getRating().getNbVotes();
-			int hashcode = meal.hashCode();
+			int hashcode = SharedFoodUtils.getMealHashCode(meal);
 
 			// Get today's date
 			Calendar cal = Calendar.getInstance();
@@ -178,7 +179,7 @@ public class FoodDB {
 				String restaurant = m.getRestaurant().getName();
 				double totalRating = m.getRating().getTotalRating();
 				int numberOfVotes = m.getRating().getNbVotes();
-				int hashcode = m.hashCode();
+				int hashcode = SharedFoodUtils.getMealHashCode(m);
 
 				// Get today's date
 				Calendar cal = Calendar.getInstance();
@@ -407,7 +408,7 @@ public class FoodDB {
 		PreparedStatement insertRating = null;
 		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where hashcode=?";
 
-//		int hashCode = meal.hashCode();
+		// int hashCode = meal.hashCode();
 
 		try {
 			insertRating = mConnection.prepareStatement(insertString);

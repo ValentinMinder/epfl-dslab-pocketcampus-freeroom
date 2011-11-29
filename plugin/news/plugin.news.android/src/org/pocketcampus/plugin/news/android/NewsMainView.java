@@ -102,7 +102,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	 * Initiates request for the restaurant, meal and sandwich data
 	 */
 	private void displayData() {
-		mLayout.setText(getResources().getString(R.string.news_no_news));
+		mLayout.setText(getResources().getString(R.string.news_loading));
 		mLayout.hideTitle();
 		mController.getNewsItems();
 	}

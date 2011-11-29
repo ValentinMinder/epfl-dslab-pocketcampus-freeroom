@@ -4,6 +4,7 @@
     android:id="@+id/sdk_separated_list_header"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:padding="6dip"
     android:orientation="horizontal" >
 
     <TextView
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dip"
-        android:padding="6dip"
         android:text="testTitle"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/black" />

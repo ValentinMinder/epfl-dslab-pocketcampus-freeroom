@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.server.db;
 
+import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.RatingValue;
 
 /**
@@ -32,6 +33,7 @@ public class FoodUtils {
 		return rating;
 
 	}
+
 
 	/**
 	 * Converts a RatingValue to a double value

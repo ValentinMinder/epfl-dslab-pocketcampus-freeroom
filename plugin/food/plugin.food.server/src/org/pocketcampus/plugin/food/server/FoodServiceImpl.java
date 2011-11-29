@@ -20,6 +20,7 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
+import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 /**
@@ -161,7 +162,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		updateMenus();
 		System.out.println("<getRating>: Rating Request");
 
-		int mealHashCode = meal.hashCode();
+		int mealHashCode = SharedFoodUtils.getMealHashCode(meal);
 
 		if (mMealRatings != null) {
 			return mMealRatings.get(mealHashCode);
@@ -230,14 +231,14 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return SubmitStatus.ALREADY_VOTED;
 		}
 
-		int mealHashCode = meal.hashCode();
+		int mealHashCode = SharedFoodUtils.getMealHashCode(meal);
 
 		double ratingTotal;
 		double ratingValue;
 		int newNbVotes;
 
 		for (Meal currentMeal : mAllMeals) {
-			if (currentMeal.hashCode() == mealHashCode) {
+			if (SharedFoodUtils.getMealHashCode(currentMeal) == mealHashCode) {
 
 				ratingTotal = currentMeal.getRating().getTotalRating()
 						+ rating.getRatingValue();
@@ -307,7 +308,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 			mAllMeals = mealsFromDB;
 
 			for (Meal m : mAllMeals) {
-				mMealRatings.put(m.hashCode(), m.getRating());
+				mMealRatings.put(SharedFoodUtils.getMealHashCode(m),
+						m.getRating());
 			}
 			mLastImportedMeals = new Date();
 			System.out.println("<importMenus>: Getting menus from DB");
@@ -366,7 +368,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 									BAD_CHAR)) {
 						if (!alreadyExist(newMeal)) {
 							mAllMeals.add(newMeal);
-							mMealRatings.put(newMeal.hashCode(), mealRating);
+							mMealRatings.put(
+									SharedFoodUtils.getMealHashCode(newMeal),
+									mealRating);
 							// Buffer list to then add to the database the new
 							// meals
 							newlyParsedMeals.add(newMeal);
@@ -405,7 +409,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	private boolean alreadyExist(Meal meal) {
 		for (Meal m : mAllMeals) {
-			if (m.hashCode() == meal.hashCode()) {
+			if (SharedFoodUtils.getMealHashCode(m) == SharedFoodUtils
+					.getMealHashCode(meal)) {
 				return true;
 			}
 		}

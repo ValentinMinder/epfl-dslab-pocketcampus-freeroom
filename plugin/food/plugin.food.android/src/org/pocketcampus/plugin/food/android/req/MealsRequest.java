@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.food.android.req;
 
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.android.FoodModel;
@@ -62,7 +63,7 @@ public class MealsRequest extends
 	@Override
 	protected void onError(FoodController controller, Exception e) {
 		Log.d("NetworkError", "onError");
-		((FoodModel) controller.getModel()).getMealsErrorHappened();
+		((FoodModel) controller.getModel()).networkErrorHappened(controller.getString(R.string.food_meals_request_error));
 		e.printStackTrace();
 	}
 }

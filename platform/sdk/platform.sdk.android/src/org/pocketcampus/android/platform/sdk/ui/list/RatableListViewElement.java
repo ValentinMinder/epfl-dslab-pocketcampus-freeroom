@@ -53,6 +53,7 @@ public class RatableListViewElement extends ListView implements Element {
 
 	/**
 	 * Sets the adapter dimension
+	 * 
 	 * @param dimension
 	 */
 	public void setDimension(ElementDimension dimension) {
@@ -61,18 +62,24 @@ public class RatableListViewElement extends ListView implements Element {
 
 	/**
 	 * Sets the click listener for the line
+	 * 
 	 * @param lineClickListener
 	 */
 	public void setOnLineClickListener(OnItemClickListener lineClickListener) {
 		mAdapter.setOnLineClickListener(lineClickListener);
 	}
-	
+
 	/**
-	 * Sets the click listener for the rating 
+	 * Sets the click listener for the rating
+	 * 
 	 * @param ratingClickListener
 	 */
 	public void setOnRatingClickListener(OnItemClickListener ratingClickListener) {
 		mAdapter.setOnRatingClickListener(ratingClickListener);
 	}
 
+	/** Notifies the ListView that the Data set has changed */
+	public void notifyDataSetChanged() {
+		mAdapter.notifyDataSetChanged();
+	}
 }

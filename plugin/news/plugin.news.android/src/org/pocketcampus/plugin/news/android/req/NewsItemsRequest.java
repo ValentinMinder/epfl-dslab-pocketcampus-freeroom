@@ -30,7 +30,7 @@ public class NewsItemsRequest extends
 	protected List<NewsItem> runInBackground(Iface client, Object param)
 			throws Exception {
 		System.out.println("<News> Requesting news items");
-		
+
 		return client.getNewsItems();
 	}
 
@@ -59,7 +59,7 @@ public class NewsItemsRequest extends
 	@Override
 	protected void onError(NewsController controller, Exception e) {
 		System.out.println("onError");
-		controller.getModel().notifyNetworkError();
+		((NewsModel) controller.getModel()).notifyNetworkError();
 		e.printStackTrace();
 	}
 }
