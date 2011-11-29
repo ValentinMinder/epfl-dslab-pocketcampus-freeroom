@@ -7,8 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.plugin.transport.shared.Departure;
 import org.pocketcampus.plugin.transport.shared.FareType;
 import org.pocketcampus.plugin.transport.shared.Line;
+import org.pocketcampus.plugin.transport.shared.LineDestination;
 import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Fare;
@@ -18,12 +20,14 @@ import org.pocketcampus.plugin.transport.shared.Part;
 import org.pocketcampus.plugin.transport.shared.LocationType;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
+import org.pocketcampus.plugin.transport.shared.StationDepartures;
 import org.pocketcampus.plugin.transport.shared.Stop;
 import org.pocketcampus.plugin.transport.shared.TransportService;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
 import de.schildbach.pte.dto.NearbyStationsResult;
+import de.schildbach.pte.dto.QueryDeparturesResult;
 
 
 public class TransportServiceImpl implements TransportService.Iface {
@@ -34,9 +38,10 @@ public class TransportServiceImpl implements TransportService.Iface {
 		
 		try {
 			System.out.println(autocomplete("Neuchatel").get(0).id);
-			System.out.println(connections("neuchatel", "EPFL"));
+			System.out.println(connections("EPFL", "Bassenges"));
 			// EPFL -> Neuchatel
 			System.out.println(connectionsFromStationsIDs("8501214", "8504221"));
+			System.out.println(nextDepartures("8501214"));
 		} catch (TException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -87,10 +92,10 @@ public class TransportServiceImpl implements TransportService.Iface {
 		try {
 			for(Integer inte: ids){
 				de.schildbach.pte.dto.Location sLocation = new de.schildbach.pte.dto.Location(de.schildbach.pte.dto.LocationType.STATION, inte.intValue());
-				NearbyStationsResult res = mSbbProvider.queryNearbyStations(sLocation, 15000, 10);
+				NearbyStationsResult res = mSbbProvider.queryNearbyStations(sLocation, 0, 0);
 				if(res != null ){
 					locations.addAll((convertSchToPC(res.stations)));
-					System.out.println("haha");
+					System.out.println("haha " + res.status + ": " + res.stations.size());
 				}else{
 					System.out.println(res);
 				}
@@ -104,11 +109,24 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 
 	@Override
-	public QueryDepartureResult nextDepartures(String IDStation)
-			throws TException {
-		// TODO Auto-generated method stub
-		return null;
+	public QueryDepartureResult nextDepartures(String IDStation) throws TException {
+			
+		if(IDStation == null) {
+			return null;
+		}
+		
+		QueryDepartureResult nextDepartures = null;
+		
+		try {
+			nextDepartures = convertSchToPC(mSbbProvider.queryDepartures(Integer.parseInt(IDStation), 5, false));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return nextDepartures;
 	}
+
+	
 
 	@Override
 	public QueryConnectionsResult connections(String from, String to) throws TException {
@@ -179,6 +197,76 @@ public class TransportServiceImpl implements TransportService.Iface {
 				);
 	}
 	
+	private QueryDepartureResult convertSchToPC(QueryDeparturesResult sq) {
+		return new QueryDepartureResult(convertSchToPC(sq.status),
+				convertSchStaDepToPC(sq.stationDepartures));
+	}
+	
+	//STATIONS DEPARTURS
+	private List<StationDepartures> convertSchStaDepToPC(List<de.schildbach.pte.dto.StationDepartures> l){
+		LinkedList<StationDepartures> ret = new LinkedList<StationDepartures>();
+		for(de.schildbach.pte.dto.StationDepartures sd : l){
+			ret.add(convertSchToPC(sd));
+		}
+		return ret;
+	}
+	
+	private StationDepartures convertSchToPC(de.schildbach.pte.dto.StationDepartures sf){
+		return new StationDepartures(convertSchToPC(sf.location),
+				convertSchDepToPC(sf.departures),
+				convertSchLiDesToPC(sf.lines));
+	}
+
+	private List<LineDestination> convertSchLiDesToPC(List<de.schildbach.pte.dto.LineDestination> lines) {
+		if(lines == null)
+			return null;
+		
+		LinkedList<LineDestination> ret = new LinkedList<LineDestination>();
+		for(de.schildbach.pte.dto.LineDestination sd : lines){
+			ret.add(convertSchToPC(sd));
+		}
+		return ret;
+	}
+
+	private LineDestination convertSchToPC(de.schildbach.pte.dto.LineDestination sd) {
+		return new LineDestination(sd.line.label, null, sd.destinationId, sd.destination);
+	}
+
+	// DEPARTURES
+	private List<Departure> convertSchDepToPC(List<de.schildbach.pte.dto.Departure> ld) {
+		LinkedList<Departure> ret = new LinkedList<Departure>();
+		for(de.schildbach.pte.dto.Departure d : ld){
+			ret.add(convertSchToPC(d));
+		}
+		return ret;
+	}
+
+	private Departure convertSchToPC(de.schildbach.pte.dto.Departure d) {
+		long plt = 0, prt = 0;
+		if(d.plannedTime!= null)
+			plt = d.plannedTime.getTime();
+		
+		if(d.predictedTime != null)
+			prt = d.predictedTime.getTime();
+		
+		return new Departure(plt,
+				prt,
+				d.line.label, 
+				null, "", d.position, d.destinationId, d.destination, d.message);
+	}
+
+	private NearbyStatus convertSchToPC(de.schildbach.pte.dto.QueryDeparturesResult.Status ss) {
+		switch(ss){
+		case INVALID_STATION:
+			return NearbyStatus.INVALID_STATION;
+		case OK:
+			return NearbyStatus.OK;
+		case SERVICE_DOWN:
+			default:
+				return NearbyStatus.SERVICE_DOWN;
+		}
+	}
+
 	private Location convertSchToPC(de.schildbach.pte.dto.Location s){
 		if(s != null)
 			return new Location(convertSchToPC(s.type), s.id, s.lat, s.lon, s.place, s.name);
@@ -245,11 +333,11 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 	
 	private Part convertSchToPC(de.schildbach.pte.dto.Connection.Part sf){
-		Part part = null;
+		Part part = new Part(convertSchToPC(sf.departure),
+				convertSchToPC(sf.arrival),
+				convertSchPointsToPC(sf.path));
+		
 		if(sf instanceof de.schildbach.pte.dto.Connection.Trip ){
-			part = new Part(convertSchToPC(sf.departure),
-					convertSchToPC(sf.arrival),
-					convertSchPointsToPC(sf.path));
 			de.schildbach.pte.dto.Connection.Trip sft = (de.schildbach.pte.dto.Connection.Trip) sf;
 			
 			part.line = convertSchToPC(sft.line);
@@ -259,6 +347,12 @@ public class TransportServiceImpl implements TransportService.Iface {
 			part.departurePosition = sft.departurePosition;
 			part.arrivalPosition = sft.arrivalPosition;
 			part.intermediateStops = convertSchStopToPC(sft.intermediateStops);
+		}
+		if(sf instanceof de.schildbach.pte.dto.Connection.Footway){
+			de.schildbach.pte.dto.Connection.Footway sff = (de.schildbach.pte.dto.Connection.Footway) sf;
+			part.foot = true;
+			part.min = sff.min;
+			
 		}
 		return part;
 	}

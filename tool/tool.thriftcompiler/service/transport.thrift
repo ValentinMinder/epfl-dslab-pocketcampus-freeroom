@@ -124,7 +124,7 @@ struct GetConnectionDetailsResult{
 
 struct LineDestination{
 	1: required string line;
-	2: required list<i32> lineColors;
+	2: required list<string> lineColors;
 	3: required i32 destinationId;
 	4: required string destination;
 }
@@ -144,7 +144,7 @@ struct NearbyStationsResult
 
 
 enum Status{
-		OK; AMBIGUOUS; TOO_CLOSE; UNRESOLVABLE_ADDRESS; NO_CONNECTIONS; INVALID_DATE; SERVICE_DOWN;
+		sOK; AMBIGUOUS; TOO_CLOSE; UNRESOLVABLE_ADDRESS; NO_CONNECTIONS; INVALID_DATE; SERVICE_DOWN;
 	}
 struct QueryConnectionsResult{
 	1: required list<Location> ambiguousFrom;
@@ -167,7 +167,7 @@ struct StationDepartures
 }
 
 struct QueryDepartureResult{
-	1: required Status status;
+	1: required NearbyStatus status;
 	2: required list<StationDepartures> stationDepartures
 }
 
