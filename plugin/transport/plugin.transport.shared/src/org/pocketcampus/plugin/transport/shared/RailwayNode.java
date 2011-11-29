@@ -805,15 +805,15 @@ public class RailwayNode implements org.apache.thrift.TBase<RailwayNode, Railway
         case 1: // TAGS_
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map56 = iprot.readMapBegin();
-              this.tags_ = new HashMap<String,String>(2*_map56.size);
-              for (int _i57 = 0; _i57 < _map56.size; ++_i57)
+              org.apache.thrift.protocol.TMap _map60 = iprot.readMapBegin();
+              this.tags_ = new HashMap<String,String>(2*_map60.size);
+              for (int _i61 = 0; _i61 < _map60.size; ++_i61)
               {
-                String _key58; // required
-                String _val59; // required
-                _key58 = iprot.readString();
-                _val59 = iprot.readString();
-                this.tags_.put(_key58, _val59);
+                String _key62; // required
+                String _val63; // required
+                _key62 = iprot.readString();
+                _val63 = iprot.readString();
+                this.tags_.put(_key62, _val63);
               }
               iprot.readMapEnd();
             }
@@ -917,10 +917,10 @@ public class RailwayNode implements org.apache.thrift.TBase<RailwayNode, Railway
       oprot.writeFieldBegin(TAGS__FIELD_DESC);
       {
         oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.tags_.size()));
-        for (Map.Entry<String, String> _iter60 : this.tags_.entrySet())
+        for (Map.Entry<String, String> _iter64 : this.tags_.entrySet())
         {
-          oprot.writeString(_iter60.getKey());
-          oprot.writeString(_iter60.getValue());
+          oprot.writeString(_iter64.getKey());
+          oprot.writeString(_iter64.getValue());
         }
         oprot.writeMapEnd();
       }

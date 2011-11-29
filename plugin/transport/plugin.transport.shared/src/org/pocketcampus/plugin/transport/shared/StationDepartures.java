@@ -455,14 +455,14 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
         case 2: // DEPARTURES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list44 = iprot.readListBegin();
-              this.departures = new ArrayList<Departure>(_list44.size);
-              for (int _i45 = 0; _i45 < _list44.size; ++_i45)
+              org.apache.thrift.protocol.TList _list48 = iprot.readListBegin();
+              this.departures = new ArrayList<Departure>(_list48.size);
+              for (int _i49 = 0; _i49 < _list48.size; ++_i49)
               {
-                Departure _elem46; // required
-                _elem46 = new Departure();
-                _elem46.read(iprot);
-                this.departures.add(_elem46);
+                Departure _elem50; // required
+                _elem50 = new Departure();
+                _elem50.read(iprot);
+                this.departures.add(_elem50);
               }
               iprot.readListEnd();
             }
@@ -473,14 +473,14 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
         case 3: // LINES
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list47 = iprot.readListBegin();
-              this.lines = new ArrayList<LineDestination>(_list47.size);
-              for (int _i48 = 0; _i48 < _list47.size; ++_i48)
+              org.apache.thrift.protocol.TList _list51 = iprot.readListBegin();
+              this.lines = new ArrayList<LineDestination>(_list51.size);
+              for (int _i52 = 0; _i52 < _list51.size; ++_i52)
               {
-                LineDestination _elem49; // required
-                _elem49 = new LineDestination();
-                _elem49.read(iprot);
-                this.lines.add(_elem49);
+                LineDestination _elem53; // required
+                _elem53 = new LineDestination();
+                _elem53.read(iprot);
+                this.lines.add(_elem53);
               }
               iprot.readListEnd();
             }
@@ -512,9 +512,9 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
       oprot.writeFieldBegin(DEPARTURES_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.departures.size()));
-        for (Departure _iter50 : this.departures)
+        for (Departure _iter54 : this.departures)
         {
-          _iter50.write(oprot);
+          _iter54.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -524,9 +524,9 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
       oprot.writeFieldBegin(LINES_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.lines.size()));
-        for (LineDestination _iter51 : this.lines)
+        for (LineDestination _iter55 : this.lines)
         {
-          _iter51.write(oprot);
+          _iter55.write(oprot);
         }
         oprot.writeListEnd();
       }

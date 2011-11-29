@@ -151,31 +151,31 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.DEPARTURE, new org.apache.thrift.meta_data.FieldMetaData("departure", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.DEPARTURE, new org.apache.thrift.meta_data.FieldMetaData("departure", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.ARRIVAL, new org.apache.thrift.meta_data.FieldMetaData("arrival", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ARRIVAL, new org.apache.thrift.meta_data.FieldMetaData("arrival", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.PATH, new org.apache.thrift.meta_data.FieldMetaData("path", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.PATH, new org.apache.thrift.meta_data.FieldMetaData("path", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Point.class))));
-    tmpMap.put(_Fields.LINE, new org.apache.thrift.meta_data.FieldMetaData("line", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.LINE, new org.apache.thrift.meta_data.FieldMetaData("line", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Line.class)));
-    tmpMap.put(_Fields.DESTINATION, new org.apache.thrift.meta_data.FieldMetaData("destination", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.DESTINATION, new org.apache.thrift.meta_data.FieldMetaData("destination", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.DEPARTURE_TIME, new org.apache.thrift.meta_data.FieldMetaData("departureTime", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.DEPARTURE_TIME, new org.apache.thrift.meta_data.FieldMetaData("departureTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
-    tmpMap.put(_Fields.DEPARTURE_POSITION, new org.apache.thrift.meta_data.FieldMetaData("departurePosition", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.DEPARTURE_POSITION, new org.apache.thrift.meta_data.FieldMetaData("departurePosition", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.ARRIVAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("arrivalTime", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ARRIVAL_TIME, new org.apache.thrift.meta_data.FieldMetaData("arrivalTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
-    tmpMap.put(_Fields.ARRIVAL_POSITION, new org.apache.thrift.meta_data.FieldMetaData("arrivalPosition", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ARRIVAL_POSITION, new org.apache.thrift.meta_data.FieldMetaData("arrivalPosition", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.INTERMEDIATE_STOPS, new org.apache.thrift.meta_data.FieldMetaData("intermediateStops", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.INTERMEDIATE_STOPS, new org.apache.thrift.meta_data.FieldMetaData("intermediateStops", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Stop.class))));
-    tmpMap.put(_Fields.FOOT, new org.apache.thrift.meta_data.FieldMetaData("foot", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.FOOT, new org.apache.thrift.meta_data.FieldMetaData("foot", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.MIN, new org.apache.thrift.meta_data.FieldMetaData("min", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.MIN, new org.apache.thrift.meta_data.FieldMetaData("min", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Part.class, metaDataMap);
@@ -187,34 +187,12 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
   public Part(
     Location departure,
     Location arrival,
-    List<Point> path,
-    Line line,
-    Location destination,
-    long departureTime,
-    String departurePosition,
-    long arrivalTime,
-    String arrivalPosition,
-    List<Stop> intermediateStops,
-    boolean foot,
-    int min)
+    List<Point> path)
   {
     this();
     this.departure = departure;
     this.arrival = arrival;
     this.path = path;
-    this.line = line;
-    this.destination = destination;
-    this.departureTime = departureTime;
-    setDepartureTimeIsSet(true);
-    this.departurePosition = departurePosition;
-    this.arrivalTime = arrivalTime;
-    setArrivalTimeIsSet(true);
-    this.arrivalPosition = arrivalPosition;
-    this.intermediateStops = intermediateStops;
-    this.foot = foot;
-    setFootIsSet(true);
-    this.min = min;
-    setMinIsSet(true);
   }
 
   /**
@@ -835,8 +813,8 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
         return false;
     }
 
-    boolean this_present_departureTime = true;
-    boolean that_present_departureTime = true;
+    boolean this_present_departureTime = true && this.isSetDepartureTime();
+    boolean that_present_departureTime = true && that.isSetDepartureTime();
     if (this_present_departureTime || that_present_departureTime) {
       if (!(this_present_departureTime && that_present_departureTime))
         return false;
@@ -853,8 +831,8 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
         return false;
     }
 
-    boolean this_present_arrivalTime = true;
-    boolean that_present_arrivalTime = true;
+    boolean this_present_arrivalTime = true && this.isSetArrivalTime();
+    boolean that_present_arrivalTime = true && that.isSetArrivalTime();
     if (this_present_arrivalTime || that_present_arrivalTime) {
       if (!(this_present_arrivalTime && that_present_arrivalTime))
         return false;
@@ -880,8 +858,8 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
         return false;
     }
 
-    boolean this_present_foot = true;
-    boolean that_present_foot = true;
+    boolean this_present_foot = true && this.isSetFoot();
+    boolean that_present_foot = true && that.isSetFoot();
     if (this_present_foot || that_present_foot) {
       if (!(this_present_foot && that_present_foot))
         return false;
@@ -889,8 +867,8 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
         return false;
     }
 
-    boolean this_present_min = true;
-    boolean that_present_min = true;
+    boolean this_present_min = true && this.isSetMin();
+    boolean that_present_min = true && that.isSetMin();
     if (this_present_min || that_present_min) {
       if (!(this_present_min && that_present_min))
         return false;
@@ -930,7 +908,7 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
     if (present_destination)
       builder.append(destination);
 
-    boolean present_departureTime = true;
+    boolean present_departureTime = true && (isSetDepartureTime());
     builder.append(present_departureTime);
     if (present_departureTime)
       builder.append(departureTime);
@@ -940,7 +918,7 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
     if (present_departurePosition)
       builder.append(departurePosition);
 
-    boolean present_arrivalTime = true;
+    boolean present_arrivalTime = true && (isSetArrivalTime());
     builder.append(present_arrivalTime);
     if (present_arrivalTime)
       builder.append(arrivalTime);
@@ -955,12 +933,12 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
     if (present_intermediateStops)
       builder.append(intermediateStops);
 
-    boolean present_foot = true;
+    boolean present_foot = true && (isSetFoot());
     builder.append(present_foot);
     if (present_foot)
       builder.append(foot);
 
-    boolean present_min = true;
+    boolean present_min = true && (isSetMin());
     builder.append(present_min);
     if (present_min)
       builder.append(min);
@@ -1265,49 +1243,67 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
       oprot.writeFieldEnd();
     }
     if (this.line != null) {
-      oprot.writeFieldBegin(LINE_FIELD_DESC);
-      this.line.write(oprot);
-      oprot.writeFieldEnd();
+      if (isSetLine()) {
+        oprot.writeFieldBegin(LINE_FIELD_DESC);
+        this.line.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.destination != null) {
-      oprot.writeFieldBegin(DESTINATION_FIELD_DESC);
-      this.destination.write(oprot);
+      if (isSetDestination()) {
+        oprot.writeFieldBegin(DESTINATION_FIELD_DESC);
+        this.destination.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetDepartureTime()) {
+      oprot.writeFieldBegin(DEPARTURE_TIME_FIELD_DESC);
+      oprot.writeI64(this.departureTime);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(DEPARTURE_TIME_FIELD_DESC);
-    oprot.writeI64(this.departureTime);
-    oprot.writeFieldEnd();
     if (this.departurePosition != null) {
-      oprot.writeFieldBegin(DEPARTURE_POSITION_FIELD_DESC);
-      oprot.writeString(this.departurePosition);
+      if (isSetDeparturePosition()) {
+        oprot.writeFieldBegin(DEPARTURE_POSITION_FIELD_DESC);
+        oprot.writeString(this.departurePosition);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (isSetArrivalTime()) {
+      oprot.writeFieldBegin(ARRIVAL_TIME_FIELD_DESC);
+      oprot.writeI64(this.arrivalTime);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(ARRIVAL_TIME_FIELD_DESC);
-    oprot.writeI64(this.arrivalTime);
-    oprot.writeFieldEnd();
     if (this.arrivalPosition != null) {
-      oprot.writeFieldBegin(ARRIVAL_POSITION_FIELD_DESC);
-      oprot.writeString(this.arrivalPosition);
-      oprot.writeFieldEnd();
+      if (isSetArrivalPosition()) {
+        oprot.writeFieldBegin(ARRIVAL_POSITION_FIELD_DESC);
+        oprot.writeString(this.arrivalPosition);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.intermediateStops != null) {
-      oprot.writeFieldBegin(INTERMEDIATE_STOPS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.intermediateStops.size()));
-        for (Stop _iter11 : this.intermediateStops)
+      if (isSetIntermediateStops()) {
+        oprot.writeFieldBegin(INTERMEDIATE_STOPS_FIELD_DESC);
         {
-          _iter11.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.intermediateStops.size()));
+          for (Stop _iter11 : this.intermediateStops)
+          {
+            _iter11.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
+    }
+    if (isSetFoot()) {
+      oprot.writeFieldBegin(FOOT_FIELD_DESC);
+      oprot.writeBool(this.foot);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(FOOT_FIELD_DESC);
-    oprot.writeBool(this.foot);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(MIN_FIELD_DESC);
-    oprot.writeI32(this.min);
-    oprot.writeFieldEnd();
+    if (isSetMin()) {
+      oprot.writeFieldBegin(MIN_FIELD_DESC);
+      oprot.writeI32(this.min);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -1340,68 +1336,95 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
       sb.append(this.path);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("line:");
-    if (this.line == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.line);
+    if (isSetLine()) {
+      if (!first) sb.append(", ");
+      sb.append("line:");
+      if (this.line == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.line);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("destination:");
-    if (this.destination == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.destination);
+    if (isSetDestination()) {
+      if (!first) sb.append(", ");
+      sb.append("destination:");
+      if (this.destination == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.destination);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("departureTime:");
-    sb.append(this.departureTime);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("departurePosition:");
-    if (this.departurePosition == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.departurePosition);
+    if (isSetDepartureTime()) {
+      if (!first) sb.append(", ");
+      sb.append("departureTime:");
+      sb.append(this.departureTime);
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("arrivalTime:");
-    sb.append(this.arrivalTime);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("arrivalPosition:");
-    if (this.arrivalPosition == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.arrivalPosition);
+    if (isSetDeparturePosition()) {
+      if (!first) sb.append(", ");
+      sb.append("departurePosition:");
+      if (this.departurePosition == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.departurePosition);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("intermediateStops:");
-    if (this.intermediateStops == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.intermediateStops);
+    if (isSetArrivalTime()) {
+      if (!first) sb.append(", ");
+      sb.append("arrivalTime:");
+      sb.append(this.arrivalTime);
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("foot:");
-    sb.append(this.foot);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("min:");
-    sb.append(this.min);
-    first = false;
+    if (isSetArrivalPosition()) {
+      if (!first) sb.append(", ");
+      sb.append("arrivalPosition:");
+      if (this.arrivalPosition == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.arrivalPosition);
+      }
+      first = false;
+    }
+    if (isSetIntermediateStops()) {
+      if (!first) sb.append(", ");
+      sb.append("intermediateStops:");
+      if (this.intermediateStops == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.intermediateStops);
+      }
+      first = false;
+    }
+    if (isSetFoot()) {
+      if (!first) sb.append(", ");
+      sb.append("foot:");
+      sb.append(this.foot);
+      first = false;
+    }
+    if (isSetMin()) {
+      if (!first) sb.append(", ");
+      sb.append("min:");
+      sb.append(this.min);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (departure == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'departure' was not present! Struct: " + toString());
+    }
+    if (arrival == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'arrival' was not present! Struct: " + toString());
+    }
+    if (path == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'path' was not present! Struct: " + toString());
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

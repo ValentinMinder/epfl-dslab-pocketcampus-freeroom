@@ -670,16 +670,16 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
         case 1: // NODES_
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map65 = iprot.readMapBegin();
-              this.nodes_ = new HashMap<Integer,RailwayNode>(2*_map65.size);
-              for (int _i66 = 0; _i66 < _map65.size; ++_i66)
+              org.apache.thrift.protocol.TMap _map69 = iprot.readMapBegin();
+              this.nodes_ = new HashMap<Integer,RailwayNode>(2*_map69.size);
+              for (int _i70 = 0; _i70 < _map69.size; ++_i70)
               {
-                int _key67; // required
-                RailwayNode _val68; // required
-                _key67 = iprot.readI32();
-                _val68 = new RailwayNode();
-                _val68.read(iprot);
-                this.nodes_.put(_key67, _val68);
+                int _key71; // required
+                RailwayNode _val72; // required
+                _key71 = iprot.readI32();
+                _val72 = new RailwayNode();
+                _val72.read(iprot);
+                this.nodes_.put(_key71, _val72);
               }
               iprot.readMapEnd();
             }
@@ -690,16 +690,16 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
         case 2: // WAYS_
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map69 = iprot.readMapBegin();
-              this.ways_ = new HashMap<Integer,RailwayWay>(2*_map69.size);
-              for (int _i70 = 0; _i70 < _map69.size; ++_i70)
+              org.apache.thrift.protocol.TMap _map73 = iprot.readMapBegin();
+              this.ways_ = new HashMap<Integer,RailwayWay>(2*_map73.size);
+              for (int _i74 = 0; _i74 < _map73.size; ++_i74)
               {
-                int _key71; // required
-                RailwayWay _val72; // required
-                _key71 = iprot.readI32();
-                _val72 = new RailwayWay();
-                _val72.read(iprot);
-                this.ways_.put(_key71, _val72);
+                int _key75; // required
+                RailwayWay _val76; // required
+                _key75 = iprot.readI32();
+                _val76 = new RailwayWay();
+                _val76.read(iprot);
+                this.ways_.put(_key75, _val76);
               }
               iprot.readMapEnd();
             }
@@ -710,14 +710,14 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
         case 3: // MEMBERS_
           if (field.type == org.apache.thrift.protocol.TType.SET) {
             {
-              org.apache.thrift.protocol.TSet _set73 = iprot.readSetBegin();
-              this.members_ = new HashSet<RailwayMember>(2*_set73.size);
-              for (int _i74 = 0; _i74 < _set73.size; ++_i74)
+              org.apache.thrift.protocol.TSet _set77 = iprot.readSetBegin();
+              this.members_ = new HashSet<RailwayMember>(2*_set77.size);
+              for (int _i78 = 0; _i78 < _set77.size; ++_i78)
               {
-                RailwayMember _elem75; // required
-                _elem75 = new RailwayMember();
-                _elem75.read(iprot);
-                this.members_.add(_elem75);
+                RailwayMember _elem79; // required
+                _elem79 = new RailwayMember();
+                _elem79.read(iprot);
+                this.members_.add(_elem79);
               }
               iprot.readSetEnd();
             }
@@ -728,14 +728,14 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
         case 4: // RAILWAY_
           if (field.type == org.apache.thrift.protocol.TType.SET) {
             {
-              org.apache.thrift.protocol.TSet _set76 = iprot.readSetBegin();
-              this.railway_ = new HashSet<RailwayNode>(2*_set76.size);
-              for (int _i77 = 0; _i77 < _set76.size; ++_i77)
+              org.apache.thrift.protocol.TSet _set80 = iprot.readSetBegin();
+              this.railway_ = new HashSet<RailwayNode>(2*_set80.size);
+              for (int _i81 = 0; _i81 < _set80.size; ++_i81)
               {
-                RailwayNode _elem78; // required
-                _elem78 = new RailwayNode();
-                _elem78.read(iprot);
-                this.railway_.add(_elem78);
+                RailwayNode _elem82; // required
+                _elem82 = new RailwayNode();
+                _elem82.read(iprot);
+                this.railway_.add(_elem82);
               }
               iprot.readSetEnd();
             }
@@ -746,16 +746,16 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
         case 5: // STOP_NODES_
           if (field.type == org.apache.thrift.protocol.TType.MAP) {
             {
-              org.apache.thrift.protocol.TMap _map79 = iprot.readMapBegin();
-              this.stopNodes_ = new HashMap<Integer,RailwayNode>(2*_map79.size);
-              for (int _i80 = 0; _i80 < _map79.size; ++_i80)
+              org.apache.thrift.protocol.TMap _map83 = iprot.readMapBegin();
+              this.stopNodes_ = new HashMap<Integer,RailwayNode>(2*_map83.size);
+              for (int _i84 = 0; _i84 < _map83.size; ++_i84)
               {
-                int _key81; // required
-                RailwayNode _val82; // required
-                _key81 = iprot.readI32();
-                _val82 = new RailwayNode();
-                _val82.read(iprot);
-                this.stopNodes_.put(_key81, _val82);
+                int _key85; // required
+                RailwayNode _val86; // required
+                _key85 = iprot.readI32();
+                _val86 = new RailwayNode();
+                _val86.read(iprot);
+                this.stopNodes_.put(_key85, _val86);
               }
               iprot.readMapEnd();
             }
@@ -782,10 +782,10 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
       oprot.writeFieldBegin(NODES__FIELD_DESC);
       {
         oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.nodes_.size()));
-        for (Map.Entry<Integer, RailwayNode> _iter83 : this.nodes_.entrySet())
+        for (Map.Entry<Integer, RailwayNode> _iter87 : this.nodes_.entrySet())
         {
-          oprot.writeI32(_iter83.getKey());
-          _iter83.getValue().write(oprot);
+          oprot.writeI32(_iter87.getKey());
+          _iter87.getValue().write(oprot);
         }
         oprot.writeMapEnd();
       }
@@ -795,10 +795,10 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
       oprot.writeFieldBegin(WAYS__FIELD_DESC);
       {
         oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.ways_.size()));
-        for (Map.Entry<Integer, RailwayWay> _iter84 : this.ways_.entrySet())
+        for (Map.Entry<Integer, RailwayWay> _iter88 : this.ways_.entrySet())
         {
-          oprot.writeI32(_iter84.getKey());
-          _iter84.getValue().write(oprot);
+          oprot.writeI32(_iter88.getKey());
+          _iter88.getValue().write(oprot);
         }
         oprot.writeMapEnd();
       }
@@ -808,9 +808,9 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
       oprot.writeFieldBegin(MEMBERS__FIELD_DESC);
       {
         oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.members_.size()));
-        for (RailwayMember _iter85 : this.members_)
+        for (RailwayMember _iter89 : this.members_)
         {
-          _iter85.write(oprot);
+          _iter89.write(oprot);
         }
         oprot.writeSetEnd();
       }
@@ -820,9 +820,9 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
       oprot.writeFieldBegin(RAILWAY__FIELD_DESC);
       {
         oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.railway_.size()));
-        for (RailwayNode _iter86 : this.railway_)
+        for (RailwayNode _iter90 : this.railway_)
         {
-          _iter86.write(oprot);
+          _iter90.write(oprot);
         }
         oprot.writeSetEnd();
       }
@@ -832,10 +832,10 @@ public class Railway implements org.apache.thrift.TBase<Railway, Railway._Fields
       oprot.writeFieldBegin(STOP_NODES__FIELD_DESC);
       {
         oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRUCT, this.stopNodes_.size()));
-        for (Map.Entry<Integer, RailwayNode> _iter87 : this.stopNodes_.entrySet())
+        for (Map.Entry<Integer, RailwayNode> _iter91 : this.stopNodes_.entrySet())
         {
-          oprot.writeI32(_iter87.getKey());
-          _iter87.getValue().write(oprot);
+          oprot.writeI32(_iter91.getKey());
+          _iter91.getValue().write(oprot);
         }
         oprot.writeMapEnd();
       }

@@ -28,7 +28,7 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
   private static final org.apache.thrift.protocol.TField COLORS_FIELD_DESC = new org.apache.thrift.protocol.TField("colors", org.apache.thrift.protocol.TType.LIST, (short)2);
 
   public String label; // required
-  public List<Integer> colors; // required
+  public List<String> colors; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -100,7 +100,7 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.COLORS, new org.apache.thrift.meta_data.FieldMetaData("colors", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Line.class, metaDataMap);
   }
@@ -110,7 +110,7 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
 
   public Line(
     String label,
-    List<Integer> colors)
+    List<String> colors)
   {
     this();
     this.label = label;
@@ -125,8 +125,8 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
       this.label = other.label;
     }
     if (other.isSetColors()) {
-      List<Integer> __this__colors = new ArrayList<Integer>();
-      for (Integer other_element : other.colors) {
+      List<String> __this__colors = new ArrayList<String>();
+      for (String other_element : other.colors) {
         __this__colors.add(other_element);
       }
       this.colors = __this__colors;
@@ -171,22 +171,22 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
     return (this.colors == null) ? 0 : this.colors.size();
   }
 
-  public java.util.Iterator<Integer> getColorsIterator() {
+  public java.util.Iterator<String> getColorsIterator() {
     return (this.colors == null) ? null : this.colors.iterator();
   }
 
-  public void addToColors(int elem) {
+  public void addToColors(String elem) {
     if (this.colors == null) {
-      this.colors = new ArrayList<Integer>();
+      this.colors = new ArrayList<String>();
     }
     this.colors.add(elem);
   }
 
-  public List<Integer> getColors() {
+  public List<String> getColors() {
     return this.colors;
   }
 
-  public Line setColors(List<Integer> colors) {
+  public Line setColors(List<String> colors) {
     this.colors = colors;
     return this;
   }
@@ -220,7 +220,7 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
       if (value == null) {
         unsetColors();
       } else {
-        setColors((List<Integer>)value);
+        setColors((List<String>)value);
       }
       break;
 
@@ -361,11 +361,11 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-              this.colors = new ArrayList<Integer>(_list0.size);
+              this.colors = new ArrayList<String>(_list0.size);
               for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                int _elem2; // required
-                _elem2 = iprot.readI32();
+                String _elem2; // required
+                _elem2 = iprot.readString();
                 this.colors.add(_elem2);
               }
               iprot.readListEnd();
@@ -397,10 +397,10 @@ public class Line implements org.apache.thrift.TBase<Line, Line._Fields>, java.i
     if (this.colors != null) {
       oprot.writeFieldBegin(COLORS_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, this.colors.size()));
-        for (int _iter3 : this.colors)
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.colors.size()));
+        for (String _iter3 : this.colors)
         {
-          oprot.writeI32(_iter3);
+          oprot.writeString(_iter3);
         }
         oprot.writeListEnd();
       }

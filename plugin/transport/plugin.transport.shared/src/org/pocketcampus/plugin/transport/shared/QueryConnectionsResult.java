@@ -931,14 +931,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
         case 1: // AMBIGUOUS_FROM
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list28 = iprot.readListBegin();
-              this.ambiguousFrom = new ArrayList<Location>(_list28.size);
-              for (int _i29 = 0; _i29 < _list28.size; ++_i29)
+              org.apache.thrift.protocol.TList _list32 = iprot.readListBegin();
+              this.ambiguousFrom = new ArrayList<Location>(_list32.size);
+              for (int _i33 = 0; _i33 < _list32.size; ++_i33)
               {
-                Location _elem30; // required
-                _elem30 = new Location();
-                _elem30.read(iprot);
-                this.ambiguousFrom.add(_elem30);
+                Location _elem34; // required
+                _elem34 = new Location();
+                _elem34.read(iprot);
+                this.ambiguousFrom.add(_elem34);
               }
               iprot.readListEnd();
             }
@@ -949,14 +949,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
         case 2: // AMBIGUOUS_VIA
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list31 = iprot.readListBegin();
-              this.ambiguousVia = new ArrayList<Location>(_list31.size);
-              for (int _i32 = 0; _i32 < _list31.size; ++_i32)
+              org.apache.thrift.protocol.TList _list35 = iprot.readListBegin();
+              this.ambiguousVia = new ArrayList<Location>(_list35.size);
+              for (int _i36 = 0; _i36 < _list35.size; ++_i36)
               {
-                Location _elem33; // required
-                _elem33 = new Location();
-                _elem33.read(iprot);
-                this.ambiguousVia.add(_elem33);
+                Location _elem37; // required
+                _elem37 = new Location();
+                _elem37.read(iprot);
+                this.ambiguousVia.add(_elem37);
               }
               iprot.readListEnd();
             }
@@ -967,14 +967,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
         case 3: // AMBIGUOUS_TO
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list34 = iprot.readListBegin();
-              this.ambiguousTo = new ArrayList<Location>(_list34.size);
-              for (int _i35 = 0; _i35 < _list34.size; ++_i35)
+              org.apache.thrift.protocol.TList _list38 = iprot.readListBegin();
+              this.ambiguousTo = new ArrayList<Location>(_list38.size);
+              for (int _i39 = 0; _i39 < _list38.size; ++_i39)
               {
-                Location _elem36; // required
-                _elem36 = new Location();
-                _elem36.read(iprot);
-                this.ambiguousTo.add(_elem36);
+                Location _elem40; // required
+                _elem40 = new Location();
+                _elem40.read(iprot);
+                this.ambiguousTo.add(_elem40);
               }
               iprot.readListEnd();
             }
@@ -1023,14 +1023,14 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
         case 9: // CONNECTIONS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list37 = iprot.readListBegin();
-              this.connections = new ArrayList<Connection>(_list37.size);
-              for (int _i38 = 0; _i38 < _list37.size; ++_i38)
+              org.apache.thrift.protocol.TList _list41 = iprot.readListBegin();
+              this.connections = new ArrayList<Connection>(_list41.size);
+              for (int _i42 = 0; _i42 < _list41.size; ++_i42)
               {
-                Connection _elem39; // required
-                _elem39 = new Connection();
-                _elem39.read(iprot);
-                this.connections.add(_elem39);
+                Connection _elem43; // required
+                _elem43 = new Connection();
+                _elem43.read(iprot);
+                this.connections.add(_elem43);
               }
               iprot.readListEnd();
             }
@@ -1057,9 +1057,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldBegin(AMBIGUOUS_FROM_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousFrom.size()));
-        for (Location _iter40 : this.ambiguousFrom)
+        for (Location _iter44 : this.ambiguousFrom)
         {
-          _iter40.write(oprot);
+          _iter44.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1069,9 +1069,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldBegin(AMBIGUOUS_VIA_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousVia.size()));
-        for (Location _iter41 : this.ambiguousVia)
+        for (Location _iter45 : this.ambiguousVia)
         {
-          _iter41.write(oprot);
+          _iter45.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1081,9 +1081,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldBegin(AMBIGUOUS_TO_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.ambiguousTo.size()));
-        for (Location _iter42 : this.ambiguousTo)
+        for (Location _iter46 : this.ambiguousTo)
         {
-          _iter42.write(oprot);
+          _iter46.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1118,9 +1118,9 @@ public class QueryConnectionsResult implements org.apache.thrift.TBase<QueryConn
       oprot.writeFieldBegin(CONNECTIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.connections.size()));
-        for (Connection _iter43 : this.connections)
+        for (Connection _iter47 : this.connections)
         {
-          _iter43.write(oprot);
+          _iter47.write(oprot);
         }
         oprot.writeListEnd();
       }

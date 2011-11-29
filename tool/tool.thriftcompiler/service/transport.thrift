@@ -43,9 +43,10 @@ struct Point{
 	2: required i32 lon;
 }
 
+typedef i32 Integer
 struct Line{
 	1: required string label;
-	2: required list<i32> colors;
+	2: required list<string> colors;
 }
 
 
@@ -56,20 +57,20 @@ struct Stop{
 }
 
 struct Part {
-	1: Location departure;
-	2: Location arrival;
-	3: list<Point> path;
+	1: required Location departure;
+	2: required Location arrival;
+	3: required list<Point> path;
 	
-	4: Line line;
-	5: Location destination;
-	6: timestamp departureTime;
-	7: string departurePosition;
-	8: timestamp arrivalTime;
-	9: string arrivalPosition;
-	10: list<Stop> intermediateStops;
+	4: optional Line line;
+	5: optional Location destination;
+	6: optional timestamp departureTime;
+	7: optional string departurePosition;
+	8: optional timestamp arrivalTime;
+	9: optional string arrivalPosition;
+	10: optional list<Stop> intermediateStops;
 	
-	11:bool foot;
-	12: i32 min;
+	11: optional bool foot;
+	12: optional i32 min;
 }
 
 struct Connection 
@@ -131,14 +132,14 @@ struct LineDestination{
 
 
 
-/*enum Status	{
+enum NearbyStatus	{
 		OK; INVALID_STATION; SERVICE_DOWN;
 }
 struct NearbyStationsResult
 {
-	1: required Status status;
+	1: required NearbyStatus status;
 	2: required list<Location> stations;
-}*/
+}
 
 
 

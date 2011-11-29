@@ -356,14 +356,14 @@ public class RailwayWay implements org.apache.thrift.TBase<RailwayWay, RailwayWa
         case 1: // NDS
           if (field.type == org.apache.thrift.protocol.TType.SET) {
             {
-              org.apache.thrift.protocol.TSet _set61 = iprot.readSetBegin();
-              this.nds = new HashSet<RailwayNd>(2*_set61.size);
-              for (int _i62 = 0; _i62 < _set61.size; ++_i62)
+              org.apache.thrift.protocol.TSet _set65 = iprot.readSetBegin();
+              this.nds = new HashSet<RailwayNd>(2*_set65.size);
+              for (int _i66 = 0; _i66 < _set65.size; ++_i66)
               {
-                RailwayNd _elem63; // required
-                _elem63 = new RailwayNd();
-                _elem63.read(iprot);
-                this.nds.add(_elem63);
+                RailwayNd _elem67; // required
+                _elem67 = new RailwayNd();
+                _elem67.read(iprot);
+                this.nds.add(_elem67);
               }
               iprot.readSetEnd();
             }
@@ -401,9 +401,9 @@ public class RailwayWay implements org.apache.thrift.TBase<RailwayWay, RailwayWa
       oprot.writeFieldBegin(NDS_FIELD_DESC);
       {
         oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, this.nds.size()));
-        for (RailwayNd _iter64 : this.nds)
+        for (RailwayNd _iter68 : this.nds)
         {
-          _iter64.write(oprot);
+          _iter68.write(oprot);
         }
         oprot.writeSetEnd();
       }

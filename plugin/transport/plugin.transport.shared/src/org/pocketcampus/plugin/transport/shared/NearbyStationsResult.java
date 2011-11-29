@@ -21,27 +21,27 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepartureResult, QueryDepartureResult._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("QueryDepartureResult");
+public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStationsResult, NearbyStationsResult._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("NearbyStationsResult");
 
   private static final org.apache.thrift.protocol.TField STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("status", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField STATION_DEPARTURES_FIELD_DESC = new org.apache.thrift.protocol.TField("stationDepartures", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField STATIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("stations", org.apache.thrift.protocol.TType.LIST, (short)2);
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public Status status; // required
-  public List<StationDepartures> stationDepartures; // required
+  public NearbyStatus status; // required
+  public List<Location> stations; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     /**
      * 
-     * @see Status
+     * @see NearbyStatus
      */
     STATUS((short)1, "status"),
-    STATION_DEPARTURES((short)2, "stationDepartures");
+    STATIONS((short)2, "stations");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -58,8 +58,8 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       switch(fieldId) {
         case 1: // STATUS
           return STATUS;
-        case 2: // STATION_DEPARTURES
-          return STATION_DEPARTURES;
+        case 2: // STATIONS
+          return STATIONS;
         default:
           return null;
       }
@@ -105,65 +105,65 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Status.class)));
-    tmpMap.put(_Fields.STATION_DEPARTURES, new org.apache.thrift.meta_data.FieldMetaData("stationDepartures", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, NearbyStatus.class)));
+    tmpMap.put(_Fields.STATIONS, new org.apache.thrift.meta_data.FieldMetaData("stations", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StationDepartures.class))));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(QueryDepartureResult.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NearbyStationsResult.class, metaDataMap);
   }
 
-  public QueryDepartureResult() {
+  public NearbyStationsResult() {
   }
 
-  public QueryDepartureResult(
-    Status status,
-    List<StationDepartures> stationDepartures)
+  public NearbyStationsResult(
+    NearbyStatus status,
+    List<Location> stations)
   {
     this();
     this.status = status;
-    this.stationDepartures = stationDepartures;
+    this.stations = stations;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public QueryDepartureResult(QueryDepartureResult other) {
+  public NearbyStationsResult(NearbyStationsResult other) {
     if (other.isSetStatus()) {
       this.status = other.status;
     }
-    if (other.isSetStationDepartures()) {
-      List<StationDepartures> __this__stationDepartures = new ArrayList<StationDepartures>();
-      for (StationDepartures other_element : other.stationDepartures) {
-        __this__stationDepartures.add(new StationDepartures(other_element));
+    if (other.isSetStations()) {
+      List<Location> __this__stations = new ArrayList<Location>();
+      for (Location other_element : other.stations) {
+        __this__stations.add(new Location(other_element));
       }
-      this.stationDepartures = __this__stationDepartures;
+      this.stations = __this__stations;
     }
   }
 
-  public QueryDepartureResult deepCopy() {
-    return new QueryDepartureResult(this);
+  public NearbyStationsResult deepCopy() {
+    return new NearbyStationsResult(this);
   }
 
   @Override
   public void clear() {
     this.status = null;
-    this.stationDepartures = null;
+    this.stations = null;
   }
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public Status getStatus() {
+  public NearbyStatus getStatus() {
     return this.status;
   }
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public QueryDepartureResult setStatus(Status status) {
+  public NearbyStationsResult setStatus(NearbyStatus status) {
     this.status = status;
     return this;
   }
@@ -183,42 +183,42 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     }
   }
 
-  public int getStationDeparturesSize() {
-    return (this.stationDepartures == null) ? 0 : this.stationDepartures.size();
+  public int getStationsSize() {
+    return (this.stations == null) ? 0 : this.stations.size();
   }
 
-  public java.util.Iterator<StationDepartures> getStationDeparturesIterator() {
-    return (this.stationDepartures == null) ? null : this.stationDepartures.iterator();
+  public java.util.Iterator<Location> getStationsIterator() {
+    return (this.stations == null) ? null : this.stations.iterator();
   }
 
-  public void addToStationDepartures(StationDepartures elem) {
-    if (this.stationDepartures == null) {
-      this.stationDepartures = new ArrayList<StationDepartures>();
+  public void addToStations(Location elem) {
+    if (this.stations == null) {
+      this.stations = new ArrayList<Location>();
     }
-    this.stationDepartures.add(elem);
+    this.stations.add(elem);
   }
 
-  public List<StationDepartures> getStationDepartures() {
-    return this.stationDepartures;
+  public List<Location> getStations() {
+    return this.stations;
   }
 
-  public QueryDepartureResult setStationDepartures(List<StationDepartures> stationDepartures) {
-    this.stationDepartures = stationDepartures;
+  public NearbyStationsResult setStations(List<Location> stations) {
+    this.stations = stations;
     return this;
   }
 
-  public void unsetStationDepartures() {
-    this.stationDepartures = null;
+  public void unsetStations() {
+    this.stations = null;
   }
 
-  /** Returns true if field stationDepartures is set (has been assigned a value) and false otherwise */
-  public boolean isSetStationDepartures() {
-    return this.stationDepartures != null;
+  /** Returns true if field stations is set (has been assigned a value) and false otherwise */
+  public boolean isSetStations() {
+    return this.stations != null;
   }
 
-  public void setStationDeparturesIsSet(boolean value) {
+  public void setStationsIsSet(boolean value) {
     if (!value) {
-      this.stationDepartures = null;
+      this.stations = null;
     }
   }
 
@@ -228,15 +228,15 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       if (value == null) {
         unsetStatus();
       } else {
-        setStatus((Status)value);
+        setStatus((NearbyStatus)value);
       }
       break;
 
-    case STATION_DEPARTURES:
+    case STATIONS:
       if (value == null) {
-        unsetStationDepartures();
+        unsetStations();
       } else {
-        setStationDepartures((List<StationDepartures>)value);
+        setStations((List<Location>)value);
       }
       break;
 
@@ -248,8 +248,8 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     case STATUS:
       return getStatus();
 
-    case STATION_DEPARTURES:
-      return getStationDepartures();
+    case STATIONS:
+      return getStations();
 
     }
     throw new IllegalStateException();
@@ -264,8 +264,8 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     switch (field) {
     case STATUS:
       return isSetStatus();
-    case STATION_DEPARTURES:
-      return isSetStationDepartures();
+    case STATIONS:
+      return isSetStations();
     }
     throw new IllegalStateException();
   }
@@ -274,12 +274,12 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof QueryDepartureResult)
-      return this.equals((QueryDepartureResult)that);
+    if (that instanceof NearbyStationsResult)
+      return this.equals((NearbyStationsResult)that);
     return false;
   }
 
-  public boolean equals(QueryDepartureResult that) {
+  public boolean equals(NearbyStationsResult that) {
     if (that == null)
       return false;
 
@@ -292,12 +292,12 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
         return false;
     }
 
-    boolean this_present_stationDepartures = true && this.isSetStationDepartures();
-    boolean that_present_stationDepartures = true && that.isSetStationDepartures();
-    if (this_present_stationDepartures || that_present_stationDepartures) {
-      if (!(this_present_stationDepartures && that_present_stationDepartures))
+    boolean this_present_stations = true && this.isSetStations();
+    boolean that_present_stations = true && that.isSetStations();
+    if (this_present_stations || that_present_stations) {
+      if (!(this_present_stations && that_present_stations))
         return false;
-      if (!this.stationDepartures.equals(that.stationDepartures))
+      if (!this.stations.equals(that.stations))
         return false;
     }
 
@@ -313,21 +313,21 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     if (present_status)
       builder.append(status.getValue());
 
-    boolean present_stationDepartures = true && (isSetStationDepartures());
-    builder.append(present_stationDepartures);
-    if (present_stationDepartures)
-      builder.append(stationDepartures);
+    boolean present_stations = true && (isSetStations());
+    builder.append(present_stations);
+    if (present_stations)
+      builder.append(stations);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(QueryDepartureResult other) {
+  public int compareTo(NearbyStationsResult other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    QueryDepartureResult typedOther = (QueryDepartureResult)other;
+    NearbyStationsResult typedOther = (NearbyStationsResult)other;
 
     lastComparison = Boolean.valueOf(isSetStatus()).compareTo(typedOther.isSetStatus());
     if (lastComparison != 0) {
@@ -339,12 +339,12 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetStationDepartures()).compareTo(typedOther.isSetStationDepartures());
+    lastComparison = Boolean.valueOf(isSetStations()).compareTo(typedOther.isSetStations());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetStationDepartures()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.stationDepartures, typedOther.stationDepartures);
+    if (isSetStations()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.stations, typedOther.stations);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -368,22 +368,22 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       switch (field.id) {
         case 1: // STATUS
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.status = Status.findByValue(iprot.readI32());
+            this.status = NearbyStatus.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // STATION_DEPARTURES
+        case 2: // STATIONS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
-              org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
-              this.stationDepartures = new ArrayList<StationDepartures>(_list56.size);
-              for (int _i57 = 0; _i57 < _list56.size; ++_i57)
+              org.apache.thrift.protocol.TList _list28 = iprot.readListBegin();
+              this.stations = new ArrayList<Location>(_list28.size);
+              for (int _i29 = 0; _i29 < _list28.size; ++_i29)
               {
-                StationDepartures _elem58; // required
-                _elem58 = new StationDepartures();
-                _elem58.read(iprot);
-                this.stationDepartures.add(_elem58);
+                Location _elem30; // required
+                _elem30 = new Location();
+                _elem30.read(iprot);
+                this.stations.add(_elem30);
               }
               iprot.readListEnd();
             }
@@ -411,13 +411,13 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       oprot.writeI32(this.status.getValue());
       oprot.writeFieldEnd();
     }
-    if (this.stationDepartures != null) {
-      oprot.writeFieldBegin(STATION_DEPARTURES_FIELD_DESC);
+    if (this.stations != null) {
+      oprot.writeFieldBegin(STATIONS_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.stationDepartures.size()));
-        for (StationDepartures _iter59 : this.stationDepartures)
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.stations.size()));
+        for (Location _iter31 : this.stations)
         {
-          _iter59.write(oprot);
+          _iter31.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -429,7 +429,7 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("QueryDepartureResult(");
+    StringBuilder sb = new StringBuilder("NearbyStationsResult(");
     boolean first = true;
 
     sb.append("status:");
@@ -440,11 +440,11 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("stationDepartures:");
-    if (this.stationDepartures == null) {
+    sb.append("stations:");
+    if (this.stations == null) {
       sb.append("null");
     } else {
-      sb.append(this.stationDepartures);
+      sb.append(this.stations);
     }
     first = false;
     sb.append(")");
@@ -456,8 +456,8 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
     if (status == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'status' was not present! Struct: " + toString());
     }
-    if (stationDepartures == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'stationDepartures' was not present! Struct: " + toString());
+    if (stations == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'stations' was not present! Struct: " + toString());
     }
   }
 
