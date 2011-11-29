@@ -1,15 +1,17 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.adapter.RichLabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Location;
@@ -22,6 +24,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +54,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private StandardTitledLayout mLayout;
 	/** The text displayed if the user has no destination set yet */
 	private TextView mText;
+	/** The listView to display next departures */
+	private RichLabeledListViewElement mDestinationsList;
+	/** The adapter to contain the destinations displayed in the list */
+	private RichLabeledArrayAdapter mAdapter;
+	/** Displayed locations */
+	private List<Connection> mDisplayedLocations;
 
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
@@ -67,7 +78,36 @@ public class TransportMainView extends PluginView implements ITransportView {
 		}
 
 	};
-	
+
+	/** The labeler that says how to display a Location */
+	private IRichLabeler<Connection> mConnectionLabeler = new IRichLabeler<Connection>() {
+		@Override
+		public String getLabel(Connection dest) {
+			return "";
+		}
+
+		@Override
+		public String getTitle(Connection obj) {
+			return obj.getTo().getName();
+		}
+
+		@Override
+		public String getDescription(Connection obj) {
+			return timeString(obj.getDepartureTime());
+		}
+
+		@Override
+		public double getValue(Connection obj) {
+			return -1;
+		}
+
+		@Override
+		public Date getDate(Connection obj) {
+			return null;
+		}
+
+	};
+
 	/* Constants */
 	/** The EPFL Station ID */
 	private static final int EPFL_STATION_ID = 8501214;
@@ -101,6 +141,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		setContentView(mLayout);
 
 		if (mDestPrefs.getAll() == null || mDestPrefs.getAll().isEmpty()) {
+			Log.d("TRANSPORT", "Prefs were null");
 			mText = new TextView(this);
 			mText.setText(getResources().getString(
 					R.string.transport_main_no_destinations));
@@ -145,23 +186,42 @@ public class TransportMainView extends PluginView implements ITransportView {
 		if (id == R.id.transport_destinations) {
 			Intent i = new Intent(this, TransportTimeView.class);
 			startActivity(i);
-		} /*else if (id == R.id.transport_settings) {
-			Log.d("TRANSPORT", "Settings");
-
-		}*/
+		} /*
+		 * else if (id == R.id.transport_settings) { Log.d("TRANSPORT",
+		 * "Settings");
+		 * 
+		 * }
+		 */
 
 		return true;
 	}
 
 	/**
-	 * Display the list of preferred destinations along woth the next departures
-	 * to go there
+	 * Ask the server for connections in order to display the list of preferred
+	 * destinations along with the next departures to go there
 	 */
 	private void displayDestinations() {
 		List<Location> locations = mModel.getPreferredDestinations();
 
 		if (locations != null && !locations.isEmpty()) {
+			mDisplayedLocations = new ArrayList<Connection>();
+			mDestinationsList = new RichLabeledListViewElement(this,
+					mDisplayedLocations, mConnectionLabeler);
+			mDestinationsList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					Connection c = (Connection)arg0.getItemAtPosition(arg2);
+					
+					Toast.makeText(getApplicationContext(),
+							"Clicked on " + c.getTo(),
+							Toast.LENGTH_SHORT).show();
+				}
+			});
+
 			mLayout.removeFillerView();
+			mLayout.addFillerView(mDestinationsList);
 
 			for (Location loc : locations) {
 				mController.nextDepartures(loc.getName());
@@ -175,7 +235,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void autoCompletedDestinationsUpdated() {
-//		Not used in this view
+		// Not used in this view
 	}
 
 	/**
@@ -186,24 +246,36 @@ public class TransportMainView extends PluginView implements ITransportView {
 	public void connectionUpdated(QueryConnectionsResult result) {
 		Log.d("TRANSPORT", "Connection Updated (view)");
 
-		if(result != null) {
+		if (result != null) {
 			List<Connection> connections = result.getConnections();
 
-			if(connections != null && !connections.isEmpty()) {
+			if (connections != null && !connections.isEmpty()) {
+
 				for (Connection c : connections) {
 					Date date = new Date();
 					Location from = c.getFrom();
 					Location to = c.getTo();
 					date.setTime(c.getDepartureTime());
-					Log.d("TRANSPORT", "Next departures from " + from.getName() + " to " + to.getName()
-							+ " at " + date);
+					Log.d("TRANSPORT", "Next departures from " + from.getName()
+							+ " to " + to.getName() + " at " + date);
+
+					if (!mDisplayedLocations.contains(c)) {
+						mDisplayedLocations.add(c);
+					} else {
+
+					}
+					mAdapter = new RichLabeledArrayAdapter(this,
+							mDisplayedLocations, mConnectionLabeler);
+
+					mDestinationsList.setAdapter(mAdapter);
+					mDestinationsList.invalidate();
 				}
 			}
 		} else {
-			Log.d("TRANSPORT","Bouuuuhouhou ! (view)");
+			Log.d("TRANSPORT", "Bouuuuhouhou ! (view)");
 		}
 	}
-	
+
 	/**
 	 * Called by the model when the list of preferred destinations has been
 	 * updated and refreshes the view
@@ -223,5 +295,24 @@ public class TransportMainView extends PluginView implements ITransportView {
 		Toast toast = Toast.makeText(getApplicationContext(), "Network error!",
 				Toast.LENGTH_SHORT);
 		toast.show();
+	}
+
+	private String timeString(long millisec) {
+		String min = "";
+
+		Date now = new Date();
+		Date date = new Date();
+		date.setTime(millisec);
+
+		Date minutes = new Date();
+
+		Log.d("TRANSPORT", "Now : " + now);
+		Log.d("TRANSPORT", "Departure : " + date);
+
+		minutes.setTime(date.getTime() - now.getTime());
+		min = "in " + (minutes.getHours() - 1) + " hours, "
+				+ minutes.getMinutes() + " minutes";
+
+		return min;
 	}
 }
