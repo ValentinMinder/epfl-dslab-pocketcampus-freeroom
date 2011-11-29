@@ -2,50 +2,73 @@ package org.pocketcampus.plugin.transport.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
+import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
+import org.pocketcampus.plugin.transport.shared.TransportService.connections_args;
 
-public class TransportController extends PluginController {
+import android.util.Log;
 
+/**
+ * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
+ * @author Pascal <pascal.scheiben@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
+ * 
+ */
+public class TransportController extends PluginController implements
+		ITransportController {
+	/** The plugin model */
 	private TransportModel mModel;
-	private Iface mClient;
-	
+	/** The EPFL Station ID */
+	private static final int EPFL_STATION_ID = 8501214;
+
 	/**
-	 *  This name must match given in the Server.java file in plugin.launcher.server.
-	 *  It's used to route the request to the right server implementation.
+	 * This name must match given in the Server.java file in
+	 * plugin.launcher.server. It's used to route the request to the right
+	 * server implementation.
 	 */
 	private String mPluginName = "transport";
 
 	@Override
 	public void onCreate() {
 		mModel = new TransportModel();
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
-	
+
 	/**
-	 * The view will call this in order to register in the model's listener list.
+	 * The view will call this in order to register in the model's listener
+	 * list.
 	 */
 	@Override
 	public PluginModel getModel() {
 		return mModel;
 	}
 
+	/**
+	 * 
+	 * @param constraint
+	 */
+	@Override
 	public void getAutocompletions(String constraint) {
-		new AutoCompleteRequest().start(this, mClient, constraint);
+		Log.d("TRANSPORT", "Autocomplete request (controller)");
+		new AutoCompleteRequest().start(this,
+				(Iface) getClient(new Client.Factory(), mPluginName),
+				constraint);
+	}
+
+	/**
+	 * 
+	 * @param location
+	 */
+	@Override
+	public void nextDepartures(String location) {
+		Log.d("TRANSPORT", "Departures request (controller)");
+		connections_args args = new connections_args("EPFL",
+				location);
+		new NextDeparturesFromEPFLRequest().start(this,
+				(Iface) getClient(new Client.Factory(), mPluginName), args);
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

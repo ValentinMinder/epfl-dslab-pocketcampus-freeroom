@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- General -->
+    <string name="transport_plugin_name">Transport</string>
+    <string name="transport_set_destinations_message">Type destination</string>
+    <string name="transport"></string>
+    <string name="transport_main_no_destinations">Go to the destinations view to choose your preferred destinations</string>
+        
+    <!-- Menu -->
+    <string name="transport_menu_destinations">Set destinations</string>
+    <string name="transport_menu_settings">Settings</string>
+
 </resources>

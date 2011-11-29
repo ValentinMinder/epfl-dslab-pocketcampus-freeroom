@@ -25,7 +25,10 @@
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
         </activity>
-
+	
+        <activity android:name=".plugin.transport.android.TransportTimeView" >
+        </activity>    
+           
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.transport.android.TransportController" >

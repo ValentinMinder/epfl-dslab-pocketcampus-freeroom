@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/transport_destinations"
+        android:icon="@drawable/transport_menu_destinations"
+        android:title="@+string/transport_menu_destinations"/>
+
+    <!-- 
+    <item
+        android:id="@+id/transport_settings"
+        android:icon="@drawable/transport_menu_settings"
+        android:title="@+string/transport_menu_settings"/>
+    -->
+
+</menu>

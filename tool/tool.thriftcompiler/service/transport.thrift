@@ -76,13 +76,13 @@ struct Part {
 struct Connection 
 {
 	1: required string id;
-	2: required string link;
+	2: optional string link;
 	3: required timestamp departureTime;
 	4: required timestamp arrivalTime;
 	5: required Location from;
 	6: required Location to;
-	7: required list<Part> parts;
-	8: required list<Fare> fares;
+	7: optional list<Part> parts;
+	8: optional list<Fare> fares;
 }
 
 enum FareType{
@@ -151,11 +151,11 @@ struct QueryConnectionsResult{
 	2: optional list<Location> ambiguousVia;
 	3: optional list<Location> ambiguousTo;
 
-	4: required string queryUri;
+	4: optional string queryUri;
 	5: required Location from;
-	6: required Location via;
+	6: optional Location via;
 	7: required Location to;
-	8: required string context;
+	8: optional string context;
 	9: required list<Connection> connections;
 }
 
