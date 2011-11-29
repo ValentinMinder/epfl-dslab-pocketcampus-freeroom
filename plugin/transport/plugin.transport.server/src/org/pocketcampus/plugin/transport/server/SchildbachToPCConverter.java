@@ -25,16 +25,16 @@ import de.schildbach.pte.dto.QueryDeparturesResult;
 public class SchildbachToPCConverter {
 	static protected QueryConnectionsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
 		QueryConnectionsResult qcr = new QueryConnectionsResult(
-				s.queryUri,
 				convertSchToPC(s.from),
-				convertSchToPC(s.via),
 				convertSchToPC(s.to),
-				s.context,
 				convertSchConToPC(s.connections)
 		);
 		qcr.ambiguousFrom = convertSchToPC(s.ambiguousFrom);
 		qcr.ambiguousVia = convertSchToPC(s.ambiguousVia);
 		qcr.ambiguousTo = convertSchToPC(s.ambiguousTo);
+		qcr.queryUri = s.queryUri;
+		qcr.via = convertSchToPC(s.via);
+		qcr.context = s.context;
 		return qcr;
 	}
 	
@@ -141,15 +141,16 @@ public class SchildbachToPCConverter {
 	}
 
 	static protected Connection convertSchToPC(de.schildbach.pte.dto.Connection sc){
-		return new Connection(sc.id,
-				sc.link,
+		Connection pcc = new Connection(sc.id,
 				sc.departureTime.getTime(),
 				sc.arrivalTime.getTime(),
 				convertSchToPC(sc.from),
-				convertSchToPC(sc.to),
-				convertSchPartsToPC(sc.parts),
-				convertSchFaresToPC(sc.fares)
+				convertSchToPC(sc.to)
 				);
+		pcc.setLink(sc.link);
+		pcc.setParts(convertSchPartsToPC(sc.parts));
+		pcc.setFares(convertSchFaresToPC(sc.fares));
+		return pcc;
 	}
 	
 	static protected List<Connection> convertSchConToPC(List<de.schildbach.pte.dto.Connection> l){

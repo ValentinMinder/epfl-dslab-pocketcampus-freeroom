@@ -131,7 +131,7 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LINK, new org.apache.thrift.meta_data.FieldMetaData("link", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.LINK, new org.apache.thrift.meta_data.FieldMetaData("link", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DEPARTURE_TIME, new org.apache.thrift.meta_data.FieldMetaData("departureTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
@@ -141,10 +141,10 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
     tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.PARTS, new org.apache.thrift.meta_data.FieldMetaData("parts", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.PARTS, new org.apache.thrift.meta_data.FieldMetaData("parts", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Part.class))));
-    tmpMap.put(_Fields.FARES, new org.apache.thrift.meta_data.FieldMetaData("fares", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.FARES, new org.apache.thrift.meta_data.FieldMetaData("fares", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Fare.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -156,25 +156,19 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
 
   public Connection(
     String id,
-    String link,
     long departureTime,
     long arrivalTime,
     Location from,
-    Location to,
-    List<Part> parts,
-    List<Fare> fares)
+    Location to)
   {
     this();
     this.id = id;
-    this.link = link;
     this.departureTime = departureTime;
     setDepartureTimeIsSet(true);
     this.arrivalTime = arrivalTime;
     setArrivalTimeIsSet(true);
     this.from = from;
     this.to = to;
-    this.parts = parts;
-    this.fares = fares;
   }
 
   /**
@@ -926,9 +920,11 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
       oprot.writeFieldEnd();
     }
     if (this.link != null) {
-      oprot.writeFieldBegin(LINK_FIELD_DESC);
-      oprot.writeString(this.link);
-      oprot.writeFieldEnd();
+      if (isSetLink()) {
+        oprot.writeFieldBegin(LINK_FIELD_DESC);
+        oprot.writeString(this.link);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(DEPARTURE_TIME_FIELD_DESC);
     oprot.writeI64(this.departureTime);
@@ -947,28 +943,32 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
       oprot.writeFieldEnd();
     }
     if (this.parts != null) {
-      oprot.writeFieldBegin(PARTS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.parts.size()));
-        for (Part _iter18 : this.parts)
+      if (isSetParts()) {
+        oprot.writeFieldBegin(PARTS_FIELD_DESC);
         {
-          _iter18.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.parts.size()));
+          for (Part _iter18 : this.parts)
+          {
+            _iter18.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     if (this.fares != null) {
-      oprot.writeFieldBegin(FARES_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.fares.size()));
-        for (Fare _iter19 : this.fares)
+      if (isSetFares()) {
+        oprot.writeFieldBegin(FARES_FIELD_DESC);
         {
-          _iter19.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.fares.size()));
+          for (Fare _iter19 : this.fares)
+          {
+            _iter19.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -986,14 +986,16 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
       sb.append(this.id);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("link:");
-    if (this.link == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.link);
+    if (isSetLink()) {
+      if (!first) sb.append(", ");
+      sb.append("link:");
+      if (this.link == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.link);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("departureTime:");
     sb.append(this.departureTime);
@@ -1018,22 +1020,26 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
       sb.append(this.to);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("parts:");
-    if (this.parts == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.parts);
+    if (isSetParts()) {
+      if (!first) sb.append(", ");
+      sb.append("parts:");
+      if (this.parts == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.parts);
+      }
+      first = false;
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("fares:");
-    if (this.fares == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.fares);
+    if (isSetFares()) {
+      if (!first) sb.append(", ");
+      sb.append("fares:");
+      if (this.fares == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.fares);
+      }
+      first = false;
     }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -1043,9 +1049,6 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
     if (id == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not present! Struct: " + toString());
     }
-    if (link == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'link' was not present! Struct: " + toString());
-    }
     // alas, we cannot check 'departureTime' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'arrivalTime' because it's a primitive and you chose the non-beans generator.
     if (from == null) {
@@ -1053,12 +1056,6 @@ public class Connection implements org.apache.thrift.TBase<Connection, Connectio
     }
     if (to == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'to' was not present! Struct: " + toString());
-    }
-    if (parts == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'parts' was not present! Struct: " + toString());
-    }
-    if (fares == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'fares' was not present! Struct: " + toString());
     }
   }
 
