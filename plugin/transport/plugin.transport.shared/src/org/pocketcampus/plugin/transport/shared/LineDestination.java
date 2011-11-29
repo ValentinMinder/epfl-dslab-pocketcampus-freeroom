@@ -30,7 +30,7 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
   private static final org.apache.thrift.protocol.TField DESTINATION_FIELD_DESC = new org.apache.thrift.protocol.TField("destination", org.apache.thrift.protocol.TType.STRING, (short)4);
 
   public String line; // required
-  public List<Integer> lineColors; // required
+  public List<String> lineColors; // required
   public int destinationId; // required
   public String destination; // required
 
@@ -112,7 +112,7 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LINE_COLORS, new org.apache.thrift.meta_data.FieldMetaData("lineColors", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     tmpMap.put(_Fields.DESTINATION_ID, new org.apache.thrift.meta_data.FieldMetaData("destinationId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.DESTINATION, new org.apache.thrift.meta_data.FieldMetaData("destination", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -126,7 +126,7 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
 
   public LineDestination(
     String line,
-    List<Integer> lineColors,
+    List<String> lineColors,
     int destinationId,
     String destination)
   {
@@ -148,8 +148,8 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
       this.line = other.line;
     }
     if (other.isSetLineColors()) {
-      List<Integer> __this__lineColors = new ArrayList<Integer>();
-      for (Integer other_element : other.lineColors) {
+      List<String> __this__lineColors = new ArrayList<String>();
+      for (String other_element : other.lineColors) {
         __this__lineColors.add(other_element);
       }
       this.lineColors = __this__lineColors;
@@ -201,22 +201,22 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
     return (this.lineColors == null) ? 0 : this.lineColors.size();
   }
 
-  public java.util.Iterator<Integer> getLineColorsIterator() {
+  public java.util.Iterator<String> getLineColorsIterator() {
     return (this.lineColors == null) ? null : this.lineColors.iterator();
   }
 
-  public void addToLineColors(int elem) {
+  public void addToLineColors(String elem) {
     if (this.lineColors == null) {
-      this.lineColors = new ArrayList<Integer>();
+      this.lineColors = new ArrayList<String>();
     }
     this.lineColors.add(elem);
   }
 
-  public List<Integer> getLineColors() {
+  public List<String> getLineColors() {
     return this.lineColors;
   }
 
-  public LineDestination setLineColors(List<Integer> lineColors) {
+  public LineDestination setLineColors(List<String> lineColors) {
     this.lineColors = lineColors;
     return this;
   }
@@ -297,7 +297,7 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
       if (value == null) {
         unsetLineColors();
       } else {
-        setLineColors((List<Integer>)value);
+        setLineColors((List<String>)value);
       }
       break;
 
@@ -512,11 +512,11 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
-              this.lineColors = new ArrayList<Integer>(_list24.size);
+              this.lineColors = new ArrayList<String>(_list24.size);
               for (int _i25 = 0; _i25 < _list24.size; ++_i25)
               {
-                int _elem26; // required
-                _elem26 = iprot.readI32();
+                String _elem26; // required
+                _elem26 = iprot.readString();
                 this.lineColors.add(_elem26);
               }
               iprot.readListEnd();
@@ -566,10 +566,10 @@ public class LineDestination implements org.apache.thrift.TBase<LineDestination,
     if (this.lineColors != null) {
       oprot.writeFieldBegin(LINE_COLORS_FIELD_DESC);
       {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, this.lineColors.size()));
-        for (int _iter27 : this.lineColors)
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.lineColors.size()));
+        for (String _iter27 : this.lineColors)
         {
-          oprot.writeI32(_iter27);
+          oprot.writeString(_iter27);
         }
         oprot.writeListEnd();
       }

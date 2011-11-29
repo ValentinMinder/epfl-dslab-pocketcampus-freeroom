@@ -29,16 +29,16 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public Status status; // required
+  public NearbyStatus status; // required
   public List<StationDepartures> stationDepartures; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     /**
      * 
-     * @see Status
+     * @see NearbyStatus
      */
     STATUS((short)1, "status"),
     STATION_DEPARTURES((short)2, "stationDepartures");
@@ -105,7 +105,7 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.STATUS, new org.apache.thrift.meta_data.FieldMetaData("status", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, Status.class)));
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, NearbyStatus.class)));
     tmpMap.put(_Fields.STATION_DEPARTURES, new org.apache.thrift.meta_data.FieldMetaData("stationDepartures", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StationDepartures.class))));
@@ -117,7 +117,7 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
   }
 
   public QueryDepartureResult(
-    Status status,
+    NearbyStatus status,
     List<StationDepartures> stationDepartures)
   {
     this();
@@ -153,17 +153,17 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public Status getStatus() {
+  public NearbyStatus getStatus() {
     return this.status;
   }
 
   /**
    * 
-   * @see Status
+   * @see NearbyStatus
    */
-  public QueryDepartureResult setStatus(Status status) {
+  public QueryDepartureResult setStatus(NearbyStatus status) {
     this.status = status;
     return this;
   }
@@ -228,7 +228,7 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       if (value == null) {
         unsetStatus();
       } else {
-        setStatus((Status)value);
+        setStatus((NearbyStatus)value);
       }
       break;
 
@@ -368,7 +368,7 @@ public class QueryDepartureResult implements org.apache.thrift.TBase<QueryDepart
       switch (field.id) {
         case 1: // STATUS
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.status = Status.findByValue(iprot.readI32());
+            this.status = NearbyStatus.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
 public enum Status implements org.apache.thrift.TEnum {
-  OK(0),
+  sOK(0),
   AMBIGUOUS(1),
   TOO_CLOSE(2),
   UNRESOLVABLE_ADDRESS(3),
@@ -39,7 +39,7 @@ public enum Status implements org.apache.thrift.TEnum {
   public static Status findByValue(int value) { 
     switch (value) {
       case 0:
-        return OK;
+        return sOK;
       case 1:
         return AMBIGUOUS;
       case 2:
