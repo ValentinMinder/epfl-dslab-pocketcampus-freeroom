@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	
+	android:clickable="false"
+	android:linksClickable="false"
+	android:focusable="false"
+	android:focusableInTouchMode="false">
+
+	<include
+		android:id="@+id/PCSectioned_list_item_section_text"
+		layout="@android:layout/preference_category" />
+
+</LinearLayout>

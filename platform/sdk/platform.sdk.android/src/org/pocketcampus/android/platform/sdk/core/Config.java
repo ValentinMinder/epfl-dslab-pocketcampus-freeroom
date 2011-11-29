@@ -9,7 +9,8 @@ import android.util.Log;
  */
 public class Config {
 	/** Server IP. */
-	public final static String SERVER_IP = "128.178.77.233";
+	public final static String SERVER_IP = "10.0.0.80";
+	//public final static String SERVER_IP = "128.178.77.233";
 	
 	/** Server port. */
 	public final static int SERVER_PORT = 9090;

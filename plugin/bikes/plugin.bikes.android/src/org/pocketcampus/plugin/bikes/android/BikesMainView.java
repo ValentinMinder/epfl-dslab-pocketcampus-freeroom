@@ -1,19 +1,28 @@
 package org.pocketcampus.plugin.bikes.android;
 
+import java.util.ArrayList;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.*;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
+
+import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +32,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 	private BikesController mController;
 	private BikesModel mModel;
 	
-	private LabeledListViewElement mList;
+	private ListView mList;
 	private StandardLayout mLayout;
 	
 	private OnItemClickListener oicl;
@@ -49,33 +58,41 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
-				BikeEmplacement be = (BikeEmplacement) adapter.getItemAtPosition(pos);
-				
-				String ab;
-				if(be.availableQuantity> 0)
-					ab = "available bike";
-				else
-					ab = "availables bikes";
-				
-				String ep;
-				if(be.empty > 0)
-					ep = "empty bike slot";
-				else
-					ep = "empty bike slots";
-				
-				String msg = be.designation + " is at:\n" +
-							"Lat: " + be.geoLat + "\n" +
-							"Lon: " + be.geoLng + "\n" +
-							"and has " + be.availableQuantity + ab +"\n" +
-							"and " + be.empty + ep;
-				
-				Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-				toast.show();
+				if(!((PCItem) adapter.getItemAtPosition(pos)).isSection()){
+					String msg = "";
+					
+					String stationsName = ((PCEntryItem)adapter.getItemAtPosition(pos)).title;
+					
+					for(BikeEmplacement be: mModel.getAvailablesBikes()){
+						if(be.designation.equals(stationsName)){
+							String ab;
+							if(be.availableQuantity> 0)
+								ab = " available bike";
+							else
+								ab = " availables bikes";
+							
+							String ep;
+							if(be.empty > 0)
+								ep = " empty bike slot";
+							else
+								ep = " empty bike slots";
+							
+							msg = be.designation + " is at:\n" +
+										"Lat: " + be.geoLat + "\n" +
+										"Lon: " + be.geoLng + "\n" +
+										"and has " + be.availableQuantity + ab +"\n" +
+										"and " + be.empty + ep;
+						}
+					}
+					
+					
+					Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+					toast.show();
+				}
 			}
 			
 		};
 		
-		displayData();
 		
 	}
 	
@@ -89,25 +106,41 @@ public class BikesMainView extends PluginView implements IBikesView{
 		if(mModel.getAvailablesBikes().size() > 0)
 			mLayout.setText("");
 		
+		ArrayList<PCItem> items = new ArrayList<PCItem>();
+		boolean found = false;
 		
-		TextView mText = new TextView(this);
-		mText.setText("Place      available bikes");
-		mText.setId(42);
-		RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		textParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		textParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		mText.setLayoutParams(textParams);
+		items.add(new PCSectionItem("Available bikes"));
+		for(BikeEmplacement be:mModel.getAvailablesBikes()){
+			if(be.availableQuantity > 0){
+				items.add(new PCEntryItem(be.designation, be.availableQuantity+""));
+				found = true;
+				}
+		}
+		if(!found){
+			items.add(new PCEntryItem("No bikes available", ""));
+		}
 		
-		mList = new LabeledListViewElement(this, mModel.getAvailablesBikes(), labeler);
+		found = false;
+		items.add(new PCSectionItem("Empty docks"));
+		for(BikeEmplacement be:mModel.getAvailablesBikes()){
+			if(be.empty > 0){
+				items.add(new PCEntryItem(be.designation, be.empty+""));
+				found = true;
+			}
+		}if(!found){
+			items.add(new PCEntryItem("No docks available", ""));
+		}
+		
+		
+		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+		
+		mList = new ListView(this);
 		mList.setOnItemClickListener(oicl);
-		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		listParams.addRule(RelativeLayout.BELOW, mText.getId());
-		mList.setLayoutParams(listParams);
+		mList.setAdapter(adapter);		
 		
-		
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mLayout.setLayoutParams(layoutParams);
-		mLayout.addView(mText);
+		mList.setLayoutParams(layoutParams);
 		mLayout.addView(mList);
 		
 	}
