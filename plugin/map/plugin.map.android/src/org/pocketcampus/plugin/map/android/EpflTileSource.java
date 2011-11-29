@@ -8,7 +8,7 @@ import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.pocketcampus.plugin.map.android.StringUtils;
+import org.pocketcampus.plugin.map.android.utils.StringUtils;
 
 /**
  * Tile source of EPFL map for OSMDroid

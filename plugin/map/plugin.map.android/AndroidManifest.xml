@@ -17,7 +17,8 @@
         <!-- Map Plugin -->
         <activity
             android:label="Map"
-            android:name="org.pocketcampus.plugin.map.android.MapPlugin" >
+            android:name=".plugin.map.android.MapMainView"
+            android:icon="@drawable/map_icon" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
