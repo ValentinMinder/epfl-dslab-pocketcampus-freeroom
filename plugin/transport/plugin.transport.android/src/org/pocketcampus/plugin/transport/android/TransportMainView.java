@@ -134,7 +134,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 
 		mLayout = new StandardTitledLayout(this);
-
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
 
@@ -148,6 +147,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 			mLayout.addFillerView(mText);
 		} else {
 			Log.d("TRANSPORT", "Prefs weren't null");
+			/*C'est là qu'il y a encore à trafiquer*/
 			displayDestinations();
 		}
 
@@ -157,12 +157,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		Log.d("ACTIVITY", "onRestart");
-		// Refresh the list
-	}
+//	@Override
+//	protected void onRestart() {
+//		super.onRestart();
+//		Log.d("ACTIVITY", "onRestart");
+//		// Refresh the list
+//	}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -212,11 +212,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
-					Connection c = (Connection)arg0.getItemAtPosition(arg2);
-					
+					Connection c = (Connection) arg0.getItemAtPosition(arg2);
+
 					Toast.makeText(getApplicationContext(),
-							"Clicked on " + c.getTo(),
-							Toast.LENGTH_SHORT).show();
+							"Clicked on " + c.getTo(), Toast.LENGTH_SHORT)
+							.show();
 				}
 			});
 
@@ -224,7 +224,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 			mLayout.addFillerView(mDestinationsList);
 
 			for (Location loc : locations) {
-				mController.nextDepartures(loc.getName());
+				mController.nextDeparturesFromEPFL(loc.getName());
 			}
 		}
 
@@ -234,9 +234,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void autoCompletedDestinationsUpdated() {
-		// Not used in this view
-	}
+	public void autoCompletedDestinationsUpdated() {}
 
 	/**
 	 * Called by the model when the data for the resulted connection has been
@@ -297,8 +295,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 		toast.show();
 	}
 
+	/**
+	 * Returns a string representing the date by its hours and minutes
+	 * 
+	 * @param millisec
+	 * @return textDate The string representing the date as hours and minutes
+	 */
 	private String timeString(long millisec) {
-		String min = "";
+		String textDate = "";
 
 		Date now = new Date();
 		Date date = new Date();
@@ -310,9 +314,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 		Log.d("TRANSPORT", "Departure : " + date);
 
 		minutes.setTime(date.getTime() - now.getTime());
-		min = "in " + (minutes.getHours() - 1) + " hours, "
+		textDate = "in " + (minutes.getHours() - 1) + " hours, "
 				+ minutes.getMinutes() + " minutes";
 
-		return min;
+		return textDate;
 	}
 }

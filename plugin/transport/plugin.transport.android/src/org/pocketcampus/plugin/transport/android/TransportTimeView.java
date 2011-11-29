@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
+ * A view of the Transport Plugin. Displays an input bar to let the user type a
+ * destination, choose among autocompleted resulted destinations and set one of
+ * them as a preferred destination.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -78,7 +81,6 @@ public class TransportTimeView extends PluginView implements ITransportView {
 		displayView();
 
 		mLayout.addSecondLayoutFillerView(mInputBar);
-
 		setContentView(mLayout);
 
 		createDestinationsList();
@@ -113,6 +115,7 @@ public class TransportTimeView extends PluginView implements ITransportView {
 		mListView = new LabeledListViewElement(this);
 		mInputBar.addView(mListView);
 
+		/** On Item click Listener */
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int pos,
@@ -123,6 +126,7 @@ public class TransportTimeView extends PluginView implements ITransportView {
 				mDestPrefsEditor.putInt(location.getName(), location.getId());
 				mDestPrefsEditor.commit();
 				mModel.setNewPreferredDestination(location);
+				/** Go back to the main View and refreshed */
 				finish();
 			}
 		});
@@ -146,7 +150,7 @@ public class TransportTimeView extends PluginView implements ITransportView {
 	private ILabeler<Location> mLocationLabeler = new ILabeler<Location>() {
 		@Override
 		public String getLabel(Location obj) {
-			return obj.name;
+			return obj.getName();
 		}
 	};
 
@@ -164,17 +168,12 @@ public class TransportTimeView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void destinationsUpdated() {
-		// Not used in this view
-	}
+	public void destinationsUpdated() {}
 
 	/**
 	 * Not used in this view
 	 */
 	@Override
-	public void connectionUpdated(QueryConnectionsResult result) {
-		// Not used in this view
-
-	}
+	public void connectionUpdated(QueryConnectionsResult result) {}
 
 }

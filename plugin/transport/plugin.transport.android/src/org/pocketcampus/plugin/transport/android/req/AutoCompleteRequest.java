@@ -12,6 +12,8 @@ import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
  * A request to the server for the autocompletion of a destination
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
+ * @author Pascal <pascal.scheiben@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
  * 
  */
 public class AutoCompleteRequest extends

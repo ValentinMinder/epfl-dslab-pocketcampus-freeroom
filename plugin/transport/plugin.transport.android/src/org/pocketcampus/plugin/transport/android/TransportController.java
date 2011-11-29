@@ -12,6 +12,8 @@ import org.pocketcampus.plugin.transport.shared.TransportService.connections_arg
 import android.util.Log;
 
 /**
+ * The main controller of the Transport Plugin. Takes care of interactions
+ * between the model and the view and gets information from the server.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -32,6 +34,10 @@ public class TransportController extends PluginController implements
 	 */
 	private String mPluginName = "transport";
 
+	/**
+	 * <code>onCreate</code>. Called when first opening the Transport Plugin.
+	 * Initiates the model of the plugin
+	 */
 	@Override
 	public void onCreate() {
 		mModel = new TransportModel();
@@ -47,8 +53,11 @@ public class TransportController extends PluginController implements
 	}
 
 	/**
+	 * Initiates a request to the server for the autocompletion for the letters
+	 * the user typed
 	 * 
 	 * @param constraint
+	 *            The letters that the user typed
 	 */
 	@Override
 	public void getAutocompletions(String constraint) {
@@ -59,14 +68,15 @@ public class TransportController extends PluginController implements
 	}
 
 	/**
+	 * Initiates a request to the server for the Next Departures from EPFL to
+	 * any destination
 	 * 
-	 * @param location
+	 * @param location The arrival destination
 	 */
 	@Override
-	public void nextDepartures(String location) {
+	public void nextDeparturesFromEPFL(String location) {
 		Log.d("TRANSPORT", "Departures request (controller)");
-		connections_args args = new connections_args("EPFL",
-				location);
+		connections_args args = new connections_args("EPFL", location);
 		new NextDeparturesFromEPFLRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName), args);
 	}
