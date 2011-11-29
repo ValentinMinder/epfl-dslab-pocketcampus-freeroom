@@ -16,7 +16,7 @@ import android.widget.TextView;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
-public class StandardTitledDoubleLayout extends RelativeLayout {
+public class StandardTitledScrollableDoubleLayout extends RelativeLayout {
 	/** The Layout containing the title and text */
 	private RelativeLayout mLayout;
 
@@ -40,7 +40,7 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	 * @param attrs
 	 *            the attributes to set for this layout
 	 */
-	public StandardTitledDoubleLayout(Context context, AttributeSet attrs) {
+	public StandardTitledScrollableDoubleLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initialize(context);
 	}
@@ -51,7 +51,7 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	 * @param context
 	 *            the context of the calling Activity
 	 */
-	public StandardTitledDoubleLayout(Context context) {
+	public StandardTitledScrollableDoubleLayout(Context context) {
 		super(context);
 		initialize(context);
 	}
@@ -65,13 +65,13 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mLayout = (RelativeLayout) inflater.inflate(
-				R.layout.sdk_standard_titled_double_layout, null);
+				R.layout.sdk_standard_titled_scrollable_double_layout, null);
 		super.addView(mLayout);
 
-		mTitleTextView = (TextView) findViewById(R.id.sdk_standard_titled_double_layout_title);
-		mMessageTextView = (TextView) findViewById(R.id.sdk_standard_titled_double_layout_msg);
-		mFillerLayoutOne = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_layout_filler1);
-		mFillerLayoutTwo = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_layout_filler2);
+		mTitleTextView = (TextView) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_title);
+		mMessageTextView = (TextView) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_msg);
+		mFillerLayoutOne = (RelativeLayout) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_filler1);
+		mFillerLayoutTwo = (RelativeLayout) findViewById(R.id.sdk_standard_scrollable_titled_double_layout_filler2);
 	}
 
 	/**

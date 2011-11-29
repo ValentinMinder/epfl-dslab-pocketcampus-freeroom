@@ -29,8 +29,7 @@
         android:id="@+id/sdk_standard_titled_layout_filler"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/sdk_standard_titled_layout_title"
-        android:gravity="bottom" >
+        android:layout_below="@+id/sdk_standard_titled_layout_title" >
     </RelativeLayout>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.MultipleCheckBoxesListViewElement;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MealTagger;
@@ -47,9 +48,10 @@ public class FoodSuggestionsView extends PluginView {
 	private FoodController mController;
 
 	/* GUI */
-	/** A simple full screen layout */
-	private StandardLayout mLayout;
-
+	/** A double full screen layout */
+	private StandardTitledDoubleLayout mLayout;
+	/** The second inner layout */
+	private StandardLayout mInnerLayout;
 	/** The list to be displayed in the layout */
 	private MultipleCheckBoxesListViewElement mListView;
 
@@ -105,8 +107,11 @@ public class FoodSuggestionsView extends PluginView {
 		mTagsList = mController.getMealTags();
 		mTagsToDisplay = languageCompatible();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
+		// The StandardLayout is a RelativeLayout with a TextView in its center
+		// and/or two RelativeLayout one above the other
+		mLayout = new StandardTitledDoubleLayout(this);
+		mLayout.setTitle(getResources().getString(R.string.food_by_suggestions));
+		mInnerLayout = new StandardLayout(this);
 
 		// List View
 		// Filling the ListView
@@ -136,10 +141,11 @@ public class FoodSuggestionsView extends PluginView {
 		setOnListViewClickListener();
 
 		// Set the layout
-		mLayout.addView(computeButton);
-		mLayout.addView(mLikeButton);
-		mLayout.addView(mDislikeButton);
-		mLayout.addView(mListView);
+		mInnerLayout.addView(computeButton);
+		mInnerLayout.addView(mLikeButton);
+		mInnerLayout.addView(mDislikeButton);
+		mLayout.addFirstLayoutFillerView(mListView);
+		mLayout.addSecondLayoutFillerView(mInnerLayout);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -152,13 +158,17 @@ public class FoodSuggestionsView extends PluginView {
 		// Layout
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		mLayout.setLayoutParams(layoutParams);
+		mInnerLayout.setLayoutParams(layoutParams);
 
+		// List
+		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		mListView.setLayoutParams(listParams);
+		
 		// Compute Button
 		computeButton.setText(R.string.food_suggestions_ok);
 		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		// buttonParams.addRule(RelativeLayout.ABOVE, mListView.getId());
 		buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		computeButton.setLayoutParams(buttonParams);
@@ -174,7 +184,7 @@ public class FoodSuggestionsView extends PluginView {
 		RelativeLayout.LayoutParams likeParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		likeParams.addRule(RelativeLayout.LEFT_OF, mDislikeButton.getId());
-		// likeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		likeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		mLikeButton.setLayoutParams(likeParams);
 
 		// Dislike Button
@@ -184,16 +194,9 @@ public class FoodSuggestionsView extends PluginView {
 		RelativeLayout.LayoutParams dislikeParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT,
 				android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-		// dislikeParams.addRule(RelativeLayout.RIGHT_OF, likeButton.getId());
-		// dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		dislikeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		mDislikeButton.setLayoutParams(dislikeParams);
-
-		// List w.r.t. the Compute Button
-		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		listParams.addRule(RelativeLayout.BELOW, computeButton.getId());
-		mListView.setLayoutParams(listParams);
 	}
 
 	/**
