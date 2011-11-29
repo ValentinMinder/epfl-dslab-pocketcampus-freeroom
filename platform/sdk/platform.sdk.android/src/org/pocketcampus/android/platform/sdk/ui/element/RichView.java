@@ -115,15 +115,23 @@ public class RichView extends LinearLayout {
 		/** Bind the data efficiently with the holder. */
 
 		/** Title */
-		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		if(mLabeler.getTitle(mCurrentObject) != null) {			
+			mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		}
 		/** Description */
-		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
+		if(mLabeler.getDescription(mCurrentObject) != null) {			
+			mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
+		}
 		/** Price */
-		mValueLine.setText("" + mLabeler.getValue(mCurrentObject));
+		if(mLabeler.getValue(mCurrentObject) != -1) {			
+			mValueLine.setText("" + mLabeler.getValue(mCurrentObject));
+		}
 		/** Date */
-		Date date = mLabeler.getDate(mCurrentObject);
-		mDateLine.setText("" + day(date) + " " + (date.getMonth()+1) + ", "
-				+ date.getHours() + ":" + date.getMinutes());
+		if(mLabeler.getDate(mCurrentObject) != null) {			
+			Date date = mLabeler.getDate(mCurrentObject);
+			mDateLine.setText("" + day(date) + " " + (date.getMonth()+1) + ", "
+					+ date.getHours() + ":" + date.getMinutes());
+		}
 
 		addView(mConvertView);
 	}
