@@ -147,9 +147,9 @@ enum Status{
 		sOK; AMBIGUOUS; TOO_CLOSE; UNRESOLVABLE_ADDRESS; NO_CONNECTIONS; INVALID_DATE; SERVICE_DOWN;
 	}
 struct QueryConnectionsResult{
-	1: optionnal list<Location> ambiguousFrom;
-	2: optionnal list<Location> ambiguousVia;
-	3: optionnal list<Location> ambiguousTo;
+	1: optional list<Location> ambiguousFrom;
+	2: optional list<Location> ambiguousVia;
+	3: optional list<Location> ambiguousTo;
 
 	4: required string queryUri;
 	5: required Location from;
