@@ -1,19 +1,15 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import java.util.List;
-
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.shared.Sandwich;
 
 import android.app.Service;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 /**

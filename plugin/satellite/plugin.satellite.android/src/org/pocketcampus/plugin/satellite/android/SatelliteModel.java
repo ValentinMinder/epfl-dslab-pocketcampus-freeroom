@@ -1,19 +1,11 @@
 package org.pocketcampus.plugin.satellite.android;
 
-import java.util.List;
-
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.satellite.android.iface.ISatelliteEventsView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteModel;
-import org.pocketcampus.plugin.satellite.android.iface.ISatelliteSandwichesView;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
-import org.pocketcampus.plugin.satellite.shared.Event;
-import org.pocketcampus.plugin.satellite.shared.Sandwich;
-
-import android.util.Log;
 
 /**
  * The Model of the satellite plugin, used to handle the information that is

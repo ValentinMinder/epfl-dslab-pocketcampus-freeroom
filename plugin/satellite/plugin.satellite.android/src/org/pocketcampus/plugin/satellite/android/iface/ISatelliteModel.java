@@ -1,11 +1,7 @@
 package org.pocketcampus.plugin.satellite.android.iface;
 
-import java.util.List;
-
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
-import org.pocketcampus.plugin.satellite.shared.Event;
-import org.pocketcampus.plugin.satellite.shared.Sandwich;
 
 /**
  * The interface that defines the public methods of SatelliteModel

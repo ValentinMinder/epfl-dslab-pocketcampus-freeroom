@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.satellite.android.SatelliteController;
-import org.pocketcampus.plugin.satellite.android.SatelliteModel;
 import org.pocketcampus.plugin.satellite.shared.Sandwich;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Iface;
 

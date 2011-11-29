@@ -7,6 +7,7 @@ import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.satellite.android.display.AffluenceImageView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
@@ -35,7 +36,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	private SatelliteController mController;
 
 	/** A Standard Titled Layout */
-	private StandardTitledDoubleLayout mLayout;
+	private StandardTitledScrollableDoubleLayout mLayout;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -56,7 +57,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
 
-		mLayout = new StandardTitledDoubleLayout(this);
+		mLayout = new StandardTitledScrollableDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.satellite_menu_main_page));
 
