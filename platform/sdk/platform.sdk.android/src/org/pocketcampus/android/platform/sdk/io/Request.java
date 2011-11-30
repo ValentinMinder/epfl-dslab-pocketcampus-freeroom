@@ -2,6 +2,7 @@ package org.pocketcampus.android.platform.sdk.io;
 
 import java.util.concurrent.RejectedExecutionException;
 
+import org.pocketcampus.android.platform.sdk.core.Config;
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 
@@ -41,7 +42,7 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		} catch (RejectedExecutionException e) {
 			// Requests are being fired too quickly. This request will be ignored.
 			// Mostly happens when using monkey...
-			Log.e(this.toString(), "Too many requests running, exectuion rejected.");
+			Log.e(this.toString(), "Too many requests running, execution rejected.");
 		}
 	}
 
@@ -55,7 +56,11 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 
 		try {
 			ResultType result = runInBackground(mClient, param);
-			System.out.println("Received result: " + result);
+			
+			if(Config.LOG_LEVEL <= Log.VERBOSE) {
+				System.out.println("Received result: " + result);
+			}
+			
 			return result;
 
 		} catch (Exception e) {
