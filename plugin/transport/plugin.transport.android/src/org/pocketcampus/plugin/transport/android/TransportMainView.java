@@ -186,12 +186,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-	//  @Override
-	//	protected void onRestart() {
-	//		super.onRestart();
-	//		Log.d("ACTIVITY", "onRestart");
-	//		displayDestinations();
-	//	}
+	  @Override
+		protected void onRestart() {
+			super.onRestart();
+			Log.d("ACTIVITY", "onRestart");
+			displayDestinations();
+		}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -353,8 +353,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void autoCompletedDestinationsUpdated() {
-	}
+	public void autoCompletedDestinationsUpdated() {}
 
 	/**
 	 * Returns a string representing the date by its hours and minutes

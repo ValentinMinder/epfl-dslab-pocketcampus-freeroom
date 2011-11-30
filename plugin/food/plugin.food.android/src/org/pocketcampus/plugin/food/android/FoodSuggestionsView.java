@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
@@ -28,7 +29,6 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -56,7 +56,7 @@ public class FoodSuggestionsView extends PluginView {
 	private MultipleCheckBoxesListViewElement mListView;
 
 	/** The button to validate the choices */
-	private Button computeButton;
+	private ButtonElement computeButton;
 
 	/** The ImageButton to represent "I like" */
 	private ImageButton mLikeButton;
@@ -119,7 +119,7 @@ public class FoodSuggestionsView extends PluginView {
 				mTagLabeler);
 
 		// Compute Suggestions Button
-		computeButton = new Button(this);
+		computeButton = new ButtonElement(this);
 		computeButton.setId(1);
 
 		// Like Button
@@ -142,8 +142,8 @@ public class FoodSuggestionsView extends PluginView {
 
 		// Set the layout
 		mInnerLayout.addView(computeButton);
-		mInnerLayout.addView(mLikeButton);
-		mInnerLayout.addView(mDislikeButton);
+//		mInnerLayout.addView(mLikeButton);
+//		mInnerLayout.addView(mDislikeButton);
 		mLayout.addFirstLayoutFillerView(mListView);
 		mLayout.addSecondLayoutFillerView(mInnerLayout);
 
@@ -165,38 +165,38 @@ public class FoodSuggestionsView extends PluginView {
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		mListView.setLayoutParams(listParams);
 		
+		
 		// Compute Button
-		computeButton.setText(R.string.food_suggestions_ok);
+		computeButton.setText(getResources().getString(R.string.food_suggestions_ok));
 		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		computeButton.setLayoutParams(buttonParams);
 
 		// Set onClickListener
 		setOnComputeButtonClickListener();
 
-		// Like Button
-		mLikeButton.setBackgroundResource(R.drawable.food_suggestions_like);
-		mLikeButton.setClickable(false);
-		mLikeButton.setMinimumHeight(computeButton.getHeight());
-		mLikeButton.setMinimumWidth(computeButton.getHeight());
-		RelativeLayout.LayoutParams likeParams = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		likeParams.addRule(RelativeLayout.LEFT_OF, mDislikeButton.getId());
-		likeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		mLikeButton.setLayoutParams(likeParams);
-
-		// Dislike Button
-		mDislikeButton
-				.setBackgroundResource(R.drawable.food_suggestions_dislike);
-		mDislikeButton.setClickable(false);
-		RelativeLayout.LayoutParams dislikeParams = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT,
-				android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-		dislikeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		mDislikeButton.setLayoutParams(dislikeParams);
+//		// Like Button
+//		mLikeButton.setBackgroundResource(R.drawable.food_suggestions_like);
+//		mLikeButton.setClickable(false);
+//		mLikeButton.setMinimumHeight(computeButton.getHeight());
+//		mLikeButton.setMinimumWidth(computeButton.getHeight());
+//		RelativeLayout.LayoutParams likeParams = new RelativeLayout.LayoutParams(
+//				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		likeParams.addRule(RelativeLayout.LEFT_OF, mDislikeButton.getId());
+//		likeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+//		mLikeButton.setLayoutParams(likeParams);
+//
+//		// Dislike Button
+//		mDislikeButton
+//				.setBackgroundResource(R.drawable.food_suggestions_dislike);
+//		mDislikeButton.setClickable(false);
+//		RelativeLayout.LayoutParams dislikeParams = new RelativeLayout.LayoutParams(
+//				LayoutParams.WRAP_CONTENT,
+//				android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+//		dislikeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+//		dislikeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		mDislikeButton.setLayoutParams(dislikeParams);
 	}
 
 	/**

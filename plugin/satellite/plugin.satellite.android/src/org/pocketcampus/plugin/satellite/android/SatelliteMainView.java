@@ -6,7 +6,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.satellite.android.display.AffluenceImageView;
@@ -178,6 +177,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 						getString(R.string.satellite_network_error),
 						Toast.LENGTH_SHORT);
 		toast.show();
+		mLayout.removeFirstLayoutFillerView();
+		mLayout.removeSecondLayoutFillerView();
+		mLayout.setText(getResources().getString(R.string.satellite_nothing_to_display));
 	}
 
 	/**

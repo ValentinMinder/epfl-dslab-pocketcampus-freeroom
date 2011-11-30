@@ -95,7 +95,7 @@ public class TransportTimeView extends PluginView implements ITransportView {
 
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
-				R.string.transport_plugin_name));
+				R.string.transport_add_destination));
 
 		mInputBar = new InputBarElement(this);
 		mInputBar.setInputHint(getResources().getString(
