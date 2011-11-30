@@ -74,24 +74,24 @@ public class LoaderNewsImageView extends LinearLayout {
 		addView(mSpinner);
 		addView(mImage);
 
-		// if (imageDrawable != null) {
-		// mImage.setImageDrawable(imageDrawable);
-		// mImage.setVisibility(View.VISIBLE);
-		// mSpinner.setVisibility(View.GONE);
-		// } else {
-		if (imageUrl != null) {
-			setImageDrawable(imageUrl);
-		} else {
-			mDrawable = mContext.getResources().getDrawable(
-					R.drawable.news_no_image);
-			mImage.setImageDrawable(mDrawable);
+		if (imageDrawable != null) {
+			mImage.setImageDrawable(imageDrawable);
 			mImage.setVisibility(View.VISIBLE);
 			mSpinner.setVisibility(View.GONE);
-			if (mNewsItem != null) {
-				mNewsItem.setDrawable(mDrawable);
+		} else {
+			if (imageUrl != null) {
+				setImageDrawable(imageUrl);
+			} else {
+				mDrawable = mContext.getResources().getDrawable(
+						R.drawable.news_no_image);
+				mImage.setImageDrawable(mDrawable);
+				mImage.setVisibility(View.VISIBLE);
+				mSpinner.setVisibility(View.GONE);
+				if (mNewsItem != null) {
+					mNewsItem.setDrawable(mDrawable);
+				}
 			}
 		}
-		// }
 	}
 
 	/**
@@ -108,20 +108,20 @@ public class LoaderNewsImageView extends LinearLayout {
 		new Thread() {
 			public void run() {
 				try {
-					Log.d(LoaderImageView.class.toString(), "Loading "
-							+ imageUrl);
+					// Log.d(LoaderImageView.class.toString(), "Loading "
+					// + imageUrl);
 					mDrawable = getDrawableFromUrl(imageUrl);
-					Log.d(LoaderImageView.class.toString(), "Loaded "
-							+ imageUrl);
+					// Log.d(LoaderImageView.class.toString(), "Loaded "
+					// + imageUrl);
 					imageLoadedHandler.sendEmptyMessage(COMPLETE);
 				} catch (MalformedURLException e) {
 					imageLoadedHandler.sendEmptyMessage(FAILED);
-					Log.d(LoaderImageView.class.toString(), "Could not load "
-							+ imageUrl);
+					// Log.d(LoaderImageView.class.toString(), "Could not load "
+					// + imageUrl);
 				} catch (IOException e) {
 					imageLoadedHandler.sendEmptyMessage(FAILED);
-					Log.d(LoaderImageView.class.toString(), "Could not load "
-							+ imageUrl);
+					// Log.d(LoaderImageView.class.toString(), "Could not load "
+					// + imageUrl);
 				}
 			};
 		}.start();

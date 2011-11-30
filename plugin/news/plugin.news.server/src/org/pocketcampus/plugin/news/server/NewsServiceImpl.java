@@ -63,6 +63,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 		getFeedsUrls();
 		importFeeds();
+		try {
+			getNewsItems();
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -71,8 +77,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private void getFeedsUrls() {
 		FeedsListParser flp = new FeedsListParser("feeds_list_en.txt");
 		mFeedUrls = flp.getFeeds();
-		FeedsListParser flpFr = new FeedsListParser("feeds_list_fr.txt");
-		mFeedUrlsFr = flp.getFeeds();
+		// FeedsListParser flpFr = new FeedsListParser("feeds_list_fr.txt");
+		// mFeedUrlsFr = flp.getFeeds();
 	}
 
 	/**
@@ -83,10 +89,10 @@ public class NewsServiceImpl implements NewsService.Iface {
 				|| mNewsItemsList.isEmpty()) {
 			importFeedForLanguage(mFeedUrls, mNewsItemsList, mFeedsList);
 		}
-		if (!isUpToDate(mLastImportedFeeds) || mNewsItemsListFr == null
-				|| mNewsItemsListFr.isEmpty()) {
-			importFeedForLanguage(mFeedUrlsFr, mNewsItemsListFr, mFeedsListFr);
-		}
+		// if (!isUpToDate(mLastImportedFeeds) || mNewsItemsListFr == null
+		// || mNewsItemsListFr.isEmpty()) {
+		// importFeedForLanguage(mFeedUrlsFr, mNewsItemsListFr, mFeedsListFr);
+		// }
 		mLastImportedFeeds = new Date();
 	}
 
@@ -115,7 +121,10 @@ public class NewsServiceImpl implements NewsService.Iface {
 			feed = parser.getFeed();
 
 			if (feed != null) {
-				mNewsItemsList.addAll(feed.getItems());
+				List<NewsItem> feedItems = feed.getItems();
+				for (int i = 0; i < 5 && i < feedItems.size(); i++) {
+					mNewsItemsList.add(feedItems.get(i));
+				}
 				mFeedsList.add(feed);
 			}
 		}
@@ -132,6 +141,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public List<NewsItem> getNewsItems() throws TException {
 		importFeeds();
+		System.out.println(mNewsItemsList.size());
 		return mNewsItemsList;
 	}
 
