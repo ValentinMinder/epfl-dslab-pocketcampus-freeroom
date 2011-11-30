@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="src" path="/plugin.takeoutreceiver.server"/>
+	<classpathentry kind="lib" path="/plugin.takeoutreceiver.server/lib/bcprov-jdk15-146.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.0_Beta_4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

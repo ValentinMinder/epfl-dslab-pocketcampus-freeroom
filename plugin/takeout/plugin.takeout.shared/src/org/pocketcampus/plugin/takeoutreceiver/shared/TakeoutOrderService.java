@@ -5,7 +5,6 @@
  */
 package org.pocketcampus.plugin.takeoutreceiver.shared;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class TakeoutOrderService {
 
   public interface Iface {
 
-    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant() throws org.apache.thrift.TException;
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant(String phoneId) throws org.apache.thrift.TException;
 
     public boolean versionMatches(long version) throws org.apache.thrift.TException;
 
@@ -35,7 +34,7 @@ public class TakeoutOrderService {
 
   public interface AsyncIface {
 
-    public void getRestaurant(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRestaurant_call> resultHandler) throws org.apache.thrift.TException;
+    public void getRestaurant(String phoneId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRestaurant_call> resultHandler) throws org.apache.thrift.TException;
 
     public void versionMatches(long version, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.versionMatches_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -63,15 +62,16 @@ public class TakeoutOrderService {
       super(iprot, oprot);
     }
 
-    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant() throws org.apache.thrift.TException
+    public org.pocketcampus.platform.sdk.shared.restaurant.Restaurant getRestaurant(String phoneId) throws org.apache.thrift.TException
     {
-      send_getRestaurant();
+      send_getRestaurant(phoneId);
       return recv_getRestaurant();
     }
 
-    public void send_getRestaurant() throws org.apache.thrift.TException
+    public void send_getRestaurant(String phoneId) throws org.apache.thrift.TException
     {
       getRestaurant_args args = new getRestaurant_args();
+      args.setPhoneId(phoneId);
       sendBase("getRestaurant", args);
     }
 
@@ -149,21 +149,24 @@ public class TakeoutOrderService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getRestaurant(org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler) throws org.apache.thrift.TException {
+    public void getRestaurant(String phoneId, org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getRestaurant_call method_call = new getRestaurant_call(resultHandler, this, ___protocolFactory, ___transport);
+      getRestaurant_call method_call = new getRestaurant_call(phoneId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRestaurant_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getRestaurant_call(org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String phoneId;
+      public getRestaurant_call(String phoneId, org.apache.thrift.async.AsyncMethodCallback<getRestaurant_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.phoneId = phoneId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getRestaurant", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getRestaurant_args args = new getRestaurant_args();
+        args.setPhoneId(phoneId);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -272,7 +275,7 @@ public class TakeoutOrderService {
 
       protected getRestaurant_result getResult(I iface, getRestaurant_args args) throws org.apache.thrift.TException {
         getRestaurant_result result = new getRestaurant_result();
-        result.success = iface.getRestaurant();
+        result.success = iface.getRestaurant(args.phoneId);
         return result;
       }
     }
@@ -315,11 +318,13 @@ public class TakeoutOrderService {
   public static class getRestaurant_args implements org.apache.thrift.TBase<getRestaurant_args, getRestaurant_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getRestaurant_args");
 
+    private static final org.apache.thrift.protocol.TField PHONE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("phoneId", org.apache.thrift.protocol.TType.STRING, (short)1);
 
+    public String phoneId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      PHONE_ID((short)1, "phoneId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -334,6 +339,8 @@ public class TakeoutOrderService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // PHONE_ID
+            return PHONE_ID;
           default:
             return null;
         }
@@ -372,9 +379,14 @@ public class TakeoutOrderService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.PHONE_ID, new org.apache.thrift.meta_data.FieldMetaData("phoneId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING          , "PushNotificationPhoneId")));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRestaurant_args.class, metaDataMap);
     }
@@ -382,10 +394,20 @@ public class TakeoutOrderService {
     public getRestaurant_args() {
     }
 
+    public getRestaurant_args(
+      String phoneId)
+    {
+      this();
+      this.phoneId = phoneId;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getRestaurant_args(getRestaurant_args other) {
+      if (other.isSetPhoneId()) {
+        this.phoneId = other.phoneId;
+      }
     }
 
     public getRestaurant_args deepCopy() {
@@ -394,15 +416,51 @@ public class TakeoutOrderService {
 
     @Override
     public void clear() {
+      this.phoneId = null;
+    }
+
+    public String getPhoneId() {
+      return this.phoneId;
+    }
+
+    public getRestaurant_args setPhoneId(String phoneId) {
+      this.phoneId = phoneId;
+      return this;
+    }
+
+    public void unsetPhoneId() {
+      this.phoneId = null;
+    }
+
+    /** Returns true if field phoneId is set (has been assigned a value) and false otherwise */
+    public boolean isSetPhoneId() {
+      return this.phoneId != null;
+    }
+
+    public void setPhoneIdIsSet(boolean value) {
+      if (!value) {
+        this.phoneId = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case PHONE_ID:
+        if (value == null) {
+          unsetPhoneId();
+        } else {
+          setPhoneId((String)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case PHONE_ID:
+        return getPhoneId();
+
       }
       throw new IllegalStateException();
     }
@@ -414,6 +472,8 @@ public class TakeoutOrderService {
       }
 
       switch (field) {
+      case PHONE_ID:
+        return isSetPhoneId();
       }
       throw new IllegalStateException();
     }
@@ -431,14 +491,21 @@ public class TakeoutOrderService {
       if (that == null)
         return false;
 
+      boolean this_present_phoneId = true && this.isSetPhoneId();
+      boolean that_present_phoneId = true && that.isSetPhoneId();
+      if (this_present_phoneId || that_present_phoneId) {
+        if (!(this_present_phoneId && that_present_phoneId))
+          return false;
+        if (!this.phoneId.equals(that.phoneId))
+          return false;
+      }
+
       return true;
     }
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getRestaurant_args other) {
@@ -449,6 +516,16 @@ public class TakeoutOrderService {
       int lastComparison = 0;
       getRestaurant_args typedOther = (getRestaurant_args)other;
 
+      lastComparison = Boolean.valueOf(isSetPhoneId()).compareTo(typedOther.isSetPhoneId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPhoneId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.phoneId, typedOther.phoneId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -466,6 +543,13 @@ public class TakeoutOrderService {
           break;
         }
         switch (field.id) {
+          case 1: // PHONE_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.phoneId = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -481,6 +565,11 @@ public class TakeoutOrderService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.phoneId != null) {
+        oprot.writeFieldBegin(PHONE_ID_FIELD_DESC);
+        oprot.writeString(this.phoneId);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -490,12 +579,22 @@ public class TakeoutOrderService {
       StringBuilder sb = new StringBuilder("getRestaurant_args(");
       boolean first = true;
 
+      sb.append("phoneId:");
+      if (this.phoneId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.phoneId);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
 
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
+      if (phoneId == null) {
+        throw new org.apache.thrift.protocol.TProtocolException("Required field 'phoneId' was not present! Struct: " + toString());
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -706,14 +805,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(getRestaurant_result other) {
@@ -1013,14 +1105,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_version = true;
-      builder.append(present_version);
-      if (present_version)
-        builder.append(version);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(versionMatches_args other) {
@@ -1317,14 +1402,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true;
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(versionMatches_result other) {
@@ -1419,6 +1497,8 @@ public class TakeoutOrderService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -1617,14 +1697,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_order = true && (isSetOrder());
-      builder.append(present_order);
-      if (present_order)
-        builder.append(order);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(placeOrder_args other) {
@@ -1922,14 +1995,7 @@ public class TakeoutOrderService {
 
     @Override
     public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
+      return 0;
     }
 
     public int compareTo(placeOrder_result other) {
