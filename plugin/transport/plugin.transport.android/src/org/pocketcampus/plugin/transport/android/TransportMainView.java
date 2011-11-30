@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The adapter to contain the destinations displayed in the list */
 	private RichLabeledArrayAdapter mAdapter;
 	/** Displayed locations */
-	private List<Connection> mDisplayedLocations;
+	private HashMap<String, List<Connection>> mDisplayedLocations;
 
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
@@ -275,22 +276,21 @@ public class TransportMainView extends PluginView implements ITransportView {
 			// }
 			// });
 
+			/** NEW */
 			items = new ArrayList<PCItem>();
+
+			mDisplayedLocations = new HashMap<String, List<Connection>>();
 
 			for (Location loc : locations) {
 				Log.d("TRANSPORT", "Added section " + loc.getName());
-				items.add(new PCSectionItem(loc.getName()));
 
+				mDisplayedLocations.put(loc.getName(), new ArrayList<Connection>());
 				mController.nextDeparturesFromEPFL(loc.getName());
 			}
-
-			PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-
 			mListView = new ListView(this);
-			mListView.setAdapter(adapter);
-
-			mLayout.removeSecondLayoutFillerView();
 			mLayout.addSecondLayoutFillerView(mListView);
+			
+			setItemsToDisplay();
 		}
 
 	}
@@ -310,17 +310,21 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				int i = 0;
 				for (Connection c : connections) {
-					if(i<3) {
+					if (i < 3) {
 						i++;
 						Log.d("TRANSPORT",
 								"Added item " + timeString(c.getArrivalTime()));
-						items.add(new PCEntryItem(timeString(c.getArrivalTime()),
-								""));
 
-						PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+						mDisplayedLocations.get(c.getTo().getName()).add(c);
+						
 
-						mListView.setAdapter(adapter);
-						mListView.invalidate();
+						//						items.add(new PCEntryItem(
+						//								timeString(c.getArrivalTime()), ""));
+
+						//						PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+
+						//						mListView.setAdapter(adapter);
+						//						mListView.invalidate();
 					}
 
 					// if (!mDisplayedLocations.contains(c)) {
@@ -334,6 +338,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 					// mDestinationsList.setAdapter(mAdapter);
 					// mDestinationsList.invalidate();
 				}
+				setItemsToDisplay();
 			}
 		} else {
 			Log.d("TRANSPORT", "Bouuuuhouhou ! (view)");
@@ -375,7 +380,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void autoCompletedDestinationsUpdated() {}
+	public void autoCompletedDestinationsUpdated() {
+	}
 
 	/**
 	 * Returns a string representing the date by its hours and minutes
@@ -402,4 +408,31 @@ public class TransportMainView extends PluginView implements ITransportView {
 		return textDate;
 	}
 
+	/**
+	 * 
+	 */
+	private void setItemsToDisplay() {
+		Set<String> set = mDisplayedLocations.keySet();
+
+		for(String l : set) {
+			items.add(new PCSectionItem(l));
+
+			int i = 0;
+			for (Connection c : mDisplayedLocations.get(l)) {
+				if (i < 3) {
+					i++;
+					items.add(new PCEntryItem(timeString(c.getArrivalTime()), ""));
+				}
+			}
+		}
+		
+		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+
+//		mListView = new ListView(this);
+		mListView.setAdapter(adapter);
+		mListView.invalidate();
+		
+//		mLayout.removeSecondLayoutFillerView();
+//		mLayout.addSecondLayoutFillerView(mListView);
+	}
 }
