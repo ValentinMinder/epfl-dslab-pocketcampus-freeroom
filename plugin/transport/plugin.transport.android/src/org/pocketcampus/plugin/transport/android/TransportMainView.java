@@ -185,12 +185,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-	// @Override
-	protected void onRestart() {
-		super.onRestart();
-		Log.d("ACTIVITY", "onRestart");
-		displayDestinations();
-	}
+//  @Override
+//	protected void onRestart() {
+//		super.onRestart();
+//		Log.d("ACTIVITY", "onRestart");
+//		displayDestinations();
+//	}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -229,6 +229,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * destinations along with the next departures to go there
 	 */
 	private void displayDestinations() {
+		/** Button "Add Destination" */
 		ButtonElement b = new ButtonElement(this);
 		b.setId(1);
 
@@ -254,29 +255,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		mLayout.addFirstLayoutFillerView(b);
 
+		/** List of next departures */
 		List<Location> locations = mModel.getPreferredDestinations();
-
 		if (locations != null && !locations.isEmpty()) {
 
-			// mDisplayedLocations = new ArrayList<Connection>();
-			// mDestinationsList = new RichLabeledListViewElement(this,
-			// mDisplayedLocations, mConnectionLabeler);
-			//
-			// mDestinationsList.setOnItemClickListener(new
-			// OnItemClickListener() {
-			//
-			// @Override
-			// public void onItemClick(AdapterView<?> arg0, View arg1,
-			// int arg2, long arg3) {
-			// Connection c = (Connection) arg0.getItemAtPosition(arg2);
-			//
-			// // Toast.makeText(getApplicationContext(),
-			// // "Clicked on " + c.getTo().getName(), Toast.LENGTH_SHORT)
-			// // .show();
-			// }
-			// });
-
-			/** NEW */
 			items = new ArrayList<PCItem>();
 
 			mDisplayedLocations = new HashMap<String, List<Connection>>();
@@ -284,12 +266,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 			for (Location loc : locations) {
 				Log.d("TRANSPORT", "Added section " + loc.getName());
 
-				mDisplayedLocations.put(loc.getName(), new ArrayList<Connection>());
+				mDisplayedLocations.put(loc.getName(),
+						new ArrayList<Connection>());
 				mController.nextDeparturesFromEPFL(loc.getName());
 			}
+
 			mListView = new ListView(this);
+			mLayout.removeSecondLayoutFillerView();
 			mLayout.addSecondLayoutFillerView(mListView);
-			
+
 			setItemsToDisplay();
 		}
 
@@ -316,27 +301,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 								"Added item " + timeString(c.getArrivalTime()));
 
 						mDisplayedLocations.get(c.getTo().getName()).add(c);
-						
-
-						//						items.add(new PCEntryItem(
-						//								timeString(c.getArrivalTime()), ""));
-
-						//						PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-
-						//						mListView.setAdapter(adapter);
-						//						mListView.invalidate();
 					}
-
-					// if (!mDisplayedLocations.contains(c)) {
-					// mDisplayedLocations.add(c);
-					// } else {
-					//
-					// }
-					// mAdapter = new RichLabeledArrayAdapter(this,
-					// mDisplayedLocations, mConnectionLabeler);
-
-					// mDestinationsList.setAdapter(mAdapter);
-					// mDestinationsList.invalidate();
 				}
 				setItemsToDisplay();
 			}
@@ -398,9 +363,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		Date minutes = new Date();
 
-		Log.d("TRANSPORT", "Now : " + now);
-		Log.d("TRANSPORT", "Departure : " + date);
-
 		minutes.setTime(date.getTime() - now.getTime());
 		textDate = "in " + (minutes.getHours() - 1) + " hours, "
 				+ minutes.getMinutes() + " minutes";
@@ -413,26 +375,27 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private void setItemsToDisplay() {
 		Set<String> set = mDisplayedLocations.keySet();
-
-		for(String l : set) {
+		items = new ArrayList<PCItem>();
+		
+		for (String l : set) {
 			items.add(new PCSectionItem(l));
 
 			int i = 0;
 			for (Connection c : mDisplayedLocations.get(l)) {
 				if (i < 3) {
 					i++;
-					items.add(new PCEntryItem(timeString(c.getArrivalTime()), ""));
+					items.add(new PCEntryItem(timeString(c.getArrivalTime()),
+							""));
 				}
 			}
 		}
-		
+
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 
-//		mListView = new ListView(this);
 		mListView.setAdapter(adapter);
 		mListView.invalidate();
-		
-//		mLayout.removeSecondLayoutFillerView();
-//		mLayout.addSecondLayoutFillerView(mListView);
+
+		// mLayout.removeSecondLayoutFillerView();
+		// mLayout.addSecondLayoutFillerView(mListView);
 	}
 }
