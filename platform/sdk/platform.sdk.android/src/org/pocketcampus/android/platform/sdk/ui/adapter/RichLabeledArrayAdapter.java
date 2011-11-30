@@ -37,6 +37,14 @@ public class RichLabeledArrayAdapter extends AbstractArrayAdapter {
 			List<? extends Object> items, IRichLabeler<? extends Object> labeler) {
 		super(context, items);
 
+		if (context == null) {
+			new IllegalArgumentException("Context cannot be null!");
+		}
+
+		if (mLabeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
+
 		mContext = context;
 		mLabeler = labeler;
 	}
@@ -47,10 +55,11 @@ public class RichLabeledArrayAdapter extends AbstractArrayAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = new RichView(getItem(position), mContext, mLabeler, mOnClickListener, position);
+		View v = new RichView(getItem(position), mContext, mLabeler,
+				mOnClickListener, position);
 		return v;
 	}
-	
+
 	public void setOnLineClickLIstener(OnItemClickListener onLineListener) {
 		mOnClickListener = onLineListener;
 	}

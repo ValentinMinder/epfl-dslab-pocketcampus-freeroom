@@ -49,6 +49,23 @@ public class PreferencesAdapter extends AbstractArrayAdapter {
 	public PreferencesAdapter(Context context, List<? extends Object> items,
 			ILabeler<? extends Object> labeler, String prefName) {
 		super(context, items);
+		
+		if(context == null) {
+			new IllegalArgumentException("Context cannot be null!");
+		}
+		
+		if(items == null) {
+			new IllegalArgumentException("The list of items cannot be null!");
+		}
+		
+		if (labeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
+		
+		if(prefName == null) {
+			new IllegalArgumentException("Preferences name cannot be null!");
+		}
+		
 		mContext = context;
 		mLabeler = labeler;
 		mItems = items;

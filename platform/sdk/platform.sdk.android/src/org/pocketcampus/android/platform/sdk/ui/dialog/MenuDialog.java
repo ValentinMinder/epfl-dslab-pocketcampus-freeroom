@@ -90,6 +90,9 @@ public class MenuDialog extends Dialog {
 		 *            The Application context
 		 */
 		public Builder(Context context) {
+			if(context == null) {
+				new IllegalArgumentException("Context cannot be null!");
+			}
 			mContext = context;
 		}
 
