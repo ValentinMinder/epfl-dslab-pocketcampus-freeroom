@@ -237,7 +237,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.CENTER_IN_PARENT);
 		b.setLayoutParams(params);
-		
+
 		b.setOnClickListener(new OnClickListener() {
 
 			/**
@@ -308,16 +308,20 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			if (connections != null && !connections.isEmpty()) {
 
+				int i = 0;
 				for (Connection c : connections) {
-					Log.d("TRANSPORT",
-							"Added item " + timeString(c.getArrivalTime()));
-					items.add(new PCEntryItem(timeString(c.getArrivalTime()),
-							""));
+					if(i<3) {
+						i++;
+						Log.d("TRANSPORT",
+								"Added item " + timeString(c.getArrivalTime()));
+						items.add(new PCEntryItem(timeString(c.getArrivalTime()),
+								""));
 
-					PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+						PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 
-					mListView.setAdapter(adapter);
-					mListView.invalidate();
+						mListView.setAdapter(adapter);
+						mListView.invalidate();
+					}
 
 					// if (!mDisplayedLocations.contains(c)) {
 					// mDisplayedLocations.add(c);
@@ -366,7 +370,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
-	
+
 	/**
 	 * Not used in this view
 	 */
