@@ -15,4 +15,9 @@ public class PCEntryItem implements PCItem{
 		return false;
 	}
 
+	@Override
+	public boolean isEmptyLayout() {
+		return false;
+	}
+
 }

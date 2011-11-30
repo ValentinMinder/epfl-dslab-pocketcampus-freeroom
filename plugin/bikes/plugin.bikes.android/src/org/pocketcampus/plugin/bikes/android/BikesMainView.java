@@ -109,6 +109,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
 		boolean found = false;
 		
+		//
 		items.add(new PCSectionItem("Available bikes"));
 		for(BikeEmplacement be:mModel.getAvailablesBikes()){
 			if(be.availableQuantity > 0){
@@ -120,16 +121,27 @@ public class BikesMainView extends PluginView implements IBikesView{
 			items.add(new PCEntryItem("No bikes available", ""));
 		}
 		
+		//
 		found = false;
+		//new section header
 		items.add(new PCSectionItem("Empty docks"));
+		//adding the content of the section
 		for(BikeEmplacement be:mModel.getAvailablesBikes()){
 			if(be.empty > 0){
+				//element by element
 				items.add(new PCEntryItem(be.designation, be.empty+""));
 				found = true;
 			}
 		}if(!found){
 			items.add(new PCEntryItem("No docks available", ""));
 		}
+		
+		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
+//		RelativeLayout t = new RelativeLayout(this);
+//		TextView tt = new TextView(this);
+//		tt.setText("houra haha");
+//		t.addView( tt );
+//		items.add(new PCEmptyLayoutItem(t));
 		
 		
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);

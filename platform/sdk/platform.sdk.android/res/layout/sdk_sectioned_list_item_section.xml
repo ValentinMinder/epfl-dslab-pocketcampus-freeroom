@@ -5,13 +5,23 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	
+	
 	android:clickable="false"
 	android:linksClickable="false"
 	android:focusable="false"
 	android:focusableInTouchMode="false">
 
-	<include
+	<!-- <include
 		android:id="@+id/PCSectioned_list_item_section_text"
 		layout="@android:layout/preference_category" />
+	-->
+	<TextView 
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+    	style="?android:attr/listSeparatorTextViewStyle"
+    	android:id="@+id/PCSectioned_list_item_section_text"
+    	
+		android:background="@color/smoke"
+		android:textColor="@android:color/white"
+	/>
 
 </LinearLayout>

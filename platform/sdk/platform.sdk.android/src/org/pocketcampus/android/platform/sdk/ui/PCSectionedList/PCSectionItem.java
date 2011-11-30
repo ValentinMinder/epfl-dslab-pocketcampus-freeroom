@@ -17,4 +17,9 @@ public class PCSectionItem implements PCItem{
 		return true;
 	}
 
+	@Override
+	public boolean isEmptyLayout() {
+		return false;
+	}
+
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -33,26 +34,32 @@ public class PCEntryAdapter extends ArrayAdapter<PCItem> {
 
 		final PCItem i = items.get(position);
 		if (i != null) {
-			if(i.isSection()){
-				PCSectionItem si = (PCSectionItem)i;
-				v = vi.inflate(R.layout.sdk_sectioned_list_item_section, null);
-
-				v.setOnClickListener(null);
-				v.setOnLongClickListener(null);
-				v.setLongClickable(false);
-				
-				final TextView sectionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_text);
-				sectionView.setText(si.getTitle());
+			if(!i.isEmptyLayout()){
+				if(i.isSection()){
+					PCSectionItem si = (PCSectionItem)i;
+					v = vi.inflate(R.layout.sdk_sectioned_list_item_section, null);
+	
+					v.setOnClickListener(null);
+					v.setOnLongClickListener(null);
+					v.setLongClickable(false);
+					
+					final TextView sectionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_text);
+					sectionView.setText(si.getTitle());
+				}else{
+					PCEntryItem ei = (PCEntryItem)i;
+					v = vi.inflate(R.layout.sdk_sectioned_list_item_entry, null);
+					final TextView title = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_place);
+					final TextView subtitle = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_nb);
+					
+					if (title != null) 
+						title.setText(ei.title);
+					if(subtitle != null)
+						subtitle.setText(ei.subtitle);
+				}
 			}else{
-				PCEntryItem ei = (PCEntryItem)i;
-				v = vi.inflate(R.layout.sdk_sectioned_list_item_entry, null);
-				final TextView title = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_place);
-				final TextView subtitle = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_nb);
+				PCEmptyLayoutItem eli = (PCEmptyLayoutItem)i;
+				v = eli.getLayout();
 				
-				if (title != null) 
-					title.setText(ei.title);
-				if(subtitle != null)
-					subtitle.setText(ei.subtitle);
 			}
 		}
 		return v;
