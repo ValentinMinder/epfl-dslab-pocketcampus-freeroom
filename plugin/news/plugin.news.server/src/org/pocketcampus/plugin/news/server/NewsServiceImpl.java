@@ -124,6 +124,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 				List<NewsItem> feedItems = feed.getItems();
 				for (int i = 0; i < 5 && i < feedItems.size(); i++) {
 					mNewsItemsList.add(feedItems.get(i));
+					
 				}
 				mFeedsList.add(feed);
 			}
