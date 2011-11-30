@@ -64,16 +64,16 @@ public class TakeoutReceiverServiceImpl implements TakeoutReceiverService.Iface 
 		new Thread() {
 			public void run() {
 				PushNotificationPayload paylod = new PushNotificationPayload();
-				   try {
-				    paylod.addCustomDictionary("orderID", "" + orderId);
-				    paylod.addAlert("Your order #" + orderId
-				      + " is ready. Come pick it up!");
-				    System.out.println(Push.payload(paylod,
-				      "./certificate/APNCertificate.p12", "mywaiter",
-				      false, token));
-				   } catch (Exception e) {
-				    e.printStackTrace();
-				   }
+				try {
+					paylod.addCustomDictionary("orderID", "" + orderId);
+					paylod.addAlert("Your order #" + orderId
+							+ " is ready. Come pick it up!");
+					System.out.println(Push.payload(paylod,
+							"./certificate/APNCertificate.p12", "mywaiter",
+							false, token));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}.start();
 		
