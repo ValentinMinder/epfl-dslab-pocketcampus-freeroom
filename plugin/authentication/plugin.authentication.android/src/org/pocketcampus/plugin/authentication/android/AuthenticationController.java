@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.authentication.android;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.RedirectHandler;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +22,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -37,6 +40,16 @@ import android.net.Uri;
 import android.util.Log;
 
 public class AuthenticationController extends PluginController implements IAuthenticationController {
+	
+	public static final boolean AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY = true;
+	private static final RedirectHandler redirectNoFollow = new RedirectHandler() {
+		public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
+			return false;
+		}
+		public URI getLocationURI(HttpResponse response, HttpContext context) throws org.apache.http.ProtocolException {
+			return null;
+		}
+	};
 
 	public class LocalCredentials {
 		public String username;
@@ -76,41 +89,52 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	@Override
-	public void authenticateUserForService(TypeOfService tos) {
-		if(tos == TypeOfService.SERVICE_ISA) { // add all services that require local authentication here
-			authenticateUserLocallyForService(tos);
-		} else {
-			new GetTequilaKeyForServiceRequest().start(this, mClient, tos);
+	public void authenticateUserForNonTequilaService(TypeOfService tos) {
+		try {
+			SessionId sessId = null;
+			switch(tos) {
+			case SERVICE_ISA:
+				sessId = loginToIsa(iLocalCredentials.username, iLocalCredentials.password);
+				break;
+			default:
+				return; // TODO this is an ERROR TypeOfService is unknown
+			}
+			if(sessId == null)
+				return; // TODO tell view that credentials are bad, let the user try again
+			forwardSessionIdToCaller(sessId);
+		} catch (IOException e) {
+			e.printStackTrace(); // TODO tell view that network error happened
 		}
+	}
+	
+	@Override
+	public void signInUserLocallyToTequila(TequilaKey teqKey) {
+		try {
+			String tequilaCookie = loginToTequila(iLocalCredentials.username, iLocalCredentials.password, teqKey.getITequilaKey());
+			if(tequilaCookie == null)
+				return; // TODO tell view that credentials are bad, let the user try again
+			forwardTequilaKeyForService(teqKey.getTos());
+		} catch (IOException e) {
+			e.printStackTrace(); // TODO tell view that network error happened
+		}
+	}
+
+	@Override
+	public void authenticateUserForTequilaEnabledService(TypeOfService tos) {
+		new GetTequilaKeyForServiceRequest().start(this, mClient, tos);
 	}
 	public void gotTequilaKeyForService(TequilaKey key) {
 		mModel.setTequilaKey(key);
-		openBrowserWithUrl(String.format(tequilaUrl, key.getITequilaKey()));
+		if(!AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY)
+			openBrowserWithUrl(String.format(tequilaUrl, key.getITequilaKey()));
 	}
-	public void forwardTequilaKeyForService(Uri aData) {
-		if(aData == null)
-			return;
-		String pcService = aData.getHost();
-		//String teqKey = aData.getQueryParameter("key");
-		
+	public void forwardTequilaKeyForService(TypeOfService tos) {
 		TequilaKey storedTeqKey = mModel.getTequilaKey();
 		if(storedTeqKey == null) {
 			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: storedTeqKey is null");
 			return;
 		}
-		TequilaKey teqKey = new TequilaKey();
-		//teqKey.setITequilaKey(key);
-		if("login.pocketcampus.org".equals(pcService)) {
-			teqKey.setTos(TypeOfService.SERVICE_POCKETCAMPUS);
-		} else if("moodle.epfl.ch".equals(pcService)) {
-			teqKey.setTos(TypeOfService.SERVICE_MOODLE);
-		} else if("cmp2www.epfl.ch".equals(pcService)) {
-			teqKey.setTos(TypeOfService.SERVICE_CAMIPRO);
-		} else {
-			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: Cannot find corresponding TypeOfService");
-			return;
-		}
-		if(storedTeqKey.getTos() != teqKey.getTos()) {
+		if(storedTeqKey.getTos() != tos) {
 			Log.e("PocketCampusAuthPlugin", "forwardTequilaKeyForService: TypeOfService did not match with stored value");
 			return;
 		}
@@ -128,6 +152,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 
 	private void forwardSessionIdToCaller(SessionId sessId) {
+		if(sessId == null)
+			return; // TODO tell view that unexpected error happened
 		String url = "pocketcampus-authenticate://%s.plugin.pocketcampus.org/auth_done?sessid=%s";
 		switch(sessId.getTos()) {
 		case SERVICE_POCKETCAMPUS:
@@ -152,30 +178,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 		mModel.setMustFinish();
 	}
 
-	private void authenticateUserLocallyForService(TypeOfService tos) {
-		SessionId sessId = null;
-		if(tos == TypeOfService.SERVICE_ISA) {
-			try {
-				sessId = loginToIsa(iLocalCredentials.username, iLocalCredentials.password);
-				if(sessId == null) {
-					//TODO tell view that credentials are bad, let the user try again
-					return;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				//TODO tell view that network error happened
-				return;
-			}
-		} else {
-			//TODO this is an ERROR TypeOfService is unknown
-		}
-		if(sessId != null) {
-			forwardSessionIdToCaller(sessId);
-		} else {
-			//TODO this is an ERROR
-		}
-	}
-	
 	private SessionId loginToIsa(String username, String password) throws IOException {
 		//HashMap<String, String> hm = new HashMap<String, String>();
 		//hm.put("ww_x_username", "test-scala");
@@ -185,6 +187,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 		
 		//HttpParams params = new BasicHttpParams(); // setup whatever params you what
 		DefaultHttpClient client = new DefaultHttpClient();
+		client.setRedirectHandler(redirectNoFollow);
 		HttpPost post = new HttpPost("https://isa.epfl.ch/imoniteur_ISAP/!logins.tryToConnect");
 		
 		List<NameValuePair> l = new LinkedList<NameValuePair>();
@@ -211,6 +214,26 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 		/*final String responseText =  EntityUtils.toString(resp.getEntity());
 		System.out.println("reply=" + responseText);*/
+		return null;
+	}
+	
+	private String loginToTequila(String username, String password, String token) throws IOException {
+		DefaultHttpClient client = new DefaultHttpClient();
+		client.setRedirectHandler(redirectNoFollow);
+		HttpPost post = new HttpPost("https://tequila.epfl.ch/cgi-bin/tequila/login");
+		List<NameValuePair> l = new LinkedList<NameValuePair>();
+		l.add(new BasicNameValuePair("requestkey", token));
+		l.add(new BasicNameValuePair("username", username));
+		l.add(new BasicNameValuePair("password", password));
+		post.setEntity(new UrlEncodedFormEntity(l)); // with list of key-value pairs
+		HttpResponse resp = client.execute(post);
+		List<Cookie> lc = client.getCookieStore().getCookies();
+		for(Cookie c : lc) {
+			System.out.println("cookie=" + c.getName() + ": " + c.getValue());
+			if("tequila_key".equals(c.getName())) {
+				return c.getValue();
+			}
+		}
 		return null;
 	}
 	

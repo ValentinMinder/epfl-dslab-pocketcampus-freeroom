@@ -6,6 +6,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
+import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
 import android.content.Intent;
@@ -89,51 +90,125 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			return;
 		Log.v("DEBUG", aData.toString());
 		if("pocketcampus-redirect".equals(aData.getScheme())) {
-			mController.forwardTequilaKeyForService(aData);
-			//} else if("pocketcampus.intent.action.AUTHENTICATION_LAUNCH".equals(aIntent.getAction())) {
+			TypeOfService tos = mapHostToTypeOfService(aData);
+			if(tos != null) {
+				mController.forwardTequilaKeyForService(tos);
+			} else {
+				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
+			}
 		} else if("pocketcampus-authenticate".equals(aData.getScheme())) {
-			// pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle
-			String pcService = aData.getQueryParameter("service");
-			if("moodle".equals(pcService)) {
-				mController.authenticateUserForService(TypeOfService.SERVICE_MOODLE);
-			} else if("camipro".equals(pcService)) {
-				mController.authenticateUserForService(TypeOfService.SERVICE_CAMIPRO);
-			} else if("isa".equals(pcService)) {
-				authenticateUserLocallyForService(TypeOfService.SERVICE_ISA); // similarly we can add other services which need local auth
+			// e.g. pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle
+			TypeOfService tos = mapQueryParameterToTypeOfService(aData);
+			if(tos != null) {
+				authenticateUserForService(tos);
+			} else {
+				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
 			}
 		} else {
 			// TODO
 			// currently moodle and camipro redirect back to http and https respectively
 			// so we must capture them from here
 			// ultimately this part should be captured by the pocketcampus-redirect section
-			mController.forwardTequilaKeyForService(aData);
+			TypeOfService tos = mapHostToTypeOfService(aData);
+			if(tos != null) {
+				mController.forwardTequilaKeyForService(tos);
+			} else {
+				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
+			}
 		}
 	}
 
 	@Override
-	public void somethingUpdated() {
-		displayData();
+	public void gotTequilaKey() {
+		if(AuthenticationController.AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY) {
+			// TODO set title showing which service is requesting auth
+			final TequilaKey teqKey = mModel.getTequilaKey();
+			if(teqKey == null)
+				return; // TODO display error
+			Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
+			loginButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+					TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+					mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
+					mController.signInUserLocallyToTequila(teqKey);
+				}
+			});
+			loginButton.setEnabled(true);
+		}
 	}
 
 	private void displayData() {
-		mLayout.setText("TequilaKey:\n" + mModel.getTequilaKey() + "\n\n"
-				+ "SessionIds:\n" + mModel.getSessionIds());
 		mLayout.setText("Tequila Authentication" + "\n\n\n"
 				+ "Redirecting... Please wait\n\n");
 	}
 	
-	private void authenticateUserLocallyForService (TypeOfService tos) {
-		final TypeOfService finalTos = tos;
-		setContentView(R.layout.authentication_customloginpage);
-		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
-		loginButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
-				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
-				mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
-				mController.authenticateUserForService(finalTos);
-			}
-		});
+	private void authenticateUserForService(TypeOfService tos) {
+		boolean serviceSupportsTequila = true;
+		switch(tos) {
+		// put here all services that do not support Tequila
+		case SERVICE_ISA:
+			serviceSupportsTequila = false;
+			break;
+		default:
+			break;
+		}
+		
+		if(!serviceSupportsTequila || AuthenticationController.AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY)
+			setContentView(R.layout.authentication_customloginpage);
+		
+		if(!serviceSupportsTequila) {
+			final TypeOfService finalTos = tos;
+			Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
+			loginButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+					TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+					mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
+					mController.authenticateUserForNonTequilaService(finalTos);
+				}
+			});
+			loginButton.setEnabled(true);
+		} else {
+			mController.authenticateUserForTequilaEnabledService(tos);
+		}
+		
+	}
+	
+	private TypeOfService mapHostToTypeOfService(Uri aData) {
+		// This is the host part of the URL that Tequila redirects to after successful authentication
+		if(aData == null)
+			return null;
+		String pcService = aData.getHost();
+		if(pcService == null)
+			return null;
+		if("login.pocketcampus.org".equals(pcService)) {
+			return TypeOfService.SERVICE_POCKETCAMPUS;
+		} else if("moodle.epfl.ch".equals(pcService)) {
+			return TypeOfService.SERVICE_MOODLE;
+		} else if("cmp2www.epfl.ch".equals(pcService)) {
+			return TypeOfService.SERVICE_CAMIPRO;
+		} else {
+			return null;
+		}
+	}
+	
+	private TypeOfService mapQueryParameterToTypeOfService(Uri aData) {
+		// This is the QueryParameter "service" that is set by a plugin calling us and asking for authentication
+		if(aData == null)
+			return null;
+		String pcService = aData.getQueryParameter("service");
+		if(pcService == null)
+			return null;
+		if("moodle".equals(pcService)) {
+			return TypeOfService.SERVICE_MOODLE;
+		} else if("camipro".equals(pcService)) {
+			return TypeOfService.SERVICE_CAMIPRO;
+		} else if("isa".equals(pcService)) {
+			return TypeOfService.SERVICE_ISA;
+		} else {
+			return null;
+		}
 	}
 	
 	/*

@@ -51,7 +51,8 @@ android:id="@+id/authentication_customloginpageLayout" android:layout_height="ma
     android:id="@+id/authentication_loginbutton"
     android:layout_centerVertical="true"
     android:layout_marginLeft="10px" 
-    android:layout_marginRight="10px"></Button>
+    android:layout_marginRight="10px"
+    android:enabled="false"></Button>
     
 </RelativeLayout>
 

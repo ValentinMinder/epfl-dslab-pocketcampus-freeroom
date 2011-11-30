@@ -15,7 +15,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	
 	public void setTequilaKey(TequilaKey value) {
 		iTequilaKey = value;
-		mListeners.somethingUpdated();
+		mListeners.gotTequilaKey();
 	}
 	
 	public void setSessionIdForService(TypeOfService tos, SessionId sessId) {
@@ -23,7 +23,6 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 			sessionIds.remove(tos);
 		}
 		sessionIds.put(tos,  sessId);
-		mListeners.somethingUpdated();
 	}
 	
 	public void setMustFinish() {
