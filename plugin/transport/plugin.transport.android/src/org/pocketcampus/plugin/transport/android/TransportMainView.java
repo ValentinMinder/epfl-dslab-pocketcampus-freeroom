@@ -152,6 +152,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
+		mLayout.hideTitle();
 
 		setContentView(mLayout);
 
@@ -185,12 +186,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-//  @Override
-//	protected void onRestart() {
-//		super.onRestart();
-//		Log.d("ACTIVITY", "onRestart");
-//		displayDestinations();
-//	}
+	//  @Override
+	//	protected void onRestart() {
+	//		super.onRestart();
+	//		Log.d("ACTIVITY", "onRestart");
+	//		displayDestinations();
+	//	}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -295,12 +296,19 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				int i = 0;
 				for (Connection c : connections) {
-					if (i < 3) {
-						i++;
-						Log.d("TRANSPORT",
-								"Added item " + timeString(c.getArrivalTime()));
+					if(c != null) {
+						if (i < 3) {
+							i++;
+							Log.d("TRANSPORT",
+									"Added item " + timeString(c.getArrivalTime()));
 
-						mDisplayedLocations.get(c.getTo().getName()).add(c);
+							List<Connection> list = mDisplayedLocations.get(c.getTo().getName());
+
+							if (list == null) {
+								mDisplayedLocations.put(c.getTo().getName(), new ArrayList<Connection>());
+							}
+							mDisplayedLocations.get(c.getTo().getName()).add(c);
+						}
 					}
 				}
 				setItemsToDisplay();
@@ -376,16 +384,19 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private void setItemsToDisplay() {
 		Set<String> set = mDisplayedLocations.keySet();
 		items = new ArrayList<PCItem>();
-		
-		for (String l : set) {
-			items.add(new PCSectionItem(l));
 
-			int i = 0;
-			for (Connection c : mDisplayedLocations.get(l)) {
-				if (i < 3) {
-					i++;
-					items.add(new PCEntryItem(timeString(c.getArrivalTime()),
-							""));
+		for (String l : set) {
+			if(!mDisplayedLocations.get(l).isEmpty()) {
+
+				items.add(new PCSectionItem(l));
+
+				int i = 0;
+				for (Connection c : mDisplayedLocations.get(l)) {
+					if (i < 3) {
+						i++;
+						items.add(new PCEntryItem(timeString(c.getArrivalTime()),
+								""));
+					}
 				}
 			}
 		}
@@ -395,7 +406,5 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mListView.setAdapter(adapter);
 		mListView.invalidate();
 
-		// mLayout.removeSecondLayoutFillerView();
-		// mLayout.addSecondLayoutFillerView(mListView);
 	}
 }
