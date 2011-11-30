@@ -105,7 +105,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.LOCATION, new org.apache.thrift.meta_data.FieldMetaData("location", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.POSITION, new org.apache.thrift.meta_data.FieldMetaData("position", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.POSITION, new org.apache.thrift.meta_data.FieldMetaData("position", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TIME, new org.apache.thrift.meta_data.FieldMetaData("time", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
@@ -118,12 +118,10 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
 
   public Stop(
     Location location,
-    String position,
     long time)
   {
     this();
     this.location = location;
-    this.position = position;
     this.time = time;
     setTimeIsSet(true);
   }
@@ -454,9 +452,11 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
       oprot.writeFieldEnd();
     }
     if (this.position != null) {
-      oprot.writeFieldBegin(POSITION_FIELD_DESC);
-      oprot.writeString(this.position);
-      oprot.writeFieldEnd();
+      if (isSetPosition()) {
+        oprot.writeFieldBegin(POSITION_FIELD_DESC);
+        oprot.writeString(this.position);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(TIME_FIELD_DESC);
     oprot.writeI64(this.time);
@@ -477,14 +477,16 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
       sb.append(this.location);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("position:");
-    if (this.position == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.position);
+    if (isSetPosition()) {
+      if (!first) sb.append(", ");
+      sb.append("position:");
+      if (this.position == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.position);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("time:");
     sb.append(this.time);
@@ -497,9 +499,6 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
     // check for required fields
     if (location == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'location' was not present! Struct: " + toString());
-    }
-    if (position == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'position' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'time' because it's a primitive and you chose the non-beans generator.
   }

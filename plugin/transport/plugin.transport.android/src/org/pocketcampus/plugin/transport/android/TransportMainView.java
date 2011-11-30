@@ -3,14 +3,21 @@ package org.pocketcampus.plugin.transport.android;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.adapter.RichLabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.Connection;
@@ -25,8 +32,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.View.OnClickListener;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,11 +60,17 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	/* Layout */
 	/** The main Layout */
-	private StandardTitledLayout mLayout;
+	private StandardTitledDoubleLayout mLayout;
 	/** The text displayed if the user has no destination set yet */
 	private TextView mText;
 	/** The listView to display next departures */
 	private RichLabeledListViewElement mDestinationsList;
+
+	/** The ListView to display next departures */
+	private ListView mListView;
+	/** The items */
+	private ArrayList<PCItem> items;
+
 	/** The adapter to contain the destinations displayed in the list */
 	private RichLabeledArrayAdapter mAdapter;
 	/** Displayed locations */
@@ -133,22 +148,34 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 
-		mLayout = new StandardTitledLayout(this);
+		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
 
 		setContentView(mLayout);
 
-		if (mDestPrefs.getAll() == null || mDestPrefs.getAll().isEmpty()) {
+		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
+
+		if (prefs == null || prefs.isEmpty()) {
 			Log.d("TRANSPORT", "Prefs were null");
-			mText = new TextView(this);
-			mText.setText(getResources().getString(
-					R.string.transport_main_no_destinations));
-			mLayout.addFillerView(mText);
+			// mText = new TextView(this);
+			// mText.setText(getResources().getString(
+			// R.string.transport_main_no_destinations));
+			// mLayout.addFillerView(mText);
+
+			/** If no destinations are set, redirect to TransportTimeView */
+			Intent i = new Intent(this, TransportTimeView.class);
+			startActivity(i);
 		} else {
-			Log.d("TRANSPORT", "Prefs weren't null");
-			/*C'est là qu'il y a encore à trafiquer*/
-			displayDestinations();
+			Set<String> set = prefs.keySet();
+			List<String> list = new ArrayList<String>();
+
+			for (String s : set) {
+				Log.d("TRANSPORT", s + " was in prefs");
+				list.add(s);
+			}
+
+			mController.getLocationsFromNames(list);
 		}
 
 	}
@@ -157,12 +184,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-//	@Override
-//	protected void onRestart() {
-//		super.onRestart();
-//		Log.d("ACTIVITY", "onRestart");
-//		// Refresh the list
-//	}
+	// @Override
+	protected void onRestart() {
+		super.onRestart();
+		Log.d("ACTIVITY", "onRestart");
+		displayDestinations();
+	}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -201,40 +228,72 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * destinations along with the next departures to go there
 	 */
 	private void displayDestinations() {
+		ButtonElement b = new ButtonElement(this);
+		b.setId(1);
+
+		b.setText(getResources().getString(R.string.transport_add_destination));
+
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		b.setLayoutParams(params);
+		
+		b.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Starts the TransportTimeView
+			 */
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(),
+						TransportTimeView.class);
+				startActivity(i);
+			}
+		});
+
+		mLayout.addFirstLayoutFillerView(b);
+
 		List<Location> locations = mModel.getPreferredDestinations();
 
 		if (locations != null && !locations.isEmpty()) {
-			mDisplayedLocations = new ArrayList<Connection>();
-			mDestinationsList = new RichLabeledListViewElement(this,
-					mDisplayedLocations, mConnectionLabeler);
-			mDestinationsList.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
-					Connection c = (Connection) arg0.getItemAtPosition(arg2);
+			// mDisplayedLocations = new ArrayList<Connection>();
+			// mDestinationsList = new RichLabeledListViewElement(this,
+			// mDisplayedLocations, mConnectionLabeler);
+			//
+			// mDestinationsList.setOnItemClickListener(new
+			// OnItemClickListener() {
+			//
+			// @Override
+			// public void onItemClick(AdapterView<?> arg0, View arg1,
+			// int arg2, long arg3) {
+			// Connection c = (Connection) arg0.getItemAtPosition(arg2);
+			//
+			// // Toast.makeText(getApplicationContext(),
+			// // "Clicked on " + c.getTo().getName(), Toast.LENGTH_SHORT)
+			// // .show();
+			// }
+			// });
 
-					Toast.makeText(getApplicationContext(),
-							"Clicked on " + c.getTo(), Toast.LENGTH_SHORT)
-							.show();
-				}
-			});
-
-			mLayout.removeFillerView();
-			mLayout.addFillerView(mDestinationsList);
+			items = new ArrayList<PCItem>();
 
 			for (Location loc : locations) {
+				Log.d("TRANSPORT", "Added section " + loc.getName());
+				items.add(new PCSectionItem(loc.getName()));
+
 				mController.nextDeparturesFromEPFL(loc.getName());
 			}
+
+			PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+
+			mListView = new ListView(this);
+			mListView.setAdapter(adapter);
+
+			mLayout.removeSecondLayoutFillerView();
+			mLayout.addSecondLayoutFillerView(mListView);
 		}
 
 	}
-
-	/**
-	 * Not used in this view
-	 */
-	@Override
-	public void autoCompletedDestinationsUpdated() {}
 
 	/**
 	 * Called by the model when the data for the resulted connection has been
@@ -250,23 +309,26 @@ public class TransportMainView extends PluginView implements ITransportView {
 			if (connections != null && !connections.isEmpty()) {
 
 				for (Connection c : connections) {
-					Date date = new Date();
-					Location from = c.getFrom();
-					Location to = c.getTo();
-					date.setTime(c.getDepartureTime());
-					Log.d("TRANSPORT", "Next departures from " + from.getName()
-							+ " to " + to.getName() + " at " + date);
+					Log.d("TRANSPORT",
+							"Added item " + timeString(c.getArrivalTime()));
+					items.add(new PCEntryItem(timeString(c.getArrivalTime()),
+							""));
 
-					if (!mDisplayedLocations.contains(c)) {
-						mDisplayedLocations.add(c);
-					} else {
+					PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 
-					}
-					mAdapter = new RichLabeledArrayAdapter(this,
-							mDisplayedLocations, mConnectionLabeler);
+					mListView.setAdapter(adapter);
+					mListView.invalidate();
 
-					mDestinationsList.setAdapter(mAdapter);
-					mDestinationsList.invalidate();
+					// if (!mDisplayedLocations.contains(c)) {
+					// mDisplayedLocations.add(c);
+					// } else {
+					//
+					// }
+					// mAdapter = new RichLabeledArrayAdapter(this,
+					// mDisplayedLocations, mConnectionLabeler);
+
+					// mDestinationsList.setAdapter(mAdapter);
+					// mDestinationsList.invalidate();
 				}
 			}
 		} else {
@@ -285,6 +347,16 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
+	 * Called by the model when the locations from the destinations names have
+	 * been updated and display the next departures
+	 */
+	@Override
+	public void locationsFromNamesUpdated(List<Location> result) {
+		Log.d("TRANSPORT", "Locations from Names updated (view)");
+		displayDestinations();
+	}
+
+	/**
 	 * Displays a toast when an error happens upon contacting the server
 	 */
 	@Override
@@ -294,6 +366,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
+	
+	/**
+	 * Not used in this view
+	 */
+	@Override
+	public void autoCompletedDestinationsUpdated() {}
 
 	/**
 	 * Returns a string representing the date by its hours and minutes
@@ -319,4 +397,5 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		return textDate;
 	}
+
 }

@@ -1,13 +1,17 @@
 package org.pocketcampus.plugin.transport.android;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
+import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
 import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.connections_args;
+import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
 
 import android.util.Log;
 
@@ -61,24 +65,48 @@ public class TransportController extends PluginController implements
 	 */
 	@Override
 	public void getAutocompletions(String constraint) {
-		Log.d("TRANSPORT", "Autocomplete request (controller)");
-		new AutoCompleteRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName),
-				constraint);
+		if (constraint != null) {
+			Log.d("TRANSPORT", "Autocomplete request (controller)");
+			new AutoCompleteRequest().start(this,
+					(Iface) getClient(new Client.Factory(), mPluginName),
+					constraint);
+		}
 	}
 
 	/**
 	 * Initiates a request to the server for the Next Departures from EPFL to
 	 * any destination
 	 * 
-	 * @param location The arrival destination
+	 * @param location
+	 *            The arrival destination
 	 */
 	@Override
 	public void nextDeparturesFromEPFL(String location) {
-		Log.d("TRANSPORT", "Departures request (controller)");
-		connections_args args = new connections_args("EPFL", location);
-		new NextDeparturesFromEPFLRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName), args);
+		if (location != null) {
+			Log.d("TRANSPORT", "Departures request (controller)");
+			connections_args args = new connections_args("EPFL", location);
+			new NextDeparturesFromEPFLRequest().start(this,
+					(Iface) getClient(new Client.Factory(), mPluginName), args);
+		}
+	}
+
+	/**
+	 * Initiates a request to the server for a list of Locations corresponding
+	 * to the list of String which is sent as parameter
+	 * 
+	 * @param list
+	 *            The list of Strings for which we want the corresponding
+	 *            Locations
+	 */
+	@Override
+	public void getLocationsFromNames(List<String> list) {
+		if (list != null && !list.isEmpty()) {
+			Log.d("TRANSPORT", "Locations from names request (controller)");
+			getLocationsFromNames_args args = new getLocationsFromNames_args(
+					list);
+			new LocationsFromNamesRequest().start(this,
+					(Iface) getClient(new Client.Factory(), mPluginName), args);
+		}
 	}
 
 }

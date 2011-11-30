@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.transport.android.iface;
 
+import java.util.List;
+
 /**
  * The interface that defines the method implemented by a controller
  * 
@@ -9,7 +11,7 @@ package org.pocketcampus.plugin.transport.android.iface;
  * 
  */
 public interface ITransportController {
-	
+
 	/**
 	 * Initiates a request to the server for the autocompletion for the letters
 	 * the user typed
@@ -23,8 +25,19 @@ public interface ITransportController {
 	 * Initiates a request to the server for the Next Departures from EPFL to
 	 * any destination
 	 * 
-	 * @param location The arrival destination
+	 * @param location
+	 *            The arrival destination
 	 */
 	public void nextDeparturesFromEPFL(String location);
+
+	/**
+	 * Initiates a request to the server for the Locations corresponding to each
+	 * String of the list
+	 * 
+	 * @param list
+	 *            The list of Strings for which we want the corresponding
+	 *            Locations
+	 */
+	public void getLocationsFromNames(List<String> list);
 
 }

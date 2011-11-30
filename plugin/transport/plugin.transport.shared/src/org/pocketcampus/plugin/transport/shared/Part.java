@@ -155,7 +155,7 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
     tmpMap.put(_Fields.ARRIVAL, new org.apache.thrift.meta_data.FieldMetaData("arrival", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
-    tmpMap.put(_Fields.PATH, new org.apache.thrift.meta_data.FieldMetaData("path", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.PATH, new org.apache.thrift.meta_data.FieldMetaData("path", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Point.class))));
     tmpMap.put(_Fields.LINE, new org.apache.thrift.meta_data.FieldMetaData("line", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -186,13 +186,11 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
 
   public Part(
     Location departure,
-    Location arrival,
-    List<Point> path)
+    Location arrival)
   {
     this();
     this.departure = departure;
     this.arrival = arrival;
-    this.path = path;
   }
 
   /**
@@ -1231,16 +1229,18 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
       oprot.writeFieldEnd();
     }
     if (this.path != null) {
-      oprot.writeFieldBegin(PATH_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.path.size()));
-        for (Point _iter10 : this.path)
+      if (isSetPath()) {
+        oprot.writeFieldBegin(PATH_FIELD_DESC);
         {
-          _iter10.write(oprot);
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.path.size()));
+          for (Point _iter10 : this.path)
+          {
+            _iter10.write(oprot);
+          }
+          oprot.writeListEnd();
         }
-        oprot.writeListEnd();
+        oprot.writeFieldEnd();
       }
-      oprot.writeFieldEnd();
     }
     if (this.line != null) {
       if (isSetLine()) {
@@ -1328,14 +1328,16 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
       sb.append(this.arrival);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("path:");
-    if (this.path == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.path);
+    if (isSetPath()) {
+      if (!first) sb.append(", ");
+      sb.append("path:");
+      if (this.path == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.path);
+      }
+      first = false;
     }
-    first = false;
     if (isSetLine()) {
       if (!first) sb.append(", ");
       sb.append("line:");
@@ -1421,9 +1423,6 @@ public class Part implements org.apache.thrift.TBase<Part, Part._Fields>, java.i
     }
     if (arrival == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'arrival' was not present! Struct: " + toString());
-    }
-    if (path == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'path' was not present! Struct: " + toString());
     }
   }
 

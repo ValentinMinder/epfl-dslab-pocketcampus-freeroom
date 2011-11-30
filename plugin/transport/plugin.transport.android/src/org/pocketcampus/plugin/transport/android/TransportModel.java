@@ -80,6 +80,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	@Override
 	public void setNewPreferredDestination(Location location) {
 		if (!mPreferredDestinations.contains(location)) {
+			Log.d("TRANSPORT", "New preferred Location set (model)");
 			mPreferredDestinations.add(location);
 		}
 		/** update the views */
@@ -109,6 +110,23 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	public List<Location> getAutoCpmpletedDestinations() {
 		/** Notify the view(s) */
 		return mAutoCompletedDestinations;
+	}
+
+	/**
+	 * Sends the locations corresponding to a list of strings to the view(s)
+	 */
+	@Override
+	public void setLocationsFromNames(List<Location> result) {
+		if(result != null) {			
+			Log.d("TRANSPORT", "Locations from Names set (model)");
+			
+			for(Location location : result) {
+				if(!mPreferredDestinations.contains(location)) {					
+					mPreferredDestinations.add(location);
+				}
+			}
+			mListeners.locationsFromNamesUpdated(result);
+		}
 	}
 
 }

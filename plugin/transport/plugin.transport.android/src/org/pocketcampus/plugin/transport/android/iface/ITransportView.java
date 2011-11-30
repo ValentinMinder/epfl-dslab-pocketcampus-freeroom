@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.transport.android.iface;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
+import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 
 /**
@@ -30,4 +33,12 @@ public interface ITransportView extends IView {
 	 * updated and refreshes the view
 	 */
 	void destinationsUpdated();
+
+	/**
+	 * Called by the model when the Locations corresponding to a list of strings
+	 * have been updated
+	 * 
+	 * @param result
+	 */
+	public void locationsFromNamesUpdated(List<Location> result);
 }

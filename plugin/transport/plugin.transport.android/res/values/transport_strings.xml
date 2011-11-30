@@ -4,7 +4,7 @@
     <!-- General -->
     <string name="transport_plugin_name">Transport</string>
     <string name="transport_set_destinations_message">Type destination</string>
-    <string name="transport"></string>
+    <string name="transport_add_destination">Add a destination</string>
     <string name="transport_main_no_destinations">Go to the destinations view to choose your preferred destinations</string>
         
     <!-- Menu -->

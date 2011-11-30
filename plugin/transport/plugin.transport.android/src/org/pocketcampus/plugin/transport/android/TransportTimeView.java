@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.transport.android;
 
+import java.util.List;
+
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -175,5 +177,11 @@ public class TransportTimeView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void connectionUpdated(QueryConnectionsResult result) {}
+
+	/**
+	 * Not used in this view
+	 */
+	@Override
+	public void locationsFromNamesUpdated(List<Location> result) {}
 
 }

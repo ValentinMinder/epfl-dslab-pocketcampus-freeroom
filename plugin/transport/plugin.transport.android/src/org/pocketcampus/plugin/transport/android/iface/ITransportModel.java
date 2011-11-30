@@ -37,10 +37,18 @@ public interface ITransportModel {
 	public void setNewPreferredDestination(Location location);
 
 	/**
-	 * Called when the connection is returned yb the server. Notifies the view
+	 * Called when the connection is returned by the server. Notifies the view
 	 * that the connections for some destinations have been updated
 	 * 
 	 * @param result
 	 */
 	public void setConnections(QueryConnectionsResult result);
+
+	/**
+	 * Called when the Locations are returned by the server. Notifies the view
+	 * that the Locations for the strings have been updated
+	 * 
+	 * @param result
+	 */
+	public void setLocationsFromNames(List<Location> result);
 }

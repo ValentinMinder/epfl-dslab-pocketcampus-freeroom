@@ -176,13 +176,13 @@ public class SchildbachToPCConverter {
 	
 	static protected Part convertSchToPC(de.schildbach.pte.dto.Connection.Part sf){
 		Part part = new Part(convertSchToPC(sf.departure),
-				convertSchToPC(sf.arrival),
-				convertSchPointsToPC(sf.path));
+				convertSchToPC(sf.arrival));
 		
 		if(sf instanceof de.schildbach.pte.dto.Connection.Trip ){
 			de.schildbach.pte.dto.Connection.Trip sft = (de.schildbach.pte.dto.Connection.Trip) sf;
 			
 			part.line = convertSchToPC(sft.line);
+			part.path = convertSchPointsToPC(sf.path);
 			part.destination = convertSchToPC(sft.destination);
 			part.departureTime = sft.departureTime.getTime();
 			part.arrivalTime = sft.arrivalTime.getTime();
@@ -201,9 +201,10 @@ public class SchildbachToPCConverter {
 	
 	//STOP
 	static protected Stop convertSchToPC(de.schildbach.pte.dto.Stop s){
-		return new Stop(convertSchToPC(s.location),
-				s.position,
+		Stop stop = new Stop(convertSchToPC(s.location),
 				s.time.getTime());
+		stop.position = s.position;
+		return stop;
 	}
 	
 	static protected List<Stop> convertSchStopToPC(List<de.schildbach.pte.dto.Stop> ls){

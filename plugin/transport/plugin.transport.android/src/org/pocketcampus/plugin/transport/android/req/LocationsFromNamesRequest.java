@@ -1,40 +1,44 @@
 package org.pocketcampus.plugin.transport.android.req;
 
+import java.util.List;
+
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
-import org.pocketcampus.plugin.transport.shared.TransportService.connections_args;
+import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
 
 import android.util.Log;
 
 /**
- * A request to the server for the next departures between two stations
+ * A request to the server for the Locations corresponding to each String in the
+ * parameters
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
  * @author Florian <florian.laurent@epfl.ch>
  * 
  */
-public class NextDeparturesFromEPFLRequest
+public class LocationsFromNamesRequest
 		extends
-		Request<TransportController, Iface, connections_args, QueryConnectionsResult> {
+		Request<TransportController, Iface, getLocationsFromNames_args, List<Location>> {
 
 	/**
-	 * Initiate the <code>connections</code> Request at the server
+	 * Initiate the <code>getLocationsFromNames</code> Request at the server
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
 	 * @param param
-	 *            the parameters to be sent for the request : destination from and to
-	 * @return the list of connections from the server
+	 *            the parameters to be sent for the request : a list of String
+	 *            for which we want the corresponding Locations
+	 * @return the list of Locations from the server
 	 */
 	@Override
-	protected QueryConnectionsResult runInBackground(Iface client,
-			connections_args param) throws Exception {
+	protected List<Location> runInBackground(Iface client,
+			getLocationsFromNames_args param) throws Exception {
 		Log.d("TRANSPORT", "run");
-		return client.connections(param.getFrom(), param.getTo());
+		return client.getLocationsFromNames(param.getNames());
 	}
 
 	/**
@@ -48,9 +52,9 @@ public class NextDeparturesFromEPFLRequest
 	 */
 	@Override
 	protected void onResult(TransportController controller,
-			QueryConnectionsResult result) {
+			List<Location> result) {
 		Log.d("TRANSPORT", "onResult");
-		((TransportModel) controller.getModel()).setConnections(result);
+		((TransportModel) controller.getModel()).setLocationsFromNames(result);
 	}
 
 	/**

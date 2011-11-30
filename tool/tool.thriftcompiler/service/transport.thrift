@@ -52,14 +52,14 @@ struct Line{
 
 struct Stop{
 	1: required Location location;
-	2: required string position;
+	2: optional string position;
 	3: required timestamp time;
 }
 
 struct Part {
 	1: required Location departure;
 	2: required Location arrival;
-	3: required list<Point> path;
+	3: optional list<Point> path;
 	
 	4: optional Line line;
 	5: optional Location destination;
