@@ -52,14 +52,11 @@ public class BeerParser {
 											h4.text().length()).trim();
 
 							Element img = h4.nextElementSibling();
-							mBeerPictureLink = img.attr("src").trim();
-
-							Element br = img.nextElementSibling();
-
-							while (br.nextElementSibling() != null
-									&& br.nextElementSibling().outerHtml()
-											.equals(br.outerHtml())) {
-
+							mBeerPictureLink = img.getElementsByAttribute("src").attr("src");
+							Elements brr = img.getAllElements();
+							Node br  = brr.last();
+							
+							while (br.nextSibling() != null) {
 								Node n = br.nextSibling();
 
 								if (n != null) {
@@ -69,10 +66,35 @@ public class BeerParser {
 												.concat(n.toString().trim()
 														+ "\n");
 									}
-									br = br.nextElementSibling();
+									br = br.nextSibling();
 								}
-								mBeerDescription = mBeerDescription;
+								mBeerDescription = mBeerDescription.trim();
+//								System.out.println("Description : " + mBeerDescription);
 							}
+							
+							
+//							Element img = h4.nextElementSibling();
+//							mBeerPictureLink = img.attr("src").trim();
+//
+//							Element br = img.nextElementSibling();
+//
+//							while (br.nextElementSibling() != null
+//									&& br.nextElementSibling().outerHtml()
+//											.equals(br.outerHtml())) {
+//
+//								Node n = br.nextSibling();
+//
+//								if (n != null) {
+//									String nText = n.toString();
+//									if (nText.length() > 2) {
+//										mBeerDescription = mBeerDescription
+//												.concat(n.toString().trim()
+//														+ "\n");
+//									}
+//									br = br.nextElementSibling();
+//								}
+//								mBeerDescription = mBeerDescription;
+//							}
 						}
 					}
 				}
@@ -84,18 +106,18 @@ public class BeerParser {
 	}
 	
 	private void cleantexts() {
-		mBeerName = mBeerName.replace("&agrave;", "√†");
-		mBeerName = mBeerName.replace("&eacute", "√©");
-		mBeerName = mBeerName.replace("&egrave;", "√®");
-		mBeerName = mBeerName.replace("&ucirc;", "√ª");
-		mBeerName = mBeerName.replace("&deg", "¬∞");
+		mBeerName = mBeerName.replace("&agrave;", "à");
+		mBeerName = mBeerName.replace("&eacute", "é");
+		mBeerName = mBeerName.replace("&egrave;", "è");
+		mBeerName = mBeerName.replace("&ucirc;", "ê");
+		mBeerName = mBeerName.replace("&deg", "°");
 		mBeerName = mBeerName.replace(";", "");
 		
-		mBeerDescription = mBeerDescription.replace("&agrave;", "√†");
-		mBeerDescription = mBeerDescription.replace("&eacute", "√©");
-		mBeerDescription = mBeerDescription.replace("&egrave;", "√®");
-		mBeerDescription = mBeerDescription.replace("&ucirc;", "√ª");
-		mBeerDescription = mBeerDescription.replace("&deg", "¬∞");
+		mBeerDescription = mBeerDescription.replace("&agrave;", "à");
+		mBeerDescription = mBeerDescription.replace("&eacute", "é");
+		mBeerDescription = mBeerDescription.replace("&egrave;", "è");
+		mBeerDescription = mBeerDescription.replace("&ucirc;", "ê");
+		mBeerDescription = mBeerDescription.replace("&deg", "°");
 		mBeerDescription = mBeerDescription.replace(";", "");
 	}
 	
