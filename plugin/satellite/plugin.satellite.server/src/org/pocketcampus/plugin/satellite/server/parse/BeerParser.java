@@ -56,7 +56,7 @@ public class BeerParser {
 							Elements brr = img.getAllElements();
 							Node br  = brr.last();
 							
-							while (br.nextSibling() != null) {
+							while (br != null && br.nextSibling() != null) {
 								Node n = br.nextSibling();
 
 								if (n != null) {
