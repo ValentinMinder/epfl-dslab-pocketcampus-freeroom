@@ -137,6 +137,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		}
 		
 		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
+		//svn comitt test
 //		RelativeLayout t = new RelativeLayout(this);
 //		TextView tt = new TextView(this);
 //		tt.setText("houra haha");
