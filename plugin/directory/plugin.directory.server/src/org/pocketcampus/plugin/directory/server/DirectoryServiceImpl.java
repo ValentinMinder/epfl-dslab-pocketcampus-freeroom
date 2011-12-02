@@ -1,9 +1,14 @@
 package org.pocketcampus.plugin.directory.server;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +16,7 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.NetworkUtil;
+import org.pocketcampus.platform.sdk.shared.utils.StringUtils;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
 import org.pocketcampus.plugin.directory.shared.NoPictureFound;
 import org.pocketcampus.plugin.directory.shared.Person;
@@ -40,21 +46,19 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
 	private static final String pictureExtension = ".jpg";
 	
-	
+	//list of names for autocompletion
+	private static ArrayList<String> given_names;
+	private static ArrayList<String> second_names;
 	
 	
 	public DirectoryServiceImpl(){
 		System.out.println("Starting Directory plugin server");
 		ldap = new LDAPConnection();
 		
+		
+		getNamesForDisk();
+		
 		connectLdap();
-//		//testing part
-//		try {
-//			List<Person> affichage = search("george");
-//			for(Person p : affichage){
-//				System.out.println(p.firstName + " " + p.lastName);
-//			}
-//		} catch (Exception e) {}
 	}
 	
 	private void connectLdap(){
@@ -63,6 +67,45 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		}catch (LDAPException e) {
 			System.out.println("Ldap exception");
 		}
+	}
+	
+	private void getNamesForDisk(){
+		given_names = new ArrayList<String>();
+		
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader("EPFL-givenNames.txt"));
+			String line;
+			while(true){
+				line = br.readLine();
+				given_names.add(line);
+				
+				if(line == null)
+					break;
+			}
+		}catch (FileNotFoundException e) {
+			System.out.println("please run tool.LdapExtractor to get autocomplete");
+		}catch (IOException e) {
+			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
+		} 
+		////////////////////////////////////////////////////////////////////
+		second_names = new ArrayList<String>();
+		try {
+			br = new BufferedReader(new FileReader("EPFL-lastNames.txt"));
+			String line;
+			while(true){
+				line = br.readLine();
+				second_names.add(line);
+				
+				if(line == null)
+					break;
+			}
+		}catch (FileNotFoundException e) {
+			System.out.println("please run tool.LdapExtractor to get autocomplete");
+		}catch (IOException e) {
+			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
+		} 
+		
 	}
 	
 	@Override
@@ -216,6 +259,30 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		throw new org.pocketcampus.plugin.directory.shared.NoPictureFound().setMessage("sorry");
 		
 	}
+
+	@Override
+	public List<String> autocompleteGivenName(String arg0) throws TException {
+		return autoComplete(arg0, given_names);
+	}
+
+	@Override
+	public List<String> autocompleteSecondName(String arg0) throws TException {
+		return autoComplete(arg0, second_names);
+	}
+	
+	private List<String> autoComplete(String constraint, List<String> list){
+		ArrayList<String> prop = new ArrayList<String>();
+		
+		for(String s : list){
+			StringUtils.capitalize(s);
+			if(s.startsWith(constraint))
+				prop.add(s);
+		}
+		
+		return prop;
+	}
+
+	
 
 	
 

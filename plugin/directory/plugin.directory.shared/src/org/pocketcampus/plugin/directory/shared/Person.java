@@ -629,23 +629,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     return false;
   }
 
-  //MODIFIED METHOD - COMPARES ONLY THE SCIPER
-  public boolean equals(Person that) {
-    if (that == null)
-      return false;
-
-    boolean this_present_sciper = true && this.isSetSciper();
-    boolean that_present_sciper = true && that.isSetSciper();
-    if (this_present_sciper || that_present_sciper) {
-      if (!(this_present_sciper && that_present_sciper))
-        return false;
-      if (!this.sciper.equals(that.sciper))
-        return false;
-    }
-
-    return true;
-  }
-
+ 	//MODIFIED METHOD - COMPARES ONLY THE SCIPER
+	public boolean equals(Person that) {
+	  if (that == null)
+	    return false;
+	
+	  boolean this_present_sciper = true && this.isSetSciper();
+	  boolean that_present_sciper = true && that.isSetSciper();
+	  if (this_present_sciper || that_present_sciper) {
+	    if (!(this_present_sciper && that_present_sciper))
+	      return false;
+	    if (!this.sciper.equals(that.sciper))
+	      return false;
+	  }
+	
+	  return true;
+	}
+	
+	
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
@@ -703,7 +704,6 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     return builder.toHashCode();
   }
 
-  //MODIFIED METHOD SO THE LAST NAME HAS MORE IMPORTANCE
   public int compareTo(Person other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
@@ -712,17 +712,6 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     int lastComparison = 0;
     Person typedOther = (Person)other;
 
-    lastComparison = Boolean.valueOf(isSetLastName()).compareTo(typedOther.isSetLastName());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetLastName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lastName, typedOther.lastName);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    
     lastComparison = Boolean.valueOf(isSetFirstName()).compareTo(typedOther.isSetFirstName());
     if (lastComparison != 0) {
       return lastComparison;
@@ -733,7 +722,16 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
-    
+    lastComparison = Boolean.valueOf(isSetLastName()).compareTo(typedOther.isSetLastName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLastName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lastName, typedOther.lastName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetSciper()).compareTo(typedOther.isSetSciper());
     if (lastComparison != 0) {
       return lastComparison;
