@@ -72,7 +72,7 @@ public class BeerParser {
 //								System.out.println("Description : " + mBeerDescription);
 							}
 							
-							
+							/** Old parser (November) */
 //							Element img = h4.nextElementSibling();
 //							mBeerPictureLink = img.attr("src").trim();
 //

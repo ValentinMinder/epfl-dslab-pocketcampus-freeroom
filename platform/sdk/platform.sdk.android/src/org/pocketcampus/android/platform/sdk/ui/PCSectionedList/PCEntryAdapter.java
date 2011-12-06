@@ -37,8 +37,8 @@ public class PCEntryAdapter extends ArrayAdapter<PCItem> {
 			if(!i.isEmptyLayout()){
 				if(i.isSection()){
 					PCSectionItem si = (PCSectionItem)i;
+					
 					v = vi.inflate(R.layout.sdk_sectioned_list_item_section, null);
-	
 					v.setOnClickListener(null);
 					//v.setOnLongClickListener(null);
 					v.setLongClickable(true);
@@ -46,9 +46,11 @@ public class PCEntryAdapter extends ArrayAdapter<PCItem> {
 					final TextView sectionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_text);
 					sectionView.setText(si.getTitle());
 				}else{
-					v.setLongClickable(false);
 					PCEntryItem ei = (PCEntryItem)i;
+					
 					v = vi.inflate(R.layout.sdk_sectioned_list_item_entry, null);
+					v.setLongClickable(false);
+					
 					final TextView title = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_place);
 					final TextView subtitle = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_nb);
 					
