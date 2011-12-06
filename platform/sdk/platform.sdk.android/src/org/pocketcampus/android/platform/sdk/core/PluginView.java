@@ -18,6 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 /**
  * Base class for all plugins. Gives access to action bar and logging
@@ -248,11 +249,50 @@ public abstract class PluginView extends Activity {
 				.findViewById(R.id.sdk_actionbar_layout);
 		actionBarLayout.addView(view, layoutParams);
 
-		mActionBar = (ActionBar) actionBarView
-				.findViewById(R.id.sdk_actionbar_layout_actionbar);
+		mActionBar = (ActionBar) actionBarView.findViewById(R.id.sdk_actionbar_layout_actionbar);
 		mActionBar.setTitle(getString(R.string.app_name));
 	}
+	
+	/**
+	 * Adds an action to the ActionBar.
+	 * @param action The Action to add.
+	 */
+	protected void addActionToActionBar(Action action) {
+		mActionBar.addAction(action);
+	}
 
+	/**
+	 * Adds an action to the ActionBar.
+	 * @param action The Action to add.
+	 * @param index The position where to add it.
+	 */
+	protected void addActionToActionBar(Action action, int index) {
+		mActionBar.addAction(action, index);
+	}
+	
+	/**
+	 * Removes an Action from the ActionBar.
+	 * @param action The Action to be removed.
+	 */
+	protected void removeActionFromActionBar(Action action) {
+		mActionBar.removeAction(action);
+	}
+	
+	/**
+	 * Removes an Action from the ActionBar.
+	 * @param index The index of the Action to be removed.
+	 */
+	protected void removeActionFromActionBar(int index) {
+		mActionBar.removeActionAt(index);
+	}
+	
+	/**
+	 * Removes all the Actions from the ActionBar.
+	 */
+	protected void removeAllActionsFromActionBar() {
+		mActionBar.removeAllActions();
+	}
+	
 	/**
 	 * Do not setup the ActionBar for this Activity. Must be called before
 	 * <code>setContentView</code>.
