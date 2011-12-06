@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.satellite.server.parse;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -106,19 +107,26 @@ public class BeerParser {
 	}
 	
 	private void cleantexts() {
-		mBeerName = mBeerName.replace("&agrave;", "à");
-		mBeerName = mBeerName.replace("&eacute", "é");
-		mBeerName = mBeerName.replace("&egrave;", "è");
-		mBeerName = mBeerName.replace("&ucirc;", "ê");
-		mBeerName = mBeerName.replace("&deg", "°");
-		mBeerName = mBeerName.replace(";", "");
+//		mBeerName = mBeerName.replace("&agrave;", "à");
+//		mBeerName = mBeerName.replace("&eacute", "é");
+//		mBeerName = mBeerName.replace("&egrave;", "è");
+//		mBeerName = mBeerName.replace("&ucirc;", "ê");
+//		mBeerName = mBeerName.replace("&deg", "°");
+//		mBeerName = mBeerName.replace(";", "");
+//		
+//		mBeerDescription = mBeerDescription.replace("&agrave;", "à");
+//		mBeerDescription = mBeerDescription.replace("&eacute", "é");
+//		mBeerDescription = mBeerDescription.replace("&egrave;", "è");
+//		mBeerDescription = mBeerDescription.replace("&ucirc;", "ê");
+//		mBeerDescription = mBeerDescription.replace("&deg", "°");
+//		mBeerDescription = mBeerDescription.replace(";", "");
 		
-		mBeerDescription = mBeerDescription.replace("&agrave;", "à");
-		mBeerDescription = mBeerDescription.replace("&eacute", "é");
-		mBeerDescription = mBeerDescription.replace("&egrave;", "è");
-		mBeerDescription = mBeerDescription.replace("&ucirc;", "ê");
-		mBeerDescription = mBeerDescription.replace("&deg", "°");
-		mBeerDescription = mBeerDescription.replace(";", "");
+//		CharSequenceTranslator translator = StringEscapeUtils.UNESCAPE_HTML4;
+		mBeerName = StringEscapeUtils.unescapeHtml4(mBeerName);
+		mBeerDescription = StringEscapeUtils.unescapeHtml4(mBeerDescription);
+//		mBeerName = translator.translate(mBeerName);
+//		mBeerDescription = translator.translate(mBeerDescription);
+		
 	}
 	
 	public Beer getBeerOfMonth() {
