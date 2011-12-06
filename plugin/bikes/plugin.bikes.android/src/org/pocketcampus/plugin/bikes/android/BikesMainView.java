@@ -66,13 +66,13 @@ public class BikesMainView extends PluginView implements IBikesView{
 					for(BikeEmplacement be: mModel.getAvailablesBikes()){
 						if(be.designation.equals(stationsName)){
 							String ab;
-							if(be.availableQuantity> 0)
+							if(be.availableQuantity == 1)
 								ab = " available bike";
 							else
 								ab = " availables bikes";
 							
 							String ep;
-							if(be.empty > 0)
+							if(be.empty == 1)
 								ep = " empty bike slot";
 							else
 								ep = " empty bike slots";
@@ -140,6 +140,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 //			items.add(new PCEntryItem("No docks available", ""));
 //		}
 //		
+		items.add(new PCSectionItem("Velopass"));
+		
 		for(BikeEmplacement be : mModel.getAvailablesBikes()){
 			String nbBikes;
 			int q = be.getAvailableQuantity();
