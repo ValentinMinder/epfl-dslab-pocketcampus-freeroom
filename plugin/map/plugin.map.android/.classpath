@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/osmdroid-android-3.0.3.jar"/>
+	<classpathentry kind="src" path="/plugin.map.shared"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

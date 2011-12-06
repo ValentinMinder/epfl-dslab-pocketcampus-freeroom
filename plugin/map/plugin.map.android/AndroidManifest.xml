@@ -30,7 +30,7 @@
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.bikes.android.MapController" >
+            android:name="org.pocketcampus.plugin.map.android.MapMainController" >
         </service>
     </application>
 

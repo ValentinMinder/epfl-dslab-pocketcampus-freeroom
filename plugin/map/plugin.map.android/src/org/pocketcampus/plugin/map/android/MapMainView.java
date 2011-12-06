@@ -28,11 +28,13 @@ import org.pocketcampus.plugin.map.android.cache.LayersCache;
 import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
+import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.android.shared.MapElementBean;
 import org.pocketcampus.plugin.map.android.shared.Position;
 import org.pocketcampus.plugin.map.android.ui.ItemDialog;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
+import org.pocketcampus.plugin.map.shared.MapLayer;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -59,11 +61,10 @@ import com.markupartist.android.widget.ActionBar;
  * @author Florian
  *
  */
-public class MapMainView extends PluginView {
+public class MapMainView extends PluginView implements IMapView {
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
-//		return MapController.class;
-		return null;
+		return MapMainController.class;
 	}
 	
 	public static final String ITEM_GO_URL = "go_url:";
@@ -119,8 +120,14 @@ public class MapMainView extends PluginView {
 	private String intentLayerId_;
 	private int intentItemId_;
 
+	private MapMainController mController;
+	private MapModel mModel;
+
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		mController = (MapMainController) controller;
+		mModel = (MapModel) controller.getModel();
+		
 		setContentView(R.layout.map_main);
 
 //		Tracker.getInstance().trackPageView("map/home");
@@ -131,9 +138,8 @@ public class MapMainView extends PluginView {
 		setupMapView();
 
 		// Download the available layers
-//		RequestParameters params = new RequestParameters();
-//		getRequestHandler().execute(new LayersRequest(), "getLayers", params);
-
+		mController.getLayers();
+		
 		handleSearchIntent(getIntent().getExtras());
 	}
 
@@ -412,14 +418,14 @@ public class MapMainView extends PluginView {
 			return true;
 
 			// Enable the user following
-		case R.id.map_my_position:
+		/*case R.id.map_my_position:
 			if(!myLocationOverlay_.isMyLocationEnabled()) {
 				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
 			}
 			toggleCenterOnUserPosition();
-
 //			Tracker.getInstance().trackPageView("map/menu/togglPosition");
-			return true;
+			return true;*/
+
 
 			// Enable the user following
 		case R.id.map_campus_position:
@@ -431,7 +437,6 @@ public class MapMainView extends PluginView {
 			// Shows the search dialog
 		case R.id.map_search:
 			onSearchRequested();
-
 //			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 			
@@ -460,7 +465,7 @@ public class MapMainView extends PluginView {
 
 		// If we already have a cache of the layers
 		if(allLayers_ != null && allLayers_.size() > 0) {
-			layerSelector();
+			//layerSelector();
 		}
 		// else wait, it will come ;)
 	}
@@ -468,7 +473,7 @@ public class MapMainView extends PluginView {
 	/**
 	 * Launch the dialog that allows to select the different layers
 	 */
-	private void layerSelector() {
+//	private void layerSelector() {
 //		final LayerSelector l = new LayerSelector(this, allLayers_, selectedLayers_);
 //
 //		// Show the dialog, using a callback to the the selected layers back
@@ -478,8 +483,8 @@ public class MapMainView extends PluginView {
 //				setSelectedLayers(l.getSelectedLayers());
 //			}
 //		});
-
-	}
+//
+//	}
 
 	/**
 	 * Enable the location and center the map on the user
@@ -967,14 +972,30 @@ public class MapMainView extends PluginView {
 		}
 	};
 
-//	@Override
-//	public PluginInfo getPluginInfo() {
-//		return new MapInfo();
-//	}
-//
-//	@Override
-//	public PluginPreference getPluginPreference() {
-//		return null;
-//	}
+	@Override
+	public void networkErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		toast.show();
+	}
 
+	@Override
+	public void layersUpdated() {
+		List<MapLayer> layers = mModel.getLayers();
+		allLayers_ = new ArrayList<MapElementsList>(layers.size());
+		
+		for(MapLayer mlb : layers) {
+			//if(mlb.isDisplayable()) {
+				allLayers_.add(new MapElementsList(mlb));
+			//}
+		}
+		
+//		layersCache_.loadSelectedLayersFromFile(allLayers_, new ILayersCacheCallback() {
+//			@Override
+//			public void onLayersLoadedFromFile(List<MapElementsList> selected) {
+//				selectedLayers_ = selected;
+//				checkSelectedLayersFromIntent();
+//				updateOverlays(false);
+//			}
+//		});
+	}
 }
