@@ -40,12 +40,13 @@ public class PCEntryAdapter extends ArrayAdapter<PCItem> {
 					v = vi.inflate(R.layout.sdk_sectioned_list_item_section, null);
 	
 					v.setOnClickListener(null);
-					v.setOnLongClickListener(null);
-					v.setLongClickable(false);
+					//v.setOnLongClickListener(null);
+					v.setLongClickable(true);
 					
 					final TextView sectionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_text);
 					sectionView.setText(si.getTitle());
 				}else{
+					v.setLongClickable(false);
 					PCEntryItem ei = (PCEntryItem)i;
 					v = vi.inflate(R.layout.sdk_sectioned_list_item_entry, null);
 					final TextView title = (TextView)v.findViewById(R.id.PCSectioned_list_item_entry_place);

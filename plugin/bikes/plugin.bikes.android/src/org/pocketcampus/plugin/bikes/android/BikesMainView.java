@@ -77,11 +77,15 @@ public class BikesMainView extends PluginView implements IBikesView{
 							else
 								ep = " empty bike slots";
 							
-							msg = be.designation + " is at:\n" +
-										"Lat: " + be.geoLat + "\n" +
-										"Lon: " + be.geoLng + "\n" +
-										"and has " + be.availableQuantity + ab +"\n" +
+							msg = be.designation + 
+										//" is at:\n" +
+										//"Lat: " + be.geoLat + "\n" +
+										//"Lon: " + be.geoLng + "\n" +
+										"\nhas " + be.availableQuantity + ab +"\n" +
 										"and " + be.empty + ep;
+							
+							//exiting the loop
+							break;
 						}
 					}
 					
@@ -109,33 +113,51 @@ public class BikesMainView extends PluginView implements IBikesView{
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
 		boolean found = false;
 		
-		//
-		items.add(new PCSectionItem("Available bikes"));
-		for(BikeEmplacement be:mModel.getAvailablesBikes()){
-			if(be.availableQuantity > 0){
-				items.add(new PCEntryItem(be.designation, be.availableQuantity+""));
-				found = true;
-				}
-		}
-		if(!found){
-			items.add(new PCEntryItem("No bikes available", ""));
-		}
+		//No sections after all
+//		items.add(new PCSectionItem("Available bikes"));
+//		for(BikeEmplacement be:mModel.getAvailablesBikes()){
+//			if(be.availableQuantity > 0){
+//				items.add(new PCEntryItem(be.designation, be.availableQuantity+""));
+//				found = true;
+//				}
+//		}
+//		if(!found){
+//			items.add(new PCEntryItem("No bikes available", ""));
+//		}
+//		
+//		//
+//		found = false;
+//		//new section header
+//		items.add(new PCSectionItem("Empty docks"));
+//		//adding the content of the section
+//		for(BikeEmplacement be:mModel.getAvailablesBikes()){
+//			if(be.empty > 0){
+//				//element by element
+//				items.add(new PCEntryItem(be.designation, be.empty+""));
+//				found = true;
+//			}
+//		}if(!found){
+//			items.add(new PCEntryItem("No docks available", ""));
+//		}
+//		
+		for(BikeEmplacement be : mModel.getAvailablesBikes()){
+			String nbBikes;
+			int q = be.getAvailableQuantity();
+			int pl = be.empty + q;
+			nbBikes = "" + q;
+			
+			nbBikes = nbBikes + " / ";
+			
+			if(pl < 10)
+				nbBikes = nbBikes + " " + pl;
+			else
+				nbBikes = nbBikes + pl;
+			
 		
-		//
-		found = false;
-		//new section header
-		items.add(new PCSectionItem("Empty docks"));
-		//adding the content of the section
-		for(BikeEmplacement be:mModel.getAvailablesBikes()){
-			if(be.empty > 0){
-				//element by element
-				items.add(new PCEntryItem(be.designation, be.empty+""));
-				found = true;
-			}
-		}if(!found){
-			items.add(new PCEntryItem("No docks available", ""));
+			
+			if(pl > 0)
+				items.add(new PCEntryItem(be.designation, nbBikes, ""));
 		}
-		
 		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
 		//svn comitt test
 //		RelativeLayout t = new RelativeLayout(this);

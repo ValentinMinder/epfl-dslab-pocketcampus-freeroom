@@ -23,6 +23,7 @@ import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Location;
+import org.pocketcampus.plugin.transport.shared.Part;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 
 import android.content.Intent;
@@ -34,6 +35,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -393,8 +397,18 @@ public class TransportMainView extends PluginView implements ITransportView {
 				for (Connection c : mDisplayedLocations.get(l)) {
 					if (i < 3) {
 						i++;
-						items.add(new PCEntryItem(timeString(c.getArrivalTime()),
-								""));
+						
+						String logo ="";
+						for(Part p : c.parts){
+							if(!p.foot){
+								logo = p.line.label;
+								break;
+								}
+						}
+						
+						PCEntryItem entry =new PCEntryItem(timeString(c.getArrivalTime()),logo, c.id); 
+						
+						items.add(entry);
 					}
 				}
 			}
@@ -403,6 +417,32 @@ public class TransportMainView extends PluginView implements ITransportView {
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 
 		mListView.setAdapter(adapter);
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				
+				String txt = ((PCEntryItem)((ListView)arg0).getItemAtPosition(arg2)).id;
+				Toast.makeText(TransportMainView.this, txt, Toast.LENGTH_SHORT).show();
+				
+				
+			}
+		});
+		
+		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+				
+				String txt = ((PCSectionItem)((ListView)arg0).getItemAtPosition(arg2)).getTitle();
+				Toast.makeText(TransportMainView.this, "Removing " + txt + " from favourites", Toast.LENGTH_LONG).show();
+				//TODO effectivly remove this station from the fav
+				return true;
+			}
+		});
+		
+	
 		mListView.invalidate();
 
 	}
