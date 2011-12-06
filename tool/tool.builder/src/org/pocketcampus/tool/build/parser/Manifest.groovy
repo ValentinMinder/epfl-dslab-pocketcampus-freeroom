@@ -28,13 +28,18 @@ class Manifest {
 			it.attributes()[ns.name] = pkg + name
 		}
 		
+		// XXX locks in portrait mode
+		def lockInPortrait = {
+			it.attributes()["android:screenOrientation"] = "portrait"
+		}
+		
 		// generates code for this plugin
 		def writer = new StringWriter()
 		def printer = new XmlNodePrinter(new PrintWriter(writer))
 		def print = { printer.print(it) }
 		
 		// applies and print
-		app.activity.each(makeNameFullyQualified).each(print)
+		app.activity.each(makeNameFullyQualified).each(lockInPortrait).each(print)
 		app.service.each(makeNameFullyQualified).each(print)
 		app.receiver.each(makeNameFullyQualified).each(print)
 		
