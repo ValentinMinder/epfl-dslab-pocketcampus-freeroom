@@ -70,7 +70,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	@Override
 	public void onCreate() {
 		// Initializing the model is part of the controller's job...
-		mModel = new AuthenticationModel();
+		mModel = AuthenticationModel.getInstance();
 		
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.

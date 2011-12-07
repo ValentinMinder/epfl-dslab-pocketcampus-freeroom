@@ -12,5 +12,6 @@ public interface ICamiproModel {
 	public CardStatistics getCardStatistics();
 	public CardLoadingWithEbankingInfo getCardLoadingWithEbankingInfo();
 	public String getCamiproCookie();
+	public String getLastUpdateDate();
 	
 }

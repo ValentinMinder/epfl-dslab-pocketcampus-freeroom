@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.camipro.android;
 
+import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -11,6 +12,16 @@ import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 public class CamiproModel extends PluginModel implements ICamiproModel {
+	
+	private CamiproModel() {
+		
+	}
+	
+	public static CamiproModel getInstance(){
+		if(self == null)
+			self = new CamiproModel();
+		return self;
+	}
 	
 	@Override
 	protected Class<? extends IView> getViewInterface() {
@@ -42,23 +53,32 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		return iCardLoadingWithEbankingInfo;
 	}
 
+	@Override
+	public String getLastUpdateDate() {
+		return lastUpdate;
+	}
+	
 	public void setTransactions(List<Transaction> trans) {
 		iTransactions = trans;
+		lastUpdate = new Date().toLocaleString();
 		mListeners.transactionsUpdated();
 	}
 
 	public void setBalance(Double bal) {
 		iBalance = bal;
+		lastUpdate = new Date().toLocaleString();
 		mListeners.balanceUpdated();
 	}
 
 	public void setCardStatistics(CardStatistics val) {
 		iCardStatistics = val;
+		lastUpdate = new Date().toLocaleString();
 		mListeners.cardStatisticsUpdated();
 	}
 	
 	public void setCardLoadingWithEbankingInfo(CardLoadingWithEbankingInfo val) {
 		iCardLoadingWithEbankingInfo = val;
+		lastUpdate = new Date().toLocaleString();
 		mListeners.cardLoadingWithEbankingInfoUpdated();
 	}
 	
@@ -69,11 +89,15 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	}
 	
 	//TODO have camipro cookie saved in storage
-	private String camiproCookie;
+	private String camiproCookie = null;
 	
-	private List<Transaction> iTransactions;
-	private Double iBalance;
-	private CardStatistics iCardStatistics;
-	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
+	private List<Transaction> iTransactions = null;
+	private Double iBalance = null;
+	private CardStatistics iCardStatistics = null;
+	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo = null;
 	
+	private String lastUpdate = null;
+	
+	private static CamiproModel self = null;
+
 }

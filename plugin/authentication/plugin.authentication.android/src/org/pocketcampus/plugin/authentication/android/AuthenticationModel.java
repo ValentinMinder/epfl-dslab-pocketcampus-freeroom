@@ -13,6 +13,16 @@ import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 public class AuthenticationModel extends PluginModel implements IAuthenticationModel {
 	IAuthenticationView mListeners = (IAuthenticationView) getListeners();
 	
+	private AuthenticationModel() {
+		
+	}
+	
+	public static AuthenticationModel getInstance(){
+		if(self == null)
+			self = new AuthenticationModel();
+		return self;
+	}
+	
 	public void setTequilaKey(TequilaKey value) {
 		iTequilaKey = value;
 		mListeners.gotTequilaKey();
@@ -55,5 +65,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private HashMap<TypeOfService, SessionId> sessionIds = new HashMap<TypeOfService, SessionId>();
 	
 	private TequilaKey iTequilaKey;
+
+	private static AuthenticationModel self = null;
 
 }

@@ -11,6 +11,8 @@ import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 
+import android.util.Log;
+
 public class CamiproController extends PluginController implements ICamiproController{
 
 	private String mPluginName = "camipro";
@@ -18,8 +20,9 @@ public class CamiproController extends PluginController implements ICamiproContr
 
 	@Override
 	public void onCreate() {
+		Log.v("DEBUG", "onCreate called on CamiproController");
 		// Initializing the model is part of the controller's job...
-		mModel = new CamiproModel();
+		mModel = CamiproModel.getInstance();
 		
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		Log.v("DEBUG", "onDisplay was called in CamiproMainView");
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
@@ -52,26 +54,51 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	protected void handleIntent(Intent aIntent) {
+		Log.v("DEBUG", "handleIntent was called in CamiproMainView");
 		// If we were pinged by auth plugin, then we must read the sessId
 		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
 			Uri aData = aIntent.getData();
 			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
 				String sessId = aData.getQueryParameter("sessid");
 				mController.setCamiproCookie(sessId);
-				refreshAll();
 			}
 		}
-		// Otherwise continue normal start-up
-		// Check if we are not signed in then ping the auth plugin
-		if(mController.getCamiproCookie() == null) {
+		
+		// Normal start-up
+		if(mModel.getCamiproCookie() == null) { // if we don't have cookie
+			// get cookie (ping auth plugin)
 			Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
 			startActivity(authIntent);
 		}
+		if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
+			// fetch them
+			mController.refreshBalanceAndTransactions();
+		}
+		if(mModel.getCardStatistics() == null || mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have some other data
+			// get them
+			mController.refreshStatsAndLoadingInfo();
+		}
+		// update display
+		updateDisplay();
 	}
+	
+	/*@Override
+	protected void onResume() {
+		super.onResume();
+		Log.v("DEBUG", "onResume was called in CamiproMainView");
+		if(mController == null) {
+			Log.v("DEBUG", "mController is null");
+		}
+		if(mController != null && mController.getCamiproCookie() == null) {
+			//finish();
+		}
+	}*/
 
 	@Override
 	public void transactionsUpdated() {
 		List<Transaction> ltb = mModel.getTransactions();
+		if(ltb == null)
+			return;
 		ListView lv = (ListView) findViewById(R.id.camipro_list);
 
 		// Create an adapter for the data
@@ -80,18 +107,18 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public void balanceUpdated() {
+		Double bal = mModel.getBalance();
+		if(bal == null)
+			return;
 		TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
-		balance.setText(formatMoney(mModel.getBalance()));
-
-		// Last update
-		String date = new Date().toLocaleString();
-		balance = (TextView) findViewById(R.id.camipro_balance_date_text);
-		balance.setText(date);
+		balance.setText(formatMoney(bal));
 	}
 
 	@Override
 	public void cardLoadingWithEbankingInfoUpdated() {
 		CardLoadingWithEbankingInfo i = mModel.getCardLoadingWithEbankingInfo();
+		if(i == null)
+			return;
 		
 		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
 		tv.setText(i.getIPaidTo());
@@ -106,6 +133,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	public void cardStatisticsUpdated() {
 		CardStatistics s = mModel.getCardStatistics();
+		if(s == null)
+			return;
 		
 		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
 		tv.setText(formatMoney(s.getITotalPaymentsLastMonth()));
@@ -121,6 +150,19 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	private void refreshAll() {
 		mController.refreshBalanceAndTransactions();
 		mController.refreshStatsAndLoadingInfo();
+	}
+	
+	private void updateDisplay() {
+		transactionsUpdated();
+		balanceUpdated();
+		cardLoadingWithEbankingInfoUpdated();
+		cardStatisticsUpdated();
+		// Last update
+		String date = mModel.getLastUpdateDate();
+		if(date != null) {
+			TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
+			dateLastUpdated.setText(date);
+		}
 	}
 	
 	private static String formatMoney(double money) {
@@ -139,6 +181,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		
 		if(item.getItemId() == R.id.camipro_refresh) {			
 			refreshAll();
+			/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+			startService(authIntent);*/
 		}
 		
 
