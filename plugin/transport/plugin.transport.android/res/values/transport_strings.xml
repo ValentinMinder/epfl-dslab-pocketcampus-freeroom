@@ -6,9 +6,18 @@
     <string name="transport_set_destinations_message">Type destination</string>
     <string name="transport_add_destination">Add a destination</string>
     <string name="transport_main_no_destinations">Go to the destinations view to choose your preferred destinations</string>
-        
+    <string name="transport_departure_at">Departure at</string>
+    <string name="transport_departure_in">Departure in</string>
+    <string name="transport_in">in</string>
+    <string name="transport_arrival_at">Arrival at</string>
+    <string name="transport_arrival_in">Arrival in</string>
+    <string name="transport_hour">hour</string>
+    <string name="transport_hours">hours</string>
+    <string name="transport_minute">minute</string>
+    <string name="transport_minutes">minutes</string>
+    
     <!-- Menu -->
-    <string name="transport_menu_destinations">Set destinations</string>
+    <string name="transport_menu_destinations">Edit destinations</string>
     <string name="transport_menu_settings">Settings</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.transport.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,17 +16,19 @@ import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.adapter.RichLabeledArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.dialog.PCDetailsDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
+import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
 import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.Part;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,6 +47,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.markupartist.android.widget.ActionBar;
+
 /**
  * The Main View of the Transport plugin, first displayed when accessing
  * Transport.
@@ -57,6 +62,9 @@ import android.widget.Toast;
  * 
  */
 public class TransportMainView extends PluginView implements ITransportView {
+	/** Main Activity */
+	private Activity mActivity;
+
 	/* MVC */
 	/** The plugin controller */
 	private TransportController mController;
@@ -89,16 +97,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The name under which the preferences are stored on the phone */
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
-	/* Labelers */
-	/** The labeler that says how to display a Location */
-	private ILabeler<Location> mLocationLabeler = new ILabeler<Location>() {
-		@Override
-		public String getLabel(Location dest) {
-			return dest.getName();
-		}
-
-	};
-
 	/** The labeler that says how to display a Location */
 	private IRichLabeler<Connection> mConnectionLabeler = new IRichLabeler<Connection>() {
 		@Override
@@ -113,7 +111,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		@Override
 		public String getDescription(Connection obj) {
-			return timeString(obj.getDepartureTime());
+			return stringifier(obj);
 		}
 
 		@Override
@@ -148,11 +146,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		mActivity = this;
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
 
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
-
+		
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
@@ -160,14 +159,19 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		setContentView(mLayout);
 
+		/** Set up edit button in the action bar */
+		Intent intent = new Intent(getApplicationContext(), TransportTimeView.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		ActionBar a = getActionBar();
+		if(a != null) {			
+			a.addAction(new ActionBar.IntentAction(getApplicationContext(), intent,
+					R.drawable.transport_action_bar_edit));
+		}
+		
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 
 		if (prefs == null || prefs.isEmpty()) {
 			Log.d("TRANSPORT", "Prefs were null");
-			// mText = new TextView(this);
-			// mText.setText(getResources().getString(
-			// R.string.transport_main_no_destinations));
-			// mLayout.addFillerView(mText);
 
 			/** If no destinations are set, redirect to TransportTimeView */
 			Intent i = new Intent(this, TransportTimeView.class);
@@ -190,12 +194,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Called when this view is accessed after already having been initialized
 	 * before
 	 */
-	  @Override
-		protected void onRestart() {
-			super.onRestart();
-			Log.d("ACTIVITY", "onRestart");
-			displayDestinations();
-		}
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		Log.d("ACTIVITY", "onRestart");
+		// displayDestinations();
+	}
 
 	/**
 	 * Main Transport Options menu contains access to the preferred destinations
@@ -235,30 +239,30 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private void displayDestinations() {
 		/** Button "Add Destination" */
-		ButtonElement b = new ButtonElement(this);
-		b.setId(1);
-
-		b.setText(getResources().getString(R.string.transport_add_destination));
-
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.CENTER_IN_PARENT);
-		b.setLayoutParams(params);
-
-		b.setOnClickListener(new OnClickListener() {
-
-			/**
-			 * Starts the TransportTimeView
-			 */
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(),
-						TransportTimeView.class);
-				startActivity(i);
-			}
-		});
-
-		mLayout.addFirstLayoutFillerView(b);
+//		ButtonElement b = new ButtonElement(this);
+//		b.setId(1);
+//
+//		b.setText(getResources().getString(R.string.transport_add_destination));
+//
+//		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//		b.setLayoutParams(params);
+//
+//		b.setOnClickListener(new OnClickListener() {
+//
+//			/**
+//			 * Starts the TransportTimeView
+//			 */
+//			@Override
+//			public void onClick(View v) {
+//				Intent i = new Intent(getApplicationContext(),
+//						TransportTimeView.class);
+//				startActivity(i);
+//			}
+//		});
+//
+//		mLayout.addFirstLayoutFillerView(b);
 
 		/** List of next departures */
 		List<Location> locations = mModel.getPreferredDestinations();
@@ -300,25 +304,26 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				int i = 0;
 				for (Connection c : connections) {
-					if(c != null) {
+					if (c != null) {
 						if (i < 3) {
 							i++;
-							Log.d("TRANSPORT",
-									"Added item " + timeString(c.getArrivalTime()));
-
-							List<Connection> list = mDisplayedLocations.get(c.getTo().getName());
+							List<Connection> list = mDisplayedLocations.get(c
+									.getTo().getName());
 
 							if (list == null) {
-								mDisplayedLocations.put(c.getTo().getName(), new ArrayList<Connection>());
+								Log.d("TRANSPORT",
+										"Added new destination because auto completion wasn't corresponding");
+								mDisplayedLocations.put(c.getTo().getName(),
+										new ArrayList<Connection>());
 							}
 							mDisplayedLocations.get(c.getTo().getName()).add(c);
+							Log.d("TRANSPORT", "Added item " + timeString(c.getDepartureTime()));
 						}
 					}
 				}
 				setItemsToDisplay();
 			}
-		} else {
-			Log.d("TRANSPORT", "Bouuuuhouhou ! (view)");
+
 		}
 	}
 
@@ -357,28 +362,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void autoCompletedDestinationsUpdated() {}
-
-	/**
-	 * Returns a string representing the date by its hours and minutes
-	 * 
-	 * @param millisec
-	 * @return textDate The string representing the date as hours and minutes
-	 */
-	private String timeString(long millisec) {
-		String textDate = "";
-
-		Date now = new Date();
-		Date date = new Date();
-		date.setTime(millisec);
-
-		Date minutes = new Date();
-
-		minutes.setTime(date.getTime() - now.getTime());
-		textDate = "in " + (minutes.getHours() - 1) + " hours, "
-				+ minutes.getMinutes() + " minutes";
-
-		return textDate;
+	public void autoCompletedDestinationsUpdated() {
 	}
 
 	/**
@@ -389,7 +373,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		items = new ArrayList<PCItem>();
 
 		for (String l : set) {
-			if(!mDisplayedLocations.get(l).isEmpty()) {
+			if (!mDisplayedLocations.get(l).isEmpty()) {
 
 				items.add(new PCSectionItem(l));
 
@@ -397,17 +381,19 @@ public class TransportMainView extends PluginView implements ITransportView {
 				for (Connection c : mDisplayedLocations.get(l)) {
 					if (i < 3) {
 						i++;
-						
-						String logo ="";
-						for(Part p : c.parts){
-							if(!p.foot){
+
+						String logo = "";
+						for (Part p : c.parts) {
+							if (!p.foot) {
 								logo = p.line.label;
 								break;
-								}
+							}
 						}
-						
-						PCEntryItem entry =new PCEntryItem(timeString(c.getArrivalTime()),logo, c.id); 
-						
+
+						logo = TransportFormatter.getNiceName(logo);
+						PCEntryItem entry = new PCEntryItem(timeString(c.getDepartureTime()),
+								logo, c.id);
+
 						items.add(entry);
 					}
 				}
@@ -417,33 +403,134 @@ public class TransportMainView extends PluginView implements ITransportView {
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 
 		mListView.setAdapter(adapter);
-		
+
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				
-				String txt = ((PCEntryItem)((ListView)arg0).getItemAtPosition(arg2)).id;
-				Toast.makeText(TransportMainView.this, txt, Toast.LENGTH_SHORT).show();
-				
-				
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+
+				String txt = ((PCEntryItem) ((ListView) arg0)
+						.getItemAtPosition(arg2)).id;
+				Toast.makeText(TransportMainView.this, txt, Toast.LENGTH_SHORT)
+						.show();
+
+				Set<String> s = mDisplayedLocations.keySet();
+				String[] dests = new String[s.size()];
+				dests = s.toArray(dests);
+
+				if (dests != null) {
+					detailsDialog(txt);
+				}
+
 			}
 		});
-		
+
 		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-				
-				String txt = ((PCSectionItem)((ListView)arg0).getItemAtPosition(arg2)).getTitle();
-				Toast.makeText(TransportMainView.this, "Removing " + txt + " from favourites", Toast.LENGTH_LONG).show();
-				//TODO effectivly remove this station from the fav
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+
+				String txt = ((PCSectionItem) ((ListView) arg0)
+						.getItemAtPosition(arg2)).getTitle();
+				Toast.makeText(TransportMainView.this,
+						"Removing " + txt + " from favourites",
+						Toast.LENGTH_LONG).show();
+				// TODO effectivly remove this station from the fav
 				return true;
 			}
 		});
-		
-	
+
 		mListView.invalidate();
 
+	}
+
+	private String timeString(long milliseconds) {
+		String s = getResources().getString(R.string.transport_in);
+		
+		Date now = new Date();
+		Date then = new Date();
+		then.setTime(milliseconds);
+		
+		long diff = then.getTime()-now.getTime();
+		Date timeTillDeparture = new Date();
+		timeTillDeparture.setTime(diff);
+		
+		diff = diff/1000; //seconds
+		int minutes = (int)diff/60; //minutes
+		int hours = (int)diff/3660; //hours
+		
+		if(hours > 0) {
+			if(hours == 1) {
+				s = s.concat(" " + hours + " "+ getResources().getString(R.string.transport_hour )+",");
+			}else {				
+				s = s.concat(" " + hours + " "+ getResources().getString(R.string.transport_hours )+",");
+			}
+		}
+		
+		while(minutes > 60) {
+			minutes = minutes - 60;
+		}
+		
+		if(minutes > 0) {
+			if(minutes == 1) {
+				s = s.concat(" " + minutes + " " + getResources().getString(R.string.transport_minute));
+			} else {
+				s = s.concat(" " + minutes + " " + getResources().getString(R.string.transport_minutes));
+			}
+		}
+		
+		return s;
+	}
+	
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private String stringifier(Connection c) {
+		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
+		String r = getResources().getString(R.string.transport_departure_at) + " "
+				+ FORMAT.format(c.getDepartureTime());
+
+		return r;
+	}
+
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private String stringifierDetails(Connection c) {
+		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
+		String r = getResources().getString(R.string.transport_departure_at) + " "
+				+ FORMAT.format(c.getDepartureTime()) + ", "
+				+ getResources().getString(R.string.transport_arrival_at) + ": "
+				+ FORMAT.format(c.getArrivalTime());
+
+		r += "\n" + c.getFrom();
+		for (Part p : c.getParts()) {
+			r += " -> " + p.getArrival();
+		}
+
+		return r;
+	}
+
+	/**
+	 * Creates a menu dialog for a particular meal
+	 * 
+	 * @param connection
+	 */
+	public void detailsDialog(String connection) {
+		// Create the Builder for the Menu dialog
+		PCDetailsDialog.Builder b = new PCDetailsDialog.Builder(mActivity);
+		b.setCanceledOnTouchOutside(true);
+
+		// Set different values for the dialog
+		b.setTitle(connection);
+
+		PCDetailsDialog dialog = b.create();
+		dialog.show();
 	}
 }
