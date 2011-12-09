@@ -86,8 +86,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	/** The adapter to contain the destinations displayed in the list */
 	private RichLabeledArrayAdapter mAdapter;
-	/** Displayed locations */
-	private HashMap<String, List<Connection>> mDisplayedLocations;
+	//	/** Displayed locations */
+	//	private HashMap<String, List<Connection>> mDisplayedLocations;
 
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
@@ -151,7 +151,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mModel = (TransportModel) mController.getModel();
 
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
-		
+		mDestPrefsEditor = mDestPrefs.edit();
+
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
@@ -160,14 +161,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 		setContentView(mLayout);
 
 		/** Set up edit button in the action bar */
-		Intent intent = new Intent(getApplicationContext(), TransportTimeView.class);
+		Intent intent = new Intent(getApplicationContext(), TransportEditView.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ActionBar a = getActionBar();
 		if(a != null) {			
 			a.addAction(new ActionBar.IntentAction(getApplicationContext(), intent,
 					R.drawable.transport_action_bar_edit));
 		}
-		
+
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 
 		if (prefs == null || prefs.isEmpty()) {
@@ -198,7 +199,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	protected void onRestart() {
 		super.onRestart();
 		Log.d("ACTIVITY", "onRestart");
-		// displayDestinations();
+		displayDestinations();
 	}
 
 	/**
@@ -238,53 +239,22 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * destinations along with the next departures to go there
 	 */
 	private void displayDestinations() {
-		/** Button "Add Destination" */
-//		ButtonElement b = new ButtonElement(this);
-//		b.setId(1);
-//
-//		b.setText(getResources().getString(R.string.transport_add_destination));
-//
-//		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-//				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//		params.addRule(RelativeLayout.CENTER_IN_PARENT);
-//		b.setLayoutParams(params);
-//
-//		b.setOnClickListener(new OnClickListener() {
-//
-//			/**
-//			 * Starts the TransportTimeView
-//			 */
-//			@Override
-//			public void onClick(View v) {
-//				Intent i = new Intent(getApplicationContext(),
-//						TransportTimeView.class);
-//				startActivity(i);
-//			}
-//		});
-//
-//		mLayout.addFirstLayoutFillerView(b);
-
 		/** List of next departures */
-		List<Location> locations = mModel.getPreferredDestinations();
-		if (locations != null && !locations.isEmpty()) {
+		HashMap<String, List<Connection>> locations = mModel.getPreferredDestinations();
 
+		if (locations != null && !locations.isEmpty()) {
 			items = new ArrayList<PCItem>();
 
-			mDisplayedLocations = new HashMap<String, List<Connection>>();
-
-			for (Location loc : locations) {
-				Log.d("TRANSPORT", "Added section " + loc.getName());
-
-				mDisplayedLocations.put(loc.getName(),
-						new ArrayList<Connection>());
-				mController.nextDeparturesFromEPFL(loc.getName());
+			for (String loc : locations.keySet()) {
+				Log.d("TRANSPORT", "Request for " + loc);
+				mController.nextDeparturesFromEPFL(loc);
 			}
 
 			mListView = new ListView(this);
 			mLayout.removeSecondLayoutFillerView();
 			mLayout.addSecondLayoutFillerView(mListView);
 
-			setItemsToDisplay();
+			setItemsToDisplay(locations);
 		}
 
 	}
@@ -296,35 +266,16 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	public void connectionUpdated(QueryConnectionsResult result) {
 		Log.d("TRANSPORT", "Connection Updated (view)");
+		HashMap<String, List<Connection>> mDisplayedLocations = mModel.getPreferredDestinations();
+		
+		items = new ArrayList<PCItem>();
+		
+		mListView = new ListView(this);
+		mLayout.removeSecondLayoutFillerView();
+		mLayout.addSecondLayoutFillerView(mListView);
 
-		if (result != null) {
-			List<Connection> connections = result.getConnections();
+		setItemsToDisplay(mDisplayedLocations);
 
-			if (connections != null && !connections.isEmpty()) {
-
-				int i = 0;
-				for (Connection c : connections) {
-					if (c != null) {
-						if (i < 3) {
-							i++;
-							List<Connection> list = mDisplayedLocations.get(c
-									.getTo().getName());
-
-							if (list == null) {
-								Log.d("TRANSPORT",
-										"Added new destination because auto completion wasn't corresponding");
-								mDisplayedLocations.put(c.getTo().getName(),
-										new ArrayList<Connection>());
-							}
-							mDisplayedLocations.get(c.getTo().getName()).add(c);
-							Log.d("TRANSPORT", "Added item " + timeString(c.getDepartureTime()));
-						}
-					}
-				}
-				setItemsToDisplay();
-			}
-
-		}
 	}
 
 	/**
@@ -368,7 +319,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/**
 	 * 
 	 */
-	private void setItemsToDisplay() {
+	private void setItemsToDisplay(HashMap<String, List<Connection>> mDisplayedLocations) {
 		Set<String> set = mDisplayedLocations.keySet();
 		items = new ArrayList<PCItem>();
 
@@ -381,7 +332,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 				for (Connection c : mDisplayedLocations.get(l)) {
 					if (i < 3) {
 						i++;
-
+						
+						mDestPrefsEditor.putInt(c.getTo().getName(), c.getTo().getId());
+						mDestPrefsEditor.commit();
+						
 						String logo = "";
 						for (Part p : c.parts) {
 							if (!p.foot) {
@@ -412,10 +366,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				String txt = ((PCEntryItem) ((ListView) arg0)
 						.getItemAtPosition(arg2)).id;
-				Toast.makeText(TransportMainView.this, txt, Toast.LENGTH_SHORT)
-						.show();
 
-				Set<String> s = mDisplayedLocations.keySet();
+				Set<String> s = mModel.getPreferredDestinations().keySet();
 				String[] dests = new String[s.size()];
 				dests = s.toArray(dests);
 
@@ -448,19 +400,19 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	private String timeString(long milliseconds) {
 		String s = getResources().getString(R.string.transport_in);
-		
+
 		Date now = new Date();
 		Date then = new Date();
 		then.setTime(milliseconds);
-		
+
 		long diff = then.getTime()-now.getTime();
 		Date timeTillDeparture = new Date();
 		timeTillDeparture.setTime(diff);
-		
+
 		diff = diff/1000; //seconds
 		int minutes = (int)diff/60; //minutes
 		int hours = (int)diff/3660; //hours
-		
+
 		if(hours > 0) {
 			if(hours == 1) {
 				s = s.concat(" " + hours + " "+ getResources().getString(R.string.transport_hour )+",");
@@ -468,11 +420,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 				s = s.concat(" " + hours + " "+ getResources().getString(R.string.transport_hours )+",");
 			}
 		}
-		
+
 		while(minutes > 60) {
 			minutes = minutes - 60;
 		}
-		
+
 		if(minutes > 0) {
 			if(minutes == 1) {
 				s = s.concat(" " + minutes + " " + getResources().getString(R.string.transport_minute));
@@ -481,9 +433,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 			}
 		}
 		
+		if(hours == 0 && minutes == 0) {
+			s = getResources().getString(R.string.transport_departure_now);
+		}
+
 		return s;
 	}
-	
+
 	/**
 	 * 
 	 * @param c

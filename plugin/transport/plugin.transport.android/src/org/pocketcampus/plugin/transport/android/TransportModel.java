@@ -1,12 +1,14 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
+import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 
@@ -25,10 +27,10 @@ import android.util.Log;
 public class TransportModel extends PluginModel implements ITransportModel {
 	/** The views listening to updates in this model */
 	private ITransportView mListeners = (ITransportView) getListeners();
-	/** The list of preferred locations set by the user */
-	private List<Location> mPreferredDestinations;
 	/** The list of locations autocompleted when the user is typing */
 	private List<Location> mAutoCompletedDestinations;
+	/** Displayed locations */
+	private HashMap<String, List<Connection>> mPreferredDestinations;
 
 	/**
 	 * The constructor
@@ -36,7 +38,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * Initializes object instances
 	 */
 	public TransportModel() {
-		mPreferredDestinations = new ArrayList<Location>();
+		mPreferredDestinations = new HashMap<String, List<Connection>>();
 		mAutoCompletedDestinations = new ArrayList<Location>();
 	}
 
@@ -52,7 +54,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * @return mPreferredDestinations The list of preferred destinations
 	 */
 	@Override
-	public List<Location> getPreferredDestinations() {
+	public HashMap<String, List<Connection>> getPreferredDestinations() {
 		return mPreferredDestinations;
 	}
 
@@ -71,23 +73,6 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	}
 
 	/**
-	 * Add a location to the current preferred destinations (called by the
-	 * TransportTimeView)
-	 * 
-	 * @param location
-	 *            The new destination to add in the preferred destinations
-	 */
-	@Override
-	public void setNewPreferredDestination(Location location) {
-		if (!mPreferredDestinations.contains(location)) {
-			Log.d("TRANSPORT", "New preferred Location set (model)");
-			mPreferredDestinations.add(location);
-		}
-		/** update the views */
-		mListeners.destinationsUpdated();
-	}
-
-	/**
 	 * Called by the request to notify that the connection has been found.
 	 * Notifies the view(s) with the result
 	 * 
@@ -97,6 +82,31 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	public void setConnections(QueryConnectionsResult result) {
 		/** update the views */
 		Log.d("TRANSPORT", "Connection set (model)");
+		
+		if (result != null) {
+			List<Connection> connections = result.getConnections();
+
+			if (connections != null && !connections.isEmpty()) {
+
+				int i = 0;
+				for (Connection c : connections) {
+					if (c != null) {
+						if (i < 3) {
+							i++;
+
+							/**Update dsipalyed locations*/
+							if(mPreferredDestinations.get(c.getTo().getName()) == null){							
+								mPreferredDestinations.put(c.getTo().getName(),
+										new ArrayList<Connection>());
+							}
+							mPreferredDestinations.get(c.getTo().getName()).add(c);
+							Log.d("TRANSPORT", "Added item " + (c.getDepartureTime()));
+						}
+					}
+				}
+			}
+
+		}
 		mListeners.connectionUpdated(result);
 	}
 
@@ -121,8 +131,8 @@ public class TransportModel extends PluginModel implements ITransportModel {
 			Log.d("TRANSPORT", "Locations from Names set (model)");
 			
 			for(Location location : result) {
-				if(!mPreferredDestinations.contains(location)) {					
-					mPreferredDestinations.add(location);
+				if(mPreferredDestinations.get(location.getName()) == null) {					
+					mPreferredDestinations.put(location.getName(), new ArrayList<Connection>());
 				}
 			}
 			mListeners.locationsFromNamesUpdated(result);

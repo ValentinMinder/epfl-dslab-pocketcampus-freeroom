@@ -27,6 +27,8 @@
         </activity>
 	
         <activity android:name=".plugin.transport.android.TransportTimeView" >
+        </activity>  
+        <activity android:name=".plugin.transport.android.TransportEditView" >
         </activity>    
            
         <service

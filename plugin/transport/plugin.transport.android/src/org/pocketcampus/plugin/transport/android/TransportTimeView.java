@@ -125,9 +125,10 @@ public class TransportTimeView extends PluginView implements ITransportView {
 				Location location = (Location) adapter.getItemAtPosition(pos);
 				Log.d("TRANSPORT", "Clicked on " + location.getName()
 						+ " with ID : " + location.getId());
-				mDestPrefsEditor.putInt(location.getName(), location.getId());
-				mDestPrefsEditor.commit();
-				mModel.setNewPreferredDestination(location);
+//				mDestPrefsEditor.putInt(location.getName(), location.getId());
+//				mDestPrefsEditor.commit();
+//				mModel.setNewPreferredDestination(location);
+				mController.nextDeparturesFromEPFL(location.getName());
 				/** Go back to the main View and refreshed */
 				finish();
 			}

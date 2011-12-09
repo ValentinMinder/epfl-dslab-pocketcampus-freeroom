@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.transport.android.iface;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.pocketcampus.plugin.transport.shared.Connection;
 import org.pocketcampus.plugin.transport.shared.Location;
 import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 
@@ -18,7 +20,7 @@ public interface ITransportModel {
 	/**
 	 * @return mPreferredDestinations The list of preferred destinations
 	 */
-	public List<Location> getPreferredDestinations();
+	public HashMap<String, List<Connection>> getPreferredDestinations();
 
 	/**
 	 * Set all the preferred destinations
@@ -27,14 +29,6 @@ public interface ITransportModel {
 	 *            The new list of preferred destinations
 	 */
 	public void setAutoCompletedDestinations(List<Location> destinations);
-
-	/**
-	 * Add a location to the current preferred destinations
-	 * 
-	 * @param location
-	 *            The new destination to add in the preferred destinations
-	 */
-	public void setNewPreferredDestination(Location location);
 
 	/**
 	 * Called when the connection is returned by the server. Notifies the view

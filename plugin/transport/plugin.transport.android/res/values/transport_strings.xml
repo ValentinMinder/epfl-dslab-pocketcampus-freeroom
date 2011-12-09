@@ -4,11 +4,13 @@
     <!-- General -->
     <string name="transport_plugin_name">Transport</string>
     <string name="transport_set_destinations_message">Type destination</string>
+    <string name="transport_edit_destinations">Edit your destinations</string>
     <string name="transport_add_destination">Add a destination</string>
     <string name="transport_main_no_destinations">Go to the destinations view to choose your preferred destinations</string>
+    <string name="transport_departure_now">Right now!</string>
     <string name="transport_departure_at">Departure at</string>
     <string name="transport_departure_in">Departure in</string>
-    <string name="transport_in">in</string>
+    <string name="transport_in">In</string>
     <string name="transport_arrival_at">Arrival at</string>
     <string name="transport_arrival_in">Arrival in</string>
     <string name="transport_hour">hour</string>
