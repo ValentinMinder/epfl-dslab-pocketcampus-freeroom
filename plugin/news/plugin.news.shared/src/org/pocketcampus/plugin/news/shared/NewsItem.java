@@ -27,8 +27,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("title", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField FEED_FIELD_DESC = new org.apache.thrift.protocol.TField("feed", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField FEED_FIELD_DESC = new org.apache.thrift.protocol.TField("feed", org.apache.thrift.protocol.TType.STRING, (short)5);
   private static final org.apache.thrift.protocol.TField PUB_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("pubDate", org.apache.thrift.protocol.TType.STRING, (short)6);
   private static final org.apache.thrift.protocol.TField PUB_DATE_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("pubDateDate", org.apache.thrift.protocol.TType.I64, (short)7);
   private static final org.apache.thrift.protocol.TField IMAGE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("imageUrl", org.apache.thrift.protocol.TType.STRING, (short)8);
@@ -36,8 +36,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public long id; // required
   public String title; // required
   public String description; // required
-  public String feed; // required
   public String link; // required
+  public String feed; // required
   public String pubDate; // required
   public long pubDateDate; // required
   public String imageUrl; // required
@@ -47,8 +47,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     ID((short)1, "id"),
     TITLE((short)2, "title"),
     DESCRIPTION((short)3, "description"),
-    FEED((short)4, "feed"),
-    LINK((short)5, "link"),
+    LINK((short)4, "link"),
+    FEED((short)5, "feed"),
     PUB_DATE((short)6, "pubDate"),
     PUB_DATE_DATE((short)7, "pubDateDate"),
     IMAGE_URL((short)8, "imageUrl");
@@ -72,10 +72,10 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
           return TITLE;
         case 3: // DESCRIPTION
           return DESCRIPTION;
-        case 4: // FEED
-          return FEED;
-        case 5: // LINK
+        case 4: // LINK
           return LINK;
+        case 5: // FEED
+          return FEED;
         case 6: // PUB_DATE
           return PUB_DATE;
         case 7: // PUB_DATE_DATE
@@ -135,9 +135,9 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.FEED, new org.apache.thrift.meta_data.FieldMetaData("feed", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LINK, new org.apache.thrift.meta_data.FieldMetaData("link", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.FEED, new org.apache.thrift.meta_data.FieldMetaData("feed", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PUB_DATE, new org.apache.thrift.meta_data.FieldMetaData("pubDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -156,8 +156,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     long id,
     String title,
     String description,
-    String feed,
     String link,
+    String feed,
     String pubDate,
     long pubDateDate)
   {
@@ -166,8 +166,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     setIdIsSet(true);
     this.title = title;
     this.description = description;
-    this.feed = feed;
     this.link = link;
+    this.feed = feed;
     this.pubDate = pubDate;
     this.pubDateDate = pubDateDate;
     setPubDateDateIsSet(true);
@@ -186,11 +186,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     if (other.isSetDescription()) {
       this.description = other.description;
     }
-    if (other.isSetFeed()) {
-      this.feed = other.feed;
-    }
     if (other.isSetLink()) {
       this.link = other.link;
+    }
+    if (other.isSetFeed()) {
+      this.feed = other.feed;
     }
     if (other.isSetPubDate()) {
       this.pubDate = other.pubDate;
@@ -211,8 +211,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     this.id = 0;
     this.title = null;
     this.description = null;
-    this.feed = null;
     this.link = null;
+    this.feed = null;
     this.pubDate = null;
     setPubDateDateIsSet(false);
     this.pubDateDate = 0;
@@ -290,30 +290,6 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
   }
 
-  public String getFeed() {
-    return this.feed;
-  }
-
-  public NewsItem setFeed(String feed) {
-    this.feed = feed;
-    return this;
-  }
-
-  public void unsetFeed() {
-    this.feed = null;
-  }
-
-  /** Returns true if field feed is set (has been assigned a value) and false otherwise */
-  public boolean isSetFeed() {
-    return this.feed != null;
-  }
-
-  public void setFeedIsSet(boolean value) {
-    if (!value) {
-      this.feed = null;
-    }
-  }
-
   public String getLink() {
     return this.link;
   }
@@ -335,6 +311,30 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public void setLinkIsSet(boolean value) {
     if (!value) {
       this.link = null;
+    }
+  }
+
+  public String getFeed() {
+    return this.feed;
+  }
+
+  public NewsItem setFeed(String feed) {
+    this.feed = feed;
+    return this;
+  }
+
+  public void unsetFeed() {
+    this.feed = null;
+  }
+
+  /** Returns true if field feed is set (has been assigned a value) and false otherwise */
+  public boolean isSetFeed() {
+    return this.feed != null;
+  }
+
+  public void setFeedIsSet(boolean value) {
+    if (!value) {
+      this.feed = null;
     }
   }
 
@@ -435,19 +435,19 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
       }
       break;
 
-    case FEED:
-      if (value == null) {
-        unsetFeed();
-      } else {
-        setFeed((String)value);
-      }
-      break;
-
     case LINK:
       if (value == null) {
         unsetLink();
       } else {
         setLink((String)value);
+      }
+      break;
+
+    case FEED:
+      if (value == null) {
+        unsetFeed();
+      } else {
+        setFeed((String)value);
       }
       break;
 
@@ -489,11 +489,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     case DESCRIPTION:
       return getDescription();
 
-    case FEED:
-      return getFeed();
-
     case LINK:
       return getLink();
+
+    case FEED:
+      return getFeed();
 
     case PUB_DATE:
       return getPubDate();
@@ -521,10 +521,10 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
       return isSetTitle();
     case DESCRIPTION:
       return isSetDescription();
-    case FEED:
-      return isSetFeed();
     case LINK:
       return isSetLink();
+    case FEED:
+      return isSetFeed();
     case PUB_DATE:
       return isSetPubDate();
     case PUB_DATE_DATE:
@@ -575,21 +575,21 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         return false;
     }
 
-    boolean this_present_feed = true && this.isSetFeed();
-    boolean that_present_feed = true && that.isSetFeed();
-    if (this_present_feed || that_present_feed) {
-      if (!(this_present_feed && that_present_feed))
-        return false;
-      if (!this.feed.equals(that.feed))
-        return false;
-    }
-
     boolean this_present_link = true && this.isSetLink();
     boolean that_present_link = true && that.isSetLink();
     if (this_present_link || that_present_link) {
       if (!(this_present_link && that_present_link))
         return false;
       if (!this.link.equals(that.link))
+        return false;
+    }
+
+    boolean this_present_feed = true && this.isSetFeed();
+    boolean that_present_feed = true && that.isSetFeed();
+    if (this_present_feed || that_present_feed) {
+      if (!(this_present_feed && that_present_feed))
+        return false;
+      if (!this.feed.equals(that.feed))
         return false;
     }
 
@@ -642,15 +642,15 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     if (present_description)
       builder.append(description);
 
-    boolean present_feed = true && (isSetFeed());
-    builder.append(present_feed);
-    if (present_feed)
-      builder.append(feed);
-
     boolean present_link = true && (isSetLink());
     builder.append(present_link);
     if (present_link)
       builder.append(link);
+
+    boolean present_feed = true && (isSetFeed());
+    builder.append(present_feed);
+    if (present_feed)
+      builder.append(feed);
 
     boolean present_pubDate = true && (isSetPubDate());
     builder.append(present_pubDate);
@@ -708,22 +708,22 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetFeed()).compareTo(typedOther.isSetFeed());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFeed()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feed, typedOther.feed);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetLink()).compareTo(typedOther.isSetLink());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetLink()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.link, typedOther.link);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetFeed()).compareTo(typedOther.isSetFeed());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFeed()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feed, typedOther.feed);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -797,16 +797,16 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // FEED
+        case 4: // LINK
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.feed = iprot.readString();
+            this.link = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // LINK
+        case 5: // FEED
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.link = iprot.readString();
+            this.feed = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -867,14 +867,14 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
       oprot.writeString(this.description);
       oprot.writeFieldEnd();
     }
-    if (this.feed != null) {
-      oprot.writeFieldBegin(FEED_FIELD_DESC);
-      oprot.writeString(this.feed);
-      oprot.writeFieldEnd();
-    }
     if (this.link != null) {
       oprot.writeFieldBegin(LINK_FIELD_DESC);
       oprot.writeString(this.link);
+      oprot.writeFieldEnd();
+    }
+    if (this.feed != null) {
+      oprot.writeFieldBegin(FEED_FIELD_DESC);
+      oprot.writeString(this.feed);
       oprot.writeFieldEnd();
     }
     if (this.pubDate != null) {
@@ -921,19 +921,19 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("feed:");
-    if (this.feed == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.feed);
-    }
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("link:");
     if (this.link == null) {
       sb.append("null");
     } else {
       sb.append(this.link);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("feed:");
+    if (this.feed == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.feed);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -971,11 +971,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     if (description == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'description' was not present! Struct: " + toString());
     }
-    if (feed == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'feed' was not present! Struct: " + toString());
-    }
     if (link == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'link' was not present! Struct: " + toString());
+    }
+    if (feed == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'feed' was not present! Struct: " + toString());
     }
     if (pubDate == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'pubDate' was not present! Struct: " + toString());

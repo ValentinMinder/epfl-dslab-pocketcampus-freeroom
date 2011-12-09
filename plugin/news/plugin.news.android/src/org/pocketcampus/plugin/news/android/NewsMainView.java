@@ -162,8 +162,9 @@ public class NewsMainView extends PluginView implements INewsView {
 
 	@Override
 	public void networkErrorHappened() {
-		// TODO Auto-generated method stub
-
+		mLayout.removeFillerView();
+		mLayout.hideTitle();
+		mLayout.setText(getString(R.string.news_no_news));
 	}
 
 	/* Sets the clickLIstener of the listView */

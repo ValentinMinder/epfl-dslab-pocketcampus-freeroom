@@ -25,17 +25,17 @@ public class NewsService {
 
   public interface Iface {
 
-    public List<NewsItem> getNewsItems() throws org.apache.thrift.TException;
+    public List<NewsItem> getNewsItems(String language) throws org.apache.thrift.TException;
 
-    public List<Feed> getFeeds() throws org.apache.thrift.TException;
+    public List<Feed> getFeeds(String language) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getNewsItems(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
+    public void getNewsItems(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getFeeds(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeeds_call> resultHandler) throws org.apache.thrift.TException;
+    public void getFeeds(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeeds_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -59,15 +59,16 @@ public class NewsService {
       super(iprot, oprot);
     }
 
-    public List<NewsItem> getNewsItems() throws org.apache.thrift.TException
+    public List<NewsItem> getNewsItems(String language) throws org.apache.thrift.TException
     {
-      send_getNewsItems();
+      send_getNewsItems(language);
       return recv_getNewsItems();
     }
 
-    public void send_getNewsItems() throws org.apache.thrift.TException
+    public void send_getNewsItems(String language) throws org.apache.thrift.TException
     {
       getNewsItems_args args = new getNewsItems_args();
+      args.setLanguage(language);
       sendBase("getNewsItems", args);
     }
 
@@ -81,15 +82,16 @@ public class NewsService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNewsItems failed: unknown result");
     }
 
-    public List<Feed> getFeeds() throws org.apache.thrift.TException
+    public List<Feed> getFeeds(String language) throws org.apache.thrift.TException
     {
-      send_getFeeds();
+      send_getFeeds(language);
       return recv_getFeeds();
     }
 
-    public void send_getFeeds() throws org.apache.thrift.TException
+    public void send_getFeeds(String language) throws org.apache.thrift.TException
     {
       getFeeds_args args = new getFeeds_args();
+      args.setLanguage(language);
       sendBase("getFeeds", args);
     }
 
@@ -121,21 +123,24 @@ public class NewsService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getNewsItems(org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler) throws org.apache.thrift.TException {
+    public void getNewsItems(String language, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getNewsItems_call method_call = new getNewsItems_call(resultHandler, this, ___protocolFactory, ___transport);
+      getNewsItems_call method_call = new getNewsItems_call(language, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getNewsItems_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getNewsItems_call(org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String language;
+      public getNewsItems_call(String language, org.apache.thrift.async.AsyncMethodCallback<getNewsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.language = language;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNewsItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getNewsItems_args args = new getNewsItems_args();
+        args.setLanguage(language);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -150,21 +155,24 @@ public class NewsService {
       }
     }
 
-    public void getFeeds(org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler) throws org.apache.thrift.TException {
+    public void getFeeds(String language, org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getFeeds_call method_call = new getFeeds_call(resultHandler, this, ___protocolFactory, ___transport);
+      getFeeds_call method_call = new getFeeds_call(language, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getFeeds_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getFeeds_call(org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String language;
+      public getFeeds_call(String language, org.apache.thrift.async.AsyncMethodCallback<getFeeds_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.language = language;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getFeeds", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getFeeds_args args = new getFeeds_args();
+        args.setLanguage(language);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -208,7 +216,7 @@ public class NewsService {
 
       protected getNewsItems_result getResult(I iface, getNewsItems_args args) throws org.apache.thrift.TException {
         getNewsItems_result result = new getNewsItems_result();
-        result.success = iface.getNewsItems();
+        result.success = iface.getNewsItems(args.language);
         return result;
       }
     }
@@ -224,7 +232,7 @@ public class NewsService {
 
       protected getFeeds_result getResult(I iface, getFeeds_args args) throws org.apache.thrift.TException {
         getFeeds_result result = new getFeeds_result();
-        result.success = iface.getFeeds();
+        result.success = iface.getFeeds(args.language);
         return result;
       }
     }
@@ -234,11 +242,13 @@ public class NewsService {
   public static class getNewsItems_args implements org.apache.thrift.TBase<getNewsItems_args, getNewsItems_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItems_args");
 
+    private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
 
+    public String language; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      LANGUAGE((short)1, "language");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -253,6 +263,8 @@ public class NewsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // LANGUAGE
+            return LANGUAGE;
           default:
             return null;
         }
@@ -291,9 +303,14 @@ public class NewsService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItems_args.class, metaDataMap);
     }
@@ -301,10 +318,20 @@ public class NewsService {
     public getNewsItems_args() {
     }
 
+    public getNewsItems_args(
+      String language)
+    {
+      this();
+      this.language = language;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getNewsItems_args(getNewsItems_args other) {
+      if (other.isSetLanguage()) {
+        this.language = other.language;
+      }
     }
 
     public getNewsItems_args deepCopy() {
@@ -313,15 +340,51 @@ public class NewsService {
 
     @Override
     public void clear() {
+      this.language = null;
+    }
+
+    public String getLanguage() {
+      return this.language;
+    }
+
+    public getNewsItems_args setLanguage(String language) {
+      this.language = language;
+      return this;
+    }
+
+    public void unsetLanguage() {
+      this.language = null;
+    }
+
+    /** Returns true if field language is set (has been assigned a value) and false otherwise */
+    public boolean isSetLanguage() {
+      return this.language != null;
+    }
+
+    public void setLanguageIsSet(boolean value) {
+      if (!value) {
+        this.language = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case LANGUAGE:
+        if (value == null) {
+          unsetLanguage();
+        } else {
+          setLanguage((String)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case LANGUAGE:
+        return getLanguage();
+
       }
       throw new IllegalStateException();
     }
@@ -333,6 +396,8 @@ public class NewsService {
       }
 
       switch (field) {
+      case LANGUAGE:
+        return isSetLanguage();
       }
       throw new IllegalStateException();
     }
@@ -350,12 +415,26 @@ public class NewsService {
       if (that == null)
         return false;
 
+      boolean this_present_language = true && this.isSetLanguage();
+      boolean that_present_language = true && that.isSetLanguage();
+      if (this_present_language || that_present_language) {
+        if (!(this_present_language && that_present_language))
+          return false;
+        if (!this.language.equals(that.language))
+          return false;
+      }
+
       return true;
     }
 
     @Override
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_language = true && (isSetLanguage());
+      builder.append(present_language);
+      if (present_language)
+        builder.append(language);
 
       return builder.toHashCode();
     }
@@ -368,6 +447,16 @@ public class NewsService {
       int lastComparison = 0;
       getNewsItems_args typedOther = (getNewsItems_args)other;
 
+      lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetLanguage()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -385,6 +474,13 @@ public class NewsService {
           break;
         }
         switch (field.id) {
+          case 1: // LANGUAGE
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.language = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -400,6 +496,11 @@ public class NewsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.language != null) {
+        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
+        oprot.writeString(this.language);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -409,6 +510,13 @@ public class NewsService {
       StringBuilder sb = new StringBuilder("getNewsItems_args(");
       boolean first = true;
 
+      sb.append("language:");
+      if (this.language == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.language);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -779,11 +887,13 @@ public class NewsService {
   public static class getFeeds_args implements org.apache.thrift.TBase<getFeeds_args, getFeeds_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getFeeds_args");
 
+    private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
 
+    public String language; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      LANGUAGE((short)1, "language");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -798,6 +908,8 @@ public class NewsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // LANGUAGE
+            return LANGUAGE;
           default:
             return null;
         }
@@ -836,9 +948,14 @@ public class NewsService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getFeeds_args.class, metaDataMap);
     }
@@ -846,10 +963,20 @@ public class NewsService {
     public getFeeds_args() {
     }
 
+    public getFeeds_args(
+      String language)
+    {
+      this();
+      this.language = language;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getFeeds_args(getFeeds_args other) {
+      if (other.isSetLanguage()) {
+        this.language = other.language;
+      }
     }
 
     public getFeeds_args deepCopy() {
@@ -858,15 +985,51 @@ public class NewsService {
 
     @Override
     public void clear() {
+      this.language = null;
+    }
+
+    public String getLanguage() {
+      return this.language;
+    }
+
+    public getFeeds_args setLanguage(String language) {
+      this.language = language;
+      return this;
+    }
+
+    public void unsetLanguage() {
+      this.language = null;
+    }
+
+    /** Returns true if field language is set (has been assigned a value) and false otherwise */
+    public boolean isSetLanguage() {
+      return this.language != null;
+    }
+
+    public void setLanguageIsSet(boolean value) {
+      if (!value) {
+        this.language = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case LANGUAGE:
+        if (value == null) {
+          unsetLanguage();
+        } else {
+          setLanguage((String)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case LANGUAGE:
+        return getLanguage();
+
       }
       throw new IllegalStateException();
     }
@@ -878,6 +1041,8 @@ public class NewsService {
       }
 
       switch (field) {
+      case LANGUAGE:
+        return isSetLanguage();
       }
       throw new IllegalStateException();
     }
@@ -895,12 +1060,26 @@ public class NewsService {
       if (that == null)
         return false;
 
+      boolean this_present_language = true && this.isSetLanguage();
+      boolean that_present_language = true && that.isSetLanguage();
+      if (this_present_language || that_present_language) {
+        if (!(this_present_language && that_present_language))
+          return false;
+        if (!this.language.equals(that.language))
+          return false;
+      }
+
       return true;
     }
 
     @Override
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_language = true && (isSetLanguage());
+      builder.append(present_language);
+      if (present_language)
+        builder.append(language);
 
       return builder.toHashCode();
     }
@@ -913,6 +1092,16 @@ public class NewsService {
       int lastComparison = 0;
       getFeeds_args typedOther = (getFeeds_args)other;
 
+      lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetLanguage()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -930,6 +1119,13 @@ public class NewsService {
           break;
         }
         switch (field.id) {
+          case 1: // LANGUAGE
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.language = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -945,6 +1141,11 @@ public class NewsService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (this.language != null) {
+        oprot.writeFieldBegin(LANGUAGE_FIELD_DESC);
+        oprot.writeString(this.language);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -954,6 +1155,13 @@ public class NewsService {
       StringBuilder sb = new StringBuilder("getFeeds_args(");
       boolean first = true;
 
+      sb.append("language:");
+      if (this.language == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.language);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }

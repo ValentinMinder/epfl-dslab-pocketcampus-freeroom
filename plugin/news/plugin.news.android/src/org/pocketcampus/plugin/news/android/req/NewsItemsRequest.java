@@ -7,6 +7,7 @@ import org.pocketcampus.plugin.news.android.NewsController;
 import org.pocketcampus.plugin.news.android.NewsModel;
 import org.pocketcampus.plugin.news.shared.NewsItem;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
+import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 
 /**
  * 
@@ -16,7 +17,7 @@ import org.pocketcampus.plugin.news.shared.NewsService.Iface;
  * 
  */
 public class NewsItemsRequest extends
-		Request<NewsController, Iface, Object, List<NewsItem>> {
+		Request<NewsController, Iface, getNewsItems_args, List<NewsItem>> {
 	/**
 	 * Initiate the <code>getNewsItem</code> Request at the server
 	 * 
@@ -27,11 +28,10 @@ public class NewsItemsRequest extends
 	 * @return the News Items
 	 */
 	@Override
-	protected List<NewsItem> runInBackground(Iface client, Object param)
+	protected List<NewsItem> runInBackground(Iface client, getNewsItems_args param)
 			throws Exception {
 		System.out.println("<News> Requesting news items");
-
-		return client.getNewsItems();
+		return client.getNewsItems(param.getLanguage());
 	}
 
 	/**

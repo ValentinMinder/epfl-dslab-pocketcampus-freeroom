@@ -18,21 +18,47 @@ import android.widget.TextView;
  * 
  */
 public class FeedInformationLayout extends RelativeLayout {
+	/** The layout containing the page */
 	private RelativeLayout mLayout;
+	/** The title of the layout */
 	private TextView mTitle;
+	/** The image displayed in the layout */
 	private ImageView mImage;
-	private TextView mDescription;
+	/** The corresponding description */
+	private TextView mTextContent;
+	/** The feed it's from */
+	private TextView mFeedTitle;
 
+	/**
+	 * 
+	 * Constructor
+	 * 
+	 * @param context
+	 *            the context of the calling activity
+	 * @param attrs
+	 */
 	public FeedInformationLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initialize(context);
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            the context of the calling activity
+	 */
 	public FeedInformationLayout(Context context) {
 		super(context);
 		initialize(context);
 	}
 
+	/**
+	 * Initializes the layout and the contained elements
+	 * 
+	 * @param context
+	 *            the context of the calling activity
+	 */
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mLayout = (RelativeLayout) inflater.inflate(
@@ -40,8 +66,9 @@ public class FeedInformationLayout extends RelativeLayout {
 		super.addView(mLayout);
 
 		mTitle = (TextView) findViewById(R.id.sdk_list_entry_feed_view_title);
+		mFeedTitle = (TextView) findViewById(R.id.sdk_list_entry_feed_view_feed);
 		mImage = (ImageView) findViewById(R.id.sdk_list_entry_feed_view_image);
-		mDescription = (TextView) findViewById(R.id.sdk_list_entry_feed_view_description);
+		mTextContent = (TextView) findViewById(R.id.sdk_list_entry_feed_view_description);
 	}
 
 	/**
@@ -55,9 +82,10 @@ public class FeedInformationLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Displays a title message.
+	 * Displays an image.
 	 * 
-	 * @param text
+	 * @param b
+	 *            the image to be displayed
 	 */
 	public void setImage(Bitmap b) {
 		mImage.setImageBitmap(b);
@@ -65,15 +93,30 @@ public class FeedInformationLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Displays a title message.
+	 * Displays a content message.
 	 * 
 	 * @param text
+	 *            the content to be displayed
 	 */
 	public void setDescription(String text) {
-		mDescription.setText(text);
-		mDescription.setVisibility(View.VISIBLE);
+		mTextContent.setText(text);
+		mTextContent.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * Displays a feed title.
+	 * 
+	 * @param text
+	 *            the content to be displayed
+	 */
+	public void setFeedTitle(String text) {
+		mFeedTitle.setText(text);
+		mFeedTitle.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * Adds a child view to the layout
+	 */
 	@Override
 	public void addView(View child) {
 		mLayout.addView(child);

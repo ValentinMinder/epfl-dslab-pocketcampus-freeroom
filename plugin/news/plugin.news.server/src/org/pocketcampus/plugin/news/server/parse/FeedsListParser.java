@@ -24,7 +24,7 @@ public class FeedsListParser {
 	private String feedString;
 
 	/**
-	 * Constructor for the RestaurantListParser
+	 * Constructor for the NewsListParser
 	 * 
 	 * @param file
 	 * @throws IllegalArgumentException

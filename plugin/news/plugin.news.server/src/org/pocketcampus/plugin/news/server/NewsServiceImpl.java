@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.news.server.parse.FeedsListParser;
+import org.pocketcampus.plugin.news.server.parse.FeedsLists;
 import org.pocketcampus.plugin.news.server.parse.RssParser;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
@@ -56,6 +57,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 	public NewsServiceImpl() {
 		System.out.println("Starting News plugin server...");
 
+		List<String> languages = new ArrayList<String>();
+		languages.add("fr");
+		languages.add("en");
+		
+		
 		mFeedsList = new ArrayList<Feed>();
 		mFeedsListFr = new ArrayList<Feed>();
 		mNewsItemsList = new ArrayList<NewsItem>();
@@ -63,12 +69,6 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 		getFeedsUrls();
 		importFeeds();
-		try {
-			getNewsItems();
-		} catch (TException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 				List<NewsItem> feedItems = feed.getItems();
 				for (int i = 0; i < 5 && i < feedItems.size(); i++) {
 					mNewsItemsList.add(feedItems.get(i));
-					
+
 				}
 				mFeedsList.add(feed);
 			}
@@ -140,7 +140,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * them.
 	 */
 	@Override
-	public List<NewsItem> getNewsItems() throws TException {
+	public List<NewsItem> getNewsItems(String language) throws TException {
+		FeedsLists.getFeedsLists();
 		importFeeds();
 		System.out.println(mNewsItemsList.size());
 		return mNewsItemsList;
@@ -166,7 +167,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * Update the Feeds from the corresponding list of feeds and return them.
 	 */
 	@Override
-	public List<Feed> getFeeds() throws TException {
+	public List<Feed> getFeeds(String language) throws TException {
 		importFeeds();
 		return mFeedsList;
 	}

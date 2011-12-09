@@ -66,16 +66,11 @@ public class NewsItemView extends PluginView {
 			mLayout.setDescription(mDescription);
 		}
 		if (mFeed != null) {
-			Toast.makeText(this, mFeed, Toast.LENGTH_SHORT).show();
-			mLayout.setDescription(mDescription);
+			mLayout.setFeedTitle(mFeed);
 		}
 		if (mBitmap != null) {
 			mLayout.setImage(mBitmap);
 		}
-		// } else {
-		// mLayout.setTitle("I\'m not done yet!");
-		// mLayout.setDescription("So why did you click on a news?");
-		// }
 	}
 
 	/**

@@ -1,49 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sdk_list_entry_feed_view"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+	android:id="@+id/sdk_list_entry_feed_view" android:layout_width="fill_parent"
+	android:layout_height="?android:attr/listPreferredItemHeight"
+	android:padding="6dip">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+		<RelativeLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/sdk_list_entry_feed_view_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="6dip" />
+			<!-- Feed it comes from -->
+			<TextView
+				android:id="@+id/sdk_list_entry_feed_view_feed"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentTop="true"
+				android:layout_alignWithParentIfMissing="true"
+				android:text="Feed"
+				android:textStyle="italic"
+				android:paddingBottom="6dip"/>
+				
+			<!-- Separator image -->
+			<View
+				android:id="@+id/sdk_list_entry_feed_view_separator"
+				android:layout_below="@+id/sdk_list_entry_feed_view_feed"
+				android:layout_width="fill_parent"
+				android:layout_height="1dip"
+				android:background="#000000" />
 
-            <TextView
-                android:id="@+id/sdk_list_entry_feed_view_title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_toRightOf="@id/sdk_list_entry_feed_view_image"
-                android:paddingBottom="6dip"
-                android:gravity="center_vertical"
-                android:text="Title" />
+			<!-- Item title -->
+			<TextView
+				android:id="@+id/sdk_list_entry_feed_view_title"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_alignWithParentIfMissing="true"
+				android:layout_below="@+id/sdk_list_entry_feed_view_separator"
+				android:paddingBottom="6dip"
+				android:paddingTop="6dip"
+				android:gravity="center_vertical"
+				android:text="Title"
+				android:textStyle="bold"
+				android:textSize="15dip" />
 
-            <TextView
-                android:id="@+id/sdk_list_entry_feed_view_description"
-                android:layout_width="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/sdk_list_entry_feed_view_image"
-                android:padding="5dip"
-                android:text="Second line" />
+			<!-- Item image -->
+			<ImageView
+				android:id="@+id/sdk_list_entry_feed_view_image"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/sdk_list_entry_feed_view_title"
+				android:layout_marginRight="6dip" />
 
-            <LinearLayout >
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+			<!-- Item description -->
+			<TextView android:id="@+id/sdk_list_entry_feed_view_description"
+				android:layout_width="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"
+				android:layout_below="@id/sdk_list_entry_feed_view_image"
+				android:padding="5dip" android:text="Second line" />
 
+		</RelativeLayout>
+	</ScrollView>
 </RelativeLayout>
