@@ -5,11 +5,11 @@ include "../include/common.thrift"
 typedef i32 int
 
 struct BikeEmplacement {
-	1: required int empty;
-	2: required int availableQuantity;
-	3: required double geoLat;
-	4: required double geoLng;
-	5: required string designation;
+	1: required int numberOfEmptySpaces;
+	2: required int numberOfAvailableBikes;
+	3: required double latitude;
+	4: required double longitude;
+	5: required string name;
 	
 	
 }
@@ -19,5 +19,5 @@ exception WebParseException {
 }
 
 service BikeService {
-	list<BikeEmplacement> getAvailableBikes() throws (1: WebParseException wpe);
+	list<BikeEmplacement> getBikeStations() throws (1: WebParseException wpe);
 }

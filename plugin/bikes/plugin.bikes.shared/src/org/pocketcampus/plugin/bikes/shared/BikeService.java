@@ -25,13 +25,13 @@ public class BikeService {
 
   public interface Iface {
 
-    public List<BikeEmplacement> getAvailableBikes() throws WebParseException, org.apache.thrift.TException;
+    public List<BikeEmplacement> getBikeStations() throws WebParseException, org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getAvailableBikes(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getAvailableBikes_call> resultHandler) throws org.apache.thrift.TException;
+    public void getBikeStations(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBikeStations_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -55,29 +55,29 @@ public class BikeService {
       super(iprot, oprot);
     }
 
-    public List<BikeEmplacement> getAvailableBikes() throws WebParseException, org.apache.thrift.TException
+    public List<BikeEmplacement> getBikeStations() throws WebParseException, org.apache.thrift.TException
     {
-      send_getAvailableBikes();
-      return recv_getAvailableBikes();
+      send_getBikeStations();
+      return recv_getBikeStations();
     }
 
-    public void send_getAvailableBikes() throws org.apache.thrift.TException
+    public void send_getBikeStations() throws org.apache.thrift.TException
     {
-      getAvailableBikes_args args = new getAvailableBikes_args();
-      sendBase("getAvailableBikes", args);
+      getBikeStations_args args = new getBikeStations_args();
+      sendBase("getBikeStations", args);
     }
 
-    public List<BikeEmplacement> recv_getAvailableBikes() throws WebParseException, org.apache.thrift.TException
+    public List<BikeEmplacement> recv_getBikeStations() throws WebParseException, org.apache.thrift.TException
     {
-      getAvailableBikes_result result = new getAvailableBikes_result();
-      receiveBase(result, "getAvailableBikes");
+      getBikeStations_result result = new getBikeStations_result();
+      receiveBase(result, "getBikeStations");
       if (result.isSetSuccess()) {
         return result.success;
       }
       if (result.wpe != null) {
         throw result.wpe;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getAvailableBikes failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBikeStations failed: unknown result");
     }
 
   }
@@ -98,21 +98,21 @@ public class BikeService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getAvailableBikes(org.apache.thrift.async.AsyncMethodCallback<getAvailableBikes_call> resultHandler) throws org.apache.thrift.TException {
+    public void getBikeStations(org.apache.thrift.async.AsyncMethodCallback<getBikeStations_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getAvailableBikes_call method_call = new getAvailableBikes_call(resultHandler, this, ___protocolFactory, ___transport);
+      getBikeStations_call method_call = new getBikeStations_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getAvailableBikes_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getAvailableBikes_call(org.apache.thrift.async.AsyncMethodCallback<getAvailableBikes_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getBikeStations_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getBikeStations_call(org.apache.thrift.async.AsyncMethodCallback<getBikeStations_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getAvailableBikes", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getAvailableBikes_args args = new getAvailableBikes_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBikeStations", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBikeStations_args args = new getBikeStations_args();
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -123,7 +123,7 @@ public class BikeService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getAvailableBikes();
+        return (new Client(prot)).recv_getBikeStations();
       }
     }
 
@@ -140,23 +140,23 @@ public class BikeService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getAvailableBikes", new getAvailableBikes());
+      processMap.put("getBikeStations", new getBikeStations());
       return processMap;
     }
 
-    private static class getAvailableBikes<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getAvailableBikes_args> {
-      public getAvailableBikes() {
-        super("getAvailableBikes");
+    private static class getBikeStations<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBikeStations_args> {
+      public getBikeStations() {
+        super("getBikeStations");
       }
 
-      protected getAvailableBikes_args getEmptyArgsInstance() {
-        return new getAvailableBikes_args();
+      protected getBikeStations_args getEmptyArgsInstance() {
+        return new getBikeStations_args();
       }
 
-      protected getAvailableBikes_result getResult(I iface, getAvailableBikes_args args) throws org.apache.thrift.TException {
-        getAvailableBikes_result result = new getAvailableBikes_result();
+      protected getBikeStations_result getResult(I iface, getBikeStations_args args) throws org.apache.thrift.TException {
+        getBikeStations_result result = new getBikeStations_result();
         try {
-          result.success = iface.getAvailableBikes();
+          result.success = iface.getBikeStations();
         } catch (WebParseException wpe) {
           result.wpe = wpe;
         }
@@ -166,8 +166,8 @@ public class BikeService {
 
   }
 
-  public static class getAvailableBikes_args implements org.apache.thrift.TBase<getAvailableBikes_args, getAvailableBikes_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAvailableBikes_args");
+  public static class getBikeStations_args implements org.apache.thrift.TBase<getBikeStations_args, getBikeStations_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBikeStations_args");
 
 
 
@@ -230,20 +230,20 @@ public class BikeService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAvailableBikes_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBikeStations_args.class, metaDataMap);
     }
 
-    public getAvailableBikes_args() {
+    public getBikeStations_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getAvailableBikes_args(getAvailableBikes_args other) {
+    public getBikeStations_args(getBikeStations_args other) {
     }
 
-    public getAvailableBikes_args deepCopy() {
-      return new getAvailableBikes_args(this);
+    public getBikeStations_args deepCopy() {
+      return new getBikeStations_args(this);
     }
 
     @Override
@@ -276,12 +276,12 @@ public class BikeService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getAvailableBikes_args)
-        return this.equals((getAvailableBikes_args)that);
+      if (that instanceof getBikeStations_args)
+        return this.equals((getBikeStations_args)that);
       return false;
     }
 
-    public boolean equals(getAvailableBikes_args that) {
+    public boolean equals(getBikeStations_args that) {
       if (that == null)
         return false;
 
@@ -295,13 +295,13 @@ public class BikeService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getAvailableBikes_args other) {
+    public int compareTo(getBikeStations_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getAvailableBikes_args typedOther = (getAvailableBikes_args)other;
+      getBikeStations_args typedOther = (getBikeStations_args)other;
 
       return 0;
     }
@@ -341,7 +341,7 @@ public class BikeService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getAvailableBikes_args(");
+      StringBuilder sb = new StringBuilder("getBikeStations_args(");
       boolean first = true;
 
       sb.append(")");
@@ -370,8 +370,8 @@ public class BikeService {
 
   }
 
-  public static class getAvailableBikes_result implements org.apache.thrift.TBase<getAvailableBikes_result, getAvailableBikes_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAvailableBikes_result");
+  public static class getBikeStations_result implements org.apache.thrift.TBase<getBikeStations_result, getBikeStations_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBikeStations_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
     private static final org.apache.thrift.protocol.TField WPE_FIELD_DESC = new org.apache.thrift.protocol.TField("wpe", org.apache.thrift.protocol.TType.STRUCT, (short)1);
@@ -451,13 +451,13 @@ public class BikeService {
       tmpMap.put(_Fields.WPE, new org.apache.thrift.meta_data.FieldMetaData("wpe", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getAvailableBikes_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBikeStations_result.class, metaDataMap);
     }
 
-    public getAvailableBikes_result() {
+    public getBikeStations_result() {
     }
 
-    public getAvailableBikes_result(
+    public getBikeStations_result(
       List<BikeEmplacement> success,
       WebParseException wpe)
     {
@@ -469,7 +469,7 @@ public class BikeService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getAvailableBikes_result(getAvailableBikes_result other) {
+    public getBikeStations_result(getBikeStations_result other) {
       if (other.isSetSuccess()) {
         List<BikeEmplacement> __this__success = new ArrayList<BikeEmplacement>();
         for (BikeEmplacement other_element : other.success) {
@@ -482,8 +482,8 @@ public class BikeService {
       }
     }
 
-    public getAvailableBikes_result deepCopy() {
-      return new getAvailableBikes_result(this);
+    public getBikeStations_result deepCopy() {
+      return new getBikeStations_result(this);
     }
 
     @Override
@@ -511,7 +511,7 @@ public class BikeService {
       return this.success;
     }
 
-    public getAvailableBikes_result setSuccess(List<BikeEmplacement> success) {
+    public getBikeStations_result setSuccess(List<BikeEmplacement> success) {
       this.success = success;
       return this;
     }
@@ -535,7 +535,7 @@ public class BikeService {
       return this.wpe;
     }
 
-    public getAvailableBikes_result setWpe(WebParseException wpe) {
+    public getBikeStations_result setWpe(WebParseException wpe) {
       this.wpe = wpe;
       return this;
     }
@@ -607,12 +607,12 @@ public class BikeService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getAvailableBikes_result)
-        return this.equals((getAvailableBikes_result)that);
+      if (that instanceof getBikeStations_result)
+        return this.equals((getBikeStations_result)that);
       return false;
     }
 
-    public boolean equals(getAvailableBikes_result that) {
+    public boolean equals(getBikeStations_result that) {
       if (that == null)
         return false;
 
@@ -654,13 +654,13 @@ public class BikeService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getAvailableBikes_result other) {
+    public int compareTo(getBikeStations_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getAvailableBikes_result typedOther = (getAvailableBikes_result)other;
+      getBikeStations_result typedOther = (getBikeStations_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -761,7 +761,7 @@ public class BikeService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getAvailableBikes_result(");
+      StringBuilder sb = new StringBuilder("getBikeStations_result(");
       boolean first = true;
 
       sb.append("success:");

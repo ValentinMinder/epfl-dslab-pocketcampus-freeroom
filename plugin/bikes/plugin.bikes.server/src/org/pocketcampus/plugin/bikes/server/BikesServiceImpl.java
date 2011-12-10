@@ -25,7 +25,7 @@ private final static long REFRESH_TIME = 5 * 60 * 1000;
 	
 	
 	@Override
-	public List<BikeEmplacement> getAvailableBikes() throws WebParseException, TException {
+	public List<BikeEmplacement> getBikeStations() throws WebParseException, TException {
 		if(isRefreshNeeded()) {
 			loadBikeStations();
 		}

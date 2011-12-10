@@ -12,7 +12,7 @@ public class BikesRequest extends Request<BikesController, Iface, Object, List<B
 
 	@Override
 	protected List<BikeEmplacement> runInBackground(Iface client, Object param) throws Exception {
-		return client.getAvailableBikes();
+		return client.getBikeStations();
 	}
 
 	@Override

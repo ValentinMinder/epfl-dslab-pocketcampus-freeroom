@@ -64,25 +64,25 @@ public class BikesMainView extends PluginView implements IBikesView{
 					String stationsName = ((PCEntryItem)adapter.getItemAtPosition(pos)).title;
 					
 					for(BikeEmplacement be: mModel.getAvailablesBikes()){
-						if(be.designation.equals(stationsName)){
+						if(be.name.equals(stationsName)){
 							String ab;
-							if(be.availableQuantity == 1)
+							if(be.numberOfAvailableBikes == 1)
 								ab = " available bike";
 							else
 								ab = " availables bikes";
 							
 							String ep;
-							if(be.empty == 1)
+							if(be.numberOfEmptySpaces == 1)
 								ep = " empty bike slot";
 							else
 								ep = " empty bike slots";
 							
-							msg = be.designation + 
+							msg = be.name + 
 										//" is at:\n" +
 										//"Lat: " + be.geoLat + "\n" +
 										//"Lon: " + be.geoLng + "\n" +
-										"\nhas " + be.availableQuantity + ab +"\n" +
-										"and " + be.empty + ep;
+										"\nhas " + be.numberOfAvailableBikes + ab +"\n" +
+										"and " + be.numberOfEmptySpaces + ep;
 							
 							//exiting the loop
 							break;
@@ -144,8 +144,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 		
 		for(BikeEmplacement be : mModel.getAvailablesBikes()){
 			String nbBikes;
-			int q = be.getAvailableQuantity();
-			int pl = be.empty + q;
+			int q = be.numberOfAvailableBikes;
+			int pl = be.numberOfEmptySpaces + q;
 			nbBikes = "" + q;
 			
 			nbBikes = nbBikes + " / ";
@@ -158,7 +158,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		
 			
 			if(pl > 0)
-				items.add(new PCEntryItem(be.designation, nbBikes, ""));
+				items.add(new PCEntryItem(be.name, nbBikes, ""));
 		}
 		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
 		//svn comitt test
@@ -186,7 +186,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		@Override
 		public String getLabel(BikeEmplacement obj) {
 			String nice;
-			nice = obj.designation + " " + obj.availableQuantity; 
+			nice = obj.name + " " + obj.numberOfAvailableBikes; 
 			return nice;
 		}
 	};

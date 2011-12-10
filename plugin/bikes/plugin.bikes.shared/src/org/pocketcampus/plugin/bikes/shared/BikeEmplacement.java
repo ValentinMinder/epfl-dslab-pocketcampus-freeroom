@@ -24,25 +24,25 @@ import org.slf4j.LoggerFactory;
 public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement, BikeEmplacement._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("BikeEmplacement");
 
-  private static final org.apache.thrift.protocol.TField EMPTY_FIELD_DESC = new org.apache.thrift.protocol.TField("empty", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField AVAILABLE_QUANTITY_FIELD_DESC = new org.apache.thrift.protocol.TField("availableQuantity", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField GEO_LAT_FIELD_DESC = new org.apache.thrift.protocol.TField("geoLat", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
-  private static final org.apache.thrift.protocol.TField GEO_LNG_FIELD_DESC = new org.apache.thrift.protocol.TField("geoLng", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
-  private static final org.apache.thrift.protocol.TField DESIGNATION_FIELD_DESC = new org.apache.thrift.protocol.TField("designation", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField NUMBER_OF_EMPTY_SPACES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfEmptySpaces", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField NUMBER_OF_AVAILABLE_BIKES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfAvailableBikes", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField LATITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("latitude", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
+  private static final org.apache.thrift.protocol.TField LONGITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("longitude", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
+  private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)5);
 
-  public int empty; // required
-  public int availableQuantity; // required
-  public double geoLat; // required
-  public double geoLng; // required
-  public String designation; // required
+  public int numberOfEmptySpaces; // required
+  public int numberOfAvailableBikes; // required
+  public double latitude; // required
+  public double longitude; // required
+  public String name; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    EMPTY((short)1, "empty"),
-    AVAILABLE_QUANTITY((short)2, "availableQuantity"),
-    GEO_LAT((short)3, "geoLat"),
-    GEO_LNG((short)4, "geoLng"),
-    DESIGNATION((short)5, "designation");
+    NUMBER_OF_EMPTY_SPACES((short)1, "numberOfEmptySpaces"),
+    NUMBER_OF_AVAILABLE_BIKES((short)2, "numberOfAvailableBikes"),
+    LATITUDE((short)3, "latitude"),
+    LONGITUDE((short)4, "longitude"),
+    NAME((short)5, "name");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,16 +57,16 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // EMPTY
-          return EMPTY;
-        case 2: // AVAILABLE_QUANTITY
-          return AVAILABLE_QUANTITY;
-        case 3: // GEO_LAT
-          return GEO_LAT;
-        case 4: // GEO_LNG
-          return GEO_LNG;
-        case 5: // DESIGNATION
-          return DESIGNATION;
+        case 1: // NUMBER_OF_EMPTY_SPACES
+          return NUMBER_OF_EMPTY_SPACES;
+        case 2: // NUMBER_OF_AVAILABLE_BIKES
+          return NUMBER_OF_AVAILABLE_BIKES;
+        case 3: // LATITUDE
+          return LATITUDE;
+        case 4: // LONGITUDE
+          return LONGITUDE;
+        case 5: // NAME
+          return NAME;
         default:
           return null;
       }
@@ -107,24 +107,24 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
   }
 
   // isset id assignments
-  private static final int __EMPTY_ISSET_ID = 0;
-  private static final int __AVAILABLEQUANTITY_ISSET_ID = 1;
-  private static final int __GEOLAT_ISSET_ID = 2;
-  private static final int __GEOLNG_ISSET_ID = 3;
+  private static final int __NUMBEROFEMPTYSPACES_ISSET_ID = 0;
+  private static final int __NUMBEROFAVAILABLEBIKES_ISSET_ID = 1;
+  private static final int __LATITUDE_ISSET_ID = 2;
+  private static final int __LONGITUDE_ISSET_ID = 3;
   private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.EMPTY, new org.apache.thrift.meta_data.FieldMetaData("empty", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.NUMBER_OF_EMPTY_SPACES, new org.apache.thrift.meta_data.FieldMetaData("numberOfEmptySpaces", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
-    tmpMap.put(_Fields.AVAILABLE_QUANTITY, new org.apache.thrift.meta_data.FieldMetaData("availableQuantity", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.NUMBER_OF_AVAILABLE_BIKES, new org.apache.thrift.meta_data.FieldMetaData("numberOfAvailableBikes", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
-    tmpMap.put(_Fields.GEO_LAT, new org.apache.thrift.meta_data.FieldMetaData("geoLat", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.LATITUDE, new org.apache.thrift.meta_data.FieldMetaData("latitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.GEO_LNG, new org.apache.thrift.meta_data.FieldMetaData("geoLng", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.LONGITUDE, new org.apache.thrift.meta_data.FieldMetaData("longitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.DESIGNATION, new org.apache.thrift.meta_data.FieldMetaData("designation", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(BikeEmplacement.class, metaDataMap);
@@ -134,22 +134,22 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
   }
 
   public BikeEmplacement(
-    int empty,
-    int availableQuantity,
-    double geoLat,
-    double geoLng,
-    String designation)
+    int numberOfEmptySpaces,
+    int numberOfAvailableBikes,
+    double latitude,
+    double longitude,
+    String name)
   {
     this();
-    this.empty = empty;
-    setEmptyIsSet(true);
-    this.availableQuantity = availableQuantity;
-    setAvailableQuantityIsSet(true);
-    this.geoLat = geoLat;
-    setGeoLatIsSet(true);
-    this.geoLng = geoLng;
-    setGeoLngIsSet(true);
-    this.designation = designation;
+    this.numberOfEmptySpaces = numberOfEmptySpaces;
+    setNumberOfEmptySpacesIsSet(true);
+    this.numberOfAvailableBikes = numberOfAvailableBikes;
+    setNumberOfAvailableBikesIsSet(true);
+    this.latitude = latitude;
+    setLatitudeIsSet(true);
+    this.longitude = longitude;
+    setLongitudeIsSet(true);
+    this.name = name;
   }
 
   /**
@@ -158,12 +158,12 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
   public BikeEmplacement(BikeEmplacement other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.empty = other.empty;
-    this.availableQuantity = other.availableQuantity;
-    this.geoLat = other.geoLat;
-    this.geoLng = other.geoLng;
-    if (other.isSetDesignation()) {
-      this.designation = other.designation;
+    this.numberOfEmptySpaces = other.numberOfEmptySpaces;
+    this.numberOfAvailableBikes = other.numberOfAvailableBikes;
+    this.latitude = other.latitude;
+    this.longitude = other.longitude;
+    if (other.isSetName()) {
+      this.name = other.name;
     }
   }
 
@@ -173,172 +173,172 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
 
   @Override
   public void clear() {
-    setEmptyIsSet(false);
-    this.empty = 0;
-    setAvailableQuantityIsSet(false);
-    this.availableQuantity = 0;
-    setGeoLatIsSet(false);
-    this.geoLat = 0.0;
-    setGeoLngIsSet(false);
-    this.geoLng = 0.0;
-    this.designation = null;
+    setNumberOfEmptySpacesIsSet(false);
+    this.numberOfEmptySpaces = 0;
+    setNumberOfAvailableBikesIsSet(false);
+    this.numberOfAvailableBikes = 0;
+    setLatitudeIsSet(false);
+    this.latitude = 0.0;
+    setLongitudeIsSet(false);
+    this.longitude = 0.0;
+    this.name = null;
   }
 
-  public int getEmpty() {
-    return this.empty;
+  public int getNumberOfEmptySpaces() {
+    return this.numberOfEmptySpaces;
   }
 
-  public BikeEmplacement setEmpty(int empty) {
-    this.empty = empty;
-    setEmptyIsSet(true);
+  public BikeEmplacement setNumberOfEmptySpaces(int numberOfEmptySpaces) {
+    this.numberOfEmptySpaces = numberOfEmptySpaces;
+    setNumberOfEmptySpacesIsSet(true);
     return this;
   }
 
-  public void unsetEmpty() {
-    __isset_bit_vector.clear(__EMPTY_ISSET_ID);
+  public void unsetNumberOfEmptySpaces() {
+    __isset_bit_vector.clear(__NUMBEROFEMPTYSPACES_ISSET_ID);
   }
 
-  /** Returns true if field empty is set (has been assigned a value) and false otherwise */
-  public boolean isSetEmpty() {
-    return __isset_bit_vector.get(__EMPTY_ISSET_ID);
+  /** Returns true if field numberOfEmptySpaces is set (has been assigned a value) and false otherwise */
+  public boolean isSetNumberOfEmptySpaces() {
+    return __isset_bit_vector.get(__NUMBEROFEMPTYSPACES_ISSET_ID);
   }
 
-  public void setEmptyIsSet(boolean value) {
-    __isset_bit_vector.set(__EMPTY_ISSET_ID, value);
+  public void setNumberOfEmptySpacesIsSet(boolean value) {
+    __isset_bit_vector.set(__NUMBEROFEMPTYSPACES_ISSET_ID, value);
   }
 
-  public int getAvailableQuantity() {
-    return this.availableQuantity;
+  public int getNumberOfAvailableBikes() {
+    return this.numberOfAvailableBikes;
   }
 
-  public BikeEmplacement setAvailableQuantity(int availableQuantity) {
-    this.availableQuantity = availableQuantity;
-    setAvailableQuantityIsSet(true);
+  public BikeEmplacement setNumberOfAvailableBikes(int numberOfAvailableBikes) {
+    this.numberOfAvailableBikes = numberOfAvailableBikes;
+    setNumberOfAvailableBikesIsSet(true);
     return this;
   }
 
-  public void unsetAvailableQuantity() {
-    __isset_bit_vector.clear(__AVAILABLEQUANTITY_ISSET_ID);
+  public void unsetNumberOfAvailableBikes() {
+    __isset_bit_vector.clear(__NUMBEROFAVAILABLEBIKES_ISSET_ID);
   }
 
-  /** Returns true if field availableQuantity is set (has been assigned a value) and false otherwise */
-  public boolean isSetAvailableQuantity() {
-    return __isset_bit_vector.get(__AVAILABLEQUANTITY_ISSET_ID);
+  /** Returns true if field numberOfAvailableBikes is set (has been assigned a value) and false otherwise */
+  public boolean isSetNumberOfAvailableBikes() {
+    return __isset_bit_vector.get(__NUMBEROFAVAILABLEBIKES_ISSET_ID);
   }
 
-  public void setAvailableQuantityIsSet(boolean value) {
-    __isset_bit_vector.set(__AVAILABLEQUANTITY_ISSET_ID, value);
+  public void setNumberOfAvailableBikesIsSet(boolean value) {
+    __isset_bit_vector.set(__NUMBEROFAVAILABLEBIKES_ISSET_ID, value);
   }
 
-  public double getGeoLat() {
-    return this.geoLat;
+  public double getLatitude() {
+    return this.latitude;
   }
 
-  public BikeEmplacement setGeoLat(double geoLat) {
-    this.geoLat = geoLat;
-    setGeoLatIsSet(true);
+  public BikeEmplacement setLatitude(double latitude) {
+    this.latitude = latitude;
+    setLatitudeIsSet(true);
     return this;
   }
 
-  public void unsetGeoLat() {
-    __isset_bit_vector.clear(__GEOLAT_ISSET_ID);
+  public void unsetLatitude() {
+    __isset_bit_vector.clear(__LATITUDE_ISSET_ID);
   }
 
-  /** Returns true if field geoLat is set (has been assigned a value) and false otherwise */
-  public boolean isSetGeoLat() {
-    return __isset_bit_vector.get(__GEOLAT_ISSET_ID);
+  /** Returns true if field latitude is set (has been assigned a value) and false otherwise */
+  public boolean isSetLatitude() {
+    return __isset_bit_vector.get(__LATITUDE_ISSET_ID);
   }
 
-  public void setGeoLatIsSet(boolean value) {
-    __isset_bit_vector.set(__GEOLAT_ISSET_ID, value);
+  public void setLatitudeIsSet(boolean value) {
+    __isset_bit_vector.set(__LATITUDE_ISSET_ID, value);
   }
 
-  public double getGeoLng() {
-    return this.geoLng;
+  public double getLongitude() {
+    return this.longitude;
   }
 
-  public BikeEmplacement setGeoLng(double geoLng) {
-    this.geoLng = geoLng;
-    setGeoLngIsSet(true);
+  public BikeEmplacement setLongitude(double longitude) {
+    this.longitude = longitude;
+    setLongitudeIsSet(true);
     return this;
   }
 
-  public void unsetGeoLng() {
-    __isset_bit_vector.clear(__GEOLNG_ISSET_ID);
+  public void unsetLongitude() {
+    __isset_bit_vector.clear(__LONGITUDE_ISSET_ID);
   }
 
-  /** Returns true if field geoLng is set (has been assigned a value) and false otherwise */
-  public boolean isSetGeoLng() {
-    return __isset_bit_vector.get(__GEOLNG_ISSET_ID);
+  /** Returns true if field longitude is set (has been assigned a value) and false otherwise */
+  public boolean isSetLongitude() {
+    return __isset_bit_vector.get(__LONGITUDE_ISSET_ID);
   }
 
-  public void setGeoLngIsSet(boolean value) {
-    __isset_bit_vector.set(__GEOLNG_ISSET_ID, value);
+  public void setLongitudeIsSet(boolean value) {
+    __isset_bit_vector.set(__LONGITUDE_ISSET_ID, value);
   }
 
-  public String getDesignation() {
-    return this.designation;
+  public String getName() {
+    return this.name;
   }
 
-  public BikeEmplacement setDesignation(String designation) {
-    this.designation = designation;
+  public BikeEmplacement setName(String name) {
+    this.name = name;
     return this;
   }
 
-  public void unsetDesignation() {
-    this.designation = null;
+  public void unsetName() {
+    this.name = null;
   }
 
-  /** Returns true if field designation is set (has been assigned a value) and false otherwise */
-  public boolean isSetDesignation() {
-    return this.designation != null;
+  /** Returns true if field name is set (has been assigned a value) and false otherwise */
+  public boolean isSetName() {
+    return this.name != null;
   }
 
-  public void setDesignationIsSet(boolean value) {
+  public void setNameIsSet(boolean value) {
     if (!value) {
-      this.designation = null;
+      this.name = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case EMPTY:
+    case NUMBER_OF_EMPTY_SPACES:
       if (value == null) {
-        unsetEmpty();
+        unsetNumberOfEmptySpaces();
       } else {
-        setEmpty((Integer)value);
+        setNumberOfEmptySpaces((Integer)value);
       }
       break;
 
-    case AVAILABLE_QUANTITY:
+    case NUMBER_OF_AVAILABLE_BIKES:
       if (value == null) {
-        unsetAvailableQuantity();
+        unsetNumberOfAvailableBikes();
       } else {
-        setAvailableQuantity((Integer)value);
+        setNumberOfAvailableBikes((Integer)value);
       }
       break;
 
-    case GEO_LAT:
+    case LATITUDE:
       if (value == null) {
-        unsetGeoLat();
+        unsetLatitude();
       } else {
-        setGeoLat((Double)value);
+        setLatitude((Double)value);
       }
       break;
 
-    case GEO_LNG:
+    case LONGITUDE:
       if (value == null) {
-        unsetGeoLng();
+        unsetLongitude();
       } else {
-        setGeoLng((Double)value);
+        setLongitude((Double)value);
       }
       break;
 
-    case DESIGNATION:
+    case NAME:
       if (value == null) {
-        unsetDesignation();
+        unsetName();
       } else {
-        setDesignation((String)value);
+        setName((String)value);
       }
       break;
 
@@ -347,20 +347,20 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case EMPTY:
-      return Integer.valueOf(getEmpty());
+    case NUMBER_OF_EMPTY_SPACES:
+      return Integer.valueOf(getNumberOfEmptySpaces());
 
-    case AVAILABLE_QUANTITY:
-      return Integer.valueOf(getAvailableQuantity());
+    case NUMBER_OF_AVAILABLE_BIKES:
+      return Integer.valueOf(getNumberOfAvailableBikes());
 
-    case GEO_LAT:
-      return Double.valueOf(getGeoLat());
+    case LATITUDE:
+      return Double.valueOf(getLatitude());
 
-    case GEO_LNG:
-      return Double.valueOf(getGeoLng());
+    case LONGITUDE:
+      return Double.valueOf(getLongitude());
 
-    case DESIGNATION:
-      return getDesignation();
+    case NAME:
+      return getName();
 
     }
     throw new IllegalStateException();
@@ -373,16 +373,16 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     }
 
     switch (field) {
-    case EMPTY:
-      return isSetEmpty();
-    case AVAILABLE_QUANTITY:
-      return isSetAvailableQuantity();
-    case GEO_LAT:
-      return isSetGeoLat();
-    case GEO_LNG:
-      return isSetGeoLng();
-    case DESIGNATION:
-      return isSetDesignation();
+    case NUMBER_OF_EMPTY_SPACES:
+      return isSetNumberOfEmptySpaces();
+    case NUMBER_OF_AVAILABLE_BIKES:
+      return isSetNumberOfAvailableBikes();
+    case LATITUDE:
+      return isSetLatitude();
+    case LONGITUDE:
+      return isSetLongitude();
+    case NAME:
+      return isSetName();
     }
     throw new IllegalStateException();
   }
@@ -400,48 +400,48 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     if (that == null)
       return false;
 
-    boolean this_present_empty = true;
-    boolean that_present_empty = true;
-    if (this_present_empty || that_present_empty) {
-      if (!(this_present_empty && that_present_empty))
+    boolean this_present_numberOfEmptySpaces = true;
+    boolean that_present_numberOfEmptySpaces = true;
+    if (this_present_numberOfEmptySpaces || that_present_numberOfEmptySpaces) {
+      if (!(this_present_numberOfEmptySpaces && that_present_numberOfEmptySpaces))
         return false;
-      if (this.empty != that.empty)
-        return false;
-    }
-
-    boolean this_present_availableQuantity = true;
-    boolean that_present_availableQuantity = true;
-    if (this_present_availableQuantity || that_present_availableQuantity) {
-      if (!(this_present_availableQuantity && that_present_availableQuantity))
-        return false;
-      if (this.availableQuantity != that.availableQuantity)
+      if (this.numberOfEmptySpaces != that.numberOfEmptySpaces)
         return false;
     }
 
-    boolean this_present_geoLat = true;
-    boolean that_present_geoLat = true;
-    if (this_present_geoLat || that_present_geoLat) {
-      if (!(this_present_geoLat && that_present_geoLat))
+    boolean this_present_numberOfAvailableBikes = true;
+    boolean that_present_numberOfAvailableBikes = true;
+    if (this_present_numberOfAvailableBikes || that_present_numberOfAvailableBikes) {
+      if (!(this_present_numberOfAvailableBikes && that_present_numberOfAvailableBikes))
         return false;
-      if (this.geoLat != that.geoLat)
-        return false;
-    }
-
-    boolean this_present_geoLng = true;
-    boolean that_present_geoLng = true;
-    if (this_present_geoLng || that_present_geoLng) {
-      if (!(this_present_geoLng && that_present_geoLng))
-        return false;
-      if (this.geoLng != that.geoLng)
+      if (this.numberOfAvailableBikes != that.numberOfAvailableBikes)
         return false;
     }
 
-    boolean this_present_designation = true && this.isSetDesignation();
-    boolean that_present_designation = true && that.isSetDesignation();
-    if (this_present_designation || that_present_designation) {
-      if (!(this_present_designation && that_present_designation))
+    boolean this_present_latitude = true;
+    boolean that_present_latitude = true;
+    if (this_present_latitude || that_present_latitude) {
+      if (!(this_present_latitude && that_present_latitude))
         return false;
-      if (!this.designation.equals(that.designation))
+      if (this.latitude != that.latitude)
+        return false;
+    }
+
+    boolean this_present_longitude = true;
+    boolean that_present_longitude = true;
+    if (this_present_longitude || that_present_longitude) {
+      if (!(this_present_longitude && that_present_longitude))
+        return false;
+      if (this.longitude != that.longitude)
+        return false;
+    }
+
+    boolean this_present_name = true && this.isSetName();
+    boolean that_present_name = true && that.isSetName();
+    if (this_present_name || that_present_name) {
+      if (!(this_present_name && that_present_name))
+        return false;
+      if (!this.name.equals(that.name))
         return false;
     }
 
@@ -452,30 +452,30 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_empty = true;
-    builder.append(present_empty);
-    if (present_empty)
-      builder.append(empty);
+    boolean present_numberOfEmptySpaces = true;
+    builder.append(present_numberOfEmptySpaces);
+    if (present_numberOfEmptySpaces)
+      builder.append(numberOfEmptySpaces);
 
-    boolean present_availableQuantity = true;
-    builder.append(present_availableQuantity);
-    if (present_availableQuantity)
-      builder.append(availableQuantity);
+    boolean present_numberOfAvailableBikes = true;
+    builder.append(present_numberOfAvailableBikes);
+    if (present_numberOfAvailableBikes)
+      builder.append(numberOfAvailableBikes);
 
-    boolean present_geoLat = true;
-    builder.append(present_geoLat);
-    if (present_geoLat)
-      builder.append(geoLat);
+    boolean present_latitude = true;
+    builder.append(present_latitude);
+    if (present_latitude)
+      builder.append(latitude);
 
-    boolean present_geoLng = true;
-    builder.append(present_geoLng);
-    if (present_geoLng)
-      builder.append(geoLng);
+    boolean present_longitude = true;
+    builder.append(present_longitude);
+    if (present_longitude)
+      builder.append(longitude);
 
-    boolean present_designation = true && (isSetDesignation());
-    builder.append(present_designation);
-    if (present_designation)
-      builder.append(designation);
+    boolean present_name = true && (isSetName());
+    builder.append(present_name);
+    if (present_name)
+      builder.append(name);
 
     return builder.toHashCode();
   }
@@ -488,52 +488,52 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     int lastComparison = 0;
     BikeEmplacement typedOther = (BikeEmplacement)other;
 
-    lastComparison = Boolean.valueOf(isSetEmpty()).compareTo(typedOther.isSetEmpty());
+    lastComparison = Boolean.valueOf(isSetNumberOfEmptySpaces()).compareTo(typedOther.isSetNumberOfEmptySpaces());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetEmpty()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.empty, typedOther.empty);
+    if (isSetNumberOfEmptySpaces()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfEmptySpaces, typedOther.numberOfEmptySpaces);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetAvailableQuantity()).compareTo(typedOther.isSetAvailableQuantity());
+    lastComparison = Boolean.valueOf(isSetNumberOfAvailableBikes()).compareTo(typedOther.isSetNumberOfAvailableBikes());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetAvailableQuantity()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.availableQuantity, typedOther.availableQuantity);
+    if (isSetNumberOfAvailableBikes()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfAvailableBikes, typedOther.numberOfAvailableBikes);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetGeoLat()).compareTo(typedOther.isSetGeoLat());
+    lastComparison = Boolean.valueOf(isSetLatitude()).compareTo(typedOther.isSetLatitude());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetGeoLat()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.geoLat, typedOther.geoLat);
+    if (isSetLatitude()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.latitude, typedOther.latitude);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetGeoLng()).compareTo(typedOther.isSetGeoLng());
+    lastComparison = Boolean.valueOf(isSetLongitude()).compareTo(typedOther.isSetLongitude());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetGeoLng()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.geoLng, typedOther.geoLng);
+    if (isSetLongitude()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.longitude, typedOther.longitude);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetDesignation()).compareTo(typedOther.isSetDesignation());
+    lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetDesignation()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.designation, typedOther.designation);
+    if (isSetName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.name, typedOther.name);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -555,41 +555,41 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
         break;
       }
       switch (field.id) {
-        case 1: // EMPTY
+        case 1: // NUMBER_OF_EMPTY_SPACES
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.empty = iprot.readI32();
-            setEmptyIsSet(true);
+            this.numberOfEmptySpaces = iprot.readI32();
+            setNumberOfEmptySpacesIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // AVAILABLE_QUANTITY
+        case 2: // NUMBER_OF_AVAILABLE_BIKES
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.availableQuantity = iprot.readI32();
-            setAvailableQuantityIsSet(true);
+            this.numberOfAvailableBikes = iprot.readI32();
+            setNumberOfAvailableBikesIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // GEO_LAT
+        case 3: // LATITUDE
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-            this.geoLat = iprot.readDouble();
-            setGeoLatIsSet(true);
+            this.latitude = iprot.readDouble();
+            setLatitudeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // GEO_LNG
+        case 4: // LONGITUDE
           if (field.type == org.apache.thrift.protocol.TType.DOUBLE) {
-            this.geoLng = iprot.readDouble();
-            setGeoLngIsSet(true);
+            this.longitude = iprot.readDouble();
+            setLongitudeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // DESIGNATION
+        case 5: // NAME
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.designation = iprot.readString();
+            this.name = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -602,17 +602,17 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetEmpty()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'empty' was not found in serialized data! Struct: " + toString());
+    if (!isSetNumberOfEmptySpaces()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'numberOfEmptySpaces' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetAvailableQuantity()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'availableQuantity' was not found in serialized data! Struct: " + toString());
+    if (!isSetNumberOfAvailableBikes()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'numberOfAvailableBikes' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetGeoLat()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'geoLat' was not found in serialized data! Struct: " + toString());
+    if (!isSetLatitude()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'latitude' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetGeoLng()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'geoLng' was not found in serialized data! Struct: " + toString());
+    if (!isSetLongitude()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'longitude' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -621,21 +621,21 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(EMPTY_FIELD_DESC);
-    oprot.writeI32(this.empty);
+    oprot.writeFieldBegin(NUMBER_OF_EMPTY_SPACES_FIELD_DESC);
+    oprot.writeI32(this.numberOfEmptySpaces);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(AVAILABLE_QUANTITY_FIELD_DESC);
-    oprot.writeI32(this.availableQuantity);
+    oprot.writeFieldBegin(NUMBER_OF_AVAILABLE_BIKES_FIELD_DESC);
+    oprot.writeI32(this.numberOfAvailableBikes);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(GEO_LAT_FIELD_DESC);
-    oprot.writeDouble(this.geoLat);
+    oprot.writeFieldBegin(LATITUDE_FIELD_DESC);
+    oprot.writeDouble(this.latitude);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(GEO_LNG_FIELD_DESC);
-    oprot.writeDouble(this.geoLng);
+    oprot.writeFieldBegin(LONGITUDE_FIELD_DESC);
+    oprot.writeDouble(this.longitude);
     oprot.writeFieldEnd();
-    if (this.designation != null) {
-      oprot.writeFieldBegin(DESIGNATION_FIELD_DESC);
-      oprot.writeString(this.designation);
+    if (this.name != null) {
+      oprot.writeFieldBegin(NAME_FIELD_DESC);
+      oprot.writeString(this.name);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -647,27 +647,27 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
     StringBuilder sb = new StringBuilder("BikeEmplacement(");
     boolean first = true;
 
-    sb.append("empty:");
-    sb.append(this.empty);
+    sb.append("numberOfEmptySpaces:");
+    sb.append(this.numberOfEmptySpaces);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("availableQuantity:");
-    sb.append(this.availableQuantity);
+    sb.append("numberOfAvailableBikes:");
+    sb.append(this.numberOfAvailableBikes);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("geoLat:");
-    sb.append(this.geoLat);
+    sb.append("latitude:");
+    sb.append(this.latitude);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("geoLng:");
-    sb.append(this.geoLng);
+    sb.append("longitude:");
+    sb.append(this.longitude);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("designation:");
-    if (this.designation == null) {
+    sb.append("name:");
+    if (this.name == null) {
       sb.append("null");
     } else {
-      sb.append(this.designation);
+      sb.append(this.name);
     }
     first = false;
     sb.append(")");
@@ -676,12 +676,12 @@ public class BikeEmplacement implements org.apache.thrift.TBase<BikeEmplacement,
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'empty' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'availableQuantity' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'geoLat' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'geoLng' because it's a primitive and you chose the non-beans generator.
-    if (designation == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'designation' was not present! Struct: " + toString());
+    // alas, we cannot check 'numberOfEmptySpaces' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'numberOfAvailableBikes' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'latitude' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'longitude' because it's a primitive and you chose the non-beans generator.
+    if (name == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }
   }
 
