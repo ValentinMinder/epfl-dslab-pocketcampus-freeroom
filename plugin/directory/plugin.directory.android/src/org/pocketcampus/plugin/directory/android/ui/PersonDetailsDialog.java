@@ -55,8 +55,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 			return;
 		}
 		
-		if(displayedPerson_.picture_url != null){
-			liv.setImageDrawable(displayedPerson_.picture_url);
+		if(displayedPerson_.pictureUrl != null){
+			liv.setImageDrawable(displayedPerson_.pictureUrl);
 		
 			liv.setVisibility(View.VISIBLE);
 		}else{
@@ -89,16 +89,21 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		office_.setText(p.office);
 		
 		phone_ = (TextView) findViewById(R.id.directory_person_details_dialog_phone_number);
-		phone_.setVisibility(visibility(p.isSetPhone_number()));
-		phone_.setText(p.phone_number);
+		phone_.setVisibility(visibility(p.isSetOfficePhoneNumber()));
+		phone_.setText(p.officePhoneNumber);
 		
 //		web_ = (TextView) findViewById(R.id.directory_person_details_dialog_web);
 //		web_.setVisibility(visibility(p.isSetWeb()));
 //		web_.setText(p.web);
 		
 		ou_ = (TextView) findViewById(R.id.directory_person_details_dialog_ou);
-		ou_.setVisibility(visibility(p.isSetOu()));
-		ou_.setText(p.ou);
+		ou_.setVisibility(visibility(p.isSetOrganizationalUnit()));
+		String multipleLinesOU = "";
+		for(String s : p.OrganizationalUnit){
+			multipleLinesOU += (s + "\n");
+		}
+		multipleLinesOU.substring(0, multipleLinesOU.length() -1);
+		ou_.setText(multipleLinesOU);
 	}
 	
 	private int visibility(boolean hasMail) {
@@ -112,7 +117,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ImageView webButton = (ImageView) findViewById(R.id.directory_imageButton_web);
 		
 		mailButton.setVisibility(visibility(displayedPerson_.isSetMail()));
-		phoneButton.setVisibility(visibility(displayedPerson_.isSetPhone_number()));
+		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
 		//mapButton.setVisibility(visibility(displayedPerson_.hasOffice()));
 		mapButton.setVisibility(visibility(false)); // TODO call map when ready
 		webButton.setVisibility(visibility(displayedPerson_.isSetWeb()));
@@ -163,7 +168,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		.setPositiveButton(/*R.string.yes*/"yes", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + displayedPerson_.phone_number));
+				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + displayedPerson_.officePhoneNumber));
 				
 				try{
 					ctx_.startActivity(dialIntent);

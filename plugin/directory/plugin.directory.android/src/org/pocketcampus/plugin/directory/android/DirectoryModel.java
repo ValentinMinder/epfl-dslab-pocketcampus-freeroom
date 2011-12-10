@@ -58,7 +58,7 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	}
 
 	public void setProfilePicture(String result) {
-		mSelectedPerson.picture_url = result;
+		mSelectedPerson.pictureUrl = result;
 		mListeners.pictureUpdated();
 	}
 

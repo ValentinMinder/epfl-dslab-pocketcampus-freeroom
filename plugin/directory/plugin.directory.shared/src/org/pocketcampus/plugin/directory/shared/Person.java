@@ -29,22 +29,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
   private static final org.apache.thrift.protocol.TField SCIPER_FIELD_DESC = new org.apache.thrift.protocol.TField("sciper", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField MAIL_FIELD_DESC = new org.apache.thrift.protocol.TField("mail", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField WEB_FIELD_DESC = new org.apache.thrift.protocol.TField("web", org.apache.thrift.protocol.TType.STRING, (short)5);
-  private static final org.apache.thrift.protocol.TField PHONE_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("phone_number", org.apache.thrift.protocol.TType.STRING, (short)6);
-  private static final org.apache.thrift.protocol.TField OFFICE_FIELD_DESC = new org.apache.thrift.protocol.TField("office", org.apache.thrift.protocol.TType.STRING, (short)7);
-  private static final org.apache.thrift.protocol.TField GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("gaspar", org.apache.thrift.protocol.TType.STRING, (short)8);
-  private static final org.apache.thrift.protocol.TField OU_FIELD_DESC = new org.apache.thrift.protocol.TField("ou", org.apache.thrift.protocol.TType.STRING, (short)9);
-  private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("picture_url", org.apache.thrift.protocol.TType.STRING, (short)10);
+  private static final org.apache.thrift.protocol.TField PRIVATE_PHONE_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("privatePhoneNumber", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField OFFICE_PHONE_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("officePhoneNumber", org.apache.thrift.protocol.TType.STRING, (short)7);
+  private static final org.apache.thrift.protocol.TField OFFICE_FIELD_DESC = new org.apache.thrift.protocol.TField("office", org.apache.thrift.protocol.TType.STRING, (short)8);
+  private static final org.apache.thrift.protocol.TField GASPAR_FIELD_DESC = new org.apache.thrift.protocol.TField("gaspar", org.apache.thrift.protocol.TType.STRING, (short)9);
+  private static final org.apache.thrift.protocol.TField ORGANIZATIONAL_UNIT_FIELD_DESC = new org.apache.thrift.protocol.TField("OrganizationalUnit", org.apache.thrift.protocol.TType.LIST, (short)10);
+  private static final org.apache.thrift.protocol.TField PICTURE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("pictureUrl", org.apache.thrift.protocol.TType.STRING, (short)11);
 
   public String firstName; // required
   public String lastName; // required
   public String sciper; // required
   public String mail; // required
   public String web; // required
-  public String phone_number; // required
+  public String privatePhoneNumber; // required
+  public String officePhoneNumber; // required
   public String office; // required
   public String gaspar; // required
-  public String ou; // required
-  public String picture_url; // required
+  public List<String> OrganizationalUnit; // required
+  public String pictureUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -53,11 +55,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     SCIPER((short)3, "sciper"),
     MAIL((short)4, "mail"),
     WEB((short)5, "web"),
-    PHONE_NUMBER((short)6, "phone_number"),
-    OFFICE((short)7, "office"),
-    GASPAR((short)8, "gaspar"),
-    OU((short)9, "ou"),
-    PICTURE_URL((short)10, "picture_url");
+    PRIVATE_PHONE_NUMBER((short)6, "privatePhoneNumber"),
+    OFFICE_PHONE_NUMBER((short)7, "officePhoneNumber"),
+    OFFICE((short)8, "office"),
+    GASPAR((short)9, "gaspar"),
+    ORGANIZATIONAL_UNIT((short)10, "OrganizationalUnit"),
+    PICTURE_URL((short)11, "pictureUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -82,15 +85,17 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
           return MAIL;
         case 5: // WEB
           return WEB;
-        case 6: // PHONE_NUMBER
-          return PHONE_NUMBER;
-        case 7: // OFFICE
+        case 6: // PRIVATE_PHONE_NUMBER
+          return PRIVATE_PHONE_NUMBER;
+        case 7: // OFFICE_PHONE_NUMBER
+          return OFFICE_PHONE_NUMBER;
+        case 8: // OFFICE
           return OFFICE;
-        case 8: // GASPAR
+        case 9: // GASPAR
           return GASPAR;
-        case 9: // OU
-          return OU;
-        case 10: // PICTURE_URL
+        case 10: // ORGANIZATIONAL_UNIT
+          return ORGANIZATIONAL_UNIT;
+        case 11: // PICTURE_URL
           return PICTURE_URL;
         default:
           return null;
@@ -146,15 +151,18 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.WEB, new org.apache.thrift.meta_data.FieldMetaData("web", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.PHONE_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("phone_number", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.PRIVATE_PHONE_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("privatePhoneNumber", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.OFFICE_PHONE_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("officePhoneNumber", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.OFFICE, new org.apache.thrift.meta_data.FieldMetaData("office", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.GASPAR, new org.apache.thrift.meta_data.FieldMetaData("gaspar", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.OU, new org.apache.thrift.meta_data.FieldMetaData("ou", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("picture_url", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.ORGANIZATIONAL_UNIT, new org.apache.thrift.meta_data.FieldMetaData("OrganizationalUnit", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.PICTURE_URL, new org.apache.thrift.meta_data.FieldMetaData("pictureUrl", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Person.class, metaDataMap);
@@ -193,8 +201,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (other.isSetWeb()) {
       this.web = other.web;
     }
-    if (other.isSetPhone_number()) {
-      this.phone_number = other.phone_number;
+    if (other.isSetPrivatePhoneNumber()) {
+      this.privatePhoneNumber = other.privatePhoneNumber;
+    }
+    if (other.isSetOfficePhoneNumber()) {
+      this.officePhoneNumber = other.officePhoneNumber;
     }
     if (other.isSetOffice()) {
       this.office = other.office;
@@ -202,11 +213,15 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (other.isSetGaspar()) {
       this.gaspar = other.gaspar;
     }
-    if (other.isSetOu()) {
-      this.ou = other.ou;
+    if (other.isSetOrganizationalUnit()) {
+      List<String> __this__OrganizationalUnit = new ArrayList<String>();
+      for (String other_element : other.OrganizationalUnit) {
+        __this__OrganizationalUnit.add(other_element);
+      }
+      this.OrganizationalUnit = __this__OrganizationalUnit;
     }
-    if (other.isSetPicture_url()) {
-      this.picture_url = other.picture_url;
+    if (other.isSetPictureUrl()) {
+      this.pictureUrl = other.pictureUrl;
     }
   }
 
@@ -221,11 +236,12 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     this.sciper = null;
     this.mail = null;
     this.web = null;
-    this.phone_number = null;
+    this.privatePhoneNumber = null;
+    this.officePhoneNumber = null;
     this.office = null;
     this.gaspar = null;
-    this.ou = null;
-    this.picture_url = null;
+    this.OrganizationalUnit = null;
+    this.pictureUrl = null;
   }
 
   public String getFirstName() {
@@ -348,27 +364,51 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
-  public String getPhone_number() {
-    return this.phone_number;
+  public String getPrivatePhoneNumber() {
+    return this.privatePhoneNumber;
   }
 
-  public Person setPhone_number(String phone_number) {
-    this.phone_number = phone_number;
+  public Person setPrivatePhoneNumber(String privatePhoneNumber) {
+    this.privatePhoneNumber = privatePhoneNumber;
     return this;
   }
 
-  public void unsetPhone_number() {
-    this.phone_number = null;
+  public void unsetPrivatePhoneNumber() {
+    this.privatePhoneNumber = null;
   }
 
-  /** Returns true if field phone_number is set (has been assigned a value) and false otherwise */
-  public boolean isSetPhone_number() {
-    return this.phone_number != null;
+  /** Returns true if field privatePhoneNumber is set (has been assigned a value) and false otherwise */
+  public boolean isSetPrivatePhoneNumber() {
+    return this.privatePhoneNumber != null;
   }
 
-  public void setPhone_numberIsSet(boolean value) {
+  public void setPrivatePhoneNumberIsSet(boolean value) {
     if (!value) {
-      this.phone_number = null;
+      this.privatePhoneNumber = null;
+    }
+  }
+
+  public String getOfficePhoneNumber() {
+    return this.officePhoneNumber;
+  }
+
+  public Person setOfficePhoneNumber(String officePhoneNumber) {
+    this.officePhoneNumber = officePhoneNumber;
+    return this;
+  }
+
+  public void unsetOfficePhoneNumber() {
+    this.officePhoneNumber = null;
+  }
+
+  /** Returns true if field officePhoneNumber is set (has been assigned a value) and false otherwise */
+  public boolean isSetOfficePhoneNumber() {
+    return this.officePhoneNumber != null;
+  }
+
+  public void setOfficePhoneNumberIsSet(boolean value) {
+    if (!value) {
+      this.officePhoneNumber = null;
     }
   }
 
@@ -420,51 +460,66 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     }
   }
 
-  public String getOu() {
-    return this.ou;
+  public int getOrganizationalUnitSize() {
+    return (this.OrganizationalUnit == null) ? 0 : this.OrganizationalUnit.size();
   }
 
-  public Person setOu(String ou) {
-    this.ou = ou;
+  public java.util.Iterator<String> getOrganizationalUnitIterator() {
+    return (this.OrganizationalUnit == null) ? null : this.OrganizationalUnit.iterator();
+  }
+
+  public void addToOrganizationalUnit(String elem) {
+    if (this.OrganizationalUnit == null) {
+      this.OrganizationalUnit = new ArrayList<String>();
+    }
+    this.OrganizationalUnit.add(elem);
+  }
+
+  public List<String> getOrganizationalUnit() {
+    return this.OrganizationalUnit;
+  }
+
+  public Person setOrganizationalUnit(List<String> OrganizationalUnit) {
+    this.OrganizationalUnit = OrganizationalUnit;
     return this;
   }
 
-  public void unsetOu() {
-    this.ou = null;
+  public void unsetOrganizationalUnit() {
+    this.OrganizationalUnit = null;
   }
 
-  /** Returns true if field ou is set (has been assigned a value) and false otherwise */
-  public boolean isSetOu() {
-    return this.ou != null;
+  /** Returns true if field OrganizationalUnit is set (has been assigned a value) and false otherwise */
+  public boolean isSetOrganizationalUnit() {
+    return this.OrganizationalUnit != null;
   }
 
-  public void setOuIsSet(boolean value) {
+  public void setOrganizationalUnitIsSet(boolean value) {
     if (!value) {
-      this.ou = null;
+      this.OrganizationalUnit = null;
     }
   }
 
-  public String getPicture_url() {
-    return this.picture_url;
+  public String getPictureUrl() {
+    return this.pictureUrl;
   }
 
-  public Person setPicture_url(String picture_url) {
-    this.picture_url = picture_url;
+  public Person setPictureUrl(String pictureUrl) {
+    this.pictureUrl = pictureUrl;
     return this;
   }
 
-  public void unsetPicture_url() {
-    this.picture_url = null;
+  public void unsetPictureUrl() {
+    this.pictureUrl = null;
   }
 
-  /** Returns true if field picture_url is set (has been assigned a value) and false otherwise */
-  public boolean isSetPicture_url() {
-    return this.picture_url != null;
+  /** Returns true if field pictureUrl is set (has been assigned a value) and false otherwise */
+  public boolean isSetPictureUrl() {
+    return this.pictureUrl != null;
   }
 
-  public void setPicture_urlIsSet(boolean value) {
+  public void setPictureUrlIsSet(boolean value) {
     if (!value) {
-      this.picture_url = null;
+      this.pictureUrl = null;
     }
   }
 
@@ -510,11 +565,19 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
-    case PHONE_NUMBER:
+    case PRIVATE_PHONE_NUMBER:
       if (value == null) {
-        unsetPhone_number();
+        unsetPrivatePhoneNumber();
       } else {
-        setPhone_number((String)value);
+        setPrivatePhoneNumber((String)value);
+      }
+      break;
+
+    case OFFICE_PHONE_NUMBER:
+      if (value == null) {
+        unsetOfficePhoneNumber();
+      } else {
+        setOfficePhoneNumber((String)value);
       }
       break;
 
@@ -534,19 +597,19 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       break;
 
-    case OU:
+    case ORGANIZATIONAL_UNIT:
       if (value == null) {
-        unsetOu();
+        unsetOrganizationalUnit();
       } else {
-        setOu((String)value);
+        setOrganizationalUnit((List<String>)value);
       }
       break;
 
     case PICTURE_URL:
       if (value == null) {
-        unsetPicture_url();
+        unsetPictureUrl();
       } else {
-        setPicture_url((String)value);
+        setPictureUrl((String)value);
       }
       break;
 
@@ -570,8 +633,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     case WEB:
       return getWeb();
 
-    case PHONE_NUMBER:
-      return getPhone_number();
+    case PRIVATE_PHONE_NUMBER:
+      return getPrivatePhoneNumber();
+
+    case OFFICE_PHONE_NUMBER:
+      return getOfficePhoneNumber();
 
     case OFFICE:
       return getOffice();
@@ -579,11 +645,11 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     case GASPAR:
       return getGaspar();
 
-    case OU:
-      return getOu();
+    case ORGANIZATIONAL_UNIT:
+      return getOrganizationalUnit();
 
     case PICTURE_URL:
-      return getPicture_url();
+      return getPictureUrl();
 
     }
     throw new IllegalStateException();
@@ -606,16 +672,18 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       return isSetMail();
     case WEB:
       return isSetWeb();
-    case PHONE_NUMBER:
-      return isSetPhone_number();
+    case PRIVATE_PHONE_NUMBER:
+      return isSetPrivatePhoneNumber();
+    case OFFICE_PHONE_NUMBER:
+      return isSetOfficePhoneNumber();
     case OFFICE:
       return isSetOffice();
     case GASPAR:
       return isSetGaspar();
-    case OU:
-      return isSetOu();
+    case ORGANIZATIONAL_UNIT:
+      return isSetOrganizationalUnit();
     case PICTURE_URL:
-      return isSetPicture_url();
+      return isSetPictureUrl();
     }
     throw new IllegalStateException();
   }
@@ -629,24 +697,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     return false;
   }
 
- 	//MODIFIED METHOD - COMPARES ONLY THE SCIPER
-	public boolean equals(Person that) {
-	  if (that == null)
-	    return false;
-	
-	  boolean this_present_sciper = true && this.isSetSciper();
-	  boolean that_present_sciper = true && that.isSetSciper();
-	  if (this_present_sciper || that_present_sciper) {
-	    if (!(this_present_sciper && that_present_sciper))
-	      return false;
-	    if (!this.sciper.equals(that.sciper))
-	      return false;
-	  }
-	
-	  return true;
-	}
-	
-	
+  public boolean equals(Person that) {
+    if (that == null)
+      return false;
+
+    boolean this_present_sciper = true && this.isSetSciper();
+    boolean that_present_sciper = true && that.isSetSciper();
+    if (this_present_sciper || that_present_sciper) {
+      if (!(this_present_sciper && that_present_sciper))
+        return false;
+      if (!this.sciper.equals(that.sciper))
+        return false;
+    }
+
+   
+
+    return true;
+  }
+
   @Override
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
@@ -676,10 +744,15 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (present_web)
       builder.append(web);
 
-    boolean present_phone_number = true && (isSetPhone_number());
-    builder.append(present_phone_number);
-    if (present_phone_number)
-      builder.append(phone_number);
+    boolean present_privatePhoneNumber = true && (isSetPrivatePhoneNumber());
+    builder.append(present_privatePhoneNumber);
+    if (present_privatePhoneNumber)
+      builder.append(privatePhoneNumber);
+
+    boolean present_officePhoneNumber = true && (isSetOfficePhoneNumber());
+    builder.append(present_officePhoneNumber);
+    if (present_officePhoneNumber)
+      builder.append(officePhoneNumber);
 
     boolean present_office = true && (isSetOffice());
     builder.append(present_office);
@@ -691,15 +764,15 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (present_gaspar)
       builder.append(gaspar);
 
-    boolean present_ou = true && (isSetOu());
-    builder.append(present_ou);
-    if (present_ou)
-      builder.append(ou);
+    boolean present_OrganizationalUnit = true && (isSetOrganizationalUnit());
+    builder.append(present_OrganizationalUnit);
+    if (present_OrganizationalUnit)
+      builder.append(OrganizationalUnit);
 
-    boolean present_picture_url = true && (isSetPicture_url());
-    builder.append(present_picture_url);
-    if (present_picture_url)
-      builder.append(picture_url);
+    boolean present_pictureUrl = true && (isSetPictureUrl());
+    builder.append(present_pictureUrl);
+    if (present_pictureUrl)
+      builder.append(pictureUrl);
 
     return builder.toHashCode();
   }
@@ -762,12 +835,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPhone_number()).compareTo(typedOther.isSetPhone_number());
+    lastComparison = Boolean.valueOf(isSetPrivatePhoneNumber()).compareTo(typedOther.isSetPrivatePhoneNumber());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetPhone_number()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.phone_number, typedOther.phone_number);
+    if (isSetPrivatePhoneNumber()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.privatePhoneNumber, typedOther.privatePhoneNumber);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetOfficePhoneNumber()).compareTo(typedOther.isSetOfficePhoneNumber());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetOfficePhoneNumber()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.officePhoneNumber, typedOther.officePhoneNumber);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -792,22 +875,22 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetOu()).compareTo(typedOther.isSetOu());
+    lastComparison = Boolean.valueOf(isSetOrganizationalUnit()).compareTo(typedOther.isSetOrganizationalUnit());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetOu()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ou, typedOther.ou);
+    if (isSetOrganizationalUnit()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.OrganizationalUnit, typedOther.OrganizationalUnit);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPicture_url()).compareTo(typedOther.isSetPicture_url());
+    lastComparison = Boolean.valueOf(isSetPictureUrl()).compareTo(typedOther.isSetPictureUrl());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetPicture_url()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.picture_url, typedOther.picture_url);
+    if (isSetPictureUrl()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pictureUrl, typedOther.pictureUrl);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -864,37 +947,54 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // PHONE_NUMBER
+        case 6: // PRIVATE_PHONE_NUMBER
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.phone_number = iprot.readString();
+            this.privatePhoneNumber = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 7: // OFFICE
+        case 7: // OFFICE_PHONE_NUMBER
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.officePhoneNumber = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // OFFICE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.office = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 8: // GASPAR
+        case 9: // GASPAR
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.gaspar = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 9: // OU
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.ou = iprot.readString();
+        case 10: // ORGANIZATIONAL_UNIT
+          if (field.type == org.apache.thrift.protocol.TType.LIST) {
+            {
+              org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+              this.OrganizationalUnit = new ArrayList<String>(_list0.size);
+              for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+              {
+                String _elem2; // required
+                _elem2 = iprot.readString();
+                this.OrganizationalUnit.add(_elem2);
+              }
+              iprot.readListEnd();
+            }
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 10: // PICTURE_URL
+        case 11: // PICTURE_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.picture_url = iprot.readString();
+            this.pictureUrl = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -943,10 +1043,17 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         oprot.writeFieldEnd();
       }
     }
-    if (this.phone_number != null) {
-      if (isSetPhone_number()) {
-        oprot.writeFieldBegin(PHONE_NUMBER_FIELD_DESC);
-        oprot.writeString(this.phone_number);
+    if (this.privatePhoneNumber != null) {
+      if (isSetPrivatePhoneNumber()) {
+        oprot.writeFieldBegin(PRIVATE_PHONE_NUMBER_FIELD_DESC);
+        oprot.writeString(this.privatePhoneNumber);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.officePhoneNumber != null) {
+      if (isSetOfficePhoneNumber()) {
+        oprot.writeFieldBegin(OFFICE_PHONE_NUMBER_FIELD_DESC);
+        oprot.writeString(this.officePhoneNumber);
         oprot.writeFieldEnd();
       }
     }
@@ -964,17 +1071,24 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
         oprot.writeFieldEnd();
       }
     }
-    if (this.ou != null) {
-      if (isSetOu()) {
-        oprot.writeFieldBegin(OU_FIELD_DESC);
-        oprot.writeString(this.ou);
+    if (this.OrganizationalUnit != null) {
+      if (isSetOrganizationalUnit()) {
+        oprot.writeFieldBegin(ORGANIZATIONAL_UNIT_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.OrganizationalUnit.size()));
+          for (String _iter3 : this.OrganizationalUnit)
+          {
+            oprot.writeString(_iter3);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
     }
-    if (this.picture_url != null) {
-      if (isSetPicture_url()) {
+    if (this.pictureUrl != null) {
+      if (isSetPictureUrl()) {
         oprot.writeFieldBegin(PICTURE_URL_FIELD_DESC);
-        oprot.writeString(this.picture_url);
+        oprot.writeString(this.pictureUrl);
         oprot.writeFieldEnd();
       }
     }
@@ -1030,13 +1144,23 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       first = false;
     }
-    if (isSetPhone_number()) {
+    if (isSetPrivatePhoneNumber()) {
       if (!first) sb.append(", ");
-      sb.append("phone_number:");
-      if (this.phone_number == null) {
+      sb.append("privatePhoneNumber:");
+      if (this.privatePhoneNumber == null) {
         sb.append("null");
       } else {
-        sb.append(this.phone_number);
+        sb.append(this.privatePhoneNumber);
+      }
+      first = false;
+    }
+    if (isSetOfficePhoneNumber()) {
+      if (!first) sb.append(", ");
+      sb.append("officePhoneNumber:");
+      if (this.officePhoneNumber == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.officePhoneNumber);
       }
       first = false;
     }
@@ -1060,23 +1184,23 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
       }
       first = false;
     }
-    if (isSetOu()) {
+    if (isSetOrganizationalUnit()) {
       if (!first) sb.append(", ");
-      sb.append("ou:");
-      if (this.ou == null) {
+      sb.append("OrganizationalUnit:");
+      if (this.OrganizationalUnit == null) {
         sb.append("null");
       } else {
-        sb.append(this.ou);
+        sb.append(this.OrganizationalUnit);
       }
       first = false;
     }
-    if (isSetPicture_url()) {
+    if (isSetPictureUrl()) {
       if (!first) sb.append(", ");
-      sb.append("picture_url:");
-      if (this.picture_url == null) {
+      sb.append("pictureUrl:");
+      if (this.pictureUrl == null) {
         sb.append("null");
       } else {
-        sb.append(this.picture_url);
+        sb.append(this.pictureUrl);
       }
       first = false;
     }

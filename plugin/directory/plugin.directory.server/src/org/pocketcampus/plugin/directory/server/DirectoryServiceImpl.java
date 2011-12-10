@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 	
 	@Override
-	public List<Person> search(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
+	public List<Person> searchPersons(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		LinkedList<Person> results = new LinkedList<Person>();
 		String sciper;
 		
@@ -137,10 +138,25 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		for(Person sup : tmp){
 			if(!results.contains(sup))
 				results.add(sup);
+			else{
+				Iterator<Person> it = results.iterator();
+				
+				while(it.hasNext()){
+					Person duplicatePerson = it.next();
+					
+					if(duplicatePerson.equals(sup)){
+						sup.OrganizationalUnit.addAll(duplicatePerson.OrganizationalUnit);
+						break;
+					}
+				}
+			}
 		}
 		
 		//adding a test person
-		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPhone_number("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOu("StarkLabs"));
+		ArrayList<String> ouList = new ArrayList<String>();
+		ouList.add("Stark Labs");
+		ouList.add("S.H.I.E.L.D.");
+		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganizationalUnit(ouList));
 					
 
 		System.out.println("Directory: " + results.size() + "persons found for param: " + param);
@@ -182,14 +198,28 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						e.getAttributeValue("uniqueIdentifier"));
 				p.setMail(e.getAttributeValue("mail"));
 				p.setWeb(web);
-				p.setPhone_number(e.getAttributeValue("telephoneNumber"));
+				p.setOfficePhoneNumber(e.getAttributeValue("telephoneNumber"));
 				p.setOffice(e.getAttributeValue("roomNumber"));
 				p.setGaspar(e.getAttributeValue("uid"));
-				p.setOu(e.getAttributeValue("ou"));
+				ArrayList<String> ouList = new ArrayList<String>();
+				ouList.add(e.getAttributeValue("ou"));
+				p.setOrganizationalUnit(ouList);
 				
 				//no duplicates!
 				if( !results.contains(p))
 					results.add(p);
+				else{
+					Iterator<Person> it = results.iterator();
+					
+					while(it.hasNext()){
+						Person duplicatePerson = it.next();
+						
+						if(duplicatePerson.equals(p)){
+							p.OrganizationalUnit.addAll(duplicatePerson.OrganizationalUnit);
+							break;
+						}
+					}
+				}
 				
 			}
 			
@@ -260,13 +290,11 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 	}
 
-	@Override
-	public List<String> autocompleteGivenName(String arg0) throws TException {
+	public List<String> autocompleteGivenName(String arg0){
 		return autoComplete(arg0, given_names);
 	}
 
-	@Override
-	public List<String> autocompleteSecondName(String arg0) throws TException {
+	public List<String> autocompleteSecondName(String arg0){
 		return autoComplete(arg0, second_names);
 	}
 	
@@ -280,6 +308,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		}
 		
 		return prop;
+	}
+
+	@Override
+	public List<String> autocomplete(String constraint) throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

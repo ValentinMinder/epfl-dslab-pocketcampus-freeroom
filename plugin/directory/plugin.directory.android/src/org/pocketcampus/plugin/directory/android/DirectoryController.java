@@ -93,7 +93,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		HashSet<String> allOU = new HashSet<String>();
 		//String toast ="";
 		for(Person p : mModel.getResults()){
-			allOU.add(p.ou);
+			allOU.addAll(p.OrganizationalUnit);
 			//toast += " " + p.ou;
 		}
 		
@@ -107,7 +107,12 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		Iterator<Person> i = mModel.getResults().iterator();
 		int j=0;
 		while(i.hasNext()){
-			if(!ouToKeep.contains( i.next().ou)){
+			boolean keep = false;
+			for(String ou: i.next().OrganizationalUnit){
+				if(ouToKeep.contains(ou))
+					keep = true;
+			}
+			if(!keep){
 				i.remove();
 				j++;
 			}

@@ -25,25 +25,21 @@ public class DirectoryService {
 
   public interface Iface {
 
-    public List<Person> search(String param) throws LDAPException, org.apache.thrift.TException;
+    public List<Person> searchPersons(String nameOrSciper) throws LDAPException, org.apache.thrift.TException;
 
     public String getProfilePicture(String sciper) throws NoPictureFound, org.apache.thrift.TException;
 
-    public List<String> autocompleteGivenName(String constraint) throws org.apache.thrift.TException;
-
-    public List<String> autocompleteSecondName(String constraint) throws org.apache.thrift.TException;
+    public List<String> autocomplete(String constraint) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
+    public void searchPersons(String nameOrSciper, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.searchPersons_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getProfilePicture(String sciper, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getProfilePicture_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void autocompleteGivenName(String constraint, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autocompleteGivenName_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void autocompleteSecondName(String constraint, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autocompleteSecondName_call> resultHandler) throws org.apache.thrift.TException;
+    public void autocomplete(String constraint, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.autocomplete_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -67,30 +63,30 @@ public class DirectoryService {
       super(iprot, oprot);
     }
 
-    public List<Person> search(String param) throws LDAPException, org.apache.thrift.TException
+    public List<Person> searchPersons(String nameOrSciper) throws LDAPException, org.apache.thrift.TException
     {
-      send_search(param);
-      return recv_search();
+      send_searchPersons(nameOrSciper);
+      return recv_searchPersons();
     }
 
-    public void send_search(String param) throws org.apache.thrift.TException
+    public void send_searchPersons(String nameOrSciper) throws org.apache.thrift.TException
     {
-      search_args args = new search_args();
-      args.setParam(param);
-      sendBase("search", args);
+      searchPersons_args args = new searchPersons_args();
+      args.setNameOrSciper(nameOrSciper);
+      sendBase("searchPersons", args);
     }
 
-    public List<Person> recv_search() throws LDAPException, org.apache.thrift.TException
+    public List<Person> recv_searchPersons() throws LDAPException, org.apache.thrift.TException
     {
-      search_result result = new search_result();
-      receiveBase(result, "search");
+      searchPersons_result result = new searchPersons_result();
+      receiveBase(result, "searchPersons");
       if (result.isSetSuccess()) {
         return result.success;
       }
       if (result.le != null) {
         throw result.le;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "search failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchPersons failed: unknown result");
     }
 
     public String getProfilePicture(String sciper) throws NoPictureFound, org.apache.thrift.TException
@@ -119,50 +115,27 @@ public class DirectoryService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getProfilePicture failed: unknown result");
     }
 
-    public List<String> autocompleteGivenName(String constraint) throws org.apache.thrift.TException
+    public List<String> autocomplete(String constraint) throws org.apache.thrift.TException
     {
-      send_autocompleteGivenName(constraint);
-      return recv_autocompleteGivenName();
+      send_autocomplete(constraint);
+      return recv_autocomplete();
     }
 
-    public void send_autocompleteGivenName(String constraint) throws org.apache.thrift.TException
+    public void send_autocomplete(String constraint) throws org.apache.thrift.TException
     {
-      autocompleteGivenName_args args = new autocompleteGivenName_args();
+      autocomplete_args args = new autocomplete_args();
       args.setConstraint(constraint);
-      sendBase("autocompleteGivenName", args);
+      sendBase("autocomplete", args);
     }
 
-    public List<String> recv_autocompleteGivenName() throws org.apache.thrift.TException
+    public List<String> recv_autocomplete() throws org.apache.thrift.TException
     {
-      autocompleteGivenName_result result = new autocompleteGivenName_result();
-      receiveBase(result, "autocompleteGivenName");
+      autocomplete_result result = new autocomplete_result();
+      receiveBase(result, "autocomplete");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autocompleteGivenName failed: unknown result");
-    }
-
-    public List<String> autocompleteSecondName(String constraint) throws org.apache.thrift.TException
-    {
-      send_autocompleteSecondName(constraint);
-      return recv_autocompleteSecondName();
-    }
-
-    public void send_autocompleteSecondName(String constraint) throws org.apache.thrift.TException
-    {
-      autocompleteSecondName_args args = new autocompleteSecondName_args();
-      args.setConstraint(constraint);
-      sendBase("autocompleteSecondName", args);
-    }
-
-    public List<String> recv_autocompleteSecondName() throws org.apache.thrift.TException
-    {
-      autocompleteSecondName_result result = new autocompleteSecondName_result();
-      receiveBase(result, "autocompleteSecondName");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autocompleteSecondName failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autocomplete failed: unknown result");
     }
 
   }
@@ -183,24 +156,24 @@ public class DirectoryService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void search(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
+    public void searchPersons(String nameOrSciper, org.apache.thrift.async.AsyncMethodCallback<searchPersons_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      search_call method_call = new search_call(param, resultHandler, this, ___protocolFactory, ___transport);
+      searchPersons_call method_call = new searchPersons_call(nameOrSciper, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class search_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String param;
-      public search_call(String param, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class searchPersons_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String nameOrSciper;
+      public searchPersons_call(String nameOrSciper, org.apache.thrift.async.AsyncMethodCallback<searchPersons_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.param = param;
+        this.nameOrSciper = nameOrSciper;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        search_args args = new search_args();
-        args.setParam(param);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchPersons", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        searchPersons_args args = new searchPersons_args();
+        args.setNameOrSciper(nameOrSciper);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -211,7 +184,7 @@ public class DirectoryService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_search();
+        return (new Client(prot)).recv_searchPersons();
       }
     }
 
@@ -247,23 +220,23 @@ public class DirectoryService {
       }
     }
 
-    public void autocompleteGivenName(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocompleteGivenName_call> resultHandler) throws org.apache.thrift.TException {
+    public void autocomplete(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocomplete_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      autocompleteGivenName_call method_call = new autocompleteGivenName_call(constraint, resultHandler, this, ___protocolFactory, ___transport);
+      autocomplete_call method_call = new autocomplete_call(constraint, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class autocompleteGivenName_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class autocomplete_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String constraint;
-      public autocompleteGivenName_call(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocompleteGivenName_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public autocomplete_call(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocomplete_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.constraint = constraint;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("autocompleteGivenName", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        autocompleteGivenName_args args = new autocompleteGivenName_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("autocomplete", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        autocomplete_args args = new autocomplete_args();
         args.setConstraint(constraint);
         args.write(prot);
         prot.writeMessageEnd();
@@ -275,39 +248,7 @@ public class DirectoryService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_autocompleteGivenName();
-      }
-    }
-
-    public void autocompleteSecondName(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocompleteSecondName_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      autocompleteSecondName_call method_call = new autocompleteSecondName_call(constraint, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class autocompleteSecondName_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String constraint;
-      public autocompleteSecondName_call(String constraint, org.apache.thrift.async.AsyncMethodCallback<autocompleteSecondName_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.constraint = constraint;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("autocompleteSecondName", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        autocompleteSecondName_args args = new autocompleteSecondName_args();
-        args.setConstraint(constraint);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public List<String> getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_autocompleteSecondName();
+        return (new Client(prot)).recv_autocomplete();
       }
     }
 
@@ -324,26 +265,25 @@ public class DirectoryService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("search", new search());
+      processMap.put("searchPersons", new searchPersons());
       processMap.put("getProfilePicture", new getProfilePicture());
-      processMap.put("autocompleteGivenName", new autocompleteGivenName());
-      processMap.put("autocompleteSecondName", new autocompleteSecondName());
+      processMap.put("autocomplete", new autocomplete());
       return processMap;
     }
 
-    private static class search<I extends Iface> extends org.apache.thrift.ProcessFunction<I, search_args> {
-      public search() {
-        super("search");
+    private static class searchPersons<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchPersons_args> {
+      public searchPersons() {
+        super("searchPersons");
       }
 
-      protected search_args getEmptyArgsInstance() {
-        return new search_args();
+      protected searchPersons_args getEmptyArgsInstance() {
+        return new searchPersons_args();
       }
 
-      protected search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
-        search_result result = new search_result();
+      protected searchPersons_result getResult(I iface, searchPersons_args args) throws org.apache.thrift.TException {
+        searchPersons_result result = new searchPersons_result();
         try {
-          result.success = iface.search(args.param);
+          result.success = iface.searchPersons(args.nameOrSciper);
         } catch (LDAPException le) {
           result.le = le;
         }
@@ -371,50 +311,34 @@ public class DirectoryService {
       }
     }
 
-    private static class autocompleteGivenName<I extends Iface> extends org.apache.thrift.ProcessFunction<I, autocompleteGivenName_args> {
-      public autocompleteGivenName() {
-        super("autocompleteGivenName");
+    private static class autocomplete<I extends Iface> extends org.apache.thrift.ProcessFunction<I, autocomplete_args> {
+      public autocomplete() {
+        super("autocomplete");
       }
 
-      protected autocompleteGivenName_args getEmptyArgsInstance() {
-        return new autocompleteGivenName_args();
+      protected autocomplete_args getEmptyArgsInstance() {
+        return new autocomplete_args();
       }
 
-      protected autocompleteGivenName_result getResult(I iface, autocompleteGivenName_args args) throws org.apache.thrift.TException {
-        autocompleteGivenName_result result = new autocompleteGivenName_result();
-        result.success = iface.autocompleteGivenName(args.constraint);
-        return result;
-      }
-    }
-
-    private static class autocompleteSecondName<I extends Iface> extends org.apache.thrift.ProcessFunction<I, autocompleteSecondName_args> {
-      public autocompleteSecondName() {
-        super("autocompleteSecondName");
-      }
-
-      protected autocompleteSecondName_args getEmptyArgsInstance() {
-        return new autocompleteSecondName_args();
-      }
-
-      protected autocompleteSecondName_result getResult(I iface, autocompleteSecondName_args args) throws org.apache.thrift.TException {
-        autocompleteSecondName_result result = new autocompleteSecondName_result();
-        result.success = iface.autocompleteSecondName(args.constraint);
+      protected autocomplete_result getResult(I iface, autocomplete_args args) throws org.apache.thrift.TException {
+        autocomplete_result result = new autocomplete_result();
+        result.success = iface.autocomplete(args.constraint);
         return result;
       }
     }
 
   }
 
-  public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
+  public static class searchPersons_args implements org.apache.thrift.TBase<searchPersons_args, searchPersons_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchPersons_args");
 
-    private static final org.apache.thrift.protocol.TField PARAM_FIELD_DESC = new org.apache.thrift.protocol.TField("param", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField NAME_OR_SCIPER_FIELD_DESC = new org.apache.thrift.protocol.TField("nameOrSciper", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-    public String param; // required
+    public String nameOrSciper; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      PARAM((short)1, "param");
+      NAME_OR_SCIPER((short)1, "nameOrSciper");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -429,8 +353,8 @@ public class DirectoryService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PARAM
-            return PARAM;
+          case 1: // NAME_OR_SCIPER
+            return NAME_OR_SCIPER;
           default:
             return null;
         }
@@ -475,71 +399,71 @@ public class DirectoryService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PARAM, new org.apache.thrift.meta_data.FieldMetaData("param", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.NAME_OR_SCIPER, new org.apache.thrift.meta_data.FieldMetaData("nameOrSciper", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchPersons_args.class, metaDataMap);
     }
 
-    public search_args() {
+    public searchPersons_args() {
     }
 
-    public search_args(
-      String param)
+    public searchPersons_args(
+      String nameOrSciper)
     {
       this();
-      this.param = param;
+      this.nameOrSciper = nameOrSciper;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_args(search_args other) {
-      if (other.isSetParam()) {
-        this.param = other.param;
+    public searchPersons_args(searchPersons_args other) {
+      if (other.isSetNameOrSciper()) {
+        this.nameOrSciper = other.nameOrSciper;
       }
     }
 
-    public search_args deepCopy() {
-      return new search_args(this);
+    public searchPersons_args deepCopy() {
+      return new searchPersons_args(this);
     }
 
     @Override
     public void clear() {
-      this.param = null;
+      this.nameOrSciper = null;
     }
 
-    public String getParam() {
-      return this.param;
+    public String getNameOrSciper() {
+      return this.nameOrSciper;
     }
 
-    public search_args setParam(String param) {
-      this.param = param;
+    public searchPersons_args setNameOrSciper(String nameOrSciper) {
+      this.nameOrSciper = nameOrSciper;
       return this;
     }
 
-    public void unsetParam() {
-      this.param = null;
+    public void unsetNameOrSciper() {
+      this.nameOrSciper = null;
     }
 
-    /** Returns true if field param is set (has been assigned a value) and false otherwise */
-    public boolean isSetParam() {
-      return this.param != null;
+    /** Returns true if field nameOrSciper is set (has been assigned a value) and false otherwise */
+    public boolean isSetNameOrSciper() {
+      return this.nameOrSciper != null;
     }
 
-    public void setParamIsSet(boolean value) {
+    public void setNameOrSciperIsSet(boolean value) {
       if (!value) {
-        this.param = null;
+        this.nameOrSciper = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case PARAM:
+      case NAME_OR_SCIPER:
         if (value == null) {
-          unsetParam();
+          unsetNameOrSciper();
         } else {
-          setParam((String)value);
+          setNameOrSciper((String)value);
         }
         break;
 
@@ -548,8 +472,8 @@ public class DirectoryService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case PARAM:
-        return getParam();
+      case NAME_OR_SCIPER:
+        return getNameOrSciper();
 
       }
       throw new IllegalStateException();
@@ -562,8 +486,8 @@ public class DirectoryService {
       }
 
       switch (field) {
-      case PARAM:
-        return isSetParam();
+      case NAME_OR_SCIPER:
+        return isSetNameOrSciper();
       }
       throw new IllegalStateException();
     }
@@ -572,21 +496,21 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_args)
-        return this.equals((search_args)that);
+      if (that instanceof searchPersons_args)
+        return this.equals((searchPersons_args)that);
       return false;
     }
 
-    public boolean equals(search_args that) {
+    public boolean equals(searchPersons_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_param = true && this.isSetParam();
-      boolean that_present_param = true && that.isSetParam();
-      if (this_present_param || that_present_param) {
-        if (!(this_present_param && that_present_param))
+      boolean this_present_nameOrSciper = true && this.isSetNameOrSciper();
+      boolean that_present_nameOrSciper = true && that.isSetNameOrSciper();
+      if (this_present_nameOrSciper || that_present_nameOrSciper) {
+        if (!(this_present_nameOrSciper && that_present_nameOrSciper))
           return false;
-        if (!this.param.equals(that.param))
+        if (!this.nameOrSciper.equals(that.nameOrSciper))
           return false;
       }
 
@@ -597,28 +521,28 @@ public class DirectoryService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_param = true && (isSetParam());
-      builder.append(present_param);
-      if (present_param)
-        builder.append(param);
+      boolean present_nameOrSciper = true && (isSetNameOrSciper());
+      builder.append(present_nameOrSciper);
+      if (present_nameOrSciper)
+        builder.append(nameOrSciper);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(search_args other) {
+    public int compareTo(searchPersons_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_args typedOther = (search_args)other;
+      searchPersons_args typedOther = (searchPersons_args)other;
 
-      lastComparison = Boolean.valueOf(isSetParam()).compareTo(typedOther.isSetParam());
+      lastComparison = Boolean.valueOf(isSetNameOrSciper()).compareTo(typedOther.isSetNameOrSciper());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetParam()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.param, typedOther.param);
+      if (isSetNameOrSciper()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.nameOrSciper, typedOther.nameOrSciper);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -640,9 +564,9 @@ public class DirectoryService {
           break;
         }
         switch (field.id) {
-          case 1: // PARAM
+          case 1: // NAME_OR_SCIPER
             if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.param = iprot.readString();
+              this.nameOrSciper = iprot.readString();
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -662,9 +586,9 @@ public class DirectoryService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.param != null) {
-        oprot.writeFieldBegin(PARAM_FIELD_DESC);
-        oprot.writeString(this.param);
+      if (this.nameOrSciper != null) {
+        oprot.writeFieldBegin(NAME_OR_SCIPER_FIELD_DESC);
+        oprot.writeString(this.nameOrSciper);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -673,14 +597,14 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_args(");
+      StringBuilder sb = new StringBuilder("searchPersons_args(");
       boolean first = true;
 
-      sb.append("param:");
-      if (this.param == null) {
+      sb.append("nameOrSciper:");
+      if (this.nameOrSciper == null) {
         sb.append("null");
       } else {
-        sb.append(this.param);
+        sb.append(this.nameOrSciper);
       }
       first = false;
       sb.append(")");
@@ -709,8 +633,8 @@ public class DirectoryService {
 
   }
 
-  public static class search_result implements org.apache.thrift.TBase<search_result, search_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_result");
+  public static class searchPersons_result implements org.apache.thrift.TBase<searchPersons_result, searchPersons_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchPersons_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
     private static final org.apache.thrift.protocol.TField LE_FIELD_DESC = new org.apache.thrift.protocol.TField("le", org.apache.thrift.protocol.TType.STRUCT, (short)1);
@@ -790,13 +714,13 @@ public class DirectoryService {
       tmpMap.put(_Fields.LE, new org.apache.thrift.meta_data.FieldMetaData("le", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchPersons_result.class, metaDataMap);
     }
 
-    public search_result() {
+    public searchPersons_result() {
     }
 
-    public search_result(
+    public searchPersons_result(
       List<Person> success,
       LDAPException le)
     {
@@ -808,7 +732,7 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public search_result(search_result other) {
+    public searchPersons_result(searchPersons_result other) {
       if (other.isSetSuccess()) {
         List<Person> __this__success = new ArrayList<Person>();
         for (Person other_element : other.success) {
@@ -821,8 +745,8 @@ public class DirectoryService {
       }
     }
 
-    public search_result deepCopy() {
-      return new search_result(this);
+    public searchPersons_result deepCopy() {
+      return new searchPersons_result(this);
     }
 
     @Override
@@ -850,7 +774,7 @@ public class DirectoryService {
       return this.success;
     }
 
-    public search_result setSuccess(List<Person> success) {
+    public searchPersons_result setSuccess(List<Person> success) {
       this.success = success;
       return this;
     }
@@ -874,7 +798,7 @@ public class DirectoryService {
       return this.le;
     }
 
-    public search_result setLe(LDAPException le) {
+    public searchPersons_result setLe(LDAPException le) {
       this.le = le;
       return this;
     }
@@ -946,12 +870,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof search_result)
-        return this.equals((search_result)that);
+      if (that instanceof searchPersons_result)
+        return this.equals((searchPersons_result)that);
       return false;
     }
 
-    public boolean equals(search_result that) {
+    public boolean equals(searchPersons_result that) {
       if (that == null)
         return false;
 
@@ -993,13 +917,13 @@ public class DirectoryService {
       return builder.toHashCode();
     }
 
-    public int compareTo(search_result other) {
+    public int compareTo(searchPersons_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      search_result typedOther = (search_result)other;
+      searchPersons_result typedOther = (searchPersons_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1041,14 +965,14 @@ public class DirectoryService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Person>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                this.success = new ArrayList<Person>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
                 {
-                  Person _elem2; // required
-                  _elem2 = new Person();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
+                  Person _elem6; // required
+                  _elem6 = new Person();
+                  _elem6.read(iprot);
+                  this.success.add(_elem6);
                 }
                 iprot.readListEnd();
               }
@@ -1082,9 +1006,9 @@ public class DirectoryService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Person _iter3 : this.success)
+          for (Person _iter7 : this.success)
           {
-            _iter3.write(oprot);
+            _iter7.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1100,7 +1024,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("search_result(");
+      StringBuilder sb = new StringBuilder("searchPersons_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1845,8 +1769,8 @@ public class DirectoryService {
 
   }
 
-  public static class autocompleteGivenName_args implements org.apache.thrift.TBase<autocompleteGivenName_args, autocompleteGivenName_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocompleteGivenName_args");
+  public static class autocomplete_args implements org.apache.thrift.TBase<autocomplete_args, autocomplete_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocomplete_args");
 
     private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
 
@@ -1918,13 +1842,13 @@ public class DirectoryService {
       tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocompleteGivenName_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocomplete_args.class, metaDataMap);
     }
 
-    public autocompleteGivenName_args() {
+    public autocomplete_args() {
     }
 
-    public autocompleteGivenName_args(
+    public autocomplete_args(
       String constraint)
     {
       this();
@@ -1934,14 +1858,14 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public autocompleteGivenName_args(autocompleteGivenName_args other) {
+    public autocomplete_args(autocomplete_args other) {
       if (other.isSetConstraint()) {
         this.constraint = other.constraint;
       }
     }
 
-    public autocompleteGivenName_args deepCopy() {
-      return new autocompleteGivenName_args(this);
+    public autocomplete_args deepCopy() {
+      return new autocomplete_args(this);
     }
 
     @Override
@@ -1953,7 +1877,7 @@ public class DirectoryService {
       return this.constraint;
     }
 
-    public autocompleteGivenName_args setConstraint(String constraint) {
+    public autocomplete_args setConstraint(String constraint) {
       this.constraint = constraint;
       return this;
     }
@@ -2012,12 +1936,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof autocompleteGivenName_args)
-        return this.equals((autocompleteGivenName_args)that);
+      if (that instanceof autocomplete_args)
+        return this.equals((autocomplete_args)that);
       return false;
     }
 
-    public boolean equals(autocompleteGivenName_args that) {
+    public boolean equals(autocomplete_args that) {
       if (that == null)
         return false;
 
@@ -2045,13 +1969,13 @@ public class DirectoryService {
       return builder.toHashCode();
     }
 
-    public int compareTo(autocompleteGivenName_args other) {
+    public int compareTo(autocomplete_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      autocompleteGivenName_args typedOther = (autocompleteGivenName_args)other;
+      autocomplete_args typedOther = (autocomplete_args)other;
 
       lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
       if (lastComparison != 0) {
@@ -2113,7 +2037,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("autocompleteGivenName_args(");
+      StringBuilder sb = new StringBuilder("autocomplete_args(");
       boolean first = true;
 
       sb.append("constraint:");
@@ -2149,8 +2073,8 @@ public class DirectoryService {
 
   }
 
-  public static class autocompleteGivenName_result implements org.apache.thrift.TBase<autocompleteGivenName_result, autocompleteGivenName_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocompleteGivenName_result");
+  public static class autocomplete_result implements org.apache.thrift.TBase<autocomplete_result, autocomplete_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocomplete_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
@@ -2223,13 +2147,13 @@ public class DirectoryService {
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
               new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocompleteGivenName_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocomplete_result.class, metaDataMap);
     }
 
-    public autocompleteGivenName_result() {
+    public autocomplete_result() {
     }
 
-    public autocompleteGivenName_result(
+    public autocomplete_result(
       List<String> success)
     {
       this();
@@ -2239,7 +2163,7 @@ public class DirectoryService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public autocompleteGivenName_result(autocompleteGivenName_result other) {
+    public autocomplete_result(autocomplete_result other) {
       if (other.isSetSuccess()) {
         List<String> __this__success = new ArrayList<String>();
         for (String other_element : other.success) {
@@ -2249,8 +2173,8 @@ public class DirectoryService {
       }
     }
 
-    public autocompleteGivenName_result deepCopy() {
-      return new autocompleteGivenName_result(this);
+    public autocomplete_result deepCopy() {
+      return new autocomplete_result(this);
     }
 
     @Override
@@ -2277,7 +2201,7 @@ public class DirectoryService {
       return this.success;
     }
 
-    public autocompleteGivenName_result setSuccess(List<String> success) {
+    public autocomplete_result setSuccess(List<String> success) {
       this.success = success;
       return this;
     }
@@ -2336,12 +2260,12 @@ public class DirectoryService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof autocompleteGivenName_result)
-        return this.equals((autocompleteGivenName_result)that);
+      if (that instanceof autocomplete_result)
+        return this.equals((autocomplete_result)that);
       return false;
     }
 
-    public boolean equals(autocompleteGivenName_result that) {
+    public boolean equals(autocomplete_result that) {
       if (that == null)
         return false;
 
@@ -2369,657 +2293,13 @@ public class DirectoryService {
       return builder.toHashCode();
     }
 
-    public int compareTo(autocompleteGivenName_result other) {
+    public int compareTo(autocomplete_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      autocompleteGivenName_result typedOther = (autocompleteGivenName_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<String>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  String _elem6; // required
-                  _elem6 = iprot.readString();
-                  this.success.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, this.success.size()));
-          for (String _iter7 : this.success)
-          {
-            oprot.writeString(_iter7);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("autocompleteGivenName_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class autocompleteSecondName_args implements org.apache.thrift.TBase<autocompleteSecondName_args, autocompleteSecondName_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocompleteSecondName_args");
-
-    private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
-
-    public String constraint; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      CONSTRAINT((short)1, "constraint");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // CONSTRAINT
-            return CONSTRAINT;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocompleteSecondName_args.class, metaDataMap);
-    }
-
-    public autocompleteSecondName_args() {
-    }
-
-    public autocompleteSecondName_args(
-      String constraint)
-    {
-      this();
-      this.constraint = constraint;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public autocompleteSecondName_args(autocompleteSecondName_args other) {
-      if (other.isSetConstraint()) {
-        this.constraint = other.constraint;
-      }
-    }
-
-    public autocompleteSecondName_args deepCopy() {
-      return new autocompleteSecondName_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.constraint = null;
-    }
-
-    public String getConstraint() {
-      return this.constraint;
-    }
-
-    public autocompleteSecondName_args setConstraint(String constraint) {
-      this.constraint = constraint;
-      return this;
-    }
-
-    public void unsetConstraint() {
-      this.constraint = null;
-    }
-
-    /** Returns true if field constraint is set (has been assigned a value) and false otherwise */
-    public boolean isSetConstraint() {
-      return this.constraint != null;
-    }
-
-    public void setConstraintIsSet(boolean value) {
-      if (!value) {
-        this.constraint = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case CONSTRAINT:
-        if (value == null) {
-          unsetConstraint();
-        } else {
-          setConstraint((String)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case CONSTRAINT:
-        return getConstraint();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case CONSTRAINT:
-        return isSetConstraint();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof autocompleteSecondName_args)
-        return this.equals((autocompleteSecondName_args)that);
-      return false;
-    }
-
-    public boolean equals(autocompleteSecondName_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_constraint = true && this.isSetConstraint();
-      boolean that_present_constraint = true && that.isSetConstraint();
-      if (this_present_constraint || that_present_constraint) {
-        if (!(this_present_constraint && that_present_constraint))
-          return false;
-        if (!this.constraint.equals(that.constraint))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_constraint = true && (isSetConstraint());
-      builder.append(present_constraint);
-      if (present_constraint)
-        builder.append(constraint);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(autocompleteSecondName_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      autocompleteSecondName_args typedOther = (autocompleteSecondName_args)other;
-
-      lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetConstraint()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.constraint, typedOther.constraint);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      org.apache.thrift.protocol.TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // CONSTRAINT
-            if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.constraint = iprot.readString();
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.constraint != null) {
-        oprot.writeFieldBegin(CONSTRAINT_FIELD_DESC);
-        oprot.writeString(this.constraint);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("autocompleteSecondName_args(");
-      boolean first = true;
-
-      sb.append("constraint:");
-      if (this.constraint == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.constraint);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-  }
-
-  public static class autocompleteSecondName_result implements org.apache.thrift.TBase<autocompleteSecondName_result, autocompleteSecondName_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("autocompleteSecondName_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
-
-    public List<String> success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocompleteSecondName_result.class, metaDataMap);
-    }
-
-    public autocompleteSecondName_result() {
-    }
-
-    public autocompleteSecondName_result(
-      List<String> success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public autocompleteSecondName_result(autocompleteSecondName_result other) {
-      if (other.isSetSuccess()) {
-        List<String> __this__success = new ArrayList<String>();
-        for (String other_element : other.success) {
-          __this__success.add(other_element);
-        }
-        this.success = __this__success;
-      }
-    }
-
-    public autocompleteSecondName_result deepCopy() {
-      return new autocompleteSecondName_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<String> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(String elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<String>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<String> getSuccess() {
-      return this.success;
-    }
-
-    public autocompleteSecondName_result setSuccess(List<String> success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((List<String>)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof autocompleteSecondName_result)
-        return this.equals((autocompleteSecondName_result)that);
-      return false;
-    }
-
-    public boolean equals(autocompleteSecondName_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      HashCodeBuilder builder = new HashCodeBuilder();
-
-      boolean present_success = true && (isSetSuccess());
-      builder.append(present_success);
-      if (present_success)
-        builder.append(success);
-
-      return builder.toHashCode();
-    }
-
-    public int compareTo(autocompleteSecondName_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      autocompleteSecondName_result typedOther = (autocompleteSecondName_result)other;
+      autocomplete_result typedOther = (autocomplete_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -3097,7 +2377,7 @@ public class DirectoryService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("autocompleteSecondName_result(");
+      StringBuilder sb = new StringBuilder("autocomplete_result(");
       boolean first = true;
 
       sb.append("success:");

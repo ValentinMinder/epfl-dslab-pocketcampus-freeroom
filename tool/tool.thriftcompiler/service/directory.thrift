@@ -20,11 +20,12 @@ struct Person {
 	3: required string sciper;
 	4: optional string mail;
 	5: optional string web;
-	6: optional string phone_number;
-	7: optional string office;
-	8: optional string gaspar;
-	9: optional string ou;
-	10: optional string picture_url;
+	6: optional string privatePhoneNumber;
+	7: optional string officePhoneNumber;
+	8: optional string office;
+	9: optional string gaspar;
+	10: optional list<string> OrganizationalUnit;
+	11: optional string pictureUrl;
 	
 }
 
@@ -37,8 +38,7 @@ exception NoPictureFound{
 }
 
 service DirectoryService {
-	list<Person> search(1: string param) throws (1: LDAPException le);
+	list<Person> searchPersons(1: string nameOrSciper) throws (1: LDAPException le);
 	string getProfilePicture(1: string sciper) throws (1: NoPictureFound npf);
-	list<string> autocompleteGivenName(1:string constraint);
-	list<string> autocompleteSecondName(1:string constraint);
+	list<string> autocomplete(1:string constraint);
 }

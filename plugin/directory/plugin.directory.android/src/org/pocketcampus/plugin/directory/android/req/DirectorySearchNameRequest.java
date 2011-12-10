@@ -29,7 +29,7 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 
 	@Override
 	protected List<Person> runInBackground(Iface client, String param) throws Exception {
-		return client.search(param);
+		return client.searchPersons(param);
 	}
 	
 
