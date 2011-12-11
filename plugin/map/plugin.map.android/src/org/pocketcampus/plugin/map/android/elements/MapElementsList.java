@@ -14,7 +14,7 @@ public class MapElementsList extends ArrayList<MapElement> {
 	 */
 	private String layerTitle_;
 	private int cacheTimeInSeconds_;
-	private String layerId_;
+	private long layerId_;
 	private String iconUrl_;
 	private boolean isDisplayable_;
 	
@@ -34,7 +34,7 @@ public class MapElementsList extends ArrayList<MapElement> {
 	public MapElementsList(MapLayer mlb) {
 		layerTitle_ = mlb.getName();
 		cacheTimeInSeconds_ = mlb.getCacheInSeconds();
-		layerId_ = mlb.getExternalId();
+		layerId_ = mlb.getLayerId();
 		iconUrl_ = mlb.getDrawableUrl();
 		isDisplayable_ = mlb.isDisplayable();
 	}
@@ -49,7 +49,7 @@ public class MapElementsList extends ArrayList<MapElement> {
 		return null;
 	}
 		
-	public String getLayerId() {
+	public long getLayerId() {
 		return layerId_;
 	}
 	
@@ -87,11 +87,18 @@ public class MapElementsList extends ArrayList<MapElement> {
 	public boolean isDisplayable() {
 		return isDisplayable_;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = prime + ((layerId_ == null) ? 0 : layerId_.hashCode());
+		int result = super.hashCode();
+		result = prime * result + cacheTimeInSeconds_;
+		result = prime * result
+				+ ((iconUrl_ == null) ? 0 : iconUrl_.hashCode());
+		result = prime * result + (isDisplayable_ ? 1231 : 1237);
+		result = prime * result + (int) (layerId_ ^ (layerId_ >>> 32));
+		result = prime * result
+				+ ((layerTitle_ == null) ? 0 : layerTitle_.hashCode());
 		return result;
 	}
 
@@ -99,13 +106,26 @@ public class MapElementsList extends ArrayList<MapElement> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+		if (!super.equals(obj))
+			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		MapElementsList other = (MapElementsList) obj;
-		if (layerId_ == null) {
-			if (other.layerId_ != null)
+		if (cacheTimeInSeconds_ != other.cacheTimeInSeconds_)
+			return false;
+		if (iconUrl_ == null) {
+			if (other.iconUrl_ != null)
 				return false;
-		} else if (!layerId_.equals(other.layerId_))
+		} else if (!iconUrl_.equals(other.iconUrl_))
+			return false;
+		if (isDisplayable_ != other.isDisplayable_)
+			return false;
+		if (layerId_ != other.layerId_)
+			return false;
+		if (layerTitle_ == null) {
+			if (other.layerTitle_ != null)
+				return false;
+		} else if (!layerTitle_.equals(other.layerTitle_))
 			return false;
 		return true;
 	}

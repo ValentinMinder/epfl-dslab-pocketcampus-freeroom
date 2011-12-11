@@ -54,9 +54,9 @@ public class LayersCache {
 				Log.d(this.getClass().toString(), "Saving layers to file");
 				
 				// Save only the IDs of the layers
-				List<String> layersStrings = new ArrayList<String>();
+				List<Integer> layersStrings = new ArrayList<Integer>();
 				for(MapElementsList mel : layers) {
-					layersStrings.add(mel.getLayerId());
+					layersStrings.add((int) mel.getLayerId());
 				}
 
 				// Try to save into the file

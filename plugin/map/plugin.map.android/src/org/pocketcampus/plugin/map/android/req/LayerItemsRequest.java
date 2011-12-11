@@ -5,19 +5,14 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.map.android.MapMainController;
 import org.pocketcampus.plugin.map.android.MapModel;
-import org.pocketcampus.plugin.map.shared.MapLayer;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 
-public class LayerRequest extends Request<MapMainController, Iface, Object, List<MapLayer>> {
+public class LayerItemsRequest extends Request<MapMainController, Iface, Integer, List<MapItem>> {
 
 	@Override
-	protected List<MapLayer> runInBackground(Iface client, Object param) throws Exception {
-		return client.getLayerList();
-	}
-
-	@Override
-	protected void onResult(MapMainController controller, List<MapLayer> result) {
-		((MapModel) controller.getModel()).setLayers(result);
+	protected List<MapItem> runInBackground(Iface client, Integer id) throws Exception {
+		return client.getLayerItems(id);
 	}
 
 	@Override
@@ -26,4 +21,11 @@ public class LayerRequest extends Request<MapMainController, Iface, Object, List
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
+
+	@Override
+	protected void onResult(MapMainController controller, List<MapItem> result) {
+		((MapModel) controller.getModel()).addLayerItems(result);
+	}
+	
+	
 }

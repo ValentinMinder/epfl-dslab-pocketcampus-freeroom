@@ -55,5 +55,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.takeoutreceiver.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.shared"/>
+	<classpathentry kind="src" path="/plugin.map.server"/>
+	<classpathentry kind="src" path="/plugin.map.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

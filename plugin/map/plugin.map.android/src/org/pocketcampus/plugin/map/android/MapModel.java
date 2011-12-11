@@ -5,6 +5,7 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
 public class MapModel extends PluginModel {
@@ -24,5 +25,9 @@ public class MapModel extends PluginModel {
 	
 	public List<MapLayer> getLayers() {
 		return mLayers;
+	}
+
+	public void addLayerItems(List<MapItem> result) {
+		System.out.println(result);
 	}
 }

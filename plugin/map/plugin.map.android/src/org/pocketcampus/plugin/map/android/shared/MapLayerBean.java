@@ -19,7 +19,7 @@ public class MapLayerBean implements Serializable {
 	
 	private String name;
 	private String drawableUrl;
-	private String externalId;
+	private long externalId;
 	private transient int pluginInternalId; // Do not serialize it
 	private int cacheInSeconds;
 	private boolean displayable;
@@ -47,10 +47,11 @@ public class MapLayerBean implements Serializable {
 			String s = new String(pluginInstance.getClass().getCanonicalName() + layerId);
 		    m.update(s.getBytes(),0,s.length());
 		    BigInteger i = new BigInteger(1,m.digest());
-			this.externalId =  String.format("%1$032X", i);
+			//this.externalId =  String.format("%1$032X", i);
+		    this.externalId =  Integer.parseInt(i.toString());
 			
 		} catch (NoSuchAlgorithmException e) {
-			this.externalId = pluginInstance.getClass().getCanonicalName() + layerId;
+			this.externalId = 0;//pluginInstance.getClass().getCanonicalName() + layerId;
 		}
 	}
 	
@@ -75,7 +76,7 @@ public class MapLayerBean implements Serializable {
 		this.drawableUrl = drawable_url;
 	}
 	
-	public String getExternalId() {
+	public long getExternalId() {
 		return externalId;
 	}
 	public int getInternalId() {

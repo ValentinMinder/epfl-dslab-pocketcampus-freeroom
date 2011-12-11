@@ -117,7 +117,7 @@ public class MapMainView extends PluginView implements IMapView {
 	
 	// Variables used when the plugin is launched by another plugin.
 	// to remember which item to show once they are loaded.
-	private String intentLayerId_;
+	private int intentLayerId_;
 	private int intentItemId_;
 
 	private MapMainController mController;
@@ -167,7 +167,7 @@ public class MapMainView extends PluginView implements IMapView {
 		// Get extras from the intent
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-			intentLayerId_ = extras.getString("MapLayer");
+			intentLayerId_ = Integer.parseInt(extras.getString("MapLayer"));
 			intentItemId_ = extras.getInt("MapItem");
 		}
 	}
@@ -462,7 +462,8 @@ public class MapMainView extends PluginView implements IMapView {
 	 * Show the list of available layers
 	 */
 	private void selectLayers() {
-
+		System.out.println(allLayers_);
+		
 		// If we already have a cache of the layers
 		if(allLayers_ != null && allLayers_.size() > 0) {
 			//layerSelector();
@@ -727,20 +728,20 @@ public class MapMainView extends PluginView implements IMapView {
 	private void checkSelectedLayersFromIntent() {
 		
 		// Not comming from another plugin
-		if(intentLayerId_ == null) {
-			return;
-		}
+//		if(intentLayerId_ == null) {
+//			return;
+//		}
 		
 		// Is the layer already selected?
 		for(MapElementsList mel : selectedLayers_) {
-			if(mel.getLayerId().equals(intentLayerId_)) {
+			if(mel.getLayerId() == intentLayerId_) {
 				return;
 			}
 		}
 		
 		// Find the corresponding layer from all the available layers and add it to the selection
 		for(MapElementsList mel : allLayers_) {
-			if(mel.getLayerId().equals(intentLayerId_)) {
+			if(mel.getLayerId() == intentLayerId_) {
 				selectedLayers_.add(mel);
 				return;
 			}

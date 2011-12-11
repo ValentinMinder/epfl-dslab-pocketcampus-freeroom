@@ -124,7 +124,7 @@ public class MapPlugin extends PluginView {
 	
 	// Variables used when the plugin is launched by another plugin.
 	// to remember which item to show once they are loaded.
-	private String intentLayerId_;
+	private int intentLayerId_;
 	private int intentItemId_;
 
 	@Override
@@ -734,20 +734,20 @@ public class MapPlugin extends PluginView {
 	private void checkSelectedLayersFromIntent() {
 		
 		// Not comming from another plugin
-		if(intentLayerId_ == null) {
-			return;
-		}
+//		if(intentLayerId_ == null) {
+//			return;
+//		}
 		
 		// Is the layer already selected?
 		for(MapElementsList mel : selectedLayers_) {
-			if(mel.getLayerId().equals(intentLayerId_)) {
+			if(mel.getLayerId() == intentLayerId_) {
 				return;
 			}
 		}
 		
 		// Find the corresponding layer from all the available layers and add it to the selection
 		for(MapElementsList mel : allLayers_) {
-			if(mel.getLayerId().equals(intentLayerId_)) {
+			if(mel.getLayerId() == intentLayerId_) {
 				selectedLayers_.add(mel);
 				return;
 			}

@@ -26,15 +26,13 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField DRAWABLE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("drawableUrl", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField EXTERNAL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("externalId", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField PLUGIN_INTERNAL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("pluginInternalId", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField LAYER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("layerId", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField CACHE_IN_SECONDS_FIELD_DESC = new org.apache.thrift.protocol.TField("cacheInSeconds", org.apache.thrift.protocol.TType.I32, (short)5);
   private static final org.apache.thrift.protocol.TField DISPLAYABLE_FIELD_DESC = new org.apache.thrift.protocol.TField("displayable", org.apache.thrift.protocol.TType.BOOL, (short)6);
 
   public String name; // required
   public String drawableUrl; // required
-  public String externalId; // required
-  public int pluginInternalId; // required
+  public long layerId; // required
   public int cacheInSeconds; // required
   public boolean displayable; // required
 
@@ -42,8 +40,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
     DRAWABLE_URL((short)2, "drawableUrl"),
-    EXTERNAL_ID((short)3, "externalId"),
-    PLUGIN_INTERNAL_ID((short)4, "pluginInternalId"),
+    LAYER_ID((short)3, "layerId"),
     CACHE_IN_SECONDS((short)5, "cacheInSeconds"),
     DISPLAYABLE((short)6, "displayable");
 
@@ -64,10 +61,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
           return NAME;
         case 2: // DRAWABLE_URL
           return DRAWABLE_URL;
-        case 3: // EXTERNAL_ID
-          return EXTERNAL_ID;
-        case 4: // PLUGIN_INTERNAL_ID
-          return PLUGIN_INTERNAL_ID;
+        case 3: // LAYER_ID
+          return LAYER_ID;
         case 5: // CACHE_IN_SECONDS
           return CACHE_IN_SECONDS;
         case 6: // DISPLAYABLE
@@ -112,7 +107,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   }
 
   // isset id assignments
-  private static final int __PLUGININTERNALID_ISSET_ID = 0;
+  private static final int __LAYERID_ISSET_ID = 0;
   private static final int __CACHEINSECONDS_ISSET_ID = 1;
   private static final int __DISPLAYABLE_ISSET_ID = 2;
   private BitSet __isset_bit_vector = new BitSet(3);
@@ -124,10 +119,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.DRAWABLE_URL, new org.apache.thrift.meta_data.FieldMetaData("drawableUrl", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.EXTERNAL_ID, new org.apache.thrift.meta_data.FieldMetaData("externalId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.PLUGIN_INTERNAL_ID, new org.apache.thrift.meta_data.FieldMetaData("pluginInternalId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
+    tmpMap.put(_Fields.LAYER_ID, new org.apache.thrift.meta_data.FieldMetaData("layerId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.CACHE_IN_SECONDS, new org.apache.thrift.meta_data.FieldMetaData("cacheInSeconds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
     tmpMap.put(_Fields.DISPLAYABLE, new org.apache.thrift.meta_data.FieldMetaData("displayable", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -142,17 +135,15 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   public MapLayer(
     String name,
     String drawableUrl,
-    String externalId,
-    int pluginInternalId,
+    long layerId,
     int cacheInSeconds,
     boolean displayable)
   {
     this();
     this.name = name;
     this.drawableUrl = drawableUrl;
-    this.externalId = externalId;
-    this.pluginInternalId = pluginInternalId;
-    setPluginInternalIdIsSet(true);
+    this.layerId = layerId;
+    setLayerIdIsSet(true);
     this.cacheInSeconds = cacheInSeconds;
     setCacheInSecondsIsSet(true);
     this.displayable = displayable;
@@ -171,10 +162,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     if (other.isSetDrawableUrl()) {
       this.drawableUrl = other.drawableUrl;
     }
-    if (other.isSetExternalId()) {
-      this.externalId = other.externalId;
-    }
-    this.pluginInternalId = other.pluginInternalId;
+    this.layerId = other.layerId;
     this.cacheInSeconds = other.cacheInSeconds;
     this.displayable = other.displayable;
   }
@@ -187,9 +175,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
   public void clear() {
     this.name = null;
     this.drawableUrl = null;
-    this.externalId = null;
-    setPluginInternalIdIsSet(false);
-    this.pluginInternalId = 0;
+    setLayerIdIsSet(false);
+    this.layerId = 0;
     setCacheInSecondsIsSet(false);
     this.cacheInSeconds = 0;
     setDisplayableIsSet(false);
@@ -244,51 +231,27 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     }
   }
 
-  public String getExternalId() {
-    return this.externalId;
+  public long getLayerId() {
+    return this.layerId;
   }
 
-  public MapLayer setExternalId(String externalId) {
-    this.externalId = externalId;
+  public MapLayer setLayerId(long layerId) {
+    this.layerId = layerId;
+    setLayerIdIsSet(true);
     return this;
   }
 
-  public void unsetExternalId() {
-    this.externalId = null;
+  public void unsetLayerId() {
+    __isset_bit_vector.clear(__LAYERID_ISSET_ID);
   }
 
-  /** Returns true if field externalId is set (has been assigned a value) and false otherwise */
-  public boolean isSetExternalId() {
-    return this.externalId != null;
+  /** Returns true if field layerId is set (has been assigned a value) and false otherwise */
+  public boolean isSetLayerId() {
+    return __isset_bit_vector.get(__LAYERID_ISSET_ID);
   }
 
-  public void setExternalIdIsSet(boolean value) {
-    if (!value) {
-      this.externalId = null;
-    }
-  }
-
-  public int getPluginInternalId() {
-    return this.pluginInternalId;
-  }
-
-  public MapLayer setPluginInternalId(int pluginInternalId) {
-    this.pluginInternalId = pluginInternalId;
-    setPluginInternalIdIsSet(true);
-    return this;
-  }
-
-  public void unsetPluginInternalId() {
-    __isset_bit_vector.clear(__PLUGININTERNALID_ISSET_ID);
-  }
-
-  /** Returns true if field pluginInternalId is set (has been assigned a value) and false otherwise */
-  public boolean isSetPluginInternalId() {
-    return __isset_bit_vector.get(__PLUGININTERNALID_ISSET_ID);
-  }
-
-  public void setPluginInternalIdIsSet(boolean value) {
-    __isset_bit_vector.set(__PLUGININTERNALID_ISSET_ID, value);
+  public void setLayerIdIsSet(boolean value) {
+    __isset_bit_vector.set(__LAYERID_ISSET_ID, value);
   }
 
   public int getCacheInSeconds() {
@@ -355,19 +318,11 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       }
       break;
 
-    case EXTERNAL_ID:
+    case LAYER_ID:
       if (value == null) {
-        unsetExternalId();
+        unsetLayerId();
       } else {
-        setExternalId((String)value);
-      }
-      break;
-
-    case PLUGIN_INTERNAL_ID:
-      if (value == null) {
-        unsetPluginInternalId();
-      } else {
-        setPluginInternalId((Integer)value);
+        setLayerId((Long)value);
       }
       break;
 
@@ -398,11 +353,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     case DRAWABLE_URL:
       return getDrawableUrl();
 
-    case EXTERNAL_ID:
-      return getExternalId();
-
-    case PLUGIN_INTERNAL_ID:
-      return Integer.valueOf(getPluginInternalId());
+    case LAYER_ID:
+      return Long.valueOf(getLayerId());
 
     case CACHE_IN_SECONDS:
       return Integer.valueOf(getCacheInSeconds());
@@ -425,10 +377,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       return isSetName();
     case DRAWABLE_URL:
       return isSetDrawableUrl();
-    case EXTERNAL_ID:
-      return isSetExternalId();
-    case PLUGIN_INTERNAL_ID:
-      return isSetPluginInternalId();
+    case LAYER_ID:
+      return isSetLayerId();
     case CACHE_IN_SECONDS:
       return isSetCacheInSeconds();
     case DISPLAYABLE:
@@ -468,21 +418,12 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         return false;
     }
 
-    boolean this_present_externalId = true && this.isSetExternalId();
-    boolean that_present_externalId = true && that.isSetExternalId();
-    if (this_present_externalId || that_present_externalId) {
-      if (!(this_present_externalId && that_present_externalId))
+    boolean this_present_layerId = true;
+    boolean that_present_layerId = true;
+    if (this_present_layerId || that_present_layerId) {
+      if (!(this_present_layerId && that_present_layerId))
         return false;
-      if (!this.externalId.equals(that.externalId))
-        return false;
-    }
-
-    boolean this_present_pluginInternalId = true;
-    boolean that_present_pluginInternalId = true;
-    if (this_present_pluginInternalId || that_present_pluginInternalId) {
-      if (!(this_present_pluginInternalId && that_present_pluginInternalId))
-        return false;
-      if (this.pluginInternalId != that.pluginInternalId)
+      if (this.layerId != that.layerId)
         return false;
     }
 
@@ -521,15 +462,10 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     if (present_drawableUrl)
       builder.append(drawableUrl);
 
-    boolean present_externalId = true && (isSetExternalId());
-    builder.append(present_externalId);
-    if (present_externalId)
-      builder.append(externalId);
-
-    boolean present_pluginInternalId = true;
-    builder.append(present_pluginInternalId);
-    if (present_pluginInternalId)
-      builder.append(pluginInternalId);
+    boolean present_layerId = true;
+    builder.append(present_layerId);
+    if (present_layerId)
+      builder.append(layerId);
 
     boolean present_cacheInSeconds = true;
     builder.append(present_cacheInSeconds);
@@ -572,22 +508,12 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetExternalId()).compareTo(typedOther.isSetExternalId());
+    lastComparison = Boolean.valueOf(isSetLayerId()).compareTo(typedOther.isSetLayerId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetExternalId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.externalId, typedOther.externalId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetPluginInternalId()).compareTo(typedOther.isSetPluginInternalId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPluginInternalId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pluginInternalId, typedOther.pluginInternalId);
+    if (isSetLayerId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.layerId, typedOther.layerId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -643,17 +569,10 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // EXTERNAL_ID
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.externalId = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // PLUGIN_INTERNAL_ID
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.pluginInternalId = iprot.readI32();
-            setPluginInternalIdIsSet(true);
+        case 3: // LAYER_ID
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.layerId = iprot.readI64();
+            setLayerIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -682,8 +601,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetPluginInternalId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'pluginInternalId' was not found in serialized data! Struct: " + toString());
+    if (!isSetLayerId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'layerId' was not found in serialized data! Struct: " + toString());
     }
     if (!isSetCacheInSeconds()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'cacheInSeconds' was not found in serialized data! Struct: " + toString());
@@ -708,13 +627,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
       oprot.writeString(this.drawableUrl);
       oprot.writeFieldEnd();
     }
-    if (this.externalId != null) {
-      oprot.writeFieldBegin(EXTERNAL_ID_FIELD_DESC);
-      oprot.writeString(this.externalId);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldBegin(PLUGIN_INTERNAL_ID_FIELD_DESC);
-    oprot.writeI32(this.pluginInternalId);
+    oprot.writeFieldBegin(LAYER_ID_FIELD_DESC);
+    oprot.writeI64(this.layerId);
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(CACHE_IN_SECONDS_FIELD_DESC);
     oprot.writeI32(this.cacheInSeconds);
@@ -747,16 +661,8 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("externalId:");
-    if (this.externalId == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.externalId);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("pluginInternalId:");
-    sb.append(this.pluginInternalId);
+    sb.append("layerId:");
+    sb.append(this.layerId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("cacheInSeconds:");
@@ -775,10 +681,7 @@ public class MapLayer implements org.apache.thrift.TBase<MapLayer, MapLayer._Fie
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }
-    if (externalId == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'externalId' was not present! Struct: " + toString());
-    }
-    // alas, we cannot check 'pluginInternalId' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'layerId' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'cacheInSeconds' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'displayable' because it's a primitive and you chose the non-beans generator.
   }

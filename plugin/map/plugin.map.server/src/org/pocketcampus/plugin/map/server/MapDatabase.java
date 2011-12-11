@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.text.Position;
 
 import org.pocketcampus.plugin.map.server.database.ConnectionManager;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
 public class MapDatabase {
@@ -64,7 +65,7 @@ public class MapDatabase {
 //						rs.getInt(LAYER_CACHE),
 //						rs.getBoolean(LAYER_DISPLAYABLE));
 				
-				MapLayer mlb = new MapLayer(rs.getString(LAYER_TITLE), rs.getString(LAYER_IMAGE_URL), "id", rs.getInt(LAYER_ID), rs.getInt(LAYER_CACHE), rs.getBoolean(LAYER_DISPLAYABLE));
+				MapLayer mlb = new MapLayer(rs.getString(LAYER_TITLE), rs.getString(LAYER_IMAGE_URL), rs.getInt(LAYER_ID), rs.getInt(LAYER_CACHE), rs.getBoolean(LAYER_DISPLAYABLE));
 				
 				layers.add(mlb);
 			}
@@ -79,16 +80,16 @@ public class MapDatabase {
 		return layers;
 	}
 	
-//	public List<MapElementBean> getMapElements(int layerId) {
-//		List<MapElementBean> elements = new LinkedList<MapElementBean>();
-//
-//		try {
-//			Connection dbConnection = connectionManager_.getConnection();
-//			PreparedStatement statement = dbConnection.prepareStatement("select * from " + TABLE_POIS + " where " + POI_LAYER_ID + "=?");
-//			statement.setInt(1, layerId);
-//			ResultSet rs = statement.executeQuery();
-//
-//			while (rs.next()) {
+	public List<MapItem> getMapElements(int layerId) {
+		List<MapItem> elements = new LinkedList<MapItem>();
+
+		try {
+			Connection dbConnection = connectionManager_.getConnection();
+			PreparedStatement statement = dbConnection.prepareStatement("select * from " + TABLE_POIS + " where " + POI_LAYER_ID + "=?");
+			statement.setInt(1, layerId);
+			ResultSet rs = statement.executeQuery();
+
+			while (rs.next()) {
 //				MapElementBean meb = new MapElementBean(rs.getString(POI_TITLE),
 //														rs.getString(POI_DESCRIPTION),
 //														rs.getDouble(POI_LATITUDE),
@@ -96,25 +97,32 @@ public class MapDatabase {
 //														rs.getDouble(POI_ALTITUDE),
 //														layerId,
 //														rs.getInt(POI_ID));
-//
-//				// Check if this item wants to launch another plugin
-//				String pluginPackage = rs.getString(POI_PLUGIN);
-//				if(pluginPackage != null && !"".equals(pluginPackage)) {
-//					meb.setPluginId(pluginPackage);
-//				}
-//				
-//				elements.add(meb);
-//			}
-//
-//			statement.close();
-//			connectionManager_.disconnect();
-//		} catch (SQLException e) {
-//			System.err.println("Error with SQL");
-//			e.printStackTrace();
-//		}
-//
-//		return elements;
-//	}
+				
+				MapItem meb = new MapItem(rs.getString(POI_TITLE),
+						rs.getString(POI_DESCRIPTION),
+						rs.getDouble(POI_LATITUDE),
+						rs.getDouble(POI_LONGITUDE),
+						layerId,
+						rs.getInt(POI_ID));
+
+				// Check if this item wants to launch another plugin
+				String pluginPackage = rs.getString(POI_PLUGIN);
+				if(pluginPackage != null && !"".equals(pluginPackage)) {
+					//meb.setPluginId(pluginPackage);
+				}
+				
+				elements.add(meb);
+			}
+
+			statement.close();
+			connectionManager_.disconnect();
+		} catch (SQLException e) {
+			System.err.println("Error with SQL");
+			e.printStackTrace();
+		}
+
+		return elements;
+	}
 	
 //	public String getTitleClosestPOI(Position person) {
 //		String titleClosetPOI = "";
@@ -139,7 +147,7 @@ public class MapDatabase {
 //	}
 	
 	
-//  NOT USE ANYMORE, SEARCH IS DONE DIRECTLY ON EPFL WEBSITE
+//  NOT USED ANYMORE, SEARCH IS DONE DIRECTLY ON EPFL WEBSITE
 //	
 //	/**
 //	 * Searches the elements with a specific title or description

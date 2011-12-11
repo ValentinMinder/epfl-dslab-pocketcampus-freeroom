@@ -6,11 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.MapService;
 
 public class MapServiceImpl implements MapService.Iface {
 	private List<MapLayer> mLayersList = new ArrayList<MapLayer>();
+	private List<MapItem> mItemsList = new ArrayList<MapItem>();
 	private MapDatabase mMapDb;
 	
 	public MapServiceImpl() {
@@ -19,7 +21,7 @@ public class MapServiceImpl implements MapService.Iface {
 	}
 	
 	@Override
-	public List<MapLayer> getLayers() throws TException {
+	public List<MapLayer> getLayerList() throws TException {
 		System.out.println("getLayers");
 		
 		synchronized (mLayersList) {
@@ -37,6 +39,13 @@ public class MapServiceImpl implements MapService.Iface {
 		}
 		
 		return mLayersList;
+	}
+
+	@Override
+	public List<MapItem> getLayerItems(int layerId) throws TException {
+		mItemsList = mMapDb.getMapElements(layerId);
+		
+		return mItemsList;
 	}
 
 }
