@@ -86,7 +86,7 @@ public interface IFoodModel {
 	 * Set the <code>Ratings</code> for all meals <code>Meal</code> and notify
 	 * the listeners
 	 */
-	public void setRatings(Map<Integer, Rating> map);
+	public void setRatings(Map<Long, Rating> map);
 
 	/**
 	 * Returns whether the user has already voted or not

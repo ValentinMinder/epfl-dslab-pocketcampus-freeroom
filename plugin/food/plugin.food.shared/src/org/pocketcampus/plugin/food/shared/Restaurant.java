@@ -24,17 +24,17 @@ import org.slf4j.LoggerFactory;
 public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restaurant._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Restaurant");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("Id", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField RESTAURANT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurantId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField LOCATION_FIELD_DESC = new org.apache.thrift.protocol.TField("location", org.apache.thrift.protocol.TType.STRUCT, (short)3);
 
-  public long Id; // required
+  public long restaurantId; // required
   public String name; // required
   public org.pocketcampus.platform.sdk.shared.common.Location location; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "Id"),
+    RESTAURANT_ID((short)1, "restaurantId"),
     NAME((short)2, "name"),
     LOCATION((short)3, "location");
 
@@ -51,8 +51,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
+        case 1: // RESTAURANT_ID
+          return RESTAURANT_ID;
         case 2: // NAME
           return NAME;
         case 3: // LOCATION
@@ -97,13 +97,13 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   }
 
   // isset id assignments
-  private static final int __ID_ISSET_ID = 0;
+  private static final int __RESTAURANTID_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("Id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.RESTAURANT_ID, new org.apache.thrift.meta_data.FieldMetaData("restaurantId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -117,12 +117,12 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   }
 
   public Restaurant(
-    long Id,
+    long restaurantId,
     String name)
   {
     this();
-    this.Id = Id;
-    setIdIsSet(true);
+    this.restaurantId = restaurantId;
+    setRestaurantIdIsSet(true);
     this.name = name;
   }
 
@@ -132,7 +132,7 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   public Restaurant(Restaurant other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.Id = other.Id;
+    this.restaurantId = other.restaurantId;
     if (other.isSetName()) {
       this.name = other.name;
     }
@@ -147,33 +147,33 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   @Override
   public void clear() {
-    setIdIsSet(false);
-    this.Id = 0;
+    setRestaurantIdIsSet(false);
+    this.restaurantId = 0;
     this.name = null;
     this.location = null;
   }
 
-  public long getId() {
-    return this.Id;
+  public long getRestaurantId() {
+    return this.restaurantId;
   }
 
-  public Restaurant setId(long Id) {
-    this.Id = Id;
-    setIdIsSet(true);
+  public Restaurant setRestaurantId(long restaurantId) {
+    this.restaurantId = restaurantId;
+    setRestaurantIdIsSet(true);
     return this;
   }
 
-  public void unsetId() {
-    __isset_bit_vector.clear(__ID_ISSET_ID);
+  public void unsetRestaurantId() {
+    __isset_bit_vector.clear(__RESTAURANTID_ISSET_ID);
   }
 
-  /** Returns true if field Id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return __isset_bit_vector.get(__ID_ISSET_ID);
+  /** Returns true if field restaurantId is set (has been assigned a value) and false otherwise */
+  public boolean isSetRestaurantId() {
+    return __isset_bit_vector.get(__RESTAURANTID_ISSET_ID);
   }
 
-  public void setIdIsSet(boolean value) {
-    __isset_bit_vector.set(__ID_ISSET_ID, value);
+  public void setRestaurantIdIsSet(boolean value) {
+    __isset_bit_vector.set(__RESTAURANTID_ISSET_ID, value);
   }
 
   public String getName() {
@@ -226,11 +226,11 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
+    case RESTAURANT_ID:
       if (value == null) {
-        unsetId();
+        unsetRestaurantId();
       } else {
-        setId((Long)value);
+        setRestaurantId((Long)value);
       }
       break;
 
@@ -255,8 +255,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return Long.valueOf(getId());
+    case RESTAURANT_ID:
+      return Long.valueOf(getRestaurantId());
 
     case NAME:
       return getName();
@@ -275,8 +275,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
+    case RESTAURANT_ID:
+      return isSetRestaurantId();
     case NAME:
       return isSetName();
     case LOCATION:
@@ -298,12 +298,12 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     if (that == null)
       return false;
 
-    boolean this_present_Id = true;
-    boolean that_present_Id = true;
-    if (this_present_Id || that_present_Id) {
-      if (!(this_present_Id && that_present_Id))
+    boolean this_present_restaurantId = true;
+    boolean that_present_restaurantId = true;
+    if (this_present_restaurantId || that_present_restaurantId) {
+      if (!(this_present_restaurantId && that_present_restaurantId))
         return false;
-      if (this.Id != that.Id)
+      if (this.restaurantId != that.restaurantId)
         return false;
     }
 
@@ -332,10 +332,10 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_Id = true;
-    builder.append(present_Id);
-    if (present_Id)
-      builder.append(Id);
+    boolean present_restaurantId = true;
+    builder.append(present_restaurantId);
+    if (present_restaurantId)
+      builder.append(restaurantId);
 
     boolean present_name = true && (isSetName());
     builder.append(present_name);
@@ -358,12 +358,12 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     int lastComparison = 0;
     Restaurant typedOther = (Restaurant)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    lastComparison = Boolean.valueOf(isSetRestaurantId()).compareTo(typedOther.isSetRestaurantId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.Id, typedOther.Id);
+    if (isSetRestaurantId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.restaurantId, typedOther.restaurantId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -405,10 +405,10 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
         break;
       }
       switch (field.id) {
-        case 1: // ID
+        case 1: // RESTAURANT_ID
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.Id = iprot.readI64();
-            setIdIsSet(true);
+            this.restaurantId = iprot.readI64();
+            setRestaurantIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -436,8 +436,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'Id' was not found in serialized data! Struct: " + toString());
+    if (!isSetRestaurantId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'restaurantId' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -446,8 +446,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI64(this.Id);
+    oprot.writeFieldBegin(RESTAURANT_ID_FIELD_DESC);
+    oprot.writeI64(this.restaurantId);
     oprot.writeFieldEnd();
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
@@ -470,8 +470,8 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
     StringBuilder sb = new StringBuilder("Restaurant(");
     boolean first = true;
 
-    sb.append("Id:");
-    sb.append(this.Id);
+    sb.append("restaurantId:");
+    sb.append(this.restaurantId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("name:");
@@ -497,7 +497,7 @@ public class Restaurant implements org.apache.thrift.TBase<Restaurant, Restauran
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'Id' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'restaurantId' because it's a primitive and you chose the non-beans generator.
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }

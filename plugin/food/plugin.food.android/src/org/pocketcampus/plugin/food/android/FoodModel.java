@@ -15,7 +15,6 @@ import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.utils.FileCache;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
-import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
@@ -141,7 +140,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 				mMealsCache = new FileCache(ctx);
 			}
 			mMeals = mMealsCache.restoreFromFile();
-			if (mMeals != null) {
+			if (mMeals != null && !mMeals.isEmpty()) {
 				Toast.makeText(ctx,
 						ctx.getString(R.string.food_displaying_from_cache),
 						Toast.LENGTH_SHORT).show();
@@ -253,10 +252,10 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	 * the listeners
 	 */
 	@Override
-	public void setRatings(Map<Integer, Rating> result) {
+	public void setRatings(Map<Long, Rating> result) {
 		if (mMeals != null && !mMeals.isEmpty()) {
 			for (Meal m : mMeals) {
-				m.setRating(result.get(SharedFoodUtils.getMealHashCode(m)));
+				m.setRating(result.get(m.getMealId()));
 			}
 		}
 		mListeners.ratingsUpdated();

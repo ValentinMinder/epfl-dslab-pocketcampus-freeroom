@@ -16,7 +16,6 @@ import org.pocketcampus.plugin.food.shared.FoodService.Client;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.FoodService.setRating_args;
 import org.pocketcampus.plugin.food.shared.Meal;
-import org.pocketcampus.plugin.food.shared.Rating;
 
 import android.provider.Settings.Secure;
 import android.util.Log;
@@ -128,8 +127,7 @@ public class FoodController extends PluginController implements IFoodController 
 				"Sending rating : " + rating + " for meal : " + meal.getName()
 						+ " and device with ID : " + deviceID);
 
-		Rating toSend = new Rating(rating, 1, rating);
-		setRating_args ratingArgs = new setRating_args(toSend, meal, deviceID);
+		setRating_args ratingArgs = new setRating_args(meal.getMealId(), rating, deviceID);
 
 		new SetRatingRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName),

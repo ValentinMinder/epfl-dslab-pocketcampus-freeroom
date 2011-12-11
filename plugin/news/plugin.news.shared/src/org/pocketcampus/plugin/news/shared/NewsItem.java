@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("NewsItem");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField NEWS_ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("newsItemId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("title", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("description", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField LINK_FIELD_DESC = new org.apache.thrift.protocol.TField("link", org.apache.thrift.protocol.TType.STRING, (short)4);
@@ -33,7 +33,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   private static final org.apache.thrift.protocol.TField PUB_DATE_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("pubDateDate", org.apache.thrift.protocol.TType.I64, (short)7);
   private static final org.apache.thrift.protocol.TField IMAGE_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("imageUrl", org.apache.thrift.protocol.TType.STRING, (short)8);
 
-  public long id; // required
+  public long newsItemId; // required
   public String title; // required
   public String description; // required
   public String link; // required
@@ -44,7 +44,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
+    NEWS_ITEM_ID((short)1, "newsItemId"),
     TITLE((short)2, "title"),
     DESCRIPTION((short)3, "description"),
     LINK((short)4, "link"),
@@ -66,8 +66,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
+        case 1: // NEWS_ITEM_ID
+          return NEWS_ITEM_ID;
         case 2: // TITLE
           return TITLE;
         case 3: // DESCRIPTION
@@ -122,14 +122,14 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   }
 
   // isset id assignments
-  private static final int __ID_ISSET_ID = 0;
+  private static final int __NEWSITEMID_ISSET_ID = 0;
   private static final int __PUBDATEDATE_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.NEWS_ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("newsItemId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.TITLE, new org.apache.thrift.meta_data.FieldMetaData("title", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -153,7 +153,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   }
 
   public NewsItem(
-    long id,
+    long newsItemId,
     String title,
     String description,
     String link,
@@ -162,8 +162,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     long pubDateDate)
   {
     this();
-    this.id = id;
-    setIdIsSet(true);
+    this.newsItemId = newsItemId;
+    setNewsItemIdIsSet(true);
     this.title = title;
     this.description = description;
     this.link = link;
@@ -179,7 +179,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public NewsItem(NewsItem other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.id = other.id;
+    this.newsItemId = other.newsItemId;
     if (other.isSetTitle()) {
       this.title = other.title;
     }
@@ -207,8 +207,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   @Override
   public void clear() {
-    setIdIsSet(false);
-    this.id = 0;
+    setNewsItemIdIsSet(false);
+    this.newsItemId = 0;
     this.title = null;
     this.description = null;
     this.link = null;
@@ -219,27 +219,27 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     this.imageUrl = null;
   }
 
-  public long getId() {
-    return this.id;
+  public long getNewsItemId() {
+    return this.newsItemId;
   }
 
-  public NewsItem setId(long id) {
-    this.id = id;
-    setIdIsSet(true);
+  public NewsItem setNewsItemId(long newsItemId) {
+    this.newsItemId = newsItemId;
+    setNewsItemIdIsSet(true);
     return this;
   }
 
-  public void unsetId() {
-    __isset_bit_vector.clear(__ID_ISSET_ID);
+  public void unsetNewsItemId() {
+    __isset_bit_vector.clear(__NEWSITEMID_ISSET_ID);
   }
 
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return __isset_bit_vector.get(__ID_ISSET_ID);
+  /** Returns true if field newsItemId is set (has been assigned a value) and false otherwise */
+  public boolean isSetNewsItemId() {
+    return __isset_bit_vector.get(__NEWSITEMID_ISSET_ID);
   }
 
-  public void setIdIsSet(boolean value) {
-    __isset_bit_vector.set(__ID_ISSET_ID, value);
+  public void setNewsItemIdIsSet(boolean value) {
+    __isset_bit_vector.set(__NEWSITEMID_ISSET_ID, value);
   }
 
   public String getTitle() {
@@ -411,11 +411,11 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
+    case NEWS_ITEM_ID:
       if (value == null) {
-        unsetId();
+        unsetNewsItemId();
       } else {
-        setId((Long)value);
+        setNewsItemId((Long)value);
       }
       break;
 
@@ -480,8 +480,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return Long.valueOf(getId());
+    case NEWS_ITEM_ID:
+      return Long.valueOf(getNewsItemId());
 
     case TITLE:
       return getTitle();
@@ -515,8 +515,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
+    case NEWS_ITEM_ID:
+      return isSetNewsItemId();
     case TITLE:
       return isSetTitle();
     case DESCRIPTION:
@@ -548,12 +548,12 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     if (that == null)
       return false;
 
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
+    boolean this_present_newsItemId = true;
+    boolean that_present_newsItemId = true;
+    if (this_present_newsItemId || that_present_newsItemId) {
+      if (!(this_present_newsItemId && that_present_newsItemId))
         return false;
-      if (this.id != that.id)
+      if (this.newsItemId != that.newsItemId)
         return false;
     }
 
@@ -627,10 +627,10 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_id = true;
-    builder.append(present_id);
-    if (present_id)
-      builder.append(id);
+    boolean present_newsItemId = true;
+    builder.append(present_newsItemId);
+    if (present_newsItemId)
+      builder.append(newsItemId);
 
     boolean present_title = true && (isSetTitle());
     builder.append(present_title);
@@ -678,12 +678,12 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     int lastComparison = 0;
     NewsItem typedOther = (NewsItem)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    lastComparison = Boolean.valueOf(isSetNewsItemId()).compareTo(typedOther.isSetNewsItemId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+    if (isSetNewsItemId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.newsItemId, typedOther.newsItemId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -775,10 +775,10 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
         break;
       }
       switch (field.id) {
-        case 1: // ID
+        case 1: // NEWS_ITEM_ID
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.id = iprot.readI64();
-            setIdIsSet(true);
+            this.newsItemId = iprot.readI64();
+            setNewsItemIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -841,8 +841,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' was not found in serialized data! Struct: " + toString());
+    if (!isSetNewsItemId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'newsItemId' was not found in serialized data! Struct: " + toString());
     }
     if (!isSetPubDateDate()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'pubDateDate' was not found in serialized data! Struct: " + toString());
@@ -854,8 +854,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI64(this.id);
+    oprot.writeFieldBegin(NEWS_ITEM_ID_FIELD_DESC);
+    oprot.writeI64(this.newsItemId);
     oprot.writeFieldEnd();
     if (this.title != null) {
       oprot.writeFieldBegin(TITLE_FIELD_DESC);
@@ -901,8 +901,8 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
     StringBuilder sb = new StringBuilder("NewsItem(");
     boolean first = true;
 
-    sb.append("id:");
-    sb.append(this.id);
+    sb.append("newsItemId:");
+    sb.append(this.newsItemId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("title:");
@@ -964,7 +964,7 @@ public class NewsItem implements org.apache.thrift.TBase<NewsItem, NewsItem._Fie
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'id' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'newsItemId' because it's a primitive and you chose the non-beans generator.
     if (title == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'title' was not present! Struct: " + toString());
     }

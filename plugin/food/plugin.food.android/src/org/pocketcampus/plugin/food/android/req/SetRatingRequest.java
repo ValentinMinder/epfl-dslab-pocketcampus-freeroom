@@ -25,20 +25,20 @@ public class SetRatingRequest extends
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
-	 * @param param
-	 *            the parameters to be sent for the request.
-	 *            the new Rating, the deviceId of the user and the Meal
+	 * @param setRatingParam
+	 *            the parameters to be sent for the request. the meal ID, the
+	 *            new Rating, the deviceId of the user
 	 * @return the Status of the submission
 	 */
 	@Override
-	protected SubmitStatus runInBackground(Iface client, setRating_args param)
-			throws Exception {
+	protected SubmitStatus runInBackground(Iface client,
+			setRating_args setRatingParam) throws Exception {
 		Log.d("<SetRatingRequest>:", "run");
-		if (!param.getClass().equals(setRating_args.class)) {
+		if (!setRatingParam.getClass().equals(setRating_args.class)) {
 			throw new IllegalArgumentException();
 		}
-		return client.setRating(param.getRating(), param.getMeal(),
-				param.getDeviceID());
+		return client.setRating(setRatingParam.getMealId(),
+				setRatingParam.getRating(), setRatingParam.getDeviceId());
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class SetRatingRequest extends
 	 *            the controller that initiated the request, of which we have to
 	 *            notify of the result
 	 * @param result
-	 *            the status of the submission 
+	 *            the status of the submission
 	 */
 	@Override
 	protected void onResult(FoodController controller, SubmitStatus result) {

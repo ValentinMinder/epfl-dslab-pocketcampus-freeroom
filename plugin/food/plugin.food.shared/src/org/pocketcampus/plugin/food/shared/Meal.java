@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Meal");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("Id", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField MEAL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("mealId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField MEAL_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("mealDescription", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField RESTAURANT_FIELD_DESC = new org.apache.thrift.protocol.TField("restaurant", org.apache.thrift.protocol.TType.STRUCT, (short)4);
   private static final org.apache.thrift.protocol.TField RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("rating", org.apache.thrift.protocol.TType.STRUCT, (short)5);
   private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
 
-  public long Id; // required
+  public long mealId; // required
   public String name; // required
   public String mealDescription; // required
   public Restaurant restaurant; // required
@@ -40,7 +40,7 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "Id"),
+    MEAL_ID((short)1, "mealId"),
     NAME((short)2, "name"),
     MEAL_DESCRIPTION((short)3, "mealDescription"),
     RESTAURANT((short)4, "restaurant"),
@@ -60,8 +60,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
+        case 1: // MEAL_ID
+          return MEAL_ID;
         case 2: // NAME
           return NAME;
         case 3: // MEAL_DESCRIPTION
@@ -112,14 +112,14 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
   }
 
   // isset id assignments
-  private static final int __ID_ISSET_ID = 0;
+  private static final int __MEALID_ISSET_ID = 0;
   private static final int __PRICE_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("Id", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.MEAL_ID, new org.apache.thrift.meta_data.FieldMetaData("mealId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "Id")));
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -139,15 +139,15 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
   }
 
   public Meal(
-    long Id,
+    long mealId,
     String name,
     String mealDescription,
     Restaurant restaurant,
     Rating rating)
   {
     this();
-    this.Id = Id;
-    setIdIsSet(true);
+    this.mealId = mealId;
+    setMealIdIsSet(true);
     this.name = name;
     this.mealDescription = mealDescription;
     this.restaurant = restaurant;
@@ -160,7 +160,7 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
   public Meal(Meal other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.Id = other.Id;
+    this.mealId = other.mealId;
     if (other.isSetName()) {
       this.name = other.name;
     }
@@ -182,8 +182,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   @Override
   public void clear() {
-    setIdIsSet(false);
-    this.Id = 0;
+    setMealIdIsSet(false);
+    this.mealId = 0;
     this.name = null;
     this.mealDescription = null;
     this.restaurant = null;
@@ -192,27 +192,27 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     this.price = 0.0;
   }
 
-  public long getId() {
-    return this.Id;
+  public long getMealId() {
+    return this.mealId;
   }
 
-  public Meal setId(long Id) {
-    this.Id = Id;
-    setIdIsSet(true);
+  public Meal setMealId(long mealId) {
+    this.mealId = mealId;
+    setMealIdIsSet(true);
     return this;
   }
 
-  public void unsetId() {
-    __isset_bit_vector.clear(__ID_ISSET_ID);
+  public void unsetMealId() {
+    __isset_bit_vector.clear(__MEALID_ISSET_ID);
   }
 
-  /** Returns true if field Id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return __isset_bit_vector.get(__ID_ISSET_ID);
+  /** Returns true if field mealId is set (has been assigned a value) and false otherwise */
+  public boolean isSetMealId() {
+    return __isset_bit_vector.get(__MEALID_ISSET_ID);
   }
 
-  public void setIdIsSet(boolean value) {
-    __isset_bit_vector.set(__ID_ISSET_ID, value);
+  public void setMealIdIsSet(boolean value) {
+    __isset_bit_vector.set(__MEALID_ISSET_ID, value);
   }
 
   public String getName() {
@@ -336,11 +336,11 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
+    case MEAL_ID:
       if (value == null) {
-        unsetId();
+        unsetMealId();
       } else {
-        setId((Long)value);
+        setMealId((Long)value);
       }
       break;
 
@@ -389,8 +389,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return Long.valueOf(getId());
+    case MEAL_ID:
+      return Long.valueOf(getMealId());
 
     case NAME:
       return getName();
@@ -418,8 +418,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
+    case MEAL_ID:
+      return isSetMealId();
     case NAME:
       return isSetName();
     case MEAL_DESCRIPTION:
@@ -447,12 +447,12 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     if (that == null)
       return false;
 
-    boolean this_present_Id = true;
-    boolean that_present_Id = true;
-    if (this_present_Id || that_present_Id) {
-      if (!(this_present_Id && that_present_Id))
+    boolean this_present_mealId = true;
+    boolean that_present_mealId = true;
+    if (this_present_mealId || that_present_mealId) {
+      if (!(this_present_mealId && that_present_mealId))
         return false;
-      if (this.Id != that.Id)
+      if (this.mealId != that.mealId)
         return false;
     }
 
@@ -508,10 +508,10 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_Id = true;
-    builder.append(present_Id);
-    if (present_Id)
-      builder.append(Id);
+    boolean present_mealId = true;
+    builder.append(present_mealId);
+    if (present_mealId)
+      builder.append(mealId);
 
     boolean present_name = true && (isSetName());
     builder.append(present_name);
@@ -549,12 +549,12 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     int lastComparison = 0;
     Meal typedOther = (Meal)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    lastComparison = Boolean.valueOf(isSetMealId()).compareTo(typedOther.isSetMealId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.Id, typedOther.Id);
+    if (isSetMealId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mealId, typedOther.mealId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -626,10 +626,10 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
         break;
       }
       switch (field.id) {
-        case 1: // ID
+        case 1: // MEAL_ID
           if (field.type == org.apache.thrift.protocol.TType.I64) {
-            this.Id = iprot.readI64();
-            setIdIsSet(true);
+            this.mealId = iprot.readI64();
+            setMealIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -680,8 +680,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'Id' was not found in serialized data! Struct: " + toString());
+    if (!isSetMealId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'mealId' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -690,8 +690,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(ID_FIELD_DESC);
-    oprot.writeI64(this.Id);
+    oprot.writeFieldBegin(MEAL_ID_FIELD_DESC);
+    oprot.writeI64(this.mealId);
     oprot.writeFieldEnd();
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
@@ -727,8 +727,8 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
     StringBuilder sb = new StringBuilder("Meal(");
     boolean first = true;
 
-    sb.append("Id:");
-    sb.append(this.Id);
+    sb.append("mealId:");
+    sb.append(this.mealId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("name:");
@@ -774,7 +774,7 @@ public class Meal implements org.apache.thrift.TBase<Meal, Meal._Fields>, java.i
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'Id' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'mealId' because it's a primitive and you chose the non-beans generator.
     if (name == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'name' was not present! Struct: " + toString());
     }

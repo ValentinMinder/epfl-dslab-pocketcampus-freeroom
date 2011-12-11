@@ -167,8 +167,8 @@ public class MenuSorter {
 			if (d0 != d1) {
 				return (d0 < d1 ? -1 : 1);
 			} else {
-				int n0 = thisMeal.getRating().getNbVotes();
-				int n1 = thisMeal.getRating().getNbVotes();
+				int n0 = thisMeal.getRating().getNumberOfVotes();
+				int n1 = thisMeal.getRating().getNumberOfVotes();
 				return (n0 < n1 ? -1 : 1);
 			}
 		}

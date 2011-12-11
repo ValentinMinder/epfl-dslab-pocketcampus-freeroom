@@ -220,7 +220,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		b.setTitle(meal.getRestaurant().getName() + " - " + meal.getName());
 		b.setDescription(meal.getMealDescription());
 		b.setRating(mModel.getHasVoted(), (float) 0.0, meal.getRating()
-				.getNbVotes());
+				.getNumberOfVotes());
 
 		b.setFirstButton(R.string.food_menu_dialog_firstButton,
 				new MenuDialogListener(b, meal));
@@ -296,7 +296,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			Log.d("RATING", "Already Voted");
 			Toast.makeText(this, R.string.food_rating_already_voted,
 					Toast.LENGTH_SHORT).show();
-		} else if (status.equals(SubmitStatus.TOOEARLY)) {
+		} else if (status.equals(SubmitStatus.TOO_EARLY)) {
 			Log.d("RATING", "Too Early");
 			Toast.makeText(this, R.string.food_rating_too_early,
 					Toast.LENGTH_SHORT).show();
@@ -719,7 +719,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 */
 		@Override
 		public int getNbVotes(Meal meal) {
-			return meal.getRating().getNbVotes();
+			return meal.getRating().getNumberOfVotes();
 		}
 
 		/**

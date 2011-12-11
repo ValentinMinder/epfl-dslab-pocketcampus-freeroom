@@ -13,7 +13,6 @@ import java.util.List;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 
 /**
  * Class that handles interactions with the test database to store and retrieve
@@ -106,16 +105,16 @@ public class FoodDB {
 			return false;
 		}
 		PreparedStatement insertMeal = null;
-		String insertString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
+		String insertString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
 				+ " VALUES (?,?,?,?,?,?,?)";
 
 		try {
 			String name = meal.getName();
 			String description = meal.getMealDescription();
 			String restaurant = meal.getRestaurant().getName();
-			double totalRating = meal.getRating().getTotalRating();
-			int numberOfVotes = meal.getRating().getNbVotes();
-			int hashcode = SharedFoodUtils.getMealHashCode(meal);
+			double totalRating = meal.getRating().getSumOfRatings();
+			int numberOfVotes = meal.getRating().getNumberOfVotes();
+			long mealId = meal.getMealId();
 
 			// Get today's date
 			Calendar cal = Calendar.getInstance();
@@ -133,7 +132,7 @@ public class FoodDB {
 			insertMeal.setString(3, restaurant);
 			insertMeal.setFloat(4, (float) totalRating);
 			insertMeal.setInt(5, numberOfVotes);
-			insertMeal.setInt(6, hashcode);
+			insertMeal.setLong(6, mealId);
 			insertMeal.setString(7, dateString);
 
 			// Insert meal in database
@@ -169,7 +168,7 @@ public class FoodDB {
 		}
 		PreparedStatement statement = null;
 		try {
-			String statementString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, HashCode, stamp_created)"
+			String statementString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
 					+ " VALUES (?,?,?,?,?,?,?)";
 
 			statement = mConnection.prepareStatement(statementString);
@@ -177,9 +176,9 @@ public class FoodDB {
 				String name = m.getName();
 				String description = m.getMealDescription();
 				String restaurant = m.getRestaurant().getName();
-				double totalRating = m.getRating().getTotalRating();
-				int numberOfVotes = m.getRating().getNbVotes();
-				int hashcode = SharedFoodUtils.getMealHashCode(m);
+				double totalRating = m.getRating().getSumOfRatings();
+				int numberOfVotes = m.getRating().getNumberOfVotes();
+				long mealId = m.getMealId();
 
 				// Get today's date
 				Calendar cal = Calendar.getInstance();
@@ -193,7 +192,7 @@ public class FoodDB {
 				statement.setString(3, restaurant);
 				statement.setFloat(4, (float) totalRating);
 				statement.setInt(5, numberOfVotes);
-				statement.setInt(6, hashcode);
+				statement.setLong(6, mealId);
 				statement.setString(7, dateString);
 
 				statement.addBatch();
@@ -248,8 +247,7 @@ public class FoodDB {
 			String restaurant = null;
 			double totalRating = 0;
 			int numberOfVotes = 0;
-			int hashcode = 0;
-			Date stamp_created = null;
+			int mealId = 0;
 
 			// Treat the answer from the database
 			while (rset.next()) {
@@ -258,17 +256,15 @@ public class FoodDB {
 				restaurant = rset.getString("Restaurant");
 				totalRating = rset.getFloat("TotalRating");
 				numberOfVotes = rset.getInt("NumberOfVotes");
-				hashcode = rset.getInt("HashCode");
-				stamp_created = rset.getDate("stamp_created");
+				mealId = rset.getInt("MealId");
 
 				// Create a new meal from the info we got in the database
-				long id = (restaurant + name).hashCode();
 				Rating mealRating = new Rating(FoodUtils.doubleToRatingValue(
 						totalRating, numberOfVotes), numberOfVotes, totalRating);
 				Restaurant mealResto = new Restaurant(restaurant.hashCode(),
 						restaurant);
 
-				Meal gottenMeal = new Meal(id, name, description, mealResto,
+				Meal gottenMeal = new Meal(mealId, name, description, mealResto,
 						mealRating);
 
 				campusMeals.add(gottenMeal);
@@ -354,12 +350,12 @@ public class FoodDB {
 	 * @param deviceId
 	 *            the ID to be inserted
 	 */
-	public void insertVotedDevice(String deviceId, int hashCode, Double myRating) {
+	public void insertVotedDevice(String deviceId, long mealId, Double myRating) {
 		if (!isValidConnection() || myRating == null) {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
-		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created, Rating, HashCode) VALUES (?, ?, ?, ?)";
+		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created, Rating, MealId) VALUES (?, ?, ?, ?)";
 		ResultSet rset = null;
 
 		try {
@@ -374,7 +370,7 @@ public class FoodDB {
 			insertVotedDevice.setString(1, deviceId);
 			insertVotedDevice.setString(2, dateString);
 			insertVotedDevice.setDouble(3, myRating);
-			insertVotedDevice.setInt(4, hashCode);
+			insertVotedDevice.setLong(4, mealId);
 
 			count = insertVotedDevice.executeUpdate();
 			System.out.println("<Food> " + count + " rows were inserted");
@@ -400,23 +396,21 @@ public class FoodDB {
 	 * @param meal
 	 *            the Meal for which the rating was submitted
 	 */
-	public void insertRating(Meal meal, int hashCode) {
+	public void insertRating(Meal meal) {
 		if (!isValidConnection() || meal == null) {
 			return;
 		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
-		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where hashcode=?";
-
-		// int hashCode = meal.hashCode();
+		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where MealId=?";
 
 		try {
 			insertRating = mConnection.prepareStatement(insertString);
 
 			Rating r = meal.getRating();
-			insertRating.setFloat(1, (float) r.getTotalRating());
-			insertRating.setInt(2, r.getNbVotes());
-			insertRating.setInt(3, hashCode);
+			insertRating.setFloat(1, (float) r.getSumOfRatings());
+			insertRating.setInt(2, r.getNumberOfVotes());
+			insertRating.setLong(3, meal.getMealId());
 
 			System.out.println(insertRating);
 
@@ -424,8 +418,8 @@ public class FoodDB {
 		} catch (SQLException e) {
 			System.out.println("Problem: could not insert rating:" + "Rating="
 					+ meal.getRating().getRatingValue() + ", NumberOfVotes="
-					+ meal.getRating().getNbVotes() + "where hashcode="
-					+ hashCode);
+					+ meal.getRating().getNumberOfVotes() + "where MealId="
+					+ meal.getMealId());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -443,20 +437,20 @@ public class FoodDB {
 	 * 
 	 * @param uploader
 	 *            the ID of the device that uploaded the picture
-	 * @param hashCode
-	 *            the hashcode of the Meal for which this picture was submitted
+	 * @param mealId
+	 *            the ID of the Meal for which this picture was submitted
 	 * @param picture
 	 *            the Meal picture
 	 * @return
 	 */
-	public boolean uploadPicture(String uploader, int hashCode, byte[] picture) {
+	public boolean uploadPicture(String uploader, int mealId, byte[] picture) {
 		if (!isValidConnection() || picture == null) {
 			return false;
 		}
 		System.out.println("<Food> Inserting picture.");
 		PreparedStatement uploadPicture = null;
 
-		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealHashCode, stamp_created)"
+		String insertString = "INSERT INTO Pictures (Picture, Uploader, MealId, stamp_created)"
 				+ " VALUES (?,?,?,?)";
 
 		Calendar cal = Calendar.getInstance();
@@ -470,7 +464,7 @@ public class FoodDB {
 
 			uploadPicture.setBytes(1, picture);
 			uploadPicture.setString(2, uploader);
-			uploadPicture.setInt(3, hashCode);
+			uploadPicture.setInt(3, mealId);
 			uploadPicture.setString(4, dateString);
 
 			uploadPicture.executeUpdate();

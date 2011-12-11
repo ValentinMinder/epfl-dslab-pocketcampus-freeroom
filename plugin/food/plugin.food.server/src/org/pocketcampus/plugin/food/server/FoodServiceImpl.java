@@ -20,7 +20,6 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
-import org.pocketcampus.plugin.food.shared.SharedFoodUtils;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 /**
@@ -47,7 +46,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private List<Meal> mAllMeals;
 
 	/** Ratings for all Meals, represents with their hashcode */
-	private HashMap<Integer, Rating> mMealRatings;
+	private HashMap<Long, Rating> mMealRatings;
 
 	/** The list of DeviceIds that have already voted for a meal today */
 	private ArrayList<String> mDeviceIds;
@@ -73,7 +72,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
 		mAllMeals = new ArrayList<Meal>();
 		mSandwiches = new ArrayList<Sandwich>();
-		mMealRatings = new HashMap<Integer, Rating>();
+		mMealRatings = new HashMap<Long, Rating>();
 		mDeviceIds = new ArrayList<String>();
 
 		getRestaurantsList();
@@ -162,10 +161,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		updateMenus();
 		System.out.println("<getRating>: Rating Request");
 
-		int mealHashCode = SharedFoodUtils.getMealHashCode(meal);
-
 		if (mMealRatings != null) {
-			return mMealRatings.get(mealHashCode);
+			return mMealRatings.get(meal.getMealId());
 		}
 
 		return null;
@@ -180,7 +177,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 *         corresponding meal
 	 */
 	@Override
-	public Map<Integer, Rating> getRatings() throws TException {
+	public Map<Long, Rating> getRatings() throws TException {
 		// Here is why we don't get the Ratings right?
 		updateMenus();
 		System.out.println("<getRatings>: Ratings Request.");
@@ -203,21 +200,21 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 *         Already_Voted or Too_Early)
 	 */
 	@Override
-	public SubmitStatus setRating(Rating rating, Meal meal, String deviceId)
+	public SubmitStatus setRating(long mealId, double rating, String deviceId)
 			throws TException {
 		updateMenus();
 		System.out.println("<setRating>: Rating Request");
 
-		if (rating == null || meal == null || deviceId == null) {
+		if (deviceId == null) {
 			return SubmitStatus.ERROR;
 		}
 
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
-		// if (now.get(Calendar.HOUR_OF_DAY) < 11) {
-		// return SubmitStatus.TOOEARLY;
-		// }
+		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
+			return SubmitStatus.TOO_EARLY;
+		}
 
 		if (mDeviceIds.contains(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");
@@ -231,18 +228,16 @@ public class FoodServiceImpl implements FoodService.Iface {
 			return SubmitStatus.ALREADY_VOTED;
 		}
 
-		int mealHashCode = SharedFoodUtils.getMealHashCode(meal);
-
 		double ratingTotal;
 		double ratingValue;
 		int newNbVotes;
 
 		for (Meal currentMeal : mAllMeals) {
-			if (SharedFoodUtils.getMealHashCode(currentMeal) == mealHashCode) {
+			if (currentMeal.getMealId() == mealId) {
 
-				ratingTotal = currentMeal.getRating().getTotalRating()
-						+ rating.getRatingValue();
-				newNbVotes = currentMeal.getRating().getNbVotes() + 1;
+				ratingTotal = currentMeal.getRating().getSumOfRatings()
+						+ rating;
+				newNbVotes = currentMeal.getRating().getNumberOfVotes() + 1;
 				if (newNbVotes != 0) {
 					ratingValue = ratingTotal / newNbVotes;
 				} else {
@@ -250,20 +245,19 @@ public class FoodServiceImpl implements FoodService.Iface {
 				}
 
 				// Update Rating for this meal
-				currentMeal.getRating().setNbVotes(newNbVotes);
-				currentMeal.getRating().setTotalRating(ratingTotal);
+				currentMeal.getRating().setNumberOfVotes(newNbVotes);
+				currentMeal.getRating().setSumOfRatings(ratingTotal);
 				currentMeal.getRating().setRatingValue(ratingValue);
 
 				// Update Rating + deviceID on DB
-				mDatabase.insertRating(currentMeal, mealHashCode);
-				mDatabase.insertVotedDevice(deviceId, mealHashCode,
-						rating.getRatingValue());
+				mDatabase.insertRating(currentMeal);
+				mDatabase.insertVotedDevice(deviceId, mealId, rating);
 
 				// Add deviceID in the list
 				mDeviceIds.add(deviceId);
 
 				// Update Rating in the MealList
-				mMealRatings.put(mealHashCode, currentMeal.getRating());
+				mMealRatings.put(mealId, currentMeal.getRating());
 				return SubmitStatus.VALID;
 			}
 		}
@@ -308,8 +302,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 			mAllMeals = mealsFromDB;
 
 			for (Meal m : mAllMeals) {
-				mMealRatings.put(SharedFoodUtils.getMealHashCode(m),
-						m.getRating());
+				mMealRatings.put(m.getMealId(), m.getRating());
 			}
 			mLastImportedMeals = new Date();
 			System.out.println("<importMenus>: Getting menus from DB");
@@ -358,8 +351,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 					// Meal description
 					String description = feed.items.get(i).description;
 					// Meal id
-					long id = (r + name).hashCode();
 
+					long id = generateMealId(name, description, newResto);
 					Meal newMeal = new Meal(id, name, description, newResto,
 							mealRating);
 					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
@@ -368,9 +361,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 									BAD_CHAR)) {
 						if (!alreadyExist(newMeal)) {
 							mAllMeals.add(newMeal);
-							mMealRatings.put(
-									SharedFoodUtils.getMealHashCode(newMeal),
-									mealRating);
+							mMealRatings.put(newMeal.getMealId(), mealRating);
 							// Buffer list to then add to the database the new
 							// meals
 							newlyParsedMeals.add(newMeal);
@@ -386,6 +377,18 @@ public class FoodServiceImpl implements FoodService.Iface {
 			mLastImportedMeals = new Date();
 		}
 		return newlyParsedMeals;
+	}
+
+	public static long generateMealId(String name, String description,
+			Restaurant restaurant) {
+		final long prime = 31;
+		long result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((restaurant == null) ? 0 : restaurant.getName().hashCode());
+		return result;
 	}
 
 	/**
@@ -408,9 +411,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * @return true if it's already in the list of Meals
 	 */
 	private boolean alreadyExist(Meal meal) {
+		long mealId = meal.getMealId();
 		for (Meal m : mAllMeals) {
-			if (SharedFoodUtils.getMealHashCode(m) == SharedFoodUtils
-					.getMealHashCode(meal)) {
+			if (m.getMealId() == mealId) {
 				return true;
 			}
 		}

@@ -13,7 +13,7 @@ import org.apache.thrift.TEnum;
 public enum SubmitStatus implements org.apache.thrift.TEnum {
   ALREADY_VOTED(0),
   VALID(1),
-  TOOEARLY(2),
+  TOO_EARLY(2),
   ERROR(3);
 
   private final int value;
@@ -40,7 +40,7 @@ public enum SubmitStatus implements org.apache.thrift.TEnum {
       case 1:
         return VALID;
       case 2:
-        return TOOEARLY;
+        return TOO_EARLY;
       case 3:
         return ERROR;
       default:

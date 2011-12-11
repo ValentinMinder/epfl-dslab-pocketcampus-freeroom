@@ -6,17 +6,18 @@ typedef i32 int
 typedef i64 timestamp
 
 struct NewsItem {
-	1: required common.Id id;
+	1: required common.Id newsItemId;
 	2: required string title;
 	3: required string description;
 	4: required string link;
-	5: required string pubDate;
-	6: required timestamp pubDateDate;
-	7: optional string imageUrl;
+	5: required string feed;
+	6: required string pubDate;
+	7: required timestamp pubDateDate;
+	8: optional string imageUrl;
 }
 
 struct Feed {
-	1: required common.Id Id;
+	1: required common.Id feedId;
 	2: required string title;
 	3: required string link;
 	4: required string description;
@@ -24,6 +25,6 @@ struct Feed {
 }
 
 service NewsService {
-	list<NewsItem> getNewsItems();
-	list<Feed> getFeeds();
+	list<NewsItem> getNewsItems(1: string language);
+	list<Feed> getFeeds(1: string language);
 }

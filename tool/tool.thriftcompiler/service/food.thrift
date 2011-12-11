@@ -3,7 +3,7 @@ namespace java org.pocketcampus.plugin.food.shared
 include "../include/common.thrift"
 
 struct Restaurant {
-	1: required common.Id Id;
+	1: required common.Id restaurantId;
 	2: required string name;
 	3: optional common.Location location;
 }
@@ -11,18 +11,18 @@ struct Restaurant {
 enum SubmitStatus {
 	ALREADY_VOTED;
 	VALID;
-	TOOEARLY;
+	TOO_EARLY;
 	ERROR;
 }
 
 struct Rating {
 	1: required double ratingValue;
-	2: required i32 nbVotes;
-	3: required double totalRating;
+	2: required i32 numberOfVotes;
+	3: required double sumOfRatings;
 }
 
 struct Meal {
-	1: required common.Id Id;
+	1: required common.Id mealId;
 	2: required string name;
 	3: required string mealDescription;
 	4: required Restaurant restaurant;
@@ -31,7 +31,7 @@ struct Meal {
 }
 
 struct Sandwich {
-	1: required common.Id Id;
+	1: required common.Id sandwichId;
 	2: required Restaurant restaurant;
 	3: required string name;
 }
@@ -42,6 +42,6 @@ service FoodService {
 	list<Sandwich> getSandwiches();
 	Rating getRating(1: Meal meal);
 	bool hasVoted(1: string deviceId);
-	map<i32, Rating> getRatings();
-	SubmitStatus setRating(1: Rating rating, 2: Meal meal, 3: string deviceID);
+	map<common.Id, Rating> getRatings();
+	SubmitStatus setRating(1: common.Id mealId, 2: double rating, 3: string deviceId);
 }

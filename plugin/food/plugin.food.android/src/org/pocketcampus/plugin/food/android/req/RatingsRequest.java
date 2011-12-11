@@ -19,7 +19,7 @@ import android.util.Log;
  * 
  */
 public class RatingsRequest extends
-		Request<FoodController, Iface, Object, Map<Integer, Rating>> {
+		Request<FoodController, Iface, Object, Map<Long, Rating>> {
 
 	/**
 	 * Initiate the <code>getRatings</code> Request at the server
@@ -32,7 +32,7 @@ public class RatingsRequest extends
 	 *         the server
 	 */
 	@Override
-	protected Map<Integer, Rating> runInBackground(Iface client, Object param)
+	protected Map<Long, Rating> runInBackground(Iface client, Object param)
 			throws Exception {
 		Log.d("<RatingsRequest>:", "run");
 		return client.getRatings();
@@ -49,7 +49,7 @@ public class RatingsRequest extends
 	 */
 	@Override
 	protected void onResult(FoodController controller,
-			Map<Integer, Rating> result) {
+			Map<Long, Rating> result) {
 		Log.d("<RatingsRequest>:", "onResult");
 		((FoodModel) controller.getModel()).setRatings(result);
 	}
