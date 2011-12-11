@@ -18,13 +18,13 @@ struct Person {
 	1: required string firstName;
 	2: required string lastName;
 	3: required string sciper;
-	4: optional string mail;
+	4: optional string email;
 	5: optional string web;
 	6: optional string privatePhoneNumber;
 	7: optional string officePhoneNumber;
 	8: optional string office;
 	9: optional string gaspar;
-	10: optional list<string> OrganizationalUnit;
+	10: optional list<string> OrganisationalUnit;
 	11: optional string pictureUrl;
 	
 }

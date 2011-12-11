@@ -13,7 +13,7 @@ android:id="@+id/relativeLayout1" android:layout_height="match_parent">
     android:layout_above="@+id/directory_lname" 
     android:layout_centerHorizontal="true"></TextView>
     
-    <EditText 
+    <InputBarElement 
     android:layout_height="wrap_content" 
     android:id="@+id/directory_lname" 
     android:layout_width="fill_parent" 
@@ -23,7 +23,7 @@ android:id="@+id/relativeLayout1" android:layout_height="match_parent">
     android:layout_marginBottom="10px"
     android:singleLine="true"
     android:imeActionLabel="Search"
-    android:imeOptions="actionSearch"></EditText>
+    android:imeOptions="actionSearch"></InputBarElement>
     
     <Button 
     android:layout_height="wrap_content" 

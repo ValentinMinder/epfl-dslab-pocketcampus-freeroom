@@ -1766,7 +1766,6 @@ Exnar
 Barrandon
 Pascal
 Schibli
-Baroni
 Eggli
 Bouche
 Viscolo
@@ -2397,7 +2396,6 @@ Paderno
 Gysler
 Laporte
 Maslov
-Özuysal
 Xiao
 Beaude
 Pattaroni
@@ -2407,6 +2405,7 @@ Bireima
 Grana
 Biro
 Masin
+Bourqui
 Julier
 Chaboudez
 Djelid
@@ -3053,7 +3052,6 @@ Bel Hammar
 Theler
 Kronig
 Minnig
-Delcor Poch
 Ramadani
 Just
 Grometto
@@ -3961,7 +3959,6 @@ Hosseini Kamal
 Braghieri
 Vigne
 Visciòla
-Elsea
 Adyel
 Ahadpour
 Avet
@@ -4399,7 +4396,6 @@ Olivo
 Dirren
 Zürcher Wimmer
 Anderle Pedone
-Bourqui
 Moegli
 Wischmann
 Boulangier
@@ -5498,6 +5494,7 @@ Béen
 Derriey
 De Carvalho
 De Wolf
+Denizot
 Dunand
 Preitner
 Gauteaub
@@ -8987,15 +8984,12 @@ Mubin
 Piazzesi
 Baquerizo Ibarra
 Dobre
-Guerrero Colmenares
 Karakonstantis
 Schill
 Koblanski
 Rincón Gil
-Salinas Saenz
 Abu Antoun
 Valencia Esquivel
-Rudy
 Zhong
 Coderay
 Virattipong
@@ -9099,6 +9093,7 @@ Castro
 Herriman
 Kopta
 Patel
+Püspöki
 Mustafa
 Marolda
 Bauer
@@ -9589,7 +9584,6 @@ Bader
 Schüpfer
 Hergibo
 Rakonjac
-Ismayilov
 Häller
 Divis
 Justafré
@@ -10634,7 +10628,6 @@ Barchi
 Ben Hattar
 Biétry
 Bitar
-Boscardin
 Bourgarel
 Braidi
 Bürki
@@ -11082,7 +11075,6 @@ Sakuwaha
 Panchal
 Can
 Ferrante Ritzi
-Auría Rasclosa
 Georgala
 Ghennai
 Dejonckheere
@@ -11644,6 +11636,7 @@ Alonso
 Remondeulaz
 Stieger
 Altimari
+Chantada Santodomingo
 Biosa
 Kasap
 Massih
@@ -11811,3 +11804,15 @@ Araujo Magaña
 Verdu Tirado
 Charouit
 Thorimbert
+Morini
+Cavotta
+Augustyniak
+Beglot
+Piccini
+Caruso
+Sonachalam
+Radheep
+Singh 
+Riemensberger
+Stefanucci
+Auría Rasclosa

@@ -93,7 +93,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		HashSet<String> allOU = new HashSet<String>();
 		//String toast ="";
 		for(Person p : mModel.getResults()){
-			allOU.addAll(p.OrganizationalUnit);
+			allOU.addAll(p.OrganisationalUnit);
 			//toast += " " + p.ou;
 		}
 		
@@ -108,7 +108,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		int j=0;
 		while(i.hasNext()){
 			boolean keep = false;
-			for(String ou: i.next().OrganizationalUnit){
+			for(String ou: i.next().OrganisationalUnit){
 				if(ouToKeep.contains(ou))
 					keep = true;
 			}
@@ -121,6 +121,16 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		Toast.makeText(this,j+ " removed", Toast.LENGTH_SHORT).show();
 		setResults(mModel.getResults());
 	}
+
+	@Override
+	public void getAutoCompleted(String txt) {
+		new DirectoryGivenNameAutoCompleteRequest().start(this,
+				(Iface) getClient(new Client.Factory(), mPluginName),
+				txt);
+		
+	}
+
+	
 
 	
 

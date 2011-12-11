@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.directory.android;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.android.ui.DirectorySearchLayout;
@@ -41,7 +42,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
 		
-		mLayout = new DirectorySearchLayout(this);
+		mLayout = new DirectorySearchLayout(this, mController);
 		
 		OnClickListener listener = new OnClickListener() {
 			@Override
@@ -49,6 +50,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 				search();
 			}
 		};
+		
+		
 		
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);

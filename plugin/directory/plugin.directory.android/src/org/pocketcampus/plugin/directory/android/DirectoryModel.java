@@ -62,6 +62,16 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 		mListeners.pictureUpdated();
 	}
 
+	public void setAutoCompletedGN(List<String> result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAutoCompletedSN(List<String> result) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

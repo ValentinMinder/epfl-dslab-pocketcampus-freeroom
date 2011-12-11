@@ -7,4 +7,5 @@ public interface IDirectoryController {
 	public void setResults(List<Person> res);
 	public void search(String name);
 	public void getProfilePicture(String sciper);
+	public void getAutoCompleted(String txt);
 }

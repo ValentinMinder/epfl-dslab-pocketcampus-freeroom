@@ -145,7 +145,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 					Person duplicatePerson = it.next();
 					
 					if(duplicatePerson.equals(sup)){
-						sup.OrganizationalUnit.addAll(duplicatePerson.OrganizationalUnit);
+						sup.OrganisationalUnit.addAll(duplicatePerson.OrganisationalUnit);
 						break;
 					}
 				}
@@ -156,7 +156,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		ArrayList<String> ouList = new ArrayList<String>();
 		ouList.add("Stark Labs");
 		ouList.add("S.H.I.E.L.D.");
-		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setMail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganizationalUnit(ouList));
+		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setEmail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganisationalUnit(ouList));
 					
 
 		System.out.println("Directory: " + results.size() + "persons found for param: " + param);
@@ -196,14 +196,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						e.getAttributeValue("givenName"),
 						e.getAttributeValue("sn"),
 						e.getAttributeValue("uniqueIdentifier"));
-				p.setMail(e.getAttributeValue("mail"));
+				p.setEmail(e.getAttributeValue("mail"));
 				p.setWeb(web);
 				p.setOfficePhoneNumber(e.getAttributeValue("telephoneNumber"));
 				p.setOffice(e.getAttributeValue("roomNumber"));
 				p.setGaspar(e.getAttributeValue("uid"));
 				ArrayList<String> ouList = new ArrayList<String>();
 				ouList.add(e.getAttributeValue("ou"));
-				p.setOrganizationalUnit(ouList);
+				p.setOrganisationalUnit(ouList);
 				
 				//no duplicates!
 				if( !results.contains(p))
@@ -215,7 +215,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						Person duplicatePerson = it.next();
 						
 						if(duplicatePerson.equals(p)){
-							p.OrganizationalUnit.addAll(duplicatePerson.OrganizationalUnit);
+							p.OrganisationalUnit.addAll(duplicatePerson.OrganisationalUnit);
 							break;
 						}
 					}

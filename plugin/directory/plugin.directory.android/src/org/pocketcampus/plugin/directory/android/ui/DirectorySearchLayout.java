@@ -2,6 +2,9 @@ package org.pocketcampus.plugin.directory.android.ui;
 
 
 import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
+import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
+import org.pocketcampus.plugin.directory.android.DirectoryController;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -23,20 +26,23 @@ import android.widget.TextView.OnEditorActionListener;
 public class DirectorySearchLayout extends RelativeLayout {
 	//private TextView mTextFName;
 	//private TextView mTextLName;
-	private EditText mEditName;
+	private InputBarElement mEditName;
 	private RelativeLayout mInnerLayout;
+	private DirectoryController mController;
 
-	public DirectorySearchLayout(Context context, AttributeSet attrs) {
+	public DirectorySearchLayout(Context context, DirectoryController con, AttributeSet attrs) {
 		super(context, attrs);
-		initialize(context);
+		initialize(context, con);
 	}
 	
-	public DirectorySearchLayout(Context context) {
+	public DirectorySearchLayout(Context context, DirectoryController con) {
 		super(context);
-		initialize(context);
+		initialize(context, con);
 	}
 	
-	private void initialize(Context context) {
+	private void initialize(Context context, DirectoryController controller) {
+		mController = controller;
+		
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mInnerLayout = (RelativeLayout) inflater.inflate(R.layout.directory_search_layout, null);
 		
@@ -45,13 +51,21 @@ public class DirectorySearchLayout extends RelativeLayout {
 		
 		
 		//mEditFName = (EditText)findViewById(R.id.directory_fname);
-		mEditName = (EditText)findViewById(R.id.directory_lname);
-		mEditName.setHint("");
+		mEditName = (InputBarElement)findViewById(R.id.directory_lname);
+		
+		mEditName.setOnKeyPressedListener(new OnKeyPressedListener() {
+			@Override
+			public void onKeyPressed(String text) {
+				mController.getAutoCompleted(text);
+				
+			}
+		});
+
 		
 	}
 	
 	public String getName(){
-		return mEditName.getText().toString();
+		return mEditName.getInputText();
 	}
 	
 	public void setOnEditorActionListener(OnEditorActionListener oeal){

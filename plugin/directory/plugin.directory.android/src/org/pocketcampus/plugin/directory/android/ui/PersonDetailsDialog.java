@@ -81,8 +81,8 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		fname_.setText(p.getFirstName() + " ");
 		
 		mail_ = (TextView) findViewById(R.id.directory_person_details_dialog_mail);
-		mail_.setVisibility(visibility(p.isSetMail()));
-		mail_.setText(p.mail);
+		mail_.setVisibility(visibility(p.isSetEmail()));
+		mail_.setText(p.email);
 		
 		office_ = (TextView) findViewById(R.id.directory_person_details_dialog_office);
 		office_.setVisibility(visibility(p.isSetOffice()));
@@ -97,9 +97,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 //		web_.setText(p.web);
 		
 		ou_ = (TextView) findViewById(R.id.directory_person_details_dialog_ou);
-		ou_.setVisibility(visibility(p.isSetOrganizationalUnit()));
+		ou_.setVisibility(visibility(p.isSetOrganisationalUnit()));
 		String multipleLinesOU = "";
-		for(String s : p.OrganizationalUnit){
+		for(String s : p.OrganisationalUnit){
 			multipleLinesOU += (s + "\n");
 		}
 		multipleLinesOU.substring(0, multipleLinesOU.length() -1);
@@ -116,7 +116,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ImageView mapButton = (ImageView) findViewById(R.id.directory_imageButton_room);
 		ImageView webButton = (ImageView) findViewById(R.id.directory_imageButton_web);
 		
-		mailButton.setVisibility(visibility(displayedPerson_.isSetMail()));
+		mailButton.setVisibility(visibility(displayedPerson_.isSetEmail()));
 		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
 		//mapButton.setVisibility(visibility(displayedPerson_.hasOffice()));
 		mapButton.setVisibility(visibility(false)); // TODO call map when ready
@@ -185,7 +185,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 	
 	private void performMail(){
-		Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + displayedPerson_.mail));
+		Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + displayedPerson_.email));
 		
 		try {
 		    ctx_.startActivity(Intent.createChooser(emailIntent, "Send email..."));
