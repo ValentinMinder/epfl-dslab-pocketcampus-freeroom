@@ -141,16 +141,6 @@ public abstract class RequestHandler<R, O> {
 		dbConnection = dbManager.getConnection();
 		defaultAutoCommitValue = dbConnection.getAutoCommit();
 		dbConnection.setAutoCommit(false);
-		
-		/* FIXME
-		 * Si la connexion (Connection) est partagée entre les instances, ou qu'une classe
-		 * utilise un DB handler dans une méthode, et pas de handler dans une autre, que
-		 * l'autre méthode utilise autoCommit à true et que pour le handler ce doit être à
-		 * false, si les deux méthodes sont appelées en même temps => CLASH sur
-		 * les autoCommit
-		 * 
-		 * http://www.google.com/search?hl=fr&client=opera&hs=hrr&rls=fr&q=servlet+static+variable+context&aq=f&aqi=&aql=&oq=
-		 */
 	}
 	
 	/**
