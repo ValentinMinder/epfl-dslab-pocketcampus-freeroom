@@ -49,7 +49,7 @@ public class TextViewElement  extends LinearLayout{
 
 	public void initializeView() {
 		// Bind the data efficiently with the holder.
-		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
 		mTitleLine.setClickable(false);
 		
 		mTitleLine.setOnClickListener(new OnClickListener() {

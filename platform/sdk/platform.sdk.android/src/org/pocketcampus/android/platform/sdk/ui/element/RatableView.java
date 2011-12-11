@@ -137,13 +137,13 @@ public class RatableView extends LinearLayout {
 		/** Bind the data efficiently with the holder. */
 
 		/** Title */
-		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
 		/** Description */
 		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 
 		/** Rating */
 		setRating(mLabeler.getRating(mCurrentObject),
-				mLabeler.getNbVotes(mCurrentObject));
+				mLabeler.getNumberOfVotes(mCurrentObject));
 
 		addView(mConvertView);
 	}

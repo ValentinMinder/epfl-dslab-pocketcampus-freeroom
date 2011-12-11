@@ -21,7 +21,7 @@ public interface IRatableViewLabeler<LabeledObjectType> {
 	 *            the object of which we want the title
 	 * @return the String title
 	 */
-	public String getTitle(LabeledObjectType obj);
+	public String getLabel(LabeledObjectType obj);
 
 	/**
 	 * Returns the description of the object passed in parameter
@@ -47,7 +47,7 @@ public interface IRatableViewLabeler<LabeledObjectType> {
 	 * @param obj
 	 *            the object of which we want the Number of Votes
 	 */
-	public int getNbVotes(LabeledObjectType obj);
+	public int getNumberOfVotes(LabeledObjectType obj);
 
 	/**
 	 * Returns the Place at which the object passed in parameter is available

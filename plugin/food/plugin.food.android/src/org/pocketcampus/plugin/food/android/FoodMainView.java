@@ -15,6 +15,7 @@ import org.pocketcampus.android.platform.sdk.ui.element.TextViewElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.ExpandableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableExpandableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
@@ -35,6 +36,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 /**
  * The Main View of the Food plugin, first displayed when accessing Food.
@@ -70,6 +74,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	private OnItemClickListener mOnLineClickListener;
 	/** Listener for when you click on a rating in the list */
 	private OnItemClickListener mOnRatingClickListener;
+
+	/** The action bar displayed in the food plugin */
+	private ActionBar mActionBar;
+
+	/** The action shown in action bar to toggle menus by restaurants or ratings */
+	private ShowByRestaurantOrRatingsAction showAllMenusAction;
 
 	/**
 	 * Keeps in memory whether we are coming back from choosing restaurant
@@ -166,12 +176,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.food_by_resto) {
+		if (item.getItemId() == R.id.food_by_meals) {
 			showMenusByRestaurants();
 		} else if (item.getItemId() == R.id.food_by_sandwiches) {
 			showSandwiches();
-		} else if (item.getItemId() == R.id.food_by_ratings) {
-			showMenusByRatings();
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			// Extras to add to the Intent
 			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
@@ -181,6 +189,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					FoodSuggestionsView.class);
 			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
+
 		} else if (item.getItemId() == R.id.food_by_settings) {
 			backFromPreferences = true;
 			Intent settings = new Intent(getApplicationContext(),
@@ -429,6 +438,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				.getMealsByRestaurants(this);
 		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
 
+		if (mActionBar == null) {
+			mActionBar = getActionBar();
+		}
+
+		if (showAllMenusAction == null || !showAllMenusAction.isShown()) {
+			showAllMenusAction = new ShowByRestaurantOrRatingsAction();
+			mActionBar.addAction(showAllMenusAction, 0);
+		} else {
+			showAllMenusAction.setIsRestaurant(true);
+		}
+
 		if (mealHashMap != null) {
 
 			/**
@@ -466,12 +486,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
 		Log.d("RATING", "Size of meals list : " + mealsByRatings.size());
 
+		if (showAllMenusAction == null) {
+			showAllMenusAction = new ShowByRestaurantOrRatingsAction();
+		}
+		showAllMenusAction.setIsRestaurant(false);
+
 		if (mealsByRatings != null && !mealsByRatings.isEmpty()) {
 			mLayout.removeFillerView();
 
 			// Create a new list by ratings
 			RatableListViewElement l = new RatableListViewElement(this,
-					mealsByRatings, mMealLabeler);
+					mealsByRatings, mMealWithRestaurantLabeler);
 
 			setListOnClickListeners(mealsByRatings, l);
 
@@ -494,10 +519,19 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 *            displayed
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
+		removeShowAllMenusAction();
 
 		if (mLayout == null) {
 			mLayout = new StandardTitledLayout(this);
 		}
+
+		if (mActionBar == null) {
+			mActionBar = getActionBar();
+		}
+
+		showAllMenusAction = new ShowByRestaurantOrRatingsAction();
+		showAllMenusAction.setIsRestaurant(false);
+		mActionBar.addAction(showAllMenusAction, 0);
 
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
 			Log.d("RATING", "Size of meals by suggestions list : "
@@ -505,7 +539,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			mLayout.removeFillerView();
 			RatableListViewElement l = new RatableListViewElement(this,
-					mealsBySuggestions, mMealLabeler);
+					mealsBySuggestions, mMealWithRestaurantLabeler);
 
 			setListOnClickListeners(mealsBySuggestions, l);
 
@@ -523,6 +557,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Shows the list of Sandwiches by Restaurants
 	 */
 	public void showSandwiches() {
+		removeShowAllMenusAction();
+
 		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel
 				.getSandwiches();
 		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
@@ -531,8 +567,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			mLayout.removeFillerView();
 
-			mList = new RatableExpandableListViewElement(this, mSandwiches,
-					mSandwichLabeler, mSandwichViewConstructor);
+			ExpandableListViewElement mList = new ExpandableListViewElement(
+					this, mSandwiches, mSandwichLabeler,
+					mSandwichViewConstructor);
 
 			if (!mSandwiches.isEmpty()) {
 				mLayout.hideText();
@@ -541,6 +578,22 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			} else {
 				mLayout.setText(getString(R.string.food_no_sandwiches));
 				mLayout.hideTitle();
+			}
+		}
+	}
+
+	/**
+	 * Removes the button in the action bar to toggle menus by restaurant or
+	 * ratings.
+	 */
+	public void removeShowAllMenusAction() {
+		if (showAllMenusAction.isShown()) {
+			if (mActionBar == null) {
+				mActionBar = getActionBar();
+			}
+			mActionBar.removeActionAt(0);
+			if (showAllMenusAction != null) {
+				showAllMenusAction.setShown(false);
 			}
 		}
 	}
@@ -679,10 +732,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param meal
 		 *            the meal to be displayed
-		 * @return
+		 * @return the title of the meal
 		 */
 		@Override
-		public String getTitle(Meal meal) {
+		public String getLabel(Meal meal) {
 			return meal.getName();
 		}
 
@@ -691,7 +744,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param meal
 		 *            the meal to be displayed
-		 * @return
+		 * @return the description for the meal
 		 */
 		@Override
 		public String getDescription(Meal meal) {
@@ -703,7 +756,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param meal
 		 *            the meal to be displayed
-		 * @return
+		 * @return the current rating for the meal
 		 */
 		@Override
 		public float getRating(Meal meal) {
@@ -715,10 +768,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param meal
 		 *            the meal to be displayed
-		 * @return
+		 * @return the number of votes for the meal
 		 */
 		@Override
-		public int getNbVotes(Meal meal) {
+		public int getNumberOfVotes(Meal meal) {
 			return meal.getRating().getNumberOfVotes();
 		}
 
@@ -727,7 +780,74 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param meal
 		 *            the meal to be displayed
-		 * @return
+		 * @return the restaurant at which it is available
+		 */
+		@Override
+		public String getPlaceName(Meal meal) {
+			return meal.getRestaurant().getName();
+		}
+	};
+
+	/**
+	 * The labeler for a meal, to tell how it has to be displayed in a generic
+	 * view.
+	 */
+	IRatableViewLabeler<Meal> mMealWithRestaurantLabeler = new IRatableViewLabeler<Meal>() {
+
+		/**
+		 * Returns the title of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return the title of the meal
+		 */
+		@Override
+		public String getLabel(Meal meal) {
+			return meal.getName() + " @ " + meal.getRestaurant().getName();
+		}
+
+		/**
+		 * Returns the description of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return the description for the meal
+		 */
+		@Override
+		public String getDescription(Meal meal) {
+			return meal.getMealDescription();
+		}
+
+		/**
+		 * Returns the Rating of a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return the current rating for the meal
+		 */
+		@Override
+		public float getRating(Meal meal) {
+			return (float) meal.getRating().getRatingValue();
+		}
+
+		/**
+		 * Returns the Number Of Votes for a meal
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return the number of votes for the meal
+		 */
+		@Override
+		public int getNumberOfVotes(Meal meal) {
+			return meal.getRating().getNumberOfVotes();
+		}
+
+		/**
+		 * Returns the name of the Restaurant the meal is available at.
+		 * 
+		 * @param meal
+		 *            the meal to be displayed
+		 * @return the restaurant at which it is available
 		 */
 		@Override
 		public String getPlaceName(Meal meal) {
@@ -742,7 +862,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	IRatableViewLabeler<Sandwich> mSandwichLabeler = new IRatableViewLabeler<Sandwich>() {
 
 		@Override
-		public String getTitle(Sandwich sandwich) {
+		public String getLabel(Sandwich sandwich) {
 			return sandwich.getName();
 		}
 
@@ -757,7 +877,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 
 		@Override
-		public int getNbVotes(Sandwich sandwich) {
+		public int getNumberOfVotes(Sandwich sandwich) {
 			return 0;
 		}
 
@@ -797,8 +917,65 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	@Override
 	public void networkErrorHappened(String message) {
-		Toast.makeText(this, message, Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 
+	/**
+	 * Takes care of showing the "show by restaurants" or "show by ratings"
+	 * button in the Action Bar
+	 * 
+	 * @author Elodie <elodienilane.triponez@epfl.ch>
+	 * 
+	 */
+	private class ShowByRestaurantOrRatingsAction implements Action {
+		private boolean mButtonByRestaurants;
+		private boolean mIsShown;
+
+		ShowByRestaurantOrRatingsAction() {
+			mButtonByRestaurants = true;
+			mIsShown = true;
+		}
+
+		@Override
+		public int getDrawable() {
+			if (mButtonByRestaurants) {
+				return R.drawable.food_menus_by_ratings;
+			} else {
+				return R.drawable.food_menus_by_restaurant;
+			}
+		}
+
+		@Override
+		public void performAction(View view) {
+			mButtonByRestaurants = !mButtonByRestaurants;
+			mActionBar.removeActionAt(0);
+			mActionBar.addAction(this, 0);
+			if (mButtonByRestaurants) {
+				// if (isSandwichDisplay_) {
+				// resetScreen();
+				// isSandwichDisplay_ = false;
+				// }
+				showMenusByRestaurants();
+			} else {
+				showMenusByRatings();
+			}
+			// displayView();
+			// foodDisplayHandler_.refreshView();
+		}
+
+		/**
+		 * Returns whether or not the button in the action bar is shown
+		 */
+		public boolean isShown() {
+			return mIsShown;
+		}
+
+		public void setShown(boolean show) {
+			mIsShown = show;
+		}
+
+		public void setIsRestaurant(boolean isRestaurants) {
+			mButtonByRestaurants = isRestaurants;
+		}
+	}
 }

@@ -3,9 +3,7 @@
 
     <!-- General -->
     <string name="food_hello">Hello World, androidActivity!</string>
-    <string name="food_menu_restaurants">Restaurants</string>
     <string name="food_menu_meals">Meals</string>
-    <string name="food_menu_ratings">Ratings</string>
     <string name="food_menu_sandwiches">Sandwiches</string>
     <string name="food_menu_suggestions">Suggestions</string>
     <string name="food_menu_settings">Settings</string>
