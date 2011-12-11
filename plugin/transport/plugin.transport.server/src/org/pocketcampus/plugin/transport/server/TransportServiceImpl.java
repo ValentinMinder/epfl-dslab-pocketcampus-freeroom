@@ -22,37 +22,39 @@ public class TransportServiceImpl implements TransportService.Iface {
 	public TransportServiceImpl() {
 		mSbbProvider = new SbbProvider(
 				"MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
-
-		try {
-			//System.out.println(autocomplete("Neuchatel").get(0).id);
-			//System.out.println(connections("EPFL", "Bassenges"));
-			// EPFL -> Neuchatel
-			ArrayList<Integer> l = new ArrayList<Integer>();
-			l.add(new Integer(8501214));
-			System.out
-					.println(getLocationsFromIDs(l));
-			
-			System.out.println("---------------------");
-			System.out.println(nextDepartures("8501214"));
-		} catch (TException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		ArrayList<Integer> ids = new ArrayList<Integer>();
+		
 		System.out.println("Transport started");
-		ids.add(new Integer(8501214));
-		ids.add(new Integer(8504221));
-		try {
-			List<TransportStation> li = getLocationsFromIDs(ids);
-			for (TransportStation l : li) {
-				if(l != null)
-					System.out.println("pouet" + l.name);
-			}
-		} catch (TException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+//		try {
+//			//System.out.println(autocomplete("Neuchatel").get(0).id);
+//			//System.out.println(connections("EPFL", "Bassenges"));
+//			// EPFL -> Neuchatel
+//			ArrayList<Integer> l = new ArrayList<Integer>();
+//			l.add(new Integer(8501214));
+//			System.out
+//					.println(getLocationsFromIDs(l));
+//			
+//			System.out.println("---------------------");
+//			System.out.println(nextDepartures("8501214"));
+//		} catch (TException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//
+//		ArrayList<Integer> ids = new ArrayList<Integer>();
+//		
+//		ids.add(new Integer(8501214));
+//		ids.add(new Integer(8504221));
+//		try {
+//			List<TransportStation> li = getLocationsFromIDs(ids);
+//			for (TransportStation l : li) {
+//				if(l != null)
+//					System.out.println("pouet" + l.name);
+//			}
+//		} catch (TException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 
