@@ -9,6 +9,9 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
+import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapQueryParameterToTypeOfService;
+import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapHostToTypeOfService;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,7 +77,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		displayData();
 		
 	}
-
+	
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		
@@ -120,11 +123,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 
 	@Override
 	public void gotTequilaKey() {
+		final TequilaKey teqKey = mModel.getTequilaKey();
+		if(teqKey == null)
+			return; // TODO display error
 		if(AuthenticationController.AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY) {
 			// TODO set title showing which service is requesting auth
-			final TequilaKey teqKey = mModel.getTequilaKey();
-			if(teqKey == null)
-				return; // TODO display error
 			Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
 			loginButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -173,42 +176,6 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			mController.authenticateUserForTequilaEnabledService(tos);
 		}
 		
-	}
-	
-	private TypeOfService mapHostToTypeOfService(Uri aData) {
-		// This is the host part of the URL that Tequila redirects to after successful authentication
-		if(aData == null)
-			return null;
-		String pcService = aData.getHost();
-		if(pcService == null)
-			return null;
-		if("login.pocketcampus.org".equals(pcService)) {
-			return TypeOfService.SERVICE_POCKETCAMPUS;
-		} else if("moodle.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("cmp2www.epfl.ch".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else {
-			return null;
-		}
-	}
-	
-	private TypeOfService mapQueryParameterToTypeOfService(Uri aData) {
-		// This is the QueryParameter "service" that is set by a plugin calling us and asking for authentication
-		if(aData == null)
-			return null;
-		String pcService = aData.getQueryParameter("service");
-		if(pcService == null)
-			return null;
-		if("moodle".equals(pcService)) {
-			return TypeOfService.SERVICE_MOODLE;
-		} else if("camipro".equals(pcService)) {
-			return TypeOfService.SERVICE_CAMIPRO;
-		} else if("isa".equals(pcService)) {
-			return TypeOfService.SERVICE_ISA;
-		} else {
-			return null;
-		}
 	}
 	
 	/*

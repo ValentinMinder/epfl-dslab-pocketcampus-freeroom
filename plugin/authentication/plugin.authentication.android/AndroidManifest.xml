@@ -58,14 +58,21 @@
 			    
 		</activity>
 		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController"
-			xmlns:android="http://schemas.android.com/apk/res/android"></service>
-            
-		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationService">
+			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
 				<category android:name="org.pocketcampus.plugin.authentication" />
 				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" />
 			</intent-filter>
+		    		    
+		</service>
+            
+		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationService">
+<!-- 			<intent-filter> -->
+<!-- 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" /> -->
+<!-- 				<category android:name="org.pocketcampus.plugin.authentication" /> -->
+<!-- 				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" /> -->
+<!-- 			</intent-filter> -->
 		</service>
             
     </application>

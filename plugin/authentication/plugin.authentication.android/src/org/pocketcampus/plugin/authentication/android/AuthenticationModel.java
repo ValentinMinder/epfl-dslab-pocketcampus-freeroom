@@ -28,6 +28,10 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		mListeners.gotTequilaKey();
 	}
 	
+	public void setTequilaCookie(String value) {
+		tequilaCookie = value;
+	}
+	
 	public void setSessionIdForService(TypeOfService tos, SessionId sessId) {
 		if(sessionIds.containsKey(tos)) {
 			sessionIds.remove(tos);
@@ -50,6 +54,10 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		return iTequilaKey;
 	}
 
+	public String getTequilaCookie() {
+		return tequilaCookie;
+	}
+
 	@Override
 	public SessionId getSessionIdForService(TypeOfService tos) {
 		return sessionIds.get(tos);
@@ -65,6 +73,8 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private HashMap<TypeOfService, SessionId> sessionIds = new HashMap<TypeOfService, SessionId>();
 	
 	private TequilaKey iTequilaKey;
+	
+	private String tequilaCookie;
 
 	private static AuthenticationModel self = null;
 

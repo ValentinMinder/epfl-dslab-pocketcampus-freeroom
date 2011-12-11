@@ -45,10 +45,14 @@ public class CamiproController extends PluginController implements ICamiproContr
 	}
 	
 	public void refreshBalanceAndTransactions() {
+		if(mModel.getCamiproCookie() == null)
+			return;
 		new BalanceAndTransactionsRequest().start(this, mClientBT, buildSessionId());
 	}
 	
 	public void refreshStatsAndLoadingInfo() {
+		if(mModel.getCamiproCookie() == null)
+			return;
 		new StatsAndLoadingInfoRequest().start(this, mClientSL, buildSessionId());
 	}
 	

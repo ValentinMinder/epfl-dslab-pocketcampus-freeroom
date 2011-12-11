@@ -36,7 +36,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		Log.v("DEBUG", "onDisplay was called in CamiproMainView");
+		Log.v("DEBUG", "CamiproMainView::onDisplay");
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
@@ -54,7 +54,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	protected void handleIntent(Intent aIntent) {
-		Log.v("DEBUG", "handleIntent was called in CamiproMainView");
+		Log.v("DEBUG", "CamiproMainView::handleIntent");
 		// If we were pinged by auth plugin, then we must read the sessId
 		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
 			Uri aData = aIntent.getData();
@@ -67,8 +67,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		// Normal start-up
 		if(mModel.getCamiproCookie() == null) { // if we don't have cookie
 			// get cookie (ping auth plugin)
-			Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-			startActivity(authIntent);
+			//Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+			//startActivity(authIntent);
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+			startService(authIntent);
 		}
 		if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
 			// fetch them
@@ -82,17 +85,15 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		updateDisplay();
 	}
 	
-	/*@Override
+	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.v("DEBUG", "onResume was called in CamiproMainView");
-		if(mController == null) {
-			Log.v("DEBUG", "mController is null");
-		}
+		Log.v("DEBUG", "CamiproMainView::onResume");
 		if(mController != null && mController.getCamiproCookie() == null) {
-			//finish();
+			// Resumed and lot logged in? go back
+			finish();
 		}
-	}*/
+	}
 
 	@Override
 	public void transactionsUpdated() {
@@ -181,9 +182,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		
 		if(item.getItemId() == R.id.camipro_refresh) {			
 			refreshAll();
-			/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-			startService(authIntent);*/
 		}
 		
 
