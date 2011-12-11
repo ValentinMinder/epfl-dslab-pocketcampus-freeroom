@@ -259,7 +259,7 @@ public class FoodDB {
 				mealId = rset.getInt("MealId");
 
 				// Create a new meal from the info we got in the database
-				Rating mealRating = new Rating(FoodUtils.doubleToRatingValue(
+				Rating mealRating = new Rating(FoodUtils.totalRatingToRatingValue(
 						totalRating, numberOfVotes), numberOfVotes, totalRating);
 				Restaurant mealResto = new Restaurant(restaurant.hashCode(),
 						restaurant);
