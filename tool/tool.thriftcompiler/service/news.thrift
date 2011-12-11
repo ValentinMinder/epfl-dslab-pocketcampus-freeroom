@@ -11,9 +11,8 @@ struct NewsItem {
 	3: required string description;
 	4: required string link;
 	5: required string feed;
-	6: required string pubDate;
-	7: required timestamp pubDateDate;
-	8: optional string imageUrl;
+	6: required timestamp pubDate;
+	7: optional string imageUrl;
 }
 
 struct Feed {

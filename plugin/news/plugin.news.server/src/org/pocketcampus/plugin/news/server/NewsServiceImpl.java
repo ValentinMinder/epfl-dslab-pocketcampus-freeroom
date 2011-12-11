@@ -151,9 +151,9 @@ public class NewsServiceImpl implements NewsService.Iface {
 		@Override
 		public int compare(NewsItem o1, NewsItem o2) {
 			try {
-				if (o2.getPubDateDate() < o1.getPubDateDate()) {
+				if (o2.getPubDate() < o1.getPubDate()) {
 					return -1;
-				} else if (o2.getPubDateDate() > o1.getPubDateDate()) {
+				} else if (o2.getPubDate() > o1.getPubDate()) {
 					return 1;
 				}
 				return 0;

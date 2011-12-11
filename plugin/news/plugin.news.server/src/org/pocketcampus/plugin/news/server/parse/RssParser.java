@@ -154,16 +154,15 @@ public class RssParser extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("pubDate")
 				|| qName.equalsIgnoreCase("pubDate")) {
 			if (this.mInItem && this.mItem != null) {
-				String pubDate = mText.toString().trim();
-				this.mItem.setPubDate(pubDate);
-				this.mItem.setPubDateDate(getPubDateDate(pubDate));
+				String pubDateString = mText.toString().trim();
+				this.mItem.setPubDate(getPubDate(pubDateString));
 			}
 		}
 
 		this.mText = new StringBuilder();
 	}
 
-	public static long getPubDateDate(String pubDate) {
+	public static long getPubDate(String pubDate) {
 
 		Date pubDateDate = null;
 		// Try to parse the following format: Thu, 24 Mar 2011 06:17:28
