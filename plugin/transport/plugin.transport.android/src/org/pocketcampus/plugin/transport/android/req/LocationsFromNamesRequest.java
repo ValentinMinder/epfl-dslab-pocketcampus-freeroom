@@ -13,7 +13,7 @@ import android.util.Log;
 
 /**
  * A request to the server for the Locations corresponding to each String in the
- * parameters
+ * parameters.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -25,7 +25,7 @@ public class LocationsFromNamesRequest
 		Request<TransportController, Iface, getLocationsFromNames_args, List<TransportStation>> {
 
 	/**
-	 * Initiate the <code>getLocationsFromNames</code> Request at the server
+	 * Initiates the <code>getLocationsFromNames</code> request at the server.
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
@@ -42,7 +42,7 @@ public class LocationsFromNamesRequest
 	}
 
 	/**
-	 * Tell the model the departures have been updated.
+	 * Tells the model that the departures have been updated.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
@@ -54,7 +54,7 @@ public class LocationsFromNamesRequest
 	protected void onResult(TransportController controller,
 			List<TransportStation> result) {
 		Log.d("TRANSPORT", "onResult");
-		((TransportModel) controller.getModel()).setLocationsFromNames(result);
+		((TransportModel) controller.getModel()).setPreferredDestinations(result);
 	}
 
 	/**

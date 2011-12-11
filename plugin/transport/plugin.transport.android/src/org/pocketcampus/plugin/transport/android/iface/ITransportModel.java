@@ -3,12 +3,12 @@ package org.pocketcampus.plugin.transport.android.iface;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 
 /**
- * The interface that defines the method implemented by a model
+ * The interface that defines the methods implemented by a model of the plugin.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -18,12 +18,12 @@ import org.pocketcampus.plugin.transport.shared.TransportStation;
 public interface ITransportModel {
 
 	/**
-	 * @return mPreferredDestinations The list of preferred destinations
+	 * @return mPreferredDestinations The list of preferred destinations.
 	 */
 	public HashMap<String, List<TransportTrip>> getPreferredDestinations();
 
 	/**
-	 * Set all the preferred destinations
+	 * Sets all the preferred destinations.
 	 * 
 	 * @param destinations
 	 *            The new list of preferred destinations
@@ -32,7 +32,7 @@ public interface ITransportModel {
 
 	/**
 	 * Called when the connection is returned by the server. Notifies the view
-	 * that the connections for some destinations have been updated
+	 * that the connections for some destinations have been updated.
 	 * 
 	 * @param result
 	 */
@@ -40,9 +40,9 @@ public interface ITransportModel {
 
 	/**
 	 * Called when the Locations are returned by the server. Notifies the view
-	 * that the Locations for the strings have been updated
+	 * that the Locations for the strings have been updated.
 	 * 
 	 * @param result
 	 */
-	public void setLocationsFromNames(List<TransportStation> result);
+	public void setPreferredDestinations(List<TransportStation> result);
 }

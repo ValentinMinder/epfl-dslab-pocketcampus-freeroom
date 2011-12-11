@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.transport.android.iface;
 import java.util.List;
 
 /**
- * The interface that defines the method implemented by a controller
+ * The interface that defines the methods implemented by a controller of the plugin.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -13,8 +13,8 @@ import java.util.List;
 public interface ITransportController {
 
 	/**
-	 * Initiates a request to the server for the autocompletion for the letters
-	 * the user typed
+	 * Initiates a request to the server for the auto completion for the letters
+	 * the user typed.
 	 * 
 	 * @param constraint
 	 *            The letters that the user typed
@@ -23,7 +23,7 @@ public interface ITransportController {
 
 	/**
 	 * Initiates a request to the server for the Next Departures from EPFL to
-	 * any destination
+	 * any destination.
 	 * 
 	 * @param location
 	 *            The arrival destination
@@ -32,7 +32,7 @@ public interface ITransportController {
 
 	/**
 	 * Initiates a request to the server for the Locations corresponding to each
-	 * String of the list
+	 * String of the list.
 	 * 
 	 * @param list
 	 *            The list of Strings for which we want the corresponding

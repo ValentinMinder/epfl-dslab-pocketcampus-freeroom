@@ -9,7 +9,7 @@ import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 
 /**
- * A request to the server for the autocompletion of a destination
+ * A request to the server for the auto completion of a destination.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -20,13 +20,13 @@ public class AutoCompleteRequest extends
 		Request<TransportController, Iface, String, List<TransportStation>> {
 
 	/**
-	 * Initiate the <code>autocomplete</code> Request at the server
+	 * Initiate the <code>autocomplete</code> request at the server
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
 	 * @param param
 	 *            the parameters to be sent for the request : a string,
-	 *            constraint for the autocompletion
+	 *            constraint for the auto completion
 	 */
 	@Override
 	protected List<TransportStation> runInBackground(Iface client, String constraint)
@@ -35,7 +35,7 @@ public class AutoCompleteRequest extends
 	}
 
 	/**
-	 * Tell the model the departures have been updated.
+	 * Tells the model that the auto completion has been updated.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to

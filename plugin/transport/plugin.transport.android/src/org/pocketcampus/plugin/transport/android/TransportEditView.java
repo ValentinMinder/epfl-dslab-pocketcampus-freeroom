@@ -1,16 +1,24 @@
 package org.pocketcampus.plugin.transport.android;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 
 /**
  * The edit view of the Transport Plugin. Displays the list of current
@@ -19,7 +27,7 @@ import android.util.Log;
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
- * @author FLorian <florian.laurent@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class TransportEditView extends PluginView {
 	/* MVC */
@@ -30,9 +38,9 @@ public class TransportEditView extends PluginView {
 	/** The main layout */
 	private StandardTitledDoubleLayout mLayout;
 	/** The first one-element-ListView to add a destination */
-
+	private/* Labeled */ListViewElement mAddView;
 	/** The list of current preferred destinations */
-
+	private ListViewElement mListView;
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
 	private SharedPreferences mDestPrefs;
@@ -50,10 +58,8 @@ public class TransportEditView extends PluginView {
 	}
 
 	/**
-	 * On display. Called when first displaying the view Retrieve the model,
-	 * controller and the preferences and calls onDisplay to create the layout.
-	 * Then it calls the method that creates the destinations list filled with
-	 * the preferred destinations of the user
+	 * On display. Called when first displaying the view. Retrieves the model
+	 * and the controller and ...
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
@@ -64,28 +70,54 @@ public class TransportEditView extends PluginView {
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 
-		/** Testing ... */
-		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-		if (prefs != null) {
-			for(String s : prefs.keySet()){
-				Log.d("TRANSPORT",s + " was in the preferences.");
-			}
-		}
-
+		/** Layout */
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_edit_destinations));
 
+		/** Add some */
+		ArrayList<String> l = new ArrayList<String>();
+		l.add(getResources().getString(R.string.transport_add_destination));
+		mAddView = new ListViewElement(this, l);
+		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		mAddView.setLayoutParams(p);
+		mAddView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent i = new Intent(getApplicationContext(),
+						TransportAddView.class);
+				startActivity(i);
+				finish();
+			}
+		});
+
+		mLayout.addFirstLayoutFillerView(mAddView);
+
+		/** Already there */
+		ArrayList<String> list = new ArrayList<String>();
+		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
+		if (prefs != null) {
+			for (String s : prefs.keySet()) {
+				list.add(s);
+				Log.d("TRANSPORT", s + " was in the preferences.");
+			}
+		}
+
+		mListView = new ListViewElement(this, list);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				//Remove from prefs and remove from the list
+			}
+
+		});
+		mLayout.addSecondLayoutFillerView(mListView);
+
 		setContentView(mLayout);
 	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void onBackPressed(){
-		super.onBackPressed();
-		
-	}
-
 }

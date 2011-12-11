@@ -9,33 +9,27 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
-import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
-
-import android.util.Log;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 /**
  * The Main Model for the Transport plugin. Handles all the data relative to
- * this plugin : preferred destinations, autocompleted destinations, ...
+ * this plugin : preferred destinations, auto completed destinations, ...
  * 
- * 
- * @author Oriane <oriane.rodriguez@epfl.chY
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
  * @author Florian <florian.laurent@epfl.ch>
- * 
  */
 public class TransportModel extends PluginModel implements ITransportModel {
 	/** The views listening to updates in this model */
 	private ITransportView mListeners = (ITransportView) getListeners();
-	/** The list of locations autocompleted when the user is typing */
+	/** The list of destinations auto completed when the user is typing */
 	private List<TransportStation> mAutoCompletedDestinations;
-	/** Displayed locations */
+	/** The user's preferred destinations */
 	private HashMap<String, List<TransportTrip>> mPreferredDestinations;
 
 	/**
-	 * The constructor
-	 * 
-	 * Initializes object instances
+	 * The constructor of the plugin: initializes object instances.
 	 */
 	public TransportModel() {
 		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
@@ -43,7 +37,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	}
 
 	/**
-	 * Returns the interface that the views must implement
+	 * Returns the interface that the views must implement.
 	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
@@ -51,7 +45,8 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	}
 
 	/**
-	 * @return mPreferredDestinations The list of preferred destinations
+	 * @return mPreferredDestinations The list of the sžser's preferred
+	 *         destinations.
 	 */
 	@Override
 	public HashMap<String, List<TransportTrip>> getPreferredDestinations() {
@@ -59,82 +54,85 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	}
 
 	/**
-	 * Set all the preferred destinations
+	 * Set all the current preferred destinations.
 	 * 
 	 * @param destinations
 	 *            The new list of preferred destinations
 	 */
 	@Override
 	public void setAutoCompletedDestinations(List<TransportStation> destinations) {
-		mAutoCompletedDestinations.clear();
-		mAutoCompletedDestinations.addAll(destinations);
-		/** Update the views */
-		mListeners.autoCompletedDestinationsUpdated();
+		if (destinations != null) {
+			mAutoCompletedDestinations.clear();
+			mAutoCompletedDestinations.addAll(destinations);
+			/** Notifies the view(s) */
+			mListeners.autoCompletedDestinationsUpdated();
+		}
 	}
 
 	/**
-	 * Called by the request to notify that the connection has been found.
-	 * Notifies the view(s) with the result
+	 * Called when the result of the connections request is received to notify
+	 * that connections have been found. Notifies the view(s) with the result
 	 * 
 	 * @param result
 	 */
 	@Override
 	public void setConnections(QueryTripsResult result) {
-		/** update the views */
-		Log.d("TRANSPORT", "Connection set (model)");
-		
 		if (result != null) {
 			List<TransportTrip> connections = result.getConnections();
 
 			if (connections != null && !connections.isEmpty()) {
-
 				int i = 0;
 				for (TransportTrip c : connections) {
 					if (c != null) {
 						if (i < 3) {
 							i++;
 
-							/**Update dsipalyed locations*/
-							if(mPreferredDestinations.get(c.getTo().getName()) == null){							
+							/** Update displayed locations */
+							if (mPreferredDestinations.get(c.getTo().getName()) == null) {
 								mPreferredDestinations.put(c.getTo().getName(),
 										new ArrayList<TransportTrip>());
 							}
-							mPreferredDestinations.get(c.getTo().getName()).add(c);
-							Log.d("TRANSPORT", "Added item " + (c.getDepartureTime()));
+							mPreferredDestinations.get(c.getTo().getName())
+									.add(c);
 						}
 					}
 				}
 			}
 
 		}
-		mListeners.connectionUpdated(result);
+		/** Notifies the view(s) */
+		mListeners.connectionsUpdated(result);
 	}
 
 	/**
-	 * Sends the current autocompleted destinations to refresh the view and
-	 * display them to the user while he's taping
+	 * Sends the current auto completed destinations to refresh the view and
+	 * display them to the user while he's taping.
 	 * 
-	 * @return mAutoCompletedDestinations The list of current autocompleted
-	 *         destinations to display to the user
+	 * @return mAutoCompletedDestinations The list of current auto completed
+	 *         destinations to display to the user.
 	 */
 	public List<TransportStation> getAutoCpmpletedDestinations() {
-		/** Notify the view(s) */
+		/** Notifies the view(s) */
 		return mAutoCompletedDestinations;
 	}
 
 	/**
-	 * Sends the locations corresponding to a list of strings to the view(s)
+	 * Returns the locations corresponding to a list of locations names.
 	 */
 	@Override
-	public void setLocationsFromNames(List<TransportStation> result) {
-		if(result != null) {			
-			Log.d("TRANSPORT", "Locations from Names set (model)");
-			
-			for(TransportStation location : result) {
-				if(mPreferredDestinations.get(location.getName()) == null) {					
-					mPreferredDestinations.put(location.getName(), new ArrayList<TransportTrip>());
+	public void setPreferredDestinations(List<TransportStation> result) {
+		if (result != null) {
+			for (TransportStation location : result) {
+				/**
+				 * prepares the hash map to contain connections to those
+				 * destinations.
+				 */
+				if (mPreferredDestinations.get(location.getName()) == null) {
+					mPreferredDestinations.put(location.getName(),
+							new ArrayList<TransportTrip>());
 				}
 			}
+			/** Notifies the view(s) */
 			mListeners.locationsFromNamesUpdated(result);
 		}
 	}

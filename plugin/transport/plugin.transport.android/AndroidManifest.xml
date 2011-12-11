@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 	
-        <activity android:name=".plugin.transport.android.TransportTimeView" >
+        <activity android:name=".plugin.transport.android.TransportAddView" >
         </activity>  
         <activity android:name=".plugin.transport.android.TransportEditView" >
         </activity>    

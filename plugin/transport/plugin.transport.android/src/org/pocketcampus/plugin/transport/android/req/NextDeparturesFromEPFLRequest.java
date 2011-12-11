@@ -15,19 +15,19 @@ import android.util.Log;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
  * @author Florian <florian.laurent@epfl.ch>
- * 
  */
 public class NextDeparturesFromEPFLRequest
 		extends
 		Request<TransportController, Iface, getTrips_args, QueryTripsResult> {
 
 	/**
-	 * Initiate the <code>connections</code> Request at the server
+	 * Initiates the <code>connections</code> request to the server
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
 	 * @param param
-	 *            the parameters to be sent for the request : destination from and to
+	 *            the parameters to be sent for the request : destination from
+	 *            and to
 	 * @return the list of connections from the server
 	 */
 	@Override
@@ -38,7 +38,7 @@ public class NextDeparturesFromEPFLRequest
 	}
 
 	/**
-	 * Tell the model the departures have been updated.
+	 * Tells the model that the connections have been updated.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to

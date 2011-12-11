@@ -17,7 +17,7 @@ import android.util.Log;
 
 /**
  * The main controller of the Transport Plugin. Takes care of interactions
- * between the model and the view and gets information from the server.
+ * between the model and the view(s) and gets information from the server.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -28,9 +28,6 @@ public class TransportController extends PluginController implements
 		ITransportController {
 	/** The plugin model */
 	private TransportModel mModel;
-	/** The EPFL Station ID */
-	private static final int EPFL_STATION_ID = 8501214;
-
 	/**
 	 * This name must match given in the Server.java file in
 	 * plugin.launcher.server. It's used to route the request to the right
@@ -57,8 +54,8 @@ public class TransportController extends PluginController implements
 	}
 
 	/**
-	 * Initiates a request to the server for the autocompletion for the letters
-	 * the user typed
+	 * Initiates a request to the server for the auto completion for the letters
+	 * that the user typed.
 	 * 
 	 * @param constraint
 	 *            The letters that the user typed
@@ -75,7 +72,7 @@ public class TransportController extends PluginController implements
 
 	/**
 	 * Initiates a request to the server for the Next Departures from EPFL to
-	 * any destination
+	 * any destination.
 	 * 
 	 * @param location
 	 *            The arrival destination
@@ -92,7 +89,7 @@ public class TransportController extends PluginController implements
 
 	/**
 	 * Initiates a request to the server for a list of Locations corresponding
-	 * to the list of String which is sent as parameter
+	 * to the list of String which is sent as parameter.
 	 * 
 	 * @param list
 	 *            The list of Strings for which we want the corresponding
