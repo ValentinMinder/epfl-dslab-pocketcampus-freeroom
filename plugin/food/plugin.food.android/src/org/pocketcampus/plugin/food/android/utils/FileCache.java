@@ -40,22 +40,52 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import android.content.Context;
 import android.util.Log;
 
+/**
+ * Class that handles caching the food menus for use when the server cannot be
+ * reached, but the menus where already downloaded in the same day and are still
+ * valid
+ * 
+ * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
+ */
 public class FileCache {
 
+	/** The context of the calling activity */
 	private Context mContext;
+	/** The date at which the menu was successfully cached. Null if never */
 	private Date mValidityDate;
+	/** Name of the file that will be written to cache with the menus */
 	private final static String CACHE_NAME = "MenusCache";
+	/** Tag corresponding to logs from this class */
 	private final static String LOG_TAG = "FileCache";
 
-	public FileCache(Context ctx_) {
-		mContext = ctx_;
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            the context of the calling activity
+	 */
+	public FileCache(Context context) {
+		mContext = context;
 	}
 
+	/**
+	 * Returns the date at which the menus were last cached successfully. Null
+	 * if never.
+	 * 
+	 * @return the validity date of the menus cache
+	 */
 	public Date getValidityDate() {
 		return mValidityDate;
 	}
 
-	public void writeToFile(List<Meal> campusMenu_) {
+	/**
+	 * Writes the menus to a cache file on the phone
+	 * 
+	 * @param campusMenu
+	 *            the menu to write to cache
+	 */
+	public void writeToFile(List<Meal> campusMenu) {
 		File menuFile = new File(mContext.getCacheDir(), CACHE_NAME);
 
 		Calendar cal = Calendar.getInstance();
@@ -67,17 +97,22 @@ public class FileCache {
 			fos = new FileOutputStream(menuFile);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(cal.getTime());
-			out.writeObject(campusMenu_);
+			out.writeObject(campusMenu);
 			out.close();
 		} catch (IOException ex) {
-			// Toast.makeText(mContext, "Writing IO Exception",
-			// Toast.LENGTH_SHORT)
-			// .show();
+			Log.d(LOG_TAG, "Unable to cache menus");
 		}
 	}
 
+	/**
+	 * Reads the menus from the cache, if there has been a prior successful
+	 * writing of the menus to the cache
+	 * 
+	 * @return the menus read from the cache; null if cache is not valid or
+	 *         empty
+	 */
 	@SuppressWarnings("unchecked")
-	public List<Meal> restoreFromFile() {
+	public List<Meal> readFromFile() {
 		List<Meal> menu = null;
 		File toGet = new File(mContext.getCacheDir(), CACHE_NAME);
 		FileInputStream fis = null;
@@ -109,10 +144,16 @@ public class FileCache {
 		return new ArrayList<Meal>();
 	}
 
+	/**
+	 * Checks whether the menu written to the cache is valid, that is that it's
+	 * not null and it was written on the same day as it has to be used
+	 * 
+	 * @return
+	 */
 	public boolean isValidMenu() {
 		Calendar cal = Calendar.getInstance();
 		Calendar validity = Calendar.getInstance();
-		if (mValidityDate == null) {
+		if (mValidityDate == null || validity == null) {
 			return false;
 		}
 		validity.setTime(mValidityDate);
@@ -129,6 +170,15 @@ public class FileCache {
 		return false;
 	}
 
+	/**
+	 * Gets the difference in minutes between two dates
+	 * 
+	 * @param then
+	 *            the first date
+	 * @param now
+	 *            the second date
+	 * @return the difference
+	 */
 	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();
 
@@ -137,5 +187,4 @@ public class FileCache {
 		Log.d(LOG_TAG, "" + diffMinutes);
 		return diffMinutes;
 	}
-
 }

@@ -139,7 +139,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 			if (mMealsCache == null) {
 				mMealsCache = new FileCache(ctx);
 			}
-			mMeals = mMealsCache.restoreFromFile();
+			mMeals = mMealsCache.readFromFile();
 			if (mMeals != null && !mMeals.isEmpty()) {
 				Toast.makeText(ctx,
 						ctx.getString(R.string.food_displaying_from_cache),
