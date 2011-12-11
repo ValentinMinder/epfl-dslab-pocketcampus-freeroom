@@ -10,10 +10,14 @@ import java.io.InputStreamReader;
  * @author florian
  */
 public class LibraryThriftCompiler {
-	private static boolean modeVerbose = false;
+	private static final boolean VERBOSE = false;
+	private static final String SHARED_CLASSES_PATH = "../../platform/sdk/platform.sdk.shared/src";
 
 	public static void main(String argv[]) {
 		boolean errorOccured = false;
+		
+		// TODO find a way to clear the directory without nuking utils
+		//FileUtils.clearDir(SHARED_CLASSES_PATH);
 		
 		File[] files = new File("service/").listFiles();
 		for (int i = 0; i < files.length; i++) {
@@ -40,7 +44,7 @@ public class LibraryThriftCompiler {
 	private static boolean compileFile(File file, boolean service) {
 		boolean errorOccured = false;
 		boolean outputOccured = false;
-		String verbose = modeVerbose ?"-v ":"";
+		String verbose = VERBOSE ?"-v ":"";
 		
 		if(file.getName().equals(".svn")){
 			return false;
@@ -55,20 +59,27 @@ public class LibraryThriftCompiler {
 		}
 		
 		try {
-			String line;
+			String fileIn = (service?"service":"include") + "/"+pluginName+".thrift";
 			
-			String directoryIn = service?"service":"include";
-			
-			String directoryOut = "../../platform/sdk/platform.sdk.shared/src";
+			String directoryOut;
 			if(service) {
+				// service definition for a plugin
 				directoryOut = "../../plugin/"+pluginName+"/plugin."+pluginName+".shared/src";
+				FileUtils.clearDir(directoryOut);
+				
+			} else {
+				// shared class
+				directoryOut = SHARED_CLASSES_PATH;
 			}
 			
-			String command = LocalConfig.THRIFT_PATH + " "+verbose+"--gen java:hashcode -out "+directoryOut+" "+directoryIn+"/"+pluginName+".thrift";
+			String command = LocalConfig.THRIFT_PATH + " "+verbose+"--gen java:hashcode -out "+directoryOut+" "+fileIn;
+			
 			Process p = Runtime.getRuntime().exec(command);
+			
 			BufferedReader inputInfo = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader inputError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			
+			String line;
 			while ((line = inputInfo.readLine()) != null && !line.equals("")) {
 				if(!outputOccured) {
 					System.out.println();
@@ -92,7 +103,7 @@ public class LibraryThriftCompiler {
 			
 			if(p.exitValue() == 0) {
 				System.out.println("ok.");
-				if(modeVerbose) System.out.println();
+				if(VERBOSE) System.out.println();
 			} else {
 				System.out.println();
 			}
