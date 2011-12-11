@@ -54,9 +54,9 @@ public class PocketCampusServer extends ServerBase {
 		processors.add(new Processor(new NewsService.Processor<NewsServiceImpl>(new NewsServiceImpl()), "news"));
 		processors.add(new Processor(new SatelliteService.Processor<SatelliteServiceImpl>(new SatelliteServiceImpl()), "satellite"));
 		processors.add(new Processor(new TakeoutGateway.Processor<TakeoutGatewayImpl>(new TakeoutGatewayImpl()), "takeout-gateway"));
-		/*processors.add(new Processor(new TakeoutOrderService.Processor<TakeoutOrderServiceImpl>(new TakeoutOrderServiceImpl()), "takeout-order"));
+		processors.add(new Processor(new TakeoutOrderService.Processor<TakeoutOrderServiceImpl>(new TakeoutOrderServiceImpl()), "takeout-order"));
 		processors.add(new Processor(new TakeoutReceiverService.Processor<TakeoutReceiverServiceImpl>(new TakeoutReceiverServiceImpl()), "takeoutreceiver"));
-		processors.add(new Processor(new TransportService.Processor<TransportServiceImpl>(new TransportServiceImpl()), "transport"));*/
+		processors.add(new Processor(new TransportService.Processor<TransportServiceImpl>(new TransportServiceImpl()), "transport"));
 		
 		return processors;
 	}
