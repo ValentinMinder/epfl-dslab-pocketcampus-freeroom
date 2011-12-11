@@ -78,4 +78,21 @@ public class FileUtils {
 		sourceChannel.close();
 		targetChannel.close();
 	}
+	
+	public static boolean deleteDir(String directoryPath) {
+		File dir = new File(directoryPath);
+		
+	    if (dir.isDirectory()) {
+	        String[] children = dir.list();
+	        for (int i=0; i<children.length; i++) {
+	            boolean success = deleteDir(children[i]);
+	            if (!success) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    // The directory is now empty so delete it
+	    return dir.delete();
+	}
 }
