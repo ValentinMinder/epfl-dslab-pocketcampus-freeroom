@@ -135,7 +135,7 @@
         <pathelement location="${plugin.map.server.location}/bin"/>
         <path refid="platform.sdk.server.classpath"/>
         <path refid="platform.sdk.shared.classpath"/>
-        <path refid="plugin.bikes.shared.classpath"/>
+        <path refid="plugin.map.shared.classpath"/>
         <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
@@ -638,6 +638,8 @@
         <path refid="plugin.authentication.shared.classpath"/>
         <path refid="plugin.bikes.server.classpath"/>
         <path refid="plugin.bikes.shared.classpath"/>
+    	<path refid="plugin.map.server.classpath"/>
+    	<path refid="plugin.map.shared.classpath"/>
         <path refid="plugin.camipro.server.classpath"/>
         <path refid="plugin.camipro.shared.classpath"/>
         <path refid="plugin.directory.server.classpath"/>
@@ -674,6 +676,8 @@
         <ant antfile="build.xml" dir="${plugin.authentication.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.bikes.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.bikes.server.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${plugin.map.shared.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${plugin.map.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.camipro.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.camipro.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.directory.shared.location}" inheritAll="false" target="clean"/>
