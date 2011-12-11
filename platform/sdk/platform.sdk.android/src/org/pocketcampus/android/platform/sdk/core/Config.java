@@ -9,11 +9,17 @@ import android.util.Log;
  */
 public class Config {
 	/** Server IP. */
-//	public final static String SERVER_IP = "10.0.0.80";
-	public final static String SERVER_IP = "128.178.77.236";
+	// Mac Mini's IP, requires VPN
+//	public final static String SERVER_IP = "128.178.77.236";
+	
+	// pocketcampus.epfl.ch's IP, doesn't require VPN
+	public final static String SERVER_IP = "128.178.132.3";
+
+	// Dev server
+//	public final static String SERVER_IP = "10.0.0.157";
 	
 	/** Server port. */
-	public final static int SERVER_PORT = 9090;
+	public final static int SERVER_PORT = 443;
 	
 	/** Level of information reported by the logger, a lower number mean more. */
 	// XXX not used for now
