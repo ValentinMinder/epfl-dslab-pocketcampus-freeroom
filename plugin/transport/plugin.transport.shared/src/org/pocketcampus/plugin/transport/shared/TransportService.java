@@ -25,17 +25,19 @@ public class TransportService {
 
   public interface Iface {
 
-    public List<Location> autocomplete(String constraint) throws org.apache.thrift.TException;
+    public List<TransportStation> autocomplete(String constraint) throws org.apache.thrift.TException;
 
-    public List<Location> getLocationsFromIDs(List<Integer> ids) throws org.apache.thrift.TException;
+    public List<TransportStation> getLocationsFromIDs(List<Integer> ids) throws org.apache.thrift.TException;
 
-    public List<Location> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException;
+    public List<TransportStation> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException;
 
     public QueryDepartureResult nextDepartures(String IDStation) throws org.apache.thrift.TException;
 
-    public QueryConnectionsResult connections(String from, String to) throws org.apache.thrift.TException;
+    public QueryTripsResult getTrips(String from, String to) throws org.apache.thrift.TException;
 
-    public QueryConnectionsResult connectionsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException;
+    public QueryTripsResult getTripsAtTime(String from, String to, long time, boolean isDeparture) throws org.apache.thrift.TException;
+
+    public QueryTripsResult getTripsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException;
 
   }
 
@@ -49,9 +51,11 @@ public class TransportService {
 
     public void nextDepartures(String IDStation, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.nextDepartures_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void connections(String from, String to, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.connections_call> resultHandler) throws org.apache.thrift.TException;
+    public void getTrips(String from, String to, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTrips_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void connectionsFromStationsIDs(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.connectionsFromStationsIDs_call> resultHandler) throws org.apache.thrift.TException;
+    public void getTripsAtTime(String from, String to, long time, boolean isDeparture, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTripsAtTime_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getTripsFromStationsIDs(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTripsFromStationsIDs_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -75,7 +79,7 @@ public class TransportService {
       super(iprot, oprot);
     }
 
-    public List<Location> autocomplete(String constraint) throws org.apache.thrift.TException
+    public List<TransportStation> autocomplete(String constraint) throws org.apache.thrift.TException
     {
       send_autocomplete(constraint);
       return recv_autocomplete();
@@ -88,7 +92,7 @@ public class TransportService {
       sendBase("autocomplete", args);
     }
 
-    public List<Location> recv_autocomplete() throws org.apache.thrift.TException
+    public List<TransportStation> recv_autocomplete() throws org.apache.thrift.TException
     {
       autocomplete_result result = new autocomplete_result();
       receiveBase(result, "autocomplete");
@@ -98,7 +102,7 @@ public class TransportService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "autocomplete failed: unknown result");
     }
 
-    public List<Location> getLocationsFromIDs(List<Integer> ids) throws org.apache.thrift.TException
+    public List<TransportStation> getLocationsFromIDs(List<Integer> ids) throws org.apache.thrift.TException
     {
       send_getLocationsFromIDs(ids);
       return recv_getLocationsFromIDs();
@@ -111,7 +115,7 @@ public class TransportService {
       sendBase("getLocationsFromIDs", args);
     }
 
-    public List<Location> recv_getLocationsFromIDs() throws org.apache.thrift.TException
+    public List<TransportStation> recv_getLocationsFromIDs() throws org.apache.thrift.TException
     {
       getLocationsFromIDs_result result = new getLocationsFromIDs_result();
       receiveBase(result, "getLocationsFromIDs");
@@ -121,7 +125,7 @@ public class TransportService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getLocationsFromIDs failed: unknown result");
     }
 
-    public List<Location> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException
+    public List<TransportStation> getLocationsFromNames(List<String> names) throws org.apache.thrift.TException
     {
       send_getLocationsFromNames(names);
       return recv_getLocationsFromNames();
@@ -134,7 +138,7 @@ public class TransportService {
       sendBase("getLocationsFromNames", args);
     }
 
-    public List<Location> recv_getLocationsFromNames() throws org.apache.thrift.TException
+    public List<TransportStation> recv_getLocationsFromNames() throws org.apache.thrift.TException
     {
       getLocationsFromNames_result result = new getLocationsFromNames_result();
       receiveBase(result, "getLocationsFromNames");
@@ -167,52 +171,78 @@ public class TransportService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "nextDepartures failed: unknown result");
     }
 
-    public QueryConnectionsResult connections(String from, String to) throws org.apache.thrift.TException
+    public QueryTripsResult getTrips(String from, String to) throws org.apache.thrift.TException
     {
-      send_connections(from, to);
-      return recv_connections();
+      send_getTrips(from, to);
+      return recv_getTrips();
     }
 
-    public void send_connections(String from, String to) throws org.apache.thrift.TException
+    public void send_getTrips(String from, String to) throws org.apache.thrift.TException
     {
-      connections_args args = new connections_args();
+      getTrips_args args = new getTrips_args();
       args.setFrom(from);
       args.setTo(to);
-      sendBase("connections", args);
+      sendBase("getTrips", args);
     }
 
-    public QueryConnectionsResult recv_connections() throws org.apache.thrift.TException
+    public QueryTripsResult recv_getTrips() throws org.apache.thrift.TException
     {
-      connections_result result = new connections_result();
-      receiveBase(result, "connections");
+      getTrips_result result = new getTrips_result();
+      receiveBase(result, "getTrips");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "connections failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTrips failed: unknown result");
     }
 
-    public QueryConnectionsResult connectionsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException
+    public QueryTripsResult getTripsAtTime(String from, String to, long time, boolean isDeparture) throws org.apache.thrift.TException
     {
-      send_connectionsFromStationsIDs(fromID, toID);
-      return recv_connectionsFromStationsIDs();
+      send_getTripsAtTime(from, to, time, isDeparture);
+      return recv_getTripsAtTime();
     }
 
-    public void send_connectionsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException
+    public void send_getTripsAtTime(String from, String to, long time, boolean isDeparture) throws org.apache.thrift.TException
     {
-      connectionsFromStationsIDs_args args = new connectionsFromStationsIDs_args();
+      getTripsAtTime_args args = new getTripsAtTime_args();
+      args.setFrom(from);
+      args.setTo(to);
+      args.setTime(time);
+      args.setIsDeparture(isDeparture);
+      sendBase("getTripsAtTime", args);
+    }
+
+    public QueryTripsResult recv_getTripsAtTime() throws org.apache.thrift.TException
+    {
+      getTripsAtTime_result result = new getTripsAtTime_result();
+      receiveBase(result, "getTripsAtTime");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTripsAtTime failed: unknown result");
+    }
+
+    public QueryTripsResult getTripsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException
+    {
+      send_getTripsFromStationsIDs(fromID, toID);
+      return recv_getTripsFromStationsIDs();
+    }
+
+    public void send_getTripsFromStationsIDs(String fromID, String toID) throws org.apache.thrift.TException
+    {
+      getTripsFromStationsIDs_args args = new getTripsFromStationsIDs_args();
       args.setFromID(fromID);
       args.setToID(toID);
-      sendBase("connectionsFromStationsIDs", args);
+      sendBase("getTripsFromStationsIDs", args);
     }
 
-    public QueryConnectionsResult recv_connectionsFromStationsIDs() throws org.apache.thrift.TException
+    public QueryTripsResult recv_getTripsFromStationsIDs() throws org.apache.thrift.TException
     {
-      connectionsFromStationsIDs_result result = new connectionsFromStationsIDs_result();
-      receiveBase(result, "connectionsFromStationsIDs");
+      getTripsFromStationsIDs_result result = new getTripsFromStationsIDs_result();
+      receiveBase(result, "getTripsFromStationsIDs");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "connectionsFromStationsIDs failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTripsFromStationsIDs failed: unknown result");
     }
 
   }
@@ -255,7 +285,7 @@ public class TransportService {
         prot.writeMessageEnd();
       }
 
-      public List<Location> getResult() throws org.apache.thrift.TException {
+      public List<TransportStation> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -287,7 +317,7 @@ public class TransportService {
         prot.writeMessageEnd();
       }
 
-      public List<Location> getResult() throws org.apache.thrift.TException {
+      public List<TransportStation> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -319,7 +349,7 @@ public class TransportService {
         prot.writeMessageEnd();
       }
 
-      public List<Location> getResult() throws org.apache.thrift.TException {
+      public List<TransportStation> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -361,73 +391,114 @@ public class TransportService {
       }
     }
 
-    public void connections(String from, String to, org.apache.thrift.async.AsyncMethodCallback<connections_call> resultHandler) throws org.apache.thrift.TException {
+    public void getTrips(String from, String to, org.apache.thrift.async.AsyncMethodCallback<getTrips_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      connections_call method_call = new connections_call(from, to, resultHandler, this, ___protocolFactory, ___transport);
+      getTrips_call method_call = new getTrips_call(from, to, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class connections_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class getTrips_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String from;
       private String to;
-      public connections_call(String from, String to, org.apache.thrift.async.AsyncMethodCallback<connections_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public getTrips_call(String from, String to, org.apache.thrift.async.AsyncMethodCallback<getTrips_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.from = from;
         this.to = to;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("connections", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        connections_args args = new connections_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTrips", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getTrips_args args = new getTrips_args();
         args.setFrom(from);
         args.setTo(to);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public QueryConnectionsResult getResult() throws org.apache.thrift.TException {
+      public QueryTripsResult getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_connections();
+        return (new Client(prot)).recv_getTrips();
       }
     }
 
-    public void connectionsFromStationsIDs(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<connectionsFromStationsIDs_call> resultHandler) throws org.apache.thrift.TException {
+    public void getTripsAtTime(String from, String to, long time, boolean isDeparture, org.apache.thrift.async.AsyncMethodCallback<getTripsAtTime_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      connectionsFromStationsIDs_call method_call = new connectionsFromStationsIDs_call(fromID, toID, resultHandler, this, ___protocolFactory, ___transport);
+      getTripsAtTime_call method_call = new getTripsAtTime_call(from, to, time, isDeparture, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class connectionsFromStationsIDs_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class getTripsAtTime_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String from;
+      private String to;
+      private long time;
+      private boolean isDeparture;
+      public getTripsAtTime_call(String from, String to, long time, boolean isDeparture, org.apache.thrift.async.AsyncMethodCallback<getTripsAtTime_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.from = from;
+        this.to = to;
+        this.time = time;
+        this.isDeparture = isDeparture;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTripsAtTime", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getTripsAtTime_args args = new getTripsAtTime_args();
+        args.setFrom(from);
+        args.setTo(to);
+        args.setTime(time);
+        args.setIsDeparture(isDeparture);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public QueryTripsResult getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getTripsAtTime();
+      }
+    }
+
+    public void getTripsFromStationsIDs(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<getTripsFromStationsIDs_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getTripsFromStationsIDs_call method_call = new getTripsFromStationsIDs_call(fromID, toID, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getTripsFromStationsIDs_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String fromID;
       private String toID;
-      public connectionsFromStationsIDs_call(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<connectionsFromStationsIDs_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public getTripsFromStationsIDs_call(String fromID, String toID, org.apache.thrift.async.AsyncMethodCallback<getTripsFromStationsIDs_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.fromID = fromID;
         this.toID = toID;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("connectionsFromStationsIDs", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        connectionsFromStationsIDs_args args = new connectionsFromStationsIDs_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getTripsFromStationsIDs", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getTripsFromStationsIDs_args args = new getTripsFromStationsIDs_args();
         args.setFromID(fromID);
         args.setToID(toID);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public QueryConnectionsResult getResult() throws org.apache.thrift.TException {
+      public QueryTripsResult getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_connectionsFromStationsIDs();
+        return (new Client(prot)).recv_getTripsFromStationsIDs();
       }
     }
 
@@ -448,8 +519,9 @@ public class TransportService {
       processMap.put("getLocationsFromIDs", new getLocationsFromIDs());
       processMap.put("getLocationsFromNames", new getLocationsFromNames());
       processMap.put("nextDepartures", new nextDepartures());
-      processMap.put("connections", new connections());
-      processMap.put("connectionsFromStationsIDs", new connectionsFromStationsIDs());
+      processMap.put("getTrips", new getTrips());
+      processMap.put("getTripsAtTime", new getTripsAtTime());
+      processMap.put("getTripsFromStationsIDs", new getTripsFromStationsIDs());
       return processMap;
     }
 
@@ -517,34 +589,50 @@ public class TransportService {
       }
     }
 
-    private static class connections<I extends Iface> extends org.apache.thrift.ProcessFunction<I, connections_args> {
-      public connections() {
-        super("connections");
+    private static class getTrips<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTrips_args> {
+      public getTrips() {
+        super("getTrips");
       }
 
-      protected connections_args getEmptyArgsInstance() {
-        return new connections_args();
+      protected getTrips_args getEmptyArgsInstance() {
+        return new getTrips_args();
       }
 
-      protected connections_result getResult(I iface, connections_args args) throws org.apache.thrift.TException {
-        connections_result result = new connections_result();
-        result.success = iface.connections(args.from, args.to);
+      protected getTrips_result getResult(I iface, getTrips_args args) throws org.apache.thrift.TException {
+        getTrips_result result = new getTrips_result();
+        result.success = iface.getTrips(args.from, args.to);
         return result;
       }
     }
 
-    private static class connectionsFromStationsIDs<I extends Iface> extends org.apache.thrift.ProcessFunction<I, connectionsFromStationsIDs_args> {
-      public connectionsFromStationsIDs() {
-        super("connectionsFromStationsIDs");
+    private static class getTripsAtTime<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTripsAtTime_args> {
+      public getTripsAtTime() {
+        super("getTripsAtTime");
       }
 
-      protected connectionsFromStationsIDs_args getEmptyArgsInstance() {
-        return new connectionsFromStationsIDs_args();
+      protected getTripsAtTime_args getEmptyArgsInstance() {
+        return new getTripsAtTime_args();
       }
 
-      protected connectionsFromStationsIDs_result getResult(I iface, connectionsFromStationsIDs_args args) throws org.apache.thrift.TException {
-        connectionsFromStationsIDs_result result = new connectionsFromStationsIDs_result();
-        result.success = iface.connectionsFromStationsIDs(args.fromID, args.toID);
+      protected getTripsAtTime_result getResult(I iface, getTripsAtTime_args args) throws org.apache.thrift.TException {
+        getTripsAtTime_result result = new getTripsAtTime_result();
+        result.success = iface.getTripsAtTime(args.from, args.to, args.time, args.isDeparture);
+        return result;
+      }
+    }
+
+    private static class getTripsFromStationsIDs<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTripsFromStationsIDs_args> {
+      public getTripsFromStationsIDs() {
+        super("getTripsFromStationsIDs");
+      }
+
+      protected getTripsFromStationsIDs_args getEmptyArgsInstance() {
+        return new getTripsFromStationsIDs_args();
+      }
+
+      protected getTripsFromStationsIDs_result getResult(I iface, getTripsFromStationsIDs_args args) throws org.apache.thrift.TException {
+        getTripsFromStationsIDs_result result = new getTripsFromStationsIDs_result();
+        result.success = iface.getTripsFromStationsIDs(args.fromID, args.toID);
         return result;
       }
     }
@@ -860,7 +948,7 @@ public class TransportService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    public List<Location> success; // required
+    public List<TransportStation> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -927,7 +1015,7 @@ public class TransportService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(autocomplete_result.class, metaDataMap);
     }
@@ -936,7 +1024,7 @@ public class TransportService {
     }
 
     public autocomplete_result(
-      List<Location> success)
+      List<TransportStation> success)
     {
       this();
       this.success = success;
@@ -947,9 +1035,9 @@ public class TransportService {
      */
     public autocomplete_result(autocomplete_result other) {
       if (other.isSetSuccess()) {
-        List<Location> __this__success = new ArrayList<Location>();
-        for (Location other_element : other.success) {
-          __this__success.add(new Location(other_element));
+        List<TransportStation> __this__success = new ArrayList<TransportStation>();
+        for (TransportStation other_element : other.success) {
+          __this__success.add(new TransportStation(other_element));
         }
         this.success = __this__success;
       }
@@ -968,22 +1056,22 @@ public class TransportService {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<Location> getSuccessIterator() {
+    public java.util.Iterator<TransportStation> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(Location elem) {
+    public void addToSuccess(TransportStation elem) {
       if (this.success == null) {
-        this.success = new ArrayList<Location>();
+        this.success = new ArrayList<TransportStation>();
       }
       this.success.add(elem);
     }
 
-    public List<Location> getSuccess() {
+    public List<TransportStation> getSuccess() {
       return this.success;
     }
 
-    public autocomplete_result setSuccess(List<Location> success) {
+    public autocomplete_result setSuccess(List<TransportStation> success) {
       this.success = success;
       return this;
     }
@@ -1009,7 +1097,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Location>)value);
+          setSuccess((List<TransportStation>)value);
         }
         break;
 
@@ -1114,11 +1202,11 @@ public class TransportService {
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list92 = iprot.readListBegin();
-                this.success = new ArrayList<Location>(_list92.size);
+                this.success = new ArrayList<TransportStation>(_list92.size);
                 for (int _i93 = 0; _i93 < _list92.size; ++_i93)
                 {
-                  Location _elem94; // required
-                  _elem94 = new Location();
+                  TransportStation _elem94; // required
+                  _elem94 = new TransportStation();
                   _elem94.read(iprot);
                   this.success.add(_elem94);
                 }
@@ -1146,7 +1234,7 @@ public class TransportService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Location _iter95 : this.success)
+          for (TransportStation _iter95 : this.success)
           {
             _iter95.write(oprot);
           }
@@ -1542,7 +1630,7 @@ public class TransportService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    public List<Location> success; // required
+    public List<TransportStation> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1609,7 +1697,7 @@ public class TransportService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getLocationsFromIDs_result.class, metaDataMap);
     }
@@ -1618,7 +1706,7 @@ public class TransportService {
     }
 
     public getLocationsFromIDs_result(
-      List<Location> success)
+      List<TransportStation> success)
     {
       this();
       this.success = success;
@@ -1629,9 +1717,9 @@ public class TransportService {
      */
     public getLocationsFromIDs_result(getLocationsFromIDs_result other) {
       if (other.isSetSuccess()) {
-        List<Location> __this__success = new ArrayList<Location>();
-        for (Location other_element : other.success) {
-          __this__success.add(new Location(other_element));
+        List<TransportStation> __this__success = new ArrayList<TransportStation>();
+        for (TransportStation other_element : other.success) {
+          __this__success.add(new TransportStation(other_element));
         }
         this.success = __this__success;
       }
@@ -1650,22 +1738,22 @@ public class TransportService {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<Location> getSuccessIterator() {
+    public java.util.Iterator<TransportStation> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(Location elem) {
+    public void addToSuccess(TransportStation elem) {
       if (this.success == null) {
-        this.success = new ArrayList<Location>();
+        this.success = new ArrayList<TransportStation>();
       }
       this.success.add(elem);
     }
 
-    public List<Location> getSuccess() {
+    public List<TransportStation> getSuccess() {
       return this.success;
     }
 
-    public getLocationsFromIDs_result setSuccess(List<Location> success) {
+    public getLocationsFromIDs_result setSuccess(List<TransportStation> success) {
       this.success = success;
       return this;
     }
@@ -1691,7 +1779,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Location>)value);
+          setSuccess((List<TransportStation>)value);
         }
         break;
 
@@ -1796,11 +1884,11 @@ public class TransportService {
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list100 = iprot.readListBegin();
-                this.success = new ArrayList<Location>(_list100.size);
+                this.success = new ArrayList<TransportStation>(_list100.size);
                 for (int _i101 = 0; _i101 < _list100.size; ++_i101)
                 {
-                  Location _elem102; // required
-                  _elem102 = new Location();
+                  TransportStation _elem102; // required
+                  _elem102 = new TransportStation();
                   _elem102.read(iprot);
                   this.success.add(_elem102);
                 }
@@ -1828,7 +1916,7 @@ public class TransportService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Location _iter103 : this.success)
+          for (TransportStation _iter103 : this.success)
           {
             _iter103.write(oprot);
           }
@@ -2224,7 +2312,7 @@ public class TransportService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
-    public List<Location> success; // required
+    public List<TransportStation> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2291,7 +2379,7 @@ public class TransportService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getLocationsFromNames_result.class, metaDataMap);
     }
@@ -2300,7 +2388,7 @@ public class TransportService {
     }
 
     public getLocationsFromNames_result(
-      List<Location> success)
+      List<TransportStation> success)
     {
       this();
       this.success = success;
@@ -2311,9 +2399,9 @@ public class TransportService {
      */
     public getLocationsFromNames_result(getLocationsFromNames_result other) {
       if (other.isSetSuccess()) {
-        List<Location> __this__success = new ArrayList<Location>();
-        for (Location other_element : other.success) {
-          __this__success.add(new Location(other_element));
+        List<TransportStation> __this__success = new ArrayList<TransportStation>();
+        for (TransportStation other_element : other.success) {
+          __this__success.add(new TransportStation(other_element));
         }
         this.success = __this__success;
       }
@@ -2332,22 +2420,22 @@ public class TransportService {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<Location> getSuccessIterator() {
+    public java.util.Iterator<TransportStation> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(Location elem) {
+    public void addToSuccess(TransportStation elem) {
       if (this.success == null) {
-        this.success = new ArrayList<Location>();
+        this.success = new ArrayList<TransportStation>();
       }
       this.success.add(elem);
     }
 
-    public List<Location> getSuccess() {
+    public List<TransportStation> getSuccess() {
       return this.success;
     }
 
-    public getLocationsFromNames_result setSuccess(List<Location> success) {
+    public getLocationsFromNames_result setSuccess(List<TransportStation> success) {
       this.success = success;
       return this;
     }
@@ -2373,7 +2461,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Location>)value);
+          setSuccess((List<TransportStation>)value);
         }
         break;
 
@@ -2478,11 +2566,11 @@ public class TransportService {
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list108 = iprot.readListBegin();
-                this.success = new ArrayList<Location>(_list108.size);
+                this.success = new ArrayList<TransportStation>(_list108.size);
                 for (int _i109 = 0; _i109 < _list108.size; ++_i109)
                 {
-                  Location _elem110; // required
-                  _elem110 = new Location();
+                  TransportStation _elem110; // required
+                  _elem110 = new TransportStation();
                   _elem110.read(iprot);
                   this.success.add(_elem110);
                 }
@@ -2510,7 +2598,7 @@ public class TransportService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Location _iter111 : this.success)
+          for (TransportStation _iter111 : this.success)
           {
             _iter111.write(oprot);
           }
@@ -3168,8 +3256,8 @@ public class TransportService {
 
   }
 
-  public static class connections_args implements org.apache.thrift.TBase<connections_args, connections_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("connections_args");
+  public static class getTrips_args implements org.apache.thrift.TBase<getTrips_args, getTrips_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTrips_args");
 
     private static final org.apache.thrift.protocol.TField FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("from", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField TO_FIELD_DESC = new org.apache.thrift.protocol.TField("to", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -3248,13 +3336,13 @@ public class TransportService {
       tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(connections_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTrips_args.class, metaDataMap);
     }
 
-    public connections_args() {
+    public getTrips_args() {
     }
 
-    public connections_args(
+    public getTrips_args(
       String from,
       String to)
     {
@@ -3266,7 +3354,7 @@ public class TransportService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public connections_args(connections_args other) {
+    public getTrips_args(getTrips_args other) {
       if (other.isSetFrom()) {
         this.from = other.from;
       }
@@ -3275,8 +3363,8 @@ public class TransportService {
       }
     }
 
-    public connections_args deepCopy() {
-      return new connections_args(this);
+    public getTrips_args deepCopy() {
+      return new getTrips_args(this);
     }
 
     @Override
@@ -3289,7 +3377,7 @@ public class TransportService {
       return this.from;
     }
 
-    public connections_args setFrom(String from) {
+    public getTrips_args setFrom(String from) {
       this.from = from;
       return this;
     }
@@ -3313,7 +3401,7 @@ public class TransportService {
       return this.to;
     }
 
-    public connections_args setTo(String to) {
+    public getTrips_args setTo(String to) {
       this.to = to;
       return this;
     }
@@ -3385,12 +3473,12 @@ public class TransportService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof connections_args)
-        return this.equals((connections_args)that);
+      if (that instanceof getTrips_args)
+        return this.equals((getTrips_args)that);
       return false;
     }
 
-    public boolean equals(connections_args that) {
+    public boolean equals(getTrips_args that) {
       if (that == null)
         return false;
 
@@ -3432,13 +3520,13 @@ public class TransportService {
       return builder.toHashCode();
     }
 
-    public int compareTo(connections_args other) {
+    public int compareTo(getTrips_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      connections_args typedOther = (connections_args)other;
+      getTrips_args typedOther = (getTrips_args)other;
 
       lastComparison = Boolean.valueOf(isSetFrom()).compareTo(typedOther.isSetFrom());
       if (lastComparison != 0) {
@@ -3522,7 +3610,7 @@ public class TransportService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("connections_args(");
+      StringBuilder sb = new StringBuilder("getTrips_args(");
       boolean first = true;
 
       sb.append("from:");
@@ -3566,12 +3654,12 @@ public class TransportService {
 
   }
 
-  public static class connections_result implements org.apache.thrift.TBase<connections_result, connections_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("connections_result");
+  public static class getTrips_result implements org.apache.thrift.TBase<getTrips_result, getTrips_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTrips_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public QueryConnectionsResult success; // required
+    public QueryTripsResult success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3637,16 +3725,16 @@ public class TransportService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, QueryConnectionsResult.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, QueryTripsResult.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(connections_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTrips_result.class, metaDataMap);
     }
 
-    public connections_result() {
+    public getTrips_result() {
     }
 
-    public connections_result(
-      QueryConnectionsResult success)
+    public getTrips_result(
+      QueryTripsResult success)
     {
       this();
       this.success = success;
@@ -3655,14 +3743,14 @@ public class TransportService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public connections_result(connections_result other) {
+    public getTrips_result(getTrips_result other) {
       if (other.isSetSuccess()) {
-        this.success = new QueryConnectionsResult(other.success);
+        this.success = new QueryTripsResult(other.success);
       }
     }
 
-    public connections_result deepCopy() {
-      return new connections_result(this);
+    public getTrips_result deepCopy() {
+      return new getTrips_result(this);
     }
 
     @Override
@@ -3670,11 +3758,11 @@ public class TransportService {
       this.success = null;
     }
 
-    public QueryConnectionsResult getSuccess() {
+    public QueryTripsResult getSuccess() {
       return this.success;
     }
 
-    public connections_result setSuccess(QueryConnectionsResult success) {
+    public getTrips_result setSuccess(QueryTripsResult success) {
       this.success = success;
       return this;
     }
@@ -3700,7 +3788,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((QueryConnectionsResult)value);
+          setSuccess((QueryTripsResult)value);
         }
         break;
 
@@ -3733,12 +3821,12 @@ public class TransportService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof connections_result)
-        return this.equals((connections_result)that);
+      if (that instanceof getTrips_result)
+        return this.equals((getTrips_result)that);
       return false;
     }
 
-    public boolean equals(connections_result that) {
+    public boolean equals(getTrips_result that) {
       if (that == null)
         return false;
 
@@ -3766,13 +3854,13 @@ public class TransportService {
       return builder.toHashCode();
     }
 
-    public int compareTo(connections_result other) {
+    public int compareTo(getTrips_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      connections_result typedOther = (connections_result)other;
+      getTrips_result typedOther = (getTrips_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -3803,7 +3891,7 @@ public class TransportService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new QueryConnectionsResult();
+              this.success = new QueryTripsResult();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -3834,7 +3922,7 @@ public class TransportService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("connections_result(");
+      StringBuilder sb = new StringBuilder("getTrips_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -3870,8 +3958,893 @@ public class TransportService {
 
   }
 
-  public static class connectionsFromStationsIDs_args implements org.apache.thrift.TBase<connectionsFromStationsIDs_args, connectionsFromStationsIDs_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("connectionsFromStationsIDs_args");
+  public static class getTripsAtTime_args implements org.apache.thrift.TBase<getTripsAtTime_args, getTripsAtTime_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTripsAtTime_args");
+
+    private static final org.apache.thrift.protocol.TField FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("from", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField TO_FIELD_DESC = new org.apache.thrift.protocol.TField("to", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("time", org.apache.thrift.protocol.TType.I64, (short)3);
+    private static final org.apache.thrift.protocol.TField IS_DEPARTURE_FIELD_DESC = new org.apache.thrift.protocol.TField("isDeparture", org.apache.thrift.protocol.TType.BOOL, (short)4);
+
+    public String from; // required
+    public String to; // required
+    public long time; // required
+    public boolean isDeparture; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      FROM((short)1, "from"),
+      TO((short)2, "to"),
+      TIME((short)3, "time"),
+      IS_DEPARTURE((short)4, "isDeparture");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // FROM
+            return FROM;
+          case 2: // TO
+            return TO;
+          case 3: // TIME
+            return TIME;
+          case 4: // IS_DEPARTURE
+            return IS_DEPARTURE;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __TIME_ISSET_ID = 0;
+    private static final int __ISDEPARTURE_ISSET_ID = 1;
+    private BitSet __isset_bit_vector = new BitSet(2);
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.FROM, new org.apache.thrift.meta_data.FieldMetaData("from", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.TIME, new org.apache.thrift.meta_data.FieldMetaData("time", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64          , "timestamp")));
+      tmpMap.put(_Fields.IS_DEPARTURE, new org.apache.thrift.meta_data.FieldMetaData("isDeparture", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTripsAtTime_args.class, metaDataMap);
+    }
+
+    public getTripsAtTime_args() {
+    }
+
+    public getTripsAtTime_args(
+      String from,
+      String to,
+      long time,
+      boolean isDeparture)
+    {
+      this();
+      this.from = from;
+      this.to = to;
+      this.time = time;
+      setTimeIsSet(true);
+      this.isDeparture = isDeparture;
+      setIsDepartureIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getTripsAtTime_args(getTripsAtTime_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      if (other.isSetFrom()) {
+        this.from = other.from;
+      }
+      if (other.isSetTo()) {
+        this.to = other.to;
+      }
+      this.time = other.time;
+      this.isDeparture = other.isDeparture;
+    }
+
+    public getTripsAtTime_args deepCopy() {
+      return new getTripsAtTime_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.from = null;
+      this.to = null;
+      setTimeIsSet(false);
+      this.time = 0;
+      setIsDepartureIsSet(false);
+      this.isDeparture = false;
+    }
+
+    public String getFrom() {
+      return this.from;
+    }
+
+    public getTripsAtTime_args setFrom(String from) {
+      this.from = from;
+      return this;
+    }
+
+    public void unsetFrom() {
+      this.from = null;
+    }
+
+    /** Returns true if field from is set (has been assigned a value) and false otherwise */
+    public boolean isSetFrom() {
+      return this.from != null;
+    }
+
+    public void setFromIsSet(boolean value) {
+      if (!value) {
+        this.from = null;
+      }
+    }
+
+    public String getTo() {
+      return this.to;
+    }
+
+    public getTripsAtTime_args setTo(String to) {
+      this.to = to;
+      return this;
+    }
+
+    public void unsetTo() {
+      this.to = null;
+    }
+
+    /** Returns true if field to is set (has been assigned a value) and false otherwise */
+    public boolean isSetTo() {
+      return this.to != null;
+    }
+
+    public void setToIsSet(boolean value) {
+      if (!value) {
+        this.to = null;
+      }
+    }
+
+    public long getTime() {
+      return this.time;
+    }
+
+    public getTripsAtTime_args setTime(long time) {
+      this.time = time;
+      setTimeIsSet(true);
+      return this;
+    }
+
+    public void unsetTime() {
+      __isset_bit_vector.clear(__TIME_ISSET_ID);
+    }
+
+    /** Returns true if field time is set (has been assigned a value) and false otherwise */
+    public boolean isSetTime() {
+      return __isset_bit_vector.get(__TIME_ISSET_ID);
+    }
+
+    public void setTimeIsSet(boolean value) {
+      __isset_bit_vector.set(__TIME_ISSET_ID, value);
+    }
+
+    public boolean isIsDeparture() {
+      return this.isDeparture;
+    }
+
+    public getTripsAtTime_args setIsDeparture(boolean isDeparture) {
+      this.isDeparture = isDeparture;
+      setIsDepartureIsSet(true);
+      return this;
+    }
+
+    public void unsetIsDeparture() {
+      __isset_bit_vector.clear(__ISDEPARTURE_ISSET_ID);
+    }
+
+    /** Returns true if field isDeparture is set (has been assigned a value) and false otherwise */
+    public boolean isSetIsDeparture() {
+      return __isset_bit_vector.get(__ISDEPARTURE_ISSET_ID);
+    }
+
+    public void setIsDepartureIsSet(boolean value) {
+      __isset_bit_vector.set(__ISDEPARTURE_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case FROM:
+        if (value == null) {
+          unsetFrom();
+        } else {
+          setFrom((String)value);
+        }
+        break;
+
+      case TO:
+        if (value == null) {
+          unsetTo();
+        } else {
+          setTo((String)value);
+        }
+        break;
+
+      case TIME:
+        if (value == null) {
+          unsetTime();
+        } else {
+          setTime((Long)value);
+        }
+        break;
+
+      case IS_DEPARTURE:
+        if (value == null) {
+          unsetIsDeparture();
+        } else {
+          setIsDeparture((Boolean)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case FROM:
+        return getFrom();
+
+      case TO:
+        return getTo();
+
+      case TIME:
+        return Long.valueOf(getTime());
+
+      case IS_DEPARTURE:
+        return Boolean.valueOf(isIsDeparture());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case FROM:
+        return isSetFrom();
+      case TO:
+        return isSetTo();
+      case TIME:
+        return isSetTime();
+      case IS_DEPARTURE:
+        return isSetIsDeparture();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getTripsAtTime_args)
+        return this.equals((getTripsAtTime_args)that);
+      return false;
+    }
+
+    public boolean equals(getTripsAtTime_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_from = true && this.isSetFrom();
+      boolean that_present_from = true && that.isSetFrom();
+      if (this_present_from || that_present_from) {
+        if (!(this_present_from && that_present_from))
+          return false;
+        if (!this.from.equals(that.from))
+          return false;
+      }
+
+      boolean this_present_to = true && this.isSetTo();
+      boolean that_present_to = true && that.isSetTo();
+      if (this_present_to || that_present_to) {
+        if (!(this_present_to && that_present_to))
+          return false;
+        if (!this.to.equals(that.to))
+          return false;
+      }
+
+      boolean this_present_time = true;
+      boolean that_present_time = true;
+      if (this_present_time || that_present_time) {
+        if (!(this_present_time && that_present_time))
+          return false;
+        if (this.time != that.time)
+          return false;
+      }
+
+      boolean this_present_isDeparture = true;
+      boolean that_present_isDeparture = true;
+      if (this_present_isDeparture || that_present_isDeparture) {
+        if (!(this_present_isDeparture && that_present_isDeparture))
+          return false;
+        if (this.isDeparture != that.isDeparture)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_from = true && (isSetFrom());
+      builder.append(present_from);
+      if (present_from)
+        builder.append(from);
+
+      boolean present_to = true && (isSetTo());
+      builder.append(present_to);
+      if (present_to)
+        builder.append(to);
+
+      boolean present_time = true;
+      builder.append(present_time);
+      if (present_time)
+        builder.append(time);
+
+      boolean present_isDeparture = true;
+      builder.append(present_isDeparture);
+      if (present_isDeparture)
+        builder.append(isDeparture);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getTripsAtTime_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getTripsAtTime_args typedOther = (getTripsAtTime_args)other;
+
+      lastComparison = Boolean.valueOf(isSetFrom()).compareTo(typedOther.isSetFrom());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetFrom()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.from, typedOther.from);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetTo()).compareTo(typedOther.isSetTo());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTo()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.to, typedOther.to);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetTime()).compareTo(typedOther.isSetTime());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTime()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.time, typedOther.time);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetIsDeparture()).compareTo(typedOther.isSetIsDeparture());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIsDeparture()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isDeparture, typedOther.isDeparture);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // FROM
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.from = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // TO
+            if (field.type == org.apache.thrift.protocol.TType.STRING) {
+              this.to = iprot.readString();
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 3: // TIME
+            if (field.type == org.apache.thrift.protocol.TType.I64) {
+              this.time = iprot.readI64();
+              setTimeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 4: // IS_DEPARTURE
+            if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+              this.isDeparture = iprot.readBool();
+              setIsDepartureIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.from != null) {
+        oprot.writeFieldBegin(FROM_FIELD_DESC);
+        oprot.writeString(this.from);
+        oprot.writeFieldEnd();
+      }
+      if (this.to != null) {
+        oprot.writeFieldBegin(TO_FIELD_DESC);
+        oprot.writeString(this.to);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(TIME_FIELD_DESC);
+      oprot.writeI64(this.time);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(IS_DEPARTURE_FIELD_DESC);
+      oprot.writeBool(this.isDeparture);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getTripsAtTime_args(");
+      boolean first = true;
+
+      sb.append("from:");
+      if (this.from == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.from);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("to:");
+      if (this.to == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.to);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("time:");
+      sb.append(this.time);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("isDeparture:");
+      sb.append(this.isDeparture);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getTripsAtTime_result implements org.apache.thrift.TBase<getTripsAtTime_result, getTripsAtTime_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTripsAtTime_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public QueryTripsResult success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, QueryTripsResult.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTripsAtTime_result.class, metaDataMap);
+    }
+
+    public getTripsAtTime_result() {
+    }
+
+    public getTripsAtTime_result(
+      QueryTripsResult success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getTripsAtTime_result(getTripsAtTime_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new QueryTripsResult(other.success);
+      }
+    }
+
+    public getTripsAtTime_result deepCopy() {
+      return new getTripsAtTime_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public QueryTripsResult getSuccess() {
+      return this.success;
+    }
+
+    public getTripsAtTime_result setSuccess(QueryTripsResult success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((QueryTripsResult)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getTripsAtTime_result)
+        return this.equals((getTripsAtTime_result)that);
+      return false;
+    }
+
+    public boolean equals(getTripsAtTime_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getTripsAtTime_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getTripsAtTime_result typedOther = (getTripsAtTime_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new QueryTripsResult();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getTripsAtTime_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getTripsFromStationsIDs_args implements org.apache.thrift.TBase<getTripsFromStationsIDs_args, getTripsFromStationsIDs_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTripsFromStationsIDs_args");
 
     private static final org.apache.thrift.protocol.TField FROM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("fromID", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField TO_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("toID", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -3950,13 +4923,13 @@ public class TransportService {
       tmpMap.put(_Fields.TO_ID, new org.apache.thrift.meta_data.FieldMetaData("toID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(connectionsFromStationsIDs_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTripsFromStationsIDs_args.class, metaDataMap);
     }
 
-    public connectionsFromStationsIDs_args() {
+    public getTripsFromStationsIDs_args() {
     }
 
-    public connectionsFromStationsIDs_args(
+    public getTripsFromStationsIDs_args(
       String fromID,
       String toID)
     {
@@ -3968,7 +4941,7 @@ public class TransportService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public connectionsFromStationsIDs_args(connectionsFromStationsIDs_args other) {
+    public getTripsFromStationsIDs_args(getTripsFromStationsIDs_args other) {
       if (other.isSetFromID()) {
         this.fromID = other.fromID;
       }
@@ -3977,8 +4950,8 @@ public class TransportService {
       }
     }
 
-    public connectionsFromStationsIDs_args deepCopy() {
-      return new connectionsFromStationsIDs_args(this);
+    public getTripsFromStationsIDs_args deepCopy() {
+      return new getTripsFromStationsIDs_args(this);
     }
 
     @Override
@@ -3991,7 +4964,7 @@ public class TransportService {
       return this.fromID;
     }
 
-    public connectionsFromStationsIDs_args setFromID(String fromID) {
+    public getTripsFromStationsIDs_args setFromID(String fromID) {
       this.fromID = fromID;
       return this;
     }
@@ -4015,7 +4988,7 @@ public class TransportService {
       return this.toID;
     }
 
-    public connectionsFromStationsIDs_args setToID(String toID) {
+    public getTripsFromStationsIDs_args setToID(String toID) {
       this.toID = toID;
       return this;
     }
@@ -4087,12 +5060,12 @@ public class TransportService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof connectionsFromStationsIDs_args)
-        return this.equals((connectionsFromStationsIDs_args)that);
+      if (that instanceof getTripsFromStationsIDs_args)
+        return this.equals((getTripsFromStationsIDs_args)that);
       return false;
     }
 
-    public boolean equals(connectionsFromStationsIDs_args that) {
+    public boolean equals(getTripsFromStationsIDs_args that) {
       if (that == null)
         return false;
 
@@ -4134,13 +5107,13 @@ public class TransportService {
       return builder.toHashCode();
     }
 
-    public int compareTo(connectionsFromStationsIDs_args other) {
+    public int compareTo(getTripsFromStationsIDs_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      connectionsFromStationsIDs_args typedOther = (connectionsFromStationsIDs_args)other;
+      getTripsFromStationsIDs_args typedOther = (getTripsFromStationsIDs_args)other;
 
       lastComparison = Boolean.valueOf(isSetFromID()).compareTo(typedOther.isSetFromID());
       if (lastComparison != 0) {
@@ -4224,7 +5197,7 @@ public class TransportService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("connectionsFromStationsIDs_args(");
+      StringBuilder sb = new StringBuilder("getTripsFromStationsIDs_args(");
       boolean first = true;
 
       sb.append("fromID:");
@@ -4268,12 +5241,12 @@ public class TransportService {
 
   }
 
-  public static class connectionsFromStationsIDs_result implements org.apache.thrift.TBase<connectionsFromStationsIDs_result, connectionsFromStationsIDs_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("connectionsFromStationsIDs_result");
+  public static class getTripsFromStationsIDs_result implements org.apache.thrift.TBase<getTripsFromStationsIDs_result, getTripsFromStationsIDs_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTripsFromStationsIDs_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public QueryConnectionsResult success; // required
+    public QueryTripsResult success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -4339,16 +5312,16 @@ public class TransportService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, QueryConnectionsResult.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, QueryTripsResult.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(connectionsFromStationsIDs_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTripsFromStationsIDs_result.class, metaDataMap);
     }
 
-    public connectionsFromStationsIDs_result() {
+    public getTripsFromStationsIDs_result() {
     }
 
-    public connectionsFromStationsIDs_result(
-      QueryConnectionsResult success)
+    public getTripsFromStationsIDs_result(
+      QueryTripsResult success)
     {
       this();
       this.success = success;
@@ -4357,14 +5330,14 @@ public class TransportService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public connectionsFromStationsIDs_result(connectionsFromStationsIDs_result other) {
+    public getTripsFromStationsIDs_result(getTripsFromStationsIDs_result other) {
       if (other.isSetSuccess()) {
-        this.success = new QueryConnectionsResult(other.success);
+        this.success = new QueryTripsResult(other.success);
       }
     }
 
-    public connectionsFromStationsIDs_result deepCopy() {
-      return new connectionsFromStationsIDs_result(this);
+    public getTripsFromStationsIDs_result deepCopy() {
+      return new getTripsFromStationsIDs_result(this);
     }
 
     @Override
@@ -4372,11 +5345,11 @@ public class TransportService {
       this.success = null;
     }
 
-    public QueryConnectionsResult getSuccess() {
+    public QueryTripsResult getSuccess() {
       return this.success;
     }
 
-    public connectionsFromStationsIDs_result setSuccess(QueryConnectionsResult success) {
+    public getTripsFromStationsIDs_result setSuccess(QueryTripsResult success) {
       this.success = success;
       return this;
     }
@@ -4402,7 +5375,7 @@ public class TransportService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((QueryConnectionsResult)value);
+          setSuccess((QueryTripsResult)value);
         }
         break;
 
@@ -4435,12 +5408,12 @@ public class TransportService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof connectionsFromStationsIDs_result)
-        return this.equals((connectionsFromStationsIDs_result)that);
+      if (that instanceof getTripsFromStationsIDs_result)
+        return this.equals((getTripsFromStationsIDs_result)that);
       return false;
     }
 
-    public boolean equals(connectionsFromStationsIDs_result that) {
+    public boolean equals(getTripsFromStationsIDs_result that) {
       if (that == null)
         return false;
 
@@ -4468,13 +5441,13 @@ public class TransportService {
       return builder.toHashCode();
     }
 
-    public int compareTo(connectionsFromStationsIDs_result other) {
+    public int compareTo(getTripsFromStationsIDs_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      connectionsFromStationsIDs_result typedOther = (connectionsFromStationsIDs_result)other;
+      getTripsFromStationsIDs_result typedOther = (getTripsFromStationsIDs_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -4505,7 +5478,7 @@ public class TransportService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new QueryConnectionsResult();
+              this.success = new QueryTripsResult();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -4536,7 +5509,7 @@ public class TransportService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("connectionsFromStationsIDs_result(");
+      StringBuilder sb = new StringBuilder("getTripsFromStationsIDs_result(");
       boolean first = true;
 
       sb.append("success:");

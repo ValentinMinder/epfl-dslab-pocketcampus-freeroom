@@ -32,7 +32,7 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
    * @see NearbyStatus
    */
   public NearbyStatus status; // required
-  public List<Location> stations; // required
+  public List<TransportStation> stations; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -108,7 +108,7 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, NearbyStatus.class)));
     tmpMap.put(_Fields.STATIONS, new org.apache.thrift.meta_data.FieldMetaData("stations", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class))));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(NearbyStationsResult.class, metaDataMap);
   }
@@ -118,7 +118,7 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
 
   public NearbyStationsResult(
     NearbyStatus status,
-    List<Location> stations)
+    List<TransportStation> stations)
   {
     this();
     this.status = status;
@@ -133,9 +133,9 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
       this.status = other.status;
     }
     if (other.isSetStations()) {
-      List<Location> __this__stations = new ArrayList<Location>();
-      for (Location other_element : other.stations) {
-        __this__stations.add(new Location(other_element));
+      List<TransportStation> __this__stations = new ArrayList<TransportStation>();
+      for (TransportStation other_element : other.stations) {
+        __this__stations.add(new TransportStation(other_element));
       }
       this.stations = __this__stations;
     }
@@ -187,22 +187,22 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
     return (this.stations == null) ? 0 : this.stations.size();
   }
 
-  public java.util.Iterator<Location> getStationsIterator() {
+  public java.util.Iterator<TransportStation> getStationsIterator() {
     return (this.stations == null) ? null : this.stations.iterator();
   }
 
-  public void addToStations(Location elem) {
+  public void addToStations(TransportStation elem) {
     if (this.stations == null) {
-      this.stations = new ArrayList<Location>();
+      this.stations = new ArrayList<TransportStation>();
     }
     this.stations.add(elem);
   }
 
-  public List<Location> getStations() {
+  public List<TransportStation> getStations() {
     return this.stations;
   }
 
-  public NearbyStationsResult setStations(List<Location> stations) {
+  public NearbyStationsResult setStations(List<TransportStation> stations) {
     this.stations = stations;
     return this;
   }
@@ -236,7 +236,7 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
       if (value == null) {
         unsetStations();
       } else {
-        setStations((List<Location>)value);
+        setStations((List<TransportStation>)value);
       }
       break;
 
@@ -377,11 +377,11 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list28 = iprot.readListBegin();
-              this.stations = new ArrayList<Location>(_list28.size);
+              this.stations = new ArrayList<TransportStation>(_list28.size);
               for (int _i29 = 0; _i29 < _list28.size; ++_i29)
               {
-                Location _elem30; // required
-                _elem30 = new Location();
+                TransportStation _elem30; // required
+                _elem30 = new TransportStation();
                 _elem30.read(iprot);
                 this.stations.add(_elem30);
               }
@@ -415,7 +415,7 @@ public class NearbyStationsResult implements org.apache.thrift.TBase<NearbyStati
       oprot.writeFieldBegin(STATIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.stations.size()));
-        for (Location _iter31 : this.stations)
+        for (TransportStation _iter31 : this.stations)
         {
           _iter31.write(oprot);
         }

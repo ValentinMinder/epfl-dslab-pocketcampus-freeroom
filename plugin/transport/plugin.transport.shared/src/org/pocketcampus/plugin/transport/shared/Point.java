@@ -24,16 +24,16 @@ import org.slf4j.LoggerFactory;
 public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Point");
 
-  private static final org.apache.thrift.protocol.TField LAT_FIELD_DESC = new org.apache.thrift.protocol.TField("lat", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField LON_FIELD_DESC = new org.apache.thrift.protocol.TField("lon", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField LATITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("latitude", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField LONGITUDE_FIELD_DESC = new org.apache.thrift.protocol.TField("longitude", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public int lat; // required
-  public int lon; // required
+  public int latitude; // required
+  public int longitude; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    LAT((short)1, "lat"),
-    LON((short)2, "lon");
+    LATITUDE((short)1, "latitude"),
+    LONGITUDE((short)2, "longitude");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // LAT
-          return LAT;
-        case 2: // LON
-          return LON;
+        case 1: // LATITUDE
+          return LATITUDE;
+        case 2: // LONGITUDE
+          return LONGITUDE;
         default:
           return null;
       }
@@ -92,16 +92,16 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
   }
 
   // isset id assignments
-  private static final int __LAT_ISSET_ID = 0;
-  private static final int __LON_ISSET_ID = 1;
+  private static final int __LATITUDE_ISSET_ID = 0;
+  private static final int __LONGITUDE_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.LAT, new org.apache.thrift.meta_data.FieldMetaData("lat", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.LATITUDE, new org.apache.thrift.meta_data.FieldMetaData("latitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.LON, new org.apache.thrift.meta_data.FieldMetaData("lon", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.LONGITUDE, new org.apache.thrift.meta_data.FieldMetaData("longitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Point.class, metaDataMap);
@@ -111,14 +111,14 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
   }
 
   public Point(
-    int lat,
-    int lon)
+    int latitude,
+    int longitude)
   {
     this();
-    this.lat = lat;
-    setLatIsSet(true);
-    this.lon = lon;
-    setLonIsSet(true);
+    this.latitude = latitude;
+    setLatitudeIsSet(true);
+    this.longitude = longitude;
+    setLongitudeIsSet(true);
   }
 
   /**
@@ -127,8 +127,8 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
   public Point(Point other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.lat = other.lat;
-    this.lon = other.lon;
+    this.latitude = other.latitude;
+    this.longitude = other.longitude;
   }
 
   public Point deepCopy() {
@@ -137,73 +137,73 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
 
   @Override
   public void clear() {
-    setLatIsSet(false);
-    this.lat = 0;
-    setLonIsSet(false);
-    this.lon = 0;
+    setLatitudeIsSet(false);
+    this.latitude = 0;
+    setLongitudeIsSet(false);
+    this.longitude = 0;
   }
 
-  public int getLat() {
-    return this.lat;
+  public int getLatitude() {
+    return this.latitude;
   }
 
-  public Point setLat(int lat) {
-    this.lat = lat;
-    setLatIsSet(true);
+  public Point setLatitude(int latitude) {
+    this.latitude = latitude;
+    setLatitudeIsSet(true);
     return this;
   }
 
-  public void unsetLat() {
-    __isset_bit_vector.clear(__LAT_ISSET_ID);
+  public void unsetLatitude() {
+    __isset_bit_vector.clear(__LATITUDE_ISSET_ID);
   }
 
-  /** Returns true if field lat is set (has been assigned a value) and false otherwise */
-  public boolean isSetLat() {
-    return __isset_bit_vector.get(__LAT_ISSET_ID);
+  /** Returns true if field latitude is set (has been assigned a value) and false otherwise */
+  public boolean isSetLatitude() {
+    return __isset_bit_vector.get(__LATITUDE_ISSET_ID);
   }
 
-  public void setLatIsSet(boolean value) {
-    __isset_bit_vector.set(__LAT_ISSET_ID, value);
+  public void setLatitudeIsSet(boolean value) {
+    __isset_bit_vector.set(__LATITUDE_ISSET_ID, value);
   }
 
-  public int getLon() {
-    return this.lon;
+  public int getLongitude() {
+    return this.longitude;
   }
 
-  public Point setLon(int lon) {
-    this.lon = lon;
-    setLonIsSet(true);
+  public Point setLongitude(int longitude) {
+    this.longitude = longitude;
+    setLongitudeIsSet(true);
     return this;
   }
 
-  public void unsetLon() {
-    __isset_bit_vector.clear(__LON_ISSET_ID);
+  public void unsetLongitude() {
+    __isset_bit_vector.clear(__LONGITUDE_ISSET_ID);
   }
 
-  /** Returns true if field lon is set (has been assigned a value) and false otherwise */
-  public boolean isSetLon() {
-    return __isset_bit_vector.get(__LON_ISSET_ID);
+  /** Returns true if field longitude is set (has been assigned a value) and false otherwise */
+  public boolean isSetLongitude() {
+    return __isset_bit_vector.get(__LONGITUDE_ISSET_ID);
   }
 
-  public void setLonIsSet(boolean value) {
-    __isset_bit_vector.set(__LON_ISSET_ID, value);
+  public void setLongitudeIsSet(boolean value) {
+    __isset_bit_vector.set(__LONGITUDE_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case LAT:
+    case LATITUDE:
       if (value == null) {
-        unsetLat();
+        unsetLatitude();
       } else {
-        setLat((Integer)value);
+        setLatitude((Integer)value);
       }
       break;
 
-    case LON:
+    case LONGITUDE:
       if (value == null) {
-        unsetLon();
+        unsetLongitude();
       } else {
-        setLon((Integer)value);
+        setLongitude((Integer)value);
       }
       break;
 
@@ -212,11 +212,11 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case LAT:
-      return Integer.valueOf(getLat());
+    case LATITUDE:
+      return Integer.valueOf(getLatitude());
 
-    case LON:
-      return Integer.valueOf(getLon());
+    case LONGITUDE:
+      return Integer.valueOf(getLongitude());
 
     }
     throw new IllegalStateException();
@@ -229,10 +229,10 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     }
 
     switch (field) {
-    case LAT:
-      return isSetLat();
-    case LON:
-      return isSetLon();
+    case LATITUDE:
+      return isSetLatitude();
+    case LONGITUDE:
+      return isSetLongitude();
     }
     throw new IllegalStateException();
   }
@@ -250,21 +250,21 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     if (that == null)
       return false;
 
-    boolean this_present_lat = true;
-    boolean that_present_lat = true;
-    if (this_present_lat || that_present_lat) {
-      if (!(this_present_lat && that_present_lat))
+    boolean this_present_latitude = true;
+    boolean that_present_latitude = true;
+    if (this_present_latitude || that_present_latitude) {
+      if (!(this_present_latitude && that_present_latitude))
         return false;
-      if (this.lat != that.lat)
+      if (this.latitude != that.latitude)
         return false;
     }
 
-    boolean this_present_lon = true;
-    boolean that_present_lon = true;
-    if (this_present_lon || that_present_lon) {
-      if (!(this_present_lon && that_present_lon))
+    boolean this_present_longitude = true;
+    boolean that_present_longitude = true;
+    if (this_present_longitude || that_present_longitude) {
+      if (!(this_present_longitude && that_present_longitude))
         return false;
-      if (this.lon != that.lon)
+      if (this.longitude != that.longitude)
         return false;
     }
 
@@ -275,15 +275,15 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_lat = true;
-    builder.append(present_lat);
-    if (present_lat)
-      builder.append(lat);
+    boolean present_latitude = true;
+    builder.append(present_latitude);
+    if (present_latitude)
+      builder.append(latitude);
 
-    boolean present_lon = true;
-    builder.append(present_lon);
-    if (present_lon)
-      builder.append(lon);
+    boolean present_longitude = true;
+    builder.append(present_longitude);
+    if (present_longitude)
+      builder.append(longitude);
 
     return builder.toHashCode();
   }
@@ -296,22 +296,22 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     int lastComparison = 0;
     Point typedOther = (Point)other;
 
-    lastComparison = Boolean.valueOf(isSetLat()).compareTo(typedOther.isSetLat());
+    lastComparison = Boolean.valueOf(isSetLatitude()).compareTo(typedOther.isSetLatitude());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLat()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lat, typedOther.lat);
+    if (isSetLatitude()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.latitude, typedOther.latitude);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLon()).compareTo(typedOther.isSetLon());
+    lastComparison = Boolean.valueOf(isSetLongitude()).compareTo(typedOther.isSetLongitude());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLon()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.lon, typedOther.lon);
+    if (isSetLongitude()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.longitude, typedOther.longitude);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,18 +333,18 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
         break;
       }
       switch (field.id) {
-        case 1: // LAT
+        case 1: // LATITUDE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.lat = iprot.readI32();
-            setLatIsSet(true);
+            this.latitude = iprot.readI32();
+            setLatitudeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // LON
+        case 2: // LONGITUDE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.lon = iprot.readI32();
-            setLonIsSet(true);
+            this.longitude = iprot.readI32();
+            setLongitudeIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -357,11 +357,11 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetLat()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'lat' was not found in serialized data! Struct: " + toString());
+    if (!isSetLatitude()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'latitude' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetLon()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'lon' was not found in serialized data! Struct: " + toString());
+    if (!isSetLongitude()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'longitude' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -370,11 +370,11 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(LAT_FIELD_DESC);
-    oprot.writeI32(this.lat);
+    oprot.writeFieldBegin(LATITUDE_FIELD_DESC);
+    oprot.writeI32(this.latitude);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(LON_FIELD_DESC);
-    oprot.writeI32(this.lon);
+    oprot.writeFieldBegin(LONGITUDE_FIELD_DESC);
+    oprot.writeI32(this.longitude);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -385,12 +385,12 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
     StringBuilder sb = new StringBuilder("Point(");
     boolean first = true;
 
-    sb.append("lat:");
-    sb.append(this.lat);
+    sb.append("latitude:");
+    sb.append(this.latitude);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("lon:");
-    sb.append(this.lon);
+    sb.append("longitude:");
+    sb.append(this.longitude);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -398,8 +398,8 @@ public class Point implements org.apache.thrift.TBase<Point, Point._Fields>, jav
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'lat' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'lon' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'latitude' because it's a primitive and you chose the non-beans generator.
+    // alas, we cannot check 'longitude' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

@@ -28,7 +28,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
   private static final org.apache.thrift.protocol.TField POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("position", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("time", org.apache.thrift.protocol.TType.I64, (short)3);
 
-  public Location location; // required
+  public TransportStation location; // required
   public String position; // required
   public long time; // required
 
@@ -104,7 +104,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.LOCATION, new org.apache.thrift.meta_data.FieldMetaData("location", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.POSITION, new org.apache.thrift.meta_data.FieldMetaData("position", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TIME, new org.apache.thrift.meta_data.FieldMetaData("time", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -117,7 +117,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
   }
 
   public Stop(
-    Location location,
+    TransportStation location,
     long time)
   {
     this();
@@ -133,7 +133,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetLocation()) {
-      this.location = new Location(other.location);
+      this.location = new TransportStation(other.location);
     }
     if (other.isSetPosition()) {
       this.position = other.position;
@@ -153,11 +153,11 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
     this.time = 0;
   }
 
-  public Location getLocation() {
+  public TransportStation getLocation() {
     return this.location;
   }
 
-  public Stop setLocation(Location location) {
+  public Stop setLocation(TransportStation location) {
     this.location = location;
     return this;
   }
@@ -230,7 +230,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
       if (value == null) {
         unsetLocation();
       } else {
-        setLocation((Location)value);
+        setLocation((TransportStation)value);
       }
       break;
 
@@ -407,7 +407,7 @@ public class Stop implements org.apache.thrift.TBase<Stop, Stop._Fields>, java.i
       switch (field.id) {
         case 1: // LOCATION
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.location = new Location();
+            this.location = new TransportStation();
             this.location.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

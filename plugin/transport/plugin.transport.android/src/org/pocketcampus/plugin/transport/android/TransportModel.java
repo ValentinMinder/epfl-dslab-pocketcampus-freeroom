@@ -8,9 +8,9 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
-import org.pocketcampus.plugin.transport.shared.Connection;
-import org.pocketcampus.plugin.transport.shared.Location;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import android.util.Log;
 
@@ -28,9 +28,9 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	/** The views listening to updates in this model */
 	private ITransportView mListeners = (ITransportView) getListeners();
 	/** The list of locations autocompleted when the user is typing */
-	private List<Location> mAutoCompletedDestinations;
+	private List<TransportStation> mAutoCompletedDestinations;
 	/** Displayed locations */
-	private HashMap<String, List<Connection>> mPreferredDestinations;
+	private HashMap<String, List<TransportTrip>> mPreferredDestinations;
 
 	/**
 	 * The constructor
@@ -38,8 +38,8 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * Initializes object instances
 	 */
 	public TransportModel() {
-		mPreferredDestinations = new HashMap<String, List<Connection>>();
-		mAutoCompletedDestinations = new ArrayList<Location>();
+		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
+		mAutoCompletedDestinations = new ArrayList<TransportStation>();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * @return mPreferredDestinations The list of preferred destinations
 	 */
 	@Override
-	public HashMap<String, List<Connection>> getPreferredDestinations() {
+	public HashMap<String, List<TransportTrip>> getPreferredDestinations() {
 		return mPreferredDestinations;
 	}
 
@@ -65,7 +65,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 *            The new list of preferred destinations
 	 */
 	@Override
-	public void setAutoCompletedDestinations(List<Location> destinations) {
+	public void setAutoCompletedDestinations(List<TransportStation> destinations) {
 		mAutoCompletedDestinations.clear();
 		mAutoCompletedDestinations.addAll(destinations);
 		/** Update the views */
@@ -79,17 +79,17 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * @param result
 	 */
 	@Override
-	public void setConnections(QueryConnectionsResult result) {
+	public void setConnections(QueryTripsResult result) {
 		/** update the views */
 		Log.d("TRANSPORT", "Connection set (model)");
 		
 		if (result != null) {
-			List<Connection> connections = result.getConnections();
+			List<TransportTrip> connections = result.getConnections();
 
 			if (connections != null && !connections.isEmpty()) {
 
 				int i = 0;
-				for (Connection c : connections) {
+				for (TransportTrip c : connections) {
 					if (c != null) {
 						if (i < 3) {
 							i++;
@@ -97,7 +97,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 							/**Update dsipalyed locations*/
 							if(mPreferredDestinations.get(c.getTo().getName()) == null){							
 								mPreferredDestinations.put(c.getTo().getName(),
-										new ArrayList<Connection>());
+										new ArrayList<TransportTrip>());
 							}
 							mPreferredDestinations.get(c.getTo().getName()).add(c);
 							Log.d("TRANSPORT", "Added item " + (c.getDepartureTime()));
@@ -117,7 +117,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * @return mAutoCompletedDestinations The list of current autocompleted
 	 *         destinations to display to the user
 	 */
-	public List<Location> getAutoCpmpletedDestinations() {
+	public List<TransportStation> getAutoCpmpletedDestinations() {
 		/** Notify the view(s) */
 		return mAutoCompletedDestinations;
 	}
@@ -126,13 +126,13 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * Sends the locations corresponding to a list of strings to the view(s)
 	 */
 	@Override
-	public void setLocationsFromNames(List<Location> result) {
+	public void setLocationsFromNames(List<TransportStation> result) {
 		if(result != null) {			
 			Log.d("TRANSPORT", "Locations from Names set (model)");
 			
-			for(Location location : result) {
+			for(TransportStation location : result) {
 				if(mPreferredDestinations.get(location.getName()) == null) {					
-					mPreferredDestinations.put(location.getName(), new ArrayList<Connection>());
+					mPreferredDestinations.put(location.getName(), new ArrayList<TransportTrip>());
 				}
 			}
 			mListeners.locationsFromNamesUpdated(result);

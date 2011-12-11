@@ -3,9 +3,9 @@ package org.pocketcampus.plugin.transport.android.req;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
-import org.pocketcampus.plugin.transport.shared.TransportService.connections_args;
+import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 
 import android.util.Log;
 
@@ -19,7 +19,7 @@ import android.util.Log;
  */
 public class NextDeparturesFromEPFLRequest
 		extends
-		Request<TransportController, Iface, connections_args, QueryConnectionsResult> {
+		Request<TransportController, Iface, getTrips_args, QueryTripsResult> {
 
 	/**
 	 * Initiate the <code>connections</code> Request at the server
@@ -31,10 +31,10 @@ public class NextDeparturesFromEPFLRequest
 	 * @return the list of connections from the server
 	 */
 	@Override
-	protected QueryConnectionsResult runInBackground(Iface client,
-			connections_args param) throws Exception {
+	protected QueryTripsResult runInBackground(Iface client,
+			getTrips_args param) throws Exception {
 		Log.d("TRANSPORT", "run");
-		return client.connections(param.getFrom(), param.getTo());
+		return client.getTrips(param.getFrom(), param.getTo());
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class NextDeparturesFromEPFLRequest
 	 */
 	@Override
 	protected void onResult(TransportController controller,
-			QueryConnectionsResult result) {
+			QueryTripsResult result) {
 		Log.d("TRANSPORT", "onResult");
 		((TransportModel) controller.getModel()).setConnections(result);
 	}

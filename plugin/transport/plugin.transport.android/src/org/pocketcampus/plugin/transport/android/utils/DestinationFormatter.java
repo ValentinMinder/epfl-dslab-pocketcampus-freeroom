@@ -2,12 +2,12 @@ package org.pocketcampus.plugin.transport.android.utils;
 
 import java.util.HashMap;
 
-import org.pocketcampus.plugin.transport.shared.Location;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 public class DestinationFormatter {
 	private static HashMap<String, String> niceNames_;
 
-	static public String getNiceName(Location location) {
+	static public String getNiceName(TransportStation location) {
 		return getNiceName(location.name);
 	}
 

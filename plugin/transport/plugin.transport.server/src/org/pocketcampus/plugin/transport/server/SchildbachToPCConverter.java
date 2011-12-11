@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pocketcampus.plugin.transport.shared.Connection;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportLine;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.Departure;
 import org.pocketcampus.plugin.transport.shared.Fare;
 import org.pocketcampus.plugin.transport.shared.FareType;
-import org.pocketcampus.plugin.transport.shared.Line;
 import org.pocketcampus.plugin.transport.shared.LineDestination;
-import org.pocketcampus.plugin.transport.shared.Location;
-import org.pocketcampus.plugin.transport.shared.LocationType;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportStationType;
 import org.pocketcampus.plugin.transport.shared.NearbyStatus;
-import org.pocketcampus.plugin.transport.shared.Part;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.Point;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
 import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
 import org.pocketcampus.plugin.transport.shared.StationDepartures;
 import org.pocketcampus.plugin.transport.shared.Stop;
@@ -23,8 +23,8 @@ import org.pocketcampus.plugin.transport.shared.Stop;
 import de.schildbach.pte.dto.QueryDeparturesResult;
 
 public class SchildbachToPCConverter {
-	static protected QueryConnectionsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
-		QueryConnectionsResult qcr = new QueryConnectionsResult(
+	static protected QueryTripsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
+		QueryTripsResult qcr = new QueryTripsResult(
 				convertSchToPC(s.from),
 				convertSchToPC(s.to),
 				convertSchConToPC(s.connections)
@@ -108,40 +108,40 @@ public class SchildbachToPCConverter {
 		}
 	}
 
-	static protected Location convertSchToPC(de.schildbach.pte.dto.Location s){
+	static protected TransportStation convertSchToPC(de.schildbach.pte.dto.Location s){
 		if(s != null)
-			return new Location(convertSchToPC(s.type), s.id, s.lat, s.lon, s.place, s.name);
+			return new TransportStation(convertSchToPC(s.type), s.id, s.lat, s.lon, s.place, s.name);
 		else
 			return null;
 	}
 
-	static protected LocationType convertSchToPC(de.schildbach.pte.dto.LocationType type) {
+	static protected TransportStationType convertSchToPC(de.schildbach.pte.dto.LocationType type) {
 		switch(type){
 			case ADDRESS :
-				return LocationType.ADDRESS;
+				return TransportStationType.ADDRESS;
 			case STATION :
-				return LocationType.STATION;
+				return TransportStationType.STATION;
 			case POI	:
-				return LocationType.POI;
+				return TransportStationType.POI;
 			case ANY	:
 			default		:
-				return	LocationType.ANY;
+				return	TransportStationType.ANY;
 		}
 	}
 
-	static protected List<Location> convertSchToPC(List<de.schildbach.pte.dto.Location> l){
+	static protected List<TransportStation> convertSchToPC(List<de.schildbach.pte.dto.Location> l){
 		if(l== null)
 			return null;
 		
-		LinkedList<Location> ret = new LinkedList<Location>();
+		LinkedList<TransportStation> ret = new LinkedList<TransportStation>();
 		for(de.schildbach.pte.dto.Location loc : l){
 			ret.add(convertSchToPC(loc));
 		}
 		return ret;
 	}
 
-	static protected Connection convertSchToPC(de.schildbach.pte.dto.Connection sc){
-		Connection pcc = new Connection(sc.id,
+	static protected TransportTrip convertSchToPC(de.schildbach.pte.dto.Connection sc){
+		TransportTrip pcc = new TransportTrip(sc.id,
 				sc.departureTime.getTime(),
 				sc.arrivalTime.getTime(),
 				convertSchToPC(sc.from),
@@ -153,11 +153,11 @@ public class SchildbachToPCConverter {
 		return pcc;
 	}
 	
-	static protected List<Connection> convertSchConToPC(List<de.schildbach.pte.dto.Connection> l){
+	static protected List<TransportTrip> convertSchConToPC(List<de.schildbach.pte.dto.Connection> l){
 		if(l == null)
 			return null;
 		
-		LinkedList<Connection> ret = new LinkedList<Connection>();
+		LinkedList<TransportTrip> ret = new LinkedList<TransportTrip>();
 		for(de.schildbach.pte.dto.Connection con : l){
 			ret.add(convertSchToPC(con));
 		}
@@ -166,16 +166,16 @@ public class SchildbachToPCConverter {
 	
 	// PARTS
 	
-	static protected List<Part> convertSchPartsToPC(List<de.schildbach.pte.dto.Connection.Part> l){
-		LinkedList<Part> ret = new LinkedList<Part>();
+	static protected List<TransportConnection> convertSchPartsToPC(List<de.schildbach.pte.dto.Connection.Part> l){
+		LinkedList<TransportConnection> ret = new LinkedList<TransportConnection>();
 		for(de.schildbach.pte.dto.Connection.Part part : l){
 			ret.add(convertSchToPC(part));
 		}
 		return ret;
 	}
 	
-	static protected Part convertSchToPC(de.schildbach.pte.dto.Connection.Part sf){
-		Part part = new Part(convertSchToPC(sf.departure),
+	static protected TransportConnection convertSchToPC(de.schildbach.pte.dto.Connection.Part sf){
+		TransportConnection part = new TransportConnection(convertSchToPC(sf.departure),
 				convertSchToPC(sf.arrival));
 		
 		if(sf instanceof de.schildbach.pte.dto.Connection.Trip ){
@@ -216,12 +216,12 @@ public class SchildbachToPCConverter {
 	}
 	
 	//LINE
-	static protected Line convertSchToPC(de.schildbach.pte.dto.Line sl){
+	static protected TransportLine convertSchToPC(de.schildbach.pte.dto.Line sl){
 		ArrayList<String> al = new ArrayList<String>();
 		for(int i : sl.colors){
 			al.add(Integer.toString(i));
 		}
-		return new Line(sl.label, al);
+		return new TransportLine(sl.label, al);
 	}
 	
 	//POINTS

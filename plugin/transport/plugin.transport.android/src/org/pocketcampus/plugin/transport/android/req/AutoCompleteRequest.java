@@ -5,7 +5,7 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
-import org.pocketcampus.plugin.transport.shared.Location;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 
 /**
@@ -17,7 +17,7 @@ import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
  * 
  */
 public class AutoCompleteRequest extends
-		Request<TransportController, Iface, String, List<Location>> {
+		Request<TransportController, Iface, String, List<TransportStation>> {
 
 	/**
 	 * Initiate the <code>autocomplete</code> Request at the server
@@ -29,7 +29,7 @@ public class AutoCompleteRequest extends
 	 *            constraint for the autocompletion
 	 */
 	@Override
-	protected List<Location> runInBackground(Iface client, String constraint)
+	protected List<TransportStation> runInBackground(Iface client, String constraint)
 			throws Exception {
 		return client.autocomplete(constraint);
 	}
@@ -45,7 +45,7 @@ public class AutoCompleteRequest extends
 	 */
 	@Override
 	protected void onResult(TransportController controller,
-			List<Location> result) {
+			List<TransportStation> result) {
 		System.out.println(result);
 
 		((TransportModel) controller.getModel())

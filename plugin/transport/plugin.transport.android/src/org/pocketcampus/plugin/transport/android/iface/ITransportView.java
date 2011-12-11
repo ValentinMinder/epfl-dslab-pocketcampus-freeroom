@@ -3,8 +3,8 @@ package org.pocketcampus.plugin.transport.android.iface;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
-import org.pocketcampus.plugin.transport.shared.Location;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 /**
  * The interface that defines the method implemented by a view of the plugin
@@ -26,7 +26,7 @@ public interface ITransportView extends IView {
 	 * Called by the model when the data for the resulted connections for some
 	 * destination has been updated
 	 */
-	void connectionUpdated(QueryConnectionsResult result);
+	void connectionUpdated(QueryTripsResult result);
 
 	/**
 	 * Called by the model when the list of preferred destinations has been
@@ -40,5 +40,5 @@ public interface ITransportView extends IView {
 	 * 
 	 * @param result
 	 */
-	public void locationsFromNamesUpdated(List<Location> result);
+	public void locationsFromNamesUpdated(List<TransportStation> result);
 }

@@ -23,10 +23,10 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayou
 import org.pocketcampus.android.platform.sdk.ui.list.RichLabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
-import org.pocketcampus.plugin.transport.shared.Connection;
-import org.pocketcampus.plugin.transport.shared.Location;
-import org.pocketcampus.plugin.transport.shared.Part;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -98,29 +98,29 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
 	/** The labeler that says how to display a Location */
-	private IRichLabeler<Connection> mConnectionLabeler = new IRichLabeler<Connection>() {
+	private IRichLabeler<TransportTrip> mConnectionLabeler = new IRichLabeler<TransportTrip>() {
 		@Override
-		public String getLabel(Connection dest) {
+		public String getLabel(TransportTrip dest) {
 			return "";
 		}
 
 		@Override
-		public String getTitle(Connection obj) {
+		public String getTitle(TransportTrip obj) {
 			return obj.getTo().getName();
 		}
 
 		@Override
-		public String getDescription(Connection obj) {
+		public String getDescription(TransportTrip obj) {
 			return stringifier(obj);
 		}
 
 		@Override
-		public double getValue(Connection obj) {
+		public double getValue(TransportTrip obj) {
 			return -1;
 		}
 
 		@Override
-		public Date getDate(Connection obj) {
+		public Date getDate(TransportTrip obj) {
 			return null;
 		}
 
@@ -240,7 +240,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private void displayDestinations() {
 		/** List of next departures */
-		HashMap<String, List<Connection>> locations = mModel.getPreferredDestinations();
+		HashMap<String, List<TransportTrip>> locations = mModel.getPreferredDestinations();
 
 		if (locations != null && !locations.isEmpty()) {
 			items = new ArrayList<PCItem>();
@@ -264,9 +264,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * updated
 	 */
 	@Override
-	public void connectionUpdated(QueryConnectionsResult result) {
+	public void connectionUpdated(QueryTripsResult result) {
 		Log.d("TRANSPORT", "Connection Updated (view)");
-		HashMap<String, List<Connection>> mDisplayedLocations = mModel.getPreferredDestinations();
+		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel.getPreferredDestinations();
 		
 		items = new ArrayList<PCItem>();
 		
@@ -293,7 +293,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * been updated and display the next departures
 	 */
 	@Override
-	public void locationsFromNamesUpdated(List<Location> result) {
+	public void locationsFromNamesUpdated(List<TransportStation> result) {
 		Log.d("TRANSPORT", "Locations from Names updated (view)");
 		displayDestinations();
 	}
@@ -319,7 +319,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/**
 	 * 
 	 */
-	private void setItemsToDisplay(HashMap<String, List<Connection>> mDisplayedLocations) {
+	private void setItemsToDisplay(HashMap<String, List<TransportTrip>> mDisplayedLocations) {
 		Set<String> set = mDisplayedLocations.keySet();
 		items = new ArrayList<PCItem>();
 
@@ -329,7 +329,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				items.add(new PCSectionItem(l));
 
 				int i = 0;
-				for (Connection c : mDisplayedLocations.get(l)) {
+				for (TransportTrip c : mDisplayedLocations.get(l)) {
 					if (i < 3) {
 						i++;
 						
@@ -337,9 +337,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 						mDestPrefsEditor.commit();
 						
 						String logo = "";
-						for (Part p : c.parts) {
+						for (TransportConnection p : c.parts) {
 							if (!p.foot) {
-								logo = p.line.label;
+								logo = p.line.name;
 								break;
 							}
 						}
@@ -445,7 +445,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * @param c
 	 * @return
 	 */
-	private String stringifier(Connection c) {
+	private String stringifier(TransportTrip c) {
 		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 		String r = getResources().getString(R.string.transport_departure_at) + " "
 				+ FORMAT.format(c.getDepartureTime());
@@ -458,7 +458,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * @param c
 	 * @return
 	 */
-	private String stringifierDetails(Connection c) {
+	private String stringifierDetails(TransportTrip c) {
 		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 		String r = getResources().getString(R.string.transport_departure_at) + " "
 				+ FORMAT.format(c.getDepartureTime()) + ", "
@@ -466,7 +466,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				+ FORMAT.format(c.getArrivalTime());
 
 		r += "\n" + c.getFrom();
-		for (Part p : c.getParts()) {
+		for (TransportConnection p : c.getParts()) {
 			r += " -> " + p.getArrival();
 		}
 

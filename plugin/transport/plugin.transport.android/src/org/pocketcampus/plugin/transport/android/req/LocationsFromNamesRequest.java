@@ -5,7 +5,7 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
-import org.pocketcampus.plugin.transport.shared.Location;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
 
@@ -22,7 +22,7 @@ import android.util.Log;
  */
 public class LocationsFromNamesRequest
 		extends
-		Request<TransportController, Iface, getLocationsFromNames_args, List<Location>> {
+		Request<TransportController, Iface, getLocationsFromNames_args, List<TransportStation>> {
 
 	/**
 	 * Initiate the <code>getLocationsFromNames</code> Request at the server
@@ -35,7 +35,7 @@ public class LocationsFromNamesRequest
 	 * @return the list of Locations from the server
 	 */
 	@Override
-	protected List<Location> runInBackground(Iface client,
+	protected List<TransportStation> runInBackground(Iface client,
 			getLocationsFromNames_args param) throws Exception {
 		Log.d("TRANSPORT", "run");
 		return client.getLocationsFromNames(param.getNames());
@@ -52,7 +52,7 @@ public class LocationsFromNamesRequest
 	 */
 	@Override
 	protected void onResult(TransportController controller,
-			List<Location> result) {
+			List<TransportStation> result) {
 		Log.d("TRANSPORT", "onResult");
 		((TransportModel) controller.getModel()).setLocationsFromNames(result);
 	}

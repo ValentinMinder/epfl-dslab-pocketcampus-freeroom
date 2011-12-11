@@ -10,7 +10,7 @@ import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
 import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
-import org.pocketcampus.plugin.transport.shared.TransportService.connections_args;
+import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
 
 import android.util.Log;
@@ -84,7 +84,7 @@ public class TransportController extends PluginController implements
 	public void nextDeparturesFromEPFL(String location) {
 		if (location != null) {
 			Log.d("TRANSPORT", "Departures request (controller)");
-			connections_args args = new connections_args("EPFL", location);
+			getTrips_args args = new getTrips_args("EPFL", location);
 			new NextDeparturesFromEPFLRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}

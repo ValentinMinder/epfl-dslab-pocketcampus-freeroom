@@ -28,7 +28,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
   private static final org.apache.thrift.protocol.TField CONNECTION_FIELD_DESC = new org.apache.thrift.protocol.TField("connection", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
   public long currentDate; // required
-  public Connection connection; // required
+  public TransportTrip connection; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -101,7 +101,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
     tmpMap.put(_Fields.CURRENT_DATE, new org.apache.thrift.meta_data.FieldMetaData("currentDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
     tmpMap.put(_Fields.CONNECTION, new org.apache.thrift.meta_data.FieldMetaData("connection", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Connection.class)));
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportTrip.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(GetConnectionDetailsResult.class, metaDataMap);
   }
@@ -111,7 +111,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
 
   public GetConnectionDetailsResult(
     long currentDate,
-    Connection connection)
+    TransportTrip connection)
   {
     this();
     this.currentDate = currentDate;
@@ -127,7 +127,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.currentDate = other.currentDate;
     if (other.isSetConnection()) {
-      this.connection = new Connection(other.connection);
+      this.connection = new TransportTrip(other.connection);
     }
   }
 
@@ -165,11 +165,11 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
     __isset_bit_vector.set(__CURRENTDATE_ISSET_ID, value);
   }
 
-  public Connection getConnection() {
+  public TransportTrip getConnection() {
     return this.connection;
   }
 
-  public GetConnectionDetailsResult setConnection(Connection connection) {
+  public GetConnectionDetailsResult setConnection(TransportTrip connection) {
     this.connection = connection;
     return this;
   }
@@ -203,7 +203,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
       if (value == null) {
         unsetConnection();
       } else {
-        setConnection((Connection)value);
+        setConnection((TransportTrip)value);
       }
       break;
 
@@ -343,7 +343,7 @@ public class GetConnectionDetailsResult implements org.apache.thrift.TBase<GetCo
           break;
         case 2: // CONNECTION
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.connection = new Connection();
+            this.connection = new TransportTrip();
             this.connection.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

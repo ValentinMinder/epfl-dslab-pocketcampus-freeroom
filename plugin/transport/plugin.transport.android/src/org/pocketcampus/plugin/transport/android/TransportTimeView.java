@@ -12,8 +12,8 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
-import org.pocketcampus.plugin.transport.shared.Location;
-import org.pocketcampus.plugin.transport.shared.QueryConnectionsResult;
+import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -122,7 +122,7 @@ public class TransportTimeView extends PluginView implements ITransportView {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int pos,
 					long id) {
-				Location location = (Location) adapter.getItemAtPosition(pos);
+				TransportStation location = (TransportStation) adapter.getItemAtPosition(pos);
 				Log.d("TRANSPORT", "Clicked on " + location.getName()
 						+ " with ID : " + location.getId());
 //				mDestPrefsEditor.putInt(location.getName(), location.getId());
@@ -150,9 +150,9 @@ public class TransportTimeView extends PluginView implements ITransportView {
 	/**
 	 * The labeler to tell a view how to display a Location
 	 */
-	private ILabeler<Location> mLocationLabeler = new ILabeler<Location>() {
+	private ILabeler<TransportStation> mLocationLabeler = new ILabeler<TransportStation>() {
 		@Override
-		public String getLabel(Location obj) {
+		public String getLabel(TransportStation obj) {
 			return obj.getName();
 		}
 	};
@@ -177,12 +177,12 @@ public class TransportTimeView extends PluginView implements ITransportView {
 	 * Not used in this view
 	 */
 	@Override
-	public void connectionUpdated(QueryConnectionsResult result) {}
+	public void connectionUpdated(QueryTripsResult result) {}
 
 	/**
 	 * Not used in this view
 	 */
 	@Override
-	public void locationsFromNamesUpdated(List<Location> result) {}
+	public void locationsFromNamesUpdated(List<TransportStation> result) {}
 
 }

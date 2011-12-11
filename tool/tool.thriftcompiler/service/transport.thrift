@@ -9,18 +9,18 @@ include "../include/common.thrift"
 //To represent a date (milisec from January 1, 1970, 00:00:00 GMT)
 typedef i64 timestamp
 
-enum LocationType {
+enum TransportStationType {
 	ANY;
 	STATION;
 	POI;
 	ADDRESS;
 }
 
-struct Location {
-	1: LocationType type;
+struct TransportStation {
+	1: TransportStationType type;
 	2: i32 id;
-	3: i32 lat;
-	4: i32 lon;
+	3: i32 latitude;
+	4: i32 longitude;
 	5: string place;
 	6: string name;
 }
@@ -39,30 +39,30 @@ struct Fare{
 }
 
 struct Point{
-	1: required i32 lat;
-	2: required i32 lon;
+	1: required i32 latitude;
+	2: required i32 longitude;
 }
 
 typedef i32 Integer
-struct Line{
-	1: required string label;
+struct TransportLine{
+	1: required string name;
 	2: required list<string> colors;
 }
 
 
 struct Stop{
-	1: required Location location;
+	1: required TransportStation location;
 	2: optional string position;
 	3: required timestamp time;
 }
 
-struct Part {
-	1: required Location departure;
-	2: required Location arrival;
+struct TransportConnection{
+	1: required TransportStation departure;
+	2: required TransportStation arrival;
 	3: optional list<Point> path;
 	
-	4: optional Line line;
-	5: optional Location destination;
+	4: optional TransportLine line;
+	5: optional TransportStation destination;
 	6: optional timestamp departureTime;
 	7: optional string departurePosition;
 	8: optional timestamp arrivalTime;
@@ -73,15 +73,15 @@ struct Part {
 	12: optional i32 min;
 }
 
-struct Connection 
+struct TransportTrip 
 {
 	1: required string id;
 	2: optional string link;
 	3: required timestamp departureTime;
 	4: required timestamp arrivalTime;
-	5: required Location from;
-	6: required Location to;
-	7: optional list<Part> parts;
+	5: required TransportStation from;
+	6: required TransportStation to;
+	7: optional list<TransportConnection> parts;
 	8: optional list<Fare> fares;
 }
 
@@ -117,7 +117,7 @@ struct Departure{
 
 struct GetConnectionDetailsResult{
 	1: required timestamp currentDate;
-	2: required Connection connection;
+	2: required TransportTrip connection;
 }
 
 
@@ -138,7 +138,7 @@ enum NearbyStatus	{
 struct NearbyStationsResult
 {
 	1: required NearbyStatus status;
-	2: required list<Location> stations;
+	2: required list<TransportStation> stations;
 }
 
 
@@ -146,22 +146,22 @@ struct NearbyStationsResult
 enum Status{
 		sOK; AMBIGUOUS; TOO_CLOSE; UNRESOLVABLE_ADDRESS; NO_CONNECTIONS; INVALID_DATE; SERVICE_DOWN;
 	}
-struct QueryConnectionsResult{
-	1: optional list<Location> ambiguousFrom;
-	2: optional list<Location> ambiguousVia;
-	3: optional list<Location> ambiguousTo;
+struct QueryTripsResult{
+	1: optional list<TransportStation> ambiguousFrom;
+	2: optional list<TransportStation> ambiguousVia;
+	3: optional list<TransportStation> ambiguousTo;
 
 	4: optional string queryUri;
-	5: required Location from;
-	6: optional Location via;
-	7: required Location to;
+	5: required TransportStation from;
+	6: optional TransportStation via;
+	7: required TransportStation to;
 	8: optional string context;
-	9: required list<Connection> connections;
+	9: required list<TransportTrip> connections;
 }
 
 struct StationDepartures
 {
-	1: required Location location;
+	1: required TransportStation location;
 	2: required list<Departure> departures;
 	3: required list<LineDestination> lines;
 }
@@ -208,10 +208,11 @@ struct Railway{
 }
 
 service TransportService {
-	list<Location> autocomplete(1:string constraint);
-	list<Location> getLocationsFromIDs(1: list<i32> ids);
-	list<Location> getLocationsFromNames(1: list<string> names);
+	list<TransportStation> autocomplete(1:string constraint);
+	list<TransportStation> getLocationsFromIDs(1: list<i32> ids);
+	list<TransportStation> getLocationsFromNames(1: list<string> names);
 	QueryDepartureResult nextDepartures(2:string IDStation);
-	QueryConnectionsResult connections(1:string from; 2:string to);
-	QueryConnectionsResult connectionsFromStationsIDs(1: string fromID; 2:string toID);
+	QueryTripsResult getTrips(1:string from; 2:string to);
+	QueryTripsResult getTripsAtTime(1:string from; 2:string to; 3:timestamp time, 4:bool isDeparture);
+	QueryTripsResult getTripsFromStationsIDs(1: string fromID; 2:string toID);
 }

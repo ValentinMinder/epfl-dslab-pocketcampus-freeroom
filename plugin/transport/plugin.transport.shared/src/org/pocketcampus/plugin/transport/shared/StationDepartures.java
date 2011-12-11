@@ -28,7 +28,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
   private static final org.apache.thrift.protocol.TField DEPARTURES_FIELD_DESC = new org.apache.thrift.protocol.TField("departures", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField LINES_FIELD_DESC = new org.apache.thrift.protocol.TField("lines", org.apache.thrift.protocol.TType.LIST, (short)3);
 
-  public Location location; // required
+  public TransportStation location; // required
   public List<Departure> departures; // required
   public List<LineDestination> lines; // required
 
@@ -102,7 +102,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.LOCATION, new org.apache.thrift.meta_data.FieldMetaData("location", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Location.class)));
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TransportStation.class)));
     tmpMap.put(_Fields.DEPARTURES, new org.apache.thrift.meta_data.FieldMetaData("departures", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Departure.class))));
@@ -117,7 +117,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
   }
 
   public StationDepartures(
-    Location location,
+    TransportStation location,
     List<Departure> departures,
     List<LineDestination> lines)
   {
@@ -132,7 +132,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
    */
   public StationDepartures(StationDepartures other) {
     if (other.isSetLocation()) {
-      this.location = new Location(other.location);
+      this.location = new TransportStation(other.location);
     }
     if (other.isSetDepartures()) {
       List<Departure> __this__departures = new ArrayList<Departure>();
@@ -161,11 +161,11 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
     this.lines = null;
   }
 
-  public Location getLocation() {
+  public TransportStation getLocation() {
     return this.location;
   }
 
-  public StationDepartures setLocation(Location location) {
+  public StationDepartures setLocation(TransportStation location) {
     this.location = location;
     return this;
   }
@@ -269,7 +269,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
       if (value == null) {
         unsetLocation();
       } else {
-        setLocation((Location)value);
+        setLocation((TransportStation)value);
       }
       break;
 
@@ -446,7 +446,7 @@ public class StationDepartures implements org.apache.thrift.TBase<StationDepartu
       switch (field.id) {
         case 1: // LOCATION
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.location = new Location();
+            this.location = new TransportStation();
             this.location.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
