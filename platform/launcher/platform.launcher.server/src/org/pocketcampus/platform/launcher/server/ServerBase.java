@@ -14,7 +14,7 @@ public abstract class ServerBase {
 	private static TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
 	
 	public void start() throws Exception {
-		Server server = new Server(443);
+		Server server = new Server(9090);
 		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		context.setContextPath("/");
