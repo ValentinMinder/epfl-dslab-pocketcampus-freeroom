@@ -217,7 +217,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		@Override
 		public String getDescription(NewsItemWithImage obj) {
-			return obj.getNewsItem().getDescription();
+			return obj.getNewsItem().getContent();
 		}
 
 		@Override

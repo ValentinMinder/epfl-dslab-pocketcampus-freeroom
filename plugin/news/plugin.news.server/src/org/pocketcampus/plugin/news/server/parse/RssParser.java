@@ -147,7 +147,7 @@ public class RssParser extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
 			if (this.mInItem && this.mItem != null) {
-				this.mItem.setDescription(mText.toString().trim());
+				this.mItem.setContent(mText.toString().trim());
 			} else {
 				this.mRssFeed.setDescription(mText.toString().trim());
 			}

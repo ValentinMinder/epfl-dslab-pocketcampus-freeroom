@@ -8,7 +8,7 @@ typedef i64 timestamp
 struct NewsItem {
 	1: required common.Id newsItemId;
 	2: required string title;
-	3: required string description;
+	3: required string content;
 	4: required string link;
 	5: required string feed;
 	6: required timestamp pubDate;

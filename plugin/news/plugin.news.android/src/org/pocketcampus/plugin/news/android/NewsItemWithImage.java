@@ -77,8 +77,8 @@ public class NewsItemWithImage implements Serializable {
 		// if we don't have any images, we try to find an <img> tag inside the
 		// description
 		if (mNewsItem.getImageUrl() == null
-				&& mNewsItem.getDescription() != null) {
-			Matcher m = imagePattern_.matcher(mNewsItem.getDescription());
+				&& mNewsItem.getContent() != null) {
+			Matcher m = imagePattern_.matcher(mNewsItem.getContent());
 			if (m.find()) {
 				String img = m.group(1);
 				if (img.charAt(img.length() - 1) == '\"')
@@ -96,7 +96,7 @@ public class NewsItemWithImage implements Serializable {
 	 */
 	public void setFormattedDescription() {
 		if (mSpannedDescription == null) {
-			String s = mNewsItem.getDescription();
+			String s = mNewsItem.getContent();
 			// convert the < and >
 			s = s.replaceAll("&lt;", "<");
 			s = s.replaceAll("&gt;", ">");
