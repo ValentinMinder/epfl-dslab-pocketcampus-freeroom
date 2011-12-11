@@ -27,7 +27,7 @@ public class MapService {
 
     public List<MapLayer> getLayerList() throws org.apache.thrift.TException;
 
-    public List<MapItem> getLayerItems(int id) throws org.apache.thrift.TException;
+    public List<MapItem> getLayerItems(long layerId) throws org.apache.thrift.TException;
 
   }
 
@@ -35,7 +35,7 @@ public class MapService {
 
     public void getLayerList(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLayerList_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getLayerItems(int id, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLayerItems_call> resultHandler) throws org.apache.thrift.TException;
+    public void getLayerItems(long layerId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLayerItems_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -81,16 +81,16 @@ public class MapService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getLayerList failed: unknown result");
     }
 
-    public List<MapItem> getLayerItems(int id) throws org.apache.thrift.TException
+    public List<MapItem> getLayerItems(long layerId) throws org.apache.thrift.TException
     {
-      send_getLayerItems(id);
+      send_getLayerItems(layerId);
       return recv_getLayerItems();
     }
 
-    public void send_getLayerItems(int id) throws org.apache.thrift.TException
+    public void send_getLayerItems(long layerId) throws org.apache.thrift.TException
     {
       getLayerItems_args args = new getLayerItems_args();
-      args.setId(id);
+      args.setLayerId(layerId);
       sendBase("getLayerItems", args);
     }
 
@@ -151,24 +151,24 @@ public class MapService {
       }
     }
 
-    public void getLayerItems(int id, org.apache.thrift.async.AsyncMethodCallback<getLayerItems_call> resultHandler) throws org.apache.thrift.TException {
+    public void getLayerItems(long layerId, org.apache.thrift.async.AsyncMethodCallback<getLayerItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getLayerItems_call method_call = new getLayerItems_call(id, resultHandler, this, ___protocolFactory, ___transport);
+      getLayerItems_call method_call = new getLayerItems_call(layerId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getLayerItems_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private int id;
-      public getLayerItems_call(int id, org.apache.thrift.async.AsyncMethodCallback<getLayerItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private long layerId;
+      public getLayerItems_call(long layerId, org.apache.thrift.async.AsyncMethodCallback<getLayerItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.id = id;
+        this.layerId = layerId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getLayerItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getLayerItems_args args = new getLayerItems_args();
-        args.setId(id);
+        args.setLayerId(layerId);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -228,7 +228,7 @@ public class MapService {
 
       protected getLayerItems_result getResult(I iface, getLayerItems_args args) throws org.apache.thrift.TException {
         getLayerItems_result result = new getLayerItems_result();
-        result.success = iface.getLayerItems(args.id);
+        result.success = iface.getLayerItems(args.layerId);
         return result;
       }
     }
@@ -783,13 +783,13 @@ public class MapService {
   public static class getLayerItems_args implements org.apache.thrift.TBase<getLayerItems_args, getLayerItems_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getLayerItems_args");
 
-    private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField LAYER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("layerId", org.apache.thrift.protocol.TType.I64, (short)1);
 
-    public int id; // required
+    public long layerId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      ID((short)1, "id");
+      LAYER_ID((short)1, "layerId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -804,8 +804,8 @@ public class MapService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // ID
-            return ID;
+          case 1: // LAYER_ID
+            return LAYER_ID;
           default:
             return null;
         }
@@ -846,14 +846,14 @@ public class MapService {
     }
 
     // isset id assignments
-    private static final int __ID_ISSET_ID = 0;
+    private static final int __LAYERID_ISSET_ID = 0;
     private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32          , "int")));
+      tmpMap.put(_Fields.LAYER_ID, new org.apache.thrift.meta_data.FieldMetaData("layerId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64          , "Id")));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getLayerItems_args.class, metaDataMap);
     }
@@ -862,11 +862,11 @@ public class MapService {
     }
 
     public getLayerItems_args(
-      int id)
+      long layerId)
     {
       this();
-      this.id = id;
-      setIdIsSet(true);
+      this.layerId = layerId;
+      setLayerIdIsSet(true);
     }
 
     /**
@@ -875,7 +875,7 @@ public class MapService {
     public getLayerItems_args(getLayerItems_args other) {
       __isset_bit_vector.clear();
       __isset_bit_vector.or(other.__isset_bit_vector);
-      this.id = other.id;
+      this.layerId = other.layerId;
     }
 
     public getLayerItems_args deepCopy() {
@@ -884,40 +884,40 @@ public class MapService {
 
     @Override
     public void clear() {
-      setIdIsSet(false);
-      this.id = 0;
+      setLayerIdIsSet(false);
+      this.layerId = 0;
     }
 
-    public int getId() {
-      return this.id;
+    public long getLayerId() {
+      return this.layerId;
     }
 
-    public getLayerItems_args setId(int id) {
-      this.id = id;
-      setIdIsSet(true);
+    public getLayerItems_args setLayerId(long layerId) {
+      this.layerId = layerId;
+      setLayerIdIsSet(true);
       return this;
     }
 
-    public void unsetId() {
-      __isset_bit_vector.clear(__ID_ISSET_ID);
+    public void unsetLayerId() {
+      __isset_bit_vector.clear(__LAYERID_ISSET_ID);
     }
 
-    /** Returns true if field id is set (has been assigned a value) and false otherwise */
-    public boolean isSetId() {
-      return __isset_bit_vector.get(__ID_ISSET_ID);
+    /** Returns true if field layerId is set (has been assigned a value) and false otherwise */
+    public boolean isSetLayerId() {
+      return __isset_bit_vector.get(__LAYERID_ISSET_ID);
     }
 
-    public void setIdIsSet(boolean value) {
-      __isset_bit_vector.set(__ID_ISSET_ID, value);
+    public void setLayerIdIsSet(boolean value) {
+      __isset_bit_vector.set(__LAYERID_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case ID:
+      case LAYER_ID:
         if (value == null) {
-          unsetId();
+          unsetLayerId();
         } else {
-          setId((Integer)value);
+          setLayerId((Long)value);
         }
         break;
 
@@ -926,8 +926,8 @@ public class MapService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case ID:
-        return Integer.valueOf(getId());
+      case LAYER_ID:
+        return Long.valueOf(getLayerId());
 
       }
       throw new IllegalStateException();
@@ -940,8 +940,8 @@ public class MapService {
       }
 
       switch (field) {
-      case ID:
-        return isSetId();
+      case LAYER_ID:
+        return isSetLayerId();
       }
       throw new IllegalStateException();
     }
@@ -959,12 +959,12 @@ public class MapService {
       if (that == null)
         return false;
 
-      boolean this_present_id = true;
-      boolean that_present_id = true;
-      if (this_present_id || that_present_id) {
-        if (!(this_present_id && that_present_id))
+      boolean this_present_layerId = true;
+      boolean that_present_layerId = true;
+      if (this_present_layerId || that_present_layerId) {
+        if (!(this_present_layerId && that_present_layerId))
           return false;
-        if (this.id != that.id)
+        if (this.layerId != that.layerId)
           return false;
       }
 
@@ -975,10 +975,10 @@ public class MapService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_id = true;
-      builder.append(present_id);
-      if (present_id)
-        builder.append(id);
+      boolean present_layerId = true;
+      builder.append(present_layerId);
+      if (present_layerId)
+        builder.append(layerId);
 
       return builder.toHashCode();
     }
@@ -991,12 +991,12 @@ public class MapService {
       int lastComparison = 0;
       getLayerItems_args typedOther = (getLayerItems_args)other;
 
-      lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+      lastComparison = Boolean.valueOf(isSetLayerId()).compareTo(typedOther.isSetLayerId());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+      if (isSetLayerId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.layerId, typedOther.layerId);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1018,10 +1018,10 @@ public class MapService {
           break;
         }
         switch (field.id) {
-          case 1: // ID
-            if (field.type == org.apache.thrift.protocol.TType.I32) {
-              this.id = iprot.readI32();
-              setIdIsSet(true);
+          case 1: // LAYER_ID
+            if (field.type == org.apache.thrift.protocol.TType.I64) {
+              this.layerId = iprot.readI64();
+              setLayerIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1041,8 +1041,8 @@ public class MapService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI32(this.id);
+      oprot.writeFieldBegin(LAYER_ID_FIELD_DESC);
+      oprot.writeI64(this.layerId);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -1053,8 +1053,8 @@ public class MapService {
       StringBuilder sb = new StringBuilder("getLayerItems_args(");
       boolean first = true;
 
-      sb.append("id:");
-      sb.append(this.id);
+      sb.append("layerId:");
+      sb.append(this.layerId);
       first = false;
       sb.append(")");
       return sb.toString();

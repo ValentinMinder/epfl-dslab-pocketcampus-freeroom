@@ -23,5 +23,5 @@ struct MapItem {
 
 service MapService {
 	list<MapLayer> getLayerList();
-	list<MapItem> getLayerItems(1: int id);
+	list<MapItem> getLayerItems(1: common.Id layerId);
 }

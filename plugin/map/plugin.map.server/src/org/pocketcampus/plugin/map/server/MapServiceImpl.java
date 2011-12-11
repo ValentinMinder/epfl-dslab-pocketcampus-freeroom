@@ -42,9 +42,8 @@ public class MapServiceImpl implements MapService.Iface {
 	}
 
 	@Override
-	public List<MapItem> getLayerItems(int layerId) throws TException {
-		mItemsList = mMapDb.getMapElements(layerId);
-		
+	public List<MapItem> getLayerItems(long layerId) throws TException {
+		mItemsList = mMapDb.getMapElements((int) layerId);
 		return mItemsList;
 	}
 
