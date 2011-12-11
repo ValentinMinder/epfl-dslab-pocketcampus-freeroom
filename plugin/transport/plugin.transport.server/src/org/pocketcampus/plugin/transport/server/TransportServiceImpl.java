@@ -46,7 +46,8 @@ public class TransportServiceImpl implements TransportService.Iface {
 		try {
 			List<TransportStation> li = getLocationsFromIDs(ids);
 			for (TransportStation l : li) {
-				System.out.println("pouet" + l.name);
+				if(l != null)
+					System.out.println("pouet" + l.name);
 			}
 		} catch (TException e) {
 			// TODO Auto-generated catch block
