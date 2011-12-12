@@ -31,29 +31,29 @@ public class TransportServiceImpl implements TransportService.Iface {
 		System.out.println("Transport started");
 		
 		//testing getLocationsFromIDs
-		ArrayList<Integer> l = new ArrayList<Integer>();
-		l.add(new Integer(8501214));
-		l.add(new Integer(8501215));
-		l.add(new Integer(8501216));
-		l.add(new Integer(8501217));
-		l.add(new Integer(8501218));
-		l.add(new Integer(8504221));
-		
-		try {
-			for(TransportStation loc : getLocationsFromIDs(l)){
-				if(loc != null)
-					System.out.println(loc.name);
-				else
-					System.out.println("no corresponding station was found");
-			}
-		} catch (TException e) {
-			System.out.println("something very bad happend, you probably gonna die");
-		}
+//		ArrayList<Integer> l = new ArrayList<Integer>();
+//		l.add(new Integer(8501214));
+//		l.add(new Integer(8501215));
+//		l.add(new Integer(8501216));
+//		l.add(new Integer(8501217));
+//		l.add(new Integer(8501218));
+//		l.add(new Integer(8504221));
+//		
+//		try {
+//			for(TransportStation loc : getLocationsFromIDs(l)){
+//				if(loc != null)
+//					System.out.println(loc.name);
+//				else
+//					System.out.println("no corresponding station was found");
+//			}
+//		} catch (TException e) {
+//			System.out.println("something very bad happend, you probably gonna die");
+//		}
 		
 
 //		try {
 //			//System.out.println(autocomplete("Neuchatel").get(0).id);
-//			QueryTripsResult res = getTrips("EPFL", "Neuchâtel");
+//			QueryTripsResult res = getTrips("EPFL", "Neuchatel");
 //			QueryTripsResult res = getTripsFromStationsIDs("8501214", "8504221");
 //			System.out.println("from "+ res.from.name + " to " + res.to.name);
 //			for(TransportTrip tt : res.connections){
