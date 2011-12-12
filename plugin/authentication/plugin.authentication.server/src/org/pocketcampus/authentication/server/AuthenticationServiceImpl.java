@@ -1,28 +1,14 @@
 package org.pocketcampus.authentication.server;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.security.Principal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
 
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
-import org.pocketcampus.plugin.authentication.shared.LoginException;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.SessionToken;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
@@ -249,7 +235,6 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
 
 
-	private SessionManager mSessionManager = new SessionManager();
 
 	/*private LdapAuthentication mLdapAuth = new LdapAuthentication(new EpflLdapConfig());
 	private SessionManager mSessionManager = new SessionManager();
