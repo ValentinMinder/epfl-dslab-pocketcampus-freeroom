@@ -438,18 +438,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				.getMealsByRestaurants(this);
 		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
 
-		if (mActionBar == null) {
-			mActionBar = getActionBar();
-		}
-
-		if (showAllMenusAction == null || !showAllMenusAction.isShown()) {
-			showAllMenusAction = new ShowByRestaurantOrRatingsAction();
-			mActionBar.addAction(showAllMenusAction, 0);
-		} else {
-			showAllMenusAction.setIsRestaurant(true);
-		}
-
 		if (mealHashMap != null) {
+			if (mActionBar == null) {
+				mActionBar = getActionBar();
+			}
+
+			if (showAllMenusAction == null || !showAllMenusAction.isShown()) {
+				showAllMenusAction = new ShowByRestaurantOrRatingsAction();
+				mActionBar.addAction(showAllMenusAction, 0);
+			} else {
+				showAllMenusAction.setIsRestaurant(true);
+			}
 
 			/**
 			 * Iterate over the different restaurant menus

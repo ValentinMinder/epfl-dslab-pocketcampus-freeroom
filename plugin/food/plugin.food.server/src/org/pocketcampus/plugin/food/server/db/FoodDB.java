@@ -247,7 +247,7 @@ public class FoodDB {
 			String restaurant = null;
 			double totalRating = 0;
 			int numberOfVotes = 0;
-			int mealId = 0;
+			long mealId = 0;
 
 			// Treat the answer from the database
 			while (rset.next()) {
@@ -256,7 +256,7 @@ public class FoodDB {
 				restaurant = rset.getString("Restaurant");
 				totalRating = rset.getFloat("TotalRating");
 				numberOfVotes = rset.getInt("NumberOfVotes");
-				mealId = rset.getInt("MealId");
+				mealId = rset.getLong("MealId");
 
 				// Create a new meal from the info we got in the database
 				Rating mealRating = new Rating(FoodUtils.totalRatingToRatingValue(
