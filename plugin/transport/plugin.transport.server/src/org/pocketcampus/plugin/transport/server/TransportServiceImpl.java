@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.plugin.transport.shared.Departure;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.StationDepartures;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportStationType;
 import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
@@ -14,6 +17,8 @@ import org.pocketcampus.plugin.transport.shared.TransportService;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
+import de.schildbach.pte.dto.Location;
+import de.schildbach.pte.dto.LocationType;
 import de.schildbach.pte.dto.NearbyStationsResult;
 
 public class TransportServiceImpl implements TransportService.Iface {
@@ -24,36 +29,50 @@ public class TransportServiceImpl implements TransportService.Iface {
 				"MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
 		
 		System.out.println("Transport started");
+		
+		//testing getLocationsFromIDs
+		ArrayList<Integer> l = new ArrayList<Integer>();
+		l.add(new Integer(8501214));
+		l.add(new Integer(8501215));
+		l.add(new Integer(8501216));
+		l.add(new Integer(8501217));
+		l.add(new Integer(8501218));
+		l.add(new Integer(8504221));
+		
+		try {
+			for(TransportStation loc : getLocationsFromIDs(l)){
+				if(loc != null)
+					System.out.println(loc.name);
+				else
+					System.out.println("no corresponding station was found");
+			}
+		} catch (TException e) {
+			System.out.println("something very bad happend, you probably gonna die");
+		}
+		
 
 //		try {
 //			//System.out.println(autocomplete("Neuchatel").get(0).id);
-//			//System.out.println(connections("EPFL", "Bassenges"));
+//			QueryTripsResult res = getTrips("EPFL", "Neuchâtel");
+//			QueryTripsResult res = getTripsFromStationsIDs("8501214", "8504221");
+//			System.out.println("from "+ res.from.name + " to " + res.to.name);
+//			for(TransportTrip tt : res.connections){
+//				System.out.println(new Date(tt.departureTime));
+//			}
 //			// EPFL -> Neuchatel
-//			ArrayList<Integer> l = new ArrayList<Integer>();
-//			l.add(new Integer(8501214));
-//			System.out
-//					.println(getLocationsFromIDs(l));
 //			
-//			System.out.println("---------------------");
-//			System.out.println(nextDepartures("8501214"));
+//			
+//			
+			//testing newDepartures
+//			QueryDepartureResult q = nextDepartures("8501214");
+//			for(StationDepartures s :q.stationDepartures){
+//				for(Departure d : s.departures){
+//					System.out.println(d.destination + " with " + d.line + " at " + (new Date(d.plannedTime)).toString());
+//				}
+//			}
 //		} catch (TException e1) {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();
-//		}
-//
-//		ArrayList<Integer> ids = new ArrayList<Integer>();
-//		
-//		ids.add(new Integer(8501214));
-//		ids.add(new Integer(8504221));
-//		try {
-//			List<TransportStation> li = getLocationsFromIDs(ids);
-//			for (TransportStation l : li) {
-//				if(l != null)
-//					System.out.println("pouet" + l.name);
-//			}
-//		} catch (TException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
 //		}
 
 	}
@@ -94,6 +113,13 @@ public class TransportServiceImpl implements TransportService.Iface {
 		return locList;
 	}
 	
+	
+	/**
+	 *Returns a TransportStation list with the stations corresponding to the integers id list of the param 
+	 * if an id has not been found, the corresponding TransportStation in the result will be null
+	 * 
+	 * DOES NOT WORK FOR NOW, SHOULD TRY WITH THE UPDATE OF THE SCHILDBACH SDK
+	 */
 	@Override
 	public List<TransportStation> getLocationsFromIDs(List<Integer> ids)
 			throws TException {
@@ -104,14 +130,18 @@ public class TransportServiceImpl implements TransportService.Iface {
 				de.schildbach.pte.dto.Location sLocation = new de.schildbach.pte.dto.Location(
 						de.schildbach.pte.dto.LocationType.STATION,
 						inte.intValue());
-				NearbyStationsResult res = mSbbProvider.queryNearbyStations(
-						sLocation, 1000, 5);
+				NearbyStationsResult res = mSbbProvider.queryNearbyStations(sLocation, 100000, 5);
+
 				
-				boolean found = false;
 				if (res != null) {
-					for(TransportStation loc: SchildbachToPCConverter.convertSchToPC(res.stations))
+					boolean found = false;
+					
+					List<TransportStation> ts_list = SchildbachToPCConverter.convertSchToPC(res.stations);
+					System.out.println(res.stations.size());
+					for(TransportStation loc: ts_list)
 					{
 						if(loc.id == inte.intValue()){
+							System.out.println(loc);
 							found = true;
 							locations.add(loc);
 							break;
@@ -119,8 +149,10 @@ public class TransportServiceImpl implements TransportService.Iface {
 							
 					}
 					
-					if(!found)
+					if(!found){
 						locations.add(null);
+						System.out.println(inte.intValue() + " has not been found");
+					}
 				} else {
 					System.out.println(res);
 				}
@@ -155,9 +187,20 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 
 	@Override
-	public QueryTripsResult getTrips(String from, String to)
-			throws TException {
+	public QueryTripsResult getTrips(String from, String to) throws TException {
 
+		long time = (new Date()).getTime();
+		return getTripsFromSchildbach(from, to, time, true);
+	}
+
+	@Override
+	public QueryTripsResult getTripsAtTime(String from, String to, long time, boolean isDeparture) throws TException {
+		
+		return getTripsFromSchildbach(from, to, time, isDeparture);
+	}
+	
+	private QueryTripsResult getTripsFromSchildbach(String from, String to, long time, boolean isDeparture){
+		
 		if (from == null || to == null) {
 			return null;
 		}
@@ -178,34 +221,41 @@ public class TransportServiceImpl implements TransportService.Iface {
 			return null;
 		}
 
-		Date date = new Date();
-		boolean dep = true;
+		Date date = new Date(time);
 		String products = (String) null;
 		WalkSpeed walkSpeed = WalkSpeed.NORMAL;
 
-		QueryTripsResult connections = null;
+		QueryTripsResult tripResults = null;
 		try {
-			connections = SchildbachToPCConverter.convertSchToPC(mSbbProvider.queryConnections(fromLoc,
-					viaLoc, toLoc, date, dep, products, walkSpeed));
+			tripResults = SchildbachToPCConverter.convertSchToPC(mSbbProvider.queryConnections(fromLoc,
+					viaLoc, toLoc, date, isDeparture, products, walkSpeed));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return connections;
+		return tripResults;
 	}
+	
 
 	@Override
 	public QueryTripsResult getTripsFromStationsIDs(String fromID,
 			String toID) throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public QueryTripsResult getTripsAtTime(String from, String to, long time,
-			boolean isDeparture) throws TException {
-		// TODO Auto-generated method stub
-		return null;
+		de.schildbach.pte.dto.Location fromLoc = null, viaLoc = null, toLoc = null;
+		fromLoc = new Location(LocationType.STATION, Integer.parseInt(fromID));
+		toLoc   = new Location(LocationType.STATION, Integer.parseInt(toID));
+		
+		QueryTripsResult tripResults = null;
+		try {
+			String products = (String) null;
+			WalkSpeed walkSpeed = WalkSpeed.NORMAL;
+			tripResults = SchildbachToPCConverter.convertSchToPC(mSbbProvider.queryConnections(fromLoc, viaLoc, toLoc, new Date(), true, products, walkSpeed));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return tripResults;
 	}
 
 }
