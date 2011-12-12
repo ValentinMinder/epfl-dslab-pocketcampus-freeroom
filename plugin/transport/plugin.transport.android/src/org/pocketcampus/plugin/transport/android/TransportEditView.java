@@ -6,9 +6,13 @@ import java.util.Map;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.adapter.StandardArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -18,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 
 /**
@@ -59,7 +65,7 @@ public class TransportEditView extends PluginView {
 
 	/**
 	 * On display. Called when first displaying the view. Retrieves the model
-	 * and the controller and ...
+	 * and the controller and the<code>setUpLayout()</code> method.
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
@@ -70,6 +76,16 @@ public class TransportEditView extends PluginView {
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 
+		/** Set up the layout */
+		setUpLayout();
+	}
+
+	/**
+	 * Sets up the layout with a standard layout and two list view. One to add a
+	 * destination, the other one to display the current preferred destination
+	 * and let the user edit them.
+	 */
+	private void setUpLayout() {
 		/** Layout */
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
@@ -93,7 +109,6 @@ public class TransportEditView extends PluginView {
 				finish();
 			}
 		});
-
 		mLayout.addFirstLayoutFillerView(mAddView);
 
 		/** Already there */
@@ -112,12 +127,73 @@ public class TransportEditView extends PluginView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				//Remove from prefs and remove from the list
+				/** Show the confirmation dialog */
+
+				confirmationDialog(arg0.getItemAtPosition(arg2).toString());
 			}
 
 		});
 		mLayout.addSecondLayoutFillerView(mListView);
 
 		setContentView(mLayout);
+	}
+
+	/**
+	 * Creates and shows a confirmation dialog for removing a destination from
+	 * the preferred destinations.
+	 */
+	private void confirmationDialog(String s) {
+		final String dest = s;
+		StyledDialog.Builder b = new StyledDialog.Builder(this);
+		b.setCanceledOnTouchOutside(true);
+		b.setTitle(getResources().getString(R.string.transport_confirmation));
+		b.setMessage(getResources().getString(
+				R.string.transport_confirmation_delete_destination_start)
+				+ " "
+				+ dest
+				+ " "
+				+ getResources().getString(
+						R.string.transport_confirmation_delete_destination_end));
+
+		b.setPositiveButton(getResources().getString(R.string.transport_yes),
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						Log.d("TRANSPORT", "Clicked on YES");
+						/** Remove the destination and update the list */
+						mDestPrefsEditor.remove(dest);
+						mDestPrefsEditor.commit();
+						
+						ArrayList<String> list = new ArrayList<String>();
+						Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
+						if (prefs != null) {
+							for (String s : prefs.keySet()) {
+								list.add(s);
+							}
+						}
+						
+						StandardArrayAdapter adapter = new StandardArrayAdapter(
+								getApplicationContext(), list);
+						mListView.setAdapter(adapter);
+						mListView.invalidate();
+						
+						dialog.dismiss();
+					}
+				});
+
+		b.setNegativeButton(getResources().getString(R.string.transport_no),
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						Log.d("TRANSPORT", "Clicked on NO");
+						/** Do nothing */
+						dialog.dismiss();
+					}
+				});
+
+		StyledDialog d = b.create();
+		d.show();
 	}
 }

@@ -135,6 +135,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		setUpActionBar();
 
 		/** Set up destinations that will be displayed */
+		mController.freeConnections();
 		setUpDestinations();
 
 	}
@@ -146,7 +147,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		displayDestinations();
+		mController.freeConnections();
+		setUpDestinations();
 	}
 
 	/**
@@ -169,7 +171,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		int id = item.getItemId();
 
 		if (id == R.id.transport_destinations) {
-			Intent i = new Intent(this, TransportAddView.class);
+			Intent i = new Intent(this, TransportEditView.class);
 			startActivity(i);
 		}
 		// else if (id == R.id.transport_settings) { Log.d("TRANSPORT",
@@ -187,6 +189,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		/** Creates the list view and sets its click listener */
 		mListView = new ListView(this);
+		mListView.setId(1234);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

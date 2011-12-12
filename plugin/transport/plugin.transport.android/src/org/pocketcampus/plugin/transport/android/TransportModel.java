@@ -136,5 +136,11 @@ public class TransportModel extends PluginModel implements ITransportModel {
 			mListeners.locationsFromNamesUpdated(result);
 		}
 	}
-
+	
+	/**
+	 * 
+	 */
+	public void freeConnections(){
+		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
+	}
 }

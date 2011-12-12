@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.transport.android;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -8,6 +9,7 @@ import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
 import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
 import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
@@ -104,6 +106,13 @@ public class TransportController extends PluginController implements
 			new LocationsFromNamesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void freeConnections(){
+		mModel.freeConnections();
 	}
 
 }
