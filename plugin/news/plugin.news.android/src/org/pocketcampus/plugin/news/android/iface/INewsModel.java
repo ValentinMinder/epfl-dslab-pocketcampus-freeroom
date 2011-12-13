@@ -1,6 +1,8 @@
 package org.pocketcampus.plugin.news.android.iface;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.plugin.news.android.NewsItemWithImage;
 import org.pocketcampus.plugin.news.shared.Feed;
@@ -45,7 +47,22 @@ public interface INewsModel {
 	 *            the new list of Feeds
 	 */
 	public void setFeedsList(List<Feed> list);
-	
+
+	/**
+	 * Returns a map of feed names with their Urls
+	 * 
+	 * @return the map of feeds with their names
+	 */
+	public HashMap<String, String> getFeedsUrls();
+
+	/**
+	 * Update the list of Feeds urls and names and notify the View
+	 * 
+	 * @param map
+	 *            the new map of urls and names
+	 */
+	public void setFeedsUrls(Map<String, String> map);
+
 	/**
 	 * Called when an error has happened while updating the news
 	 */

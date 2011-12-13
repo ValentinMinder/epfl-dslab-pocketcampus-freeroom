@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.thrift.TException;
@@ -42,6 +43,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 	private final int MAX_NUMBER_RESULTS = 5;
 
+	private final String DEFAULT_LANGUAGE = "en";
+
 	/**
 	 * Constructor import feed Urls and feed Contents since it's the first
 	 * execution of the server.
@@ -52,16 +55,33 @@ public class NewsServiceImpl implements NewsService.Iface {
 		mLanguagesFeedsList = new HashMap<String, List<Feed>>();
 		mLanguagesNewsItemsList = new HashMap<String, List<NewsItem>>();
 
-		getFeedsUrls();
+		parseFeedsUrls();
 		importFeeds();
 	}
 
 	/**
 	 * Initiates parsing of the feeds list from the file stored on the server
 	 */
-	private void getFeedsUrls() {
+	private void parseFeedsUrls() {
 		FeedsListParser flp = new FeedsListParser("NewsFeedsLanguages.txt");
 		mLanguagesFeedUrls = flp.getFeeds();
+	}
+
+	/**
+	 * Returns the feed urls and their corresponding name
+	 * 
+	 * @param language
+	 *            the language for which we want the feed Urls.
+	 * @return the feed urls and their names
+	 */
+	@Override
+	public HashMap<String, String> getFeedUrls(String language) throws TException {
+		if (mLanguagesFeedsList != null
+				&& mLanguagesFeedsList.containsKey(language)) {
+			return mLanguagesFeedUrls.get(language);
+		} else {
+			return mLanguagesFeedUrls.get(DEFAULT_LANGUAGE);
+		}
 	}
 
 	/**
@@ -81,6 +101,14 @@ public class NewsServiceImpl implements NewsService.Iface {
 		mLastImportedFeeds = new Date();
 	}
 
+	/**
+	 * Imports all feeds in the given language from the corresponding urls
+	 * 
+	 * @param language
+	 *            the language of the feeds to import
+	 * @param mFeedUrls
+	 *            the url to the feeds
+	 */
 	private void importFeedForLanguage(String language,
 			HashMap<String, String> mFeedUrls) {
 		System.out.println("<News> Reimporting Feeds");
@@ -103,12 +131,18 @@ public class NewsServiceImpl implements NewsService.Iface {
 			if (feed != null) {
 				List<NewsItem> feedItems = feed.getItems();
 
+				// System.out.println("Number of news items: " +
+				// feedItems.size());
 				List<NewsItem> toKeep = new ArrayList<NewsItem>();
-				for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
-					toKeep.add(feedItems.get(i));
-				}
+				// for (int i = 0; i < MAX_NUMBER_RESULTS && i <
+				// feedItems.size(); i++) {
+				// System.out.println(i + ", " + feedItems.get(i).getTitle());
+				// toKeep.add(feedItems.get(i));
+				// }
+				toKeep.addAll(feedItems);
 				Collections.sort(toKeep, newsItemComparator);
 				mLanguagesNewsItemsList.put(language, toKeep);
+				System.out.println("To keep size: " + toKeep.size());
 				allFeeds.add(feed);
 			}
 		}
@@ -122,9 +156,9 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public List<NewsItem> getNewsItems(String language) throws TException {
 		importFeeds();
-		System.out.println(mLanguagesNewsItemsList.size());
 		if (mLanguagesNewsItemsList != null
 				&& mLanguagesNewsItemsList.containsKey(language)) {
+			System.out.println(mLanguagesNewsItemsList.get(language).size());
 			return mLanguagesNewsItemsList.get(language);
 		} else {
 			return mLanguagesNewsItemsList.get("en");

@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.news.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -28,6 +30,9 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 	/** Access to the preferences */
 	private SharedPreferences prefs_;
+
+	/** The map of feed names with their Urls */
+	private HashMap<String, String> mFeedUrls;
 
 	/** The list of items filtered according to what the user wants */
 	private List<NewsItemWithImage> filteredList;
@@ -104,6 +109,19 @@ public class NewsModel extends PluginModel implements INewsModel {
 				}
 			}
 			mListeners.newsUpdated();
+		}
+	}
+
+	@Override
+	public HashMap<String, String> getFeedsUrls() {
+		return mFeedUrls;
+	}
+
+	@Override
+	public void setFeedsUrls(Map<String, String> map) {
+		System.out.println("Setting feed urls" + map.keySet().toArray()[0]);
+		if (map != null) {
+			mFeedUrls = (HashMap<String, String>) map;
 		}
 	}
 }

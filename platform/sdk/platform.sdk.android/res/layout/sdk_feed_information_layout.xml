@@ -39,7 +39,6 @@
 				android:layout_below="@+id/sdk_list_entry_feed_view_separator"
 				android:paddingBottom="6dip"
 				android:paddingTop="6dip"
-				android:gravity="center_vertical"
 				android:text="Title"
 				android:textStyle="bold"
 				android:textSize="15dip" />
@@ -50,7 +49,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/sdk_list_entry_feed_view_title"
-				android:layout_marginRight="6dip" />
+				android:gravity="center_horizontal"/>
 
 			<!-- Item description -->
 			<TextView android:id="@+id/sdk_list_entry_feed_view_description"
