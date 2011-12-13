@@ -1,0 +1,8 @@
+<NewsLanguageFile>
+	<Language>en</Language>
+	<File>feeds_list_en.txt</File>
+</NewsLanguageFile>
+<NewsLanguageFile>
+	<Language>fr</Language>
+	<File>feeds_list_fr.txt</File>
+</NewsLanguageFile>

@@ -351,8 +351,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 					// Meal description
 					String description = feed.items.get(i).description;
 					// Meal id
-
 					long id = generateMealId(name, description, newResto);
+					
 					Meal newMeal = new Meal(id, name, description, newResto,
 							mealRating);
 					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
@@ -703,7 +703,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();
 
-		long realDiff = diff / 60000;
+		long realDiff = diff / (60000);
 
 		return realDiff;
 	}

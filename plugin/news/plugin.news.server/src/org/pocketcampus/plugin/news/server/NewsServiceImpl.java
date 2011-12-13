@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.news.server.parse.FeedsListParser;
-import org.pocketcampus.plugin.news.server.parse.FeedsLists;
 import org.pocketcampus.plugin.news.server.parse.RssParser;
 import org.pocketcampus.plugin.news.shared.Feed;
 import org.pocketcampus.plugin.news.shared.NewsItem;
@@ -26,29 +25,22 @@ import org.pocketcampus.plugin.news.shared.NewsService;
  */
 public class NewsServiceImpl implements NewsService.Iface {
 
-	/** List of Feed Urls for English */
-	private HashMap<String, String> mFeedUrls;
+	/** HashMap of languages with their Feed Urls */
+	private HashMap<String, HashMap<String, String>> mLanguagesFeedUrls;
 
-	/** List of Feeds for English */
-	private List<Feed> mFeedsList;
+	/** HashMap of languages with their Feeds */
+	private HashMap<String, List<Feed>> mLanguagesFeedsList;
 
-	/** List of NewsItems for English */
-	private List<NewsItem> mNewsItemsList;
-
-	/** List of Feed Urls for French */
-	private HashMap<String, String> mFeedUrlsFr;
-
-	/** List of Feeds for French */
-	private List<Feed> mFeedsListFr;
-
-	/** List of NewsItems for French */
-	private List<NewsItem> mNewsItemsListFr;
+	/** HashMap of languages with their NewsItems */
+	private HashMap<String, List<NewsItem>> mLanguagesNewsItemsList;
 
 	/** Date of the last Feeds update */
 	private Date mLastImportedFeeds;
 
 	/** Interval in minutes at which the news should be fetched */
-	private int REFRESH_INTERVAL = 30;
+	private int REFRESH_INTERVAL = 60;
+
+	private final int MAX_NUMBER_RESULTS = 5;
 
 	/**
 	 * Constructor import feed Urls and feed Contents since it's the first
@@ -57,15 +49,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 	public NewsServiceImpl() {
 		System.out.println("Starting News plugin server...");
 
-		List<String> languages = new ArrayList<String>();
-		languages.add("fr");
-		languages.add("en");
-		
-		
-		mFeedsList = new ArrayList<Feed>();
-		mFeedsListFr = new ArrayList<Feed>();
-		mNewsItemsList = new ArrayList<NewsItem>();
-		mNewsItemsListFr = new ArrayList<NewsItem>();
+		mLanguagesFeedsList = new HashMap<String, List<Feed>>();
+		mLanguagesNewsItemsList = new HashMap<String, List<NewsItem>>();
 
 		getFeedsUrls();
 		importFeeds();
@@ -75,45 +60,40 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * Initiates parsing of the feeds list from the file stored on the server
 	 */
 	private void getFeedsUrls() {
-		FeedsListParser flp = new FeedsListParser("feeds_list_en.txt");
-		mFeedUrls = flp.getFeeds();
-		// FeedsListParser flpFr = new FeedsListParser("feeds_list_fr.txt");
-		// mFeedUrlsFr = flp.getFeeds();
+		FeedsListParser flp = new FeedsListParser("NewsFeedsLanguages.txt");
+		mLanguagesFeedUrls = flp.getFeeds();
 	}
 
 	/**
 	 * Imports newsItems from the RSS feed
 	 */
 	private void importFeeds() {
-		if (!isUpToDate(mLastImportedFeeds) || mNewsItemsList == null
-				|| mNewsItemsList.isEmpty()) {
-			importFeedForLanguage(mFeedUrls, mNewsItemsList, mFeedsList);
+		if (mLanguagesFeedUrls != null
+				&& (!isUpToDate(mLastImportedFeeds)
+						|| mLanguagesNewsItemsList == null || mLanguagesNewsItemsList
+							.isEmpty())) {
+			Set<String> languages = mLanguagesFeedUrls.keySet();
+			for (String language : languages) {
+				importFeedForLanguage(language,
+						mLanguagesFeedUrls.get(language));
+			}
 		}
-		// if (!isUpToDate(mLastImportedFeeds) || mNewsItemsListFr == null
-		// || mNewsItemsListFr.isEmpty()) {
-		// importFeedForLanguage(mFeedUrlsFr, mNewsItemsListFr, mFeedsListFr);
-		// }
 		mLastImportedFeeds = new Date();
 	}
 
-	private void importFeedForLanguage(HashMap<String, String> mFeedUrls,
-			List<NewsItem> mNewsItemsList, List<Feed> mFeedsList) {
+	private void importFeedForLanguage(String language,
+			HashMap<String, String> mFeedUrls) {
 		System.out.println("<News> Reimporting Feeds");
 		// There is no feed to download
 		if (mFeedUrls.isEmpty()) {
 			return;
 		}
 
-		if (mNewsItemsList != null) {
-			mNewsItemsList.clear();
-		}
-		if (mFeedsList != null) {
-			mFeedsList.clear();
-		}
 		// Create a parser for each feed and put the items into the list
 		RssParser parser;
 		Feed feed;
 		Set<String> feedNames = mFeedUrls.keySet();
+		List<Feed> allFeeds = new ArrayList<Feed>();
 		for (String feedName : feedNames) {
 			parser = new RssParser(feedName, mFeedUrls.get(feedName));
 
@@ -122,17 +102,17 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 			if (feed != null) {
 				List<NewsItem> feedItems = feed.getItems();
-				for (int i = 0; i < 5 && i < feedItems.size(); i++) {
-					mNewsItemsList.add(feedItems.get(i));
 
+				List<NewsItem> toKeep = new ArrayList<NewsItem>();
+				for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
+					toKeep.add(feedItems.get(i));
 				}
-				mFeedsList.add(feed);
+				Collections.sort(toKeep, newsItemComparator);
+				mLanguagesNewsItemsList.put(language, toKeep);
+				allFeeds.add(feed);
 			}
 		}
-
-		// Sort the news (done asynchronously)
-		Collections.sort(mNewsItemsList, newsItemComparator);
-
+		mLanguagesFeedsList.put(language, allFeeds);
 	}
 
 	/**
@@ -141,10 +121,14 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 */
 	@Override
 	public List<NewsItem> getNewsItems(String language) throws TException {
-		FeedsLists.getFeedsLists();
 		importFeeds();
-		System.out.println(mNewsItemsList.size());
-		return mNewsItemsList;
+		System.out.println(mLanguagesNewsItemsList.size());
+		if (mLanguagesNewsItemsList != null
+				&& mLanguagesNewsItemsList.containsKey(language)) {
+			return mLanguagesNewsItemsList.get(language);
+		} else {
+			return mLanguagesNewsItemsList.get("en");
+		}
 	}
 
 	Comparator<NewsItem> newsItemComparator = new Comparator<NewsItem>() {
@@ -169,7 +153,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public List<Feed> getFeeds(String language) throws TException {
 		importFeeds();
-		return mFeedsList;
+		if (mLanguagesFeedsList != null
+				&& mLanguagesFeedsList.containsKey(language)) {
+			return mLanguagesFeedsList.get(language);
+		} else {
+			return mLanguagesFeedsList.get("en");
+		}
 	}
 
 	/**
@@ -192,6 +181,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
 		} else {
+			System.out.println("Difference between the 2 dates: "
+					+ getMinutes(then.getTime(), now.getTime()));
 			if (getMinutes(then.getTime(), now.getTime()) > REFRESH_INTERVAL) {
 				return false;
 			}

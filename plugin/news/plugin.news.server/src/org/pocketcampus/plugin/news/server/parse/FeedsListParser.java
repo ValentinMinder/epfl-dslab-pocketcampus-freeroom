@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Parses the contents of the Feeds file which is stored on the server
@@ -18,7 +19,7 @@ public class FeedsListParser {
 	private String mFile;
 
 	/** The HashMap of feeds and their Url */
-	private HashMap<String, String> feeds;
+	private HashMap<String, HashMap<String, String>> feedsForAllLanguages;
 
 	/** The whole feeds file in one String */
 	private String feedString;
@@ -35,13 +36,24 @@ public class FeedsListParser {
 			throw new IllegalArgumentException();
 		}
 		mFile = file;
-		feedString = getContents();
-		feeds = newsFeeds(feedString);
+		feedsForAllLanguages = new HashMap<String, HashMap<String,String>>();
+		// Parse the first file
+		HashMap<String, String> filesForLanguages = null;
+		feedString = getContents(mFile);
+		filesForLanguages = feedsLanguages(feedString);
+
+		// Then for each of those found, do it again.
+		Set<String> languages = filesForLanguages.keySet();
+		for (String language : languages) {
+			feedString = getContents(filesForLanguages.get(language));
+			HashMap<String, String> feedsForLanguage = newsFeeds(feedString);
+			feedsForAllLanguages.put(language, feedsForLanguage);
+		}
 	}
 
 	/** Returns the HashMap of Feed Names and their corresponding Url */
-	public HashMap<String, String> getFeeds() {
-		return feeds;
+	public HashMap<String, HashMap<String, String>> getFeeds() {
+		return feedsForAllLanguages;
 	}
 
 	/**
@@ -49,13 +61,14 @@ public class FeedsListParser {
 	 * style of implementation does not throw Exceptions to the caller.
 	 * 
 	 */
-	private String getContents() {
+	private String getContents(String languageFile) {
 		// ...checks on aFile are elided
 		StringBuilder contents = new StringBuilder();
 
 		try {
 			// use buffering, reading one line at a time
-			InputStream instream = this.getClass().getResourceAsStream(mFile);
+			InputStream instream = this.getClass().getResourceAsStream(
+					languageFile);
 
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader input = new BufferedReader(inputreader);
@@ -79,6 +92,55 @@ public class FeedsListParser {
 		}
 
 		return contents.toString();
+	}
+
+	/**
+	 * Constructs the hashmap of Feed languages with their file containing the
+	 * feed Urls
+	 * 
+	 * @param feedList
+	 *            the path to the file to parse
+	 * @return a HashMap of Feed names with their corresponding Urls
+	 */
+	private HashMap<String, String> feedsLanguages(String languagesFile) {
+		String tagLanguageFile = "<NewsLanguageFile>";
+		String tagLanguage = "<Language>";
+		String tagFile = "<File>";
+
+		String tagLanguageFileEnd = "</NewsLanguageFile>";
+		String tagLanguageEnd = "</Language>";
+		String tagFileEnd = "</File>";
+
+		HashMap<String, String> feeds = new HashMap<String, String>();
+
+		while (languagesFile.length() > 1) {
+			// News Feeds
+			int startFeed = languagesFile.indexOf(tagLanguageFile);
+			int endFeed = languagesFile.indexOf(tagLanguageFileEnd);
+			String restAttributes = languagesFile.substring(
+					startFeed + tagLanguageFile.length(), endFeed).trim();
+
+			// News Feeds Language
+			int startLanguage = restAttributes.indexOf(tagLanguage);
+			int endName = restAttributes.indexOf(tagLanguageEnd);
+			String feedLanguage = restAttributes.substring(
+					startLanguage + tagLanguage.length(), endName).trim();
+
+			// News Feeds File
+			int startFile = restAttributes.indexOf(tagFile);
+			int endFile = restAttributes.indexOf(tagFileEnd);
+			String feedFile = restAttributes.substring(
+					startFile + tagFile.length(), endFile).trim();
+
+			System.out.println(feedLanguage + " " + feedFile);
+			
+			feeds.put(feedLanguage, feedFile);
+			languagesFile = languagesFile.substring(
+					endFeed + tagLanguageFileEnd.length(),
+					languagesFile.length()).trim();
+		}
+
+		return feeds;
 	}
 
 	/**
