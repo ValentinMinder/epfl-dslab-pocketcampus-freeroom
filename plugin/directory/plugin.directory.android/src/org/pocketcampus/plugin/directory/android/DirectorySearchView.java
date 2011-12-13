@@ -3,20 +3,20 @@ package org.pocketcampus.plugin.directory.android;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
-import org.pocketcampus.plugin.directory.android.ui.DirectorySearchLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class DirectorySearchView extends PluginView implements IDirectoryView{
@@ -24,7 +24,10 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	private DirectoryController mController;
 	private IDirectoryModel mModel;
 	
-	private DirectorySearchLayout mLayout;
+	private StandardTitledLayout mLayout;
+	private InputBarElement mInputBar;
+	private LabeledListViewElement mListView;
+	ArrayAdapter<String> mAdapter;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -42,39 +45,89 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
 		
-		mLayout = new DirectorySearchLayout(this, mController);
+		displayView();
+		createSuggestionsList();
 		
-		OnClickListener listener = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				search();
-			}
-		};
-		
-		
-		
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
-
-		
-		Button searchButton = (Button) findViewById(R.id.directory_search_button);
-		searchButton.setOnClickListener(listener);
-		
-		OnEditorActionListener oeal = new OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-		            search();
-		            return true;
-		        }
-		        return false;
-			}
-		};
-		mLayout.setOnEditorActionListener(oeal);
+//		mLayout = new DirectorySearchLayout(this, mController);
+//		
+//		OnClickListener listener = new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				search();
+//			}
+//		};
+//		
+//		
+//		
+//		// The ActionBar is added automatically when you call setContentView
+//		setContentView(mLayout);
+//
+//		
+//		Button searchButton = (Button) findViewById(R.id.directory_search_button);
+//		searchButton.setOnClickListener(listener);
+//		
+//		OnEditorActionListener oeal = new OnEditorActionListener() {
+//			@Override
+//			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//		            search();
+//		            return true;
+//		        }
+//		        return false;
+//			}
+//		};
+//		mLayout.setOnEditorActionListener(oeal);
 		
 		// We need to force the display before asking the controller for the data, 
 		// as the controller may take some time to get it.
 		//displayData();
+	}
+	
+	private void displayView() {
+		/** Layout */
+		mLayout = new StandardTitledLayout(this);
+		mLayout.setTitle("lOOkin' 4 Σ1");
+
+		/** Input bar */
+		mInputBar = new InputBarElement(this);
+		mInputBar.setInputHint("search for a name");
+
+		mInputBar.setOnKeyPressedListener(new OnKeyPressedListener() {
+			@Override
+			public void onKeyPressed(String text) {
+				mController.getAutoCompleted(text);
+			}
+		});
+
+		mLayout.addFillerView(mInputBar);
+		setContentView(mLayout);
+	}
+	
+	private void createSuggestionsList() {
+		mListView = new LabeledListViewElement(this);
+		mInputBar.addView(mListView);
+
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
+				String query = adapter.getItemAtPosition(pos).toString();
+				if(query.contains(" "))
+					search(query);
+				else{
+					mInputBar.setInputText(query + " ");
+					mInputBar.setCursorAtEnd();
+				}
+			}
+		});
+		
+	}
+	
+	@Override
+	public void autoCompletedUpdated() {
+		mAdapter = new ArrayAdapter<String>(this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, mModel.getAutocompleteSuggestions());
+
+		mListView.setAdapter(mAdapter);
+		mListView.invalidate();
 	}
 	
 	@Override
@@ -104,21 +157,15 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_SEARCH){
-			search();
-
-//			String name = "ironman";
-//			Toast.makeText(this, "looking for Ironman", Toast.LENGTH_SHORT).show();
-//			mController.search(name);
+			String query = mInputBar.getInputText();
+			search(query);
 		}
 			
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	private void search(){
-		if(mLayout != null){
-			String name = mLayout.getName();
-			mController.search(name);
-		}
+	private void search(String query){
+		mController.search(query);
 	}
 
 	

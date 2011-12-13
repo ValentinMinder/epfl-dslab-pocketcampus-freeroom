@@ -124,7 +124,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 
 	@Override
 	public void getAutoCompleted(String txt) {
-		new DirectoryGivenNameAutoCompleteRequest().start(this,
+		new DirectoryAutoCompleteRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				txt);
 		

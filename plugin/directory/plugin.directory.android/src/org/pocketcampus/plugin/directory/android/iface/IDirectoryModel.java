@@ -14,4 +14,5 @@ public interface IDirectoryModel {
 	public List<Person> getResults();
 	public Person getSelectedPerson();
 	public void selectPerson(Person personToDisplay);
+	public List<String> getAutocompleteSuggestions();
 }

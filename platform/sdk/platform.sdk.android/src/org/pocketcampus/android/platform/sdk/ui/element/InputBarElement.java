@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Displays an input bar with a button on its right.
@@ -101,6 +100,14 @@ public class InputBarElement extends RelativeLayout {
 		return mEditText.getText().toString();
 	}
 	
+	public void setInputText(String text){
+		mEditText.setText(text);
+	}
+	
+	public void setCursorAtEnd(){
+		mEditText.setSelection(mEditText.getText().length());
+	}
+	
 	public void setButtonText(String text) {
 		if(text==null || text.equals("")) {
 			mButton.setVisibility(GONE);
@@ -114,11 +121,7 @@ public class InputBarElement extends RelativeLayout {
 	public void setInputHint(String hint) {
 		mEditText.setHint(hint);
 	}
-	
-	public void setOnEditorActionListener(OnEditorActionListener oeal){
-		mEditText.setOnEditorActionListener(oeal);
-	}
-	
+
 	@Override
 	public void addView(View child) {
 		mInnerLayout.addView(child);

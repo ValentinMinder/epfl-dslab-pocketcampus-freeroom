@@ -182,8 +182,15 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		
 			if(count > 1)
 				Toast.makeText(this,count + " results found", Toast.LENGTH_LONG).show();
-			else
+			else{
 				Toast.makeText(this,count + " result found", Toast.LENGTH_LONG).show();
+				Person p = (Person) mList.getAdapter().getItem(0);
+				mModel.selectPerson(p);
+				shownPersonIndex = 0;
+				mController.getProfilePicture(p.sciper);
+				System.out.println(p);
+				showPersonsDetails();
+			}
 		}
 		
 	}
@@ -244,6 +251,13 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		mModel.selectPerson(p);
 		mController.getProfilePicture(p.sciper);
 		showPersonsDetails();
+	}
+
+
+	@Override
+	public void autoCompletedUpdated() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

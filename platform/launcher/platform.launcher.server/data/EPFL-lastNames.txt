@@ -21,7 +21,6 @@ Boo
 Bossart
 Bouvet
 Bréchet
-Briguet
 Brunner
 Buri
 Buset
@@ -77,7 +76,6 @@ Jongen
 Junod
 Kaufmann
 Koppenhoefer
-Lädermann
 Larchevêque
 Leonardi
 Lindelöf
@@ -168,7 +166,6 @@ Anguish
 Anitua
 Anken-Jordi
 Ansermet
-Appert
 Arbenz
 Aubert
 Auric
@@ -698,6 +695,7 @@ Schaller
 Schiper
 Schneiter
 Schwab
+Schwendimann
 Schwitzguebel
 Seem
 Seignez
@@ -706,7 +704,6 @@ Sénéchaud
 Sesiano
 Setter
 Shah
-Siegrist
 Silvestri
 Simm
 Simond
@@ -965,7 +962,6 @@ Sayah
 Mermod
 Dusserre
 Coullerez
-Staub
 Naef
 Prandoni
 Vogel Chevroulet
@@ -1112,7 +1108,6 @@ Atallah
 Nicolet
 Tamburrino
 Tissot
-Chek-Al-Kar
 Schneider
 Schaeli
 Junillon
@@ -1354,7 +1349,6 @@ Courbat
 Crameri
 Crivelli
 Chenaux
-Cimprich
 Doswald
 Flury
 Badel
@@ -1549,6 +1543,7 @@ Humbert
 Jiguet
 Maréchal
 Palmgren
+Staub
 Vuletic
 Suruceanu
 Toubes-Scherrer
@@ -1823,7 +1818,6 @@ Mattle
 Touchard-Joly
 Coulot
 Grossglauser
-Hueckel
 Clémence
 Gisel
 Berthoud
@@ -2199,6 +2193,7 @@ Sandrone
 Gerster
 Guglielmi
 van Oosterom
+Siegrist
 Huguenin
 Buemi
 Mellier
@@ -3127,6 +3122,7 @@ Saidani
 Tabata
 Kauzlaric
 Kong
+Loock
 Margairaz
 Marquis
 Dayer
@@ -3708,7 +3704,6 @@ Fatio
 Alesina
 Zanker
 Forter
-Bertolotto
 Heintze
 Hervella
 Zaugg
@@ -4678,7 +4673,6 @@ Cetin
 Kaewkerd
 Dobrescu
 Veillon
-Ramondetti
 Domont
 Droxler
 Annibale
@@ -4860,9 +4854,9 @@ Jallut
 Benslimane
 Bidaux
 Schaeffer
-Veres
 Forlati
 El Houti
+Bodino
 Alami Idrissi
 Vasta
 Ricca
@@ -5605,6 +5599,7 @@ Moullan
 Pelisset
 Bichsel
 Bourdilloud
+Briguet
 Dimitrov
 Torriani
 Sturny
@@ -6312,7 +6307,6 @@ Rambeau-Bysath
 Rivas
 Chiche
 Chihab
-Liew
 Cassani
 Chappaz
 Choppe
@@ -6759,7 +6753,6 @@ Ottet
 Bove
 Hausammann
 Giorla
-Guan
 Manni
 Knoche
 Bridel
@@ -6920,7 +6913,6 @@ Lopez Tarifa
 Guerard
 Pericet Camara
 Sturzenegger
-Chowdhury
 Basiri
 Biswas
 Richart
@@ -7097,7 +7089,6 @@ Telefont
 Aprile
 Vitorovic
 Hashemi Zadeh
-Kosmopoulou
 Di Donna
 Azizighannad
 Kasikci
@@ -7563,6 +7554,7 @@ Kostevitch
 Fraccaro
 Bannwart
 Talà
+Guicquéro
 Echevarria Coelho
 De Weck
 Santacana Moya
@@ -8255,7 +8247,6 @@ Boumelala
 Girard-Noyer
 Valdés Undurraga
 Mendez
-Apara
 Bunescu
 Macicas
 Aimo
@@ -8292,9 +8283,7 @@ Unnikrishnan
 Bruus
 Cârjeu
 Koppitz
-Mastropietro
 Oliveros
-Tinel
 Monni
 Ccsap Huit
 Ccsap Sept
@@ -8320,7 +8309,6 @@ Delcamp
 Buyck
 Shapira
 Kolbe
-Kisseleff
 Meyerspeer
 Verhagen
 Kronstrand
@@ -8328,7 +8316,7 @@ Leran
 Arn
 Zgheib
 Nadoveza
-Amsler
+Stefanucci
 Conesa Boj
 Brodard
 Costea
@@ -8379,7 +8367,6 @@ Barthes
 Bacoyannis
 Sahal
 Schwartz
-Eggenberger
 Décaillet
 Le Grelle
 Dautheville
@@ -8424,7 +8411,6 @@ Behnisch
 Nguira
 Zoee
 Alarcon Llado
-Rohaninejad
 Maciak
 Steffen
 Bertsche
@@ -8433,9 +8419,7 @@ O'Neill
 Puppo
 Sacconi
 Sauerwald
-Bandim Faustino
 Gualco
-Castel
 Borloz
 Pires De Oliveira Filho
 Tardin
@@ -8457,8 +8441,6 @@ Buitrago Godinez
 Kennedy
 Aryananda
 Ramqaj
-Lafont
-Quaderer
 Sahin
 Travelletti
 Filipponi
@@ -8467,8 +8449,6 @@ Grobis
 Kenfack Kengue
 Knopf
 Piraino
-Mackiewicz
-Defrasne
 Ubezio
 Micciarelli
 Lamaison
@@ -8478,6 +8458,7 @@ Rea Alarcon
 Platon
 Piu
 Edmaier
+Brito Carvalho
 Martoccia
 Wieland
 Maida
@@ -8495,7 +8476,6 @@ Wise
 Perich
 Belpeche
 Haouari
-Uddegard
 Heyman
 Gray
 Kolpakov
@@ -8801,7 +8781,6 @@ Stojilovic
 Konstantinos
 Baudet
 Marchino
-Annino
 Bordry
 Martignier
 Pigeon
@@ -8934,6 +8913,7 @@ Fumagalli
 Frutos
 Witteveen
 Maillard-Wermelinger
+Riemensberger
 Saccu
 Leempoel
 Maco
@@ -8955,7 +8935,6 @@ Simonetta
 Wachowicz
 Petracca
 Jackson
-Memiaghe
 Petitprez
 Low
 Hantschel
@@ -8978,7 +8957,6 @@ Spadoni
 Cusin
 von Gunten
 Saffari
-Vermare
 Xue
 Mubin
 Piazzesi
@@ -8989,7 +8967,6 @@ Schill
 Koblanski
 Rincón Gil
 Abu Antoun
-Valencia Esquivel
 Zhong
 Coderay
 Virattipong
@@ -9330,6 +9307,7 @@ Mouscaz
 Bensaid
 Regali
 El Zein
+Carloni
 Malbois
 Byron-Exarcos
 Kormann
@@ -9362,6 +9340,7 @@ Le Gars--Santoni
 Dukic
 Dressler
 Gaspoz
+Soulier
 Hõimoja
 Holden
 Delalondre
@@ -9584,6 +9563,7 @@ Bader
 Schüpfer
 Hergibo
 Rakonjac
+Ismayilov
 Häller
 Divis
 Justafré
@@ -9962,6 +9942,7 @@ Markstedt
 Broda
 Cammack
 Pinazza
+Prevignano
 Taddei
 Wimmer
 Carraro
@@ -10140,6 +10121,7 @@ Afsin
 Allanfranchini
 Alonso Seisdedos
 Alves Luís
+Amsler
 Vehkalahti
 Suvitie
 Ngniheula
@@ -10232,7 +10214,6 @@ Barreca
 Bastid
 Anchondo Borunda
 Abdi Jama
-Benmessaoud
 Favrel
 Drais
 Grozel
@@ -10423,7 +10404,6 @@ Blondeau
 Banzet
 Lodone
 Kopp
-Soulier
 Ormaza Morales
 Sourgens
 Springmann
@@ -10661,7 +10641,6 @@ Nascimento
 Jastrzebowska
 Solis
 Cavadini
-Beaudin
 Esteban-Sanz
 Jacquin
 Giometto
@@ -10677,7 +10656,6 @@ Henslin
 Pilz
 Castillo Rueda
 Naus
-Bou Sleiman
 Birbaum
 Sodomaco
 Du Bois de Dunilac
@@ -10818,6 +10796,7 @@ Mattana
 Bartha
 Valla
 Stamoulis
+Caruso
 Bilbao Learreta
 Tao
 Berwa
@@ -11075,6 +11054,7 @@ Sakuwaha
 Panchal
 Can
 Ferrante Ritzi
+Auría Rasclosa
 Georgala
 Ghennai
 Dejonckheere
@@ -11335,7 +11315,6 @@ Combremont
 Cometta
 Elamly
 Baraschi
-Bodino
 Bolzani
 Couchepin
 Farwagi
@@ -11503,6 +11482,7 @@ Dorazco Gonzalez
 Ambrosio Galindo
 Jenzer
 Maillefer
+Ananaba
 Belleville
 Chambovey
 Demière
@@ -11700,7 +11680,6 @@ Guiet
 Grassi
 Christie
 Prada
-Braga Polo
 Rai
 Venturi
 Massard
@@ -11741,7 +11720,6 @@ Leal Silva Soares
 Kyriakides
 Baumier
 Behar
-Graux
 Gueugnon
 Sientzoff
 Thoumyre
@@ -11809,10 +11787,25 @@ Cavotta
 Augustyniak
 Beglot
 Piccini
-Caruso
 Sonachalam
-Radheep
-Singh 
-Riemensberger
-Stefanucci
-Auría Rasclosa
+Dinadayalane
+Crouzevialle
+Sommet
+Martisiute
+Fattebert
+Masiel
+Tarango
+Brito Delgado
+Iten
+Gallot Lavallée
+Anguenot
+Geuss
+Paridant De Cauwere
+Sornay
+Ravet
+Hottinger
+Goswami
+Agarwal
+Jolissaint
+Appert
+Bhumika Chaudhary

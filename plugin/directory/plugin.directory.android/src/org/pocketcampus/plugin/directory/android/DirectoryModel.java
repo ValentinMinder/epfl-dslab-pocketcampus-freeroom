@@ -14,6 +14,7 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	IDirectoryView mListeners = (IDirectoryView) getListeners();
 	
 	private List<Person> mResult;
+	private List<String> mAutoCompleteSuggestions;
 	private Person mSelectedPerson;
 
 	private List<String> organisationalUnitList;
@@ -62,14 +63,14 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 		mListeners.pictureUpdated();
 	}
 
-	public void setAutoCompletedGN(List<String> result) {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public List<String> getAutocompleteSuggestions() {
+		return mAutoCompleteSuggestions;
 	}
-
-	public void setAutoCompletedSN(List<String> result) {
-		// TODO Auto-generated method stub
-		
+	
+	public void setAutocompleteSuggestions(List<String> suggestions){
+		mAutoCompleteSuggestions = suggestions;
+		mListeners.autoCompletedUpdated();
 	}
 
 

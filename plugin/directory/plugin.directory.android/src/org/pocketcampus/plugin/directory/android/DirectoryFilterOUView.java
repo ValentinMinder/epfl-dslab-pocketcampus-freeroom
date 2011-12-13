@@ -98,5 +98,11 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 		
 	}
 
+	@Override
+	public void autoCompletedUpdated() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -7,7 +7,7 @@ import org.pocketcampus.plugin.directory.android.DirectoryController;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 
-public class DirectoryGivenNameAutoCompleteRequest extends
+public class DirectoryAutoCompleteRequest extends
 		Request<DirectoryController, Iface, String, List<String>> {
 
 	/**
@@ -39,7 +39,7 @@ public class DirectoryGivenNameAutoCompleteRequest extends
 			List<String> result) {
 		System.out.println(result);
 
-		((DirectoryModel) controller.getModel()).setAutoCompletedGN(result);
+		((DirectoryModel) controller.getModel()).setAutocompleteSuggestions(result);
 	}
 
 	/**

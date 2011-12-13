@@ -10,7 +10,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +40,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	//LDAP search params
 	private static final int NB_RESULT_LIMIT = 500;
 	private String[] attWanted = { "givenName", "sn", "mail", "labeledURI", "telephoneNumber", "roomNumber", "uniqueIdentifier", "uid", "ou" };
+	private String[] onlyNameWanted = {"givenName", "sn"};
 	
 	//stuff to get the picture
 	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
@@ -53,7 +53,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	
 	
 	public DirectoryServiceImpl(){
-		System.out.println("Starting Directory plugin server");
+		System.out.println("Directory plugin server started");
 		ldap = new LDAPConnection();
 		
 		
@@ -66,7 +66,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		try {
 			ldap.connect(LDAP_ADDRESS, LDAP_PORT);
 		}catch (LDAPException e) {
-			System.out.println("Ldap exception");
+			System.err.println("Ldap exception");
 		}
 	}
 	
@@ -75,32 +75,37 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("EPFL-givenNames.txt"));
+			br = new BufferedReader(new FileReader("data/EPFL-givenNames.txt"));
 			String line;
 			while(true){
 				line = br.readLine();
-				given_names.add(line);
 				
 				if(line == null)
 					break;
+				else
+					given_names.add(line);
 			}
+			br.close();
 		}catch (FileNotFoundException e) {
 			System.out.println("please run tool.LdapExtractor to get autocomplete");
 		}catch (IOException e) {
 			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
-		} 
+		}
 		////////////////////////////////////////////////////////////////////
 		second_names = new ArrayList<String>();
 		try {
-			br = new BufferedReader(new FileReader("EPFL-lastNames.txt"));
+			br = new BufferedReader(new FileReader("data/EPFL-lastNames.txt"));
 			String line;
 			while(true){
 				line = br.readLine();
-				second_names.add(line);
 				
 				if(line == null)
 					break;
+				else
+					second_names.add(line);
+					
 			}
+			br.close();
 		}catch (FileNotFoundException e) {
 			System.out.println("please run tool.LdapExtractor to get autocomplete");
 		}catch (IOException e) {
@@ -159,7 +164,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		if(param.equals("ironman"))results.add(new Person("Iron", "Man", ">9000").setEmail("Tony@Stark.com").setWeb("http://www.google.ch").setPrivatePhoneNumber("0765041343").setOffice("Villa near Malibu").setGaspar("ironman").setOrganisationalUnit(ouList));
 					
 
-		System.out.println("Directory: " + results.size() + "persons found for param: " + param);
+		System.out.println("Directory: " + results.size() + " person(s) found for param: " + param);
 		return results;
 	}
 	
@@ -225,12 +230,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 		} catch (LDAPSearchException e1) {
 			if(e1.getMessage().equals("size limit exceeded")){
-				System.out.println("ldap search problem: " + e1.getMessage());
+				System.err.println("ldap search problem: " + e1.getMessage());
 				throw new org.pocketcampus.plugin.directory.shared.LDAPException("too many results");
 			}
 					
 		} catch (LDAPException e) {
-			System.out.println("ldap reconnection problem");
+			System.err.println("ldap reconnection problem");
 			throw new org.pocketcampus.plugin.directory.shared.LDAPException("EPFL LDAP Problem, try again later");
 		}
 		
@@ -285,40 +290,81 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			return pictureExtUrl;
 		}
 		
-		System.out.println("sorry exception");
+		System.err.println("sorry exception");
 		throw new org.pocketcampus.plugin.directory.shared.NoPictureFound().setMessage("sorry");
 		
 	}
 
-	public List<String> autocompleteGivenName(String arg0){
-		return autoComplete(arg0, given_names);
-	}
-
-	public List<String> autocompleteSecondName(String arg0){
-		return autoComplete(arg0, second_names);
-	}
-	
-	private List<String> autoComplete(String constraint, List<String> list){
-		ArrayList<String> prop = new ArrayList<String>();
-		
-		for(String s : list){
-			StringUtils.capitalize(s);
-			if(s.startsWith(constraint))
-				prop.add(s);
-		}
-		
-		return prop;
-	}
 
 	@Override
 	public List<String> autocomplete(String constraint) throws TException {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> suggestions = new ArrayList<String>();
+//		suggestions.add("Pascal Scheiben");
+//		suggestions.add("Florian Laurent");
+//		suggestions.add("ironman");
+		
+		if(constraint.contains(" ")){
+			String name = constraint.substring(0, constraint.indexOf(" "));
+			if(second_names.contains(name)){
+				String partialFirstName = constraint.substring(constraint.indexOf(" ")+1);
+				partialFirstName = StringUtils.capitalize(partialFirstName);
+				String lastName = StringUtils.capitalize(name);
+				System.out.println("looking for: " + partialFirstName+ "... " + lastName);
+				suggestions = searchForLastNameAndPartialFirstName(lastName, partialFirstName);
+			}else{
+				suggestions = searchForDisplayName(StringUtils.capitalize(constraint));
+			}
+				
+			
+		}else{
+			for(String fname: given_names){
+				if(fname.startsWith(constraint))
+						suggestions.add(fname);
+			}
+			
+			for(String lname: second_names){
+				if(lname.startsWith(constraint))
+						suggestions.add(lname);
+			}
+		}
+		
+		return suggestions;
 	}
 
-	
+	private ArrayList<String> searchForDisplayName(String name) {
+		return searchForName("(displayName="+name+"*)");
+	}
 
+	private ArrayList<String> searchForLastNameAndPartialFirstName(String lastName, String partialFirstName) {
+		if(partialFirstName.length() == 0)
+			return searchForName("(sn=" +lastName+")");
+		else
+			return searchForName("(&(sn=" +lastName+")(" + partialFirstName +"*))");
+	}
 	
+	private ArrayList<String> searchForName(String query){
+		ArrayList<String> results = new ArrayList<String>();
+		try {
+			if (!ldap.isConnected())
+				ldap.reconnect();
 
+			// search the ldap
+			SearchResult searchResult = ldap.search("o=epfl,c=ch",
+					SearchScope.SUB, DereferencePolicy.FINDING,
+					NB_RESULT_LIMIT, 0, false, query, onlyNameWanted);
+			
+			for (SearchResultEntry e : searchResult.getSearchEntries())
+			{
+				String nameToDisplay= e.getAttributeValue("givenName") + " " + e.getAttributeValue("sn");
+				if(!results.contains(nameToDisplay))
+					results.add(nameToDisplay);
+			}
+			
+		} catch (LDAPException e) {
+			e.printStackTrace();
+		}
+
+		return results;
+	}
 
 }
