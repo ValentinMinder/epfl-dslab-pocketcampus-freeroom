@@ -87,6 +87,8 @@ public class FileUtils {
 	    if (dir.isDirectory()) {
 	        String[] children = dir.list();
 	        for (int i=0; i<children.length; i++) {
+	        	if(".svn".equals(children[i])) // do not delete .svn folders
+	        		continue;
 	            boolean success = deleteDir(new File(dir, children[i]));
 	            if (!success) {
 	                return false;
