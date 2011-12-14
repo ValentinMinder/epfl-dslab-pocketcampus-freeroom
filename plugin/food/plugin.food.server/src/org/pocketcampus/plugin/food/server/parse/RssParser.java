@@ -249,7 +249,7 @@ public class RssParser extends DefaultHandler {
 			for (int j = 0; j < words.length; j++) {
 				String s = words[j];
 
-				if (s.length() > 3 || j == 0) {
+				if (s.length() > 3 || j == 0 || s.equals("riz")) {
 					String begin = "";
 					String sub = "";
 
