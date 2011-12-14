@@ -23,6 +23,11 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		return self;
 	}
 	
+	public static CamiproModel killInstance(){
+		self = new CamiproModel();
+		return self;
+	}
+	
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return ICamiproView.class;

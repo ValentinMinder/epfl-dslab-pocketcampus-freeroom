@@ -73,14 +73,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
 			startService(authIntent);
 		}
-		if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
+		//if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
 			// fetch them
 			mController.refreshBalanceAndTransactions();
-		}
-		if(mModel.getCardStatistics() == null || mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have some other data
+		//}
+		//if(mModel.getCardStatistics() == null || mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have some other data
 			// get them
 			mController.refreshStatsAndLoadingInfo();
-		}
+		//}
 		// update display
 		updateDisplay();
 	}
@@ -182,6 +182,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		
 		if(item.getItemId() == R.id.camipro_refresh) {			
 			refreshAll();
+		} else if(item.getItemId() == R.id.camipro_logout) {			
+			mController.reset();
+			finish();
 		}
 		
 

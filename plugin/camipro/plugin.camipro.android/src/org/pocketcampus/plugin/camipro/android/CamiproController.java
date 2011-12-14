@@ -56,6 +56,10 @@ public class CamiproController extends PluginController implements ICamiproContr
 		new StatsAndLoadingInfoRequest().start(this, mClientSL, buildSessionId());
 	}
 	
+	public void reset() {
+		mModel = CamiproModel.killInstance();
+	}
+	
 	private SessionId buildSessionId() {
 		SessionId sessId = new SessionId(TypeOfService.SERVICE_CAMIPRO);
 		sessId.setCamiproCookie(mModel.getCamiproCookie());
