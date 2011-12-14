@@ -2,8 +2,10 @@ package org.pocketcampus.plugin.news.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -15,6 +17,7 @@ import org.pocketcampus.plugin.news.shared.NewsItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * 
@@ -62,6 +65,10 @@ public class NewsModel extends PluginModel implements INewsModel {
 	public List<NewsItemWithImage> getNews(Context ctx) {
 		if (prefs_ == null) {
 			prefs_ = PreferenceManager.getDefaultSharedPreferences(ctx);
+		}
+
+		if (mNewsItems == null) {
+			return null;
 		}
 
 		ArrayList<NewsItemWithImage> filteredList = new ArrayList<NewsItemWithImage>();
@@ -113,15 +120,29 @@ public class NewsModel extends PluginModel implements INewsModel {
 	}
 
 	@Override
-	public HashMap<String, String> getFeedsUrls() {
+	public Map<String, String> getFeedsUrls() {
 		return mFeedUrls;
 	}
 
 	@Override
 	public void setFeedsUrls(Map<String, String> map) {
-		System.out.println("Setting feed urls" + map.keySet().toArray()[0]);
 		if (map != null) {
-			mFeedUrls = (HashMap<String, String>) map;
+			mFeedUrls = new HashMap<String, String>();
+			Iterator<Entry<String, String>> entries = map.entrySet().iterator();
+			while (entries.hasNext()) {
+			  Entry thisEntry = (Entry<String, String>) entries.next();
+			  String key = (String) thisEntry.getKey();
+			  String value = (String) thisEntry.getValue();
+			  mFeedUrls.put(key, value);
+			}
+		} else {
+			Log.d("NEWSMODEL", "Null map");
 		}
+		mListeners.feedUrlsUpdated();
+	}
+
+	@Override
+	public void notifyNetworkErrorFeedUrls() {
+		System.out.println("NETWORK ERROR");
 	}
 }

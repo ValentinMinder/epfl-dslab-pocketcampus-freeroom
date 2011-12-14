@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.news.android;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import org.pocketcampus.R;
 
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 
 /**
  * PluginPreference class for the News plugin.
@@ -27,10 +31,14 @@ public class NewsPreferences extends PreferenceActivity {
 	protected final static String REFRESH_RATE = "news_refresh_rate";
 	protected final static String SHOW_IMG = "news_show_thumbnail";
 
+	private HashMap<String, String> mFeedNamesAndUrls;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_preference);
+
+		handleExtras();
 
 		setPreferenceScreen(createPreferenceHierarchy());
 	}
@@ -60,23 +68,31 @@ public class NewsPreferences extends PreferenceActivity {
 			}
 		};
 
-		// Feeds to display
-		String[] urls = getResources().getStringArray(R.array.news_feeds_url);
-		String[] names = getResources().getStringArray(R.array.news_feeds_name);
+		if (mFeedNamesAndUrls != null) {
+			Set<String> mFeedNames = mFeedNamesAndUrls.keySet();
 
-		CheckBoxPreference checkBoxPref;
-		int i = 0;
-		for (String name : names) {
-			checkBoxPref = new CheckBoxPreference(this);
-			checkBoxPref.setKey(LOAD_RSS + name);
-			checkBoxPref.setTitle(name);
-			checkBoxPref.setSummary(urls[i++]);
-			checkBoxPref.setDefaultValue(true);
-			checkBoxPref.setOnPreferenceChangeListener(listener);
+			String[] urls = new String[mFeedNames.size()];
+			String[] names = new String[urls.length];
+			int i = 0;
+			for (String name : mFeedNames) {
+				// Feeds to display
+				names[i] = name;
+				urls[i] = mFeedNamesAndUrls.get(name);
+				i++;
+			}
+			CheckBoxPreference checkBoxPref;
+			int j = 0;
+			for (String name : names) {
+				checkBoxPref = new CheckBoxPreference(this);
+				checkBoxPref.setKey(LOAD_RSS + name);
+				checkBoxPref.setTitle(name);
+				checkBoxPref.setSummary(urls[j++]);
+				checkBoxPref.setDefaultValue(true);
+				checkBoxPref.setOnPreferenceChangeListener(listener);
 
-			rssPrefCat.addPreference(checkBoxPref);
+				rssPrefCat.addPreference(checkBoxPref);
+			}
 		}
-
 		// PreferenceCategory otherPrefsCat = new PreferenceCategory(this);
 		// otherPrefsCat.setTitle(R.string.news_preferences_other_title);
 		// root.addPreference(otherPrefsCat);
@@ -100,5 +116,21 @@ public class NewsPreferences extends PreferenceActivity {
 		// otherPrefsCat.addPreference(showImgPref);
 
 		return root;
+	}
+
+	/**
+	 * Handle extras from the MainView
+	 */
+	@SuppressWarnings("unchecked")
+	private void handleExtras() {
+		Bundle extras = getIntent().getExtras();
+		System.out.println("Handling extra: " + extras);
+		if (extras != null) {
+			mFeedNamesAndUrls = (HashMap<String, String>) extras
+					.getSerializable("org.pocketcampus.news.feedUrls");
+			System.out.println(mFeedNamesAndUrls.size());
+		} else {
+			Log.d("NEWSPREFERENCESVIEW", "No extras received!");
+		}
 	}
 }

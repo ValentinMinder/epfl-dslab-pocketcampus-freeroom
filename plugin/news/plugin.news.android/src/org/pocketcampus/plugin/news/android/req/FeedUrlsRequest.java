@@ -1,13 +1,10 @@
 package org.pocketcampus.plugin.news.android.req;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.news.android.NewsController;
 import org.pocketcampus.plugin.news.android.NewsModel;
-import org.pocketcampus.plugin.news.shared.NewsItem;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
 
@@ -47,7 +44,7 @@ public class FeedUrlsRequest extends
 	 */
 	@Override
 	protected void onResult(NewsController controller, Map<String, String> result) {
-		System.out.println("<NewsItemsRequest> onResult");
+		System.out.println("<FeedUrlsRequest> onResult");
 		((NewsModel) controller.getModel()).setFeedsUrls(result);
 	}
 
@@ -61,7 +58,7 @@ public class FeedUrlsRequest extends
 	@Override
 	protected void onError(NewsController controller, Exception e) {
 		System.out.println("onError");
-		((NewsModel) controller.getModel()).notifyNetworkError();
+		((NewsModel) controller.getModel()).notifyNetworkErrorFeedUrls();
 		e.printStackTrace();
 	}
 }

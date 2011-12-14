@@ -5,9 +5,11 @@ import java.util.Locale;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsController;
+import org.pocketcampus.plugin.news.android.req.FeedUrlsRequest;
 import org.pocketcampus.plugin.news.android.req.NewsItemsRequest;
 import org.pocketcampus.plugin.news.shared.NewsService.Client;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
+import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
 import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 
 import android.content.SharedPreferences;
@@ -54,6 +56,17 @@ public class NewsController extends PluginController implements INewsController 
 		return mModel;
 	}
 
+	/**
+	 * Initiates a request to the server to get the feed urls and names.
+	 */
+	@Override
+	public void getFeedUrls() {
+		String language = Locale.getDefault().getLanguage();
+
+		getFeedUrls_args param = new getFeedUrls_args(language);
+		new FeedUrlsRequest().start(this, mClient, param);
+	}
+	
 	/**
 	 * Initiates a request to the server to get the news items.
 	 */

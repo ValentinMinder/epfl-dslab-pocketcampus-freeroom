@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.news.android;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -99,7 +100,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	/**
-	 * Initiates request for the restaurant, meal and sandwich data
+	 * Initiates request for news items
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.news_loading));
@@ -133,6 +134,17 @@ public class NewsMainView extends PluginView implements INewsView {
 		}
 	}
 
+	@Override
+	public void feedUrlsUpdated() {
+
+		Intent settings = new Intent(getApplicationContext(),
+				NewsPreferences.class);
+		System.out.println(mModel.getFeedsUrls().size());
+		settings.putExtra("org.pocketcampus.news.feedUrls",
+				(HashMap<String, String>) mModel.getFeedsUrls());
+		startActivity(settings);
+	}
+
 	/**
 	 * Main Food Options menu contains access to Meals by restaurants, ratings,
 	 * Sandwiches, Suggestions and Settings
@@ -151,11 +163,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.news_menu_settings) {
-			// backFromPreferences = true;
-			Intent settings = new Intent(getApplicationContext(),
-					NewsPreferences.class);
-			startActivity(settings);
-
+			mController.getFeedUrls();
 		}
 		return true;
 	}
@@ -182,8 +190,8 @@ public class NewsMainView extends PluginView implements INewsView {
 						.getNewsItem().getTitle());
 				news.putExtra("org.pocketcampus.news.newsitem.description",
 						toPass.getFormattedDescription());
-				news.putExtra("org.pocketcampus.news.newsitem.feed",
-						toPass.getNewsItem().getFeed());
+				news.putExtra("org.pocketcampus.news.newsitem.feed", toPass
+						.getNewsItem().getFeed());
 				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
 						toPass.getBitmapDrawable());
 				startActivity(news);

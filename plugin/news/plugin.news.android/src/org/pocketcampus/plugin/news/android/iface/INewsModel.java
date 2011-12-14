@@ -53,7 +53,7 @@ public interface INewsModel {
 	 * 
 	 * @return the map of feeds with their names
 	 */
-	public HashMap<String, String> getFeedsUrls();
+	public Map<String, String> getFeedsUrls();
 
 	/**
 	 * Update the list of Feeds urls and names and notify the View
@@ -67,4 +67,9 @@ public interface INewsModel {
 	 * Called when an error has happened while updating the news
 	 */
 	public void notifyNetworkError();
+	
+	/**
+	 * Called when an error has happened while updating the feed names
+	 */
+	public void notifyNetworkErrorFeedUrls();
 }
