@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -33,6 +34,17 @@ public class RestaurantListParser {
 	/** Returns the list of Strings and their corresponding Url */
 	public HashMap<String, String> getFeeds() {
 		return feeds;
+	}
+
+	/** Returns the list of Restaurants */
+	public ArrayList<String> getRestaurants() {
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for(String r : feeds.keySet()) {
+			list.add(r);
+		}
+		
+		return list;
 	}
 
 	/**

@@ -124,15 +124,19 @@ public class FoodServiceImpl implements FoodService.Iface {
 		System.out.println("<getRestaurants>: getting restaurants");
 		ArrayList<Restaurant> mRestaurantList = new ArrayList<Restaurant>();
 
-		if (mAllMeals != null) {
-
-			for (Meal m : mAllMeals) {
-				Restaurant r = m.getRestaurant();
-				if (!mRestaurantList.contains(r)) {
-					mRestaurantList.add(r);
-				}
-			}
+		for(String r : mRestaurantsFeeds.keySet()) {
+			Restaurant newResto = new Restaurant(r.hashCode(), r);
+			mRestaurantList.add(newResto);
 		}
+//		if (mAllMeals != null) {
+//
+//			for (Meal m : mAllMeals) {
+//				Restaurant r = m.getRestaurant();
+//				if (!mRestaurantList.contains(r)) {
+//					mRestaurantList.add(r);
+//				}
+//			}
+//		}
 
 		return mRestaurantList;
 	}

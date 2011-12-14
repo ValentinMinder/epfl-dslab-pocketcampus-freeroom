@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -8,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
+import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
 import android.content.SharedPreferences;
@@ -36,6 +38,10 @@ public class FoodPreferencesView extends PluginView {
 	private StandardLayout mLayout;
 	/** The list to be displayed in the layout */
 	private PreferencesListViewElement mListView;
+	
+	/*Sorter*/
+	/** A sorter for the Restaurants */
+	MenuSorter mSorter;
 
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
@@ -71,6 +77,9 @@ public class FoodPreferencesView extends PluginView {
 			PluginController controller) {
 		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
+		
+		// Sorter for the Restaurants
+		mSorter = new MenuSorter();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);
@@ -88,8 +97,9 @@ public class FoodPreferencesView extends PluginView {
 	 */
 	private void displayData() {
 		// List of Restaurants
-		mRestaurants = (ArrayList<Restaurant>) mModel.getRestaurantsList();
-
+		mRestaurants = (ArrayList<Restaurant>) mModel.getRestaurantsList();	
+		mRestaurants = mSorter.sortByRestaurant(mRestaurants);
+		
 		if (mRestaurants != null && !mRestaurants.isEmpty()) {
 			mListView = new PreferencesListViewElement(this, mRestaurants,
 					restaurantLabeler, RESTO_PREFS_NAME);

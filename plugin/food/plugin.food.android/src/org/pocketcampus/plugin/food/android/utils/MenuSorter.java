@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.food.android.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 
 /**
@@ -152,6 +154,14 @@ public class MenuSorter {
 	}
 
 	/**
+	 * Sorts a list of Restaurant alphabetically.
+	 */
+	public ArrayList<Restaurant> sortByRestaurant(ArrayList<Restaurant> collection) {
+		Collections.sort(collection, new RestaurantComparator());
+		return collection;
+	}
+
+	/**
 	 * Compares meals using their rating, in order to sort them.
 	 * 
 	 */
@@ -172,5 +182,20 @@ public class MenuSorter {
 				return (n0 < n1 ? -1 : 1);
 			}
 		}
+	}
+
+	/**
+	 * Compares Restaurants according to their names.
+	 */
+	private class RestaurantComparator implements Comparator<Restaurant> {
+
+		@Override
+		public int compare(Restaurant arg0, Restaurant arg1) {
+			String s1 = arg0.getName();
+			String s2 = arg1.getName();
+
+			return s1.compareToIgnoreCase(s2);
+		}
+
 	}
 }
