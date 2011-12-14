@@ -30,6 +30,7 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class FoodServiceImpl implements FoodService.Iface {
+	//Comment
 	/** The last time the Meals were parsed from the web page */
 	private Date mLastImportedMeals;
 
