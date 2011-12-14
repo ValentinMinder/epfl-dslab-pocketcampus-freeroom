@@ -137,10 +137,10 @@ public class NewsServiceImpl implements NewsService.Iface {
 				for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
 					toKeep.add(feedItems.get(i));
 				}
-				Collections.sort(toKeep, newsItemComparator);
 				if (mLanguagesNewsItemsList.containsKey(language)) {
 					toKeep.addAll(mLanguagesNewsItemsList.get(language));
 				}
+				Collections.sort(toKeep, newsItemComparator);
 				mLanguagesNewsItemsList.put(language, toKeep);
 				allFeeds.add(feed);
 			}
