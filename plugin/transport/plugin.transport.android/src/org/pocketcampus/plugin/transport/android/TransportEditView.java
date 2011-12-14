@@ -87,11 +87,13 @@ public class TransportEditView extends PluginView {
 	private void setUpLayout() {
 		// Layout
 		mLayout = new StandardTitledDoubleSeparatedLayout(this);
-		mLayout.setTitle(getResources().getString(
-				R.string.transport_edit_destinations));
+		mLayout.setFirstTitle(getResources().getString(
+				R.string.transport_add_destination));
+		mLayout.setSecondTitle(getResources().getString(R.string.transport_remove_destinations));
+		
 		// Add some
 		ArrayList<String> l = new ArrayList<String>();
-		l.add(getResources().getString(R.string.transport_add_destination));
+		l.add(getResources().getString(R.string.transport_new_destination));
 		mAddView = new ListViewElement(this, l);
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -112,11 +114,13 @@ public class TransportEditView extends PluginView {
 		// Already there
 		ArrayList<String> list = new ArrayList<String>();
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-		if (prefs != null) {
+		if (prefs != null && !prefs.isEmpty()) {
 			for (String s : prefs.keySet()) {
 				list.add(s);
 				Log.d("TRANSPORT", s + " was in the preferences.");
 			}
+		} else {
+			mLayout.hideSecondTitle();
 		}
 
 		mListView = new ListViewElement(this, list);
@@ -126,7 +130,6 @@ public class TransportEditView extends PluginView {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// Show the confirmation dialog
-
 				confirmationDialog(arg0.getItemAtPosition(arg2).toString());
 			}
 

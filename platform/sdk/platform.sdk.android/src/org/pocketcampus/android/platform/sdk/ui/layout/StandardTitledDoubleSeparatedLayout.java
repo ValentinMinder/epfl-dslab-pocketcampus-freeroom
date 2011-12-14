@@ -21,13 +21,16 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 	private RelativeLayout mLayout;
 
 	/** The first inner layout, below the title */
-	private RelativeLayout mFillerLayoutOne;
+	private RelativeLayout mFillerLayout1;
 	
 	/** The second inner layout, below the first one */
-	private RelativeLayout mFillerLayoutTwo;
+	private RelativeLayout mFillerLayout2;
 
-	/** The title of the Layout */
-	private TextView mTitleTextView;
+	/** The first title of the Layout */
+	private TextView mTitle1TextView;
+	
+	/** The second title of the Layout */
+	private TextView mTitle2TextView;
 
 	/** The TextView displayed at the center of the Layout */
 	private TextView mMessageTextView;
@@ -68,10 +71,11 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 				R.layout.sdk_standard_titled_double_separated_layout, null);
 		super.addView(mLayout);
 
-		mTitleTextView = (TextView) findViewById(R.id.sdk_standard_titled_double_separated_layout_title1);
+		mTitle1TextView = (TextView) findViewById(R.id.sdk_standard_titled_double_separated_layout_title1);
+		mTitle2TextView = (TextView) findViewById(R.id.sdk_standard_titled_double_separated_layout_title2);
 		mMessageTextView = (TextView) findViewById(R.id.sdk_standard_titled_double_separated_layout_msg);
-		mFillerLayoutOne = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_separated_layout_filler1);
-		mFillerLayoutTwo = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_separated_layout_filler2);
+		mFillerLayout1 = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_separated_layout_filler1);
+		mFillerLayout2 = (RelativeLayout) findViewById(R.id.sdk_standard_titled_double_separated_layout_filler2);
 	}
 
 	/**
@@ -86,14 +90,25 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Displays a title message.
+	 * Displays the first title message.
 	 * 
 	 * @param text
 	 *            the title to display
 	 */
-	public void setTitle(String text) {
-		mTitleTextView.setText(text);
-		mTitleTextView.setVisibility(View.VISIBLE);
+	public void setFirstTitle(String text) {
+		mTitle1TextView.setText(text);
+		mTitle1TextView.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * Displays the second title message.
+	 * 
+	 * @param text
+	 *            the title to display
+	 */
+	public void setSecondTitle(String text) {
+		mTitle2TextView.setText(text);
+		mTitle2TextView.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -104,10 +119,17 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Hides the title.
+	 * Hides the first title.
 	 */
-	public void hideTitle() {
-		mTitleTextView.setVisibility(View.GONE);
+	public void hideFirstTitle() {
+		mTitle1TextView.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * Hides the second title.
+	 */
+	public void hideSecondTitle() {
+		mTitle2TextView.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -122,14 +144,14 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 	 *            the view to add to the first inner layout
 	 */
 	public void addFirstLayoutFillerView(View child) {
-		mFillerLayoutOne.addView(child);
+		mFillerLayout1.addView(child);
 	}
 
 	/**
 	 * Remove views from the first inner layout, below the title
 	 */
 	public void removeFirstLayoutFillerView() {
-		mFillerLayoutOne.removeAllViews();
+		mFillerLayout1.removeAllViews();
 	}
 	
 	/**
@@ -139,13 +161,13 @@ public class StandardTitledDoubleSeparatedLayout extends RelativeLayout {
 	 *            the view to add to the second inner layout
 	 */
 	public void addSecondLayoutFillerView(View child) {
-		mFillerLayoutTwo.addView(child);
+		mFillerLayout2.addView(child);
 	}
 
 	/**
 	 * Remove views from the second inner layout, below the first inner layout
 	 */
 	public void removeSecondLayoutFillerView() {
-		mFillerLayoutTwo.removeAllViews();
+		mFillerLayout2.removeAllViews();
 	}
 }
