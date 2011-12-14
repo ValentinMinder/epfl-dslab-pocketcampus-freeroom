@@ -63,9 +63,13 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	/* Layout */
 	/** A simple full screen layout */
 	private StandardTitledLayout mLayout;
+	
 	/** The main list with menus and sandwiches */
-	private RatableExpandableListViewElement mList;
+	private RatableExpandableListViewElement mExpandableList;
 
+	/** The main list with suggestions and ratings*/
+	private RatableListViewElement mList;
+	
 	/* Constants */
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
@@ -119,8 +123,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 
-		mList = new RatableExpandableListViewElement(this);
+		mExpandableList = new RatableExpandableListViewElement(this);
 
+		mList = new RatableListViewElement(this);
+		
 		// We need to force the display before asking the controller for the
 		// data,
 		// as the controller may take some time to get it.
@@ -249,6 +255,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
+		mExpandableList.notifyDataSetChanged();
 		mList.notifyDataSetChanged();
 	}
 
@@ -457,7 +464,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			if (!mealHashMap.isEmpty()) {
 
 				// Filtering restaurant that the user doesn't want to display
-				mList = new RatableExpandableListViewElement(this, mealHashMap,
+				mExpandableList = new RatableExpandableListViewElement(this, mealHashMap,
 						mMealLabeler, mMealsViewConstructor);
 
 				setHashMapOnClickListeners(mealHashMap);
@@ -467,7 +474,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				// Set the title to Restaurants
 				mLayout.setTitle(this.getString(R.string.food_by_restaurants));
 				// Add the list containing the meals
-				mLayout.addFillerView(mList);
+				mLayout.addFillerView(mExpandableList);
 			} else {
 				// Set the centered text to empty menus
 				mLayout.setText(getString(R.string.food_no_menus));
@@ -493,15 +500,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mLayout.removeFillerView();
 
 			// Create a new list by ratings
-			RatableListViewElement l = new RatableListViewElement(this,
+			mList = new RatableListViewElement(this,
 					mealsByRatings, mMealWithRestaurantLabeler);
 
-			setListOnClickListeners(mealsByRatings, l);
+			setListOnClickListeners(mealsByRatings, mList);
 
 			// Hide the text that says the list is empty
 			mLayout.hideText();
 			mLayout.setTitle(getString(R.string.food_by_ratings));
-			mLayout.addFillerView(l);
+			mLayout.addFillerView(mList);
 		} else {
 			mLayout.removeFillerView();
 			mLayout.setText(getString(R.string.food_no_menus));
@@ -536,15 +543,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					+ mealsBySuggestions.size());
 
 			mLayout.removeFillerView();
-			RatableListViewElement l = new RatableListViewElement(this,
+			mList = new RatableListViewElement(this,
 					mealsBySuggestions, mMealWithRestaurantLabeler);
 
-			setListOnClickListeners(mealsBySuggestions, l);
+			setListOnClickListeners(mealsBySuggestions, mList);
 
 			// Hide the text that says the list is empty
 			mLayout.hideText();
 			mLayout.setTitle(getString(R.string.food_by_suggestions));
-			mLayout.addFillerView(l);
+			mLayout.addFillerView(mList);
 		} else {
 			mLayout.setText(getString(R.string.food_no_menus));
 			mLayout.hideTitle();
