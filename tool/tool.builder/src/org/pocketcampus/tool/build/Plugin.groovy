@@ -16,6 +16,7 @@ class Plugin {
 	private File mManifestFile
 	private File mDotClasspathFile
 	private File mProjectDotPropertiesFile
+	private File mIgnoreMeFile
 	
 	private Manifest mManifest
 	private DotClasspath mDotClassPath
@@ -120,6 +121,9 @@ class Plugin {
 		mProjectDotPropertiesFile = new File(mAndroidDirectory.getPath() + "/project.properties")
 		checkFile(mProjectDotPropertiesFile, ".properties")
 		
+		mIgnoreMeFile = new File(mAndroidDirectory.getPath() + "/ignore.me")
+		checkFileAbsent(mIgnoreMeFile, "ignore.me")
+		
 		mProjectDotPropertiesFile.eachLine {
 			if(it.indexOf("android.library=true") != -1)
 				throw new IllegalArgumentException("This plugin is an Android library, expected stand-alone plugin.");
@@ -131,6 +135,13 @@ class Plugin {
 		if(!file.exists()) {
 			println file.getPath();
 			throw new IllegalArgumentException("Plugin's " + desc + " doesn't exist!");	
+		}
+	}
+	
+	private void checkFileAbsent(File file, String desc) {
+		if(file.exists()) {
+			println file.getPath();
+			throw new IllegalArgumentException("Plugin's " + desc + " exists, plugin will be ignored.");
 		}
 	}
 	
