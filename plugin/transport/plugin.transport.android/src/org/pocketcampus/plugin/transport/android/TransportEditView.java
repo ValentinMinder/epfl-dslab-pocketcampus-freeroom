@@ -9,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.StandardArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 
 import android.content.DialogInterface;
@@ -40,7 +41,7 @@ public class TransportEditView extends PluginView {
 	/** The plugin model */
 	private TransportModel mModel;
 	/** The main layout */
-	private StandardTitledDoubleLayout mLayout;
+	private StandardTitledDoubleSeparatedLayout mLayout;
 	/** The first one-element-ListView to add a destination */
 	private ListViewElement mAddView;
 	/** The list of current preferred destinations */
@@ -85,10 +86,9 @@ public class TransportEditView extends PluginView {
 	 */
 	private void setUpLayout() {
 		// Layout
-		mLayout = new StandardTitledDoubleLayout(this);
+		mLayout = new StandardTitledDoubleSeparatedLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_edit_destinations));
-
 		// Add some
 		ArrayList<String> l = new ArrayList<String>();
 		l.add(getResources().getString(R.string.transport_add_destination));
