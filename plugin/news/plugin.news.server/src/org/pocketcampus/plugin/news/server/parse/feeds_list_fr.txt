@@ -20,11 +20,11 @@
 	<rssfeed>http://actu.epfl.ch/feeds/rss/ic/fr/</rssfeed>
 </Feed>
 <Feed>
-	<name>EPFL Collège des Humanités</name>
+	<name>EPFL Coll√®ge des Humanit√©s</name>
 	<rssfeed>http://actu.epfl.ch/feeds/rss/cdh/fr/</rssfeed>
 </Feed>
 <Feed>
-	<name>EPFL Sciences et Techniques de l'Ingénieur</name>
+	<name>EPFL Sciences et Techniques de l'IngÔøΩnieur</name>
 	<rssfeed>http://actu.epfl.ch/feeds/rss/sti/fr/</rssfeed>
 </Feed>
 <Feed>
