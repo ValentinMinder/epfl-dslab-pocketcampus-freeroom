@@ -38,9 +38,9 @@ public class FoodDB {
 	 * Constructor for the Food Database Handler
 	 */
 	public FoodDB() {
-		mUserName = "pocketbuddy";
-		mPassWord = "";
-		mUrl = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";
+		mUserName = "pocketcampus";
+		mPassWord = "pHEcNhrKAZMS5Hdp";
+		mUrl = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
 		createConnection();
 	}
 
@@ -55,7 +55,7 @@ public class FoodDB {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				mConnection = DriverManager.getConnection(mUrl, mUserName,
 						mPassWord);
-				System.out.println("Database connection established");
+				System.out.println("Database connection established ("+mUrl+")");
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("Cannot connect to database server");
@@ -105,7 +105,7 @@ public class FoodDB {
 			return false;
 		}
 		PreparedStatement insertMeal = null;
-		String insertString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
+		String insertString = "INSERT INTO campusmenus (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
 				+ " VALUES (?,?,?,?,?,?,?)";
 
 		try {
@@ -168,7 +168,7 @@ public class FoodDB {
 		}
 		PreparedStatement statement = null;
 		try {
-			String statementString = "INSERT INTO CAMPUSMENUS (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
+			String statementString = "INSERT INTO campusmenus (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
 					+ " VALUES (?,?,?,?,?,?,?)";
 
 			statement = mConnection.prepareStatement(statementString);
@@ -223,7 +223,7 @@ public class FoodDB {
 			return null;
 		}
 		PreparedStatement getMeals = null;
-		String getString = "SELECT * FROM CAMPUSMENUS WHERE STAMP_CREATED = ?";
+		String getString = "SELECT * FROM campusmenus WHERE stamp_created = ?";
 		try {
 			List<Meal> campusMeals = new ArrayList<Meal>();
 
@@ -298,7 +298,7 @@ public class FoodDB {
 			return false;
 		}
 		PreparedStatement checkVotedDevice = null;
-		String getString = "SELECT count(DEVICEID) FROM DAILYRATINGS WHERE DEVICEID = ? and STAMP_CREATED = ?";
+		String getString = "SELECT count(DEVICEID) FROM dailyratings WHERE DeviceId = ? and stamp_created = ?";
 		ResultSet rset = null;
 		boolean found = false;
 
@@ -355,7 +355,7 @@ public class FoodDB {
 			return;
 		}
 		PreparedStatement insertVotedDevice = null;
-		String insertString = "INSERT INTO DAILYRATINGS (DeviceId, stamp_created, Rating, MealId) VALUES (?, ?, ?, ?)";
+		String insertString = "INSERT INTO dailyratings (DeviceId, stamp_created, Rating, MealId) VALUES (?, ?, ?, ?)";
 		ResultSet rset = null;
 
 		try {
@@ -402,7 +402,7 @@ public class FoodDB {
 		}
 		System.out.println("Inserting rating.");
 		PreparedStatement insertRating = null;
-		String insertString = "UPDATE CAMPUSMENUS SET TotalRating=?, NumberOfVotes=? where MealId=?";
+		String insertString = "UPDATE campusmenus SET TotalRating=?, NumberOfVotes=? where MealId=?";
 
 		try {
 			insertRating = mConnection.prepareStatement(insertString);

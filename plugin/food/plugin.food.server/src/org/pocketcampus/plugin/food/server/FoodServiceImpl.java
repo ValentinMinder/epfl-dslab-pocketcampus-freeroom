@@ -216,9 +216,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
-		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
-			return SubmitStatus.TOO_EARLY;
-		}
+//		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
+//			return SubmitStatus.TOO_EARLY;
+//		}
 
 		if (mDeviceIds.contains(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");
