@@ -16,6 +16,7 @@ import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.dialog.PCDetailsDialog;
+import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
@@ -34,9 +35,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar;
@@ -150,12 +154,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	protected void onRestart() {
 		super.onRestart();
 		mModel.freeConnections();
-		// Set up the main layout and the list view
-		setUpLayout();
-		setUpListView();
-
-		// Set up the action bar with a button
-		setUpActionBar();
 		setUpDestinations();
 	}
 
@@ -247,11 +245,31 @@ public class TransportMainView extends PluginView implements ITransportView {
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 		// If no destinations set, display a message
 		if (prefs == null || prefs.isEmpty()) {
+			ButtonElement addButton = new ButtonElement(this, getResources()
+					.getString(R.string.transport_add_destination));
+			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			l.addRule(RelativeLayout.CENTER_IN_PARENT);
+			addButton.setLayoutParams(l);
+			
+			addButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent add = new Intent(getApplicationContext(), TransportAddView.class);
+					startActivity(add);
+				}
+			});
+			
 			mLayout.removeFillerView();
-			mLayout.setText(getResources().getString(
-					R.string.transport_no_destinations_message));
+			mLayout.addFillerView(addButton);
+
+			// mLayout.setText(getResources().getString(
+			// R.string.transport_no_destinations_message));
 		} else {
-			mLayout.hideText();
+			// mLayout.hideText();
+
+			mLayout.removeFillerView();
+			mLayout.addFillerView(mListView);
 			Set<String> set = prefs.keySet();
 			List<String> list = new ArrayList<String>();
 
@@ -290,7 +308,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// Log.d("TRANSPORT", "Connection Updated (view)");
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getPreferredDestinations();
-
+		//In case the button is still here
+		mLayout.removeFillerView();
+		mLayout.addFillerView(mListView);
+		
 		setItemsToDisplay(mDisplayedLocations);
 
 	}
@@ -397,7 +418,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		b.setTitle(connection);
 
 		PCDetailsDialog dialog = b.create();
-//		dialog.show();
+		// dialog.show();
 	}
 
 	/**
@@ -523,7 +544,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		@Override
 		public void performAction(View view) {
+//			mModel.freeConnections();
 			displayDestinations();
+//			setUpDestinations();
 		}
 	}
 }
