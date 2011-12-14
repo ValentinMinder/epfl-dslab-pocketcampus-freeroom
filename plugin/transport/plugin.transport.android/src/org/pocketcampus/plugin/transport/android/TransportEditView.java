@@ -22,8 +22,6 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 
 /**
@@ -44,7 +42,7 @@ public class TransportEditView extends PluginView {
 	/** The main layout */
 	private StandardTitledDoubleLayout mLayout;
 	/** The first one-element-ListView to add a destination */
-	private/* Labeled */ListViewElement mAddView;
+	private ListViewElement mAddView;
 	/** The list of current preferred destinations */
 	private ListViewElement mListView;
 	/* Preferences */
@@ -76,7 +74,7 @@ public class TransportEditView extends PluginView {
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 
-		/** Set up the layout */
+		// Set up the layout
 		setUpLayout();
 	}
 
@@ -86,12 +84,12 @@ public class TransportEditView extends PluginView {
 	 * and let the user edit them.
 	 */
 	private void setUpLayout() {
-		/** Layout */
+		// Layout
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_edit_destinations));
 
-		/** Add some */
+		// Add some
 		ArrayList<String> l = new ArrayList<String>();
 		l.add(getResources().getString(R.string.transport_add_destination));
 		mAddView = new ListViewElement(this, l);
@@ -111,7 +109,7 @@ public class TransportEditView extends PluginView {
 		});
 		mLayout.addFirstLayoutFillerView(mAddView);
 
-		/** Already there */
+		// Already there
 		ArrayList<String> list = new ArrayList<String>();
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 		if (prefs != null) {
@@ -127,7 +125,7 @@ public class TransportEditView extends PluginView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				/** Show the confirmation dialog */
+				// Show the confirmation dialog
 
 				confirmationDialog(arg0.getItemAtPosition(arg2).toString());
 			}
@@ -149,9 +147,9 @@ public class TransportEditView extends PluginView {
 		b.setTitle(getResources().getString(R.string.transport_confirmation));
 		b.setMessage(getResources().getString(
 				R.string.transport_confirmation_delete_destination_start)
-				+ " "
+				+ "\n"
 				+ dest
-				+ " "
+				+ "\n"
 				+ getResources().getString(
 						R.string.transport_confirmation_delete_destination_end));
 
@@ -160,8 +158,7 @@ public class TransportEditView extends PluginView {
 
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
-						Log.d("TRANSPORT", "Clicked on YES");
-						/** Remove the destination and update the list */
+						// Remove the destination and update the list
 						mDestPrefsEditor.remove(dest);
 						mDestPrefsEditor.commit();
 						
@@ -187,8 +184,7 @@ public class TransportEditView extends PluginView {
 
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
-						Log.d("TRANSPORT", "Clicked on NO");
-						/** Do nothing */
+						// Do nothing
 						dialog.dismiss();
 					}
 				});

@@ -45,7 +45,9 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	}
 
 	/**
-	 * @return mPreferredDestinations The list of the sžser's preferred
+	 * Returns the user's preferred destinations.
+	 * 
+	 * @return mPreferredDestinations The list of the user's preferred
 	 *         destinations.
 	 */
 	@Override
@@ -64,7 +66,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		if (destinations != null) {
 			mAutoCompletedDestinations.clear();
 			mAutoCompletedDestinations.addAll(destinations);
-			/** Notifies the view(s) */
+			// Notifies the view(s)
 			mListeners.autoCompletedDestinationsUpdated();
 		}
 	}
@@ -87,7 +89,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 						if (i < 3) {
 							i++;
 
-							/** Update displayed locations */
+							// Update displayed locations
 							if (mPreferredDestinations.get(c.getTo().getName()) == null) {
 								mPreferredDestinations.put(c.getTo().getName(),
 										new ArrayList<TransportTrip>());
@@ -100,7 +102,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 			}
 
 		}
-		/** Notifies the view(s) */
+		// Notifies the view(s)
 		mListeners.connectionsUpdated(result);
 	}
 
@@ -112,7 +114,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 *         destinations to display to the user.
 	 */
 	public List<TransportStation> getAutoCpmpletedDestinations() {
-		/** Notifies the view(s) */
+		// Notifies the view(s)
 		return mAutoCompletedDestinations;
 	}
 
@@ -123,24 +125,26 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	public void setPreferredDestinations(List<TransportStation> result) {
 		if (result != null) {
 			for (TransportStation location : result) {
-				/**
-				 * prepares the hash map to contain connections to those
-				 * destinations.
-				 */
+				// Prepares the hash map to contain connections to those
+				// destinations.
 				if (mPreferredDestinations.get(location.getName()) == null) {
 					mPreferredDestinations.put(location.getName(),
 							new ArrayList<TransportTrip>());
 				}
 			}
-			/** Notifies the view(s) */
+			// Notifies the view(s)
 			mListeners.locationsFromNamesUpdated(result);
 		}
 	}
-	
+
 	/**
-	 * 
+	 * Removes all connections from the map, in order to update with new ones.
 	 */
-	public void freeConnections(){
+	public void freeConnections() {
 		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
+		// for(String s : mPreferredDestinations.keySet()){
+		// mPreferredDestinations.get(s).clear();
+		// mPreferredDestinations.put(s, new ArrayList<TransportTrip>());
+		// }
 	}
 }

@@ -22,7 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 /**
- * The view of the Transport plugin that lets the user add a preferred
+ * The view of the Transport plugin which lets the user add a preferred
  * destination. This view displays an input bar in which the user can type a
  * destination, choose among auto completed destinations that the server is
  * sending and set one of them as a preferred destination by just clicking on
@@ -86,12 +86,12 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 * listener to get auto completion when a key is pressed.
 	 */
 	private void displayView() {
-		/** Layout */
+		// Layout
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_add_destination));
 
-		/** Input bar */
+		// Input bar
 		mInputBar = new InputBarElement(this);
 		mInputBar.setInputHint(getResources().getString(
 				R.string.transport_set_destinations_message));
@@ -119,15 +119,12 @@ public class TransportAddView extends PluginView implements ITransportView {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int pos,
 					long id) {
-				TransportStation location = (TransportStation) adapter.getItemAtPosition(pos);
-
-				/**
-				 * Request for the next departures from EPFL to the destination
-				 * the user just clicked
-				 */
+				TransportStation location = (TransportStation) adapter
+						.getItemAtPosition(pos);
+				// Request for the next departures from EPFL to the destination
+				// the user just clicked
 				mController.nextDeparturesFromEPFL(location.getName());
-
-				/** Go back to the main View */
+				// Go back to the main View
 				finish();
 			}
 		});

@@ -21,7 +21,7 @@ import android.widget.TextView;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
-public class CheckBoxesView extends LinearLayout {
+public class CheckBoxView extends LinearLayout {
 	/** The Application Context */
 	private Context mContext;
 	/** The convert view */
@@ -36,8 +36,6 @@ public class CheckBoxesView extends LinearLayout {
 	private TextView mTitleLine;
 	/** The positive CheckBox */
 	private CheckBox mPositiveCheckBox;
-	/** The negative CheckBox */
-	private CheckBox mNegativeCheckBox;
 	/** The click listener on the CheckBox */
 	private OnItemClickListener mOnCheckBoxClickListener;
 
@@ -57,13 +55,13 @@ public class CheckBoxesView extends LinearLayout {
 	 * @param position
 	 *            the position of the Object in the List
 	 */
-	public CheckBoxesView(Object currentObject, Context context,
+	public CheckBoxView(Object currentObject, Context context,
 			ILabeler<? extends Object> labeler,
 			OnItemClickListener checkBoxListener, int position) {
 		super(context);
 		mContext = context;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
-				.inflate(R.layout.sdk_list_entry_checkboxes, null);
+				.inflate(R.layout.sdk_list_entry_checkbox, null);
 
 		mCurrentObject = currentObject;
 		mLabeler = labeler;
@@ -74,11 +72,9 @@ public class CheckBoxesView extends LinearLayout {
 		 * we want to bind data to.
 		 */
 		mTitleLine = (TextView) mConvertView
-				.findViewById(R.id.sdk_list_entry_checkboxes_text);
+				.findViewById(R.id.sdk_list_entry_checkbox_text);
 		mPositiveCheckBox = (CheckBox) mConvertView
-				.findViewById(R.id.sdk_list_entry_positive_checkbox);
-		mNegativeCheckBox = (CheckBox) mConvertView
-				.findViewById(R.id.sdk_list_entry_negative_checkbox);
+				.findViewById(R.id.sdk_list_entry_box);
 
 		/** Listeners */
 		mOnCheckBoxClickListener = checkBoxListener;
@@ -94,29 +90,6 @@ public class CheckBoxesView extends LinearLayout {
 		/** positive CheckBox click listener */
 		mPositiveCheckBox.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				CheckBox b = (CheckBox) v;
-
-				if (b.isChecked()) {
-					if (mNegativeCheckBox.isChecked()) {
-						mNegativeCheckBox.setChecked(false);
-					}
-				}
-				if (mOnCheckBoxClickListener != null) {
-					mOnCheckBoxClickListener.onItemClick(null, v, mPosition, 1);
-				}
-			}
-		});
-
-		/** negative CheckBox click listener */
-		mNegativeCheckBox.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				CheckBox b = (CheckBox) v;
-
-				if (b.isChecked()) {
-					if (mPositiveCheckBox.isChecked()) {
-						mPositiveCheckBox.setChecked(false);
-					}
-				}
 				if (mOnCheckBoxClickListener != null) {
 					mOnCheckBoxClickListener.onItemClick(null, v, mPosition, 0);
 				}

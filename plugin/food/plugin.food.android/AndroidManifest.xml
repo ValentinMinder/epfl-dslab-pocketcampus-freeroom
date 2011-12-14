@@ -23,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".plugin.food.android.FoodSuggestionsViewOld" >
+        </activity>
         <activity android:name=".plugin.food.android.FoodSuggestionsView" >
         </activity>
         <activity android:name=".plugin.food.android.FoodPreferencesView" >

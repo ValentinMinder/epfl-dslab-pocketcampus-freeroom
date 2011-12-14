@@ -5,7 +5,7 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/sdk_list_entry_checkboxes_text"
+        android:id="@+id/sdk_list_entry_checkbox_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -22,18 +22,12 @@
         android:orientation="horizontal" >
 
         <CheckBox
-            android:id="@+id/sdk_list_entry_positive_checkbox"
+            android:id="@+id/sdk_list_entry_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="right" />
 
-        <CheckBox
-            android:id="@+id/sdk_list_entry_negative_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="right" />
     </LinearLayout>
 
 </RelativeLayout>

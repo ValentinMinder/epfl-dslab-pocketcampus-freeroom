@@ -31,7 +31,7 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 	/** The source for the Layout */
 	protected static int mLayoutResourceId = R.layout.sdk_list_entry_checkboxes;
 	/** The source for the TextView */
-	protected static int mTextViewResourceId = R.id.sdk_list_checkbox_entry_text;
+	protected static int mTextViewResourceId = R.id.sdk_list_entry_checkboxes_text;
 	/** Listener to be set by the Application */
 	private OnItemClickListener mListener;
 

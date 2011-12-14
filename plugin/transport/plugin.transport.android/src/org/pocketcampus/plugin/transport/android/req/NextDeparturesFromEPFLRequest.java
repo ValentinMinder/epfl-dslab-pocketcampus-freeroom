@@ -33,7 +33,6 @@ public class NextDeparturesFromEPFLRequest
 	@Override
 	protected QueryTripsResult runInBackground(Iface client,
 			getTrips_args param) throws Exception {
-		Log.d("TRANSPORT", "run");
 		return client.getTrips(param.getFrom(), param.getTo());
 	}
 
@@ -49,7 +48,6 @@ public class NextDeparturesFromEPFLRequest
 	@Override
 	protected void onResult(TransportController controller,
 			QueryTripsResult result) {
-		Log.d("TRANSPORT", "onResult");
 		((TransportModel) controller.getModel()).setConnections(result);
 	}
 

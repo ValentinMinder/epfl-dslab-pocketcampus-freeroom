@@ -40,6 +40,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 /**
  * The Main View of the Transport plugin, first displayed when accessing
@@ -128,14 +129,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 
-		/** Set up the main layout and the list view */
+		// Set up the main layout and the list view
 		setUpLayout();
-		
-		/** Set up the action bar with a button */
+		setUpListView();
+
+		// Set up the action bar with a button
 		setUpActionBar();
 
-		/** Set up destinations that will be displayed */
-		mController.freeConnections();
+		// Set up destinations that will be displayed
+		mModel.freeConnections();
 		setUpDestinations();
 
 	}
@@ -147,7 +149,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		mController.freeConnections();
+		mModel.freeConnections();
+		// Set up the main layout and the list view
+		setUpLayout();
+		setUpListView();
+
+		// Set up the action bar with a button
+		setUpActionBar();
 		setUpDestinations();
 	}
 
@@ -180,14 +188,18 @@ public class TransportMainView extends PluginView implements ITransportView {
 		return true;
 	}
 
-	private void setUpLayout(){
-		/** Main layout */
+	private void setUpLayout() {
+		// Main layout
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
 		mLayout.hideTitle();
 
-		/** Creates the list view and sets its click listener */
+		setContentView(mLayout);
+	}
+
+	private void setUpListView() {
+		// Creates the list view and sets its click listener
 		mListView = new ListView(this);
 		mListView.setId(1234);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -204,12 +216,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			}
 		});
-		/** Adds it to the layout */
+		// Adds it to the layout
 		mLayout.addFillerView(mListView);
-
-		setContentView(mLayout);
 	}
-	
+
 	/**
 	 * Retrieves the action bar and adds a button to it, which will, when
 	 * clicked, open the edit view of the transport plugin.
@@ -221,7 +231,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 		ActionBar a = getActionBar();
 		if (a != null) {
 			a.addAction(new ActionBar.IntentAction(getApplicationContext(),
-					intent, R.drawable.transport_action_bar_edit));
+					intent, R.drawable.transport_action_bar_edit), 0);
+			RefreshAction refresh = new RefreshAction();
+			a.addAction(refresh, 1);
 		}
 	}
 
@@ -233,22 +245,20 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private void setUpDestinations() {
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-
+		// If no destinations set, display a message
 		if (prefs == null || prefs.isEmpty()) {
-			/**
-			 * If no destinations are set, redirect to the
-			 * <code>TransportAddView</code> class.
-			 */
-			Intent i = new Intent(this, TransportAddView.class);
-			startActivity(i);
+			mLayout.removeFillerView();
+			mLayout.setText(getResources().getString(
+					R.string.transport_no_destinations_message));
 		} else {
+			mLayout.hideText();
 			Set<String> set = prefs.keySet();
 			List<String> list = new ArrayList<String>();
 
 			for (String s : set) {
 				list.add(s);
 			}
-
+			// Binds the names with actual Location objects
 			mController.getLocationsFromNames(list);
 		}
 	}
@@ -258,17 +268,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * destinations along with the next departures to go there.
 	 */
 	private void displayDestinations() {
-		/** Gets the user's preferred destinations from the model */
+		// Gets the user's preferred destinations from the model
 		HashMap<String, List<TransportTrip>> locations = mModel
 				.getPreferredDestinations();
 
 		if (locations != null && !locations.isEmpty()) {
-
 			for (String loc : locations.keySet()) {
-				Log.d("TRANSPORT", "Request for " + loc);
 				mController.nextDeparturesFromEPFL(loc);
 			}
-
 			setItemsToDisplay(locations);
 		}
 
@@ -280,7 +287,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void connectionsUpdated(QueryTripsResult result) {
-		Log.d("TRANSPORT", "Connection Updated (view)");
+		// Log.d("TRANSPORT", "Connection Updated (view)");
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getPreferredDestinations();
 
@@ -294,7 +301,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void destinationsUpdated() {
-		Log.d("TRANSPORT", "Destinations updated (view)");
+		// Log.d("TRANSPORT", "Destinations updated (view)");
 		displayDestinations();
 	}
 
@@ -304,7 +311,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void locationsFromNamesUpdated(List<TransportStation> result) {
-		Log.d("TRANSPORT", "Locations from Names updated (view)");
+		// Log.d("TRANSPORT", "Locations from Names updated (view)");
 		displayDestinations();
 	}
 
@@ -337,25 +344,34 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				for (TransportTrip c : mDisplayedLocations.get(l)) {
 					if (i < 3) {
-						i++;
-						/** Updates the shared preferences */
-						mDestPrefsEditor.putInt(c.getTo().getName(), c.getTo()
-								.getId());
-						mDestPrefsEditor.commit();
+						Date dep = new Date();
+						dep.setTime(c.getDepartureTime());
+						Date now = new Date();
+						if (dep.after(now)) {
 
-						String logo = "";
-						for (TransportConnection p : c.parts) {
-							if (!p.foot) {
-								logo = p.line.getName();
-								break;
+							i++;
+							Log.d("TRANSPORT", "Dep was after now. " + i);
+
+							// Updates the shared preferences
+							mDestPrefsEditor.putInt(c.getTo().getName(), c
+									.getTo().getId());
+							mDestPrefsEditor.commit();
+
+							String logo = "";
+							for (TransportConnection p : c.parts) {
+								if (!p.foot) {
+									logo = p.line.getName();
+									break;
+								}
 							}
+
+							logo = TransportFormatter.getNiceName(logo);
+							PCEntryItem entry = new PCEntryItem(
+									timeString(c.getDepartureTime()), logo,
+									c.id);
+
+							items.add(entry);
 						}
-
-						logo = TransportFormatter.getNiceName(logo);
-						PCEntryItem entry = new PCEntryItem(
-								timeString(c.getDepartureTime()), logo, c.id);
-
-						items.add(entry);
 					}
 				}
 			}
@@ -368,20 +384,20 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Creates a menu dialog for a particular trip.
+	 * Creates a detailed dialog for a particular trip.
 	 * 
 	 * @param connection
 	 */
-	public void detailsDialog(String connection) {
-		/** Create the Builder for the Trip dialog */
+	private void detailsDialog(String connection) {
+		// Create the Builder for the Trip dialog
 		PCDetailsDialog.Builder b = new PCDetailsDialog.Builder(mActivity);
 		b.setCanceledOnTouchOutside(true);
 
-		/** Set different values for the dialog */
+		// Set different values for the dialog
 		b.setTitle(connection);
 
 		PCDetailsDialog dialog = b.create();
-		dialog.show();
+//		dialog.show();
 	}
 
 	/**
@@ -486,5 +502,28 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void autoCompletedDestinationsUpdated() {
+	}
+
+	/**
+	 * Refreshes the next departures when clicking on the action bar refresh
+	 * button.
+	 * 
+	 * @author Oriane <oriane.rodriguez@epfl.ch>
+	 * 
+	 */
+	private class RefreshAction implements Action {
+
+		RefreshAction() {
+		}
+
+		@Override
+		public int getDrawable() {
+			return R.drawable.transport_action_bar_refresh;
+		}
+
+		@Override
+		public void performAction(View view) {
+			displayDestinations();
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.transport.android;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -9,13 +8,10 @@ import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
 import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
 import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
-import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
-import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
-
-import android.util.Log;
+import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 
 /**
  * The main controller of the Transport Plugin. Takes care of interactions
@@ -65,7 +61,7 @@ public class TransportController extends PluginController implements
 	@Override
 	public void getAutocompletions(String constraint) {
 		if (constraint != null) {
-			Log.d("TRANSPORT", "Autocomplete request (controller)");
+			// Log.d("TRANSPORT", "Autocomplete request (controller)");
 			new AutoCompleteRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName),
 					constraint);
@@ -82,7 +78,7 @@ public class TransportController extends PluginController implements
 	@Override
 	public void nextDeparturesFromEPFL(String location) {
 		if (location != null) {
-			Log.d("TRANSPORT", "Departures request (controller)");
+			// Log.d("TRANSPORT", "Departures request (controller)");
 			getTrips_args args = new getTrips_args("EPFL", location);
 			new NextDeparturesFromEPFLRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
@@ -100,19 +96,12 @@ public class TransportController extends PluginController implements
 	@Override
 	public void getLocationsFromNames(List<String> list) {
 		if (list != null && !list.isEmpty()) {
-			Log.d("TRANSPORT", "Locations from names request (controller)");
+			// Log.d("TRANSPORT", "Locations from names request (controller)");
 			getLocationsFromNames_args args = new getLocationsFromNames_args(
 					list);
 			new LocationsFromNamesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void freeConnections(){
-		mModel.freeConnections();
 	}
 
 }

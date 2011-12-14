@@ -183,7 +183,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		} else if (item.getItemId() == R.id.food_by_suggestions) {
 			// Extras to add to the Intent
 			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
-
 			// Intent to start the SuggestionsView
 			Intent suggestions = new Intent(getApplicationContext(),
 					FoodSuggestionsView.class);
