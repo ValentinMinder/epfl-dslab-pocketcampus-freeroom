@@ -255,8 +255,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
-		mExpandableList.notifyDataSetChanged();
-		mList.notifyDataSetChanged();
+		if(mExpandableList.getAdapter() != null) {			
+			mExpandableList.notifyDataSetChanged();
+		}
+		if(mList.getAdapter() != null) {
+			mList.notifyDataSetChanged();
+		}
 	}
 
 	/**
