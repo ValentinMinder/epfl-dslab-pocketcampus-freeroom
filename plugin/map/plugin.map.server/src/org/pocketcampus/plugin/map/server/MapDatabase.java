@@ -14,17 +14,13 @@ import org.pocketcampus.plugin.map.server.database.ConnectionManager;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
-public class MapDatabase {
-//	private static final String DB_URL = "jdbc:mysql://ec2-46-51-131-245.eu-west-1.compute.amazonaws.com/pocketcampus";//jdbc:mysql://http://pocketcampus.epfl.ch/pocketcampus
-//	private static final String DB_USERNAME = "pocketbuddy";//pocketcampus
-//	private static final String DB_PASSWORD = "";//pHEcNhrKAZMS5Hdp
-	
-	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch/pocketcampus";
+public class MapDatabase {	
+	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
 	private static final String DB_USERNAME = "pocketcampus";
 	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
 	
-	private static final String TABLE_LAYERS = "MAP_LAYERS";
-	private static final String TABLE_POIS = "MAP_POIS";
+	private static final String TABLE_LAYERS = "map_layers";
+	private static final String TABLE_POIS = "map_pois";
 	
 	private static final String LAYER_TITLE = "title";
 	private static final String LAYER_IMAGE_URL = "image_url";
