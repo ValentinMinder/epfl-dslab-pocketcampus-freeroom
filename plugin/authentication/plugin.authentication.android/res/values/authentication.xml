@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="authentication_plugin_title">Authentication</string>
-    
+    <string name="authentication_plugin_title">Gaspar credentials</string>
+    <string name="username_text">Username</string>
+        <string name="passwordtext">Password</string>
+    <string name="loginbutton_string">Login</string>
+        
 </resources>

@@ -1,58 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="fill_parent" 
-android:id="@+id/authentication_customloginpageLayout" android:layout_height="match_parent">
-    <TextView 
-    android:text="Username"
-    android:layout_height="wrap_content" 
-    android:id="@+id/authentication_usernamelabel" 
-    android:layout_width="wrap_content" 
-    android:textAppearance="?android:attr/textAppearanceMedium" 
-    android:layout_above="@+id/authentication_username" 
-    android:layout_centerHorizontal="true"></TextView>
-        
-    <EditText 
-    android:layout_height="wrap_content" 
-    android:id="@+id/authentication_username" 
-    android:layout_width="fill_parent" 
-    android:layout_above="@+id/authentication_passwordlabel"
-    android:inputType="text"
-    android:layout_marginLeft="10px" 
-    android:layout_marginRight="10px" 
-    android:layout_marginBottom="10px"></EditText>
-<!--     android:imeOptions="actionNext" -->
-        
-    <TextView 
-    android:text="Password"
-    android:layout_height="wrap_content" 
-    android:id="@+id/authentication_passwordlabel" 
-    android:layout_width="wrap_content" 
-    android:textAppearance="?android:attr/textAppearanceMedium" 
-    android:layout_above="@+id/authentication_password" 
-    android:layout_centerHorizontal="true"></TextView>
-        
-    <EditText 
-    android:layout_height="wrap_content" 
-    android:id="@+id/authentication_password" 
-    android:layout_width="fill_parent" 
-    android:layout_above="@+id/authentication_loginbutton" 
-    android:password="true"
-    android:inputType="text"
-    android:layout_marginLeft="10px" 
-    android:layout_marginRight="10px" 
-    android:layout_marginBottom="10px"></EditText>
-    
-        <Button 
-    android:layout_height="wrap_content" 
-    android:layout_width="fill_parent" 
-    android:text="Sign in" 
-    android:id="@+id/authentication_loginbutton"
-    android:layout_centerVertical="true"
-    android:layout_marginLeft="10px" 
-    android:layout_marginRight="10px"
-    android:enabled="false"></Button>
-    
-</RelativeLayout>
+    android:id="@+id/authentication_customloginpageLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
+    <EditText
+        android:id="@+id/authentication_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:hint="@string/username_text"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/authentication_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/authentication_username"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:hint="@string/passwordtext"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/authentication_loginbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/authentication_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/loginbutton_string" />
+
+</RelativeLayout>

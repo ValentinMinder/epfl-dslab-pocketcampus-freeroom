@@ -27,7 +27,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	private AuthenticationController mController;
 	private IAuthenticationModel mModel;
 	
-	private StandardLayout mLayout;
+	//private StandardLayout mLayout;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -67,10 +67,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		mModel = (AuthenticationModel) controller.getModel();
 		
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
+		//mLayout = new StandardLayout(this);
 		
-		// The ActionBar is added automatically when you call setContentView
-		setContentView(mLayout);
+		// The ActionBar is added automatically when you call setContentView, unless we disable it :-)
+		disableActionBar();
+		setContentView(R.layout.authentication_redirectionpage);
 
 		// We need to force the display before asking the controller for the data, 
 		// as the controller may take some time to get it.
@@ -142,8 +143,8 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 
 	private void displayData() {
-		mLayout.setText("Tequila Authentication" + "\n\n\n"
-				+ "Redirecting... Please wait\n\n");
+		/*mLayout.setText("Tequila Authentication" + "\n\n\n"
+				+ "Redirecting... Please wait\n\n");*/
 	}
 	
 	private void authenticateUserForService(TypeOfService tos) {
