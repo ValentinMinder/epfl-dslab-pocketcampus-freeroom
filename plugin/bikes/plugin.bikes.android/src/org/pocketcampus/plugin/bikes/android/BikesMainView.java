@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.bikes.android;
 
 import java.util.ArrayList;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
@@ -47,7 +48,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		setContentView(mLayout);
 		
 		mController.getAvailableBikes();
-		mLayout.setText("Loading");
+		mLayout.setText(getString(R.string.bikes_loading));
 		
 		oicl = new OnItemClickListener() {
 
@@ -64,22 +65,22 @@ public class BikesMainView extends PluginView implements IBikesView{
 						if(be.name.equals(stationsName)){
 							String ab;
 							if(be.numberOfAvailableBikes == 1)
-								ab = " available bike";
+								ab = getString(R.string.bikes_available_bike);
 							else
-								ab = " availables bikes";
+								ab = getString(R.string.bikes_available_bikes);
 							
 							String ep;
 							if(be.numberOfEmptySpaces == 1)
-								ep = " empty bike slot";
+								ep = getString(R.string.bikes_empty_slot);
 							else
-								ep = " empty bike slots";
+								ep = getString(R.string.bikes_empty_slots);
 							
 							msg = be.name + 
 										//" is at:\n" +
 										//"Lat: " + be.geoLat + "\n" +
 										//"Lon: " + be.geoLng + "\n" +
-										"\nhas " + be.numberOfAvailableBikes + ab +"\n" +
-										"and " + be.numberOfEmptySpaces + ep;
+										"\n"+ getString(R.string.bikes_has)+" " + be.numberOfAvailableBikes + ab +"\n" +
+										getString(R.string.bikes_and) +" " + be.numberOfEmptySpaces + ep;
 							
 							//exiting the loop
 							break;
@@ -111,7 +112,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 //		boolean found = false;
 		
 	
-		items.add(new PCSectionItem("Velopass","Available"));
+		items.add(new PCSectionItem(getString(R.string.bikes_velopass),getString(R.string.bikes_Available)));
 		
 		for(BikeEmplacement be : mModel.getAvailablesBikes()){
 			String nbBikes;
@@ -174,14 +175,6 @@ public class BikesMainView extends PluginView implements IBikesView{
 				items.add(new PCEmptyLayoutItem(listElement));
 			}
 		}
-		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
-		//svn comitt test
-//		RelativeLayout t = new RelativeLayout(this);
-//		TextView tt = new TextView(this);
-//		tt.setText("houra haha");
-//		t.addView( tt );
-//		items.add(new PCEmptyLayoutItem(t));
-		
 		
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
 		
@@ -207,16 +200,14 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.bikes_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 		
-		mLayout.setText("Please try again later.");
+		mLayout.setText(getString(R.string.bikes_try_again_later));
 	}
 
 	@Override
 	public void bikeListUpdated() {
-		//Toast toast = Toast.makeText(getApplicationContext(), mModel.getAvailablesBikes().get(0).toString(), Toast.LENGTH_SHORT);
-		//toast.show();
 		displayData();
 		
 	}

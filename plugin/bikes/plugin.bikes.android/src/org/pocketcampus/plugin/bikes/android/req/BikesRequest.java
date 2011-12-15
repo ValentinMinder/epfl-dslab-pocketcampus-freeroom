@@ -8,6 +8,8 @@ import org.pocketcampus.plugin.bikes.android.BikesModel;
 import org.pocketcampus.plugin.bikes.shared.BikeService.Iface;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
+import android.util.Log;
+
 public class BikesRequest extends Request<BikesController, Iface, Object, List<BikeEmplacement>> {
 
 	@Override
@@ -23,7 +25,7 @@ public class BikesRequest extends Request<BikesController, Iface, Object, List<B
 
 	@Override
 	protected void onError(BikesController controller, Exception e) {
-		System.err.println("error in bikes request");
+		Log.d("Bikes","error in bikes request");
 		controller.getModel().notifyNetworkError();
 		
 	}
