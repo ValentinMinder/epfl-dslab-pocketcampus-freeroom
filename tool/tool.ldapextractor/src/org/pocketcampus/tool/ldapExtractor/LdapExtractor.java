@@ -61,7 +61,6 @@ public class LdapExtractor {
 				name = splitted[0];
 				if( !gn_results.contains(name)){
 					gn_results.add(name);
-					out.println(name);
 				}
 				cpt++;
 				if(cpt%250==0){
@@ -70,6 +69,11 @@ public class LdapExtractor {
 						System.out.println();
 				}
 			}
+			
+			Collections.sort(gn_results);
+			for(String name: gn_results)
+				out.println(name);
+			
 			out.close();
 			
 		} catch (FileNotFoundException e2) {
@@ -97,7 +101,6 @@ public class LdapExtractor {
 				String name = e.getAttributeValue("sn");
 				if( !sn_results.contains(name)){
 					sn_results.add(name);
-					out.println(name);
 				}
 				cpt++;
 				if(cpt%250==0){
@@ -106,6 +109,11 @@ public class LdapExtractor {
 						System.out.println();
 				}
 
+			}
+			
+			Collections.sort(sn_results);
+			for(String name: sn_results){
+				out.println(name);
 			}
 			out.close();
 			
@@ -119,9 +127,6 @@ public class LdapExtractor {
 		System.out.println("Found " + sn_results.size() + " last names");
 		
 		
-		Collections.sort(gn_results);
-		Collections.sort(sn_results);
-
 	}
 	
 	private static void connectLdap(){
