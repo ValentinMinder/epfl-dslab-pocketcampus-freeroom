@@ -14,6 +14,7 @@
     <color name="white">@android:color/white</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="darker_gray">@android:color/darker_gray</color>
+    
 
     <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <!-- SHOULD BE MERGED FROM THE LAUNCHER!!! -->
@@ -36,8 +37,8 @@
     <!-- Color used by the ActionBar -->
     <color name="actionbar_separator">#8B1A1A</color>
     <color name="actionbar_title">@color/white</color>
-    <color name="actionbar_background_start">@color/epfl_corrected_red</color>
-    <color name="actionbar_background_end">@color/epfl_corrected_red</color>
+    <color name="actionbar_background_start">@color/epfl_red_start</color>
+    <color name="actionbar_background_end">@color/epfl_red_end</color>
     <color name="actionbar_background_item_pressed_start">#FF7F00</color>
     <color name="actionbar_background_item_pressed_end">#EE7600</color>
 

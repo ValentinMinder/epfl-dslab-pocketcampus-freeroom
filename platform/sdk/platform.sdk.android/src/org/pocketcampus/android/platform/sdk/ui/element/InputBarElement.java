@@ -1,7 +1,5 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
-import java.awt.event.InputMethodEvent;
-
 import org.pocketcampus.R;
 
 import android.content.Context;
