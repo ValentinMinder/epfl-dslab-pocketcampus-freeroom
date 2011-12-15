@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.directory.android;
 
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.List;
 
-import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
@@ -16,14 +15,7 @@ import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -76,9 +68,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 
 	
-	private void displayData() {
-		mPersons = mModel.getResults();
-	}
+//	private void displayData() {
+//		mPersons = mModel.getResults();
+//	}
 
 	/**
 	 * We could also have gotten the controller this way.
@@ -129,14 +121,14 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 //		return true;
 //	}
 
-	private HashSet<String> getOuSelection() {
-		HashSet<String> keeper = new HashSet<String>();
-		
-		
-		
-		
-		return keeper;
-	}
+//	private HashSet<String> getOuSelection() {
+//		HashSet<String> keeper = new HashSet<String>();
+//		
+//		
+//		
+//		
+//		return keeper;
+//	}
 
 
 

@@ -1,5 +1,7 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
+import java.awt.event.InputMethodEvent;
+
 import org.pocketcampus.R;
 
 import android.content.Context;
@@ -7,7 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
+import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Displays an input bar with a button on its right.
@@ -52,23 +56,26 @@ public class InputBarElement extends RelativeLayout {
 		LayoutParams editTextParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		editTextParams.setMargins(8, 8, 8, 8);
 		
-		Drawable img = getContext().getResources().getDrawable(R.drawable.sdk_magnify_mini_icon);
 		
 		mEditText = new EditTextElement(context, hintText);
 		mEditText.setLayoutParams(editTextParams);
 		mEditText.setSingleLine();
 		mEditText.setId(1);
-		mEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+		
+		
 		super.addView(mEditText);
 		
 		// BUTTON
-		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		LayoutParams buttonParams = new LayoutParams(45,LayoutParams.FILL_PARENT);
+		buttonParams.setMargins(15, 13, 14, 15);
+		buttonParams.addRule(RelativeLayout.ALIGN_TOP, mEditText.getId());
+		buttonParams.addRule(RelativeLayout.ALIGN_RIGHT, mEditText.getId());
+		buttonParams.addRule(RelativeLayout.ALIGN_BOTTOM, mEditText.getId());
 		
 		mButton = new ButtonElement(context);
-		mButton.setLayoutParams(buttonParams);
+		
 		setButtonText(buttonText);
-		super.addView(mButton);
+		super.addView(mButton, buttonParams);
 		
 		// LAYOUT
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -85,6 +92,16 @@ public class InputBarElement extends RelativeLayout {
 	public void setOnButtonClickListener(OnClickListener listener) {
 		mButton.setOnClickListener(listener);
 	}
+	
+	public void setImeOptions(int opt){
+		mEditText.setImeOptions(opt );
+	}
+	
+	public void setOnEditorActionListener(OnEditorActionListener onEditorActionListener){
+		mEditText.setOnEditorActionListener(onEditorActionListener);
+	}
+	
+	
 
 	public void setOnKeyPressedListener(final OnKeyPressedListener listener) {
 		mEditText.addTextChangedListener(new TextWatcher() {
@@ -109,10 +126,12 @@ public class InputBarElement extends RelativeLayout {
 	}
 	
 	public void setButtonText(String text) {
-		if(text==null || text.equals("")) {
+		if(text==null ) {
 			mButton.setVisibility(GONE);
 			
-		} else {
+		} else if(text.equals("")){
+			mButton.setBackgroundResource(R.drawable.sdk_magnify_mini_icon);
+		}else{
 			mButton.setText(text);
 			mButton.setVisibility(VISIBLE);
 		}

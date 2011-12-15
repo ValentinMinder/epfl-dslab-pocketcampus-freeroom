@@ -9,14 +9,19 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
+import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class DirectorySearchView extends PluginView implements IDirectoryView{
@@ -28,6 +33,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	private InputBarElement mInputBar;
 	private LabeledListViewElement mListView;
 	ArrayAdapter<String> mAdapter;
+	
+	PersonDetailsDialog mDialog;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -86,11 +93,28 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	private void displayView() {
 		/** Layout */
 		mLayout = new StandardTitledLayout(this);
-		mLayout.setTitle("lOOkin' 4 Σ1");
+		mLayout.setTitle("Search the epfl directory");
 
 		/** Input bar */
-		mInputBar = new InputBarElement(this);
-		mInputBar.setInputHint("search for a name");
+		mInputBar = new InputBarElement(this, "","name or sciper");
+		mInputBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+		mInputBar.setOnEditorActionListener(new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_SEARCH){
+					String query = mInputBar.getInputText();
+					search(query);
+				}
+				return true;
+			}
+		});
+		mInputBar.setOnButtonClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String query = mInputBar.getInputText();
+				search(query);
+			}
+		});
 
 		mInputBar.setOnKeyPressedListener(new OnKeyPressedListener() {
 			@Override
@@ -138,7 +162,12 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 
 	@Override
 	public void resultsUpdated() {
-		startActivity(new Intent(this, DirectoryResultListView.class));
+		if(mModel.getResults().size() == 1){
+			mModel.selectPerson(mModel.getResults().get(0));
+			mDialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
+			mDialog.show();
+		}else
+			startActivity(new Intent(this, DirectoryResultListView.class));
 		
 	}
 
@@ -150,7 +179,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	@Override
 	public void pictureUpdated() {
-		//should not happen here
+		mDialog.loadPicture();
 		
 	}
 	
