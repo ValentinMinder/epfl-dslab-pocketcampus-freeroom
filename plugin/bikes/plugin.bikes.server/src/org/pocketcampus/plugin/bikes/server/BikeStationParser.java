@@ -2,6 +2,8 @@ package org.pocketcampus.plugin.bikes.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,8 @@ public class BikeStationParser {
 	
 	public ArrayList<BikeEmplacement> parseBikesStations() throws IOException {
 		ArrayList<BikeEmplacement> stations = new ArrayList<BikeEmplacement>();
+		ArrayList<String> names = new ArrayList<String>();
+		HashMap<String, BikeEmplacement> map =  new HashMap<String, BikeEmplacement>();
 		
 		String source = URLLoader.getSource(URL);
 		
@@ -36,8 +40,16 @@ public class BikeStationParser {
 				int bikes = Integer.parseInt(m.group(2));
 				double geoLat = Double.parseDouble(m.group(3).replace(",","."));
 				double geoLng = Double.parseDouble(m.group(4).replace(",","."));
-				stations.add(new BikeEmplacement(empty, bikes, geoLat, geoLng, m.group(5)));
+				String name = m.group(5);
+				map.put(name, new BikeEmplacement(empty, bikes, geoLat, geoLng, name));
+				names.add(name);
+//				stations.add(new BikeEmplacement(empty, bikes, geoLat, geoLng, m.group(5)));
 			}
+		}
+		
+		Collections.sort(names);
+		for(String name: names){
+			stations.add(map.get(name));
 		}
 		
 		return stations;
