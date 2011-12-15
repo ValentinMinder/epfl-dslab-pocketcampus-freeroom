@@ -104,6 +104,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		// Create an adapter for the data
 		lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
+		updateDate();
 	}
 
 	@Override
@@ -113,6 +114,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			return;
 		TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
 		balance.setText(formatMoney(bal));
+		updateDate();
 	}
 
 	@Override
@@ -129,6 +131,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_ref_number_text);
 		tv.setText(i.getIReferenceNumber());
+		updateDate();
 	}
 
 	@Override
@@ -145,6 +148,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
 		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths() / 3.0));
+		updateDate();
 	}
 
 	
@@ -158,11 +162,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		balanceUpdated();
 		cardLoadingWithEbankingInfoUpdated();
 		cardStatisticsUpdated();
+	}
+	
+	private void updateDate() {
 		// Last update
 		String date = mModel.getLastUpdateDate();
 		if(date != null) {
 			TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
-			dateLastUpdated.setText(date);
+			dateLastUpdated.setText("As of " + date + " given no offline transactions");
 		}
 	}
 	

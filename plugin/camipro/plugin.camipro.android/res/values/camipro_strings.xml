@@ -28,6 +28,6 @@
     
     <string name="camipro_ebanking_stats_title">Statistics</string>
     <string name="camipro_ebanking_1month_title">Total payments last month</string>
-    <string name="camipro_ebanking_3months_title">Total payments three months</string>
+    <string name="camipro_ebanking_3months_title">Total payments last three months</string>
     <string name="camipro_ebanking_average_title">Average per month</string>
 </resources>

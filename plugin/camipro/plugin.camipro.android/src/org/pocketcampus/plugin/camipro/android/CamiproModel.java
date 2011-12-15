@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.camipro.android;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -65,26 +66,31 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	
 	public void setTransactions(List<Transaction> trans) {
 		iTransactions = trans;
-		lastUpdate = new Date().toLocaleString();
+		lastUpdate = getCurrentDate();
 		mListeners.transactionsUpdated();
 	}
 
 	public void setBalance(Double bal) {
 		iBalance = bal;
-		lastUpdate = new Date().toLocaleString();
+		lastUpdate = getCurrentDate();
 		mListeners.balanceUpdated();
 	}
 
 	public void setCardStatistics(CardStatistics val) {
 		iCardStatistics = val;
-		lastUpdate = new Date().toLocaleString();
+		lastUpdate = getCurrentDate();
 		mListeners.cardStatisticsUpdated();
 	}
 	
 	public void setCardLoadingWithEbankingInfo(CardLoadingWithEbankingInfo val) {
 		iCardLoadingWithEbankingInfo = val;
-		lastUpdate = new Date().toLocaleString();
+		lastUpdate = getCurrentDate();
 		mListeners.cardLoadingWithEbankingInfoUpdated();
+	}
+	
+	private String getCurrentDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH'h'mm");
+		return sdf.format(new Date());
 	}
 	
 	ICamiproView mListeners = (ICamiproView) getListeners();
