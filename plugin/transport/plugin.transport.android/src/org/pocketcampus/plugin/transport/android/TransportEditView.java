@@ -8,7 +8,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.StandardArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 
@@ -18,7 +17,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -36,10 +34,6 @@ import android.widget.RelativeLayout;
  */
 public class TransportEditView extends PluginView {
 	/* MVC */
-	/** The plugin controller */
-	private TransportController mController;
-	/** The plugin model */
-	private TransportModel mModel;
 	/** The main layout */
 	private StandardTitledDoubleSeparatedLayout mLayout;
 	/** The first one-element-ListView to add a destination */
@@ -69,12 +63,8 @@ public class TransportEditView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		mController = (TransportController) controller;
-		mModel = (TransportModel) mController.getModel();
-
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
-
 		// Set up the layout
 		setUpLayout();
 	}
@@ -84,22 +74,29 @@ public class TransportEditView extends PluginView {
 	 * destination, the other one to display the current preferred destination
 	 * and let the user edit them.
 	 */
+	@SuppressWarnings("unchecked")
 	private void setUpLayout() {
 		// Layout
 		mLayout = new StandardTitledDoubleSeparatedLayout(this);
 		mLayout.setFirstTitle(getResources().getString(
 				R.string.transport_add_destination));
-		mLayout.setSecondTitle(getResources().getString(R.string.transport_remove_destinations));
-		
-		// Add some
+		mLayout.setSecondTitle(getResources().getString(
+				R.string.transport_remove_destinations));
+
+		// Field to add a new destination
 		ArrayList<String> l = new ArrayList<String>();
 		l.add(getResources().getString(R.string.transport_new_destination));
 		mAddView = new ListViewElement(this, l);
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		mAddView.setLayoutParams(p);
+		// Click Listener
 		mAddView.setOnItemClickListener(new OnItemClickListener() {
 
+			/**
+			 * Defines what is to be performed when the user clicks on the
+			 * "New destination" field of the list.
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -111,21 +108,24 @@ public class TransportEditView extends PluginView {
 		});
 		mLayout.addFirstLayoutFillerView(mAddView);
 
-		// Already there
+		// Destinations that are already there
 		ArrayList<String> list = new ArrayList<String>();
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 		if (prefs != null && !prefs.isEmpty()) {
 			for (String s : prefs.keySet()) {
 				list.add(s);
-				Log.d("TRANSPORT", s + " was in the preferences.");
 			}
 		} else {
 			mLayout.hideSecondTitle();
 		}
-
 		mListView = new ListViewElement(this, list);
+		// Click Listener
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
+			/**
+			 * Defines what is to be performed when the user clicks on a
+			 * destination of th.e list
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -159,39 +159,51 @@ public class TransportEditView extends PluginView {
 		b.setPositiveButton(getResources().getString(R.string.transport_yes),
 				new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int arg1) {
-						// Remove the destination and update the list
-						mDestPrefsEditor.remove(dest);
-						mDestPrefsEditor.commit();
-						
-						ArrayList<String> list = new ArrayList<String>();
-						Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-						if (prefs != null) {
-							for (String s : prefs.keySet()) {
-								list.add(s);
-							}
-						}
-						
-						StandardArrayAdapter adapter = new StandardArrayAdapter(
-								getApplicationContext(), list);
-						mListView.setAdapter(adapter);
-						mListView.invalidate();
-						
-						dialog.dismiss();
+			/**
+			 * Defines what is to be performed when the user clicks on
+			 * the "Yes" button of the dialog.
+			 */
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				// Remove the destination and update the list
+				mDestPrefsEditor.remove(dest);
+				mDestPrefsEditor.commit();
+
+				ArrayList<String> list = new ArrayList<String>();
+				Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs
+						.getAll();
+				if (prefs != null) {
+					for (String s : prefs.keySet()) {
+						list.add(s);
 					}
-				});
+				}
+
+				// Update the list view
+				StandardArrayAdapter adapter = new StandardArrayAdapter(
+						getApplicationContext(), list);
+				mListView.setAdapter(adapter);
+				mListView.invalidate();
+
+				dialog.dismiss();
+			}
+		});
 
 		b.setNegativeButton(getResources().getString(R.string.transport_no),
 				new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int arg1) {
-						// Do nothing
-						dialog.dismiss();
-					}
-				});
+			/**
+			 * Defines what is to be performed when the user clicks on
+			 * the "Yes" button of the dialog.
+			 */
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				// Do nothing
+				dialog.dismiss();
+			}
+		});
 
+		//Create and display the dialog
 		StyledDialog d = b.create();
 		d.show();
 	}

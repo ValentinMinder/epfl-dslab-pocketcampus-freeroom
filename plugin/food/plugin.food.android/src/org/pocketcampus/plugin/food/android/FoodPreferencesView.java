@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -38,8 +37,8 @@ public class FoodPreferencesView extends PluginView {
 	private StandardLayout mLayout;
 	/** The list to be displayed in the layout */
 	private PreferencesListViewElement mListView;
-	
-	/*Sorter*/
+
+	/* Sorter */
 	/** A sorter for the Restaurants */
 	MenuSorter mSorter;
 
@@ -54,10 +53,6 @@ public class FoodPreferencesView extends PluginView {
 	/* Restaurants */
 	/** The list of Restaurants the preferences are made on */
 	private ArrayList<Restaurant> mRestaurants;
-
-	/* Listener */
-	/** Callback for when an item is clicked in the list */
-	private OnItemClickListener mListener;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -77,7 +72,7 @@ public class FoodPreferencesView extends PluginView {
 			PluginController controller) {
 		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
-		
+
 		// Sorter for the Restaurants
 		mSorter = new MenuSorter();
 
@@ -97,9 +92,9 @@ public class FoodPreferencesView extends PluginView {
 	 */
 	private void displayData() {
 		// List of Restaurants
-		mRestaurants = (ArrayList<Restaurant>) mModel.getRestaurantsList();	
+		mRestaurants = (ArrayList<Restaurant>) mModel.getRestaurantsList();
 		mRestaurants = mSorter.sortByRestaurant(mRestaurants);
-		
+
 		if (mRestaurants != null && !mRestaurants.isEmpty()) {
 			mListView = new PreferencesListViewElement(this, mRestaurants,
 					restaurantLabeler, RESTO_PREFS_NAME);
@@ -111,9 +106,10 @@ public class FoodPreferencesView extends PluginView {
 
 			mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
 			mRestoPrefsEditor = mRestoPrefs.edit();
-			
+
 			if (mRestoPrefs.getAll().isEmpty()) {
-				Log.d("PREFERENCES", "First time instanciatation (FoodPreference)");
+				Log.d("PREFERENCES",
+						"First time instanciatation (FoodPreference)");
 				for (Restaurant r : mRestaurants) {
 					mRestoPrefsEditor.putBoolean(r.getName(), true);
 				}
@@ -156,22 +152,16 @@ public class FoodPreferencesView extends PluginView {
 	 */
 	ILabeler<Restaurant> restaurantLabeler = new ILabeler<Restaurant>() {
 
+		/**
+		 * Returns the name of a restaurant
+		 * 
+		 * @param resto
+		 *            The restaurant to be displayed
+		 * @return The restaurant name
+		 */
 		@Override
 		public String getLabel(Restaurant resto) {
 			return resto.getName();
 		}
 	};
-
-//	/**
-//	 * The constructor for a Restaurant View to be displayed in the list
-//	 */
-//	IViewConstructor restaurantConstructor = new IViewConstructor() {
-//
-//		@Override
-//		public View getNewView(Object currentObject, Context context,
-//				ILabeler<? extends Object> labeler, int position) {
-//			return new PreferencesView(currentObject, context, labeler,
-//					RESTO_PREFS_NAME, mListener, position);
-//		}
-//	};
 }

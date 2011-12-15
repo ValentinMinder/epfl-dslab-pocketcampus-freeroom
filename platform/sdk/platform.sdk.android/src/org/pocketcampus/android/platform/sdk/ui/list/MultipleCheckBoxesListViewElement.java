@@ -23,11 +23,6 @@ public class MultipleCheckBoxesListViewElement extends ListView implements Eleme
 	public MultipleCheckBoxesListViewElement(Context context,
 			List<? extends Object> items, ILabeler labeler) {
 		super(context);
-
-//		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
-//				LayoutParams.FILL_PARENT);
-//		setLayoutParams(params);
-
 		mAdapter = new MultipleCheckBoxesArrayAdapter(context, items, labeler);
 		setAdapter(mAdapter);
 	}

@@ -8,8 +8,6 @@ import org.pocketcampus.plugin.satellite.android.req.BeerRequest;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Client;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Iface;
 
-import android.util.Log;
-
 /**
  * Controller for the Satellite plugin. Takes care of interactions between the
  * model and the view and gets information from the server.
@@ -24,7 +22,7 @@ ISatelliteController {
 	private SatelliteModel mModel;
 
 	/** Interface to the plugin's server client */
-	private Iface mClient;
+//	private Iface mClient;
 
 	/** The name of the plugin */
 	private String mPluginName = "satellite";
@@ -39,7 +37,7 @@ ISatelliteController {
 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+//		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 
 	/**
@@ -55,7 +53,6 @@ ISatelliteController {
 	 */
 	@Override
 	public void getBeerOfMonth() {
-		Log.d("SATELLITE", "Beer of month request");
 		new BeerRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				(Object) null);
@@ -66,41 +63,8 @@ ISatelliteController {
 	 */
 	@Override
 	public void getAffluence() {
-		Log.d("SATELLITE", "Affluence request");
 		new AffluenceRequest().start(this,
 				(Iface) getClient(new Client.Factory(), mPluginName),
 				(Object) null);
 	}
-
-	/**
-	 * Initiates a request to the server to get the list of all beers Satellite
-	 * proposes
-	 */
-//	@Override
-//	public void getAllBeers() {
-//		Log.d("SATELLITE", "Beers request");
-//	}
-
-	/**
-	 * Initiates a request to the server to get the list of sandwiches Satellite
-	 * proposes
-	 */
-//	@Override
-//	public void getSandwiches() {
-//		Log.d("SATELLITE", "Sandwich request");
-//		new SandwichRequest().start(this,
-//				(Iface) getClient(new Client.Factory(), mPluginName),
-//				(Object) null);
-//	}
-
-	/**
-	 * Initiates a request to the server to get the list of next events at
-	 * Satellite
-	 */
-//	@Override
-//	public void getEvents() {
-//		Log.d("SATELLITE", "Events request");
-//
-//	}
-
 }

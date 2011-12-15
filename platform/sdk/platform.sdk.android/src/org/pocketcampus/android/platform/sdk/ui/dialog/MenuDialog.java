@@ -273,7 +273,7 @@ public class MenuDialog extends Dialog {
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			/** Dialog */
+			// Dialog
 			final MenuDialog dialog = new MenuDialog(mContext, R.style.Dialog);
 			final View layout = inflater
 					.inflate(R.layout.sdk_dialog_menu, null);
@@ -282,7 +282,7 @@ public class MenuDialog extends Dialog {
 
 			dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
 
-			/** Title */
+			// Title
 			if (mTitle != null) {
 				((TextView) layout.findViewById(R.id.sdk_dialog_menu_title))
 						.setText(mTitle);
@@ -292,7 +292,7 @@ public class MenuDialog extends Dialog {
 						.setVisibility(View.GONE);
 			}
 
-			/** First button and its Listener */
+			// First button and its Listener
 			if (mFirstButtonText != null) {
 				((Button) layout.findViewById(R.id.sdk_dialog_menu_firstButton))
 						.setText(mFirstButtonText);
@@ -309,12 +309,12 @@ public class MenuDialog extends Dialog {
 							});
 				}
 			} else {
-				/** if no confirm button just set the visibility to GONE */
+				// if no confirm button just set the visibility to GONE
 				layout.findViewById(R.id.sdk_dialog_menu_firstButton)
 						.setVisibility(View.GONE);
 			}
 
-			/** Second button and its Listener */
+			// Second button and its Listener
 			if (mSecondButtonText != null) {
 				((Button) layout
 						.findViewById(R.id.sdk_dialog_menu_secondButton))
@@ -330,12 +330,12 @@ public class MenuDialog extends Dialog {
 							});
 				}
 			} else {
-				/** if no confirm button just set the visibility to GONE */
+				// if no confirm button just set the visibility to GONE
 				layout.findViewById(R.id.sdk_dialog_menu_secondButton)
 						.setVisibility(View.GONE);
 			}
 
-			/** Third button and its Listener */
+			// Third button and its Listener
 			if (mThirdButtonText != null) {
 				((Button) layout.findViewById(R.id.sdk_dialog_menu_thirdButton))
 						.setText(mThirdButtonText);
@@ -350,12 +350,12 @@ public class MenuDialog extends Dialog {
 							});
 				}
 			} else {
-				/** if no confirm button just set the visibility to GONE */
+				// if no confirm button just set the visibility to GONE
 				layout.findViewById(R.id.sdk_dialog_menu_thirdButton)
 						.setVisibility(View.GONE);
 			}
 
-			/** Description */
+			// Description
 			if (mDescription != null) {
 				((TextView) layout
 						.findViewById(R.id.sdk_dialog_menu_description))
@@ -372,7 +372,7 @@ public class MenuDialog extends Dialog {
 								LayoutParams.WRAP_CONTENT));
 			}
 
-			/** Rating Bar */
+			// Rating Bar
 			RatingBar ratingBar = ((RatingBar) layout
 					.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator));
 			if (!mHasVoted) {

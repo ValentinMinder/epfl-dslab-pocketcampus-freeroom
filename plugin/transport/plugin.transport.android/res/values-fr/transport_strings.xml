@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+    <string name="transport_plugin_name">Transport</string>
+    <string name="transport_no_destinations_message">Ajoutez une destination!</string>
+    <string name="transport_set_destinations_message">Entrez une destination</string>
+    <string name="transport_edit_destinations">Gérer vos destinations</string>
+    <string name="transport_add_destination">Ajouter une destination</string>
+    <string name="transport_remove_destinations">Supprimer les destinations</string>
+    <string name="transport_new_destination">Nouvelle destination</string>
+    <string name="transport_confirmation">Confirmation</string>
+    <string name="transport_confirmation_delete_destination_start">Êtes-vous sûr de vouloir supprimer</string>
+    <string name="transport_confirmation_delete_destination_end">de vos destinations préférées?</string>
+    <string name="transport_yes">Oui</string>
+    <string name="transport_no">Non</string>
+    
+    <!-- Timing -->
+    <string name="transport_departure_now">Maintenant!</string>
+    <string name="transport_departure_at">Départ à</string>
+    <string name="transport_departure_in">Départ dans</string>
+    <string name="transport_in">Dans</string>
+    <string name="transport_arrival_at">Arrivée à</string>
+    <string name="transport_arrival_in">Arrivée dans</string>
+    <string name="transport_hour">heure</string>
+    <string name="transport_hours">heures</string>
+    <string name="transport_minute">minute</string>
+    <string name="transport_minutes">minutes</string>
+    
+    <!-- Menu -->
+    <string name="transport_menu_destinations">Gérer les destinations</string>
+    <string name="transport_menu_settings">Préférences</string>
+    
+    <!-- Error -->
+    <string name="transport_network_error">Erreur de connexion!</string>
+    
+    <!-- From last year -->
+    <string name="transport_to">à</string>	
+    <string name="transport_walk_in_min">min. de marche</string>
+
+</resources>

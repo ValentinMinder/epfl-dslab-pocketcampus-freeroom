@@ -8,8 +8,8 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
-import org.pocketcampus.plugin.satellite.android.display.AffluenceImageView;
 import org.pocketcampus.plugin.satellite.android.iface.ISatelliteMainView;
+import org.pocketcampus.plugin.satellite.android.ui.AffluenceImageView;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
@@ -61,7 +61,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 				R.string.satellite_menu_main_page));
 
 		setContentView(mLayout);
-
 		showMainPage();
 	}
 
@@ -72,7 +71,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		/** Refresh the main Page */
+		// Refresh the main Page
 		showMainPage();
 	}
 
@@ -81,18 +80,11 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 * be refreshed.
 	 */
 	public void showMainPage() {
-		/** Refreshed each time, since this information can change very fast */
+		// Refreshed each time, since this information can change very fast
 		mController.getAffluence();
 		// To Do : test if the month is the same or not
 		mController.getBeerOfMonth();
 	}
-
-	/**
-	 * Shows the list of beers available at Satellite
-	 */
-	// public void showBeers() {
-	// mController.getAllBeers();
-	// }
 
 	/**
 	 * Main Satellite Options menu contains access to Beers, Events, Sandwiches
@@ -140,7 +132,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	@Override
 	public void beerUpdated() {
-		Log.d("SATELLITE", "Beer updated (View)");
 		Beer beer = mModel.getBeerOfMonth();
 		if (beer != null) {
 			ImageTextView t = new ImageTextView(beer, getApplicationContext(),
@@ -179,7 +170,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		toast.show();
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
-		mLayout.setText(getResources().getString(R.string.satellite_nothing_to_display));
+		mLayout.setText(getResources().getString(
+				R.string.satellite_nothing_to_display));
 	}
 
 	/**
@@ -222,7 +214,12 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
+	 * Returns the corresponding image resource for the current affluence at
+	 * Satellite.
 	 * 
+	 * @param affluence
+	 *            The current affluence
+	 * @return The corresponding image resource
 	 */
 	private int chooseImage(Affluence affluence) {
 		int img = R.drawable.satellite_affluence_empty;
@@ -244,7 +241,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 			img = R.drawable.satellite_affluence_closed;
 			break;
 		case ERROR:
-			img = R.drawable.satellite_affluence_closed; 
+			img = R.drawable.satellite_affluence_closed;
 			break;
 		default:
 			img = R.drawable.satellite_affluence_closed;
@@ -256,20 +253,41 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 
 	/**
 	 * The labeler for the affluence, to tell how it has to be displayed in a
-	 * generic view
+	 * generic view.
 	 */
 	IFeedViewLabeler<Affluence> mAffluenceLabeler = new IFeedViewLabeler<Affluence>() {
 
+		/**
+		 * Returns the affluence title
+		 * 
+		 * @param affluence
+		 *            The affluence to be displayed
+		 * @return The affluence title
+		 */
 		@Override
 		public String getTitle(Affluence affluence) {
 			return getResources().getString(R.string.satellite_affluence);
 		}
 
+		/**
+		 * Returns the affluence description
+		 * 
+		 * @param affluence
+		 *            The affluence to be displayed
+		 * @return The affluence description
+		 */
 		@Override
 		public String getDescription(Affluence affluence) {
 			return chooseDescription(affluence);
 		}
 
+		/**
+		 * Returns the affluence picture
+		 * 
+		 * @param affluence
+		 *            The affluence to be displayed
+		 * @return The affluence picture as a LinearLayout
+		 */
 		@Override
 		public LinearLayout getPictureLayout(Affluence obj) {
 			return null;
@@ -283,21 +301,49 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	ISubtitledFeedViewLabeler<Beer> mBeerLabeler = new ISubtitledFeedViewLabeler<Beer>() {
 
+		/**
+		 * Returns the beer title
+		 * 
+		 * @param beer
+		 *            The beer to be displayed
+		 * @return The beer title
+		 */
 		@Override
 		public String getTitle(Beer beer) {
 			return getResources().getString(R.string.satellite_beer_of_month);
 		}
 
+		/**
+		 * Returns the beer name
+		 * 
+		 * @param beer
+		 *            The beer to be displayed
+		 * @return The beer name
+		 */
 		@Override
 		public String getSubtitle(Beer beer) {
 			return beer.getName();
 		}
-		
+
+		/**
+		 * Returns the beer description
+		 * 
+		 * @param beer
+		 *            The beer to be displayed
+		 * @return The beer description
+		 */
 		@Override
 		public String getDescription(Beer beer) {
 			return beer.getDescription();
 		}
 
+		/**
+		 * Returns the beer picture
+		 * 
+		 * @param beer
+		 *            The beer to be displayed
+		 * @return The beer picture as a LinearLayout
+		 */
 		@Override
 		public LinearLayout getPictureLayout(Beer beer) {
 			return new LoaderImageView(getApplicationContext(),
@@ -305,31 +351,4 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		}
 
 	};
-
-	// @Override
-	// public void sandwichesUpdated() {
-	// Log.d("SATELLITE", "Sandwiches updated");
-	// }
-
-	// @Override
-	// public void eventsUpdated() {
-	//
-	// }
-
-	// @Override
-	// public void beersUpdated() {
-	// Log.d("SATELLITE", "Beers updated (View)");
-	//
-	// List<Beer> beers = mModel.getAllBeers();
-	//
-	// if (beers != null && !beers.isEmpty()) {
-	//
-	// RichLabeledListViewElement l = new RichLabeledListViewElement(this,
-	// beers, mBeerLabeler);
-	//
-	// mLayout.addFillerView(l);
-	// }
-	//
-	// }
-
 }

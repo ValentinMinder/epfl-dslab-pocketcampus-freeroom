@@ -18,11 +18,12 @@ import android.widget.Toast;
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
-public class SatelliteSandwichesView extends PluginView implements ISatelliteMainView {
+public class SatelliteSandwichesView extends PluginView implements
+		ISatelliteMainView {
 	/** The Plugin Controller */
-	private SatelliteController mController;
+//	private SatelliteController mController;
 	/** The Plugin Model */
-	private SatelliteModel mModel;
+//	private SatelliteModel mModel;
 	/** A Standard Titled Layout */
 	private StandardTitledLayout mLayout;
 
@@ -38,8 +39,8 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		mController = (SatelliteController) controller;
-		mModel = (SatelliteModel) mController.getModel();
+//		mController = (SatelliteController) controller;
+//		mModel = (SatelliteModel) mController.getModel();
 
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getResources().getString(
@@ -55,29 +56,29 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 	 * Asks the controller for the sandwiches.
 	 */
 	private void showSandwiches() {
-//		mController.getSandwiches();
+		// mController.getSandwiches();
 	}
 
 	/**
 	 * Called when the data was updated in the Plugin Model. Displays the
 	 * sandwichList in a LabeledListView.
 	 */
-//	@Override
-//	public void sandwichesUpdated() {
-//		Log.d("SATELLITE", "Sandwiches updated (View)");
-//		mLayout.removeFillerView();
-//
-//		List<Sandwich> sandwiches = mModel.getSandwiches()null;
-//
-//		if (sandwiches != null && !sandwiches.isEmpty()) {
-//			LabeledListViewElement l = new LabeledListViewElement(this,
-//					sandwiches, mSandwichLabeler);
-//			l.setClickable(false);
-//			
-//			mLayout.hideText();
-//			mLayout.addFillerView(l);
-//		}
-//	}
+	// @Override
+	// public void sandwichesUpdated() {
+	// Log.d("SATELLITE", "Sandwiches updated (View)");
+	// mLayout.removeFillerView();
+	//
+	// List<Sandwich> sandwiches = mModel.getSandwiches()null;
+	//
+	// if (sandwiches != null && !sandwiches.isEmpty()) {
+	// LabeledListViewElement l = new LabeledListViewElement(this,
+	// sandwiches, mSandwichLabeler);
+	// l.setClickable(false);
+	//
+	// mLayout.hideText();
+	// mLayout.addFillerView(l);
+	// }
+	// }
 
 	/**
 	 * Display a toast when a network error happened.
@@ -95,6 +96,13 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 	 */
 	ILabeler<Sandwich> mSandwichLabeler = new ILabeler<Sandwich>() {
 
+		/**
+		 * Returns the sandwich name
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return The sandwich name
+		 */
 		@Override
 		public String getLabel(Sandwich sandwich) {
 			return sandwich.getName();
@@ -102,28 +110,17 @@ public class SatelliteSandwichesView extends PluginView implements ISatelliteMai
 
 	};
 
+	/**
+	 * Not used in this view
+	 */
 	@Override
 	public void beerUpdated() {
-		// TODO Auto-generated method stub
-		
 	}
-	
+
+	/**
+	 * Not used in this view
+	 */
 	@Override
 	public void affluenceUpdated() {
-		// TODO Auto-generated method stub
-		
 	}
-
-//	@Override
-//	public void beersUpdated() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-//	@Override
-//	public void eventsUpdated() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 }

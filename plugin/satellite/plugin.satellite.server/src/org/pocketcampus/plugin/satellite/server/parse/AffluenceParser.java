@@ -6,14 +6,24 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 
+/**
+ * A class to parse the current affluence at Satellite
+ * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
+ * 
+ */
 public class AffluenceParser {
-
+	/** The url of the affluence page */
 	private final static String AFFLUENCE_URL = "http://sat.epfl.ch/affluence";
-	private String affluence;
+	/** The String we retrieve */
+	private String mAffluence;
 
+	/**
+	 * The constructor. Initiates the parsing of the page.
+	 */
 	public AffluenceParser() {
 		Document doc = null;
-		affluence = "";
+		mAffluence = "";
 
 		try {
 			doc = Jsoup.connect(AFFLUENCE_URL).get();
@@ -23,36 +33,41 @@ public class AffluenceParser {
 		}
 
 		if (doc != null) {
-			affluence = doc.text();
-		} 
+			mAffluence = doc.text();
+		}
 
 	}
 
+	/**
+	 * Returns the Affluence enum corresponding the its value.
+	 * 
+	 * @return The enum affluence
+	 */
 	public Affluence getAffluence() {
 		Affluence a = Affluence.ERROR;
-		
-		switch (Integer.valueOf(affluence)) {
-		case 0 :
+
+		switch (Integer.valueOf(mAffluence)) {
+		case 0:
 			a = Affluence.EMPTY;
 			break;
-		case 1 :
+		case 1:
 			a = Affluence.MEDIUM;
 			break;
-		case 2 :
+		case 2:
 			a = Affluence.CROWDED;
 			break;
-		case 3 :
+		case 3:
 			a = Affluence.FULL;
 			break;
-		case 4 :
+		case 4:
 			a = Affluence.CLOSED;
 			break;
-		default :
+		default:
 			a = Affluence.ERROR;
 			break;
 		}
-		
+
 		return a;
 	}
-	
+
 }

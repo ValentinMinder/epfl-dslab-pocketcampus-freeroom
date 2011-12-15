@@ -33,9 +33,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	/** The last time the Meals were parsed from the web page */
 	private Date mLastImportedMeals;
 
-	/** The last time the Sandwiches were imported */
-	private Date mLastImportedSandwiches;
-
 	/** Interface to the database */
 	private FoodDB mDatabase;
 
@@ -76,11 +73,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mDeviceIds = new ArrayList<String>();
 
 		getRestaurantsList();
-
 		importMenus();
 		importSandwiches();
-
-		mLastImportedSandwiches = new Date();
 	}
 
 	/**
@@ -123,20 +117,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 		System.out.println("<getRestaurants>: getting restaurants");
 		ArrayList<Restaurant> mRestaurantList = new ArrayList<Restaurant>();
 
-		for(String r : mRestaurantsFeeds.keySet()) {
+		for (String r : mRestaurantsFeeds.keySet()) {
 			Restaurant newResto = new Restaurant(r.hashCode(), r);
 			mRestaurantList.add(newResto);
 		}
-//		if (mAllMeals != null) {
-//
-//			for (Meal m : mAllMeals) {
-//				Restaurant r = m.getRestaurant();
-//				if (!mRestaurantList.contains(r)) {
-//					mRestaurantList.add(r);
-//				}
-//			}
-//		}
-
 		return mRestaurantList;
 	}
 
@@ -216,9 +200,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
 
-//		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
-//			return SubmitStatus.TOO_EARLY;
-//		}
+		if (now.get(Calendar.HOUR_OF_DAY) < 11) {
+			return SubmitStatus.TOO_EARLY;
+		}
 
 		if (mDeviceIds.contains(deviceId)) {
 			System.out.println("<setRating>: Already in mDeviceIds.");
@@ -356,7 +340,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 					String description = feed.items.get(i).description;
 					// Meal id
 					long id = generateMealId(name, description, newResto);
-					
+
 					Meal newMeal = new Meal(id, name, description, newResto,
 							mealRating);
 					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
@@ -478,9 +462,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 				leGiacometti, "Jambon de dinde"));
 		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Gruyère")
 				.hashCode(), leGiacometti, "Gruyière"));
-		mSandwiches.add(new Sandwich(
-				(leGiacometti.getName() + "Viande Séchée").hashCode(),
-				leGiacometti, "Viande Séchée"));
+		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Viande Séchée")
+				.hashCode(), leGiacometti, "Viande Séchée"));
 		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Jambon Cru")
 				.hashCode(), leGiacometti, "Jambon Cru"));
 		mSandwiches.add(new Sandwich((leGiacometti.getName() + "Roast-Beef")
@@ -582,7 +565,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mSandwiches.add(new Sandwich((satellite.getName() + "Viande séchée")
 				.hashCode(), satellite, "Viande séchée"));
 
-		/* N�goce */
+		/* Négoce */
 		Restaurant negoce = new Restaurant(("Négoce").hashCode(), "Négoce");
 		mSandwiches.add(new Sandwich((negoce.getName() + "Dinde").hashCode(),
 				negoce, "Dinde"));
@@ -604,8 +587,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 				.hashCode(), negoce, "Roast-Beef"));
 		mSandwiches.add(new Sandwich((negoce.getName() + "Mozarrella")
 				.hashCode(), negoce, "Mozzarella"));
-
-		mLastImportedSandwiches = new Date();
 	}
 
 	/**
@@ -643,12 +624,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * @return true if the date is today
 	 */
 	private boolean isToday(Date oldDate) {
-		if (oldDate == null)
+		if (oldDate == null) {
 			return false;
-
+		}
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
 
@@ -664,12 +644,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 * @return true if it is
 	 */
 	private boolean isUpToDate(Date oldDate) {
-		if (oldDate == null)
+		if (oldDate == null) {
 			return false;
-
+		}
 		Calendar now = Calendar.getInstance();
 		now.setTime(new Date());
-
 		Calendar then = Calendar.getInstance();
 		then.setTime(oldDate);
 
@@ -692,9 +671,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();
-
 		long realDiff = diff / (60000);
-
 		return realDiff;
 	}
 }

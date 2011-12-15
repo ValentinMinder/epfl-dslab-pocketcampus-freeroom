@@ -19,20 +19,4 @@ public interface ISatelliteMainView extends IView {
 	 * Called when the affluence is updated in the SatelliteModel
 	 */
 	public void affluenceUpdated();
-	
-	/**
-	 * Called when the list of beers is updated in the SatelliteModel
-	 */
-//	public void beersUpdated();
-	
-	/**
-	 * Called when the list of sandwiches is updated in the SatelliteModel
-	 */
-//	public void sandwichesUpdated();
-	
-	/**
-	 * Called when the list of events is updated in the SatelliteModel
-	 */
-//	public void eventsUpdated();
-	
 }

@@ -33,7 +33,7 @@ public class FoodController extends PluginController implements IFoodController 
 	private FoodModel mModel;
 
 	/** Interface to the plugin's server client */
-	private Iface mClient;
+//	private Iface mClient;
 
 	/** The name of the plugin */
 	private String mPluginName = "food";
@@ -48,7 +48,7 @@ public class FoodController extends PluginController implements IFoodController 
 
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+//		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.transport.android;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ITransportDetailsViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.ui.TransportTripDetailsDialog;
@@ -26,23 +24,19 @@ import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
@@ -63,8 +57,6 @@ import com.markupartist.android.widget.ActionBar.Action;
  * 
  */
 public class TransportMainView extends PluginView implements ITransportView {
-	/** Main Activity of the plugin */
-	private Activity mActivity;
 	/* MVC */
 	/** The plugin controller */
 	private TransportController mController;
@@ -84,38 +76,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
 	/**
-	 * A labeler for a TransportConnection object, to tell a view how to display
-	 * it.
-	 */
-	private ITransportDetailsViewLabeler<TransportConnection> mTransportConnectionLabeler = new ITransportDetailsViewLabeler<TransportConnection>() {
-
-		@Override
-		public LinearLayout getPictureLayout(TransportConnection co) {
-			return null;
-		}
-
-		@Override
-		public String getDepartureTime(TransportConnection co) {
-			return stringifier(co.getDepartureTime());
-		}
-
-		@Override
-		public String getDeparturePlace(TransportConnection co) {
-			return co.getDeparture().getName();
-		}
-
-		@Override
-		public String getArrivalTime(TransportConnection co) {
-			return stringifier(co.getArrivalTime());
-		}
-
-		@Override
-		public String getArrivalPlace(TransportConnection co) {
-			return co.getArrival().getName();
-		}
-	};
-
-	/**
 	 * Defines what the main controller is for this view.
 	 */
 	@Override
@@ -125,12 +85,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	/**
 	 * On display. Called when first displaying the view. Retrieve the model and
-	 * the controller and
+	 * the controller and calls the methods which set up hte layout, the action
+	 * bar and the destinations with next departures.
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-		mActivity = this;
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
 
@@ -190,48 +150,51 @@ public class TransportMainView extends PluginView implements ITransportView {
 		return true;
 	}
 
+	/**
+	 * Sets up the main layout of the plugin.
+	 */
 	private void setUpLayout() {
 		// Main layout
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.transport_plugin_name));
 		mLayout.hideTitle();
-
 		setContentView(mLayout);
 	}
 
+	/**
+	 * Sets up the list of destinations found in the shared preferences along
+	 * with their next departures.
+	 */
 	private void setUpListView() {
 		// Creates the list view and sets its click listener
 		mListView = new ListView(this);
 		mListView.setId(1234);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
+			/**
+			 * Defines what is to be performed when the user clicks on a
+			 * departure.
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-
+				// Find the name and departure time as a string
 				String txt = ((PCEntryItem) ((ListView) arg0)
 						.getItemAtPosition(arg2)).id;
-
+				// Separate into name and departure time
 				String[] s = txt.split(":");
 				String name = s[0];
 				long depTime = Long.valueOf(s[1]);
-
+				// Find the destination in the ones from the model
 				List<TransportTrip> trips = mModel.getPreferredDestinations()
 						.get(name);
-				boolean found = false;
-
 				for (TransportTrip trip : trips) {
 					if (trip.getDepartureTime() == depTime) {
-						found = true;
 						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
 								TransportMainView.this, trip);
 						dialog.show();
 					}
-				}
-				if (!found) {
-					Toast.makeText(getApplicationContext(), "Problem",
-							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -257,14 +220,16 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Set up which destinations have to be displayed. First checks if there are
-	 * destinations in the shared preferences. If yes, asks for next departures,
-	 * and if not, opens the add view of the transport plugin to let the user
-	 * add a destination.
+	 * Sets up which destinations have to be displayed. First checks if there
+	 * are destinations in the shared preferences. If yes, asks for next
+	 * departures, and if not, opens the add view of the transport plugin to let
+	 * the user add a destination.
 	 */
+	@SuppressWarnings("unchecked")
 	private void setUpDestinations() {
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-		// If no destinations set, display a message
+		// If no destinations set, display a button that redirects to the add
+		// view of the plugin
 		if (prefs == null || prefs.isEmpty()) {
 			ButtonElement addButton = new ButtonElement(this, getResources()
 					.getString(R.string.transport_add_destination));
@@ -275,6 +240,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			addButton.setOnClickListener(new OnClickListener() {
 
+				/**
+				 * Defines what is to be performed when the user clicks on the
+				 * add button.
+				 */
 				@Override
 				public void onClick(View v) {
 					Intent add = new Intent(getApplicationContext(),
@@ -285,17 +254,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			mLayout.removeFillerView();
 			mLayout.addFillerView(addButton);
-
-			// mLayout.setText(getResources().getString(
-			// R.string.transport_no_destinations_message));
 		} else {
-			// mLayout.hideText();
-
+			// If destination(s) are in the shared preferences, remove the
+			// button of the main layout and adds the list view
 			mLayout.removeFillerView();
 			mLayout.addFillerView(mListView);
 			Set<String> set = prefs.keySet();
 			List<String> list = new ArrayList<String>();
-
 			for (String s : set) {
 				list.add(s);
 			}
@@ -312,14 +277,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// Gets the user's preferred destinations from the model
 		HashMap<String, List<TransportTrip>> locations = mModel
 				.getPreferredDestinations();
-
 		if (locations != null && !locations.isEmpty()) {
 			for (String loc : locations.keySet()) {
 				mController.nextDeparturesFromEPFL(loc);
 			}
 			setItemsToDisplay(locations);
 		}
-
 	}
 
 	/**
@@ -328,15 +291,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void connectionsUpdated(QueryTripsResult result) {
-		// Log.d("TRANSPORT", "Connection Updated (view)");
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getPreferredDestinations();
 		// In case the button is still here
 		mLayout.removeFillerView();
 		mLayout.addFillerView(mListView);
-
+		// Fill in the list view with the next departures
 		setItemsToDisplay(mDisplayedLocations);
-
 	}
 
 	/**
@@ -345,7 +306,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void destinationsUpdated() {
-		// Log.d("TRANSPORT", "Destinations updated (view)");
 		displayDestinations();
 	}
 
@@ -355,7 +315,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void locationsFromNamesUpdated(List<TransportStation> result) {
-		// Log.d("TRANSPORT", "Locations from Names updated (view)");
 		displayDestinations();
 	}
 
@@ -364,10 +323,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources()
-				.getString(R.string.transport_network_error),
-				Toast.LENGTH_SHORT);
-		toast.show();
+		// Display an error message on the screen
+		mLayout.setText(getResources().getString(
+				R.string.transport_network_error));
 	}
 
 	/**
@@ -392,15 +350,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 						dep.setTime(c.getDepartureTime());
 						Date now = new Date();
 						if (dep.after(now)) {
-
 							i++;
-							Log.d("TRANSPORT", "Dep was after now. " + i);
-
 							// Updates the shared preferences
 							mDestPrefsEditor.putInt(c.getTo().getName(), c
 									.getTo().getId());
 							mDestPrefsEditor.commit();
-
+							// String representing the type of transport
 							String logo = "";
 							for (TransportConnection p : c.parts) {
 								if (!p.foot) {
@@ -408,23 +363,21 @@ public class TransportMainView extends PluginView implements ITransportView {
 									break;
 								}
 							}
-
 							logo = TransportFormatter.getNiceName(logo);
 							PCEntryItem entry = new PCEntryItem(
 									timeString(c.getDepartureTime()), logo, c
 											.getTo().getName()
 											+ ":"
 											+ c.getDepartureTime());
-
+							// Add this departure
 							items.add(entry);
 						}
 					}
 				}
 			}
 		}
-
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-
+		// Update the list view
 		mListView.setAdapter(adapter);
 		mListView.invalidate();
 	}
@@ -486,26 +439,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Returns a text of the form : "HH:MM", which represents a departure time
-	 * in milliseconds.
-	 * 
-	 * @param c
-	 *            The time in milliseconds that we want the text for.
-	 * @return r The text representation of the departure time.
-	 */
-	private String stringifier(long time) {
-		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
-		return FORMAT.format(time);
-	}
-
-	/**
-	 * Not used in this view
-	 */
-	@Override
-	public void autoCompletedDestinationsUpdated() {
-	}
-
-	/**
 	 * Refreshes the next departures when clicking on the action bar refresh
 	 * button.
 	 * 
@@ -514,17 +447,34 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private class RefreshAction implements Action {
 
+		/**
+		 * The constructor which doesn't do anything
+		 */
 		RefreshAction() {
 		}
 
+		/**
+		 * Returns the resource for the icon of the button in the action bar
+		 */
 		@Override
 		public int getDrawable() {
 			return R.drawable.transport_action_bar_refresh;
 		}
 
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
 		@Override
 		public void performAction(View view) {
 			displayDestinations();
 		}
+	}
+
+	/**
+	 * Not used in this view
+	 */
+	@Override
+	public void autoCompletedDestinationsUpdated() {
 	}
 }

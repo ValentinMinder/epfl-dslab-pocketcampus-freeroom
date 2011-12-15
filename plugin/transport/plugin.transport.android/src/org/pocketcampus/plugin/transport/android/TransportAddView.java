@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 /**
  * The view of the Transport plugin which lets the user add a preferred
@@ -76,8 +75,9 @@ public class TransportAddView extends PluginView implements ITransportView {
 			PluginController controller) {
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
-
+		// Display the view
 		displayView();
+		// Create the list of next departures
 		createDestinationsList();
 	}
 
@@ -137,7 +137,6 @@ public class TransportAddView extends PluginView implements ITransportView {
 	public void autoCompletedDestinationsUpdated() {
 		mAdapter = new LabeledArrayAdapter(this,
 				mModel.getAutoCompletedDestinations(), mLocationLabeler);
-
 		mListView.setAdapter(mAdapter);
 		mListView.invalidate();
 	}
@@ -147,10 +146,10 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources()
-				.getString(R.string.transport_network_error),
-				Toast.LENGTH_SHORT);
-		toast.show();
+//		Toast toast = Toast.makeText(getApplicationContext(), getResources()
+//				.getString(R.string.transport_network_error),
+//				Toast.LENGTH_SHORT);
+//		toast.show();
 	}
 
 	/**

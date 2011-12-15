@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.satellite.server;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
@@ -26,15 +25,7 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	/** The List of sandwiches sold at Satellite */
 	private List<Sandwich> mSandwiches;
 	/** The list of next events at Satellite */
-	private List<Event> mEvents;
-
-	/** Last import date of events */
-	private Date mLastImportedEvents;
-	/** Last import date of beers */
-	private Date mLastImportedBeers;
-	/** Last import date of the beer of the month */
-	private Date mLastImportedBeer;
-	
+	private List<Event> mEvents;	
 	/** The parser for the affluence */
 	private AffluenceParser mAffluenceParser;
 	/** The parser for the beer of the month */
@@ -50,10 +41,6 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 		mBeers = new ArrayList<Beer>();
 		mSandwiches = new ArrayList<Sandwich>();
 		mEvents = new ArrayList<Event>();
-
-		mLastImportedEvents = new Date();
-		mLastImportedBeers = new Date();
-		mLastImportedBeer = new Date();
 	}
 
 	/**

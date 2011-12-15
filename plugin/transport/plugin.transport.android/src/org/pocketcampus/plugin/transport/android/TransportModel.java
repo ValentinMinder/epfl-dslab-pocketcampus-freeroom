@@ -88,7 +88,6 @@ public class TransportModel extends PluginModel implements ITransportModel {
 					if (c != null) {
 						if (i < 3) {
 							i++;
-
 							// Update displayed locations
 							if (mPreferredDestinations.get(c.getTo().getName()) == null) {
 								mPreferredDestinations.put(c.getTo().getName(),

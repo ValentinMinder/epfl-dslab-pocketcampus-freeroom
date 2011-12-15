@@ -1,8 +1,7 @@
-package org.pocketcampus.plugin.satellite.android.display;
+package org.pocketcampus.plugin.satellite.android.ui;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.plugin.satellite.shared.Affluence;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,9 +21,8 @@ import android.widget.TextView;
 public class AffluenceImageView extends LinearLayout {
 	/** The convert view */
 	private View mConvertView;
-	/** The Affluence to be displayed in the View */
-	private Affluence mAffluence;
 	/** The Labeler for the Affluence view */
+	@SuppressWarnings("rawtypes")
 	private IFeedViewLabeler mLabeler;
 	/** The Object to display */
 	private Object mCurrentObject;
@@ -38,14 +36,19 @@ public class AffluenceImageView extends LinearLayout {
 	private TextView mDescription;
 
 	/**
-	 * The constructor
+	 * The constructor of the view
 	 * 
-	 * @param affluence
+	 * @param object
+	 *            The object to be displayed
+	 * @param imageResource
+	 *            The resource value of the image
 	 * @param context
+	 *            The application context
 	 * @param labeler
+	 *            The labeler that says how to display the Object
 	 */
-	public AffluenceImageView(Object object, int imageResource, Context context,
-			IFeedViewLabeler<? extends Object> labeler) {
+	public AffluenceImageView(Object object, int imageResource,
+			Context context, IFeedViewLabeler<? extends Object> labeler) {
 		super(context);
 		this.mConvertView = LayoutInflater
 				.from(context.getApplicationContext()).inflate(
@@ -70,18 +73,23 @@ public class AffluenceImageView extends LinearLayout {
 	/**
 	 * Initializes the View
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
-		/** Title */
-		mTitle.setText(mLabeler.getTitle(mCurrentObject));
+		// Title
+		if (mLabeler.getTitle(mCurrentObject) != null) {
+			mTitle.setText(mLabeler.getTitle(mCurrentObject));
+		}
 
-		/** Description */
-		mDescription.setText(mLabeler.getDescription(mCurrentObject));
+		// Description
+		if (mLabeler.getDescription(mCurrentObject) != null) {
+			mDescription.setText(mLabeler.getDescription(mCurrentObject));
+		}
 
-		/** Image */
-		mImage.setImageDrawable(getResources().getDrawable(
-				mImageResource));
-
+		// Image
+		if (mLabeler.getPictureLayout(mCurrentObject) != null) {
+			mImage.setImageDrawable(getResources().getDrawable(mImageResource));
+		}
 
 		addView(mConvertView);
 	}

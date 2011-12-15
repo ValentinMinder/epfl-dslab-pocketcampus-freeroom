@@ -1,7 +1,6 @@
 package org.pocketcampus.android.platform.sdk.ui.element;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
 
 import android.content.Context;
@@ -79,17 +78,25 @@ public class ImageTextView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		/** Title */
-		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		// Title
+		if (mLabeler.getTitle(mCurrentObject) != null) {
+			mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+		}
 
-		/** Subtitle */
-		mSubtitleLine.setText(mLabeler.getSubtitle(mCurrentObject));
-		
-		/** Description */
-		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
+		// Subtitle
+		if (mLabeler.getSubtitle(mCurrentObject) != null) {
+			mSubtitleLine.setText(mLabeler.getSubtitle(mCurrentObject));
+		}
 
-		/** Image */
-		mImage.addView(mLabeler.getPictureLayout(mCurrentObject));
+		// Description
+		if (mLabeler.getDescription(mCurrentObject) != null) {
+			mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
+		}
+
+		// Image
+		if (mLabeler.getPictureLayout(mCurrentObject) != null) {
+			mImage.addView(mLabeler.getPictureLayout(mCurrentObject));
+		}
 
 		addView(mConvertView);
 	}

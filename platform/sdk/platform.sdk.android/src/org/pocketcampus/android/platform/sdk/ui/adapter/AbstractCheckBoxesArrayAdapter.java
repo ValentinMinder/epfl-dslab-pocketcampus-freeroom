@@ -59,18 +59,18 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 
-		/** If the View is null, calls the super getView() method */
+		// If the View is null, calls the super getView() method
 		if (v == null) {
 			v = super.getView(position, convertView, parent);
 		}
 
-		/** Creates the TextView and the two CheckBoxes */
+		// Creates the TextView and the two CheckBoxes
 		final CheckBox likeB = (CheckBox) v
 				.findViewById(R.id.sdk_list_entry_positive_checkbox);
 		final CheckBox dislikeB = (CheckBox) v
 				.findViewById(R.id.sdk_list_entry_negative_checkbox);
 
-		/** Listener on the positive CheckBox */
+		// Listener on the positive CheckBox
 		likeB.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -89,7 +89,7 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 			}
 		});
 		
-		/** Listener on the negative CheckBox */
+		// Listener on the negative CheckBox
 		dislikeB.setOnClickListener(new OnClickListener() {
 
 			@Override

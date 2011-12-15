@@ -194,7 +194,7 @@ public class RatingDialog extends Dialog {
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			/** Dialog */
+			// Dialog
 			final RatingDialog dialog = new RatingDialog(mContext,
 					R.style.Dialog);
 			final View layout = inflater.inflate(R.layout.sdk_dialog_rating,
@@ -204,7 +204,7 @@ public class RatingDialog extends Dialog {
 
 			dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
 
-			/** title */
+			// Title
 			if (mTitle != null) {
 				((TextView) layout.findViewById(R.id.sdk_dialog_rating_title))
 						.setText(mTitle);
@@ -214,7 +214,7 @@ public class RatingDialog extends Dialog {
 						.setVisibility(View.GONE);
 			}
 
-			/** positive button and its listener */
+			// Positive button and its listener
 			if (mPositiveButtonText != null) {
 				mPositiveButton = ((Button) layout
 						.findViewById(R.id.sdk_dialog_rating_positiveButton));
@@ -231,12 +231,12 @@ public class RatingDialog extends Dialog {
 							});
 				}
 			} else {
-				/** if no positive button just set the visibility to GONE */
+				// If no positive button just set the visibility to GONE
 				layout.findViewById(R.id.sdk_dialog_rating_positiveButton)
 						.setVisibility(View.GONE);
 			}
 
-			/** negative button and its listener */
+			// Negative button and its listener
 			if (mNegativeButtonText != null) {
 				mNegativeButton = ((Button) layout
 						.findViewById(R.id.sdk_dialog_rating_negativeButton));
@@ -253,12 +253,12 @@ public class RatingDialog extends Dialog {
 							});
 				}
 			} else {
-				/** if no negative button just set the visibility to GONE */
+				// If no negative button just set the visibility to GONE
 				layout.findViewById(R.id.sdk_dialog_rating_negativeButton)
 						.setVisibility(View.GONE);
 			}
 
-			/** Rating bar */
+			// Rating bar
 			mRatingBar = ((RatingBar) layout
 					.findViewById(R.id.sdk_dialog_rating_ratingBarIndicator));
 			mRatingBar.setRating(0);

@@ -16,10 +16,30 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+/**
+ * The Dialog of the Transport plugin for the details of a departure. It
+ * displays the details of all connections of the trip : departure and arrival
+ * time, departure and arrival place, and a logo representing the type of
+ * transport to use.
+ * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
+ * @author Pascal <pascal.scheiben@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
+ * 
+ */
 public class TransportTripDetailsDialog extends Dialog {
 	private TransportTrip connection_;
 	private Context ctx_;
 
+	/**
+	 * The constructor sets the main layout and calls the
+	 * <code>setDialogContents()</code> method.
+	 * 
+	 * @param ctxt
+	 *            The application context
+	 * @param connection
+	 *            The TransportTrip for which we create the dialog
+	 */
 	public TransportTripDetailsDialog(Context ctxt, TransportTrip connection) {
 		super(ctxt);
 		connection_ = connection;
@@ -33,6 +53,9 @@ public class TransportTripDetailsDialog extends Dialog {
 		setDialogContent();
 	}
 
+	/**
+	 * Sets the content of the dialog.
+	 */
 	private void setDialogContent() {
 		ArrayList<HashMap<String, String>> connectionParts = new ArrayList<HashMap<String, String>>();
 

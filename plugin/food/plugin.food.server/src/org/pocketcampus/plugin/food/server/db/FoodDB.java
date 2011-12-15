@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.pocketcampus.plugin.food.shared.Meal;
@@ -88,7 +87,7 @@ public class FoodDB {
 			try {
 				mConnection.close();
 				System.out.println("Database connection terminated");
-			} catch (Exception e) { /* ignore close errors */
+			} catch (Exception e) { // ignore close errors
 			}
 		}
 	}

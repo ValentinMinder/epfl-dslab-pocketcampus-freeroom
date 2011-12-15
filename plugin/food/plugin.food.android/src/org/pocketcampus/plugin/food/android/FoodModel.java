@@ -181,11 +181,9 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	public List<MealTag> getMealTags() {
 		List<MealTag> tags = new ArrayList<MealTag>();
 		MealTag[] arrayTags = MealTag.values();
-
 		for (int i = 0; i < arrayTags.length; i++) {
 			tags.add(arrayTags[i]);
 		}
-
 		return tags;
 	}
 
@@ -199,13 +197,11 @@ public class FoodModel extends PluginModel implements IFoodModel {
 			HashMap<String, Vector<Meal>> mealMap) {
 		Set<String> set = mealMap.keySet();
 		HashMap<String, Vector<Meal>> toDisplay = new HashMap<String, Vector<Meal>>();
-
 		for (String r : set) {
 			if (mRestoPrefs.getBoolean(r, false)) {
 				toDisplay.put(r, mealMap.get(r));
 			}
 		}
-
 		return toDisplay;
 	}
 

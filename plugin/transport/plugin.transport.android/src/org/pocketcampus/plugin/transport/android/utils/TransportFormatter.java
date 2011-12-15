@@ -34,11 +34,9 @@ public class TransportFormatter {
 		if (niceNames_ == null) {
 			initialize();
 		}
-
 		if (niceNames_.containsKey(lineName)) {
 			return niceNames_.get(lineName);
 		}
-
 		return lineName;
 	}
 

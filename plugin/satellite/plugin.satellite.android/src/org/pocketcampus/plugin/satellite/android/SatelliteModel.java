@@ -18,19 +18,10 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 
 	/** The listeners for the state of the view */
 	ISatelliteMainView mListeners = (ISatelliteMainView) getListeners();
-//	ISatelliteSandwichesView mSandwichesListeners = (ISatelliteSandwichesView) getListeners();
-//	ISatelliteEventsView mEventsListeners = (ISatelliteEventsView) getListeners();
-
 	/** The Beer of the month at Satellite */
 	private Beer mBeerOfMonth;
 	/** The current affluence at Satellite */
 	private Affluence mAffluence;
-	/** The list of beers available at Satellite */
-//	private List<Beer> mBeers;
-	/** The list of sandwiches available at Satellite */
-//	private List<Sandwich> mSandwiches;
-	/** The list of the next events scheduled at Satellite */
-//	private List<Event> mEvents;
 
 	/**
 	 * Returns the interface of the linked view
@@ -78,65 +69,4 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 			mListeners.affluenceUpdated();
 		}
 	}
-	
-	/**
-	 * Returns the list of all beers Satellite proposes
-	 */
-//	@Override
-//	public List<Beer> getAllBeers() {
-//		return mBeers;
-//	}
-
-	/**
-	 * Sets the list of beers and notify the view that the data has been updated
-	 */
-//	@Override
-//	public void setAllBeers(List<Beer> list) {
-//		if (list != null && !list.isEmpty()) {
-//			mBeers = list;
-////			mListeners.beersUpdated();
-//		}
-//	}
-
-	/**
-	 * Returns the list of sandwiches Satellite proposes
-	 */
-//	@Override
-//	public List<Sandwich> getSandwiches() {
-//		return mSandwiches;
-//	}
-
-	/**
-	 * Sets the list of sandwiches and notify the view that the data has been
-	 * updated
-	 */
-//	@Override
-//	public void setSandwiches(List<Sandwich> list) {
-//		if (list != null && !list.isEmpty()) {
-//			Log.d("SANDWICHES", "Got " + list.size()
-//					+ " sandwiches from the server");
-//			mSandwiches = list;
-//			mListeners.sandwichesUpdated();
-//		}
-//	}
-
-	/**
-	 * Returns the list of next events at Satellite
-	 */
-//	@Override
-//	public List<Event> getEvents() {
-//		return mEvents;
-//	}
-
-	/**
-	 * Sets the list of event and notify the view that the data has been updated
-	 */
-//	@Override
-//	public void setEvents(List<Event> list) {
-//		if (list != null && !list.isEmpty()) {
-//			mEvents = list;
-////			mListeners.eventsUpdated();
-//		}
-//	}
-
 }

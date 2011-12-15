@@ -11,7 +11,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.CheckBoxListViewElement;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
@@ -49,12 +48,10 @@ public class FoodSuggestionsView extends PluginView {
 	/* GUI */
 	/** A double full screen layout */
 	private StandardTitledDoubleLayout mLayout;
-	/** The second inner layout */
-	private StandardLayout mInnerLayout;
 	/** The list to be displayed in the layout */
 	private CheckBoxListViewElement mListView;
 	/** The button to validate the choices */
-	private ButtonElement computeButton;
+	private ButtonElement mComputeButton;
 
 	/**
 	 * The Meals sent by the MainView, modified here and sent back filtered with
@@ -83,40 +80,36 @@ public class FoodSuggestionsView extends PluginView {
 
 		/* ===== LAYOUT, VIEWS & DATA ===== */
 
-		/** Handle extras from MainView */
+		// Handle extras from MainView
 		handleExtras();
 
-		/** Get the tags from the controller */
+		// Get the tags from the controller
 		mTagsList = mController.getMealTags();
 
-		/**
-		 * The StandardLayout is a RelativeLayout with a TextView in its center
-		 * and/or two RelativeLayout one above the other
-		 */
+		// The StandardLayout is a RelativeLayout with a TextView in its center
+		// and/or two RelativeLayout one above the other
 		mLayout = new StandardTitledDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(R.string.food_by_suggestions));
-		mInnerLayout = new StandardLayout(this);
 
-		/** ListView */
+		// ListView
 		mListView = new CheckBoxListViewElement(this, mTagsList, mTagLabeler);
 
-		/** Compute Suggestions Button */
-		computeButton = new ButtonElement(this);
-		computeButton.setId(1);
+		// Compute Suggestions Button
+		mComputeButton = new ButtonElement(this, getResources().getString(
+				R.string.food_suggestions_ok));
 
-		/** Instantiate Objects */
+		// Instantiate Objects
 		mLikes = new ArrayList<MealTag>();
 
 		/* ===== PARAMETERS ===== */
 		setParameters();
 
-		/** Set onClickListener */
+		// Set onClickListener
 		setOnListViewClickListener();
 
-		/** Set the layout */
-		mInnerLayout.addView(computeButton);
+		// Set the layout
 		mLayout.addFirstLayoutFillerView(mListView);
-		mLayout.addSecondLayoutFillerView(mInnerLayout);
+		mLayout.addSecondLayoutFillerView(mComputeButton);
 
 		setContentView(mLayout);
 	}
@@ -125,26 +118,25 @@ public class FoodSuggestionsView extends PluginView {
 	 * Sets the parameters for the ListView and the Buttons.
 	 */
 	private void setParameters() {
-		/** Layout */
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		mInnerLayout.setLayoutParams(layoutParams);
-
-		/** List */
+		// List
 		RelativeLayout.LayoutParams listParams = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		mListView.setLayoutParams(listParams);
 
-		/** Compute Button */
-		computeButton.setText(getResources().getString(
-				R.string.food_suggestions_ok));
+		// Compute Button
 		RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		computeButton.setLayoutParams(buttonParams);
+		mComputeButton.setLayoutParams(buttonParams);
 
-		/** Set onClickListener */
-		setOnComputeButtonClickListener();
+		// Set onClickListener
+		mComputeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finalizeSuggestions();
+			}
+		});
 	}
 
 	/**
@@ -170,21 +162,6 @@ public class FoodSuggestionsView extends PluginView {
 			}
 
 		});
-	}
-
-	/**
-	 * Sets the clickListener on the Compute Button.
-	 */
-	private void setOnComputeButtonClickListener() {
-
-		computeButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finalizeSuggestions();
-			}
-		});
-
 	}
 
 	/**
@@ -262,22 +239,6 @@ public class FoodSuggestionsView extends PluginView {
 	}
 
 	/**
-	 * To display the right language and not always English (as it is in the
-	 * enum type).
-	 * 
-	 * @return the list of tags depending on the language the phone is setup in
-	 */
-	private ArrayList<String> languageCompatible() {
-		ArrayList<String> list = new ArrayList<String>();
-
-		for (MealTag m : mTagsList) {
-			list.add(write(m));
-		}
-
-		return list;
-	}
-
-	/**
 	 * Convert from MealTag to String
 	 * 
 	 * @param tag
@@ -326,9 +287,16 @@ public class FoodSuggestionsView extends PluginView {
 	 */
 	ILabeler<MealTag> mTagLabeler = new ILabeler<MealTag>() {
 
+		/**
+		 * Returns the MealTag name
+		 * 
+		 * @param mealTag
+		 *            The MealTag to be displayed
+		 * @return The name of the MealTag
+		 */
 		@Override
-		public String getLabel(MealTag obj) {
-			return write(obj);
+		public String getLabel(MealTag mealTag) {
+			return write(mealTag);
 		}
 
 	};

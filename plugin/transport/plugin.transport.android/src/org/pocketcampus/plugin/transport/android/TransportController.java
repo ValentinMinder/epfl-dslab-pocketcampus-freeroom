@@ -78,7 +78,6 @@ public class TransportController extends PluginController implements
 	@Override
 	public void nextDeparturesFromEPFL(String location) {
 		if (location != null) {
-			// Log.d("TRANSPORT", "Departures request (controller)");
 			getTrips_args args = new getTrips_args("EPFL", location);
 			new NextDeparturesFromEPFLRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
@@ -96,7 +95,6 @@ public class TransportController extends PluginController implements
 	@Override
 	public void getLocationsFromNames(List<String> list) {
 		if (list != null && !list.isEmpty()) {
-			// Log.d("TRANSPORT", "Locations from names request (controller)");
 			getLocationsFromNames_args args = new getLocationsFromNames_args(
 					list);
 			new LocationsFromNamesRequest().start(this,

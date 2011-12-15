@@ -6,14 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.plugin.transport.shared.Departure;
+import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
-import org.pocketcampus.plugin.transport.shared.StationDepartures;
-import org.pocketcampus.plugin.transport.shared.TransportTrip;
+import org.pocketcampus.plugin.transport.shared.TransportService;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportStationType;
-import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
-import org.pocketcampus.plugin.transport.shared.TransportService;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;

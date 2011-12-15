@@ -28,6 +28,12 @@ public class PreferencesListViewElement extends ListView implements Element {
 		
 	}
 	
+	/**
+	 * Sets the click listener for the CheckBox
+	 * 
+	 * @param clickListener
+	 *            The click listener created in the application
+	 */
 	public void setOnItemClickListener(OnItemClickListener l) {
 		mAdapter.setOnCheckBoxClickListener(l);
 	}

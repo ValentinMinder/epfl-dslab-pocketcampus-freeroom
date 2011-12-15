@@ -19,9 +19,9 @@ public class DestinationFormatter {
 	 * names.
 	 */
 	private static void inititializeList() {
-		if (niceNames_ != null)
-			return;
-
+		if (niceNames_ != null) {
+			return;			
+		}
 		niceNames_ = new HashMap<String, String>();
 		niceNames_.put("Ecublens VD, EPFL", "EPFL");
 		niceNames_.put("Lausanne, Vigie", "Vigie");
@@ -50,11 +50,9 @@ public class DestinationFormatter {
 	 */
 	public static String getNiceName(String locationName) {
 		inititializeList();
-
 		if (niceNames_.containsKey(locationName)) {
 			return niceNames_.get(locationName);
 		}
-
 		return locationName;
 	}
 }

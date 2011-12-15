@@ -63,13 +63,13 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	/* Layout */
 	/** A simple full screen layout */
 	private StandardTitledLayout mLayout;
-	
+
 	/** The main list with menus and sandwiches */
 	private RatableExpandableListViewElement mExpandableList;
 
-	/** The main list with suggestions and ratings*/
+	/** The main list with suggestions and ratings */
 	private RatableListViewElement mList;
-	
+
 	/* Constants */
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
@@ -126,7 +126,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		mExpandableList = new RatableExpandableListViewElement(this);
 
 		mList = new RatableListViewElement(this);
-		
+
 		// We need to force the display before asking the controller for the
 		// data,
 		// as the controller may take some time to get it.
@@ -255,10 +255,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	public void ratingsUpdated() {
 		Log.d("RATING", "All Ratings updated");
-		if(mExpandableList.getAdapter() != null) {			
+		if (mExpandableList.getAdapter() != null) {
 			mExpandableList.notifyDataSetChanged();
 		}
-		if(mList.getAdapter() != null) {
+		if (mList.getAdapter() != null) {
 			mList.notifyDataSetChanged();
 		}
 	}
@@ -460,16 +460,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				showAllMenusAction.setIsRestaurant(true);
 			}
 
-			/**
-			 * Iterate over the different restaurant menus
-			 */
+			// Iterate over the different restaurant menus
 			mLayout.removeFillerView();
 
 			if (!mealHashMap.isEmpty()) {
 
 				// Filtering restaurant that the user doesn't want to display
-				mExpandableList = new RatableExpandableListViewElement(this, mealHashMap,
-						mMealLabeler, mMealsViewConstructor);
+				mExpandableList = new RatableExpandableListViewElement(this,
+						mealHashMap, mMealLabeler, mMealsViewConstructor);
 
 				setHashMapOnClickListeners(mealHashMap);
 
@@ -504,8 +502,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mLayout.removeFillerView();
 
 			// Create a new list by ratings
-			mList = new RatableListViewElement(this,
-					mealsByRatings, mMealWithRestaurantLabeler);
+			mList = new RatableListViewElement(this, mealsByRatings,
+					mMealWithRestaurantLabeler);
 
 			setListOnClickListeners(mealsByRatings, mList);
 
@@ -547,8 +545,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					+ mealsBySuggestions.size());
 
 			mLayout.removeFillerView();
-			mList = new RatableListViewElement(this,
-					mealsBySuggestions, mMealWithRestaurantLabeler);
+			mList = new RatableListViewElement(this, mealsBySuggestions,
+					mMealWithRestaurantLabeler);
 
 			setListOnClickListeners(mealsBySuggestions, mList);
 
@@ -870,26 +868,61 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	IRatableViewLabeler<Sandwich> mSandwichLabeler = new IRatableViewLabeler<Sandwich>() {
 
+		/**
+		 * Returns the sandwich name
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return the sandwich name
+		 */
 		@Override
 		public String getLabel(Sandwich sandwich) {
 			return sandwich.getName();
 		}
 
+		/**
+		 * Returns the sandwich description
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return the sandwich description (here empty)
+		 */
 		@Override
 		public String getDescription(Sandwich sandwich) {
 			return "";
 		}
 
+		/**
+		 * Returns the sandwich rating
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return the sandwich rating (here null)
+		 */
 		@Override
 		public float getRating(Sandwich sandwich) {
 			return (float) 0;
 		}
 
+		/**
+		 * Returns the sandwich name number of votes
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return the sandwich number of votes (here 0)
+		 */
 		@Override
 		public int getNumberOfVotes(Sandwich sandwich) {
 			return 0;
 		}
 
+		/**
+		 * Returns the restaurant name where the sandwich is available
+		 * 
+		 * @param sandwich
+		 *            The sandwich to be displayed
+		 * @return the restaurant name
+		 */
 		@Override
 		public String getPlaceName(Sandwich sandwich) {
 			return sandwich.getRestaurant().getName();

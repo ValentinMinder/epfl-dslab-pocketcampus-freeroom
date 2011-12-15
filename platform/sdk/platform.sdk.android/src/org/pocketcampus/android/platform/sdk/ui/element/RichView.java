@@ -76,10 +76,8 @@ public class RichView extends LinearLayout {
 		mLabeler = labeler;
 		mPosition = position;
 
-		/**
-		 * Creates a ViewHolder and store references to the two children views
-		 * we want to bind data to.
-		 */
+		// Creates a ViewHolder and store references to the two children views
+		// we want to bind data to.
 		mLayout = (LinearLayout) mConvertView
 				.findViewById(R.id.sdk_list_entry_rich_view_layout);
 		mTitleLine = (TextView) mConvertView
@@ -91,7 +89,7 @@ public class RichView extends LinearLayout {
 		mDateLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_list_entry_rich_view_date);
 
-		/** Listener */
+		// Listener
 		mOnElementClickLIstener = elementListener;
 
 		initializeView();
@@ -102,7 +100,7 @@ public class RichView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		/** Sets the click listener on the layout (on the line) */
+		// Sets the click listener on the layout (on the line)
 		mLayout.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
@@ -112,58 +110,67 @@ public class RichView extends LinearLayout {
 			}
 		});
 
-		/** Bind the data efficiently with the holder. */
+		// Binds the data efficiently with the holder.
 
-		/** Title */
-		if(mLabeler.getTitle(mCurrentObject) != null) {			
+		// Title
+		if (mLabeler.getTitle(mCurrentObject) != null) {
 			mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
 		}
-		/** Description */
-		if(mLabeler.getDescription(mCurrentObject) != null) {			
+
+		// Description
+		if (mLabeler.getDescription(mCurrentObject) != null) {
 			mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 		}
-		/** Price */
-		if(mLabeler.getValue(mCurrentObject) != -1) {			
+
+		// Price
+		if (mLabeler.getValue(mCurrentObject) != -1) {
 			mValueLine.setText("" + mLabeler.getValue(mCurrentObject));
 		}
-		/** Date */
-		if(mLabeler.getDate(mCurrentObject) != null) {			
+
+		// Date
+		if (mLabeler.getDate(mCurrentObject) != null) {
 			Date date = mLabeler.getDate(mCurrentObject);
-			mDateLine.setText("" + day(date) + " " + (date.getMonth()+1) + ", "
-					+ date.getHours() + ":" + date.getMinutes());
+			mDateLine.setText("" + day(date) + " " + (date.getMonth() + 1)
+					+ ", " + date.getHours() + ":" + date.getMinutes());
 		}
 
 		addView(mConvertView);
 	}
 
-	private String day(Date date){
+	/**
+	 * Returns the name of the day for a date.
+	 * 
+	 * @param date
+	 * @return
+	 */
+	private String day(Date date) {
 		String day = "";
-		
+
 		switch (date.getDay()) {
-		case 0 :
+		case 0:
 			day = mContext.getResources().getString(R.string.sdk_day_sunday);
 			break;
-		case 1 :
+		case 1:
 			day = mContext.getResources().getString(R.string.sdk_day_monday);
 			break;
-		case 2 :
+		case 2:
 			day = mContext.getResources().getString(R.string.sdk_day_tuesday);
 			break;
-		case 3 :
+		case 3:
 			day = mContext.getResources().getString(R.string.sdk_day_wednesday);
 			break;
-		case 4 :
+		case 4:
 			day = mContext.getResources().getString(R.string.sdk_day_thursday);
 			break;
-		case 5 :
+		case 5:
 			day = mContext.getResources().getString(R.string.sdk_day_friday);
 			break;
-		case 6 :
+		case 6:
 			day = mContext.getResources().getString(R.string.sdk_day_saturday);
-		default :
+		default:
 			break;
 		}
-		
+
 		return day;
 	}
- }
+}

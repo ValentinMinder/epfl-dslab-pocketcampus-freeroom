@@ -56,7 +56,7 @@ public class PreferencesView extends LinearLayout {
 
 		mPrefs = mContext.getSharedPreferences(prefName, 0);
 
-		/** Creates the TextView and the CheckBox */
+		// Creates the TextView and the CheckBox
 		mTitle = (TextView) mConvertView
 				.findViewById(R.id.sdk_list_preferences_entry_text);
 		mPrefBox = (CheckBox) mConvertView
@@ -70,17 +70,17 @@ public class PreferencesView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		/** Bind the data efficiently with the holder. */
+		// Binds the data efficiently with the holder.
 
-		/** TextView */
+		// TextView
 		mTitle.setText(mLabeler.getLabel(mCurrentObject));
 
-		/** CheckBox */
+		// CheckBox
 		if (mPrefs.getBoolean(mTitle.getText().toString(), false)) {
 			mPrefBox.setChecked(true);
 		}
 
-		/** CheckBox Listener */
+		// CheckBox Listener
 		mPrefBox.setOnClickListener(new OnClickListener() {
 
 			@Override

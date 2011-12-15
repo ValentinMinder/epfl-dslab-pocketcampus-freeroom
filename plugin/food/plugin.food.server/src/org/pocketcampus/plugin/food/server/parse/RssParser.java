@@ -359,6 +359,9 @@ public class RssParser extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * Appends the characters from an array to the StringBuilder text.
+	 */
 	public void characters(char[] ch, int start, int length) {
 		this.text.append(ch, start, length);
 	}

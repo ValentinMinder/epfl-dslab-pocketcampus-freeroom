@@ -67,16 +67,14 @@ public class CheckBoxView extends LinearLayout {
 		mLabeler = labeler;
 		mPosition = position;
 
-		/**
-		 * Creates a ViewHolder and store references to the two children views
-		 * we want to bind data to.
-		 */
+		// Creates a ViewHolder and store references to the two children views
+		// we want to bind data to.
 		mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_list_entry_checkbox_text);
 		mPositiveCheckBox = (CheckBox) mConvertView
 				.findViewById(R.id.sdk_list_entry_box);
 
-		/** Listeners */
+		// Listeners
 		mOnCheckBoxClickListener = checkBoxListener;
 
 		initializeView();
@@ -87,7 +85,7 @@ public class CheckBoxView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		/** positive CheckBox click listener */
+		// Positive CheckBox click listener
 		mPositiveCheckBox.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mOnCheckBoxClickListener != null) {
@@ -96,8 +94,10 @@ public class CheckBoxView extends LinearLayout {
 			}
 		});
 
-		/** Title text for the holder */
-		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
+		// Title text for the holder
+		if(mLabeler.getLabel(mCurrentObject) != null) {			
+			mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
+		}
 
 		addView(mConvertView);
 	}
