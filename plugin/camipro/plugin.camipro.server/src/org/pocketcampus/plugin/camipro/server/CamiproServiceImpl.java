@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
@@ -169,13 +170,11 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.setRequestProperty("Cookie", cookie.cookie());
-		BufferedInputStream buffer = new BufferedInputStream(conn.getInputStream());
-		StringBuilder builder = new StringBuilder();
-		int byteRead;
-		while ((byteRead = buffer.read()) != -1)
-			builder.append((char) byteRead);
-		buffer.close();
-		return builder.toString();
+		Scanner reader = new Scanner(conn.getInputStream());
+		StringBuilder token = new StringBuilder ();
+		while(reader.hasNextLine())
+			token.append(reader.nextLine());
+		return token.toString();
 	}
 	
 	private String getSubstringBetween(String orig, String before, String after) {
