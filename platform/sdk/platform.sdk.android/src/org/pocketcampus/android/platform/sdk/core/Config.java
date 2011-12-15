@@ -1,5 +1,11 @@
 package org.pocketcampus.android.platform.sdk.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -10,7 +16,7 @@ import android.util.Log;
 public class Config {
 	/** Server IP. */
 	// Mac Mini's IP, requires VPN
-	public final static String SERVER_IP = "128.178.77.236";
+	public static String SERVER_IP = "128.178.77.236";
 	
 	// pocketcampus.epfl.ch's IP, doesn't require VPN
 //	public final static String SERVER_IP = "128.178.132.3";
@@ -19,7 +25,7 @@ public class Config {
 //	public final static String SERVER_IP = "10.0.0.157";
 	
 	/** Server port. */
-	public final static int SERVER_PORT = 9090;
+	public static int SERVER_PORT = 9090;
 	
 	/** Level of information reported by the logger, a lower number mean more. */
 	// XXX not used for now
@@ -30,4 +36,33 @@ public class Config {
 
 	/** Time before giving up HTTP read operation (ms). */
 	public static final int HTTP_READ_TIMEOUT = 20000;
+	
+	static {
+		try {
+			String configFile = Environment.getExternalStorageDirectory() + "/pocketcampus.config";
+			if(new File(configFile).exists()) {
+				FileReader fr = new FileReader(configFile);
+				BufferedReader br = new BufferedReader(fr);
+				String line;
+				while((line = br.readLine()) != null) {
+					String[] param = line.trim().split("=");
+					if(param.length == 2) {
+						if("SERVER_IP".equals(param[0]))
+							SERVER_IP = param[1];
+						if("SERVER_PORT".equals(param[0]))
+							SERVER_PORT = Integer.parseInt(param[1]);
+					}
+				}
+			} else {
+				FileWriter fw = new FileWriter(configFile, false);
+				fw.write("SERVER_IP=" + SERVER_IP + "\n");
+				fw.write("SERVER_PORT=" + SERVER_PORT + "\n");
+				fw.close();
+			}
+		} catch (Exception e) {
+			Log.e("DEBUG", "grrrrrrrrr Exception while running static code!?!?");
+			e.printStackTrace();
+		}
+	}
+	
 }
