@@ -318,12 +318,12 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 		}else{
 			for(String fname: given_names){
-				if(fname.startsWith(constraint))
+				if(fname.startsWith(StringUtils.capitalize(constraint)))
 						suggestions.add(fname);
 			}
 			
 			for(String lname: second_names){
-				if(lname.startsWith(constraint))
+				if(lname.startsWith(StringUtils.capitalize(constraint)))
 						suggestions.add(lname);
 			}
 		}
@@ -339,7 +339,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		if(partialFirstName.length() == 0)
 			return searchForName("(sn=" +lastName+")");
 		else
-			return searchForName("(&(sn=" +lastName+")(" + partialFirstName +"*))");
+			return searchForName("(&(sn=" +lastName+")(givenName=" + partialFirstName +"*))");
 	}
 	
 	private ArrayList<String> searchForName(String query){
