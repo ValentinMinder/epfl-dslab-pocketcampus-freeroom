@@ -87,9 +87,7 @@ public class AffluenceImageView extends LinearLayout {
 		}
 
 		// Image
-		if (mLabeler.getPictureLayout(mCurrentObject) != null) {
-			mImage.setImageDrawable(getResources().getDrawable(mImageResource));
-		}
+		mImage.setImageDrawable(getResources().getDrawable(mImageResource));
 
 		addView(mConvertView);
 	}
