@@ -6,24 +6,22 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.*;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
 
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,10 +56,12 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
-				if(!((PCItem) adapter.getItemAtPosition(pos)).isSection()){
+				PCItem item = (PCItem) adapter.getItemAtPosition(pos);
+				if( item.isEmptyLayout() ){
 					String msg = "";
 					
-					String stationsName = ((PCEntryItem)adapter.getItemAtPosition(pos)).title;
+					//make this a little less ugly, getting the relative layout  to get first textview using the hadcoded id and finally converting the charSequence to a string
+					String stationsName = ((TextView)((PCEmptyLayoutItem)adapter.getItemAtPosition(pos)).getLayout().findViewById(4)).getText().toString();
 					
 					for(BikeEmplacement be: mModel.getAvailablesBikes()){
 						if(be.name.equals(stationsName)){
@@ -113,34 +113,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
 		boolean found = false;
 		
-		//No sections after all
-//		items.add(new PCSectionItem("Available bikes"));
-//		for(BikeEmplacement be:mModel.getAvailablesBikes()){
-//			if(be.availableQuantity > 0){
-//				items.add(new PCEntryItem(be.designation, be.availableQuantity+""));
-//				found = true;
-//				}
-//		}
-//		if(!found){
-//			items.add(new PCEntryItem("No bikes available", ""));
-//		}
-//		
-//		//
-//		found = false;
-//		//new section header
-//		items.add(new PCSectionItem("Empty docks"));
-//		//adding the content of the section
-//		for(BikeEmplacement be:mModel.getAvailablesBikes()){
-//			if(be.empty > 0){
-//				//element by element
-//				items.add(new PCEntryItem(be.designation, be.empty+""));
-//				found = true;
-//			}
-//		}if(!found){
-//			items.add(new PCEntryItem("No docks available", ""));
-//		}
-//		
-		items.add(new PCSectionItem("Velopass"));
+	
+		items.add(new PCSectionItem("Velopass","Available"));
 		
 		for(BikeEmplacement be : mModel.getAvailablesBikes()){
 			String nbBikes;
@@ -155,10 +129,53 @@ public class BikesMainView extends PluginView implements IBikesView{
 			else
 				nbBikes = nbBikes + pl;
 			
-		
 			
-			if(pl > 0)
-				items.add(new PCEntryItem(be.name, nbBikes, ""));
+			if(pl > 0){
+				RelativeLayout listElement = new RelativeLayout(this);
+				float textSize = 15f;
+				int layoutsWidth = 30;
+				//bikeEmplacement name
+				TextView titleView = new TextView(this);
+				titleView.setText(be.name);
+				titleView.setId(4);
+				titleView.setTextSize(textSize);
+				LayoutParams titleParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
+				titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+				titleParams.setMargins(15, 3, 3, 3);
+				listElement.addView(titleView, titleParams);
+				
+				TextView totalPlacesView = new TextView(this);
+				totalPlacesView.setText(pl + "");
+				totalPlacesView.setGravity(Gravity.RIGHT);
+				totalPlacesView.setTextSize(textSize);
+				LayoutParams totalParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
+				totalParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				totalParams.setMargins(3, 3, 15, 3);
+				totalPlacesView.setId(3);
+				listElement.addView(totalPlacesView,totalParams);
+				
+				TextView slashView = new TextView(this);
+				slashView.setText("/");
+				slashView.setGravity(Gravity.RIGHT);
+				slashView.setTextSize(textSize);
+				slashView.setId(2);
+				LayoutParams slashParams = new LayoutParams(layoutsWidth/3, LayoutParams.FILL_PARENT);
+				slashParams.addRule(RelativeLayout.LEFT_OF, totalPlacesView.getId());
+				slashParams.setMargins(3, 3, 3, 3);
+				listElement.addView(slashView,slashParams);
+				
+				TextView bikesAvailableView = new TextView(this);
+				bikesAvailableView.setText(q + "");
+				bikesAvailableView.setGravity(Gravity.RIGHT);
+				bikesAvailableView.setTextSize(textSize);
+				bikesAvailableView.setId(1);
+				LayoutParams availableParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
+				availableParams.addRule(RelativeLayout.LEFT_OF, slashView.getId());
+				availableParams.setMargins(3, 3, 3, 3);
+				listElement.addView(bikesAvailableView,availableParams);
+				
+				items.add(new PCEmptyLayoutItem(listElement));
+			}
 		}
 		//coucou oriane, regarde ici pour savoir comment ajouter tout ce que tu veux!!!!!
 		//svn comitt test

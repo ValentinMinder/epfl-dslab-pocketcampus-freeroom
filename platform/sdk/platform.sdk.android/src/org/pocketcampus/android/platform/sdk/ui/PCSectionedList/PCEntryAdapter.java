@@ -45,6 +45,10 @@ public class PCEntryAdapter extends ArrayAdapter<PCItem> {
 					
 					final TextView sectionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_text);
 					sectionView.setText(si.getTitle());
+					
+					final TextView sectionDescriptionView = (TextView) v.findViewById(R.id.PCSectioned_list_item_section_description);
+					sectionDescriptionView.setText(si.getDescription());
+					
 				}else{
 					PCEntryItem ei = (PCEntryItem)i;
 					

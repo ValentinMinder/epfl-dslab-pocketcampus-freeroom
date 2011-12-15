@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical"
-	
-	
-	android:clickable="false"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/smoke"
+    
+    android:clickable="false"
 	android:longClickable="true"
 	android:linksClickable="false"
 	android:focusable="false"
 	android:focusableInTouchMode="false">
 
-	<!-- <include
-		android:id="@+id/PCSectioned_list_item_section_text"
-		layout="@android:layout/preference_category" />
-	-->
-	<TextView 
+	<TextView
 	    xmlns:android="http://schemas.android.com/apk/res/android"
-    	style="?android:attr/listSeparatorTextViewStyle"
-    	android:id="@+id/PCSectioned_list_item_section_text"
-    	
-		android:background="@color/smoke"
-		android:textColor="@android:color/white"
-	/>
+	    android:id="@+id/PCSectioned_list_item_section_text"
+	    style="?android:attr/listSeparatorTextViewStyle"
+	    android:layout_width="wrap_content"
+	    android:textColor="@android:color/white" android:layout_alignParentLeft="true" android:background="@color/transparent"/>
 
-</LinearLayout>
+	<TextView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/PCSectioned_list_item_section_description"
+	    style="?android:attr/listSeparatorTextViewStyle"
+	    android:layout_width="wrap_content"
+	    android:textColor="@android:color/white" android:layout_alignParentRight="true" android:background="@color/transparent" android:layout_marginRight="5dip"/>
+
+</RelativeLayout>
+
+
