@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -51,7 +52,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	public void loadPicture() {
 		LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
 		if(liv == null){
-			System.out.println("liv is null");
+			Log.d("Directory", "loaderImageView in the layout is null");
 			return;
 		}
 		
@@ -67,7 +68,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	private void build(){
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setTitle("Details");
+		setTitle(ctx_.getResources().getString(R.string.directory_person_details_dialog_tile));
 		setContentView(R.layout.directory_person_details_dialog);
 		getWindow().setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
@@ -163,9 +164,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	private void performDial() {
 		AlertDialog dialog = new AlertDialog.Builder(ctx_)
-		.setTitle(/*getString(R.string.directory_call) +*/ "Call "+displayedPerson_.getFirstName()+" "+displayedPerson_.getLastName()+"?")
+		.setTitle(getString(R.string.directory_call) + displayedPerson_.getFirstName()+" "+displayedPerson_.getLastName()+"?")
 		
-		.setPositiveButton(/*R.string.yes*/"yes", new DialogInterface.OnClickListener() {
+		.setPositiveButton(getString(R.string.directory_yes), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + displayedPerson_.officePhoneNumber));
@@ -173,12 +174,12 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 				try{
 					ctx_.startActivity(dialIntent);
 				}catch (Exception e){
-					Toast.makeText(ctx_,/* getString(R.string.directory_couldnt_call)*/"problem with phone call", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx_,getString(R.string.directory_couldnt_call), Toast.LENGTH_SHORT).show();
 				}
 			}
 		})
 		
-		.setNegativeButton(/*R.string.no*/"no", null)
+		.setNegativeButton(getString(R.string.directory_no), null)
 		.show();
 		
 		dialog.setCanceledOnTouchOutside(true);
@@ -190,7 +191,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		try {
 		    ctx_.startActivity(Intent.createChooser(emailIntent, "Send email..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-		    Toast.makeText(ctx_, /*getString(R.string.directory_couldnt_email)*/"problem with email", Toast.LENGTH_SHORT).show();
+		    Toast.makeText(ctx_, getString(R.string.directory_couldnt_email), Toast.LENGTH_SHORT).show();
 		}
 		
 	}
@@ -206,7 +207,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	
 	
-//	private CharSequence getString(int resId) {
-//		return ctx_.getString(resId);
-//	}
+	private CharSequence getString(int resId) {
+		return ctx_.getString(resId);
+	}
 }

@@ -6,6 +6,8 @@ import org.pocketcampus.plugin.directory.android.DirectoryController;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
 
+import android.util.Log;
+
 import java.util.*;
 
 public class DirectorySearchSciperRequest extends Request<DirectoryController, Iface, Object, List<Person>> {
@@ -22,7 +24,7 @@ public class DirectorySearchSciperRequest extends Request<DirectoryController, I
 
 	@Override
 	protected void onError(DirectoryController controller, Exception e) {
-		System.out.println("onError");
+		Log.e("Directory", "error in the search sciper request");
 		controller.getModel().notifyNetworkError();
 	}
 

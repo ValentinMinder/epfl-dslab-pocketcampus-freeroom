@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.directory.android;
 import java.util.Collections;
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
@@ -59,7 +60,7 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT).show();
 	}
 
 	private void setOnListViewClickListener() {
@@ -82,27 +83,23 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 
 	@Override
 	public void resultsUpdated() {
-		// TODO Auto-generated method stub
-		
+		// should not happen here
 	}
 
 	@Override
 	public void tooManyResults(int nb) {
-		// not used
-		
-	}
+		// should not happen here
+		}
 
 	@Override
 	public void pictureUpdated() {
-		// not used
-		
-	}
+		// should not happen here
+		}
 
 	@Override
 	public void autoCompletedUpdated() {
-		// TODO Auto-generated method stub
-		
-	}
+		// should not happen here
+		}
 
 	
 }

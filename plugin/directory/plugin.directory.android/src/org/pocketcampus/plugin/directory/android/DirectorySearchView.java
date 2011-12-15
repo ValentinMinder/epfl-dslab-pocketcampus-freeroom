@@ -93,10 +93,10 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	private void displayView() {
 		/** Layout */
 		mLayout = new StandardTitledLayout(this);
-		mLayout.setTitle("Search the epfl directory");
+		mLayout.setTitle(getString(R.string.directory_searchView_title));
 
 		/** Input bar */
-		mInputBar = new InputBarElement(this, "","name or sciper");
+		mInputBar = new InputBarElement(this, "",getString(R.string.directory_searchView_hint));
 		mInputBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mInputBar.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -156,7 +156,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
@@ -174,7 +174,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 
 	@Override
 	public void tooManyResults(int nb) {
-		Toast.makeText(this, "Too many results, try to be more specific", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, getString(R.string.directory_too_many_results_warning), Toast.LENGTH_LONG).show();
 		
 	}
 	

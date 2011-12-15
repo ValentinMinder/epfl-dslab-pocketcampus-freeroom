@@ -8,6 +8,8 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
+import android.util.Log;
+
 
 public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	IDirectoryView mListeners = (IDirectoryView) getListeners();
@@ -39,7 +41,7 @@ public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	
 	public void setResults(List<Person> results){
 		mResult = results;
-		System.out.println("result set via the model");
+		Log.v("Directory","result set via the model");
 		mListeners.resultsUpdated();
 		
 	}

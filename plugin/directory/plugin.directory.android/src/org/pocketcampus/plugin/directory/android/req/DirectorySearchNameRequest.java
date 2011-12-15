@@ -6,6 +6,8 @@ import org.pocketcampus.plugin.directory.android.DirectoryController;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
 
+import android.util.Log;
+
 import java.util.*;
 
 public class DirectorySearchNameRequest extends Request<DirectoryController, Iface, String, List<Person>> {
@@ -19,7 +21,7 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 	protected void onError(DirectoryController controller, Exception e) {
 		
 		if(e != null ){
-			System.out.println("onError "+e.getMessage());
+			Log.e("Directory","onError "+e.getMessage());
 			if(e.getMessage().equals("too many results"))
 				((DirectoryModel) controller.getModel()).notifyTooManyResults(1337);
 		}else{

@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.directory.android;
 //import java.util.HashSet;
 import java.util.List;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
@@ -15,6 +16,7 @@ import org.pocketcampus.plugin.directory.android.ui.PersonDetailsDialog;
 import org.pocketcampus.plugin.directory.shared.Person;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,7 +62,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		mMainLayout = new StandardLayout(this); 
 		setContentView(mMainLayout);
 		
-		mMainLayout.setText("Loading..");
+		mMainLayout.setText(getString(R.string.directory_loading));
 		
 		resultsUpdated();
 		
@@ -87,7 +89,6 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 			public void onViewBound(PluginController controller) {
 				mController = (DirectoryController) controller;
 				mModel = (DirectoryModel) mController.getModel();
-				System.out.println(mModel.getResults());
 				releaseController(mController);
 			}
 		};
@@ -155,7 +156,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 					mModel.selectPerson(p);
 					shownPersonIndex = pos;
 					mController.getProfilePicture(p.sciper);
-					System.out.println(p);
+					Log.v("Directory", p.toString());
 					showPersonsDetails();
 				}
 			});
@@ -167,20 +168,20 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		
 		
 		if (mList.getAdapter().getCount() == 0)
-			mMainLayout.setText("No result found");
+			mMainLayout.setText(getString(R.string.directory_no_results_found));
 		else{
 			mMainLayout.setText("");
 			int count = mList.getAdapter().getCount() ;
 		
 			if(count > 1)
-				Toast.makeText(this,count + " results found", Toast.LENGTH_LONG).show();
+				Toast.makeText(this,count + getString(R.string.directory_results_found), Toast.LENGTH_LONG).show();
 			else{
-				Toast.makeText(this,count + " result found", Toast.LENGTH_LONG).show();
+				Toast.makeText(this,count + getString(R.string.directory_result_found), Toast.LENGTH_LONG).show();
 				Person p = (Person) mList.getAdapter().getItem(0);
 				mModel.selectPerson(p);
 				shownPersonIndex = 0;
 				mController.getProfilePicture(p.sciper);
-				System.out.println(p);
+				Log.v("Directory", p.toString());
 				showPersonsDetails();
 			}
 		}
@@ -208,7 +209,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void tooManyResults(int nb) {
-		System.out.println("oh aye");
+		System.out.println(getString(R.string.directory_too_many_results_warning));
 		
 	}
 
@@ -248,7 +249,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void autoCompletedUpdated() {
-		// TODO Auto-generated method stub
+		// should not happen here
 		
 	}
 	

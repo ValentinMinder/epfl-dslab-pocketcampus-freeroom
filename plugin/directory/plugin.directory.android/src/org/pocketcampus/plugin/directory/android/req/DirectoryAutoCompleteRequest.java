@@ -7,6 +7,8 @@ import org.pocketcampus.plugin.directory.android.DirectoryController;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 
+import android.util.Log;
+
 public class DirectoryAutoCompleteRequest extends
 		Request<DirectoryController, Iface, String, List<String>> {
 
@@ -26,7 +28,7 @@ public class DirectoryAutoCompleteRequest extends
 	}
 
 	/**
-	 * Tell the model the departures have been updated.
+	 * Tell the model the suggestions have been updated.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
@@ -37,7 +39,7 @@ public class DirectoryAutoCompleteRequest extends
 	@Override
 	protected void onResult(DirectoryController controller,
 			List<String> result) {
-		System.out.println(result);
+		Log.v("Directory",result.toString());
 
 		((DirectoryModel) controller.getModel()).setAutocompleteSuggestions(result);
 	}
