@@ -350,6 +350,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	private void authenticateUserForService(TypeOfService tos) {
+		// Temporary: re-login to Tequila each time (for today's presentation purposes)
+		mModel.setTequilaCookie(null);
+		// TODO remove the above
 		boolean serviceSupportsTequila = true;
 		switch(tos) {
 		// put here all services that do not support Tequila
