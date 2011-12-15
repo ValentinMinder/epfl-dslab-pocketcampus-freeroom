@@ -16,13 +16,13 @@ import android.util.Log;
 public class Config {
 	/** Server IP. */
 	// Mac Mini's IP, requires VPN
-	public static String SERVER_IP = "128.178.77.236";
+//	public static String SERVER_IP = "128.178.77.236";
 	
 	// pocketcampus.epfl.ch's IP, doesn't require VPN
 //	public final static String SERVER_IP = "128.178.132.3";
 
 	// Dev server (Florian)
-//	public final static String SERVER_IP = "10.0.0.157";
+	public static String SERVER_IP = "10.0.0.80";
 	
 	/** Server port. */
 	public static int SERVER_PORT = 9090;

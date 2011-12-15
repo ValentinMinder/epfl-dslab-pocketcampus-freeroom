@@ -8,7 +8,6 @@ import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
-import android.widget.Toast;
 
 public class DirectoryModel extends PluginModel implements IDirectoryModel{
 	IDirectoryView mListeners = (IDirectoryView) getListeners();

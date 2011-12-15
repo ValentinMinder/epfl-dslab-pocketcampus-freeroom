@@ -2,7 +2,6 @@ package org.pocketcampus.plugin.directory.android;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -36,6 +35,7 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 	protected void onDisplay(Bundle savedInstanceState,	PluginController controller){
 		mController = (DirectoryController)controller;
 		mModel = (DirectoryModel)controller.getModel();
+		mModel.toString();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardLayout(this);

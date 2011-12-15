@@ -164,6 +164,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	public void resultsUpdated() {
 		if(mModel.getResults().size() == 1){
 			mModel.selectPerson(mModel.getResults().get(0));
+			mController.getProfilePicture(mModel.getResults().get(0).sciper);
 			mDialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
 			mDialog.show();
 		}else

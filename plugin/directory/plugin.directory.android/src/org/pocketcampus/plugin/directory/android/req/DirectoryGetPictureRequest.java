@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.directory.android.req;
 
-import java.util.List;
+//import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.directory.android.DirectoryController;
 import org.pocketcampus.plugin.directory.android.DirectoryModel;
-import org.pocketcampus.plugin.directory.shared.NoPictureFound;
-import org.pocketcampus.plugin.directory.shared.Person;
+//import org.pocketcampus.plugin.directory.shared.NoPictureFound;
+//import org.pocketcampus.plugin.directory.shared.Person;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 
 public class DirectoryGetPictureRequest extends Request<DirectoryController, Iface, String, String>{
