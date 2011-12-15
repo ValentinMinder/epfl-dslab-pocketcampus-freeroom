@@ -15,11 +15,11 @@ import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
-import org.pocketcampus.android.platform.sdk.ui.dialog.PCDetailsDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
-import org.pocketcampus.android.platform.sdk.ui.labeler.IRichLabeler;
+import org.pocketcampus.android.platform.sdk.ui.labeler.ITransportDetailsViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
+import org.pocketcampus.plugin.transport.android.ui.TransportTripDetailsDialog;
 import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportConnection;
@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -82,33 +83,36 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The name under which the preferences are stored on the phone */
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
-	/** The labeler that says how to display a Location */
-	private IRichLabeler<TransportTrip> mConnectionLabeler = new IRichLabeler<TransportTrip>() {
-		@Override
-		public String getLabel(TransportTrip dest) {
-			return "";
-		}
+	/**
+	 * A labeler for a TransportConnection object, to tell a view how to display
+	 * it.
+	 */
+	private ITransportDetailsViewLabeler<TransportConnection> mTransportConnectionLabeler = new ITransportDetailsViewLabeler<TransportConnection>() {
 
 		@Override
-		public String getTitle(TransportTrip obj) {
-			return obj.getTo().getName();
-		}
-
-		@Override
-		public String getDescription(TransportTrip obj) {
-			return stringifier(obj);
-		}
-
-		@Override
-		public double getValue(TransportTrip obj) {
-			return -1;
-		}
-
-		@Override
-		public Date getDate(TransportTrip obj) {
+		public LinearLayout getPictureLayout(TransportConnection co) {
 			return null;
 		}
 
+		@Override
+		public String getDepartureTime(TransportConnection co) {
+			return stringifier(co.getDepartureTime());
+		}
+
+		@Override
+		public String getDeparturePlace(TransportConnection co) {
+			return co.getDeparture().getName();
+		}
+
+		@Override
+		public String getArrivalTime(TransportConnection co) {
+			return stringifier(co.getArrivalTime());
+		}
+
+		@Override
+		public String getArrivalPlace(TransportConnection co) {
+			return co.getArrival().getName();
+		}
 	};
 
 	/**
@@ -208,10 +212,27 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 				String txt = ((PCEntryItem) ((ListView) arg0)
 						.getItemAtPosition(arg2)).id;
-				if (txt != null) {
-					detailsDialog(txt);
-				}
 
+				String[] s = txt.split(":");
+				String name = s[0];
+				long depTime = Long.valueOf(s[1]);
+
+				List<TransportTrip> trips = mModel.getPreferredDestinations()
+						.get(name);
+				boolean found = false;
+
+				for (TransportTrip trip : trips) {
+					if (trip.getDepartureTime() == depTime) {
+						found = true;
+						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
+								TransportMainView.this, trip);
+						dialog.show();
+					}
+				}
+				if (!found) {
+					Toast.makeText(getApplicationContext(), "Problem",
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		// Adds it to the layout
@@ -247,19 +268,21 @@ public class TransportMainView extends PluginView implements ITransportView {
 		if (prefs == null || prefs.isEmpty()) {
 			ButtonElement addButton = new ButtonElement(this, getResources()
 					.getString(R.string.transport_add_destination));
-			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			l.addRule(RelativeLayout.CENTER_IN_PARENT);
 			addButton.setLayoutParams(l);
-			
+
 			addButton.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
-					Intent add = new Intent(getApplicationContext(), TransportAddView.class);
+					Intent add = new Intent(getApplicationContext(),
+							TransportAddView.class);
 					startActivity(add);
 				}
 			});
-			
+
 			mLayout.removeFillerView();
 			mLayout.addFillerView(addButton);
 
@@ -308,10 +331,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// Log.d("TRANSPORT", "Connection Updated (view)");
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getPreferredDestinations();
-		//In case the button is still here
+		// In case the button is still here
 		mLayout.removeFillerView();
 		mLayout.addFillerView(mListView);
-		
+
 		setItemsToDisplay(mDisplayedLocations);
 
 	}
@@ -388,8 +411,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 							logo = TransportFormatter.getNiceName(logo);
 							PCEntryItem entry = new PCEntryItem(
-									timeString(c.getDepartureTime()), logo,
-									c.id);
+									timeString(c.getDepartureTime()), logo, c
+											.getTo().getName()
+											+ ":"
+											+ c.getDepartureTime());
 
 							items.add(entry);
 						}
@@ -402,23 +427,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		mListView.setAdapter(adapter);
 		mListView.invalidate();
-	}
-
-	/**
-	 * Creates a detailed dialog for a particular trip.
-	 * 
-	 * @param connection
-	 */
-	private void detailsDialog(String connection) {
-		// Create the Builder for the Trip dialog
-		PCDetailsDialog.Builder b = new PCDetailsDialog.Builder(mActivity);
-		b.setCanceledOnTouchOutside(true);
-
-		// Set different values for the dialog
-		b.setTitle(connection);
-
-		PCDetailsDialog dialog = b.create();
-		// dialog.show();
 	}
 
 	/**
@@ -478,44 +486,16 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Returns a text of the form : "HH:MM", which represents a
-	 * <code>Connection</code> departure time.
+	 * Returns a text of the form : "HH:MM", which represents a departure time
+	 * in milliseconds.
 	 * 
 	 * @param c
-	 *            The <code>Connection</code> we want the text for.
-	 * @return r The text representation of the <code>Connection</code>
-	 *         departure time.
+	 *            The time in milliseconds that we want the text for.
+	 * @return r The text representation of the departure time.
 	 */
-	private String stringifier(TransportTrip c) {
+	private String stringifier(long time) {
 		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
-		String r = getResources().getString(R.string.transport_departure_at)
-				+ " " + FORMAT.format(c.getDepartureTime());
-
-		return r;
-	}
-
-	/**
-	 * Returns a text representation of a <code>Connection</code> object. It
-	 * will display a list of parts of the trip.
-	 * 
-	 * @param c
-	 *            The <code>Connection</code> we want the text representation
-	 *            for.
-	 * @return r The text representation of the <code>Connection</code> object.
-	 */
-	private String stringifierDetails(TransportTrip c) {
-		final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
-		String r = getResources().getString(R.string.transport_departure_at)
-				+ " " + FORMAT.format(c.getDepartureTime()) + ", "
-				+ getResources().getString(R.string.transport_arrival_at)
-				+ ": " + FORMAT.format(c.getArrivalTime());
-
-		r += "\n" + c.getFrom();
-		for (TransportConnection p : c.getParts()) {
-			r += " -> " + p.getArrival();
-		}
-
-		return r;
+		return FORMAT.format(time);
 	}
 
 	/**
@@ -544,9 +524,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		@Override
 		public void performAction(View view) {
-//			mModel.freeConnections();
 			displayDestinations();
-//			setUpDestinations();
 		}
 	}
 }

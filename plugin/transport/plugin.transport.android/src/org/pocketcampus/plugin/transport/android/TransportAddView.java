@@ -136,7 +136,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 	@Override
 	public void autoCompletedDestinationsUpdated() {
 		mAdapter = new LabeledArrayAdapter(this,
-				mModel.getAutoCpmpletedDestinations(), mLocationLabeler);
+				mModel.getAutoCompletedDestinations(), mLocationLabeler);
 
 		mListView.setAdapter(mAdapter);
 		mListView.invalidate();

@@ -113,7 +113,7 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * @return mAutoCompletedDestinations The list of current auto completed
 	 *         destinations to display to the user.
 	 */
-	public List<TransportStation> getAutoCpmpletedDestinations() {
+	public List<TransportStation> getAutoCompletedDestinations() {
 		// Notifies the view(s)
 		return mAutoCompletedDestinations;
 	}
@@ -142,9 +142,5 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 */
 	public void freeConnections() {
 		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
-		// for(String s : mPreferredDestinations.keySet()){
-		// mPreferredDestinations.get(s).clear();
-		// mPreferredDestinations.put(s, new ArrayList<TransportTrip>());
-		// }
 	}
 }

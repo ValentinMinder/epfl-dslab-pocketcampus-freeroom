@@ -33,5 +33,9 @@
     
     <!-- Error -->
     <string name="transport_network_error">Network error!</string>
+    
+    <!-- From last year -->
+    <string name="transport_to">to</string>	
+    <string name="transport_walk_in_min">min. walk</string>
 
 </resources>
