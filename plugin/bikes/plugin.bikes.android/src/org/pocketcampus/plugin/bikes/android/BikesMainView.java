@@ -14,11 +14,8 @@ import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -111,7 +108,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 			mLayout.setText("");
 		
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
-		boolean found = false;
+//		boolean found = false;
 		
 	
 		items.add(new PCSectionItem("Velopass","Available"));
