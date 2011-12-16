@@ -79,7 +79,7 @@
         <pathelement location="bin"/>
         <path refid="plugin.events.shared.classpath"/>
         <path refid="platform.sdk.server.classpath"/>
-        <path refid="platform.sdk.shared.classpath"/>s
+        <path refid="platform.sdk.shared.classpath"/>
         <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
