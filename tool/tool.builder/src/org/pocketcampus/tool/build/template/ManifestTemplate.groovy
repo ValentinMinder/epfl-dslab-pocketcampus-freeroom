@@ -17,6 +17,7 @@ class ManifestTemplate {
 	<application
 		android:label="PocketCampus"
 		android:theme="@style/PocketCampusTheme"
+		android:icon="@drawable/app_icon"
 		android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
 	
 		"""+ pluginManifests +"""\
