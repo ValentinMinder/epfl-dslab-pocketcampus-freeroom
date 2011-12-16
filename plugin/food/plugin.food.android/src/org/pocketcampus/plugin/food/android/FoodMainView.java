@@ -83,7 +83,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	private ActionBar mActionBar;
 
 	/** The action shown in action bar to toggle menus by restaurants or ratings */
-	private ShowByRestaurantOrRatingsAction showAllMenusAction;
+	private ShowByRestaurantOrRatingsAction mShowAllMenusAction;
+	/** The action shown in action bar when suggestions are displayed */
+	private ShowBySuggestionsAction mShowSuggestionsAction;
 
 	/**
 	 * Keeps in memory whether we are coming back from choosing restaurant
@@ -153,7 +155,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		mLayout.setText(getResources().getString(R.string.food_loading));
 		mController.getRestaurants();
 		mController.getMeals();
-		mController.getSandwiches();
+//		mController.getSandwiches();
 		mController.getHasVoted();
 	}
 
@@ -182,11 +184,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.food_by_meals) {
-			showMenusByRestaurants();
-		} else if (item.getItemId() == R.id.food_by_sandwiches) {
-			showSandwiches();
-		} else if (item.getItemId() == R.id.food_by_suggestions) {
+		/*
+		 * if (item.getItemId() == R.id.food_by_meals) {
+		 * showMenusByRestaurants(); } else if (item.getItemId() ==
+		 * R.id.food_by_sandwiches) { showSandwiches(); } else
+		 */if (item.getItemId() == R.id.food_by_suggestions) {
 			// Extras to add to the Intent
 			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
 			// Intent to start the SuggestionsView
@@ -466,11 +468,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
-			if (showAllMenusAction == null || !showAllMenusAction.isShown()) {
-				showAllMenusAction = new ShowByRestaurantOrRatingsAction();
-				mActionBar.addAction(showAllMenusAction, 0);
+			if (mShowAllMenusAction == null || !mShowAllMenusAction.isShown()) {
+				mShowAllMenusAction = new ShowByRestaurantOrRatingsAction();
+				mActionBar.addAction(mShowAllMenusAction, 0);
 			} else {
-				showAllMenusAction.setIsRestaurant(true);
+				mShowAllMenusAction.setIsRestaurant(true);
 			}
 			// Iterate over the different restaurant menus
 			mLayout.removeFillerView();
@@ -503,10 +505,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	public void showMenusByRatings() {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
-		if (showAllMenusAction == null) {
-			showAllMenusAction = new ShowByRestaurantOrRatingsAction();
+		if (mShowAllMenusAction == null) {
+			mShowAllMenusAction = new ShowByRestaurantOrRatingsAction();
 		}
-		showAllMenusAction.setIsRestaurant(false);
+		mShowAllMenusAction.setIsRestaurant(false);
 
 		if (mealsByRatings != null && !mealsByRatings.isEmpty()) {
 			mLayout.removeFillerView();
@@ -543,9 +545,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		if (mActionBar == null) {
 			mActionBar = getActionBar();
 		}
-		showAllMenusAction = new ShowByRestaurantOrRatingsAction();
-		showAllMenusAction.setIsRestaurant(false);
-		mActionBar.addAction(showAllMenusAction, 0);
+
+		mShowSuggestionsAction = new ShowBySuggestionsAction();
+		mActionBar.addAction(mShowSuggestionsAction);
 
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
 			mLayout.removeFillerView();
@@ -595,13 +597,13 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * ratings.
 	 */
 	public void removeShowAllMenusAction() {
-		if (showAllMenusAction.isShown()) {
+		if (mShowAllMenusAction.isShown()) {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
 			mActionBar.removeActionAt(0);
-			if (showAllMenusAction != null) {
-				showAllMenusAction.setShown(false);
+			if (mShowAllMenusAction != null) {
+				mShowAllMenusAction.setShown(false);
 			}
 		}
 	}
@@ -1034,6 +1036,40 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		public void setIsRestaurant(boolean isRestaurants) {
 			mButtonByRestaurants = isRestaurants;
+		}
+	}
+
+	/**
+	 * Takes care of showing the "show by restaurants" or "show by ratings"
+	 * button in the Action Bar
+	 * 
+	 * @author Elodie <elodienilane.triponez@epfl.ch>
+	 * 
+	 */
+	private class ShowBySuggestionsAction implements Action {
+
+		/**
+		 * The constructor
+		 */
+		ShowBySuggestionsAction() {
+		}
+
+		/**
+		 * Returns the resource for the button icon in the action bar.
+		 */
+		@Override
+		public int getDrawable() {
+			return R.drawable.food_menus_by_suggestions;
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
+		@Override
+		public void performAction(View view) {
+			mActionBar.removeAllActions();
+			showMenusByRestaurants();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--
     <item
         android:id="@+id/food_by_meals"
         android:icon="@drawable/food_opt_icon_resto"
@@ -10,6 +11,7 @@
         android:id="@+id/food_by_sandwiches"
         android:icon="@drawable/food_opt_icon_sandwich"
         android:title="@+string/food_menu_sandwiches"/>
+    -->
 
     <item
         android:id="@+id/food_by_suggestions"
