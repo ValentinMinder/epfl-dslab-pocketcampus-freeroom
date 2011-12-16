@@ -5,28 +5,28 @@
     <string name="satellite_app_name">Satellite</string>
     <string name="satellite_nothing_to_display">Nothing to display</string>
     <string name="satellite_menu_main_page">Satellite</string>
-    
+
     <!-- Affluence -->
     <string name="satellite_affluence">Affluence</string>
     <string name="satellite_menu_affluence">Affluence</string>
-    <string name="satellite_affluence_empty">Ça roule!</string>
-    <string name="satellite_affluence_medium">Ça se remplit...</string>
-    <string name="satellite_affluence_crowded">On y est presque...</string>
-    <string name="satellite_affluence_full">Ça y est, on est plein!</string>
-    <string name="satellite_affluence_closed">Cherche pas, c\'est fermé...</string>
+    <string name="satellite_affluence_empty">So few people!</string>
+    <string name="satellite_affluence_medium">It\'s getting crowded...</string>
+    <string name="satellite_affluence_crowded">Almost there...</string>
+    <string name="satellite_affluence_full">There it is, we\'re full!</string>
+    <string name="satellite_affluence_closed">Don\'t bother, we\'re closed...</string>
     <string name="satellite_affluence_error">Error</string>
-        
-	<!-- Beer(s) -->
-	<string name="satellite_menu_beers">Beers</string>
-	<string name="satellite_beer_of_month">Beer Of The Month</string>
-	
-	<!-- Events -->
-	<string name="satellite_menu_events">Events</string>
-	
-	<!-- Sandwiches -->
-	<string name="satellite_menu_sandwiches">Sandwiches</string>
-	
+
+    <!-- Beer(s) -->
+    <string name="satellite_menu_beers">Beers</string>
+    <string name="satellite_beer_of_month">Beer Of The Month</string>
+
+    <!-- Events -->
+    <string name="satellite_menu_events">Events</string>
+
+    <!-- Sandwiches -->
+    <string name="satellite_menu_sandwiches">Sandwiches</string>
+
     <!-- Error -->
-   	<string name="satellite_network_error">Network Error!</string>
+    <string name="satellite_network_error">Network Error!</string>
 
 </resources>
