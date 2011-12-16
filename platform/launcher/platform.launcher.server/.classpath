@@ -44,9 +44,11 @@
 	<classpathentry kind="src" path="/plugin.directory.server"/>
 	<classpathentry kind="src" path="/plugin.directory.shared"/>
 	<classpathentry kind="src" path="/plugin.food.shared"/>
-	<classpathentry kind="src" path="/plugin.news.server"/>
 	<classpathentry kind="src" path="/plugin.food.server"/>
 	<classpathentry kind="src" path="/plugin.news.shared"/>
+	<classpathentry kind="src" path="/plugin.news.server"/>
+	<classpathentry kind="src" path="/plugin.events.shared"/>
+	<classpathentry kind="src" path="/plugin.events.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.server"/>
@@ -55,7 +57,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
 	<classpathentry kind="src" path="/plugin.map.server"/>
 	<classpathentry kind="src" path="/plugin.map.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
