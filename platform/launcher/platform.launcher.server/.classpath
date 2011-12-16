@@ -55,5 +55,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
 	<classpathentry kind="src" path="/plugin.map.server"/>
 	<classpathentry kind="src" path="/plugin.map.shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

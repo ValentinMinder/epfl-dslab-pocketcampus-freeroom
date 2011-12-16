@@ -12,6 +12,8 @@ import org.pocketcampus.plugin.camipro.server.CamiproServiceImpl;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
 import org.pocketcampus.plugin.directory.server.DirectoryServiceImpl;
 import org.pocketcampus.plugin.directory.shared.DirectoryService;
+import org.pocketcampus.plugin.events.server.EventsServiceImpl;
+import org.pocketcampus.plugin.events.shared.EventsService;
 import org.pocketcampus.plugin.food.server.FoodServiceImpl;
 import org.pocketcampus.plugin.food.shared.FoodService;
 import org.pocketcampus.plugin.isacademia.server.IsacademiaServiceImpl;
@@ -45,6 +47,7 @@ public class PocketCampusServer extends ServerBase {
 		processors.add(new Processor(new BikeService.Processor<BikesServiceImpl>(new BikesServiceImpl()), "bikes"));
 		processors.add(new Processor(new CamiproService.Processor<CamiproServiceImpl>(new CamiproServiceImpl()), "camipro"));
 		processors.add(new Processor(new DirectoryService.Processor<DirectoryServiceImpl>(new DirectoryServiceImpl()), "directory"));
+		processors.add(new Processor(new EventsService.Processor<EventsServiceImpl>(new EventsServiceImpl()), "events"));
 		processors.add(new Processor(new FoodService.Processor<FoodServiceImpl>(new FoodServiceImpl()), "food"));
 		processors.add(new Processor(new IsacademiaService.Processor<IsacademiaServiceImpl>(new IsacademiaServiceImpl()), "isacademia"));
 		processors.add(new Processor(new MapService.Processor<MapServiceImpl>(new MapServiceImpl()), "map"));
