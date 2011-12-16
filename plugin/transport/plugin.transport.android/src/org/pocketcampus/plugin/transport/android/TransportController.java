@@ -7,7 +7,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
 import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
-import org.pocketcampus.plugin.transport.android.req.NextDeparturesFromEPFLRequest;
+import org.pocketcampus.plugin.transport.android.req.NextDeparturesRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
@@ -79,7 +79,23 @@ public class TransportController extends PluginController implements
 	public void nextDeparturesFromEPFL(String location) {
 		if (location != null) {
 			getTrips_args args = new getTrips_args("EPFL", location);
-			new NextDeparturesFromEPFLRequest().start(this,
+			new NextDeparturesRequest().start(this,
+					(Iface) getClient(new Client.Factory(), mPluginName), args);
+		}
+	}
+	
+	/**
+	 * Initiates a request to the server for the Next Departures from any destination to
+	 * EPFL.
+	 * 
+	 * @param location
+	 *            The departure destination
+	 */
+	@Override
+	public void nextDeparturesToEPFL(String location) {
+		if(location != null) {
+			getTrips_args args = new getTrips_args(location, "EPFL");
+			new NextDeparturesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}
 	}

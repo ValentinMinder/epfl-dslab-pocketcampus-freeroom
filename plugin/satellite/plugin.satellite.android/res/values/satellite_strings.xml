@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General -->
-    <string name="satellite_app_name">Satellite</string>
+    <string name="satellite_plugin_name">Satellite</string>
     <string name="satellite_nothing_to_display">Nothing to display</string>
     <string name="satellite_menu_main_page">Satellite</string>
 

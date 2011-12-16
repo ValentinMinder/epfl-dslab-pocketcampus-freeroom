@@ -16,7 +16,7 @@ import android.util.Log;
  * @author Pascal <pascal.scheiben@epfl.ch>
  * @author Florian <florian.laurent@epfl.ch>
  */
-public class NextDeparturesFromEPFLRequest
+public class NextDeparturesRequest
 		extends
 		Request<TransportController, Iface, getTrips_args, QueryTripsResult> {
 

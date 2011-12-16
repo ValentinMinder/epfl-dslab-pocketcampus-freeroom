@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,8 +96,20 @@ public class TransportModel extends PluginModel implements ITransportModel {
 								mPreferredDestinations.put(c.getTo().getName(),
 										new ArrayList<TransportTrip>());
 							}
-							//kjsdfhlkjqhklfjhjlsadfhoiqhcoiuneoicuqwoifuhqoifuhqoifhoiuqfhoeifhqowihfdeowqfhoqiwhfoiqwufhoiqhwefoiuwhqf
-							Log.wtf("Transport", "in model-> dep: " + c.departureTime + " arr: " + c.arrivalTime);
+							
+							/* TEST */
+							Date dep = new Date();
+							dep.setTime(c.getParts().get(0).departureTime);
+							Date arr = new Date();
+							arr.setTime(c.getParts().get(0).arrivalTime);
+							Log.d("TRANSPORT", "Departure - "
+									+ c.getParts().get(0)
+											.getDeparturePosition() + " : "
+									+ dep + " Arrival - "
+									+ c.getParts().get(0).getArrivalPosition()
+									+ " : " + arr);
+							/* END TEST */
+							
 							mPreferredDestinations.get(c.getTo().getName())
 									.add(c);
 						}
@@ -144,11 +157,11 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * Removes all connections from the map, in order to update with new ones.
 	 */
 	public void freeConnections() {
-		for(String s : mPreferredDestinations.keySet()) {
+		for (String s : mPreferredDestinations.keySet()) {
 			mPreferredDestinations.get(s).clear();
 		}
 	}
-	
+
 	/**
 	 * Removes all destinations from the map, in order to update with new ones.
 	 */

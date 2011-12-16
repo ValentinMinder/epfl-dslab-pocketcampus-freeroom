@@ -14,7 +14,7 @@
         android:theme="@style/PocketCampusTheme" >
 
         <activity
-            android:label="Transport"
+            android:label="@string/transport_plugin_name"
              android:icon="@drawable/transport_icon"
             android:name="org.pocketcampus.plugin.transport.android.TransportMainView" >
             <intent-filter >

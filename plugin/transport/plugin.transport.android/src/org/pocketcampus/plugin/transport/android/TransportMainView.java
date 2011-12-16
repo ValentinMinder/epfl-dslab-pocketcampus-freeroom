@@ -77,6 +77,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The name under which the preferences are stored on the phone */
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
+	/** Boolean telling which direction is shown */
+	private boolean mFromEpfl;
+
 	/**
 	 * Defines what the main controller is for this view.
 	 */
@@ -98,6 +101,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
+
+		mFromEpfl = true;
 
 		// Set up the main layout and the list view
 		setUpLayout();
@@ -210,8 +215,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ActionBar a = getActionBar();
 		if (a != null) {
-			a.addAction(new ActionBar.IntentAction(getApplicationContext(),
-					intent, R.drawable.transport_action_bar_edit), 0);
+			ChangeDirectionAction direction = new ChangeDirectionAction();
+			a.addAction(direction, 0);
 			RefreshAction refresh = new RefreshAction();
 			a.addAction(refresh, 1);
 		}
@@ -276,8 +281,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 		HashMap<String, List<TransportTrip>> locations = mModel
 				.getPreferredDestinations();
 		if (locations != null && !locations.isEmpty()) {
-			for (String loc : locations.keySet()) {
-				mController.nextDeparturesFromEPFL(loc);
+
+			if (mFromEpfl) {
+				for (String loc : locations.keySet()) {
+					mController.nextDeparturesFromEPFL(loc);
+				}
+			} else {
+				for (String loc : locations.keySet()) {
+					mController.nextDeparturesToEPFL(loc);
+				}
 			}
 			setItemsToDisplay(locations);
 		}
@@ -343,7 +355,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 				String from = DestinationFormatter
 						.getNiceName(mDisplayedLocations.get(l).get(0)
 								.getFrom());
-				items.add(new PCSectionItem(from + " - " + l));
+				items.add(new PCSectionItem(from + " - "
+						+ DestinationFormatter.getNiceName(l)));
 				int i = 0;
 
 				for (TransportTrip c : mDisplayedLocations.get(l)) {
@@ -354,9 +367,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 						if (dep.after(now)) {
 							i++;
 							// Updates the shared preferences
-							mDestPrefsEditor.putInt(c.getTo().getName(), c
-									.getTo().getId());
-							mDestPrefsEditor.commit();
+							if (!(c.getTo().getName()
+									.equals("Ecublens VD, EPFL"))) {
+								mDestPrefsEditor.putInt(c.getTo().getName(), c
+										.getTo().getId());
+								mDestPrefsEditor.commit();
+							}
 							// String representing the type of transport
 							String logo = "";
 							for (TransportConnection p : c.parts) {
@@ -471,6 +487,54 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
+			mLayout.removeFillerView();
+			mLayout.addFillerView(mListView);
+			mModel.freeConnections();
+			if (mModel.getPreferredDestinations() == null
+					|| mModel.getPreferredDestinations().isEmpty()) {
+				setUpDestinations();
+			} else {
+				displayDestinations();
+			}
+		}
+	}
+
+	/**
+	 * Refreshes the next departures when clicking on the action bar refresh
+	 * button.
+	 * 
+	 * @author Oriane <oriane.rodriguez@epfl.ch>
+	 * 
+	 */
+	private class ChangeDirectionAction implements Action {
+
+		/**
+		 * The constructor which doesn't do anything
+		 */
+		ChangeDirectionAction() {
+		}
+
+		/**
+		 * Returns the resource for the icon of the button in the action bar
+		 */
+		@Override
+		public int getDrawable() {
+			return R.drawable.transport_action_bar_change_direction;
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
+		@Override
+		public void performAction(View view) {
+
+			if (mFromEpfl) {
+				mFromEpfl = false;
+			} else {
+				mFromEpfl = true;
+			}
+
 			mLayout.removeFillerView();
 			mLayout.addFillerView(mListView);
 			mModel.freeConnections();

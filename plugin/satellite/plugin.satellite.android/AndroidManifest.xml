@@ -14,7 +14,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             android:icon="@drawable/satellite_normal_icon"
-            android:label="Satellite"
+            android:label="@string/satellite_plugin_name"
             android:name=".plugin.satellite.android.SatelliteMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

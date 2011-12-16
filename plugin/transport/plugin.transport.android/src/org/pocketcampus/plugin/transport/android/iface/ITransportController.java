@@ -29,6 +29,15 @@ public interface ITransportController {
 	 *            The arrival destination
 	 */
 	public void nextDeparturesFromEPFL(String location);
+	
+	/**
+	 * Initiates a request to the server for the Next Departures from any destination to
+	 * EPFL.
+	 * 
+	 * @param location
+	 *            The departure destination
+	 */
+	public void nextDeparturesToEPFL(String location);
 
 	/**
 	 * Initiates a request to the server for the Locations corresponding to each
