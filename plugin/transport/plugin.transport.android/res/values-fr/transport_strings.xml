@@ -3,8 +3,8 @@
 
     <!-- General -->
     <string name="transport_plugin_name">Transport</string>
-    <string name="transport_no_destinations_message">Ajoutez une destination!</string>
-    <string name="transport_set_destinations_message">Entrez une destination</string>
+    <string name="transport_no_destinations_message">Ajouter une destination!</string>
+    <string name="transport_set_destinations_message">Chercher une destination</string>
     <string name="transport_edit_destinations">Gérer vos destinations</string>
     <string name="transport_add_destination">Ajouter une destination</string>
     <string name="transport_remove_destinations">Supprimer les destinations</string>

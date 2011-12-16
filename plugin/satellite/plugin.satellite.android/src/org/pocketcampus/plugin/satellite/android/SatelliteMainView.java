@@ -62,17 +62,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
-	 * Called when this view is accessed after already having been initialized
-	 * before
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		// Refresh the main Page
-		showMainPage();
-	}
-
-	/**
 	 * Displays the main Page of the Plugin, and refresh the data which has to
 	 * be refreshed.
 	 */
