@@ -1,44 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/authentication_customloginpageLayout"
+    style="@style/Dialog"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="wrap_content" >
+     
+    
 
-    <EditText
-        android:id="@+id/authentication_username"
+    <LinearLayout
+        android:id="@+id/authentication_dialog_top"
+        style="@style/Dialog.Top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:hint="@string/username_text"
-        android:singleLine="true" >
+        android:orientation="vertical" >
 
-        <requestFocus />
-    </EditText>
+            <TextView
+            android:id="@+id/authentication_dialog_title"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gaspar Account"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/authentication_password"
+    <LinearLayout
+        android:id="@+id/authentication_dialog_middle"
+        style="@style/Dialog.Middle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_username"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:hint="@string/passwordtext"
-        android:inputType="textPassword" />
+        android:layout_below="@+id/authentication_dialog_top"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/authentication_loginbutton"
+	
+	    <EditText
+	        android:id="@+id/authentication_username"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginLeft="5dp"
+	        android:layout_marginRight="5dp"
+	        android:hint="@string/username_text"
+	        android:singleLine="true" >
+	
+	        <requestFocus />
+	    </EditText>
+	
+	    <EditText
+	        android:id="@+id/authentication_password"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/authentication_username"
+	        android:layout_marginTop="15dp"
+	        android:layout_marginLeft="5dp"
+	        android:layout_marginRight="5dp"
+	        android:hint="@string/passwordtext"
+	        android:inputType="textPassword" />
+	
+	    
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/authentication_dialog_bottom"
+        style="@style/Dialog.Bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/authentication_password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/loginbutton_string" />
+        android:layout_below="@+id/authentication_dialog_middle"
+        android:orientation="horizontal" >
+
+	    <Button
+	        android:id="@+id/authentication_loginbutton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="3dp"
+	        android:text="@string/loginbutton_string" />
+    </LinearLayout>
+        
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return AuthenticationController.class;
+	}
+	
+	@Override
+	protected void onPreCreate() {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 	
 	/**
@@ -135,6 +141,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 					TextView passwordField = (TextView) findViewById(R.id.authentication_password);
 					mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
+					//setContentView(R.layout.authentication_redirectionpage);
 					mController.signInUserLocallyToTequila(teqKey);
 				}
 			});

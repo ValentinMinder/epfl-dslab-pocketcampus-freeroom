@@ -62,6 +62,8 @@ public abstract class PluginView extends Activity {
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		onPreCreate();
 
 		Class<? extends Service> controllerClass = getMainControllerClass();
 
@@ -121,6 +123,13 @@ public abstract class PluginView extends Activity {
 	 * @param intent
 	 */
 	protected void handleIntent(Intent intent) {
+	}
+
+	/**
+	 * Called from onCreate before creating anything
+	 * Here we can do things like disabling Activity title
+	 */
+	protected void onPreCreate() {
 	}
 
 	@Override
