@@ -5,6 +5,7 @@ import org.pocketcampus.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -13,33 +14,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class StyledDialog extends Dialog {
-	
+
 	public StyledDialog(Context context, int theme) {
 		super(context, theme);
 	}
-	
+
 	public StyledDialog(Context context) {
 		super(context);
 	}
-	
+
 	public static class Builder {
 		private Context mContext;
 		private String mTitle;
 		private String mMessage;
+		private Spanned mSpannedMessage;
 		private View mContentView;
 		private boolean mCanceledOnTouchOutside;
-		
+
 		private String mPositiveButtonText;
 		private String mNegativeButtonText;
 		private String mNeutralButtonText;
 		private DialogInterface.OnClickListener mPositiveButtonClickListener;
 		private DialogInterface.OnClickListener mNegativeButtonClickListener;
 		private DialogInterface.OnClickListener mNeutralButtonClickListener;
-		
+
 		public Builder(Context context) {
 			mContext = context;
 		}
-		
+
 		/**
 		 * Sets the dialog message.
 		 * @param message
@@ -49,7 +51,7 @@ public class StyledDialog extends Dialog {
 			mMessage = message;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the dialog message from a resource.
 		 * @param message
@@ -59,7 +61,12 @@ public class StyledDialog extends Dialog {
 			mMessage = (String) mContext.getText(message);
 			return this;
 		}
-		
+
+		public Builder setMessage(Spanned spanned) {
+			mSpannedMessage = spanned;
+			return this;
+		}
+
 		/**
 		 * Sets the dialog title.
 		 * @param title
@@ -69,7 +76,7 @@ public class StyledDialog extends Dialog {
 			mTitle = title;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the dialog title from a resource.
 		 * @param title
@@ -79,7 +86,7 @@ public class StyledDialog extends Dialog {
 			mTitle = (String) mContext.getText(title);
 			return this;
 		}
-		
+
 		/**
 		 * Sets a custom content view for the Dialog.
 		 * Only used if no message is set.
@@ -90,7 +97,7 @@ public class StyledDialog extends Dialog {
 			mContentView = view;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the positive button text from a resource and its listener
 		 * @param positiveButtonText
@@ -102,7 +109,7 @@ public class StyledDialog extends Dialog {
 			mPositiveButtonClickListener = listener;
 			return this;
 		}
-		
+
 		/**
 		 * Set the positive button text and its listener
 		 * @param positiveButtonText
@@ -114,7 +121,7 @@ public class StyledDialog extends Dialog {
 			mPositiveButtonClickListener = listener;
 			return this;
 		}
-		
+
 		/**
 		 * Set the negative button text from a resource and its listener
 		 * @param negativeButtonText
@@ -126,7 +133,7 @@ public class StyledDialog extends Dialog {
 			mNegativeButtonClickListener = listener;
 			return this;
 		}
-		
+
 		/**
 		 * Set the negative button text and its listener
 		 * @param negativeButtonText
@@ -138,7 +145,7 @@ public class StyledDialog extends Dialog {
 			mNegativeButtonClickListener = listener;
 			return this;
 		}
-		
+
 		/**
 		 * Set the neutral button text from a resource and its listener
 		 * @param mNeutralButtonText
@@ -150,7 +157,7 @@ public class StyledDialog extends Dialog {
 			mNeutralButtonClickListener = listener;
 			return this;
 		}
-		
+
 		/**
 		 * Set the neutral button text and its listener
 		 * @param mNeutralButtonText
@@ -162,33 +169,33 @@ public class StyledDialog extends Dialog {
 			mNeutralButtonClickListener = listener;
 			return this;
 		}
-		
+
 		public void setCanceledOnTouchOutside(boolean cancel) {
 			mCanceledOnTouchOutside = cancel;
 		}
-		
+
 		/**
 		 * Creates the custom dialog.
 		 */
 		public StyledDialog create() {
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			
+
 			// dialog
 			final StyledDialog dialog = new StyledDialog(mContext, R.style.Dialog);
 			View layout = inflater.inflate(R.layout.sdk_styled_dialog, null);
 			dialog.addContentView(layout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			
+
 			dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
-			
+
 			// title
 			if(mTitle != null) {
 				((TextView) layout.findViewById(R.id.title)).setText(mTitle);
 			} else {
 				((LinearLayout) layout.findViewById(R.id.title_layout)).setVisibility(View.GONE);
 			}
-			
+
 			// TODO refactor
-			
+
 			// set the confirm button
 			if (mPositiveButtonText != null) {
 				((Button) layout.findViewById(R.id.positiveButton))
@@ -208,7 +215,7 @@ public class StyledDialog extends Dialog {
 				layout.findViewById(R.id.positiveButton).setVisibility(
 						View.GONE);
 			}
-			
+
 			// set the cancel button
 			if (mNegativeButtonText != null) {
 				((Button) layout.findViewById(R.id.negativeButton))
@@ -226,11 +233,11 @@ public class StyledDialog extends Dialog {
 				layout.findViewById(R.id.negativeButton).setVisibility(
 						View.GONE);
 			}
-			
+
 			// set the neutral button
 			if (mNeutralButtonText != null) {
 				dialog.setCanceledOnTouchOutside(true);
-				
+
 				((Button) layout.findViewById(R.id.neutralButton))
 				.setText(mNeutralButtonText);
 				if (mNeutralButtonClickListener != null) {
@@ -245,11 +252,11 @@ public class StyledDialog extends Dialog {
 				// if no confirm button just set the visibility to GONE
 				layout.findViewById(R.id.neutralButton).setVisibility(View.GONE);
 			}
-			
+
 			// message
 			if (mMessage != null) {
 				((TextView) layout.findViewById(R.id.message)).setText(mMessage);
-				
+
 			} else if (mContentView != null) {
 				((LinearLayout) layout.findViewById(R.id.content))
 				.removeAllViews();
@@ -259,7 +266,21 @@ public class StyledDialog extends Dialog {
 								LayoutParams.WRAP_CONTENT, 
 								LayoutParams.WRAP_CONTENT));
 			}
-			
+
+			// message from spanned
+			if (mSpannedMessage != null) {
+				((TextView) layout.findViewById(R.id.message)).setText(mSpannedMessage);
+
+			} else if (mContentView != null) {
+				((LinearLayout) layout.findViewById(R.id.content))
+				.removeAllViews();
+				((LinearLayout) layout.findViewById(R.id.content))
+				.addView(mContentView, 
+						new LayoutParams(
+								LayoutParams.WRAP_CONTENT, 
+								LayoutParams.WRAP_CONTENT));
+			}
+
 			dialog.setContentView(layout);
 			return dialog;
 		}

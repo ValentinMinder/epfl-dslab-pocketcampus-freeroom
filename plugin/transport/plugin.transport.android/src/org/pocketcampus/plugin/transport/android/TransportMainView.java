@@ -18,6 +18,7 @@ import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.ui.TransportTripDetailsDialog;
+import org.pocketcampus.plugin.transport.android.utils.DestinationFormatter;
 import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportConnection;
@@ -144,9 +145,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 			Intent i = new Intent(this, TransportEditView.class);
 			startActivity(i);
 		}
-		// else if (id == R.id.transport_settings) { Log.d("TRANSPORT",
-		// "Settings");}
-
 		return true;
 	}
 
@@ -342,7 +340,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 		for (String l : set) {
 			if (!mDisplayedLocations.get(l).isEmpty()) {
-				items.add(new PCSectionItem(l));
+				String from = DestinationFormatter
+						.getNiceName(mDisplayedLocations.get(l).get(0)
+								.getFrom());
+				items.add(new PCSectionItem(from + " - " + l));
 				int i = 0;
 
 				for (TransportTrip c : mDisplayedLocations.get(l)) {
@@ -369,7 +370,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 									timeString(c.getDepartureTime()), logo, c
 											.getTo().getName()
 											+ ":"
-											+ c.getDepartureTime());
+											+ c.getDepartureTime()
+											+ ":"
+											+ c.getArrivalTime());
 							// Add this departure
 							items.add(entry);
 						}

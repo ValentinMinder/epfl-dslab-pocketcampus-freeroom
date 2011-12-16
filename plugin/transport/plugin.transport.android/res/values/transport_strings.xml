@@ -11,7 +11,7 @@
     <string name="transport_new_destination">New destination</string>
     <string name="transport_confirmation">Confirmation</string>
     <string name="transport_confirmation_delete_destination_start">Are you sure you want to remove</string>
-    <string name="transport_confirmation_delete_destination_end">from your preferred destinations?</string>
+    <string name="transport_confirmation_delete_destination_end">from your favourite destinations?</string>
     <string name="transport_yes">Yes</string>
     <string name="transport_no">No</string>
     

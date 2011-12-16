@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.R;
@@ -17,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -148,63 +152,83 @@ public class TransportEditView extends PluginView {
 		StyledDialog.Builder b = new StyledDialog.Builder(this);
 		b.setCanceledOnTouchOutside(true);
 		b.setTitle(getResources().getString(R.string.transport_confirmation));
-		b.setMessage(getResources().getString(
-				R.string.transport_confirmation_delete_destination_start)
-				+ "\n"
-				+ dest
-				+ "\n"
-				+ getResources().getString(
-						R.string.transport_confirmation_delete_destination_end));
+		b.setMessage(Html
+				.fromHtml(getResources()
+						.getString(
+								R.string.transport_confirmation_delete_destination_start)
+						+ " <b>"
+						+ dest
+						+ "</b> "
+						+ getResources()
+								.getString(
+										R.string.transport_confirmation_delete_destination_end)));
 
 		b.setPositiveButton(getResources().getString(R.string.transport_yes),
 				new OnClickListener() {
 
-			/**
-			 * Defines what is to be performed when the user clicks on
-			 * the "Yes" button of the dialog.
-			 */
-			@SuppressWarnings("unchecked")
-			@Override
-			public void onClick(DialogInterface dialog, int arg1) {
-				// Remove the destination and update the list
-				mDestPrefsEditor.remove(dest);
-				mDestPrefsEditor.commit();
+					/**
+					 * Defines what is to be performed when the user clicks on
+					 * the "Yes" button of the dialog.
+					 */
+					@SuppressWarnings("unchecked")
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						// Remove the destination and update the list
+						mDestPrefsEditor.remove(dest);
+						mDestPrefsEditor.commit();
 
-				ArrayList<String> list = new ArrayList<String>();
-				Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs
-						.getAll();
-				if (prefs != null) {
-					for (String s : prefs.keySet()) {
-						list.add(s);
+						List<String> list = new ArrayList<String>();
+						Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs
+								.getAll();
+						if (prefs != null) {
+							for (String s : prefs.keySet()) {
+								list.add(s);
+							}
+						}
+						Collections.sort(list, new StringComparator());
+
+						// Update the list view
+						StandardArrayAdapter adapter = new StandardArrayAdapter(
+								getApplicationContext(), list);
+						mListView.setAdapter(adapter);
+						mListView.invalidate();
+
+						if(list.isEmpty()) {
+							mLayout.removeSecondLayoutFillerView();
+							mLayout.hideSecondTitle();
+						}
+						dialog.dismiss();
 					}
-				}
-
-				// Update the list view
-				StandardArrayAdapter adapter = new StandardArrayAdapter(
-						getApplicationContext(), list);
-				mListView.setAdapter(adapter);
-				mListView.invalidate();
-
-				dialog.dismiss();
-			}
-		});
+				});
 
 		b.setNegativeButton(getResources().getString(R.string.transport_no),
 				new OnClickListener() {
 
-			/**
-			 * Defines what is to be performed when the user clicks on
-			 * the "Yes" button of the dialog.
-			 */
-			@Override
-			public void onClick(DialogInterface dialog, int arg1) {
-				// Do nothing
-				dialog.dismiss();
-			}
-		});
+					/**
+					 * Defines what is to be performed when the user clicks on
+					 * the "Yes" button of the dialog.
+					 */
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						// Do nothing
+						dialog.dismiss();
+					}
+				});
 
-		//Create and display the dialog
+		// Create and display the dialog
 		StyledDialog d = b.create();
 		d.show();
+	}
+	
+	/**
+	 * Compares Restaurants according to their names.
+	 */
+	private class StringComparator implements Comparator<String> {
+
+		@Override
+		public int compare(String arg0, String arg1) {
+			return arg0.compareToIgnoreCase(arg1);
+		}
+
 	}
 }

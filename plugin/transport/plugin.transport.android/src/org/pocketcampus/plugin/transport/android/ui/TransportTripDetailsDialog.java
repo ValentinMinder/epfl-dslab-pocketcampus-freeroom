@@ -111,8 +111,7 @@ public class TransportTripDetailsDialog extends Dialog {
 		list.setAdapter(mSchedule);
 
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
-		title.setText(DestinationFormatter.getNiceName(connection_.from) + " "
-				+ ctx_.getResources().getString(R.string.transport_to) + " "
+		title.setText(DestinationFormatter.getNiceName(connection_.from) + " - "
 				+ DestinationFormatter.getNiceName(connection_.to));
 	}
 }

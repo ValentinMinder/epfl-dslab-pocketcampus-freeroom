@@ -20,6 +20,8 @@ public class TransportFormatter {
 		niceNames_ = new HashMap<String, String>();
 		niceNames_.put("UMetm1", "M1");
 		niceNames_.put("UMetm2", "M2");
+		niceNames_.put("BBus33", "Bus 33");
+		niceNames_.put("BBus30", "Bus 30");
 	}
 
 	/**
