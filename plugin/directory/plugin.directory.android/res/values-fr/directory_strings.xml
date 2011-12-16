@@ -8,13 +8,13 @@
      <string name="directory_yes">oui</string>
      <string name="directory_no">non</string>
   
-     <string name="directory_searchView_title">Rechercher dans l'annuaire de l'EPFL</string>
+     <string name="directory_searchView_title">Rechercher dans l annuaire de l EPFL</string>
      <string name="directory_searchView_hint">nom ou sciper</string>
      
      <string name="directory_network_error">Erreur réseau!</string>
-     <string name="directory_too_many_results_warning">Trop de résultats, essayer d'être plus précis</string>
-     <string name="directory_couldnt_call">Un problème est survenu avec l'appel téléphonique</string>
-     <string name="directory_couldnt_email">Un problème est survenu lors de l'envoi d'email</string>
+     <string name="directory_too_many_results_warning">Trop de résultats, essayer d être plus précis</string>
+     <string name="directory_couldnt_call">Un problème est survenu avec l appel téléphonique</string>
+     <string name="directory_couldnt_email">Un problème est survenu lors de l envoi d email</string>
      
      <string name="directory_no_results_found">Aucun résultats trouvés</string>
      <string name="directory_result_found"> résultat trouvé</string>
