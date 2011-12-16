@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -17,8 +17,11 @@ import android.widget.TextView.OnEditorActionListener;
  *
  */
 public class InputBarElement extends RelativeLayout {
+	private int mRessource = R.drawable.sdk_magnify_mini_icon;
+	
 	private EditTextElement mEditText;
 	private ButtonElement mButton;
+	private ImageButton mImageButton;
 	private RelativeLayout mInnerLayout;
 	
 	/**
@@ -64,16 +67,21 @@ public class InputBarElement extends RelativeLayout {
 		super.addView(mEditText);
 		
 		// BUTTON
-		LayoutParams buttonParams = new LayoutParams(45,LayoutParams.FILL_PARENT);
+		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.FILL_PARENT);
 		buttonParams.setMargins(15, 13, 14, 15);
 		buttonParams.addRule(RelativeLayout.ALIGN_TOP, mEditText.getId());
 		buttonParams.addRule(RelativeLayout.ALIGN_RIGHT, mEditText.getId());
 		buttonParams.addRule(RelativeLayout.ALIGN_BOTTOM, mEditText.getId());
 		
+		LayoutParams imageButtonParams = new LayoutParams(buttonParams);
+		imageButtonParams.width = 45;
+		
 		mButton = new ButtonElement(context);
+		mImageButton = new ImageButton(context);
 		
 		setButtonText(buttonText);
 		super.addView(mButton, buttonParams);
+		super.addView(mImageButton, buttonParams);
 		
 		// LAYOUT
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -89,6 +97,7 @@ public class InputBarElement extends RelativeLayout {
 	
 	public void setOnButtonClickListener(OnClickListener listener) {
 		mButton.setOnClickListener(listener);
+		mImageButton.setOnClickListener(listener);
 	}
 	
 	public void setImeOptions(int opt){
@@ -126,13 +135,22 @@ public class InputBarElement extends RelativeLayout {
 	public void setButtonText(String text) {
 		if(text==null ) {
 			mButton.setVisibility(GONE);
+			mImageButton.setVisibility(GONE);
 			
 		} else if(text.equals("")){
-			mButton.setBackgroundResource(R.drawable.sdk_magnify_mini_icon);
+			mButton.setVisibility(GONE);
+			Drawable img = getContext().getResources().getDrawable(mRessource);
+			mImageButton.setImageDrawable(img);
+//			mButton.setBackgroundResource(R.drawable.sdk_magnify_mini_icon);
 		}else{
 			mButton.setText(text);
 			mButton.setVisibility(VISIBLE);
+			mImageButton.setVisibility(GONE);
 		}
+	}
+	
+	public void setImageButtonDrawableRessource(int ressource){
+		this.mRessource = ressource;
 	}
 	
 	public void setInputHint(String hint) {
