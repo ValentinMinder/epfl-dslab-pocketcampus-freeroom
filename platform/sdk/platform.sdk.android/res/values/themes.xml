@@ -69,7 +69,7 @@
     -->
 
     <style name="PocketCampusTheme.Primary">
-        <item name="android:background">@color/epfl_corrected_red</item>
+        <item name="android:background">@drawable/epfl_primary_gradient</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
