@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -75,6 +76,7 @@ public class TransportTripDetailsDialog extends Dialog {
 				departureTime = formatter.format(part.getDepartureTime());
 				arrivalTime = formatter.format(part.getArrivalTime());
 				departurePlace = part.getDeparture().getName();
+				Log.wtf("Transport", "in dialog-> dep: " + part.departureTime + " arr: " + part.arrivalTime);
 
 			} else {
 				// Part is a Footway

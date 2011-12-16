@@ -12,6 +12,8 @@ import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
+import android.util.Log;
+
 /**
  * The Main Model for the Transport plugin. Handles all the data relative to
  * this plugin : preferred destinations, auto completed destinations, ...
@@ -93,6 +95,8 @@ public class TransportModel extends PluginModel implements ITransportModel {
 								mPreferredDestinations.put(c.getTo().getName(),
 										new ArrayList<TransportTrip>());
 							}
+							//kjsdfhlkjqhklfjhjlsadfhoiqhcoiuneoicuqwoifuhqoifuhqoifhoiuqfhoeifhqowihfdeowqfhoqiwhfoiqwufhoiqhwefoiuwhqf
+							Log.wtf("Transport", "in model-> dep: " + c.departureTime + " arr: " + c.arrivalTime);
 							mPreferredDestinations.get(c.getTo().getName())
 									.add(c);
 						}

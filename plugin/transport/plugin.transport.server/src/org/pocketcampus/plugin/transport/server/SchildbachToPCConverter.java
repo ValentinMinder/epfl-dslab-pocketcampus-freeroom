@@ -181,6 +181,7 @@ public class SchildbachToPCConverter {
 		if(sf instanceof de.schildbach.pte.dto.Connection.Trip ){
 			de.schildbach.pte.dto.Connection.Trip sft = (de.schildbach.pte.dto.Connection.Trip) sf;
 			
+			part.foot = false;
 			part.line = convertSchToPC(sft.line);
 			part.path = convertSchPointsToPC(sf.path);
 			part.destination = convertSchToPC(sft.destination);

@@ -229,7 +229,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println(tripResults.connections.get(0).parts.get(0).departureTime);
 		return tripResults;
 	}
 	
