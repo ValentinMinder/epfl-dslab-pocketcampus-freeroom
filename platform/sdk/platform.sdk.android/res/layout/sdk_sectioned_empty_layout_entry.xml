@@ -11,8 +11,6 @@
         android:layout_height="40dip"
         android:layout_weight="1">
     
-        
-
     </RelativeLayout>
     
 </LinearLayout>

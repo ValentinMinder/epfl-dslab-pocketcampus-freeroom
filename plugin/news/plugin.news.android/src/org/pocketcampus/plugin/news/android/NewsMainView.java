@@ -72,11 +72,13 @@ public class NewsMainView extends PluginView implements INewsView {
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this, null);
 
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		mLayout.setLayoutParams(layoutParams);
-		mLayout.setGravity(Gravity.CENTER_VERTICAL);
+//		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
+//				LayoutParams.WRAP_CONTENT);
+//		mLayout.setLayoutParams(layoutParams);
+//		mLayout.setGravity(Gravity.CENTER_VERTICAL);
 
+		mLayout.setTitle(getString(R.string.news_plugin_title));
+		
 		prefs_ = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// The ActionBar is added automatically when you call setContentView
@@ -115,6 +117,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		mLayout.hideTitle();
 		if (newsList != null) {
 			if (!newsList.isEmpty()) {
+				mLayout.setTitle(getString(R.string.news_plugin_title));
 				// Add them to the listView
 				mListView = new FeedListViewElement(this, newsList,
 						mNewsItemLabeler);
@@ -197,7 +200,7 @@ public class NewsMainView extends PluginView implements INewsView {
 				startActivity(news);
 			}
 		};
-		mListView.setOnLineClickListener(mOnItemClickListener);
+		mListView.setOnItemClickListener(mOnItemClickListener);
 	}
 
 	@Override

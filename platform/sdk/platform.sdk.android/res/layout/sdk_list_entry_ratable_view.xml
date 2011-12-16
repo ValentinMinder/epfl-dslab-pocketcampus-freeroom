@@ -11,11 +11,9 @@
         android:layout_height="wrap_content"
         android:padding="6dip"
         android:text="testTitle"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        style="@style/PocketCampusTheme.Primary.Subtitle" />
 
     <LinearLayout
-        android:id="@+id/rela1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="horizontal" >
@@ -26,9 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dip"
             android:paddingLeft="15dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black" />
-
+            style="@style/PocketCampusTheme.Primary.SecondSubtitle"/>
         <RelativeLayout
             android:id="@+id/food_rela1"
             android:layout_width="wrap_content"
@@ -49,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:paddingTop="2dip"
                     android:layout_marginRight="5dip"
                     android:isIndicator="true"
                     android:numStars="5" />
@@ -66,10 +63,8 @@
                     android:layout_below="@+id/food_menuentry_ratingIndicator"
                     android:layout_marginBottom="5dip"
                     android:paddingRight="15dip"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@android:color/black" />
+                    style="@style/PocketCampusTheme.Primary.SecondSubtitle"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
 </LinearLayout>

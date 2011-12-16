@@ -2,10 +2,11 @@ package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
 
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.utils.MenuSorter;
@@ -34,7 +35,7 @@ public class FoodPreferencesView extends PluginView {
 
 	/* Layout */
 	/** A simple full screen layout */
-	private StandardLayout mLayout;
+	private StandardTitledLayout mLayout;
 	/** The list to be displayed in the layout */
 	private PreferencesListViewElement mListView;
 
@@ -77,7 +78,9 @@ public class FoodPreferencesView extends PluginView {
 		mSorter = new MenuSorter();
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		mLayout = new StandardLayout(this);
+		mLayout = new StandardTitledLayout(this);
+		
+		mLayout.setTitle(getString(R.string.food_preferences));
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -102,7 +105,7 @@ public class FoodPreferencesView extends PluginView {
 			// Set onClickListener
 			setOnListViewClickListener();
 
-			mLayout.addView(mListView);
+			mLayout.addFillerView(mListView);
 
 			mRestoPrefs = getSharedPreferences(RESTO_PREFS_NAME, 0);
 			mRestoPrefsEditor = mRestoPrefs.edit();
@@ -144,6 +147,7 @@ public class FoodPreferencesView extends PluginView {
 				}
 			}
 		});
+		
 	}
 
 	/**

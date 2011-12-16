@@ -232,7 +232,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		b.setCanceledOnTouchOutside(true);
 
 		// Set different values for the dialog
-		b.setTitle(meal.getRestaurant().getName() + " - " + meal.getName());
+		b.setTitle(meal.getName() + " @ " + meal.getRestaurant().getName());
 		b.setDescription(meal.getMealDescription());
 		b.setRating(mModel.getHasVoted(), (float) 0.0, meal.getRating()
 				.getNumberOfVotes());

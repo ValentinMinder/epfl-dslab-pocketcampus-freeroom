@@ -5,6 +5,7 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,7 +37,7 @@ public class PreferencesView extends LinearLayout {
 	/** The CheckBox to represent the preference for this Object */
 	private CheckBox mPrefBox;
 	/** The CheckBox listener */
-	private OnItemClickListener mOnChekcBoxClickListener;
+	private OnItemClickListener mOnCheckBoxClickListener;
 	/** The SharedPreferences to retrieve */
 	private SharedPreferences mPrefs;
 
@@ -52,7 +53,7 @@ public class PreferencesView extends LinearLayout {
 		mLabeler = labeler;
 		mPosition = position;
 
-		mOnChekcBoxClickListener = listener;
+		mOnCheckBoxClickListener = listener;
 
 		mPrefs = mContext.getSharedPreferences(prefName, 0);
 
@@ -87,13 +88,13 @@ public class PreferencesView extends LinearLayout {
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
 
-				if (mOnChekcBoxClickListener != null) {
+				if (mOnCheckBoxClickListener != null) {
 
 					if (b.isChecked()) {
-						mOnChekcBoxClickListener.onItemClick(null, (View) b,
+						mOnCheckBoxClickListener.onItemClick(null, (View) b,
 								mPosition, (long) 1);
 					} else {
-						mOnChekcBoxClickListener.onItemClick(null, (View) b,
+						mOnCheckBoxClickListener.onItemClick(null, (View) b,
 								mPosition, (long) 0);
 					}
 
@@ -101,6 +102,39 @@ public class PreferencesView extends LinearLayout {
 			}
 		});
 
+		mConvertView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPrefBox.performClick();
+			}
+		});
+
+		mConvertView.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				switch (keyCode) {
+				case KeyEvent.ACTION_DOWN:
+					mPrefBox.performClick();
+					break;
+				}
+				return false;
+			}
+		});
+
+		
+		this.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				switch (keyCode) {
+				case KeyEvent.ACTION_DOWN:
+					mPrefBox.performClick();
+					break;
+				}
+				return false;
+			}
+		});
 		addView(mConvertView);
 	}
 

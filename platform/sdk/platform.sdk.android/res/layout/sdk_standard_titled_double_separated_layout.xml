@@ -6,16 +6,7 @@
 
     <TextView
         android:id="@+id/sdk_standard_titled_double_separated_layout_title1"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="fill_parent"
-        android:layout_height="25dip"
-        android:layout_alignParentTop="true"
-        android:background="@color/smoke"
-        android:gravity="top"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        android:paddingTop="2dip"
-        android:textColor="@android:color/white" />
+        style="@style/PocketCampusTheme.Secondary.Title" />
 
     <TextView
         android:id="@+id/sdk_standard_titled_double_separated_layout_msg"

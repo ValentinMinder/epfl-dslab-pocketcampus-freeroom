@@ -82,7 +82,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	public void setRestaurantsList(List<Restaurant> list) {
 		if (mListeners != null) {
 			this.mRestaurantsList = list;
-			// Notifiy the view
+			// Notify the view
 			this.mListeners.restaurantsUpdated();
 		}
 	}
@@ -167,8 +167,13 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		if (mSorter == null) {
 			mSorter = new MenuSorter();
 		}
+
 		if (mMeals != null) {
-			return mSorter.sortByRatings(mMeals);
+			if (mRestoPrefs.getAll().isEmpty()) {
+				return mSorter.sortByRatings(mMeals);
+			} else {
+				return mSorter.sortByRatings(filterPreferredRestaurants());
+			}
 		} else {
 			return new ArrayList<Meal>();
 		}
@@ -191,7 +196,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	 * Gets the preferred restaurants as defined by the user
 	 * 
 	 * @param mealMap
-	 *            the list of meals to filter
+	 *            the hashMap of meals to filter
 	 */
 	public HashMap<String, Vector<Meal>> filterPreferredRestaurants(
 			HashMap<String, Vector<Meal>> mealMap) {
@@ -203,6 +208,20 @@ public class FoodModel extends PluginModel implements IFoodModel {
 			}
 		}
 		return toDisplay;
+	}
+
+	/**
+	 * Gets the meals from all preferred restaurants as defined by the user
+	 * 
+	 */
+	public List<Meal> filterPreferredRestaurants() {
+		List<Meal> filteredMeal = new ArrayList<Meal>();
+		for (Meal m : mMeals) {
+			if (mRestoPrefs.getBoolean(m.getRestaurant().getName(), false)) {
+				filteredMeal.add(m);
+			}
+		}
+		return filteredMeal;
 	}
 
 	/**

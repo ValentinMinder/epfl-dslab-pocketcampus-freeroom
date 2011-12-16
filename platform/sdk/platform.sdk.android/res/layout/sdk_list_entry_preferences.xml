@@ -3,16 +3,16 @@
     android:id="@+id/sdk_list_preferences_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/sdk_list_preferences_entry_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="6dip"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/black" />
-
+        android:layout_centerVertical="true"
+        android:paddingLeft="6dip"
+        style="@style/PocketCampusTheme.Primary.Title"/>
     <CheckBox
         android:id="@+id/sdk_list_preferences_entry_prefBox"
         android:layout_width="wrap_content"

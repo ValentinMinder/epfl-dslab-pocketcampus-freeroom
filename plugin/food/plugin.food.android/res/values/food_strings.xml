@@ -16,7 +16,7 @@
     <string name="food_by_restaurants">Restaurants</string>
 
     <!-- Meals -->
-    <string name="food_no_menus">No Menus</string>
+    <string name="food_no_menus">No Menus.</string>
     <string name="food_loading">Loading menus...</string>
 
     <!-- Menu Dialog -->
@@ -27,7 +27,7 @@
     <!-- Ratings -->
     <string name="food_by_ratings">Ratings</string>
     <string name="food_rating_valid">Rating submission successful!</string>
-    <string name="food_rating_already_voted">You can only vote for one meal a day...</string>
+    <string name="food_rating_already_voted">You can only vote for one meal a day.</string>
     <string name="food_rating_too_early">Too early to vote!</string>
     <string name="food_rating_error">An error occurred while submitting the rating. Try again!</string>
 
@@ -59,4 +59,6 @@
     <string name="food_suggestions_test">Test</string>
     <string name="food_suggestions_notag">No existing Tag</string>
 
+    <!-- Preferences -->
+    <string name="food_preferences">Preferences</string>
 </resources>

@@ -88,7 +88,9 @@ public class NewsModel extends PluginModel implements INewsModel {
 			NewsItemWithImage newsItemWithImage) {
 		for (NewsItemWithImage ni : filteredList) {
 			if (ni.getNewsItem().getTitle()
-					.equals(newsItemWithImage.getNewsItem().getTitle())) {
+					.equals(newsItemWithImage.getNewsItem().getTitle())
+					|| ni.getNewsItem().getLink()
+							.equals(newsItemWithImage.getNewsItem().getLink())) {
 				return true;
 			}
 		}
@@ -130,10 +132,10 @@ public class NewsModel extends PluginModel implements INewsModel {
 			mFeedUrls = new HashMap<String, String>();
 			Iterator<Entry<String, String>> entries = map.entrySet().iterator();
 			while (entries.hasNext()) {
-			  Entry thisEntry = (Entry<String, String>) entries.next();
-			  String key = (String) thisEntry.getKey();
-			  String value = (String) thisEntry.getValue();
-			  mFeedUrls.put(key, value);
+				Entry thisEntry = (Entry<String, String>) entries.next();
+				String key = (String) thisEntry.getKey();
+				String value = (String) thisEntry.getValue();
+				mFeedUrls.put(key, value);
 			}
 		} else {
 			Log.d("NEWSMODEL", "Null map");

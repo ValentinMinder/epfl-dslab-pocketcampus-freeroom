@@ -9,7 +9,8 @@
 		android:layout_height="fill_parent">
 
 		<RelativeLayout android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:paddingTop="2dip">
 
 			<!-- Feed it comes from -->
 			<TextView
