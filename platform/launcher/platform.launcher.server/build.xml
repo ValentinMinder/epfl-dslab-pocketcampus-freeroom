@@ -20,6 +20,8 @@
     <property name="plugin.directory.server.location" value="../../../plugin/directory/plugin.directory.server"/>
     <property name="plugin.food.shared.location" value="../../../plugin/food/plugin.food.shared"/>
     <property name="plugin.food.server.location" value="../../../plugin/food/plugin.food.server"/>
+	<property name="plugin.events.shared.location" value="../../../plugin/events/plugin.events.shared"/>
+	<property name="plugin.events.server.location" value="../../../plugin/events/plugin.events.server"/>
     <property name="plugin.news.shared.location" value="../../../plugin/news/plugin.news.shared"/>
     <property name="plugin.news.server.location" value="../../../plugin/news/plugin.news.server"/>
     <property name="plugin.map.shared.location" value="../../../plugin/map/plugin.map.shared"/>
@@ -141,7 +143,26 @@
         <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
-    </path>	
+    </path>
+	<path id="plugin.events.shared.classpath">
+        <pathelement location="${plugin.events.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+		<pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+    </path>
+    <path id="plugin.events.server.classpath">
+        <pathelement location="${plugin.events.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <path refid="plugin.events.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+    </path>
     <path id="plugin.isacademia.shared.classpath">
         <pathelement location="${plugin.isacademia.shared.location}/bin"/>
         <path refid="platform.sdk.shared.classpath"/>
@@ -661,16 +682,18 @@
         <path refid="plugin.bikes.shared.classpath"/>
         <path refid="plugin.map.server.classpath"/>
         <path refid="plugin.map.shared.classpath"/>
+        <path refid="plugin.events.server.classpath"/>
+        <path refid="plugin.events.shared.classpath"/>
         <path refid="plugin.isacademia.server.classpath"/>
         <path refid="plugin.isacademia.shared.classpath"/>
         <path refid="plugin.camipro.server.classpath"/>
         <path refid="plugin.camipro.shared.classpath"/>
         <path refid="plugin.directory.server.classpath"/>
         <path refid="plugin.directory.shared.classpath"/>
-        <path refid="plugin.food.shared.classpath"/>
         <path refid="plugin.news.server.classpath"/>
-        <path refid="plugin.food.server.classpath"/>
         <path refid="plugin.news.shared.classpath"/>
+        <path refid="plugin.food.server.classpath"/>
+        <path refid="plugin.food.shared.classpath"/>
         <path refid="plugin.takeout.shared.classpath"/>
         <path refid="plugin.takeoutreceiver.shared.classpath"/>
         <path refid="plugin.takeout.server.classpath"/>
@@ -701,6 +724,8 @@
         <ant antfile="build.xml" dir="${plugin.bikes.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.map.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.map.server.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${plugin.events.shared.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${plugin.events.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.isacademia.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.isacademia.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.camipro.shared.location}" inheritAll="false" target="clean"/>
@@ -773,6 +798,16 @@
             </propertyset>
         </ant>
         <ant antfile="build.xml" dir="${plugin.directory.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.events.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.events.server.location}" inheritAll="false" target="build-project">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>
@@ -933,6 +968,8 @@
             <fileset dir="${PC_TRUNK}/plugin/food/plugin.food.server/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/news/plugin.news.server/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/news/plugin.news.shared/bin"/>
+			<fileset dir="${PC_TRUNK}/plugin/events/plugin.events.server/bin"/>
+			<fileset dir="${PC_TRUNK}/plugin/events/plugin.events.shared/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/takeout/plugin.takeout.shared/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/takeout/plugin.takeout.server/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/takeoutreceiver/plugin.takeoutreceiver.shared/bin"/>

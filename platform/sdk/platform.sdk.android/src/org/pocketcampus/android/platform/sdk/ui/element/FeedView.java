@@ -78,24 +78,6 @@ public class FeedView extends LinearLayout {
 	 */
 	public void initializeView() {
 
-		/** title line click listener */
-		mTitleLine.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (mOnElementClickListener != null) {
-					mOnElementClickListener.onItemClick(null, v, mPosition, 0);
-				}
-			}
-		});
-
-		/** description line click listener */
-		mImage.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (mOnElementClickListener != null) {
-					mOnElementClickListener.onItemClick(null, v, mPosition, 0);
-				}
-			}
-		});
-
 		/** Title */
 		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
 
