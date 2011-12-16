@@ -205,10 +205,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Called when the list of restaurants has been updated
+	 * Not used
 	 */
 	public void restaurantsUpdated() {
-		Log.d("RESTAURANT", "Restaurants updated");
 	}
 
 	/**
@@ -327,11 +326,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Called when the sandwiches list is updated
+	 * Not used
 	 */
 	@Override
 	public void sandwichesUpdated() {
-		Log.d("SANDWICHES", "Sandwiches updated");
 	}
 
 	/**
@@ -379,6 +377,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			final HashMap<String, Vector<Meal>> mealHashMap) {
 		// Create Listeners
 		mOnLineClickListener = new OnItemClickListener() {
+
+			/**
+			 * Defines what is to be performed when the user clicks on an
+			 * element of the mensu list
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int positionInSection, long arg3) {
@@ -391,6 +394,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		mOnRatingClickListener = new OnItemClickListener() {
 
+			/**
+			 * Defines what is to be performed when the user clicks on a Rating
+			 * Bar in the list
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View okButton,
 					int positionInSection, long rating) {
@@ -414,6 +421,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			RatableListViewElement l) {
 		// Create Listeners
 		mOnLineClickListener = new OnItemClickListener() {
+
+			/**
+			 * Defines what is to be performed when the user clicks on an
+			 * element of the menus list
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int position, long arg3) {
@@ -425,6 +437,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		mOnRatingClickListener = new OnItemClickListener() {
 
+			/**
+			 * Defines what is to be performed when the user clicks on a
+			 * RatingBar in the list view
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View okButton,
 					int position, long rating) {
@@ -446,20 +462,16 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	public void showMenusByRestaurants() {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
 				.getMealsByRestaurants(this);
-		Log.d("MEALS", "Size of list of meals : " + mealHashMap.size());
-
 		if (mealHashMap != null) {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
-
 			if (showAllMenusAction == null || !showAllMenusAction.isShown()) {
 				showAllMenusAction = new ShowByRestaurantOrRatingsAction();
 				mActionBar.addAction(showAllMenusAction, 0);
 			} else {
 				showAllMenusAction.setIsRestaurant(true);
 			}
-
 			// Iterate over the different restaurant menus
 			mLayout.removeFillerView();
 
@@ -491,8 +503,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	public void showMenusByRatings() {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
-		Log.d("RATING", "Size of meals list : " + mealsByRatings.size());
-
 		if (showAllMenusAction == null) {
 			showAllMenusAction = new ShowByRestaurantOrRatingsAction();
 		}
@@ -527,23 +537,17 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
 		removeShowAllMenusAction();
-
 		if (mLayout == null) {
 			mLayout = new StandardTitledLayout(this);
 		}
-
 		if (mActionBar == null) {
 			mActionBar = getActionBar();
 		}
-
 		showAllMenusAction = new ShowByRestaurantOrRatingsAction();
 		showAllMenusAction.setIsRestaurant(false);
 		mActionBar.addAction(showAllMenusAction, 0);
 
 		if (mealsBySuggestions != null && !mealsBySuggestions.isEmpty()) {
-			Log.d("RATING", "Size of meals by suggestions list : "
-					+ mealsBySuggestions.size());
-
 			mLayout.removeFillerView();
 			mList = new RatableListViewElement(this, mealsBySuggestions,
 					mMealWithRestaurantLabeler);
@@ -565,13 +569,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	public void showSandwiches() {
 		removeShowAllMenusAction();
-
 		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel
 				.getSandwiches();
-		Log.d("SANDWICHES", "Size of Sandwiches list : " + mSandwiches.size());
 
 		if (mSandwiches != null) {
-
 			mLayout.removeFillerView();
 
 			ExpandableListViewElement mList = new ExpandableListViewElement(
@@ -619,25 +620,27 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			meal = m;
 		}
 
+		/**
+		 * Defines what is to be performed when the user clicks on the dialog
+		 * buttons. (rate, cancel)
+		 */
 		@Override
 		public void onClick(DialogInterface dialog, int code) {
 			switch (code) {
 			case DialogInterface.BUTTON1:
+				// Rate it
 				rating = builder.getSubmittedRating();
-				Log.d("RATING", "Rating submitted : " + rating);
 				dialog.dismiss();
 				mController.setRating((float) rating, meal);
 				break;
 
 			case DialogInterface.BUTTON2:
-				// Pictures
-				// Log.d("PICTURES", "Picture taken");
+				// Cancel
 				dialog.dismiss();
 				break;
 
 			case DialogInterface.BUTTON3:
-				// Go there
-				Log.d("MAP", "Go there clicked");
+				// Not defined
 				dialog.dismiss();
 				break;
 
@@ -667,6 +670,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			rating = r;
 		}
 
+		/**
+		 * Defines what is to be performed when the user click on the dialog
+		 * buttons (positive or negative).
+		 */
 		@Override
 		public void onClick(DialogInterface dialog, int code) {
 			switch (code) {
@@ -877,7 +884,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 */
 		@Override
 		public String getLabel(Sandwich sandwich) {
-			return sandwich.getName();
+			return " " + sandwich.getName();
 		}
 
 		/**
@@ -957,6 +964,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 	};
 
+	/**
+	 * Display a message saying that there is nothin to display when an error
+	 * occurs while contacting the server.
+	 */
 	@Override
 	public void networkErrorHappened(String message) {
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -973,11 +984,18 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		private boolean mButtonByRestaurants;
 		private boolean mIsShown;
 
+		/**
+		 * The constructor sets the boolean "shown by restaurant" and "is shown"
+		 * to true.
+		 */
 		ShowByRestaurantOrRatingsAction() {
 			mButtonByRestaurants = true;
 			mIsShown = true;
 		}
 
+		/**
+		 * Returns the resource for the button icon in the action bar.
+		 */
 		@Override
 		public int getDrawable() {
 			if (mButtonByRestaurants) {
@@ -987,22 +1005,20 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			}
 		}
 
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
 		@Override
 		public void performAction(View view) {
 			mButtonByRestaurants = !mButtonByRestaurants;
 			mActionBar.removeActionAt(0);
 			mActionBar.addAction(this, 0);
 			if (mButtonByRestaurants) {
-				// if (isSandwichDisplay_) {
-				// resetScreen();
-				// isSandwichDisplay_ = false;
-				// }
 				showMenusByRestaurants();
 			} else {
 				showMenusByRatings();
 			}
-			// displayView();
-			// foodDisplayHandler_.refreshView();
 		}
 
 		/**

@@ -16,7 +16,6 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /**
  * The Main View of the Satellite plugin, first displayed when accessing
@@ -30,10 +29,8 @@ import android.widget.Toast;
 public class SatelliteMainView extends PluginView implements ISatelliteMainView {
 	/** The Plugin Model */
 	private SatelliteModel mModel;
-
 	/** The Plugin Controller */
 	private SatelliteController mController;
-
 	/** A Standard Titled Layout */
 	private StandardTitledScrollableDoubleLayout mLayout;
 
@@ -159,15 +156,10 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
-	 * Displays a toast when an error happens upon contacting the server
+	 * Displays a message when an error happens upon contacting the server
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast
-				.makeText(getApplicationContext(),
-						getString(R.string.satellite_network_error),
-						Toast.LENGTH_SHORT);
-		toast.show();
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
 		mLayout.setText(getResources().getString(

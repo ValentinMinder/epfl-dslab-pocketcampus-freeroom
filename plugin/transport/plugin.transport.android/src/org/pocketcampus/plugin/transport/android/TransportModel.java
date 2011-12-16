@@ -144,6 +144,15 @@ public class TransportModel extends PluginModel implements ITransportModel {
 	 * Removes all connections from the map, in order to update with new ones.
 	 */
 	public void freeConnections() {
+		for(String s : mPreferredDestinations.keySet()) {
+			mPreferredDestinations.get(s).clear();
+		}
+	}
+	
+	/**
+	 * Removes all destinations from the map, in order to update with new ones.
+	 */
+	public void freeDestinations() {
 		mPreferredDestinations = new HashMap<String, List<TransportTrip>>();
 	}
 }

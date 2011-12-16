@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -105,9 +106,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		setUpActionBar();
 
 		// Set up destinations that will be displayed
-		mModel.freeConnections();
+		mModel.freeDestinations();
 		setUpDestinations();
-
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		mModel.freeConnections();
+		mModel.freeDestinations();
 		setUpDestinations();
 	}
 
@@ -319,11 +319,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Displays a toast when an error happens upon contacting the server
+	 * Displays a message when an error happens upon contacting the server
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Display an error message on the screen
+		Log.d("TRANSPORT", "Error");
+		mLayout.removeFillerView();
 		mLayout.setText(getResources().getString(
 				R.string.transport_network_error));
 	}
@@ -467,7 +468,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
-			displayDestinations();
+			mLayout.removeFillerView();
+			mLayout.addFillerView(mListView);
+			mModel.freeConnections();
+			if (mModel.getPreferredDestinations() == null
+					|| mModel.getPreferredDestinations().isEmpty()) {
+				setUpDestinations();
+			} else {
+				displayDestinations();
+			}
 		}
 	}
 

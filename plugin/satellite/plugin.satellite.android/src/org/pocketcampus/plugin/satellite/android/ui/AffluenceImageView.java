@@ -11,12 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display an Object that represents a Feed entry. It represents a
- * line of a ListView and contains the object's title and description along with
- * a picture. It's designed to be used with the FeedListView or an equivalent,
- * and can be created directly in the Application View.
+ * A view to display a picture with a title and a description.
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class AffluenceImageView extends LinearLayout {
 	/** The convert view */
@@ -26,8 +23,8 @@ public class AffluenceImageView extends LinearLayout {
 	private IFeedViewLabeler mLabeler;
 	/** The Object to display */
 	private Object mCurrentObject;
+	/** The image resource */
 	private int mImageResource;
-
 	/** Title : "Affluence" */
 	private TextView mTitle;
 	/** The Object's image */
