@@ -141,7 +141,6 @@
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2-sources.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
-        <pathelement location="lib/unboundid-ldapsdk-se.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
