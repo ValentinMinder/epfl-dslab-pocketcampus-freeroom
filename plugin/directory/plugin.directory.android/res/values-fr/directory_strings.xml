@@ -8,7 +8,7 @@
      <string name="directory_yes">oui</string>
      <string name="directory_no">non</string>
   
-     <string name="directory_searchView_title">Rechercher dans l\'annuaire de l\'EPFL</string>
+     <string name="directory_searchView_title">Annuaire EPFL</string>
      <string name="directory_searchView_hint">Chercher une personne</string>
      
      <string name="directory_network_error">Erreur réseau!</string>
