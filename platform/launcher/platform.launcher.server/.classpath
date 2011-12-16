@@ -47,8 +47,6 @@
 	<classpathentry kind="src" path="/plugin.food.server"/>
 	<classpathentry kind="src" path="/plugin.news.shared"/>
 	<classpathentry kind="src" path="/plugin.news.server"/>
-	<classpathentry kind="src" path="/plugin.events.shared"/>
-	<classpathentry kind="src" path="/plugin.events.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.server"/>
