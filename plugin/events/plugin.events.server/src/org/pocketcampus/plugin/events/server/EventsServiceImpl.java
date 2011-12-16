@@ -41,8 +41,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 	/** Interval in minutes at which the events should be fetched */
 	private int REFRESH_INTERVAL = 60;
 
-	private final int MAX_NUMBER_RESULTS = 5;
-
 	private final String DEFAULT_LANGUAGE = "en";
 
 	/**
