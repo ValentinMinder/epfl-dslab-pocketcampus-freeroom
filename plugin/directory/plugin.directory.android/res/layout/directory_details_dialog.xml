@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="280dip"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/directory_person_details_title_layout"
+        style="@style/Dialog.Top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/directory_person_details_title_dialog"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="8dip" />
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/Dialog.Middle"
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:padding="15dip" >
+
+        <RelativeLayout
+            android:id="@+id/directory_person_details_dialog_allinfos"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <org.pocketcampus.android.platform.sdk.utils.LoaderImageView
+                android:id="@+id/directory_person_details_dialog_photo"
+                android:layout_width="85dip"
+                android:layout_height="90dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:paddingRight="5dip" >
+            </org.pocketcampus.android.platform.sdk.utils.LoaderImageView>
+
+          
+
+            <TextView
+                android:id="@+id/directory_person_details_dialog_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/directory_person_details_dialog_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/directory_person_details_dialog_mail"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo" >
+            </TextView>
+            
+            <TextView
+                android:id="@+id/directory_person_details_dialog_office_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/directory_person_details_dialog_phone_number"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/directory_person_details_dialog_office"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/directory_person_details_dialog_office_phone_number"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+                android:visibility="gone" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/directory_person_details_dialog_web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/directory_person_details_dialog_office"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
+                android:visibility="gone" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/directory_person_details_dialog_ou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:visibility="gone" >
+            </TextView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/directory_person_details_dialog_allinfos"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="15dip" >
+
+            <ImageView
+                android:id="@+id/directory_imageButton_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/directory_mail" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/directory_imageButton_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:src="@drawable/directory_map" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/directory_imageButton_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:src="@drawable/directory_phone" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/directory_imageButton_web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:src="@drawable/directory_web" >
+            </ImageView>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

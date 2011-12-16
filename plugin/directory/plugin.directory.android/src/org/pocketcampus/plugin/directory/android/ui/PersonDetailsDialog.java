@@ -28,10 +28,12 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	Person displayedPerson_;
 	
+	TextView title_;
 	TextView fname_;
 	TextView lname_;
 	TextView mail_;
 	TextView office_;
+	TextView officePhone_;
 	TextView phone_;
 	TextView web_;
 	TextView ou_;
@@ -68,18 +70,21 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	private void build(){
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setTitle(ctx_.getResources().getString(R.string.directory_person_details_dialog_tile));
-		setContentView(R.layout.directory_person_details_dialog);
+//		setTitle(ctx_.getResources().getString(R.string.directory_person_details_dialog_tile));
+		setContentView(R.layout.directory_details_dialog);
 		getWindow().setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
 	}
 	
 	private void setContent(Person p){
-		lname_ = (TextView) findViewById(R.id.directory_person_details_dialog_lname);
-		lname_.setText(p.getLastName());
+		title_ = (TextView) findViewById(R.id.directory_person_details_title_dialog);
+		title_.setText(p.getFirstName()+" "+p.getLastName());
 		
-		fname_ = (TextView) findViewById(R.id.directory_person_details_dialog_fname);
-		fname_.setText(p.getFirstName() + " ");
+//		lname_ = (TextView) findViewById(R.id.directory_person_details_dialog_lname);
+//		lname_.setText(p.getLastName());
+//		
+//		fname_ = (TextView) findViewById(R.id.directory_person_details_dialog_fname);
+//		fname_.setText(p.getFirstName() + " ");
 		
 		mail_ = (TextView) findViewById(R.id.directory_person_details_dialog_mail);
 		mail_.setVisibility(visibility(p.isSetEmail()));
@@ -90,8 +95,12 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		office_.setText(p.office);
 		
 		phone_ = (TextView) findViewById(R.id.directory_person_details_dialog_phone_number);
-		phone_.setVisibility(visibility(p.isSetOfficePhoneNumber()));
-		phone_.setText(p.officePhoneNumber);
+		phone_.setVisibility(visibility(p.isSetPrivatePhoneNumber()));
+		phone_.setText(p.privatePhoneNumber);
+		
+		officePhone_ = (TextView) findViewById(R.id.directory_person_details_dialog_office_phone_number);
+		officePhone_.setVisibility(visibility(p.isSetOfficePhoneNumber()));
+		officePhone_.setText(p.officePhoneNumber);
 		
 //		web_ = (TextView) findViewById(R.id.directory_person_details_dialog_web);
 //		web_.setVisibility(visibility(p.isSetWeb()));
