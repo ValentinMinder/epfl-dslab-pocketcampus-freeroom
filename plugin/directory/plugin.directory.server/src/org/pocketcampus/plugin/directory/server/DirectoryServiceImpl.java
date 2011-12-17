@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.directory.server;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("data/EPFL-givenNames.txt"));
+			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-givenNames.txt"));
 			String line;
 			while(true){
 				line = br.readLine();
@@ -87,14 +88,14 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			}
 			br.close();
 		}catch (FileNotFoundException e) {
-			System.out.println("please run tool.LdapExtractor to get autocomplete");
+			System.out.println("please run tool.LdapExtractor to get given name autocomplete");
 		}catch (IOException e) {
 			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
 		}
 		////////////////////////////////////////////////////////////////////
 		second_names = new ArrayList<String>();
 		try {
-			br = new BufferedReader(new FileReader("data/EPFL-lastNames.txt"));
+			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-lastNames.txt"));
 			String line;
 			while(true){
 				line = br.readLine();
@@ -305,15 +306,17 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		if(constraint.contains(" ")){
 			String name = constraint.substring(0, constraint.indexOf(" "));
+			name = StringUtils.capitalize(name);
 			if(second_names.contains(name)){
 				String partialFirstName = constraint.substring(constraint.indexOf(" ")+1);
 				partialFirstName = StringUtils.capitalize(partialFirstName);
 				String lastName = StringUtils.capitalize(name);
 				System.out.println("looking for: " + partialFirstName+ "... " + lastName);
 				suggestions = searchForLastNameAndPartialFirstName(lastName, partialFirstName);
-			}else{
-				suggestions = searchForDisplayName(StringUtils.capitalize(constraint));
 			}
+			
+			suggestions.addAll(searchForDisplayName(StringUtils.capitalize(constraint)));
+			
 				
 			
 		}else{
