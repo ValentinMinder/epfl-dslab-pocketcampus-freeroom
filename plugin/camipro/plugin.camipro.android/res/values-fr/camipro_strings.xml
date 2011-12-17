@@ -8,8 +8,8 @@
 
     <string name="camipro_current_balance">Solde actuel</string>
     <string name="camipro_ebanking_1month_title">Total dernier mois</string>
-    <string name="camipro_ebanking_3months_title">Total last 3 months</string>
-    <string name="camipro_ebanking_average_title">Total 3 derniers mois</string>
+    <string name="camipro_ebanking_3months_title">Total 3 derniers mois</string>
+    <string name="camipro_ebanking_average_title">Moyenne par mois</string>
         
     
     <string name="camipro_balance_section_title">Solde et Montants (sous réserve de transactions effectuées offline)</string>
