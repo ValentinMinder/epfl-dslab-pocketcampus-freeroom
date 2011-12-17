@@ -1,44 +1,28 @@
 package org.pocketcampus.plugin.camipro.android;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
-import org.pocketcampus.plugin.camipro.android.CamiproMainView.TransactionAdapter;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
-import org.pocketcampus.plugin.camipro.shared.CardStatistics;
-import org.pocketcampus.plugin.camipro.shared.Transaction;
-
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class CamiproCardRechargeView extends PluginView implements ICamiproView {
 
@@ -55,7 +39,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		//mLayout = new StandardLayout(this);
-		mLayout = new StandardTitledDoubleSeparatedLayout(this);
+		mLayout = new StandardTitledLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -88,8 +72,8 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	@Override
 	public void cardLoadingWithEbankingInfoUpdated() {
-		mLayout.hideFirstTitle();
-		mLayout.setSecondTitle(getResources().getString(R.string.camipro_ebanking_section_title));
+		
+		mLayout.setTitle(getResources().getString(R.string.camipro_ebanking_section_title));
 		CardLoadingWithEbankingInfo ebanking = mModel.getCardLoadingWithEbankingInfo();
 		if(ebanking == null)
 			return;
@@ -102,10 +86,13 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		einfos.add(new EbankingInfo(null, getResources().getString(R.string.camipro_ebanking_infos_remark)));
 		
 		ListView lv = new ListView(this);
-		lv.setAdapter(new EbankingAdapter(this, R.layout.camipro_ebankinginfo, einfos));
 		
-		mLayout.removeSecondLayoutFillerView();
-		mLayout.addSecondLayoutFillerView(lv);
+		lv.setAdapter(new EbankingAdapter(this, R.layout.camipro_ebankinginfo, einfos));
+		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		lv.setLayoutParams(p);
+		
+		
+		mLayout.addFillerView(lv);
 	}
 
 	@Override
@@ -126,7 +113,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	private CamiproController mController;
 	private ICamiproModel mModel;
 	
-	private StandardTitledDoubleSeparatedLayout mLayout;
+	private StandardTitledLayout mLayout;
 
 	
 	
