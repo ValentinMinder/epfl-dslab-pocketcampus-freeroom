@@ -135,13 +135,13 @@ public class BikesMainView extends PluginView implements IBikesView{
 			
 			if(pl > 0){
 				RelativeLayout listElement = new RelativeLayout(this);
-				float textSize = 15f;
+				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
 				int layoutsWidth = 30;
 				//bikeEmplacement name
 				TextView titleView = new TextView(this);
 				titleView.setText(be.name);
 				titleView.setId(4);
-				titleView.setTextSize(textSize);
+				titleView.setTextAppearance(this, textAppearanceID);
 				LayoutParams titleParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
 				titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				titleParams.setMargins(15, 3, 3, 3);
@@ -150,7 +150,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView totalPlacesView = new TextView(this);
 				totalPlacesView.setText(pl + "");
 				totalPlacesView.setGravity(Gravity.RIGHT);
-				totalPlacesView.setTextSize(textSize);
+				totalPlacesView.setTextAppearance(this, textAppearanceID);
 				LayoutParams totalParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
 				totalParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				totalParams.setMargins(3, 3, 15, 3);
@@ -160,7 +160,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView slashView = new TextView(this);
 				slashView.setText("/");
 				slashView.setGravity(Gravity.RIGHT);
-				slashView.setTextSize(textSize);
+				slashView.setTextAppearance(this, textAppearanceID);
 				slashView.setId(2);
 				LayoutParams slashParams = new LayoutParams(layoutsWidth/3, LayoutParams.FILL_PARENT);
 				slashParams.addRule(RelativeLayout.LEFT_OF, totalPlacesView.getId());
@@ -170,7 +170,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView bikesAvailableView = new TextView(this);
 				bikesAvailableView.setText(q + "");
 				bikesAvailableView.setGravity(Gravity.RIGHT);
-				bikesAvailableView.setTextSize(textSize);
+				bikesAvailableView.setTextAppearance(this, textAppearanceID);
 				bikesAvailableView.setId(1);
 				LayoutParams availableParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
 				availableParams.addRule(RelativeLayout.LEFT_OF, slashView.getId());
