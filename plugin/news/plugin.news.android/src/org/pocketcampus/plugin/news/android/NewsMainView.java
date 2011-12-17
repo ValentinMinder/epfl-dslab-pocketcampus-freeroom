@@ -8,7 +8,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.list.FeedWithImageListViewElement;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
@@ -17,11 +17,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -35,7 +33,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	private INewsModel mModel;
 
 	private StandardTitledLayout mLayout;
-	private FeedListViewElement mListView;
+	private FeedWithImageListViewElement mListView;
 
 	private OnItemClickListener mOnItemClickListener;
 
@@ -119,7 +117,7 @@ public class NewsMainView extends PluginView implements INewsView {
 			if (!newsList.isEmpty()) {
 				mLayout.setTitle(getString(R.string.news_plugin_title));
 				// Add them to the listView
-				mListView = new FeedListViewElement(this, newsList,
+				mListView = new FeedWithImageListViewElement(this, newsList,
 						mNewsItemLabeler);
 
 				// Set onClickListener

@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.events.android;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,7 +12,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
+import org.pocketcampus.android.platform.sdk.ui.list.FeedListViewElement;
 import org.pocketcampus.plugin.events.android.iface.IEventsModel;
 import org.pocketcampus.plugin.events.android.iface.IEventsView;
 
@@ -22,7 +26,6 @@ import android.view.View;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 
 /**
  * 
@@ -33,7 +36,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private IEventsModel mModel;
 
 	private StandardTitledLayout mLayout;
-	private LabeledListViewElement mListView;
+	private FeedListViewElement mListView;
 
 	private OnItemClickListener mOnItemClickListener;
 
@@ -110,7 +113,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		if (eventsList != null) {
 			if (!eventsList.isEmpty()) {
 				// Add them to the listView
-				mListView = new LabeledListViewElement(this, eventsList,
+				mListView = new FeedListViewElement(this, eventsList,
 						mEventsItemLabeler);
 
 				// Set onClickListener
@@ -187,8 +190,24 @@ public class EventsMainView extends PluginView implements IEventsView {
 						toPass.getFormattedDescription());
 				events.putExtra("org.pocketcampus.events.eventsitem.feed",
 						toPass.getEventsItem().getFeed());
-				events.putExtra("org.pocketcampus.events.eventsitem.bitmap",
-						toPass.getBitmapDrawable());
+
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+				if (toPass.getEventsItem().getStartDate() != 0) {
+					Date startDate = new Date(toPass.getEventsItem()
+							.getStartDate());
+					String date;
+					if(toPass.getEventsItem().getEndDate() != 0){
+						Date endDate = new Date(toPass.getEventsItem()
+								.getEndDate());
+						date = getString(R.string.events_from)+" "+df.format(startDate)+" "+getString(R.string.events_to)+" "+df.format(endDate);
+					} else {
+
+						date = getString(R.string.events_on)+" "+df.format(startDate);
+					}
+					events.putExtra("org.pocketcampus.events.eventsitem.date", date
+							);
+				}
 				startActivity(events);
 			}
 		};

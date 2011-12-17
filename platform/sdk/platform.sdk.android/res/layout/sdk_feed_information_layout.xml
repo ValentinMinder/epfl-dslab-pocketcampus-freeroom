@@ -53,12 +53,19 @@
 				android:layout_below="@id/sdk_list_entry_feed_view_title"
 				android:gravity="center_horizontal"/>
 
+			<!-- Date -->
+			<TextView android:id="@+id/sdk_list_entry_feed_view_date"
+				android:layout_width="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/sdk_list_entry_feed_view_image"
+				android:padding="5dip" android:text="" />
+				
 			<!-- Item description -->
 			<TextView android:id="@+id/sdk_list_entry_feed_view_description"
 				android:layout_width="wrap_content"
 				android:layout_alignParentBottom="true"
 				android:layout_alignParentRight="true"
-				android:layout_below="@id/sdk_list_entry_feed_view_image"
+				android:layout_below="@id/sdk_list_entry_feed_view_date"
 				android:padding="5dip" android:text="Second line" />
 
 		</RelativeLayout>

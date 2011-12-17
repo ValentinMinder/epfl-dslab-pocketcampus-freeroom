@@ -2,7 +2,6 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,18 +18,20 @@ import android.widget.TextView;
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
-public class FeedView extends LinearLayout {
+public class FeedWithImageView extends LinearLayout {
 	/** The convert view */
 	private View mConvertView;
 	/** The Object to be displayed in the View */
 	private Object mCurrentObject;
 	/** The Labeler from the Application to get the Obejct's attributes */
-	private ILabeler mLabeler;
+	private IFeedViewLabeler mLabeler;
 	/** The position of the Object in the ListView */
 	private int mPosition;
 	/** The Object's title */
 	private TextView mTitleLine;
 
+	/** The Object's image */
+	private LinearLayout mImage;
 	/** The click listener on the Object's title and description */
 	private OnItemClickListener mOnElementClickListener;
 
@@ -48,20 +49,24 @@ public class FeedView extends LinearLayout {
 	 * @param position
 	 *            the position of the Object in the List
 	 */
-	public FeedView(Object currentObject, Context context,
-			ILabeler<Object> labeler,
+	public FeedWithImageView(Object currentObject, Context context,
+			IFeedViewLabeler<Object> labeler,
 			OnItemClickListener elementListener, int position) {
 		super(context);
 		this.mConvertView = LayoutInflater
 				.from(context.getApplicationContext()).inflate(
-						R.layout.sdk_list_entry_feed, null);
+						R.layout.sdk_list_entry_feed_with_image
+						, null);
 
 		this.mCurrentObject = currentObject;
 		this.mLabeler = labeler;
 		this.mPosition = position;
 
 		this.mTitleLine = (TextView) mConvertView
-				.findViewById(R.id.sdk_list_entry_feed_title);
+				.findViewById(R.id.sdk_list_entry_feed_with_image_title);
+
+		this.mImage = (LinearLayout) mConvertView
+				.findViewById(R.id.sdk_list_entry_feed_with_image_image);
 
 		/** Listener */
 		this.mOnElementClickListener = elementListener;
@@ -75,7 +80,9 @@ public class FeedView extends LinearLayout {
 	public void initializeView() {
 
 		/** Title */
-		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
+		mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
+
+		mImage.addView(mLabeler.getPictureLayout(mCurrentObject));
 
 		addView(mConvertView);
 	}

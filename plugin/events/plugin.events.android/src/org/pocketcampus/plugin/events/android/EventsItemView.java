@@ -17,6 +17,7 @@ public class EventsItemView extends PluginView {
 	private String mTitle;
 	private String mDescription;
 	private String mFeed;
+	private String mDate;
 	private Bitmap mBitmap;
 	private FeedInformationLayout mLayout;
 
@@ -64,8 +65,8 @@ public class EventsItemView extends PluginView {
 		if (mFeed != null) {
 			mLayout.setFeedTitle(mFeed);
 		}
-		if (mBitmap != null) {
-			mLayout.setImage(mBitmap);
+		if (mDate != null) {
+			mLayout.setDate(mDate);
 		}
 	}
 
@@ -84,6 +85,8 @@ public class EventsItemView extends PluginView {
 					"org.pocketcampus.events.eventsitem.bitmap");
 			mFeed = (String) extras
 					.getSerializable("org.pocketcampus.events.eventsitem.feed");
+			mDate = (String) extras
+					.getSerializable("org.pocketcampus.events.eventsitem.date");
 
 		} else {
 			Log.d("EVENTSITEMVIEW", "No extras received!");

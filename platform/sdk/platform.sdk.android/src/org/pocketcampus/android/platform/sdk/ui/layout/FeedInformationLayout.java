@@ -28,6 +28,8 @@ public class FeedInformationLayout extends RelativeLayout {
 	private TextView mTextContent;
 	/** The feed it's from */
 	private TextView mFeedTitle;
+	/** The date of the item*/
+	private TextView mDate;
 
 	/**
 	 * 
@@ -69,6 +71,7 @@ public class FeedInformationLayout extends RelativeLayout {
 		mFeedTitle = (TextView) findViewById(R.id.sdk_list_entry_feed_view_feed);
 		mImage = (ImageView) findViewById(R.id.sdk_list_entry_feed_view_image);
 		mTextContent = (TextView) findViewById(R.id.sdk_list_entry_feed_view_description);
+		mDate = (TextView) findViewById(R.id.sdk_list_entry_feed_view_date);
 	}
 
 	/**
@@ -101,6 +104,17 @@ public class FeedInformationLayout extends RelativeLayout {
 	public void setDescription(String text) {
 		mTextContent.setText(text);
 		mTextContent.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * Displays a date.
+	 * 
+	 * @param text
+	 *            the content to be displayed
+	 */
+	public void setDate(String text) {
+		mDate.setText(text);
+		mDate.setVisibility(View.VISIBLE);
 	}
 
 	/**

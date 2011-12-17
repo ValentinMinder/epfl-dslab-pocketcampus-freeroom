@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="events_plugin_title">Evènements</string>
+
+	<string name="events_preferences_rss_title">Options de flux RSS</string>
+	<string name="events_preferences_other_title">Options</string>
+
+	<string name="events_settings">Préférences</string>
+	<string name="events_no_events">Aucun évènement à afficher.</string>
+	<string name="events_loading">Chargement des évènements...</string>
+	
+	<string name="events_no_feed_selected">Aucun flux séléctionné.</string>
+	<string name="events_readmore">
+		<u>En savoir plus...</u>
+	</string>
+
+</resources>

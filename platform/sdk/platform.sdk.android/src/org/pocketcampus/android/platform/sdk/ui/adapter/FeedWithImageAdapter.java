@@ -2,8 +2,8 @@ package org.pocketcampus.android.platform.sdk.ui.adapter;
 
 import java.util.List;
 
-import org.pocketcampus.android.platform.sdk.ui.element.FeedView;
-import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
+import org.pocketcampus.android.platform.sdk.ui.element.FeedWithImageView;
+import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 
 import android.content.Context;
 import android.view.View;
@@ -16,9 +16,9 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
-public class FeedAdapter extends AbstractArrayAdapter {
+public class FeedWithImageAdapter extends AbstractArrayAdapter {
 	/** The labeler that defines the information to display from the object */
-	private ILabeler mLabeler;
+	private IFeedViewLabeler mLabeler;
 
 	/** The context of the calling View */
 	private Context mContext;
@@ -36,8 +36,8 @@ public class FeedAdapter extends AbstractArrayAdapter {
 	 * @param labeler
 	 *            the labeler to get information from the object
 	 */
-	public FeedAdapter(Context context, List<? extends Object> items,
-			ILabeler<? extends Object> labeler) {
+	public FeedWithImageAdapter(Context context, List<? extends Object> items,
+			IFeedViewLabeler<? extends Object> labeler) {
 		super(context, items);
 		if (items != null && labeler != null) {
 			mContext = context;
@@ -58,7 +58,7 @@ public class FeedAdapter extends AbstractArrayAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		FeedView rv = new FeedView(getItem(position), mContext, mLabeler,
+		FeedWithImageView rv = new FeedWithImageView(getItem(position), mContext, mLabeler,
 				mOnLineClickListener, position);
 		return rv;
 	}
