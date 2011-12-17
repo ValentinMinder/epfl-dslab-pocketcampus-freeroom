@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.directory.android;
 
+import java.util.ArrayList;
+
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
@@ -88,12 +90,19 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		mInputBar.setOnKeyPressedListener(new OnKeyPressedListener() {
 			@Override
 			public void onKeyPressed(String text) {
-				mController.getAutoCompleted(text);
 				
-				if(mInputBar.getInputText().length() == 0)
+				
+				if(mInputBar.getInputText().length() == 0){
 					mInputBar.setButtonText(null);
-				else
+					mAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sdk_list_entry, R.id.sdk_list_entry_text, new ArrayList<String>());
+
+					mListView.setAdapter(mAdapter);
+					mListView.invalidate();
+					
+				}else{
 					mInputBar.setButtonText("");
+					mController.getAutoCompleted(text);
+				}
 			}
 		});
 
