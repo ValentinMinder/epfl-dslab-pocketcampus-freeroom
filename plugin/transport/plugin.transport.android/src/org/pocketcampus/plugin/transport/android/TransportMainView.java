@@ -390,17 +390,31 @@ public class TransportMainView extends PluginView implements ITransportView {
 								}
 							}
 							logo = TransportFormatter.getNiceName(logo);
-							PCEntryItem entry = new PCEntryItem(
-									timeString(c.getDepartureTime()), logo, c
-											.getTo().getName()
-											+ ":"
-											+ c.getDepartureTime()
-											+ ":"
-											+ c.getArrivalTime()
-											+ ":"
-											+ c.getId());
+							if(mFromEpfl) {
+								PCEntryItem entry = new PCEntryItem(
+										timeString(c.getDepartureTime()), logo, c
+										.getTo().getName()
+										+ ":"
+										+ c.getDepartureTime()
+										+ ":"
+										+ c.getArrivalTime()
+										+ ":"
+										+ c.getId());
+								items.add(entry);
+
+							} else {
+								PCEntryItem entry = new PCEntryItem(
+										timeString(c.getDepartureTime()), logo, c
+										.getFrom().getName()
+										+ ":"
+										+ c.getDepartureTime()
+										+ ":"
+										+ c.getArrivalTime()
+										+ ":"
+										+ c.getId());
+								items.add(entry);
+							}
 							// Add this departure
-							items.add(entry);
 						}
 					}
 				}
