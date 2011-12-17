@@ -168,15 +168,15 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_SEARCH && mInputBar.getInputText().length()> 0){
-			String query = mInputBar.getInputText();
-			search(query);
-		}
-			
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if(keyCode == KeyEvent.KEYCODE_SEARCH && mInputBar.getInputText().length()> 0){
+//			String query = mInputBar.getInputText();
+//			search(query);
+//		}
+//			
+//		return super.onKeyDown(keyCode, event);
+//	}
 	
 	private void search(String query){
 		mController.search(query);

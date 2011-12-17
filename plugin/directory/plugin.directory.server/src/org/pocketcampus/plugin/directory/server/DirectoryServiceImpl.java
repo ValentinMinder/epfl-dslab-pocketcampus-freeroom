@@ -1,10 +1,5 @@
 package org.pocketcampus.plugin.directory.server;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -52,6 +47,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	private static ArrayList<String> given_names;
 	private static ArrayList<String> second_names;
 	
+	//database stuff
+	DirectoryDatabase connectionManager = new DirectoryDatabase();
 	
 	public DirectoryServiceImpl(){
 		System.out.println("Directory plugin server started");
@@ -72,47 +69,52 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	}
 	
 	private void getNamesForDisk(){
-		given_names = new ArrayList<String>();
+//		given_names = new ArrayList<String>();
+//		
+//		BufferedReader br;
+//		try {
+//			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-givenNames.txt"));
+//			String line;
+//			while(true){
+//				line = br.readLine();
+//				
+//				if(line == null)
+//					break;
+//				else
+//					given_names.add(line);
+//			}
+//			br.close();
+//		}catch (FileNotFoundException e) {
+//			System.out.println("please run tool.LdapExtractor to get given name autocomplete");
+//		}catch (IOException e) {
+//			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
+//		}
+//		////////////////////////////////////////////////////////////////////
+//		second_names = new ArrayList<String>();
+//		try {
+//			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-lastNames.txt"));
+//			String line;
+//			while(true){
+//				line = br.readLine();
+//				
+//				if(line == null)
+//					break;
+//				else
+//					second_names.add(line);
+//					
+//			}
+//			br.close();
+//		}catch (FileNotFoundException e) {
+//			System.out.println("please run tool.LdapExtractor to get autocomplete");
+//		}catch (IOException e) {
+//			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
+//		} 
 		
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-givenNames.txt"));
-			String line;
-			while(true){
-				line = br.readLine();
-				
-				if(line == null)
-					break;
-				else
-					given_names.add(line);
-			}
-			br.close();
-		}catch (FileNotFoundException e) {
-			System.out.println("please run tool.LdapExtractor to get given name autocomplete");
-		}catch (IOException e) {
-			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
-		}
-		////////////////////////////////////////////////////////////////////
-		second_names = new ArrayList<String>();
-		try {
-			br = new BufferedReader(new FileReader("data" +File.separator+ "EPFL-lastNames.txt"));
-			String line;
-			while(true){
-				line = br.readLine();
-				
-				if(line == null)
-					break;
-				else
-					second_names.add(line);
-					
-			}
-			br.close();
-		}catch (FileNotFoundException e) {
-			System.out.println("please run tool.LdapExtractor to get autocomplete");
-		}catch (IOException e) {
-			System.out.println("IO exception while getting name for auto complete: " + e.getMessage());
-		} 
+		given_names = (ArrayList<String>) connectionManager.getFirstNames();
+		second_names = (ArrayList<String>) connectionManager.getLastNames();
 		
+		System.out.println("Nb of first names: "+given_names.size());
+		System.out.println("Nb of last names: "+second_names.size());
 	}
 	
 	@Override
@@ -317,21 +319,24 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 			suggestions.addAll(searchForDisplayName(StringUtils.capitalize(constraint)));
 			
-				
+			return suggestions;
 			
 		}else{
 			for(String fname: given_names){
-				if(fname.startsWith(StringUtils.capitalize(constraint)))
-						suggestions.add(fname);
+				if(StringUtils.removeAccents(fname).startsWith(StringUtils.capitalize(constraint))) {
+					suggestions.add(fname);
+				}
+						
 			}
 			
 			for(String lname: second_names){
-				if(lname.startsWith(StringUtils.capitalize(constraint)))
-						suggestions.add(lname);
+				if(StringUtils.removeAccents(lname).startsWith(StringUtils.capitalize(constraint))) {
+					suggestions.add(lname);
+				}
 			}
+			
+			return suggestions.subList(0, 25);
 		}
-		
-		return suggestions;
 	}
 
 	private ArrayList<String> searchForDisplayName(String name) {
