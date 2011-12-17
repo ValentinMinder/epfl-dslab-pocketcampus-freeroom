@@ -76,6 +76,8 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerHorizontal="true"
 	        android:layout_marginTop="3dp"
+	        android:layout_marginLeft="100dp"
+	        android:layout_marginRight="100dp"
 	        android:text="@string/loginbutton_string" />
     </LinearLayout>
         

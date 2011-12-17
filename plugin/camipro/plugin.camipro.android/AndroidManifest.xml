@@ -50,7 +50,11 @@
 		<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
             
-    </application>
+		<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproCardRechargeView"
+			xmlns:android="http://schemas.android.com/apk/res/android" >
+		</activity>
+		
+	</application>
     
         
 	<uses-permission android:name="android.permission.INTERNET" />

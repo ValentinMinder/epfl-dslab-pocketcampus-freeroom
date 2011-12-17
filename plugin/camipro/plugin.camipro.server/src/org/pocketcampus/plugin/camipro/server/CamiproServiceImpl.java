@@ -128,7 +128,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 				if(trans.length < 4)
 					continue;
 				tTransactions.add(new Transaction(
-						getSubstringBetween(trans[0], ">", "<").replace(" ", "\nat "),
+						getSubstringBetween(trans[0], ">", "<"),
 						getSubstringBetween(trans[1], ">", "<"),
 						getSubstringBetween(trans[2], ">", "<"),
 						Double.parseDouble(getSubstringBetween(trans[3], ">", "<"))));

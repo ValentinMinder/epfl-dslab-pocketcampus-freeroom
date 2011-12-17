@@ -9,7 +9,7 @@
 	android:paddingLeft="10dp"
 	android:orientation="vertical" >
 	
-		<TextView android:id="@+id/camipro_item_description"
+		<TextView android:id="@+id/camipro_ebankinginfo_title"
 			android:textColor="#000"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 			android:layout_height="fill_parent"
 			android:orientation="horizontal" >
 			
-				<TextView android:id="@+id/camipro_item_date"
+				<TextView android:id="@+id/camipro_ebankinginfo_value"
 					android:textColor="#000"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -30,12 +30,6 @@
 					android:layout_weight="1"
 					android:paddingRight="10dp" />
 					
-				<TextView android:id="@+id/camipro_item_amount"
-					android:textColor="#000"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="14dp" />
-				
 		</LinearLayout>
 		
 </LinearLayout>

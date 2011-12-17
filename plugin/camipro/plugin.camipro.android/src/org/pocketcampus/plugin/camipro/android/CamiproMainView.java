@@ -1,16 +1,24 @@
 package org.pocketcampus.plugin.camipro.android;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
+import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,10 +30,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class CamiproMainView extends PluginView implements ICamiproView {
 
@@ -43,13 +55,19 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		//mLayout = new StandardLayout(this);
+		mLayout = new StandardTitledDoubleSeparatedLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
-		//setContentView(mLayout);
-		setContentView(R.layout.camipro_main);
+		setContentView(mLayout);
+		//setContentView(R.layout.camipro_main);
 
 		//mLayout.setText("Loading");
 		//refreshAll();
+		ActionBar a = getActionBar();
+		if (a != null) {
+			RefreshAction refresh = new RefreshAction();
+			a.addAction(refresh, 0);
+		}
 	}
 	
 	@Override
@@ -100,10 +118,22 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		List<Transaction> ltb = mModel.getTransactions();
 		if(ltb == null)
 			return;
-		ListView lv = (ListView) findViewById(R.id.camipro_list);
-
-		// Create an adapter for the data
+		
+		/*ArrayList<String> list = new ArrayList<String>();
+		for (Transaction s : ltb) {
+			list.add(s.getIDate() + "\t" + s.getIPlace() + "\t" + formatMoney(s.getIAmount()));
+		}*/
+		ListView lv = new ListView(getApplicationContext());
 		lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
+		
+		mLayout.removeSecondLayoutFillerView();
+		//mLayout.addSecondLayoutFillerView(new ListViewElement(this, list));
+		mLayout.addSecondLayoutFillerView(lv);
+
+		
+		//ListView lv = (ListView) findViewById(R.id.camipro_list);
+		// Create an adapter for the data
+		//lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
 		updateDate();
 	}
 
@@ -112,8 +142,10 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		Double bal = mModel.getBalance();
 		if(bal == null)
 			return;
-		TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
-		balance.setText(formatMoney(bal));
+		
+		updatedBalanceOrStats();
+		//TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
+		//balance.setText(formatMoney(bal));
 		updateDate();
 	}
 
@@ -123,7 +155,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(i == null)
 			return;
 		
-		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
+		/*TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
 		tv.setText(i.getIPaidTo());
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_account_number_text);
@@ -131,7 +163,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_ref_number_text);
 		tv.setText(i.getIReferenceNumber());
-		updateDate();
+		updateDate();*/
 	}
 
 	@Override
@@ -140,15 +172,37 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(s == null)
 			return;
 		
-		TextView tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
+		updatedBalanceOrStats();
+		/*TextView tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
 		tv.setText(formatMoney(s.getITotalPaymentsLastMonth()));
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
 		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths()));
 
 		tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
-		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths() / 3.0));
+		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths() / 3.0));*/
 		updateDate();
+	}
+	
+	private void updatedBalanceOrStats() {
+		ArrayList<Amout> l = new ArrayList<Amout>();
+		Double bal = mModel.getBalance();
+		if(bal != null) {
+			l.add(new Amout("Current balance ", bal));
+		}
+		CardStatistics s = mModel.getCardStatistics();
+		if(s != null) {
+			l.add(new Amout("Total last month ", s.getITotalPaymentsLastMonth()));
+			l.add(new Amout("Total last 3 months ", s.getITotalPaymentsLastThreeMonths()));
+			l.add(new Amout("Average per month ", s.getITotalPaymentsLastThreeMonths() / 3.0));
+		}
+		//ListViewElement mAddView = new ListViewElement(this, l);
+		ListView lv = new ListView(getApplicationContext());
+		lv.setAdapter(new AmountAdapter(getApplicationContext(), R.layout.camipro_amount, l));
+		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		lv.setLayoutParams(p);
+		mLayout.removeFirstLayoutFillerView();
+		mLayout.addFirstLayoutFillerView(lv);
 	}
 
 	
@@ -165,18 +219,16 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	}
 	
 	private void updateDate() {
+		mLayout.setFirstTitle("Balance (given no offline transaction)");
 		// Last update
 		String date = mModel.getLastUpdateDate();
 		if(date != null) {
-			TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
-			dateLastUpdated.setText("As of " + date + " given no offline transactions");
+			//TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
+			//dateLastUpdated.setText("As of " + date + " given no offline transactions");
+			mLayout.setSecondTitle("Transactions (as of " + date + ")");
 		}
 	}
 	
-	private static String formatMoney(double money) {
-		return String.format("CHF %.2f", money);
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -187,8 +239,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
-		if(item.getItemId() == R.id.camipro_refresh) {			
-			refreshAll();
+		if(item.getItemId() == R.id.camipro_recharge) {			
+			Intent i = new Intent(this, CamiproCardRechargeView.class);
+			startActivity(i);
 		} else if(item.getItemId() == R.id.camipro_logout) {			
 			mController.reset();
 			finish();
@@ -205,17 +258,22 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	private CamiproController mController;
 	private ICamiproModel mModel;
+	
+	private StandardTitledDoubleSeparatedLayout mLayout;
+
 
 	
 	
 	
+
+	/*****
+	 * HELPERS
+	 */
 	
-	
-	
-		
-		
-	// TODO remove this class from here
-	
+	private static String formatMoney(double money) {
+		return String.format("CHF %.2f", money);
+	}
+
 	public class TransactionAdapter extends ArrayAdapter<Transaction> {
 		private LayoutInflater li_;
 		//private java.text.DateFormat df_; // Used to format the date
@@ -265,7 +323,73 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		}
 	}
 
+	public class Amout {
+		Amout(String t, double v) {
+			title = t;
+			value = v;
+		}
+		public String title;
+		public double value;
+	}
+	
+	public class AmountAdapter extends ArrayAdapter<Amout> {
+		
+		public AmountAdapter(Context context, int textViewResourceId, List<Amout> amounts) {
+			super(context, textViewResourceId, amounts);
+			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			rid = textViewResourceId;
+		}
 
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			if (v == null) {
+				v = li.inflate(rid, null);
+			}
+			TextView tv;
+			Amout t = getItem(position);
+			tv = (TextView) v.findViewById(R.id.camipro_amount_title);
+			tv.setText(t.title);
+			tv = (TextView) v.findViewById(R.id.camipro_amount_value);
+			tv.setText(formatMoney(t.value));
+			return v;
+		}
+		
+		private LayoutInflater li;
+		private int rid;
+		
+	}
+
+	/**
+	 * Refreshes camipro
+	 * 
+	 * @author Amer <amer.chamseddine@epfl.ch>
+	 * 
+	 */
+	private class RefreshAction implements Action {
+
+		/**
+		 * The constructor which doesn't do anything
+		 */
+		RefreshAction() {
+		}
+
+		/**
+		 * Returns the resource for the icon of the button in the action bar
+		 */
+		@Override
+		public int getDrawable() {
+			return R.drawable.sdk_action_bar_refresh;
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
+		@Override
+		public void performAction(View view) {
+			refreshAll();
+		}
+	}
 
 
 
