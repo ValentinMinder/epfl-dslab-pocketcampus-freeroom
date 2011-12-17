@@ -137,7 +137,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
@@ -174,9 +174,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 			int count = mList.getAdapter().getCount() ;
 		
 			if(count > 1)
-				Toast.makeText(this,count + getString(R.string.directory_results_found), Toast.LENGTH_LONG).show();
+				Toast.makeText(this,count +" "+ getString(R.string.directory_results_found), Toast.LENGTH_LONG).show();
 			else{
-				Toast.makeText(this,count + getString(R.string.directory_result_found), Toast.LENGTH_LONG).show();
+				Toast.makeText(this,count +" "+ getString(R.string.directory_result_found), Toast.LENGTH_LONG).show();
 				Person p = (Person) mList.getAdapter().getItem(0);
 				mModel.selectPerson(p);
 				shownPersonIndex = 0;

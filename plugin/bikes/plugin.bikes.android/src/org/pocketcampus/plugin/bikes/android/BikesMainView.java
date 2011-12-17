@@ -79,8 +79,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 										//" is at:\n" +
 										//"Lat: " + be.geoLat + "\n" +
 										//"Lon: " + be.geoLng + "\n" +
-										"\n"+ getString(R.string.bikes_has)+" " + be.numberOfAvailableBikes + ab +"\n" +
-										getString(R.string.bikes_and) +" " + be.numberOfEmptySpaces + ep;
+										"\n"+ getString(R.string.bikes_has)+" " + be.numberOfAvailableBikes + " " + ab +"\n" +
+										getString(R.string.bikes_and) +" " + be.numberOfEmptySpaces + " " +ep;
 							
 							//exiting the loop
 							break;

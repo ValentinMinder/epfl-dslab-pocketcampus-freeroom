@@ -17,8 +17,8 @@
      <string name="directory_couldnt_email">Problem with email</string>
      
      <string name="directory_no_results_found">No results found</string>
-     <string name="directory_result_found"> result found</string>
-     <string name="directory_results_found"> results found</string>
+     <string name="directory_result_found">result found</string>
+     <string name="directory_results_found">results found</string>
 
      <string name="directory_loading">Loading...</string>
    

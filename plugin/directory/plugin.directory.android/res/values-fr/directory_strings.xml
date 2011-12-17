@@ -17,8 +17,8 @@
      <string name="directory_couldnt_email">Un problème est survenu lors de l\'envoi d\'email</string>
      
      <string name="directory_no_results_found">Aucuns résultats trouvés</string>
-     <string name="directory_result_found"> résultat trouvé</string>
-     <string name="directory_results_found"> résultats trouvés</string>
+     <string name="directory_result_found">résultat trouvé</string>
+     <string name="directory_results_found">résultats trouvés</string>
 
      <string name="directory_loading">Chargement...</string>
    

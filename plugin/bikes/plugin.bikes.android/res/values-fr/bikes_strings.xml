@@ -11,10 +11,10 @@
      <string name="bikes_network_error">Erreur avec le réseau</string>
      <string name="bikes_try_again_later">Veuillez réessayer plus tard</string>
      
-     <string name="bikes_empty_slot"> emplacement vide</string>
-     <string name="bikes_empty_slots"> emplacements vides</string>
-     <string name="bikes_available_bike"> vélo disponible</string>
-     <string name="bikes_available_bikes"> vélos disponibles</string>
+     <string name="bikes_empty_slot">emplacement vide</string>
+     <string name="bikes_empty_slots">emplacements vides</string>
+     <string name="bikes_available_bike">vélo disponible</string>
+     <string name="bikes_available_bikes">vélos disponibles</string>
 
      <string name="bikes_loading">Chargement..</string>
    

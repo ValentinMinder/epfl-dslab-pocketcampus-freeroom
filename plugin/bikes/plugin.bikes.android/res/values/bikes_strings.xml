@@ -11,10 +11,10 @@
      <string name="bikes_network_error">Network error!</string>
      <string name="bikes_try_again_later">Please try again later</string>
      
-     <string name="bikes_empty_slot"> empty bike slot</string>
-     <string name="bikes_empty_slots"> empty bike slots</string>
-     <string name="bikes_available_bike"> available bike</string>
-     <string name="bikes_available_bikes"> available bikes</string>
+     <string name="bikes_empty_slot">empty bike slot</string>
+     <string name="bikes_empty_slots">empty bike slots</string>
+     <string name="bikes_available_bike">available bike</string>
+     <string name="bikes_available_bikes">available bikes</string>
 
      <string name="bikes_loading">Loading..</string>
    
