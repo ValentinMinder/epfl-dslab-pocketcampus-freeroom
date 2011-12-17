@@ -6,4 +6,8 @@ public interface IMapView extends IView {
 
 	void layersUpdated();
 
+	void layerItemsUpdated();
+
+	void searchResultsUpdated();
+
 }

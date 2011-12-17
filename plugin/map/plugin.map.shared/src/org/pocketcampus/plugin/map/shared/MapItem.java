@@ -123,7 +123,7 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TITLE, new org.apache.thrift.meta_data.FieldMetaData("title", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("description", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LATITUDE, new org.apache.thrift.meta_data.FieldMetaData("latitude", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
@@ -772,9 +772,6 @@ public class MapItem implements org.apache.thrift.TBase<MapItem, MapItem._Fields
     // check for required fields
     if (title == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'title' was not present! Struct: " + toString());
-    }
-    if (description == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'description' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'latitude' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'longitude' because it's a primitive and you chose the non-beans generator.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item
+	<!--<item
 		android:title="@string/map_menu_layers"
 		android:id="@+id/map_menu_layers_button"
 		android:icon="@android:drawable/ic_menu_preferences" />
@@ -8,7 +8,6 @@
 		android:title="@string/map_menu_clear_layers"
 		android:id="@+id/map_menu_clear_layers_button"
 		android:icon="@drawable/ic_menu_close_clear_cancel" />
-	<!--
 	<item
 		android:title="@string/map_menu_my_position_on"
 		android:id="@+id/map_my_position"
@@ -28,10 +27,10 @@
 		android:title="@string/map_menu_toggle_map_mode"
 		android:id="@+id/map_toggle_mode"
 		android:icon="@android:drawable/ic_menu_mapmode" />
-		 -->
 	<item
 		android:title="@string/map_menu_clear_path"
 		android:id="@+id/map_clear_path"
 		android:icon="@android:drawable/ic_menu_myplaces"
 		android:visible="false" />
+		 -->
 </menu>

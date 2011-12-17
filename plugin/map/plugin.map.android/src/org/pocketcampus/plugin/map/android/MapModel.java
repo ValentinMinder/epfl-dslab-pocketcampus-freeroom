@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.map.android;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
@@ -8,10 +9,14 @@ import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
+import android.widget.ArrayAdapter;
+
 public class MapModel extends PluginModel {
 	private IMapView mListeners = (IMapView) getListeners();
 	
 	private List<MapLayer> mLayers;
+	private List<MapItem> mLayerItems = new ArrayList<MapItem>();
+	private List<MapItem> mSearchResults;
 	
 	@Override
 	protected Class<? extends IView> getViewInterface() {
@@ -29,5 +34,21 @@ public class MapModel extends PluginModel {
 
 	public void addLayerItems(List<MapItem> result) {
 		System.out.println(result);
+		mLayerItems.addAll(result);
+		mListeners.layerItemsUpdated();
+	}
+
+	public void setSearchResult(List<MapItem> results) {
+		System.out.println(results);
+		mSearchResults = results;
+		mListeners.searchResultsUpdated();
+	}
+
+	public List<MapItem> getLayerItems() {
+		return mLayerItems;
+	}
+
+	public List<MapItem> getSearchResults() {
+		return mSearchResults;
 	}
 }

@@ -26,7 +26,19 @@
 
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                	android:value=".plugin.map.android.search.MapSearchActivity" />
         </activity>
+        
+            <activity android:name=".plugin.map.android.search.MapSearchActivity"
+				android:launchMode="singleTop"
+				android:noHistory="true">
+			<intent-filter>
+            	<action android:name="android.intent.action.SEARCH" />
+       		</intent-filter>
+        	<meta-data android:name="android.app.searchable"
+            	android:resource="@xml/searchable"/>
+		</activity>
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"

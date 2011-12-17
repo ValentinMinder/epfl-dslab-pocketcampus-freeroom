@@ -29,7 +29,7 @@ public class MapService {
 
     public List<MapItem> getLayerItems(long layerId) throws org.apache.thrift.TException;
 
-    public List<MapItem> search(String constraint) throws org.apache.thrift.TException;
+    public List<MapItem> search(String query) throws org.apache.thrift.TException;
 
   }
 
@@ -39,7 +39,7 @@ public class MapService {
 
     public void getLayerItems(long layerId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getLayerItems_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void search(String constraint, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
+    public void search(String query, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.search_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -108,16 +108,16 @@ public class MapService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getLayerItems failed: unknown result");
     }
 
-    public List<MapItem> search(String constraint) throws org.apache.thrift.TException
+    public List<MapItem> search(String query) throws org.apache.thrift.TException
     {
-      send_search(constraint);
+      send_search(query);
       return recv_search();
     }
 
-    public void send_search(String constraint) throws org.apache.thrift.TException
+    public void send_search(String query) throws org.apache.thrift.TException
     {
       search_args args = new search_args();
-      args.setConstraint(constraint);
+      args.setQuery(query);
       sendBase("search", args);
     }
 
@@ -210,24 +210,24 @@ public class MapService {
       }
     }
 
-    public void search(String constraint, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
+    public void search(String query, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      search_call method_call = new search_call(constraint, resultHandler, this, ___protocolFactory, ___transport);
+      search_call method_call = new search_call(query, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class search_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String constraint;
-      public search_call(String constraint, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String query;
+      public search_call(String query, org.apache.thrift.async.AsyncMethodCallback<search_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.constraint = constraint;
+        this.query = query;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
         search_args args = new search_args();
-        args.setConstraint(constraint);
+        args.setQuery(query);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -304,7 +304,7 @@ public class MapService {
 
       protected search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
         search_result result = new search_result();
-        result.success = iface.search(args.constraint);
+        result.success = iface.search(args.query);
         return result;
       }
     }
@@ -1504,13 +1504,13 @@ public class MapService {
   public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
 
-    private static final org.apache.thrift.protocol.TField CONSTRAINT_FIELD_DESC = new org.apache.thrift.protocol.TField("constraint", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField QUERY_FIELD_DESC = new org.apache.thrift.protocol.TField("query", org.apache.thrift.protocol.TType.STRING, (short)1);
 
-    public String constraint; // required
+    public String query; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      CONSTRAINT((short)1, "constraint");
+      QUERY((short)1, "query");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1525,8 +1525,8 @@ public class MapService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // CONSTRAINT
-            return CONSTRAINT;
+          case 1: // QUERY
+            return QUERY;
           default:
             return null;
         }
@@ -1571,7 +1571,7 @@ public class MapService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.CONSTRAINT, new org.apache.thrift.meta_data.FieldMetaData("constraint", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.QUERY, new org.apache.thrift.meta_data.FieldMetaData("query", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(search_args.class, metaDataMap);
@@ -1581,18 +1581,18 @@ public class MapService {
     }
 
     public search_args(
-      String constraint)
+      String query)
     {
       this();
-      this.constraint = constraint;
+      this.query = query;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public search_args(search_args other) {
-      if (other.isSetConstraint()) {
-        this.constraint = other.constraint;
+      if (other.isSetQuery()) {
+        this.query = other.query;
       }
     }
 
@@ -1602,40 +1602,40 @@ public class MapService {
 
     @Override
     public void clear() {
-      this.constraint = null;
+      this.query = null;
     }
 
-    public String getConstraint() {
-      return this.constraint;
+    public String getQuery() {
+      return this.query;
     }
 
-    public search_args setConstraint(String constraint) {
-      this.constraint = constraint;
+    public search_args setQuery(String query) {
+      this.query = query;
       return this;
     }
 
-    public void unsetConstraint() {
-      this.constraint = null;
+    public void unsetQuery() {
+      this.query = null;
     }
 
-    /** Returns true if field constraint is set (has been assigned a value) and false otherwise */
-    public boolean isSetConstraint() {
-      return this.constraint != null;
+    /** Returns true if field query is set (has been assigned a value) and false otherwise */
+    public boolean isSetQuery() {
+      return this.query != null;
     }
 
-    public void setConstraintIsSet(boolean value) {
+    public void setQueryIsSet(boolean value) {
       if (!value) {
-        this.constraint = null;
+        this.query = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case CONSTRAINT:
+      case QUERY:
         if (value == null) {
-          unsetConstraint();
+          unsetQuery();
         } else {
-          setConstraint((String)value);
+          setQuery((String)value);
         }
         break;
 
@@ -1644,8 +1644,8 @@ public class MapService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case CONSTRAINT:
-        return getConstraint();
+      case QUERY:
+        return getQuery();
 
       }
       throw new IllegalStateException();
@@ -1658,8 +1658,8 @@ public class MapService {
       }
 
       switch (field) {
-      case CONSTRAINT:
-        return isSetConstraint();
+      case QUERY:
+        return isSetQuery();
       }
       throw new IllegalStateException();
     }
@@ -1677,12 +1677,12 @@ public class MapService {
       if (that == null)
         return false;
 
-      boolean this_present_constraint = true && this.isSetConstraint();
-      boolean that_present_constraint = true && that.isSetConstraint();
-      if (this_present_constraint || that_present_constraint) {
-        if (!(this_present_constraint && that_present_constraint))
+      boolean this_present_query = true && this.isSetQuery();
+      boolean that_present_query = true && that.isSetQuery();
+      if (this_present_query || that_present_query) {
+        if (!(this_present_query && that_present_query))
           return false;
-        if (!this.constraint.equals(that.constraint))
+        if (!this.query.equals(that.query))
           return false;
       }
 
@@ -1693,10 +1693,10 @@ public class MapService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_constraint = true && (isSetConstraint());
-      builder.append(present_constraint);
-      if (present_constraint)
-        builder.append(constraint);
+      boolean present_query = true && (isSetQuery());
+      builder.append(present_query);
+      if (present_query)
+        builder.append(query);
 
       return builder.toHashCode();
     }
@@ -1709,12 +1709,12 @@ public class MapService {
       int lastComparison = 0;
       search_args typedOther = (search_args)other;
 
-      lastComparison = Boolean.valueOf(isSetConstraint()).compareTo(typedOther.isSetConstraint());
+      lastComparison = Boolean.valueOf(isSetQuery()).compareTo(typedOther.isSetQuery());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetConstraint()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.constraint, typedOther.constraint);
+      if (isSetQuery()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.query, typedOther.query);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1736,9 +1736,9 @@ public class MapService {
           break;
         }
         switch (field.id) {
-          case 1: // CONSTRAINT
+          case 1: // QUERY
             if (field.type == org.apache.thrift.protocol.TType.STRING) {
-              this.constraint = iprot.readString();
+              this.query = iprot.readString();
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1758,9 +1758,9 @@ public class MapService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.constraint != null) {
-        oprot.writeFieldBegin(CONSTRAINT_FIELD_DESC);
-        oprot.writeString(this.constraint);
+      if (this.query != null) {
+        oprot.writeFieldBegin(QUERY_FIELD_DESC);
+        oprot.writeString(this.query);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1772,11 +1772,11 @@ public class MapService {
       StringBuilder sb = new StringBuilder("search_args(");
       boolean first = true;
 
-      sb.append("constraint:");
-      if (this.constraint == null) {
+      sb.append("query:");
+      if (this.query == null) {
         sb.append("null");
       } else {
-        sb.append(this.constraint);
+        sb.append(this.query);
       }
       first = false;
       sb.append(")");

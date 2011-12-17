@@ -2,19 +2,21 @@ package org.pocketcampus.plugin.map.android;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.map.android.req.LayerItemsRequest;
 import org.pocketcampus.plugin.map.android.req.LayerRequest;
+import org.pocketcampus.plugin.map.android.req.SearchRequest;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 import org.pocketcampus.plugin.map.shared.MapService.Client;
 
 public class MapMainController extends PluginController {
 	private MapModel mModel;
-	private Iface mClient;
+//	private Iface mClient;
 	private String mPluginName = "map";
 
 	@Override
 	public void onCreate() {
 		mModel = new MapModel();
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+//		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
 	@Override
@@ -23,7 +25,16 @@ public class MapMainController extends PluginController {
 	}
 
 	public void getLayers() {
-		new LayerRequest().start(this, mClient, (Object)null);
+		new LayerRequest().start(this,  (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
+	}
+
+	public void getLayerItems(int layerId) {
+		new LayerItemsRequest().start(this,  (Iface) getClient(new Client.Factory(), mPluginName), layerId);
+	}
+
+	public void search(String query) {
+		System.out.println("Search: " + query);
+		new SearchRequest().start(this,  (Iface) getClient(new Client.Factory(), mPluginName), query);
 	}
 }
 

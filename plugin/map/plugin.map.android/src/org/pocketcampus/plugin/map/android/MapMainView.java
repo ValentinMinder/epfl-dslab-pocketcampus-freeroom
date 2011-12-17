@@ -33,9 +33,12 @@ import org.pocketcampus.plugin.map.android.ui.ItemDialog;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
 import org.pocketcampus.plugin.map.shared.MapElementBean;
+import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.Position;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -240,27 +243,32 @@ public class MapMainView extends PluginView implements IMapView {
 	 * @param extras the bundle containing the extras
 	 * @return Whether it handled the intent or not
 	 */
-//	private boolean handleSearchIntent(Bundle extras) {
-//
-//		if(extras == null) {
-//			return false;
-//		}
-//		
-//		if(extras.containsKey("MapElement")) {
-//			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
-//			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
-//			MapElement overItem = new MapElement(meb.getTitle(), meb.getDescription(), gp);
-//			List<MapElement> overItems = new ArrayList<MapElement>(1);
-//			overItems.add(overItem);
-//			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
-//			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
-//			temporaryOverlays_.add(aOverlay);
-//			centerOnPoint(gp);
-//			return true;
-//		}
-//		
-//		return false;
-//	}
+	private boolean handleSearchIntent(Bundle extras) {
+
+		if(extras == null) {
+			return false;
+		}
+		
+		if(extras.containsKey("MapElement")) {
+			MapItem meb = (MapItem) extras.getSerializable("MapElement");
+			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
+			MapElement overItem = new MapElement(meb.getTitle(), meb.getDescription(), gp);
+			List<MapElement> overItems = new ArrayList<MapElement>(1);
+			overItems.add(overItem);
+			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
+			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+			
+			temporaryOverlays_.clear();
+			temporaryOverlays_.add(aOverlay);
+			
+			centerOnPoint(gp);
+			
+			updateOverlays(false);
+			return true;
+		}
+		
+		return false;
+	}
 
 	/**
 	 * The background is provided by the default tile source.
@@ -364,11 +372,10 @@ public class MapMainView extends PluginView implements IMapView {
 		super.onPause();
 	}
 	
-//	@Override
-//	protected void onNewIntent(Intent intent) {
-//		super.onNewIntent(intent);
-//		handleSearchIntent(intent.getExtras());
-//	}
+	@Override
+	protected void handleIntent(Intent intent) {
+		handleSearchIntent(intent.getExtras());
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -389,10 +396,10 @@ public class MapMainView extends PluginView implements IMapView {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// Do we display a path?
-		menu.findItem(R.id.map_clear_path).setVisible(mapPathOverlay_.isShowingPath());
+//		menu.findItem(R.id.map_clear_path).setVisible(mapPathOverlay_.isShowingPath());
 
 		// Do we already have the available layers?
-		menu.findItem(R.id.map_menu_layers_button).setEnabled(allLayers_ != null && allLayers_.size() > 0);
+//		menu.findItem(R.id.map_menu_layers_button).setEnabled(allLayers_ != null && allLayers_.size() > 0);
 		
 		// Change the text if we follow the user or not
 //		MenuItem follow = menu.findItem(R.id.map_my_position);
@@ -414,11 +421,11 @@ public class MapMainView extends PluginView implements IMapView {
 		switch (item.getItemId()) {
 
 		// Show a layer selection
-		case R.id.map_menu_layers_button:
-			selectLayers();
-
-//			Tracker.getInstance().trackPageView("map/menu/getLayers");
-			return true;
+//		case R.id.map_menu_layers_button:
+//			selectLayers();
+//
+////			Tracker.getInstance().trackPageView("map/menu/getLayers");
+//			return true;
 
 			// Enable the user following
 		/*case R.id.map_my_position:
@@ -443,18 +450,18 @@ public class MapMainView extends PluginView implements IMapView {
 //			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 			
-		case R.id.map_clear_path:
-			clearPath();
+//		case R.id.map_clear_path:
+//			clearPath();
 
 //			Tracker.getInstance().trackPageView("map/menu/clearPath");
-			return true;
+//			return true;
 			
-		case R.id.map_menu_clear_layers_button:
-			temporaryOverlays_.clear();
-			setSelectedLayers(new ArrayList<MapElementsList>());
-			
-//			Tracker.getInstance().trackPageView("map/menu/clearLayers");
-			return true;
+//		case R.id.map_menu_clear_layers_button:
+//			temporaryOverlays_.clear();
+//			setSelectedLayers(new ArrayList<MapElementsList>());
+//			
+////			Tracker.getInstance().trackPageView("map/menu/clearLayers");
+//			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -469,7 +476,7 @@ public class MapMainView extends PluginView implements IMapView {
 		
 		// If we already have a cache of the layers
 		if(allLayers_ != null && allLayers_.size() > 0) {
-			//layerSelector();
+			layerSelector();
 		}
 		// else wait, it will come ;)
 	}
@@ -477,35 +484,35 @@ public class MapMainView extends PluginView implements IMapView {
 	/**
 	 * Launch the dialog that allows to select the different layers
 	 */
-//	private void layerSelector() {
-//		final LayerSelector l = new LayerSelector(this, allLayers_, selectedLayers_);
-//
-//		// Show the dialog, using a callback to the the selected layers back
-//		l.selectLayers(new DialogInterface.OnClickListener() {
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				setSelectedLayers(l.getSelectedLayers());
-//			}
-//		});
-//
-//	}
+	private void layerSelector() {
+		final LayerSelector l = new LayerSelector(this, allLayers_, selectedLayers_);
+
+		// Show the dialog, using a callback to the the selected layers back
+		l.selectLayers(new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setSelectedLayers(l.getSelectedLayers());
+			}
+		});
+
+	}
 
 	/**
 	 * Enable the location and center the map on the user
 	 */
-	private void toggleCenterOnUserPosition() {
-		if(myLocationOverlay_.isFollowLocationEnabled()) {
-			myLocationOverlay_.disableMyLocation();
-			myLocationOverlay_.disableFollowLocation();
-			if(DEBUG)
-				googleLocationOverlay_.disableMyLocation();
-		} else {
-			myLocationOverlay_.enableMyLocation();
-			myLocationOverlay_.enableFollowLocation();
-			if(DEBUG)
-				googleLocationOverlay_.enableMyLocation();
-		}
-	}
+//	private void toggleCenterOnUserPosition() {
+//		if(myLocationOverlay_.isFollowLocationEnabled()) {
+//			myLocationOverlay_.disableMyLocation();
+//			myLocationOverlay_.disableFollowLocation();
+//			if(DEBUG)
+//				googleLocationOverlay_.disableMyLocation();
+//		} else {
+//			myLocationOverlay_.enableMyLocation();
+//			myLocationOverlay_.enableFollowLocation();
+//			if(DEBUG)
+//				googleLocationOverlay_.enableMyLocation();
+//		}
+//	}
 
 	/**
 	 * Center the map on campus
@@ -603,11 +610,11 @@ public class MapMainView extends PluginView implements IMapView {
 		layersCache_.saveSelectedLayersToFile(this.selectedLayers_);
 
 		// Track
-		StringBuffer selected = new StringBuffer("?layers=");
-		for(MapElementsList l : selectedLayers) {
-			selected.append(l.getLayerTitle());
-			selected.append(',');
-		}
+//		StringBuffer selected = new StringBuffer("?layers=");
+//		for(MapElementsList l : selectedLayers) {
+//			selected.append(l.getLayerTitle());
+//			selected.append(',');
+//		}
 
 //		Tracker.getInstance().trackPageView("map/selectedLayers" + selected);
 	}
@@ -660,7 +667,10 @@ public class MapMainView extends PluginView implements IMapView {
 		/* The idea is to add MapElements (=item) into the MapElementsList.
 		 * The data comes from the cache (local file) or from the server
 		 */
-
+		
+		// XXX
+		mController.getLayerItems((int) layer.getLayerId());
+		
 //		incrementProgressCounter();
 //		RequestParameters param = new RequestParameters();
 //		param.addParameter("layer_id", layer.getLayerId());
@@ -825,6 +835,96 @@ public class MapMainView extends PluginView implements IMapView {
 	 * If the layer already exists, but is outdated,
 	 * we redownload the new items, but keep the old ones on the screen while downloading
 	 */
+
+	/**
+	 * Handle a click on an item
+	 */
+	class OverlayClickHandler implements ItemizedIconOverlay.OnItemGestureListener<MapElement> {
+
+		MapMainView a_;
+
+		protected OverlayClickHandler(MapMainView a) {
+			this.a_ = a;
+		}
+
+		@Override
+		public boolean onItemLongPress(int arg0, MapElement arg1) {
+			return false;
+		}
+
+		@Override
+		public boolean onItemSingleTapUp(int index, final MapElement item) {
+			//final ItemDialog dialog = new ItemDialog(a_, item);
+			//dialog.showDialog();
+			
+			return true;
+		}
+	}
+
+	/**
+	 * Get the Drawable object from an icon on the server.
+	 * Get a cached version if available
+	 * @param iconUrl URL of the icon
+	 * @return the Drawable
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public Drawable getDrawableFromCacheOrUrl(String iconUrl) {
+		if(iconUrl == null || iconUrl.equals("null") || iconUrl.length() <= 0 )
+			return null;
+		
+//		Drawable i = icons.get(iconUrl);
+		Drawable i = getResources().getDrawable(R.drawable.map_marker_search);
+		
+//		if(i == null) {
+//			try {
+//				i = ImageUtil.getDrawableFromUrl(RequestHandler.getServerUrl() + iconUrl);
+//				icons.put(iconUrl, i);
+//			} catch (IOException e) {
+//				Log.e(this.getClass().toString(), "getDrawableFromCacheOrUrl -> " + e.toString());
+//			}
+//		}
+		
+		return i;
+	}
+
+	/**
+	 * Runnable used to refresh the layers automatically
+	 */
+	private Runnable overlaysRefreshTicker_ = new Runnable() {
+		public void run() {
+			updateOverlays(false);	
+			overlaysHandler_.postDelayed(this, LAYERS_REFRESH_TIMEOUT);
+		}
+	};
+
+	@Override
+	public void networkErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+	@Override
+	public void layersUpdated() {
+		List<MapLayer> layers = mModel.getLayers();
+		allLayers_ = new ArrayList<MapElementsList>(layers.size());
+		
+		for(MapLayer mlb : layers) {
+			//if(mlb.isDisplayable()) {
+				allLayers_.add(new MapElementsList(mlb));
+			//}
+		}
+		
+//		layersCache_.loadSelectedLayersFromFile(allLayers_, new ILayersCacheCallback() {
+//			@Override
+//			public void onLayersLoadedFromFile(List<MapElementsList> selected) {
+//				selectedLayers_ = selected;
+//				checkSelectedLayersFromIntent();
+//				updateOverlays(false);
+//			}
+//		});
+	}
+
 //	class ItemsRequest extends DataRequest {
 //
 //		private final MapElementsList layer_;
@@ -914,92 +1014,51 @@ public class MapMainView extends PluginView implements IMapView {
 //			
 //		}
 //	}
-
-	/**
-	 * Handle a click on an item
-	 */
-	class OverlayClickHandler implements ItemizedIconOverlay.OnItemGestureListener<MapElement> {
-
-		MapMainView a_;
-
-		protected OverlayClickHandler(MapMainView a) {
-			this.a_ = a;
-		}
-
-		@Override
-		public boolean onItemLongPress(int arg0, MapElement arg1) {
-			return false;
-		}
-
-		@Override
-		public boolean onItemSingleTapUp(int index, final MapElement item) {
-			final ItemDialog dialog = new ItemDialog(a_, item);
-			dialog.showDialog();
-			
-			return true;
-		}
-	}
-
-	/**
-	 * Get the Drawable object from an icon on the server.
-	 * Get a cached version if available
-	 * @param iconUrl URL of the icon
-	 * @return the Drawable
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
-	public Drawable getDrawableFromCacheOrUrl(String iconUrl) {
-		if(iconUrl == null || iconUrl.equals("null") || iconUrl.length() <= 0 )
-			return null;
-		
-		Drawable i = icons.get(iconUrl);
-		
-//		if(i == null) {
-//			try {
-//				i = ImageUtil.getDrawableFromUrl(RequestHandler.getServerUrl() + iconUrl);
-//				icons.put(iconUrl, i);
-//			} catch (IOException e) {
-//				Log.e(this.getClass().toString(), "getDrawableFromCacheOrUrl -> " + e.toString());
-//			}
-//		}
-		
-		return i;
-	}
-
-	/**
-	 * Runnable used to refresh the layers automatically
-	 */
-	private Runnable overlaysRefreshTicker_ = new Runnable() {
-		public void run() {
-			updateOverlays(false);	
-			overlaysHandler_.postDelayed(this, LAYERS_REFRESH_TIMEOUT);
-		}
-	};
-
+	
 	@Override
-	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
-		toast.show();
+	public void layerItemsUpdated() {
+		List<MapItem> items = mModel.getLayerItems();
+		
+		if(items==null || items.size()<1) {
+			return;
+		}
+		
+		System.out.println("Layer id: " + items.get(0).getLayerId());
+		
+		MapElementsList layer = null;
+		for(MapElementsList l : selectedLayers_) {
+			if(l.getLayerId() == items.get(0).getLayerId()) {
+				layer = l;
+			}
+		}
+		
+		ItemizedIconOverlay<MapElement> aOverlay;
+		
+		// Try to get the icon for the overlay
+		aOverlay = new ItemizedIconOverlay<MapElement>(layer, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+		
+		ItemizedIconOverlay<MapElement> oldOverlay = cachedOverlays_.put(layer, aOverlay);
+		
+		if(oldOverlay != null) {
+			mapView_.getOverlays().remove(oldOverlay);
+		}
+		if(aOverlay != null) {
+			mapView_.getOverlays().add(aOverlay);
+		}
+		mapView_.invalidate();
 	}
 
 	@Override
-	public void layersUpdated() {
-		List<MapLayer> layers = mModel.getLayers();
-		allLayers_ = new ArrayList<MapElementsList>(layers.size());
+	public void searchResultsUpdated() {
+		// TODO Auto-generated method stub
 		
-		for(MapLayer mlb : layers) {
-			//if(mlb.isDisplayable()) {
-				allLayers_.add(new MapElementsList(mlb));
-			//}
-		}
-		
-//		layersCache_.loadSelectedLayersFromFile(allLayers_, new ILayersCacheCallback() {
-//			@Override
-//			public void onLayersLoadedFromFile(List<MapElementsList> selected) {
-//				selectedLayers_ = selected;
-//				checkSelectedLayersFromIntent();
-//				updateOverlays(false);
-//			}
-//		});
 	}
 }
+
+
+
+
+
+
+
+

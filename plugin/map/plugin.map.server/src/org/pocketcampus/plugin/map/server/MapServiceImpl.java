@@ -22,7 +22,7 @@ public class MapServiceImpl implements MapService.Iface {
 	
 	@Override
 	public List<MapLayer> getLayerList() throws TException {
-		System.out.println("getLayers");
+		System.out.println("getLayerList");
 		
 		synchronized (mLayersList) {
 			mLayersList = mMapDb.getMapLayers();
@@ -43,12 +43,14 @@ public class MapServiceImpl implements MapService.Iface {
 
 	@Override
 	public List<MapItem> getLayerItems(long layerId) throws TException {
+		System.out.println("getLayerItems(id: "+layerId+")");
 		mItemsList = mMapDb.getMapElements((int) layerId);
 		return mItemsList;
 	}
 
 	@Override
 	public List<MapItem> search(String query) throws TException {
+		System.out.println("search(query: "+query+")");
 		List<MapItem> results = Search.searchTextOnEpflWebsite(query, 100);
 		System.out.println(results);
 		return results;
