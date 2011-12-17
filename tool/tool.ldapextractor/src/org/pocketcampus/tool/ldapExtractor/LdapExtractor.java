@@ -56,7 +56,7 @@ public class LdapExtractor {
 			{		
 				//no duplicates!
 				String name = e.getAttributeValue("givenName");
-				//pierre andré stéphane pastiche > pierre
+				//pierre andrï¿½ stï¿½phane pastiche > pierre
 				String[] splitted = name.split(" ");
 				name = splitted[0];
 				if( !gn_results.contains(name)){
@@ -72,7 +72,7 @@ public class LdapExtractor {
 			
 			Collections.sort(gn_results);
 			for(String name: gn_results)
-				out.println(name);
+				out.println("\""+name+"\";");
 			
 			out.close();
 			
@@ -113,7 +113,7 @@ public class LdapExtractor {
 			
 			Collections.sort(sn_results);
 			for(String name: sn_results){
-				out.println(name);
+				out.println("\""+name+"\";");
 			}
 			out.close();
 			
