@@ -16,9 +16,7 @@
             android:id="@+id/directory_person_details_title_dialog"
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
-            android:layout_marginLeft="8dip" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <RelativeLayout

@@ -16,9 +16,7 @@
             android:id="@+id/bikes_details_title_dialog"
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
-            android:layout_marginLeft="8dip" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -26,8 +24,7 @@
         style="@style/Dialog.Middle"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:padding="15dip" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/bikes_textView_available"
@@ -40,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
         </TextView>
-            
     </LinearLayout>
 
 </LinearLayout>

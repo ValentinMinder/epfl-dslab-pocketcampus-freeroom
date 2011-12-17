@@ -223,7 +223,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 		 */
 		@Override
 		public int getDrawable() {
-			return R.drawable.bikes_action_bar_refresh;
+			return R.drawable.sdk_action_bar_refresh;
 		}
 
 		/**

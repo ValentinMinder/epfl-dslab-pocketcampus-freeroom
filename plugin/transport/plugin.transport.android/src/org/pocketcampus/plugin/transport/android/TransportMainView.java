@@ -373,13 +373,17 @@ public class TransportMainView extends PluginView implements ITransportView {
 							i++;
 							// Updates the shared preferences
 							if (mFromEpfl) {
-								mDestPrefsEditor.putInt(c.getTo().getName(), c
-										.getTo().getId());
-								mDestPrefsEditor.commit();
+								if(!c.getTo().getName().equals("Ecublens VD, EPFL")) {									
+									mDestPrefsEditor.putInt(c.getTo().getName(), c
+											.getTo().getId());
+									mDestPrefsEditor.commit();
+								}
 							} else {
-								mDestPrefsEditor.putInt(c.getFrom().getName(),
-										c.getFrom().getId());
-								mDestPrefsEditor.commit();
+								if(!c.getFrom().getName().equals("Ecublens VD, EPFL")) {
+									mDestPrefsEditor.putInt(c.getFrom().getName(),
+											c.getFrom().getId());
+									mDestPrefsEditor.commit();
+								}
 							}
 							// String representing the type of transport
 							String logo = "";
@@ -502,7 +506,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public int getDrawable() {
-			return R.drawable.transport_action_bar_refresh;
+			return R.drawable.sdk_action_bar_refresh;
 		}
 
 		/**

@@ -43,6 +43,11 @@ public class TransportFormatter {
 			return "Bus " + lineName.substring(index + 3);
 		}
 		
+		if (lineName.contains("Tram")) {
+			int index = lineName.indexOf("Tram");
+			return "Tram " + lineName.substring(index + 3);
+		}
+		
 		while (lineName.matches(".*(1).*")) {
 			String[] s = lineName.split("1");
 			lineName = s[0];

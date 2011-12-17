@@ -16,7 +16,6 @@
 
 	<style name="Dialog.Middle" parent="@style/PocketCampusTheme.Secondary">
 		<item name="android:padding">12sp</item>
-		<item name="android:paddingLeft">10sp</item>
 	</style>
 
 	<style name="Dialog.Bottom" parent="@style/PocketCampusTheme.Secondary">

@@ -18,9 +18,7 @@
             android:id="@+id/sdk_dialog_rating_title"
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dip"
-            android:paddingRight="8dip" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <!-- Rating Bar -->
