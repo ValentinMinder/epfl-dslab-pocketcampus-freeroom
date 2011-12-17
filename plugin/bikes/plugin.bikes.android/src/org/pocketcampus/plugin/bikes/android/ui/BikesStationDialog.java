@@ -37,7 +37,6 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 
 	private void build(){
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		setTitle(ctx_.getResources().getString(R.string.directory_person_details_dialog_tile));
 		setContentView(R.layout.bikes_details_dialog);
 		getWindow().setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		setCanceledOnTouchOutside(true);
@@ -75,7 +74,7 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		//do nothing
 		
 	}
 }
