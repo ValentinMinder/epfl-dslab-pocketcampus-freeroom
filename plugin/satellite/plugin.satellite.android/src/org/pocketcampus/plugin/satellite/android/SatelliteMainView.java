@@ -14,7 +14,6 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 /**
@@ -56,6 +55,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		mLayout = new StandardTitledScrollableDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.satellite_menu_main_page));
+		mLayout.setText(getResources().getString(R.string.satellite_loading));
 
 		setContentView(mLayout);
 		showMainPage();
@@ -120,6 +120,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	public void beerUpdated() {
 		Beer beer = mModel.getBeerOfMonth();
 		if (beer != null) {
+			mLayout.hideText();
 			ImageTextView t = new ImageTextView(beer, getApplicationContext(),
 					mBeerLabeler, 0);
 			mLayout.addSecondLayoutFillerView(t);
@@ -132,11 +133,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	@Override
 	public void affluenceUpdated() {
-		Log.d("SATELLITE", "Affluence updated (View)");
-
 		Affluence a = mModel.getAffluence();
-
 		if (a != null) {
+			mLayout.hideText();
 			AffluenceImageView view = new AffluenceImageView(a, chooseImage(a),
 					this, mAffluenceLabeler);
 
