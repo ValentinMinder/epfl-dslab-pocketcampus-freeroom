@@ -74,7 +74,7 @@ public class CheckBoxArrayAdapter extends AbstractArrayAdapter {
 	 * Sets the positive CheckBox click listener from the Application
 	 * 
 	 * @param checkBoxListener
-	 *            The Listener set by the Applciation
+	 *            The Listener set by the Application
 	 */
 	public void setOnCheckBoxClickListener(OnItemClickListener checkBoxListener) {
 		mOnCheckBoxClickListener = checkBoxListener;

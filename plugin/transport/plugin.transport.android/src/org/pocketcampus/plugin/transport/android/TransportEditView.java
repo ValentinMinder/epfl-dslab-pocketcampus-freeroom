@@ -3,17 +3,16 @@ package org.pocketcampus.plugin.transport.android;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.adapter.StandardArrayAdapter;
+import org.pocketcampus.android.platform.sdk.ui.adapter.IconTextArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -25,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 /**
@@ -37,13 +37,18 @@ import android.widget.RelativeLayout;
  * @author Florian <florian.laurent@epfl.ch>
  */
 public class TransportEditView extends PluginView {
+	private Context mContext;
 	/* MVC */
 	/** The main layout */
 	private StandardTitledDoubleSeparatedLayout mLayout;
 	/** The first one-element-ListView to add a destination */
-	private ListViewElement mAddView;
+	private ListView mAddList;
+	/** The corresponding adapter */
+	private IconTextArrayAdapter mAddAdapter;
 	/** The list of current preferred destinations */
-	private ListViewElement mListView;
+	private ListView mDeleteList;
+	/** The corresponding adapter */
+	private IconTextArrayAdapter mDeleteListAdapter;
 	/* Preferences */
 	/** The pointer to access and modify preferences stored on the phone */
 	private SharedPreferences mDestPrefs;
@@ -67,6 +72,7 @@ public class TransportEditView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		mContext = getApplicationContext();
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
 		mDestPrefsEditor = mDestPrefs.edit();
 		// Set up the layout
@@ -90,12 +96,17 @@ public class TransportEditView extends PluginView {
 		// Field to add a new destination
 		ArrayList<String> l = new ArrayList<String>();
 		l.add(getResources().getString(R.string.transport_new_destination));
-		mAddView = new ListViewElement(this, l);
+
+		mAddList = new ListView(this);
+		mAddAdapter = new IconTextArrayAdapter(getApplicationContext(), l,
+				R.drawable.transport_plus);
+		mAddList.setAdapter(mAddAdapter);
+
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		mAddView.setLayoutParams(p);
+		mAddList.setLayoutParams(p);
 		// Click Listener
-		mAddView.setOnItemClickListener(new OnItemClickListener() {
+		mAddList.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
 			 * Defines what is to be performed when the user clicks on the
@@ -110,7 +121,7 @@ public class TransportEditView extends PluginView {
 				finish();
 			}
 		});
-		mLayout.addFirstLayoutFillerView(mAddView);
+		mLayout.addFirstLayoutFillerView(mAddList);
 
 		// Destinations that are already there
 		ArrayList<String> list = new ArrayList<String>();
@@ -123,9 +134,13 @@ public class TransportEditView extends PluginView {
 			mLayout.hideSecondTitle();
 		}
 		Collections.sort(list);
-		mListView = new ListViewElement(this, list);
-		// Click Listener
-		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+		// List with destinations to remove
+		mDeleteList = new ListView(this);
+		mDeleteListAdapter = new IconTextArrayAdapter(getApplicationContext(),
+				list, R.drawable.transport_minus);
+		mDeleteList.setAdapter(mDeleteListAdapter);
+		mDeleteList.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
 			 * Defines what is to be performed when the user clicks on a
@@ -139,8 +154,8 @@ public class TransportEditView extends PluginView {
 			}
 
 		});
-		mLayout.addSecondLayoutFillerView(mListView);
 
+		mLayout.addSecondLayoutFillerView(mDeleteList);
 		setContentView(mLayout);
 	}
 
@@ -178,7 +193,7 @@ public class TransportEditView extends PluginView {
 						mDestPrefsEditor.remove(dest);
 						mDestPrefsEditor.commit();
 
-						List<String> list = new ArrayList<String>();
+						ArrayList<String> list = new ArrayList<String>();
 						Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs
 								.getAll();
 						if (prefs != null) {
@@ -189,10 +204,10 @@ public class TransportEditView extends PluginView {
 						Collections.sort(list, new StringComparator());
 
 						// Update the list view
-						StandardArrayAdapter adapter = new StandardArrayAdapter(
-								getApplicationContext(), list);
-						mListView.setAdapter(adapter);
-						mListView.invalidate();
+						mDeleteListAdapter = new IconTextArrayAdapter(mContext,
+								list, R.drawable.transport_minus);
+						mDeleteList.setAdapter(mDeleteListAdapter);
+						mDeleteList.invalidate();
 
 						if (list.isEmpty()) {
 							mLayout.removeSecondLayoutFillerView();
