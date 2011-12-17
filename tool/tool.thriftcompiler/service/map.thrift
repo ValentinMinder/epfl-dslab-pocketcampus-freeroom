@@ -14,7 +14,7 @@ struct MapLayer {
 
 struct MapItem {
 	1: required string title;
-	2: required string description
+	2: string description
 	3: required double latitude;
 	4: required double longitude;
 	5: required common.Id layerId;
@@ -24,4 +24,6 @@ struct MapItem {
 service MapService {
 	list<MapLayer> getLayerList();
 	list<MapItem> getLayerItems(1: common.Id layerId);
+	list<MapItem> search(1: string query);
+//	list<MapItem> searchLayersItems(1: MapLayer.name layerName, 2: string itemName);
 }
