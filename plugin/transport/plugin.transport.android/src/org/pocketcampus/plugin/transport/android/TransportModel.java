@@ -95,26 +95,34 @@ public class TransportModel extends PluginModel implements ITransportModel {
 									+ " (model)");
 							i++;
 							// Update displayed locations
-							if (mPreferredDestinations.get(c.getTo().getName()) == null) {
-								mPreferredDestinations.put(c.getTo().getName(),
-										new ArrayList<TransportTrip>());
+							if(c.getTo().getName().equals("Ecublens VD, EPFL")) {							
+								if (mPreferredDestinations.get(c.getFrom().getName()) == null) {
+									mPreferredDestinations.put(c.getFrom().getName(),
+											new ArrayList<TransportTrip>());
+								}
+								mPreferredDestinations.get(c.getFrom().getName())
+								.add(c);
+							} else {
+								if (mPreferredDestinations.get(c.getTo().getName()) == null) {
+									mPreferredDestinations.put(c.getTo().getName(),
+											new ArrayList<TransportTrip>());
+								}
+								mPreferredDestinations.get(c.getTo().getName())
+								.add(c);
 							}
 
 							/* TEST */
-							Date dep = new Date();
-							dep.setTime(c.getParts().get(0).departureTime);
-							Date arr = new Date();
-							arr.setTime(c.getParts().get(0).arrivalTime);
-							Log.d("TRANSPORT", "Departure - "
-									+ c.getParts().get(0)
-											.getDeparturePosition() + " : "
-									+ dep + " Arrival - "
-									+ c.getParts().get(0).getArrivalPosition()
-									+ " : " + arr);
+//							Date dep = new Date();
+//							dep.setTime(c.getParts().get(0).departureTime);
+//							Date arr = new Date();
+//							arr.setTime(c.getParts().get(0).arrivalTime);
+//							Log.d("TRANSPORT", "Departure - "
+//									+ c.getParts().get(0)
+//											.getDeparturePosition() + " : "
+//									+ dep + " Arrival - "
+//									+ c.getParts().get(0).getArrivalPosition()
+//									+ " : " + arr);
 							/* END TEST */
-
-							mPreferredDestinations.get(c.getTo().getName())
-									.add(c);
 
 						}
 					}

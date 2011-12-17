@@ -93,7 +93,7 @@ public class TransportController extends PluginController implements
 	 */
 	@Override
 	public void nextDeparturesToEPFL(String location) {
-		if(location != null) {
+		if(location != null && !location.equals("")) {
 			getTrips_args args = new getTrips_args(location, "EPFL");
 			new NextDeparturesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);

@@ -285,10 +285,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 		if (locations != null && !locations.isEmpty()) {
 			if (mFromEpfl) {
 				for (String loc : locations.keySet()) {
+					Log.d("TRANSPORT", "Request to " + loc);
 					mController.nextDeparturesFromEPFL(loc);
 				}
 			} else {
 				for (String loc : locations.keySet()) {
+					Log.d("TRANSPORT", "Request from " + loc);
 					mController.nextDeparturesToEPFL(loc);
 				}
 			}
@@ -355,7 +357,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 				String from = DestinationFormatter
 						.getNiceName(mDisplayedLocations.get(l).get(0)
 								.getFrom());
-				String to = DestinationFormatter.getNiceName(l);
+				String to = DestinationFormatter
+						.getNiceName(mDisplayedLocations.get(l).get(0)
+								.getTo());
+
 				items.add(new PCSectionItem(from + " - " + to));
 				int i = 0;
 
@@ -371,7 +376,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 								mDestPrefsEditor.putInt(c.getTo().getName(), c
 										.getTo().getId());
 								mDestPrefsEditor.commit();
-
 							} else {
 								mDestPrefsEditor.putInt(c.getFrom().getName(),
 										c.getFrom().getId());
@@ -397,8 +401,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 											+ c.getId());
 							// Add this departure
 							items.add(entry);
-						} else {
-							Log.d("TRANSPORT", "Time was before now");
 						}
 					}
 				}
