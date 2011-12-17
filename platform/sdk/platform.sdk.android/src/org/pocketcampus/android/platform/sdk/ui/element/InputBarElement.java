@@ -140,14 +140,15 @@ public class InputBarElement extends RelativeLayout {
 		} else if(text.equals("")){
 			mButton.setVisibility(GONE);
 			Drawable img = getContext().getResources().getDrawable(mRessource);
+			mImageButton.setVisibility(VISIBLE);
 			mImageButton.setImageDrawable(img);
-//			mButton.setBackgroundResource(R.drawable.sdk_magnify_mini_icon);
 		}else{
 			mButton.setText(text);
 			mButton.setVisibility(VISIBLE);
 			mImageButton.setVisibility(GONE);
 		}
 	}
+	
 	
 	public void setImageButtonDrawableRessource(int ressource){
 		this.mRessource = ressource;

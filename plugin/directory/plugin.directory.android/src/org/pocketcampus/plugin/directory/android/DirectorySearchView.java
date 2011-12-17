@@ -55,39 +55,6 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		displayView();
 		createSuggestionsList();
 		
-//		mLayout = new DirectorySearchLayout(this, mController);
-//		
-//		OnClickListener listener = new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				search();
-//			}
-//		};
-//		
-//		
-//		
-//		// The ActionBar is added automatically when you call setContentView
-//		setContentView(mLayout);
-//
-//		
-//		Button searchButton = (Button) findViewById(R.id.directory_search_button);
-//		searchButton.setOnClickListener(listener);
-//		
-//		OnEditorActionListener oeal = new OnEditorActionListener() {
-//			@Override
-//			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//		            search();
-//		            return true;
-//		        }
-//		        return false;
-//			}
-//		};
-//		mLayout.setOnEditorActionListener(oeal);
-		
-		// We need to force the display before asking the controller for the data, 
-		// as the controller may take some time to get it.
-		//displayData();
 	}
 	
 	private void displayView() {
@@ -96,7 +63,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		mLayout.setTitle(getString(R.string.directory_searchView_title));
 
 		/** Input bar */
-		mInputBar = new InputBarElement(this, "",getString(R.string.directory_searchView_hint));
+		mInputBar = new InputBarElement(this, null,getString(R.string.directory_searchView_hint));
 		mInputBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mInputBar.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -105,9 +72,11 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 					String query = mInputBar.getInputText();
 					search(query);
 				}
+				
 				return true;
 			}
 		});
+		
 		mInputBar.setOnButtonClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -120,6 +89,11 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 			@Override
 			public void onKeyPressed(String text) {
 				mController.getAutoCompleted(text);
+				
+				if(mInputBar.getInputText().length() == 0)
+					mInputBar.setButtonText(null);
+				else
+					mInputBar.setButtonText("");
 			}
 		});
 
@@ -187,7 +161,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_SEARCH){
+		if(keyCode == KeyEvent.KEYCODE_SEARCH && mInputBar.getInputText().length()> 0){
 			String query = mInputBar.getInputText();
 			search(query);
 		}
