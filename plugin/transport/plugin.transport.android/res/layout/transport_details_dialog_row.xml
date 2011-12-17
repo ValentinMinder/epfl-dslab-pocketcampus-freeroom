@@ -36,17 +36,17 @@
 
             <TextView
                 android:id="@+id/transport_details_dialog_dep_time"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="@android:color/black" >
+                android:layout_alignParentRight="true" >
             </TextView>
 
             <TextView
                 android:id="@+id/transport_details_dialog_dep_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black" >
+                style="@style/DialogText" >
             </TextView>
         </RelativeLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@android:color/black" >
+                style="@style/DialogText" >
             </TextView>
         </RelativeLayout>
 
@@ -75,14 +75,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textColor="@android:color/black" >
+                style="@style/DialogText" >
             </TextView>
 
             <TextView
                 android:id="@+id/transport_details_dialog_arr_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black" >
+                style="@style/DialogText" >
             </TextView>
         </RelativeLayout>
     </LinearLayout>

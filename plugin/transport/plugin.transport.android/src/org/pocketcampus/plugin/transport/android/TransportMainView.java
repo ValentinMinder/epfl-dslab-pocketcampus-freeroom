@@ -337,7 +337,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Log.d("TRANSPORT", "Error");
 		mLayout.removeFillerView();
 		mLayout.setText(getResources().getString(
 				R.string.transport_network_error));

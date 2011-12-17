@@ -6,7 +6,7 @@ import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.Html;
-import android.text.util.Linkify;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -69,15 +69,14 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 				+ be.numberOfAvailableBikes + "</b> " + availableBikes + " "
 				+ getString(R.string.bikes_and) + " <b>"
 				+ be.numberOfEmptySpaces + "</b> " + emptySlots + ".<br><br>"
-				+ getString(R.string.bikes_infos_1) + " "
-				+ getString(R.string.bikes_infos_2)));
+				+ getString(R.string.bikes_infos_1)));
 
 		link_ = (TextView) findViewById(R.id.bikes_textView_link);
 		link_.setText(Html.fromHtml(" <a href=\""
 				+ getString(R.string.bikes_website) + "\">"
-				+ getString(R.string.bikes_website_name) + "</a>"));
-		link_.setAutoLinkMask(Linkify.WEB_URLS);
-		link_.setLinksClickable(true);
+				+ getString(R.string.bikes_infos_2) + "</a>"));
+		
+		link_.setMovementMethod(LinkMovementMethod.getInstance());
 
 	}
 

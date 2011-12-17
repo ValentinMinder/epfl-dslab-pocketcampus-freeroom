@@ -248,9 +248,6 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.bikes_network_error), Toast.LENGTH_SHORT);
-		toast.show();
-		
 		mLayout.setText(getString(R.string.bikes_try_again_later));
 	}
 
