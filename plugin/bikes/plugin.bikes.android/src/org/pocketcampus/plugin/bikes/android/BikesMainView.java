@@ -95,14 +95,6 @@ public class BikesMainView extends PluginView implements IBikesView{
 							break;
 						}
 					}
-					
-					
-//					Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-//					toast.show();
-					
-					
-					
-					
 				}
 			}
 			
@@ -122,9 +114,6 @@ public class BikesMainView extends PluginView implements IBikesView{
 			mLayout.setText("");
 		
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
-//		boolean found = false;
-		
-	
 		items.add(new PCSectionItem(getString(R.string.bikes_velopass),getString(R.string.bikes_Available)));
 		
 		for(BikeEmplacement be : mModel.getAvailablesBikes()){
@@ -145,11 +134,13 @@ public class BikesMainView extends PluginView implements IBikesView{
 				RelativeLayout listElement = new RelativeLayout(this);
 				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
 				int layoutsWidth = 30;
+				float textSize = 18f;
 				//bikeEmplacement name
 				TextView titleView = new TextView(this);
 				titleView.setText(be.name);
 				titleView.setId(4);
-				titleView.setTextAppearance(this, textAppearanceID);
+//				titleView.setTextAppearance(this, textAppearanceID);
+				titleView.setTextSize(textSize);
 				LayoutParams titleParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
 				titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				titleParams.setMargins(15, 3, 3, 3);
@@ -158,7 +149,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView totalPlacesView = new TextView(this);
 				totalPlacesView.setText(pl + "");
 				totalPlacesView.setGravity(Gravity.RIGHT);
-				totalPlacesView.setTextAppearance(this, textAppearanceID);
+//				totalPlacesView.setTextAppearance(this, textAppearanceID);
+				totalPlacesView.setTextSize(textSize);
 				LayoutParams totalParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
 				totalParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				totalParams.setMargins(3, 3, 15, 3);
@@ -168,7 +160,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView slashView = new TextView(this);
 				slashView.setText("/");
 				slashView.setGravity(Gravity.RIGHT);
-				slashView.setTextAppearance(this, textAppearanceID);
+//				slashView.setTextAppearance(this, textAppearanceID);
+				slashView.setTextSize(textSize);
 				slashView.setId(2);
 				LayoutParams slashParams = new LayoutParams(layoutsWidth/3, LayoutParams.FILL_PARENT);
 				slashParams.addRule(RelativeLayout.LEFT_OF, totalPlacesView.getId());
@@ -178,7 +171,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 				TextView bikesAvailableView = new TextView(this);
 				bikesAvailableView.setText(q + "");
 				bikesAvailableView.setGravity(Gravity.RIGHT);
-				bikesAvailableView.setTextAppearance(this, textAppearanceID);
+//				bikesAvailableView.setTextAppearance(this, textAppearanceID);
+				bikesAvailableView.setTextSize(textSize);
 				bikesAvailableView.setId(1);
 				LayoutParams availableParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
 				availableParams.addRule(RelativeLayout.LEFT_OF, slashView.getId());

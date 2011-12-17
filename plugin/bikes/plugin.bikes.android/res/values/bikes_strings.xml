@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-     <string name="bikes_plugin_name">Bikes</string>
-     <string name="bikes_velopass">Velopass</string>
-    
-     <string name="bikes_Available">Available</string>
-     <string name="bikes_has">has</string>
-     <string name="bikes_and">and</string>
-  
-     <string name="bikes_network_error">Network error!</string>
-     <string name="bikes_try_again_later">Please try again later</string>
-     
-     <string name="bikes_empty_slot">empty bike slot</string>
-     <string name="bikes_empty_slots">empty bike slots</string>
-     <string name="bikes_available_bike">available bike</string>
-     <string name="bikes_available_bikes">available bikes</string>
+    <string name="bikes_plugin_name">Bikes</string>
+    <string name="bikes_velopass">Velopass</string>
+    <string name="bikes_Available">Available</string>
+    <string name="bikes_has">has</string>
+    <string name="bikes_and">and</string>
+    <string name="bikes_infos_1">You can borrow a bike using your Camipro card.</string>
+    <string name="bikes_infos_2">For more informations : </string>
+    <string name="bikes_website">http://developpement-durable.epfl.ch/page-12546.html</string>
+    <string name="bikes_website_name">Web site</string>
+    <string name="bikes_network_error">Network error!</string>
+    <string name="bikes_try_again_later">Please try again later</string>
+    <string name="bikes_there_is">There is</string>
+    <string name="bikes_there_are">There are</string>
+    <string name="bikes_empty_slot">empty bike slot</string>
+    <string name="bikes_empty_slots">empty bike slots</string>
+    <string name="bikes_available_bike">available bike</string>
+    <string name="bikes_available_bikes">available bikes</string>
+    <string name="bikes_loading">Loading..</string>
 
-     <string name="bikes_loading">Loading..</string>
-   
 </resources>
