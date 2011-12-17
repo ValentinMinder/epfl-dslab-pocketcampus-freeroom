@@ -91,7 +91,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		lv.setLayoutParams(p);
 		
-		
+		mLayout.removeFillerView();
 		mLayout.addFillerView(lv);
 	}
 

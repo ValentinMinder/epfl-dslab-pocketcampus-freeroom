@@ -257,7 +257,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
 	private CamiproController mController;

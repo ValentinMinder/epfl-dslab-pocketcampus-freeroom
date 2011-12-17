@@ -211,14 +211,27 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 */
 	
-	public void wrongCredentials() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Invalid credentials!", Toast.LENGTH_SHORT);
+	@Override
+	public void notifyBadCredentials() {
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_invalid_credentials), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
 	@Override
+	public void notifyBadToken() {
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_invalid_token), Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+	@Override
+	public void notifyUnexpectedErrorHappened() {
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_unexpected_error), Toast.LENGTH_SHORT);
+		toast.show();
+	}
+	
+	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 

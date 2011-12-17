@@ -135,10 +135,13 @@ public class AuthenticationController extends PluginController implements IAuthe
 			default:
 				return; // TODO this is an ERROR TypeOfService is unknown
 			}
-			if(sessId == null)
-				return; // TODO tell view that credentials are bad, let the user try again
+			if(sessId == null) {
+				mModel.getListenersToNotify().notifyBadCredentials();
+				return; // tell view that credentials are bad, let the user try again
+			}
 			forwardSessionIdToCaller(sessId);
 		} catch (IOException e) {
+			mModel.getListenersToNotify().notifyBadCredentials();
 			e.printStackTrace(); // TODO tell view that network error happened
 		}
 	}
@@ -147,13 +150,18 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public void signInUserLocallyToTequila(TequilaKey teqKey) {
 		try {
 			mModel.setTequilaCookie(loginToTequila(iLocalCredentials.username, iLocalCredentials.password));
-			if(mModel.getTequilaCookie() == null)
-				return; // TODO tell view that credentials are bad, let the user try again
-			if(!authenticateTokenWithTequila(mModel.getTequilaCookie(), teqKey.getITequilaKey()))
-				return; // TODO tell the view that token is unknown
+			if(mModel.getTequilaCookie() == null) {
+				mModel.getListenersToNotify().notifyBadCredentials();
+				return; // tell view that credentials are bad, let the user try again
+			}
+			if(!authenticateTokenWithTequila(mModel.getTequilaCookie(), teqKey.getITequilaKey())) {
+				mModel.getListenersToNotify().notifyBadToken();
+				return; // tell the view that token is unknown
+			}
 			forwardTequilaKeyForService(teqKey.getTos());
 		} catch (IOException e) {
-			e.printStackTrace(); // TODO tell view that network error happened
+			mModel.getListenersToNotify().networkErrorHappened();
+			e.printStackTrace(); // tell view that network error happened
 		}
 	}
 
@@ -199,8 +207,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	private void forwardSessionIdToCaller(SessionId sessId) {
-		if(sessId == null)
+		if(sessId == null) {
 			return; // TODO tell view that unexpected error happened
+		}
 		String url = "pocketcampus-authenticate://%s.plugin.pocketcampus.org/auth_done?sessid=%s";
 		switch(sessId.getTos()) {
 		case SERVICE_POCKETCAMPUS:
@@ -350,9 +359,11 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	private void authenticateUserForService(TypeOfService tos) {
-		// Temporary: re-login to Tequila each time (for today's presentation purposes)
+		
+		// Temporary: re-login to Tequila each time (for today's release purposes)
 		mModel.setTequilaCookie(null);
 		// TODO remove the above
+		
 		boolean serviceSupportsTequila = true;
 		switch(tos) {
 		// put here all services that do not support Tequila
