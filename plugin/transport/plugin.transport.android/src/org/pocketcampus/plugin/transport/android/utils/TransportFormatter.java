@@ -85,6 +85,10 @@ public class TransportFormatter {
 			lineName = s[0];
 		}
 
+		if(lineName.startsWith("I")) {
+			lineName = lineName.substring(1);
+		}
+		
 		return lineName;
 	}
 

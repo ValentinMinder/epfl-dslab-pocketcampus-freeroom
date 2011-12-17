@@ -37,5 +37,6 @@
     <!-- From last year -->
     <string name="transport_to">à</string>	
     <string name="transport_walk_in_min">min. de marche</string>
+    <string name="transport_by_feet">A pieds</string>
 
 </resources>

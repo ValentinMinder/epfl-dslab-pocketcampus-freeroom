@@ -6,12 +6,12 @@ import java.util.HashMap;
 
 import org.pocketcampus.R;
 import org.pocketcampus.plugin.transport.android.utils.DestinationFormatter;
+import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
 import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -70,24 +70,28 @@ public class TransportTripDetailsDialog extends Dialog {
 			String departurePlace = part.departure.name;
 			String arrivalTime = "";
 			String arrivalPlace = part.arrival.name;
+			String line = "";
 
 			if (!part.foot) {
 				// Part is a Trip
 				departureTime = formatter.format(part.getDepartureTime());
 				arrivalTime = formatter.format(part.getArrivalTime());
-				departurePlace = part.getDeparture().getName();
-				Log.wtf("Transport", "in dialog-> dep: " + part.departureTime + " arr: " + part.arrivalTime);
-
+				if (part.line != null) {
+					line = TransportFormatter.getNiceName(part.line.name);
+				} else {
+					line = ctx_.getResources().getString(R.string.transport_by_feet);
+				}
 			} else {
 				// Part is a Footway
-				departureTime = (part).min
-						+ " "
-						+ ctx_.getResources().getString(
-								R.string.transport_walk_in_min);
+				departureTime = formatter.format(part.getDepartureTime());
+				arrivalTime = formatter.format(part.getArrivalTime());
+				line = ctx_.getResources().getString(R.string.transport_by_feet);
 			}
 
 			partRow.put("departureTime", departureTime);
 			partRow.put("departurePlace", departurePlace);
+
+			partRow.put("line", line);
 
 			partRow.put("arrivalTime", arrivalTime);
 			partRow.put("arrivalPlace", arrivalPlace);
@@ -95,11 +99,12 @@ public class TransportTripDetailsDialog extends Dialog {
 			connectionParts.add(partRow);
 		}
 
-		String[] keys = { "departureTime", "departurePlace", "arrivalTime",
-				"arrivalPlace" };
+		String[] keys = { "departureTime", "departurePlace", "line",
+				"arrivalTime", "arrivalPlace" };
 
 		int[] ids = { R.id.transport_details_dialog_dep_time,
 				R.id.transport_details_dialog_dep_place,
+				R.id.transport_details_dialog_line,
 				R.id.transport_details_dialog_arr_time,
 				R.id.transport_details_dialog_arr_place };
 
@@ -111,7 +116,7 @@ public class TransportTripDetailsDialog extends Dialog {
 		list.setAdapter(mSchedule);
 
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
-		title.setText(DestinationFormatter.getNiceName(connection_.from) + " - "
-				+ DestinationFormatter.getNiceName(connection_.to));
+		title.setText(DestinationFormatter.getNiceName(connection_.from)
+				+ " - " + DestinationFormatter.getNiceName(connection_.to));
 	}
 }

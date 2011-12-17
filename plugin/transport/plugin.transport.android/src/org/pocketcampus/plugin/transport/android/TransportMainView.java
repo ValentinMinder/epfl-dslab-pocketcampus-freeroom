@@ -197,6 +197,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 				for (TransportTrip trip : trips) {
 					if (trip.getDepartureTime() == depTime
 							&& trip.getArrivalTime() == arrTime) {
+						Log.d("TRANSPORT", "Line is " + trip.getParts().get(0).getLine());
+						
 						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
 								TransportMainView.this, trip);
 						dialog.show();
