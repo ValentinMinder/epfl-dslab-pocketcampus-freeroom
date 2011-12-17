@@ -168,7 +168,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 			mDialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
 			mDialog.show();
 		}else
-			startActivity(new Intent(this, DirectoryResultListView.class));
+			startActivity(new Intent(getApplicationContext(), DirectoryResultListView.class));
 		
 	}
 
@@ -180,7 +180,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	@Override
 	public void pictureUpdated() {
-		mDialog.loadPicture();
+		if(mDialog != null)
+			mDialog.loadPicture();
 		
 	}
 	
