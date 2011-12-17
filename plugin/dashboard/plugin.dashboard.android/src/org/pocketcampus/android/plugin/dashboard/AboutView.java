@@ -10,7 +10,6 @@ public class AboutView extends PluginView {
 	
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-//		disableActionBar();
 		setContentView(R.layout.dashboard_about);
 	}
 
