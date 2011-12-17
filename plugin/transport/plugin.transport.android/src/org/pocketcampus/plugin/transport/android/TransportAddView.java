@@ -16,6 +16,7 @@ import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -146,10 +147,10 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-//		Toast toast = Toast.makeText(getApplicationContext(), getResources()
-//				.getString(R.string.transport_network_error),
-//				Toast.LENGTH_SHORT);
-//		toast.show();
+		// Toast toast = Toast.makeText(getApplicationContext(), getResources()
+		// .getString(R.string.transport_network_error),
+		// Toast.LENGTH_SHORT);
+		// toast.show();
 	}
 
 	/**

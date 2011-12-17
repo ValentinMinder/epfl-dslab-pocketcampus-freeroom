@@ -90,13 +90,16 @@ public class TransportModel extends PluginModel implements ITransportModel {
 				for (TransportTrip c : connections) {
 					if (c != null) {
 						if (i < 3) {
+							Log.d("TRANSPORT", "Setting connection " + i
+									+ " for destination " + c.getTo().getName()
+									+ " (model)");
 							i++;
 							// Update displayed locations
 							if (mPreferredDestinations.get(c.getTo().getName()) == null) {
 								mPreferredDestinations.put(c.getTo().getName(),
 										new ArrayList<TransportTrip>());
 							}
-							
+
 							/* TEST */
 							Date dep = new Date();
 							dep.setTime(c.getParts().get(0).departureTime);
@@ -109,9 +112,10 @@ public class TransportModel extends PluginModel implements ITransportModel {
 									+ c.getParts().get(0).getArrivalPosition()
 									+ " : " + arr);
 							/* END TEST */
-							
+
 							mPreferredDestinations.get(c.getTo().getName())
 									.add(c);
+
 						}
 					}
 				}

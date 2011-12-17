@@ -20,8 +20,6 @@ public class TransportFormatter {
 		niceNames_ = new HashMap<String, String>();
 		niceNames_.put("UMetm1", "M1");
 		niceNames_.put("UMetm2", "M2");
-		niceNames_.put("BBus33", "Bus 33");
-		niceNames_.put("BBus30", "Bus 30");
 	}
 
 	/**
@@ -38,6 +36,25 @@ public class TransportFormatter {
 		}
 		if (niceNames_.containsKey(lineName)) {
 			return niceNames_.get(lineName);
+		}
+		if (lineName.contains("ICN")) {
+			return "ICN";
+		}
+		if (lineName.contains("RE")) {
+			return "RE";
+		}
+		if (lineName.contains("IC")) {
+			return "IC";
+		}
+		if (lineName.contains("TGV")) {
+			return "TGV";
+		}
+		if(lineName.contains("IR")) {
+			return "IR";
+		}
+		if(lineName.contains("Bus")) {
+			int index = lineName.indexOf("Bus");
+			return "Bus "+lineName.substring(index+3);
 		}
 		return lineName;
 	}

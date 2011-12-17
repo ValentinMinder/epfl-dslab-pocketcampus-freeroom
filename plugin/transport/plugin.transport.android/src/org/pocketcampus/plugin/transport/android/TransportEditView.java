@@ -122,6 +122,7 @@ public class TransportEditView extends PluginView {
 		} else {
 			mLayout.hideSecondTitle();
 		}
+		Collections.sort(list);
 		mListView = new ListViewElement(this, list);
 		// Click Listener
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -193,7 +194,7 @@ public class TransportEditView extends PluginView {
 						mListView.setAdapter(adapter);
 						mListView.invalidate();
 
-						if(list.isEmpty()) {
+						if (list.isEmpty()) {
 							mLayout.removeSecondLayoutFillerView();
 							mLayout.hideSecondTitle();
 						}
@@ -219,12 +220,15 @@ public class TransportEditView extends PluginView {
 		StyledDialog d = b.create();
 		d.show();
 	}
-	
+
 	/**
 	 * Compares Restaurants according to their names.
 	 */
 	private class StringComparator implements Comparator<String> {
 
+		/**
+		 * Compares two string alphabetically
+		 */
 		@Override
 		public int compare(String arg0, String arg1) {
 			return arg0.compareToIgnoreCase(arg1);

@@ -147,6 +147,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		int id = item.getItemId();
 
 		if (id == R.id.transport_destinations) {
+			mFromEpfl = true;
 			Intent i = new Intent(this, TransportEditView.class);
 			startActivity(i);
 		}
@@ -189,14 +190,17 @@ public class TransportMainView extends PluginView implements ITransportView {
 				String[] s = txt.split(":");
 				String name = s[0];
 				long depTime = Long.valueOf(s[1]);
+				long arrTime = Long.valueOf(s[2]);
 				// Find the destination in the ones from the model
 				List<TransportTrip> trips = mModel.getPreferredDestinations()
 						.get(name);
 				for (TransportTrip trip : trips) {
-					if (trip.getDepartureTime() == depTime) {
+					if (trip.getDepartureTime() == depTime
+							&& trip.getArrivalTime() == arrTime) {
 						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
 								TransportMainView.this, trip);
 						dialog.show();
+						break;
 					}
 				}
 			}
@@ -210,9 +214,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * clicked, open the edit view of the transport plugin.
 	 */
 	private void setUpActionBar() {
-		Intent intent = new Intent(getApplicationContext(),
-				TransportEditView.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		ActionBar a = getActionBar();
 		if (a != null) {
 			ChangeDirectionAction direction = new ChangeDirectionAction();
@@ -249,6 +250,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				 */
 				@Override
 				public void onClick(View v) {
+					mFromEpfl = true;
 					Intent add = new Intent(getApplicationContext(),
 							TransportAddView.class);
 					startActivity(add);
@@ -281,7 +283,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 		HashMap<String, List<TransportTrip>> locations = mModel
 				.getPreferredDestinations();
 		if (locations != null && !locations.isEmpty()) {
-
 			if (mFromEpfl) {
 				for (String loc : locations.keySet()) {
 					mController.nextDeparturesFromEPFL(loc);
@@ -291,7 +292,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 					mController.nextDeparturesToEPFL(loc);
 				}
 			}
-			setItemsToDisplay(locations);
 		}
 	}
 
@@ -355,8 +355,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 				String from = DestinationFormatter
 						.getNiceName(mDisplayedLocations.get(l).get(0)
 								.getFrom());
-				items.add(new PCSectionItem(from + " - "
-						+ DestinationFormatter.getNiceName(l)));
+				String to = DestinationFormatter.getNiceName(l);
+				items.add(new PCSectionItem(from + " - " + to));
 				int i = 0;
 
 				for (TransportTrip c : mDisplayedLocations.get(l)) {
@@ -367,16 +367,20 @@ public class TransportMainView extends PluginView implements ITransportView {
 						if (dep.after(now)) {
 							i++;
 							// Updates the shared preferences
-							if (!(c.getTo().getName()
-									.equals("Ecublens VD, EPFL"))) {
+							if (mFromEpfl) {
 								mDestPrefsEditor.putInt(c.getTo().getName(), c
 										.getTo().getId());
+								mDestPrefsEditor.commit();
+
+							} else {
+								mDestPrefsEditor.putInt(c.getFrom().getName(),
+										c.getFrom().getId());
 								mDestPrefsEditor.commit();
 							}
 							// String representing the type of transport
 							String logo = "";
 							for (TransportConnection p : c.parts) {
-								if (!p.foot) {
+								if (!p.foot && p.line != null) {
 									logo = p.line.getName();
 									break;
 								}
@@ -388,9 +392,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 											+ ":"
 											+ c.getDepartureTime()
 											+ ":"
-											+ c.getArrivalTime());
+											+ c.getArrivalTime()
+											+ ":"
+											+ c.getId());
 							// Add this departure
 							items.add(entry);
+						} else {
+							Log.d("TRANSPORT", "Time was before now");
 						}
 					}
 				}
@@ -535,8 +543,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 				mFromEpfl = true;
 			}
 
-			mLayout.removeFillerView();
-			mLayout.addFillerView(mListView);
 			mModel.freeConnections();
 			if (mModel.getPreferredDestinations() == null
 					|| mModel.getPreferredDestinations().isEmpty()) {
