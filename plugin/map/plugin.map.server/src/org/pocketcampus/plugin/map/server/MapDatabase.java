@@ -8,9 +8,8 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.text.Position;
-
-import org.pocketcampus.plugin.map.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 
