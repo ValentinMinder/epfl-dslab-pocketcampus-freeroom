@@ -9,6 +9,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
@@ -29,7 +31,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	
 	private LabeledListViewElement mList;
 	private List<Person> mPersons;
-	private StandardLayout mMainLayout;
+	private StandardTitledLayout mMainLayout;
 	
 	private PersonDetailsDialog dialog;
 	private int shownPersonIndex;
@@ -59,10 +61,10 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
 		
-		mMainLayout = new StandardLayout(this); 
+		mMainLayout = new StandardTitledLayout(this); 
 		setContentView(mMainLayout);
 		
-		mMainLayout.setText(getString(R.string.directory_loading));
+		mMainLayout.setTitle(getString(R.string.directory_results_listView_title));
 		
 		resultsUpdated();
 		
@@ -161,7 +163,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 				}
 			});
 			
-			mMainLayout.addView(mList);
+			mMainLayout.addFillerView(mList);
 		}else{
 			mList.setAdapter(new LabeledArrayAdapter(this, mPersons, labeler));
 		}
