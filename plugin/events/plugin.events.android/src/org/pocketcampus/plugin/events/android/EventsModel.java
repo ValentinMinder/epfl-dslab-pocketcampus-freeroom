@@ -32,7 +32,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	private List<EventsItemWithImage> mEventsItems;
 
 	/** Access to the preferences */
-	private SharedPreferences prefs_;
+	private SharedPreferences mPrefs;
 
 	/** The map of feed names with their Urls */
 	private HashMap<String, String> mFeedUrls;
@@ -60,8 +60,8 @@ public class EventsModel extends PluginModel implements IEventsModel {
 
 	@Override
 	public List<EventsItemWithImage> getEvents(Context ctx) {
-		if (prefs_ == null) {
-			prefs_ = PreferenceManager.getDefaultSharedPreferences(ctx);
+		if (mPrefs == null) {
+			mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 		}
 
 		if (mEventsItems == null) {
@@ -70,7 +70,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 
 		ArrayList<EventsItemWithImage> filteredList = new ArrayList<EventsItemWithImage>();
 		for (EventsItemWithImage eventsItem : mEventsItems) {
-			if (prefs_.getBoolean(EventsPreferences.LOAD_RSS
+			if (mPrefs.getBoolean(EventsPreferences.LOAD_RSS
 					+ eventsItem.getEventsItem().getFeed(), true)) {
 				if (!alreadyContains(filteredList, eventsItem)) {
 					filteredList.add(eventsItem);

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.events.android;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -11,6 +12,7 @@ import org.pocketcampus.plugin.events.shared.EventsService.Client;
 import org.pocketcampus.plugin.events.shared.EventsService.Iface;
 import org.pocketcampus.plugin.events.shared.EventsService.getEventsItems_args;
 import org.pocketcampus.plugin.events.shared.EventsService.getFeedUrls_args;
+import org.pocketcampus.plugin.events.shared.Feed;
 
 /**
  * Controller for the events plugin. Takes care of interactions between the model
@@ -66,10 +68,10 @@ public class EventsController extends PluginController implements IEventsControl
 	 * Initiates a request to the server to get the events items.
 	 */
 	@Override
-	public void getEventItems() {
+	public void getEventItems(List<Feed> preferedFeeds) {
 		String language = Locale.getDefault().getLanguage();
 
-		getEventsItems_args param = new getEventsItems_args(language);
+		getEventsItems_args param = new getEventsItems_args(language, preferedFeeds);
 		new EventsItemsRequest().start(this, mClient, param);
 	}
 

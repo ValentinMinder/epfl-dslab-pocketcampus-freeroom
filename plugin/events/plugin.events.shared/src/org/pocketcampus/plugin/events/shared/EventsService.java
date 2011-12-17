@@ -25,7 +25,7 @@ public class EventsService {
 
   public interface Iface {
 
-    public List<EventsItem> getEventsItems(String language) throws org.apache.thrift.TException;
+    public List<EventsItem> getEventsItems(String language, List<Feed> feedsToGet) throws org.apache.thrift.TException;
 
     public Map<String,String> getFeedUrls(String language) throws org.apache.thrift.TException;
 
@@ -35,7 +35,7 @@ public class EventsService {
 
   public interface AsyncIface {
 
-    public void getEventsItems(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEventsItems_call> resultHandler) throws org.apache.thrift.TException;
+    public void getEventsItems(String language, List<Feed> feedsToGet, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getEventsItems_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getFeedUrls(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeedUrls_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -63,16 +63,17 @@ public class EventsService {
       super(iprot, oprot);
     }
 
-    public List<EventsItem> getEventsItems(String language) throws org.apache.thrift.TException
+    public List<EventsItem> getEventsItems(String language, List<Feed> feedsToGet) throws org.apache.thrift.TException
     {
-      send_getEventsItems(language);
+      send_getEventsItems(language, feedsToGet);
       return recv_getEventsItems();
     }
 
-    public void send_getEventsItems(String language) throws org.apache.thrift.TException
+    public void send_getEventsItems(String language, List<Feed> feedsToGet) throws org.apache.thrift.TException
     {
       getEventsItems_args args = new getEventsItems_args();
       args.setLanguage(language);
+      args.setFeedsToGet(feedsToGet);
       sendBase("getEventsItems", args);
     }
 
@@ -150,24 +151,27 @@ public class EventsService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getEventsItems(String language, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler) throws org.apache.thrift.TException {
+    public void getEventsItems(String language, List<Feed> feedsToGet, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getEventsItems_call method_call = new getEventsItems_call(language, resultHandler, this, ___protocolFactory, ___transport);
+      getEventsItems_call method_call = new getEventsItems_call(language, feedsToGet, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getEventsItems_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String language;
-      public getEventsItems_call(String language, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private List<Feed> feedsToGet;
+      public getEventsItems_call(String language, List<Feed> feedsToGet, org.apache.thrift.async.AsyncMethodCallback<getEventsItems_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.language = language;
+        this.feedsToGet = feedsToGet;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEventsItems", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getEventsItems_args args = new getEventsItems_args();
         args.setLanguage(language);
+        args.setFeedsToGet(feedsToGet);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -276,7 +280,7 @@ public class EventsService {
 
       protected getEventsItems_result getResult(I iface, getEventsItems_args args) throws org.apache.thrift.TException {
         getEventsItems_result result = new getEventsItems_result();
-        result.success = iface.getEventsItems(args.language);
+        result.success = iface.getEventsItems(args.language, args.feedsToGet);
         return result;
       }
     }
@@ -319,12 +323,15 @@ public class EventsService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEventsItems_args");
 
     private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField FEEDS_TO_GET_FIELD_DESC = new org.apache.thrift.protocol.TField("feedsToGet", org.apache.thrift.protocol.TType.LIST, (short)2);
 
     public String language; // required
+    public List<Feed> feedsToGet; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      LANGUAGE((short)1, "language");
+      LANGUAGE((short)1, "language"),
+      FEEDS_TO_GET((short)2, "feedsToGet");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -341,6 +348,8 @@ public class EventsService {
         switch(fieldId) {
           case 1: // LANGUAGE
             return LANGUAGE;
+          case 2: // FEEDS_TO_GET
+            return FEEDS_TO_GET;
           default:
             return null;
         }
@@ -387,6 +396,9 @@ public class EventsService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.FEEDS_TO_GET, new org.apache.thrift.meta_data.FieldMetaData("feedsToGet", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Feed.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEventsItems_args.class, metaDataMap);
     }
@@ -395,10 +407,12 @@ public class EventsService {
     }
 
     public getEventsItems_args(
-      String language)
+      String language,
+      List<Feed> feedsToGet)
     {
       this();
       this.language = language;
+      this.feedsToGet = feedsToGet;
     }
 
     /**
@@ -407,6 +421,13 @@ public class EventsService {
     public getEventsItems_args(getEventsItems_args other) {
       if (other.isSetLanguage()) {
         this.language = other.language;
+      }
+      if (other.isSetFeedsToGet()) {
+        List<Feed> __this__feedsToGet = new ArrayList<Feed>();
+        for (Feed other_element : other.feedsToGet) {
+          __this__feedsToGet.add(new Feed(other_element));
+        }
+        this.feedsToGet = __this__feedsToGet;
       }
     }
 
@@ -417,6 +438,7 @@ public class EventsService {
     @Override
     public void clear() {
       this.language = null;
+      this.feedsToGet = null;
     }
 
     public String getLanguage() {
@@ -443,6 +465,45 @@ public class EventsService {
       }
     }
 
+    public int getFeedsToGetSize() {
+      return (this.feedsToGet == null) ? 0 : this.feedsToGet.size();
+    }
+
+    public java.util.Iterator<Feed> getFeedsToGetIterator() {
+      return (this.feedsToGet == null) ? null : this.feedsToGet.iterator();
+    }
+
+    public void addToFeedsToGet(Feed elem) {
+      if (this.feedsToGet == null) {
+        this.feedsToGet = new ArrayList<Feed>();
+      }
+      this.feedsToGet.add(elem);
+    }
+
+    public List<Feed> getFeedsToGet() {
+      return this.feedsToGet;
+    }
+
+    public getEventsItems_args setFeedsToGet(List<Feed> feedsToGet) {
+      this.feedsToGet = feedsToGet;
+      return this;
+    }
+
+    public void unsetFeedsToGet() {
+      this.feedsToGet = null;
+    }
+
+    /** Returns true if field feedsToGet is set (has been assigned a value) and false otherwise */
+    public boolean isSetFeedsToGet() {
+      return this.feedsToGet != null;
+    }
+
+    public void setFeedsToGetIsSet(boolean value) {
+      if (!value) {
+        this.feedsToGet = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case LANGUAGE:
@@ -453,6 +514,14 @@ public class EventsService {
         }
         break;
 
+      case FEEDS_TO_GET:
+        if (value == null) {
+          unsetFeedsToGet();
+        } else {
+          setFeedsToGet((List<Feed>)value);
+        }
+        break;
+
       }
     }
 
@@ -460,6 +529,9 @@ public class EventsService {
       switch (field) {
       case LANGUAGE:
         return getLanguage();
+
+      case FEEDS_TO_GET:
+        return getFeedsToGet();
 
       }
       throw new IllegalStateException();
@@ -474,6 +546,8 @@ public class EventsService {
       switch (field) {
       case LANGUAGE:
         return isSetLanguage();
+      case FEEDS_TO_GET:
+        return isSetFeedsToGet();
       }
       throw new IllegalStateException();
     }
@@ -500,6 +574,15 @@ public class EventsService {
           return false;
       }
 
+      boolean this_present_feedsToGet = true && this.isSetFeedsToGet();
+      boolean that_present_feedsToGet = true && that.isSetFeedsToGet();
+      if (this_present_feedsToGet || that_present_feedsToGet) {
+        if (!(this_present_feedsToGet && that_present_feedsToGet))
+          return false;
+        if (!this.feedsToGet.equals(that.feedsToGet))
+          return false;
+      }
+
       return true;
     }
 
@@ -511,6 +594,11 @@ public class EventsService {
       builder.append(present_language);
       if (present_language)
         builder.append(language);
+
+      boolean present_feedsToGet = true && (isSetFeedsToGet());
+      builder.append(present_feedsToGet);
+      if (present_feedsToGet)
+        builder.append(feedsToGet);
 
       return builder.toHashCode();
     }
@@ -529,6 +617,16 @@ public class EventsService {
       }
       if (isSetLanguage()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.language, typedOther.language);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetFeedsToGet()).compareTo(typedOther.isSetFeedsToGet());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetFeedsToGet()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.feedsToGet, typedOther.feedsToGet);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -557,6 +655,24 @@ public class EventsService {
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case 2: // FEEDS_TO_GET
+            if (field.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
+                this.feedsToGet = new ArrayList<Feed>(_list4.size);
+                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                {
+                  Feed _elem6; // required
+                  _elem6 = new Feed();
+                  _elem6.read(iprot);
+                  this.feedsToGet.add(_elem6);
+                }
+                iprot.readListEnd();
+              }
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
         }
@@ -577,6 +693,18 @@ public class EventsService {
         oprot.writeString(this.language);
         oprot.writeFieldEnd();
       }
+      if (this.feedsToGet != null) {
+        oprot.writeFieldBegin(FEEDS_TO_GET_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.feedsToGet.size()));
+          for (Feed _iter7 : this.feedsToGet)
+          {
+            _iter7.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -591,6 +719,14 @@ public class EventsService {
         sb.append("null");
       } else {
         sb.append(this.language);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("feedsToGet:");
+      if (this.feedsToGet == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.feedsToGet);
       }
       first = false;
       sb.append(")");
@@ -877,14 +1013,14 @@ public class EventsService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<EventsItem>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
+                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                this.success = new ArrayList<EventsItem>(_list8.size);
+                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
                 {
-                  EventsItem _elem6; // required
-                  _elem6 = new EventsItem();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
+                  EventsItem _elem10; // required
+                  _elem10 = new EventsItem();
+                  _elem10.read(iprot);
+                  this.success.add(_elem10);
                 }
                 iprot.readListEnd();
               }
@@ -910,9 +1046,9 @@ public class EventsService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (EventsItem _iter7 : this.success)
+          for (EventsItem _iter11 : this.success)
           {
-            _iter7.write(oprot);
+            _iter11.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1527,15 +1663,15 @@ public class EventsService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.MAP) {
               {
-                org.apache.thrift.protocol.TMap _map8 = iprot.readMapBegin();
-                this.success = new HashMap<String,String>(2*_map8.size);
-                for (int _i9 = 0; _i9 < _map8.size; ++_i9)
+                org.apache.thrift.protocol.TMap _map12 = iprot.readMapBegin();
+                this.success = new HashMap<String,String>(2*_map12.size);
+                for (int _i13 = 0; _i13 < _map12.size; ++_i13)
                 {
-                  String _key10; // required
-                  String _val11; // required
-                  _key10 = iprot.readString();
-                  _val11 = iprot.readString();
-                  this.success.put(_key10, _val11);
+                  String _key14; // required
+                  String _val15; // required
+                  _key14 = iprot.readString();
+                  _val15 = iprot.readString();
+                  this.success.put(_key14, _val15);
                 }
                 iprot.readMapEnd();
               }
@@ -1561,10 +1697,10 @@ public class EventsService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, this.success.size()));
-          for (Map.Entry<String, String> _iter12 : this.success.entrySet())
+          for (Map.Entry<String, String> _iter16 : this.success.entrySet())
           {
-            oprot.writeString(_iter12.getKey());
-            oprot.writeString(_iter12.getValue());
+            oprot.writeString(_iter16.getKey());
+            oprot.writeString(_iter16.getValue());
           }
           oprot.writeMapEnd();
         }
@@ -2174,14 +2310,14 @@ public class EventsService {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list13 = iprot.readListBegin();
-                this.success = new ArrayList<Feed>(_list13.size);
-                for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+                org.apache.thrift.protocol.TList _list17 = iprot.readListBegin();
+                this.success = new ArrayList<Feed>(_list17.size);
+                for (int _i18 = 0; _i18 < _list17.size; ++_i18)
                 {
-                  Feed _elem15; // required
-                  _elem15 = new Feed();
-                  _elem15.read(iprot);
-                  this.success.add(_elem15);
+                  Feed _elem19; // required
+                  _elem19 = new Feed();
+                  _elem19.read(iprot);
+                  this.success.add(_elem19);
                 }
                 iprot.readListEnd();
               }
@@ -2207,9 +2343,9 @@ public class EventsService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Feed _iter16 : this.success)
+          for (Feed _iter20 : this.success)
           {
-            _iter16.write(oprot);
+            _iter20.write(oprot);
           }
           oprot.writeListEnd();
         }

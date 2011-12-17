@@ -151,15 +151,32 @@ public class EventsServiceImpl implements EventsService.Iface {
 	 * them.
 	 */
 	@Override
-	public List<EventsItem> getEventsItems(String language) throws TException {
+	public List<EventsItem> getEventsItems(String language,
+			List<Feed> feedsToGet) throws TException {
 		importFeeds();
+
+		if (feedsToGet == null) {
+			return null;
+		}
+		List<EventsItem> eventItems;
 		if (mLanguagesEventsItemsList != null
 				&& mLanguagesEventsItemsList.containsKey(language)) {
-			System.out.println(mLanguagesEventsItemsList.get(language).size());
-			return mLanguagesEventsItemsList.get(language);
+
+			eventItems = mLanguagesEventsItemsList.get(language);
 		} else {
-			return mLanguagesEventsItemsList.get("en");
+			eventItems = mLanguagesEventsItemsList.get("en");
 		}
+
+		List<EventsItem> filteredEventItems = new ArrayList<EventsItem>();
+		if (eventItems != null) {
+			for (EventsItem ei : eventItems) {
+				if (feedsToGet.contains(ei.getFeed())) {
+					filteredEventItems.add(ei);
+				}
+			}
+		}
+
+		return filteredEventItems;
 	}
 
 	Comparator<EventsItem> EventsItemComparator = new Comparator<EventsItem>() {

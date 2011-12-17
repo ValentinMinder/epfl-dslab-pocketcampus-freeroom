@@ -102,7 +102,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.events_loading));
 		mLayout.hideTitle();
-		mController.getEventItems();
+		mController.getEventItems(mModel.getFeedsList());
 	}
 
 	@Override

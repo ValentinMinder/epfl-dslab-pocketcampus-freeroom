@@ -127,7 +127,8 @@ public class RssParser extends DefaultHandler {
 		if (localName.equalsIgnoreCase("item")
 				|| qName.equalsIgnoreCase("item")) {
 			this.mInItem = false;
-			if(!mItem.getTitle().contains("to be defined"));
+			if (!mItem.getTitle().contains("to be defined"))
+				;
 			this.mRssFeed.addToItems(this.mItem);
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
@@ -151,6 +152,12 @@ public class RssParser extends DefaultHandler {
 			} else {
 				this.mRssFeed.setDescription(mText.toString().trim());
 			}
+		} else if (localName.equalsIgnoreCase("epfl:urlref")
+				|| qName.equalsIgnoreCase("epfl:urlref")) {
+			if (this.mInItem && this.mItem != null) {
+				String urlref = mText.toString().trim();
+				this.mItem.setUrlref(urlref);
+			}
 		} else if (localName.equalsIgnoreCase("epfl:startDate")
 				|| qName.equalsIgnoreCase("epfl:startDate")) {
 			if (this.mInItem && this.mItem != null) {
@@ -161,13 +168,7 @@ public class RssParser extends DefaultHandler {
 				|| qName.equalsIgnoreCase("epfl:endDate")) {
 			if (this.mInItem && this.mItem != null) {
 				String endDateString = mText.toString().trim();
-				this.mItem.setStartDate(getPubDate(endDateString));
-			}
-		} else if (localName.equalsIgnoreCase("epfl:organizer")
-				|| qName.equalsIgnoreCase("epfl:organizer")) {
-			if (this.mInItem && this.mItem != null) {
-				String organizerString = mText.toString().trim();
-				this.mItem.setOrganizer(organizerString);
+				this.mItem.setEndDate(getPubDate(endDateString));
 			}
 		} else if (localName.equalsIgnoreCase("epfl:startTime")
 				|| qName.equalsIgnoreCase("epfl:startTime")) {
@@ -175,8 +176,73 @@ public class RssParser extends DefaultHandler {
 				String startTimeString = mText.toString().trim();
 				this.mItem.setStartTime(startTimeString);
 			}
+		} else if (localName.equalsIgnoreCase("epfl:speaker")
+				|| qName.equalsIgnoreCase("epfl:speaker")) {
+			if (this.mInItem && this.mItem != null) {
+				String speaker = mText.toString().trim();
+				this.mItem.setSpeaker(speaker);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:speaker")
+				|| qName.equalsIgnoreCase("epfl:speaker")) {
+			if (this.mInItem && this.mItem != null) {
+				String speaker = mText.toString().trim();
+				this.mItem.setSpeaker(speaker);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:contact")
+				|| qName.equalsIgnoreCase("epfl:contact")) {
+			if (this.mInItem && this.mItem != null) {
+				String contact = mText.toString().trim();
+				this.mItem.setContact(contact);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:language")
+				|| qName.equalsIgnoreCase("epfl:language")) {
+			if (this.mInItem && this.mItem != null) {
+				String language = mText.toString().trim();
+				this.mItem.setLanguage(language);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:audience")
+				|| qName.equalsIgnoreCase("epfl:audience")) {
+			if (this.mInItem && this.mItem != null) {
+				String audience = mText.toString().trim();
+				this.mItem.setAudience(audience);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:expectedPeople")
+				|| qName.equalsIgnoreCase("epfl:expectedPeople")) {
+			if (this.mInItem && this.mItem != null) {
+				String expectedPeople = mText.toString().trim();
+				this.mItem.setExpectedPeople(expectedPeople);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:location")
+				|| qName.equalsIgnoreCase("epfl:location")) {
+			if (this.mInItem && this.mItem != null) {
+				String location = mText.toString().trim();
+				this.mItem.setLocation(location);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:room")
+				|| qName.equalsIgnoreCase("epfl:room")) {
+			if (this.mInItem && this.mItem != null) {
+				String room = mText.toString().trim();
+				this.mItem.setRoom(room);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:category")
+				|| qName.equalsIgnoreCase("epfl:category")) {
+			if (this.mInItem && this.mItem != null) {
+				String category = mText.toString().trim();
+				this.mItem.setCategory(category);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:organizer")
+				|| qName.equalsIgnoreCase("epfl:organizer")) {
+			if (this.mInItem && this.mItem != null) {
+				String organizerString = mText.toString().trim();
+				this.mItem.setOrganizer(organizerString);
+			}
+		} else if (localName.equalsIgnoreCase("epfl:shortTitle")
+				|| qName.equalsIgnoreCase("epfl:shortTitle")) {
+			if (this.mInItem && this.mItem != null) {
+				String shortTitle = mText.toString().trim();
+				this.mItem.setShorttitle(shortTitle);
+			}
 		}
-
 		this.mText = new StringBuilder();
 	}
 
