@@ -1,4 +1,4 @@
-package org.pocketcampus.plugin.map.android.shared;
+package org.pocketcampus.plugin.map.shared;
 
 import java.io.Serializable;
 
