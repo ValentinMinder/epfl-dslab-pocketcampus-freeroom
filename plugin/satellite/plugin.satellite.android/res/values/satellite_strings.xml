@@ -28,6 +28,6 @@
     <string name="satellite_menu_sandwiches">Sandwiches</string>
 
     <!-- Error -->
-    <string name="satellite_network_error">Network Error!</string>
+    <string name="satellite_network_error">Could not connect.</string>
 
 </resources>

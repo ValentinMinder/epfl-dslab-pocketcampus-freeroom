@@ -32,7 +32,7 @@
     <string name="transport_menu_settings">Settings</string>
     
     <!-- Error -->
-    <string name="transport_network_error">Network error!</string>
+    <string name="transport_network_error">Could not connect.</string>
     
     <!-- From last year -->
     <string name="transport_to">to</string>	

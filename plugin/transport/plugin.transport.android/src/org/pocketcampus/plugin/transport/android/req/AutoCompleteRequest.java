@@ -61,7 +61,7 @@ public class AutoCompleteRequest extends
 	 */
 	@Override
 	protected void onError(TransportController controller, Exception e) {
-		e.printStackTrace();
+		controller.getModel().notifyNetworkError();
 	}
 
 }

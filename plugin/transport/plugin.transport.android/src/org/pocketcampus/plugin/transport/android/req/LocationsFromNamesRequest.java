@@ -66,8 +66,7 @@ public class LocationsFromNamesRequest
 	 */
 	@Override
 	protected void onError(TransportController controller, Exception e) {
-		Log.d("TRANSPORT", "onError");
-		e.printStackTrace();
+		controller.getModel().notifyNetworkError();
 	}
 
 }
