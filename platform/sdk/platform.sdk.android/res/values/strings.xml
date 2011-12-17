@@ -18,4 +18,7 @@
 	<string name="sdk_nb_votes_singular">vote</string>
 	<string name="sdk_nb_votes_plural">votes</string>
 	
+	<!-- Communication with server -->
+	<string name="sdk_connection_error_happened">Network error!</string>
+	
 </resources>

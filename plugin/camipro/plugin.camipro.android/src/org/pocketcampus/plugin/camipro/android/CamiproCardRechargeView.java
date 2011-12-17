@@ -89,18 +89,17 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	@Override
 	public void cardLoadingWithEbankingInfoUpdated() {
 		mLayout.hideFirstTitle();
-		//mLayout.setSecondTitle(getResources().getString());
-		mLayout.setSecondTitle("Recharge Card with E-Banking");
+		mLayout.setSecondTitle(getResources().getString(R.string.camipro_ebanking_section_title));
 		CardLoadingWithEbankingInfo ebanking = mModel.getCardLoadingWithEbankingInfo();
 		if(ebanking == null)
 			return;
 		
 		ArrayList<EbankingInfo> einfos = new ArrayList<CamiproCardRechargeView.EbankingInfo>();
-		einfos.add(new EbankingInfo(null, "In order to load your CAMIPRO card, please copy the payment details below (account number, reference number, etc.) in the e-banking tool provided by your financial institution.\nThe payment to select is an orange payment slip."));
-		einfos.add(new EbankingInfo("Reference number", ebanking.getIReferenceNumber()));
-		einfos.add(new EbankingInfo("Paid to", ebanking.getIPaidTo()));
-		einfos.add(new EbankingInfo("Account number", ebanking.getIAccountNumber()));
-		einfos.add(new EbankingInfo(null, "The processing time for charging your CAMIPRO card is about 3 working days\nThe maximum amount is CHF 300.-"));
+		einfos.add(new EbankingInfo(null, getResources().getString(R.string.camipro_ebanking_infos_text)));
+		einfos.add(new EbankingInfo(getResources().getString(R.string.camipro_ebanking_ref_number_title), ebanking.getIReferenceNumber()));
+		einfos.add(new EbankingInfo(getResources().getString(R.string.camipro_ebanking_paid_to_title), ebanking.getIPaidTo()));
+		einfos.add(new EbankingInfo(getResources().getString(R.string.camipro_ebanking_account_number_title), ebanking.getIAccountNumber()));
+		einfos.add(new EbankingInfo(null, getResources().getString(R.string.camipro_ebanking_infos_remark)));
 		
 		ListView lv = new ListView(this);
 		lv.setAdapter(new EbankingAdapter(this, R.layout.camipro_ebankinginfo, einfos));
@@ -121,7 +120,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
 	private CamiproController mController;

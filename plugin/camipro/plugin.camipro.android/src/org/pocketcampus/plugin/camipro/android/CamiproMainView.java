@@ -188,13 +188,16 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		ArrayList<Amout> l = new ArrayList<Amout>();
 		Double bal = mModel.getBalance();
 		if(bal != null) {
-			l.add(new Amout("Current balance ", bal));
+			l.add(new Amout(getResources().getString(R.string.camipro_current_balance), bal));
 		}
 		CardStatistics s = mModel.getCardStatistics();
 		if(s != null) {
-			l.add(new Amout("Total last month ", s.getITotalPaymentsLastMonth()));
-			l.add(new Amout("Total last 3 months ", s.getITotalPaymentsLastThreeMonths()));
-			l.add(new Amout("Average per month ", s.getITotalPaymentsLastThreeMonths() / 3.0));
+			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_1month_title),
+					s.getITotalPaymentsLastMonth()));
+			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_3months_title),
+					s.getITotalPaymentsLastThreeMonths()));
+			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_average_title),
+					s.getITotalPaymentsLastThreeMonths() / 3.0));
 		}
 		//ListViewElement mAddView = new ListViewElement(this, l);
 		ListView lv = new ListView(getApplicationContext());
@@ -219,13 +222,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	}
 	
 	private void updateDate() {
-		mLayout.setFirstTitle("Balance (given no offline transaction)");
+		mLayout.setFirstTitle(getResources().getString(R.string.camipro_balance_section_title));
 		// Last update
 		String date = mModel.getLastUpdateDate();
 		if(date != null) {
 			//TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
 			//dateLastUpdated.setText("As of " + date + " given no offline transactions");
-			mLayout.setSecondTitle("Transactions (as of " + date + ")");
+			mLayout.setSecondTitle(String.format(
+					getResources().getString(R.string.camipro_transactions_section_title), date));
 		}
 	}
 	

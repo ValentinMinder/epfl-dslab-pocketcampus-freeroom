@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="camipro_plugin_title">Camipro</string>
+    
+    <color name="camipro_plus">#459900</color>
+    <color name="camipro_minus">#E30000</color>
+
+    <string name="camipro_current_balance">Solde actuel</string>
+    <string name="camipro_ebanking_1month_title">Total dernier mois</string>
+    <string name="camipro_ebanking_3months_title">Total last 3 months</string>
+    <string name="camipro_ebanking_average_title">Total 3 derniers mois</string>
+        
+    
+    <string name="camipro_balance_section_title">Solde et Montants (sous réserve de transactions effectuées offline)</string>
+    <string name="camipro_transactions_section_title">Transactions (à %s)</string>
+    <string name="camipro_ebanking_section_title">Chargement par E-Banking</string>
+        
+    
+    <string name="camipro_ebanking_infos_text">Afin de recharger votre carte CAMIPRO, veuillez reporter les indications de paiement ci-dessous (no de compte, no de référence, etc.) dans l\'outil e-banking fourni par votre établissement financier.\nLe type de paiement à effectuer est un paiement par BVR orange.</string>
+    <string name="camipro_ebanking_paid_to_title">Versement pour</string>
+    <string name="camipro_ebanking_account_number_title">Numéro de compte</string>
+    <string name="camipro_ebanking_ref_number_title">Numéro de référence</string>
+    <string name="camipro_ebanking_infos_remark">Le délai de traitement du chargement de votre carte CAMIPRO est de 2 à 3 jours ouvrables.\nLe montant maximal est CHF 300.-</string>
+        
+    <string name="camipro_string_recharge">Chargement de carte</string>
+    <string name="camipro_string_logout">Déconnexion</string>
+        
+</resources>

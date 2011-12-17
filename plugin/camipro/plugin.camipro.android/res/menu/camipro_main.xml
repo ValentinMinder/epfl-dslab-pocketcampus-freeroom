@@ -4,12 +4,12 @@
 	<item
 		android:id="@+id/camipro_recharge"
 		android:icon="@drawable/camipro_menu_recharge"
-		android:title="Recharge"
+		android:title="@+string/camipro_string_recharge"
 		/>
 	<item
 		android:id="@+id/camipro_logout"
 		android:icon="@drawable/camipro_menu_logout"
-		android:title="Logout"
+		android:title="@+string/camipro_string_logout"
 		/>
 		
 </menu>
