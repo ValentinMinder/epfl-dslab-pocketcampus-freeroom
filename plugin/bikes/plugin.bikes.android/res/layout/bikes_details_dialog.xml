@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="280dip"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/bikes_details_title_layout"
+        style="@style/Dialog.Top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/bikes_details_title_dialog"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="8dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inner_layout"
+        style="@style/Dialog.Middle"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="15dip" >
+
+        <TextView
+            android:id="@+id/bikes_textView_available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/bikes_textView_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TextView>
+            
+    </LinearLayout>
+
+</LinearLayout>

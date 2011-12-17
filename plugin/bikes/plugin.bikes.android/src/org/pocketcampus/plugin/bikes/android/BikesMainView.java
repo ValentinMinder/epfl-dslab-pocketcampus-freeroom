@@ -9,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.*;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
+import org.pocketcampus.plugin.bikes.android.ui.BikesStationDialog;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
 import com.markupartist.android.widget.ActionBar;
@@ -88,13 +89,20 @@ public class BikesMainView extends PluginView implements IBikesView{
 										getString(R.string.bikes_and) +" " + be.numberOfEmptySpaces + " " +ep;
 							
 							//exiting the loop
+							BikesStationDialog dialog = new BikesStationDialog(BikesMainView.this, be);
+							dialog.show();
+							
 							break;
 						}
 					}
 					
 					
-					Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-					toast.show();
+//					Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+//					toast.show();
+					
+					
+					
+					
 				}
 			}
 			
