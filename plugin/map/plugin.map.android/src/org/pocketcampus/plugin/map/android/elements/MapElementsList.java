@@ -2,8 +2,8 @@ package org.pocketcampus.plugin.map.android.elements;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.plugin.map.android.shared.MapLayerBean;
 import org.pocketcampus.plugin.map.shared.MapLayer;
+import org.pocketcampus.plugin.map.shared.MapLayerBean;
 
 public class MapElementsList extends ArrayList<MapElement> {
 

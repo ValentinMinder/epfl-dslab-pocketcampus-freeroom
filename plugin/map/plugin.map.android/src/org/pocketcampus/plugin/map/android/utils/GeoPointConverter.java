@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.map.android.utils;
 
 import org.osmdroid.util.GeoPoint;
-import org.pocketcampus.plugin.map.android.shared.Position;
+import org.pocketcampus.plugin.map.shared.Position;
 
 public class GeoPointConverter {
 	public static Position toPosition(GeoPoint g) {

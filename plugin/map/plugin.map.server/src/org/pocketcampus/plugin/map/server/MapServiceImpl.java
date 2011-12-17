@@ -47,4 +47,11 @@ public class MapServiceImpl implements MapService.Iface {
 		return mItemsList;
 	}
 
+	@Override
+	public List<MapItem> search(String query) throws TException {
+		List<MapItem> results = Search.searchTextOnEpflWebsite(query, 100);
+		System.out.println(results);
+		return results;
+	}
+
 }

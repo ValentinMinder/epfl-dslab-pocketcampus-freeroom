@@ -29,12 +29,12 @@ import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
-import org.pocketcampus.plugin.map.android.shared.MapElementBean;
-import org.pocketcampus.plugin.map.android.shared.Position;
 import org.pocketcampus.plugin.map.android.ui.ItemDialog;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
+import org.pocketcampus.plugin.map.shared.MapElementBean;
 import org.pocketcampus.plugin.map.shared.MapLayer;
+import org.pocketcampus.plugin.map.shared.Position;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -140,7 +140,7 @@ public class MapMainView extends PluginView implements IMapView {
 		// Download the available layers
 		mController.getLayers();
 		
-		handleSearchIntent(getIntent().getExtras());
+//		handleSearchIntent(getIntent().getExtras());
 	}
 
 	private void initVariables() {
@@ -220,17 +220,17 @@ public class MapMainView extends PluginView implements IMapView {
 	 */
 	private ITileSource getTileSource(int level) {
 		ITileSource tileSource;
-		if(getResources().getBoolean(R.bool.map_tilesource_is_epfl)) {
+//		if(getResources().getBoolean(R.bool.map_tilesource_is_epfl)) {
 			tileSource = new EpflTileSource(level + "");
-		} else {
-			String name = getResources().getString(R.string.map_tilesource_name);
-			int zoomMin = getResources().getInteger(R.integer.map_tilesource_zoom_min);
-			int zoomMax = getResources().getInteger(R.integer.map_tilesource_zoom_max);	
-			int tileSize = getResources().getInteger(R.integer.map_tilesource_tile_size);
-			String ext = getResources().getString(R.string.map_tilesource_filename_ending);
-			String[] urls = getResources().getStringArray(R.array.map_tilesource_urls);
-			tileSource = new XYTileSource(name, ResourceProxy.string.mapnik, zoomMin, zoomMax, tileSize, ext, urls);
-		}
+//		} else {
+//			String name = getResources().getString(R.string.map_tilesource_name);
+//			int zoomMin = getResources().getInteger(R.integer.map_tilesource_zoom_min);
+//			int zoomMax = getResources().getInteger(R.integer.map_tilesource_zoom_max);	
+//			int tileSize = getResources().getInteger(R.integer.map_tilesource_tile_size);
+//			String ext = getResources().getString(R.string.map_tilesource_filename_ending);
+//			String[] urls = getResources().getStringArray(R.array.map_tilesource_urls);
+//			tileSource = new XYTileSource(name, ResourceProxy.string.mapnik, zoomMin, zoomMax, tileSize, ext, urls);
+//		}
 		return tileSource;
 	}
 
@@ -240,27 +240,27 @@ public class MapMainView extends PluginView implements IMapView {
 	 * @param extras the bundle containing the extras
 	 * @return Whether it handled the intent or not
 	 */
-	private boolean handleSearchIntent(Bundle extras) {
-
-		if(extras == null) {
-			return false;
-		}
-		
-		if(extras.containsKey("MapElement")) {
-			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
-			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
-			MapElement overItem = new MapElement(meb.getTitle(), meb.getDescription(), gp);
-			List<MapElement> overItems = new ArrayList<MapElement>(1);
-			overItems.add(overItem);
-			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
-			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
-			temporaryOverlays_.add(aOverlay);
-			centerOnPoint(gp);
-			return true;
-		}
-		
-		return false;
-	}
+//	private boolean handleSearchIntent(Bundle extras) {
+//
+//		if(extras == null) {
+//			return false;
+//		}
+//		
+//		if(extras.containsKey("MapElement")) {
+//			MapElementBean meb = (MapElementBean) extras.getSerializable("MapElement");
+//			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
+//			MapElement overItem = new MapElement(meb.getTitle(), meb.getDescription(), gp);
+//			List<MapElement> overItems = new ArrayList<MapElement>(1);
+//			overItems.add(overItem);
+//			Drawable searchMarker = this.getResources().getDrawable(R.drawable.map_marker_search);
+//			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(overItems, searchMarker, overlayClickHandler_, new DefaultResourceProxyImpl(getApplicationContext()));
+//			temporaryOverlays_.add(aOverlay);
+//			centerOnPoint(gp);
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 
 	/**
 	 * The background is provided by the default tile source.
@@ -274,7 +274,7 @@ public class MapMainView extends PluginView implements IMapView {
 		mapView_.setBuiltInZoomControls(true);
 		/* XXX This is done to allow zoom up to 22 (for epfl) but the tiles will not load because
 		 * the mapnik zoom is between 0 and 18 */
-		ITileSource aTileSource =  new XYTileSource("Mapnik", ResourceProxy.string.mapnik, 0, 22, 256, ".png", "http://tile.openstreetmap.org/");
+		ITileSource aTileSource =  new XYTileSource("Mapnik", ResourceProxy.string.mapnik, 14, 18, 256, ".png", "http://tile.openstreetmap.org/");
 		mapView_.setTileSource(aTileSource);
 		mapController_ = mapView_.getController();
 
@@ -325,6 +325,9 @@ public class MapMainView extends PluginView implements IMapView {
 
 		// Center map
 		centerOnCampus();
+		
+		// Forces redisplay
+		updateOverlays(false);
 	}
 
 	/**
