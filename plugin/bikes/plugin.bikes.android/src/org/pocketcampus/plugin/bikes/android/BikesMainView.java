@@ -11,6 +11,9 @@ import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.*;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
+
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -49,6 +52,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 		
 		mController.getAvailableBikes();
 		mLayout.setText(getString(R.string.bikes_loading));
+		
+		setUpActionBar();
 		
 		oicl = new OnItemClickListener() {
 
@@ -189,6 +194,47 @@ public class BikesMainView extends PluginView implements IBikesView{
 		
 	}
 	
+	private void setUpActionBar() {
+		ActionBar a = getActionBar();
+		if (a != null) {
+			RefreshAction refresh = new RefreshAction();
+			a.addAction(refresh, 0);
+		}
+	}
+	
+	private class RefreshAction implements Action {
+
+		/**
+		 * The constructor which doesn't do anything
+		 */
+		RefreshAction() {
+		}
+
+		/**
+		 * Returns the resource for the icon of the button in the action bar
+		 */
+		@Override
+		public int getDrawable() {
+			return R.drawable.bikes_action_bar_refresh;
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
+		@Override
+		public void performAction(View view) {
+			mList.invalidateViews();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				System.out.println("siesta");
+			}
+			mLayout.setText(getResources().getString(R.string.bikes_loading));
+			mController.getAvailableBikes();
+		}
+	}
+	
 	ILabeler<BikeEmplacement> labeler = new ILabeler<BikeEmplacement>(){
 		@Override
 		public String getLabel(BikeEmplacement obj) {
@@ -209,7 +255,6 @@ public class BikesMainView extends PluginView implements IBikesView{
 	@Override
 	public void bikeListUpdated() {
 		displayData();
-		
 	}
 	
 }
