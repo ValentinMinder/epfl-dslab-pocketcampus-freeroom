@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEmptyLayoutItem;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.*;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesView;
 import org.pocketcampus.plugin.bikes.android.ui.BikesStationDialog;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
-
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
-
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,177 +25,196 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class BikesMainView extends PluginView implements IBikesView{
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
+
+public class BikesMainView extends PluginView implements IBikesView {
 
 	private BikesController mController;
 	private BikesModel mModel;
-	
+
 	private ListView mList;
-	private StandardLayout mLayout;
-	
+	private StandardTitledLayout mLayout;
+
 	private OnItemClickListener oicl;
 
 	/**
-	 * Called once the view is connected to the controller.
-	 * If you don't implement <code>getMainControllerClass()</code> 
-	 * then the controller given here will simply be <code>null</code>.
+	 * Called once the view is connected to the controller. If you don't
+	 * implement <code>getMainControllerClass()</code> then the controller given
+	 * here will simply be <code>null</code>.
 	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState,
+			PluginController controller) {
 		// Get and cast the controller and model
 		mController = (BikesController) controller;
 		mModel = (BikesModel) controller.getModel();
-		
-		mLayout = new StandardLayout(this);
+
+		mLayout = new StandardTitledLayout(this);
+		mLayout.hideTitle();
 		setContentView(mLayout);
-		
+
 		mController.getAvailableBikes();
 		mLayout.setText(getString(R.string.bikes_loading));
-		
+
 		setUpActionBar();
-		
+
 		oicl = new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> adapter, View arg1, int pos, long arg3) {
+			public void onItemClick(AdapterView<?> adapter, View arg1, int pos,
+					long arg3) {
 				PCItem item = (PCItem) adapter.getItemAtPosition(pos);
-				if( item.isEmptyLayout() ){
+				if (item.isEmptyLayout()) {
 					String msg = "";
-					
-					//make this a little less ugly, getting the relative layout  to get first textview using the hadcoded id and finally converting the charSequence to a string
-					String stationsName = ((TextView)((PCEmptyLayoutItem)adapter.getItemAtPosition(pos)).getLayout().findViewById(4)).getText().toString();
-					
-					for(BikeEmplacement be: mModel.getAvailablesBikes()){
-						if(be.name.equals(stationsName)){
+
+					// make this a little less ugly, getting the relative layout
+					// to get first textview using the hadcoded id and finally
+					// converting the charSequence to a string
+					String stationsName = ((TextView) ((PCEmptyLayoutItem) adapter
+							.getItemAtPosition(pos)).getLayout()
+							.findViewById(4)).getText().toString();
+
+					for (BikeEmplacement be : mModel.getAvailablesBikes()) {
+						if (be.name.equals(stationsName)) {
 							String ab;
-							if(be.numberOfAvailableBikes == 1)
+							if (be.numberOfAvailableBikes == 1)
 								ab = getString(R.string.bikes_available_bike);
 							else
 								ab = getString(R.string.bikes_available_bikes);
-							
+
 							String ep;
-							if(be.numberOfEmptySpaces == 1)
+							if (be.numberOfEmptySpaces == 1)
 								ep = getString(R.string.bikes_empty_slot);
 							else
 								ep = getString(R.string.bikes_empty_slots);
-							
-							msg = be.name + 
-										//" is at:\n" +
-										//"Lat: " + be.geoLat + "\n" +
-										//"Lon: " + be.geoLng + "\n" +
-										"\n"+ getString(R.string.bikes_has)+" " + be.numberOfAvailableBikes + " " + ab +"\n" +
-										getString(R.string.bikes_and) +" " + be.numberOfEmptySpaces + " " +ep;
-							
-							//exiting the loop
-							BikesStationDialog dialog = new BikesStationDialog(BikesMainView.this, be);
+
+							msg = be.name
+									+
+									// " is at:\n" +
+									// "Lat: " + be.geoLat + "\n" +
+									// "Lon: " + be.geoLng + "\n" +
+									"\n" + getString(R.string.bikes_has) + " "
+									+ be.numberOfAvailableBikes + " " + ab
+									+ "\n" + getString(R.string.bikes_and)
+									+ " " + be.numberOfEmptySpaces + " " + ep;
+
+							// exiting the loop
+							BikesStationDialog dialog = new BikesStationDialog(
+									BikesMainView.this, be);
 							dialog.show();
-							
+
 							break;
 						}
 					}
 				}
 			}
-			
+
 		};
-		
-		
+
 	}
-	
+
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return BikesController.class;
 	}
-	
-	private void displayData(){
 
-		if(mModel.getAvailablesBikes().size() > 0)
+	private void displayData() {
+
+		if (mModel.getAvailablesBikes().size() > 0)
 			mLayout.setText("");
-		
+
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
-		items.add(new PCSectionItem(getString(R.string.bikes_velopass),getString(R.string.bikes_Available)));
-		
-		for(BikeEmplacement be : mModel.getAvailablesBikes()){
+		items.add(new PCSectionItem(getString(R.string.bikes_velopass),
+				getString(R.string.bikes_Available)));
+
+		for (BikeEmplacement be : mModel.getAvailablesBikes()) {
 			String nbBikes;
 			int q = be.numberOfAvailableBikes;
 			int pl = be.numberOfEmptySpaces + q;
 			nbBikes = "" + q;
-			
+
 			nbBikes = nbBikes + " / ";
-			
-			if(pl < 10)
+
+			if (pl < 10)
 				nbBikes = nbBikes + " " + pl;
 			else
 				nbBikes = nbBikes + pl;
-			
-			
-			if(pl > 0){
+
+			if (pl > 0) {
 				RelativeLayout listElement = new RelativeLayout(this);
 				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
 				int layoutsWidth = 30;
 				float textSize = 18f;
-				//bikeEmplacement name
+				// bikeEmplacement name
 				TextView titleView = new TextView(this);
 				titleView.setText(be.name);
 				titleView.setId(4);
-//				titleView.setTextAppearance(this, textAppearanceID);
+				// titleView.setTextAppearance(this, textAppearanceID);
 				titleView.setTextSize(textSize);
-				LayoutParams titleParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
+				LayoutParams titleParams = new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
 				titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				titleParams.setMargins(15, 3, 3, 3);
 				listElement.addView(titleView, titleParams);
-				
+
 				TextView totalPlacesView = new TextView(this);
 				totalPlacesView.setText(pl + "");
 				totalPlacesView.setGravity(Gravity.RIGHT);
-//				totalPlacesView.setTextAppearance(this, textAppearanceID);
+				// totalPlacesView.setTextAppearance(this, textAppearanceID);
 				totalPlacesView.setTextSize(textSize);
-				LayoutParams totalParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
+				LayoutParams totalParams = new LayoutParams(layoutsWidth,
+						LayoutParams.FILL_PARENT);
 				totalParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				totalParams.setMargins(3, 3, 15, 3);
 				totalPlacesView.setId(3);
-				listElement.addView(totalPlacesView,totalParams);
-				
+				listElement.addView(totalPlacesView, totalParams);
+
 				TextView slashView = new TextView(this);
 				slashView.setText("/");
 				slashView.setGravity(Gravity.RIGHT);
-//				slashView.setTextAppearance(this, textAppearanceID);
+				// slashView.setTextAppearance(this, textAppearanceID);
 				slashView.setTextSize(textSize);
 				slashView.setId(2);
-				LayoutParams slashParams = new LayoutParams(layoutsWidth/3, LayoutParams.FILL_PARENT);
-				slashParams.addRule(RelativeLayout.LEFT_OF, totalPlacesView.getId());
+				LayoutParams slashParams = new LayoutParams(layoutsWidth / 3,
+						LayoutParams.FILL_PARENT);
+				slashParams.addRule(RelativeLayout.LEFT_OF,
+						totalPlacesView.getId());
 				slashParams.setMargins(3, 3, 3, 3);
-				listElement.addView(slashView,slashParams);
-				
+				listElement.addView(slashView, slashParams);
+
 				TextView bikesAvailableView = new TextView(this);
 				bikesAvailableView.setText(q + "");
 				bikesAvailableView.setGravity(Gravity.RIGHT);
-//				bikesAvailableView.setTextAppearance(this, textAppearanceID);
+				// bikesAvailableView.setTextAppearance(this, textAppearanceID);
 				bikesAvailableView.setTextSize(textSize);
 				bikesAvailableView.setId(1);
-				LayoutParams availableParams = new LayoutParams(layoutsWidth, LayoutParams.FILL_PARENT);
-				availableParams.addRule(RelativeLayout.LEFT_OF, slashView.getId());
+				LayoutParams availableParams = new LayoutParams(layoutsWidth,
+						LayoutParams.FILL_PARENT);
+				availableParams.addRule(RelativeLayout.LEFT_OF,
+						slashView.getId());
 				availableParams.setMargins(3, 3, 3, 3);
-				listElement.addView(bikesAvailableView,availableParams);
-				
+				listElement.addView(bikesAvailableView, availableParams);
+
 				items.add(new PCEmptyLayoutItem(listElement));
 			}
 		}
-		
+
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-		
+
 		mList = new ListView(this);
 		mList.setOnItemClickListener(oicl);
-		mList.setAdapter(adapter);		
-		
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		mList.setAdapter(adapter);
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mLayout.setLayoutParams(layoutParams);
 		mList.setLayoutParams(layoutParams);
-		mLayout.addView(mList);
-		
+		mLayout.addFillerView(mList);
+
 	}
-	
+
 	private void setUpActionBar() {
 		ActionBar a = getActionBar();
 		if (a != null) {
@@ -203,7 +222,7 @@ public class BikesMainView extends PluginView implements IBikesView{
 			a.addAction(refresh, 0);
 		}
 	}
-	
+
 	private class RefreshAction implements Action {
 
 		/**
@@ -227,21 +246,17 @@ public class BikesMainView extends PluginView implements IBikesView{
 		@Override
 		public void performAction(View view) {
 			mList.invalidateViews();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				System.out.println("siesta");
-			}
+			mLayout.removeFillerView();
 			mLayout.setText(getResources().getString(R.string.bikes_loading));
 			mController.getAvailableBikes();
 		}
 	}
-	
-	ILabeler<BikeEmplacement> labeler = new ILabeler<BikeEmplacement>(){
+
+	ILabeler<BikeEmplacement> labeler = new ILabeler<BikeEmplacement>() {
 		@Override
 		public String getLabel(BikeEmplacement obj) {
 			String nice;
-			nice = obj.name + " " + obj.numberOfAvailableBikes; 
+			nice = obj.name + " " + obj.numberOfAvailableBikes;
 			return nice;
 		}
 	};
@@ -253,7 +268,8 @@ public class BikesMainView extends PluginView implements IBikesView{
 
 	@Override
 	public void bikeListUpdated() {
+		mLayout.removeFillerView();
 		displayData();
 	}
-	
+
 }

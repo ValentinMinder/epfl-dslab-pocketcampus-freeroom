@@ -11,10 +11,10 @@
     <string name="mainscreen_preview_version">version 3\n</string>
     <string name="mainscreen_licence">PocketCampus is built using open source software. See relevant licenses.\n</string>
     <string name="mainscreen_visit_us">Visit us at</string>
-    <string name="website_url">http://www.pocketcampus.org/\n</string>
+    <string name="website_url">http://www.pocketcampus.org/</string>
     <string name="mainscreen_supervisors">Supervisor</string>
     <string name="mainscreen_developers">Developers</string>
-    <string name="mainscreen_sponsors">PocketCampus is sponsored by Google, Apple and EPFL VPAA.</string>
+    <string name="mainscreen_sponsors">\nPocketCampus is sponsored by Google, Apple and EPFL VPAA.</string>
     
     <string name="mainscreen_supervisors_names">Prof George Candea\n</string>
     <string name="mainscreen_developers_names">Silviu Andrica\nAmer Chamseddine\nFlorian Laurent\nOriane Rodriguez\nPascal Scheiben\nElodie Nilane Triponez\n</string>
