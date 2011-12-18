@@ -71,10 +71,6 @@
 			android:visibility="gone"
 			android:layout_below="@+id/directory_person_details_dialog_office" 
 			android:layout_toRightOf="@+id/directory_person_details_dialog_photo"></TextView>
-			
-		
-		
-		
 		
 		<TextView 
 			android:layout_height="wrap_content" 
@@ -132,21 +128,3 @@
 	</LinearLayout>
 
 </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

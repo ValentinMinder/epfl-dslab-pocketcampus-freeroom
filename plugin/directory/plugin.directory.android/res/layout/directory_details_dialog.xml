@@ -21,8 +21,8 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/Dialog.Middle"
         android:id="@+id/relativeLayout1"
+        style="@style/Dialog.Middle"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal"
@@ -42,10 +42,9 @@
                 android:paddingRight="5dip" >
             </org.pocketcampus.android.platform.sdk.utils.LoaderImageView>
 
-          
-
             <TextView
                 android:id="@+id/directory_person_details_dialog_mail"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -54,14 +53,16 @@
 
             <TextView
                 android:id="@+id/directory_person_details_dialog_phone_number"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/directory_person_details_dialog_mail"
                 android:layout_toRightOf="@+id/directory_person_details_dialog_photo" >
             </TextView>
-            
+
             <TextView
                 android:id="@+id/directory_person_details_dialog_office_phone_number"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/directory_person_details_dialog_phone_number"
@@ -70,6 +71,7 @@
 
             <TextView
                 android:id="@+id/directory_person_details_dialog_office"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/directory_person_details_dialog_office_phone_number"
@@ -79,6 +81,7 @@
 
             <TextView
                 android:id="@+id/directory_person_details_dialog_web"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/directory_person_details_dialog_office"
@@ -88,56 +91,64 @@
 
             <TextView
                 android:id="@+id/directory_person_details_dialog_ou"
+                style="@style/DialogText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/directory_person_details_dialog_web"
+                android:layout_toRightOf="@+id/directory_person_details_dialog_photo"
                 android:visibility="gone" >
             </TextView>
         </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/directory_person_details_dialog_allinfos"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="15dip" >
-
-            <ImageView
-                android:id="@+id/directory_imageButton_mail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/directory_mail" >
-            </ImageView>
-
-            <ImageView
-                android:id="@+id/directory_imageButton_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
-                android:src="@drawable/directory_map" >
-            </ImageView>
-
-            <ImageView
-                android:id="@+id/directory_imageButton_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
-                android:src="@drawable/directory_phone" >
-            </ImageView>
-
-            <ImageView
-                android:id="@+id/directory_imageButton_web"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
-                android:src="@drawable/directory_web" >
-            </ImageView>
-        </LinearLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        style="@style/Dialog.Bottom"
+        android:weightSum="99"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/directory_person_details_dialog_allinfos"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/directory_imageButton_mail"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_weight="33"
+            android:text="@string/directory_dialog_button_mail"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/directory_imageButton_call"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_weight="33"
+            android:text="@string/directory_dialog_button_call"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/directory_imageButton_web"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_weight="33"
+            android:text="@string/directory_dialog_button_web"
+            android:visibility="gone" />
+
+        <!-- <Button
+            android:id="@+id/directory_imageButton_map"
+            android:layout_width="0"
+            android:layout_weight="33"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/directory_dialog_button_map"
+            android:visibility="gone" />
+             -->
+    </LinearLayout>
 
 </LinearLayout>

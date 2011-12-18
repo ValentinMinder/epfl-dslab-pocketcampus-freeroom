@@ -15,9 +15,10 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,20 +122,20 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 
 	private void setClickListener(){
-		ImageView mailButton = (ImageView) findViewById(R.id.directory_imageButton_mail);
-		ImageView phoneButton = (ImageView) findViewById(R.id.directory_imageButton_phone);
-		ImageView mapButton = (ImageView) findViewById(R.id.directory_imageButton_room);
-		ImageView webButton = (ImageView) findViewById(R.id.directory_imageButton_web);
+		Button mailButton = (Button) findViewById(R.id.directory_imageButton_mail);
+		Button phoneButton = (Button) findViewById(R.id.directory_imageButton_call);
+//		Button mapButton = (Button) findViewById(R.id.directory_imageButton_map);
+		Button webButton = (Button) findViewById(R.id.directory_imageButton_web);
 		
 		mailButton.setVisibility(visibility(displayedPerson_.isSetEmail()));
 		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
 		//mapButton.setVisibility(visibility(displayedPerson_.hasOffice()));
-		mapButton.setVisibility(visibility(false)); // TODO call map when ready
+//		mapButton.setVisibility(visibility(false)); // TODO call map when ready
 		webButton.setVisibility(visibility(displayedPerson_.isSetWeb()));
 		
 		mailButton.setOnClickListener(this);
 		phoneButton.setOnClickListener(this);
-		mapButton.setOnClickListener(this);
+//		mapButton.setOnClickListener(this);
 		webButton.setOnClickListener(this);
 	}
 	@Override

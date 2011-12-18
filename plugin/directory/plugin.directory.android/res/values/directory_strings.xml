@@ -3,6 +3,12 @@
 
      <string name="directory_plugin_name">Directory</string>
      <string name="directory_person_details_dialog_tile">Details</string>
+     
+     <!-- Dialog buttons -->
+     <string name="directory_dialog_button_call">Call</string>
+     <string name="directory_dialog_button_web">Website</string>
+     <string name="directory_dialog_button_map">Find on Map</string>
+     <string name="directory_dialog_button_mail">Email</string>
     
      <string name="directory_call">Call</string>
      <string name="directory_yes">yes</string>
