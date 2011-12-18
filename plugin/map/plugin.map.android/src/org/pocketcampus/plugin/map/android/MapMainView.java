@@ -78,7 +78,7 @@ public class MapMainView extends PluginView implements IMapView {
 	private static Position CAMPUS_CENTER_P;
 	private static GeoPoint CAMPUS_CENTER_G;
 	
-	private static boolean DEBUG = false;
+	private static boolean DEBUG = true;
 
 	// Map UI
 	private MapView mapView_;
@@ -281,8 +281,8 @@ public class MapMainView extends PluginView implements IMapView {
 		mapView_.setMultiTouchControls(true);
 		mapView_.setBuiltInZoomControls(true);
 		/* XXX This is done to allow zoom up to 22 (for epfl) but the tiles will not load because
-		 * the mapnik zoom is between 0 and 18 */
-		ITileSource aTileSource =  new XYTileSource("Mapnik", ResourceProxy.string.mapnik, 14, 18, 256, ".png", "http://tile.openstreetmap.org/");
+		 * the mapnik zoom is between 14 and 19 */
+		ITileSource aTileSource =  new XYTileSource("Mapnik", ResourceProxy.string.mapnik, 14, 19, 256, ".png", "http://tile.openstreetmap.org/");
 		mapView_.setTileSource(aTileSource);
 		mapController_ = mapView_.getController();
 
@@ -319,13 +319,13 @@ public class MapMainView extends PluginView implements IMapView {
 		constantOverlays_.add(0, tilesOverlay);
 
 		// Following the user
-		// myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+		 myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
 //		myLocationOverlay_ = new HybridPositioningOverlay(this, mapView_);
 //		constantOverlays_.add(myLocationOverlay_);
-//		if(DEBUG) {
-//			googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
-//			constantOverlays_.add(googleLocationOverlay_);
-//		}
+		if(DEBUG) {
+			googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
+			constantOverlays_.add(googleLocationOverlay_);
+		}
 
 		// Path overlay
 		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
@@ -402,12 +402,12 @@ public class MapMainView extends PluginView implements IMapView {
 //		menu.findItem(R.id.map_menu_layers_button).setEnabled(allLayers_ != null && allLayers_.size() > 0);
 		
 		// Change the text if we follow the user or not
-//		MenuItem follow = menu.findItem(R.id.map_my_position);
-//		if(myLocationOverlay_.isFollowLocationEnabled()) {
-//			follow.setTitle(R.string.map_menu_my_position_off);
-//		} else {
-//			follow.setTitle(R.string.map_menu_my_position_on);
-//		}
+		MenuItem follow = menu.findItem(R.id.map_my_position);
+		if(myLocationOverlay_.isFollowLocationEnabled()) {
+			follow.setTitle(R.string.map_menu_my_position_off);
+		} else {
+			follow.setTitle(R.string.map_menu_my_position_on);
+		}
 
 		return true;
 	}
@@ -428,21 +428,21 @@ public class MapMainView extends PluginView implements IMapView {
 //			return true;
 
 			// Enable the user following
-		/*case R.id.map_my_position:
+		case R.id.map_my_position:
 			if(!myLocationOverlay_.isMyLocationEnabled()) {
 				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
 			}
 			toggleCenterOnUserPosition();
 //			Tracker.getInstance().trackPageView("map/menu/togglPosition");
-			return true;*/
+			return true;
 
 
 			// Enable the user following
-		case R.id.map_campus_position:
-			centerOnCampus();
+//		case R.id.map_campus_position:
+//			centerOnCampus();
 
 //			Tracker.getInstance().trackPageView("map/menu/centerOnCampus");
-			return true;
+//			return true;
 
 			// Shows the search dialog
 		case R.id.map_search:
@@ -500,19 +500,22 @@ public class MapMainView extends PluginView implements IMapView {
 	/**
 	 * Enable the location and center the map on the user
 	 */
-//	private void toggleCenterOnUserPosition() {
-//		if(myLocationOverlay_.isFollowLocationEnabled()) {
-//			myLocationOverlay_.disableMyLocation();
-//			myLocationOverlay_.disableFollowLocation();
-//			if(DEBUG)
-//				googleLocationOverlay_.disableMyLocation();
-//		} else {
-//			myLocationOverlay_.enableMyLocation();
-//			myLocationOverlay_.enableFollowLocation();
-//			if(DEBUG)
-//				googleLocationOverlay_.enableMyLocation();
-//		}
-//	}
+	private void toggleCenterOnUserPosition() {
+		if(myLocationOverlay_.isFollowLocationEnabled()) {
+			myLocationOverlay_.disableMyLocation();
+			myLocationOverlay_.disableFollowLocation();
+			
+			if(DEBUG) {
+				googleLocationOverlay_.disableMyLocation();
+			}
+			
+		} else {
+			myLocationOverlay_.enableMyLocation();
+			myLocationOverlay_.enableFollowLocation();
+			if(DEBUG)
+				googleLocationOverlay_.enableMyLocation();
+		}
+	}
 
 	/**
 	 * Center the map on campus

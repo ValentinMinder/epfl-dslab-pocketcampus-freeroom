@@ -3,8 +3,8 @@
     <string name="map_plugin_title">Map</string>
     
     <string name="map_menu_layers">Layers</string>
-    <string name="map_menu_my_position_on">Follow me</string>
-    <string name="map_menu_my_position_off">Do not follow me</string>
+    <string name="map_menu_my_position_on">My position</string>
+    <string name="map_menu_my_position_off">Remove position</string>
     <string name="map_menu_campus_position">Locate campus</string>
     <string name="map_menu_search">Search</string>
     <string name="map_menu_clear_path">Clear path</string>
@@ -26,7 +26,7 @@
     <string name="map_zoom_button">Zoom in</string>
     <string name="map_open_plugin_button">More</string>
     
-    <string name="map_compute_position">Your position is being computed...</string>
+    <string name="map_compute_position">Locating...</string>
     
     <string name="map_layer_not_found">Impossible to find the requested item.</string>
 </resources>
