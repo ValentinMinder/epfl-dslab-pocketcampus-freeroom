@@ -30,7 +30,7 @@ public abstract class ServerBase {
 		Server server = new Server(LISTEN_ON_PORT);
 		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		context.setContextPath("/");
+		context.setContextPath("/v3r1");
 		
 		String locale = "en_US";
 		String encoding = "UTF-8";
