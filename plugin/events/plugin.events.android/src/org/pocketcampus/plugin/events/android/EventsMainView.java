@@ -129,24 +129,24 @@ public class EventsMainView extends PluginView implements IEventsView {
 	 * Main Food Options menu contains access to Meals by restaurants, ratings,
 	 * Sandwiches, Suggestions and Settings
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.events_menu, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.events_menu, menu);
+//		return true;
+//	}
 
 	/**
 	 * Decides what happens when the options menu is opened and an option is
 	 * chosen (what view to display)
 	 */
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if (item.getItemId() == R.id.events_menu_settings) {
-			mController.getFeedUrls();
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+//		if (item.getItemId() == R.id.events_menu_settings) {
+//			mController.getFeedUrls();
+//		}
+//		return true;
+//	}
 
 	@Override
 	public void networkErrorHappened() {
