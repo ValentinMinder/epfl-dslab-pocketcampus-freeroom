@@ -50,7 +50,8 @@ class ManifestTemplate {
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 </manifest>
 		"""
 	}
