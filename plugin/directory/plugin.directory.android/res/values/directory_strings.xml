@@ -6,7 +6,7 @@
      
      <!-- Dialog buttons -->
      <string name="directory_dialog_button_call">Call</string>
-     <string name="directory_dialog_button_web">Website</string>
+     <string name="directory_dialog_button_web">Webpage</string>
      <string name="directory_dialog_button_map">Find on Map</string>
      <string name="directory_dialog_button_mail">Email</string>
     
@@ -15,7 +15,7 @@
      <string name="directory_no">no</string>
   
      <string name="directory_searchView_title">EPFL directory</string>
-     <string name="directory_searchView_hint">Search for a person</string>
+     <string name="directory_searchView_hint">Search for someone</string>
      
      <string name="directory_network_error">Coudl not connect.</string>
      <string name="directory_too_many_results_warning">Too many results, try to be more specific</string>
