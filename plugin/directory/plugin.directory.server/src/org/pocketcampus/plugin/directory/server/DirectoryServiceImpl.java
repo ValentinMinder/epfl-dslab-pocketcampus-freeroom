@@ -42,6 +42,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	private static final String pictureCamiproBase = "http://people.epfl.ch/cache/photos/camipro/";
 	private static final String pictureExtBase = "http://people.epfl.ch/cache/photos/ext/";
 	private static final String pictureExtension = ".jpg";
+
+	private static final int MAX_SUGGESTION_NUMBER = 25;
 	
 	//list of names for autocompletion
 	private static ArrayList<String> given_names;
@@ -335,7 +337,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 				}
 			}
 			
-			return suggestions.subList(0, 25);
+			return suggestions.subList(0, Math.min(suggestions.size(), MAX_SUGGESTION_NUMBER));
 		}
 	}
 
