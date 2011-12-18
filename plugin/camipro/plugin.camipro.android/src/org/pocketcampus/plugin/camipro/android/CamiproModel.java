@@ -64,39 +64,44 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		return lastUpdate;
 	}
 	
+	public void setLastUpdateDate(String aDate) {
+		lastUpdate = aDate;
+		mListeners.lastUpdateDateUpdated();
+	}
+	
 	public void setTransactions(List<Transaction> trans) {
 		iTransactions = trans;
-		lastUpdate = getCurrentDate();
 		mListeners.transactionsUpdated();
 	}
 
 	public void setBalance(Double bal) {
 		iBalance = bal;
-		lastUpdate = getCurrentDate();
 		mListeners.balanceUpdated();
 	}
 
 	public void setCardStatistics(CardStatistics val) {
 		iCardStatistics = val;
-		lastUpdate = getCurrentDate();
 		mListeners.cardStatisticsUpdated();
 	}
 	
 	public void setCardLoadingWithEbankingInfo(CardLoadingWithEbankingInfo val) {
 		iCardLoadingWithEbankingInfo = val;
-		lastUpdate = getCurrentDate();
 		mListeners.cardLoadingWithEbankingInfoUpdated();
 	}
 	
-	private String getCurrentDate() {
+	/*private String getCurrentDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH'h'mm");
 		return sdf.format(new Date());
-	}
+	}*/
 	
 	ICamiproView mListeners = (ICamiproView) getListeners();
 	
 	public void setCamiproCookie(String aCamiproCookie) {
 		camiproCookie = aCamiproCookie;
+	}
+	
+	public ICamiproView getListenersToNotify() {
+		return mListeners;
 	}
 	
 	//TODO have camipro cookie saved in storage
@@ -106,7 +111,6 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	private Double iBalance = null;
 	private CardStatistics iCardStatistics = null;
 	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo = null;
-	
 	private String lastUpdate = null;
 	
 	private static CamiproModel self = null;

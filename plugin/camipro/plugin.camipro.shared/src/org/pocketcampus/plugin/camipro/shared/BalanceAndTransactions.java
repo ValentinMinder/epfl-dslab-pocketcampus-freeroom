@@ -26,14 +26,20 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
 
   private static final org.apache.thrift.protocol.TField I_BALANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("iBalance", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
   private static final org.apache.thrift.protocol.TField I_TRANSACTIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("iTransactions", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField I_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iDate", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)4);
 
   public double iBalance; // required
   public List<Transaction> iTransactions; // required
+  public String iDate; // required
+  public int iStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     I_BALANCE((short)1, "iBalance"),
-    I_TRANSACTIONS((short)2, "iTransactions");
+    I_TRANSACTIONS((short)2, "iTransactions"),
+    I_DATE((short)3, "iDate"),
+    I_STATUS((short)4, "iStatus");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +58,10 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
           return I_BALANCE;
         case 2: // I_TRANSACTIONS
           return I_TRANSACTIONS;
+        case 3: // I_DATE
+          return I_DATE;
+        case 4: // I_STATUS
+          return I_STATUS;
         default:
           return null;
       }
@@ -93,16 +103,21 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
 
   // isset id assignments
   private static final int __IBALANCE_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __ISTATUS_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_BALANCE, new org.apache.thrift.meta_data.FieldMetaData("iBalance", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_BALANCE, new org.apache.thrift.meta_data.FieldMetaData("iBalance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.I_TRANSACTIONS, new org.apache.thrift.meta_data.FieldMetaData("iTransactions", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_TRANSACTIONS, new org.apache.thrift.meta_data.FieldMetaData("iTransactions", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Transaction.class))));
+    tmpMap.put(_Fields.I_DATE, new org.apache.thrift.meta_data.FieldMetaData("iDate", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_STATUS, new org.apache.thrift.meta_data.FieldMetaData("iStatus", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(BalanceAndTransactions.class, metaDataMap);
   }
@@ -111,13 +126,11 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
   }
 
   public BalanceAndTransactions(
-    double iBalance,
-    List<Transaction> iTransactions)
+    int iStatus)
   {
     this();
-    this.iBalance = iBalance;
-    setIBalanceIsSet(true);
-    this.iTransactions = iTransactions;
+    this.iStatus = iStatus;
+    setIStatusIsSet(true);
   }
 
   /**
@@ -134,6 +147,10 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
       }
       this.iTransactions = __this__iTransactions;
     }
+    if (other.isSetIDate()) {
+      this.iDate = other.iDate;
+    }
+    this.iStatus = other.iStatus;
   }
 
   public BalanceAndTransactions deepCopy() {
@@ -145,6 +162,9 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     setIBalanceIsSet(false);
     this.iBalance = 0.0;
     this.iTransactions = null;
+    this.iDate = null;
+    setIStatusIsSet(false);
+    this.iStatus = 0;
   }
 
   public double getIBalance() {
@@ -209,6 +229,53 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     }
   }
 
+  public String getIDate() {
+    return this.iDate;
+  }
+
+  public BalanceAndTransactions setIDate(String iDate) {
+    this.iDate = iDate;
+    return this;
+  }
+
+  public void unsetIDate() {
+    this.iDate = null;
+  }
+
+  /** Returns true if field iDate is set (has been assigned a value) and false otherwise */
+  public boolean isSetIDate() {
+    return this.iDate != null;
+  }
+
+  public void setIDateIsSet(boolean value) {
+    if (!value) {
+      this.iDate = null;
+    }
+  }
+
+  public int getIStatus() {
+    return this.iStatus;
+  }
+
+  public BalanceAndTransactions setIStatus(int iStatus) {
+    this.iStatus = iStatus;
+    setIStatusIsSet(true);
+    return this;
+  }
+
+  public void unsetIStatus() {
+    __isset_bit_vector.clear(__ISTATUS_ISSET_ID);
+  }
+
+  /** Returns true if field iStatus is set (has been assigned a value) and false otherwise */
+  public boolean isSetIStatus() {
+    return __isset_bit_vector.get(__ISTATUS_ISSET_ID);
+  }
+
+  public void setIStatusIsSet(boolean value) {
+    __isset_bit_vector.set(__ISTATUS_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case I_BALANCE:
@@ -227,6 +294,22 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
       }
       break;
 
+    case I_DATE:
+      if (value == null) {
+        unsetIDate();
+      } else {
+        setIDate((String)value);
+      }
+      break;
+
+    case I_STATUS:
+      if (value == null) {
+        unsetIStatus();
+      } else {
+        setIStatus((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -237,6 +320,12 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
 
     case I_TRANSACTIONS:
       return getITransactions();
+
+    case I_DATE:
+      return getIDate();
+
+    case I_STATUS:
+      return Integer.valueOf(getIStatus());
 
     }
     throw new IllegalStateException();
@@ -253,6 +342,10 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
       return isSetIBalance();
     case I_TRANSACTIONS:
       return isSetITransactions();
+    case I_DATE:
+      return isSetIDate();
+    case I_STATUS:
+      return isSetIStatus();
     }
     throw new IllegalStateException();
   }
@@ -270,8 +363,8 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     if (that == null)
       return false;
 
-    boolean this_present_iBalance = true;
-    boolean that_present_iBalance = true;
+    boolean this_present_iBalance = true && this.isSetIBalance();
+    boolean that_present_iBalance = true && that.isSetIBalance();
     if (this_present_iBalance || that_present_iBalance) {
       if (!(this_present_iBalance && that_present_iBalance))
         return false;
@@ -288,6 +381,24 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
         return false;
     }
 
+    boolean this_present_iDate = true && this.isSetIDate();
+    boolean that_present_iDate = true && that.isSetIDate();
+    if (this_present_iDate || that_present_iDate) {
+      if (!(this_present_iDate && that_present_iDate))
+        return false;
+      if (!this.iDate.equals(that.iDate))
+        return false;
+    }
+
+    boolean this_present_iStatus = true;
+    boolean that_present_iStatus = true;
+    if (this_present_iStatus || that_present_iStatus) {
+      if (!(this_present_iStatus && that_present_iStatus))
+        return false;
+      if (this.iStatus != that.iStatus)
+        return false;
+    }
+
     return true;
   }
 
@@ -295,7 +406,7 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iBalance = true;
+    boolean present_iBalance = true && (isSetIBalance());
     builder.append(present_iBalance);
     if (present_iBalance)
       builder.append(iBalance);
@@ -304,6 +415,16 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     builder.append(present_iTransactions);
     if (present_iTransactions)
       builder.append(iTransactions);
+
+    boolean present_iDate = true && (isSetIDate());
+    builder.append(present_iDate);
+    if (present_iDate)
+      builder.append(iDate);
+
+    boolean present_iStatus = true;
+    builder.append(present_iStatus);
+    if (present_iStatus)
+      builder.append(iStatus);
 
     return builder.toHashCode();
   }
@@ -332,6 +453,26 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     }
     if (isSetITransactions()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTransactions, typedOther.iTransactions);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIDate()).compareTo(typedOther.isSetIDate());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iDate, typedOther.iDate);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIStatus()).compareTo(typedOther.isSetIStatus());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIStatus()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iStatus, typedOther.iStatus);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -379,6 +520,21 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // I_DATE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iDate = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 4: // I_STATUS
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.iStatus = iprot.readI32();
+            setIStatusIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -387,8 +543,8 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetIBalance()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iBalance' was not found in serialized data! Struct: " + toString());
+    if (!isSetIStatus()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iStatus' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -397,21 +553,35 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(I_BALANCE_FIELD_DESC);
-    oprot.writeDouble(this.iBalance);
-    oprot.writeFieldEnd();
-    if (this.iTransactions != null) {
-      oprot.writeFieldBegin(I_TRANSACTIONS_FIELD_DESC);
-      {
-        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iTransactions.size()));
-        for (Transaction _iter3 : this.iTransactions)
-        {
-          _iter3.write(oprot);
-        }
-        oprot.writeListEnd();
-      }
+    if (isSetIBalance()) {
+      oprot.writeFieldBegin(I_BALANCE_FIELD_DESC);
+      oprot.writeDouble(this.iBalance);
       oprot.writeFieldEnd();
     }
+    if (this.iTransactions != null) {
+      if (isSetITransactions()) {
+        oprot.writeFieldBegin(I_TRANSACTIONS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iTransactions.size()));
+          for (Transaction _iter3 : this.iTransactions)
+          {
+            _iter3.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.iDate != null) {
+      if (isSetIDate()) {
+        oprot.writeFieldBegin(I_DATE_FIELD_DESC);
+        oprot.writeString(this.iDate);
+        oprot.writeFieldEnd();
+      }
+    }
+    oprot.writeFieldBegin(I_STATUS_FIELD_DESC);
+    oprot.writeI32(this.iStatus);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -421,16 +591,34 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
     StringBuilder sb = new StringBuilder("BalanceAndTransactions(");
     boolean first = true;
 
-    sb.append("iBalance:");
-    sb.append(this.iBalance);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("iTransactions:");
-    if (this.iTransactions == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iTransactions);
+    if (isSetIBalance()) {
+      sb.append("iBalance:");
+      sb.append(this.iBalance);
+      first = false;
     }
+    if (isSetITransactions()) {
+      if (!first) sb.append(", ");
+      sb.append("iTransactions:");
+      if (this.iTransactions == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iTransactions);
+      }
+      first = false;
+    }
+    if (isSetIDate()) {
+      if (!first) sb.append(", ");
+      sb.append("iDate:");
+      if (this.iDate == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iDate);
+      }
+      first = false;
+    }
+    if (!first) sb.append(", ");
+    sb.append("iStatus:");
+    sb.append(this.iStatus);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -438,10 +626,7 @@ public class BalanceAndTransactions implements org.apache.thrift.TBase<BalanceAn
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'iBalance' because it's a primitive and you chose the non-beans generator.
-    if (iTransactions == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTransactions' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'iStatus' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

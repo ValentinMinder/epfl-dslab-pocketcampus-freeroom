@@ -12,9 +12,10 @@
     <string name="camipro_ebanking_average_title">Average per month</string>
         
     
-    <string name="camipro_balance_section_title">Balance (given no offline transaction)</string>
-    <string name="camipro_transactions_section_title">Transactions (as of %s)</string>
-    <string name="camipro_ebanking_section_title">Recharge Card with E-Banking</string>
+    <string name="camipro_balance_section_title">Balance</string>
+    <string name="camipro_transactions_section_title">Last update %s</string>
+    <string name="camipro_ebanking_section_title">Recharge card with e-banking</string>
+    <string name="camipro_statistics_section_title">Statistics</string>
         
     
     <string name="camipro_ebanking_infos_text">In order to load your CAMIPRO card, please copy the payment details below (account number, reference number, etc.) in the e-banking tool provided by your financial institution.\nThe payment to select is an orange payment slip.</string>
@@ -25,5 +26,10 @@
         
     <string name="camipro_string_recharge">Recharge card</string>
     <string name="camipro_string_logout">Logout</string>
+    
+    <string name="camipro_error_camipro_down">Could not connect to Camipro servers</string>
+        
+    <string name="camipro_menu_send_by_email">Send by email</string>
+        
         
 </resources>

@@ -3,6 +3,12 @@ namespace java org.pocketcampus.plugin.camipro.shared
 include "authentication.thrift"
 
 
+struct CamiproRequest {
+	1: required authentication.SessionId iSessionId;
+	2: required string iLanguage;
+}
+
+
 struct Transaction {
 	1: required string iDate;
 	2: required string iOperation;
@@ -11,8 +17,10 @@ struct Transaction {
 }
 
 struct BalanceAndTransactions {
-	1: required double iBalance; 
-	2: required list<Transaction> iTransactions;
+	1: optional double iBalance; 
+	2: optional list<Transaction> iTransactions;
+	3: optional string iDate;
+	4: required i32 iStatus;
 }
 
 
@@ -28,11 +36,20 @@ struct CardLoadingWithEbankingInfo {
 }
 
 struct StatsAndLoadingInfo {
-	1: required CardStatistics iCardStatistics;
-	2: required CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
+	1: optional CardStatistics iCardStatistics;
+	2: optional CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
+	3: required i32 iStatus;
 }
 
+
+struct SendMailResult {
+	1: optional string iResultText;
+	2: required i32 iStatus;
+}
+
+
 service CamiproService {
-	BalanceAndTransactions getBalanceAndTransactions(1: authentication.SessionId aSessionId);
-	StatsAndLoadingInfo getStatsAndLoadingInfo(1: authentication.SessionId aSessionId);
+	BalanceAndTransactions getBalanceAndTransactions(1: CamiproRequest iRequest);
+	StatsAndLoadingInfo getStatsAndLoadingInfo(1: CamiproRequest iRequest);
+	SendMailResult sendLoadingInfoByEmail(1: CamiproRequest iRequest);
 }

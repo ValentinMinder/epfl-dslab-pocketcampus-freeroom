@@ -25,17 +25,21 @@ public class CamiproService {
 
   public interface Iface {
 
-    public BalanceAndTransactions getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
+    public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws org.apache.thrift.TException;
 
-    public StatsAndLoadingInfo getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
+    public StatsAndLoadingInfo getStatsAndLoadingInfo(CamiproRequest iRequest) throws org.apache.thrift.TException;
+
+    public SendMailResult sendLoadingInfoByEmail(CamiproRequest iRequest) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException;
+    public void getBalanceAndTransactions(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException;
+    public void getStatsAndLoadingInfo(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void sendLoadingInfoByEmail(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.sendLoadingInfoByEmail_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -59,16 +63,16 @@ public class CamiproService {
       super(iprot, oprot);
     }
 
-    public BalanceAndTransactions getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getBalanceAndTransactions(aSessionId);
+      send_getBalanceAndTransactions(iRequest);
       return recv_getBalanceAndTransactions();
     }
 
-    public void send_getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public void send_getBalanceAndTransactions(CamiproRequest iRequest) throws org.apache.thrift.TException
     {
       getBalanceAndTransactions_args args = new getBalanceAndTransactions_args();
-      args.setASessionId(aSessionId);
+      args.setIRequest(iRequest);
       sendBase("getBalanceAndTransactions", args);
     }
 
@@ -82,16 +86,16 @@ public class CamiproService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBalanceAndTransactions failed: unknown result");
     }
 
-    public StatsAndLoadingInfo getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public StatsAndLoadingInfo getStatsAndLoadingInfo(CamiproRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getStatsAndLoadingInfo(aSessionId);
+      send_getStatsAndLoadingInfo(iRequest);
       return recv_getStatsAndLoadingInfo();
     }
 
-    public void send_getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public void send_getStatsAndLoadingInfo(CamiproRequest iRequest) throws org.apache.thrift.TException
     {
       getStatsAndLoadingInfo_args args = new getStatsAndLoadingInfo_args();
-      args.setASessionId(aSessionId);
+      args.setIRequest(iRequest);
       sendBase("getStatsAndLoadingInfo", args);
     }
 
@@ -103,6 +107,29 @@ public class CamiproService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getStatsAndLoadingInfo failed: unknown result");
+    }
+
+    public SendMailResult sendLoadingInfoByEmail(CamiproRequest iRequest) throws org.apache.thrift.TException
+    {
+      send_sendLoadingInfoByEmail(iRequest);
+      return recv_sendLoadingInfoByEmail();
+    }
+
+    public void send_sendLoadingInfoByEmail(CamiproRequest iRequest) throws org.apache.thrift.TException
+    {
+      sendLoadingInfoByEmail_args args = new sendLoadingInfoByEmail_args();
+      args.setIRequest(iRequest);
+      sendBase("sendLoadingInfoByEmail", args);
+    }
+
+    public SendMailResult recv_sendLoadingInfoByEmail() throws org.apache.thrift.TException
+    {
+      sendLoadingInfoByEmail_result result = new sendLoadingInfoByEmail_result();
+      receiveBase(result, "sendLoadingInfoByEmail");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "sendLoadingInfoByEmail failed: unknown result");
     }
 
   }
@@ -123,24 +150,24 @@ public class CamiproService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getBalanceAndTransactions(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException {
+    public void getBalanceAndTransactions(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getBalanceAndTransactions_call method_call = new getBalanceAndTransactions_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      getBalanceAndTransactions_call method_call = new getBalanceAndTransactions_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getBalanceAndTransactions_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
-      public getBalanceAndTransactions_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private CamiproRequest iRequest;
+      public getBalanceAndTransactions_call(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getBalanceAndTransactions_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.aSessionId = aSessionId;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBalanceAndTransactions", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getBalanceAndTransactions_args args = new getBalanceAndTransactions_args();
-        args.setASessionId(aSessionId);
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -155,24 +182,24 @@ public class CamiproService {
       }
     }
 
-    public void getStatsAndLoadingInfo(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException {
+    public void getStatsAndLoadingInfo(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getStatsAndLoadingInfo_call method_call = new getStatsAndLoadingInfo_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      getStatsAndLoadingInfo_call method_call = new getStatsAndLoadingInfo_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getStatsAndLoadingInfo_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
-      public getStatsAndLoadingInfo_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private CamiproRequest iRequest;
+      public getStatsAndLoadingInfo_call(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getStatsAndLoadingInfo_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.aSessionId = aSessionId;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getStatsAndLoadingInfo", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getStatsAndLoadingInfo_args args = new getStatsAndLoadingInfo_args();
-        args.setASessionId(aSessionId);
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -184,6 +211,38 @@ public class CamiproService {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getStatsAndLoadingInfo();
+      }
+    }
+
+    public void sendLoadingInfoByEmail(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<sendLoadingInfoByEmail_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      sendLoadingInfoByEmail_call method_call = new sendLoadingInfoByEmail_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class sendLoadingInfoByEmail_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private CamiproRequest iRequest;
+      public sendLoadingInfoByEmail_call(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<sendLoadingInfoByEmail_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.iRequest = iRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sendLoadingInfoByEmail", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        sendLoadingInfoByEmail_args args = new sendLoadingInfoByEmail_args();
+        args.setIRequest(iRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public SendMailResult getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_sendLoadingInfoByEmail();
       }
     }
 
@@ -202,6 +261,7 @@ public class CamiproService {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getBalanceAndTransactions", new getBalanceAndTransactions());
       processMap.put("getStatsAndLoadingInfo", new getStatsAndLoadingInfo());
+      processMap.put("sendLoadingInfoByEmail", new sendLoadingInfoByEmail());
       return processMap;
     }
 
@@ -216,7 +276,7 @@ public class CamiproService {
 
       protected getBalanceAndTransactions_result getResult(I iface, getBalanceAndTransactions_args args) throws org.apache.thrift.TException {
         getBalanceAndTransactions_result result = new getBalanceAndTransactions_result();
-        result.success = iface.getBalanceAndTransactions(args.aSessionId);
+        result.success = iface.getBalanceAndTransactions(args.iRequest);
         return result;
       }
     }
@@ -232,7 +292,23 @@ public class CamiproService {
 
       protected getStatsAndLoadingInfo_result getResult(I iface, getStatsAndLoadingInfo_args args) throws org.apache.thrift.TException {
         getStatsAndLoadingInfo_result result = new getStatsAndLoadingInfo_result();
-        result.success = iface.getStatsAndLoadingInfo(args.aSessionId);
+        result.success = iface.getStatsAndLoadingInfo(args.iRequest);
+        return result;
+      }
+    }
+
+    private static class sendLoadingInfoByEmail<I extends Iface> extends org.apache.thrift.ProcessFunction<I, sendLoadingInfoByEmail_args> {
+      public sendLoadingInfoByEmail() {
+        super("sendLoadingInfoByEmail");
+      }
+
+      protected sendLoadingInfoByEmail_args getEmptyArgsInstance() {
+        return new sendLoadingInfoByEmail_args();
+      }
+
+      protected sendLoadingInfoByEmail_result getResult(I iface, sendLoadingInfoByEmail_args args) throws org.apache.thrift.TException {
+        sendLoadingInfoByEmail_result result = new sendLoadingInfoByEmail_result();
+        result.success = iface.sendLoadingInfoByEmail(args.iRequest);
         return result;
       }
     }
@@ -242,13 +318,13 @@ public class CamiproService {
   public static class getBalanceAndTransactions_args implements org.apache.thrift.TBase<getBalanceAndTransactions_args, getBalanceAndTransactions_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBalanceAndTransactions_args");
 
-    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
+    public CamiproRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_SESSION_ID((short)1, "aSessionId");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -263,8 +339,8 @@ public class CamiproService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // A_SESSION_ID
-            return A_SESSION_ID;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -309,8 +385,8 @@ public class CamiproService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CamiproRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBalanceAndTransactions_args.class, metaDataMap);
     }
@@ -319,18 +395,18 @@ public class CamiproService {
     }
 
     public getBalanceAndTransactions_args(
-      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+      CamiproRequest iRequest)
     {
       this();
-      this.aSessionId = aSessionId;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getBalanceAndTransactions_args(getBalanceAndTransactions_args other) {
-      if (other.isSetASessionId()) {
-        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      if (other.isSetIRequest()) {
+        this.iRequest = new CamiproRequest(other.iRequest);
       }
     }
 
@@ -340,40 +416,40 @@ public class CamiproService {
 
     @Override
     public void clear() {
-      this.aSessionId = null;
+      this.iRequest = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
-      return this.aSessionId;
+    public CamiproRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getBalanceAndTransactions_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
-      this.aSessionId = aSessionId;
+    public getBalanceAndTransactions_args setIRequest(CamiproRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetASessionId() {
-      this.aSessionId = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
-    public boolean isSetASessionId() {
-      return this.aSessionId != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setASessionIdIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.aSessionId = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case A_SESSION_ID:
+      case I_REQUEST:
         if (value == null) {
-          unsetASessionId();
+          unsetIRequest();
         } else {
-          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+          setIRequest((CamiproRequest)value);
         }
         break;
 
@@ -382,8 +458,8 @@ public class CamiproService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case A_SESSION_ID:
-        return getASessionId();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -396,8 +472,8 @@ public class CamiproService {
       }
 
       switch (field) {
-      case A_SESSION_ID:
-        return isSetASessionId();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -415,12 +491,12 @@ public class CamiproService {
       if (that == null)
         return false;
 
-      boolean this_present_aSessionId = true && this.isSetASessionId();
-      boolean that_present_aSessionId = true && that.isSetASessionId();
-      if (this_present_aSessionId || that_present_aSessionId) {
-        if (!(this_present_aSessionId && that_present_aSessionId))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.aSessionId.equals(that.aSessionId))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -431,10 +507,10 @@ public class CamiproService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_aSessionId = true && (isSetASessionId());
-      builder.append(present_aSessionId);
-      if (present_aSessionId)
-        builder.append(aSessionId);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
@@ -447,12 +523,12 @@ public class CamiproService {
       int lastComparison = 0;
       getBalanceAndTransactions_args typedOther = (getBalanceAndTransactions_args)other;
 
-      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetASessionId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -474,10 +550,10 @@ public class CamiproService {
           break;
         }
         switch (field.id) {
-          case 1: // A_SESSION_ID
+          case 1: // I_REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-              this.aSessionId.read(iprot);
+              this.iRequest = new CamiproRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -497,9 +573,9 @@ public class CamiproService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aSessionId != null) {
-        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
-        this.aSessionId.write(oprot);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -511,11 +587,11 @@ public class CamiproService {
       StringBuilder sb = new StringBuilder("getBalanceAndTransactions_args(");
       boolean first = true;
 
-      sb.append("aSessionId:");
-      if (this.aSessionId == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.aSessionId);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -851,13 +927,13 @@ public class CamiproService {
   public static class getStatsAndLoadingInfo_args implements org.apache.thrift.TBase<getStatsAndLoadingInfo_args, getStatsAndLoadingInfo_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStatsAndLoadingInfo_args");
 
-    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
+    public CamiproRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_SESSION_ID((short)1, "aSessionId");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -872,8 +948,8 @@ public class CamiproService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // A_SESSION_ID
-            return A_SESSION_ID;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -918,8 +994,8 @@ public class CamiproService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CamiproRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStatsAndLoadingInfo_args.class, metaDataMap);
     }
@@ -928,18 +1004,18 @@ public class CamiproService {
     }
 
     public getStatsAndLoadingInfo_args(
-      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+      CamiproRequest iRequest)
     {
       this();
-      this.aSessionId = aSessionId;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getStatsAndLoadingInfo_args(getStatsAndLoadingInfo_args other) {
-      if (other.isSetASessionId()) {
-        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      if (other.isSetIRequest()) {
+        this.iRequest = new CamiproRequest(other.iRequest);
       }
     }
 
@@ -949,40 +1025,40 @@ public class CamiproService {
 
     @Override
     public void clear() {
-      this.aSessionId = null;
+      this.iRequest = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
-      return this.aSessionId;
+    public CamiproRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getStatsAndLoadingInfo_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
-      this.aSessionId = aSessionId;
+    public getStatsAndLoadingInfo_args setIRequest(CamiproRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetASessionId() {
-      this.aSessionId = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
-    public boolean isSetASessionId() {
-      return this.aSessionId != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setASessionIdIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.aSessionId = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case A_SESSION_ID:
+      case I_REQUEST:
         if (value == null) {
-          unsetASessionId();
+          unsetIRequest();
         } else {
-          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+          setIRequest((CamiproRequest)value);
         }
         break;
 
@@ -991,8 +1067,8 @@ public class CamiproService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case A_SESSION_ID:
-        return getASessionId();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -1005,8 +1081,8 @@ public class CamiproService {
       }
 
       switch (field) {
-      case A_SESSION_ID:
-        return isSetASessionId();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -1024,12 +1100,12 @@ public class CamiproService {
       if (that == null)
         return false;
 
-      boolean this_present_aSessionId = true && this.isSetASessionId();
-      boolean that_present_aSessionId = true && that.isSetASessionId();
-      if (this_present_aSessionId || that_present_aSessionId) {
-        if (!(this_present_aSessionId && that_present_aSessionId))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.aSessionId.equals(that.aSessionId))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -1040,10 +1116,10 @@ public class CamiproService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_aSessionId = true && (isSetASessionId());
-      builder.append(present_aSessionId);
-      if (present_aSessionId)
-        builder.append(aSessionId);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
@@ -1056,12 +1132,12 @@ public class CamiproService {
       int lastComparison = 0;
       getStatsAndLoadingInfo_args typedOther = (getStatsAndLoadingInfo_args)other;
 
-      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetASessionId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1083,10 +1159,10 @@ public class CamiproService {
           break;
         }
         switch (field.id) {
-          case 1: // A_SESSION_ID
+          case 1: // I_REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-              this.aSessionId.read(iprot);
+              this.iRequest = new CamiproRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1106,9 +1182,9 @@ public class CamiproService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aSessionId != null) {
-        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
-        this.aSessionId.write(oprot);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1120,11 +1196,11 @@ public class CamiproService {
       StringBuilder sb = new StringBuilder("getStatsAndLoadingInfo_args(");
       boolean first = true;
 
-      sb.append("aSessionId:");
-      if (this.aSessionId == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.aSessionId);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -1422,6 +1498,615 @@ public class CamiproService {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder("getStatsAndLoadingInfo_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class sendLoadingInfoByEmail_args implements org.apache.thrift.TBase<sendLoadingInfoByEmail_args, sendLoadingInfoByEmail_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendLoadingInfoByEmail_args");
+
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    public CamiproRequest iRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      I_REQUEST((short)1, "iRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // I_REQUEST
+            return I_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CamiproRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendLoadingInfoByEmail_args.class, metaDataMap);
+    }
+
+    public sendLoadingInfoByEmail_args() {
+    }
+
+    public sendLoadingInfoByEmail_args(
+      CamiproRequest iRequest)
+    {
+      this();
+      this.iRequest = iRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public sendLoadingInfoByEmail_args(sendLoadingInfoByEmail_args other) {
+      if (other.isSetIRequest()) {
+        this.iRequest = new CamiproRequest(other.iRequest);
+      }
+    }
+
+    public sendLoadingInfoByEmail_args deepCopy() {
+      return new sendLoadingInfoByEmail_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.iRequest = null;
+    }
+
+    public CamiproRequest getIRequest() {
+      return this.iRequest;
+    }
+
+    public sendLoadingInfoByEmail_args setIRequest(CamiproRequest iRequest) {
+      this.iRequest = iRequest;
+      return this;
+    }
+
+    public void unsetIRequest() {
+      this.iRequest = null;
+    }
+
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
+    }
+
+    public void setIRequestIsSet(boolean value) {
+      if (!value) {
+        this.iRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case I_REQUEST:
+        if (value == null) {
+          unsetIRequest();
+        } else {
+          setIRequest((CamiproRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case I_REQUEST:
+        return getIRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case I_REQUEST:
+        return isSetIRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof sendLoadingInfoByEmail_args)
+        return this.equals((sendLoadingInfoByEmail_args)that);
+      return false;
+    }
+
+    public boolean equals(sendLoadingInfoByEmail_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
+          return false;
+        if (!this.iRequest.equals(that.iRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(sendLoadingInfoByEmail_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      sendLoadingInfoByEmail_args typedOther = (sendLoadingInfoByEmail_args)other;
+
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // I_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iRequest = new CamiproRequest();
+              this.iRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("sendLoadingInfoByEmail_args(");
+      boolean first = true;
+
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class sendLoadingInfoByEmail_result implements org.apache.thrift.TBase<sendLoadingInfoByEmail_result, sendLoadingInfoByEmail_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendLoadingInfoByEmail_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public SendMailResult success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SendMailResult.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendLoadingInfoByEmail_result.class, metaDataMap);
+    }
+
+    public sendLoadingInfoByEmail_result() {
+    }
+
+    public sendLoadingInfoByEmail_result(
+      SendMailResult success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public sendLoadingInfoByEmail_result(sendLoadingInfoByEmail_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new SendMailResult(other.success);
+      }
+    }
+
+    public sendLoadingInfoByEmail_result deepCopy() {
+      return new sendLoadingInfoByEmail_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public SendMailResult getSuccess() {
+      return this.success;
+    }
+
+    public sendLoadingInfoByEmail_result setSuccess(SendMailResult success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((SendMailResult)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof sendLoadingInfoByEmail_result)
+        return this.equals((sendLoadingInfoByEmail_result)that);
+      return false;
+    }
+
+    public boolean equals(sendLoadingInfoByEmail_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(sendLoadingInfoByEmail_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      sendLoadingInfoByEmail_result typedOther = (sendLoadingInfoByEmail_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new SendMailResult();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("sendLoadingInfoByEmail_result(");
       boolean first = true;
 
       sb.append("success:");

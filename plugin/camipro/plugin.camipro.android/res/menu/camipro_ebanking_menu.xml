@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/camipro_send_ebankinginfo_byemail"
+		android:icon="@android:drawable/ic_menu_send"
+		android:title="@+string/camipro_menu_send_by_email"
+		/>
+		
+</menu>

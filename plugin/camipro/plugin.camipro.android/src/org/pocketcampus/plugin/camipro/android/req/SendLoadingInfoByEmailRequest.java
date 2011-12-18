@@ -5,25 +5,24 @@ import org.pocketcampus.plugin.camipro.android.CamiproController;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
-import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
+import org.pocketcampus.plugin.camipro.shared.SendMailResult;
 
-public class StatsAndLoadingInfoRequest extends Request<CamiproController, Iface, CamiproRequest, StatsAndLoadingInfo> {
+public class SendLoadingInfoByEmailRequest extends Request<CamiproController, Iface, CamiproRequest, SendMailResult> {
 
 	@Override
-	protected StatsAndLoadingInfo runInBackground(Iface client, CamiproRequest param) throws Exception {
-		System.out.println("Getting StatsAndLoadingInfo");
-		return client.getStatsAndLoadingInfo(param);
+	protected SendMailResult runInBackground(Iface client, CamiproRequest param) throws Exception {
+		System.out.println("Requesting to SendLoadingInfoByEmail");
+		return client.sendLoadingInfoByEmail(param);
 	}
 
 	@Override
-	protected void onResult(CamiproController controller, StatsAndLoadingInfo result) {
+	protected void onResult(CamiproController controller, SendMailResult result) {
 		if(result.getIStatus() == 404) {
 			((CamiproModel) controller.getModel()).getListenersToNotify().camiproServersDown();
 		} else if(result.getIStatus() == 407) {
 			((CamiproModel) controller.getModel()).getListenersToNotify().notLoggedIn();
 		} else if(result.getIStatus() == 200) {
-			((CamiproModel) controller.getModel()).setCardStatistics(result.getICardStatistics());
-			((CamiproModel) controller.getModel()).setCardLoadingWithEbankingInfo(result.getICardLoadingWithEbankingInfo());
+			((CamiproModel) controller.getModel()).getListenersToNotify().emailSent(result.getIResultText());
 		}
 	}
 

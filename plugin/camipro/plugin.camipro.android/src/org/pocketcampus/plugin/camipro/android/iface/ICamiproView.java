@@ -7,4 +7,10 @@ public interface ICamiproView extends IView {
 	void balanceUpdated();
 	void cardLoadingWithEbankingInfoUpdated();
 	void cardStatisticsUpdated();
+	void lastUpdateDateUpdated();
+	
+	void networkErrorHappened();
+	void camiproServersDown();
+	void notLoggedIn();
+	void emailSent(String result);
 }

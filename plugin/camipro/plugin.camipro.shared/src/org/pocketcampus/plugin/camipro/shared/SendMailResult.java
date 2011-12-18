@@ -21,22 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoadingInfo, StatsAndLoadingInfo._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("StatsAndLoadingInfo");
+public class SendMailResult implements org.apache.thrift.TBase<SendMailResult, SendMailResult._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SendMailResult");
 
-  private static final org.apache.thrift.protocol.TField I_CARD_STATISTICS_FIELD_DESC = new org.apache.thrift.protocol.TField("iCardStatistics", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField I_CARD_LOADING_WITH_EBANKING_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("iCardLoadingWithEbankingInfo", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField I_RESULT_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("iResultText", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)2);
 
-  public CardStatistics iCardStatistics; // required
-  public CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo; // required
+  public String iResultText; // required
   public int iStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_CARD_STATISTICS((short)1, "iCardStatistics"),
-    I_CARD_LOADING_WITH_EBANKING_INFO((short)2, "iCardLoadingWithEbankingInfo"),
-    I_STATUS((short)3, "iStatus");
+    I_RESULT_TEXT((short)1, "iResultText"),
+    I_STATUS((short)2, "iStatus");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -51,11 +48,9 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_CARD_STATISTICS
-          return I_CARD_STATISTICS;
-        case 2: // I_CARD_LOADING_WITH_EBANKING_INFO
-          return I_CARD_LOADING_WITH_EBANKING_INFO;
-        case 3: // I_STATUS
+        case 1: // I_RESULT_TEXT
+          return I_RESULT_TEXT;
+        case 2: // I_STATUS
           return I_STATUS;
         default:
           return null;
@@ -103,20 +98,18 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_CARD_STATISTICS, new org.apache.thrift.meta_data.FieldMetaData("iCardStatistics", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CardStatistics.class)));
-    tmpMap.put(_Fields.I_CARD_LOADING_WITH_EBANKING_INFO, new org.apache.thrift.meta_data.FieldMetaData("iCardLoadingWithEbankingInfo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CardLoadingWithEbankingInfo.class)));
+    tmpMap.put(_Fields.I_RESULT_TEXT, new org.apache.thrift.meta_data.FieldMetaData("iResultText", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_STATUS, new org.apache.thrift.meta_data.FieldMetaData("iStatus", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(StatsAndLoadingInfo.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SendMailResult.class, metaDataMap);
   }
 
-  public StatsAndLoadingInfo() {
+  public SendMailResult() {
   }
 
-  public StatsAndLoadingInfo(
+  public SendMailResult(
     int iStatus)
   {
     this();
@@ -127,75 +120,47 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public StatsAndLoadingInfo(StatsAndLoadingInfo other) {
+  public SendMailResult(SendMailResult other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetICardStatistics()) {
-      this.iCardStatistics = new CardStatistics(other.iCardStatistics);
-    }
-    if (other.isSetICardLoadingWithEbankingInfo()) {
-      this.iCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(other.iCardLoadingWithEbankingInfo);
+    if (other.isSetIResultText()) {
+      this.iResultText = other.iResultText;
     }
     this.iStatus = other.iStatus;
   }
 
-  public StatsAndLoadingInfo deepCopy() {
-    return new StatsAndLoadingInfo(this);
+  public SendMailResult deepCopy() {
+    return new SendMailResult(this);
   }
 
   @Override
   public void clear() {
-    this.iCardStatistics = null;
-    this.iCardLoadingWithEbankingInfo = null;
+    this.iResultText = null;
     setIStatusIsSet(false);
     this.iStatus = 0;
   }
 
-  public CardStatistics getICardStatistics() {
-    return this.iCardStatistics;
+  public String getIResultText() {
+    return this.iResultText;
   }
 
-  public StatsAndLoadingInfo setICardStatistics(CardStatistics iCardStatistics) {
-    this.iCardStatistics = iCardStatistics;
+  public SendMailResult setIResultText(String iResultText) {
+    this.iResultText = iResultText;
     return this;
   }
 
-  public void unsetICardStatistics() {
-    this.iCardStatistics = null;
+  public void unsetIResultText() {
+    this.iResultText = null;
   }
 
-  /** Returns true if field iCardStatistics is set (has been assigned a value) and false otherwise */
-  public boolean isSetICardStatistics() {
-    return this.iCardStatistics != null;
+  /** Returns true if field iResultText is set (has been assigned a value) and false otherwise */
+  public boolean isSetIResultText() {
+    return this.iResultText != null;
   }
 
-  public void setICardStatisticsIsSet(boolean value) {
+  public void setIResultTextIsSet(boolean value) {
     if (!value) {
-      this.iCardStatistics = null;
-    }
-  }
-
-  public CardLoadingWithEbankingInfo getICardLoadingWithEbankingInfo() {
-    return this.iCardLoadingWithEbankingInfo;
-  }
-
-  public StatsAndLoadingInfo setICardLoadingWithEbankingInfo(CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo) {
-    this.iCardLoadingWithEbankingInfo = iCardLoadingWithEbankingInfo;
-    return this;
-  }
-
-  public void unsetICardLoadingWithEbankingInfo() {
-    this.iCardLoadingWithEbankingInfo = null;
-  }
-
-  /** Returns true if field iCardLoadingWithEbankingInfo is set (has been assigned a value) and false otherwise */
-  public boolean isSetICardLoadingWithEbankingInfo() {
-    return this.iCardLoadingWithEbankingInfo != null;
-  }
-
-  public void setICardLoadingWithEbankingInfoIsSet(boolean value) {
-    if (!value) {
-      this.iCardLoadingWithEbankingInfo = null;
+      this.iResultText = null;
     }
   }
 
@@ -203,7 +168,7 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
     return this.iStatus;
   }
 
-  public StatsAndLoadingInfo setIStatus(int iStatus) {
+  public SendMailResult setIStatus(int iStatus) {
     this.iStatus = iStatus;
     setIStatusIsSet(true);
     return this;
@@ -224,19 +189,11 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_CARD_STATISTICS:
+    case I_RESULT_TEXT:
       if (value == null) {
-        unsetICardStatistics();
+        unsetIResultText();
       } else {
-        setICardStatistics((CardStatistics)value);
-      }
-      break;
-
-    case I_CARD_LOADING_WITH_EBANKING_INFO:
-      if (value == null) {
-        unsetICardLoadingWithEbankingInfo();
-      } else {
-        setICardLoadingWithEbankingInfo((CardLoadingWithEbankingInfo)value);
+        setIResultText((String)value);
       }
       break;
 
@@ -253,11 +210,8 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_CARD_STATISTICS:
-      return getICardStatistics();
-
-    case I_CARD_LOADING_WITH_EBANKING_INFO:
-      return getICardLoadingWithEbankingInfo();
+    case I_RESULT_TEXT:
+      return getIResultText();
 
     case I_STATUS:
       return Integer.valueOf(getIStatus());
@@ -273,10 +227,8 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
     }
 
     switch (field) {
-    case I_CARD_STATISTICS:
-      return isSetICardStatistics();
-    case I_CARD_LOADING_WITH_EBANKING_INFO:
-      return isSetICardLoadingWithEbankingInfo();
+    case I_RESULT_TEXT:
+      return isSetIResultText();
     case I_STATUS:
       return isSetIStatus();
     }
@@ -287,30 +239,21 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof StatsAndLoadingInfo)
-      return this.equals((StatsAndLoadingInfo)that);
+    if (that instanceof SendMailResult)
+      return this.equals((SendMailResult)that);
     return false;
   }
 
-  public boolean equals(StatsAndLoadingInfo that) {
+  public boolean equals(SendMailResult that) {
     if (that == null)
       return false;
 
-    boolean this_present_iCardStatistics = true && this.isSetICardStatistics();
-    boolean that_present_iCardStatistics = true && that.isSetICardStatistics();
-    if (this_present_iCardStatistics || that_present_iCardStatistics) {
-      if (!(this_present_iCardStatistics && that_present_iCardStatistics))
+    boolean this_present_iResultText = true && this.isSetIResultText();
+    boolean that_present_iResultText = true && that.isSetIResultText();
+    if (this_present_iResultText || that_present_iResultText) {
+      if (!(this_present_iResultText && that_present_iResultText))
         return false;
-      if (!this.iCardStatistics.equals(that.iCardStatistics))
-        return false;
-    }
-
-    boolean this_present_iCardLoadingWithEbankingInfo = true && this.isSetICardLoadingWithEbankingInfo();
-    boolean that_present_iCardLoadingWithEbankingInfo = true && that.isSetICardLoadingWithEbankingInfo();
-    if (this_present_iCardLoadingWithEbankingInfo || that_present_iCardLoadingWithEbankingInfo) {
-      if (!(this_present_iCardLoadingWithEbankingInfo && that_present_iCardLoadingWithEbankingInfo))
-        return false;
-      if (!this.iCardLoadingWithEbankingInfo.equals(that.iCardLoadingWithEbankingInfo))
+      if (!this.iResultText.equals(that.iResultText))
         return false;
     }
 
@@ -330,15 +273,10 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iCardStatistics = true && (isSetICardStatistics());
-    builder.append(present_iCardStatistics);
-    if (present_iCardStatistics)
-      builder.append(iCardStatistics);
-
-    boolean present_iCardLoadingWithEbankingInfo = true && (isSetICardLoadingWithEbankingInfo());
-    builder.append(present_iCardLoadingWithEbankingInfo);
-    if (present_iCardLoadingWithEbankingInfo)
-      builder.append(iCardLoadingWithEbankingInfo);
+    boolean present_iResultText = true && (isSetIResultText());
+    builder.append(present_iResultText);
+    if (present_iResultText)
+      builder.append(iResultText);
 
     boolean present_iStatus = true;
     builder.append(present_iStatus);
@@ -348,30 +286,20 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
     return builder.toHashCode();
   }
 
-  public int compareTo(StatsAndLoadingInfo other) {
+  public int compareTo(SendMailResult other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    StatsAndLoadingInfo typedOther = (StatsAndLoadingInfo)other;
+    SendMailResult typedOther = (SendMailResult)other;
 
-    lastComparison = Boolean.valueOf(isSetICardStatistics()).compareTo(typedOther.isSetICardStatistics());
+    lastComparison = Boolean.valueOf(isSetIResultText()).compareTo(typedOther.isSetIResultText());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetICardStatistics()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCardStatistics, typedOther.iCardStatistics);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetICardLoadingWithEbankingInfo()).compareTo(typedOther.isSetICardLoadingWithEbankingInfo());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetICardLoadingWithEbankingInfo()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCardLoadingWithEbankingInfo, typedOther.iCardLoadingWithEbankingInfo);
+    if (isSetIResultText()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iResultText, typedOther.iResultText);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -403,23 +331,14 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
         break;
       }
       switch (field.id) {
-        case 1: // I_CARD_STATISTICS
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iCardStatistics = new CardStatistics();
-            this.iCardStatistics.read(iprot);
+        case 1: // I_RESULT_TEXT
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iResultText = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_CARD_LOADING_WITH_EBANKING_INFO
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo();
-            this.iCardLoadingWithEbankingInfo.read(iprot);
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // I_STATUS
+        case 2: // I_STATUS
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.iStatus = iprot.readI32();
             setIStatusIsSet(true);
@@ -445,17 +364,10 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iCardStatistics != null) {
-      if (isSetICardStatistics()) {
-        oprot.writeFieldBegin(I_CARD_STATISTICS_FIELD_DESC);
-        this.iCardStatistics.write(oprot);
-        oprot.writeFieldEnd();
-      }
-    }
-    if (this.iCardLoadingWithEbankingInfo != null) {
-      if (isSetICardLoadingWithEbankingInfo()) {
-        oprot.writeFieldBegin(I_CARD_LOADING_WITH_EBANKING_INFO_FIELD_DESC);
-        this.iCardLoadingWithEbankingInfo.write(oprot);
+    if (this.iResultText != null) {
+      if (isSetIResultText()) {
+        oprot.writeFieldBegin(I_RESULT_TEXT_FIELD_DESC);
+        oprot.writeString(this.iResultText);
         oprot.writeFieldEnd();
       }
     }
@@ -468,25 +380,15 @@ public class StatsAndLoadingInfo implements org.apache.thrift.TBase<StatsAndLoad
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("StatsAndLoadingInfo(");
+    StringBuilder sb = new StringBuilder("SendMailResult(");
     boolean first = true;
 
-    if (isSetICardStatistics()) {
-      sb.append("iCardStatistics:");
-      if (this.iCardStatistics == null) {
+    if (isSetIResultText()) {
+      sb.append("iResultText:");
+      if (this.iResultText == null) {
         sb.append("null");
       } else {
-        sb.append(this.iCardStatistics);
-      }
-      first = false;
-    }
-    if (isSetICardLoadingWithEbankingInfo()) {
-      if (!first) sb.append(", ");
-      sb.append("iCardLoadingWithEbankingInfo:");
-      if (this.iCardLoadingWithEbankingInfo == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.iCardLoadingWithEbankingInfo);
+        sb.append(this.iResultText);
       }
       first = false;
     }

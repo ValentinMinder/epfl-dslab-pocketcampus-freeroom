@@ -59,6 +59,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
+		mLayout.hideFirstTitle();
+		mLayout.hideSecondTitle();
 		//setContentView(R.layout.camipro_main);
 
 		//mLayout.setText("Loading");
@@ -85,11 +87,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		// Normal start-up
 		if(mModel.getCamiproCookie() == null) { // if we don't have cookie
 			// get cookie (ping auth plugin)
-			//Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-			//startActivity(authIntent);
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-			startService(authIntent);
+			pingAuthPlugin(this);
 		}
 		//if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
 			// fetch them
@@ -134,7 +132,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		//ListView lv = (ListView) findViewById(R.id.camipro_list);
 		// Create an adapter for the data
 		//lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
-		updateDate();
 	}
 
 	@Override
@@ -143,85 +140,31 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(bal == null)
 			return;
 		
-		updatedBalanceOrStats();
-		//TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
-		//balance.setText(formatMoney(bal));
-		updateDate();
-	}
-
-	@Override
-	public void cardLoadingWithEbankingInfoUpdated() {
-		CardLoadingWithEbankingInfo i = mModel.getCardLoadingWithEbankingInfo();
-		if(i == null)
-			return;
-		
-		/*TextView tv = (TextView) findViewById(R.id.camipro_ebanking_paid_to_text);
-		tv.setText(i.getIPaidTo());
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_account_number_text);
-		tv.setText(i.getIAccountNumber());
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_ref_number_text);
-		tv.setText(i.getIReferenceNumber());
-		updateDate();*/
-	}
-
-	@Override
-	public void cardStatisticsUpdated() {
-		CardStatistics s = mModel.getCardStatistics();
-		if(s == null)
-			return;
-		
-		updatedBalanceOrStats();
-		/*TextView tv = (TextView) findViewById(R.id.camipro_ebanking_1month_text);
-		tv.setText(formatMoney(s.getITotalPaymentsLastMonth()));
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_3months_text);
-		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths()));
-
-		tv = (TextView) findViewById(R.id.camipro_ebanking_average_text);
-		tv.setText(formatMoney(s.getITotalPaymentsLastThreeMonths() / 3.0));*/
-		updateDate();
-	}
-	
-	private void updatedBalanceOrStats() {
 		ArrayList<Amout> l = new ArrayList<Amout>();
-		Double bal = mModel.getBalance();
-		if(bal != null) {
-			l.add(new Amout(getResources().getString(R.string.camipro_current_balance), bal));
-		}
-		CardStatistics s = mModel.getCardStatistics();
-		if(s != null) {
-			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_1month_title),
-					s.getITotalPaymentsLastMonth()));
-			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_3months_title),
-					s.getITotalPaymentsLastThreeMonths()));
-			l.add(new Amout(getResources().getString(R.string.camipro_ebanking_average_title),
-					s.getITotalPaymentsLastThreeMonths() / 3.0));
-		}
-		//ListViewElement mAddView = new ListViewElement(this, l);
+		l.add(new Amout(getResources().getString(R.string.camipro_current_balance), bal));
+		
 		ListView lv = new ListView(getApplicationContext());
 		lv.setAdapter(new AmountAdapter(getApplicationContext(), R.layout.camipro_amount, l));
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		lv.setLayoutParams(p);
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.addFirstLayoutFillerView(lv);
+		
+		
+		//TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
+		//balance.setText(formatMoney(bal));
 	}
 
-	
-	private void refreshAll() {
-		mController.refreshBalanceAndTransactions();
-		mController.refreshStatsAndLoadingInfo();
+	@Override
+	public void cardLoadingWithEbankingInfoUpdated() {
+	}
+
+	@Override
+	public void cardStatisticsUpdated() {
 	}
 	
-	private void updateDisplay() {
-		transactionsUpdated();
-		balanceUpdated();
-		cardLoadingWithEbankingInfoUpdated();
-		cardStatisticsUpdated();
-	}
-	
-	private void updateDate() {
+	@Override
+	public void lastUpdateDateUpdated() {
 		mLayout.setFirstTitle(getResources().getString(R.string.camipro_balance_section_title));
 		// Last update
 		String date = mModel.getLastUpdateDate();
@@ -231,6 +174,23 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			mLayout.setSecondTitle(String.format(
 					getResources().getString(R.string.camipro_transactions_section_title), date));
 		}
+	}
+
+
+	private void updateDisplay() {
+		transactionsUpdated();
+		balanceUpdated();
+		cardLoadingWithEbankingInfoUpdated();
+		cardStatisticsUpdated();
+	}
+
+	
+	public static void pingAuthPlugin(Context context) {
+		//Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+		//startActivity(authIntent);
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+		context.startService(authIntent);
 	}
 	
 	@Override
@@ -255,10 +215,33 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		return true;
 	}
 	
+	
+	
+	
+	@Override
+	public void emailSent(String result) {
+		Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+	}
+
+
+	
+	
 	@Override
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
+	
+	@Override
+	public void camiproServersDown() {
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void notLoggedIn() {
+		mController.reset();
+		pingAuthPlugin(this);
+	}
+
 
 	private CamiproController mController;
 	private ICamiproModel mModel;
@@ -274,7 +257,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	 * HELPERS
 	 */
 	
-	private static String formatMoney(double money) {
+	public static String formatMoney(double money) {
 		return String.format("CHF %.2f", money);
 	}
 
@@ -351,8 +334,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			}
 			TextView tv;
 			Amout t = getItem(position);
-			tv = (TextView) v.findViewById(R.id.camipro_amount_title);
-			tv.setText(t.title);
+			/*tv = (TextView) v.findViewById(R.id.camipro_amount_title);
+			tv.setText(t.title);*/
 			tv = (TextView) v.findViewById(R.id.camipro_amount_value);
 			tv.setText(formatMoney(t.value));
 			return v;
@@ -391,10 +374,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		 */
 		@Override
 		public void performAction(View view) {
-			refreshAll();
+			mController.refreshBalanceAndTransactions();
 		}
 	}
-
 
 
 
