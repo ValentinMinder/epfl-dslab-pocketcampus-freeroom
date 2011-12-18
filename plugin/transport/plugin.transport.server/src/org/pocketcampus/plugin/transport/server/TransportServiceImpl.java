@@ -8,9 +8,11 @@ import java.util.List;
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.transport.shared.QueryDepartureResult;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportService;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportStationType;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import de.schildbach.pte.NetworkProvider.WalkSpeed;
 import de.schildbach.pte.SbbProvider;
@@ -22,10 +24,9 @@ public class TransportServiceImpl implements TransportService.Iface {
 	private SbbProvider mSbbProvider;
 
 	public TransportServiceImpl() {
-		mSbbProvider = new SbbProvider(
-				"MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
+		mSbbProvider = new SbbProvider("MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
 		
-		System.out.println("Transport started");
+		System.out.println("Transport started.");
 		
 		//testing getLocationsFromIDs
 //		ArrayList<Integer> l = new ArrayList<Integer>();
@@ -48,9 +49,9 @@ public class TransportServiceImpl implements TransportService.Iface {
 //		}
 		
 
-//		try {
+		try {
 //			//System.out.println(autocomplete("Neuchatel").get(0).id);
-//			QueryTripsResult res = getTrips("EPFL", "Neuchatel");
+			QueryTripsResult res = getTrips("EPFL", "Neuchatel");
 //			QueryTripsResult res = getTripsFromStationsIDs("8501214", "8504221");
 //			System.out.println("from "+ res.from.name + " to " + res.to.name);
 //			for(TransportTrip tt : res.connections){
@@ -67,10 +68,9 @@ public class TransportServiceImpl implements TransportService.Iface {
 //					System.out.println(d.destination + " with " + d.line + " at " + (new Date(d.plannedTime)).toString());
 //				}
 //			}
-//		} catch (TException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		} catch (TException e1) {
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -186,8 +186,25 @@ public class TransportServiceImpl implements TransportService.Iface {
 	@Override
 	public QueryTripsResult getTrips(String from, String to) throws TException {
 
-		long time = (new Date()).getTime();
-		return getTripsFromSchildbach(from, to, time, true);
+		long now = (new Date()).getTime();
+		QueryTripsResult tmp = getTripsFromSchildbach(from, to, now, true);
+		
+		for(TransportTrip tt: tmp.getConnections()){
+			for(TransportConnection tc : tt.getParts()){
+				tc.setFootIsSet(true);
+				
+				if(tc.foot == false) {
+					tc.setArrivalTimeIsSet(true);
+					tc.setDepartureTimeIsSet(true);
+					tc.setLineIsSet(true);
+					
+				} else {
+					tc.setMinIsSet(true);
+				}
+			}
+		}
+		
+		return tmp;
 	}
 
 	@Override

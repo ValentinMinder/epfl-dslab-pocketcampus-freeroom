@@ -26,6 +26,7 @@
     <string name="transport_hours">hours</string>
     <string name="transport_minute">minute</string>
     <string name="transport_minutes">minutes</string>
+    <string name="transport_minute_abbrev">minute</string>
     
     <!-- Menu -->
     <string name="transport_menu_destinations">Edit destinations</string>

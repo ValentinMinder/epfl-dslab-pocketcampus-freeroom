@@ -281,6 +281,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * destinations along with the next departures to go there.
 	 */
 	private void displayDestinations() {
+		mLayout.hideText();
 		// Gets the user's preferred destinations from the model
 		HashMap<String, List<TransportTrip>> locations = mModel
 				.getPreferredDestinations();
@@ -517,7 +518,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		@Override
 		public void performAction(View view) {
 			mLayout.removeFillerView();
-			mLayout.addFillerView(mListView);
+//			mLayout.addFillerView(mListView);
 			mModel.freeConnections();
 			if (mModel.getPreferredDestinations() == null
 					|| mModel.getPreferredDestinations().isEmpty()) {

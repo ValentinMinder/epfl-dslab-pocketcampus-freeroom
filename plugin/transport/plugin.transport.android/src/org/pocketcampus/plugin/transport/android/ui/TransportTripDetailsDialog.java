@@ -71,30 +71,29 @@ public class TransportTripDetailsDialog extends Dialog {
 			String arrivalTime = "";
 			String arrivalPlace = part.arrival.name;
 			String line = "";
+			String walkingTime;
 
-			if (!part.foot) {
+			if (part.foot) {
+				// Part is a Footway
+				walkingTime = part.getMin() + " " + getString(R.string.transport_minute_abbrev);
+				line = getString(R.string.transport_by_feet);
+				partRow.put("departureTime", walkingTime);
+				
+			} else {
 				// Part is a Trip
 				departureTime = formatter.format(part.getDepartureTime());
 				arrivalTime = formatter.format(part.getArrivalTime());
 				if (part.line != null) {
 					line = TransportFormatter.getNiceName(part.line.name);
-				} else {
-					line = ctx_.getResources().getString(R.string.transport_by_feet);
 				}
-			} else {
-				// Part is a Footway
-				departureTime = formatter.format(part.getDepartureTime());
-				arrivalTime = formatter.format(part.getArrivalTime());
-				line = ctx_.getResources().getString(R.string.transport_by_feet);
+					
+				partRow.put("departureTime", departureTime);
 			}
-
-			partRow.put("departureTime", departureTime);
-			partRow.put("departurePlace", departurePlace);
-
-			partRow.put("line", line);
-
+			
 			partRow.put("arrivalTime", arrivalTime);
 			partRow.put("arrivalPlace", arrivalPlace);
+			partRow.put("departurePlace", departurePlace);
+			partRow.put("line", line);
 
 			connectionParts.add(partRow);
 		}
@@ -118,5 +117,9 @@ public class TransportTripDetailsDialog extends Dialog {
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
 		title.setText(DestinationFormatter.getNiceName(connection_.from)
 				+ " - " + DestinationFormatter.getNiceName(connection_.to));
+	}
+
+	private String getString(int id) {
+		return ctx_.getResources().getString(id);
 	}
 }

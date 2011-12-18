@@ -4,6 +4,7 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 
@@ -31,9 +32,17 @@ public class NextDeparturesRequest
 	 * @return the list of connections from the server
 	 */
 	@Override
-	protected QueryTripsResult runInBackground(Iface client,
-			getTrips_args param) throws Exception {
-		return client.getTrips(param.getFrom(), param.getTo());
+	protected QueryTripsResult runInBackground(Iface client, getTrips_args param) throws Exception {
+		QueryTripsResult results = client.getTrips(param.getFrom(), param.getTo());
+		System.out.println(results);
+		
+		for(TransportConnection part : results.connections.get(0).getParts()) {
+			System.out.println("From: " + part.departureTime+ " " + part.isSetDepartureTime());
+			System.out.println("To: " + part.arrivalTime + " " + part.isSetArrivalTime());
+			System.out.println("Footway?: " + part.isFoot() + part.isSetFoot());
+		}
+		
+		return results;
 	}
 
 	/**
@@ -46,8 +55,7 @@ public class NextDeparturesRequest
 	 *            the departures list gotten from the server
 	 */
 	@Override
-	protected void onResult(TransportController controller,
-			QueryTripsResult result) {
+	protected void onResult(TransportController controller, QueryTripsResult result) {
 		((TransportModel) controller.getModel()).setConnections(result);
 	}
 
