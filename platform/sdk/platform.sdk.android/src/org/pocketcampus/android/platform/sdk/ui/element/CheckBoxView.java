@@ -4,8 +4,11 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -91,6 +94,40 @@ public class CheckBoxView extends LinearLayout {
 				if (mOnCheckBoxClickListener != null) {
 					mOnCheckBoxClickListener.onItemClick(null, v, mPosition, 0);
 				}
+			}
+		});
+		
+		mConvertView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPositiveCheckBox.performClick();
+			}
+		});
+
+		mConvertView.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				switch (keyCode) {
+				case KeyEvent.ACTION_DOWN:
+					mPositiveCheckBox.performClick();
+					break;
+				}
+				return false;
+			}
+		});
+
+		
+		this.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				switch (keyCode) {
+				case KeyEvent.ACTION_DOWN:
+					mPositiveCheckBox.performClick();
+					break;
+				}
+				return false;
 			}
 		});
 
