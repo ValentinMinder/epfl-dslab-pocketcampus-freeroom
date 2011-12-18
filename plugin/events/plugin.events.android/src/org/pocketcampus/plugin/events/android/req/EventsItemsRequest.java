@@ -31,7 +31,7 @@ public class EventsItemsRequest extends
 	protected List<EventsItem> runInBackground(Iface client, getEventsItems_args param)
 			throws Exception {
 		System.out.println("<Events> Requesting events items");
-		return client.getEventsItems(param.getLanguage(), param.getFeedsToGet());
+		return client.getEventsItems(param.getLanguage());
 	}
 
 	/**

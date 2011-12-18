@@ -71,7 +71,7 @@ public class EventsController extends PluginController implements IEventsControl
 	public void getEventItems(List<Feed> preferedFeeds) {
 		String language = Locale.getDefault().getLanguage();
 
-		getEventsItems_args param = new getEventsItems_args(language, preferedFeeds);
+		getEventsItems_args param = new getEventsItems_args(language);
 		new EventsItemsRequest().start(this, mClient, param);
 	}
 
