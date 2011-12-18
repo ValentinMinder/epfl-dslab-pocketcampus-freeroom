@@ -11,7 +11,7 @@
      <string name="directory_searchView_title">EPFL directory</string>
      <string name="directory_searchView_hint">Search for a person</string>
      
-     <string name="directory_network_error">Network error!</string>
+     <string name="directory_network_error">Coudl not connect.</string>
      <string name="directory_too_many_results_warning">Too many results, try to be more specific</string>
      <string name="directory_couldnt_call">Problem with phone call</string>
      <string name="directory_couldnt_email">Problem with email</string>

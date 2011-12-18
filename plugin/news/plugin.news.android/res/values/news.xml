@@ -6,7 +6,7 @@
 	<string name="news_preferences_other_title">Options</string>
 
 	<string name="news_settings">Preferences</string>
-	<string name="news_no_news">No news to display.</string>
+	<string name="news_no_news">Could not connect.</string>
 	<string name="news_loading">Loading news...</string>
 	
 	<string name="news_no_feed_selected">No feed selected</string>

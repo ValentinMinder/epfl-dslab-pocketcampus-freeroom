@@ -11,7 +11,7 @@
      <string name="directory_searchView_title">Annuaire EPFL</string>
      <string name="directory_searchView_hint">Chercher une personne</string>
      
-     <string name="directory_network_error">Erreur réseau!</string>
+     <string name="directory_network_error">Could not connect.</string>
      <string name="directory_too_many_results_warning">Trop de résultats, essayez d\'être plus précis</string>
      <string name="directory_couldnt_call">Un problème est survenu lors de l\'appel téléphonique</string>
      <string name="directory_couldnt_email">Un problème est survenu lors de l\'envoi d\'email</string>

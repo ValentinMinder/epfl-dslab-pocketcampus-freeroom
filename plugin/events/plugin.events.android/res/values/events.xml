@@ -6,7 +6,7 @@
 	<string name="events_preferences_other_title">Options</string>
 
 	<string name="events_settings">Settings</string>
-	<string name="events_no_events">No events to display.</string>
+	<string name="events_no_events">Could not connect.</string>
 	<string name="events_loading">Loading events...</string>
 
 	<string name="events_no_feed_selected">No feed selected</string>

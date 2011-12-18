@@ -6,7 +6,7 @@
 	<string name="news_preferences_other_title">Options</string>
 
 	<string name="news_settings">Préférences</string>
-	<string name="news_no_news">Aucune nouvelle à afficher.</string>
+	<string name="news_no_news">Impossible de se connecter.</string>
 	<string name="news_loading">Chargement des nouvelles...</string>
 	
 	<string name="news_no_feed_selected">Aucun flux sélectionné.</string>

@@ -3,7 +3,7 @@
 
     <!-- General -->
     <string name="satellite_plugin_name">Satellite</string>
-    <string name="satellite_nothing_to_display">Rien à afficher</string>
+    <string name="satellite_nothing_to_display">Impossible de se connecter.</string>
     <string name="satellite_menu_main_page">Satellite</string>
     <string name="satellite_loading">Chargement...</string>
     
