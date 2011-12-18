@@ -18,6 +18,7 @@ package org.pocketcampus.android.platform.sdk.ui.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,7 +28,7 @@ import android.view.ViewGroup;
  */
 public class DashboardLayout extends ViewGroup {
 
-    private static final int UNEVEN_GRID_PENALTY_MULTIPLIER = 0;
+    private static final int UNEVEN_GRID_PENALTY_MULTIPLIER = 2;
 
     private int mMaxChildWidth = 0;
     private int mMaxChildHeight = 0;
@@ -43,7 +44,12 @@ public class DashboardLayout extends ViewGroup {
     public DashboardLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	return false;
+    }
+    
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mMaxChildWidth = 0;
@@ -120,7 +126,7 @@ public class DashboardLayout extends ViewGroup {
         int hSpace = 0;
         int vSpace = 0;
 
-        int cols = 1;
+        int cols = 3;
         int rows;
 
         while (true) {
@@ -154,7 +160,11 @@ public class DashboardLayout extends ViewGroup {
 
             ++cols;
         }
-
+        
+        // XXX
+       /* cols = 3;
+        rows = 3;*/
+        
         // Lay out children based on calculated best-fit number of rows and cols.
 
         // If we chose a layout that has negative horizontal or vertical space, force it to zero.
