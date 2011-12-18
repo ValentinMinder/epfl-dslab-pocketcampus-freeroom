@@ -140,6 +140,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(bal == null)
 			return;
 		
+		mLayout.setFirstTitle(getResources().getString(R.string.camipro_balance_section_title));
+		
 		ArrayList<Amout> l = new ArrayList<Amout>();
 		l.add(new Amout(getResources().getString(R.string.camipro_current_balance), bal));
 		
@@ -165,7 +167,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	public void lastUpdateDateUpdated() {
-		mLayout.setFirstTitle(getResources().getString(R.string.camipro_balance_section_title));
 		// Last update
 		String date = mModel.getLastUpdateDate();
 		if(date != null) {
@@ -182,6 +183,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		balanceUpdated();
 		cardLoadingWithEbankingInfoUpdated();
 		cardStatisticsUpdated();
+		lastUpdateDateUpdated();
 	}
 
 	
@@ -228,7 +230,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override

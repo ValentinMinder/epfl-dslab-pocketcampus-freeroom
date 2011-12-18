@@ -65,11 +65,11 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	@Override
 	protected void handleIntent(Intent aIntent) {
 		// Normal start-up
-		//if(mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have the data
+		if(mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have the data
 			// get it
 			// Normally this shouldn't happen
 			mController.refreshStatsAndLoadingInfo();
-		//}
+		}
 		// update display
 		updateDisplay();
 	}
@@ -185,7 +185,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	}
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
 	private CamiproController mController;

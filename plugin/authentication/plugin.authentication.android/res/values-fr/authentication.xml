@@ -6,4 +6,9 @@
     <string name="authentication_string_password_hint">Mot de passe</string>
     <string name="authentication_string_login">Connexion</string>
         
+    <string name="authentication_invalid_credentials">Nom d\'utilisateur ou mot de passe invalides, essayer de nouveau</string>
+    <string name="authentication_invalid_token">Token invalide</string>
+    <string name="authentication_unexpected_error">Une erreur inattendue s\'est produite</string>
+    <string name="authentication_connection_error_happened">Nous ne pouvons pas vous connecter maintenant, car vous n\'êtes pas connecté à Internet</string>
+        
 </resources>

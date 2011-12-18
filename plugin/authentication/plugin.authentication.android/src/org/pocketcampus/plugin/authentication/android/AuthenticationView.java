@@ -213,25 +213,25 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	
 	@Override
 	public void notifyBadCredentials() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_invalid_credentials), Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
 	@Override
 	public void notifyBadToken() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_invalid_token), Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_token), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
 	@Override
 	public void notifyUnexpectedErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_authentication_unexpected_error), Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_unexpected_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
