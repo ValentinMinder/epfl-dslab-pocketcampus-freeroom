@@ -18,11 +18,9 @@ import org.pocketcampus.plugin.events.android.iface.IEventsView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -70,10 +68,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this, null);
 
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		mLayout.setLayoutParams(layoutParams);
-		mLayout.setGravity(Gravity.CENTER_VERTICAL);
+		mLayout.setTitle(getString(R.string.events_plugin_title));
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
