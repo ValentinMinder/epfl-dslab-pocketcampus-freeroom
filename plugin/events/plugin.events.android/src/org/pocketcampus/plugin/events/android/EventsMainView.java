@@ -18,7 +18,6 @@ import org.pocketcampus.plugin.events.android.iface.IEventsView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,28 +85,17 @@ public class EventsMainView extends PluginView implements IEventsView {
 	}
 
 	/**
-	 * Called when this view is accessed after already having been initialized
-	 * before
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		Log.d("ACTIVITY", "onRestart");
-		eventsUpdated();
-	}
-
-	/**
 	 * Initiates request for events items
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.events_loading));
 		mLayout.hideTitle();
-		mController.getEventItems(mModel.getFeedsList());
+		mController.getEventItems();
 	}
 
 	@Override
 	public void eventsUpdated() {
-		List<EventsItemWithImage> eventsList = mModel.getEvents(this);
+		List<EventsItemWithSpanned> eventsList = mModel.getEvents(this);
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
 		if (eventsList != null) {
@@ -181,7 +169,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					int position, long arg3) {
 				Intent events = new Intent(getApplicationContext(),
 						EventsItemView.class);
-				EventsItemWithImage toPass = mModel.getEvents(
+				EventsItemWithSpanned toPass = mModel.getEvents(
 						EventsMainView.this).get(position);
 				events.putExtra("org.pocketcampus.events.eventsitem.title",
 						toPass.getEventsItem().getTitle());
@@ -191,50 +179,78 @@ public class EventsMainView extends PluginView implements IEventsView {
 				events.putExtra("org.pocketcampus.events.eventsitem.feed",
 						toPass.getEventsItem().getFeed());
 
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat df = new SimpleDateFormat("EEEE dd MMMM yyyy");
 
-				if (toPass.getEventsItem().getStartDate() != 0) {
-					Date startDate = new Date(toPass.getEventsItem()
-							.getStartDate());
-					String date;
-					if(toPass.getEventsItem().getEndDate() != 0){
-						Date endDate = new Date(toPass.getEventsItem()
-								.getEndDate());
-						date = getString(R.string.events_from)+" "+df.format(startDate)+" "+getString(R.string.events_to)+" "+df.format(endDate);
+				String info = "";
+
+				// Format date
+				long startDateLong = toPass.getEventsItem().getStartDate();
+				long endDateLong = toPass.getEventsItem().getEndDate();
+				if (startDateLong != 0) {
+					Date startDate = new Date(startDateLong);
+					if (endDateLong != 0 && startDateLong != endDateLong) {
+						Date endDate = new Date(endDateLong);
+
+						info = getString(R.string.events_from) + " "
+								+ bold(df.format(startDate)) + " "
+								+ getString(R.string.events_to) + " "
+								+ bold(df.format(endDate));
 					} else {
-
-						date = getString(R.string.events_on)+" "+df.format(startDate);
+						info = getString(R.string.events_on) + " "
+								+ bold(df.format(startDate));
 					}
-					events.putExtra("org.pocketcampus.events.eventsitem.date", date
-							);
+
+					if (!(toPass.getEventsItem().getStartTime()).equals("")) {
+						DateFormat time = new SimpleDateFormat("hh:mm");
+
+						try {
+							Date startTimeDate = time.parse(toPass
+									.getEventsItem().getStartTime());
+							String startTimeString = time.format(startTimeDate);
+
+							info = info + " " + getString(R.string.events_at)
+									+ " " + startTimeString;
+						} catch (ParseException e) {
+						}
+
+					}
+
 				}
+				if (!(toPass.getEventsItem().getSpeaker()).equals("")) {
+					info = info + "<br>" + getString(R.string.events_speaker)
+							+ " " + bold(toPass.getEventsItem().getSpeaker());
+				}
+
+				if (!(toPass.getEventsItem().getRoom()).equals("")) {
+					info = info + "<br>" + getString(R.string.events_room)
+							+ " " + toPass.getEventsItem().getRoom();
+				} else if (!(toPass.getEventsItem().getLocation()).equals("")) {
+					info = info + "<br>" + getString(R.string.events_location)
+							+ " " + bold(toPass.getEventsItem().getLocation());
+				}
+
+				events.putExtra("org.pocketcampus.events.eventsitem.info", info);
+
 				startActivity(events);
 			}
 		};
 		mListView.setOnItemClickListener(mOnItemClickListener);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// eventsProvider_.refreshIfNeeded();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// eventsProvider_.removeeventsListener(this);
+	private String bold(String toBoldify) {
+		return "<b>" + toBoldify + "</b>";
 	}
 
 	/**
 	 * The labeler for a feed, to tell how it has to be displayed in a generic
 	 * view.
 	 */
-	ILabeler<EventsItemWithImage> mEventsItemLabeler = new ILabeler<EventsItemWithImage>() {
+	ILabeler<EventsItemWithSpanned> mEventsItemLabeler = new ILabeler<EventsItemWithSpanned>() {
 
 		@Override
-		public String getLabel(EventsItemWithImage obj) {
+		public String getLabel(EventsItemWithSpanned obj) {
 			return obj.getEventsItem().getTitle();
 		}
 	};
+
 }

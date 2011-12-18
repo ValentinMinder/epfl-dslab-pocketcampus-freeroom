@@ -98,8 +98,8 @@ public class EventsServiceImpl implements EventsService.Iface {
 				importFeedForLanguage(language,
 						mLanguagesFeedUrls.get(language));
 			}
+			mLastImportedFeeds = new Date();
 		}
-		mLastImportedFeeds = new Date();
 	}
 
 	/**
@@ -166,15 +166,6 @@ public class EventsServiceImpl implements EventsService.Iface {
 			eventItems = mLanguagesEventsItemsList.get("en");
 		}
 
-		// List<EventsItem> filteredEventItems = new ArrayList<EventsItem>();
-		// if (eventItems != null) {
-		// for (EventsItem ei : eventItems) {
-		// if (feedsToGet.contains(ei.getFeed())) {
-		// filteredEventItems.add(ei);
-		// }
-		// }
-		// }
-
 		return eventItems;
 	}
 
@@ -183,9 +174,9 @@ public class EventsServiceImpl implements EventsService.Iface {
 		public int compare(EventsItem o1, EventsItem o2) {
 			try {
 				if (o2.getStartDate() < o1.getStartDate()) {
-					return -1;
-				} else if (o2.getEndDate() > o1.getEndDate()) {
 					return 1;
+				} else if (o2.getStartDate() > o1.getStartDate()) {
+					return -1;
 				}
 				return 0;
 			} catch (NullPointerException e) {

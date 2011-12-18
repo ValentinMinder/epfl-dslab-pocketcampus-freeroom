@@ -15,7 +15,7 @@ import android.text.Html;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
-public class EventsItemWithImage implements Serializable {
+public class EventsItemWithSpanned implements Serializable {
 	/** Used to pass the EventsItem in an Intent */
 	private static final long serialVersionUID = 1L;
 	/** The EventsItem */
@@ -31,7 +31,7 @@ public class EventsItemWithImage implements Serializable {
 	 * @param eventsItem
 	 *            the EvensItem to which we want to associate an image
 	 */
-	public EventsItemWithImage(EventsItem eventsItem) {
+	public EventsItemWithSpanned(EventsItem eventsItem) {
 		this.mEventsItem = eventsItem;
 		this.mDrawable = null;
 		setFormattedDescription();

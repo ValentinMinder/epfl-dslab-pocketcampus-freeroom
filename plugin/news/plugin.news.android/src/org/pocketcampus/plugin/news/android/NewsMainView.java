@@ -13,10 +13,7 @@ import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import org.pocketcampus.plugin.news.android.iface.INewsView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -36,8 +33,6 @@ public class NewsMainView extends PluginView implements INewsView {
 	private FeedWithImageListViewElement mListView;
 
 	private OnItemClickListener mOnItemClickListener;
-
-	private SharedPreferences prefs_;
 
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
@@ -70,14 +65,13 @@ public class NewsMainView extends PluginView implements INewsView {
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this, null);
 
-//		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-//				LayoutParams.WRAP_CONTENT);
-//		mLayout.setLayoutParams(layoutParams);
-//		mLayout.setGravity(Gravity.CENTER_VERTICAL);
+		// LayoutParams layoutParams = new
+		// LayoutParams(LayoutParams.WRAP_CONTENT,
+		// LayoutParams.WRAP_CONTENT);
+		// mLayout.setLayoutParams(layoutParams);
+		// mLayout.setGravity(Gravity.CENTER_VERTICAL);
 
 		mLayout.setTitle(getString(R.string.news_plugin_title));
-		
-		prefs_ = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
@@ -86,17 +80,6 @@ public class NewsMainView extends PluginView implements INewsView {
 		// data,
 		// as the controller may take some time to get it.
 		displayData();
-	}
-
-	/**
-	 * Called when this view is accessed after already having been initialized
-	 * before
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		Log.d("ACTIVITY", "onRestart");
-		newsUpdated();
 	}
 
 	/**
@@ -199,18 +182,6 @@ public class NewsMainView extends PluginView implements INewsView {
 			}
 		};
 		mListView.setOnItemClickListener(mOnItemClickListener);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// newsProvider_.refreshIfNeeded();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// newsProvider_.removeNewsListener(this);
 	}
 
 	/**

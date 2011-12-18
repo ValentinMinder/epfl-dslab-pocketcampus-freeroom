@@ -29,7 +29,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	IEventsView mListeners = (IEventsView) getListeners();
 
 	/** List of events items to display. */
-	private List<EventsItemWithImage> mEventsItems;
+	private List<EventsItemWithSpanned> mEventsItems;
 
 	/** Access to the preferences */
 	private SharedPreferences mPrefs;
@@ -48,10 +48,10 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	public void setEvents(List<EventsItem> eventsItems) {
 		if (eventsItems != null) {
 			if (mEventsItems == null) {
-				mEventsItems = new ArrayList<EventsItemWithImage>();
+				mEventsItems = new ArrayList<EventsItemWithSpanned>();
 			}
 			for (EventsItem ni : eventsItems) {
-				EventsItemWithImage eventsItem = new EventsItemWithImage(ni);
+				EventsItemWithSpanned eventsItem = new EventsItemWithSpanned(ni);
 				mEventsItems.add(eventsItem);
 			}
 			mListeners.eventsUpdated();
@@ -59,7 +59,7 @@ public class EventsModel extends PluginModel implements IEventsModel {
 	}
 
 	@Override
-	public List<EventsItemWithImage> getEvents(Context ctx) {
+	public List<EventsItemWithSpanned> getEvents(Context ctx) {
 		if (mPrefs == null) {
 			mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 		}
@@ -68,8 +68,8 @@ public class EventsModel extends PluginModel implements IEventsModel {
 			return null;
 		}
 
-		ArrayList<EventsItemWithImage> filteredList = new ArrayList<EventsItemWithImage>();
-		for (EventsItemWithImage eventsItem : mEventsItems) {
+		ArrayList<EventsItemWithSpanned> filteredList = new ArrayList<EventsItemWithSpanned>();
+		for (EventsItemWithSpanned eventsItem : mEventsItems) {
 			if (mPrefs.getBoolean(EventsPreferences.LOAD_RSS
 					+ eventsItem.getEventsItem().getFeed(), true)) {
 				if (!alreadyContains(filteredList, eventsItem)) {
@@ -81,9 +81,9 @@ public class EventsModel extends PluginModel implements IEventsModel {
 		return filteredList;
 	}
 
-	private boolean alreadyContains(List<EventsItemWithImage> filteredList,
-			EventsItemWithImage eventsItemWithImage) {
-		for (EventsItemWithImage ni : filteredList) {
+	private boolean alreadyContains(List<EventsItemWithSpanned> filteredList,
+			EventsItemWithSpanned eventsItemWithImage) {
+		for (EventsItemWithSpanned ni : filteredList) {
 			if (ni.getEventsItem().getTitle()
 					.equals(eventsItemWithImage.getEventsItem().getTitle())) {
 				return true;
@@ -103,13 +103,13 @@ public class EventsModel extends PluginModel implements IEventsModel {
 			mEventsFeeds = list;
 
 			if (mEventsItems == null) {
-				mEventsItems = new ArrayList<EventsItemWithImage>();
+				mEventsItems = new ArrayList<EventsItemWithSpanned>();
 			}
 
 			for (Feed f : mEventsFeeds) {
 				List<EventsItem> feedItems = f.getItems();
 				for (EventsItem ni : feedItems) {
-					mEventsItems.add(new EventsItemWithImage(ni));
+					mEventsItems.add(new EventsItemWithSpanned(ni));
 				}
 			}
 			mListeners.eventsUpdated();

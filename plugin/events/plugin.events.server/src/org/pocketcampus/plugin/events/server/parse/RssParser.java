@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.events.server.parse;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -118,134 +119,151 @@ public class RssParser extends DefaultHandler {
 				mInImage = false;
 			return;
 		}
+
 		if (this.mInTextInput) {
 			if (localName.equalsIgnoreCase("textInput")
 					|| qName.equalsIgnoreCase("textInput"))
 				mInTextInput = false;
 			return;
 		}
+
+		String current = removeBadStuff(this.mText.toString().trim());
+
 		if (localName.equalsIgnoreCase("item")
 				|| qName.equalsIgnoreCase("item")) {
 			this.mInItem = false;
-			if (!mItem.getTitle().contains("to be defined"))
-				;
-			this.mRssFeed.addToItems(this.mItem);
+			if (!mItem.getTitle().contains("To be defined")) {
+				this.mRssFeed.addToItems(this.mItem);
+			}
+
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
 			if (this.mInItem && this.mItem != null) {
-				this.mItem.setTitle(this.mText.toString().trim());
+				String title = current;
+
+				if (!title.isEmpty() && title.length() > 1) {
+					title = title.substring(0, 1).toUpperCase()
+							+ title.substring(1, title.length());
+				}
+				this.mItem.setTitle(title);
 			} else {
-				this.mRssFeed.setTitle(this.mText.toString().trim());
+				this.mRssFeed.setTitle(current);
 				this.mRssFeed.setTitle(mFeedName);
 			}
 		} else if (localName.equalsIgnoreCase("link")
 				|| qName.equalsIgnoreCase("link")) {
 			if (this.mInItem && this.mItem != null) {
-				this.mItem.setLink(mText.toString().trim());
+				this.mItem.setLink(current);
 			} else {
-				this.mRssFeed.setLink(mText.toString().trim());
+				this.mRssFeed.setLink(current);
 			}
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
 			if (this.mInItem && this.mItem != null) {
-				this.mItem.setContent(mText.toString().trim());
+				this.mItem.setContent(current);
 			} else {
-				this.mRssFeed.setDescription(mText.toString().trim());
+				this.mRssFeed.setDescription(current);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:urlref")
 				|| qName.equalsIgnoreCase("epfl:urlref")) {
 			if (this.mInItem && this.mItem != null) {
-				String urlref = mText.toString().trim();
+				String urlref = current;
 				this.mItem.setUrlref(urlref);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:startDate")
 				|| qName.equalsIgnoreCase("epfl:startDate")) {
 			if (this.mInItem && this.mItem != null) {
-				String startDateString = mText.toString().trim();
+				String startDateString = current;
 				this.mItem.setStartDate(getPubDate(startDateString));
 			}
 		} else if (localName.equalsIgnoreCase("epfl:endDate")
 				|| qName.equalsIgnoreCase("epfl:endDate")) {
 			if (this.mInItem && this.mItem != null) {
-				String endDateString = mText.toString().trim();
+				String endDateString = current;
 				this.mItem.setEndDate(getPubDate(endDateString));
 			}
 		} else if (localName.equalsIgnoreCase("epfl:startTime")
 				|| qName.equalsIgnoreCase("epfl:startTime")) {
 			if (this.mInItem && this.mItem != null) {
-				String startTimeString = mText.toString().trim();
+				String startTimeString = current;
+				long startDate = this.mItem.getStartDate();
+				if (startDate != 0) {
+					this.mItem.setStartDate(addStartTime(startDate,
+							startTimeString));
+				}
 				this.mItem.setStartTime(startTimeString);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:speaker")
 				|| qName.equalsIgnoreCase("epfl:speaker")) {
 			if (this.mInItem && this.mItem != null) {
-				String speaker = mText.toString().trim();
+				String speaker = current;
 				this.mItem.setSpeaker(speaker);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:speaker")
 				|| qName.equalsIgnoreCase("epfl:speaker")) {
 			if (this.mInItem && this.mItem != null) {
-				String speaker = mText.toString().trim();
+				String speaker = current;
 				this.mItem.setSpeaker(speaker);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:contact")
 				|| qName.equalsIgnoreCase("epfl:contact")) {
 			if (this.mInItem && this.mItem != null) {
-				String contact = mText.toString().trim();
+				String contact = current;
 				this.mItem.setContact(contact);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:language")
 				|| qName.equalsIgnoreCase("epfl:language")) {
 			if (this.mInItem && this.mItem != null) {
-				String language = mText.toString().trim();
+				String language = current;
 				this.mItem.setLanguage(language);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:audience")
 				|| qName.equalsIgnoreCase("epfl:audience")) {
 			if (this.mInItem && this.mItem != null) {
-				String audience = mText.toString().trim();
+				String audience = current;
 				this.mItem.setAudience(audience);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:expectedPeople")
 				|| qName.equalsIgnoreCase("epfl:expectedPeople")) {
 			if (this.mInItem && this.mItem != null) {
-				String expectedPeople = mText.toString().trim();
+				String expectedPeople = current;
 				this.mItem.setExpectedPeople(expectedPeople);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:location")
 				|| qName.equalsIgnoreCase("epfl:location")) {
 			if (this.mInItem && this.mItem != null) {
-				String location = mText.toString().trim();
+				String location = current;
 				this.mItem.setLocation(location);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:room")
 				|| qName.equalsIgnoreCase("epfl:room")) {
 			if (this.mInItem && this.mItem != null) {
-				String room = mText.toString().trim();
+				String room = current;
 				this.mItem.setRoom(room);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:category")
 				|| qName.equalsIgnoreCase("epfl:category")) {
 			if (this.mInItem && this.mItem != null) {
-				String category = mText.toString().trim();
+				String category = current;
 				this.mItem.setCategory(category);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:organizer")
 				|| qName.equalsIgnoreCase("epfl:organizer")) {
 			if (this.mInItem && this.mItem != null) {
-				String organizerString = mText.toString().trim();
+				String organizerString = current;
 				this.mItem.setOrganizer(organizerString);
 			}
 		} else if (localName.equalsIgnoreCase("epfl:shortTitle")
 				|| qName.equalsIgnoreCase("epfl:shortTitle")) {
 			if (this.mInItem && this.mItem != null) {
-				String shortTitle = mText.toString().trim();
+				String shortTitle = current;
 				this.mItem.setShorttitle(shortTitle);
 			}
 		}
 		this.mText = new StringBuilder();
 	}
 
+	/** Converts a date string to a long, containing the time in milliseconds */
 	public static long getPubDate(String pubDateString) {
 
 		Date pubDate = null;
@@ -259,6 +277,41 @@ public class RssParser extends DefaultHandler {
 			return pubDate.getTime();
 		}
 		return 0;
+	}
+
+	public static long addStartTime(long startDate, String startTime) {
+
+		Date pubDate = null;
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		try {
+			String date = df.format(new Date(startDate)) + " " + startTime;
+			pubDate = df.parse(date);
+		} catch (ParseException e) {
+			System.out.println("No date");
+		}
+		if (pubDate != null) {
+			return pubDate.getTime();
+		}
+		return 0;
+	}
+
+	private String removeBadStuff(String s) {
+		if (s.length() > 0) {
+			s = s.replace("′", "'");
+			s = s.replace("l?", "l'");
+			s = s.replace("d?", "d'");
+			s = s.replace("Ã©", "é");
+			s = s.replace("<p>", "");
+			s = s.replace("<em>", "");
+			s = s.replace("</em>", "");
+			s = s.replace("</p>", "");
+			s = s.replace("<br>", "");
+			s = s.replace("<br />", "");
+			if (!(s.charAt(s.length() - 1) == ('\n'))) {
+				s += "\n";
+			}
+		}
+		return s.trim();
 	}
 
 	public void characters(char[] ch, int start, int length) {

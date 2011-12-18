@@ -4,7 +4,6 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.FeedInformationLayout;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,8 +16,7 @@ public class EventsItemView extends PluginView {
 	private String mTitle;
 	private String mDescription;
 	private String mFeed;
-	private String mDate;
-	private Bitmap mBitmap;
+	private String mInfo;
 	private FeedInformationLayout mLayout;
 
 	/**
@@ -65,8 +63,8 @@ public class EventsItemView extends PluginView {
 		if (mFeed != null) {
 			mLayout.setFeedTitle(mFeed);
 		}
-		if (mDate != null) {
-			mLayout.setDate(mDate);
+		if (mInfo != null) {
+			mLayout.setInfo(mInfo);
 		}
 	}
 
@@ -81,12 +79,10 @@ public class EventsItemView extends PluginView {
 					.getSerializable("org.pocketcampus.events.eventsitem.title");
 			mDescription = (String) extras
 					.getSerializable("org.pocketcampus.events.eventsitem.description");
-			mBitmap = (Bitmap) this.getIntent().getParcelableExtra(
-					"org.pocketcampus.events.eventsitem.bitmap");
 			mFeed = (String) extras
 					.getSerializable("org.pocketcampus.events.eventsitem.feed");
-			mDate = (String) extras
-					.getSerializable("org.pocketcampus.events.eventsitem.date");
+			mInfo = (String) extras
+					.getSerializable("org.pocketcampus.events.eventsitem.info");
 
 		} else {
 			Log.d("EVENTSITEMVIEW", "No extras received!");

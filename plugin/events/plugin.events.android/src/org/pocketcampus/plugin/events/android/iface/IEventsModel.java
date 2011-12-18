@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.events.android.iface;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.plugin.events.android.EventsItemWithImage;
+import org.pocketcampus.plugin.events.android.EventsItemWithSpanned;
 import org.pocketcampus.plugin.events.shared.EventsItem;
 import org.pocketcampus.plugin.events.shared.Feed;
 
@@ -22,7 +22,7 @@ public interface IEventsModel {
 	 * 
 	 * @return the list of events items
 	 */
-	public List<EventsItemWithImage> getEvents(Context ctx);
+	public List<EventsItemWithSpanned> getEvents(Context ctx);
 
 	/**
 	 * Update the list of EventsItems and notify the View

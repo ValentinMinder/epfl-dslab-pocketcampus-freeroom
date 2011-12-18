@@ -4,6 +4,7 @@ import org.pocketcampus.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ public class FeedInformationLayout extends RelativeLayout {
 	/** The feed it's from */
 	private TextView mFeedTitle;
 	/** The date of the item*/
-	private TextView mDate;
+	private TextView mInfo;
 
 	/**
 	 * 
@@ -71,7 +72,9 @@ public class FeedInformationLayout extends RelativeLayout {
 		mFeedTitle = (TextView) findViewById(R.id.sdk_list_entry_feed_view_feed);
 		mImage = (ImageView) findViewById(R.id.sdk_list_entry_feed_view_image);
 		mTextContent = (TextView) findViewById(R.id.sdk_list_entry_feed_view_description);
-		mDate = (TextView) findViewById(R.id.sdk_list_entry_feed_view_date);
+		mInfo = (TextView) findViewById(R.id.sdk_list_entry_feed_view_info);
+		
+		mInfo.setVisibility(View.GONE);
 	}
 
 	/**
@@ -112,9 +115,9 @@ public class FeedInformationLayout extends RelativeLayout {
 	 * @param text
 	 *            the content to be displayed
 	 */
-	public void setDate(String text) {
-		mDate.setText(text);
-		mDate.setVisibility(View.VISIBLE);
+	public void setInfo(String text) {
+		mInfo.setText(Html.fromHtml(text));
+		mInfo.setVisibility(View.VISIBLE);
 	}
 
 	/**

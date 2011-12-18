@@ -160,7 +160,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 			System.out.println(mLanguagesNewsItemsList.get(language).size());
 			return mLanguagesNewsItemsList.get(language);
 		} else {
-			return mLanguagesNewsItemsList.get("en");
+			return mLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
 		}
 	}
 
