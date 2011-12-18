@@ -22,13 +22,13 @@
     <string name="camipro_ebanking_paid_to_title">Paid to</string>
     <string name="camipro_ebanking_account_number_title">Account number</string>
     <string name="camipro_ebanking_ref_number_title">Reference number</string>
-    <string name="camipro_ebanking_infos_remark">The processing time for charging your CAMIPRO card is about 3 working days\nThe maximum amount is CHF 300.-</string>
+    <string name="camipro_ebanking_infos_remark">The processing time for charging your CAMIPRO card is about 3 working days.\nThe maximum amount is CHF 300.-</string>
         
-    <string name="camipro_string_recharge">Recharge card</string>
+    <string name="camipro_string_recharge">Charge card</string>
     <string name="camipro_string_logout">Logout</string>
     
-    <string name="camipro_error_camipro_down">PocketCampus tried to connect to Camipro servers, but they seem down</string>
-    <string name="camipro_connection_error_happened">We cannot fetch Camipro data right now, because you are not connected to the Internet</string>
+    <string name="camipro_error_camipro_down">PocketCampus tried to connect to Camipro servers, but they seem down.</string>
+    <string name="camipro_connection_error_happened">We cannot fetch Camipro data right now, because you are not connected to the Internet.</string>
         
     <string name="camipro_menu_send_by_email">Send by email</string>
         
