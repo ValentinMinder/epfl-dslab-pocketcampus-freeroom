@@ -38,32 +38,32 @@ public class Config {
 	/** Version of the Application */
 	public static String VERSION = "v3r1";
 	
-//	static {
-//		try {
-//			String configFile = Environment.getExternalStorageDirectory() + "/pocketcampus.config";
-//			if(new File(configFile).exists()) {
-//				FileReader fr = new FileReader(configFile);
-//				BufferedReader br = new BufferedReader(fr);
-//				String line;
-//				while((line = br.readLine()) != null) {
-//					String[] param = line.trim().split("=");
-//					if(param.length == 2) {
-//						if("SERVER_IP".equals(param[0]))
-//							SERVER_IP = param[1];
-//						if("SERVER_PORT".equals(param[0]))
-//							SERVER_PORT = Integer.parseInt(param[1]);
-//					}
-//				}
-//			} else {
-//				FileWriter fw = new FileWriter(configFile, false);
-//				fw.write("SERVER_IP=" + SERVER_IP + "\n");
-//				fw.write("SERVER_PORT=" + SERVER_PORT + "\n");
-//				fw.close();
-//			}
-//		} catch (Exception e) {
-//			Log.e("DEBUG", "grrrrrrrrr Exception while running static code!?!?");
-//			e.printStackTrace();
-//		}
-//	}
+	static {
+		try {
+			String configFile = Environment.getExternalStorageDirectory() + "/pocketcampus.config";
+			if(new File(configFile).exists()) {
+				FileReader fr = new FileReader(configFile);
+				BufferedReader br = new BufferedReader(fr);
+				String line;
+				while((line = br.readLine()) != null) {
+					String[] param = line.trim().split("=");
+					if(param.length == 2) {
+						if("SERVER_IP".equals(param[0]))
+							SERVER_IP = param[1];
+						if("SERVER_PORT".equals(param[0]))
+							SERVER_PORT = Integer.parseInt(param[1]);
+					}
+				}
+			} else {
+				FileWriter fw = new FileWriter(configFile, false);
+				fw.write("SERVER_IP=" + SERVER_IP + "\n");
+				fw.write("SERVER_PORT=" + SERVER_PORT + "\n");
+				fw.close();
+			}
+		} catch (Exception e) {
+			Log.e("DEBUG", "grrrrrrrrr Exception while running static code!?!?");
+			e.printStackTrace();
+		}
+	}
 	
 }
