@@ -87,23 +87,21 @@ public class TransportTripDetailsDialog extends Dialog {
 					line = TransportFormatter.getNiceName(part.line.name);
 				}
 					
-				partRow.put("departureTime", departureTime);
+				partRow.put("departureTime", line+", "+departureTime);
 			}
 			
 			partRow.put("arrivalTime", arrivalTime);
 			partRow.put("arrivalPlace", arrivalPlace);
 			partRow.put("departurePlace", departurePlace);
-			partRow.put("line", line);
 
 			connectionParts.add(partRow);
 		}
 
-		String[] keys = { "departureTime", "departurePlace", "line",
+		String[] keys = { "departureTime", "departurePlace",
 				"arrivalTime", "arrivalPlace" };
 
 		int[] ids = { R.id.transport_details_dialog_dep_time,
 				R.id.transport_details_dialog_dep_place,
-				R.id.transport_details_dialog_line,
 				R.id.transport_details_dialog_arr_time,
 				R.id.transport_details_dialog_arr_place };
 
@@ -113,6 +111,9 @@ public class TransportTripDetailsDialog extends Dialog {
 
 		ListView list = (ListView) findViewById(R.id.transport_details_dialog_list);
 		list.setAdapter(mSchedule);
+		list.setClickable(false);
+		list.setFocusable(false);
+		list.setSelector(android.R.color.transparent);
 
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
 		title.setText(DestinationFormatter.getNiceName(connection_.from)

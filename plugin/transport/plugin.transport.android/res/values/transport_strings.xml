@@ -14,7 +14,7 @@
     <string name="transport_confirmation_delete_destination_end">from your favourite destinations?</string>
     <string name="transport_yes">Yes</string>
     <string name="transport_no">No</string>
-    
+
     <!-- Timing -->
     <string name="transport_departure_now">Right now!</string>
     <string name="transport_departure_at">Departure at</string>
@@ -26,17 +26,17 @@
     <string name="transport_hours">hours</string>
     <string name="transport_minute">minute</string>
     <string name="transport_minutes">minutes</string>
-    <string name="transport_minute_abbrev">minute</string>
-    
+    <string name="transport_minute_abbrev">min.</string>
+
     <!-- Menu -->
     <string name="transport_menu_destinations">Edit destinations</string>
     <string name="transport_menu_settings">Settings</string>
-    
+
     <!-- Error -->
     <string name="transport_network_error">Could not connect.</string>
-    
+
     <!-- From last year -->
-    <string name="transport_to">to</string>	
+    <string name="transport_to">to</string>
     <string name="transport_walk_in_min">min. walk</string>
     <string name="transport_by_feet">By feet</string>
 
