@@ -19,7 +19,7 @@
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gaspar Account" />
+            android:text="@string/authentication_plugin_title" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +39,7 @@
 	        android:layout_marginTop="5dp"
 	        android:layout_marginLeft="5dp"
 	        android:layout_marginRight="5dp"
-	        android:hint="@string/username_text"
+	        android:hint="@string/authentication_string_username_hint"
 	        android:singleLine="true" >
 	
 	        <requestFocus />
@@ -53,7 +53,7 @@
 	        android:layout_marginTop="15dp"
 	        android:layout_marginLeft="5dp"
 	        android:layout_marginRight="5dp"
-	        android:hint="@string/passwordtext"
+	        android:hint="@string/authentication_string_password_hint"
 	        android:inputType="textPassword" />
 	
 	    
@@ -77,7 +77,7 @@
 	        android:layout_marginLeft="100dp"
 	        android:layout_marginRight="100dp"
 	        android:enabled="false"
-	        android:text="@string/loginbutton_string" />
+	        android:text="@string/authentication_string_login" />
     </LinearLayout>
         
 
