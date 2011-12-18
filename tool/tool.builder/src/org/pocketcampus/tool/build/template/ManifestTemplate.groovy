@@ -9,7 +9,8 @@ class ManifestTemplate {
 
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pocketcampus">
+	package="org.pocketcampus"
+    android:installLocation="preferExternal">
 
 	<uses-sdk
 		android:minSdkVersion="8" />
