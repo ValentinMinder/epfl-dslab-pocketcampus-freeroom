@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEmptyLayoutItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
@@ -48,7 +47,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		//Tracker
-		Tracker.getInstance().trackPageView("bikes");
+//		Tracker.getInstance().trackPageView("bikes");
 		
 		// Get and cast the controller and model
 		mController = (BikesController) controller;
@@ -109,7 +108,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 							dialog.show();
 
 							//Tracker
-							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
+//							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
 							
 							break;
 						}
@@ -252,7 +251,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 		@Override
 		public void performAction(View view) {
 			//Tracker
-			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
+//			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
 			
 			mList.invalidateViews();
 			mLayout.removeFillerView();
@@ -273,7 +272,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-		Tracker.getInstance().trackPageView("bikes/network_error");
+//		Tracker.getInstance().trackPageView("bikes/network_error");
 		
 		mLayout.setText(getString(R.string.bikes_try_again_later));
 	}

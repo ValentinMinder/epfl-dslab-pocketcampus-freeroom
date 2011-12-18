@@ -6,15 +6,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.TextView;
 
 /**
  * A Dialog to display a Rating Bar that the user can set, along with a confirm
