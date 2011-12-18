@@ -7,7 +7,7 @@
     <string name="food_menu_sandwiches">Sandwiches</string>
     <string name="food_menu_suggestions">Suggestions</string>
     <string name="food_menu_settings">Préférences</string>
-	<string name="food_network_error">Erreur de connexion!</string>
+	<string name="food_network_error">Impossible de se connecter.</string>
 	<string name="food_meals_request_error">Impossible de mettre à jour les menus!</string>
 	<string name="food_displaying_from_cache">Affichage des menus depuis le cache</string>
     
@@ -16,6 +16,7 @@
 
     <!-- Meals -->
     <string name="food_no_menus">Pas de menus.</string>
+    <string name="food_no_menus_week_end">Pas de menus pendant le week-end.</string>
     <string name="food_loading">Chargement des menus...</string>
 
     <!-- Menu Dialog -->

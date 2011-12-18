@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.food.android;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -155,7 +156,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		mLayout.setText(getResources().getString(R.string.food_loading));
 		mController.getRestaurants();
 		mController.getMeals();
-//		mController.getSandwiches();
 		mController.getHasVoted();
 	}
 
@@ -184,11 +184,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		/*
-		 * if (item.getItemId() == R.id.food_by_meals) {
-		 * showMenusByRestaurants(); } else if (item.getItemId() ==
-		 * R.id.food_by_sandwiches) { showSandwiches(); } else
-		 */if (item.getItemId() == R.id.food_by_suggestions) {
+		if (item.getItemId() == R.id.food_by_suggestions) {
 			// Extras to add to the Intent
 			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
 			// Intent to start the SuggestionsView
@@ -241,8 +237,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				new MenuDialogListener(b, meal));
 		b.setSecondButton(R.string.food_menu_dialog_secondButton,
 				new MenuDialogListener(b, meal));
-		// b.setThirdButton(R.string.food_menu_dialog_thirdButton,
-		// new MenuDialogListener(b, meal));
 
 		// Create the dialog and display it
 		MenuDialog dialog = b.create();
@@ -339,33 +333,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Toast toast = Toast.makeText(getApplicationContext(),
-		// getString(R.string.food_network_error),
-		// Toast.LENGTH_SHORT);
-		// TODO: DEPENDS ON THE REQUEST
-		// toast.show();
-	}
-
-	/**
-	 * Updates the view with what has to be currently displayed
-	 */
-	public void updateView() {
-		// mList.getAdapter().removeSections();
-		// switch (currentDisplayType_) {
-		// case Restaurants:
-		// showMenusByRestaurants();
-		// break;
-		// case Ratings:
-		// showMenusByRatings();
-		// break;
-		// case Sandwiches:
-		// showSandwiches();
-		// break;
-		// case Suggestions:
-		// showMenusBySuggestions();
-		// break;
-		// }
-		// ownerActivity_.refreshActionBar(currentDisplayType_);
 	}
 
 	/**
@@ -493,7 +460,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				mLayout.addFillerView(mExpandableList);
 			} else {
 				// Set the centered text to empty menus
-				mLayout.setText(getString(R.string.food_no_menus));
+				Date today = new Date();
+				int day = today.getDay();
+				Log.d("FOOD", "Day is " + day);
+				if (day == 0 || day == 6) {
+					mLayout.setText(getString(R.string.food_no_menus_week_end));
+				} else {
+					mLayout.setText(getString(R.string.food_no_menus));
+				}
 				// Hide the title as there is no content
 				mLayout.hideTitle();
 			}
@@ -525,7 +499,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mLayout.addFillerView(mList);
 		} else {
 			mLayout.removeFillerView();
-			mLayout.setText(getString(R.string.food_no_menus));
+			Date today = new Date();
+			int day = today.getDay();
+			Log.d("FOOD", "Day is " + day);
+			if (day == 0 || day == 6) {
+				mLayout.setText(getString(R.string.food_no_menus_week_end));
+			} else {
+				mLayout.setText(getString(R.string.food_no_menus));
+			}
 			mLayout.hideTitle();
 		}
 	}
@@ -561,7 +542,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mLayout.setTitle(getString(R.string.food_by_suggestions));
 			mLayout.addFillerView(mList);
 		} else {
-			mLayout.setText(getString(R.string.food_no_menus));
+			Date today = new Date();
+			int day = today.getDay();
+			Log.d("FOOD", "Day is " + day);
+			if (day == 0 || day == 6) {
+				mLayout.setText(getString(R.string.food_no_menus_week_end));
+			} else {
+				mLayout.setText(getString(R.string.food_no_menus));
+			}
 			mLayout.hideTitle();
 		}
 	}
@@ -967,7 +955,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	};
 
 	/**
-	 * Display a message saying that there is nothin to display when an error
+	 * Display a message saying that there is nothing to display when an error
 	 * occurs while contacting the server.
 	 */
 	@Override
