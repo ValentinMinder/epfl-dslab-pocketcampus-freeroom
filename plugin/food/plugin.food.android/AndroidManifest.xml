@@ -14,7 +14,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             android:icon="@drawable/food_icon"
-            android:label="Food"
+            android:label="@string/food_plugin_title"
             android:name=".plugin.food.android.FoodMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

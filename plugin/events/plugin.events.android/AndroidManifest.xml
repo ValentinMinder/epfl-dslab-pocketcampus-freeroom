@@ -14,7 +14,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             android:icon="@drawable/events_icon"
-            android:label="Events"
+            android:label="@string/events_plugin_title"
             android:name=".plugin.events.android.EventsMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

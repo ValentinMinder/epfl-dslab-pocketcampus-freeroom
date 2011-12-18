@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-     <string name="directory_plugin_name">Directory</string>
+     <string name="directory_plugin_name">Annuaire</string>
      <string name="directory_person_details_dialog_tile">Détails</string>
     
      <string name="directory_call">Appeler</string>

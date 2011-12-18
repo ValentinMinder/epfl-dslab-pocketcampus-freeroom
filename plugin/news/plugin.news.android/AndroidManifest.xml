@@ -14,7 +14,7 @@
         android:theme="@style/PocketCampusTheme" >
         <activity
             android:icon="@drawable/news_icon"
-            android:label="News"
+            android:label="@string/news_plugin_title"
             android:name=".plugin.news.android.NewsMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

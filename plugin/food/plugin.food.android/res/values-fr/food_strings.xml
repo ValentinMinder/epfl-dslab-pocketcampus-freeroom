@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General -->
-    <string name="food_hello">Bonjour, activité Android!</string>
+    <string name="food_plugin_title">Restaurants</string>
     <string name="food_menu_meals">Menus</string>
     <string name="food_menu_sandwiches">Sandwiches</string>
     <string name="food_menu_suggestions">Suggestions</string>

@@ -16,7 +16,7 @@
         <!-- Bikes Plugin -->
 		<activity
 		    android:name="org.pocketcampus.plugin.bikes.android.BikesMainView"
-			android:label="Bikes"
+			android:label="@string/bikes_plugin_name"
 			 android:icon="@drawable/bike_icon">
 			
 			<intent-filter>

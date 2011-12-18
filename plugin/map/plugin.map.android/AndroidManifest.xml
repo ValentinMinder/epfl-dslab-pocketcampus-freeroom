@@ -16,7 +16,7 @@
 
         <!-- Map Plugin -->
         <activity
-            android:label="Map"
+            android:label="@string/map_plugin_title"
             android:name=".plugin.map.android.MapMainView"
             android:icon="@drawable/map_icon" >
             <intent-filter >

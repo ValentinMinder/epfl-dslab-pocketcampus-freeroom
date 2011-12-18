@@ -16,7 +16,7 @@
 
         <!-- Directory Plugin -->
         <activity
-            android:label="Directory"
+            android:label="@string/directory_plugin_name"
              android:icon="@drawable/directory_icon"
             android:name="org.pocketcampus.plugin.directory.android.DirectorySearchView" >
             <intent-filter >
