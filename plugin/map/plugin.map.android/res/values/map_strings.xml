@@ -20,7 +20,9 @@
     <string name="map_directions_not_found">We were unable to find a valid route for you.</string>
     
     <string name="map_search">Search the map</string>
-    <string name="map_searching">Searching the map</string>
+    <string name="map_search_failed">Couldn\'t load results.</string>
+    <string name="map_search_no_results">No results.</string>
+    <string name="map_searching">Searching...</string>
     <string name="map_level">Level</string>
     <string name="map_take_me_there_button">Take me there</string>
     <string name="map_zoom_button">Zoom in</string>

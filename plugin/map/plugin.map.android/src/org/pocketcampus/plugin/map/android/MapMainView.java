@@ -29,10 +29,8 @@ import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
 import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
-import org.pocketcampus.plugin.map.android.ui.ItemDialog;
 import org.pocketcampus.plugin.map.android.ui.LevelBar;
 import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
-import org.pocketcampus.plugin.map.shared.MapElementBean;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.Position;
@@ -141,7 +139,7 @@ public class MapMainView extends PluginView implements IMapView {
 		setupMapView();
 
 		// Download the available layers
-		mController.getLayers();
+		//mController.getLayers();
 		
 //		handleSearchIntent(getIntent().getExtras());
 	}
@@ -174,27 +172,6 @@ public class MapMainView extends PluginView implements IMapView {
 			intentItemId_ = extras.getInt("MapItem");
 		}
 	}
-
-//	@Override
-//	protected void setupActionBar(boolean addHomeButton) {
-//
-//		actionBar_.addAction(new Action() {
-//
-//			@Override
-//			public void performAction(View view) {
-//				updateOverlays(true);
-//
-//				Tracker.getInstance().trackPageView("map/manualRefresh");
-//			}
-//
-//			@Override
-//			public int getDrawable() {
-//				return R.drawable.refresh;
-//			}
-//		});
-//
-//		super.setupActionBar(addHomeButton);
-//	}
 
 	/**
 	 * Change the level of the map.
@@ -512,8 +489,10 @@ public class MapMainView extends PluginView implements IMapView {
 		} else {
 			myLocationOverlay_.enableMyLocation();
 			myLocationOverlay_.enableFollowLocation();
-			if(DEBUG)
+			
+			if(DEBUG) {
 				googleLocationOverlay_.enableMyLocation();
+			}
 		}
 	}
 
@@ -903,8 +882,8 @@ public class MapMainView extends PluginView implements IMapView {
 
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
-		toast.show();
+//		Toast toast = Toast.makeText(getApplicationContext(), "Network error!", Toast.LENGTH_SHORT);
+//		toast.show();
 	}
 
 	@Override
