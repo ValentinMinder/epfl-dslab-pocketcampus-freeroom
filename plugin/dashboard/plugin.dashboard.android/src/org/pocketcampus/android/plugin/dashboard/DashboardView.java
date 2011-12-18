@@ -7,6 +7,7 @@ import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginInfo;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,9 @@ public class DashboardView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		setContentView(R.layout.dashboard_main);
-
+		//Tracker
+		Tracker.getInstance().trackPageView("dashboard");
+				
 		mDashboard = new PluginDashboard(this);
 
 		// TODO use an intent filter instead
@@ -44,6 +47,9 @@ public class DashboardView extends PluginView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.dashboard_about) {
+			//Tracker
+			Tracker.getInstance().trackPageView("dashboard/menu");
+			
 			startActivity(new Intent(this, AboutView.class));
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		}

@@ -11,7 +11,7 @@
     <string name="bikes_website">http://developpement-durable.epfl.ch/page-12546.html</string>
     <string name="bikes_website_name">Site web</string>
     <string name="bikes_network_error">Erreur avec le réseau</string>
-    <string name="bikes_try_again_later">Veuillez réessayer plus tard</string>
+    <string name="bikes_try_again_later">Impossible de se connecter.</string>
     <string name="bikes_there_is">Il y a</string>
     <string name="bikes_there_are">Il y a</string>
     <string name="bikes_empty_slot">emplacement vide</string>

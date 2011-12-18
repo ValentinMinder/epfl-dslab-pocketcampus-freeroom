@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/lib-google-analytics.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
