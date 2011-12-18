@@ -99,8 +99,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 				importFeedForLanguage(language,
 						mLanguagesFeedUrls.get(language));
 			}
+			mLastImportedFeeds = new Date();
 		}
-		mLastImportedFeeds = new Date();
 	}
 
 	/**
