@@ -12,7 +12,7 @@
     <string name="camipro_ebanking_average_title">Moyenne par mois</string>
         
     
-    <string name="camipro_balance_section_title">Solde</string>
+    <string name="camipro_balance_section_title">Solde Camipro</string>
     <string name="camipro_transactions_section_title">Dernière mise à jour %s</string>
     <string name="camipro_ebanking_section_title">Chargement par e-banking</string>
     <string name="camipro_statistics_section_title">Statistiques</string>
