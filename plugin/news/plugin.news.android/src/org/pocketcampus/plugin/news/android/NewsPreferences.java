@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.pocketcampus.R;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -36,8 +37,8 @@ public class NewsPreferences extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("news/preferences");
-		
+		// Tracker.getInstance().trackPageView("news/preferences");
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_preference);
 
@@ -66,8 +67,8 @@ public class NewsPreferences extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
 				// Tracker
-//				Tracker.getInstance().trackPageView("news/preferences/change");
-				
+				// Tracker.getInstance().trackPageView("news/preferences/change");
+
 				PreferenceManager.getDefaultSharedPreferences(that).edit()
 						.putLong(CACHE_TIME, 0).commit();
 				return true;
@@ -122,6 +123,12 @@ public class NewsPreferences extends PreferenceActivity {
 		// otherPrefsCat.addPreference(showImgPref);
 
 		return root;
+	}
+
+	@Override
+	public void onBackPressed() {
+		setResult(Activity.RESULT_OK);
+		finish();
 	}
 
 	/**

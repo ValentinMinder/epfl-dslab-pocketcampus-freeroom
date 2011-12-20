@@ -8,7 +8,6 @@ import org.pocketcampus.plugin.news.android.iface.INewsModel;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * 
@@ -72,6 +71,7 @@ public class NewsItemView extends PluginView {
 			mLayout.setImage(mBitmap);
 		}
 	}
+
 
 	/**
 	 * Handle extras from the MainView

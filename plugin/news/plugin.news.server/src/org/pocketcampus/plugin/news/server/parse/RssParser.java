@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -40,6 +42,10 @@ public class RssParser extends DefaultHandler {
 	private boolean mInItem;
 	private boolean mInImage;
 	private boolean mInTextInput;
+
+	/** Used to get an image from the text */
+	private final static Pattern imagePattern_ = Pattern
+			.compile("<img.*src=\"?(\\S+).*>");
 
 	public RssParser(String feedName, String url) {
 		this.mUrlString = url;
@@ -128,6 +134,41 @@ public class RssParser extends DefaultHandler {
 		if (localName.equalsIgnoreCase("item")
 				|| qName.equalsIgnoreCase("item")) {
 			this.mInItem = false;
+			// Set the image URL
+			if (mItem.getImageUrl() == null && mItem.getContent() != null) {
+				Matcher m = imagePattern_.matcher(mItem.getContent());
+				if (m.find()) {
+					String img = m.group(1);
+					if (img.charAt(img.length() - 1) == '\"')
+						img = img.substring(0, img.length() - 1);
+					mItem.setImageUrl(img);
+				}
+			}
+			String content = this.mItem.getContent();
+			if(mItem.getTitle().contains("Towards a zero carbon built")){
+				System.out.println(content);
+			}
+			content = content.replaceAll("<img[^>]+>", "");
+			content = content.replaceAll("(&nbsp;)+", "");
+			content = content.replaceAll("(<strong>)+", "<b>");
+			content = content.replaceAll("(</strong>)+", "</b>");
+			content = content.replaceAll("((<br />)\n)+", "\n<br />");
+			content = content.replaceAll("(<p>(&nbsp;)+</p>)+", "");
+			
+			if(mItem.getTitle().contains("Towards a zero carbon built")){
+				System.out.println(content);
+			}
+			int carriageReturn = content.indexOf("<br />");
+
+			if (carriageReturn != -1) {
+				String firstParagraph = content.substring(0, carriageReturn);
+				String rest = content.substring(carriageReturn,
+						content.length());
+
+				content = "<b>" + firstParagraph + "</b>" + rest;
+			}
+			this.mItem.setContent(content);
+
 			this.mRssFeed.addToItems(this.mItem);
 		} else if (localName.equalsIgnoreCase("title")
 				|| qName.equalsIgnoreCase("title")) {
@@ -147,7 +188,9 @@ public class RssParser extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
 			if (this.mInItem && this.mItem != null) {
-				this.mItem.setContent(mText.toString().trim());
+				String content = mText.toString().trim();
+
+				this.mItem.setContent(content);
 			} else {
 				this.mRssFeed.setDescription(mText.toString().trim());
 			}

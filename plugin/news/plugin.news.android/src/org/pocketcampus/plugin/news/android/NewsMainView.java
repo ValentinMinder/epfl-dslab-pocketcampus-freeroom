@@ -34,6 +34,8 @@ public class NewsMainView extends PluginView implements INewsView {
 
 	private OnItemClickListener mOnItemClickListener;
 
+	private static final int PREFERENCES_REQUEST_CODE = 1555;
+
 	/**
 	 * Defines what the main controller is for this view. This is optional, some
 	 * view may not need a controller (see for example the dashboard).
@@ -58,7 +60,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("news");
+		// Tracker.getInstance().trackPageView("news");
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -66,12 +68,6 @@ public class NewsMainView extends PluginView implements INewsView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this, null);
-
-		// LayoutParams layoutParams = new
-		// LayoutParams(LayoutParams.WRAP_CONTENT,
-		// LayoutParams.WRAP_CONTENT);
-		// mLayout.setLayoutParams(layoutParams);
-		// mLayout.setGravity(Gravity.CENTER_VERTICAL);
 
 		mLayout.setTitle(getString(R.string.news_plugin_title));
 
@@ -128,7 +124,33 @@ public class NewsMainView extends PluginView implements INewsView {
 		System.out.println(mModel.getFeedsUrls().size());
 		settings.putExtra("org.pocketcampus.news.feedUrls",
 				(HashMap<String, String>) mModel.getFeedsUrls());
-		startActivity(settings);
+		
+		startActivityForResult(settings, PREFERENCES_REQUEST_CODE);
+	}
+
+	/**
+	 * Called when coming back from the preferences
+	 * 
+	 * @param requestCode
+	 *            The integer request code originally supplied to
+	 *            startActivityForResult(), allowing you to identify who this
+	 *            result came from.
+	 * @param resultCode
+	 *            The integer result code returned by the child activity through
+	 *            its setResult().
+	 * @param data
+	 *            An Intent, which can return result data to the caller (various
+	 *            data can be attached to Intent "extras").
+	 */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case PREFERENCES_REQUEST_CODE:
+			if (resultCode == RESULT_OK) {
+				newsUpdated();
+			}
+		}
 	}
 
 	/**
@@ -157,7 +179,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-//		Tracker.getInstance().trackPageView("news/network_error");
+		// Tracker.getInstance().trackPageView("news/network_error");
 
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
@@ -178,15 +200,15 @@ public class NewsMainView extends PluginView implements INewsView {
 				news.putExtra("org.pocketcampus.news.newsitem.title", toPass
 						.getNewsItem().getTitle());
 				news.putExtra("org.pocketcampus.news.newsitem.description",
-						toPass.getFormattedDescription());
+						toPass.getNewsItem().getContent());
 				news.putExtra("org.pocketcampus.news.newsitem.feed", toPass
 						.getNewsItem().getFeed());
 				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
 						toPass.getBitmapDrawable());
 
 				// Tracker
-//				Tracker.getInstance().trackPageView(
-//						"news/click/" + toPass.getNewsItem().getTitle());
+				// Tracker.getInstance().trackPageView(
+				// "news/click/" + toPass.getNewsItem().getTitle());
 
 				startActivity(news);
 			}

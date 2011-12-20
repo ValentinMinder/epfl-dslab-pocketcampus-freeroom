@@ -5,6 +5,7 @@ import org.pocketcampus.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,8 @@ public class FeedInformationLayout extends RelativeLayout {
 	 *            the content to be displayed
 	 */
 	public void setDescription(String text) {
-		mTextContent.setText(text);
+		mTextContent.setText(Html.fromHtml(text));
+		mTextContent.setMovementMethod(LinkMovementMethod.getInstance());
 		mTextContent.setVisibility(View.VISIBLE);
 	}
 	

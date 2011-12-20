@@ -214,8 +214,6 @@ public class NewsServiceImpl implements NewsService.Iface {
 		if (now.get(Calendar.DAY_OF_WEEK) != then.get(Calendar.DAY_OF_WEEK)) {
 			return false;
 		} else {
-			System.out.println("Difference between the 2 dates: "
-					+ getMinutes(then.getTime(), now.getTime()));
 			if (getMinutes(then.getTime(), now.getTime()) > REFRESH_INTERVAL) {
 				return false;
 			}
