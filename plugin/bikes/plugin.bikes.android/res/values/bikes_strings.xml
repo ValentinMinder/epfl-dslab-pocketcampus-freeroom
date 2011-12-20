@@ -18,6 +18,6 @@
     <string name="bikes_empty_slots">empty bike slots</string>
     <string name="bikes_available_bike">available bike</string>
     <string name="bikes_available_bikes">available bikes</string>
-    <string name="bikes_loading">Loading..</string>
+    <string name="bikes_loading">Loading bikes...</string>
 
 </resources>
