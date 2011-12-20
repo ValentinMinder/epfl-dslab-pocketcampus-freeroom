@@ -285,7 +285,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private void importMenus() {
 		List<Meal> mealsFromDB = mDatabase.getMeals();
 
-		System.out.println("MealsFromDb: " + mealsFromDB.size());
 		if (mealsFromDB != null && !mealsFromDB.isEmpty()) {
 			mAllMeals = mealsFromDB;
 
@@ -322,9 +321,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private List<Meal> parseMenus() {
 		Set<String> restaurants = mRestaurantsFeeds.keySet();
 		List<Meal> newlyParsedMeals = new ArrayList<Meal>();
-
+		List<String> notCapitalized = mDatabase.getNotCapitalized(); 
+				
 		for (String r : restaurants) {
-			RssParser rp = new RssParser(mRestaurantsFeeds.get(r));
+			RssParser rp = new RssParser(mRestaurantsFeeds.get(r), notCapitalized);
 			rp.parse();
 			RssFeed feed = rp.getFeed();
 

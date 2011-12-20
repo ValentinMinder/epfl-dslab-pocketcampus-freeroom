@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -34,14 +35,17 @@ public class RssParser extends DefaultHandler {
 	/** Tells whether the object being parsed is an image */
 	private boolean imgStatus;
 
+	private List<String> notCapitalized;
+
 	/**
 	 * Constructor for the Parser
 	 * 
 	 * @param url
 	 *            the Url to the feed to parse
 	 */
-	public RssParser(String url) {
+	public RssParser(String url, List<String> notCapitalized) {
 		this.urlString = url;
+		this.notCapitalized = notCapitalized;
 		this.text = new StringBuilder();
 	}
 
@@ -249,16 +253,51 @@ public class RssParser extends DefaultHandler {
 			for (int j = 0; j < words.length; j++) {
 				String s = words[j];
 
-				if (s.length() > 3 || j == 0 || s.equals("riz")) {
+				if ((s.length() > 2 || j == 0)
+						&& (notCapitalized != null && !notCapitalized
+								.contains(s))) {
 					String begin = "";
 					String sub = "";
 
 					if (s.length() > 1) {
 						begin = s.substring(0, 1);
-						begin = begin.toUpperCase();
+						if (begin.equals("-")) {
+							begin = s.substring(1, 2);
+							sub = s.substring(2);
+						} else if (begin.equals("(") || begin.equals("-")) {
+							// System.out.println(s);
+							begin = begin.concat(s.substring(1, 2)
+									.toUpperCase());
+							sub = s.substring(2);
+						} else {
+							begin = begin.toUpperCase();
+							sub = s.substring(1);
+						}
 
-						sub = s.substring(1);
 						sub = sub.toLowerCase();
+						
+						if (sub.contains("'") || sub.contains("-")) {
+							int toCapitalize = 0;
+							if (sub.contains("'")) {
+								toCapitalize = sub.indexOf("'") + 1;
+							} else if (sub.contains("-")) {
+								toCapitalize = sub.indexOf("-") + 1;
+							}
+							if ((toCapitalize) <= sub.length()) {
+								System.out.println(sub.substring(0,
+										toCapitalize));
+								System.out.println(sub.substring(toCapitalize,
+										toCapitalize + 1));
+								System.out.println(sub.substring(
+										toCapitalize + 1, sub.length()));
+
+								sub = sub.substring(0, toCapitalize)
+										+ sub.substring(toCapitalize,
+												toCapitalize + 1).toUpperCase()
+										+ sub.substring(toCapitalize + 1,
+												sub.length());
+							}
+						}
 					} else {
 						begin = s;
 						begin = begin.toUpperCase();
