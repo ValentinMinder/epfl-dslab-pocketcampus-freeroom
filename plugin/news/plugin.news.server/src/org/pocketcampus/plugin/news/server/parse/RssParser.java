@@ -145,9 +145,6 @@ public class RssParser extends DefaultHandler {
 				}
 			}
 			String content = this.mItem.getContent();
-			if(mItem.getTitle().contains("Towards a zero carbon built")){
-				System.out.println(content);
-			}
 			content = content.replaceAll("<img[^>]+>", "");
 			content = content.replaceAll("(&nbsp;)+", "");
 			content = content.replaceAll("(<strong>)+", "<b>");
@@ -155,9 +152,6 @@ public class RssParser extends DefaultHandler {
 			content = content.replaceAll("((<br />)\n)+", "\n<br />");
 			content = content.replaceAll("(<p>(&nbsp;)+</p>)+", "");
 			
-			if(mItem.getTitle().contains("Towards a zero carbon built")){
-				System.out.println(content);
-			}
 			int carriageReturn = content.indexOf("<br />");
 
 			if (carriageReturn != -1) {
