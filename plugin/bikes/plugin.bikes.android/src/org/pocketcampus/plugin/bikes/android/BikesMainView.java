@@ -253,10 +253,12 @@ public class BikesMainView extends PluginView implements IBikesView {
 //			Tracker
 //			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
 			
-			mList.invalidateViews();
-			mLayout.removeFillerView();
-			mLayout.setText(getResources().getString(R.string.bikes_loading));
-			mController.getAvailableBikes();
+			if(mList != null && mLayout != null && mController != null){
+				mList.invalidateViews();
+				mLayout.removeFillerView();
+				mLayout.setText(getResources().getString(R.string.bikes_loading));
+				mController.getAvailableBikes();
+			}
 		}
 	}
 
