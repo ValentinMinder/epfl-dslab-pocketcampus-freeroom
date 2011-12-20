@@ -35,6 +35,9 @@ public class NewsPreferences extends PreferenceActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("news/preferences");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_preference);
 
@@ -62,6 +65,9 @@ public class NewsPreferences extends PreferenceActivity {
 		OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
+				// Tracker
+//				Tracker.getInstance().trackPageView("news/preferences/change");
+				
 				PreferenceManager.getDefaultSharedPreferences(that).edit()
 						.putLong(CACHE_TIME, 0).commit();
 				return true;

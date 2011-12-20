@@ -6,21 +6,15 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCSectionItem;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +26,9 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
+
 public class CamiproCardRechargeView extends PluginView implements ICamiproView {
 
 	@Override
@@ -41,6 +38,9 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("camipro/charge");
+		
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
@@ -160,6 +160,9 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
 		if(item.getItemId() == R.id.camipro_send_ebankinginfo_byemail) {			
+			//Tracker
+//			Tracker.getInstance().trackPageView("camipro/charge/email");
+			
 			mController.sendEmailWithLoadingDetails();
 		}
 		
@@ -185,6 +188,9 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	}
 	@Override
 	public void networkErrorHappened() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("camipro/charge/network_error");
+		
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
@@ -286,6 +292,9 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		 */
 		@Override
 		public void performAction(View view) {
+			//Tracker
+//			Tracker.getInstance().trackPageView("camipro/charge/refresh");
+			
 			mController.refreshStatsAndLoadingInfo();
 		}
 	}

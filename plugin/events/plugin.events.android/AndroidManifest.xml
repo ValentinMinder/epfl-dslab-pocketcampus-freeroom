@@ -20,7 +20,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".plugin.events.android.EventsPreferences" >

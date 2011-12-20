@@ -15,8 +15,8 @@ import android.app.Service;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class DirectoryFilterOUView extends PluginView implements IDirectoryView {
 	private DirectoryController mController;
@@ -34,6 +34,9 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,	PluginController controller){
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/OUView");
+		
 		mController = (DirectoryController)controller;
 		mModel = (DirectoryModel)controller.getModel();
 		mModel.toString();
@@ -60,6 +63,9 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 
 	@Override
 	public void networkErrorHappened() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/OUView/network_error");
+		
 		Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT).show();
 	}
 
@@ -71,6 +77,9 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				//arg2 = position;
+				//Tracker
+//				Tracker.getInstance().trackPageView("directory/OUView/click");
+				
 				Toast.makeText(getApplicationContext(), mOUList.get(arg2).toString(), 
 						Toast.LENGTH_SHORT).show();
 				mController.addOuToKeep( mOUList.get(arg2));

@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.authentication.android;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
@@ -47,6 +46,9 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("authentication");
+		
 		/*Intent aIntent = getIntent();
 		String aAction = aIntent.getAction();
 		Uri aData = aIntent.getData();
@@ -138,6 +140,9 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
 			loginButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
+					// Tracker
+//					Tracker.getInstance().trackPageView("authentication/login/click");
+					
 					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 					TextView passwordField = (TextView) findViewById(R.id.authentication_password);
 					mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());

@@ -49,6 +49,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("satellite");
+		
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
 
@@ -148,6 +151,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 */
 	@Override
 	public void networkErrorHappened() {
+		// Tracker
+//		Tracker.getInstance().trackPageView("satellite/network_error");
+		
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
 		mLayout.setText(getResources().getString(

@@ -5,7 +5,6 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
-import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
@@ -75,7 +74,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-		Tracker.getInstance().trackPageView("transport/addView");
+//		Tracker.getInstance().trackPageView("transport/addView");
 
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
@@ -127,8 +126,8 @@ public class TransportAddView extends PluginView implements ITransportView {
 						.getItemAtPosition(pos);
 
 				// Tracker
-				Tracker.getInstance().trackPageView(
-						"transport/addView/add" + location.getName());
+//				Tracker.getInstance().trackPageView(
+//						"transport/addView/add" + location.getName());
 
 				// Request for the next departures from EPFL to the destination
 				// the user just clicked
@@ -156,7 +155,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-		Tracker.getInstance().trackPageView("transport/addView/network_error");
+//		Tracker.getInstance().trackPageView("transport/addView/network_error");
 	}
 
 	/**

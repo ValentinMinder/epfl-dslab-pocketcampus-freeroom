@@ -20,9 +20,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -50,6 +50,9 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/SearchView");
+		
 		// Get and cast the controller and model
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
@@ -139,6 +142,9 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	@Override
 	public void networkErrorHappened() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/searchView/network_error");
+		
 		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
@@ -179,6 +185,9 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 //	}
 	
 	private void search(String query){
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/SearchView/search/" + query);
+		
 		mController.search(query);
 	}
 

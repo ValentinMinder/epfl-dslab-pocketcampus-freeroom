@@ -57,6 +57,8 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("news");
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -154,6 +156,9 @@ public class NewsMainView extends PluginView implements INewsView {
 
 	@Override
 	public void networkErrorHappened() {
+		// Tracker
+//		Tracker.getInstance().trackPageView("news/network_error");
+
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
 		mLayout.setText(getString(R.string.news_no_news));
@@ -178,6 +183,11 @@ public class NewsMainView extends PluginView implements INewsView {
 						.getNewsItem().getFeed());
 				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
 						toPass.getBitmapDrawable());
+
+				// Tracker
+//				Tracker.getInstance().trackPageView(
+//						"news/click/" + toPass.getNewsItem().getTitle());
+
 				startActivity(news);
 			}
 		};

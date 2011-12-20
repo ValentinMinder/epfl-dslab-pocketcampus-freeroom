@@ -18,8 +18,6 @@ import org.pocketcampus.plugin.events.android.iface.IEventsView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,7 +58,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-
+		//Tracker
+//		Tracker.getInstance().trackPageView("events");
+		
 		// Get and cast the controller and model
 		mController = (EventsController) controller;
 		mModel = (EventsModel) controller.getModel();
@@ -150,6 +150,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 
 	@Override
 	public void networkErrorHappened() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("events/network_error");
+		
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
 		mLayout.setText(getString(R.string.events_no_events));
@@ -226,6 +229,9 @@ public class EventsMainView extends PluginView implements IEventsView {
 
 				events.putExtra("org.pocketcampus.events.eventsitem.info", info);
 
+				//Tracker
+//				Tracker.getInstance().trackPageView("events/click/" + toPass.getEventsItem().getTitle());
+				
 				startActivity(events);
 			}
 		};

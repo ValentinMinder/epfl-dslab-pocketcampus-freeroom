@@ -126,6 +126,9 @@ public class MapMainView extends PluginView implements IMapView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("map");
+		
 		mController = (MapMainController) controller;
 		mModel = (MapModel) controller.getModel();
 		

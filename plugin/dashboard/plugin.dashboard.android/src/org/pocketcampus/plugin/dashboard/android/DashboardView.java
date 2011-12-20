@@ -21,6 +21,9 @@ public class DashboardView extends PluginView {
 	
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("dashboard");
+		
 		setContentView(R.layout.dashboard_main);
 		//Tracker
 //		Tracker.getInstance().trackPageView("dashboard");
@@ -46,9 +49,6 @@ public class DashboardView extends PluginView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.dashboard_about) {
-			//Tracker
-//			Tracker.getInstance().trackPageView("dashboard/menu");
-			
 			startActivity(new Intent(this, AboutView.class));
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		}

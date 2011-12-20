@@ -25,18 +25,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * A class used to search map elements and display the result of the search
- * Look at http://developer.android.com/guide/topics/search/search-dialog.html
+ * A class used to search map elements and display the result of the search Look
+ * at http://developer.android.com/guide/topics/search/search-dialog.html
  * 
  * @author Johan, Jonas, Florian
- *
+ * 
  */
 public class MapSearchActivity extends PluginView implements IMapView {
 	private ProgressDialog progressDialog_;
 
 	private MapMainController mController;
 	private MapModel mModel;
-	
+
 	private StandardLayout mLayout;
 
 	@Override
@@ -45,26 +45,30 @@ public class MapSearchActivity extends PluginView implements IMapView {
 	}
 
 	@Override
-	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState,
+			PluginController controller) {
 		mController = (MapMainController) controller;
 		mModel = (MapModel) controller.getModel();
-		
+
 		mLayout = new StandardLayout(this);
 		mLayout.setText(getString(R.string.map_searching));
-		
+
 		setContentView(mLayout);
-		
-		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mLayout.addView(inflater.inflate(R.layout.map_search_result, null));
 	}
 
 	/**
 	 * Verify the Intent's action and get the query
+	 * 
 	 * @param intent
 	 */
 	protected void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
+			// Tracker
+//			Tracker.getInstance().trackPageView("map/search/" + query);
 			query = query.trim();
 			mController.search(query);
 		}
@@ -72,12 +76,17 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 	/**
 	 * Parses the result from JSON and then displays the list of results
-	 * @param results A list containing the results title
-	 * @param results2 Beans of the items
+	 * 
+	 * @param results
+	 *            A list containing the results title
+	 * @param results2
+	 *            Beans of the items
 	 */
-	private void parseAndDisplayResult(ArrayAdapter<String> results, final List<MapItem> results2) {
+	private void parseAndDisplayResult(ArrayAdapter<String> results,
+			final List<MapItem> results2) {
 
-		if(results != null && results.getCount() == 1 && results2 != null && results2.size() > 0) {
+		if (results != null && results.getCount() == 1 && results2 != null
+				&& results2.size() > 0) {
 			startMapActivity(results2.get(0));
 			finish();
 		}
@@ -85,16 +94,18 @@ public class MapSearchActivity extends PluginView implements IMapView {
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(results2 != null && results2.size() > 0) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (results2 != null && results2.size() > 0) {
 					try {
-						MapItem meb = results2.get(position); 
+						MapItem meb = results2.get(position);
 						startMapActivity(meb);
-					} catch (Exception e) {}
+					} catch (Exception e) {
+					}
 				}
 			}
 		});
-		
+
 		mLayout.hideText();
 		setListAdapter(results);
 
@@ -110,7 +121,9 @@ public class MapSearchActivity extends PluginView implements IMapView {
 
 	/**
 	 * Launch the map with the map element to be displayed
-	 * @param mapItem a map element to be displayed.
+	 * 
+	 * @param mapItem
+	 *            a map element to be displayed.
 	 */
 	private void startMapActivity(MapItem mapItem) {
 		Intent startMapActivity = new Intent(this, MapMainView.class);
@@ -123,21 +136,30 @@ public class MapSearchActivity extends PluginView implements IMapView {
 	public void searchResultsUpdated() {
 		List<MapItem> results = mModel.getSearchResults();
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.map_list);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				R.layout.map_list);
 
-		if(results.size() > 0) {
-			for(MapItem meb : results) {
+		if (results.size() > 0) {
+			for (MapItem meb : results) {
 				adapter.add(meb.getTitle());
 			}
-			
+
 			parseAndDisplayResult(adapter, results);
-			
+
 		} else {
 			mLayout.setText(getString(R.string.map_search_no_results));
 		}
 	}
-	
-	@Override public void networkErrorHappened() {}
-	@Override public void layersUpdated() {}
-	@Override public void layerItemsUpdated() {}
+
+	@Override
+	public void networkErrorHappened() {
+	}
+
+	@Override
+	public void layersUpdated() {
+	}
+
+	@Override
+	public void layerItemsUpdated() {
+	}
 }

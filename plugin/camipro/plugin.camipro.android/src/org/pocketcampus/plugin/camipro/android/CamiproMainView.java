@@ -1,24 +1,15 @@
 package org.pocketcampus.plugin.camipro.android;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.ListViewElement;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
-import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
-import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
-
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,13 +22,14 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
 
 public class CamiproMainView extends PluginView implements ICamiproView {
 
@@ -48,6 +40,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("camipro");
+		
 		Log.v("DEBUG", "CamiproMainView::onDisplay");
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
@@ -205,10 +200,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
-		if(item.getItemId() == R.id.camipro_recharge) {			
+		if(item.getItemId() == R.id.camipro_recharge) {
+			//Tracker
+//			Tracker.getInstance().trackPageView("camipro/menu/charge");
 			Intent i = new Intent(this, CamiproCardRechargeView.class);
 			startActivity(i);
 		} else if(item.getItemId() == R.id.camipro_logout) {			
+			//Tracker
+//			Tracker.getInstance().trackPageView("camipro/menu/logout");
 			mController.reset();
 			finish();
 		}
@@ -376,6 +375,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		 */
 		@Override
 		public void performAction(View view) {
+			//Tracker
+//			Tracker.getInstance().trackPageView("camipro/refresh");
+			
 			mController.refreshBalanceAndTransactions();
 		}
 	}

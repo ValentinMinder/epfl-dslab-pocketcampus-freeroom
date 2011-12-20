@@ -107,7 +107,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 									BikesMainView.this, be);
 							dialog.show();
 
-							//Tracker
+//							Tracker
 //							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
 							
 							break;
@@ -250,7 +250,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 		 */
 		@Override
 		public void performAction(View view) {
-			//Tracker
+//			Tracker
 //			Tracker.getInstance().trackPageView("bikes/actionbar/refresh");
 			
 			mList.invalidateViews();

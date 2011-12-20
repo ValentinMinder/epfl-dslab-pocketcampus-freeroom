@@ -8,9 +8,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledScrollableDoubleLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.LabeledListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
@@ -57,6 +55,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/ResultView");
+		
 		// Get and cast the controller and model
 		mController = (DirectoryController) controller;
 		mModel = (DirectoryModel) controller.getModel();
@@ -69,12 +70,6 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		resultsUpdated();
 		
 	}
-
-
-	
-//	private void displayData() {
-//		mPersons = mModel.getResults();
-//	}
 
 	/**
 	 * We could also have gotten the controller this way.
@@ -139,6 +134,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	@Override
 	public void networkErrorHappened() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/ResultView/network_error");
+		
 		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 		toast.show();
 	}
@@ -192,6 +190,8 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 
 	protected void showPersonsDetails() {
+		//Tracker
+//		Tracker.getInstance().trackPageView("directory/ResultView/person/" + mModel.getSelectedPerson().sciper);
 	
 		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
 		//TODO make fade in if necessary		
