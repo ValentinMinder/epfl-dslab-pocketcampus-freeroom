@@ -27,7 +27,7 @@
 
     <!-- Ratings -->
     <string name="food_by_ratings">Ratings</string>
-    <string name="food_rating_valid">Rating submission successful!</string>
+    <string name="food_rating_valid">Thanks for your vote!</string>
     <string name="food_rating_already_voted">You can only vote for one meal a day.</string>
     <string name="food_rating_too_early">Too early to vote!</string>
     <string name="food_rating_error">An error occurred while submitting the rating. Try again!</string>
