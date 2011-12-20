@@ -435,6 +435,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
+
+			if (mShowSuggestionsAction != null) {
+				mActionBar.removeAction(mShowSuggestionsAction);
+			}
+
 			if (mShowAllMenusAction == null || !mShowAllMenusAction.isShown()) {
 				mShowAllMenusAction = new ShowByRestaurantOrRatingsAction();
 				mActionBar.addAction(mShowAllMenusAction, 0);

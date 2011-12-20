@@ -43,7 +43,7 @@ public class ConnectionManager implements IConnectionManager {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		if (this.connection == null) {
+		if (this.connection == null || !this.connection.isValid(30000)) {
 			connect();
 		}
 		return this.connection;
