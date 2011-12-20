@@ -66,7 +66,7 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 		available_ = (TextView) findViewById(R.id.bikes_textView_available);
 		available_.setText(be.numberOfAvailableBikes + " " + availableBikes);
 		available_.setText(Html.fromHtml(thereIsAre + " <b>"
-				+ be.numberOfAvailableBikes + "</b> " + availableBikes + " "
+				+ be.numberOfAvailableBikes + "</b> " + availableBikes + " <br>"
 				+ getString(R.string.bikes_and) + " <b>"
 				+ be.numberOfEmptySpaces + "</b> " + emptySlots + ".<br><br>"
 				+ getString(R.string.bikes_infos_1)));
