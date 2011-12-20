@@ -275,7 +275,7 @@ public class RssParser extends DefaultHandler {
 						}
 
 						sub = sub.toLowerCase();
-						
+
 						if (sub.contains("'") || sub.contains("-")) {
 							int toCapitalize = 0;
 							if (sub.contains("'")) {
@@ -284,13 +284,6 @@ public class RssParser extends DefaultHandler {
 								toCapitalize = sub.indexOf("-") + 1;
 							}
 							if ((toCapitalize) <= sub.length()) {
-								System.out.println(sub.substring(0,
-										toCapitalize));
-								System.out.println(sub.substring(toCapitalize,
-										toCapitalize + 1));
-								System.out.println(sub.substring(
-										toCapitalize + 1, sub.length()));
-
 								sub = sub.substring(0, toCapitalize)
 										+ sub.substring(toCapitalize,
 												toCapitalize + 1).toUpperCase()
