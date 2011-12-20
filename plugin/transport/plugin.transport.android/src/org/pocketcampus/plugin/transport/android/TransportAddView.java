@@ -5,6 +5,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
@@ -16,7 +17,6 @@ import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -74,6 +74,9 @@ public class TransportAddView extends PluginView implements ITransportView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		// Tracker
+		Tracker.getInstance().trackPageView("transport/addView");
+
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
 		// Display the view
@@ -122,6 +125,11 @@ public class TransportAddView extends PluginView implements ITransportView {
 					long id) {
 				TransportStation location = (TransportStation) adapter
 						.getItemAtPosition(pos);
+
+				// Tracker
+				Tracker.getInstance().trackPageView(
+						"transport/addView/add" + location.getName());
+
 				// Request for the next departures from EPFL to the destination
 				// the user just clicked
 				mController.nextDeparturesFromEPFL(location.getName());
@@ -147,10 +155,8 @@ public class TransportAddView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
-		// Toast toast = Toast.makeText(getApplicationContext(), getResources()
-		// .getString(R.string.transport_network_error),
-		// Toast.LENGTH_SHORT);
-		// toast.show();
+		// Tracker
+		Tracker.getInstance().trackPageView("transport/addView/network_error");
 	}
 
 	/**

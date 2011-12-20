@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -65,6 +64,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	/** The plugin model */
 	private TransportModel mModel;
 	/* Layout */
+	/** The Action Bar */
+	private ActionBar mActionBar;
+	/** Refresh action in the action bar */
+	private RefreshAction mRefreshAction;
+	/** Change direction action in the action bar */
+	private ChangeDirectionAction mDirectionAction;
 	/** The main Layout consisting of two inner layouts and a title */
 	private StandardTitledLayout mLayout;
 	/** The ListView to display next departures */
@@ -96,6 +101,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+//		Tracker
+//		Tracker.getInstance().trackPageView("transport");
+
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
 
@@ -197,10 +205,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 				for (TransportTrip trip : trips) {
 					if (trip.getDepartureTime() == depTime
 							&& trip.getArrivalTime() == arrTime) {
-						Log.d("TRANSPORT", "Line is " + trip.getParts().get(0).getLine());
-						
+
 						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
 								TransportMainView.this, trip);
+
+						// Tracker
+//						Tracker.getInstance().trackPageView(
+//								"transport/dialog/" + trip.getFrom().getName()
+//								+ "/" + trip.getTo().getName());
+
 						dialog.show();
 						break;
 					}
@@ -216,12 +229,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * clicked, open the edit view of the transport plugin.
 	 */
 	private void setUpActionBar() {
-		ActionBar a = getActionBar();
-		if (a != null) {
-			ChangeDirectionAction direction = new ChangeDirectionAction();
-			a.addAction(direction, 0);
-			RefreshAction refresh = new RefreshAction();
-			a.addAction(refresh, 1);
+		mActionBar = getActionBar();
+		if (mActionBar != null) {
+			// ChangeDirectionAction direction = new ChangeDirectionAction();
+			// a.addAction(direction, 0);
+			mRefreshAction = new RefreshAction();
+			mActionBar.addAction(mRefreshAction, 0);
 		}
 	}
 
@@ -237,6 +250,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 		// If no destinations set, display a button that redirects to the add
 		// view of the plugin
 		if (prefs == null || prefs.isEmpty()) {
+			if(mActionBar == null) {
+				mActionBar = getActionBar();
+			}
+			if(mDirectionAction != null) {
+				mActionBar.removeAction(mDirectionAction);
+			}
 			ButtonElement addButton = new ButtonElement(this, getResources()
 					.getString(R.string.transport_add_destination));
 			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -252,6 +271,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 				 */
 				@Override
 				public void onClick(View v) {
+					// Tracker
+//					Tracker.getInstance().trackPageView("transport/button/add");
+
 					mFromEpfl = true;
 					Intent add = new Intent(getApplicationContext(),
 							TransportAddView.class);
@@ -288,12 +310,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 		if (locations != null && !locations.isEmpty()) {
 			if (mFromEpfl) {
 				for (String loc : locations.keySet()) {
-					Log.d("TRANSPORT", "Request to " + loc);
 					mController.nextDeparturesFromEPFL(loc);
 				}
 			} else {
 				for (String loc : locations.keySet()) {
-					Log.d("TRANSPORT", "Request from " + loc);
 					mController.nextDeparturesToEPFL(loc);
 				}
 			}
@@ -306,6 +326,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void connectionsUpdated(QueryTripsResult result) {
+		if (mActionBar != null) {
+			mActionBar = getActionBar();
+		}
+		if(mDirectionAction == null) {			
+			mDirectionAction = new ChangeDirectionAction();
+		}
+		mActionBar.removeAction(mDirectionAction);
+		mActionBar.addAction(mDirectionAction, 0);
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
 				.getPreferredDestinations();
 		// In case the button is still here
@@ -338,6 +366,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	@Override
 	public void networkErrorHappened() {
+		// Tracker
+//		Tracker.getInstance().trackPageView("transport/network_error");
+
 		mLayout.removeFillerView();
 		mLayout.setText(getResources().getString(
 				R.string.transport_network_error));
@@ -360,8 +391,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 						.getNiceName(mDisplayedLocations.get(l).get(0)
 								.getFrom());
 				String to = DestinationFormatter
-						.getNiceName(mDisplayedLocations.get(l).get(0)
-								.getTo());
+						.getNiceName(mDisplayedLocations.get(l).get(0).getTo());
 
 				items.add(new PCSectionItem(from + " - " + to));
 				int i = 0;
@@ -375,15 +405,18 @@ public class TransportMainView extends PluginView implements ITransportView {
 							i++;
 							// Updates the shared preferences
 							if (mFromEpfl) {
-								if(!c.getTo().getName().equals("Ecublens VD, EPFL")) {									
-									mDestPrefsEditor.putInt(c.getTo().getName(), c
-											.getTo().getId());
+								if (!c.getTo().getName()
+										.equals("Ecublens VD, EPFL")) {
+									mDestPrefsEditor.putInt(
+											c.getTo().getName(), c.getTo()
+											.getId());
 									mDestPrefsEditor.commit();
 								}
 							} else {
-								if(!c.getFrom().getName().equals("Ecublens VD, EPFL")) {
-									mDestPrefsEditor.putInt(c.getFrom().getName(),
-											c.getFrom().getId());
+								if (!c.getFrom().getName()
+										.equals("Ecublens VD, EPFL")) {
+									mDestPrefsEditor.putInt(c.getFrom()
+											.getName(), c.getFrom().getId());
 									mDestPrefsEditor.commit();
 								}
 							}
@@ -396,28 +429,22 @@ public class TransportMainView extends PluginView implements ITransportView {
 								}
 							}
 							logo = TransportFormatter.getNiceName(logo);
-							if(mFromEpfl) {
+							if (mFromEpfl) {
 								PCEntryItem entry = new PCEntryItem(
-										timeString(c.getDepartureTime()), logo, c
-										.getTo().getName()
-										+ ":"
-										+ c.getDepartureTime()
-										+ ":"
-										+ c.getArrivalTime()
-										+ ":"
-										+ c.getId());
+										timeString(c.getDepartureTime()), logo,
+										c.getTo().getName() + ":"
+												+ c.getDepartureTime() + ":"
+												+ c.getArrivalTime() + ":"
+												+ c.getId());
 								items.add(entry);
 
 							} else {
 								PCEntryItem entry = new PCEntryItem(
-										timeString(c.getDepartureTime()), logo, c
-										.getFrom().getName()
-										+ ":"
-										+ c.getDepartureTime()
-										+ ":"
-										+ c.getArrivalTime()
-										+ ":"
-										+ c.getId());
+										timeString(c.getDepartureTime()), logo,
+										c.getFrom().getName() + ":"
+												+ c.getDepartureTime() + ":"
+												+ c.getArrivalTime() + ":"
+												+ c.getId());
 								items.add(entry);
 							}
 							// Add this departure
@@ -517,8 +544,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
+			// Tracker
+//			Tracker.getInstance().trackPageView("transport/refresh");
+
 			mLayout.removeFillerView();
-//			mLayout.addFillerView(mListView);
+			// mLayout.addFillerView(mListView);
 			mModel.freeConnections();
 			if (mModel.getPreferredDestinations() == null
 					|| mModel.getPreferredDestinations().isEmpty()) {
@@ -558,6 +588,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
+			// Tracker
+//			Tracker.getInstance().trackPageView("transport/changed/direction");
 
 			if (mFromEpfl) {
 				mFromEpfl = false;
