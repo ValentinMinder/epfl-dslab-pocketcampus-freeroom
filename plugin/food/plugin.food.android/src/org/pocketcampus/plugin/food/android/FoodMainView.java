@@ -110,6 +110,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		//Tracker
+//		Tracker.getInstance().trackPageView("food");
+		
 		Log.d("ACTIVITY", "onDisplay");
 		mActivity = this;
 		// Get and cast the controller and model
@@ -357,6 +360,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 				final Meal meal = mealHashMap.get(v.getTag()).get(
 						positionInSection);
+				//Tracker
+//				Tracker.getInstance().trackPageView("food/menus/dialog/" + meal);
 				menuDialog(meal);
 			}
 		};
@@ -373,6 +378,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 				final Meal meal = mealHashMap.get(okButton.getTag()).get(
 						positionInSection);
+				
+				//Tracker
+//				Tracker.getInstance().trackPageView("food/menus/dialog/rating/" + meal);
 
 				ratingDialog(meal, rating);
 			}
@@ -400,6 +408,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					int position, long arg3) {
 
 				final Meal meal = mealList.get(position);
+				
+				//Tracker
+//				Tracker.getInstance().trackPageView("food/ratingsORsuggestions/dialog/" + meal);
 				menuDialog(meal);
 			}
 		};
@@ -415,7 +426,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 					int position, long rating) {
 
 				final Meal meal = mealList.get(position);
-
+				
+				//Tracker
+//				Tracker.getInstance().trackPageView("food/ratingsORsuggestions/dialog/rating" + meal);
 				ratingDialog(meal, rating);
 			}
 		};
@@ -623,6 +636,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		public void onClick(DialogInterface dialog, int code) {
 			switch (code) {
 			case DialogInterface.BUTTON1:
+				//Tracker
+//				Tracker.getInstance().trackPageView("food/dialog/button/rate");
+				
 				// Rate it
 				rating = builder.getSubmittedRating();
 				dialog.dismiss();
@@ -630,6 +646,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				break;
 
 			case DialogInterface.BUTTON2:
+//				Tracker.getInstance().trackPageView("food/dialog/button/cancel");
 				// Cancel
 				dialog.dismiss();
 				break;
@@ -674,6 +691,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			switch (code) {
 
 			case DialogInterface.BUTTON_POSITIVE:
+//				Tracker.getInstance().trackPageView("food/dialog/rating/button/rate");
 				rating = builder.getSubmittedRating();
 				Log.d("RATING", "Rating submitted : " + rating);
 				dialog.dismiss();
@@ -681,6 +699,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				break;
 
 			case DialogInterface.BUTTON_NEGATIVE:
+//				Tracker.getInstance().trackPageView("food/dialog/rating/button/cancel");
 				dialog.dismiss();
 				break;
 
@@ -1010,8 +1029,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mActionBar.removeActionAt(0);
 			mActionBar.addAction(this, 0);
 			if (mButtonByRestaurants) {
+//				Tracker.getInstance().trackPageView("food/actionbar/by/restaurants");
 				showMenusByRestaurants();
 			} else {
+//				Tracker.getInstance().trackPageView("food/actionbar/by/ratings");
 				showMenusByRatings();
 			}
 		}
@@ -1061,6 +1082,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 */
 		@Override
 		public void performAction(View view) {
+//			Tracker.getInstance().trackPageView("food/actionbar/suggestions/back");
 			mActionBar.removeAllActions();
 			showMenusByRestaurants();
 		}

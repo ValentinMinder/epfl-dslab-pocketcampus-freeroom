@@ -76,6 +76,9 @@ public class FoodSuggestionsView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("food/suggestions");
+
 		mController = (FoodController) controller;
 
 		/* ===== LAYOUT, VIEWS & DATA ===== */
@@ -134,6 +137,8 @@ public class FoodSuggestionsView extends PluginView {
 
 			@Override
 			public void onClick(View v) {
+				// Tracker
+//				Tracker.getInstance().trackPageView("food/suggestions/confirm");
 				finalizeSuggestions();
 			}
 		});
@@ -153,10 +158,14 @@ public class FoodSuggestionsView extends PluginView {
 				CheckBox b = (CheckBox) box;
 
 				if (b.isChecked()) {
+					// Tracker
+//					Tracker.getInstance().trackPageView("food/suggestions/add/" + tag);
 					if (!mLikes.contains(tag)) {
 						mLikes.add(tag);
 					}
 				} else {
+					// Tracker
+//					Tracker.getInstance().trackPageView("food/suggestions/remove/" + tag);
 					mLikes.remove(tag);
 				}
 			}

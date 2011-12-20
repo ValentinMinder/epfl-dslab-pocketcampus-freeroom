@@ -71,6 +71,8 @@ public class FoodPreferencesView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		// Tracker
+//		Tracker.getInstance().trackPageView("food/preferences");
 		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
 
@@ -79,7 +81,7 @@ public class FoodPreferencesView extends PluginView {
 
 		// The StandardLayout is a RelativeLayout with a TextView in its center.
 		mLayout = new StandardTitledLayout(this);
-		
+
 		mLayout.setTitle(getString(R.string.food_preferences));
 
 		// The ActionBar is added automatically when you call setContentView
@@ -137,17 +139,24 @@ public class FoodPreferencesView extends PluginView {
 					int position, long isChecked) {
 
 				if (isChecked == 1) {
+					// Tracker
+//					Tracker.getInstance().trackPageView(
+//							"food/preferences/add/"
+//									+ mRestaurants.get(position).name);
 					mRestoPrefsEditor.putBoolean(
 							mRestaurants.get(position).name, true);
 					mRestoPrefsEditor.commit();
 				} else {
+//					Tracker.getInstance().trackPageView(
+//							"food/preferences/remove/"
+//									+ mRestaurants.get(position).name);
 					mRestoPrefsEditor.putBoolean(
 							mRestaurants.get(position).name, false);
 					mRestoPrefsEditor.commit();
 				}
 			}
 		});
-		
+
 	}
 
 	/**
