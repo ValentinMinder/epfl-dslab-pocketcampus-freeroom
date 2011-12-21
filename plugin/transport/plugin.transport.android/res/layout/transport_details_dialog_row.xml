@@ -49,24 +49,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/transport_details_dialog_line">
             </TextView>
-            
-            
-            
-            
         </RelativeLayout>
 
-        <!--  <RelativeLayout
-            android:id="@+id/relativeLayout1b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/transport_details_dialog_line"
-                style="@style/DialogText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TextView>
-        </RelativeLayout> -->
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"

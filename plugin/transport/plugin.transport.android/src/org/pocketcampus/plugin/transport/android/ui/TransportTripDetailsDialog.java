@@ -12,7 +12,6 @@ import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.text.Html;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
