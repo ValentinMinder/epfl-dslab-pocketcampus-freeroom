@@ -26,7 +26,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 public class DirectorySearchView extends PluginView implements IDirectoryView{
 
@@ -113,6 +112,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 
 		mLayout.addFillerView(mInputBar);
 		setContentView(mLayout);
+		
+	
 	}
 	
 	private void createSuggestionsList() {
@@ -141,6 +142,8 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		mListView.setAdapter(mAdapter);
 		mListView.invalidate();
 		
+		mLayout.hideText();
+		
 	}
 	
 	@Override
@@ -151,12 +154,15 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mInputBar.getWindowToken(), 0);
 		
-		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
-		toast.show();
+		mLayout.setText(getString(R.string.directory_network_error));
+//		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
+//		toast.show();
 	}
 
 	@Override
 	public void resultsUpdated() {
+		mLayout.hideText();
+		
 		if(mModel.getResults().size() == 1){
 			mModel.selectPerson(mModel.getResults().get(0));
 			mController.getProfilePicture(mModel.getResults().get(0).sciper);
@@ -169,7 +175,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 
 	@Override
 	public void tooManyResults(int nb) {
-		Toast.makeText(this, getString(R.string.directory_too_many_results_warning), Toast.LENGTH_LONG).show();
+		mLayout.setText( getString(R.string.directory_too_many_results_warning) );
 		
 	}
 	
