@@ -12,6 +12,7 @@ import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.Html;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -87,9 +88,10 @@ public class TransportTripDetailsDialog extends Dialog {
 					line = TransportFormatter.getNiceName(part.line.name);
 				}
 					
-				partRow.put("departureTime", line+", "+departureTime);
+				partRow.put("departureTime", departureTime);
 			}
 			
+			partRow.put("line", line);
 			partRow.put("arrivalTime", arrivalTime);
 			partRow.put("arrivalPlace", arrivalPlace);
 			partRow.put("departurePlace", departurePlace);
@@ -97,11 +99,12 @@ public class TransportTripDetailsDialog extends Dialog {
 			connectionParts.add(partRow);
 		}
 
-		String[] keys = { "departureTime", "departurePlace",
+		String[] keys = { "departureTime", "departurePlace", "line",
 				"arrivalTime", "arrivalPlace" };
 
 		int[] ids = { R.id.transport_details_dialog_dep_time,
 				R.id.transport_details_dialog_dep_place,
+				R.id.transport_details_dialog_line,
 				R.id.transport_details_dialog_arr_time,
 				R.id.transport_details_dialog_arr_place };
 
