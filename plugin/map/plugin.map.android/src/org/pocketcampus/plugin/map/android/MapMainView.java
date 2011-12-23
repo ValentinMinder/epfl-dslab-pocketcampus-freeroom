@@ -24,6 +24,7 @@ import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.plugin.map.android.cache.LayersCache;
 import org.pocketcampus.plugin.map.android.elements.MapElement;
 import org.pocketcampus.plugin.map.android.elements.MapElementsList;
@@ -127,14 +128,12 @@ public class MapMainView extends PluginView implements IMapView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("map");
+		Tracker.getInstance().trackPageView("map");
 		
 		mController = (MapMainController) controller;
 		mModel = (MapModel) controller.getModel();
 		
 		setContentView(R.layout.map_main);
-
-//		Tracker.getInstance().trackPageView("map/home");
 
 		initVariables();
 		
@@ -194,7 +193,7 @@ public class MapMainView extends PluginView implements IMapView {
 		updateOverlays(false);
 		mapView_.postInvalidate();
 		
-//		Tracker.getInstance().trackPageView("map/changeLevel" + level);
+		Tracker.getInstance().trackPageView("map/changeLevel" + level);
 	}
 	
 	/**
@@ -404,7 +403,7 @@ public class MapMainView extends PluginView implements IMapView {
 //		case R.id.map_menu_layers_button:
 //			selectLayers();
 //
-////			Tracker.getInstance().trackPageView("map/menu/getLayers");
+//			Tracker.getInstance().trackPageView("map/menu/getLayers");
 //			return true;
 
 			// Enable the user following
@@ -413,7 +412,7 @@ public class MapMainView extends PluginView implements IMapView {
 				Toast.makeText(this, getResources().getString(R.string.map_compute_position), Toast.LENGTH_LONG).show();
 			}
 			toggleCenterOnUserPosition();
-//			Tracker.getInstance().trackPageView("map/menu/togglPosition");
+			Tracker.getInstance().trackPageView("map/menu/togglPosition");
 			return true;
 
 
@@ -427,7 +426,7 @@ public class MapMainView extends PluginView implements IMapView {
 			// Shows the search dialog
 		case R.id.map_search:
 			onSearchRequested();
-//			Tracker.getInstance().trackPageView("map/menu/search"); 
+			Tracker.getInstance().trackPageView("map/menu/search"); 
 			return true;
 			
 //		case R.id.map_clear_path:
@@ -440,7 +439,7 @@ public class MapMainView extends PluginView implements IMapView {
 //			temporaryOverlays_.clear();
 //			setSelectedLayers(new ArrayList<MapElementsList>());
 //			
-////			Tracker.getInstance().trackPageView("map/menu/clearLayers");
+//			Tracker.getInstance().trackPageView("map/menu/clearLayers");
 //			return true;
 
 		default:

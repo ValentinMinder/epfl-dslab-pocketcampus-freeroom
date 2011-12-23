@@ -10,6 +10,7 @@ import java.util.Set;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
@@ -102,7 +103,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 //		Tracker
-//		Tracker.getInstance().trackPageView("transport");
+		Tracker.getInstance().trackPageView("transport");
 
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
@@ -210,9 +211,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 								TransportMainView.this, trip);
 
 						// Tracker
-//						Tracker.getInstance().trackPageView(
-//								"transport/dialog/" + trip.getFrom().getName()
-//								+ "/" + trip.getTo().getName());
+						Tracker.getInstance().trackPageView(
+								"transport/dialog/" + trip.getFrom().getName()
+								+ "/" + trip.getTo().getName());
 
 						dialog.show();
 						break;
@@ -272,7 +273,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 				@Override
 				public void onClick(View v) {
 					// Tracker
-//					Tracker.getInstance().trackPageView("transport/button/add");
+					Tracker.getInstance().trackPageView("transport/button/add");
 
 					mFromEpfl = true;
 					Intent add = new Intent(getApplicationContext(),
@@ -367,7 +368,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-//		Tracker.getInstance().trackPageView("transport/network_error");
+		Tracker.getInstance().trackPageView("transport/network_error");
 
 		mLayout.removeFillerView();
 		mLayout.setText(getResources().getString(
@@ -545,7 +546,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		@Override
 		public void performAction(View view) {
 			// Tracker
-//			Tracker.getInstance().trackPageView("transport/refresh");
+			Tracker.getInstance().trackPageView("transport/refresh");
 
 			mLayout.removeFillerView();
 			// mLayout.addFillerView(mListView);
@@ -589,7 +590,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		@Override
 		public void performAction(View view) {
 			// Tracker
-//			Tracker.getInstance().trackPageView("transport/changed/direction");
+			Tracker.getInstance().trackPageView("transport/changed/direction");
 
 			if (mFromEpfl) {
 				mFromEpfl = false;

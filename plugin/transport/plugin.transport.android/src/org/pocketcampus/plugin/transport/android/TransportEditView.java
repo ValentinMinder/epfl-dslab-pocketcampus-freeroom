@@ -8,6 +8,7 @@ import java.util.Map;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.IconTextArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.StyledDialog;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
@@ -73,7 +74,7 @@ public class TransportEditView extends PluginView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("transport/editView");
+		Tracker.getInstance().trackPageView("transport/editView");
 
 		mContext = getApplicationContext();
 		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
@@ -119,7 +120,7 @@ public class TransportEditView extends PluginView {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// Tracker
-//				Tracker.getInstance().trackPageView("transport/editView/add");
+				Tracker.getInstance().trackPageView("transport/editView/add");
 				
 				Intent i = new Intent(getApplicationContext(),
 						TransportAddView.class);
@@ -156,9 +157,9 @@ public class TransportEditView extends PluginView {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// Tracker
-//				Tracker.getInstance().trackPageView(
-//						"transport/editView/remove/"
-//								+ arg0.getItemAtPosition(arg2).toString());
+				Tracker.getInstance().trackPageView(
+						"transport/editView/remove/"
+								+ arg0.getItemAtPosition(arg2).toString());
 
 				// Show the confirmation dialog
 				confirmationDialog(arg0.getItemAtPosition(arg2).toString());
@@ -201,7 +202,7 @@ public class TransportEditView extends PluginView {
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
 						// Tracker
-//						Tracker.getInstance().trackPageView("transport/editView/dialog/remove");
+						Tracker.getInstance().trackPageView("transport/editView/dialog/remove");
 						
 						// Remove the destination and update the list
 						mDestPrefsEditor.remove(dest);
@@ -241,7 +242,7 @@ public class TransportEditView extends PluginView {
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
 						// Tracker
-//						Tracker.getInstance().trackPageView("transport/editView/dialog/dontRemove");
+						Tracker.getInstance().trackPageView("transport/editView/dialog/dontRemove");
 						
 						// Do nothing
 						dialog.dismiss();

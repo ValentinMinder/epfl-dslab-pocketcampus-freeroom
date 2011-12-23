@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.ButtonElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleLayout;
@@ -77,7 +78,7 @@ public class FoodSuggestionsView extends PluginView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("food/suggestions");
+		Tracker.getInstance().trackPageView("food/suggestions");
 
 		mController = (FoodController) controller;
 
@@ -138,7 +139,7 @@ public class FoodSuggestionsView extends PluginView {
 			@Override
 			public void onClick(View v) {
 				// Tracker
-//				Tracker.getInstance().trackPageView("food/suggestions/confirm");
+				Tracker.getInstance().trackPageView("food/suggestions/confirm");
 				finalizeSuggestions();
 			}
 		});
@@ -159,13 +160,13 @@ public class FoodSuggestionsView extends PluginView {
 
 				if (b.isChecked()) {
 					// Tracker
-//					Tracker.getInstance().trackPageView("food/suggestions/add/" + tag);
+					Tracker.getInstance().trackPageView("food/suggestions/add/" + tag);
 					if (!mLikes.contains(tag)) {
 						mLikes.add(tag);
 					}
 				} else {
 					// Tracker
-//					Tracker.getInstance().trackPageView("food/suggestions/remove/" + tag);
+					Tracker.getInstance().trackPageView("food/suggestions/remove/" + tag);
 					mLikes.remove(tag);
 				}
 			}

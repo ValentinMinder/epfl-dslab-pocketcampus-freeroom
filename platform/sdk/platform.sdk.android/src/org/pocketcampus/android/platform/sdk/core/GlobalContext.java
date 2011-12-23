@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.thrift.TServiceClient;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.Icon;
 
 import android.app.Application;
@@ -32,7 +33,7 @@ public class GlobalContext extends Application {
 		super.onCreate();
 		
 		//Starts the Tracker for the google analytics
-//		Tracker.getInstance().start(getApplicationContext());
+		Tracker.getInstance().start(getApplicationContext());
 		
 		mPluginInfoMap = new HashMap<String, PluginInfo>();
 		mPluginClientMap = new HashMap<String, TServiceClient>();

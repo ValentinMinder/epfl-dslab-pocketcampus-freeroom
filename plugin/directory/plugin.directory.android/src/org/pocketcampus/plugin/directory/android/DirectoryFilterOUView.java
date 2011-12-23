@@ -6,6 +6,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.CheckBoxesListViewElement;
 import org.pocketcampus.plugin.directory.android.iface.IDirectoryModel;
@@ -35,7 +36,7 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,	PluginController controller){
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/OUView");
+		Tracker.getInstance().trackPageView("directory/OUView");
 		
 		mController = (DirectoryController)controller;
 		mModel = (DirectoryModel)controller.getModel();
@@ -64,7 +65,7 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/OUView/network_error");
+		Tracker.getInstance().trackPageView("directory/OUView/network_error");
 		
 		Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT).show();
 	}
@@ -78,7 +79,7 @@ public class DirectoryFilterOUView extends PluginView implements IDirectoryView 
 					long arg3) {
 				//arg2 = position;
 				//Tracker
-//				Tracker.getInstance().trackPageView("directory/OUView/click");
+				Tracker.getInstance().trackPageView("directory/OUView/click");
 				
 				Toast.makeText(getApplicationContext(), mOUList.get(arg2).toString(), 
 						Toast.LENGTH_SHORT).show();

@@ -38,6 +38,6 @@
     <!-- From last year -->
     <string name="transport_to">to</string>
     <string name="transport_walk_in_min">min. walk</string>
-    <string name="transport_by_feet">By feet</string>
+    <string name="transport_by_feet">Walking</string>
 
 </resources>

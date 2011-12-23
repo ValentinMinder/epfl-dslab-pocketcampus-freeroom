@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
@@ -72,7 +73,7 @@ public class FoodPreferencesView extends PluginView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("food/preferences");
+		Tracker.getInstance().trackPageView("food/preferences");
 		// Get and cast the model
 		mModel = (FoodModel) controller.getModel();
 
@@ -140,16 +141,16 @@ public class FoodPreferencesView extends PluginView {
 
 				if (isChecked == 1) {
 					// Tracker
-//					Tracker.getInstance().trackPageView(
-//							"food/preferences/add/"
-//									+ mRestaurants.get(position).name);
+					Tracker.getInstance().trackPageView(
+							"food/preferences/add/"
+									+ mRestaurants.get(position).name);
 					mRestoPrefsEditor.putBoolean(
 							mRestaurants.get(position).name, true);
 					mRestoPrefsEditor.commit();
 				} else {
-//					Tracker.getInstance().trackPageView(
-//							"food/preferences/remove/"
-//									+ mRestaurants.get(position).name);
+					Tracker.getInstance().trackPageView(
+							"food/preferences/remove/"
+									+ mRestaurants.get(position).name);
 					mRestoPrefsEditor.putBoolean(
 							mRestaurants.get(position).name, false);
 					mRestoPrefsEditor.commit();

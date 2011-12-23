@@ -1,15 +1,16 @@
 package org.pocketcampus.plugin.authentication.android;
 
+import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapHostToTypeOfService;
+import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapQueryParameterToTypeOfService;
+
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
-
-import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapQueryParameterToTypeOfService;
-import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapHostToTypeOfService;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -47,7 +48,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("authentication");
+		Tracker.getInstance().trackPageView("authentication");
 		
 		/*Intent aIntent = getIntent();
 		String aAction = aIntent.getAction();
@@ -141,7 +142,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			loginButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					// Tracker
-//					Tracker.getInstance().trackPageView("authentication/login/click");
+					Tracker.getInstance().trackPageView("authentication/login/click");
 					
 					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 					TextView passwordField = (TextView) findViewById(R.id.authentication_password);

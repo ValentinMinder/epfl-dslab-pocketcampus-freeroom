@@ -6,6 +6,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
@@ -41,7 +42,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("camipro");
+		Tracker.getInstance().trackPageView("camipro");
 		
 		Log.v("DEBUG", "CamiproMainView::onDisplay");
 		// Get and cast the controller and model
@@ -201,13 +202,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		
 		if(item.getItemId() == R.id.camipro_recharge) {
-			//Tracker
-//			Tracker.getInstance().trackPageView("camipro/menu/charge");
 			Intent i = new Intent(this, CamiproCardRechargeView.class);
 			startActivity(i);
 		} else if(item.getItemId() == R.id.camipro_logout) {			
 			//Tracker
-//			Tracker.getInstance().trackPageView("camipro/menu/logout");
+			Tracker.getInstance().trackPageView("camipro/menu/logout");
 			mController.reset();
 			finish();
 		}
@@ -376,7 +375,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		@Override
 		public void performAction(View view) {
 			//Tracker
-//			Tracker.getInstance().trackPageView("camipro/refresh");
+			Tracker.getInstance().trackPageView("camipro/refresh");
 			
 			mController.refreshBalanceAndTransactions();
 		}

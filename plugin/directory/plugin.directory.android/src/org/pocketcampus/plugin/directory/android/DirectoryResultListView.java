@@ -6,6 +6,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.adapter.LabeledArrayAdapter;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ILabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -56,7 +57,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/ResultView");
+		Tracker.getInstance().trackPageView("directory/ResultView");
 		
 		// Get and cast the controller and model
 		mController = (DirectoryController) controller;
@@ -135,7 +136,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/ResultView/network_error");
+		Tracker.getInstance().trackPageView("directory/ResultView/network_error");
 		
 		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 		toast.show();
@@ -191,7 +192,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 
 	protected void showPersonsDetails() {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/ResultView/person/" + mModel.getSelectedPerson().sciper);
+		Tracker.getInstance().trackPageView("directory/ResultView/person/" + mModel.getSelectedPerson().sciper);
 	
 		dialog = new PersonDetailsDialog(this, mModel.getSelectedPerson());
 		//TODO make fade in if necessary		

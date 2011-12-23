@@ -6,6 +6,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
@@ -39,7 +40,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("camipro/charge");
+		Tracker.getInstance().trackPageView("camipro/charge");
 		
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
@@ -161,7 +162,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		
 		if(item.getItemId() == R.id.camipro_send_ebankinginfo_byemail) {			
 			//Tracker
-//			Tracker.getInstance().trackPageView("camipro/charge/email");
+			Tracker.getInstance().trackPageView("camipro/charge/email");
 			
 			mController.sendEmailWithLoadingDetails();
 		}
@@ -189,7 +190,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-//		Tracker.getInstance().trackPageView("camipro/charge/network_error");
+		Tracker.getInstance().trackPageView("camipro/charge/network_error");
 		
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
@@ -293,7 +294,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		@Override
 		public void performAction(View view) {
 			//Tracker
-//			Tracker.getInstance().trackPageView("camipro/charge/refresh");
+			Tracker.getInstance().trackPageView("camipro/charge/refresh");
 			
 			mController.refreshStatsAndLoadingInfo();
 		}

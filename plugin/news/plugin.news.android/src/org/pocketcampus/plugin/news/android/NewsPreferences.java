@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class NewsPreferences extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Tracker
-		// Tracker.getInstance().trackPageView("news/preferences");
+		 Tracker.getInstance().trackPageView("news/preferences");
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_preference);
@@ -67,7 +68,7 @@ public class NewsPreferences extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
 				// Tracker
-				// Tracker.getInstance().trackPageView("news/preferences/change");
+				 Tracker.getInstance().trackPageView("news/preferences/change");
 
 				PreferenceManager.getDefaultSharedPreferences(that).edit()
 						.putLong(CACHE_TIME, 0).commit();

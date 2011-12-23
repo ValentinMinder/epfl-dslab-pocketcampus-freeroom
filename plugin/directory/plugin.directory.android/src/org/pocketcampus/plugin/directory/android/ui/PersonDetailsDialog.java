@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.directory.android.ui;
 
 import org.pocketcampus.R;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.directory.android.DirectoryResultListView;
 import org.pocketcampus.plugin.directory.shared.Person;
@@ -188,9 +189,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								// Tracker
-//								Tracker.getInstance().trackPageView(
-//										"directory/call/"
-//												+ displayedPerson_.sciper);
+								Tracker.getInstance().trackPageView(
+										"directory/call/"
+												+ displayedPerson_.sciper);
 
 								Intent dialIntent = new Intent(
 										Intent.ACTION_CALL,

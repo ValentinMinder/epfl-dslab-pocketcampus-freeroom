@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.dashboard.android;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -15,7 +16,7 @@ public class AboutView extends PluginView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("dashboard/about");
+		Tracker.getInstance().trackPageView("dashboard/about");
 		
 		setContentView(R.layout.dashboard_about);
 		TextView link = (TextView) findViewById(R.id.url);

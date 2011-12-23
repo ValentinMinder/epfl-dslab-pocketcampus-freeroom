@@ -6,6 +6,7 @@ import java.util.List;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.FeedWithImageListViewElement;
@@ -60,7 +61,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-		// Tracker.getInstance().trackPageView("news");
+		 Tracker.getInstance().trackPageView("news");
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -179,7 +180,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-		// Tracker.getInstance().trackPageView("news/network_error");
+		 Tracker.getInstance().trackPageView("news/network_error");
 
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
@@ -207,8 +208,8 @@ public class NewsMainView extends PluginView implements INewsView {
 						toPass.getBitmapDrawable());
 
 				// Tracker
-				// Tracker.getInstance().trackPageView(
-				// "news/click/" + toPass.getNewsItem().getTitle());
+				 Tracker.getInstance().trackPageView(
+				 "news/click/" + toPass.getNewsItem().getTitle());
 
 				startActivity(news);
 			}

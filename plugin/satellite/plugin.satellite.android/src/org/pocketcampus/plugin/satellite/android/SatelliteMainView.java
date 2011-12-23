@@ -3,6 +3,7 @@ package org.pocketcampus.plugin.satellite.android;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.ImageTextView;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IFeedViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.labeler.ISubtitledFeedViewLabeler;
@@ -14,6 +15,7 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 /**
@@ -50,7 +52,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-//		Tracker.getInstance().trackPageView("satellite");
+		Log.d("googleanalytics", "getInstance()");
+		Tracker.getInstance().trackPageView("satellite");
 		
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
@@ -152,7 +155,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-//		Tracker.getInstance().trackPageView("satellite/network_error");
+		Log.d("googleanalytics","network error");	
+		Tracker.getInstance().trackPageView("satellite/network_error");
 		
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
@@ -208,20 +212,20 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	 * @return The corresponding image resource
 	 */
 	private int chooseImage(Affluence affluence) {
-		int img = R.drawable.satellite_affluence_empty;
+		int img;
 
 		switch (affluence) {
 		case EMPTY:
 			img = R.drawable.satellite_affluence_empty;
 			break;
 		case MEDIUM:
-			img = R.drawable.satellite_affluence_empty;
+			img = R.drawable.satellite_affluence_medium;
 			break;
 		case CROWDED:
-			img = R.drawable.satellite_affluence_empty;
+			img = R.drawable.satellite_affluence_crowded;
 			break;
 		case FULL:
-			img = R.drawable.satellite_affluence_empty;
+			img = R.drawable.satellite_affluence_full;
 			break;
 		case CLOSED:
 			img = R.drawable.satellite_affluence_closed;

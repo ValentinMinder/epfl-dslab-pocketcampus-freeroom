@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.element.InputBarElement;
 import org.pocketcampus.android.platform.sdk.ui.element.OnKeyPressedListener;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -52,7 +53,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/SearchView");
+		Tracker.getInstance().trackPageView("directory/SearchView");
 		
 		// Get and cast the controller and model
 		mController = (DirectoryController) controller;
@@ -149,7 +150,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/searchView/network_error");
+		Tracker.getInstance().trackPageView("directory/searchView/network_error");
 		
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mInputBar.getWindowToken(), 0);
@@ -198,7 +199,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	private void search(String query){
 		//Tracker
-//		Tracker.getInstance().trackPageView("directory/SearchView/search/" + query);
+		Tracker.getInstance().trackPageView("directory/SearchView/search/" + query);
 		
 		mController.search(query);
 	}

@@ -7,6 +7,7 @@ import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginInfo;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
+import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,11 +23,9 @@ public class DashboardView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-//		Tracker.getInstance().trackPageView("dashboard");
+		Tracker.getInstance().trackPageView("dashboard");
 		
 		setContentView(R.layout.dashboard_main);
-		//Tracker
-//		Tracker.getInstance().trackPageView("dashboard");
 				
 		mDashboard = new PluginDashboard(this);
 
