@@ -10,53 +10,56 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display an Object represented as a title, an image and a
+ * A view to display an object consisting of a title, an image and a
  * description.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class ImageTextView extends LinearLayout {
-	/** The convert view */
+	/** The <code>ConvertView</code>. */
 	private View mConvertView;
-	/** The Object to be displayed in the View */
+	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
-	/** The Labeler from the Application to get the Obejct's attributes */
+	/** The labeler from the application to get the object's attributes. */
 	private ISubtitledFeedViewLabeler mLabeler;
-	/** The position of the Object in the ListView */
-	private int mPosition;
-	/** The Object's title */
+	/** The object's title. */
 	private TextView mTitleLine;
-	/** The Object's subtitle */
+	/** The object's subtitle. */
 	private TextView mSubtitleLine;
-	/** The Object's description */
+	/** The object's description. */
 	private TextView mDescriptionLine;
-
-	/** The Object's image */
+	/** The object's image. */
 	private LinearLayout mImage;
 
 	/**
-	 * The constructor
+	 * Class constructor.
 	 * 
 	 * @param currentObject
-	 *            The Object to be displayed in the line
+	 *            The object to be displayed in the line.
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param labeler
-	 *            The Object's labeler
-	 * @param elementListener
-	 *            the listener for the title and description lines
-	 * @param position
-	 *            the position of the Object in the List
+	 *            The object's labeler.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the object is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the labeler is null.
 	 */
 	public ImageTextView(Object currentObject, Context context,
-			ISubtitledFeedViewLabeler<? extends Object> labeler, int position) {
+			ISubtitledFeedViewLabeler<? extends Object> labeler) {
 		super(context);
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_image_text_layout, null);
 
+		if (currentObject == null) {
+			new IllegalArgumentException("Object cannot be null!");
+		}
+		if (labeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
+
 		mCurrentObject = currentObject;
 		mLabeler = labeler;
-		mPosition = position;
 
 		mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.sdk_image_text_layout_title);
@@ -74,7 +77,7 @@ public class ImageTextView extends LinearLayout {
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	public void initializeView() {
 

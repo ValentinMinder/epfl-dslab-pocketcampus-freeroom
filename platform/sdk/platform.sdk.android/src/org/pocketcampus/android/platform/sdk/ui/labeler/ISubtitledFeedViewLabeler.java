@@ -3,51 +3,50 @@ package org.pocketcampus.android.platform.sdk.ui.labeler;
 import android.widget.LinearLayout;
 
 /**
- * Interface to the methods provided by a FeedViewLabeler
- * 
- * A FeedView should have a title, a description, and a picture
+ * Interface to the methods provided by a <code>SubtitledFeedViewLabeler</code>.
+ * A <code>SubtitledFeedView</code> should have a title, a subtitle, a
+ * description, and a picture.
  * 
  * Defines where the information about an object that is to be displayed will be
- * fetched from
+ * fetched from.
  * 
- * @author Elodie <elodienilane.triponez@epfl.ch>
- * 
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public interface ISubtitledFeedViewLabeler<LabeledObjectType> {
 
 	/**
-	 * Returns the title of the object passed in parameter
+	 * Returns the title of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the title
-	 * @return the String title
+	 *            The object for which we want the title.
+	 * @return The <code>String</code> object's title defined by the labeler.
 	 */
 	public String getTitle(LabeledObjectType obj);
 
 	/**
-	 * Returns the subtitle of the object passed in parameter
+	 * Returns the subtitle of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the subtitle
-	 * @return the String subtitle
+	 *            The object for which we want the subtitle.
+	 * @return The <code>String</code> subtitle defined by the labeler.
 	 */
 	public String getSubtitle(LabeledObjectType obj);
 
 	/**
-	 * Returns the description of the object passed in parameter
+	 * Returns the description of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the description
-	 * @return the String description
+	 *            The object for which we want the description.
+	 * @return The <code>String</code> description defined by the labeler.
 	 */
 	public String getDescription(LabeledObjectType obj);
 
 	/**
-	 * Returns the rating of the object passed in parameter
+	 * Returns the picture of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the rating
-	 * @return the rating
+	 *            The object for which we want the picture.
+	 * @return The <code>LinearLayout</code> picture defined by the labeler.
 	 */
 	public LinearLayout getPictureLayout(LabeledObjectType obj);
 

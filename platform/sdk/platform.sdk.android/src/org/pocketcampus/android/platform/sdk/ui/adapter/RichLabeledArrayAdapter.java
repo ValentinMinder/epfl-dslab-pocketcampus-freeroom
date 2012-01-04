@@ -11,27 +11,31 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * An Adapter to handle the display of rich labeled Objects
+ * An adapter to handle the display of rich labeled objects.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class RichLabeledArrayAdapter extends AbstractArrayAdapter {
-	/** The RichLabeler to get the object's attributes */
-	private IRichLabeler mLabeler;
-	/** The application context */
+	/** The <code>IRichLabeler</code> to get the object's attributes. */
+	private IRichLabeler<? extends Object> mLabeler;
+	/** The application context. */
 	private Context mContext;
-	/** The listener on the object line */
+	/** The click listener on the object's line. */
 	private OnItemClickListener mOnClickListener;
 
 	/**
-	 * The constructor
+	 * CLass constructor.
 	 * 
 	 * @param context
-	 *            The application context
+	 *            The application context.
 	 * @param items
-	 *            The items to display
+	 *            The items to display.
 	 * @param labeler
-	 *            The RichLabeler to get the object's attributes
+	 *            The <code>IRichLabeler</code> to get the object's attributes.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the context is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the labeler is null.
 	 */
 	public RichLabeledArrayAdapter(Context context,
 			List<? extends Object> items, IRichLabeler<? extends Object> labeler) {
@@ -50,8 +54,8 @@ public class RichLabeledArrayAdapter extends AbstractArrayAdapter {
 	}
 
 	/**
-	 * Overrides the getView method and creates an RichView for each labeled
-	 * object
+	 * Overrides the <code>getView</code> method and creates a
+	 * <code>RichView</code> for this object.
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -60,6 +64,12 @@ public class RichLabeledArrayAdapter extends AbstractArrayAdapter {
 		return v;
 	}
 
+	/**
+	 * Sets the listener on the object's line.
+	 * 
+	 * @param onLineListener
+	 *            The listener for the object's line.
+	 */
 	public void setOnLineClickLIstener(OnItemClickListener onLineListener) {
 		mOnClickListener = onLineListener;
 	}

@@ -13,56 +13,54 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display an Object that the user can rate. It represents a line of a
- * ListView and contains the object's title and description, along with a rating
- * bar and the number of votes that Object got. It's designed to be used with
- * the RatableExpandableListView or an equivalent, and can be created directly
- * in the Application View.
+ * A view to display an object labeled with a <code>IRichLabeler</code>. It
+ * represents a line of a <code>ListView</code> and contains the object's title
+ * and description, along with a <code>Date</code> and a value.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 public class RichView extends LinearLayout {
-	/** The Application Context */
+	/** The application context. */
 	private Context mContext;
-	/** The convert view */
+	/** The <code>ConvertView</code> */
 	private View mConvertView;
-	/** The layout */
+	/** The main layout. */
 	private LinearLayout mLayout;
-
-	/** The Object to be displayed in the View */
+	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
-	/** The Labeler from the Application to get the Obejct's attributes */
+	/** The labeler from the application to get the object's attributes. */
 	private IRichLabeler mLabeler;
-	/** The position of the Object in the ListView */
+	/** The object's position in the <code>ListView</code>. */
 	private int mPosition;
-	/** The Object's title */
+	/** The object's title */
 	private TextView mTitleLine;
-	/** The Object's description */
+	/** The object's description */
 	private TextView mDescriptionLine;
-	/** The Object's number of votes */
+	/** The object's value */
 	private TextView mValueLine;
-	/** The Object's date */
+	/** The object's date */
 	private TextView mDateLine;
-
-	/** The click listener on the Object's line */
-	private OnItemClickListener mOnElementClickLIstener;
+	/** The click listener on the object's line */
+	private OnItemClickListener mOnLineClickLIstener;
 
 	/**
-	 * The constructor
+	 * Class constructor.
 	 * 
 	 * @param currentObject
-	 *            The Object to be displayed in the line
+	 *            The object to be displayed in the line.
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param labeler
-	 *            The Object's labeler
+	 *            The object's labeler.
 	 * @param elementListener
-	 *            the listener for the title and description lines
-	 * @param ratingListener
-	 *            the listener on the rating bar
+	 *            The listener for the title and description lines.
 	 * @param position
-	 *            the position of the Object in the List
+	 *            The object'position in the list.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the object is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the labeler is null.
 	 */
 	public RichView(Object currentObject, Context context,
 			IRichLabeler<? extends Object> labeler,
@@ -71,6 +69,13 @@ public class RichView extends LinearLayout {
 		mContext = context;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_rich_view, null);
+
+		if (currentObject == null) {
+			new IllegalArgumentException("Object cannot be null!");
+		}
+		if (labeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
 
 		mCurrentObject = currentObject;
 		mLabeler = labeler;
@@ -90,28 +95,27 @@ public class RichView extends LinearLayout {
 				.findViewById(R.id.sdk_list_entry_rich_view_date);
 
 		// Listener
-		mOnElementClickLIstener = elementListener;
+		mOnLineClickLIstener = elementListener;
 
 		initializeView();
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	public void initializeView() {
 
 		// Sets the click listener on the layout (on the line)
 		mLayout.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (mOnElementClickLIstener != null) {
+				if (mOnLineClickLIstener != null) {
 					v.setTag(mLabeler.getTitle(mCurrentObject));
-					mOnElementClickLIstener.onItemClick(null, v, mPosition, 0);
+					mOnLineClickLIstener.onItemClick(null, v, mPosition, 0);
 				}
 			}
 		});
 
 		// Binds the data efficiently with the holder.
-
 		// Title
 		if (mLabeler.getTitle(mCurrentObject) != null) {
 			mTitleLine.setText(mLabeler.getTitle(mCurrentObject));
@@ -138,10 +142,11 @@ public class RichView extends LinearLayout {
 	}
 
 	/**
-	 * Returns the name of the day for a date.
+	 * Returns the name of the day for a given <code>Date</code>.
 	 * 
 	 * @param date
-	 * @return
+	 *            The object's date.
+	 * @return day The day as a <code>String</code>.
 	 */
 	private String day(Date date) {
 		String day = "";

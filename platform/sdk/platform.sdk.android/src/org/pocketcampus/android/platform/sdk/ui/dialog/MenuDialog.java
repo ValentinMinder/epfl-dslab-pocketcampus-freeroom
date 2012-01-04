@@ -16,81 +16,87 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 /**
- * A Dialog to display an Element consisting of a title, a description, a rating
+ * A Dialog to display an object consisting of a title, a description, a rating
  * bar that the user can use to rate the element and 1 to 3 customizable
- * buttons. The inner class Builder sets all the parameters sent from the
- * Application and then creates the corresponding Dialog.
+ * buttons. The inner class <code>Builder</code> sets all the parameters sent
+ * from the application and then creates the corresponding
+ * <code>MenuDialog</code>.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class MenuDialog extends Dialog {
 
 	/**
-	 * A constructor
+	 * Class constructor calling the super constructor.
 	 * 
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param theme
-	 *            The int value of the theme we want to use for this dialog
+	 *            The integer value of the theme we want to use for this dialog.
 	 */
 	public MenuDialog(Context context, int theme) {
 		super(context, theme);
 	}
 
 	/**
-	 * A constructor that simply calls the super constructor.
+	 * CLass constructor calling the super constructor.
 	 * 
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 */
 	public MenuDialog(Context context) {
 		super(context);
 	}
 
 	/**
-	 * Inner class Builder. Sets all the Dialog parameters and creates it.
+	 * Inner class <code>Builder</code>. Sets all the dialog parameters and
+	 * creates it.
 	 * 
 	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * 
 	 */
 	public static class Builder {
-		/** The Application context */
+		/** The application context. */
 		private Context mContext;
-		/** The content View */
+		/** The content view. */
 		private View mContentView;
-		/** Decides whether clicking outside the dialog dismisses it or not */
+		/**
+		 * <code>Boolean</code> deciding whether clicking outside the dialog
+		 * dismisses it or not.
+		 */
 		private boolean mCanceledOnTouchOutside;
-		/** The element's title to be displayed in the dialog */
+		/** The object's title to be displayed in the dialog. */
 		private String mTitle;
-		/** The element's description to be displayed in the dialog */
+		/** The object's description to be displayed in the dialog. */
 		private String mDescription;
-		/** The element's rating */
+		/** The object's rating. */
 		private float mRating;
-		/** The rating the user can set in the dialog */
+		/** The rating the user can set in the dialog. */
 		private float mMyRating;
-		/** Whether the user can still vote */
+		/** <code>Boolean</code> saying whether the user can still vote. */
 		private boolean mHasVoted;
-		/** The first button's text */
+		/** The first button's text. */
 		private String mFirstButtonText;
-		/** The second button's text */
+		/** The second button's text. */
 		private String mSecondButtonText;
-		/** The third button's text */
+		/** The third button's text. */
 		private String mThirdButtonText;
-		/** The first button's click listener */
+		/** The first button's click listener. */
 		private DialogInterface.OnClickListener mFirstButtonClickListener;
-		/** The second button's click listener */
+		/** The second button's click listener. */
 		private DialogInterface.OnClickListener mSecondButtonClickListener;
-		/** The third button's click listener */
+		/** The third button's click listener. */
 		private DialogInterface.OnClickListener mThirdButtonClickListener;
 
 		/**
-		 * The constructor
+		 * Class constructor instantiating the context.
 		 * 
 		 * @param context
-		 *            The Application context
+		 *            The application context.
+		 * @throws IllegalArgumentException
+		 *             Thrown if the context is null.
 		 */
 		public Builder(Context context) {
-			if(context == null) {
+			if (context == null) {
 				new IllegalArgumentException("Context cannot be null!");
 			}
 			mContext = context;
@@ -100,7 +106,8 @@ public class MenuDialog extends Dialog {
 		 * Sets the dialog title.
 		 * 
 		 * @param title
-		 * @return
+		 *            The dialog's title.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setTitle(String title) {
 			mTitle = title;
@@ -111,7 +118,8 @@ public class MenuDialog extends Dialog {
 		 * Sets the dialog title from a resource.
 		 * 
 		 * @param title
-		 * @return
+		 *            The dialog's title resource value.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setTitle(int title) {
 			mTitle = (String) mContext.getText(title);
@@ -122,7 +130,8 @@ public class MenuDialog extends Dialog {
 		 * Sets the dialog description.
 		 * 
 		 * @param description
-		 * @return
+		 *            The dialog's description.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setDescription(String description) {
 			mDescription = description;
@@ -133,7 +142,8 @@ public class MenuDialog extends Dialog {
 		 * Sets the dialog description from a resource.
 		 * 
 		 * @param description
-		 * @return
+		 *            The dialog's description resource value.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setDescription(int description) {
 			mDescription = (String) mContext.getText(description);
@@ -141,10 +151,16 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Sets the current rating in the Rating Bar
+		 * Sets the current rating to be displayed in the action bar.
 		 * 
+		 * @param isVisible
+		 *            <code>Boolean</code> saying if the rating bar is visible
+		 *            or not.
 		 * @param rating
-		 * @return
+		 *            The rating value.
+		 * @param nbVotes
+		 *            The number of votes.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setRating(boolean isVisible, float rating, int nbVotes) {
 			mHasVoted = isVisible;
@@ -153,11 +169,12 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Sets a custom content view for the Dialog. Only used if no
+		 * Sets a custom content view for the dialog. Only used if no
 		 * description is set.
 		 * 
 		 * @param view
-		 * @return
+		 *            The <code>ContentView</code> for the dialog.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setContentView(View view) {
 			mContentView = view;
@@ -165,11 +182,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Sets the first button text from a resource and its listener
+		 * Sets the first button text from a resource and its listener.
 		 * 
 		 * @param fristButtonText
+		 *            The text resource value for the first button.
 		 * @param listener
-		 * @return
+		 *            The listener for the first button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setFirstButton(int fristButtonText,
 				OnClickListener listener) {
@@ -179,11 +198,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Set the first button text and its listener
+		 * Sets the first button text and its listener.
 		 * 
 		 * @param firstButtonText
+		 *            The text for the first button.
 		 * @param listener
-		 * @return
+		 *            The listener for the first button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setFirstButton(String firstButtonText,
 				OnClickListener listener) {
@@ -193,11 +214,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Set the second button text from a resource and its listener
+		 * Sets the second button text from a resource and its listener.
 		 * 
 		 * @param secondButtonText
+		 *            The text resource value for the second button.
 		 * @param listener
-		 * @return
+		 *            The listener for the second button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setSecondButton(int secondButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -207,11 +230,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Set the second button text and its listener
+		 * Sets the second button text and its listener.
 		 * 
 		 * @param secondButtonText
+		 *            The text for the second button.
 		 * @param listener
-		 * @return
+		 *            The listener for the second button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setSecondButton(String secondButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -221,11 +246,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Set the third button text from a resource and its listener
+		 * Sets the third button text from a resource and its listener.
 		 * 
 		 * @param mThirdButtonText
+		 *            The text resource value for the third button.
 		 * @param listener
-		 * @return
+		 *            The listener for the third button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setThirdButton(int thirdButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -235,11 +262,13 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Set the third button text and its listener
+		 * Sets the third button text and its listener.
 		 * 
 		 * @param mThirdButtonText
+		 *            The text for the third button.
 		 * @param listener
-		 * @return
+		 *            The listener for the third button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setThirdButton(String thirdButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -249,25 +278,28 @@ public class MenuDialog extends Dialog {
 		}
 
 		/**
-		 * Sets the outside touch action (dismiss or not)
+		 * Sets the outside touch action (dismiss the dialog or not).
 		 * 
 		 * @param cancel
+		 *            A <code>Boolean</code> saying if the dialog is dismissed when
+		 *            touching outside.
 		 */
 		public void setCanceledOnTouchOutside(boolean cancel) {
 			mCanceledOnTouchOutside = cancel;
 		}
 
 		/**
-		 * Send the rating set by the user
+		 * Sends the rating set by the user.
 		 * 
-		 * @return mMyRating The rating set by the user
+		 * @return mMyRating The rating set by the user.
 		 */
 		public float getSubmittedRating() {
 			return mMyRating;
 		}
 
 		/**
-		 * Creates the custom dialog.
+		 * Creates the custom dialog. If some values or texts are not set, then
+		 * the corresponding element is not visible in the dialog.
 		 */
 		public MenuDialog create() {
 			LayoutInflater inflater = (LayoutInflater) mContext

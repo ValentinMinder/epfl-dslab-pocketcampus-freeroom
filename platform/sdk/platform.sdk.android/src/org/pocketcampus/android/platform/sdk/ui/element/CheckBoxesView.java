@@ -12,62 +12,60 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display an Object that the user can rate. It represents a line of a
- * ListView and contains the object's title and description, along with a rating
- * bar and the number of votes that Object got. It's designed to be used with
- * the RatableExpandableListView or an equivalent, and can be created directly
- * in the Application View.
+ * An array adapter that contains a <code>TextView</code> and two
+ * <code>CheckBox</code> per line (it's supposed to be used with the
+ * <code>MultipleCheckBoxesListView</code> or an equivalent).
+ * 
+ * You can set the listeners and the tags to be displayed in the
+ * <code>TextView</code> from the application.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
- * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 public class CheckBoxesView extends LinearLayout {
-	/** The Application Context */
-	private Context mContext;
-	/** The convert view */
+	/** The <code>ConvertView</code>. */
 	private View mConvertView;
-	/** The Object to be displayed in the View */
+	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
-	/** The Labeler from the Application to get the Obejct's attributes */
+	/** The labeler from the application to get the obejct's attributes. */
 	private ILabeler mLabeler;
-	/** The position of the Object in the ListView */
+	/** The position of the object in the <code>ListView</code>. */
 	private int mPosition;
-	/** The Object's title */
+	/** The object's title. */
 	private TextView mTitleLine;
-	/** The positive CheckBox */
+	/** The positive <code>CheckBox</code>. */
 	private CheckBox mPositiveCheckBox;
-	/** The negative CheckBox */
+	/** The negative <code>CheckBox</code>. */
 	private CheckBox mNegativeCheckBox;
-	/** The click listener on the CheckBox */
+	/** The click listener on the <code>CheckBox</code>. */
 	private OnItemClickListener mOnCheckBoxClickListener;
 
 	/**
-	 * The constructor
+	 * Class constructor.
 	 * 
 	 * @param currentObject
-	 *            The Object to be displayed in the line
+	 *            The object to be displayed in the line.
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param labeler
-	 *            The Object's labeler
+	 *            The object's labeler.
 	 * @param checkBoxListener
-	 *            the listener for the title and description lines
+	 *            The listener for the <code>CheckBox</code>.
 	 * @param ratingListener
-	 *            the listener on the rating bar
+	 *            The listener on the rating bar.
 	 * @param position
-	 *            the position of the Object in the List
+	 *            The position of the object in the list.
 	 */
 	public CheckBoxesView(Object currentObject, Context context,
 			ILabeler<? extends Object> labeler,
 			OnItemClickListener checkBoxListener, int position) {
 		super(context);
-		mContext = context;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_checkboxes, null);
 
 		mCurrentObject = currentObject;
 		mLabeler = labeler;
 		mPosition = position;
+		mOnCheckBoxClickListener = checkBoxListener;
 
 		// Creates a ViewHolder and store references to the two children views
 		// we want to bind data to.
@@ -78,19 +76,21 @@ public class CheckBoxesView extends LinearLayout {
 		mNegativeCheckBox = (CheckBox) mConvertView
 				.findViewById(R.id.sdk_list_entry_negative_checkbox);
 
-		// Listeners
-		mOnCheckBoxClickListener = checkBoxListener;
-
 		initializeView();
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	public void initializeView() {
 
 		// Positive CheckBox click listener
 		mPositiveCheckBox.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Defines what has to be performed when the positive
+			 * <code>CheckBox</code> is clicked.
+			 */
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
 
@@ -107,6 +107,11 @@ public class CheckBoxesView extends LinearLayout {
 
 		// Negative CheckBox click listener
 		mNegativeCheckBox.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Defines what has to be performed when the negative
+			 * <code>CheckBox</code> is clicked.
+			 */
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
 
@@ -122,7 +127,7 @@ public class CheckBoxesView extends LinearLayout {
 		});
 
 		// Title text for the holder
-		if(mLabeler.getLabel(mCurrentObject) != null) {			
+		if (mLabeler.getLabel(mCurrentObject) != null) {
 			mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
 		}
 

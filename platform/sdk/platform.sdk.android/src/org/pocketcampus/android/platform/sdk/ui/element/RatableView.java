@@ -23,44 +23,52 @@ import android.widget.TextView;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 public class RatableView extends LinearLayout {
-	/** The Application Context */
+	/** The application context. */
 	private Context mContext;
-	/** The convert view */
+	/** The <code>ConvertView</code>. */
 	private View mConvertView;
-	/** The Object to be displayed in the View */
+	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
-	/** The Labeler from the Application to get the Obejct's attributes */
+	/** The labeler from the application to get the object's attributes. */
 	private IRatableViewLabeler mLabeler;
-	/** The position of the Object in the ListView */
+	/** The object's position in the <code>ListView</code>. */
 	private int mPosition;
-	/** The Object's title */
+	/** The object's title. */
 	private TextView mTitleLine;
-	/** The Object's description */
+	/** The object's description. */
 	private TextView mDescriptionLine;
-	/** The rating bar */
+	/** The <code>RatingBar</code>. */
 	private RatingBar mRatingLine;
-	/** The number of votes */
+	/** The number of votes. */
 	private TextView mVotesLine;
-	/** The click listener on the Object's title and description */
+	/** The click listener on the object's title and description. */
 	private OnItemClickListener mOnElementClickLIstener;
-	/** The listener on the rating bar */
+	/** The listener on the <code>RatingBar</code>. */
 	private OnItemClickListener mOnRatingClickListener;
 
 	/**
-	 * The constructor
+	 * Class constructor.
 	 * 
 	 * @param currentObject
-	 *            The Object to be displayed in the line
+	 *            The object to be displayed in the line.
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param labeler
-	 *            The Object's labeler
+	 *            The object's labeler.
 	 * @param elementListener
-	 *            the listener for the title and description lines
+	 *            The listener for the title and description lines.
 	 * @param ratingListener
-	 *            the listener on the rating bar
+	 *            The listener on the <code>RatingBar</code>.
 	 * @param position
-	 *            the position of the Object in the List
+	 *            The object's position in the List.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the object is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the labeler is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the rating listener is null.
+	 * @throws IllegalArgumentException
+	 *             Thrown if the element listener is null.
 	 */
 	public RatableView(Object currentObject, Context context,
 			IRatableViewLabeler<? extends Object> labeler,
@@ -71,14 +79,27 @@ public class RatableView extends LinearLayout {
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_ratable_view, null);
 
-		this.mCurrentObject = currentObject;
+		if (currentObject == null) {
+			new IllegalArgumentException("Object cannot be null!");
+		}
+		if (labeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
+		if (ratingListener == null) {
+			new IllegalArgumentException(
+					"Listener on the rating cannot be null!");
+		}
+		if (elementListener == null) {
+			new IllegalArgumentException(
+					"Listener on the element cannot be null!");
+		}
+
+		mCurrentObject = currentObject;
 		mLabeler = labeler;
 		mPosition = position;
 
-		/**
-		 * Creates a ViewHolder and store references to the two children views
-		 * we want to bind data to.
-		 */
+		// Creates a ViewHolder and store references to the two children views
+		// we want to bind data to.
 		this.mTitleLine = (TextView) mConvertView
 				.findViewById(R.id.food_menuentry_title);
 		this.mDescriptionLine = (TextView) mConvertView
@@ -88,7 +109,7 @@ public class RatableView extends LinearLayout {
 		this.mVotesLine = (TextView) mConvertView
 				.findViewById(R.id.food_menuentry_numberOfVotes);
 
-		/** Listeners */
+		// Listeners
 		mOnElementClickLIstener = elementListener;
 		mOnRatingClickListener = ratingListener;
 
@@ -96,12 +117,16 @@ public class RatableView extends LinearLayout {
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	public void initializeView() {
 
-		/** title line click listener */
+		// Title line click listener
 		mTitleLine.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Defines what has to be performed when the title is clicked.
+			 */
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
 					v.setTag(mLabeler.getPlaceName(mCurrentObject));
@@ -110,8 +135,12 @@ public class RatableView extends LinearLayout {
 			}
 		});
 
-		/** description line click listener */
+		// Description line click listener
 		mDescriptionLine.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Defines what has to be performed when the description is clicked.
+			 */
 			public void onClick(View v) {
 				if (mOnElementClickLIstener != null) {
 					v.setTag(mLabeler.getPlaceName(mCurrentObject));
@@ -120,9 +149,12 @@ public class RatableView extends LinearLayout {
 			}
 		});
 
-		/** rating bar click listener */
+		// Rating bar click listener
 		mRatingLine.setOnTouchListener(new OnTouchListener() {
 
+			/**
+			 * Defines what has to be performed when the rating is touched.
+			 */
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP
 						&& mOnRatingClickListener != null) {
@@ -134,14 +166,13 @@ public class RatableView extends LinearLayout {
 			}
 		});
 
-		/** Bind the data efficiently with the holder. */
-
-		/** Title */
+		// Bind the data efficiently with the holder.
+		// Title
 		mTitleLine.setText(mLabeler.getLabel(mCurrentObject));
-		/** Description */
+		// Description
 		mDescriptionLine.setText(mLabeler.getDescription(mCurrentObject));
 
-		/** Rating */
+		// Rating
 		setRating(mLabeler.getRating(mCurrentObject),
 				mLabeler.getNumberOfVotes(mCurrentObject));
 
@@ -149,17 +180,19 @@ public class RatableView extends LinearLayout {
 	}
 
 	/**
-	 * Sets the rating in the rating bar and the number of votes text
+	 * Sets the rating in the <code>RatingBar</code> and the number of votes
+	 * text.
 	 * 
 	 * @param currentRating
-	 *            The current Object's rating
+	 *            The object's current rating.
 	 * @param numbVotes
-	 *            The current Object's number of votes
+	 *            The object's current number of votes.
 	 */
 	private void setRating(float currentRating, int numbVotes) {
 		mRatingLine.setRating(currentRating);
 
-		/** Checks if the number of votes is singular or plural */
+		// Checks if the number of votes is singular or plural and sets the text
+		// accordingly.
 		if (numbVotes != 1) {
 			mVotesLine.setText(numbVotes
 					+ " "

@@ -15,74 +15,82 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 
 /**
- * A Dialog to display a Rating Bar that the user can set, along with a confirm
- * button and a cancel button.
+ * A dialog to display a <code>RatingBar</code> that the user can set, along
+ * with a confirm button and a cancel button. The inner class
+ * <code>Builder</code> sets all the parameters sent from the application and
+ * then creates the corresponding <code>RatingDialog</code>.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class RatingDialog extends Dialog {
 
 	/**
-	 * A constructor
+	 * Class constructor calling the super constructor.
 	 * 
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param theme
-	 *            The int value of the theme we want to use
+	 *            The integer value of the theme we want to use.
 	 */
 	public RatingDialog(Context context, int theme) {
 		super(context, theme);
 	}
 
 	/**
-	 * A constructor that simply calls the super constructor
+	 * A constructor calling the super constructor.
 	 * 
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 */
 	public RatingDialog(Context context) {
 		super(context);
 	}
 
 	/**
-	 * Inner class Builder. Sets all the Dialog parameters and creates it.
+	 * Inner class <code>Builder</code>. Sets all the dialog parameters and
+	 * creates it.
 	 * 
 	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * 
 	 */
 	public static class Builder {
-		/** The Application context */
+		/** The application context. */
 		private Context mContext;
-		/** The content View */
-		private View mContentView;
-		/** Decides whether clicking outside the dialog dismisses it or not */
+		/**
+		 * <code>Boolean</code> deciding whether clicking outside the dialog
+		 * dismisses it or not.
+		 */
 		private boolean mCanceledOnTouchOutside;
-		/** The element's title to be displayed in the dialog */
+		/** The element's title to be displayed in the dialog. */
 		private String mTitle;
-		/** The rating bar displayed in the dialog */
+		/** The rating bar displayed in the dialog. */
 		private RatingBar mRatingBar;
-		/** The rating the user can set in the dialog */
+		/** The rating value that the user can set in the dialog. */
 		private float mMyRating;
-		/** The positive button */
+		/** The dialog's positive button. */
 		private Button mPositiveButton;
-		/** The negative button */
+		/** The dialog's negative button. */
 		private Button mNegativeButton;
-		/** The positive button's text */
+		/** The positive button's text. */
 		private String mPositiveButtonText;
-		/** the negative button's text */
+		/** the negative button's text. */
 		private String mNegativeButtonText;
-		/** The positive button's listener */
+		/** The positive button's click listener. */
 		private DialogInterface.OnClickListener mPositiveButtonClickListener;
-		/** The negative button's listener */
+		/** The negative button's click listener. */
 		private DialogInterface.OnClickListener mNegativeButtonClickListener;
 
 		/**
-		 * The constructor
+		 * The constructor instantiates the context.
 		 * 
 		 * @param context
-		 *            The Application context
+		 *            The application context.
+		 * @throws IllegalArgumentException
+		 *             Thrown if the context is null.
 		 */
 		public Builder(Context context) {
+			if (context == null) {
+				new IllegalArgumentException("Context cannot be null!");
+			}
 			mContext = context;
 		}
 
@@ -90,7 +98,8 @@ public class RatingDialog extends Dialog {
 		 * Sets the dialog title.
 		 * 
 		 * @param title
-		 * @return
+		 *            The dialog's title.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setTitle(String title) {
 			mTitle = title;
@@ -101,7 +110,8 @@ public class RatingDialog extends Dialog {
 		 * Sets the dialog title from a resource.
 		 * 
 		 * @param title
-		 * @return
+		 *            The dialog's title resource value.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setTitle(int title) {
 			mTitle = (String) mContext.getText(title);
@@ -109,23 +119,13 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * Sets a custom content view for the Dialog. Only used if no
-		 * description is set.
-		 * 
-		 * @param view
-		 * @return
-		 */
-		public Builder setContentView(View view) {
-			mContentView = view;
-			return this;
-		}
-
-		/**
-		 * Sets the positive button text from a resource and its listener
+		 * Sets the positive button text from a resource and its listener.
 		 * 
 		 * @param positiveButtonText
+		 *            The resource value of the positive button.
 		 * @param listener
-		 * @return
+		 *            The listener for the positive button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setOkButton(int positiveButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -135,11 +135,13 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * Set the positive button text and its listener
+		 * Set the positive button text and its listener.
 		 * 
 		 * @param positiveButtonText
+		 *            The text of the positive button.
 		 * @param listener
-		 * @return
+		 *            The listener for the positive button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setOkButton(String positiveButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -149,11 +151,13 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * Set the negative button text from a resource and its listener
+		 * Set the negative button text from a resource and its listener.
 		 * 
 		 * @param negativeButtonText
+		 *            The resource value of the negative button.
 		 * @param listener
-		 * @return
+		 *            The listener for the negative button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setCancelButton(int negativeButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -163,11 +167,13 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * Set the negative button text and its listener
+		 * Set the negative button text and its listener.
 		 * 
 		 * @param negativeButtonText
+		 *            The text of the negative button.
 		 * @param listener
-		 * @return
+		 *            The listener for the negative button.
+		 * @return this The <code>Builder</code> instance.
 		 */
 		public Builder setCancelButton(String negativeButtonText,
 				DialogInterface.OnClickListener listener) {
@@ -177,16 +183,19 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * Decide whether the dialog is dismissed when touching outside
+		 * Sets the outside touch action (dismiss the dialog or not).
 		 * 
 		 * @param cancel
+		 *            A <code>Boolean</code> saying if the dialog is dismissed
+		 *            when touching outside.
 		 */
 		public void setCanceledOnTouchOutside(boolean cancel) {
 			mCanceledOnTouchOutside = cancel;
 		}
 
 		/**
-		 * Creates the custom dialog.
+		 * Creates the custom dialog. If some values or texts are not set, then
+		 * the corresponding element is not visible in the dialog.
 		 */
 		public RatingDialog create() {
 			LayoutInflater inflater = (LayoutInflater) mContext
@@ -276,9 +285,9 @@ public class RatingDialog extends Dialog {
 		}
 
 		/**
-		 * To send the submitted rating to the Application
+		 * Sends the submitted rating to the application.
 		 * 
-		 * @return The submitted rating
+		 * @return mMyRating The submitted rating.
 		 */
 		public float getSubmittedRating() {
 			return mMyRating;

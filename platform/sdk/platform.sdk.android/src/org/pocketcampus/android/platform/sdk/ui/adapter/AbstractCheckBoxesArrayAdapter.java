@@ -14,46 +14,43 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 
 /**
- * An Array Adapter that contains a TextView and two CheckBoxes per line (it's
- * supposed to be used with the CheckBoxesListView or an equivalent).
+ * An array adapter that contains a <code>TextView</code> and two
+ * <code>CheckBox</code> per line (it's supposed to be used with the
+ * <code>CheckBoxesListViewElement</code> or an equivalent).
  * 
- * You can set the Listeners and the tags to be displayed in the TextViews from
- * the Application.
+ * You can set the Listeners and the tags to be displayed in the
+ * <code>TextView</code> from the application.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public abstract class AbstractCheckBoxesArrayAdapter extends
 		ArrayAdapter<Object> {
-	/** The Application context */
-	private Context mContext;
-	/** The LayoutInflater to inflate the resources for the layout */
-	private LayoutInflater mInflater;
-	/** The source for the Layout */
+	/** The resource for the layout. */
 	protected static int mLayoutResourceId = R.layout.sdk_list_entry_checkboxes;
-	/** The source for the TextView */
+	/** The resource for the <code>TextView</code>. */
 	protected static int mTextViewResourceId = R.id.sdk_list_entry_checkboxes_text;
-	/** Listener to be set by the Application */
+	/** The click listener for the object's line. */
 	private OnItemClickListener mListener;
 
 	/**
-	 * The constructor, that simply calls the super constructor
+	 * Class constructor calling the super constructor.
 	 * 
 	 * @param context
-	 *            The Application context
+	 *            The application context.
 	 * @param items
-	 *            The items to be displayed in the list
+	 *            The items to be displayed in the list.
 	 */
 	public AbstractCheckBoxesArrayAdapter(Context context,
 			List<? extends Object> items) {
 		super(context, mLayoutResourceId, mTextViewResourceId, items.toArray());
-		this.mContext = context;
 	}
 
 	/**
-	 * Overrides the getView method and creates the View by initializing the
-	 * TextView and both CheckBoxes. Also sets the Listeners on the CheckBoxes
-	 * to call the OnItemClick method if the Application has defined a Listener
-	 * for the CheckBoxes.
+	 * Overrides the <code>getView</code> method and creates the view by
+	 * initializing the <code>TextView</code> and both <code>CheckBox</code>.
+	 * Also sets the listeners on the <code>CheckBox</code> to call the
+	 * <code>OnItemClick</code> method if the application has defined a listener
+	 * for the <code>CheckBox</code>.
 	 */
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -72,26 +69,34 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 
 		// Listener on the positive CheckBox
 		likeB.setOnClickListener(new OnClickListener() {
-			
+
+			/**
+			 * Defines what has to be performed when the positive
+			 * <code>CheckBox</code> is clicked.
+			 */
 			@Override
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
-				
+
 				if (b.isChecked()) {
 					if (dislikeB.isChecked()) {
 						dislikeB.setChecked(false);
 					}
 				}
-				
+
 				if (mListener != null) {
 					mListener.onItemClick(null, (View) v, position, (long) 1);
 				}
 			}
 		});
-		
+
 		// Listener on the negative CheckBox
 		dislikeB.setOnClickListener(new OnClickListener() {
 
+			/**
+			 * Defines what has to be performed when the negative
+			 * <code>CheckBox</code> is clicked.
+			 */
 			@Override
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
@@ -112,10 +117,10 @@ public abstract class AbstractCheckBoxesArrayAdapter extends
 	}
 
 	/**
-	 * Sets the click listener for the CheckBoxes
+	 * Sets the listener for the <code>CheckBox</code>.
 	 * 
 	 * @param clickListener
-	 *            The click listener created in the application
+	 *            The listener defined in the application.
 	 */
 	public void setOnItemClickListener(OnItemClickListener clickListener) {
 		mListener = clickListener;

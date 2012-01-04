@@ -10,16 +10,25 @@ import android.content.Context;
 import android.widget.ListView;
 
 /**
- * ListView that displays a list of Item along with two CheckBoxes each, that
- * allows the user to check one or none of them, which will express if he likes
- * or dislike an item.
+ * <code>ListView</code> displaying a list of items along with a
+ * <code>CheckBox</code>, allowing the user to check one or none of them, which
+ * will express if he likes or dislike an item.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
- * 
  */
 public class CheckBoxListViewElement extends ListView implements Element {
 	private CheckBoxArrayAdapter mAdapter;
 
+	/**
+	 * Class constructor.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param items
+	 *            The list of items to be displayed.
+	 * @param labeler
+	 *            The labeler to get the objects attributes.
+	 */
 	public CheckBoxListViewElement(Context context,
 			List<? extends Object> items, ILabeler labeler) {
 		super(context);
@@ -28,10 +37,10 @@ public class CheckBoxListViewElement extends ListView implements Element {
 	}
 
 	/**
-	 * Sets the click listener for the positive CheckBox
+	 * Sets the click listener for the <code>CheckBox</code>.
 	 * 
 	 * @param clickListener
-	 *            The click listener created in the application
+	 *            The click listener created in the application.
 	 */
 	public void setOnCheckBoxClickListener(OnItemClickListener clickListener) {
 		mAdapter.setOnCheckBoxClickListener(clickListener);

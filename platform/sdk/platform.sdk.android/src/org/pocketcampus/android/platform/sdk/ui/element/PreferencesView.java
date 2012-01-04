@@ -14,33 +14,53 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A Labeled view to display a text and its correlated CheckBox to let the user
- * choose preferences.
+ * A view to display a text and its correlated <code>CheckBox</code> to let the
+ * user choose preferences.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch
  */
 public class PreferencesView extends LinearLayout {
-	/** The Application context */
+	/** The application context. */
 	private Context mContext;
-	/** The convert view */
+	/** The <code>ConvertView</code>. */
 	private View mConvertView;
-	/** The LayoutInlfater to inflate the resources for the layout */
-	private LayoutInflater mInflater;
-	/** The Object for which we can set the preferences */
+	/** The object for which we can set the preferences. */
 	private Object mCurrentObject;
-	/** The Labeler from the Application, to get the Object's attributes */
+	/** The labeler from the application, to get the object's attributes. */
 	private ILabeler mLabeler;
-	/** The position of the Object in the ListView */
+	/** The position of the object in the <code>ListView</code>. */
 	private int mPosition;
-	/** The Object's title */
+	/** The object's title. */
 	private TextView mTitle;
-	/** The CheckBox to represent the preference for this Object */
+	/** The <code>CheckBox</code> to represent the preference for this object. */
 	private CheckBox mPrefBox;
-	/** The CheckBox listener */
+	/** The <code>CheckBox</code> listener. */
 	private OnItemClickListener mOnCheckBoxClickListener;
-	/** The SharedPreferences to retrieve */
+	/** The <code>SharedPreferences</code> to retrieve. */
 	private SharedPreferences mPrefs;
 
+	/**
+	 * Class constructor.
+	 * 
+	 * @param currentObject
+	 *            The object to be displayed.
+	 * @param context
+	 *            The application context.
+	 * @param labeler
+	 *            The object's labeler.
+	 * @param prefName
+	 *            The name of the <code>SharedPreferences</code>.
+	 * @param listener
+	 *            The object's line listener.
+	 * @param position
+	 *            The object's position in the list.
+	 * @throws IllegalArgumentException
+	 *             If the object is null.
+	 * @throws IllegalArgumentException
+	 *             If the labeler is null.
+	 * @throws IllegalArgumentException
+	 *             If the listener is null.
+	 */
 	public PreferencesView(Object currentObject, Context context,
 			ILabeler<? extends Object> labeler, String prefName,
 			OnItemClickListener listener, int position) {
@@ -49,12 +69,20 @@ public class PreferencesView extends LinearLayout {
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_preferences, null);
 
+		if (currentObject == null) {
+			new IllegalArgumentException("Object cannot be null!");
+		}
+		if (labeler == null) {
+			new IllegalArgumentException("Labeler cannot be null!");
+		}
+		if (listener == null) {
+			new IllegalArgumentException("Listener cannot be null!");
+		}
+
 		mCurrentObject = currentObject;
 		mLabeler = labeler;
 		mPosition = position;
-
 		mOnCheckBoxClickListener = listener;
-
 		mPrefs = mContext.getSharedPreferences(prefName, 0);
 
 		// Creates the TextView and the CheckBox
@@ -67,12 +95,11 @@ public class PreferencesView extends LinearLayout {
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	public void initializeView() {
 
 		// Binds the data efficiently with the holder.
-
 		// TextView
 		mTitle.setText(mLabeler.getLabel(mCurrentObject));
 
@@ -84,6 +111,10 @@ public class PreferencesView extends LinearLayout {
 		// CheckBox Listener
 		mPrefBox.setOnClickListener(new OnClickListener() {
 
+			/**
+			 * Defines what has to be performed when the <code>CheckBox</code>
+			 * is clicked.
+			 */
 			@Override
 			public void onClick(View v) {
 				CheckBox b = (CheckBox) v;
@@ -103,6 +134,10 @@ public class PreferencesView extends LinearLayout {
 		});
 
 		mConvertView.setOnClickListener(new OnClickListener() {
+
+			/**
+			 * Defines what has to be performed when the line is clicked.
+			 */
 			@Override
 			public void onClick(View v) {
 				mPrefBox.performClick();
@@ -111,6 +146,9 @@ public class PreferencesView extends LinearLayout {
 
 		mConvertView.setOnKeyListener(new OnKeyListener() {
 
+			/**
+			 * Defines what has to be performed when the line is clicked.
+			 */
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				switch (keyCode) {
@@ -122,9 +160,11 @@ public class PreferencesView extends LinearLayout {
 			}
 		});
 
-		
 		this.setOnKeyListener(new OnKeyListener() {
 
+			/**
+			 * Defines what has to be performed when the line is clicked.
+			 */
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				switch (keyCode) {

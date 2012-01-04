@@ -10,35 +10,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Standard Titled <code>Layout</code> with a centered message and a title at the top.
- * You can add two inner <code>Layout</code> in the outter <code>RelativeLayout</code>
+ * A <code>RelativeLayout</code> with a centered message and a title at the top.
+ * You can add two inner layouts in the outer <code>RelativeLayout</code>.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
- * 
  */
 public class StandardTitledDoubleLayout extends RelativeLayout {
-	/** The Layout containing the title and text */
+	/** The main layout containing the title and text. */
 	private RelativeLayout mLayout;
-
-	/** The first inner layout, below the title */
+	/** The first inner layout, below the title. */
 	private RelativeLayout mFillerLayoutOne;
-	
-	/** The second inner layout, below the first one */
+	/** The second inner layout, below the first one. */
 	private RelativeLayout mFillerLayoutTwo;
-
-	/** The title of the Layout */
+	/** The layout's title. */
 	private TextView mTitleTextView;
-
-	/** The TextView displayed at the center of the Layout */
+	/** The <code>TextView</code> displayed at the center of the layout. */
 	private TextView mMessageTextView;
 
 	/**
-	 * Constructor
+	 * Class constructor instantiating the context and the attributes.
 	 * 
 	 * @param context
-	 *            the context of the calling Activity
+	 *            The application context.
 	 * @param attrs
-	 *            the attributes to set for this layout
+	 *            The attributes to set for this layout.
 	 */
 	public StandardTitledDoubleLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -46,10 +41,10 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Constructor
+	 * Class constructor initializing the context.
 	 * 
 	 * @param context
-	 *            the context of the calling Activity
+	 *            The application context.
 	 */
 	public StandardTitledDoubleLayout(Context context) {
 		super(context);
@@ -57,10 +52,10 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Initialize the layout
+	 * Initializes the layout.
 	 * 
 	 * @param context
-	 *            the context of the calling Activity
+	 *            The application context.
 	 */
 	private void initialize(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -78,7 +73,7 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	 * Displays a centered message.
 	 * 
 	 * @param text
-	 *            the text to display
+	 *            The message to display.
 	 */
 	public void setText(String text) {
 		mMessageTextView.setText(text);
@@ -86,10 +81,10 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Displays a title message.
+	 * Displays a title.
 	 * 
 	 * @param text
-	 *            the title to display
+	 *            The text of the title to display.
 	 */
 	public void setTitle(String text) {
 		mTitleTextView.setText(text);
@@ -116,34 +111,35 @@ public class StandardTitledDoubleLayout extends RelativeLayout {
 	}
 
 	/**
-	 * Add a view to the first inner layout, below the title
+	 * Adds a view to the first inner layout, below the title.
 	 * 
 	 * @param child
-	 *            the view to add to the first inner layout
+	 *            The view to add to the first inner layout.
 	 */
 	public void addFirstLayoutFillerView(View child) {
 		mFillerLayoutOne.addView(child);
 	}
 
 	/**
-	 * Remove views from the first inner layout, below the title
+	 * Removes all views from the first inner layout, below the title.
 	 */
 	public void removeFirstLayoutFillerView() {
 		mFillerLayoutOne.removeAllViews();
 	}
-	
+
 	/**
-	 * Add a view to the second inner layout, below the first inner layout
+	 * Adds a view to the second inner layout, below the first inner layout.
 	 * 
 	 * @param child
-	 *            the view to add to the second inner layout
+	 *            The view to add to the second inner layout.
 	 */
 	public void addSecondLayoutFillerView(View child) {
 		mFillerLayoutTwo.addView(child);
 	}
 
 	/**
-	 * Remove views from the second inner layout, below the first inner layout
+	 * Removes all views from the second inner layout, below the first inner
+	 * layout.
 	 */
 	public void removeSecondLayoutFillerView() {
 		mFillerLayoutTwo.removeAllViews();

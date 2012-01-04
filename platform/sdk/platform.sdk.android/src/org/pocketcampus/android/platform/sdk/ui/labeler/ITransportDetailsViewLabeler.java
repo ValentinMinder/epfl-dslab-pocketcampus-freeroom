@@ -3,13 +3,13 @@ package org.pocketcampus.android.platform.sdk.ui.labeler;
 import android.widget.LinearLayout;
 
 /**
- * Interface to the methods provided by a TransportDetailsViewLabeler
- * 
- * A FeedView should have a departure time, an arrival time, a departure place
- * and an arrival place.
+ * Interface to the methods provided by a
+ * <code>TransportDetailsViewLabeler</code>. A
+ * <code>TransportDetailsViewLabeler</code> should have a departure time, an
+ * arrival time, a departure place and an arrival place.
  * 
  * Defines where the information about an object that is to be displayed will be
- * fetched from
+ * fetched from.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
@@ -17,49 +17,47 @@ import android.widget.LinearLayout;
 public interface ITransportDetailsViewLabeler<LabeledObjectType> {
 
 	/**
-	 * Returns the departure time of the object passed in parameter in the form
-	 * HH:mm.
+	 * Returns the departure time of the labeled object in the form HH:mm.
 	 * 
 	 * @param obj
-	 *            the object of which we want the departure time
-	 * @return the String departure time
+	 *            The object of which we want the departure time.
+	 * @return The <code>String</code> departure time.
 	 */
 	public String getDepartureTime(LabeledObjectType obj);
 
 	/**
-	 * Returns the departure place of the object passed in parameter.
+	 * Returns the departure place of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the departure place
-	 * @return the String departure place
+	 *            The object of which we want the departure place.
+	 * @return The <code>String</code> departure place.
 	 */
 	public String getDeparturePlace(LabeledObjectType obj);
 
 	/**
-	 * Returns the arrival time of the object passed in parameter in the form
-	 * HH:mm.
+	 * Returns the arrival time of the labeled object in the form HH:mm.
 	 * 
 	 * @param obj
-	 *            the object of which we want the arrival time
-	 * @return the String arrival time
+	 *            The object of which we want the arrival time.
+	 * @return The <code>String</code> arrival time.
 	 */
 	public String getArrivalTime(LabeledObjectType obj);
 
 	/**
-	 * Returns the arrival place of the object passed in parameter.
+	 * Returns the arrival place of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the arrival place
-	 * @return the String arrivale place
+	 *            The object of which we want the arrival place.
+	 * @return The <code>String</code> arrival place.
 	 */
 	public String getArrivalPlace(LabeledObjectType obj);
 
 	/**
-	 * Returns the picture of the object passed in parameter.
+	 * Returns the picture of the labeled object.
 	 * 
 	 * @param obj
-	 *            the object of which we want the picture
-	 * @return the LinearLayout picture
+	 *            The object of which we want the picture
+	 * @return The <code>LinearLayout</code> picture.
 	 */
 	public LinearLayout getPictureLayout(LabeledObjectType obj);
 
