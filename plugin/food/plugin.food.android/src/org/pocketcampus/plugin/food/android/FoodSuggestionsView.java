@@ -132,6 +132,7 @@ public class FoodSuggestionsView extends PluginView {
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		mComputeButton.setLayoutParams(buttonParams);
+		mComputeButton.setEnabled(false);
 
 		// Set onClickListener
 		mComputeButton.setOnClickListener(new OnClickListener() {
@@ -160,14 +161,22 @@ public class FoodSuggestionsView extends PluginView {
 
 				if (b.isChecked()) {
 					// Tracker
-					Tracker.getInstance().trackPageView("food/suggestions/add/" + tag);
+					Tracker.getInstance().trackPageView(
+							"food/suggestions/add/" + tag);
+					if (!mComputeButton.isEnabled()) {
+						mComputeButton.setEnabled(true);
+					}
 					if (!mLikes.contains(tag)) {
 						mLikes.add(tag);
 					}
 				} else {
 					// Tracker
-					Tracker.getInstance().trackPageView("food/suggestions/remove/" + tag);
+					Tracker.getInstance().trackPageView(
+							"food/suggestions/remove/" + tag);
 					mLikes.remove(tag);
+					if(mLikes.isEmpty()) {
+						mComputeButton.setEnabled(false);
+					}
 				}
 			}
 
