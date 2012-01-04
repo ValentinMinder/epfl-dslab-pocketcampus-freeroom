@@ -4,9 +4,10 @@
     <!-- General -->
     <string name="satellite_plugin_name">Satellite</string>
     <string name="satellite_nothing_to_display">Impossible de se connecter.</string>
+    <string name="satellite_no_beer_to_display">Pas de bière à afficher.</string>
     <string name="satellite_menu_main_page">Satellite</string>
     <string name="satellite_loading">Chargement...</string>
-    
+
     <!-- Affluence -->
     <string name="satellite_affluence">Affluence</string>
     <string name="satellite_menu_affluence">Affluence</string>
@@ -16,18 +17,18 @@
     <string name="satellite_affluence_full">Ça y est, on est plein!</string>
     <string name="satellite_affluence_closed">Cherche pas, c\'est fermé...</string>
     <string name="satellite_affluence_error">Erreur</string>
-        
-	<!-- Beer(s) -->
-	<string name="satellite_menu_beers">Bières</string>
-	<string name="satellite_beer_of_month">Bière Du Mois</string>
-	
-	<!-- Events -->
-	<string name="satellite_menu_events">Événements</string>
-	
-	<!-- Sandwiches -->
-	<string name="satellite_menu_sandwiches">Sandwichs</string>
-	
+
+    <!-- Beer(s) -->
+    <string name="satellite_menu_beers">Bières</string>
+    <string name="satellite_beer_of_month">Bière Du Mois</string>
+
+    <!-- Events -->
+    <string name="satellite_menu_events">Événements</string>
+
+    <!-- Sandwiches -->
+    <string name="satellite_menu_sandwiches">Sandwichs</string>
+
     <!-- Error -->
-   	<string name="satellite_network_error">Impossible de se connecter.!</string>
+    <string name="satellite_network_error">Impossible de se connecter.!</string>
 
 </resources>

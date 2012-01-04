@@ -122,11 +122,14 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public void beerUpdated() {
 		Beer beer = mModel.getBeerOfMonth();
-		if (beer != null) {
+		if (beer != null && !beer.getPictureUrl().equals("")) {
 			mLayout.hideText();
 			ImageTextView t = new ImageTextView(beer, getApplicationContext(),
 					mBeerLabeler);
 			mLayout.addSecondLayoutFillerView(t);
+		} else {
+			mLayout.setText(getResources().getString(
+					R.string.satellite_no_beer_to_display));
 		}
 	}
 
@@ -138,11 +141,14 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	public void affluenceUpdated() {
 		Affluence a = mModel.getAffluence();
 		if (a != null) {
-			mLayout.hideText();
+			// mLayout.hideText();
 			AffluenceImageView view = new AffluenceImageView(a, chooseImage(a),
 					this, mAffluenceLabeler);
 
 			mLayout.addFirstLayoutFillerView(view);
+		} else {
+			mLayout.setText(getResources().getString(
+					R.string.satellite_nothing_to_display));
 		}
 	}
 
