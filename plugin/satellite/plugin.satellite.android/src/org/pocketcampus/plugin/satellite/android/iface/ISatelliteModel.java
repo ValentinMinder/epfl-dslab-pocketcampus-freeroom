@@ -4,7 +4,8 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 /**
- * The interface that defines the public methods of SatelliteModel
+ * The interface that defines the public methods of the
+ * <code>SatelliteModel</code>.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
@@ -12,22 +13,32 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
 public interface ISatelliteModel {
 
 	/**
-	 * Gets the beer of the month
+	 * Returns the beer of the month at Satellite.
+	 * 
+	 * @return The <code>Beer</code> object.
 	 */
 	public Beer getBeerOfMonth();
-	
+
 	/**
-	 * Sets the beer of the month
+	 * Sets the beer of the month.
+	 * 
+	 * @param beer
+	 *            The beer of the month to be set.
 	 */
 	public void setBeerOfMonth(Beer beer);
-	
+
 	/**
-	 * Get the current affluence at Satellite
+	 * Returns the current affluence at Satellite.
+	 * 
+	 * @return The <code>Affluence</code> object.
 	 */
 	public Affluence getAffluence();
-	
+
 	/**
-	 * Sets the affluence
+	 * Sets the affluence.
+	 * 
+	 * @param affluence
+	 *            The affluence to be set.
 	 */
 	public void setAffluence(Affluence affluence);
 }

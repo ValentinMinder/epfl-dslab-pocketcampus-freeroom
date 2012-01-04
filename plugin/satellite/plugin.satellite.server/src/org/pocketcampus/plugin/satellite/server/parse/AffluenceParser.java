@@ -7,19 +7,19 @@ import org.jsoup.nodes.Document;
 import org.pocketcampus.plugin.satellite.shared.Affluence;
 
 /**
- * A class to parse the current affluence at Satellite
+ * A class to parse the current affluence at Satellite.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class AffluenceParser {
-	/** The url of the affluence page */
+	/** The URL of the affluence page. */
 	private final static String AFFLUENCE_URL = "http://sat.epfl.ch/affluence";
-	/** The String we retrieve */
+	/** The String we retrieve. */
 	private String mAffluence;
 
 	/**
-	 * The constructor. Initiates the parsing of the page.
+	 * Class constructor initiating the parsing of the page.
 	 */
 	public AffluenceParser() {
 		Document doc = null;
@@ -35,13 +35,12 @@ public class AffluenceParser {
 		if (doc != null) {
 			mAffluence = doc.text();
 		}
-
 	}
 
 	/**
-	 * Returns the Affluence enum corresponding the its value.
+	 * Returns the <code>Affluence</code> enum corresponding the its value.
 	 * 
-	 * @return The enum affluence
+	 * @return The enum affluence.
 	 */
 	public Affluence getAffluence() {
 		Affluence a = Affluence.ERROR;

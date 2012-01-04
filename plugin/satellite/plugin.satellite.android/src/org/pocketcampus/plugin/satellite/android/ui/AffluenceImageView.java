@@ -11,38 +11,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A view to display a picture with a title and a description.
+ * A view to display a picture along with a title and a description.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class AffluenceImageView extends LinearLayout {
-	/** The convert view */
+	/** The <code>ConvertView</code> */
 	private View mConvertView;
-	/** The Labeler for the Affluence view */
+	/** The labeler to get the object's attributes */
 	@SuppressWarnings("rawtypes")
 	private IFeedViewLabeler mLabeler;
-	/** The Object to display */
+	/** The object to display */
 	private Object mCurrentObject;
 	/** The image resource */
 	private int mImageResource;
-	/** Title : "Affluence" */
+	/** The title : "Affluence" */
 	private TextView mTitle;
-	/** The Object's image */
+	/** The object's image */
 	private ImageView mImage;
-	/** Description of the current affluence's image */
+	/** The description of the current affluence's image */
 	private TextView mDescription;
 
 	/**
-	 * The constructor of the view
+	 * Class constructor.
 	 * 
 	 * @param object
-	 *            The object to be displayed
+	 *            The object to be displayed.
 	 * @param imageResource
-	 *            The resource value of the image
+	 *            The resource value of the image.
 	 * @param context
-	 *            The application context
+	 *            The application context.
 	 * @param labeler
-	 *            The labeler that says how to display the Object
+	 *            The labeler that says how to display the object.
 	 */
 	public AffluenceImageView(Object object, int imageResource,
 			Context context, IFeedViewLabeler<? extends Object> labeler) {
@@ -50,17 +50,15 @@ public class AffluenceImageView extends LinearLayout {
 		this.mConvertView = LayoutInflater
 				.from(context.getApplicationContext()).inflate(
 						R.layout.satellite_affluence_image_view, null);
+		
 		mLabeler = labeler;
-
 		mCurrentObject = object;
 		mImageResource = imageResource;
 
 		mTitle = (TextView) mConvertView
 				.findViewById(R.id.satellite_affluence_image_view_title);
-
 		mImage = (ImageView) mConvertView
 				.findViewById(R.id.satellite_affluence_image_view_image);
-
 		mDescription = (TextView) mConvertView
 				.findViewById(R.id.satellite_affluence_image_view_description);
 
@@ -68,7 +66,7 @@ public class AffluenceImageView extends LinearLayout {
 	}
 
 	/**
-	 * Initializes the View
+	 * Initializes the view.
 	 */
 	@SuppressWarnings("unchecked")
 	public void initializeView() {

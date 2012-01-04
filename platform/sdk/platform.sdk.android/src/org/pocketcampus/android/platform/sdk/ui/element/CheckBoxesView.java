@@ -27,6 +27,7 @@ public class CheckBoxesView extends LinearLayout {
 	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
 	/** The labeler from the application to get the obejct's attributes. */
+	@SuppressWarnings("rawtypes")
 	private ILabeler mLabeler;
 	/** The position of the object in the <code>ListView</code>. */
 	private int mPosition;
@@ -82,6 +83,7 @@ public class CheckBoxesView extends LinearLayout {
 	/**
 	 * Initializes the view.
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
 		// Positive CheckBox click listener

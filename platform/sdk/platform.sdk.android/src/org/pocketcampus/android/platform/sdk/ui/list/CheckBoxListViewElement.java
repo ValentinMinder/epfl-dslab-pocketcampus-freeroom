@@ -30,7 +30,7 @@ public class CheckBoxListViewElement extends ListView implements Element {
 	 *            The labeler to get the objects attributes.
 	 */
 	public CheckBoxListViewElement(Context context,
-			List<? extends Object> items, ILabeler labeler) {
+			List<? extends Object> items, ILabeler<? extends Object> labeler) {
 		super(context);
 		mAdapter = new CheckBoxArrayAdapter(context, items, labeler);
 		setAdapter(mAdapter);

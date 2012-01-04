@@ -30,6 +30,7 @@ public class RichView extends LinearLayout {
 	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
 	/** The labeler from the application to get the object's attributes. */
+	@SuppressWarnings("rawtypes")
 	private IRichLabeler mLabeler;
 	/** The object's position in the <code>ListView</code>. */
 	private int mPosition;
@@ -103,6 +104,7 @@ public class RichView extends LinearLayout {
 	/**
 	 * Initializes the view.
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
 		// Sets the click listener on the layout (on the line)

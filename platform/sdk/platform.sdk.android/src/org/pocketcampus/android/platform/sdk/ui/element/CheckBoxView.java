@@ -19,13 +19,12 @@ import android.widget.TextView;
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 public class CheckBoxView extends LinearLayout {
-	/** The application context. */
-	private Context mContext;
 	/** The <code>ConvertView</code>. */
 	private View mConvertView;
 	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
 	/** The labeler from the application to get the object's attributes. */
+	@SuppressWarnings("rawtypes")
 	private ILabeler mLabeler;
 	/** The position of the object in the <code>ListView</code>. */
 	private int mPosition;
@@ -58,7 +57,6 @@ public class CheckBoxView extends LinearLayout {
 			ILabeler<? extends Object> labeler,
 			OnItemClickListener checkBoxListener, int position) {
 		super(context);
-		mContext = context;
 		mConvertView = LayoutInflater.from(context.getApplicationContext())
 				.inflate(R.layout.sdk_list_entry_checkbox, null);
 
@@ -89,6 +87,7 @@ public class CheckBoxView extends LinearLayout {
 	/**
 	 * Initializes the view.
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
 		// CheckBox click listener

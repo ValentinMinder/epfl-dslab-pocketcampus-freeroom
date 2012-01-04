@@ -32,7 +32,7 @@ public class MultipleCheckBoxesListViewElement extends ListView implements
 	 *            The labeler to get the objects attributes.
 	 */
 	public MultipleCheckBoxesListViewElement(Context context,
-			List<? extends Object> items, ILabeler labeler) {
+			List<? extends Object> items, ILabeler<? extends Object> labeler) {
 		super(context);
 		mAdapter = new MultipleCheckBoxesArrayAdapter(context, items, labeler);
 		setAdapter(mAdapter);

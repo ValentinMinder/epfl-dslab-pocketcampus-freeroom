@@ -13,30 +13,29 @@ import org.pocketcampus.plugin.satellite.shared.Sandwich;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService;
 
 /**
- * Implementation of The Satellite server. Handles requests sending information
- * to the Satellite plugin.
+ * Implementation of the Satellite server. Handles requests and sends
+ * information to the Satellite plugin.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class SatelliteServiceImpl implements SatelliteService.Iface {
-	/** The List of Beers sold at Satellite */
+	/** The list of beers sold at Satellite (not used). */
 	private List<Beer> mBeers;
-	/** The List of sandwiches sold at Satellite */
+	/** The list of sandwiches sold at Satellite (not used). */
 	private List<Sandwich> mSandwiches;
-	/** The list of next events at Satellite */
-	private List<Event> mEvents;	
-	/** The parser for the affluence */
+	/** The list of next events at Satellite (not used). */
+	private List<Event> mEvents;
+	/** The parser for the affluence. */
 	private AffluenceParser mAffluenceParser;
-	/** The parser for the beer of the month */
+	/** The parser for the beer of the month. */
 	private BeerParser mBeerParser;
 
 	/**
-	 * The Constructor. When first started, the Satellite server gets the Beers
-	 * and Sandwiches from the satellite website. (sadly there is no RSS feed).
+	 * Class constructor starting the Satellite server.
 	 */
 	public SatelliteServiceImpl() {
-		System.out.println("Starting Satellite plugin server ...");
+		System.out.println("Starting the Satellite server ...");
 
 		mBeers = new ArrayList<Beer>();
 		mSandwiches = new ArrayList<Sandwich>();
@@ -44,9 +43,9 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	}
 
 	/**
-	 * Gets the Beer of the current month
+	 * Parses the beer of the current month.
 	 * 
-	 * @return beer The beer of the month
+	 * @return beer The beer of the month.
 	 */
 	@Override
 	public Beer getBeerOfTheMonth() throws TException {
@@ -56,35 +55,7 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	}
 
 	/**
-	 * Gets the list of beers sold at Satellite
-	 * 
-	 * @return mBeers The list of beers
-	 */
-	@Override
-	public List<Beer> getAllBeers() throws TException {
-		return mBeers;
-	}
-
-	/**
-	 * Gets the list of sandwiches sold at Satellite
-	 * 
-	 * @return mSandwiches The list of sandwiches
-	 */
-	@Override
-	public List<Sandwich> getSatSandwiches() throws TException {
-		if (mSandwiches == null || mSandwiches.isEmpty()) {
-			importSatSandwiches();
-			System.out
-					.println("<getSandwiches>: Reimporting satellite sandwiches.");
-		} else {
-			System.out
-					.println("<getSandwiches>: Not reimporting satellite sandwiches");
-		}
-		return mSandwiches;
-	}
-
-	/**
-	 * Gets the current affluence at Satellite.
+	 * Returns the current affluence at Satellite.
 	 * 
 	 * @return affluence The current affluence at Satellite
 	 */
@@ -96,40 +67,32 @@ public class SatelliteServiceImpl implements SatelliteService.Iface {
 	}
 
 	/**
-	 * Gets the list of next Events at Satellite
+	 * Returns the list of beers.
 	 * 
-	 * @return mEvents The list of events
+	 * Not used for now.
+	 */
+	@Override
+	public List<Beer> getAllBeers() throws TException {
+		return mBeers;
+	}
+
+	/**
+	 * Returns the list of sandwiches.
+	 * 
+	 * Not used for now.
+	 */
+	@Override
+	public List<Sandwich> getSatSandwiches() throws TException {
+		return mSandwiches;
+	}
+
+	/**
+	 * Returns the list of events.
+	 * 
+	 * Not used for now.
 	 */
 	@Override
 	public List<Event> getNextEvents() throws TException {
 		return mEvents;
-	}
-
-	/**
-	 * Import all Sandwiches at Satellite from a hardCoded list (there are no
-	 * other ways except parsing the website, but since they almost never
-	 * change, it's done that way).
-	 */
-	private void importSatSandwiches() {
-		/* Satellite */
-		mSandwiches.add(new Sandwich(("Jambon").hashCode(), "Jambon"));
-		mSandwiches.add(new Sandwich(("Thon").hashCode(), "Thon"));
-		mSandwiches.add(new Sandwich(("Jambon Fromage").hashCode(),
-				"Jambon Fromage"));
-		mSandwiches.add(new Sandwich(("Roast-Beef")
-				.hashCode(), "Roast-Beef"));
-		mSandwiches.add(new Sandwich(("Poulet au Curry")
-				.hashCode(), "Poulet au Curry"));
-		mSandwiches.add(new Sandwich(("Jambon Cru")
-				.hashCode(), "Jambon Cru"));
-		mSandwiches.add(new Sandwich(
-				("Tomate Mozzarella").hashCode(), "Tomate Mozzarella"));
-		mSandwiches.add(new Sandwich(("Salami")
-				.hashCode(), "Salami"));
-		mSandwiches.add(new Sandwich(("Parmesan")
-				.hashCode(), "Parmesan"));
-		mSandwiches.add(new Sandwich(("Aubergine grillée").hashCode(), "Aubergine grillée"));
-		mSandwiches.add(new Sandwich(("Viande séchée")
-				.hashCode(), "Viande séchée"));
 	}
 }

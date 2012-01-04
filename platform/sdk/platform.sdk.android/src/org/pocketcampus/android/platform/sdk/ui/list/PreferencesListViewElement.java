@@ -32,7 +32,7 @@ public class PreferencesListViewElement extends ListView implements Element {
 	 *            The name of the <code>SharedPreferences</code> to retrieve.
 	 */
 	public PreferencesListViewElement(Context context,
-			List<? extends Object> items, ILabeler labeler, String prefName) {
+			List<? extends Object> items, ILabeler<? extends Object> labeler, String prefName) {
 		super(context);
 
 		// Layout parameters

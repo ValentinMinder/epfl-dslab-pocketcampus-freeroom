@@ -21,6 +21,7 @@ public class ImageTextView extends LinearLayout {
 	/** The object to be displayed in the view. */
 	private Object mCurrentObject;
 	/** The labeler from the application to get the object's attributes. */
+	@SuppressWarnings("rawtypes")
 	private ISubtitledFeedViewLabeler mLabeler;
 	/** The object's title. */
 	private TextView mTitleLine;
@@ -79,6 +80,7 @@ public class ImageTextView extends LinearLayout {
 	/**
 	 * Initializes the view.
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
 		// Title

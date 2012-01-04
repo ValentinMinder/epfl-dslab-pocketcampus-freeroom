@@ -8,23 +8,22 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 /**
- * The Model of the satellite plugin, used to handle the information that is
- * going to be displayed in the views
+ * The model of the Satellite plugin, used to handle the information that is
+ * going to be displayed in the views.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class SatelliteModel extends PluginModel implements ISatelliteModel {
-
-	/** The listeners for the state of the view */
+	/** The listeners for the state of the view. */
 	ISatelliteMainView mListeners = (ISatelliteMainView) getListeners();
-	/** The Beer of the month at Satellite */
+	/** The beer of the month at Satellite. */
 	private Beer mBeerOfMonth;
-	/** The current affluence at Satellite */
+	/** The current affluence at Satellite. */
 	private Affluence mAffluence;
 
 	/**
-	 * Returns the interface of the linked view
+	 * Returns the interface of the linked view.
 	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
@@ -32,7 +31,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	}
 
 	/**
-	 * Returns the beer of the month
+	 * Returns the beer of the month.
 	 */
 	@Override
 	public Beer getBeerOfMonth() {
@@ -40,8 +39,8 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	}
 
 	/**
-	 * Sets the beer of the month and notify the view that the data has been
-	 * updated
+	 * Sets the beer of the month and notifies the view that the data has been
+	 * updated.
 	 */
 	@Override
 	public void setBeerOfMonth(Beer beer) {
@@ -52,7 +51,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	}
 
 	/**
-	 * Returns the current affluence at Satellite
+	 * Returns the current affluence at Satellite.
 	 */
 	@Override
 	public Affluence getAffluence() {
@@ -60,7 +59,7 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	}
 
 	/**
-	 * Sets the affluence and notify the view that the data has been updated
+	 * Sets the affluence and notifies the view that the data has been updated.
 	 */
 	@Override
 	public void setAffluence(Affluence affluence) {

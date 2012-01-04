@@ -27,6 +27,7 @@ public class PreferencesView extends LinearLayout {
 	/** The object for which we can set the preferences. */
 	private Object mCurrentObject;
 	/** The labeler from the application, to get the object's attributes. */
+	@SuppressWarnings("rawtypes")
 	private ILabeler mLabeler;
 	/** The position of the object in the <code>ListView</code>. */
 	private int mPosition;
@@ -97,6 +98,7 @@ public class PreferencesView extends LinearLayout {
 	/**
 	 * Initializes the view.
 	 */
+	@SuppressWarnings("unchecked")
 	public void initializeView() {
 
 		// Binds the data efficiently with the holder.
