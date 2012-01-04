@@ -20,12 +20,9 @@ import android.widget.LinearLayout;
 
 /**
  * The Main View of the Satellite plugin, first displayed when accessing
- * Satellite.
- * 
- * Displays the beer of the month and the affluence at Satellite.
+ * Satellite. Displays the beer of the month and the affluence at Satellite.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
- * 
  */
 public class SatelliteMainView extends PluginView implements ISatelliteMainView {
 	/** The Plugin Model */
@@ -54,7 +51,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		// Tracker
 		Log.d("googleanalytics", "getInstance()");
 		Tracker.getInstance().trackPageView("satellite");
-		
+
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
 
@@ -128,7 +125,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		if (beer != null) {
 			mLayout.hideText();
 			ImageTextView t = new ImageTextView(beer, getApplicationContext(),
-					mBeerLabeler, 0);
+					mBeerLabeler);
 			mLayout.addSecondLayoutFillerView(t);
 		}
 	}
@@ -155,9 +152,9 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-		Log.d("googleanalytics","network error");	
+		Log.d("googleanalytics", "network error");
 		Tracker.getInstance().trackPageView("satellite/network_error");
-		
+
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.removeSecondLayoutFillerView();
 		mLayout.setText(getResources().getString(
