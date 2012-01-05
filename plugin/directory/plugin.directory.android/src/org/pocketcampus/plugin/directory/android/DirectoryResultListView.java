@@ -224,29 +224,35 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 	
 	public void showNextPerson(){
-		//TODO secure this
 		//todo try to fade out
 		dialog.dismiss();
 		
 		//SECURE THIS
 		shownPersonIndex++;
 		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
-		mModel.selectPerson(p);
-		mController.getProfilePicture(p.sciper);
-		showPersonsDetails();
+		if(p!= null){
+			mModel.selectPerson(p);
+			mController.getProfilePicture(p.sciper);
+			showPersonsDetails();
+		}else{
+			shownPersonIndex--;
+		}
 	}
 	
 	public void showPreviousPerson(){
-		//TODO secure this
 		//todo try to fade out
 		dialog.dismiss();
 		
 		//SECURE THIS
 		shownPersonIndex--;
 		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
-		mModel.selectPerson(p);
-		mController.getProfilePicture(p.sciper);
-		showPersonsDetails();
+		if(p != null){
+			mModel.selectPerson(p);
+			mController.getProfilePicture(p.sciper);
+			showPersonsDetails();
+		}else{
+			shownPersonIndex++;
+		}
 	}
 
 

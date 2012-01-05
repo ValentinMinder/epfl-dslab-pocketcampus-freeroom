@@ -104,12 +104,13 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         style="@style/Dialog.Bottom"
-        android:weightSum="99"
+        android:weightSum="132"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/directory_person_details_dialog_allinfos"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
+        android:layout_centerInParent="true"        
+        android:paddingTop="15dip"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -140,15 +141,15 @@
             android:text="@string/directory_dialog_button_web"
             android:visibility="gone" />
 
-        <!-- <Button
+        <Button
             android:id="@+id/directory_imageButton_map"
-            android:layout_width="0"
+            android:layout_width="0px"
             android:layout_weight="33"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@string/directory_dialog_button_map"
             android:visibility="gone" />
-             -->
+            
     </LinearLayout>
 
 </LinearLayout>

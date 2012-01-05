@@ -156,6 +156,12 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		imm.hideSoftInputFromWindow(mInputBar.getWindowToken(), 0);
 		
 		mLayout.setText(getString(R.string.directory_network_error));
+		
+		mAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sdk_list_entry, R.id.sdk_list_entry_text, new ArrayList<String>());
+
+		mListView.setAdapter(mAdapter);
+		mListView.invalidate();
+		
 //		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
 //		toast.show();
 	}

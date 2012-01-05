@@ -37,12 +37,15 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	TextView phone_;
 	TextView web_;
 	TextView ou_;
+	
+	static int clickCount = 0;
 
 	public PersonDetailsDialog(Context context, Person person) {
 		super(context);
 
 		ctx_ = context;
 		displayedPerson_ = person;
+		
 
 		build();
 		setContent(person);
@@ -114,6 +117,7 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		String multipleLinesOU = "";
 		for (String s : p.OrganisationalUnit) {
 			multipleLinesOU += (s + "\n");
+			System.out.println(s);
 		}
 		multipleLinesOU.substring(0, multipleLinesOU.length() - 1);
 		ou_.setText(multipleLinesOU);
@@ -126,21 +130,18 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	private void setClickListener() {
 		Button mailButton = (Button) findViewById(R.id.directory_imageButton_mail);
 		Button phoneButton = (Button) findViewById(R.id.directory_imageButton_call);
-		// Button mapButton = (Button)
-		// findViewById(R.id.directory_imageButton_map);
+		Button mapButton = (Button)findViewById(R.id.directory_imageButton_map);
 		Button webButton = (Button) findViewById(R.id.directory_imageButton_web);
 
 		mailButton.setVisibility(visibility(displayedPerson_.isSetEmail()));
-		phoneButton.setVisibility(visibility(displayedPerson_
-				.isSetOfficePhoneNumber()));
-		// mapButton.setVisibility(visibility(displayedPerson_.hasOffice()));
-		// mapButton.setVisibility(visibility(false)); // TODO call map when
-		// ready
+		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
+		System.out.println(mapButton);
+		mapButton.setVisibility(visibility(displayedPerson_.isSetOffice()));
 		webButton.setVisibility(visibility(displayedPerson_.isSetWeb()));
 
 		mailButton.setOnClickListener(this);
 		phoneButton.setOnClickListener(this);
-		// mapButton.setOnClickListener(this);
+		mapButton.setOnClickListener(this);
 		webButton.setOnClickListener(this);
 	}
 
@@ -159,12 +160,22 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			((DirectoryResultListView) ctx_).showPreviousPerson();
-			return true;
+			if(clickCount < 3){
+				clickCount++;
+				return false;
+			}else{
+				((DirectoryResultListView) ctx_).showPreviousPerson();
+				return true;
+			}
 
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			((DirectoryResultListView) ctx_).showNextPerson();
-			return true;
+			if(clickCount < 3){
+				clickCount++;
+				return false;
+			}else{
+				((DirectoryResultListView) ctx_).showNextPerson();
+				return true;
+			}
 
 		case KeyEvent.KEYCODE_CALL:
 			performDial();
@@ -177,24 +188,24 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	}
 
 	private void performDial() {
-		AlertDialog dialog = new AlertDialog.Builder(ctx_)
-				.setTitle(
-						getString(R.string.directory_call)
-								+ " " + displayedPerson_.getFirstName() + " "
-								+ displayedPerson_.getLastName() + "?")
-
-				.setPositiveButton(getString(R.string.directory_yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+//		AlertDialog dialog = new AlertDialog.Builder(ctx_)
+//				.setTitle(
+//						getString(R.string.directory_call)
+//								+ " " + displayedPerson_.getFirstName() + " "
+//								+ displayedPerson_.getLastName() + "?")
+//
+//				.setPositiveButton(getString(R.string.directory_yes),
+//						new DialogInterface.OnClickListener() {
+//							@Override
+//							public void onClick(DialogInterface dialog,
+//									int which) {
 								// Tracker
 								Tracker.getInstance().trackPageView(
 										"directory/call/"
 												+ displayedPerson_.sciper);
 
 								Intent dialIntent = new Intent(
-										Intent.ACTION_CALL,
+										Intent.ACTION_DIAL,
 										Uri.parse("tel:"
 												+ displayedPerson_.officePhoneNumber));
 
@@ -206,13 +217,13 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 											getString(R.string.directory_couldnt_call),
 											Toast.LENGTH_SHORT).show();
 								}
-							}
-						})
-
-				.setNegativeButton(getString(R.string.directory_no), null)
-				.show();
-
-		dialog.setCanceledOnTouchOutside(true);
+//							}
+//						})
+//
+//				.setNegativeButton(getString(R.string.directory_no), null)
+//				.show();
+//
+//		dialog.setCanceledOnTouchOutside(true);
 	}
 
 	private void performMail() {

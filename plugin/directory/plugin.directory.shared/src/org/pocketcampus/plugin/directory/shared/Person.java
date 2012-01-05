@@ -701,18 +701,15 @@ public class Person implements org.apache.thrift.TBase<Person, Person._Fields>, 
     if (that == null)
       return false;
 
-    
 
-    boolean this_present_email = true && this.isSetEmail();
-    boolean that_present_email = true && that.isSetEmail();
-    if (this_present_email || that_present_email) {
-      if (!(this_present_email && that_present_email))
+    boolean this_present_sciper = true && this.isSetSciper();
+    boolean that_present_sciper = true && that.isSetSciper();
+    if (this_present_sciper || that_present_sciper) {
+      if (!(this_present_sciper && that_present_sciper))
         return false;
-      if (!this.email.equals(that.email))
+      if (!this.sciper.equals(that.sciper))
         return false;
     }
-
-    
 
     return true;
   }

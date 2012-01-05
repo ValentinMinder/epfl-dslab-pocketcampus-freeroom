@@ -225,7 +225,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 						Person duplicatePerson = it.next();
 						
 						if(duplicatePerson.equals(p)){
-							p.OrganisationalUnit.addAll(duplicatePerson.OrganisationalUnit);
+							duplicatePerson.OrganisationalUnit.addAll(p.OrganisationalUnit);
 							break;
 						}
 					}
@@ -325,14 +325,16 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 			
 		}else{
 			for(String fname: given_names){
-				if(StringUtils.removeAccents(fname).startsWith(StringUtils.capitalize(constraint))) {
+				if(StringUtils.removeAccents(fname).startsWith(StringUtils.capitalize(constraint)) ||
+						fname.startsWith(StringUtils.capitalize(constraint))) {
 					suggestions.add(fname);
 				}
 						
 			}
 			
 			for(String lname: second_names){
-				if(StringUtils.removeAccents(lname).startsWith(StringUtils.capitalize(constraint))) {
+				if(StringUtils.removeAccents(lname).startsWith(StringUtils.capitalize(constraint)) ||
+						lname.startsWith(StringUtils.capitalize(constraint))) {
 					suggestions.add(lname);
 				}
 			}
