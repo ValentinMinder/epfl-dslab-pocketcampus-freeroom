@@ -65,11 +65,11 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	}
 	
 	private void displayView() {
-		/** Layout */
+		/* Layout */
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getString(R.string.directory_searchView_title));
 
-		/** Input bar */
+		/* Input bar */
 		mInputBar = new InputBarElement(this, null,getString(R.string.directory_searchView_hint));
 		mInputBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mInputBar.setOnEditorActionListener(new OnEditorActionListener() {

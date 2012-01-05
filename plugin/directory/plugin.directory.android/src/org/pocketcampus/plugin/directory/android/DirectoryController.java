@@ -81,46 +81,6 @@ public class DirectoryController extends PluginController implements IDirectoryC
 		return mModel.getOUList();
 	}
 
-	public void filterResults() {
-		collectAllOU();
-		ouToKeep = new HashSet<String>();
-		startActivity(new Intent(this, DirectoryFilterOUView.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); //TODO remove ugly
-		RemoveUnwantedResults();
-		
-	}
-	
-	private void collectAllOU() {
-		HashSet<String> allOU = new HashSet<String>();
-		//String toast ="";
-		for(Person p : mModel.getResults()){
-			allOU.addAll(p.OrganisationalUnit);
-			//toast += " " + p.ou;
-		}
-		
-		List<String> tmp = new ArrayList<String>();
-		for(String ou : allOU)
-			tmp.add(ou);
-		mModel.setOUList(tmp);
-	}
-
-	private void RemoveUnwantedResults() {
-		Iterator<Person> i = mModel.getResults().iterator();
-		int j=0;
-		while(i.hasNext()){
-			boolean keep = false;
-			for(String ou: i.next().OrganisationalUnit){
-				if(ouToKeep.contains(ou))
-					keep = true;
-			}
-			if(!keep){
-				i.remove();
-				j++;
-			}
-		}
-		
-		Toast.makeText(this,j+ " removed", Toast.LENGTH_SHORT).show();
-		setResults(mModel.getResults());
-	}
 
 	@Override
 	public void getAutoCompleted(String txt) {
