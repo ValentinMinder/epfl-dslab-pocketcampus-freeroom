@@ -130,18 +130,18 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	private void setClickListener() {
 		Button mailButton = (Button) findViewById(R.id.directory_imageButton_mail);
 		Button phoneButton = (Button) findViewById(R.id.directory_imageButton_call);
-		Button mapButton = (Button)findViewById(R.id.directory_imageButton_map);
+//		Button mapButton = (Button)findViewById(R.id.directory_imageButton_map);
 		Button webButton = (Button) findViewById(R.id.directory_imageButton_web);
 
 		mailButton.setVisibility(visibility(displayedPerson_.isSetEmail()));
 		phoneButton.setVisibility(visibility(displayedPerson_.isSetOfficePhoneNumber()));
-		System.out.println(mapButton);
-		mapButton.setVisibility(visibility(displayedPerson_.isSetOffice()));
+//		System.out.println(mapButton);
+//		mapButton.setVisibility(visibility(displayedPerson_.isSetOffice()));
 		webButton.setVisibility(visibility(displayedPerson_.isSetWeb()));
 
 		mailButton.setOnClickListener(this);
 		phoneButton.setOnClickListener(this);
-		mapButton.setOnClickListener(this);
+//		mapButton.setOnClickListener(this);
 		webButton.setOnClickListener(this);
 	}
 
