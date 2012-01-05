@@ -1,8 +1,6 @@
 package org.pocketcampus.plugin.directory.android;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -14,8 +12,6 @@ import org.pocketcampus.plugin.directory.shared.DirectoryService.Client;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 import org.pocketcampus.plugin.directory.shared.Person;
 
-import android.content.Intent;
-import android.widget.Toast;
 
 
 public class DirectoryController extends PluginController implements IDirectoryController{

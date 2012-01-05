@@ -6,10 +6,8 @@ import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 import org.pocketcampus.plugin.directory.android.DirectoryResultListView;
 import org.pocketcampus.plugin.directory.shared.Person;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -154,6 +152,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		} else if (v.getId() == R.id.directory_imageButton_web) {
 			performWeb();
 		}
+//		else if (v.getId() == R.id.directory_imageButton_map){
+//			performMap();
+//		}
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -240,9 +241,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	}
 
-	private void performPath() {
-		// TODO call another plugin
-	}
+//	private void performMap() {
+//		// call another plugin
+//	}
 
 	private void performWeb() {
 		Intent WebIntent = new Intent(Intent.ACTION_VIEW,
