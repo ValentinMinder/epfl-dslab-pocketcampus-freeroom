@@ -25,6 +25,7 @@ struct Feed {
 
 service NewsService {
 	list<NewsItem> getNewsItems(1: string language);
+	string getNewsContent(1: string language, 2: NewsItem newsItem);
 	map<string, string> getFeedUrls(1: string language);
 	list<Feed> getFeeds(1: string language);
 }
