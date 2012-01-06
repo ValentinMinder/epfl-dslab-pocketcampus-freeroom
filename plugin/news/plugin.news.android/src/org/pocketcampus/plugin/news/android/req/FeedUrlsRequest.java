@@ -10,7 +10,7 @@ import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
 
 /**
  * 
- * A request to the server to retrieve the feed urls
+ * A request to the server to retrieve the feed urls.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
@@ -18,13 +18,13 @@ import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
 public class FeedUrlsRequest extends
 		Request<NewsController, Iface, getFeedUrls_args, Map<String, String>> {
 	/**
-	 * Initiate the <code>getNewsItem</code> Request at the server
+	 * Initiate the <code>getNewsItem</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameters to be sent for the request.
-	 * @return the News Items
+	 * @return A Map containing the Feed Urls and their names.
 	 */
 	@Override
 	protected Map<String, String> runInBackground(Iface client, getFeedUrls_args param)
@@ -38,9 +38,9 @@ public class FeedUrlsRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the feeds urls and names map gotten from the server
+	 *            the feeds urls and names map gotten from the server.
 	 */
 	@Override
 	protected void onResult(NewsController controller, Map<String, String> result) {
@@ -53,7 +53,7 @@ public class FeedUrlsRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(NewsController controller, Exception e) {

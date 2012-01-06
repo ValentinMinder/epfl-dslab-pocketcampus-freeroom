@@ -18,35 +18,40 @@ import org.pocketcampus.plugin.news.shared.NewsService;
 
 /**
  * 
- * Class that takes care of the services the News server provides to the client
+ * Class that takes care of the services the News server provides to the client.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class NewsServiceImpl implements NewsService.Iface {
 
-	/** HashMap of languages with their Feed Urls */
+	/** HashMap of languages with their Feed Urls. */
 	private HashMap<String, HashMap<String, String>> mLanguagesFeedUrls;
 
-	/** HashMap of languages with their Feeds */
+	/** HashMap of languages with their Feeds. */
 	private HashMap<String, List<Feed>> mLanguagesFeedsList;
 
-	/** HashMap of languages with their NewsItems */
+	/** HashMap of languages with their NewsItems. */
 	private HashMap<String, List<NewsItem>> mLanguagesNewsItemsList;
 
-	/** Date of the last Feeds update */
+	/** Date of the last Feeds update. */
 	private Date mLastImportedFeeds;
 
-	/** Interval in minutes at which the news should be fetched */
+	/** Interval in minutes at which the news should be fetched. */
 	private int REFRESH_INTERVAL = 60;
 
+	/** The maximum number of results to return per feed. */
 	private final int MAX_NUMBER_RESULTS = 5;
 
+	/**
+	 * The default News Language, to be used when the news are not available in
+	 * the user's phone's language.
+	 */
 	private final String DEFAULT_LANGUAGE = "en";
 
 	/**
-	 * Constructor import feed Urls and feed Contents since it's the first
-	 * execution of the server.
+	 * Constructor imports feed Urls and feed contents the server's first
+	 * execution.
 	 * 
 	 * @throws TException
 	 */
@@ -61,7 +66,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
-	 * Initiates parsing of the feeds list from the file stored on the server
+	 * Initiates parsing of the feeds list from the file stored on the server.
 	 */
 	private void parseFeedsUrls() {
 		FeedsListParser flp = new FeedsListParser("NewsFeedsLanguages.txt");
@@ -69,11 +74,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
-	 * Returns the feed urls and their corresponding name
+	 * Returns the feed urls and their corresponding name.
 	 * 
 	 * @param language
 	 *            the language for which we want the feed Urls.
-	 * @return the feed urls and their names
+	 * @return The feed urls and their names.
 	 */
 	@Override
 	public HashMap<String, String> getFeedUrls(String language)
@@ -87,7 +92,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
-	 * Imports newsItems from the RSS feed
+	 * Imports newsItems from the RSS feeds.
 	 */
 	private void importFeeds() {
 		if (mLanguagesFeedUrls != null
@@ -104,12 +109,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
-	 * Imports all feeds in the given language from the corresponding urls
+	 * Imports all feeds in the given language from the corresponding Urls.
 	 * 
 	 * @param language
-	 *            the language of the feeds to import
+	 *            The language of the feeds to import.
 	 * @param mFeedUrls
-	 *            the url to the feeds
+	 *            The url to the feeds.
 	 */
 	private void importFeedForLanguage(String language,
 			HashMap<String, String> mFeedUrls) {
@@ -151,19 +156,58 @@ public class NewsServiceImpl implements NewsService.Iface {
 	/**
 	 * Update the NewsItems from the corresponding list of feeds and return
 	 * them.
+	 * 
+	 * @param language
+	 *            The language in which the NewsItems are requested
+	 * @return The list of NewsItems for the corresponding language, or English
+	 *         if it's not available
 	 */
 	@Override
 	public List<NewsItem> getNewsItems(String language) throws TException {
 		importFeeds();
+		List<NewsItem> toReturn = null;
+		if (mLanguagesNewsItemsList != null
+				&& mLanguagesNewsItemsList.containsKey(language)) {
+			toReturn = stripContents(mLanguagesNewsItemsList.get(language));
+		} else {
+			toReturn = mLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
+		}
+
+		return toReturn;
+	}
+
+	/**
+	 * Get the content of a specific News.
+	 * 
+	 * @param language
+	 *            The language of the NewsItem.
+	 * @param newsItem
+	 *            The NewsItem for which the content is requested.
+	 * @return The content of the NewsItem.
+	 */
+	@Override
+	public String getNewsContent(String language, NewsItem newsItem)
+			throws TException {
+		importFeeds();
+		String toReturn = null;
 		if (mLanguagesNewsItemsList != null
 				&& mLanguagesNewsItemsList.containsKey(language)) {
 			System.out.println(mLanguagesNewsItemsList.get(language).size());
-			return mLanguagesNewsItemsList.get(language);
-		} else {
-			return mLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
+			List<NewsItem> newsItems = mLanguagesNewsItemsList.get(language);
+
+			for (NewsItem newsItemInList : newsItems) {
+				if (newsItem.getTitle().equals(newsItemInList.getTitle())) {
+					return newsItemInList.getContent();
+				}
+			}
 		}
+
+		return toReturn;
 	}
 
+	/**
+	 * Comparator for two NewsItems. Compares the publication date.
+	 */
 	Comparator<NewsItem> newsItemComparator = new Comparator<NewsItem>() {
 		@Override
 		public int compare(NewsItem o1, NewsItem o2) {
@@ -182,6 +226,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 	/**
 	 * Update the Feeds from the corresponding list of feeds and return them.
+	 * 
+	 * @param language
+	 *            The language in which the Feeds are requested.
+	 * @return The list of Feeds for the corresponding language, English if it's
+	 *         not available.
 	 */
 	@Override
 	public List<Feed> getFeeds(String language) throws TException {
@@ -195,11 +244,27 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
+	 * Removes the contents of all News.
+	 * 
+	 * @param newsItems
+	 *            The list of NewsItems from which we want to remove the
+	 *            content.
+	 * @return the stripped list.
+	 */
+	private List<NewsItem> stripContents(List<NewsItem> newsItems) {
+		for (NewsItem newsItem : newsItems) {
+			newsItem.content = "";
+		}
+		return newsItems;
+	}
+
+	/**
 	 * Checks whether the date is up to date (according to today and this
-	 * particular hour)
+	 * particular hour).
 	 * 
 	 * @param oldDate
-	 * @return true if it is
+	 *            The date to check.
+	 * @return True if it is, false otherwise.
 	 */
 	private boolean isUpToDate(Date oldDate) {
 		if (oldDate == null)
@@ -222,11 +287,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 	}
 
 	/**
-	 * To get the minutes separating two different dates
-	 * 
 	 * @param then
+	 *            The first date.
 	 * @param now
-	 * @return the minutes that separate both dates
+	 *            The second date.
+	 * @return The minutes that separate two dates
 	 */
 	private long getMinutes(Date then, Date now) {
 		long diff = now.getTime() - then.getTime();

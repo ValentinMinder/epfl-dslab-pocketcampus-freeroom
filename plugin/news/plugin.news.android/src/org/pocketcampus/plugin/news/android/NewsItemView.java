@@ -3,24 +3,29 @@ package org.pocketcampus.plugin.news.android;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.ui.layout.FeedInformationLayout;
-import org.pocketcampus.plugin.news.android.iface.INewsModel;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
 /**
+ * Displays the full information for a single NewsItem.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  */
 
 public class NewsItemView extends PluginView {
-	private NewsController mController;
-	private INewsModel mModel;
+	// private NewsController mController;
+	// private INewsModel mModel;
+	/** The title of the NewsItem. */
 	private String mTitle;
+	/** The description of the NewsItem. */
 	private String mDescription;
+	/** The feed the NewsItem is from. */
 	private String mFeed;
+	/** The image corresponding to the NewsItem. */
 	private Bitmap mBitmap;
+	/** The page's layout. */
 	private FeedInformationLayout mLayout;
 
 	/**
@@ -48,8 +53,8 @@ public class NewsItemView extends PluginView {
 			PluginController controller) {
 
 		// Get and cast the controller and model
-		mController = (NewsController) controller;
-		mModel = (NewsModel) controller.getModel();
+		// mController = (NewsController) controller;
+		// mModel = (NewsModel) controller.getModel();
 
 		mLayout = new FeedInformationLayout(this, null);
 
@@ -72,9 +77,9 @@ public class NewsItemView extends PluginView {
 		}
 	}
 
-
 	/**
-	 * Handle extras from the MainView
+	 * Handle extras from the MainView. Retrieves the title, description, image
+	 * and feed for the NewsItem passed in the Intent Extras.
 	 */
 	private void handleExtras() {
 		Bundle extras = getIntent().getExtras();

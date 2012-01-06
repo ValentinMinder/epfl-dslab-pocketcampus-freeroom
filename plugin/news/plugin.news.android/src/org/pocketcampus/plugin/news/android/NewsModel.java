@@ -37,9 +37,6 @@ public class NewsModel extends PluginModel implements INewsModel {
 	/** The map of feed names with their Urls */
 	private HashMap<String, String> mFeedUrls;
 
-	/** The list of items filtered according to what the user wants */
-	private List<NewsItemWithImage> filteredList;
-
 	/** List of Feeds to display */
 	private List<Feed> mNewsFeeds;
 
@@ -132,7 +129,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 			mFeedUrls = new HashMap<String, String>();
 			Iterator<Entry<String, String>> entries = map.entrySet().iterator();
 			while (entries.hasNext()) {
-				Entry thisEntry = (Entry<String, String>) entries.next();
+				Entry<String, String> thisEntry = (Entry<String, String>) entries.next();
 				String key = (String) thisEntry.getKey();
 				String value = (String) thisEntry.getValue();
 				mFeedUrls.put(key, value);

@@ -11,7 +11,7 @@ import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 
 /**
  * 
- * A request to the server to retrieve the NewsItems
+ * A request to the server to retrieve the NewsItems.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
@@ -19,13 +19,13 @@ import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 public class NewsItemsRequest extends
 		Request<NewsController, Iface, getNewsItems_args, List<NewsItem>> {
 	/**
-	 * Initiate the <code>getNewsItem</code> Request at the server
+	 * Initiate the <code>getNewsItem</code> Request at the server.
 	 * 
 	 * @param client
 	 *            the client that communicates with the server
 	 * @param param
 	 *            the parameters to be sent for the request. Not used.
-	 * @return the News Items
+	 * @return the News Items.
 	 */
 	@Override
 	protected List<NewsItem> runInBackground(Iface client, getNewsItems_args param)
@@ -39,9 +39,9 @@ public class NewsItemsRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the NewsItem list gotten from the server
+	 *            the NewsItem list gotten from the server.
 	 */
 	@Override
 	protected void onResult(NewsController controller, List<NewsItem> result) {
@@ -54,7 +54,7 @@ public class NewsItemsRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(NewsController controller, Exception e) {

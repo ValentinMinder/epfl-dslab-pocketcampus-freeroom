@@ -12,8 +12,6 @@ import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
 import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 
-import android.content.SharedPreferences;
-
 /**
  * Controller for the news plugin. Takes care of interactions between the model
  * and the view and gets information from the server.
@@ -25,14 +23,11 @@ public class NewsController extends PluginController implements INewsController 
 	/** The plugin's model. */
 	private NewsModel mModel;
 
-	/** Interface to the plugin's server client */
+	/** Interface to the plugin's server client . */
 	private Iface mClient;
 
-	/** The name of the plugin */
+	/** The name of the plugin. */
 	private String mPluginName = "news";
-
-	/** Access to the Shared Preferences on the phone */
-	private SharedPreferences prefs_;
 
 	/**
 	 * Initializes the plugin with a model and a client.
@@ -66,7 +61,7 @@ public class NewsController extends PluginController implements INewsController 
 		getFeedUrls_args param = new getFeedUrls_args(language);
 		new FeedUrlsRequest().start(this, mClient, param);
 	}
-	
+
 	/**
 	 * Initiates a request to the server to get the news items.
 	 */
@@ -77,15 +72,4 @@ public class NewsController extends PluginController implements INewsController 
 		getNewsItems_args param = new getNewsItems_args(language);
 		new NewsItemsRequest().start(this, mClient, param);
 	}
-
-	// /**
-	// * Initiates a request to the server to get the news Feeds.
-	// */
-	// @Override
-	// public void getFeeds() {
-	// Log.d("NEWS", "Sending feeds request");
-	// new FeedsRequest().start(this,
-	// (Iface) getClient(new Client.Factory(), mPluginName),
-	// (Object) null);
-	// }
 }

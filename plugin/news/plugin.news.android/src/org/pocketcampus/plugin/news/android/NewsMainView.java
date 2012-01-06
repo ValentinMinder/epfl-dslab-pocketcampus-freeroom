@@ -23,18 +23,30 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 
 /**
+ * The Main View of the News plugin, first displayed when accessing News.
+ * 
+ * Displays News from newest to oldest
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * 
  */
 public class NewsMainView extends PluginView implements INewsView {
+
+	/** The controller that does the interface between Model and View. */
 	private NewsController mController;
+	/** The corresponding model. */
 	private INewsModel mModel;
 
+	/** A simple full screen layout. */
 	private StandardTitledLayout mLayout;
+
+	/** The main list with news. */
 	private FeedWithImageListViewElement mListView;
 
+	/** Listener for when you click on a line in the list */
 	private OnItemClickListener mOnItemClickListener;
 
+	/** Code used to make a request to the preferences activity */
 	private static final int PREFERENCES_REQUEST_CODE = 1555;
 
 	/**
@@ -61,7 +73,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-		 Tracker.getInstance().trackPageView("news");
+		Tracker.getInstance().trackPageView("news");
 
 		// Get and cast the controller and model
 		mController = (NewsController) controller;
@@ -82,7 +94,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	/**
-	 * Initiates request for news items
+	 * Initiates request to the server for news items.
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.news_loading));
@@ -90,6 +102,10 @@ public class NewsMainView extends PluginView implements INewsView {
 		mController.getNewsItems();
 	}
 
+	/**
+	 * Called when the list of news has been updated. Displays the list
+	 * according to the user's preferences.
+	 */
 	@Override
 	public void newsUpdated() {
 		List<NewsItemWithImage> newsList = mModel.getNews(this);
@@ -117,20 +133,23 @@ public class NewsMainView extends PluginView implements INewsView {
 		}
 	}
 
+	/**
+	 * Called when the feed Urls have been updated. Calls the preference
+	 * activity.
+	 */
 	@Override
 	public void feedUrlsUpdated() {
 
 		Intent settings = new Intent(getApplicationContext(),
 				NewsPreferences.class);
-		System.out.println(mModel.getFeedsUrls().size());
 		settings.putExtra("org.pocketcampus.news.feedUrls",
 				(HashMap<String, String>) mModel.getFeedsUrls());
-		
+
 		startActivityForResult(settings, PREFERENCES_REQUEST_CODE);
 	}
 
 	/**
-	 * Called when coming back from the preferences
+	 * Called when coming back from the preferences.
 	 * 
 	 * @param requestCode
 	 *            The integer request code originally supplied to
@@ -155,8 +174,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	}
 
 	/**
-	 * Main Food Options menu contains access to Meals by restaurants, ratings,
-	 * Sandwiches, Suggestions and Settings
+	 * Main News Options menu contains access to the Feed preferences.
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -167,7 +185,7 @@ public class NewsMainView extends PluginView implements INewsView {
 
 	/**
 	 * Decides what happens when the options menu is opened and an option is
-	 * chosen (what view to display)
+	 * chosen (what view to display).
 	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
@@ -177,17 +195,22 @@ public class NewsMainView extends PluginView implements INewsView {
 		return true;
 	}
 
+	/**
+	 * Called when an error occurs while trying to contact the server.
+	 */
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-		 Tracker.getInstance().trackPageView("news/network_error");
+		Tracker.getInstance().trackPageView("news/network_error");
 
 		mLayout.removeFillerView();
 		mLayout.hideTitle();
 		mLayout.setText(getString(R.string.news_no_news));
 	}
 
-	/* Sets the clickLIstener of the listView */
+	/** 
+	 * Sets the clickListener of the listView.
+	 */
 	private void setOnListViewClickListener() {
 
 		mOnItemClickListener = new OnItemClickListener() {
@@ -208,8 +231,8 @@ public class NewsMainView extends PluginView implements INewsView {
 						toPass.getBitmapDrawable());
 
 				// Tracker
-				 Tracker.getInstance().trackPageView(
-				 "news/click/" + toPass.getNewsItem().getTitle());
+				Tracker.getInstance().trackPageView(
+						"news/click/" + toPass.getNewsItem().getTitle());
 
 				startActivity(news);
 			}
@@ -223,19 +246,31 @@ public class NewsMainView extends PluginView implements INewsView {
 	 */
 	IFeedViewLabeler<NewsItemWithImage> mNewsItemLabeler = new IFeedViewLabeler<NewsItemWithImage>() {
 
+		/**
+		 * @param newsItem the NewsItem to be represented
+		 * @return The title of the NewsItem.
+		 */
 		@Override
-		public String getTitle(NewsItemWithImage obj) {
-			return obj.getNewsItem().getTitle();
+		public String getTitle(NewsItemWithImage newsItem) {
+			return newsItem.getNewsItem().getTitle();
 		}
 
+		/**
+		 * @param newsItem the NewsItem to be represented
+		 * @return The description of the NewsItem.
+		 */
 		@Override
-		public String getDescription(NewsItemWithImage obj) {
-			return obj.getNewsItem().getContent();
+		public String getDescription(NewsItemWithImage newsItem) {
+			return newsItem.getNewsItem().getContent();
 		}
 
+		/**
+		 * @param newsItem the NewsItem to be represented
+		 * @return The layout with the image associated to the NewsItem.
+		 */
 		@Override
-		public LinearLayout getPictureLayout(NewsItemWithImage obj) {
-			return new LoaderNewsImageView(NewsMainView.this, obj);
+		public LinearLayout getPictureLayout(NewsItemWithImage newsItem) {
+			return new LoaderNewsImageView(NewsMainView.this, newsItem);
 		}
 	};
 }

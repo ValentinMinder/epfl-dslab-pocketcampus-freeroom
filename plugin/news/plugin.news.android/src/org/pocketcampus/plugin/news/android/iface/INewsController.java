@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.news.android.iface;
 
 /**
- * Interface to the public methods of the News Controller
+ * Interface to the public methods of the News Controller.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 

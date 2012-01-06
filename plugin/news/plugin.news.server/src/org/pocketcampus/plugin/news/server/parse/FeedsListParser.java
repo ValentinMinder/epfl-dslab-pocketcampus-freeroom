@@ -8,26 +8,27 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * Parses the contents of the Feeds file which is stored on the server
+ * Parses the contents of the Feeds file which is stored on the server.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class FeedsListParser {
 
-	/** The path to the file to parse */
+	/** The path to the file to parse. */
 	private String mFile;
 
-	/** The HashMap of feeds and their Url */
+	/** The HashMap of feeds and their Url. */
 	private HashMap<String, HashMap<String, String>> feedsForAllLanguages;
 
-	/** The whole feeds file in one String */
+	/** The whole feeds file in one String. */
 	private String feedString;
 
 	/**
-	 * Constructor for the NewsListParser
+	 * Constructor for the NewsListParser.
 	 * 
 	 * @param file
+	 *            The path to the file to parse.
 	 * @throws IllegalArgumentException
 	 *             if the file path is null
 	 */
@@ -36,7 +37,7 @@ public class FeedsListParser {
 			throw new IllegalArgumentException();
 		}
 		mFile = file;
-		feedsForAllLanguages = new HashMap<String, HashMap<String,String>>();
+		feedsForAllLanguages = new HashMap<String, HashMap<String, String>>();
 		// Parse the first file
 		HashMap<String, String> filesForLanguages = null;
 		feedString = getContents(mFile);
@@ -51,7 +52,9 @@ public class FeedsListParser {
 		}
 	}
 
-	/** Returns the HashMap of Feed Names and their corresponding Url */
+	/**
+	 * @return The HashMap of Feed Names and their corresponding Url.
+	 */
 	public HashMap<String, HashMap<String, String>> getFeeds() {
 		return feedsForAllLanguages;
 	}
@@ -96,11 +99,11 @@ public class FeedsListParser {
 
 	/**
 	 * Constructs the hashmap of Feed languages with their file containing the
-	 * feed Urls
+	 * feed Urls.
 	 * 
 	 * @param feedList
-	 *            the path to the file to parse
-	 * @return a HashMap of Feed names with their corresponding Urls
+	 *            The path to the file to parse.
+	 * @return A HashMap of Feed names with their corresponding Urls.
 	 */
 	private HashMap<String, String> feedsLanguages(String languagesFile) {
 		String tagLanguageFile = "<NewsLanguageFile>";
@@ -133,7 +136,7 @@ public class FeedsListParser {
 					startFile + tagFile.length(), endFile).trim();
 
 			System.out.println(feedLanguage + " " + feedFile);
-			
+
 			feeds.put(feedLanguage, feedFile);
 			languagesFile = languagesFile.substring(
 					endFeed + tagLanguageFileEnd.length(),
@@ -144,11 +147,11 @@ public class FeedsListParser {
 	}
 
 	/**
-	 * Constructs the hashmap of Feed names with their Urls
+	 * Constructs the hashmap of Feed names with their Urls.
 	 * 
 	 * @param feedList
-	 *            the path to the file to parse
-	 * @return a HashMap of Feed names with their corresponding Urls
+	 *            The path to the file to parse.
+	 * @return A HashMap of Feed names with their corresponding Urls.
 	 */
 	private HashMap<String, String> newsFeeds(String feedList) {
 		String tagFeed = "<Feed>";

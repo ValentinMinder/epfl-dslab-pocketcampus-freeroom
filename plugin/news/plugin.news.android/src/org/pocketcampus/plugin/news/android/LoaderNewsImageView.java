@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.utils.LoaderImageView;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,22 +26,27 @@ public class LoaderNewsImageView extends LinearLayout {
 	private static final int COMPLETE = 0;
 	private static final int FAILED = 1;
 
+	/** The Context of the calling activity. */
 	private Context mContext;
+	/** The Drawable to load. */
 	private Drawable mDrawable;
+	/** The ProgressBar displayed while the drawable is being loaded. */
 	private ProgressBar mSpinner;
+	/** The ImageView in which the drawable will be put. */
 	private ImageView mImage;
 
+	/** The NewsItem for which the image should be loaded. */
 	private NewsItemWithImage mNewsItem;
 
 	/**
-	 * This is used when creating the view programatically Once you have
+	 * This is used when creating the view programatically. Once you have
 	 * instantiated the view you can call setImageDrawable(url) to change the
-	 * image
+	 * image.
 	 * 
 	 * @param context
-	 *            the Activity context
-	 * @param imageUrl
-	 *            the Image URL you wish to load
+	 *            the Activity context.
+	 * @param newsItem
+	 *            the NewsItem for which the image should be loaded.
 	 */
 	public LoaderNewsImageView(final Context context, NewsItemWithImage newsItem) {
 		super(context);
@@ -53,8 +56,8 @@ public class LoaderNewsImageView extends LinearLayout {
 	}
 
 	/**
-	 * First time loading of the LoaderImageView Sets up the LayoutParams of the
-	 * view, you can change these to get the required effects you want
+	 * First time loading of the LoaderImageView. Sets up the LayoutParams of
+	 * the view, you can change these to get the required effects you want.
 	 */
 	private void instantiate(final Context context,
 			final Drawable imageDrawable, final String imageUrl) {
@@ -95,11 +98,10 @@ public class LoaderNewsImageView extends LinearLayout {
 	}
 
 	/**
-	 * Set's the view's drawable, this uses the internet to retrieve the image
-	 * don't forget to add the correct permissions to your manifest
+	 * Sets the view's drawable, this uses the internet to retrieve the image.
 	 * 
 	 * @param imageUrl
-	 *            the url of the image you wish to load
+	 *            the url of the image you wish to load.
 	 */
 	public void setImageDrawable(final String imageUrl) {
 		mDrawable = null;
@@ -127,6 +129,9 @@ public class LoaderNewsImageView extends LinearLayout {
 		}.start();
 	}
 
+	/**
+	 * Sets a drawable for the news which do not provide a link to an image.
+	 */
 	public void setNoImage() {
 		mDrawable = null;
 		mSpinner.setVisibility(View.GONE);
@@ -134,7 +139,7 @@ public class LoaderNewsImageView extends LinearLayout {
 	}
 
 	/**
-	 * Callback that is received once the image has been downloaded
+	 * Callback that is received once the image has been downloaded.
 	 */
 	private final Handler imageLoadedHandler = new Handler(new Callback() {
 		@Override
@@ -155,11 +160,11 @@ public class LoaderNewsImageView extends LinearLayout {
 	});
 
 	/**
-	 * Pass in an image url to get a drawable object
+	 * Pass in an image url to get a drawable object.
 	 * 
-	 * @return a drawable object
-	 * @throws IOException
-	 * @throws MalformedURLException
+	 * @return a drawable object.
+	 * @throws IOException.
+	 * @throws MalformedURLException.
 	 */
 	private static Drawable getDrawableFromUrl(final String url)
 			throws IOException, MalformedURLException {

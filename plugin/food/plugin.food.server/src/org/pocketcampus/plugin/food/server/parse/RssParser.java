@@ -20,28 +20,29 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class RssParser extends DefaultHandler {
-	/** The Url to the RSS Feed to be parsed */
+	/** The Url to the RSS Feed to be parsed. */
 	private String urlString;
 
-	/** The resulting RSS Feed */
+	/** The resulting RSS Feed. */
 	private RssFeed rssFeed;
 
-	/** Mutable sequence of Characters */
+	/** Mutable sequence of Characters. */
 	private StringBuilder text;
 
-	/** The item in which each parsed menu will be stored */
+	/** The item in which each parsed menu will be stored. */
 	private Item item;
 
-	/** Tells whether the object being parsed is an image */
+	/** Tells whether the object being parsed is an image. */
 	private boolean imgStatus;
 
+	/** List of strings that should not be capitalized. */
 	private List<String> notCapitalized;
 
 	/**
-	 * Constructor for the Parser
+	 * Constructor for the Parser.
 	 * 
 	 * @param url
-	 *            the Url to the feed to parse
+	 *            The Url to the feed to parse.
 	 */
 	public RssParser(String url, List<String> notCapitalized) {
 		this.urlString = url;
@@ -50,7 +51,7 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * Initiates the parsing of the Rss Feed page
+	 * Initiates the parsing of the Rss Feed page.
 	 */
 	public void parse() {
 		InputStream urlInputStream = null;
@@ -86,7 +87,7 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * Returns the Feed corresponding to the Url that was parsed
+	 * @return The Feed corresponding to the Url that was parsed.
 	 */
 	public RssFeed getFeed() {
 		return (this.rssFeed);
@@ -124,7 +125,7 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * Receives notification of the end of a new element
+	 * Receives notification of the end of a new element.
 	 * 
 	 * @param uri
 	 *            The Namespace URI, or the empty string if the element has no
@@ -209,11 +210,11 @@ public class RssParser extends DefaultHandler {
 
 	/**
 	 * Remove unwanted characters, such as apostrophes question marks, carrier
-	 * line feeds, html tags
+	 * line feeds, html tags.
 	 * 
 	 * @param s
-	 *            the string to format
-	 * @return the formatted string
+	 *            the string to format.
+	 * @return the formatted string.
 	 */
 	private String removeBadStuff(String s) {
 		if (s.length() > 0) {
@@ -320,7 +321,7 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * Represents an RSS Feed
+	 * Represents an RSS Feed.
 	 * 
 	 * @author Elodie <elodienilane.triponez@epfl.ch>
 	 * 
@@ -368,10 +369,7 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * An item in a feed
-	 * 
-	 * @author Elodie <elodienilane.triponez@epfl.ch>
-	 * 
+	 * An item in a feed.
 	 */
 	public static class Item {
 		/** The title of the Item */

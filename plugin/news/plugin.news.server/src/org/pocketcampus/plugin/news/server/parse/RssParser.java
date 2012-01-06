@@ -34,19 +34,35 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class RssParser extends DefaultHandler {
 
+	/** The Url to the RSS Feed to be parsed */
 	private String mUrlString;
+	/** The resulting RSS Feed */
 	private String mFeedName;
+	/***/
 	private Feed mRssFeed;
+	/** Mutable sequence of Characters */
 	private StringBuilder mText;
+	/** The item in which each parsed menu will be stored */
 	private NewsItem mItem;
+	/** Remembers whether a new item is being created */
 	private boolean mInItem;
+	/** Remembers whether an image is being created */
 	private boolean mInImage;
+	/***/
 	private boolean mInTextInput;
 
-	/** Used to get an image from the text */
+	/** Used to get an image from the text. */
 	private final static Pattern imagePattern_ = Pattern
 			.compile("<img.*src=\"?(\\S+).*>");
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param feedName
+	 *            The name of the feed to parse.
+	 * @param url
+	 *            The Url to the feed to parse.
+	 */
 	public RssParser(String feedName, String url) {
 		this.mUrlString = url;
 		this.mFeedName = feedName;
@@ -82,14 +98,29 @@ public class RssParser extends DefaultHandler {
 	}
 
 	/**
-	 * Returns the feed once it has been parsed.
-	 * 
-	 * @return the parsed feed.
+	 * @return The Feed corresponding to the Url that was parsed.
 	 */
 	public Feed getFeed() {
 		return (this.mRssFeed);
 	}
 
+	/**
+	 * Receives notification of the start of a new element
+	 * 
+	 * @param uri
+	 *            The Namespace URI, or the empty string if the element has no
+	 *            Namespace URI or if Namespace processing is not being
+	 *            performed.
+	 * @param localName
+	 *            The local name (without prefix), or the empty string if
+	 *            Namespace processing is not being performed.
+	 * @param qName
+	 *            The qualified name (with prefix), or the empty string if
+	 *            qualified names are not available.
+	 * @param attributes
+	 *            The attributes attached to the element. If there are no
+	 *            attributes, it shall be an empty Attributes object.
+	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
 		// XXX use of qName or localName? may differ on different Android
@@ -113,6 +144,20 @@ public class RssParser extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * Receives notification of the end of a new element.
+	 * 
+	 * @param uri
+	 *            The Namespace URI, or the empty string if the element has no
+	 *            Namespace URI or if Namespace processing is not being
+	 *            performed.
+	 * @param localName
+	 *            The local name (without prefix), or the empty string if
+	 *            Namespace processing is not being performed.
+	 * @param qName
+	 *            The qualified name (with prefix), or the empty string if
+	 *            qualified names are not available.
+	 */
 	public void endElement(String uri, String localName, String qName) {
 		if (this.mRssFeed == null)
 			return;
@@ -151,7 +196,7 @@ public class RssParser extends DefaultHandler {
 			content = content.replaceAll("(</strong>)+", "</b>");
 			content = content.replaceAll("((<br />)\n)+", "\n<br />");
 			content = content.replaceAll("(<p>(&nbsp;)+</p>)+", "");
-			
+
 			int carriageReturn = content.indexOf("<br />");
 
 			if (carriageReturn != -1) {
@@ -199,6 +244,13 @@ public class RssParser extends DefaultHandler {
 		this.mText = new StringBuilder();
 	}
 
+	/**
+	 * Converts a String date to a long.
+	 * 
+	 * @param pubDate
+	 *            The String date to convert.
+	 * @return the long corresponding to the String date.
+	 */
 	public static long getPubDate(String pubDate) {
 
 		Date pubDateDate = null;
@@ -218,6 +270,9 @@ public class RssParser extends DefaultHandler {
 		return 0;
 	}
 
+	/**
+	 * Appends the characters from an array to the StringBuilder text.
+	 */
 	public void characters(char[] ch, int start, int length) {
 		this.mText.append(ch, start, length);
 	}
