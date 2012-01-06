@@ -31,29 +31,29 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class FoodPreferencesView extends PluginView {
 	/* MVC */
-	/** The model to which the view is linked */
+	/** The model to which the view is linked. */
 	private IFoodModel mModel;
 
 	/* Layout */
-	/** A simple full screen layout */
+	/** A simple full screen layout. */
 	private StandardTitledLayout mLayout;
-	/** The list to be displayed in the layout */
+	/** The list to be displayed in the layout. */
 	private PreferencesListViewElement mListView;
 
 	/* Sorter */
-	/** A sorter for the Restaurants */
+	/** A sorter for the Restaurants. */
 	MenuSorter mSorter;
 
 	/* Preferences */
-	/** The pointer to access and modify preferences stored on the phone */
+	/** The pointer to access and modify preferences stored on the phone. */
 	private SharedPreferences mRestoPrefs;
-	/** Interface to modify values in SharedPreferences object */
+	/** Interface to modify values in SharedPreferences object. */
 	private Editor mRestoPrefsEditor;
-	/** The name under which the preferences are stored on the phone */
+	/** The name under which the preferences are stored on the phone. */
 	private static final String RESTO_PREFS_NAME = "RestoPrefs";
 
 	/* Restaurants */
-	/** The list of Restaurants the preferences are made on */
+	/** The list of Restaurants the preferences are made on. */
 	private ArrayList<Restaurant> mRestaurants;
 
 	/**
@@ -94,7 +94,7 @@ public class FoodPreferencesView extends PluginView {
 	}
 
 	/**
-	 * Displays the list of Restaurants which the user can choose from
+	 * Displays the list of Restaurants which the user can choose from.
 	 */
 	private void displayData() {
 		// List of Restaurants
@@ -129,7 +129,7 @@ public class FoodPreferencesView extends PluginView {
 
 	/**
 	 * Sets what happens when the user clicks on an item in the list of
-	 * Restaurants
+	 * Restaurants.
 	 */
 	private void setOnListViewClickListener() {
 
@@ -167,11 +167,11 @@ public class FoodPreferencesView extends PluginView {
 	ILabeler<Restaurant> restaurantLabeler = new ILabeler<Restaurant>() {
 
 		/**
-		 * Returns the name of a restaurant
+		 * Returns the name of a restaurant.
 		 * 
 		 * @param resto
-		 *            The restaurant to be displayed
-		 * @return The restaurant name
+		 *            The restaurant to be displayed.
+		 * @return The restaurant name.
 		 */
 		@Override
 		public String getLabel(Restaurant resto) {

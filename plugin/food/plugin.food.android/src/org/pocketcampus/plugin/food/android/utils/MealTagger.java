@@ -13,7 +13,7 @@ import android.util.Log;
 /**
  * 
  * Takes care of tagging the meal according to the different patterns Used for
- * generating suggestions for meals
+ * generating suggestions for meals.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -21,15 +21,15 @@ import android.util.Log;
  */
 public class MealTagger {
 
-	/** The patterns used to filter the meals */
+	/** The patterns used to filter the meals. */
 	private HashMap<MealTag, Collection<Pattern>> tagPatterns;
 
 	/**
-	 * Constructor without default Patterns
+	 * Constructor without default Patterns.
 	 * 
 	 * @param tagPatterns
 	 *            a HashMap. To every MealTag there is a list of
-	 *            REGULAR-EXPRESSION-patterns included.
+	 *            REGULAR-EXPRESSION-patterns associated.
 	 */
 	public MealTagger(HashMap<MealTag, Collection<Pattern>> tagPatterns) {
 		this.tagPatterns = tagPatterns;
@@ -37,7 +37,7 @@ public class MealTagger {
 	}
 
 	/**
-	 * Constructor which adds default patterns
+	 * Constructor which adds default patterns.
 	 */
 	public MealTagger() {
 
@@ -61,7 +61,7 @@ public class MealTagger {
 						Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 		Pattern ricePatterns = Pattern.compile(
 				".*(riz|risotto|cantonais|casimir).*", Pattern.CASE_INSENSITIVE
-				| Pattern.MULTILINE);
+						| Pattern.MULTILINE);
 		Pattern porcPatterns = Pattern
 				.compile(
 						".*(porc|jambon|lard|lard .?lardons.?|saucisse|cordon.?bleu).*",
@@ -69,10 +69,10 @@ public class MealTagger {
 		Pattern chickenPatterns = Pattern.compile(
 				".*(poulet|coq .?coquelet.?|dinde|volaille|nugget).*",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-//		Pattern beefPatterns = Pattern.compile(".*(boeuf|burger).*",
-//				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-//		Pattern horsePatterns = Pattern.compile(".*(cheval).*",
-//				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+		// Pattern beefPatterns = Pattern.compile(".*(boeuf|burger).*",
+		// Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+		// Pattern horsePatterns = Pattern.compile(".*(cheval).*",
+		// Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 		Pattern pizzaPatterns = Pattern.compile(".*(pizza).*",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
@@ -90,12 +90,12 @@ public class MealTagger {
 	}
 
 	/**
-	 * Add a new pattern to filter meals with
+	 * Add a new pattern to filter meals with.
 	 * 
 	 * @param tag
-	 *            the tag this is associated with
+	 *            the tag this is associated with.
 	 * @param pattern
-	 *            the pattern to filter with
+	 *            the pattern to filter with.
 	 */
 	public void addPattern(MealTag tag, Pattern pattern) {
 		if (tag == null || pattern == null) {
@@ -114,10 +114,10 @@ public class MealTagger {
 	}
 
 	/**
-	 * Returns the patterns for a particular tag
+	 * Returns the patterns for a particular tag.
 	 * 
 	 * @param tag
-	 *            the tag for which we want the patterns
+	 *            the tag for which we want the patterns.
 	 */
 	public Collection<Pattern> getPatternsFor(MealTag tag) {
 		if (tag != null) {
@@ -131,9 +131,9 @@ public class MealTagger {
 	 * Parse the Meals for a particular tag.
 	 * 
 	 * @param tag
-	 *            the tag to parse with
+	 *            the tag to parse with.
 	 * @param allMeals
-	 *            the collection of Meals
+	 *            the collection of Meals.
 	 * @return a collection of meals (subset of allMeals), which belong to the
 	 *         given tag or null if there is no Meal which belongs to the given
 	 *         tag.
@@ -161,13 +161,13 @@ public class MealTagger {
 	}
 
 	/**
-	 * Check if the Meals satisfy a tag
+	 * Check if the Meals satisfy a tag.
 	 * 
 	 * @param tag
-	 *            the tag to check for
+	 *            the tag to check for.
 	 * @param meal
-	 *            the Meal to check with
-	 * @return true if the Meal satisfies the tag, false if not
+	 *            the Meal to check with.
+	 * @return true if the Meal satisfies the tag, false if not.
 	 */
 	public boolean mealBelongsTo(MealTag tag, Meal meal) {
 		if (tag == null || meal == null) {
@@ -201,7 +201,7 @@ public class MealTagger {
 	}
 
 	/**
-	 * Extracts the sum of all tags which matches at least to one element of the
+	 * Extracts the sum of all tags which matches at least one element of the
 	 * given collection of meals. Usually, this is used to get all tags which
 	 * match one Meal.
 	 * 
@@ -259,5 +259,4 @@ public class MealTagger {
 			}
 		}
 	}
-
 }

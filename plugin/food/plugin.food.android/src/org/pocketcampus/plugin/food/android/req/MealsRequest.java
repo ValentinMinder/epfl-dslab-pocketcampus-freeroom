@@ -12,7 +12,6 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import android.util.Log;
 
 /**
- * 
  * A request to the server for all Meals in all Restaurants
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
@@ -23,13 +22,13 @@ public class MealsRequest extends
 		Request<FoodController, Iface, Object, List<Meal>> {
 
 	/**
-	 * Initiate the <code>getMeals</code> Request at the server
+	 * Initiate the <code>getMeals</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameters to be sent for the request. Not used.
-	 * @return the list of Meals from the server
+	 * @return the list of Meals from the server.
 	 */
 	@Override
 	protected List<Meal> runInBackground(Iface client, Object param)
@@ -43,9 +42,9 @@ public class MealsRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the meal list gotten from the server
+	 *            the meal list gotten from the server.
 	 */
 	@Override
 	protected void onResult(FoodController controller, List<Meal> result) {
@@ -58,12 +57,13 @@ public class MealsRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
 		Log.d("NetworkError", "onError");
-		((FoodModel) controller.getModel()).networkErrorHappened(controller.getString(R.string.food_meals_request_error));
+		((FoodModel) controller.getModel()).networkErrorHappened(controller
+				.getString(R.string.food_meals_request_error));
 		e.printStackTrace();
 	}
 }

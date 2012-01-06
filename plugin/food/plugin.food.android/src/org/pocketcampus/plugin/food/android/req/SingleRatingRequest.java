@@ -10,7 +10,7 @@ import android.util.Log;
 
 /**
  * 
- * A request to the server for the rating of a single Meal
+ * A request to the server for the rating of a single Meal.
  * 
  * @author Elodie (elodienilane.triponez@epfl.ch)
  * @author Oriane (oriane.rodriguez@epfl.ch)
@@ -20,13 +20,13 @@ public class SingleRatingRequest extends
 		Request<FoodController, Iface, Meal, Rating> {
 
 	/**
-	 * Initiate the <code>getRating</code> Request at the server
+	 * Initiate the <code>getRating</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameter meal for which we want the Rating.
-	 * @return the Rating of the Meal for which we wanted an update
+	 * @return the Rating of the Meal for which we wanted an update.
 	 */
 	@Override
 	protected Rating runInBackground(Iface client, Meal param) throws Exception {
@@ -42,9 +42,9 @@ public class SingleRatingRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the new rating
+	 *            the new rating.
 	 */
 	@Override
 	protected void onResult(FoodController controller, Rating result) {
@@ -58,7 +58,7 @@ public class SingleRatingRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
@@ -66,5 +66,4 @@ public class SingleRatingRequest extends
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-
 }

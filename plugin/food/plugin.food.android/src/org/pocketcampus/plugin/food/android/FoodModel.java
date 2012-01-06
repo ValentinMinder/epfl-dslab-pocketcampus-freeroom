@@ -18,7 +18,6 @@ import org.pocketcampus.plugin.food.android.utils.MenuSorter;
 import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
-import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.content.Context;
@@ -40,8 +39,8 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	private List<Restaurant> mRestaurantsList;
 	/** The list of all meals for a day */
 	private List<Meal> mMeals;
-	/** The list of all sandwiches */
-	private List<Sandwich> mSandwiches;
+	// /** The list of all sandwiches */
+	// private List<Sandwich> mSandwiches;
 	/** Whether the user has already used his ability to vote */
 	private boolean mHasVoted = false;
 
@@ -115,6 +114,9 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		this.mListeners.menusUpdated();
 	}
 
+	/**
+	 * Called when an error happens while trying to contact the server.
+	 */
 	@Override
 	public void networkErrorHappened(String message) {
 		this.mListeners.networkErrorHappened(message);
@@ -123,7 +125,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 
 	/**
 	 * Returns the list of Meals sorted by Restaurant. If the list is currently
-	 * null, it tries to restore the meals list from the cache
+	 * null, it tries to restore the meals list from the cache.
 	 * 
 	 * @param ctx
 	 *            the context of the calling view, to get the preferences
@@ -160,7 +162,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Returns the list of Meals sorted by Ratings
+	 * Returns the list of Meals sorted by Ratings.
 	 */
 	@Override
 	public List<Meal> getMealsByRatings() {
@@ -180,7 +182,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Returns the list of all meal tags
+	 * Returns the list of all meal tags.
 	 */
 	@Override
 	public List<MealTag> getMealTags() {
@@ -193,7 +195,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Gets the preferred restaurants as defined by the user
+	 * Gets the preferred restaurants as defined by the user.
 	 * 
 	 * @param mealMap
 	 *            the hashMap of meals to filter
@@ -211,7 +213,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Gets the meals from all preferred restaurants as defined by the user
+	 * Gets the meals from all preferred restaurants as defined by the user.
 	 * 
 	 */
 	public List<Meal> filterPreferredRestaurants() {
@@ -225,36 +227,8 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Returns the list of Sandwiches sorted by Restaurant
-	 */
-	@Override
-	public HashMap<String, Vector<Sandwich>> getSandwiches() {
-		if (mSorter == null) {
-			mSorter = new MenuSorter();
-		}
-		if (mSandwiches != null) {
-			return mSorter.sortByCafeterias(mSandwiches);
-		} else {
-			return new HashMap<String, Vector<Sandwich>>();
-		}
-	}
-
-	/**
-	 * Update the list of Sandwiches and notify the View
-	 * 
-	 * @param list
-	 *            the new list of sandwiches
-	 */
-	@Override
-	public void setSandwiches(List<Sandwich> list) {
-		mSandwiches = list;
-		// Notify the view(s)
-		mListeners.sandwichesUpdated();
-	}
-
-	/**
 	 * Set the <code>Rating</code> for a particular <code>Meal</code> and notify
-	 * the listeners
+	 * the listeners.
 	 */
 	@Override
 	public void setRating(SubmitStatus status) {
@@ -264,7 +238,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 
 	/**
 	 * Set the <code>Ratings</code> for all meals <code>Meal</code> and notify
-	 * the listeners
+	 * the listeners.
 	 */
 	@Override
 	public void setRatings(Map<Long, Rating> result) {
@@ -277,7 +251,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	}
 
 	/**
-	 * Returns whether the user has already voted or not
+	 * Returns whether the user has already voted or not.
 	 */
 	@Override
 	public boolean getHasVoted() {
@@ -286,13 +260,11 @@ public class FoodModel extends PluginModel implements IFoodModel {
 
 	/**
 	 * Changes the value for the current state of the hasVoted boolean, which
-	 * represents whether the user has voted yet
+	 * represents whether the user has voted yet.
 	 */
 	@Override
 	public void setHasVoted(boolean hasVoted) {
 		this.mHasVoted = hasVoted;
 	}
 
-	public void notifyMealsNetworkError() {
-	}
 }

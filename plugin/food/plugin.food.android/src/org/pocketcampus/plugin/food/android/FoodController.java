@@ -8,7 +8,6 @@ import org.pocketcampus.plugin.food.android.iface.IFoodController;
 import org.pocketcampus.plugin.food.android.req.MealsRequest;
 import org.pocketcampus.plugin.food.android.req.RatingsRequest;
 import org.pocketcampus.plugin.food.android.req.RestaurantsRequest;
-import org.pocketcampus.plugin.food.android.req.SandwichesRequest;
 import org.pocketcampus.plugin.food.android.req.SetRatingRequest;
 import org.pocketcampus.plugin.food.android.req.VotedRequest;
 import org.pocketcampus.plugin.food.android.utils.MealTag;
@@ -32,9 +31,6 @@ public class FoodController extends PluginController implements IFoodController 
 	/** The plugin's model. */
 	private FoodModel mModel;
 
-	/** Interface to the plugin's server client */
-//	private Iface mClient;
-
 	/** The name of the plugin */
 	private String mPluginName = "food";
 
@@ -46,9 +42,6 @@ public class FoodController extends PluginController implements IFoodController 
 		// Initializing the model is part of the controller's job...
 		mModel = new FoodModel();
 
-		// ...as well as initializing the client.
-		// The "client" is the connection we use to access the service.
-//		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 
 	/**
@@ -88,17 +81,6 @@ public class FoodController extends PluginController implements IFoodController 
 	@Override
 	public List<MealTag> getMealTags() {
 		return mModel.getMealTags();
-	}
-
-	/**
-	 * Initiates a request to the server to get the sandwiches of all
-	 * restaurants.
-	 */
-	@Override
-	public void getSandwiches() {
-		new SandwichesRequest().start(this,
-				(Iface) getClient(new Client.Factory(), mPluginName),
-				(Object) null);
 	}
 
 	/**

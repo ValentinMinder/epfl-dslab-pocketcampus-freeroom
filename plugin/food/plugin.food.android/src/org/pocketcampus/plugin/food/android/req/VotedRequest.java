@@ -9,7 +9,7 @@ import android.util.Log;
 
 /**
  * 
- * A request to the server to check if a user has voted yet
+ * A request to the server to check if a user has voted yet.
  * 
  * @author Elodie (elodienilane.triponez@epfl.ch)
  * @author Oriane (oriane.rodriguez@epfl.ch)
@@ -19,13 +19,13 @@ public class VotedRequest extends
 		Request<FoodController, Iface, String, Boolean> {
 
 	/**
-	 * Initiate the <code>hasVoted</code> Request at the server
+	 * Initiate the <code>hasVoted</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameter deviceId of the user phone.
-	 * @return the Rating of the Meal for which we wanted an update
+	 * @return the Rating of the Meal for which we wanted an update.
 	 */
 	@Override
 	protected Boolean runInBackground(Iface client, String param)
@@ -39,9 +39,9 @@ public class VotedRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            whether the user has already voted or not 
+	 *            whether the user has already voted or not. 
 	 */
 	@Override
 	protected void onResult(FoodController controller, Boolean result) {
@@ -54,7 +54,7 @@ public class VotedRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
@@ -62,5 +62,4 @@ public class VotedRequest extends
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-
 }

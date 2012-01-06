@@ -11,7 +11,7 @@ import android.util.Log;
 
 /**
  * 
- * A request to the server to submit a user Rating
+ * A request to the server to submit a user Rating.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -21,14 +21,14 @@ public class SetRatingRequest extends
 		Request<FoodController, Iface, setRating_args, SubmitStatus> {
 
 	/**
-	 * Initiate the <code>setRating</code> Request at the server
+	 * Initiate the <code>setRating</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param setRatingParam
 	 *            the parameters to be sent for the request. the meal ID, the
-	 *            new Rating, the deviceId of the user
-	 * @return the Status of the submission
+	 *            new Rating, the deviceId of the user.
+	 * @return the Status of the submission.
 	 */
 	@Override
 	protected SubmitStatus runInBackground(Iface client,
@@ -42,13 +42,13 @@ public class SetRatingRequest extends
 	}
 
 	/**
-	 * Tell the model what happened during the Rating upload.
+	 * Used to tell the model what happened during the Rating upload.
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the status of the submission
+	 *            the status of the submission.
 	 */
 	@Override
 	protected void onResult(FoodController controller, SubmitStatus result) {
@@ -61,7 +61,7 @@ public class SetRatingRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
@@ -69,5 +69,4 @@ public class SetRatingRequest extends
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-
 }

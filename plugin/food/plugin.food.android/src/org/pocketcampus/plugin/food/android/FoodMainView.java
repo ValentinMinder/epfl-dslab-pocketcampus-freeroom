@@ -17,7 +17,6 @@ import org.pocketcampus.android.platform.sdk.ui.element.TextViewElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.android.platform.sdk.ui.list.ExpandableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableExpandableListViewElement;
 import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
@@ -45,8 +44,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 /**
  * The Main View of the Food plugin, first displayed when accessing Food.
  * 
- * Displays menus by restaurants, preferences, suggestions and ratings, as well
- * as sandwiches
+ * Displays menus by restaurants, preferences, suggestions and ratings
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -57,7 +55,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	private Activity mActivity;
 
 	/* MVC */
-	/** The controller that does the interface between model and view */
+	/** The controller that does the interface between Model and View */
 	private FoodController mController;
 	/** The corresponding model */
 	private IFoodModel mModel;
@@ -66,18 +64,20 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	/** A simple full screen layout */
 	private StandardTitledLayout mLayout;
 
-	/** The main list with menus and sandwiches */
+	/** The main list with menus */
 	private RatableExpandableListViewElement mExpandableList;
 
 	/** The main list with suggestions and ratings */
 	private RatableListViewElement mList;
 
 	/* Constants */
+	/** Code used to make a request to the suggestions activity */
 	private final int SUGGESTIONS_REQUEST_CODE = 1;
 
 	/* Listeners */
 	/** Listener for when you click on a line in the list */
 	private OnItemClickListener mOnLineClickListener;
+
 	/** Listener for when you click on a rating in the list */
 	private OnItemClickListener mOnRatingClickListener;
 
@@ -91,7 +91,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	/**
 	 * Keeps in memory whether we are coming back from choosing restaurant
-	 * preferences
+	 * preferences.
 	 */
 	private boolean backFromPreferences;
 
@@ -154,7 +154,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Initiates request for the restaurant, meal and sandwich data
+	 * Initiates request for the restaurant and meal data, as well as whether
+	 * the user has already voted today.
 	 */
 	private void displayData() {
 		mLayout.setText(getResources().getString(R.string.food_loading));
@@ -173,7 +174,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	/**
 	 * Main Food Options menu contains access to Meals by restaurants, ratings,
-	 * Sandwiches, Suggestions and Settings
+	 * Suggestions and Settings
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,7 +214,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Called when the list of menus has been updated Displays the view by
+	 * Called when the list of menus has been updated. Displays the view by
 	 * restaurants.
 	 */
 	@Override
@@ -222,9 +223,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Creates a menu dialog for a particular meal
+	 * Creates a menu dialog for a particular meal. Contains the title of the
+	 * menu with the restaurant at which it is available, as well as the
+	 * content, and buttons to vote for the meal
 	 * 
 	 * @param meal
+	 *            the meal for which to create a dialog
 	 */
 	public void menuDialog(Meal meal) {
 		// Create the Builder for the Menu dialog
@@ -248,8 +252,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Called when the ratings have been updated Refreshes the view with the new
-	 * ratings
+	 * Called when the ratings have been updated. Refreshes the view with the
+	 * new ratings.
 	 */
 	@Override
 	public void ratingsUpdated() {
@@ -263,9 +267,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Creates a rating dialog for a particular meal
+	 * Creates a rating dialog for a particular meal.
 	 * 
 	 * @param meal
+	 *            the meal for which to create the rating dialog
 	 */
 	public void ratingDialog(Meal meal, long rating) {
 		if (!mModel.getHasVoted()) {
@@ -293,7 +298,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	/**
 	 * Called after a vote has been cast by a user to check whether it was
-	 * successful
+	 * successful.
 	 * 
 	 * @param status
 	 *            what the server returned upon submitting the rating
@@ -323,13 +328,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			Toast.makeText(this, R.string.food_rating_error, Toast.LENGTH_SHORT)
 					.show();
 		}
-	}
-
-	/**
-	 * Not used
-	 */
-	@Override
-	public void sandwichesUpdated() {
 	}
 
 	/**
@@ -444,7 +442,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows menus sorted by Restaurants
+	 * Shows menus sorted by Restaurants.
 	 */
 	public void showMenusByRestaurants() {
 		final HashMap<String, Vector<Meal>> mealHashMap = mModel
@@ -498,7 +496,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows menus sorted by Ratings
+	 * Shows menus sorted by Ratings.
 	 */
 	public void showMenusByRatings() {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
@@ -535,7 +533,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows menus sorted by Suggestions
+	 * Shows menus sorted by Suggestions.
 	 * 
 	 * @param mealsBySuggestions
 	 *            the list coming from the suggestions activity that has to be
@@ -581,32 +579,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Shows the list of Sandwiches by Restaurants
-	 */
-	public void showSandwiches() {
-		removeShowAllMenusAction();
-		final HashMap<String, Vector<Sandwich>> mSandwiches = mModel
-				.getSandwiches();
-
-		if (mSandwiches != null) {
-			mLayout.removeFillerView();
-
-			ExpandableListViewElement mList = new ExpandableListViewElement(
-					this, mSandwiches, mSandwichLabeler,
-					mSandwichViewConstructor);
-
-			if (!mSandwiches.isEmpty()) {
-				mLayout.hideText();
-				mLayout.setTitle(this.getString(R.string.food_by_sandwiches));
-				mLayout.addFillerView(mList);
-			} else {
-				mLayout.setText(getString(R.string.food_no_sandwiches));
-				mLayout.hideTitle();
-			}
-		}
-	}
-
-	/**
 	 * Removes the button in the action bar to toggle menus by restaurant or
 	 * ratings.
 	 */
@@ -627,10 +599,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * 
 	 */
 	private class MenuDialogListener implements DialogInterface.OnClickListener {
+		/** Builder for the dialog */
 		private MenuDialog.Builder builder;
+		/** The meal for which the dialog was displayed */
 		private Meal meal;
-		private float rating;
 
+		/** Constructor */
 		public MenuDialogListener(MenuDialog.Builder b, Meal m) {
 			builder = b;
 			meal = m;
@@ -647,7 +621,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 				// Tracker
 				Tracker.getInstance().trackPageView("food/dialog/button/rate");
 				// Rate it
-				rating = builder.getSubmittedRating();
+				float rating = builder.getSubmittedRating();
 				dialog.dismiss();
 				mController.setRating((float) rating, meal);
 				break;
@@ -677,17 +651,33 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	private class RatingDialogListener implements
 			DialogInterface.OnClickListener {
-		private RatingDialog.Builder builder;
-		private Meal meal;
-		private float rating;
+		/** The builder for the rating dialog */
+		private RatingDialog.Builder mBuilder;
+		/** The meal for which the dialog was displayed */
+		private Meal mMeal;
+		/** The rating displayed in the dialog */
+		private float mRating;
 
+		/** Empty constructor. */
 		public RatingDialogListener() {
 		}
 
-		public RatingDialogListener(RatingDialog.Builder b, Meal m, float r) {
-			builder = b;
-			meal = m;
-			rating = r;
+		/**
+		 * Constructor
+		 * 
+		 * @param builder
+		 *            the builder for the rating dialog.
+		 * @param meal
+		 *            the meal for which the dialog was displayed.
+		 * @param rating
+		 *            the rating in the dialog.
+		 */
+
+		public RatingDialogListener(RatingDialog.Builder builder, Meal meal,
+				float rating) {
+			mBuilder = builder;
+			mMeal = meal;
+			mRating = rating;
 		}
 
 		/**
@@ -701,10 +691,10 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			case DialogInterface.BUTTON_POSITIVE:
 				Tracker.getInstance().trackPageView(
 						"food/dialog/rating/button/rate");
-				rating = builder.getSubmittedRating();
-				Log.d("RATING", "Rating submitted : " + rating);
+				mRating = mBuilder.getSubmittedRating();
+				Log.d("RATING", "Rating submitted : " + mRating);
 				dialog.dismiss();
-				mController.setRating((float) rating, meal);
+				mController.setRating((float) mRating, mMeal);
 				break;
 
 			case DialogInterface.BUTTON_NEGATIVE:
@@ -722,7 +712,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 	/**
 	 * Called when coming back from another activity that was called with an
-	 * intent and from which we are expecting a result
+	 * intent and from which we are expecting a result.
 	 * 
 	 * @param requestCode
 	 *            what request this result corresponds to
@@ -1012,7 +1002,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * The constructor sets the boolean "shown by restaurant" and "is shown"
 		 * to true.
 		 */
-		ShowByRestaurantOrRatingsAction() {
+		public ShowByRestaurantOrRatingsAction() {
 			mButtonByRestaurants = true;
 			mIsShown = true;
 		}
@@ -1050,16 +1040,27 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		}
 
 		/**
-		 * Returns whether or not the button in the action bar is shown
+		 * Returns whether or not the button in the action bar is shown.
 		 */
 		public boolean isShown() {
 			return mIsShown;
 		}
 
+		/**
+		 * Sets whether the button in the action bar is currently shown.
+		 * 
+		 * @param show
+		 */
 		public void setShown(boolean show) {
 			mIsShown = show;
 		}
 
+		/**
+		 * Set whether the button being shown in the action bar is to show by
+		 * restaurants
+		 * 
+		 * @param isRestaurants
+		 */
 		public void setIsRestaurant(boolean isRestaurants) {
 			mButtonByRestaurants = isRestaurants;
 		}
@@ -1075,7 +1076,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	private class ShowBySuggestionsAction implements Action {
 
 		/**
-		 * The constructor
+		 * Empty constructor
 		 */
 		ShowBySuggestionsAction() {
 		}
@@ -1090,7 +1091,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 		/**
 		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
+		 * the action bar.
 		 */
 		@Override
 		public void performAction(View view) {

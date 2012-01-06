@@ -16,7 +16,7 @@ import org.pocketcampus.plugin.food.shared.Sandwich;
 /**
  * 
  * Used to sort the Meals according to their Restaurants or Ratings and sort
- * Sandwiches according to their Cafeterias
+ * Sandwiches according to their Cafeterias.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -25,18 +25,18 @@ import org.pocketcampus.plugin.food.shared.Sandwich;
 public class MenuSorter {
 
 	/**
-	 * Empty Constructor
+	 * Empty Constructor.
 	 */
 	public MenuSorter() {
 	}
 
 	/**
-	 * Sorts the Meals by Rating (best rates first)
+	 * Sorts the Meals by Rating (best rates first).
 	 * 
 	 * @param menus
-	 *            the collection of meals for the day
+	 *            the collection of meals for the day.
 	 * 
-	 * @return the sorted list of meals
+	 * @return the sorted list of meals.
 	 **/
 	public Vector<Meal> sortByRatings(List<Meal> menus) {
 		if (menus == null) {
@@ -57,12 +57,12 @@ public class MenuSorter {
 	}
 
 	/**
-	 * Sorts the Meals by Restaurant (Alphabetical order)
+	 * Sorts the Meals by Restaurant (Alphabetical order).
 	 * 
 	 * @param meals
-	 *            the collection of meals for the day
+	 *            the collection of meals for the day.
 	 * 
-	 * @return the sorted list of meals
+	 * @return the sorted list of meals.
 	 **/
 	public HashMap<String, Vector<Meal>> sortByRestaurant(Collection<Meal> meals) {
 
@@ -105,11 +105,11 @@ public class MenuSorter {
 	}
 
 	/**
-	 * Sorts the sandwiches by Cafeteria, alphabetically
+	 * Sorts the sandwiches by Cafeteria, alphabetically.
 	 * 
 	 * @param sandwiches
-	 *            the collection of Sandwiches to sort
-	 * @return a sorted list of Sandwiches
+	 *            the collection of Sandwiches to sort.
+	 * @return a sorted list of Sandwiches.
 	 */
 	public HashMap<String, Vector<Sandwich>> sortByCafeterias(
 			Collection<Sandwich> sandwiches) {

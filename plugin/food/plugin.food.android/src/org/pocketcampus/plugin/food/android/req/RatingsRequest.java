@@ -22,14 +22,14 @@ public class RatingsRequest extends
 		Request<FoodController, Iface, Object, Map<Long, Rating>> {
 
 	/**
-	 * Initiate the <code>getRatings</code> Request at the server
+	 * Initiate the <code>getRatings</code> Request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameters to be sent for the request. Not used.
 	 * @return the Map of meal hashcodes with their corresponding rating from
-	 *         the server
+	 *         the server.
 	 */
 	@Override
 	protected Map<Long, Rating> runInBackground(Iface client, Object param)
@@ -43,9 +43,9 @@ public class RatingsRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the ratings list gotten from the server
+	 *            the ratings list gotten from the server.
 	 */
 	@Override
 	protected void onResult(FoodController controller,
@@ -59,7 +59,7 @@ public class RatingsRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
@@ -67,5 +67,4 @@ public class RatingsRequest extends
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-
 }

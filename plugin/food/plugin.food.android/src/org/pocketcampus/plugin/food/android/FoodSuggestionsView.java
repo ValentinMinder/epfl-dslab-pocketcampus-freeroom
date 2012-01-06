@@ -33,7 +33,7 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 /**
- * The Suggestions View of the Food plugin
+ * The Suggestions View of the Food plugin.
  * 
  * Displays a list of choices the user can say he likes or dislikes, for the
  * meals to be filtered.
@@ -43,15 +43,15 @@ import android.widget.RelativeLayout;
  * 
  */
 public class FoodSuggestionsView extends PluginView {
-	/** The controller that does the interface between model and view */
+	/** The controller that does the interface between model and view. */
 	private FoodController mController;
 
 	/* GUI */
-	/** A double full screen layout */
+	/** A double full screen layout. */
 	private StandardTitledDoubleLayout mLayout;
-	/** The list to be displayed in the layout */
+	/** The list to be displayed in the layout. */
 	private CheckBoxListViewElement mListView;
-	/** The button to validate the choices */
+	/** The button to validate the choices. */
 	private ButtonElement mComputeButton;
 
 	/**
@@ -59,13 +59,16 @@ public class FoodSuggestionsView extends PluginView {
 	 * the tags.
 	 */
 	private Collection<Meal> mMeals;
-	/** To compute Suggestions based on tags */
+	/** Object used to compute Suggestions based on tags. */
 	private MealTagger mTagger;
-	/** The list of available tags */
+	/** The list of available tags. */
 	private List<MealTag> mTagsList;
-	/** The list of things the user says he likes */
+	/** The list of things the user says he likes. */
 	private List<MealTag> mLikes;
 
+	/**
+	 * Defines what the main controller is for this view.
+	 */
 	@Override
 	protected Class<? extends Service> getMainControllerClass() {
 		return FoodController.class;
@@ -174,7 +177,7 @@ public class FoodSuggestionsView extends PluginView {
 					Tracker.getInstance().trackPageView(
 							"food/suggestions/remove/" + tag);
 					mLikes.remove(tag);
-					if(mLikes.isEmpty()) {
+					if (mLikes.isEmpty()) {
 						mComputeButton.setEnabled(false);
 					}
 				}
@@ -187,12 +190,12 @@ public class FoodSuggestionsView extends PluginView {
 	 * Compute the meals satisfying what the user checked.
 	 * 
 	 * @param meals
-	 *            the list of all meals
+	 *            the list of all meals.
 	 * @param tag
-	 *            one tag
+	 *            one tag.
 	 * @param tagger
-	 *            the parser for the meals according to one tag
-	 * @return
+	 *            the parser for the meals according to one tag.
+	 * @return the resulting suggestions.
 	 */
 	private Collection<Meal> computeSuggestions(Collection<Meal> meals,
 			MealTag tag, MealTagger tagger) {
@@ -258,11 +261,11 @@ public class FoodSuggestionsView extends PluginView {
 	}
 
 	/**
-	 * Convert from MealTag to String
+	 * Convert from MealTag to String.
 	 * 
 	 * @param tag
-	 *            the tag to convert
-	 * @return the corresponding string
+	 *            the tag to convert.
+	 * @return the corresponding string.
 	 */
 	private String write(MealTag tag) {
 		Resources r = getApplicationContext().getResources();
@@ -302,15 +305,15 @@ public class FoodSuggestionsView extends PluginView {
 	}
 
 	/**
-	 * A ILabeler to tell the View what to display for the MealTag
+	 * A ILabeler to tell the View what to display for the MealTag.
 	 */
 	ILabeler<MealTag> mTagLabeler = new ILabeler<MealTag>() {
 
 		/**
-		 * Returns the MealTag name
+		 * Returns the name associated with the MealTag to be displayed.
 		 * 
-		 * @param mealTag
-		 *            The MealTag to be displayed
+		 * @param mealTag.
+		 *            The MealTag to be displayed.
 		 * @return The name of the MealTag
 		 */
 		@Override

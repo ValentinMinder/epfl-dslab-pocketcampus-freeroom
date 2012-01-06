@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * 
- * A request to the server for all Restaurants
+ * A request to the server for all Restaurants.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -22,13 +22,13 @@ public class RestaurantsRequest extends
 		Request<FoodController, Iface, Object, List<Restaurant>> {
 
 	/**
-	 * Initiate the <code>getRestaurants</code> request at the server
+	 * Initiate the <code>getRestaurants</code> request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            the client that communicates with the server.
 	 * @param param
 	 *            the parameters to be sent for the request. Not used.
-	 * @return the list of restaurants from the server
+	 * @return the list of restaurants from the server.
 	 */
 	@Override
 	protected List<Restaurant> runInBackground(Iface client, Object param)
@@ -42,9 +42,9 @@ public class RestaurantsRequest extends
 	 * 
 	 * @param controller
 	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            notify of the result.
 	 * @param result
-	 *            the list of restaurants gotten from the server
+	 *            the list of restaurants gotten from the server.
 	 */
 	@Override
 	protected void onResult(FoodController controller, List<Restaurant> result) {
@@ -57,7 +57,7 @@ public class RestaurantsRequest extends
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            the controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {

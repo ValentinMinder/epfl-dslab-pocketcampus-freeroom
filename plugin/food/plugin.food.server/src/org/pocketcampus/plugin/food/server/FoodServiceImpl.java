@@ -24,37 +24,37 @@ import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 /**
  * Takes care of handling the requests for information concerning the Food
- * plugin
+ * plugin.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class FoodServiceImpl implements FoodService.Iface {
-	/** The last time the Meals were parsed from the web page */
+	/** The last time the Meals were parsed from the web page. */
 	private Date mLastImportedMeals;
 
-	/** Interface to the database */
+	/** Interface to the database. */
 	private FoodDB mDatabase;
 
-	/** The list of Restaurants and the Url to their feeds */
+	/** The list of Restaurants and the Url to their feeds. */
 	private HashMap<String, String> mRestaurantsFeeds;
 
-	/** The list of all Meals */
+	/** The list of all Meals. */
 	private List<Meal> mAllMeals;
 
-	/** Ratings for all Meals, represents with their hashcode */
+	/** Ratings for all Meals, represents with their hashcode. */
 	private HashMap<Long, Rating> mMealRatings;
 
-	/** The list of DeviceIds that have already voted for a meal today */
+	/** The list of DeviceIds that have already voted for a meal today. */
 	private ArrayList<String> mDeviceIds;
 
-	/** The list of Sandwiches for all Cafeterias */
+	/** The list of Sandwiches for all Cafeterias. */
 	private List<Sandwich> mSandwiches;
 
 	// Character to filter because doesn't show right.
 	private final static int BAD_CHAR = 65533;
 
-	/** The interval in minutes at which the news should be fetched */
+	/** The interval in minutes at which the menu should be fetched. */
 	private int REFRESH_INTERVAL = 60;
 
 	/**
@@ -78,9 +78,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get all menus for today
+	 * Get all menus for today.
 	 * 
-	 * @return mAllMeals The list of meals
+	 * @return mAllMeals The list of meals.
 	 */
 	@Override
 	public List<Meal> getMeals() throws TException {
@@ -108,9 +108,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get all restaurants on campus
+	 * Get all restaurants on campus.
 	 * 
-	 * @return mRestaurantList The list of restaurants
+	 * @return mRestaurantList The list of restaurants.
 	 */
 	@Override
 	public List<Restaurant> getRestaurants() throws TException {
@@ -125,7 +125,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Checks whether the user has already voted today
+	 * Checks whether the user has already voted today.
 	 */
 	public boolean hasVoted(String deviceId) throws TException {
 		if (mDeviceIds.contains(deviceId)
@@ -138,11 +138,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get the Rating of a particular Meal
+	 * Get the Rating of a particular Meal.
 	 * 
 	 * @param meal
-	 *            The Meal for which we want the Rating
-	 * @return rating The Meal's Rating
+	 *            The Meal for which we want the Rating.
+	 * @return rating The Meal's Rating.
 	 */
 	@Override
 	public Rating getRating(Meal meal) throws TException {
@@ -157,12 +157,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get all the Ratings for today's meals Not working correctly, I think when
+	 * Get all the Ratings for today's meals. Not working correctly, I think when
 	 * the menus are up to date (meaning it's still today) it doesn't get the
 	 * Ratings again 'cause of the updateMenus method...
 	 * 
 	 * @return mCampusMealRatings the map of all ratings associated with the
-	 *         corresponding meal
+	 *         corresponding meal.
 	 */
 	@Override
 	public Map<Long, Rating> getRatings() throws TException {
@@ -254,7 +254,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Gets all Sandwiches on campus
+	 * Gets all Sandwiches on campus.
 	 * 
 	 * @return mSandwiches the list of sandwiches
 	 */
@@ -409,7 +409,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Import all Sandwiches on campus from a hardCoded list
+	 * Import all Sandwiches on campus from a hardcoded list
 	 */
 	private void importSandwiches() {
 		/* Cafeteria INM */
