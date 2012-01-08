@@ -8,11 +8,10 @@ typedef i64 timestamp
 struct NewsItem {
 	1: required common.Id newsItemId;
 	2: required string title;
-	3: required string content;
-	4: required string link;
-	5: required string feed;
-	6: required timestamp pubDate;
-	7: optional string imageUrl;
+	3: required string link;
+	4: required string feed;
+	5: required timestamp pubDate;
+	6: optional string imageUrl;
 }
 
 struct Feed {
@@ -25,7 +24,7 @@ struct Feed {
 
 service NewsService {
 	list<NewsItem> getNewsItems(1: string language);
-	string getNewsContent(1: string language, 2: NewsItem newsItem);
+	string getNewsItemContent(1: string language, 2: common.Id newsItemId);
 	map<string, string> getFeedUrls(1: string language);
 	list<Feed> getFeeds(1: string language);
 }

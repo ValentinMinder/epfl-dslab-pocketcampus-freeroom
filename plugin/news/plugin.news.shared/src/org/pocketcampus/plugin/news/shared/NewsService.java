@@ -27,7 +27,7 @@ public class NewsService {
 
     public List<NewsItem> getNewsItems(String language) throws org.apache.thrift.TException;
 
-    public String getNewsContent(String language, NewsItem newsItem) throws org.apache.thrift.TException;
+    public String getNewsItemContent(String language, long newsItemId) throws org.apache.thrift.TException;
 
     public Map<String,String> getFeedUrls(String language) throws org.apache.thrift.TException;
 
@@ -39,7 +39,7 @@ public class NewsService {
 
     public void getNewsItems(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItems_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getNewsContent(String language, NewsItem newsItem, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsContent_call> resultHandler) throws org.apache.thrift.TException;
+    public void getNewsItemContent(String language, long newsItemId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getNewsItemContent_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getFeedUrls(String language, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getFeedUrls_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -90,28 +90,28 @@ public class NewsService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNewsItems failed: unknown result");
     }
 
-    public String getNewsContent(String language, NewsItem newsItem) throws org.apache.thrift.TException
+    public String getNewsItemContent(String language, long newsItemId) throws org.apache.thrift.TException
     {
-      send_getNewsContent(language, newsItem);
-      return recv_getNewsContent();
+      send_getNewsItemContent(language, newsItemId);
+      return recv_getNewsItemContent();
     }
 
-    public void send_getNewsContent(String language, NewsItem newsItem) throws org.apache.thrift.TException
+    public void send_getNewsItemContent(String language, long newsItemId) throws org.apache.thrift.TException
     {
-      getNewsContent_args args = new getNewsContent_args();
+      getNewsItemContent_args args = new getNewsItemContent_args();
       args.setLanguage(language);
-      args.setNewsItem(newsItem);
-      sendBase("getNewsContent", args);
+      args.setNewsItemId(newsItemId);
+      sendBase("getNewsItemContent", args);
     }
 
-    public String recv_getNewsContent() throws org.apache.thrift.TException
+    public String recv_getNewsItemContent() throws org.apache.thrift.TException
     {
-      getNewsContent_result result = new getNewsContent_result();
-      receiveBase(result, "getNewsContent");
+      getNewsItemContent_result result = new getNewsItemContent_result();
+      receiveBase(result, "getNewsItemContent");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNewsContent failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getNewsItemContent failed: unknown result");
     }
 
     public Map<String,String> getFeedUrls(String language) throws org.apache.thrift.TException
@@ -210,27 +210,27 @@ public class NewsService {
       }
     }
 
-    public void getNewsContent(String language, NewsItem newsItem, org.apache.thrift.async.AsyncMethodCallback<getNewsContent_call> resultHandler) throws org.apache.thrift.TException {
+    public void getNewsItemContent(String language, long newsItemId, org.apache.thrift.async.AsyncMethodCallback<getNewsItemContent_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getNewsContent_call method_call = new getNewsContent_call(language, newsItem, resultHandler, this, ___protocolFactory, ___transport);
+      getNewsItemContent_call method_call = new getNewsItemContent_call(language, newsItemId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getNewsContent_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class getNewsItemContent_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String language;
-      private NewsItem newsItem;
-      public getNewsContent_call(String language, NewsItem newsItem, org.apache.thrift.async.AsyncMethodCallback<getNewsContent_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private long newsItemId;
+      public getNewsItemContent_call(String language, long newsItemId, org.apache.thrift.async.AsyncMethodCallback<getNewsItemContent_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.language = language;
-        this.newsItem = newsItem;
+        this.newsItemId = newsItemId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNewsContent", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getNewsContent_args args = new getNewsContent_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getNewsItemContent", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getNewsItemContent_args args = new getNewsItemContent_args();
         args.setLanguage(language);
-        args.setNewsItem(newsItem);
+        args.setNewsItemId(newsItemId);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -241,7 +241,7 @@ public class NewsService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getNewsContent();
+        return (new Client(prot)).recv_getNewsItemContent();
       }
     }
 
@@ -323,7 +323,7 @@ public class NewsService {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getNewsItems", new getNewsItems());
-      processMap.put("getNewsContent", new getNewsContent());
+      processMap.put("getNewsItemContent", new getNewsItemContent());
       processMap.put("getFeedUrls", new getFeedUrls());
       processMap.put("getFeeds", new getFeeds());
       return processMap;
@@ -345,18 +345,18 @@ public class NewsService {
       }
     }
 
-    private static class getNewsContent<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getNewsContent_args> {
-      public getNewsContent() {
-        super("getNewsContent");
+    private static class getNewsItemContent<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getNewsItemContent_args> {
+      public getNewsItemContent() {
+        super("getNewsItemContent");
       }
 
-      protected getNewsContent_args getEmptyArgsInstance() {
-        return new getNewsContent_args();
+      protected getNewsItemContent_args getEmptyArgsInstance() {
+        return new getNewsItemContent_args();
       }
 
-      protected getNewsContent_result getResult(I iface, getNewsContent_args args) throws org.apache.thrift.TException {
-        getNewsContent_result result = new getNewsContent_result();
-        result.success = iface.getNewsContent(args.language, args.newsItem);
+      protected getNewsItemContent_result getResult(I iface, getNewsItemContent_args args) throws org.apache.thrift.TException {
+        getNewsItemContent_result result = new getNewsItemContent_result();
+        result.success = iface.getNewsItemContent(args.language, args.newsItemId);
         return result;
       }
     }
@@ -1040,19 +1040,19 @@ public class NewsService {
 
   }
 
-  public static class getNewsContent_args implements org.apache.thrift.TBase<getNewsContent_args, getNewsContent_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsContent_args");
+  public static class getNewsItemContent_args implements org.apache.thrift.TBase<getNewsItemContent_args, getNewsItemContent_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItemContent_args");
 
     private static final org.apache.thrift.protocol.TField LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("language", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField NEWS_ITEM_FIELD_DESC = new org.apache.thrift.protocol.TField("newsItem", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+    private static final org.apache.thrift.protocol.TField NEWS_ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("newsItemId", org.apache.thrift.protocol.TType.I64, (short)2);
 
     public String language; // required
-    public NewsItem newsItem; // required
+    public long newsItemId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
       LANGUAGE((short)1, "language"),
-      NEWS_ITEM((short)2, "newsItem");
+      NEWS_ITEM_ID((short)2, "newsItemId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1069,8 +1069,8 @@ public class NewsService {
         switch(fieldId) {
           case 1: // LANGUAGE
             return LANGUAGE;
-          case 2: // NEWS_ITEM
-            return NEWS_ITEM;
+          case 2: // NEWS_ITEM_ID
+            return NEWS_ITEM_ID;
           default:
             return null;
         }
@@ -1111,57 +1111,61 @@ public class NewsService {
     }
 
     // isset id assignments
+    private static final int __NEWSITEMID_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("language", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.NEWS_ITEM, new org.apache.thrift.meta_data.FieldMetaData("newsItem", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, NewsItem.class)));
+      tmpMap.put(_Fields.NEWS_ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("newsItemId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64          , "Id")));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsContent_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItemContent_args.class, metaDataMap);
     }
 
-    public getNewsContent_args() {
+    public getNewsItemContent_args() {
     }
 
-    public getNewsContent_args(
+    public getNewsItemContent_args(
       String language,
-      NewsItem newsItem)
+      long newsItemId)
     {
       this();
       this.language = language;
-      this.newsItem = newsItem;
+      this.newsItemId = newsItemId;
+      setNewsItemIdIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getNewsContent_args(getNewsContent_args other) {
+    public getNewsItemContent_args(getNewsItemContent_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
       if (other.isSetLanguage()) {
         this.language = other.language;
       }
-      if (other.isSetNewsItem()) {
-        this.newsItem = new NewsItem(other.newsItem);
-      }
+      this.newsItemId = other.newsItemId;
     }
 
-    public getNewsContent_args deepCopy() {
-      return new getNewsContent_args(this);
+    public getNewsItemContent_args deepCopy() {
+      return new getNewsItemContent_args(this);
     }
 
     @Override
     public void clear() {
       this.language = null;
-      this.newsItem = null;
+      setNewsItemIdIsSet(false);
+      this.newsItemId = 0;
     }
 
     public String getLanguage() {
       return this.language;
     }
 
-    public getNewsContent_args setLanguage(String language) {
+    public getNewsItemContent_args setLanguage(String language) {
       this.language = language;
       return this;
     }
@@ -1181,28 +1185,27 @@ public class NewsService {
       }
     }
 
-    public NewsItem getNewsItem() {
-      return this.newsItem;
+    public long getNewsItemId() {
+      return this.newsItemId;
     }
 
-    public getNewsContent_args setNewsItem(NewsItem newsItem) {
-      this.newsItem = newsItem;
+    public getNewsItemContent_args setNewsItemId(long newsItemId) {
+      this.newsItemId = newsItemId;
+      setNewsItemIdIsSet(true);
       return this;
     }
 
-    public void unsetNewsItem() {
-      this.newsItem = null;
+    public void unsetNewsItemId() {
+      __isset_bit_vector.clear(__NEWSITEMID_ISSET_ID);
     }
 
-    /** Returns true if field newsItem is set (has been assigned a value) and false otherwise */
-    public boolean isSetNewsItem() {
-      return this.newsItem != null;
+    /** Returns true if field newsItemId is set (has been assigned a value) and false otherwise */
+    public boolean isSetNewsItemId() {
+      return __isset_bit_vector.get(__NEWSITEMID_ISSET_ID);
     }
 
-    public void setNewsItemIsSet(boolean value) {
-      if (!value) {
-        this.newsItem = null;
-      }
+    public void setNewsItemIdIsSet(boolean value) {
+      __isset_bit_vector.set(__NEWSITEMID_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
@@ -1215,11 +1218,11 @@ public class NewsService {
         }
         break;
 
-      case NEWS_ITEM:
+      case NEWS_ITEM_ID:
         if (value == null) {
-          unsetNewsItem();
+          unsetNewsItemId();
         } else {
-          setNewsItem((NewsItem)value);
+          setNewsItemId((Long)value);
         }
         break;
 
@@ -1231,8 +1234,8 @@ public class NewsService {
       case LANGUAGE:
         return getLanguage();
 
-      case NEWS_ITEM:
-        return getNewsItem();
+      case NEWS_ITEM_ID:
+        return Long.valueOf(getNewsItemId());
 
       }
       throw new IllegalStateException();
@@ -1247,8 +1250,8 @@ public class NewsService {
       switch (field) {
       case LANGUAGE:
         return isSetLanguage();
-      case NEWS_ITEM:
-        return isSetNewsItem();
+      case NEWS_ITEM_ID:
+        return isSetNewsItemId();
       }
       throw new IllegalStateException();
     }
@@ -1257,12 +1260,12 @@ public class NewsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getNewsContent_args)
-        return this.equals((getNewsContent_args)that);
+      if (that instanceof getNewsItemContent_args)
+        return this.equals((getNewsItemContent_args)that);
       return false;
     }
 
-    public boolean equals(getNewsContent_args that) {
+    public boolean equals(getNewsItemContent_args that) {
       if (that == null)
         return false;
 
@@ -1275,12 +1278,12 @@ public class NewsService {
           return false;
       }
 
-      boolean this_present_newsItem = true && this.isSetNewsItem();
-      boolean that_present_newsItem = true && that.isSetNewsItem();
-      if (this_present_newsItem || that_present_newsItem) {
-        if (!(this_present_newsItem && that_present_newsItem))
+      boolean this_present_newsItemId = true;
+      boolean that_present_newsItemId = true;
+      if (this_present_newsItemId || that_present_newsItemId) {
+        if (!(this_present_newsItemId && that_present_newsItemId))
           return false;
-        if (!this.newsItem.equals(that.newsItem))
+        if (this.newsItemId != that.newsItemId)
           return false;
       }
 
@@ -1296,21 +1299,21 @@ public class NewsService {
       if (present_language)
         builder.append(language);
 
-      boolean present_newsItem = true && (isSetNewsItem());
-      builder.append(present_newsItem);
-      if (present_newsItem)
-        builder.append(newsItem);
+      boolean present_newsItemId = true;
+      builder.append(present_newsItemId);
+      if (present_newsItemId)
+        builder.append(newsItemId);
 
       return builder.toHashCode();
     }
 
-    public int compareTo(getNewsContent_args other) {
+    public int compareTo(getNewsItemContent_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getNewsContent_args typedOther = (getNewsContent_args)other;
+      getNewsItemContent_args typedOther = (getNewsItemContent_args)other;
 
       lastComparison = Boolean.valueOf(isSetLanguage()).compareTo(typedOther.isSetLanguage());
       if (lastComparison != 0) {
@@ -1322,12 +1325,12 @@ public class NewsService {
           return lastComparison;
         }
       }
-      lastComparison = Boolean.valueOf(isSetNewsItem()).compareTo(typedOther.isSetNewsItem());
+      lastComparison = Boolean.valueOf(isSetNewsItemId()).compareTo(typedOther.isSetNewsItemId());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetNewsItem()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.newsItem, typedOther.newsItem);
+      if (isSetNewsItemId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.newsItemId, typedOther.newsItemId);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1356,10 +1359,10 @@ public class NewsService {
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
             break;
-          case 2: // NEWS_ITEM
-            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.newsItem = new NewsItem();
-              this.newsItem.read(iprot);
+          case 2: // NEWS_ITEM_ID
+            if (field.type == org.apache.thrift.protocol.TType.I64) {
+              this.newsItemId = iprot.readI64();
+              setNewsItemIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1384,18 +1387,16 @@ public class NewsService {
         oprot.writeString(this.language);
         oprot.writeFieldEnd();
       }
-      if (this.newsItem != null) {
-        oprot.writeFieldBegin(NEWS_ITEM_FIELD_DESC);
-        this.newsItem.write(oprot);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(NEWS_ITEM_ID_FIELD_DESC);
+      oprot.writeI64(this.newsItemId);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getNewsContent_args(");
+      StringBuilder sb = new StringBuilder("getNewsItemContent_args(");
       boolean first = true;
 
       sb.append("language:");
@@ -1406,12 +1407,8 @@ public class NewsService {
       }
       first = false;
       if (!first) sb.append(", ");
-      sb.append("newsItem:");
-      if (this.newsItem == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.newsItem);
-      }
+      sb.append("newsItemId:");
+      sb.append(this.newsItemId);
       first = false;
       sb.append(")");
       return sb.toString();
@@ -1431,6 +1428,8 @@ public class NewsService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -1439,8 +1438,8 @@ public class NewsService {
 
   }
 
-  public static class getNewsContent_result implements org.apache.thrift.TBase<getNewsContent_result, getNewsContent_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsContent_result");
+  public static class getNewsItemContent_result implements org.apache.thrift.TBase<getNewsItemContent_result, getNewsItemContent_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getNewsItemContent_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
 
@@ -1512,13 +1511,13 @@ public class NewsService {
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsContent_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getNewsItemContent_result.class, metaDataMap);
     }
 
-    public getNewsContent_result() {
+    public getNewsItemContent_result() {
     }
 
-    public getNewsContent_result(
+    public getNewsItemContent_result(
       String success)
     {
       this();
@@ -1528,14 +1527,14 @@ public class NewsService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getNewsContent_result(getNewsContent_result other) {
+    public getNewsItemContent_result(getNewsItemContent_result other) {
       if (other.isSetSuccess()) {
         this.success = other.success;
       }
     }
 
-    public getNewsContent_result deepCopy() {
-      return new getNewsContent_result(this);
+    public getNewsItemContent_result deepCopy() {
+      return new getNewsItemContent_result(this);
     }
 
     @Override
@@ -1547,7 +1546,7 @@ public class NewsService {
       return this.success;
     }
 
-    public getNewsContent_result setSuccess(String success) {
+    public getNewsItemContent_result setSuccess(String success) {
       this.success = success;
       return this;
     }
@@ -1606,12 +1605,12 @@ public class NewsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getNewsContent_result)
-        return this.equals((getNewsContent_result)that);
+      if (that instanceof getNewsItemContent_result)
+        return this.equals((getNewsItemContent_result)that);
       return false;
     }
 
-    public boolean equals(getNewsContent_result that) {
+    public boolean equals(getNewsItemContent_result that) {
       if (that == null)
         return false;
 
@@ -1639,13 +1638,13 @@ public class NewsService {
       return builder.toHashCode();
     }
 
-    public int compareTo(getNewsContent_result other) {
+    public int compareTo(getNewsItemContent_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      getNewsContent_result typedOther = (getNewsContent_result)other;
+      getNewsItemContent_result typedOther = (getNewsItemContent_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -1706,7 +1705,7 @@ public class NewsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getNewsContent_result(");
+      StringBuilder sb = new StringBuilder("getNewsItemContent_result(");
       boolean first = true;
 
       sb.append("success:");

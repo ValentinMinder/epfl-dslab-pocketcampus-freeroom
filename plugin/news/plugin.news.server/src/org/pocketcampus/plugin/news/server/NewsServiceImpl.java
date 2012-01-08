@@ -34,6 +34,9 @@ public class NewsServiceImpl implements NewsService.Iface {
 	/** HashMap of languages with their NewsItems. */
 	private HashMap<String, List<NewsItem>> mLanguagesNewsItemsList;
 
+	/** HashMap of NewsDescriptions. */
+	private HashMap<Long, String> mNewsContents;
+
 	/** Date of the last Feeds update. */
 	private Date mLastImportedFeeds;
 
@@ -60,7 +63,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 
 		mLanguagesFeedsList = new HashMap<String, List<Feed>>();
 		mLanguagesNewsItemsList = new HashMap<String, List<NewsItem>>();
-
+		mNewsContents = new HashMap<Long, String>();
 		parseFeedsUrls();
 		importFeeds();
 	}
@@ -168,7 +171,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 		List<NewsItem> toReturn = null;
 		if (mLanguagesNewsItemsList != null
 				&& mLanguagesNewsItemsList.containsKey(language)) {
-			toReturn = stripContents(mLanguagesNewsItemsList.get(language));
+			toReturn = mLanguagesNewsItemsList.get(language);
 		} else {
 			toReturn = mLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
 		}
@@ -186,20 +189,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * @return The content of the NewsItem.
 	 */
 	@Override
-	public String getNewsContent(String language, NewsItem newsItem)
+	public String getNewsItemContent(String language, long newsItemId)
 			throws TException {
 		importFeeds();
 		String toReturn = null;
-		if (mLanguagesNewsItemsList != null
-				&& mLanguagesNewsItemsList.containsKey(language)) {
-			System.out.println(mLanguagesNewsItemsList.get(language).size());
-			List<NewsItem> newsItems = mLanguagesNewsItemsList.get(language);
-
-			for (NewsItem newsItemInList : newsItems) {
-				if (newsItem.getTitle().equals(newsItemInList.getTitle())) {
-					return newsItemInList.getContent();
-				}
-			}
+		if (mNewsContents != null && mNewsContents.containsKey(newsItemId)) {
+			return mNewsContents.get(newsItemId);
 		}
 
 		return toReturn;
@@ -241,21 +236,6 @@ public class NewsServiceImpl implements NewsService.Iface {
 		} else {
 			return mLanguagesFeedsList.get("en");
 		}
-	}
-
-	/**
-	 * Removes the contents of all News.
-	 * 
-	 * @param newsItems
-	 *            The list of NewsItems from which we want to remove the
-	 *            content.
-	 * @return the stripped list.
-	 */
-	private List<NewsItem> stripContents(List<NewsItem> newsItems) {
-		for (NewsItem newsItem : newsItems) {
-			newsItem.content = "";
-		}
-		return newsItems;
 	}
 
 	/**

@@ -223,8 +223,6 @@ public class NewsMainView extends PluginView implements INewsView {
 						.get(position);
 				news.putExtra("org.pocketcampus.news.newsitem.title", toPass
 						.getNewsItem().getTitle());
-				news.putExtra("org.pocketcampus.news.newsitem.description",
-						toPass.getNewsItem().getContent());
 				news.putExtra("org.pocketcampus.news.newsitem.feed", toPass
 						.getNewsItem().getFeed());
 				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
@@ -261,7 +259,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		 */
 		@Override
 		public String getDescription(NewsItemWithImage newsItem) {
-			return newsItem.getNewsItem().getContent();
+			return "";
 		}
 
 		/**

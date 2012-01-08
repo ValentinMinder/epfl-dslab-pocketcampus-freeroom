@@ -5,6 +5,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,12 +39,16 @@ public class RssParser extends DefaultHandler {
 	private String mUrlString;
 	/** The resulting RSS Feed */
 	private String mFeedName;
-	/***/
+	/** The Feed to save the items in */
 	private Feed mRssFeed;
-	/** Mutable sequence of Characters */
-	private StringBuilder mText;
 	/** The item in which each parsed menu will be stored */
 	private NewsItem mItem;
+	/** The list of News descriptions */
+	private HashMap<Long, String> mNewsContents;
+	/** String with the content of the current news */
+	private String mCurrentContent;
+	/** Mutable sequence of Characters */
+	private StringBuilder mText;
 	/** Remembers whether a new item is being created */
 	private boolean mInItem;
 	/** Remembers whether an image is being created */
@@ -130,6 +135,7 @@ public class RssParser extends DefaultHandler {
 		if (localName.equalsIgnoreCase("channel")
 				|| qName.equalsIgnoreCase("channel")) {
 			this.mRssFeed = new Feed();
+			this.mNewsContents = new HashMap<Long, String>();
 		} else if (localName.equalsIgnoreCase("item")
 				&& (this.mRssFeed != null) || qName.equalsIgnoreCase("item")) {
 			this.mItem = new NewsItem();
@@ -180,8 +186,8 @@ public class RssParser extends DefaultHandler {
 				|| qName.equalsIgnoreCase("item")) {
 			this.mInItem = false;
 			// Set the image URL
-			if (mItem.getImageUrl() == null && mItem.getContent() != null) {
-				Matcher m = imagePattern_.matcher(mItem.getContent());
+			if (mItem.getImageUrl() == null && mCurrentContent != null) {
+				Matcher m = imagePattern_.matcher(mCurrentContent);
 				if (m.find()) {
 					String img = m.group(1);
 					if (img.charAt(img.length() - 1) == '\"')
@@ -189,24 +195,31 @@ public class RssParser extends DefaultHandler {
 					mItem.setImageUrl(img);
 				}
 			}
-			String content = this.mItem.getContent();
-			content = content.replaceAll("<img[^>]+>", "");
-			content = content.replaceAll("(&nbsp;)+", "");
-			content = content.replaceAll("(<strong>)+", "<b>");
-			content = content.replaceAll("(</strong>)+", "</b>");
-			content = content.replaceAll("((<br />)\n)+", "\n<br />");
-			content = content.replaceAll("(<p>(&nbsp;)+</p>)+", "");
+			String content = mCurrentContent;
 
-			int carriageReturn = content.indexOf("<br />");
+			mItem.setNewsItemId(generateNewsItemId(mItem.getTitle(),
+					mCurrentContent, mItem.getImageUrl()));
 
-			if (carriageReturn != -1) {
-				String firstParagraph = content.substring(0, carriageReturn);
-				String rest = content.substring(carriageReturn,
-						content.length());
+			if (content != null) {
+				content = content.replaceAll("<img[^>]+>", "");
+				content = content.replaceAll("(&nbsp;)+", "");
+				content = content.replaceAll("(<strong>)+", "<b>");
+				content = content.replaceAll("(</strong>)+", "</b>");
+				content = content.replaceAll("((<br />)\n)+", "\n<br />");
+				content = content.replaceAll("(<p>(&nbsp;)+</p>)+", "");
 
-				content = "<b>" + firstParagraph + "</b>" + rest;
+				int carriageReturn = content.indexOf("<br />");
+
+				if (carriageReturn != -1) {
+					String firstParagraph = content
+							.substring(0, carriageReturn);
+					String rest = content.substring(carriageReturn,
+							content.length());
+
+					content = "<b>" + firstParagraph + "</b>" + rest;
+				}
+				this.mNewsContents.put(mItem.getNewsItemId(), mCurrentContent);
 			}
-			this.mItem.setContent(content);
 
 			this.mRssFeed.addToItems(this.mItem);
 		} else if (localName.equalsIgnoreCase("title")
@@ -227,9 +240,8 @@ public class RssParser extends DefaultHandler {
 		} else if (localName.equalsIgnoreCase("description")
 				|| qName.equalsIgnoreCase("description")) {
 			if (this.mInItem && this.mItem != null) {
-				String content = mText.toString().trim();
+				mCurrentContent = mText.toString().trim();
 
-				this.mItem.setContent(content);
 			} else {
 				this.mRssFeed.setDescription(mText.toString().trim());
 			}
@@ -242,6 +254,17 @@ public class RssParser extends DefaultHandler {
 		}
 
 		this.mText = new StringBuilder();
+	}
+
+	private long generateNewsItemId(String title, String content,
+			String imageUrl) {
+		final long prime = 31;
+		long result = 1;
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result
+				+ ((imageUrl == null) ? 0 : imageUrl.hashCode());
+		return result;
 	}
 
 	/**

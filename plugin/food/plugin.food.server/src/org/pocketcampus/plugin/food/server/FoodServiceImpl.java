@@ -157,9 +157,9 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Get all the Ratings for today's meals. Not working correctly, I think when
-	 * the menus are up to date (meaning it's still today) it doesn't get the
-	 * Ratings again 'cause of the updateMenus method...
+	 * Get all the Ratings for today's meals. Not working correctly, I think
+	 * when the menus are up to date (meaning it's still today) it doesn't get
+	 * the Ratings again 'cause of the updateMenus method...
 	 * 
 	 * @return mCampusMealRatings the map of all ratings associated with the
 	 *         corresponding meal.
@@ -321,10 +321,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private List<Meal> parseMenus() {
 		Set<String> restaurants = mRestaurantsFeeds.keySet();
 		List<Meal> newlyParsedMeals = new ArrayList<Meal>();
-		List<String> notCapitalized = mDatabase.getNotCapitalized(); 
-				
+		List<String> notCapitalized = mDatabase.getNotCapitalized();
+
 		for (String r : restaurants) {
-			RssParser rp = new RssParser(mRestaurantsFeeds.get(r), notCapitalized);
+			RssParser rp = new RssParser(mRestaurantsFeeds.get(r),
+					notCapitalized);
 			rp.parse();
 			RssFeed feed = rp.getFeed();
 
@@ -367,6 +368,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return newlyParsedMeals;
 	}
 
+	/**
+	 * Generate the Meal Id for a given Meal.
+	 * 
+	 * @param name
+	 *            The name of the Meal.
+	 * @param description
+	 *            The description of the Meal.
+	 * @param restaurant
+	 *            The Restaurant the Meal is available at.
+	 * @return The generated unique Id in long type.
+	 */
 	public static long generateMealId(String name, String description,
 			Restaurant restaurant) {
 		final long prime = 31;
@@ -380,7 +392,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Imports the Meals again if they are not up to date
+	 * Imports the Meals again if they are not up to date.
 	 */
 	private void updateMenus() {
 		if (!isToday(mLastImportedMeals)) {
