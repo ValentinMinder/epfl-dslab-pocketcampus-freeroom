@@ -12,7 +12,7 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import android.util.Log;
 
 /**
- * A request to the server for all Meals in all Restaurants
+ * A request to the server for all meals in all restaurants
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
@@ -22,46 +22,43 @@ public class MealsRequest extends
 		Request<FoodController, Iface, Object, List<Meal>> {
 
 	/**
-	 * Initiate the <code>getMeals</code> Request at the server.
+	 * Initiates the <code>getMeals</code> request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server.
+	 *            The client that communicates with the server.
 	 * @param param
-	 *            the parameters to be sent for the request. Not used.
-	 * @return the list of Meals from the server.
+	 *            The parameters to be sent for the request. Not used.
+	 * @return The list of meals from the server.
 	 */
 	@Override
 	protected List<Meal> runInBackground(Iface client, Object param)
 			throws Exception {
-		Log.d("MealsRequest", "run");
 		return client.getMeals();
 	}
 
 	/**
-	 * Tell the model the meals have been updated.
+	 * Tells the model the meals have been updated.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request, of which we have to
+	 *            The controller that initiated the request, of which we have to
 	 *            notify of the result.
 	 * @param result
-	 *            the meal list gotten from the server.
+	 *            The meal list gotten from the server.
 	 */
 	@Override
 	protected void onResult(FoodController controller, List<Meal> result) {
-		Log.d("MealsRequest", "onResult");
 		((FoodModel) controller.getModel()).setMeals(result, controller);
 	}
 
 	/**
-	 * Notifies the Model that an error has occurred while processing the
+	 * Notifies the model that an error has occurred while processing the
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request.
+	 *            The controller that initiated the request.
 	 */
 	@Override
 	protected void onError(FoodController controller, Exception e) {
-		Log.d("NetworkError", "onError");
 		((FoodModel) controller.getModel()).networkErrorHappened(controller
 				.getString(R.string.food_meals_request_error));
 		e.printStackTrace();
