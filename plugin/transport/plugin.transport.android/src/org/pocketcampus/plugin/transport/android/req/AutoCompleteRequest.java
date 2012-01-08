@@ -9,7 +9,7 @@ import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 
 /**
- * A request to the server for the auto completion of a destination.
+ * A request to the server for the auto completion of a station.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -20,17 +20,17 @@ public class AutoCompleteRequest extends
 		Request<TransportController, Iface, String, List<TransportStation>> {
 
 	/**
-	 * Initiate the <code>autocomplete</code> request at the server
+	 * Initiates the <code>autocomplete</code> request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            The client communicating with the server.
 	 * @param param
-	 *            the parameters to be sent for the request : a string,
-	 *            constraint for the auto completion
+	 *            The parameters to be sent for the request : a
+	 *            <code>String</code>, constraint for the auto completion.
 	 */
 	@Override
-	protected List<TransportStation> runInBackground(Iface client, String constraint)
-			throws Exception {
+	protected List<TransportStation> runInBackground(Iface client,
+			String constraint) throws Exception {
 		return client.autocomplete(constraint);
 	}
 
@@ -38,30 +38,29 @@ public class AutoCompleteRequest extends
 	 * Tells the model that the auto completion has been updated.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            The controller that initiated the request, of which we have to
+	 *            notify of the result.
 	 * @param result
-	 *            the list of auto completed destinations gotten from the server
+	 *            The list of auto completed stations gotten from the server.
 	 */
 	@Override
 	protected void onResult(TransportController controller,
 			List<TransportStation> result) {
-		System.out.println(result);
-
 		((TransportModel) controller.getModel())
-				.setAutoCompletedDestinations(result);
+				.setAutoCompletedStations(result);
 	}
 
 	/**
-	 * Notifies the Model that an error has occurred while processing the
+	 * Notifies the model that an error has occurred while processing the
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            The controller that initiated the request.
 	 */
 	@Override
 	protected void onError(TransportController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
+		e.printStackTrace();
 	}
 
 }

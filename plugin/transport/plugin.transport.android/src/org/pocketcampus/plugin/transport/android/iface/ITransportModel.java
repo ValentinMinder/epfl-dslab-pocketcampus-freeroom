@@ -18,31 +18,38 @@ import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 public interface ITransportModel {
 
 	/**
-	 * @return mPreferredDestinations The list of preferred destinations.
-	 */
-	public HashMap<String, List<TransportTrip>> getPreferredDestinations();
-
-	/**
-	 * Sets all the preferred destinations.
+	 * Returns the favorite stations of the user.
 	 * 
-	 * @param destinations
-	 *            The new list of preferred destinations
+	 * @return The list of favorite stations.
 	 */
-	public void setAutoCompletedDestinations(List<TransportStation> destinations);
+	public HashMap<String, List<TransportTrip>> getFavoriteStations();
 
 	/**
-	 * Called when the connection is returned by the server. Notifies the view
-	 * that the connections for some destinations have been updated.
+	 * Sets the stations received from the server while the user is typing.
+	 * Called each time the user types a character.
+	 * 
+	 * @param stations
+	 *            The new list of auto completed stations.
+	 */
+	public void setAutoCompletedStations(List<TransportStation> stations);
+
+	/**
+	 * Called when the connections are returned by the server. Notifies the view
+	 * that the connections between two stations have been updated.
 	 * 
 	 * @param result
+	 *            A <code>QueryTripsResult</code> consisting of the connections
+	 *            between two stations, and all the information that goes with
+	 *            it.
 	 */
 	public void setConnections(QueryTripsResult result);
 
 	/**
-	 * Called when the Locations are returned by the server. Notifies the view
-	 * that the Locations for the strings have been updated.
+	 * Called when the stations are returned by the server. Notifies the view
+	 * that the favorite stations have been updated.
 	 * 
 	 * @param result
+	 *            The list of favorite stations.
 	 */
-	public void setPreferredDestinations(List<TransportStation> result);
+	public void setFavoriteStations(List<TransportStation> result);
 }

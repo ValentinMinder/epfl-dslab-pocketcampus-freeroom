@@ -5,54 +5,53 @@ import java.util.HashMap;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 /**
- * This class formats some destination names that we know are not named nicely.
- * We can add some whenever needed.
+ * Formats some stations names that we know are not named nicely. We can add any
+ * station whenever needed.
  * 
  * @author Florian <florian.laurent@epfl.ch>
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */
 public class DestinationFormatter {
-	private static HashMap<String, String> niceNames_;
+	private static HashMap<String, String> mNiceNames;
 
 	/**
-	 * Initialize the hash map containing the bad names and corresponding nice
-	 * names.
+	 * Initializes the <code>HashMap</code> containing the bad names and
+	 * corresponding nice names.
 	 */
 	private static void inititializeList() {
-		if (niceNames_ != null) {
-			return;			
+		if (mNiceNames != null) {
+			return;
 		}
-		niceNames_ = new HashMap<String, String>();
-		niceNames_.put("Ecublens VD, EPFL", "EPFL");
-		niceNames_.put("Lausanne, Vigie", "Vigie");
+		mNiceNames = new HashMap<String, String>();
+		mNiceNames.put("Ecublens VD, EPFL", "EPFL");
+		mNiceNames.put("Lausanne, Vigie", "Vigie");
 	}
 
 	/**
-	 * A way to call the <code>getNiceName(String locationName)</code> method
-	 * with a Location.
+	 * A way to call the <code>getNiceName</code> method with a station.
 	 * 
-	 * @param location
-	 *            The Location for which we want a nice name
-	 * @return the result of the <code>getNiceName(String locationName)</code>
-	 *         method called with the location's name.
+	 * @param station
+	 *            The station for which we want the nice name.
+	 * @return The result of the <code>getNiceName</code> method called with the
+	 *         station's name.
 	 */
-	public static String getNiceName(TransportStation location) {
-		return getNiceName(location.name);
+	public static String getNiceName(TransportStation station) {
+		return getNiceName(station.name);
 	}
 
 	/**
-	 * Returns the nice name of the location if it was in the hash map, doesn't
+	 * Returns the nice name of the station if it was in the list, doesn't
 	 * change anything otherwise.
 	 * 
-	 * @param locationName
-	 *            The Location for which we want a nice name
-	 * @return locationName formatted
+	 * @param stationName
+	 *            The station for which we want a nice name.
+	 * @return stationName formatted.
 	 */
-	public static String getNiceName(String locationName) {
+	public static String getNiceName(String stationName) {
 		inititializeList();
-		if (niceNames_.containsKey(locationName)) {
-			return niceNames_.get(locationName);
+		if (mNiceNames.containsKey(stationName)) {
+			return mNiceNames.get(stationName);
 		}
-		return locationName;
+		return stationName;
 	}
 }

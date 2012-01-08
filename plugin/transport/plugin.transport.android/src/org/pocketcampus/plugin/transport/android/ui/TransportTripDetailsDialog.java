@@ -18,10 +18,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 /**
- * The Dialog of the Transport plugin for the details of a departure. It
- * displays the details of all connections of the trip : departure and arrival
- * time, departure and arrival place, and a logo representing the type of
- * transport to use.
+ * The dialog of the transport plugin for the details of a departure. Displays
+ * the details of all connections of the trip : departure and arrival time,
+ * departure and arrival place, and the type of transport to use.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -33,23 +32,22 @@ public class TransportTripDetailsDialog extends Dialog {
 	private Context ctx_;
 
 	/**
-	 * The constructor sets the main layout and calls the
-	 * <code>setDialogContents()</code> method.
+	 * Class constructor setting the main layout and calling the
+	 * <code>setDialogContents</code> method.
 	 * 
 	 * @param ctxt
-	 *            The application context
+	 *            The application context.
 	 * @param connection
-	 *            The TransportTrip for which we create the dialog
+	 *            The <code>TransportTrip</code> for which we create the dialog.
 	 */
 	public TransportTripDetailsDialog(Context ctxt, TransportTrip connection) {
 		super(ctxt);
 		connection_ = connection;
 		ctx_ = ctxt.getApplicationContext();
 
-		// Setups dialog.
+		// Setups the dialog.
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.transport_details_dialog);
-
 		setCanceledOnTouchOutside(true);
 		setDialogContent();
 	}
@@ -60,6 +58,7 @@ public class TransportTripDetailsDialog extends Dialog {
 	private void setDialogContent() {
 		ArrayList<HashMap<String, String>> connectionParts = new ArrayList<HashMap<String, String>>();
 
+		// Formats the departure and arrival times
 		SimpleDateFormat formatter = new SimpleDateFormat();
 		formatter.applyPattern("HH:mm");
 
@@ -75,10 +74,11 @@ public class TransportTripDetailsDialog extends Dialog {
 
 			if (part.foot) {
 				// Part is a Footway
-				walkingTime = part.getMin() + " " + getString(R.string.transport_minute_abbrev);
+				walkingTime = part.getMin() + " "
+						+ getString(R.string.transport_minute_abbrev);
 				line = getString(R.string.transport_by_feet);
 				partRow.put("departureTime", walkingTime);
-				
+
 			} else {
 				// Part is a Trip
 				departureTime = formatter.format(part.getDepartureTime());
@@ -86,10 +86,10 @@ public class TransportTripDetailsDialog extends Dialog {
 				if (part.line != null) {
 					line = TransportFormatter.getNiceName(part.line.name);
 				}
-					
+
 				partRow.put("departureTime", departureTime);
 			}
-			
+
 			partRow.put("line", line);
 			partRow.put("arrivalTime", arrivalTime);
 			partRow.put("arrivalPlace", arrivalPlace);
@@ -111,17 +111,26 @@ public class TransportTripDetailsDialog extends Dialog {
 				connectionParts, R.layout.transport_details_dialog_row, keys,
 				ids);
 
+		// List of connections
 		ListView list = (ListView) findViewById(R.id.transport_details_dialog_list);
 		list.setAdapter(mSchedule);
 		list.setClickable(false);
 		list.setFocusable(false);
 		list.setSelector(android.R.color.transparent);
 
+		// Dialog title
 		TextView title = (TextView) findViewById(R.id.transport_title_dialog);
 		title.setText(DestinationFormatter.getNiceName(connection_.from)
 				+ " - " + DestinationFormatter.getNiceName(connection_.to));
 	}
 
+	/**
+	 * Returns the <code>String</code> corresponding to a resource.
+	 * 
+	 * @param id
+	 *            The id of the resource.
+	 * @return The corresponding <code>String</code>.
+	 */
 	private String getString(int id) {
 		return ctx_.getResources().getString(id);
 	}

@@ -3,7 +3,8 @@ package org.pocketcampus.plugin.transport.android.iface;
 import java.util.List;
 
 /**
- * The interface that defines the methods implemented by a controller of the plugin.
+ * The interface that defines the methods implemented by a controller of the
+ * plugin.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -17,36 +18,29 @@ public interface ITransportController {
 	 * the user typed.
 	 * 
 	 * @param constraint
-	 *            The letters that the user typed
+	 *            The letters that the user typed.
 	 */
 	public void getAutocompletions(String constraint);
 
 	/**
-	 * Initiates a request to the server for the Next Departures from EPFL to
-	 * any destination.
+	 * Initiates a request to the server for the next departures between any two
+	 * stations.
 	 * 
-	 * @param location
-	 *            The arrival destination
+	 * @param departure
+	 *            The name of the departure station.
+	 * @param arrival
+	 *            The name of the arrival station.
 	 */
-	public void nextDeparturesFromEPFL(String location);
-	
-	/**
-	 * Initiates a request to the server for the Next Departures from any destination to
-	 * EPFL.
-	 * 
-	 * @param location
-	 *            The departure destination
-	 */
-	public void nextDeparturesToEPFL(String location);
+	public void nextDepartures(String departure, String arrival);
 
 	/**
-	 * Initiates a request to the server for the Locations corresponding to each
-	 * String of the list.
+	 * Initiates a request to the server for the stations corresponding to each
+	 * <code>String</code> of the list.
 	 * 
 	 * @param list
-	 *            The list of Strings for which we want the corresponding
-	 *            Locations
+	 *            The list of <code>String</code> for which we want the
+	 *            corresponding stations.
 	 */
-	public void getLocationsFromNames(List<String> list);
+	public void getStationsFromNames(List<String> list);
 
 }

@@ -17,28 +17,34 @@ import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 public interface ITransportView extends IView {
 
 	/**
-	 * Called by the model when the list of auto completed destinations has been
-	 * updated and refreshes the view.
+	 * Called by the model when the list of auto completed stations has been
+	 * updated.
 	 */
-	void autoCompletedDestinationsUpdated();
+	void autoCompletedStationsUpdated();
 
 	/**
-	 * Called by the model when the data for the resulted connections for some
-	 * destination has been updated.
+	 * Called by the model when the data for the resulted connections between
+	 * two stations has been updated.
+	 * 
+	 * @param result
+	 *            A <code>QueryTripsResult</code> consisting of the connections
+	 *            between two stations, and all the information that goes with
+	 *            it.
 	 */
 	void connectionsUpdated(QueryTripsResult result);
 
 	/**
-	 * Called by the model when the list of preferred destinations has been
-	 * updated and refreshes the view.
+	 * Called by the model when the list of favorite stations has been updated
+	 * and refreshes the view.
 	 */
-	void destinationsUpdated();
+	void favoriteStationsUpdated();
 
 	/**
-	 * Called by the model when the Locations corresponding to a list of strings
-	 * have been updated.
+	 * Called by the model when the stations corresponding to a list of
+	 * <code>String</code> have been updated.
 	 * 
 	 * @param result
+	 *            The list of corresponding stations.
 	 */
-	public void locationsFromNamesUpdated(List<TransportStation> result);
+	public void stationsFromNamesUpdated(List<TransportStation> result);
 }

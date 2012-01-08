@@ -6,7 +6,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
 import org.pocketcampus.plugin.transport.android.req.AutoCompleteRequest;
-import org.pocketcampus.plugin.transport.android.req.LocationsFromNamesRequest;
+import org.pocketcampus.plugin.transport.android.req.StationsFromNamesRequest;
 import org.pocketcampus.plugin.transport.android.req.NextDeparturesRequest;
 import org.pocketcampus.plugin.transport.shared.TransportService.Client;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
@@ -14,8 +14,8 @@ import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFro
 import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 
 /**
- * The main controller of the Transport Plugin. Takes care of interactions
- * between the model and the view(s) and gets information from the server.
+ * The main controller of the Transport plugin. Takes care of interactions
+ * between the model and the views and gets data from the server.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -24,7 +24,7 @@ import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
  */
 public class TransportController extends PluginController implements
 		ITransportController {
-	/** The plugin model */
+	/** The plugin model. */
 	private TransportModel mModel;
 	/**
 	 * This name must match given in the Server.java file in
@@ -34,8 +34,8 @@ public class TransportController extends PluginController implements
 	private String mPluginName = "transport";
 
 	/**
-	 * <code>onCreate</code>. Called when first opening the Transport Plugin.
-	 * Initiates the model of the plugin
+	 * Called when first opening the Transport plugin. Initiates the model of
+	 * the plugin.
 	 */
 	@Override
 	public void onCreate() {
@@ -43,8 +43,7 @@ public class TransportController extends PluginController implements
 	}
 
 	/**
-	 * The view will call this in order to register in the model's listener
-	 * list.
+	 * Called in order to register in the model's listeners list.
 	 */
 	@Override
 	public PluginModel getModel() {
@@ -53,15 +52,14 @@ public class TransportController extends PluginController implements
 
 	/**
 	 * Initiates a request to the server for the auto completion for the letters
-	 * that the user typed.
+	 * that the user is typed.
 	 * 
 	 * @param constraint
-	 *            The letters that the user typed
+	 *            The letters that the user typed.
 	 */
 	@Override
 	public void getAutocompletions(String constraint) {
 		if (constraint != null) {
-			// Log.d("TRANSPORT", "Autocomplete request (controller)");
 			new AutoCompleteRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName),
 					constraint);
@@ -69,51 +67,39 @@ public class TransportController extends PluginController implements
 	}
 
 	/**
-	 * Initiates a request to the server for the Next Departures from EPFL to
-	 * any destination.
+	 * Initiates a request to the server for the next departures between any two
+	 * stations.
 	 * 
-	 * @param location
-	 *            The arrival destination
+	 * @param departure
+	 *            The departure station.
+	 * 
+	 * @param arrival
+	 *            The arrival station.
 	 */
 	@Override
-	public void nextDeparturesFromEPFL(String location) {
-		if (location != null) {
-			getTrips_args args = new getTrips_args("EPFL", location);
-			new NextDeparturesRequest().start(this,
-					(Iface) getClient(new Client.Factory(), mPluginName), args);
-		}
-	}
-	
-	/**
-	 * Initiates a request to the server for the Next Departures from any destination to
-	 * EPFL.
-	 * 
-	 * @param location
-	 *            The departure destination
-	 */
-	@Override
-	public void nextDeparturesToEPFL(String location) {
-		if(location != null && !location.equals("")) {
-			getTrips_args args = new getTrips_args(location, "EPFL");
+	public void nextDepartures(String departure, String arrival) {
+		if (departure != null && arrival != null) {
+			getTrips_args args = new getTrips_args(departure, arrival);
 			new NextDeparturesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}
 	}
 
 	/**
-	 * Initiates a request to the server for a list of Locations corresponding
-	 * to the list of String which is sent as parameter.
+	 * Initiates a request to the server for a list of
+	 * <code>TransportStation</code> corresponding to the list of
+	 * <code>String</code> which is sent as parameter.
 	 * 
 	 * @param list
-	 *            The list of Strings for which we want the corresponding
-	 *            Locations
+	 *            The list of <code>String</code> for which we want the
+	 *            corresponding stations.
 	 */
 	@Override
-	public void getLocationsFromNames(List<String> list) {
+	public void getStationsFromNames(List<String> list) {
 		if (list != null && !list.isEmpty()) {
 			getLocationsFromNames_args args = new getLocationsFromNames_args(
 					list);
-			new LocationsFromNamesRequest().start(this,
+			new StationsFromNamesRequest().start(this,
 					(Iface) getClient(new Client.Factory(), mPluginName), args);
 		}
 	}

@@ -12,15 +12,15 @@ import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFro
 import android.util.Log;
 
 /**
- * A request to the server for the Locations corresponding to each String in the
- * parameters.
+ * A request to the server for the stations corresponding to each
+ * <code>String</code> sent as parameters.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
  * @author Florian <florian.laurent@epfl.ch>
  * 
  */
-public class LocationsFromNamesRequest
+public class StationsFromNamesRequest
 		extends
 		Request<TransportController, Iface, getLocationsFromNames_args, List<TransportStation>> {
 
@@ -28,45 +28,45 @@ public class LocationsFromNamesRequest
 	 * Initiates the <code>getLocationsFromNames</code> request at the server.
 	 * 
 	 * @param client
-	 *            the client that communicates with the server
+	 *            The client communicating with the server.
 	 * @param param
-	 *            the parameters to be sent for the request : a list of String
-	 *            for which we want the corresponding Locations
-	 * @return the list of Locations from the server
+	 *            The parameters to be sent for the request : a list of
+	 *            <code>String</code> for which we want the corresponding
+	 *            stations.
+	 * @return The list of stations gotten from the server.
 	 */
 	@Override
 	protected List<TransportStation> runInBackground(Iface client,
 			getLocationsFromNames_args param) throws Exception {
-		Log.d("TRANSPORT", "run");
 		return client.getLocationsFromNames(param.getNames());
 	}
 
 	/**
-	 * Tells the model that the departures have been updated.
+	 * Tells the model that the stations have been updated.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request, of which we have to
-	 *            notify of the result
+	 *            The controller that initiated the request, of which we have to
+	 *            notify of the result.
 	 * @param result
-	 *            the departures list gotten from the server
+	 *            The stations list gotten from the server.
 	 */
 	@Override
 	protected void onResult(TransportController controller,
 			List<TransportStation> result) {
-		Log.d("TRANSPORT", "onResult");
-		((TransportModel) controller.getModel()).setPreferredDestinations(result);
+		((TransportModel) controller.getModel()).setFavoriteStations(result);
 	}
 
 	/**
-	 * Notifies the Model that an error has occurred while processing the
+	 * Notifies the model that an error has occurred while processing the
 	 * request.
 	 * 
 	 * @param controller
-	 *            the controller that initiated the request
+	 *            The controller that initiated the request.
 	 */
 	@Override
 	protected void onError(TransportController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
+		e.printStackTrace();
 	}
 
 }

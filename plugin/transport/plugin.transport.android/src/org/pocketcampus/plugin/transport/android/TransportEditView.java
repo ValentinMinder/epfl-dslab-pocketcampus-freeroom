@@ -29,9 +29,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 /**
- * The edit view of the Transport Plugin. Displays the list of current
- * destinations as well as a field "add destination" in order to let the user
- * edit his preferred destinations.
+ * The edit view of the Transport plugin. Displays the list of current stations
+ * as well as a field "add station" in order to let the user edit his favorite
+ * stations.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -39,23 +39,22 @@ import android.widget.RelativeLayout;
  */
 public class TransportEditView extends PluginView {
 	private Context mContext;
-	/* MVC */
-	/** The main layout */
+	/** The main layout. */
 	private StandardTitledDoubleSeparatedLayout mLayout;
-	/** The first one-element-ListView to add a destination */
+	/** The first one-element-list to add a destination. */
 	private ListView mAddList;
-	/** The corresponding adapter */
+	/** The corresponding adapter. */
 	private IconTextArrayAdapter mAddAdapter;
-	/** The list of current preferred destinations */
+	/** The list of current favorite stations. */
 	private ListView mDeleteList;
-	/** The corresponding adapter */
+	/** The corresponding adapter. */
 	private IconTextArrayAdapter mDeleteListAdapter;
-	/* Preferences */
-	/** The pointer to access and modify preferences stored on the phone */
+
+	/** The pointer to access and modify preferences stored on the phone. */
 	private SharedPreferences mDestPrefs;
-	/** Interface to modify values in SharedPreferences object */
+	/** Interface to modify values in the <code>SharedPreferences</code> object. */
 	private Editor mDestPrefsEditor;
-	/** The name under which the preferences are stored on the phone */
+	/** The name under which the preferences are stored on the phone. */
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
 	/**
@@ -67,8 +66,8 @@ public class TransportEditView extends PluginView {
 	}
 
 	/**
-	 * On display. Called when first displaying the view. Retrieves the model
-	 * and the controller and the<code>setUpLayout()</code> method.
+	 * Called when first displaying the view. Retrieves the model and the
+	 * controller and calls the<code>setUpLayout</code> method.
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
@@ -84,22 +83,22 @@ public class TransportEditView extends PluginView {
 	}
 
 	/**
-	 * Sets up the layout with a standard layout and two list view. One to add a
-	 * destination, the other one to display the current preferred destination
-	 * and let the user edit them.
+	 * Sets up the layout with a standard layout and two lists. One to add a
+	 * station, the other one to display the current favorite stations and let
+	 * the user remove them.
 	 */
 	@SuppressWarnings("unchecked")
 	private void setUpLayout() {
 		// Layout
 		mLayout = new StandardTitledDoubleSeparatedLayout(this);
 		mLayout.setFirstTitle(getResources().getString(
-				R.string.transport_add_destination));
+				R.string.transport_add_station));
 		mLayout.setSecondTitle(getResources().getString(
-				R.string.transport_remove_destinations));
+				R.string.transport_remove_stations));
 
 		// Field to add a new destination
 		ArrayList<String> l = new ArrayList<String>();
-		l.add(getResources().getString(R.string.transport_new_destination));
+		l.add(getResources().getString(R.string.transport_new_station));
 
 		mAddList = new ListView(this);
 		mAddAdapter = new IconTextArrayAdapter(getApplicationContext(), l,
@@ -113,15 +112,16 @@ public class TransportEditView extends PluginView {
 		mAddList.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
-			 * Defines what is to be performed when the user clicks on the
-			 * "New destination" field of the list.
+			 * When the user clicks on the "New station" field of the list,
+			 * opens the <code>TransportAddView Activity</code> to let the user
+			 * type a new station.
 			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// Tracker
 				Tracker.getInstance().trackPageView("transport/editView/add");
-				
+
 				Intent i = new Intent(getApplicationContext(),
 						TransportAddView.class);
 				startActivity(i);
@@ -130,7 +130,7 @@ public class TransportEditView extends PluginView {
 		});
 		mLayout.addFirstLayoutFillerView(mAddList);
 
-		// Destinations that are already there
+		// Stations that are already there
 		ArrayList<String> list = new ArrayList<String>();
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
 		if (prefs != null && !prefs.isEmpty()) {
@@ -142,7 +142,7 @@ public class TransportEditView extends PluginView {
 		}
 		Collections.sort(list);
 
-		// List with destinations to remove
+		// List with stations to remove
 		mDeleteList = new ListView(this);
 		mDeleteListAdapter = new IconTextArrayAdapter(getApplicationContext(),
 				list, R.drawable.transport_minus);
@@ -150,8 +150,9 @@ public class TransportEditView extends PluginView {
 		mDeleteList.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
-			 * Defines what is to be performed when the user clicks on a
-			 * destination of th.e list
+			 * When the user clicks on a station of the list, opens the
+			 * confirmation dialog asking if he really wants to remove it from
+			 * his favorite stations.
 			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -172,38 +173,37 @@ public class TransportEditView extends PluginView {
 	}
 
 	/**
-	 * Creates and shows a confirmation dialog for removing a destination from
-	 * the preferred destinations.
+	 * Creates and shows a confirmation dialog for removing a station from the
+	 * favorite stations.
 	 */
 	private void confirmationDialog(String s) {
 		final String dest = s;
 		StyledDialog.Builder b = new StyledDialog.Builder(this);
 		b.setCanceledOnTouchOutside(true);
 		b.setTitle(getResources().getString(R.string.transport_confirmation));
-		b.setMessage(Html
-				.fromHtml(getResources()
-						.getString(
-								R.string.transport_confirmation_delete_destination_start)
-						+ " <b>"
-						+ dest
-						+ "</b> "
-						+ getResources()
-								.getString(
-										R.string.transport_confirmation_delete_destination_end)));
+		b.setMessage(Html.fromHtml(getResources().getString(
+				R.string.transport_confirmation_delete_station_start)
+				+ " <b>"
+				+ dest
+				+ "</b> "
+				+ getResources().getString(
+						R.string.transport_confirmation_delete_station_end)));
 
 		b.setPositiveButton(getResources().getString(R.string.transport_yes),
 				new OnClickListener() {
 
 					/**
-					 * Defines what is to be performed when the user clicks on
-					 * the "Yes" button of the dialog.
+					 * When the user clicks on the "Yes" button of the dialog,
+					 * the station is removed from his favorite ones and the
+					 * list is updated.
 					 */
 					@SuppressWarnings("unchecked")
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
 						// Tracker
-						Tracker.getInstance().trackPageView("transport/editView/dialog/remove");
-						
+						Tracker.getInstance().trackPageView(
+								"transport/editView/dialog/remove");
+
 						// Remove the destination and update the list
 						mDestPrefsEditor.remove(dest);
 						mDestPrefsEditor.commit();
@@ -236,15 +236,16 @@ public class TransportEditView extends PluginView {
 				new OnClickListener() {
 
 					/**
-					 * Defines what is to be performed when the user clicks on
-					 * the "Yes" button of the dialog.
+					 * When the user clicks on the "No" button of the dialog,
+					 * nothing happens and the dialog is dismissed.
 					 */
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
 						// Tracker
-						Tracker.getInstance().trackPageView("transport/editView/dialog/dontRemove");
-						
-						// Do nothing
+						Tracker.getInstance().trackPageView(
+								"transport/editView/dialog/dontRemove");
+
+						// Do nothing and dismiss the dialog
 						dialog.dismiss();
 					}
 				});
@@ -255,12 +256,12 @@ public class TransportEditView extends PluginView {
 	}
 
 	/**
-	 * Compares Restaurants according to their names.
+	 * Compares stations according to their names.
 	 */
 	private class StringComparator implements Comparator<String> {
 
 		/**
-		 * Compares two string alphabetically
+		 * Compares two string alphabetically.
 		 */
 		@Override
 		public int compare(String arg0, String arg1) {

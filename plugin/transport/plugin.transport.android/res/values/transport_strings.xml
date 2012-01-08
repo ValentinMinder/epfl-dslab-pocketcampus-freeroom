@@ -3,15 +3,15 @@
 
     <!-- General -->
     <string name="transport_plugin_name">Transport</string>
-    <string name="transport_no_destinations_message">Go add a destination!</string>
-    <string name="transport_set_destinations_message">Search destination</string>
-    <string name="transport_edit_destinations">Edit your destinations</string>
-    <string name="transport_add_destination">Add a destination</string>
-    <string name="transport_remove_destinations">Remove destinations</string>
-    <string name="transport_new_destination">New destination</string>
+    <string name="transport_no_stations_message">Go add a station!</string>
+    <string name="transport_set_stations_message">Search station</string>
+    <string name="transport_edit_stations">Edit your stations</string>
+    <string name="transport_add_station">Add a station</string>
+    <string name="transport_remove_stations">Remove stations</string>
+    <string name="transport_new_station">New station</string>
     <string name="transport_confirmation">Confirmation</string>
-    <string name="transport_confirmation_delete_destination_start">Are you sure you want to remove</string>
-    <string name="transport_confirmation_delete_destination_end">from your favourite destinations?</string>
+    <string name="transport_confirmation_delete_station_start">Are you sure you want to remove</string>
+    <string name="transport_confirmation_delete_station_end">from your favorite stations?</string>
     <string name="transport_yes">Yes</string>
     <string name="transport_no">No</string>
 
@@ -29,7 +29,7 @@
     <string name="transport_minute_abbrev">min.</string>
 
     <!-- Menu -->
-    <string name="transport_menu_destinations">Edit destinations</string>
+    <string name="transport_menu_stations">Edit stations</string>
     <string name="transport_menu_settings">Settings</string>
 
     <!-- Error -->

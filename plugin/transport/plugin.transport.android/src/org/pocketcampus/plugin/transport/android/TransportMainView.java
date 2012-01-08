@@ -44,14 +44,14 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
- * The Main View of the Transport plugin, first displayed when accessing
+ * The main view of the Transport plugin, first displayed when accessing
  * Transport.
  * 
- * Displays the next departures for the destinations that the user has set as
- * preferred destinations. The preferred destinations are stored in the android
- * shared preferences and displayed each time the user accesses the Transport
- * plugin. He can go to the edit view to delete them more or add more
- * destinations.
+ * Displays the next departures for the stations that the user has set as
+ * favorite stations. The favorite stations are stored in the android
+ * <code>SharedPreferences</code> and displayed each time the user accesses the
+ * Transport plugin. He can go to the <code>TransportEditView Activity</code> to
+ * delete them or add more stations.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * @author Pascal <pascal.scheiben@epfl.ch>
@@ -60,31 +60,33 @@ import com.markupartist.android.widget.ActionBar.Action;
  */
 public class TransportMainView extends PluginView implements ITransportView {
 	/* MVC */
-	/** The plugin controller */
+	/** The plugin controller. */
 	private TransportController mController;
-	/** The plugin model */
+	/** The plugin model. */
 	private TransportModel mModel;
 	/* Layout */
-	/** The Action Bar */
+	/** The <code>ActionBar</code>. */
 	private ActionBar mActionBar;
-	/** Refresh action in the action bar */
+	/** Refresh action in the action bar. */
 	private RefreshAction mRefreshAction;
-	/** Change direction action in the action bar */
+	/** Change direction action in the action bar. */
 	private ChangeDirectionAction mDirectionAction;
-	/** The main Layout consisting of two inner layouts and a title */
+	/** The main Layout consisting of two inner layouts and a title. */
 	private StandardTitledLayout mLayout;
-	/** The ListView to display next departures */
+	/** The list to display next departures. */
 	private ListView mListView;
-	/* Preferences */
-	/** The pointer to access and modify preferences stored on the phone */
+
+	/** The pointer to access and modify preferences stored on the phone. */
 	private SharedPreferences mDestPrefs;
-	/** Interface to modify values in SharedPreferences object */
+	/** Interface to modify values in the <code>SharedPreferences</code> object. */
 	private Editor mDestPrefsEditor;
-	/** The name under which the preferences are stored on the phone */
+	/** The name under which the preferences are stored on the phone. */
 	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
 
-	/** Boolean telling which direction is shown */
+	/** A <code>Boolean</code> telling which direction is shown. */
 	private boolean mFromEpfl;
+	/** The name of the EPFL station. */
+	private final String M_EPFL_STATION = "EPFL";
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -95,14 +97,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * On display. Called when first displaying the view. Retrieve the model and
-	 * the controller and calls the methods which set up hte layout, the action
-	 * bar and the destinations with next departures.
+	 * Called when first displaying the view. Retrieves the model and the
+	 * controller and calls the methods setting up the layout, the action bar
+	 * and the stations with next departures.
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-//		Tracker
+		// Tracker
 		Tracker.getInstance().trackPageView("transport");
 
 		mController = (TransportController) controller;
@@ -137,8 +139,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Main Transport Options menu contains access to the preferred destinations
-	 * and the settings
+	 * Main Transport Options Menu containing access to the favorite stations.
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,14 +149,14 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Decides what happens when the options menu is opened and an option is
+	 * Decides what happens when the Options Menu is opened and an option is
 	 * chosen (which view to display).
 	 */
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		int id = item.getItemId();
 
-		if (id == R.id.transport_destinations) {
+		if (id == R.id.transport_stations) {
 			mFromEpfl = true;
 			Intent i = new Intent(this, TransportEditView.class);
 			startActivity(i);
@@ -176,8 +177,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Sets up the list of destinations found in the shared preferences along
-	 * with their next departures.
+	 * Sets up the list of stations found in the <code>SharedPreferences</code>
+	 * along with their next departures.
 	 */
 	private void setUpListView() {
 		// Creates the list view and sets its click listener
@@ -186,8 +187,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
-			 * Defines what is to be performed when the user clicks on a
-			 * departure.
+			 * When the user clicks on a departure, shows a dialog with
+			 * connections details about the whole trip.
 			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -201,8 +202,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 				long depTime = Long.valueOf(s[1]);
 				long arrTime = Long.valueOf(s[2]);
 				// Find the destination in the ones from the model
-				List<TransportTrip> trips = mModel.getPreferredDestinations()
-						.get(name);
+				List<TransportTrip> trips = mModel.getFavoriteStations().get(
+						name);
 				for (TransportTrip trip : trips) {
 					if (trip.getDepartureTime() == depTime
 							&& trip.getArrivalTime() == arrTime) {
@@ -213,7 +214,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 						// Tracker
 						Tracker.getInstance().trackPageView(
 								"transport/dialog/" + trip.getFrom().getName()
-								+ "/" + trip.getTo().getName());
+										+ "/" + trip.getTo().getName());
 
 						dialog.show();
 						break;
@@ -226,39 +227,35 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Retrieves the action bar and adds a button to it, which will, when
-	 * clicked, open the edit view of the transport plugin.
+	 * Retrieves the action bar and adds a refresh action to it.
 	 */
 	private void setUpActionBar() {
 		mActionBar = getActionBar();
 		if (mActionBar != null) {
-			// ChangeDirectionAction direction = new ChangeDirectionAction();
-			// a.addAction(direction, 0);
 			mRefreshAction = new RefreshAction();
 			mActionBar.addAction(mRefreshAction, 0);
 		}
 	}
 
 	/**
-	 * Sets up which destinations have to be displayed. First checks if there
-	 * are destinations in the shared preferences. If yes, asks for next
-	 * departures, and if not, opens the add view of the transport plugin to let
-	 * the user add a destination.
+	 * Sets up which stations have to be displayed. First checks if there are
+	 * stations in the <code>SharedPreferences</code>. If yes, asks for next
+	 * departures, and if not, displays a button to let the user add a station.
 	 */
 	@SuppressWarnings("unchecked")
 	private void setUpDestinations() {
 		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-		// If no destinations set, display a button that redirects to the add
+		// If no stations set, display a button that redirects to the add
 		// view of the plugin
 		if (prefs == null || prefs.isEmpty()) {
-			if(mActionBar == null) {
+			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
-			if(mDirectionAction != null) {
+			if (mDirectionAction != null) {
 				mActionBar.removeAction(mDirectionAction);
 			}
 			ButtonElement addButton = new ButtonElement(this, getResources()
-					.getString(R.string.transport_add_destination));
+					.getString(R.string.transport_add_station));
 			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT);
 			l.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -267,8 +264,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 			addButton.setOnClickListener(new OnClickListener() {
 
 				/**
-				 * Defines what is to be performed when the user clicks on the
-				 * add button.
+				 * When the user clicks on the add button, opens the
+				 * <code>TransportAddView Activity</code>.
 				 */
 				@Override
 				public void onClick(View v) {
@@ -285,7 +282,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 			mLayout.removeFillerView();
 			mLayout.addFillerView(addButton);
 		} else {
-			// If destination(s) are in the shared preferences, remove the
+			// If station(s) are in the shared preferences, remove the
 			// button of the main layout and adds the list view
 			mLayout.removeFillerView();
 			mLayout.addFillerView(mListView);
@@ -294,28 +291,30 @@ public class TransportMainView extends PluginView implements ITransportView {
 			for (String s : set) {
 				list.add(s);
 			}
-			// Binds the names with actual Location objects
-			mController.getLocationsFromNames(list);
+			// Binds the names with actual TransportStation objects
+			mController.getStationsFromNames(list);
 		}
 	}
 
 	/**
-	 * Asks the server for connections in order to display the list of preferred
-	 * destinations along with the next departures to go there.
+	 * Asks the server for connections in order to display the list of favorite
+	 * stations along with the next departures.
 	 */
 	private void displayDestinations() {
 		mLayout.hideText();
 		// Gets the user's preferred destinations from the model
 		HashMap<String, List<TransportTrip>> locations = mModel
-				.getPreferredDestinations();
+				.getFavoriteStations();
 		if (locations != null && !locations.isEmpty()) {
+			// The user wants to leave EPFL
 			if (mFromEpfl) {
 				for (String loc : locations.keySet()) {
-					mController.nextDeparturesFromEPFL(loc);
+					mController.nextDepartures(M_EPFL_STATION, loc);
 				}
+				// The user wants to go to EPFL
 			} else {
 				for (String loc : locations.keySet()) {
-					mController.nextDeparturesToEPFL(loc);
+					mController.nextDepartures(loc, M_EPFL_STATION);
 				}
 			}
 		}
@@ -330,13 +329,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 		if (mActionBar != null) {
 			mActionBar = getActionBar();
 		}
-		if(mDirectionAction == null) {			
+		if (mDirectionAction == null) {
 			mDirectionAction = new ChangeDirectionAction();
 		}
 		mActionBar.removeAction(mDirectionAction);
 		mActionBar.addAction(mDirectionAction, 0);
 		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
-				.getPreferredDestinations();
+				.getFavoriteStations();
 		// In case the button is still here
 		mLayout.removeFillerView();
 		mLayout.addFillerView(mListView);
@@ -345,25 +344,25 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Called by the model when the list of preferred destinations has been
-	 * updated and refreshes the view.
+	 * Called by the model when the list of favorite stations has been updated
+	 * and refreshes the view.
 	 */
 	@Override
-	public void destinationsUpdated() {
+	public void favoriteStationsUpdated() {
 		displayDestinations();
 	}
 
 	/**
-	 * Called by the model when the locations from the destinations names have
-	 * been updated and displays the next departures.
+	 * Called by the model when the stations from the names have been updated
+	 * and displays the next departures.
 	 */
 	@Override
-	public void locationsFromNamesUpdated(List<TransportStation> result) {
+	public void stationsFromNamesUpdated(List<TransportStation> result) {
 		displayDestinations();
 	}
 
 	/**
-	 * Displays a message when an error happens upon contacting the server
+	 * Displays a message when an error happens upon contacting the server.
 	 */
 	@Override
 	public void networkErrorHappened() {
@@ -377,9 +376,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	/**
 	 * Called when connections are received from the server. Creates the items
-	 * to be displayed (Destination name with time until departure) and update
-	 * the shared preferences. (This is not done before to make sure we store
-	 * the correct location name in the preferences).
+	 * to be displayed (Station name with time until departure) and updates the
+	 * shared preferences. (This is not done before getting the result, to make
+	 * sure we store the correct station name in the preferences).
 	 */
 	private void setItemsToDisplay(
 			HashMap<String, List<TransportTrip>> mDisplayedLocations) {
@@ -410,7 +409,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 										.equals("Ecublens VD, EPFL")) {
 									mDestPrefsEditor.putInt(
 											c.getTo().getName(), c.getTo()
-											.getId());
+													.getId());
 									mDestPrefsEditor.commit();
 								}
 							} else {
@@ -465,8 +464,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * to a text in the form : "In x hour(s), y minute(s)."
 	 * 
 	 * @param milliseconds
-	 *            the time until the next departure.
-	 * @return s the string representing the time left until the departure.
+	 *            The time until the next departure.
+	 * @return s The <code>String</code> representation of the time left until
+	 *         the departure.
 	 */
 	private String timeString(long milliseconds) {
 		String s = getResources().getString(R.string.transport_in);
@@ -526,13 +526,13 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private class RefreshAction implements Action {
 
 		/**
-		 * The constructor which doesn't do anything
+		 * Class constructor which doesn't do anything.
 		 */
 		RefreshAction() {
 		}
 
 		/**
-		 * Returns the resource for the icon of the button in the action bar
+		 * Returns the resource for the icon of the button in the action bar.
 		 */
 		@Override
 		public int getDrawable() {
@@ -540,8 +540,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		}
 
 		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
+		 * Refreshes the departures when the user clicks on the button in the
+		 * action bar.
 		 */
 		@Override
 		public void performAction(View view) {
@@ -551,8 +551,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 			mLayout.removeFillerView();
 			// mLayout.addFillerView(mListView);
 			mModel.freeConnections();
-			if (mModel.getPreferredDestinations() == null
-					|| mModel.getPreferredDestinations().isEmpty()) {
+			if (mModel.getFavoriteStations() == null
+					|| mModel.getFavoriteStations().isEmpty()) {
 				setUpDestinations();
 			} else {
 				displayDestinations();
@@ -561,8 +561,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Refreshes the next departures when clicking on the action bar refresh
-	 * button.
+	 * Change the direction of the trips when clicking on the action bar change
+	 * direction button.
 	 * 
 	 * @author Oriane <oriane.rodriguez@epfl.ch>
 	 * 
@@ -576,7 +576,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		}
 
 		/**
-		 * Returns the resource for the icon of the button in the action bar
+		 * Returns the resource for the icon of the button in the action bar.
 		 */
 		@Override
 		public int getDrawable() {
@@ -584,8 +584,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 		}
 
 		/**
-		 * Defines what is to be performed when the user clicks on the button in
-		 * the action bar
+		 * Changes direction and refreshes the departures when the user clicks
+		 * on the button in the action bar.
 		 */
 		@Override
 		public void performAction(View view) {
@@ -599,8 +599,8 @@ public class TransportMainView extends PluginView implements ITransportView {
 			}
 
 			mModel.freeConnections();
-			if (mModel.getPreferredDestinations() == null
-					|| mModel.getPreferredDestinations().isEmpty()) {
+			if (mModel.getFavoriteStations() == null
+					|| mModel.getFavoriteStations().isEmpty()) {
 				setUpDestinations();
 			} else {
 				displayDestinations();
@@ -609,9 +609,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 	}
 
 	/**
-	 * Not used in this view
+	 * Not used in this view.
 	 */
 	@Override
-	public void autoCompletedDestinationsUpdated() {
+	public void autoCompletedStationsUpdated() {
 	}
 }
