@@ -33,8 +33,10 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
+import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetSessionIdForServiceRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetTequilaKeyForServiceRequest;
+import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
@@ -57,7 +59,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 	
 	public static final boolean AUTHENTICATE_TEQUILAENABLEDSERVICES_LOCALLY = true;
 	
-	private static final RedirectHandler redirectNoFollow = new RedirectHandler() {
+	public static final RedirectHandler redirectNoFollow = new RedirectHandler() {
 		public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
 			return false;
 		}
@@ -69,6 +71,16 @@ public class AuthenticationController extends PluginController implements IAuthe
 	public class LocalCredentials {
 		public String username;
 		public String password;
+	}
+	
+	public class TokenCredentialsComplex {
+		public TequilaKey token;
+		public LocalCredentials credentials;
+	}
+	
+	public class TokenCookieComplex {
+		public TequilaKey token;
+		public String cookie;
 	}
 	
 	private AuthenticationModel mModel;
@@ -88,8 +100,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 		// ...as well as initializing the client.
 		// The "client" is the connection we use to access the service.
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		threadSafeClient = getThreadSafeClient();
+		threadSafeClient.setRedirectHandler(redirectNoFollow);
 	}
-	
+	/*
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		//Log.v("DEBUG", "AuthenticationController::onStartCommand {act=" + aIntent.getAction() + "}");
@@ -112,19 +126,21 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 		return START_NOT_STICKY;
 	}
-	
+	*/
 	@Override
 	public PluginModel getModel() {
 		return mModel;
 	}
 
-	@Override
 	public void setLocalCredentials(String user, String pass) {
 		iLocalCredentials.username = user;
 		iLocalCredentials.password = pass;
 	}
+	/*
+	public LocalCredentials getLocalCredentials() {
+		return iLocalCredentials;
+	}
 	
-	@Override
 	public void authenticateUserForNonTequilaService(TypeOfService tos) {
 		try {
 			SessionId sessId = null;
@@ -146,10 +162,11 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 	}
 	
-	@Override
-	public void signInUserLocallyToTequila(TequilaKey teqKey) {
+	public void signInUserLocallyToTequila(String s) {
+		TequilaKey teqKey = mModel.getTequilaKey();
+		//new loginToTequilaRequest().start(this, getThreadSafeClient(), iLocalCredentials);
 		try {
-			mModel.setTequilaCookie(loginToTequila(iLocalCredentials.username, iLocalCredentials.password));
+			mModel.setTequilaCookie(s);
 			if(mModel.getTequilaCookie() == null) {
 				mModel.getListenersToNotify().notifyBadCredentials();
 				return; // tell view that credentials are bad, let the user try again
@@ -165,7 +182,6 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 	}
 
-	@Override
 	public void authenticateUserForTequilaEnabledService(TypeOfService tos) {
 		new GetTequilaKeyForServiceRequest().start(this, mClient, tos);
 	}
@@ -205,7 +221,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 		mModel.setSessionIdForService(sessId.getTos(), sessId);
 		forwardSessionIdToCaller(sessId);
 	}
-	
+	*/
 	private void forwardSessionIdToCaller(SessionId sessId) {
 		if(sessId == null) {
 			return; // TODO tell view that unexpected error happened
@@ -231,9 +247,9 @@ public class AuthenticationController extends PluginController implements IAuthe
 		Intent callerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		callerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(callerIntent);
-		mModel.setMustFinish();
+		//mModel.setMustFinish();
 	}
-
+/*
 	private SessionId loginToIsa(String username, String password) throws IOException {
 		//HashMap<String, String> hm = new HashMap<String, String>();
 		//hm.put("ww_x_username", "test-scala");
@@ -251,12 +267,12 @@ public class AuthenticationController extends PluginController implements IAuthe
 		l.add(new BasicNameValuePair("ww_x_password", password));
 		post.setEntity(new UrlEncodedFormEntity(l)); // with list of key-value pairs
 		//post.setHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6");
-		/*client.execute(post, new ResponseHandler(){
-			public Object handleResponse(HttpResponse response)
-					throws ClientProtocolException, IOException {
-				System.out.println("reply=" + response.getLastHeader("Set-Cookie"));
-				return null;
-			}});*/
+		//client.execute(post, new ResponseHandler(){
+			//public Object handleResponse(HttpResponse response)
+					//throws ClientProtocolException, IOException {
+				//System.out.println("reply=" + response.getLastHeader("Set-Cookie"));
+				//return null;
+			//}});
 		HttpResponse resp = client.execute(post);
 		LinkedList<String> ckz = new LinkedList<String>();
 		for(Header h : resp.getAllHeaders()) {
@@ -272,18 +288,18 @@ public class AuthenticationController extends PluginController implements IAuthe
 			return sessId;
 		}
 		Log.v("DEBUG", "ISA: Wrogn credentials");
-		/*List<Cookie> lc = client.getCookieStore().getCookies();
-		for(Cookie c : lc) {
-			System.out.println("cookie=" + c.getName() + ": " + c.getValue());
-			//ISA-CNXKEY: 853654DF9F5454C7A80C466A113A6758
-			if("ISA-CNXKEY".equals(c.getName())) {
-				SessionId sessId = new SessionId(TypeOfService.SERVICE_ISA);
-				sessId.setIsaCookie(c.getValue());
-				return sessId;
-			}
-		}*/
-		/*final String responseText =  EntityUtils.toString(resp.getEntity());
-		System.out.println("reply=" + responseText);*/
+		//List<Cookie> lc = client.getCookieStore().getCookies();
+		//for(Cookie c : lc) {
+			//System.out.println("cookie=" + c.getName() + ": " + c.getValue());
+			// //ISA-CNXKEY: 853654DF9F5454C7A80C466A113A6758
+			//if("ISA-CNXKEY".equals(c.getName())) {
+				//SessionId sessId = new SessionId(TypeOfService.SERVICE_ISA);
+				//sessId.setIsaCookie(c.getValue());
+				//return sessId;
+			//}
+		//}
+		//final String responseText =  EntityUtils.toString(resp.getEntity());
+		//System.out.println("reply=" + responseText);
 		return null;
 	}
 	
@@ -321,7 +337,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 		//Log.v("DEBUG", "HTTP Status Code: " + resp);
 		//return false;
 	}
-	
+	*/
 	public static TypeOfService mapHostToTypeOfService(Uri aData) {
 		// This is the host part of the URL that Tequila redirects to after successful authentication
 		if(aData == null)
@@ -357,7 +373,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 			return null;
 		}
 	}
-	
+	/*
 	private void authenticateUserForService(TypeOfService tos) {
 		
 		// Temporary: re-login to Tequila each time (for today's release purposes)
@@ -382,6 +398,37 @@ public class AuthenticationController extends PluginController implements IAuthe
 		
 	}
 	
+	*/
+	
+	public void nGetTequilaKey() {
+		new GetTequilaKeyForServiceRequest().start(this, mClient, mModel.getTypeOfService());
+		mModel.setAuthState(1);
+	}
+	
+	public void nAuthenticateToken() {
+		TokenCookieComplex tc = new TokenCookieComplex();
+		tc.cookie = mModel.getTequilaCookie();
+		tc.token = mModel.getTequilaKey();
+		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
+		mModel.setAuthState(3);
+	}
+	
+	public void nGetSessionId() {
+		new GetSessionIdForServiceRequest().start(this, mClient, mModel.getTequilaKey());
+		mModel.setAuthState(5);
+	}
+	
+	public void nForwardSessionId() {
+		forwardSessionIdToCaller(mModel.getSessionId());
+		mModel.setAuthState(0);
+	}
+	
+	public void nGetTequilaCookie() {
+		new LoginToTequilaRequest().start(this, threadSafeClient, iLocalCredentials);
+		mModel.setIntState(1);
+	}
+	
+	
 	private void openView() {
 		Intent authIntent = new Intent(Intent.ACTION_VIEW, intentUri);
 		authIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -395,6 +442,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 
 	private Uri intentUri = null;
+	
+	private DefaultHttpClient threadSafeClient = null;
 	
 	private LocalCredentials iLocalCredentials = new LocalCredentials();
 

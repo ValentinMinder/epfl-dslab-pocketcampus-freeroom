@@ -1,21 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/authentication_customloginpageLayout"
+    style="@style/Dialog"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="wrap_content" >
+     
+    
 
-<!--     <TextView -->
-<!--         android:id="@+id/textView1" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_centerHorizontal="true" -->
-<!--         android:text="Redirecting ...\nPlease wait" > -->
-<!--     </TextView> -->
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/authentication_dialog_top"
+        style="@style/Dialog.Top"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:orientation="vertical" >
+
+            <TextView
+            android:id="@+id/authentication_dialog_title"
+            style="@style/DialogText.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/authentication_plugin_title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/authentication_dialog_middle"
+        style="@style/Dialog.Middle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/authentication_dialog_top"
+        android:gravity="center"
+        android:minHeight="100dp"
+        android:orientation="vertical" >
+
+	
+		
+		    <ProgressBar
+		        android:id="@+id/progressBar1"
+		        style="?android:attr/progressBarStyleLarge"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_centerHorizontal="true" />
+		
+
+	    
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/authentication_dialog_bottom"
+        style="@style/Dialog.Bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/authentication_dialog_middle"
+        android:orientation="horizontal" >
+
+	    <Button
+	        android:id="@+id/authentication_loginbutton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="3dp"
+	        android:layout_marginLeft="100dp"
+	        android:layout_marginRight="100dp"
+	        android:enabled="false"
+	        android:text="@string/authentication_string_login" />
+    </LinearLayout>
+        
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
+import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,7 @@ import android.widget.Toast;
 public class AuthenticationView extends PluginView implements IAuthenticationView {
 	
 	private AuthenticationController mController;
-	private IAuthenticationModel mModel;
+	private AuthenticationModel mModel;
 	
 	//private StandardLayout mLayout;
 
@@ -80,7 +82,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		
 		// The ActionBar is added automatically when you call setContentView, unless we disable it :-)
 		disableActionBar();
-		setContentView(R.layout.authentication_redirectionpage);
+		//setContentView(R.layout.authentication_redirectionpage);
 
 		// We need to force the display before asking the controller for the data, 
 		// as the controller may take some time to get it.
@@ -94,6 +96,8 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		if(mController == null) // resuming?
 			return;
 		
+
+		
 		if(aIntent == null)
 			return;
 		if(!Intent.ACTION_VIEW.equals(aIntent.getAction()))
@@ -105,7 +109,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		if("pocketcampus-redirect".equals(aData.getScheme())) {
 			TypeOfService tos = mapHostToTypeOfService(aData);
 			if(tos != null) {
-				mController.forwardTequilaKeyForService(tos);
+				//mController.forwardTequilaKeyForService(tos);
 			} else {
 				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
 			}
@@ -113,7 +117,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			// e.g. pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle
 			TypeOfService tos = mapQueryParameterToTypeOfService(aData);
 			if(tos != null) {
-				authenticateUserForService(tos);
+				//authenticateUserForService(tos);
+				mModel.setTypeOfService(tos);
+				mModel.setIntState(0);
+				mModel.setAuthState(0);
 			} else {
 				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
 			}
@@ -124,14 +131,14 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			// ultimately this part should be captured by the pocketcampus-redirect section
 			TypeOfService tos = mapHostToTypeOfService(aData);
 			if(tos != null) {
-				mController.forwardTequilaKeyForService(tos);
+				//mController.forwardTequilaKeyForService(tos);
 			} else {
 				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
 			}
 		}
 	}
 
-	@Override
+	/*
 	public void gotTequilaKey() {
 		final TequilaKey teqKey = mModel.getTequilaKey();
 		if(teqKey == null)
@@ -147,19 +154,20 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 					TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 					TextView passwordField = (TextView) findViewById(R.id.authentication_password);
 					mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
-					//setContentView(R.layout.authentication_redirectionpage);
-					mController.signInUserLocallyToTequila(teqKey);
+					setContentView(R.layout.authentication_redirectionpage);
+					new LoginToTequilaRequest().start(mController, mController.getThreadSafeClient(), mController.getLocalCredentials());
+					//mController.signInUserLocallyToTequila(teqKey);
 				}
 			});
 			loginButton.setEnabled(true);
 		}
-	}
+	}*/
 
 	private void displayData() {
 		/*mLayout.setText("Tequila Authentication" + "\n\n\n"
 				+ "Redirecting... Please wait\n\n");*/
 	}
-	
+	/*
 	private void authenticateUserForService(TypeOfService tos) {
 		boolean serviceSupportsTequila = true;
 		switch(tos) {
@@ -191,7 +199,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		}
 		
 	}
-	
+	*/
 	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,33 +225,123 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	}
 */
 	
+	public void enableLogin() {
+		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
+		loginButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+				mController.setLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
+				//setContentView(R.layout.authentication_redirectionpage);
+				mController.nGetTequilaCookie();
+				displayWait();
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			}
+		});
+		loginButton.setEnabled(true);
+	}
+	
+	public void displayForm() {
+		
+		setContentView(R.layout.authentication_customloginpage);
+	}
+	public void displayWait() {
+		setContentView(R.layout.authentication_redirectionpage);
+		
+	}
+	
 	@Override
 	public void notifyBadCredentials() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT);
 		toast.show();
+		
+		mModel.setAuthState(0);
+		mModel.setIntState(0);
+		//displayForm();
+		
 	}
 
 	@Override
 	public void notifyBadToken() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_token), Toast.LENGTH_SHORT);
 		toast.show();
+		
+		mModel.setAuthState(0);
+		mModel.setIntState(0);
+		//displayForm();
+		
 	}
 
 	@Override
 	public void notifyUnexpectedErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_unexpected_error), Toast.LENGTH_SHORT);
 		toast.show();
+		
+		//mModel.setAuthState(0);
+		mModel.setIntState(0);
+		//displayForm();
+		
 	}
 	
 	@Override
 	public void networkErrorHappened() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT);
 		toast.show();
+		
+		//mModel.setAuthState(0);
+		mModel.setIntState(0);
+		//displayForm();
+		
+		/*int is = mModel.getIntState();
+		int as = mModel.getAuthState();
+		
+		if((is|1) == 1) {
+			mModel.setIntState(is - 1);
+		}
+		
+		if((as|1) == 1) {
+			mModel.setAuthState(as - 1);
+		}*/
+		
 	}
 
 	@Override
-	public void mustFinish() {
-		finish();
+	public void intStateUpdated() {
+		int is = mModel.getIntState();
+		switch(is) {
+		case 0:
+			displayForm();
+			break;
+		case 2:
+			mController.nAuthenticateToken();
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+	@Override
+	public void authStateUpdated() {
+		int as = mModel.getAuthState();
+		switch(as) {
+		case 0:
+			mController.nGetTequilaKey();
+			break;
+		case 2:
+			enableLogin();
+			break;
+		case 4:
+			mController.nGetSessionId();
+			break;
+		case 6:
+			mController.nForwardSessionId();
+			finish();
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 }

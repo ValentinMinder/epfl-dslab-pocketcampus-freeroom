@@ -184,11 +184,12 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	
 	public static void pingAuthPlugin(Context context) {
-		//Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-		//startActivity(authIntent);
-		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+		Intent authIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-		context.startService(authIntent);
+		context.startActivity(authIntent);
+		/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
+		context.startService(authIntent);*/
 	}
 	
 	@Override

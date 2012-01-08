@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.authentication.android;
 
-import java.util.HashMap;
-
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
@@ -14,71 +12,80 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	IAuthenticationView mListeners = (IAuthenticationView) getListeners();
 	
 	private AuthenticationModel() {
-		
 	}
-	
 	public static AuthenticationModel getInstance(){
 		if(self == null)
 			self = new AuthenticationModel();
 		return self;
 	}
 	
+	
+	
+
+	public TypeOfService getTypeOfService() {
+		return iTypeOfService;
+	}
+	public void setTypeOfService(TypeOfService value) {
+		iTypeOfService = value;
+	}
+
+	public TequilaKey getTequilaKey() {
+		return iTequilaKey;
+	}
 	public void setTequilaKey(TequilaKey value) {
 		iTequilaKey = value;
-		mListeners.gotTequilaKey();
 	}
+
+	public SessionId getSessionId() {
+		return iSessionId;
+	}
+	public void setSessionId(SessionId value) {
+		iSessionId = value;
+	}
+
+	
+	
 	
 	public void setTequilaCookie(String value) {
 		tequilaCookie = value;
 	}
-	
-	public void setSessionIdForService(TypeOfService tos, SessionId sessId) {
-		if(sessionIds.containsKey(tos)) {
-			sessionIds.remove(tos);
-		}
-		sessionIds.put(tos,  sessId);
+	public String getTequilaCookie() {
+		return tequilaCookie;
 	}
-	
-	public void setMustFinish() {
-		mListeners.mustFinish();
+	public void setAuthState(int value) {
+		authState = value;
+		mListeners.authStateUpdated();
 	}
-	
+	public int getAuthState() {
+		return authState;
+	}
+	public void setIntState(int value) {
+		intState = value;
+		mListeners.intStateUpdated();
+	}
+	public int getIntState() {
+		return intState;
+	}
 
+	
+	
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return IAuthenticationView.class;
 	}
-
-	@Override
-	public TequilaKey getTequilaKey() {
-		return iTequilaKey;
-	}
-
-	public String getTequilaCookie() {
-		return tequilaCookie;
-	}
-
-	@Override
-	public SessionId getSessionIdForService(TypeOfService tos) {
-		return sessionIds.get(tos);
-	}
-
-	@Override
-	public String getSessionIds() {
-		return sessionIds.toString();
-	}
-	
 	public IAuthenticationView getListenersToNotify() {
 		return mListeners;
 	}
 	
-	// TODO store these in persistent storage, because on rotate the model is destroyed
-
-	private HashMap<TypeOfService, SessionId> sessionIds = new HashMap<TypeOfService, SessionId>();
 	
+	
+	private TypeOfService iTypeOfService;
 	private TequilaKey iTequilaKey;
+	private SessionId iSessionId;
 	
-	private String tequilaCookie;
+	private String tequilaCookie; // this is the only thing we need to store
+	private int authState = 0; // plugin authentication state
+	private int intState = 0; // internal state
 
 	private static AuthenticationModel self = null;
 

@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.authentication.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
@@ -14,10 +15,8 @@ public class GetTequilaKeyForServiceRequest extends Request<AuthenticationContro
 
 	@Override
 	protected void onResult(AuthenticationController controller, TequilaKey result) {
-		if(result != null)
-			controller.gotTequilaKeyForService(result);
-		else
-			throw new RuntimeException("GetTequilaKeyForServiceRequest: Got a null TequilaKey");
+		((AuthenticationModel) controller.getModel()).setTequilaKey(result);
+		((AuthenticationModel) controller.getModel()).setAuthState(2);
 	}
 	
 	@Override
