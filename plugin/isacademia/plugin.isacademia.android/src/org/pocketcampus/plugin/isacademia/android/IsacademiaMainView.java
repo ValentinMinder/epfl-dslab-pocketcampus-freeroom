@@ -65,11 +65,11 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 		// Normal start-up
 		if(mModel.getIsacademiaCookie() == null) { // if we don't have cookie
 			// get cookie (ping auth plugin)
-			//Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-			//startActivity(authIntent);
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=isacademia"));
-			startService(authIntent);
+			Intent authIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=isacademia"));
+			startActivity(authIntent);
+			//Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+					//Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=isacademia"));
+			//startService(authIntent);
 		}
 		if(mModel.getCourses() == null) { // if we don't have some data
 			// fetch them

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="authentication_plugin_title">Gaspar account</string>
+    <string name="authentication_plugin_title">Tequila authentication</string>
+    <string name="authentication_authenticating_title">Authenticating</string>
+    
     <string name="authentication_string_username_hint">Username</string>
     <string name="authentication_string_password_hint">Password</string>
     <string name="authentication_string_login">Login</string>

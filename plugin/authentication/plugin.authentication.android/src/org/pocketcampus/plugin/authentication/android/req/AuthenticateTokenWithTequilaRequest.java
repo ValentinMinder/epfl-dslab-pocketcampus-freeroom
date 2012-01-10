@@ -1,28 +1,12 @@
 package org.pocketcampus.plugin.authentication.android.req;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
-import org.pocketcampus.plugin.authentication.android.AuthenticationController.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController.TokenCookieComplex;
-import org.pocketcampus.plugin.authentication.android.AuthenticationController.TokenCredentialsComplex;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TequilaKey;
-
-import android.util.Log;
 
 public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationController, DefaultHttpClient, TokenCookieComplex, Boolean> {
 	@Override
@@ -35,13 +19,12 @@ public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationC
 
 	@Override
 	protected void onResult(AuthenticationController controller, Boolean result) {
+		AuthenticationModel am = ((AuthenticationModel) controller.getModel());
 		if(result) {
-			((AuthenticationModel) controller.getModel()).setAuthState(4);
+			am.setAuthenticatedToken(am.getTequilaKey().getITequilaKey());
 		} else {
 			// TODO do more checks to know if token is invalid or cookie has timed out
-			((AuthenticationModel) controller.getModel()).setAuthState(0);
-			((AuthenticationModel) controller.getModel()).setIntState(0);
-			((AuthenticationModel) controller.getModel()).getListenersToNotify().notifyBadToken();
+			am.getListenersToNotify().notifyCookieTimedOut();
 		}
 	}
 	

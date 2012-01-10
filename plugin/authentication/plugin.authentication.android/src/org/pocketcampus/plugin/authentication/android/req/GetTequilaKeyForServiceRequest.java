@@ -16,7 +16,6 @@ public class GetTequilaKeyForServiceRequest extends Request<AuthenticationContro
 	@Override
 	protected void onResult(AuthenticationController controller, TequilaKey result) {
 		((AuthenticationModel) controller.getModel()).setTequilaKey(result);
-		((AuthenticationModel) controller.getModel()).setAuthState(2);
 	}
 	
 	@Override

@@ -19,7 +19,7 @@
             style="@style/DialogText.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/authentication_plugin_title" />
+            android:text="@string/authentication_authenticating_title" />
     </LinearLayout>
 
     <LinearLayout

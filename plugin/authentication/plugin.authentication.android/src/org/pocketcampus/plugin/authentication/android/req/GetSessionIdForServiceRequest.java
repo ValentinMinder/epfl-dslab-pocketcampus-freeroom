@@ -16,7 +16,6 @@ public class GetSessionIdForServiceRequest extends Request<AuthenticationControl
 	@Override
 	protected void onResult(AuthenticationController controller, SessionId result) {
 		((AuthenticationModel) controller.getModel()).setSessionId(result);
-		((AuthenticationModel) controller.getModel()).setAuthState(6);
 	}
 	
 	@Override

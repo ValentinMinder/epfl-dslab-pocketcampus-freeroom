@@ -6,34 +6,34 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class AuthenticationModel extends PluginModel implements IAuthenticationModel {
 	IAuthenticationView mListeners = (IAuthenticationView) getListeners();
 	
-	private AuthenticationModel() {
-	}
-	public static AuthenticationModel getInstance(){
-		if(self == null)
-			self = new AuthenticationModel();
-		return self;
+	public AuthenticationModel(Context context) {
+		iStorage = context.getSharedPreferences(AUTH_STORAGE_NAME, 0);
+		tequilaCookie = iStorage.getString(TEQUILA_COOKIE_KEY, null);
 	}
 	
-	
-	
-
-	public TypeOfService getTypeOfService() {
-		return iTypeOfService;
-	}
-	public void setTypeOfService(TypeOfService value) {
-		iTypeOfService = value;
-	}
 
 	public TequilaKey getTequilaKey() {
 		return iTequilaKey;
 	}
 	public void setTequilaKey(TequilaKey value) {
 		iTequilaKey = value;
+		mListeners.gotTequilaKey();
+	}
+
+	public String getAuthenticatedToken() {
+		return iAuthenticatedToken;
+	}
+	public void setAuthenticatedToken(String value) {
+		iAuthenticatedToken = value;
+		mListeners.gotAuthenticatedToken();
 	}
 
 	public SessionId getSessionId() {
@@ -41,6 +41,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	public void setSessionId(SessionId value) {
 		iSessionId = value;
+		mListeners.gotSessionId();
 	}
 
 	
@@ -48,23 +49,13 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	
 	public void setTequilaCookie(String value) {
 		tequilaCookie = value;
+		Editor editor = iStorage.edit();
+		editor.putString(TEQUILA_COOKIE_KEY, tequilaCookie);
+		editor.commit();
+		mListeners.gotTequilaCookie();
 	}
 	public String getTequilaCookie() {
 		return tequilaCookie;
-	}
-	public void setAuthState(int value) {
-		authState = value;
-		mListeners.authStateUpdated();
-	}
-	public int getAuthState() {
-		return authState;
-	}
-	public void setIntState(int value) {
-		intState = value;
-		mListeners.intStateUpdated();
-	}
-	public int getIntState() {
-		return intState;
 	}
 
 	
@@ -79,14 +70,16 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	
 	
 	
-	private TypeOfService iTypeOfService;
 	private TequilaKey iTequilaKey;
 	private SessionId iSessionId;
+	private String iAuthenticatedToken;
 	
 	private String tequilaCookie; // this is the only thing we need to store
-	private int authState = 0; // plugin authentication state
-	private int intState = 0; // internal state
 
-	private static AuthenticationModel self = null;
+	///////////
+
+	private SharedPreferences iStorage;
+	private static final String AUTH_STORAGE_NAME = "AUTH_STORAGE_NAME";
+	private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
 
 }
