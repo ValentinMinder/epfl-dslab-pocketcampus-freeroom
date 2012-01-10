@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.transport.android;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEmptyLayoutItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryAdapter;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCEntryItem;
 import org.pocketcampus.android.platform.sdk.ui.PCSectionedList.PCItem;
@@ -36,7 +38,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -222,6 +226,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 				}
 			}
 		});
+		
+		
+		
 		// Adds it to the layout
 		mLayout.addFillerView(mListView);
 	}
@@ -285,12 +292,32 @@ public class TransportMainView extends PluginView implements ITransportView {
 			// If station(s) are in the shared preferences, remove the
 			// button of the main layout and adds the list view
 			mLayout.removeFillerView();
-			mLayout.addFillerView(mListView);
+			
+			//adding the titles
+			ArrayList<PCItem> items = new ArrayList<PCItem>();
+			
 			Set<String> set = prefs.keySet();
 			List<String> list = new ArrayList<String>();
-			for (String s : set) {
+			
+			
+			
+			List<String> dest = new ArrayList<String>();
+			dest.addAll(set);
+			Collections.sort(dest);
+			for (String s : dest) {
 				list.add(s);
+				
+				if(mFromEpfl)
+					items.add(new PCSectionItem(M_EPFL_STATION + " - " +s));
+				else
+					items.add(new PCSectionItem(s + " - " + M_EPFL_STATION));
+				
+				items.add(new PCEntryItem("", "", ""));
 			}
+			
+			PCEntryAdapter adapter = new PCEntryAdapter(this, items);
+			mListView.setAdapter(adapter);
+			mLayout.addFillerView(mListView);
 			// Binds the names with actual TransportStation objects
 			mController.getStationsFromNames(list);
 		}
@@ -382,10 +409,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 */
 	private void setItemsToDisplay(
 			HashMap<String, List<TransportTrip>> mDisplayedLocations) {
-		Set<String> set = mDisplayedLocations.keySet();
+		
+		Set<String> setA = mDisplayedLocations.keySet();
+		Set<String> set = mDestPrefs.getAll().keySet();
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
-
-		for (String l : set) {
+		List<String> dest = new ArrayList<String>();
+		dest.addAll(set);
+		Collections.sort(dest);
+		for (String l : dest) {
+			
 			if (!mDisplayedLocations.get(l).isEmpty()) {
 				String from = DestinationFormatter
 						.getNiceName(mDisplayedLocations.get(l).get(0)
@@ -451,6 +483,15 @@ public class TransportMainView extends PluginView implements ITransportView {
 						}
 					}
 				}
+			}else{
+				//just show the title
+				String title;
+				if(mFromEpfl)
+					title = M_EPFL_STATION + " - " + l;
+				else
+					title = l + " - " + M_EPFL_STATION;
+				items.add(new PCSectionItem(title));
+				items.add(new PCEntryItem("", "", ""));
 			}
 		}
 		PCEntryAdapter adapter = new PCEntryAdapter(this, items);

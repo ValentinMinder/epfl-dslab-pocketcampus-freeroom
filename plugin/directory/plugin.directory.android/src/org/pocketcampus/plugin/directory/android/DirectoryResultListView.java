@@ -94,43 +94,6 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		getController(DirectoryController.class, callback);
 	}
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//	    inflater.inflate(R.menu.directory_resultlist_menu, menu);
-//	    return true;
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-//		switch (item.getItemId()) {
-//	    	case R.id.directory_resultList_filtre:
-//	    		
-//	    		mController.filterResults();
-//	    		
-//	    		
-//	    		
-//	    		// = getOuSelection(allOU);
-//		    	
-//				//Toast.makeText(this, "filtre! " + toast, Toast.LENGTH_LONG).show();
-//				
-//				//filterResult(ouToKeep);
-//		        return true;
-//		}
-//		return true;
-//	}
-
-//	private HashSet<String> getOuSelection() {
-//		HashSet<String> keeper = new HashSet<String>();
-//		
-//		
-//		
-//		
-//		return keeper;
-//	}
-
-
-
 
 
 	@Override
@@ -189,7 +152,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		
 	}
 
-
+	/**
+	 * Shows the details of the person selected in the model.
+	 */
 	protected void showPersonsDetails() {
 		//Tracker
 		Tracker.getInstance().trackPageView("directory/ResultView/person/" + mModel.getSelectedPerson().sciper);
@@ -201,7 +166,7 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 	
 	
-	ILabeler<Person> labeler = new ILabeler<Person>(){
+	private ILabeler<Person> labeler = new ILabeler<Person>(){
 		@Override
 		public String getLabel(Person obj) {
 			String nice;
@@ -224,34 +189,38 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 	
 	public void showNextPerson(){
-		//todo try to fade out
-		dialog.dismiss();
 		
 		//SECURE THIS
 		shownPersonIndex++;
-		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
-		if(p!= null){
+		if(shownPersonIndex> mList.getCount()-1)
+			shownPersonIndex--;
+		else{
+			//todo try to fade out
+			dialog.dismiss();
+			
+			Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
+			
 			mModel.selectPerson(p);
 			mController.getProfilePicture(p.sciper);
 			showPersonsDetails();
-		}else{
-			shownPersonIndex--;
 		}
+		
 	}
 	
 	public void showPreviousPerson(){
-		//todo try to fade out
-		dialog.dismiss();
 		
 		//SECURE THIS
 		shownPersonIndex--;
-		Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
-		if(p != null){
+		if(shownPersonIndex<0)
+			shownPersonIndex=0;
+		else{
+			//todo try to fade out
+			dialog.dismiss();
+			
+			Person p = (Person) mList.getItemAtPosition(shownPersonIndex);
 			mModel.selectPerson(p);
 			mController.getProfilePicture(p.sciper);
 			showPersonsDetails();
-		}else{
-			shownPersonIndex++;
 		}
 	}
 
