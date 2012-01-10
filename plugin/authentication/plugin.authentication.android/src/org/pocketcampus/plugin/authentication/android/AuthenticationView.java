@@ -186,7 +186,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 
 	@Override
 	public void notifyCookieTimedOut() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_token), Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_cookie_expired), Toast.LENGTH_SHORT);
 		toast.show();
 		mModel.setTequilaCookie(null);
 		displayForm();
