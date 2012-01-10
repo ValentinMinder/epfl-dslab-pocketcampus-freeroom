@@ -19,7 +19,9 @@ import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 public class AuthenticationController extends PluginController implements IAuthenticationController {
 	
@@ -75,7 +77,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 		threadSafeClient.setRedirectHandler(redirectNoFollow);
 	}
 	
-	/*@Override
+	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		if(aIntent == null)
 			return START_NOT_STICKY;
@@ -87,12 +89,13 @@ public class AuthenticationController extends PluginController implements IAuthe
 		Uri intentUri = aIntent.getData();
 		if(intentUri == null)
 			return START_NOT_STICKY;
-		Log.v("DEBUG", intentUri.toString());
-		if("pocketcampus-authenticate".equals(intentUri.getScheme())) {
-			// e.g. pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle
+		Log.v("DEBUG", "AuthenticationController::onStartCommand {uri=" + intentUri.toString() + "}");
+		if("pocketcampus-logout".equals(intentUri.getScheme())) {
+			Log.v("DEBUG", "AuthenticationController::onStartCommand {Logging out}");
+			mModel.setTequilaCookie(null);
 		}
 		return START_NOT_STICKY;
-	}*/
+	}
 	
 	@Override
 	public PluginModel getModel() {

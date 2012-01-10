@@ -64,7 +64,7 @@
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
 				<category android:name="org.pocketcampus.plugin.authentication" />
-				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" />
+				<data android:scheme="pocketcampus-logout" android:host="authentication.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
 		</service>

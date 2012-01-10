@@ -209,6 +209,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/menu/logout");
 			mController.reset();
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
+			startService(authIntent);
 			finish();
 		}
 		
