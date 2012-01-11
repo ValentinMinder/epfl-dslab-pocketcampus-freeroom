@@ -44,7 +44,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private int REFRESH_INTERVAL = 60;
 
 	/** The maximum number of results to return per feed. */
-	private final int MAX_NUMBER_RESULTS = 5;
+	private final int MAX_NUMBER_RESULTS = 10;
 
 	/**
 	 * The default News Language, to be used when the news are not available in
@@ -195,7 +195,6 @@ public class NewsServiceImpl implements NewsService.Iface {
 		importFeeds();
 		String toReturn = null;
 		if (mNewsContents != null && mNewsContents.containsKey(newsItemId)) {
-			System.out.println(mNewsContents.get(newsItemId));
 			return mNewsContents.get(newsItemId);
 		}
 
