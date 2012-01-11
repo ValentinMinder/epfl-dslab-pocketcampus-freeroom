@@ -281,7 +281,7 @@ public class NewsMainView extends PluginView implements INewsView {
 			news.putExtra("org.pocketcampus.news.newsitem.bitmap",
 					toDisplay.getBitmapDrawable());
 
-			news.putExtra("org.pocketcampus.news.newsitem.bitmap", content);
+			news.putExtra("org.pocketcampus.news.newsitem.description", content);
 
 			startActivity(news);
 		}

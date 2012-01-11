@@ -148,6 +148,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 				if (mLanguagesNewsItemsList.containsKey(language)) {
 					toKeep.addAll(mLanguagesNewsItemsList.get(language));
 				}
+
+				mNewsContents.putAll(parser.getNewsContents());
 				Collections.sort(toKeep, newsItemComparator);
 				mLanguagesNewsItemsList.put(language, toKeep);
 				allFeeds.add(feed);
@@ -189,11 +191,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * @return The content of the NewsItem.
 	 */
 	@Override
-	public String getNewsItemContent(long newsItemId)
-			throws TException {
+	public String getNewsItemContent(long newsItemId) throws TException {
 		importFeeds();
 		String toReturn = null;
 		if (mNewsContents != null && mNewsContents.containsKey(newsItemId)) {
+			System.out.println(mNewsContents.get(newsItemId));
 			return mNewsContents.get(newsItemId);
 		}
 

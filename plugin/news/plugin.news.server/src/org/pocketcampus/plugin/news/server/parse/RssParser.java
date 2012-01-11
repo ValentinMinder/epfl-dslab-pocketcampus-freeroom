@@ -108,6 +108,13 @@ public class RssParser extends DefaultHandler {
 	public Feed getFeed() {
 		return (this.mRssFeed);
 	}
+	
+	/**
+	 * @return The contents of the news items in the feeds.
+	 */
+	public HashMap<Long, String> getNewsContents() {
+		return (this.mNewsContents);
+	}
 
 	/**
 	 * Receives notification of the start of a new element
@@ -218,7 +225,7 @@ public class RssParser extends DefaultHandler {
 
 					content = "<b>" + firstParagraph + "</b>" + rest;
 				}
-				this.mNewsContents.put(mItem.getNewsItemId(), mCurrentContent);
+				this.mNewsContents.put(mItem.getNewsItemId(), content);
 			}
 
 			this.mRssFeed.addToItems(this.mItem);
