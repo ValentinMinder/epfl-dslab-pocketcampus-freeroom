@@ -15,22 +15,29 @@ import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 
-import android.util.Log;
-
+/**
+ * CamiproController - Main logic for the Camipro Plugin.
+ * 
+ * This class issues requests to the Camipro PocketCampus
+ * server to get the Camipro data of the logged in user.
+ * It also allows the users to get the e-banking information
+ * via email.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ * 
+ */
 public class CamiproController extends PluginController implements ICamiproController{
 
 	private String mPluginName = "camipro";
 	
-
+	private CamiproModel mModel;
+	private Iface mClientBT;
+	private Iface mClientSL;
+	private Iface mClientLE;
+	
 	@Override
 	public void onCreate() {
-		Log.v("DEBUG", "onCreate called on CamiproController");
-		// Initializing the model is part of the controller's job...
-		mModel = CamiproModel.getInstance();
-		
-		// ...as well as initializing the client.
-		// The "client" is the connection we use to access the service.
-		//TODO for now, need two clients to be able to issue two concurrent server requests
+		mModel = new CamiproModel(getApplicationContext());
 		mClientBT = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientSL = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientLE = (Iface) getClient(new Client.Factory(), mPluginName);
@@ -67,10 +74,6 @@ public class CamiproController extends PluginController implements ICamiproContr
 		new SendLoadingInfoByEmailRequest().start(this, mClientLE, buildSessionId());
 	}
 	
-	public void reset() {
-		mModel = CamiproModel.killInstance();
-	}
-	
 	private CamiproRequest buildSessionId() {
 		SessionId sessId = new SessionId(TypeOfService.SERVICE_CAMIPRO);
 		sessId.setCamiproCookie(mModel.getCamiproCookie());
@@ -79,10 +82,5 @@ public class CamiproController extends PluginController implements ICamiproContr
 		cr.setISessionId(sessId);
 		return cr;
 	}
-	
-	private CamiproModel mModel;
-	private Iface mClientBT;
-	private Iface mClientSL;
-	private Iface mClientLE;
 	
 }

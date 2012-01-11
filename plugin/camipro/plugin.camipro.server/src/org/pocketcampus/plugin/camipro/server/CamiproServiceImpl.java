@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -19,6 +18,17 @@ import org.pocketcampus.plugin.camipro.shared.SendMailResult;
 import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
+/**
+ * CamiproServiceImpl
+ * 
+ * The implementation of the server side of the Camipro Plugin.
+ * 
+ * It fetches the user's Camipro data from the Camipro servers.
+ * And sends the e-banking information to the user by email.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class CamiproServiceImpl implements CamiproService.Iface {
 	
 	
@@ -154,6 +164,10 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		return mr;
 	}
 	
+	
+	/**
+	 * HELPER FUNCTIONS
+	 */
 	
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();

@@ -17,7 +17,8 @@
     <string name="camipro_ebanking_section_title">Chargement par e-banking</string>
     <string name="camipro_statistics_section_title">Statistiques</string>
         
-    
+    <string name="camipro_no_recent_transactions">Pas de transactions récentes</string>
+        
     <string name="camipro_ebanking_infos_text">Afin de charger votre carte CAMIPRO, veuillez reporter les indications de paiement ci-dessous (no de compte, no de référence, etc.) dans l\'outil e-banking fourni par votre établissement financier.\nLe type de paiement à effectuer est un paiement par BVR orange.</string>
     <string name="camipro_ebanking_paid_to_title">Versement pour</string>
     <string name="camipro_ebanking_account_number_title">Numéro de compte</string>

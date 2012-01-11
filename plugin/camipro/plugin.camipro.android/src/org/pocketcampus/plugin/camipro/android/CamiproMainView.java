@@ -7,8 +7,8 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.layout.StandardLayout;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledDoubleSeparatedLayout;
-import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,8 +31,26 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
+/**
+ * CamiproMainView - Main view that shows Camipro balance and transactions.
+ * 
+ * This is the main view in the Camipro Plugin.
+ * It shows the Balance and the transactions.
+ * It checks if the user is logged in, if not it pings
+ * the Authentication Plugin.
+ * When it gets back a valid SessionId it fetches the
+ * user's Camipro data.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ * 
+ */
 public class CamiproMainView extends PluginView implements ICamiproView {
 
+	private CamiproController mController;
+	private CamiproModel mModel;
+	
+	private StandardTitledDoubleSeparatedLayout mLayout;
+	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return CamiproController.class;
@@ -44,33 +61,34 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		//Tracker
 		Tracker.getInstance().trackPageView("camipro");
 		
-		Log.v("DEBUG", "CamiproMainView::onDisplay");
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		//mLayout = new StandardLayout(this);
+		// Setup layout
 		mLayout = new StandardTitledDoubleSeparatedLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
 		mLayout.hideFirstTitle();
 		mLayout.hideSecondTitle();
-		//setContentView(R.layout.camipro_main);
 
-		//mLayout.setText("Loading");
-		//refreshAll();
 		ActionBar a = getActionBar();
 		if (a != null) {
 			RefreshAction refresh = new RefreshAction();
 			a.addAction(refresh, 0);
 		}
 	}
-	
+
+	/**
+	 * Handles the intent that was used to start this plugin.
+	 * 
+	 * If we were pinged by auth plugin, then we must read the sessId.
+	 * Otherwise we do a normal startup, and if we do not have the
+	 * camiproCookie we ping the Authentication Plugin.
+	 */
 	@Override
 	protected void handleIntent(Intent aIntent) {
-		Log.v("DEBUG", "CamiproMainView::handleIntent");
 		// If we were pinged by auth plugin, then we must read the sessId
 		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
 			Uri aData = aIntent.getData();
@@ -85,22 +103,21 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			// get cookie (ping auth plugin)
 			pingAuthPlugin(this);
 		}
-		//if(mModel.getBalance() == null || mModel.getTransactions() == null) { // if we don't have some data
-			// fetch them
-			mController.refreshBalanceAndTransactions();
-		//}
-		//if(mModel.getCardStatistics() == null || mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have some other data
-			// get them
-			mController.refreshStatsAndLoadingInfo();
-		//}
-		// update display
+		
+		mController.refreshBalanceAndTransactions();
 		updateDisplay();
 	}
-	
+
+	/**
+	 * This is called when the Activity is resumed.
+	 * 
+	 * If the user presses back on the Authentication window,
+	 * This Activity is resumed but we do not have the
+	 * camiproCookie. In this case we close the Activity.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.v("DEBUG", "CamiproMainView::onResume");
 		if(mController != null && mController.getCamiproCookie() == null) {
 			// Resumed and lot logged in? go back
 			finish();
@@ -112,22 +129,16 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		List<Transaction> ltb = mModel.getTransactions();
 		if(ltb == null)
 			return;
-		
-		/*ArrayList<String> list = new ArrayList<String>();
-		for (Transaction s : ltb) {
-			list.add(s.getIDate() + "\t" + s.getIPlace() + "\t" + formatMoney(s.getIAmount()));
-		}*/
-		ListView lv = new ListView(getApplicationContext());
-		lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
-		
 		mLayout.removeSecondLayoutFillerView();
-		//mLayout.addSecondLayoutFillerView(new ListViewElement(this, list));
-		mLayout.addSecondLayoutFillerView(lv);
-
-		
-		//ListView lv = (ListView) findViewById(R.id.camipro_list);
-		// Create an adapter for the data
-		//lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
+		if(ltb.size() > 0) {
+			ListView lv = new ListView(getApplicationContext());
+			lv.setAdapter(new TransactionAdapter(getApplicationContext(), R.layout.camipro_transaction, ltb));
+			mLayout.addSecondLayoutFillerView(lv);
+		} else {
+			StandardLayout eLayout = new StandardLayout(this);
+			eLayout.setText(getResources().getString(R.string.camipro_no_recent_transactions));
+			mLayout.addSecondLayoutFillerView(eLayout);
+		}
 	}
 
 	@Override
@@ -135,22 +146,15 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		Double bal = mModel.getBalance();
 		if(bal == null)
 			return;
-		
 		mLayout.setFirstTitle(getResources().getString(R.string.camipro_balance_section_title));
-		
 		ArrayList<Amout> l = new ArrayList<Amout>();
 		l.add(new Amout(getResources().getString(R.string.camipro_current_balance), bal));
-		
 		ListView lv = new ListView(getApplicationContext());
 		lv.setAdapter(new AmountAdapter(getApplicationContext(), R.layout.camipro_amount, l));
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		lv.setLayoutParams(p);
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.addFirstLayoutFillerView(lv);
-		
-		
-		//TextView balance = (TextView) findViewById(R.id.camipro_balance_number);
-		//balance.setText(formatMoney(bal));
 	}
 
 	@Override
@@ -163,16 +167,12 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	
 	@Override
 	public void lastUpdateDateUpdated() {
-		// Last update
 		String date = mModel.getLastUpdateDate();
 		if(date != null) {
-			//TextView dateLastUpdated = (TextView) findViewById(R.id.camipro_balance_date_text);
-			//dateLastUpdated.setText("As of " + date + " given no offline transactions");
 			mLayout.setSecondTitle(String.format(
 					getResources().getString(R.string.camipro_transactions_section_title), date));
 		}
 	}
-
 
 	private void updateDisplay() {
 		transactionsUpdated();
@@ -181,15 +181,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		cardStatisticsUpdated();
 		lastUpdateDateUpdated();
 	}
-
 	
 	public static void pingAuthPlugin(Context context) {
 		Intent authIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
 		context.startActivity(authIntent);
-		/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-		context.startService(authIntent);*/
 	}
 	
 	@Override
@@ -201,64 +197,47 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		
 		if(item.getItemId() == R.id.camipro_recharge) {
 			Intent i = new Intent(this, CamiproCardRechargeView.class);
 			startActivity(i);
 		} else if(item.getItemId() == R.id.camipro_logout) {			
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/menu/logout");
-			mController.reset();
+			mModel.setCamiproCookie(null);
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
 			startService(authIntent);
 			finish();
 		}
-		
-
 		return true;
 	}
-	
-	
-	
 	
 	@Override
 	public void emailSent(String result) {
 		Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
 	}
 
-
-	
-	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
 	public void camiproServersDown() {
-		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void notLoggedIn() {
-		mController.reset();
+		mModel.setCamiproCookie(null);
 		pingAuthPlugin(this);
 	}
-
-
-	private CamiproController mController;
-	private ICamiproModel mModel;
-	
-	private StandardTitledDoubleSeparatedLayout mLayout;
-
-
-	
-	
 	
 
 	/*****
-	 * HELPERS
+	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
 	public static String formatMoney(double money) {
@@ -267,7 +246,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	public class TransactionAdapter extends ArrayAdapter<Transaction> {
 		private LayoutInflater li_;
-		//private java.text.DateFormat df_; // Used to format the date
 		private Context context_;
 	
 		// Colors
@@ -283,7 +261,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		public TransactionAdapter(Context context, int textViewResourceId, List<Transaction> transactions) {
 			super(context, textViewResourceId, transactions);
 			li_ = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			//df_ = DateFormat.getDateFormat(context);
 			context_ = context;
 	
 			minus_ = context_.getResources().getColor(R.color.camipro_minus);
@@ -338,8 +315,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			}
 			TextView tv;
 			Amout t = getItem(position);
-			/*tv = (TextView) v.findViewById(R.id.camipro_amount_title);
-			tv.setText(t.title);*/
 			tv = (TextView) v.findViewById(R.id.camipro_amount_value);
 			tv.setText(formatMoney(t.value));
 			return v;
@@ -380,15 +355,8 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		public void performAction(View view) {
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/refresh");
-			
 			mController.refreshBalanceAndTransactions();
 		}
 	}
-
-
-
-
-
-
 	
 }

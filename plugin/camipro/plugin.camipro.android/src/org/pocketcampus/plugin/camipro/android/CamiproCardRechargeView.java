@@ -8,13 +8,11 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +28,22 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
+/**
+ * CamiproCardRechargeView - View that shows Camipro recharge with e-banking.
+ * 
+ * This view shows how to recharge your camipro card
+ * with e-banking. It also shows the statistics of the card.
+ * And features a "send it by email" button in the menu.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ * 
+ */
 public class CamiproCardRechargeView extends PluginView implements ICamiproView {
+
+	private CamiproController mController;
+	private CamiproModel mModel;
+	
+	private StandardTitledLayout mLayout;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -46,58 +59,33 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
 
-		// The StandardLayout is a RelativeLayout with a TextView in its center.
-		//mLayout = new StandardLayout(this);
+		// Setup the layout
 		mLayout = new StandardTitledLayout(this);
 
 		// The ActionBar is added automatically when you call setContentView
 		setContentView(mLayout);
-		//setContentView(R.layout.camipro_main);
+		mLayout.hideTitle();
 
-		//mLayout.setText("Loading");
-		//refreshAll();
 		ActionBar a = getActionBar();
 		if (a != null) {
 			RefreshAction refresh = new RefreshAction();
 			a.addAction(refresh, 0);
 		}
-	}
-	
-	@Override
-	protected void handleIntent(Intent aIntent) {
-		// Normal start-up
-		if(mModel.getCardLoadingWithEbankingInfo() == null) { // if we don't have the data
-			// get it
-			// Normally this shouldn't happen
-			mController.refreshStatsAndLoadingInfo();
-		}
-		// update display
+		
+		mController.refreshStatsAndLoadingInfo();
 		updateDisplay();
 	}
 	
 	@Override
-	protected void onResume() {
-		super.onResume();
-		if(mController != null && mController.getCamiproCookie() == null) {
-			// Resumed and lot logged in? go back
-			finish();
-		}
-	}
-
-
-	@Override
 	public void transactionsUpdated() {
-		// no need coz not displayed
 	}
 
 	@Override
 	public void balanceUpdated() {
-		// no need coz not displayed
 	}
 	
 	@Override
 	public void lastUpdateDateUpdated() {
-		// no need coz not displayed
 	}
 
 	@Override
@@ -109,7 +97,6 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	public void cardStatisticsUpdated() {
 		updateDisplay();
 	}
-
 
 	private void updateDisplay() {
 		CardLoadingWithEbankingInfo ebanking = mModel.getCardLoadingWithEbankingInfo();
@@ -146,9 +133,6 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		mLayout.removeFillerView();
 		mLayout.addFillerView(lv);
 	}
-	
-	
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -159,18 +143,13 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		
 		if(item.getItemId() == R.id.camipro_send_ebankinginfo_byemail) {			
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/charge/email");
-			
 			mController.sendEmailWithLoadingDetails();
 		}
-		
-
 		return true;
 	}
-	
 
 	@Override
 	public void emailSent(String result) {
@@ -184,26 +163,21 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	@Override
 	public void notLoggedIn() {
-		mController.reset();
+		mModel.setCamiproCookie(null);
 		CamiproMainView.pingAuthPlugin(this);
 	}
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
 		Tracker.getInstance().trackPageView("camipro/charge/network_error");
-		
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
-	private CamiproController mController;
-	private ICamiproModel mModel;
 	
-	private StandardTitledLayout mLayout;
-
+	/*****
+	 * HELPER CLASSES AND FUNCTIONS
+	 */
 	
-	
-	
-
 	public class EbankingInfo {
 		EbankingInfo(String t, String v, boolean s) {
 			title = t;
@@ -217,6 +191,9 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	
 	public class EbankingAdapter extends ArrayAdapter<EbankingInfo> {
 
+		private LayoutInflater li;
+		private int rid;
+		
 		public EbankingAdapter(Context context, int textViewResourceId, List<EbankingInfo> ebankingInfo) {
 			super(context, textViewResourceId, ebankingInfo);
 			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -228,9 +205,6 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	        EbankingInfo t = getItem(position);
 	        if(t.isSeparator) {
 				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
-				//v.setOnClickListener(null);
-				//v.setOnLongClickListener(null);
-				//v.setLongClickable(true);
 		        TextView tv;
 		        tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_text);
 		        if(t.title != null)
@@ -259,11 +233,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	        return v;
 		}
 		
-		private LayoutInflater li;
-		private int rid;
-		
 	}
-
 
 	/**
 	 * Refreshes camipro
@@ -295,11 +265,8 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		public void performAction(View view) {
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/charge/refresh");
-			
 			mController.refreshStatsAndLoadingInfo();
 		}
 	}
 
-
-	
 }

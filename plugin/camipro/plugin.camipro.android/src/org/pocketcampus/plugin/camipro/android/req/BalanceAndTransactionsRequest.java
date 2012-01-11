@@ -7,11 +7,20 @@ import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 
+/**
+ * BalanceAndTransactionsRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to get the Camipro balance and card transactions
+ * of the logged in user.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class BalanceAndTransactionsRequest extends Request<CamiproController, Iface, CamiproRequest, BalanceAndTransactions> {
 
 	@Override
 	protected BalanceAndTransactions runInBackground(Iface client, CamiproRequest param) throws Exception {
-		System.out.println("Getting BalanceAndTransactions");
 		return client.getBalanceAndTransactions(param);
 	}
 

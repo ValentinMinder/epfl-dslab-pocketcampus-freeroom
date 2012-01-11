@@ -7,11 +7,20 @@ import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
 
+/**
+ * StatsAndLoadingInfoRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to get the user's Card statistics and information about how to
+ * load the card via e-banking.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class StatsAndLoadingInfoRequest extends Request<CamiproController, Iface, CamiproRequest, StatsAndLoadingInfo> {
 
 	@Override
 	protected StatsAndLoadingInfo runInBackground(Iface client, CamiproRequest param) throws Exception {
-		System.out.println("Getting StatsAndLoadingInfo");
 		return client.getStatsAndLoadingInfo(param);
 	}
 

@@ -17,7 +17,8 @@
     <string name="camipro_ebanking_section_title">Recharge card with e-banking</string>
     <string name="camipro_statistics_section_title">Statistics</string>
         
-    
+    <string name="camipro_no_recent_transactions">No recent transactions</string>
+        
     <string name="camipro_ebanking_infos_text">In order to load your CAMIPRO card, please copy the payment details below (account number, reference number, etc.) in the e-banking tool provided by your financial institution.\nThe payment to select is an orange payment slip.</string>
     <string name="camipro_ebanking_paid_to_title">Paid to</string>
     <string name="camipro_ebanking_account_number_title">Account number</string>

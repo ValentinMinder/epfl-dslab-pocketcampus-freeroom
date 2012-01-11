@@ -7,6 +7,16 @@ import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.SendMailResult;
 
+/**
+ * SendLoadingInfoByEmailRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to send the e-banking card charging information to the user
+ * by email.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class SendLoadingInfoByEmailRequest extends Request<CamiproController, Iface, CamiproRequest, SendMailResult> {
 
 	@Override
