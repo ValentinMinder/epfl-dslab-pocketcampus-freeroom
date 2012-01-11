@@ -19,4 +19,10 @@ public interface INewsView extends IView {
 	 * Called when the list of feed names and urls has been updated.
 	 */
 	public void feedUrlsUpdated();
+	
+	/**
+	 * Called when the content of a news has been loaded.
+	 */
+	public void newsContentLoaded(String content);
+
 }

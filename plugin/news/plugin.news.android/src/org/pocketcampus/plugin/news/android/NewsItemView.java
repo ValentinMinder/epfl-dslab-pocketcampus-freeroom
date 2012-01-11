@@ -15,8 +15,6 @@ import android.util.Log;
  */
 
 public class NewsItemView extends PluginView {
-	// private NewsController mController;
-	// private INewsModel mModel;
 	/** The title of the NewsItem. */
 	private String mTitle;
 	/** The description of the NewsItem. */
@@ -51,10 +49,6 @@ public class NewsItemView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
-
-		// Get and cast the controller and model
-		// mController = (NewsController) controller;
-		// mModel = (NewsModel) controller.getModel();
 
 		mLayout = new FeedInformationLayout(this, null);
 

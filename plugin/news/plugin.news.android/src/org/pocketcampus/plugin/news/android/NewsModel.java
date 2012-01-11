@@ -129,7 +129,8 @@ public class NewsModel extends PluginModel implements INewsModel {
 			mFeedUrls = new HashMap<String, String>();
 			Iterator<Entry<String, String>> entries = map.entrySet().iterator();
 			while (entries.hasNext()) {
-				Entry<String, String> thisEntry = (Entry<String, String>) entries.next();
+				Entry<String, String> thisEntry = (Entry<String, String>) entries
+						.next();
 				String key = (String) thisEntry.getKey();
 				String value = (String) thisEntry.getValue();
 				mFeedUrls.put(key, value);
@@ -138,6 +139,11 @@ public class NewsModel extends PluginModel implements INewsModel {
 			Log.d("NEWSMODEL", "Null map");
 		}
 		mListeners.feedUrlsUpdated();
+	}
+
+	@Override
+	public void displayNewsContent(String content) {
+		mListeners.newsContentLoaded(content);
 	}
 
 	@Override

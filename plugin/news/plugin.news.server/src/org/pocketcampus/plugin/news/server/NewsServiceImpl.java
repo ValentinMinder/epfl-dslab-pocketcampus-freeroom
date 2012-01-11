@@ -189,7 +189,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * @return The content of the NewsItem.
 	 */
 	@Override
-	public String getNewsItemContent(String language, long newsItemId)
+	public String getNewsItemContent(long newsItemId)
 			throws TException {
 		importFeeds();
 		String toReturn = null;

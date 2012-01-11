@@ -6,10 +6,12 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.news.android.iface.INewsController;
 import org.pocketcampus.plugin.news.android.req.FeedUrlsRequest;
+import org.pocketcampus.plugin.news.android.req.NewsItemContentRequest;
 import org.pocketcampus.plugin.news.android.req.NewsItemsRequest;
 import org.pocketcampus.plugin.news.shared.NewsService.Client;
 import org.pocketcampus.plugin.news.shared.NewsService.Iface;
 import org.pocketcampus.plugin.news.shared.NewsService.getFeedUrls_args;
+import org.pocketcampus.plugin.news.shared.NewsService.getNewsItemContent_args;
 import org.pocketcampus.plugin.news.shared.NewsService.getNewsItems_args;
 
 /**
@@ -71,5 +73,20 @@ public class NewsController extends PluginController implements INewsController 
 
 		getNewsItems_args param = new getNewsItems_args(language);
 		new NewsItemsRequest().start(this, mClient, param);
+	}
+
+	/**
+	 * Loads the news item content for a specific item
+	 * 
+	 * @param newsItem
+	 *            The news item for which to load the content.
+	 */
+	@Override
+	public void getNewsContent(long itemId) {
+		String language = Locale.getDefault().getLanguage();
+
+		getNewsItemContent_args param = new getNewsItemContent_args(itemId);
+		new NewsItemContentRequest().start(this, mClient, param);
+
 	}
 }

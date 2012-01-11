@@ -71,4 +71,9 @@ public interface INewsModel {
 	 * Called when an error has happened while updating the feed names.
 	 */
 	public void notifyNetworkErrorFeedUrls();
+	
+	/**
+	 * Called when the content of a news has been loaded.
+	 */
+	public void displayNewsContent(String content);
 }

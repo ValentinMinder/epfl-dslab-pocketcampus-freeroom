@@ -208,7 +208,7 @@ public class NewsMainView extends PluginView implements INewsView {
 		mLayout.setText(getString(R.string.news_no_news));
 	}
 
-	/** 
+	/**
 	 * Sets the clickListener of the listView.
 	 */
 	private void setOnListViewClickListener() {
@@ -217,22 +217,14 @@ public class NewsMainView extends PluginView implements INewsView {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int position, long arg3) {
-				Intent news = new Intent(getApplicationContext(),
-						NewsItemView.class);
-				NewsItemWithImage toPass = mModel.getNews(NewsMainView.this)
-						.get(position);
-				news.putExtra("org.pocketcampus.news.newsitem.title", toPass
-						.getNewsItem().getTitle());
-				news.putExtra("org.pocketcampus.news.newsitem.feed", toPass
-						.getNewsItem().getFeed());
-				news.putExtra("org.pocketcampus.news.newsitem.bitmap",
-						toPass.getBitmapDrawable());
+				toDisplay = mModel.getNews(NewsMainView.this).get(position);
+
+				mController.getNewsContent(toDisplay.getNewsItem()
+						.getNewsItemId());
 
 				// Tracker
 				Tracker.getInstance().trackPageView(
-						"news/click/" + toPass.getNewsItem().getTitle());
-
-				startActivity(news);
+						"news/click/" + toDisplay.getNewsItem().getTitle());
 			}
 		};
 		mListView.setOnItemClickListener(mOnItemClickListener);
@@ -245,7 +237,8 @@ public class NewsMainView extends PluginView implements INewsView {
 	IFeedViewLabeler<NewsItemWithImage> mNewsItemLabeler = new IFeedViewLabeler<NewsItemWithImage>() {
 
 		/**
-		 * @param newsItem the NewsItem to be represented
+		 * @param newsItem
+		 *            the NewsItem to be represented
 		 * @return The title of the NewsItem.
 		 */
 		@Override
@@ -254,7 +247,8 @@ public class NewsMainView extends PluginView implements INewsView {
 		}
 
 		/**
-		 * @param newsItem the NewsItem to be represented
+		 * @param newsItem
+		 *            the NewsItem to be represented
 		 * @return The description of the NewsItem.
 		 */
 		@Override
@@ -263,7 +257,8 @@ public class NewsMainView extends PluginView implements INewsView {
 		}
 
 		/**
-		 * @param newsItem the NewsItem to be represented
+		 * @param newsItem
+		 *            the NewsItem to be represented
 		 * @return The layout with the image associated to the NewsItem.
 		 */
 		@Override
@@ -271,4 +266,24 @@ public class NewsMainView extends PluginView implements INewsView {
 			return new LoaderNewsImageView(NewsMainView.this, newsItem);
 		}
 	};
+
+	private NewsItemWithImage toDisplay;
+
+	@Override
+	public void newsContentLoaded(String content) {
+		if (toDisplay != null) {
+			Intent news = new Intent(getApplicationContext(),
+					NewsItemView.class);
+			news.putExtra("org.pocketcampus.news.newsitem.title", toDisplay
+					.getNewsItem().getTitle());
+			news.putExtra("org.pocketcampus.news.newsitem.feed", toDisplay
+					.getNewsItem().getFeed());
+			news.putExtra("org.pocketcampus.news.newsitem.bitmap",
+					toDisplay.getBitmapDrawable());
+
+			news.putExtra("org.pocketcampus.news.newsitem.bitmap", content);
+
+			startActivity(news);
+		}
+	}
 }
