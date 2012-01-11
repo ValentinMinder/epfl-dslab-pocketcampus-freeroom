@@ -20,6 +20,27 @@ import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 
+/**
+ * GetSessionIdDirectlyFromProviderRequest
+ * 
+ * This class sends an HttpRequest directly to the server of the specific service
+ * that is requesting authentication, in order to authenticate the user to that service.
+ * Usually this is used when the service is not Tequila enabled,
+ * so the user must provide their username and password for this service in particular.
+ * For every service that is not Tequila-enabled a helper function
+ * that logs in the user must be implemented here. e.g. loginToIsa.
+ * This function takes as arguments the HttpClient to be used to connect to the server
+ * and the LocalCredentials consisting of the user's username and password.
+ * This function must return a valid SessionId if the authentication succeeds,
+ * otherwise it returns null.
+ * If there is a network error (such as no connection to the Internet) the
+ * function can throw an IOException.
+ * It is advised that this function uses HTTPS connection to send the user's
+ * credentials. e.g. loginToIsa.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class GetSessionIdDirectlyFromProviderRequest extends Request<AuthenticationController, DefaultHttpClient, TOSCredentialsComplex, SessionId> {
 	
 	@Override
@@ -46,9 +67,22 @@ public class GetSessionIdDirectlyFromProviderRequest extends Request<Authenticat
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
-	
-	// Helper functions
-	
+
+	/**
+	 * Helper function that logs in the user directly to ISA.
+	 * 
+	 * It uses the user's username and password and sends them
+	 * directly to ISA. If the authentication succeeds, it returns
+	 * a valid SessionId for the ISA service. Otherwise it returns
+	 * null. If there is no Internet connection, it throws
+	 * an IOException.
+	 * 
+	 * @param client is the HTTP client used to connect to ISA server.
+	 * @param credentials is the LocalCredentials containing the user's
+	 * username and password.
+	 * @return a valid SessionId if authentication succeeds or null otherwise.
+	 * @throws IOException in case it could not reach the ISA server.
+	 */
 	private SessionId loginToIsa(DefaultHttpClient client, LocalCredentials credentials) throws IOException {
 		client.setRedirectHandler(AuthenticationController.redirectNoFollow);
 		HttpPost post = new HttpPost(AuthenticationController.isaLoginUrl);

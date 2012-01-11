@@ -11,15 +11,64 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+/**
+ * AuthenticationModel - The Model that stores the data of this plugin.
+ * 
+ * This is the Model associated with the Authentication plugin.
+ * It stores the data required for the correct functioning of the plugin.
+ * Some data is persistent. e.g.tequilaCookie.
+ * Other data are temporary.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class AuthenticationModel extends PluginModel implements IAuthenticationModel {
-	IAuthenticationView mListeners = (IAuthenticationView) getListeners();
 	
+	/**
+	 * Some constants.
+	 */
+	private static final String AUTH_STORAGE_NAME = "AUTH_STORAGE_NAME";
+	private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
+	
+	/**
+	 * Reference to the Views that need to be notified when the stored data changes.
+	 */
+	IAuthenticationView mListeners = (IAuthenticationView) getListeners();
+
+	/**
+	 * SharedPreferences object responsible for the persistent data storage.
+	 */
+	private SharedPreferences iStorage;
+
+	/**
+	 * Member variables containing required data for the plugin.
+	 */
+	private TequilaKey iTequilaKey;
+	private SessionId iSessionId;
+	private String iAuthenticatedToken;
+	
+	/**
+	 * Data that need to be persistent.
+	 */
+	private String tequilaCookie;
+
+	/**
+	 * Constructor with reference to the context.
+	 * 
+	 * We need the context to be able to instantiate
+	 * the SharedPreferences object in order to use
+	 * persistent storage.
+	 * 
+	 * @param context is the Application Context.
+	 */
 	public AuthenticationModel(Context context) {
 		iStorage = context.getSharedPreferences(AUTH_STORAGE_NAME, 0);
 		tequilaCookie = iStorage.getString(TEQUILA_COOKIE_KEY, null);
 	}
-	
 
+	/**
+	 * Setter and getter for iTequilaKey.
+	 */
 	public TequilaKey getTequilaKey() {
 		return iTequilaKey;
 	}
@@ -28,6 +77,9 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		mListeners.gotTequilaKey();
 	}
 
+	/**
+	 * Setter and getter for iAuthenticatedToken.
+	 */
 	public String getAuthenticatedToken() {
 		return iAuthenticatedToken;
 	}
@@ -36,6 +88,9 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		mListeners.gotAuthenticatedToken();
 	}
 
+	/**
+	 * Setter and getter for iSessionId.
+	 */
 	public SessionId getSessionId() {
 		return iSessionId;
 	}
@@ -44,9 +99,12 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		mListeners.gotSessionId();
 	}
 
-	
-	
-	
+	/**
+	 * Setter and getter for tequilaCookie.
+	 */
+	public String getTequilaCookie() {
+		return tequilaCookie;
+	}
 	public void setTequilaCookie(String value) {
 		tequilaCookie = value;
 		Editor editor = iStorage.edit();
@@ -54,32 +112,20 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		editor.commit();
 		mListeners.gotTequilaCookie();
 	}
-	public String getTequilaCookie() {
-		return tequilaCookie;
-	}
 
-	
-	
+	/**
+	 * Returns the Type of the Views associated with this plugin.
+	 */
 	@Override
 	protected Class<? extends IView> getViewInterface() {
 		return IAuthenticationView.class;
 	}
+	
+	/**
+	 * Returns the registered listeners to by notified.
+	 */
 	public IAuthenticationView getListenersToNotify() {
 		return mListeners;
 	}
 	
-	
-	
-	private TequilaKey iTequilaKey;
-	private SessionId iSessionId;
-	private String iAuthenticatedToken;
-	
-	private String tequilaCookie; // this is the only thing we need to store
-
-	///////////
-
-	private SharedPreferences iStorage;
-	private static final String AUTH_STORAGE_NAME = "AUTH_STORAGE_NAME";
-	private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
-
 }

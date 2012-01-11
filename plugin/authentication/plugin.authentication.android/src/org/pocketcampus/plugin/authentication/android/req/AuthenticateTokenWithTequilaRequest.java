@@ -8,7 +8,18 @@ import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController.TokenCookieComplex;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 
+/**
+ * AuthenticateTokenWithTequilaRequest
+ * 
+ * This class sends an HttpRequest to the Tequila server directly
+ * in order to authenticate the token the we got for a specific service.
+ * This class connects to Tequila over a secure HTTPS connection.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationController, DefaultHttpClient, TokenCookieComplex, Boolean> {
+	
 	@Override
 	protected Boolean runInBackground(DefaultHttpClient client, TokenCookieComplex param) throws Exception {
 		HttpGet get = new HttpGet(String.format(AuthenticationController.tequilaAuthTokenUrl, param.token.getITequilaKey()));
@@ -23,7 +34,6 @@ public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationC
 		if(result) {
 			am.setAuthenticatedToken(am.getTequilaKey().getITequilaKey());
 		} else {
-			// TODO do more checks to know if token is invalid or cookie has timed out
 			am.getListenersToNotify().notifyCookieTimedOut();
 		}
 	}
@@ -33,4 +43,5 @@ public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationC
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
+	
 }

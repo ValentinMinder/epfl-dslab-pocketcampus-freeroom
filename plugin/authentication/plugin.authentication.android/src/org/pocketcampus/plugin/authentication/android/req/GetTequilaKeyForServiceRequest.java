@@ -7,7 +7,20 @@ import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
+/**
+ * GetTequilaKeyForServiceRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to get a Tequila Token for the service that is
+ * currently requesting authentication.
+ * This token will be subsequently authenticated with Tequila,
+ * and used to get a valid SessionId.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class GetTequilaKeyForServiceRequest extends Request<AuthenticationController, Iface, TypeOfService, TequilaKey> {
+	
 	@Override
 	protected TequilaKey runInBackground(Iface client, TypeOfService param) throws Exception {
 		return client.getTequilaKeyForService(param);
@@ -23,4 +36,5 @@ public class GetTequilaKeyForServiceRequest extends Request<AuthenticationContro
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
+	
 }

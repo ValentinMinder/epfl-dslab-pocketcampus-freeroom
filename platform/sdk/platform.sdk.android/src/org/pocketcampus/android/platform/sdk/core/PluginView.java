@@ -22,9 +22,11 @@ import com.markupartist.android.widget.ActionBar.Action;
 
 /**
  * Base class for all plugins. Gives access to action bar and logging
- * functionalities. TODO way to disable the action bar
+ * functionalities.
+ * Gives a way to handle Intents, and to disable the activity title.
  * 
- * @author Florian
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Amer <amer.chamseddine@epfl.ch>
  */
 public abstract class PluginView extends Activity {
 
@@ -118,9 +120,12 @@ public abstract class PluginView extends Activity {
 	}
 
 	/**
-	 * Calling <code>super.handleIntent</code> is not necessary.
-	 * 
-	 * @param intent
+	 * Called when the activity is started after receiving an intent.
+	 * Normally, if the activity was previously created,
+	 * onNewIntent receives the intent, otherwise,
+	 * onCreate receives it.
+	 * In both cases if you want to handle that intent
+	 * just override this function
 	 */
 	protected void handleIntent(Intent intent) {
 	}

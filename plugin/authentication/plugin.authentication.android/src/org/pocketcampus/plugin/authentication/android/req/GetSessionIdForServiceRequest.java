@@ -7,7 +7,19 @@ import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface
 import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 
+/**
+ * GetSessionIdForServiceRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to get the SessionId for a specific service
+ * provided that we have a token that was previously authenticated
+ * using Tequila.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class GetSessionIdForServiceRequest extends Request<AuthenticationController, Iface, TequilaKey, SessionId> {
+	
 	@Override
 	protected SessionId runInBackground(Iface client, TequilaKey param) throws Exception {
 		return client.getSessionIdForService(param);
@@ -23,4 +35,5 @@ public class GetSessionIdForServiceRequest extends Request<AuthenticationControl
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
+	
 }

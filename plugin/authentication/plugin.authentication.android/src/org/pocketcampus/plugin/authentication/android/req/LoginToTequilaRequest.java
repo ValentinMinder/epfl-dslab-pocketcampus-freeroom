@@ -14,7 +14,19 @@ import org.pocketcampus.plugin.authentication.android.AuthenticationController;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 
+/**
+ * LoginToTequilaRequest
+ * 
+ * This class sends an HttpRequest to the Tequila server directly
+ * in order to login the user to Tequila. It gets back a TequilaCookie,
+ * that can be used later on to authenticate tokens for different services.
+ * This class sends the user credentials to Tequila over a secure HTTPS connection.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class LoginToTequilaRequest extends Request<AuthenticationController, DefaultHttpClient, LocalCredentials, String> {
+	
 	@Override
 	protected String runInBackground(DefaultHttpClient client, LocalCredentials param) throws Exception {
 		client.setRedirectHandler(AuthenticationController.redirectNoFollow);
@@ -22,7 +34,7 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 		List<NameValuePair> l = new LinkedList<NameValuePair>();
 		l.add(new BasicNameValuePair("username", param.username));
 		l.add(new BasicNameValuePair("password", param.password));
-		post.setEntity(new UrlEncodedFormEntity(l)); // with list of key-value pairs
+		post.setEntity(new UrlEncodedFormEntity(l));
 		client.execute(post);
 		List<Cookie> lc = client.getCookieStore().getCookies();
 		for(Cookie c : lc) {
@@ -48,4 +60,5 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}
+	
 }

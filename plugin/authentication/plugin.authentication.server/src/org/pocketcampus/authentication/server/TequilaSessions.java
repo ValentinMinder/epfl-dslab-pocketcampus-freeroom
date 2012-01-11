@@ -3,6 +3,15 @@ package org.pocketcampus.authentication.server;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * TequilaSessions
+ * 
+ * Contains the database of the Sessions that are currently
+ * opened with the "PocketCampus" service. 
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class TequilaSessions {
 	
 	static HashMap<String, TequilaSession> mSessionMap = new HashMap<String, TequilaSession>();
