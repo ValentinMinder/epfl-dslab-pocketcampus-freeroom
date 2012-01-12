@@ -16,20 +16,25 @@ import android.view.MenuInflater;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+/**
+ * 
+ * View for the Dashboard.
+ * 
+ * @author Florian Laurent <florian.laurent@epfl.ch>
+ *
+ */
 public class DashboardView extends PluginView {
 
 	private PluginDashboard	mDashboard;
 	
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		//Tracker
 		Tracker.getInstance().trackPageView("dashboard");
 		
 		setContentView(R.layout.dashboard_main);
-				
+		
+		// Creates and fills in the <code>PluginDashboard</code>.
 		mDashboard = new PluginDashboard(this);
-
-		// TODO use an intent filter instead
 		ArrayList<PluginInfo> pluginManifests = ((GlobalContext) getApplication()).getAllPluginInfos();
 		mDashboard.addPlugins(pluginManifests);
 
@@ -45,8 +50,14 @@ public class DashboardView extends PluginView {
 		return true;
 	}
 	
+	/**
+	 * Modifies the default entry and exit animations with a fade-in and fade-out.
+	 * 
+	 * @param item
+	 * @return
+	 */
 	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+	public boolean onOptionsItemSelected(android.view. MenuItem item) {
 		if (item.getItemId() == R.id.dashboard_about) {
 			startActivity(new Intent(this, AboutView.class));
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);

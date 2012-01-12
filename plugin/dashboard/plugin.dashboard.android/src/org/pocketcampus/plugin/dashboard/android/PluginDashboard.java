@@ -17,10 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * This dashboard displays multiple plugins on a single-page grid. The optimal spacing between the items is
+ * This Dashboard displays multiple plugins on a single-page grid. The optimal spacing between the items is
  * computed to give the best possible appearance based on the screen size and number of icons.
  * 
- * @author Florian
+ * @author Florian Laurent <florian.laurent@epfl.ch>
  */
 public class PluginDashboard {
 	private DashboardLayout	mDashboard;

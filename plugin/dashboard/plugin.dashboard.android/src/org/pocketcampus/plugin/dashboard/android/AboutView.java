@@ -10,15 +10,20 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
+/**
+ * View with the About information: team members, version, website URL and sponsors.
+ * 
+ * @author Florian Laurent <florian.laurent@epfl.ch>
+ */
 public class AboutView extends PluginView {
 
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
-		//Tracker
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		Tracker.getInstance().trackPageView("dashboard/about");
 		
 		setContentView(R.layout.dashboard_about);
+		
+		// sets the website link with the correct style
 		TextView link = (TextView) findViewById(R.id.url);
 		link.setText(Html.fromHtml("<font color=\"white\"><a href=\""
 				+ getString(R.string.website_url) + "\">"
@@ -26,6 +31,9 @@ public class AboutView extends PluginView {
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 
+	/**
+	 * Modifies the default entry and exit animations with a fade-in and fade-out.
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
