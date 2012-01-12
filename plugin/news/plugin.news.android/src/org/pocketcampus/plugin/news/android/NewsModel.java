@@ -16,7 +16,6 @@ import org.pocketcampus.plugin.news.shared.NewsItem;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -32,7 +31,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 	private List<NewsItemWithImage> mNewsItems;
 
 	/** Access to the preferences */
-	private SharedPreferences prefs_;
+	private SharedPreferences mPreferences;
 
 	/** The map of feed names with their Urls */
 	private HashMap<String, String> mFeedUrls;
@@ -60,8 +59,9 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 	@Override
 	public List<NewsItemWithImage> getNews(Context ctx) {
-		if (prefs_ == null) {
-			prefs_ = PreferenceManager.getDefaultSharedPreferences(ctx);
+		if (mPreferences == null) {
+			mPreferences = ctx.getSharedPreferences(
+					NewsPreferencesView.NEWS_PREFS_NAME, 0);
 		}
 
 		if (mNewsItems == null) {
@@ -70,8 +70,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 		ArrayList<NewsItemWithImage> filteredList = new ArrayList<NewsItemWithImage>();
 		for (NewsItemWithImage newsItem : mNewsItems) {
-			if (prefs_.getBoolean(NewsPreferencesView.LOAD_RSS
-					+ newsItem.getNewsItem().getFeed(), true)) {
+			if (mPreferences.getBoolean(newsItem.getNewsItem().getFeed(), true)) {
 				if (!alreadyContains(filteredList, newsItem)) {
 					filteredList.add(newsItem);
 				}

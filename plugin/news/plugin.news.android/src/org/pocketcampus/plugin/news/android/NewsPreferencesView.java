@@ -14,6 +14,7 @@ import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.android.platform.sdk.ui.list.PreferencesListViewElement;
 import org.pocketcampus.plugin.news.android.iface.INewsModel;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class NewsPreferencesView extends PluginView {
 	/** Interface to modify values in SharedPreferences object. */
 	private Editor mNewsPrefsEditor;
 	/** The name under which the preferences are stored on the phone. */
-	private static final String NEWS_PREFS_NAME = "NewsPrefs";
+	public static final String NEWS_PREFS_NAME = "NewsPrefs";
 
 	/* Feed */
 	/** The list of Feeds the preferences are made on. */
@@ -127,6 +128,12 @@ public class NewsPreferencesView extends PluginView {
 
 	}
 
+	@Override
+	public void onBackPressed() {
+		setResult(Activity.RESULT_OK);
+		finish();
+	}
+
 	/**
 	 * Sets what happens when the user clicks on an item in the list of Feeds.
 	 */
@@ -143,11 +150,14 @@ public class NewsPreferencesView extends PluginView {
 					Tracker.getInstance().trackPageView(
 							"news/preferences/add/" + mFeedNames.get(position));
 					mNewsPrefsEditor.putBoolean(mFeedNames.get(position), true);
+					Log.d("Prefs", mFeedNames.get(position));
 					mNewsPrefsEditor.commit();
 				} else {
 					Tracker.getInstance().trackPageView(
 							"news/preferences/remove/"
 									+ mFeedNames.get(position));
+					Log.d("Prefs", mFeedNames.get(position));
+
 					mNewsPrefsEditor.putBoolean(mFeedNames.get(position), false);
 					mNewsPrefsEditor.commit();
 				}
