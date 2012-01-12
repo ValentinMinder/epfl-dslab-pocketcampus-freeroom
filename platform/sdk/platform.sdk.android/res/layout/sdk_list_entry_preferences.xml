@@ -8,15 +8,18 @@
 
     <TextView
         android:id="@+id/sdk_list_preferences_entry_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/sdk_list_preferences_entry_prefBox"
+        android:layout_width="wrap_content"
         android:paddingLeft="6dip"
         style="@style/PocketCampusTheme.Primary.Subtitle"/>
     <CheckBox
         android:id="@+id/sdk_list_preferences_entry_prefBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="6dip"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
