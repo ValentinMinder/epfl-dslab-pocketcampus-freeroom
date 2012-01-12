@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 /**
  * Free for anyone to use, just say thanks and share :-)
  * 
- * @author Blundell
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class LoaderNewsImageView extends LinearLayout {

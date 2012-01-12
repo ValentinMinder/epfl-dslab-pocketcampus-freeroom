@@ -83,10 +83,7 @@ public class NewsController extends PluginController implements INewsController 
 	 */
 	@Override
 	public void getNewsContent(long itemId) {
-		String language = Locale.getDefault().getLanguage();
-
 		getNewsItemContent_args param = new getNewsItemContent_args(itemId);
 		new NewsItemContentRequest().start(this, mClient, param);
-
 	}
 }
