@@ -8,8 +8,6 @@ import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
-import android.util.Log;
-
 /**
  * 
  * A request to the server for all restaurants.

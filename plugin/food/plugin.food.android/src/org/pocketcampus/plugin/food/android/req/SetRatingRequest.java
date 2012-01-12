@@ -7,8 +7,6 @@ import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.FoodService.setRating_args;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
-import android.util.Log;
-
 /**
  * 
  * A request to the server to submit a user <code>Rating</code>.

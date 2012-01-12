@@ -9,8 +9,6 @@ import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 import org.pocketcampus.plugin.food.shared.Meal;
 
-import android.util.Log;
-
 /**
  * A request to the server for all meals in all restaurants
  * 

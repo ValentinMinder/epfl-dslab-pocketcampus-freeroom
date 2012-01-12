@@ -5,8 +5,6 @@ import org.pocketcampus.plugin.food.android.FoodController;
 import org.pocketcampus.plugin.food.android.FoodModel;
 import org.pocketcampus.plugin.food.shared.FoodService.Iface;
 
-import android.util.Log;
-
 /**
  * 
  * A request to the server to check if a user has voted yet.

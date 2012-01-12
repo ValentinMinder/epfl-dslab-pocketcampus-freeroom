@@ -10,11 +10,9 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.android.platform.sdk.ui.adapter.ExpandableListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
 import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
-import org.pocketcampus.android.platform.sdk.ui.element.TextViewElement;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.android.platform.sdk.ui.labeler.IRatableViewLabeler;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
@@ -23,7 +21,6 @@ import org.pocketcampus.android.platform.sdk.ui.list.RatableListViewElement;
 import org.pocketcampus.plugin.food.android.iface.IFoodMainView;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.shared.Meal;
-import org.pocketcampus.plugin.food.shared.Sandwich;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
 import android.app.Activity;
@@ -1002,9 +999,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param show
 		 */
-		public void setShown(boolean show) {
-			mIsShown = show;
-		}
+//		public void setShown(boolean show) {
+//			mIsShown = show;
+//		}
 
 		/**
 		 * Set whether the button being shown in the action bar is to show by
@@ -1114,10 +1111,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mIsAllShown = !mIsAllShown;
 			mActionBar.removeActionAt(0);
 			mActionBar.addAction(this, 0);
-		}
-
-		public boolean isShown() {
-			return mIsAllShown;
 		}
 
 		public void setIsShown(boolean isShown) {
