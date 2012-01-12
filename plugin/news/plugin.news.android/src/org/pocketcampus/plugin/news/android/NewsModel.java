@@ -70,7 +70,7 @@ public class NewsModel extends PluginModel implements INewsModel {
 
 		ArrayList<NewsItemWithImage> filteredList = new ArrayList<NewsItemWithImage>();
 		for (NewsItemWithImage newsItem : mNewsItems) {
-			if (prefs_.getBoolean(NewsPreferences.LOAD_RSS
+			if (prefs_.getBoolean(NewsPreferencesView.LOAD_RSS
 					+ newsItem.getNewsItem().getFeed(), true)) {
 				if (!alreadyContains(filteredList, newsItem)) {
 					filteredList.add(newsItem);

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="news_plugin_title">Nouvelles</string>
 
-	<string name="news_preferences_rss_title">Options de flux RSS</string>
-	<string name="news_preferences_other_title">Options</string>
+    <string name="news_plugin_title">Nouvelles</string>
+    <string name="news_preferences_rss_title">Options de flux RSS</string>
+    <string name="news_preferences_other_title">Options</string>
+    <string name="news_settings">Préférences</string>
+    <string name="news_no_news">Impossible de se connecter.</string>
+    <string name="news_loading">Chargement des nouvelles...</string>
+    <string name="news_no_feed_selected">Aucun flux sélectionné.</string>
 
-	<string name="news_settings">Préférences</string>
-	<string name="news_no_news">Impossible de se connecter.</string>
-	<string name="news_loading">Chargement des nouvelles...</string>
-	
-	<string name="news_no_feed_selected">Aucun flux sélectionné.</string>
+    <!-- Preferences -->
+    <string name="news_preferences">Préférences</string>
 
 </resources>

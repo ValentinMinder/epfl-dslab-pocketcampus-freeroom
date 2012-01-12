@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.news.android;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -141,9 +140,7 @@ public class NewsMainView extends PluginView implements INewsView {
 	public void feedUrlsUpdated() {
 
 		Intent settings = new Intent(getApplicationContext(),
-				NewsPreferences.class);
-		settings.putExtra("org.pocketcampus.news.feedUrls",
-				(HashMap<String, String>) mModel.getFeedsUrls());
+				NewsPreferencesView.class);
 
 		startActivityForResult(settings, PREFERENCES_REQUEST_CODE);
 	}
