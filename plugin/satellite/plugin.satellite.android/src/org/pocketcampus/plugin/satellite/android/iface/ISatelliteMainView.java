@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.satellite.android.iface;
 import org.pocketcampus.android.platform.sdk.core.IView;
 
 /**
- * The interface that defines the public methods for the
+ * The interface that defines the public methods of the
  * <code>SatelliteMainView</code>.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>

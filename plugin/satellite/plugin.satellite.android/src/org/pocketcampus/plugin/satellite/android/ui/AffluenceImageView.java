@@ -50,7 +50,7 @@ public class AffluenceImageView extends LinearLayout {
 		this.mConvertView = LayoutInflater
 				.from(context.getApplicationContext()).inflate(
 						R.layout.satellite_affluence_image_view, null);
-		
+
 		mLabeler = labeler;
 		mCurrentObject = object;
 		mImageResource = imageResource;

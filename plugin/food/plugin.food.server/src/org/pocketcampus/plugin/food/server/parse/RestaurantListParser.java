@@ -11,6 +11,7 @@ import java.util.HashMap;
  * Parses the contents of the Restaurant file which is stored on the server
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class RestaurantListParser {

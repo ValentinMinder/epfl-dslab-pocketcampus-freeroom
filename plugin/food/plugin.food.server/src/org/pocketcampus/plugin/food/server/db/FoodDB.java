@@ -20,6 +20,7 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
  * meals, user ids and ratings
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodDB {

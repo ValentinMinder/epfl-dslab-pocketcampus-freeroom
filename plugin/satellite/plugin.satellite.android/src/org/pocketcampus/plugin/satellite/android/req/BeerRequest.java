@@ -7,7 +7,7 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
 import org.pocketcampus.plugin.satellite.shared.SatelliteService.Iface;
 
 /**
- * Request to the server to get the Beer of the month at Satellite.
+ * Request to the server to get the beer of the month at Satellite.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 

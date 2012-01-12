@@ -5,6 +5,7 @@ package org.pocketcampus.plugin.food.server.db;
  * Class used for all Utils
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FoodUtils {

@@ -8,8 +8,8 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 /**
- * The model of the Satellite plugin, used to handle the information that is
- * going to be displayed in the views.
+ * The model of the Satellite plugin, handling the data of the plugin and the
+ * notifications to the views when the data changes.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
@@ -59,7 +59,8 @@ public class SatelliteModel extends PluginModel implements ISatelliteModel {
 	}
 
 	/**
-	 * Sets the affluence and notifies the view that the data has been updated.
+	 * Sets the current affluence and notifies the view that the data has been
+	 * updated.
 	 */
 	@Override
 	public void setAffluence(Affluence affluence) {

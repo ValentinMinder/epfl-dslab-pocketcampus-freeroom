@@ -17,6 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Parses the RSS Feeds containing the Meals for a restaurant
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class RssParser extends DefaultHandler {

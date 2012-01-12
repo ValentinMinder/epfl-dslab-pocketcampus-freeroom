@@ -27,7 +27,7 @@ public class SatelliteController extends PluginController implements
 	 */
 	@Override
 	public void onCreate() {
-		// Initializing the model is part of the controller's job...
+		// Initializing the model is part of the controller's job
 		mModel = new SatelliteModel();
 	}
 

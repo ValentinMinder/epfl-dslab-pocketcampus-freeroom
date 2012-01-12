@@ -15,7 +15,6 @@ import org.pocketcampus.plugin.satellite.shared.Affluence;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 /**
@@ -30,7 +29,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	private SatelliteModel mModel;
 	/** The plugin controller. */
 	private SatelliteController mController;
-	/** A titled layout. */
+	/** The main titled layout. */
 	private StandardTitledScrollableDoubleLayout mLayout;
 
 	/**
@@ -50,28 +49,26 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 		// Tracker
-		Log.d("googleanalytics", "getInstance()");
 		Tracker.getInstance().trackPageView("satellite");
 
 		// MVC
 		mController = (SatelliteController) controller;
 		mModel = (SatelliteModel) mController.getModel();
 
-		// Layout
+		// Initialize the main layout
 		mLayout = new StandardTitledScrollableDoubleLayout(this);
 		mLayout.setTitle(getResources().getString(
 				R.string.satellite_menu_main_page));
 		mLayout.setText(getResources().getString(R.string.satellite_loading));
 
 		setContentView(mLayout);
-		showMainPage();
+		loadData();
 	}
 
 	/**
-	 * Displays the main page of the plugin by asking the controller for the
-	 * affluence and the beer of the month.
+	 * Asks the controller for the affluence and the beer of the month.
 	 */
-	public void showMainPage() {
+	public void loadData() {
 		mController.getAffluence();
 		mController.getBeerOfMonth();
 	}
@@ -119,7 +116,6 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public void networkErrorHappened() {
 		// Tracker
-		Log.d("googleanalytics", "network error");
 		Tracker.getInstance().trackPageView("satellite/network_error");
 
 		mLayout.removeFirstLayoutFillerView();
@@ -211,8 +207,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	}
 
 	/**
-	 * The labeler for the affluence, telling how it has to be displayed in a
-	 * generic view.
+	 * The labeler for an <code>Affluence</code> object, telling how it has to
+	 * be displayed in a generic view.
 	 */
 	IFeedViewLabeler<Affluence> mAffluenceLabeler = new IFeedViewLabeler<Affluence>() {
 
@@ -255,8 +251,8 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	};
 
 	/**
-	 * The labeler for a Beer, telling how it has to be displayed in a generic
-	 * view.
+	 * The labeler for a <code>Beer</code> object, telling how it has to be
+	 * displayed in a generic view.
 	 */
 	ISubtitledFeedViewLabeler<Beer> mBeerLabeler = new ISubtitledFeedViewLabeler<Beer>() {
 

@@ -46,6 +46,7 @@ import android.util.Log;
  * valid.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
 public class FileCache {
