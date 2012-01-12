@@ -86,8 +86,8 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public HashMap<String, String> getFeedUrls(String language)
 			throws TException {
-		if (mLanguagesFeedsList != null
-				&& mLanguagesFeedsList.containsKey(language)) {
+		if (mLanguagesFeedUrls != null
+				&& mLanguagesFeedUrls.containsKey(language)) {
 			return mLanguagesFeedUrls.get(language);
 		} else {
 			return mLanguagesFeedUrls.get(DEFAULT_LANGUAGE);
@@ -139,19 +139,25 @@ public class NewsServiceImpl implements NewsService.Iface {
 			feed = parser.getFeed();
 
 			if (feed != null) {
+				// Add feed's items to the list
 				List<NewsItem> feedItems = feed.getItems();
 
+				// Keep only the 5 latest news.
 				List<NewsItem> toKeep = new ArrayList<NewsItem>();
 				for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
 					toKeep.add(feedItems.get(i));
 				}
+				// Add the items to the list of News Items.
 				if (mLanguagesNewsItemsList.containsKey(language)) {
 					toKeep.addAll(mLanguagesNewsItemsList.get(language));
 				}
 
-				mNewsContents.putAll(parser.getNewsContents());
 				Collections.sort(toKeep, newsItemComparator);
+				mLanguagesNewsItemsList.clear();
 				mLanguagesNewsItemsList.put(language, toKeep);
+				
+				// Add contents to list
+				mNewsContents.putAll(parser.getNewsContents());
 				allFeeds.add(feed);
 			}
 		}

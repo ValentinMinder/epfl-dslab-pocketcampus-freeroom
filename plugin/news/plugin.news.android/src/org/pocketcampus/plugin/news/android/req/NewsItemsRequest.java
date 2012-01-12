@@ -28,8 +28,8 @@ public class NewsItemsRequest extends
 	 * @return the News Items.
 	 */
 	@Override
-	protected List<NewsItem> runInBackground(Iface client, getNewsItems_args param)
-			throws Exception {
+	protected List<NewsItem> runInBackground(Iface client,
+			getNewsItems_args param) throws Exception {
 		System.out.println("<News> Requesting news items");
 		return client.getNewsItems(param.getLanguage());
 	}
