@@ -10,6 +10,7 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.android.platform.sdk.ui.adapter.ExpandableListAdapter;
 import org.pocketcampus.android.platform.sdk.ui.dialog.MenuDialog;
 import org.pocketcampus.android.platform.sdk.ui.dialog.RatingDialog;
 import org.pocketcampus.android.platform.sdk.ui.element.RatableView;
@@ -85,7 +86,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	private ActionBar mActionBar;
 
 	/** The action shown in action bar to toggle menus by restaurants or ratings */
-	private ShowByRestaurantOrRatingsAction mShowAllMenusAction;
+	private ShowAllAction mShowAllMenusAction;
+	/** The action shown in action bar to toggle menus by restaurants or ratings */
+	private ShowByRestaurantOrRatingsAction mShowMenusOrRatingAction;
 	/** The action shown in action bar when suggestions are displayed */
 	private ShowBySuggestionsAction mShowSuggestionsAction;
 
@@ -451,17 +454,27 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
+			
+			// Removes everything
+			mActionBar.removeAllActions();
 
-			if (mShowSuggestionsAction != null) {
-				mActionBar.removeAction(mShowSuggestionsAction);
-			}
-
-			if (mShowAllMenusAction == null || !mShowAllMenusAction.isShown()) {
-				mShowAllMenusAction = new ShowByRestaurantOrRatingsAction();
-				mActionBar.addAction(mShowAllMenusAction, 0);
+			// Add the action bar's button to expand all menus
+			if (mShowAllMenusAction == null) {
+				mShowAllMenusAction = new ShowAllAction();
 			} else {
-				mShowAllMenusAction.setIsRestaurant(true);
+				mShowAllMenusAction.setIsShown(false);
 			}
+			mActionBar.addAction(mShowAllMenusAction, 0);
+
+			// Add the action bar's button to show menus sorted by ratings
+			if (mShowMenusOrRatingAction == null
+					|| !mShowMenusOrRatingAction.isShown()) {
+				mShowMenusOrRatingAction = new ShowByRestaurantOrRatingsAction();
+			} else {
+				mShowMenusOrRatingAction.setIsRestaurant(true);
+			}
+			mActionBar.addAction(mShowMenusOrRatingAction, 1);
+
 			// Iterate over the different restaurant menus
 			mLayout.removeFillerView();
 
@@ -500,10 +513,15 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 */
 	public void showMenusByRatings() {
 		List<Meal> mealsByRatings = mModel.getMealsByRatings();
-		if (mShowAllMenusAction == null) {
-			mShowAllMenusAction = new ShowByRestaurantOrRatingsAction();
+
+		// Remove the action bar's button to expand all menus
+		mActionBar.removeAction(mShowAllMenusAction);
+
+		// Add the action bar's button to show the menus sorted by restaurants
+		if (mShowMenusOrRatingAction == null) {
+			mShowMenusOrRatingAction = new ShowByRestaurantOrRatingsAction();
 		}
-		mShowAllMenusAction.setIsRestaurant(false);
+		mShowMenusOrRatingAction.setIsRestaurant(false);
 
 		if (mealsByRatings != null && !mealsByRatings.isEmpty()) {
 			mLayout.removeFillerView();
@@ -540,7 +558,8 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 *            displayed
 	 */
 	public void showMenusBySuggestions(ArrayList<Meal> mealsBySuggestions) {
-		removeShowAllMenusAction();
+		removeOtherActions();
+
 		if (mLayout == null) {
 			mLayout = new StandardTitledLayout(this);
 		}
@@ -582,16 +601,24 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Removes the button in the action bar to toggle menus by restaurant or
 	 * ratings.
 	 */
-	public void removeShowAllMenusAction() {
-		if (mShowAllMenusAction.isShown()) {
-			if (mActionBar == null) {
-				mActionBar = getActionBar();
-			}
-			mActionBar.removeActionAt(0);
-			if (mShowAllMenusAction != null) {
-				mShowAllMenusAction.setShown(false);
-			}
+	public void removeOtherActions() {
+		if (mActionBar == null) {
+			mActionBar = getActionBar();
 		}
+
+		mActionBar.removeAllActions();
+
+		// // Remove the expand action
+		// mActionBar.removeActionAt(0);
+		//
+		// if (mShowMenusOrRatingAction.isShown()) {
+		//
+		// // Remove the restaurants/ratings action
+		// mActionBar.removeActionAt(1);
+		// if (mShowMenusOrRatingAction != null) {
+		// mShowMenusOrRatingAction.setShown(false);
+		// }
+		// }
 	}
 
 	/**
@@ -884,73 +911,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	};
 
 	/**
-	 * The labeler for a Sandwich, to tell how it has to be displayed in a
-	 * generic view.
-	 */
-	IRatableViewLabeler<Sandwich> mSandwichLabeler = new IRatableViewLabeler<Sandwich>() {
-
-		/**
-		 * Returns the sandwich name
-		 * 
-		 * @param sandwich
-		 *            The sandwich to be displayed
-		 * @return the sandwich name
-		 */
-		@Override
-		public String getLabel(Sandwich sandwich) {
-			return " " + sandwich.getName();
-		}
-
-		/**
-		 * Returns the sandwich description
-		 * 
-		 * @param sandwich
-		 *            The sandwich to be displayed
-		 * @return the sandwich description (here empty)
-		 */
-		@Override
-		public String getDescription(Sandwich sandwich) {
-			return "";
-		}
-
-		/**
-		 * Returns the sandwich rating
-		 * 
-		 * @param sandwich
-		 *            The sandwich to be displayed
-		 * @return the sandwich rating (here null)
-		 */
-		@Override
-		public float getRating(Sandwich sandwich) {
-			return (float) 0;
-		}
-
-		/**
-		 * Returns the sandwich name number of votes
-		 * 
-		 * @param sandwich
-		 *            The sandwich to be displayed
-		 * @return the sandwich number of votes (here 0)
-		 */
-		@Override
-		public int getNumberOfVotes(Sandwich sandwich) {
-			return 0;
-		}
-
-		/**
-		 * Returns the restaurant name where the sandwich is available
-		 * 
-		 * @param sandwich
-		 *            The sandwich to be displayed
-		 * @return the restaurant name
-		 */
-		@Override
-		public String getPlaceName(Sandwich sandwich) {
-			return sandwich.getRestaurant().getName();
-		}
-	};
-
-	/**
 	 * The constructor for a Meal View to be displayed in the list
 	 */
 	IRatableViewConstructor mMealsViewConstructor = new IRatableViewConstructor() {
@@ -961,20 +921,6 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 
 			return new RatableView(currentObject, context, labeler,
 					mOnLineClickListener, mOnRatingClickListener, position);
-		}
-	};
-
-	/**
-	 * The constructor for a Sandwich View to be displayed in the list
-	 */
-	IRatableViewConstructor mSandwichViewConstructor = new IRatableViewConstructor() {
-
-		@Override
-		public View getNewView(Object currentObject, Context context,
-				IRatableViewLabeler<? extends Object> labeler, int position) {
-
-			return new TextViewElement(currentObject, context, labeler, null,
-					null, position);
 		}
 	};
 
@@ -992,6 +938,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * button in the Action Bar
 	 * 
 	 * @author Elodie <elodienilane.triponez@epfl.ch>
+	 * @author Oriane <oriane.rodriguez@epfl.ch>
 	 * 
 	 */
 	private class ShowByRestaurantOrRatingsAction implements Action {
@@ -1026,8 +973,12 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		@Override
 		public void performAction(View view) {
 			mButtonByRestaurants = !mButtonByRestaurants;
-			mActionBar.removeActionAt(0);
-			mActionBar.addAction(this, 0);
+			mActionBar.removeAction(this);
+			if (mButtonByRestaurants)
+				mActionBar.addAction(this, 0);
+			else
+				mActionBar.addAction(this, 1);
+
 			if (mButtonByRestaurants) {
 				Tracker.getInstance().trackPageView(
 						"food/actionbar/by/restaurants");
@@ -1070,6 +1021,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	 * Takes care of showing the "show by restaurants" or "show by ratings"
 	 * button in the Action Bar
 	 * 
+	 * @author Oriane <oriane.rodriguez@epfl.ch>
 	 * @author Elodie <elodienilane.triponez@epfl.ch>
 	 * 
 	 */
@@ -1097,8 +1049,79 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		public void performAction(View view) {
 			Tracker.getInstance().trackPageView(
 					"food/actionbar/suggestions/back");
-			mActionBar.removeAllActions();
+			mActionBar.removeAction(this);
 			showMenusByRestaurants();
+		}
+	}
+
+	/**
+	 * Opens all Restaurants or closes them all.
+	 * 
+	 * @author Oriane <oriane.rodriguez@epfl.ch>
+	 * @author Elodie <elodienilane.triponez@epfl.ch>
+	 * 
+	 */
+	private class ShowAllAction implements Action {
+		/** Everything shown or everything closed. */
+		private boolean mIsAllShown;
+
+		/**
+		 * Empty constructor
+		 */
+		ShowAllAction() {
+			mIsAllShown = false;
+		}
+
+		/**
+		 * Returns the resource for the button icon in the action bar.
+		 */
+		@Override
+		public int getDrawable() {
+			if (mIsAllShown) {
+				return R.drawable.food_menus_collapse;
+			} else {
+				return R.drawable.food_menus_expand;
+			}
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar.
+		 */
+		@Override
+		public void performAction(View view) {
+			int i = 0;
+			int count = mExpandableList.getExpandableListAdapter()
+					.getGroupCount();
+
+			if (mIsAllShown) {
+				Tracker.getInstance().trackPageView("food/actionbar/collapse");
+
+				while (i < count) {
+					mExpandableList.collapseGroup(i);
+					i++;
+				}
+
+			} else {
+				Tracker.getInstance().trackPageView("food/actionbar/expand");
+
+				while (i < count) {
+					mExpandableList.expandGroup(i);
+					i++;
+				}
+			}
+
+			mIsAllShown = !mIsAllShown;
+			mActionBar.removeActionAt(0);
+			mActionBar.addAction(this, 0);
+		}
+
+		public boolean isShown() {
+			return mIsAllShown;
+		}
+
+		public void setIsShown(boolean isShown) {
+			mIsAllShown = isShown;
 		}
 	}
 }

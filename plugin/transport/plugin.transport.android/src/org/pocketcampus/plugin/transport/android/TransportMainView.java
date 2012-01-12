@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -391,13 +390,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 		Tracker.getInstance().trackPageView("transport/network_error");
 
 		if (mDestPrefs.getAll() != null && !mDestPrefs.getAll().isEmpty()) {
-
-			Log.d("TRANSPORT", "Prefs not null/empty");
 			mLayout.removeFillerView();
 			mLayout.setText(getResources().getString(
 					R.string.transport_network_error));
-		} else {
-			Log.d("TRANSPORT", "Prefs null/empty");
 		}
 	}
 
@@ -411,7 +406,6 @@ public class TransportMainView extends PluginView implements ITransportView {
 			HashMap<String, List<TransportTrip>> mDisplayedLocations) {
 
 		Set<String> set = mDisplayedLocations.keySet();
-		Set<String> setA = mDestPrefs.getAll().keySet();
 		ArrayList<PCItem> items = new ArrayList<PCItem>();
 		List<String> dest = new ArrayList<String>();
 		dest.addAll(set);

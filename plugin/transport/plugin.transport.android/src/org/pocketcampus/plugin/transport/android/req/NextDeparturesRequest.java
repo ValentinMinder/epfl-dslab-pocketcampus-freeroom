@@ -4,7 +4,6 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
 import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
-import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getTrips_args;
 

@@ -5,11 +5,9 @@ import java.util.List;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
 import org.pocketcampus.plugin.transport.android.TransportModel;
-import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportService.getLocationsFromNames_args;
-
-import android.util.Log;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 /**
  * A request to the server for the stations corresponding to each

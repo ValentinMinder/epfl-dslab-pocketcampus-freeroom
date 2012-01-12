@@ -62,6 +62,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		this.mViewLabeler = viewLabeler;
 	}
 
+	/** Return a pointer to the ExpandableListAdapter. */
+	public ExpandableListAdapter getExpandableAdapter() {
+		return this;
+	}
+
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		if (mChildren != null && mHeaders != null) {
