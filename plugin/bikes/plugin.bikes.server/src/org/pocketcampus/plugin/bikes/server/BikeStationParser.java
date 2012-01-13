@@ -10,11 +10,19 @@ import java.util.regex.Pattern;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
 import org.pocketcampus.platform.sdk.shared.utils.URLLoader;;
 
+/**
+ * Parser for the velopass website
+ * @author Pascal <pascal.scheiben@gmail.com>
+ * @author Guillaume <guillaume.ulrich@epfl.ch>
+ */
 public class BikeStationParser {
 
+	/**url of the velopass website */
 	private static final String URL = "http://www.bicincitta.com/wsexchange/panoramica.aspx?city=2000&usr=polyright&pw=bv9y7t34b9je";	
 	
+	/** Parse the information from the website*/
 	public ArrayList<BikeEmplacement> parseBikesStations() throws IOException {
+		
 		ArrayList<BikeEmplacement> stations = new ArrayList<BikeEmplacement>();
 		ArrayList<String> names = new ArrayList<String>();
 		HashMap<String, BikeEmplacement> map =  new HashMap<String, BikeEmplacement>();

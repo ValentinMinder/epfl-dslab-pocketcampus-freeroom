@@ -7,13 +7,28 @@ import org.pocketcampus.plugin.bikes.android.req.BikesRequest;
 import org.pocketcampus.plugin.bikes.shared.BikeService.Client;
 import org.pocketcampus.plugin.bikes.shared.BikeService.Iface;
 
+/**
+ * Controller for the bikes plugin.
+ * Handles the request from the plugin to the server.
+ * Bikes controller only has to get the number of available bikes for every station.
+ * @author Pascal <pascal.scheiben@gmail.com>
+ */
 public class BikesController extends PluginController implements IBikesController{
 
+	/** Model of this plugin*/
 	private BikesModel mModel;
+	/** Client for the request*/
 	private Iface mClient;
 	
+	/**
+	 *  This name must match given in the Server.java file in plugin.launcher.server.
+	 *  It's used to route the request to the right server implementation.
+	 */
 	private String mPluginName = "bikes";
 	
+	/**
+	 * Initializing
+	 */
 	@Override
 	public void onCreate() {
 		// Initializing the model is part of the controller's job...
@@ -24,11 +39,18 @@ public class BikesController extends PluginController implements IBikesControlle
 		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
+	/**
+	 * Returnds the associated model.
+	 */
 	@Override
 	public PluginModel getModel() {
 		return mModel;
 	}
 
+	/**
+	 * Makes a request to the server to get a list of <code>BikeEmplacement</code>.
+	 * Every BikeEmplacement contains the number of available bikes and empty slots.
+	 */
 	@Override
 	public void getAvailableBikes() {
 		new BikesRequest().start(this, mClient, (Object)null);

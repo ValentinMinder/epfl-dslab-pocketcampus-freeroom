@@ -29,20 +29,30 @@ import android.widget.TextView;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
+/**
+ * Initial and only view on the bikes plugin.
+ * Composed of a list containing a specific layout with four <code>textView</code>
+ * to have a aligned final layout.
+ * 
+ * @author Pascal <pascal.scheiben@gmail.com>
+ */
 public class BikesMainView extends PluginView implements IBikesView {
 
+	/** Controller for this view*/
 	private BikesController mController;
+	/** Model for this view*/
 	private BikesModel mModel;
 
+	/** List containing each of the <code>BikeEmplacement</code>*/
 	private ListView mList;
+	/** Global layout for this view */
 	private StandardTitledLayout mLayout;
 
+	/** Listener for the clicks on the list*/
 	private OnItemClickListener oicl;
 
 	/**
-	 * Called once the view is connected to the controller. If you don't
-	 * implement <code>getMainControllerClass()</code> then the controller given
-	 * here will simply be <code>null</code>.
+	 * Prepare the view to receive the data.
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
@@ -70,7 +80,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 					long arg3) {
 				PCItem item = (PCItem) adapter.getItemAtPosition(pos);
 				if (item.isEmptyLayout()) {
-					String msg = "";
+//					String msg = "";
 
 					// make this a little less ugly, getting the relative layout
 					// to get first textview using the hadcoded id and finally
@@ -81,36 +91,38 @@ public class BikesMainView extends PluginView implements IBikesView {
 					
 					for (BikeEmplacement be : mModel.getAvailablesBikes()) {
 						if (be.name.equals(stationsName)) {
-							String ab;
-							if (be.numberOfAvailableBikes == 1)
-								ab = getString(R.string.bikes_available_bike);
-							else
-								ab = getString(R.string.bikes_available_bikes);
+							
+							//old code to show a toast instead of a popup dialog
+//							String ab;
+//							if (be.numberOfAvailableBikes == 1)
+//								ab = getString(R.string.bikes_available_bike);
+//							else
+//								ab = getString(R.string.bikes_available_bikes);
+//
+//							String ep;
+//							if (be.numberOfEmptySpaces == 1)
+//								ep = getString(R.string.bikes_empty_slot);
+//							else
+//								ep = getString(R.string.bikes_empty_slots);
+//
+//							msg = be.name
+//									+
+//									// " is at:\n" +
+//									// "Lat: " + be.geoLat + "\n" +
+//									// "Lon: " + be.geoLng + "\n" +
+//									"\n" + getString(R.string.bikes_has) + " "
+//									+ be.numberOfAvailableBikes + " " + ab
+//									+ "\n" + getString(R.string.bikes_and)
+//									+ " " + be.numberOfEmptySpaces + " " + ep;
 
-							String ep;
-							if (be.numberOfEmptySpaces == 1)
-								ep = getString(R.string.bikes_empty_slot);
-							else
-								ep = getString(R.string.bikes_empty_slots);
-
-							msg = be.name
-									+
-									// " is at:\n" +
-									// "Lat: " + be.geoLat + "\n" +
-									// "Lon: " + be.geoLng + "\n" +
-									"\n" + getString(R.string.bikes_has) + " "
-									+ be.numberOfAvailableBikes + " " + ab
-									+ "\n" + getString(R.string.bikes_and)
-									+ " " + be.numberOfEmptySpaces + " " + ep;
-
-							// exiting the loop
+							
 							BikesStationDialog dialog = new BikesStationDialog(
 									BikesMainView.this, be);
 							dialog.show();
 
 //							Tracker
 							Tracker.getInstance().trackPageView("bikes/home/dialog/" + stationsName);
-							
+							// exiting the loop
 							break;
 						}
 					}
@@ -120,12 +132,23 @@ public class BikesMainView extends PluginView implements IBikesView {
 		};
 
 	}
-
+	
+	/**
+	 * Defines what the main controller is for this view. This is optional, some view may not need
+	 * a controller (see for example the dashboard).
+	 * 
+	 * This is only a shortcut for what is done in <code>getOtherController()</code> below: if you know you'll
+	 * need a controller before doing anything else in this view, you can define it as you're main controller so you
+	 * know it'll be ready as soon as <code>onDisplay()</code> is called.
+	 */
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return BikesController.class;
 	}
 
+	/**
+	 * Method to refresh all the data of the <code>BikeEmplacement</code>
+	 */
 	private void displayData() {
 
 		if (mModel.getAvailablesBikes().size() > 0)
@@ -150,7 +173,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 
 			if (pl > 0) {
 				RelativeLayout listElement = new RelativeLayout(this);
-				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
+//				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
 				int layoutsWidth = 30;
 				float textSize = 18f;
 				// bikeEmplacement name
@@ -221,6 +244,9 @@ public class BikesMainView extends PluginView implements IBikesView {
 
 	}
 
+	/**
+	 * Prepare the action bar 
+	 */
 	private void setUpActionBar() {
 		ActionBar a = getActionBar();
 		if (a != null) {
@@ -229,6 +255,10 @@ public class BikesMainView extends PluginView implements IBikesView {
 		}
 	}
 
+	/**
+	 * Inner action class to be added to the action bar.
+	 * Implements the ActionBar.Action interfce
+	 */
 	private class RefreshAction implements Action {
 
 		/**
@@ -272,6 +302,10 @@ public class BikesMainView extends PluginView implements IBikesView {
 		}
 	};
 
+	/**
+	 * Called by the model when something is wrong with the network.
+	 * Display a centered error message.
+	 */
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
@@ -280,6 +314,10 @@ public class BikesMainView extends PluginView implements IBikesView {
 		mLayout.setText(getString(R.string.bikes_try_again_later));
 	}
 
+	/**
+	 * Called by the model when the results of the <code>BikeRequest</code>is updated.
+	 * Displays of refreshes the data.
+	 */
 	@Override
 	public void bikeListUpdated() {
 		mLayout.removeFillerView();

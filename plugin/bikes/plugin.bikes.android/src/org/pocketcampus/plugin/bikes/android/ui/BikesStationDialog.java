@@ -13,18 +13,35 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
+/**
+ * Custom dialog to show the details of a <code>BikeEmplacement</code>
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class BikesStationDialog extends Dialog implements OnClickListener {
 
+	/** Context of this Dialog*/
 	Context ctx_;
 
+	/** The <code>BikeEmplacament</code> that will be displayed*/
 	BikeEmplacement displayedStation_;
 
+	/** Textview containing the title*/
 	TextView title_;
+	/** Textview containing the number of empty bikes slots*/
 	TextView empty_;
+	/** Textview containing the number of available bikes*/
 	TextView available_;
+	/** Textview containing the link to the page containing more infos about the velopass system*/
 	TextView link_;
 
+	/**
+	 * Constructor of the dialog. Calls the methods to set the layouts parameters and fill the view. 
+	 * @param context Context of this dialog
+	 * @param bikeEmplacement <code>BikeEmplacement</code> to be displayed.
+	 */
 	public BikesStationDialog(Context context, BikeEmplacement bikeEmplacement) {
+		
 		super(context);
 
 		ctx_ = context;
@@ -35,6 +52,9 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 
 	}
 
+	/**
+	 * Sets the features of the dialog's window
+	 */
 	private void build() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.bikes_details_dialog);
@@ -43,6 +63,10 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 		setCanceledOnTouchOutside(true);
 	}
 
+	/**
+	 * Fill the textViews with the corresponding informations from the BikeEmplacement
+	 * @param be <code>BikeEmplacement</code> to be displayed.
+	 */
 	private void setContent(BikeEmplacement be) {
 		title_ = (TextView) findViewById(R.id.bikes_details_title_dialog);
 		title_.setText(be.name);
@@ -65,6 +89,7 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 
 		available_ = (TextView) findViewById(R.id.bikes_textView_available);
 		available_.setText(be.numberOfAvailableBikes + " " + availableBikes);
+		//TODO what happens if there is one bike?
 		available_.setText(Html.fromHtml(thereIsAre + " <b>"
 				+ be.numberOfAvailableBikes + "</b> " + availableBikes + " <br>"
 				+ getString(R.string.bikes_and) + " <b>"
@@ -80,10 +105,18 @@ public class BikesStationDialog extends Dialog implements OnClickListener {
 
 	}
 
+	/**
+	 * Get a displayed text via his ressource id
+	 * @param resId The id of the wanted ressource.
+	 * @return A <code>CharSequence</code> of the specified ressource
+	 */
 	private String getString(int resId) {
 		return ctx_.getString(resId) + "";
 	}
 
+	/**
+	 * clicklistener that does nothing
+	 */
 	@Override
 	public void onClick(View v) {
 		// do nothing
