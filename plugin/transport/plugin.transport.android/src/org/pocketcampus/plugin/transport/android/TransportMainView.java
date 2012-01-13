@@ -592,10 +592,9 @@ public class TransportMainView extends PluginView implements ITransportView {
 			if (mModel.getFavoriteStations() == null
 					|| mModel.getFavoriteStations().isEmpty()) {
 				setUpDestinations();
-//				System.out.println("was nuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuull");
 			} else {
-				displayDestinations();
-//				System.out.println("was nooooooooooooooooooot null");
+//				displayDestinations();
+				setUpDestinations();
 			}
 		}
 	}
