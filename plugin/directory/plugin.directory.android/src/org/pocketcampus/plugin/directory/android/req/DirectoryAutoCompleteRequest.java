@@ -9,6 +9,12 @@ import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 
 import android.util.Log;
 
+/**
+ * Request to the server to get a list of suggestions corresponding
+ * to a parial name
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class DirectoryAutoCompleteRequest extends
 		Request<DirectoryController, Iface, String, List<String>> {
 
@@ -21,7 +27,6 @@ public class DirectoryAutoCompleteRequest extends
 	 *            the parameters to be sent for the request : a string,
 	 *            constraint for the autocompletion
 	 */
-	@Override
 	protected List<String> runInBackground(Iface client, String constraint)
 			throws Exception {
 		return client.autocomplete(constraint);
@@ -36,7 +41,6 @@ public class DirectoryAutoCompleteRequest extends
 	 * @param result
 	 *            the list of auto completed destinations gotten from the server
 	 */
-	@Override
 	protected void onResult(DirectoryController controller,
 			List<String> result) {
 		Log.v("Directory",result.toString());
@@ -51,7 +55,6 @@ public class DirectoryAutoCompleteRequest extends
 	 * @param controller
 	 *            the controller that initiated the request
 	 */
-	@Override
 	protected void onError(DirectoryController controller, Exception e) {
 		e.printStackTrace();
 	}

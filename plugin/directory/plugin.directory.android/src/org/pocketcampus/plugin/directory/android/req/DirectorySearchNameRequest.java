@@ -10,14 +10,33 @@ import android.util.Log;
 
 import java.util.*;
 
+/**
+ *	Request to the server to get a list of <code>Person</code> corresponding to the parameter
+ * 
+ * @author Pascal <pascal.scheiben@gmail.com>
+ */
 public class DirectorySearchNameRequest extends Request<DirectoryController, Iface, String, List<Person>> {
 
-	@Override
+	/**
+	 * Tell the model the results have been updated.
+	 * 
+	 * @param controller
+	 *            the controller that initiated the request, of which we have to
+	 *            notify of the result
+	 * @param result
+	 *            the list of <code>Person</code> gotten from the server
+	 */
 	protected void onResult(DirectoryController controller, List<Person> result) {
 		((DirectoryModel) controller.getModel()).setResults(result);
 	}
 
-	@Override
+	/**
+	 * Notifies the Model that an error has occurred while processing the
+	 * request.
+	 * 
+	 * @param controller
+	 *            the controller that initiated the request
+	 */
 	protected void onError(DirectoryController controller, Exception e) {
 		
 		if(e != null ){
@@ -30,7 +49,15 @@ public class DirectorySearchNameRequest extends Request<DirectoryController, Ifa
 		
 	}
 
-	@Override
+	/**
+	 * Initiate the search Request at the server
+	 * 
+	 * @param client
+	 *            the client that communicates with the server
+	 * @param param
+	 *            the parameters to be sent for the request : a string,
+	 *            constraint for the search, should be a partial name (partial first or/and last name), full name or a sciper number
+	 */
 	protected List<Person> runInBackground(Iface client, String param) throws Exception {
 		return client.searchPersons(param);
 	}

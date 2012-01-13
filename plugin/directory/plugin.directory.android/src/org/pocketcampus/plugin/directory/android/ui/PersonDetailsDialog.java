@@ -20,6 +20,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Customized dialog to show <code>Person</code>'s information
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	Context ctx_;
@@ -38,6 +43,11 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 	
 	static int clickCount = 0;
 
+	/**
+	 * Constructor with basic need
+	 * @param context Application context to use for this dialog
+	 * @param person Person to display in this dialog
+	 */
 	public PersonDetailsDialog(Context context, Person person) {
 		super(context);
 
@@ -51,6 +61,10 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	}
 
+	/**
+	 * Called when the url of the picture is updated when the request is done.
+	 * Loads the picture from the url in the dialog
+	 */
 	public void loadPicture() {
 		LoaderImageView liv = (LoaderImageView) findViewById(R.id.directory_person_details_dialog_photo);
 		if (liv == null) {
@@ -68,6 +82,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	}
 
+	/**
+	 * Sets up the basic UI material of this dialog 
+	 */
 	private void build() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// setTitle(ctx_.getResources().getString(R.string.directory_person_details_dialog_tile));
@@ -77,6 +94,10 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		setCanceledOnTouchOutside(true);
 	}
 
+	/**
+	 * Sets the UI material relative to displayed person
+	 * @param p The <code>Person</code> to display
+	 */
 	private void setContent(Person p) {
 		title_ = (TextView) findViewById(R.id.directory_person_details_title_dialog);
 		title_.setText(p.getFirstName() + " " + p.getLastName());
@@ -121,10 +142,18 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		ou_.setText(multipleLinesOU);
 	}
 
-	private int visibility(boolean hasMail) {
-		return hasMail ? View.VISIBLE : View.GONE;
+	/**
+	 * Get the visibility constant from a boolean
+	 * @param bool True for VISIBLE and False for GONE
+	 * @return
+	 */
+	private int visibility(boolean bool) {
+		return bool ? View.VISIBLE : View.GONE;
 	}
 
+	/**
+	 * Set all the clicklistener for all the button
+	 */
 	private void setClickListener() {
 		Button mailButton = (Button) findViewById(R.id.directory_imageButton_mail);
 		Button phoneButton = (Button) findViewById(R.id.directory_imageButton_call);
@@ -143,6 +172,10 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		webButton.setOnClickListener(this);
 	}
 
+
+	/**
+	 * Inherited from the <code>OnClickListener</code> interface
+	 */
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.directory_imageButton_mail) {
@@ -157,6 +190,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 //		}
 	}
 
+	/**
+	 * Overriding the onKeyDown method of the super class to define what the call button does. (It dials the number of the person)
+	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		switch (keyCode) {
@@ -179,8 +215,12 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 			}
 
 		case KeyEvent.KEYCODE_CALL:
+			if(displayedPerson_.isSetOfficePhoneNumber()){
 			performDial();
 			return true;
+			}else{
+				return super.onKeyDown(keyCode, event);
+			}
 
 		default:
 			return super.onKeyDown(keyCode, event);
@@ -188,6 +228,9 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 
 	}
 
+	/**
+	 * Dials the number of the person
+	 */
 	private void performDial() {
 //		AlertDialog dialog = new AlertDialog.Builder(ctx_)
 //				.setTitle(
@@ -240,17 +283,27 @@ public class PersonDetailsDialog extends Dialog implements OnClickListener {
 		}
 
 	}
-
+	/**
+	 * Shows the office of the person on the map
+	 */
 //	private void performMap() {
 //		// call another plugin
 //	}
 
+	/**
+	 * Opens the web browser of the phone and shows the webpage of the person
+	 */
 	private void performWeb() {
 		Intent WebIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse(displayedPerson_.web));
 		ctx_.startActivity(WebIntent);
 	}
 
+	/**
+	 * Get a displayed text via his ressource id
+	 * @param resId The id of the wanted ressource.
+	 * @return A <code>CharSequence</code> of the specified ressource
+	 */
 	private CharSequence getString(int resId) {
 		return ctx_.getString(resId);
 	}

@@ -28,18 +28,39 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+/**
+ * Initial view for the directory plugin.
+ * At the top is a inputbar, and just below a list to contain the autocomplete suggestions.
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class DirectorySearchView extends PluginView implements IDirectoryView{
 
+	/** Controller for this view */
 	private DirectoryController mController;
+	/** Model for this view */
 	private IDirectoryModel mModel;
 	
+	/** Global layout for this view */
 	private StandardTitledLayout mLayout;
+	/** The input bar to make the search */
 	private InputBarElement mInputBar;
+	/** List designed to contain the autocomplete suggestions */
 	private LabeledListViewElement mListView;
-	ArrayAdapter<String> mAdapter;
+	/** Adapter for the <code>mListView</code>*/
+	private ArrayAdapter<String> mAdapter;
 	
-	PersonDetailsDialog mDialog;
+	/** Dialog to display the Person information if there is only one result*/
+	private PersonDetailsDialog mDialog;
 	
+	/**
+	 * Defines what the main controller is for this view. This is optional, some view may not need
+	 * a controller (see for example the dashboard).
+	 * 
+	 * This is only a shortcut for what is done in <code>getOtherController()</code> below: if you know you'll
+	 * need a controller before doing anything else in this view, you can define it as you're main controller so you
+	 * know it'll be ready as soon as <code>onDisplay()</code> is called.
+	 */
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return DirectoryController.class;
@@ -64,13 +85,17 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 	
+	/** 
+	 * Called by the onDisplay method to set up all the UI material
+	 */
 	private void displayView() {
 		/* Layout */
 		mLayout = new StandardTitledLayout(this);
 		mLayout.setTitle(getString(R.string.directory_searchView_title));
 
-		/* Input bar */
+		//Add the little magnifying glass on the virtual keyboard
 		mInputBar = new InputBarElement(this, null,getString(R.string.directory_searchView_hint));
+		//and set what it does
 		mInputBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		mInputBar.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -117,6 +142,9 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 	
 	}
 	
+	/**
+	 * Initialize the autocomplete suggestion list 
+	 */
 	private void createSuggestionsList() {
 		mListView = new LabeledListViewElement(this);
 		mInputBar.addView(mListView);
@@ -136,6 +164,10 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 	
+	/**
+	 * Called by the model when the results of the autocomplete are back from the server.
+	 * Add them to the list
+	 */
 	@Override
 	public void autoCompletedUpdated() {
 		mAdapter = new ArrayAdapter<String>(this, R.layout.sdk_list_entry, R.id.sdk_list_entry_text, mModel.getAutocompleteSuggestions());
@@ -147,6 +179,10 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 	
+	/**
+	 * Called by the model when there is a problem with the network.
+	 * Displays a centered error message.
+	 */
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
@@ -161,11 +197,13 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 
 		mListView.setAdapter(mAdapter);
 		mListView.invalidate();
-		
-//		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.directory_network_error), Toast.LENGTH_SHORT);
-//		toast.show();
 	}
 
+	/**
+	 * Called by the model when the results are updated.
+	 * Open a <code>DirectoryResultListView</code> if there are several results
+	 * else just popup the <code>mDialog</code>
+	 */
 	@Override
 	public void resultsUpdated() {
 		mLayout.hideText();
@@ -180,12 +218,18 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 
+	/**
+	 * Called by the model if there are too many result on the server side.
+	 * Shows a centered error message.
+	 */
 	@Override
 	public void tooManyResults(int nb) {
 		mLayout.setText( getString(R.string.directory_too_many_results_warning) );
-		
 	}
 	
+	/**
+	 * Called by the model when the picture in the dialog is updated
+	 */
 	@Override
 	public void pictureUpdated() {
 		if(mDialog != null)
@@ -193,6 +237,7 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 		
 	}
 	
+	//NOT used since the normal behavior of this button is to show the search bar and not search
 //	@Override
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //		if(keyCode == KeyEvent.KEYCODE_SEARCH && mInputBar.getInputText().length()> 0){
@@ -203,6 +248,9 @@ public class DirectorySearchView extends PluginView implements IDirectoryView{
 //		return super.onKeyDown(keyCode, event);
 //	}
 	
+	/**
+	 * Initiate the search request with whats is in the <code>mInputBar</code>
+	 */
 	private void search(String query){
 		//Tracker
 		Tracker.getInstance().trackPageView("directory/SearchView/search/" + query);

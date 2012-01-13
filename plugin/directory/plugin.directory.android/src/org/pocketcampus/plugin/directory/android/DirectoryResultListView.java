@@ -1,6 +1,5 @@
 package org.pocketcampus.plugin.directory.android;
 
-//import java.util.HashSet;
 import java.util.List;
 
 import org.pocketcampus.R;
@@ -23,16 +22,29 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
+
+/**
+ * The View that contains the result of the search view if there is more than one result.
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class DirectoryResultListView extends PluginView implements IDirectoryView{
 
+	/** Controller of this plugin*/
 	private DirectoryController mController;
+	/** Model of this plugin */
 	private IDirectoryModel mModel;
 	
+	/** List that will contain only the first and last name of the results*/ 
 	private LabeledListViewElement mList;
+	/**Designed to contain the results of the search, containing <code>Person</code> with full info*/
 	private List<Person> mPersons;
+	/** Global layout for this view*/
 	private StandardTitledLayout mMainLayout;
 	
+	/** Dialog to show the details of a specific person*/
 	private PersonDetailsDialog dialog;
+	/** The index in <code>mPersons</code> of the person who is displayed in the <code>dialog</code>*/
 	private int shownPersonIndex;
 	
 	/**
@@ -96,6 +108,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	
 
 
+	/**
+	 * Called if there was a network problem while fetching the url of the picture
+	 */
 	@Override
 	public void networkErrorHappened() {
 		//Tracker
@@ -105,7 +120,10 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		toast.show();
 	}
 
-
+	/**
+	 * Called by the model when the results of the search request are back from the server.
+	 * Display them, if the list of results isn't empty. else display an error message.
+	 */
 	@Override
 	public void resultsUpdated() {
 		mPersons = mModel.getResults();
@@ -130,10 +148,12 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 			mList.setAdapter(new LabeledArrayAdapter(this, mPersons, labeler));
 		}
 		
-		
+		//no results, display it on a centered textview
 		if (mList.getAdapter().getCount() == 0)
 			mMainLayout.setText(getString(R.string.directory_no_results_found));
 		else{
+			
+			//emptying the centered textview
 			mMainLayout.setText("");
 			int count = mList.getAdapter().getCount() ;
 		
@@ -175,6 +195,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		}
 	};
 
+	/**
+	 * Inherited method not used here
+	 */
 	@Override
 	public void tooManyResults(int nb) {
 		System.out.println(getString(R.string.directory_too_many_results_warning));
@@ -182,12 +205,18 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 	}
 
 
+	/**
+	 * Called by the model when the url of the picture has been updated
+	 */
 	@Override
 	public void pictureUpdated() {
 		dialog.loadPicture();
 		
 	}
 	
+	/**
+	 * Shows the next person in the list if a dialog is already open
+	 */
 	public void showNextPerson(){
 		
 		//SECURE THIS
@@ -207,6 +236,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		
 	}
 	
+	/**
+	 * Shows the previous person in the list if a dialog is already open
+	 */
 	public void showPreviousPerson(){
 		
 		//SECURE THIS
@@ -224,7 +256,9 @@ public class DirectoryResultListView extends PluginView implements IDirectoryVie
 		}
 	}
 
-
+	/**
+	 * Inherited method not used here
+	 */
 	@Override
 	public void autoCompletedUpdated() {
 		// should not happen here
