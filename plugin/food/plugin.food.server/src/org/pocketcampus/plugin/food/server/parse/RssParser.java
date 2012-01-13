@@ -249,6 +249,11 @@ public class RssParser extends DefaultHandler {
 			if (string.contains(" ,")) {
 				string = string.replace(" ,", ", ");
 			}
+			if(string.contains("\n ")){
+				string = string.replace("\n ", "\n");
+			}
+			string = string.replace("( ", "(");
+			string = string.replace(" )", ")");
 			String[] lines = string.split("\n");
 
 			for (int i = 0; i < lines.length; i++) {
