@@ -22,6 +22,11 @@ import org.pocketcampus.plugin.transport.shared.Stop;
 
 import de.schildbach.pte.dto.QueryDeparturesResult;
 
+/**
+ * Static class to convert Schildbach(the sdk we used to get all the public transport informations) objects to pocketcampus-thrift object.
+ * @author Pascal <pascal.scheiben@gmail.com>
+ *
+ */
 public class SchildbachToPCConverter {
 	static protected QueryTripsResult convertSchToPC(de.schildbach.pte.dto.QueryConnectionsResult s){
 		QueryTripsResult qcr = new QueryTripsResult(

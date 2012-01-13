@@ -20,9 +20,20 @@ import de.schildbach.pte.dto.Location;
 import de.schildbach.pte.dto.LocationType;
 import de.schildbach.pte.dto.NearbyStationsResult;
 
+/**
+ * This is the server side implementation of the transport plugin.
+ * It handles all the service provided to the client
+ * @author Florian <florian.laurent@gmail.com>
+ * @author Pascal <pascal.scheiben@gmail.com>
+ */
 public class TransportServiceImpl implements TransportService.Iface {
+	/** Public Transport information provider*/
 	private SbbProvider mSbbProvider;
 
+	/**
+	 * Constructor.
+	 * Initializes the provider with the api key.
+	 */
 	public TransportServiceImpl() {
 		mSbbProvider = new SbbProvider(
 				"MJXZ841ZfsmqqmSymWhBPy5dMNoqoGsHInHbWJQ5PTUZOJ1rLTkn8vVZOZDFfSe");
@@ -78,6 +89,11 @@ public class TransportServiceImpl implements TransportService.Iface {
 
 	}
 
+	/**
+	 * Proposes several transport station corresponding to the user input.
+	 * @param constraint Where the user wants to go.
+	 * @return A list of <code>TransportStation</code> composed only of LocationType.STATION and no POI or else
+	 */
 	@Override
 	public List<TransportStation> autocomplete(String constraint)
 			throws TException {
@@ -101,6 +117,12 @@ public class TransportServiceImpl implements TransportService.Iface {
 		return completions;
 	}
 
+	
+	/**
+	 * Retrieves the <code>TransportStation</code> object from it's name.
+	 * @param names List of stations name.
+	 * @return List of <code>TransportStation</code>
+	 */
 	@Override
 	public List<TransportStation> getLocationsFromNames(List<String> names)
 			throws TException {
@@ -121,11 +143,14 @@ public class TransportServiceImpl implements TransportService.Iface {
 	}
 
 	/**
+	 * DOES NOT WORK FOR NOW, SHOULD TRY WITH THE UPDATE OF THE SCHILDBACH SDK
 	 * Returns a TransportStation list with the stations corresponding to the
 	 * integers id list of the param if an id has not been found, the
 	 * corresponding TransportStation in the result will be null
-	 * 
 	 * DOES NOT WORK FOR NOW, SHOULD TRY WITH THE UPDATE OF THE SCHILDBACH SDK
+	 * 
+	 * @param ids List of stations ids.
+	 * @return List of <code>TransportStation</code>
 	 */
 	@Override
 	public List<TransportStation> getLocationsFromIDs(List<Integer> ids)
@@ -172,6 +197,12 @@ public class TransportServiceImpl implements TransportService.Iface {
 		return locations;
 	}
 
+	/**
+	 * Get all the next departure from a specific station.
+	 * Useful specially for one line station like bus stops.
+	 * @param IDStation The id of the station
+	 * @return Special object containing all the next departures with some information
+	 */
 	@Override
 	public QueryDepartureResult nextDepartures(String IDStation)
 			throws TException {
@@ -194,6 +225,13 @@ public class TransportServiceImpl implements TransportService.Iface {
 		return nextDepartures;
 	}
 
+	/**
+	 * Asks the provider how to get from A to B at present time.
+	 * Calls a private method.
+	 * @param from Departure station (A)
+	 * @param to Arrival station (B)
+	 * @return Specific object converted from the Schildbach sdk containing all the trip informations
+	 */
 	@Override
 	public QueryTripsResult getTrips(String from, String to) throws TException {
 
@@ -202,6 +240,15 @@ public class TransportServiceImpl implements TransportService.Iface {
 		
 	}
 
+	/**
+	 * Asks the provider how to get from A to B at a specific time.
+	 * Allows to set the direction of the Trip.
+	 * Calls a private method.
+	 * @param from Departure station (A)
+	 * @param to Arrival station (B)
+	 * @param isDeparture the direction of your trip. True for A -> B and False for B -> A
+	 * @return Specific object converted from the Schildbach sdk containing all the trip informations
+	 */
 	@Override
 	public QueryTripsResult getTripsAtTime(String from, String to, long time,
 			boolean isDeparture) throws TException {
@@ -209,6 +256,14 @@ public class TransportServiceImpl implements TransportService.Iface {
 		return getTripsFromSchildbach(from, to, time, isDeparture);
 	}
 
+	/**
+	 * Get all the informations from the provider, and convert them to the pocketcampus classes using the converters.
+	 * @param from Departure station (A)
+	 * @param to Arrival Station (B)
+	 * @param time Epoch time in ms
+	 * @param isDeparture True if go from A to B and False if you go from B to A
+	 * @return
+	 */
 	private QueryTripsResult getTripsFromSchildbach(String from, String to,
 			long time, boolean isDeparture) {
 
@@ -219,7 +274,7 @@ public class TransportServiceImpl implements TransportService.Iface {
 		de.schildbach.pte.dto.Location fromLoc = null, viaLoc = null, toLoc = null;
 
 		try {
-			// FIXME autocomplete not optimal, use connectionsFromStationsIDs
+			// autocomplete not optimal, use connectionsFromStationsIDs
 			// instead
 			fromLoc = mSbbProvider.autocompleteStations(from).get(0);
 			toLoc = mSbbProvider.autocompleteStations(to).get(0);
@@ -241,8 +296,6 @@ public class TransportServiceImpl implements TransportService.Iface {
 			tripResults = SchildbachToPCConverter.convertSchToPC(mSbbProvider
 					.queryConnections(fromLoc, viaLoc, toLoc, date,
 							isDeparture, products, walkSpeed));
-			
-			
 			
 			
 			if (tripResults.getConnections() != null) {
@@ -267,13 +320,15 @@ public class TransportServiceImpl implements TransportService.Iface {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
 		return tripResults;
 	}
-
+	
+	/**
+	 * Asks the provider how to get from A to B at present time. Using station IDs instead of their names
+	 * @param fromID ID of the Departure station
+	 * @param toID ID of the Arrival station
+	 * @return Specific object converted from the Schildbach sdk containing all the trip informations
+	 */
 	@Override
 	public QueryTripsResult getTripsFromStationsIDs(String fromID, String toID)
 			throws TException {
