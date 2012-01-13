@@ -16,6 +16,8 @@
     <property name="plugin.bikes.server.location" value="../../../plugin/bikes/plugin.bikes.server"/>
     <property name="plugin.camipro.shared.location" value="../../../plugin/camipro/plugin.camipro.shared"/>
     <property name="plugin.camipro.server.location" value="../../../plugin/camipro/plugin.camipro.server"/>
+    <property name="plugin.moodle.shared.location" value="../../../plugin/moodle/plugin.moodle.shared"/>
+    <property name="plugin.moodle.server.location" value="../../../plugin/moodle/plugin.moodle.server"/>
     <property name="plugin.directory.shared.location" value="../../../plugin/directory/plugin.directory.shared"/>
     <property name="plugin.directory.server.location" value="../../../plugin/directory/plugin.directory.server"/>
     <property name="plugin.food.shared.location" value="../../../plugin/food/plugin.food.shared"/>
@@ -178,6 +180,25 @@
         <path refid="platform.sdk.server.classpath"/>
         <path refid="platform.sdk.shared.classpath"/>
         <path refid="plugin.isacademia.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+    </path>	
+    <path id="plugin.moodle.shared.classpath">
+        <pathelement location="${plugin.moodle.shared.location}/bin"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-io-2.0.1.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang-2.6.jar"/>
+        <pathelement location="${platform.sdk.shared.location}/lib/commons-lang3-3.0.1.jar"/>
+    </path>
+    <path id="plugin.moodle.server.classpath">
+        <pathelement location="${plugin.moodle.server.location}/bin"/>
+        <path refid="platform.sdk.server.classpath"/>
+        <path refid="platform.sdk.shared.classpath"/>
+        <path refid="plugin.moodle.shared.classpath"/>
         <pathelement location="${platform.sdk.shared.location}/lib/libthrift-0.7.0-multiplex.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-api-1.6.2.jar"/>
         <pathelement location="${platform.sdk.shared.location}/lib/slf4j-simple-1.6.2.jar"/>
@@ -688,6 +709,8 @@
         <path refid="plugin.isacademia.shared.classpath"/>
         <path refid="plugin.camipro.server.classpath"/>
         <path refid="plugin.camipro.shared.classpath"/>
+        <path refid="plugin.moodle.server.classpath"/>
+        <path refid="plugin.moodle.shared.classpath"/>
         <path refid="plugin.directory.server.classpath"/>
         <path refid="plugin.directory.shared.classpath"/>
         <path refid="plugin.news.server.classpath"/>
@@ -730,6 +753,8 @@
         <ant antfile="build.xml" dir="${plugin.isacademia.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.camipro.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.camipro.server.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.moodle.shared.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${plugin.moodle.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.directory.shared.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.directory.server.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${plugin.food.shared.location}" inheritAll="false" target="clean"/>
@@ -788,6 +813,16 @@
             </propertyset>
         </ant>
         <ant antfile="build.xml" dir="${plugin.camipro.server.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.moodle.shared.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${plugin.moodle.server.location}" inheritAll="false" target="build-project">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>
@@ -962,6 +997,8 @@
             <fileset dir="${PC_TRUNK}/plugin/isacademia/plugin.isacademia.shared/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/camipro/plugin.camipro.server/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/camipro/plugin.camipro.shared/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/moodle/plugin.moodle.server/bin"/>
+            <fileset dir="${PC_TRUNK}/plugin/moodle/plugin.moodle.shared/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/directory/plugin.directory.server/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/directory/plugin.directory.shared/bin"/>
             <fileset dir="${PC_TRUNK}/plugin/food/plugin.food.shared/bin"/>
