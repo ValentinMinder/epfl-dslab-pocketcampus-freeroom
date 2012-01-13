@@ -8,15 +8,18 @@ import org.pocketcampus.plugin.map.android.req.SearchRequest;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 import org.pocketcampus.plugin.map.shared.MapService.Client;
 
+/**
+ * Map's main controller.
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class MapMainController extends PluginController {
 	private MapModel mModel;
-//	private Iface mClient;
 	private String mPluginName = "map";
 
 	@Override
 	public void onCreate() {
 		mModel = new MapModel();
-//		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
 	
 	@Override

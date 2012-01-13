@@ -9,7 +9,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
  * It allows to change the level of the map
  * When a change of level happens, it calls the method of the listener
  * 
- * @author Johan
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Johan <johan.leuenberger@epfl.ch>
  *
  */
 public class LevelBar implements OnSeekBarChangeListener{

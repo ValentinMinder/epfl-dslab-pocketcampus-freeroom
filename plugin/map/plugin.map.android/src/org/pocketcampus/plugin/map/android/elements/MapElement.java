@@ -4,6 +4,12 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.pocketcampus.plugin.map.shared.MapElementBean;
 
+/**
+ * Represents an element on the map (AKA POI).
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class MapElement extends OverlayItem {
 	
 	private String pluginId_;

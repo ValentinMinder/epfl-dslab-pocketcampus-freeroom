@@ -1,5 +1,8 @@
 package org.pocketcampus.plugin.map.android.ui;
 
+/**
+ * @author Jonas <jonas.schmid@epfl.ch>
+ */
 public interface OnLevelBarChangeListener {
 
 	/**

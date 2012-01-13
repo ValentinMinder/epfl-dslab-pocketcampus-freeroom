@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.MapLayerBean;
 
+/**
+ * Custom List class for <code>MapElement</code>s.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class MapElementsList extends ArrayList<MapElement> {
 
 	private static final long serialVersionUID = 1054957477020550085L;

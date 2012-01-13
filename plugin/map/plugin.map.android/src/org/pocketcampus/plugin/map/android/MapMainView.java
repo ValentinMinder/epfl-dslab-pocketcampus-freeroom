@@ -54,13 +54,12 @@ import android.widget.Toast;
 import com.markupartist.android.widget.ActionBar;
 
 /**
- * Map class for the map plugin.
+ * Main class for the map plugin.
  * 
- * @status WIP
- * 
- * @author Jonas
- * @author Johan
- * @author Florian
+ * @author Johan <johan.leuenberger@epfl.ch>
+ * @author Jonas <jonas.schmid@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Johan <johan.leuenberger@epfl.ch>
  *
  */
 public class MapMainView extends PluginView implements IMapView {

@@ -28,7 +28,9 @@ import android.widget.ListView;
  * A class used to search map elements and display the result of the search Look
  * at http://developer.android.com/guide/topics/search/search-dialog.html
  * 
- * @author Johan, Jonas, Florian
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Johan <johan.leuenberger@epfl.ch>
+ * @author Jonas <jonas.schmid@epfl.ch>
  * 
  */
 public class MapSearchActivity extends PluginView implements IMapView {

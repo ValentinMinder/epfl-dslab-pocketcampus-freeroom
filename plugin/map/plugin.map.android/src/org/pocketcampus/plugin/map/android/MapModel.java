@@ -11,6 +11,12 @@ import org.pocketcampus.plugin.map.shared.MapLayer;
 
 import android.widget.ArrayAdapter;
 
+/**
+ * Map model.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class MapModel extends PluginModel {
 	private IMapView mListeners = (IMapView) getListeners();
 	

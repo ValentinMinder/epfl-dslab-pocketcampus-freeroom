@@ -8,6 +8,12 @@ import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 
+/**
+ * Search request.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class SearchRequest extends Request<MapMainController, Iface, String, List<MapItem>> {
 
 	@Override

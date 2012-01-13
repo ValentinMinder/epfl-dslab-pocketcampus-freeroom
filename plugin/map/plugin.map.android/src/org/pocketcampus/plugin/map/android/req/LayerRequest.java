@@ -8,6 +8,12 @@ import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.shared.MapLayer;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 
+/**
+ * Request to get the list of all map layers.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class LayerRequest extends Request<MapMainController, Iface, Object, List<MapLayer>> {
 
 	@Override

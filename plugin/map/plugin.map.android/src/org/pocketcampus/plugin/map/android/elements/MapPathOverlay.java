@@ -7,6 +7,12 @@ import org.pocketcampus.plugin.map.shared.Position;
 
 import android.content.Context;
 
+/**
+ * Legacy class to display path on the map.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class MapPathOverlay extends PathOverlay {
 
 	private boolean isShowing_;
@@ -36,53 +42,4 @@ public class MapPathOverlay extends PathOverlay {
 	public boolean isShowingPath() {
 		return isShowing_;
 	}
-
-//	@Override
-//	protected void draw(final Canvas canvas, final MapView mapView, final boolean shadow) {
-//		super.draw(canvas, mapView, shadow);
-//		
-//		if(path_ == null || !isShowingPath()) {
-//			return;
-//		}
-//
-//		List<Position> roadMap = path_.getRoadmapList();
-//
-//		if (shadow) {
-//			return;
-//		}
-//
-//		if (roadMap.size() < 1) {
-//			// nothing to paint
-//			return;
-//		}
-//
-//		final Projection pj = mapView.getProjection();
-//
-//		// precompute new points to the intermediate projection.
-//		final int size = roadMap.size();
-//
-//		/*
-//		while (this.mPointsPrecomputed < size) {
-//			final Point pt = this.mPoints.get(this.mPointsPrecomputed);
-//			pj.toMapPixelsProjected(pt.x, pt.y, pt);
-//
-//			this.mPointsPrecomputed++;
-//		}
-//		*/
-//
-//		Point screenPoint0 = null; // points on screen
-//		Point screenPoint1 = null;
-//		Point projectedPoint0; // points from the points list
-//		Point projectedPoint1;
-//
-//		// clipping rectangle in the intermediate projection, to avoid performing projection.
-//		final Rect clipBounds = pj.fromPixelsToProjected(pj.getScreenRect());
-//
-//		for(Position p : roadMap) {
-//			canvas.drawCircle(50, 50, 10, this.getPaint());
-//		}
-//
-//
-//	}
-
 }

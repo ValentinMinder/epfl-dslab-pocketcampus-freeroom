@@ -62,7 +62,8 @@ import com.markupartist.android.widget.ActionBar.Action;
  * 
  * @status WIP
  * 
- * @author Jonas, Johan
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Jonas <jonas.schmid@epfl.ch>
  *
  */
 public class MapPlugin extends PluginView {

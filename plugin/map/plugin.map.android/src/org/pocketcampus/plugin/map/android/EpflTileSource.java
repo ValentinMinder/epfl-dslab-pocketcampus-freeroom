@@ -8,12 +8,12 @@ import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.pocketcampus.plugin.map.android.utils.StringUtils;
 
 /**
  * Tile source of EPFL map for OSMDroid
  * 
- * @author Johan
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Johan <johan.leuenberger@epfl.ch>
  *
  */
 public class EpflTileSource extends OnlineTileSourceBase {
@@ -93,10 +93,21 @@ public class EpflTileSource extends OnlineTileSourceBase {
 	 * @return the formatted string.
 	 */
 	private String decomp(int a) {
-		String s1 = StringUtils.pad(a, 9);
+		String s1 = padString(a, 9);
 		String s = s1.substring(0, 3) + "/" + s1.substring(3, 6) + "/"
 				+ s1.substring(6, 9);
 		return s;
+	}
+	
+	/**
+	 * Formats a number as a String of nbChar characters,
+	 * padding it with 0.
+	 * @param number
+	 * @param nbChar
+	 * @return
+	 */
+	public static String padString(int number, int nbChar) {
+		return String.format("%0" + nbChar + "d", number);
 	}
 	
 	int ycoord(int y, int zoom) {

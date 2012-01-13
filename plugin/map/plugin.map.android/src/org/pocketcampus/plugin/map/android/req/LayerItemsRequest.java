@@ -8,6 +8,12 @@ import org.pocketcampus.plugin.map.android.MapModel;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapService.Iface;
 
+/**
+ * Request to get items of a layer, given it's id.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class LayerItemsRequest extends Request<MapMainController, Iface, Integer, List<MapItem>> {
 
 	@Override

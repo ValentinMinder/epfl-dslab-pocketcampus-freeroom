@@ -15,7 +15,8 @@ import android.net.Uri;
  * 
  * @status WIP
  * 
- * @author Jonas
+ * @author Jonas <jonas.schmid@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
  *
  */
 public class ItemDialog {

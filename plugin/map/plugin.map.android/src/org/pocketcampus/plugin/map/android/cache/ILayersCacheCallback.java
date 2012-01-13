@@ -9,7 +9,7 @@ import org.pocketcampus.plugin.map.android.elements.MapElementsList;
  * 
  * @status Complete
  * 
- * @author Jonas
+ * @author Jonas <jonas.schmid@epfl.ch>
  *
  */
 public interface ILayersCacheCallback {

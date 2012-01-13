@@ -21,7 +21,8 @@ import android.util.Log;
  * 
  * @status Complete
  * 
- * @author Jonas
+ * @author Florian <florian.laurent@epfl.ch>
+ * @author Jonas <jonas.schmid@epfl.ch>
  *
  */
 public class LayersCache {
