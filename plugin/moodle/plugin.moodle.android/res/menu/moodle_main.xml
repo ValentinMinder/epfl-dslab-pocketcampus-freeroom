@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/moodle_logout"
+		android:icon="@drawable/moodle_menu_logout"
+		android:title="@+string/moodle_string_logout"
+		/>
+		
+</menu>

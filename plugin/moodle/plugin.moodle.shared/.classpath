@@ -2,15 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.0-alpha1.jar"/>
-	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.shared"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/httpclient-4.0-alpha1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/javapns_2.0_Beta_4.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-ajp-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-annotations-8.0.0.M3.jar"/>
@@ -33,31 +29,14 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-webapp-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-websocket-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-xml-8.0.0.M3.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
-	<classpathentry kind="src" path="/plugin.authentication.server"/>
-	<classpathentry kind="src" path="/plugin.authentication.shared"/>
-	<classpathentry kind="src" path="/plugin.bikes.server"/>
-	<classpathentry kind="src" path="/plugin.bikes.shared"/>
-	<classpathentry kind="src" path="/plugin.camipro.server"/>
-	<classpathentry kind="src" path="/plugin.camipro.shared"/>
-	<classpathentry kind="src" path="/plugin.directory.server"/>
-	<classpathentry kind="src" path="/plugin.directory.shared"/>
-	<classpathentry kind="src" path="/plugin.food.shared"/>
-	<classpathentry kind="src" path="/plugin.food.server"/>
-	<classpathentry kind="src" path="/plugin.news.shared"/>
-	<classpathentry kind="src" path="/plugin.news.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.satellite.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
-	<classpathentry kind="src" path="/plugin.map.server"/>
-	<classpathentry kind="src" path="/plugin.map.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.events.shared"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.moodle.server"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.moodle.shared"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

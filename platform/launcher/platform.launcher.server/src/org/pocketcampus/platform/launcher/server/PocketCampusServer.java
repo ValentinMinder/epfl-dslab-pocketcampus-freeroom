@@ -20,6 +20,8 @@ import org.pocketcampus.plugin.isacademia.server.IsacademiaServiceImpl;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService;
 import org.pocketcampus.plugin.map.server.MapServiceImpl;
 import org.pocketcampus.plugin.map.shared.MapService;
+import org.pocketcampus.plugin.moodle.server.MoodleServiceImpl;
+import org.pocketcampus.plugin.moodle.shared.MoodleService;
 import org.pocketcampus.plugin.news.server.NewsServiceImpl;
 import org.pocketcampus.plugin.news.shared.NewsService;
 import org.pocketcampus.plugin.satellite.server.SatelliteServiceImpl;
@@ -51,6 +53,7 @@ public class PocketCampusServer extends ServerBase {
 		processors.add(new Processor(new FoodService.Processor<FoodServiceImpl>(new FoodServiceImpl()), "food"));
 		processors.add(new Processor(new IsacademiaService.Processor<IsacademiaServiceImpl>(new IsacademiaServiceImpl()), "isacademia"));
 		processors.add(new Processor(new MapService.Processor<MapServiceImpl>(new MapServiceImpl()), "map"));
+		processors.add(new Processor(new MoodleService.Processor<MoodleServiceImpl>(new MoodleServiceImpl()), "moodle"));
 		processors.add(new Processor(new NewsService.Processor<NewsServiceImpl>(new NewsServiceImpl()), "news"));
 		processors.add(new Processor(new SatelliteService.Processor<SatelliteServiceImpl>(new SatelliteServiceImpl()), "satellite"));
 //		processors.add(new Processor(new TakeoutGateway.Processor<TakeoutGatewayImpl>(new TakeoutGatewayImpl()), "takeout-gateway"));
