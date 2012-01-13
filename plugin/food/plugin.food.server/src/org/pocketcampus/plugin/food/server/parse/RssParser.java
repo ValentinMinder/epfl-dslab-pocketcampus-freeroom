@@ -244,77 +244,83 @@ public class RssParser extends DefaultHandler {
 	 * @return the capitalized string
 	 */
 	private String capitalize(String string) {
-		String[] lines = string.split("\n");
 		String result = "";
-
-		for (int i = 0; i < lines.length; i++) {
-
-			String[] words = lines[i].split("\\s+");
-			String capString = "";
-
-			for (int j = 0; j < words.length; j++) {
-				String s = words[j];
-
-				if ((s.length() > 2 || j == 0)
-						&& (notCapitalized != null && !notCapitalized
-								.contains(s))) {
-					String begin = "";
-					String sub = "";
-
-					if (s.length() > 1) {
-						begin = s.substring(0, 1);
-						if (begin.equals("-")) {
-							begin = s.substring(1, 2);
-							sub = s.substring(2);
-						} else if (begin.equals("(") || begin.equals("-")) {
-							// System.out.println(s);
-							begin = begin.concat(s.substring(1, 2)
-									.toUpperCase());
-							sub = s.substring(2);
-						} else {
-							begin = begin.toUpperCase();
-							sub = s.substring(1);
-						}
-
-						sub = sub.toLowerCase();
-
-						if (sub.contains("'") || sub.contains("-")) {
-							int toCapitalize = 0;
-							if (sub.contains("'")) {
-								toCapitalize = sub.indexOf("'") + 1;
-							} else if (sub.contains("-")) {
-								toCapitalize = sub.indexOf("-") + 1;
-							}
-							if ((toCapitalize) <= sub.length()) {
-								sub = sub.substring(0, toCapitalize)
-										+ sub.substring(toCapitalize,
-												toCapitalize + 1).toUpperCase()
-										+ sub.substring(toCapitalize + 1,
-												sub.length());
-							}
-						}
-					} else {
-						begin = s;
-						begin = begin.toUpperCase();
-					}
-
-					if (j == words.length - 1)
-						capString = capString.concat(begin + sub);
-					else
-						capString = capString.concat(begin + sub + " ");
-				} else {
-					s = s.toLowerCase();
-					if (j == words.length - 1)
-						capString = capString.concat(s);
-					else
-						capString = capString.concat(s + " ");
-				}
+		if (string != null) {
+			if (string.contains(" ,")) {
+				string = string.replace(" ,", ", ");
 			}
+			String[] lines = string.split("\n");
 
-			if (i == lines.length - 1) {
-				result = result.concat(capString);
-			} else {
-				result = result.concat(capString + "\n");
+			for (int i = 0; i < lines.length; i++) {
+
+				String[] words = lines[i].split("\\s+");
+				String capString = "";
+
+				for (int j = 0; j < words.length; j++) {
+					String s = words[j];
+
+					if ((s.length() > 2 || j == 0)
+							&& (notCapitalized != null && !notCapitalized
+									.contains(s))) {
+						String begin = "";
+						String sub = "";
+
+						if (s.length() > 1) {
+							begin = s.substring(0, 1);
+							if (begin.equals("-") || begin.equals(" ")) {
+								begin = s.substring(1, 2);
+								sub = s.substring(2);
+							} else if (begin.equals("(") || begin.equals("-")) {
+								// System.out.println(s);
+								begin = begin.concat(s.substring(1, 2)
+										.toUpperCase());
+								sub = s.substring(2);
+							} else {
+								begin = begin.toUpperCase();
+								sub = s.substring(1);
+							}
+
+							sub = sub.toLowerCase();
+
+							if (sub.contains("'") || sub.contains("-")) {
+								int toCapitalize = 0;
+								if (sub.contains("'")) {
+									toCapitalize = sub.indexOf("'") + 1;
+								} else if (sub.contains("-")) {
+									toCapitalize = sub.indexOf("-") + 1;
+								}
+								if ((toCapitalize) <= sub.length()) {
+									sub = sub.substring(0, toCapitalize)
+											+ sub.substring(toCapitalize,
+													toCapitalize + 1)
+													.toUpperCase()
+											+ sub.substring(toCapitalize + 1,
+													sub.length());
+								}
+							}
+						} else {
+							begin = s;
+							begin = begin.toUpperCase();
+						}
+
+						if (j == words.length - 1)
+							capString = capString.concat(begin + sub);
+						else
+							capString = capString.concat(begin + sub + " ");
+					} else {
+						s = s.toLowerCase();
+						if (j == words.length - 1)
+							capString = capString.concat(s);
+						else
+							capString = capString.concat(s + " ");
+					}
+				}
+
+				if (i == lines.length - 1) {
+					result = result.concat(capString);
+				} else {
+					result = result.concat(capString + "\n");
+				}
 			}
 		}
 
