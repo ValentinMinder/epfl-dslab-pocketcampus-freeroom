@@ -451,7 +451,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			if (mActionBar == null) {
 				mActionBar = getActionBar();
 			}
-			
+
 			// Removes everything
 			mActionBar.removeAllActions();
 
@@ -999,9 +999,9 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 * 
 		 * @param show
 		 */
-//		public void setShown(boolean show) {
-//			mIsShown = show;
-//		}
+		// public void setShown(boolean show) {
+		// mIsShown = show;
+		// }
 
 		/**
 		 * Set whether the button being shown in the action bar is to show by
@@ -1052,7 +1052,7 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	}
 
 	/**
-	 * Opens all Restaurants or closes them all.
+	 * Opens all restaurants or closes them all.
 	 * 
 	 * @author Oriane <oriane.rodriguez@epfl.ch>
 	 * @author Elodie <elodienilane.triponez@epfl.ch>
@@ -1087,24 +1087,28 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 		 */
 		@Override
 		public void performAction(View view) {
-			int i = 0;
-			int count = mExpandableList.getExpandableListAdapter()
-					.getGroupCount();
+			if (mExpandableList != null
+					&& mExpandableList.getExpandableListAdapter() != null) {
+				int i = 0;
+				int count = mExpandableList.getExpandableListAdapter()
+						.getGroupCount();
 
-			if (mIsAllShown) {
-				Tracker.getInstance().trackPageView("food/actionbar/collapse");
-
-				while (i < count) {
-					mExpandableList.collapseGroup(i);
-					i++;
-				}
-
-			} else {
-				Tracker.getInstance().trackPageView("food/actionbar/expand");
-
-				while (i < count) {
-					mExpandableList.expandGroup(i);
-					i++;
+				if (mIsAllShown) {
+					// Tracker
+					Tracker.getInstance().trackPageView(
+							"food/actionbar/collapse");
+					while (i < count) {
+						mExpandableList.collapseGroup(i);
+						i++;
+					}
+				} else {
+					// Tracker
+					Tracker.getInstance()
+							.trackPageView("food/actionbar/expand");
+					while (i < count) {
+						mExpandableList.expandGroup(i);
+						i++;
+					}
 				}
 			}
 
@@ -1113,6 +1117,11 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 			mActionBar.addAction(this, 0);
 		}
 
+		/**
+		 * Sets whether the restaurants are all shown or not.
+		 * 
+		 * @param isShown
+		 */
 		public void setIsShown(boolean isShown) {
 			mIsAllShown = isShown;
 		}
