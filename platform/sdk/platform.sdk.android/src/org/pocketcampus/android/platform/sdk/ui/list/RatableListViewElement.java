@@ -19,7 +19,9 @@ import android.widget.ListView;
  */
 public class RatableListViewElement extends ListView implements Element {
 
+	/** The dimension of the element */
 	private ElementDimension mDimension = ElementDimension.NORMAL;
+	/** The adapter for the list */
 	private RatableAdapter mAdapter;
 
 	public RatableListViewElement(Context context) {

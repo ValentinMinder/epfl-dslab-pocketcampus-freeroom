@@ -15,14 +15,22 @@ import android.widget.ListView;
  * style. Labeled means that it gets the text of its element from a
  * <code>Labeler</code>.
  * 
- * @author Elodie <oriane.rodriguez@epfl.ch>
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class FeedListViewElement extends ListView implements Element {
 
+	/** The dimension of the element */
 	private ElementDimension mDimension = ElementDimension.NORMAL;
+	/** The adapter for the list */
 	private FeedAdapter mAdapter;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            The context of the calling application.
+	 */
 	public FeedListViewElement(Context context) {
 		super(context);
 	}
@@ -34,7 +42,7 @@ public class FeedListViewElement extends ListView implements Element {
 	 * @param context
 	 *            The Application context
 	 * @param items
-	 *            The list of items to be displayed inthe list
+	 *            The list of items to be displayed in the list
 	 * @param labeler
 	 *            The Labeler to get the text of the items
 	 */

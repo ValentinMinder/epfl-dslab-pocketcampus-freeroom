@@ -14,14 +14,22 @@ import android.widget.ListView;
  * Labeled list that displays a list of Items using the feed style. Labeled
  * means that it gets the text of its element from a <code>Labeler</code>.
  * 
- * @author Elodie <oriane.rodriguez@epfl.ch>
+ * @author Elodie <elodienilane.triponez@epfl.ch>
  * 
  */
 public class FeedWithImageListViewElement extends ListView implements Element {
 
+	/** The dimension of the element */
 	private ElementDimension mDimension = ElementDimension.NORMAL;
+	/** The adapter for the list */
 	private FeedWithImageAdapter mAdapter;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 *            The context of the calling application.
+	 */
 	public FeedWithImageListViewElement(Context context) {
 		super(context);
 	}
