@@ -13,7 +13,8 @@ import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Displays an input bar with a button on its right.
- * @author Florian
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
  *
  */
 public class InputBarElement extends RelativeLayout {

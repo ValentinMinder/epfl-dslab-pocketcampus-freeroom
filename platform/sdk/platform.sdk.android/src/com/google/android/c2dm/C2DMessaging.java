@@ -26,6 +26,10 @@ import android.content.SharedPreferences.Editor;
  * Utilities for device registration.
  *
  * Will keep track of the registration token in a private preference.
+ * 
+ * Code provided by Google.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class C2DMessaging {
     public static final String EXTRA_SENDER = "sender";

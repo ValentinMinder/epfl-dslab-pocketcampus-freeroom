@@ -2,6 +2,11 @@ package org.pocketcampus.android.platform.sdk.core;
 
 import org.pocketcampus.android.platform.sdk.ui.Icon;
 
+/**
+ * Contains the information for a plugin.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ */
 public class PluginInfo {
 	private Icon mIcon;
 	private String mLabel;

@@ -16,8 +16,7 @@ import android.widget.TextView;
 /**
  * Displays a ListView with separators.
  * 
- * @author Florian
- * @status working
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class CategoryListAdapter extends BaseAdapter {
 	/** List of sections, ie sublists separated by headers. */

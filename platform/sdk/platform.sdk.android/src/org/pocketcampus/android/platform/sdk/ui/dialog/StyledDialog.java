@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ */
 public class StyledDialog extends Dialog {
 
 	public StyledDialog(Context context, int theme) {

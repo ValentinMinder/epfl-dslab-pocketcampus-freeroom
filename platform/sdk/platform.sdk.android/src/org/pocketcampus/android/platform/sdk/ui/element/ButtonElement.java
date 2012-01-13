@@ -3,6 +3,10 @@ package org.pocketcampus.android.platform.sdk.ui.element;
 import android.content.Context;
 import android.widget.Button;
 
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class ButtonElement extends Button implements Element {
 
 	public ButtonElement(Context context) {

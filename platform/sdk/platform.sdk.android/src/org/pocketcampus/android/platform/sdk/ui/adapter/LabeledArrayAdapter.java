@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class LabeledArrayAdapter extends AbstractArrayAdapter {
 	private LayoutInflater mInflater;
 	private ILabeler mLabeler;

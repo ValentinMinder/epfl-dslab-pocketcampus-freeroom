@@ -2,6 +2,12 @@ package org.pocketcampus.android.platform.sdk.core;
 
 import android.util.Log;
 
+/**
+ * Helper class for logging. Not yet used.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class Logger {
 	private String mLabel;
 	

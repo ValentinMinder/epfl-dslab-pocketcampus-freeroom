@@ -1,5 +1,3 @@
-/*
- */
 package com.google.android.c2dm;
 
 import android.app.Activity;
@@ -13,6 +11,9 @@ import android.content.Intent;
  * for longer activity
  * - must get the power lock, must make sure it's released when all done.
  * 
+ * Code provided by Google.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class C2DMBroadcastReceiver extends BroadcastReceiver {
     

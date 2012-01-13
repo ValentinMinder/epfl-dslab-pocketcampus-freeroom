@@ -10,8 +10,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ */
 public class TextViewElement  extends LinearLayout{
-
 	private LinearLayout mLayout;
 	private IRatableViewLabeler mLabeler;
 	private TextView mTitleLine;

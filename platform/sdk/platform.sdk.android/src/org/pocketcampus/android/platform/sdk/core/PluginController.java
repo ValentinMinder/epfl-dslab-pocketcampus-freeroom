@@ -19,8 +19,9 @@ import android.os.Binder;
 import android.os.IBinder;
 
 /**
- * @author florian
+ * Base controller class.
  * 
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public abstract class PluginController extends Service {
 	/** Socket connection for this plugin. */

@@ -8,7 +8,12 @@ import android.os.Bundle;
 import com.google.android.c2dm.C2DMBaseReceiver;
 import com.google.android.c2dm.C2DMessaging;
 
-
+/**
+ * Base class to receive push notifications.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class C2DMReceiver extends C2DMBaseReceiver {
 
 	public static final String SENDER_ID = "silviu.andrica@gmail.com";

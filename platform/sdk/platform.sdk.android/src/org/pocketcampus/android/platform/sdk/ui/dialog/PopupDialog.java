@@ -17,6 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class PopupDialog extends Dialog implements OnClickListener {
 	
 	private TextView mTitleTextView;

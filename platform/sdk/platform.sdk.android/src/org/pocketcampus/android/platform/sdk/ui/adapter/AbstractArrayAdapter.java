@@ -9,8 +9,7 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 
 /**
- * TODO make customizable
- * @author Florian
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public abstract class AbstractArrayAdapter extends ArrayAdapter<Object> {
 	protected static int mLayoutResourceId = R.layout.sdk_list_entry;

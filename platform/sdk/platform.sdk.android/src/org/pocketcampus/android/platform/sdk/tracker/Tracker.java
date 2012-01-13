@@ -9,7 +9,7 @@ import org.pocketcampus.android.platform.sdk.core.Config;
  * The Tracker used to send Google analytics about what the user uses in the
  * Application. Each Plugin should call it with a tag of the form
  * "plugin_name/view/action". No private informations (like password, username,
- * etc) are aloud to be tracked though.
+ * etc) are allowed to be tracked though.
  * 
  * @author Oriane <oriane.rodriguez@epfl.ch>
  */

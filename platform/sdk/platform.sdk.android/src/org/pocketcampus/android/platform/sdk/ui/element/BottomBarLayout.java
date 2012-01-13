@@ -10,6 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 // TODO have a superclass shared by this and StandardLayout?
+/**
+ * @author Florian <florian.laurent@epfl.ch>
+ *
+ */
 public class BottomBarLayout extends RelativeLayout implements Element {
 	private RelativeLayout mInnerLayout;
 	private TextView mBottomBarTextView;

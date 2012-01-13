@@ -13,7 +13,7 @@ import java.util.List;
  * TODO multiplexing! reuse single service for all plugins, use common port, encrypt.
  * TODO caching, use https://github.com/kaeppler/droid-fu/blob/master/src/main/java/com/github/droidfu/cachefu/AbstractCache.java
  * 
- * @author florian
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public abstract class PluginModel {
 

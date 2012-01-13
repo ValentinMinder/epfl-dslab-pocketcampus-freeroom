@@ -11,7 +11,7 @@ import android.util.Log;
 /**
  * Contains various configuration settings.
  *  
- * @author Florian
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class Config {
 	/** Server IP. */

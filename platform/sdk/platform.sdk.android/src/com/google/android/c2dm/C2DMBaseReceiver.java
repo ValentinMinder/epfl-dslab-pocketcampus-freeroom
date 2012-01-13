@@ -28,7 +28,11 @@ import android.util.Log;
 
 /**
  * Base class for C2D message receiver. Includes constants for the
- * strings used in the protocol.
+ * strings used in the protocol. 
+ * 
+ * Based on Google-provided code.
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public abstract class C2DMBaseReceiver extends IntentService {
     private static final String C2DM_RETRY = "com.google.android.c2dm.intent.RETRY";

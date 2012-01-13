@@ -11,11 +11,15 @@ import android.os.Handler;
 import android.util.Log;
 
 /**
+ * Base Request class.
+ * 
  * Request parameters:
  * <li>the Controller class
  * <li>the client interface class
  * <li>the class of the sent object
  * <li>the class of the returned object
+ * 
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public abstract class Request<ControllerType extends PluginController, ClientType, SentType, ResultType> extends AsyncTask<SentType, Integer, ResultType> {
 	GlobalContext mGlobalContext;

@@ -5,7 +5,7 @@ package org.pocketcampus.android.platform.sdk.core;
 /**
  * Represents a menu unique identifier, used to check if a plugin has to be displayed on a given menu.
  * 
- * @author Florian
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class MenuId {
 	private int mId;
