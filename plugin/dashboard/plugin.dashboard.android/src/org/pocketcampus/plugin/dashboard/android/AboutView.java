@@ -13,7 +13,7 @@ import android.widget.TextView;
 /**
  * View with the About information: team members, version, website URL and sponsors.
  * 
- * @author Florian Laurent <florian.laurent@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
  */
 public class AboutView extends PluginView {
 

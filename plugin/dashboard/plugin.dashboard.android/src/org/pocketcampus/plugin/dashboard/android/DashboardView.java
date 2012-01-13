@@ -20,7 +20,7 @@ import android.widget.RelativeLayout.LayoutParams;
  * 
  * View for the Dashboard.
  * 
- * @author Florian Laurent <florian.laurent@epfl.ch>
+ * @author Florian <florian.laurent@epfl.ch>
  *
  */
 public class DashboardView extends PluginView {
