@@ -64,6 +64,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 		mLanguagesFeedsList = new HashMap<String, List<Feed>>();
 		mLanguagesNewsItemsList = new HashMap<String, List<NewsItem>>();
 		mNewsContents = new HashMap<Long, String>();
+		
 		parseFeedsUrls();
 		importFeeds();
 	}

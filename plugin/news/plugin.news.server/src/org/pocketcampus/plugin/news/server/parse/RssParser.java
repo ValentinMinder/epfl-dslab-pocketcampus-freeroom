@@ -108,7 +108,7 @@ public class RssParser extends DefaultHandler {
 	public Feed getFeed() {
 		return (this.mRssFeed);
 	}
-	
+
 	/**
 	 * @return The contents of the news items in the feeds.
 	 */
@@ -263,6 +263,17 @@ public class RssParser extends DefaultHandler {
 		this.mText = new StringBuilder();
 	}
 
+	/**
+	 * Generates unique item Id for a news
+	 * 
+	 * @param title
+	 *            The title of the News item
+	 * @param content
+	 *            The content of the News item
+	 * @param imageUrl
+	 *            the imageUrl of the News item
+	 * @return The generated item Id
+	 */
 	private long generateNewsItemId(String title, String content,
 			String imageUrl) {
 		final long prime = 31;
