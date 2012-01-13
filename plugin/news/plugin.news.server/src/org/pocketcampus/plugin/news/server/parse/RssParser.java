@@ -53,7 +53,7 @@ public class RssParser extends DefaultHandler {
 	private boolean mInItem;
 	/** Remembers whether an image is being created */
 	private boolean mInImage;
-	/***/
+	/** Remembers whether the input is text */
 	private boolean mInTextInput;
 
 	/** Used to get an image from the text. */
@@ -135,9 +135,6 @@ public class RssParser extends DefaultHandler {
 	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
-		// XXX use of qName or localName? may differ on different Android
-		// platform
-		// (http://mmmyddd.freeshell.net/blog/Computer/Android/saxcompatibility)
 
 		if (localName.equalsIgnoreCase("channel")
 				|| qName.equalsIgnoreCase("channel")) {

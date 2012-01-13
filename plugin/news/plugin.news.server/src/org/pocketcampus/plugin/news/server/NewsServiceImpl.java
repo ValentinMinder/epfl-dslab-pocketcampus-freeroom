@@ -81,7 +81,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * Returns the feed urls and their corresponding name.
 	 * 
 	 * @param language
-	 *            the language for which we want the feed Urls.
+	 *            The language for which we want the feed Urls.
 	 * @return The feed urls and their names.
 	 */
 	@Override
