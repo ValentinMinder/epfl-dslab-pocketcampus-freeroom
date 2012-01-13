@@ -125,7 +125,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Checks whether the user has already voted today.
+	 * Checks whether the user has already voted today
 	 */
 	public boolean hasVoted(String deviceId) throws TException {
 		if (mDeviceIds.contains(deviceId)
