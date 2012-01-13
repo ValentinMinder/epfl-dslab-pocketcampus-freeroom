@@ -40,6 +40,9 @@ public class TransportFormatter {
 			return mNiceNames.get(stationName);
 		}
 
+		if(stationName.contains("BUS"))
+			return "Bus";
+		
 		// Keeps only the type "Bus" and its number
 		if (stationName.contains("Bus")) {
 			int index = stationName.indexOf("Bus");

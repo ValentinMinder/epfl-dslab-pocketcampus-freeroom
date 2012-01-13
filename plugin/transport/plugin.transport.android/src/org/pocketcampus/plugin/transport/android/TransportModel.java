@@ -92,21 +92,27 @@ public class TransportModel extends PluginModel implements ITransportModel {
 							i++;
 							// Update displayed stations
 							if (c.getTo().getName().equals("Ecublens VD, EPFL")) {
+								String fromName = c.getParts().get(0).departure.getName();
+								
 								if (mFavoriteStations
-										.get(c.getFrom().getName()) == null) {
+										.get(fromName) == null) {
 									mFavoriteStations.put(
-											c.getFrom().getName(),
+											fromName,
 											new ArrayList<TransportTrip>());
 								}
-								mFavoriteStations.get(c.getFrom().getName())
-										.add(c);
+								
+								
+								mFavoriteStations.get(fromName).add(c);
 							} else {
-								if (mFavoriteStations.get(c.getTo().getName()) == null) {
-									mFavoriteStations.put(c.getTo().getName(),
+								String toName = c.getParts().get(c.getParts().size()-1).arrival.getName();
+								
+								if (mFavoriteStations.get(toName) == null) {
+									mFavoriteStations.put(toName,
 											new ArrayList<TransportTrip>());
 								}
-								mFavoriteStations.get(c.getTo().getName()).add(
-										c);
+								
+								
+								mFavoriteStations.get(toName).add(c);
 							}
 						}
 					}
