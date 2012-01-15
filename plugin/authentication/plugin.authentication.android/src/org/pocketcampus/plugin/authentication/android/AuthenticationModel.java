@@ -132,7 +132,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	
 	/**
-	 * Helper function to save cookie in persistent storage
+	 * Helper function to save cookie in persistent storage.
 	 */
 	private void saveTequilaCookie() {
 		Editor editor = iStorage.edit();

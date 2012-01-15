@@ -94,7 +94,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			Uri aData = aIntent.getData();
 			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
 				String sessId = aData.getQueryParameter("sessid");
-				mController.setCamiproCookie(sessId);
+				mModel.setCamiproCookie(sessId);
 			}
 		}
 		
@@ -118,9 +118,13 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mController != null && mController.getCamiproCookie() == null) {
+		if(mModel != null && mModel.getCamiproCookie() == null) {
 			// Resumed and lot logged in? go back
 			finish();
+		}
+		if(mController != null) {
+			// Whenever we switch back to this activity, update contents
+			mController.refreshBalanceAndTransactions();
 		}
 	}
 

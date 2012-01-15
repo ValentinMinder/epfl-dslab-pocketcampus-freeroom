@@ -48,14 +48,6 @@ public class CamiproController extends PluginController implements ICamiproContr
 		return mModel;
 	}
 
-	public void setCamiproCookie(String sessId) {
-		mModel.setCamiproCookie(sessId);
-	}
-	
-	public String getCamiproCookie() {
-		return mModel.getCamiproCookie();
-	}
-	
 	public void refreshBalanceAndTransactions() {
 		if(mModel.getCamiproCookie() == null)
 			return;
