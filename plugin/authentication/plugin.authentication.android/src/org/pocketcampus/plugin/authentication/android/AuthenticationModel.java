@@ -107,10 +107,13 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	public void setTequilaCookie(String value) {
 		tequilaCookie = value;
-		Editor editor = iStorage.edit();
-		editor.putString(TEQUILA_COOKIE_KEY, tequilaCookie);
-		editor.commit();
+		saveTequilaCookie();
 		mListeners.gotTequilaCookie();
+	}
+	public void destroyTequilaCookie() {
+		// Should not call gotTequilaCookie here
+		tequilaCookie = null;
+		saveTequilaCookie();
 	}
 
 	/**
@@ -126,6 +129,15 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	 */
 	public IAuthenticationView getListenersToNotify() {
 		return mListeners;
+	}
+	
+	/**
+	 * Helper function to save cookie in persistent storage
+	 */
+	private void saveTequilaCookie() {
+		Editor editor = iStorage.edit();
+		editor.putString(TEQUILA_COOKIE_KEY, tequilaCookie);
+		editor.commit();
 	}
 	
 }

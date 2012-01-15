@@ -160,7 +160,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 			Uri intentUri = aIntent.getData();
 			if(intentUri != null && "pocketcampus-logout".equals(intentUri.getScheme())) {
 				Log.v("DEBUG", "AuthenticationController::onStartCommand {Logging out}");
-				mModel.setTequilaCookie(null);
+				mModel.destroyTequilaCookie();
 			}
 		}
 		stopSelf();
