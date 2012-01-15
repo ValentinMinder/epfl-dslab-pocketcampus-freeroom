@@ -175,6 +175,9 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				// Tracker
+				Tracker.getInstance().trackPageView("authentication/login");
+				
 				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
 				mController.nSetLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
