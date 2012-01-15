@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.isacademia.android;
 
+import java.util.Locale;
+
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
@@ -8,24 +10,31 @@ import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaController;
 import org.pocketcampus.plugin.isacademia.android.req.GetUserCoursesRequest;
 import org.pocketcampus.plugin.isacademia.android.req.GetUserExamsRequest;
 import org.pocketcampus.plugin.isacademia.android.req.GetUserScheduleRequest;
+import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService.Iface;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService.Client;
 
-import android.util.Log;
-
+/**
+ * IsacademiaController - Main logic for the Isacademia Plugin.
+ * 
+ * This class issues requests to the Isacademia PocketCampus
+ * server to get the Isacademia data of the logged in user.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ * 
+ */
 public class IsacademiaController extends PluginController implements IIsacademiaController{
 
 	private String mPluginName = "isacademia";
 	
-
+	private IsacademiaModel mModel;
+	private Iface mClientC;
+	private Iface mClientE;
+	private Iface mClientS;
+	
 	@Override
 	public void onCreate() {
-		Log.v("DEBUG", "onCreate called on CamiproController");
-		// Initializing the model is part of the controller's job...
-		mModel = IsacademiaModel.getInstance();
-		
-		// ...as well as initializing the client.
-		// The "client" is the connection we use to access the service.
+		mModel = new IsacademiaModel(getApplicationContext());
 		mClientC = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientE = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientS = (Iface) getClient(new Client.Factory(), mPluginName);
@@ -36,14 +45,6 @@ public class IsacademiaController extends PluginController implements IIsacademi
 		return mModel;
 	}
 
-	public void setIsacademiaCookie(String sessId) {
-		mModel.setIsacademiaCookie(sessId);
-	}
-	
-	public String getIsacademiaCookie() {
-		return mModel.getIsacademiaCookie();
-	}
-	
 	public void refreshCourses() {
 		if(mModel.getIsacademiaCookie() == null)
 			return;
@@ -62,15 +63,13 @@ public class IsacademiaController extends PluginController implements IIsacademi
 		new GetUserScheduleRequest().start(this, mClientS, buildSessionId());
 	}
 	
-	private SessionId buildSessionId() {
+	private IsaRequest buildSessionId() {
 		SessionId sessId = new SessionId(TypeOfService.SERVICE_ISA);
 		sessId.setIsaCookie(mModel.getIsacademiaCookie());
-		return sessId;
+		IsaRequest ir = new IsaRequest();
+		ir.setISessionId(sessId);
+		ir.setILanguage(Locale.getDefault().getLanguage());
+		return ir;
 	}
-	
-	private IsacademiaModel mModel;
-	private Iface mClientC;
-	private Iface mClientE;
-	private Iface mClientS;
 	
 }

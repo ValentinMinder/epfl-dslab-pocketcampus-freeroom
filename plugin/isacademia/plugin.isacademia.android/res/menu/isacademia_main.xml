@@ -2,9 +2,9 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
-		android:id="@+id/isacademia_refresh"
-		android:icon="@drawable/isacademia_menu_refresh"
-		android:title="Refresh"
+		android:id="@+id/isacademia_logout"
+		android:icon="@drawable/isacademia_menu_logout"
+		android:title="@+string/isacademia_string_logout"
 		/>
-		
+			
 </menu>

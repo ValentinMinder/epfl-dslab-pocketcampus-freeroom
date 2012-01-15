@@ -25,21 +25,21 @@ public class IsacademiaService {
 
   public interface Iface {
 
-    public List<Course> getUserCourses(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
+    public IsaCoursesListReply getUserCourses(IsaRequest iRequest) throws org.apache.thrift.TException;
 
-    public List<Exam> getUserExams(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
+    public IsaExamsListReply getUserExams(IsaRequest iRequest) throws org.apache.thrift.TException;
 
-    public List<Seance> getUserSchedule(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException;
+    public IsaScheduleReply getUserSchedule(IsaRequest iRequest) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getUserCourses(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserCourses_call> resultHandler) throws org.apache.thrift.TException;
+    public void getUserCourses(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserCourses_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getUserExams(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserExams_call> resultHandler) throws org.apache.thrift.TException;
+    public void getUserExams(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserExams_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getUserSchedule(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserSchedule_call> resultHandler) throws org.apache.thrift.TException;
+    public void getUserSchedule(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUserSchedule_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -63,20 +63,20 @@ public class IsacademiaService {
       super(iprot, oprot);
     }
 
-    public List<Course> getUserCourses(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public IsaCoursesListReply getUserCourses(IsaRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getUserCourses(aSessionId);
+      send_getUserCourses(iRequest);
       return recv_getUserCourses();
     }
 
-    public void send_getUserCourses(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public void send_getUserCourses(IsaRequest iRequest) throws org.apache.thrift.TException
     {
       getUserCourses_args args = new getUserCourses_args();
-      args.setASessionId(aSessionId);
+      args.setIRequest(iRequest);
       sendBase("getUserCourses", args);
     }
 
-    public List<Course> recv_getUserCourses() throws org.apache.thrift.TException
+    public IsaCoursesListReply recv_getUserCourses() throws org.apache.thrift.TException
     {
       getUserCourses_result result = new getUserCourses_result();
       receiveBase(result, "getUserCourses");
@@ -86,20 +86,20 @@ public class IsacademiaService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUserCourses failed: unknown result");
     }
 
-    public List<Exam> getUserExams(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public IsaExamsListReply getUserExams(IsaRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getUserExams(aSessionId);
+      send_getUserExams(iRequest);
       return recv_getUserExams();
     }
 
-    public void send_getUserExams(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public void send_getUserExams(IsaRequest iRequest) throws org.apache.thrift.TException
     {
       getUserExams_args args = new getUserExams_args();
-      args.setASessionId(aSessionId);
+      args.setIRequest(iRequest);
       sendBase("getUserExams", args);
     }
 
-    public List<Exam> recv_getUserExams() throws org.apache.thrift.TException
+    public IsaExamsListReply recv_getUserExams() throws org.apache.thrift.TException
     {
       getUserExams_result result = new getUserExams_result();
       receiveBase(result, "getUserExams");
@@ -109,20 +109,20 @@ public class IsacademiaService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUserExams failed: unknown result");
     }
 
-    public List<Seance> getUserSchedule(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public IsaScheduleReply getUserSchedule(IsaRequest iRequest) throws org.apache.thrift.TException
     {
-      send_getUserSchedule(aSessionId);
+      send_getUserSchedule(iRequest);
       return recv_getUserSchedule();
     }
 
-    public void send_getUserSchedule(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) throws org.apache.thrift.TException
+    public void send_getUserSchedule(IsaRequest iRequest) throws org.apache.thrift.TException
     {
       getUserSchedule_args args = new getUserSchedule_args();
-      args.setASessionId(aSessionId);
+      args.setIRequest(iRequest);
       sendBase("getUserSchedule", args);
     }
 
-    public List<Seance> recv_getUserSchedule() throws org.apache.thrift.TException
+    public IsaScheduleReply recv_getUserSchedule() throws org.apache.thrift.TException
     {
       getUserSchedule_result result = new getUserSchedule_result();
       receiveBase(result, "getUserSchedule");
@@ -150,29 +150,29 @@ public class IsacademiaService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getUserCourses(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserCourses_call> resultHandler) throws org.apache.thrift.TException {
+    public void getUserCourses(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserCourses_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getUserCourses_call method_call = new getUserCourses_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      getUserCourses_call method_call = new getUserCourses_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getUserCourses_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
-      public getUserCourses_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserCourses_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private IsaRequest iRequest;
+      public getUserCourses_call(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserCourses_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.aSessionId = aSessionId;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUserCourses", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getUserCourses_args args = new getUserCourses_args();
-        args.setASessionId(aSessionId);
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Course> getResult() throws org.apache.thrift.TException {
+      public IsaCoursesListReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -182,29 +182,29 @@ public class IsacademiaService {
       }
     }
 
-    public void getUserExams(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserExams_call> resultHandler) throws org.apache.thrift.TException {
+    public void getUserExams(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserExams_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getUserExams_call method_call = new getUserExams_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      getUserExams_call method_call = new getUserExams_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getUserExams_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
-      public getUserExams_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserExams_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private IsaRequest iRequest;
+      public getUserExams_call(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserExams_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.aSessionId = aSessionId;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUserExams", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getUserExams_args args = new getUserExams_args();
-        args.setASessionId(aSessionId);
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Exam> getResult() throws org.apache.thrift.TException {
+      public IsaExamsListReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -214,29 +214,29 @@ public class IsacademiaService {
       }
     }
 
-    public void getUserSchedule(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserSchedule_call> resultHandler) throws org.apache.thrift.TException {
+    public void getUserSchedule(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserSchedule_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getUserSchedule_call method_call = new getUserSchedule_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      getUserSchedule_call method_call = new getUserSchedule_call(iRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getUserSchedule_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.SessionId aSessionId;
-      public getUserSchedule_call(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<getUserSchedule_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private IsaRequest iRequest;
+      public getUserSchedule_call(IsaRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<getUserSchedule_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.aSessionId = aSessionId;
+        this.iRequest = iRequest;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUserSchedule", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getUserSchedule_args args = new getUserSchedule_args();
-        args.setASessionId(aSessionId);
+        args.setIRequest(iRequest);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Seance> getResult() throws org.apache.thrift.TException {
+      public IsaScheduleReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -276,7 +276,7 @@ public class IsacademiaService {
 
       protected getUserCourses_result getResult(I iface, getUserCourses_args args) throws org.apache.thrift.TException {
         getUserCourses_result result = new getUserCourses_result();
-        result.success = iface.getUserCourses(args.aSessionId);
+        result.success = iface.getUserCourses(args.iRequest);
         return result;
       }
     }
@@ -292,7 +292,7 @@ public class IsacademiaService {
 
       protected getUserExams_result getResult(I iface, getUserExams_args args) throws org.apache.thrift.TException {
         getUserExams_result result = new getUserExams_result();
-        result.success = iface.getUserExams(args.aSessionId);
+        result.success = iface.getUserExams(args.iRequest);
         return result;
       }
     }
@@ -308,7 +308,7 @@ public class IsacademiaService {
 
       protected getUserSchedule_result getResult(I iface, getUserSchedule_args args) throws org.apache.thrift.TException {
         getUserSchedule_result result = new getUserSchedule_result();
-        result.success = iface.getUserSchedule(args.aSessionId);
+        result.success = iface.getUserSchedule(args.iRequest);
         return result;
       }
     }
@@ -318,13 +318,13 @@ public class IsacademiaService {
   public static class getUserCourses_args implements org.apache.thrift.TBase<getUserCourses_args, getUserCourses_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserCourses_args");
 
-    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
+    public IsaRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_SESSION_ID((short)1, "aSessionId");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -339,8 +339,8 @@ public class IsacademiaService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // A_SESSION_ID
-            return A_SESSION_ID;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -385,8 +385,8 @@ public class IsacademiaService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserCourses_args.class, metaDataMap);
     }
@@ -395,18 +395,18 @@ public class IsacademiaService {
     }
 
     public getUserCourses_args(
-      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+      IsaRequest iRequest)
     {
       this();
-      this.aSessionId = aSessionId;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getUserCourses_args(getUserCourses_args other) {
-      if (other.isSetASessionId()) {
-        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      if (other.isSetIRequest()) {
+        this.iRequest = new IsaRequest(other.iRequest);
       }
     }
 
@@ -416,40 +416,40 @@ public class IsacademiaService {
 
     @Override
     public void clear() {
-      this.aSessionId = null;
+      this.iRequest = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
-      return this.aSessionId;
+    public IsaRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getUserCourses_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
-      this.aSessionId = aSessionId;
+    public getUserCourses_args setIRequest(IsaRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetASessionId() {
-      this.aSessionId = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
-    public boolean isSetASessionId() {
-      return this.aSessionId != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setASessionIdIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.aSessionId = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case A_SESSION_ID:
+      case I_REQUEST:
         if (value == null) {
-          unsetASessionId();
+          unsetIRequest();
         } else {
-          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+          setIRequest((IsaRequest)value);
         }
         break;
 
@@ -458,8 +458,8 @@ public class IsacademiaService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case A_SESSION_ID:
-        return getASessionId();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -472,8 +472,8 @@ public class IsacademiaService {
       }
 
       switch (field) {
-      case A_SESSION_ID:
-        return isSetASessionId();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -491,12 +491,12 @@ public class IsacademiaService {
       if (that == null)
         return false;
 
-      boolean this_present_aSessionId = true && this.isSetASessionId();
-      boolean that_present_aSessionId = true && that.isSetASessionId();
-      if (this_present_aSessionId || that_present_aSessionId) {
-        if (!(this_present_aSessionId && that_present_aSessionId))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.aSessionId.equals(that.aSessionId))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -507,10 +507,10 @@ public class IsacademiaService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_aSessionId = true && (isSetASessionId());
-      builder.append(present_aSessionId);
-      if (present_aSessionId)
-        builder.append(aSessionId);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
@@ -523,12 +523,12 @@ public class IsacademiaService {
       int lastComparison = 0;
       getUserCourses_args typedOther = (getUserCourses_args)other;
 
-      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetASessionId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -550,10 +550,10 @@ public class IsacademiaService {
           break;
         }
         switch (field.id) {
-          case 1: // A_SESSION_ID
+          case 1: // I_REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-              this.aSessionId.read(iprot);
+              this.iRequest = new IsaRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -573,9 +573,9 @@ public class IsacademiaService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aSessionId != null) {
-        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
-        this.aSessionId.write(oprot);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -587,11 +587,11 @@ public class IsacademiaService {
       StringBuilder sb = new StringBuilder("getUserCourses_args(");
       boolean first = true;
 
-      sb.append("aSessionId:");
-      if (this.aSessionId == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.aSessionId);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -623,9 +623,9 @@ public class IsacademiaService {
   public static class getUserCourses_result implements org.apache.thrift.TBase<getUserCourses_result, getUserCourses_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserCourses_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public List<Course> success; // required
+    public IsaCoursesListReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -691,8 +691,7 @@ public class IsacademiaService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Course.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaCoursesListReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserCourses_result.class, metaDataMap);
     }
@@ -701,7 +700,7 @@ public class IsacademiaService {
     }
 
     public getUserCourses_result(
-      List<Course> success)
+      IsaCoursesListReply success)
     {
       this();
       this.success = success;
@@ -712,11 +711,7 @@ public class IsacademiaService {
      */
     public getUserCourses_result(getUserCourses_result other) {
       if (other.isSetSuccess()) {
-        List<Course> __this__success = new ArrayList<Course>();
-        for (Course other_element : other.success) {
-          __this__success.add(new Course(other_element));
-        }
-        this.success = __this__success;
+        this.success = new IsaCoursesListReply(other.success);
       }
     }
 
@@ -729,26 +724,11 @@ public class IsacademiaService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Course> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Course elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Course>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Course> getSuccess() {
+    public IsaCoursesListReply getSuccess() {
       return this.success;
     }
 
-    public getUserCourses_result setSuccess(List<Course> success) {
+    public getUserCourses_result setSuccess(IsaCoursesListReply success) {
       this.success = success;
       return this;
     }
@@ -774,7 +754,7 @@ public class IsacademiaService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Course>)value);
+          setSuccess((IsaCoursesListReply)value);
         }
         break;
 
@@ -876,19 +856,9 @@ public class IsacademiaService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                this.success = new ArrayList<Course>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                {
-                  Course _elem2; // required
-                  _elem2 = new Course();
-                  _elem2.read(iprot);
-                  this.success.add(_elem2);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new IsaCoursesListReply();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -909,14 +879,7 @@ public class IsacademiaService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Course _iter3 : this.success)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -964,13 +927,13 @@ public class IsacademiaService {
   public static class getUserExams_args implements org.apache.thrift.TBase<getUserExams_args, getUserExams_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserExams_args");
 
-    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
+    public IsaRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_SESSION_ID((short)1, "aSessionId");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -985,8 +948,8 @@ public class IsacademiaService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // A_SESSION_ID
-            return A_SESSION_ID;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -1031,8 +994,8 @@ public class IsacademiaService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserExams_args.class, metaDataMap);
     }
@@ -1041,18 +1004,18 @@ public class IsacademiaService {
     }
 
     public getUserExams_args(
-      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+      IsaRequest iRequest)
     {
       this();
-      this.aSessionId = aSessionId;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getUserExams_args(getUserExams_args other) {
-      if (other.isSetASessionId()) {
-        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      if (other.isSetIRequest()) {
+        this.iRequest = new IsaRequest(other.iRequest);
       }
     }
 
@@ -1062,40 +1025,40 @@ public class IsacademiaService {
 
     @Override
     public void clear() {
-      this.aSessionId = null;
+      this.iRequest = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
-      return this.aSessionId;
+    public IsaRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getUserExams_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
-      this.aSessionId = aSessionId;
+    public getUserExams_args setIRequest(IsaRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetASessionId() {
-      this.aSessionId = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
-    public boolean isSetASessionId() {
-      return this.aSessionId != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setASessionIdIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.aSessionId = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case A_SESSION_ID:
+      case I_REQUEST:
         if (value == null) {
-          unsetASessionId();
+          unsetIRequest();
         } else {
-          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+          setIRequest((IsaRequest)value);
         }
         break;
 
@@ -1104,8 +1067,8 @@ public class IsacademiaService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case A_SESSION_ID:
-        return getASessionId();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -1118,8 +1081,8 @@ public class IsacademiaService {
       }
 
       switch (field) {
-      case A_SESSION_ID:
-        return isSetASessionId();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -1137,12 +1100,12 @@ public class IsacademiaService {
       if (that == null)
         return false;
 
-      boolean this_present_aSessionId = true && this.isSetASessionId();
-      boolean that_present_aSessionId = true && that.isSetASessionId();
-      if (this_present_aSessionId || that_present_aSessionId) {
-        if (!(this_present_aSessionId && that_present_aSessionId))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.aSessionId.equals(that.aSessionId))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -1153,10 +1116,10 @@ public class IsacademiaService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_aSessionId = true && (isSetASessionId());
-      builder.append(present_aSessionId);
-      if (present_aSessionId)
-        builder.append(aSessionId);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
@@ -1169,12 +1132,12 @@ public class IsacademiaService {
       int lastComparison = 0;
       getUserExams_args typedOther = (getUserExams_args)other;
 
-      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetASessionId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1196,10 +1159,10 @@ public class IsacademiaService {
           break;
         }
         switch (field.id) {
-          case 1: // A_SESSION_ID
+          case 1: // I_REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-              this.aSessionId.read(iprot);
+              this.iRequest = new IsaRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1219,9 +1182,9 @@ public class IsacademiaService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aSessionId != null) {
-        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
-        this.aSessionId.write(oprot);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1233,11 +1196,11 @@ public class IsacademiaService {
       StringBuilder sb = new StringBuilder("getUserExams_args(");
       boolean first = true;
 
-      sb.append("aSessionId:");
-      if (this.aSessionId == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.aSessionId);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -1269,9 +1232,9 @@ public class IsacademiaService {
   public static class getUserExams_result implements org.apache.thrift.TBase<getUserExams_result, getUserExams_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserExams_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public List<Exam> success; // required
+    public IsaExamsListReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1337,8 +1300,7 @@ public class IsacademiaService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Exam.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaExamsListReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserExams_result.class, metaDataMap);
     }
@@ -1347,7 +1309,7 @@ public class IsacademiaService {
     }
 
     public getUserExams_result(
-      List<Exam> success)
+      IsaExamsListReply success)
     {
       this();
       this.success = success;
@@ -1358,11 +1320,7 @@ public class IsacademiaService {
      */
     public getUserExams_result(getUserExams_result other) {
       if (other.isSetSuccess()) {
-        List<Exam> __this__success = new ArrayList<Exam>();
-        for (Exam other_element : other.success) {
-          __this__success.add(new Exam(other_element));
-        }
-        this.success = __this__success;
+        this.success = new IsaExamsListReply(other.success);
       }
     }
 
@@ -1375,26 +1333,11 @@ public class IsacademiaService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Exam> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Exam elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Exam>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Exam> getSuccess() {
+    public IsaExamsListReply getSuccess() {
       return this.success;
     }
 
-    public getUserExams_result setSuccess(List<Exam> success) {
+    public getUserExams_result setSuccess(IsaExamsListReply success) {
       this.success = success;
       return this;
     }
@@ -1420,7 +1363,7 @@ public class IsacademiaService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Exam>)value);
+          setSuccess((IsaExamsListReply)value);
         }
         break;
 
@@ -1522,19 +1465,9 @@ public class IsacademiaService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list4 = iprot.readListBegin();
-                this.success = new ArrayList<Exam>(_list4.size);
-                for (int _i5 = 0; _i5 < _list4.size; ++_i5)
-                {
-                  Exam _elem6; // required
-                  _elem6 = new Exam();
-                  _elem6.read(iprot);
-                  this.success.add(_elem6);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new IsaExamsListReply();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1555,14 +1488,7 @@ public class IsacademiaService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Exam _iter7 : this.success)
-          {
-            _iter7.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1610,13 +1536,13 @@ public class IsacademiaService {
   public static class getUserSchedule_args implements org.apache.thrift.TBase<getUserSchedule_args, getUserSchedule_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserSchedule_args");
 
-    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId aSessionId; // required
+    public IsaRequest iRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      A_SESSION_ID((short)1, "aSessionId");
+      I_REQUEST((short)1, "iRequest");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1631,8 +1557,8 @@ public class IsacademiaService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // A_SESSION_ID
-            return A_SESSION_ID;
+          case 1: // I_REQUEST
+            return I_REQUEST;
           default:
             return null;
         }
@@ -1677,8 +1603,8 @@ public class IsacademiaService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+      tmpMap.put(_Fields.I_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserSchedule_args.class, metaDataMap);
     }
@@ -1687,18 +1613,18 @@ public class IsacademiaService {
     }
 
     public getUserSchedule_args(
-      org.pocketcampus.plugin.authentication.shared.SessionId aSessionId)
+      IsaRequest iRequest)
     {
       this();
-      this.aSessionId = aSessionId;
+      this.iRequest = iRequest;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getUserSchedule_args(getUserSchedule_args other) {
-      if (other.isSetASessionId()) {
-        this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.aSessionId);
+      if (other.isSetIRequest()) {
+        this.iRequest = new IsaRequest(other.iRequest);
       }
     }
 
@@ -1708,40 +1634,40 @@ public class IsacademiaService {
 
     @Override
     public void clear() {
-      this.aSessionId = null;
+      this.iRequest = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.SessionId getASessionId() {
-      return this.aSessionId;
+    public IsaRequest getIRequest() {
+      return this.iRequest;
     }
 
-    public getUserSchedule_args setASessionId(org.pocketcampus.plugin.authentication.shared.SessionId aSessionId) {
-      this.aSessionId = aSessionId;
+    public getUserSchedule_args setIRequest(IsaRequest iRequest) {
+      this.iRequest = iRequest;
       return this;
     }
 
-    public void unsetASessionId() {
-      this.aSessionId = null;
+    public void unsetIRequest() {
+      this.iRequest = null;
     }
 
-    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
-    public boolean isSetASessionId() {
-      return this.aSessionId != null;
+    /** Returns true if field iRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIRequest() {
+      return this.iRequest != null;
     }
 
-    public void setASessionIdIsSet(boolean value) {
+    public void setIRequestIsSet(boolean value) {
       if (!value) {
-        this.aSessionId = null;
+        this.iRequest = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case A_SESSION_ID:
+      case I_REQUEST:
         if (value == null) {
-          unsetASessionId();
+          unsetIRequest();
         } else {
-          setASessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+          setIRequest((IsaRequest)value);
         }
         break;
 
@@ -1750,8 +1676,8 @@ public class IsacademiaService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case A_SESSION_ID:
-        return getASessionId();
+      case I_REQUEST:
+        return getIRequest();
 
       }
       throw new IllegalStateException();
@@ -1764,8 +1690,8 @@ public class IsacademiaService {
       }
 
       switch (field) {
-      case A_SESSION_ID:
-        return isSetASessionId();
+      case I_REQUEST:
+        return isSetIRequest();
       }
       throw new IllegalStateException();
     }
@@ -1783,12 +1709,12 @@ public class IsacademiaService {
       if (that == null)
         return false;
 
-      boolean this_present_aSessionId = true && this.isSetASessionId();
-      boolean that_present_aSessionId = true && that.isSetASessionId();
-      if (this_present_aSessionId || that_present_aSessionId) {
-        if (!(this_present_aSessionId && that_present_aSessionId))
+      boolean this_present_iRequest = true && this.isSetIRequest();
+      boolean that_present_iRequest = true && that.isSetIRequest();
+      if (this_present_iRequest || that_present_iRequest) {
+        if (!(this_present_iRequest && that_present_iRequest))
           return false;
-        if (!this.aSessionId.equals(that.aSessionId))
+        if (!this.iRequest.equals(that.iRequest))
           return false;
       }
 
@@ -1799,10 +1725,10 @@ public class IsacademiaService {
     public int hashCode() {
       HashCodeBuilder builder = new HashCodeBuilder();
 
-      boolean present_aSessionId = true && (isSetASessionId());
-      builder.append(present_aSessionId);
-      if (present_aSessionId)
-        builder.append(aSessionId);
+      boolean present_iRequest = true && (isSetIRequest());
+      builder.append(present_iRequest);
+      if (present_iRequest)
+        builder.append(iRequest);
 
       return builder.toHashCode();
     }
@@ -1815,12 +1741,12 @@ public class IsacademiaService {
       int lastComparison = 0;
       getUserSchedule_args typedOther = (getUserSchedule_args)other;
 
-      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      lastComparison = Boolean.valueOf(isSetIRequest()).compareTo(typedOther.isSetIRequest());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetASessionId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+      if (isSetIRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iRequest, typedOther.iRequest);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1842,10 +1768,10 @@ public class IsacademiaService {
           break;
         }
         switch (field.id) {
-          case 1: // A_SESSION_ID
+          case 1: // I_REQUEST
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.aSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-              this.aSessionId.read(iprot);
+              this.iRequest = new IsaRequest();
+              this.iRequest.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -1865,9 +1791,9 @@ public class IsacademiaService {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.aSessionId != null) {
-        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
-        this.aSessionId.write(oprot);
+      if (this.iRequest != null) {
+        oprot.writeFieldBegin(I_REQUEST_FIELD_DESC);
+        this.iRequest.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1879,11 +1805,11 @@ public class IsacademiaService {
       StringBuilder sb = new StringBuilder("getUserSchedule_args(");
       boolean first = true;
 
-      sb.append("aSessionId:");
-      if (this.aSessionId == null) {
+      sb.append("iRequest:");
+      if (this.iRequest == null) {
         sb.append("null");
       } else {
-        sb.append(this.aSessionId);
+        sb.append(this.iRequest);
       }
       first = false;
       sb.append(")");
@@ -1915,9 +1841,9 @@ public class IsacademiaService {
   public static class getUserSchedule_result implements org.apache.thrift.TBase<getUserSchedule_result, getUserSchedule_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserSchedule_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public List<Seance> success; // required
+    public IsaScheduleReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1983,8 +1909,7 @@ public class IsacademiaService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Seance.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaScheduleReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserSchedule_result.class, metaDataMap);
     }
@@ -1993,7 +1918,7 @@ public class IsacademiaService {
     }
 
     public getUserSchedule_result(
-      List<Seance> success)
+      IsaScheduleReply success)
     {
       this();
       this.success = success;
@@ -2004,11 +1929,7 @@ public class IsacademiaService {
      */
     public getUserSchedule_result(getUserSchedule_result other) {
       if (other.isSetSuccess()) {
-        List<Seance> __this__success = new ArrayList<Seance>();
-        for (Seance other_element : other.success) {
-          __this__success.add(new Seance(other_element));
-        }
-        this.success = __this__success;
+        this.success = new IsaScheduleReply(other.success);
       }
     }
 
@@ -2021,26 +1942,11 @@ public class IsacademiaService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Seance> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Seance elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Seance>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Seance> getSuccess() {
+    public IsaScheduleReply getSuccess() {
       return this.success;
     }
 
-    public getUserSchedule_result setSuccess(List<Seance> success) {
+    public getUserSchedule_result setSuccess(IsaScheduleReply success) {
       this.success = success;
       return this;
     }
@@ -2066,7 +1972,7 @@ public class IsacademiaService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Seance>)value);
+          setSuccess((IsaScheduleReply)value);
         }
         break;
 
@@ -2168,19 +2074,9 @@ public class IsacademiaService {
         }
         switch (field.id) {
           case 0: // SUCCESS
-            if (field.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                this.success = new ArrayList<Seance>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
-                {
-                  Seance _elem10; // required
-                  _elem10 = new Seance();
-                  _elem10.read(iprot);
-                  this.success.add(_elem10);
-                }
-                iprot.readListEnd();
-              }
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new IsaScheduleReply();
+              this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             }
@@ -2201,14 +2097,7 @@ public class IsacademiaService {
 
       if (this.isSetSuccess()) {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.success.size()));
-          for (Seance _iter11 : this.success)
-          {
-            _iter11.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
+        this.success.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

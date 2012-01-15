@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Course");
+public class IsaCourse implements org.apache.thrift.TBase<IsaCourse, IsaCourse._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaCourse");
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("code", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -131,13 +131,13 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     tmpMap.put(_Fields.CREDITS, new org.apache.thrift.meta_data.FieldMetaData("credits", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Course.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaCourse.class, metaDataMap);
   }
 
-  public Course() {
+  public IsaCourse() {
   }
 
-  public Course(
+  public IsaCourse(
     String name,
     String code,
     String instructor,
@@ -154,7 +154,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Course(Course other) {
+  public IsaCourse(IsaCourse other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetName()) {
@@ -175,8 +175,8 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     this.credits = other.credits;
   }
 
-  public Course deepCopy() {
-    return new Course(this);
+  public IsaCourse deepCopy() {
+    return new IsaCourse(this);
   }
 
   @Override
@@ -194,7 +194,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.name;
   }
 
-  public Course setName(String name) {
+  public IsaCourse setName(String name) {
     this.name = name;
     return this;
   }
@@ -218,7 +218,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.code;
   }
 
-  public Course setCode(String code) {
+  public IsaCourse setCode(String code) {
     this.code = code;
     return this;
   }
@@ -242,7 +242,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.instructor;
   }
 
-  public Course setInstructor(String instructor) {
+  public IsaCourse setInstructor(String instructor) {
     this.instructor = instructor;
     return this;
   }
@@ -266,7 +266,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.rooms;
   }
 
-  public Course setRooms(String rooms) {
+  public IsaCourse setRooms(String rooms) {
     this.rooms = rooms;
     return this;
   }
@@ -290,7 +290,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.dateTime;
   }
 
-  public Course setDateTime(String dateTime) {
+  public IsaCourse setDateTime(String dateTime) {
     this.dateTime = dateTime;
     return this;
   }
@@ -314,7 +314,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return this.credits;
   }
 
-  public Course setCredits(int credits) {
+  public IsaCourse setCredits(int credits) {
     this.credits = credits;
     setCreditsIsSet(true);
     return this;
@@ -437,12 +437,12 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Course)
-      return this.equals((Course)that);
+    if (that instanceof IsaCourse)
+      return this.equals((IsaCourse)that);
     return false;
   }
 
-  public boolean equals(Course that) {
+  public boolean equals(IsaCourse that) {
     if (that == null)
       return false;
 
@@ -540,13 +540,13 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
     return builder.toHashCode();
   }
 
-  public int compareTo(Course other) {
+  public int compareTo(IsaCourse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Course typedOther = (Course)other;
+    IsaCourse typedOther = (IsaCourse)other;
 
     lastComparison = Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
     if (lastComparison != 0) {
@@ -724,7 +724,7 @@ public class Course implements org.apache.thrift.TBase<Course, Course._Fields>, 
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Course(");
+    StringBuilder sb = new StringBuilder("IsaCourse(");
     boolean first = true;
 
     sb.append("name:");

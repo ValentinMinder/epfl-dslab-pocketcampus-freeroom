@@ -1,24 +1,37 @@
 package org.pocketcampus.plugin.isacademia.android.req;
 
-import java.util.List;
-
 import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.isacademia.android.IsacademiaController;
 import org.pocketcampus.plugin.isacademia.android.IsacademiaModel;
-import org.pocketcampus.plugin.isacademia.shared.Exam;
+import org.pocketcampus.plugin.isacademia.shared.IsaExamsListReply;
+import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService.Iface;
 
-public class GetUserExamsRequest extends Request<IsacademiaController, Iface, SessionId, List<Exam>> {
+/**
+ * GetUserExamsRequest
+ * 
+ * This class sends an HttpRequest using Thrift to the PocketCampus server
+ * in order to get the ISA enrolled exams of the logged in user.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
+public class GetUserExamsRequest extends Request<IsacademiaController, Iface, IsaRequest, IsaExamsListReply> {
 
 	@Override
-	protected List<Exam> runInBackground(Iface client, SessionId param) throws Exception {
+	protected IsaExamsListReply runInBackground(Iface client, IsaRequest param) throws Exception {
 		return client.getUserExams(param);
 	}
 
 	@Override
-	protected void onResult(IsacademiaController controller, List<Exam> result) {
-		((IsacademiaModel) controller.getModel()).setExams(result);
+	protected void onResult(IsacademiaController controller, IsaExamsListReply result) {
+		if(result.getIStatus() == 404) {
+			((IsacademiaModel) controller.getModel()).getListenersToNotify().isaServersDown();
+		} else if(result.getIStatus() == 407) {
+			((IsacademiaModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+		} else if(result.getIStatus() == 200) {
+			((IsacademiaModel) controller.getModel()).setExams(result.getIExams());
+		}
 	}
 
 	@Override

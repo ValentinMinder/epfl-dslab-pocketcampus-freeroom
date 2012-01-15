@@ -1,31 +1,24 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.LinkedList;
-import java.util.List;
 
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
-import org.pocketcampus.plugin.isacademia.shared.Course;
-import org.pocketcampus.plugin.isacademia.shared.Exam;
+import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
+import org.pocketcampus.plugin.isacademia.shared.IsaCoursesListReply;
+import org.pocketcampus.plugin.isacademia.shared.IsaExam;
+import org.pocketcampus.plugin.isacademia.shared.IsaExamsListReply;
+import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
+import org.pocketcampus.plugin.isacademia.shared.IsaScheduleReply;
+import org.pocketcampus.plugin.isacademia.shared.IsaSeance;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService;
-import org.pocketcampus.plugin.isacademia.shared.Seance;
 import org.pocketcampus.plugin.isacademia.shared.SeanceType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,11 +26,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+/**
+ * IsacademiaServiceImpl
+ * 
+ * The implementation of the server side of the Isacademia Plugin.
+ * 
+ * It fetches the user's Isacademia data from the Isacademia servers.
+ * 
+ * @author Amer <amer.chamseddine@epfl.ch>
+ *
+ */
 public class IsacademiaServiceImpl implements IsacademiaService.Iface {
-	
-	
-	public static DocumentBuilderFactory docBuilderFactory;
-	public static DocumentBuilder docBuilder;
 	
 	final public static String ISA_URL = "https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_cell=%s";
 	
@@ -46,14 +45,11 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	}
 
 	@Override
-	public List<Course> getUserCourses(SessionId aSessionId) throws TException {
-		//System.out.println("test");
-		//test();
-		//executeCommand();
+	public IsaCoursesListReply getUserCourses(IsaRequest iRequest) throws TException {
 		System.out.println("getUserCourses");
 		Document doc = null;
 		Cookie cookie = new Cookie();
-		cookie.importFromString(aSessionId.getIsaCookie());
+		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1210075152"), cookie);
@@ -62,18 +58,21 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new TException("getUserCourses: Failed to get data from IS-Academia upstream server");
+			return new IsaCoursesListReply(404);
 		}
 		
+		// TODO must do check if not logged in
+		// return new IsaCoursesListReply(407);
+		
 		doc.getDocumentElement().normalize();
-		LinkedList<Course> tCourses = new LinkedList<Course>();
+		LinkedList<IsaCourse> tCourses = new LinkedList<IsaCourse>();
 		NodeList nList = doc.getElementsByTagName("tr");
 		for(int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
 				Element eElement = (Element) nNode;
 				NodeList nlList = eElement.getElementsByTagName("td");
-				Course crs = new Course();
+				IsaCourse crs = new IsaCourse();
 				crs.setName(nlList.item(0).getTextContent());
 				crs.setCode(getSubstringBetween(nlList.item(1).getTextContent(), "]", "["));
 				crs.setInstructor(getSubstringBetween(nlList.item(2).getTextContent(), "]", "["));
@@ -89,123 +88,18 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 				tCourses.add(crs);
 			}
 		}
-		return tCourses;
+		
+		IsaCoursesListReply clr = new IsaCoursesListReply(200);
+		clr.setICourses(tCourses);
+		return clr;
 	}
-
-	private String executeCommand(String cmd) {
-
-		//String cmd = "ls -al";
-		Runtime run = Runtime.getRuntime();
-		Process pr = null;
-		try {
-			pr = run.exec(cmd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			pr.waitFor();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = "";
-		int byteRead;
-		StringBuilder builder = new StringBuilder();
-		try {
-			while ((byteRead = buf.read()) != -1)
-				builder.append((char) byteRead);
-			/*while ((line = buf.readLine()) != null) {
-				builder.append(line);
-				//System.out.println(line);
-			}*/
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//System.out.println(builder.toString());
-		return builder.toString();
-	}
-	
-	private void test () {
-        try {
-            SSLSocketFactory factory =
-                (SSLSocketFactory)SSLSocketFactory.getDefault();
-            SSLSocket socket =
-                (SSLSocket)factory.createSocket("isadev.epfl.ch", 443);
-
-            /*
-             * send http request
-             *
-             * Before any application data is sent or received, the
-             * SSL socket will do SSL handshaking first to set up
-             * the security attributes.
-             *
-             * SSL handshaking can be initiated by either flushing data
-             * down the pipe, or by starting the handshaking by hand.
-             *
-             * Handshaking is started manually in this example because
-             * PrintWriter catches all IOExceptions (including
-             * SSLExceptions), sets an internal error flag, and then
-             * returns without rethrowing the exception.
-             *
-             * Unfortunately, this means any error messages are lost,
-             * which caused lots of confusion for others using this
-             * code.  The only way to tell there was an error is to call
-             * PrintWriter.checkError().
-             */
-            socket.setEnabledProtocols(new String[]{"SSLv3"});
-            socket.startHandshake();
-            ;
-            //System.out.println("KEEPALIVE: " + socket.getKeepAlive());
-            for(String s : socket.getSupportedProtocols())
-            	System.out.println(s);
-            
-            
-            System.out.println("AND NOW");
-            for(String s : socket.getEnabledProtocols())
-            	System.out.println(s);
-            
-
-            PrintWriter out = new PrintWriter(
-                                  new BufferedWriter(
-                                  new OutputStreamWriter(
-                                  socket.getOutputStream())));
-
-            out.println("GET / HTTP/1.0");
-            out.println();
-            out.flush();
-
-            /*
-             * Make sure there were no surprises
-             */
-            if (out.checkError())
-                System.out.println(
-                    "SSLSocketClient:  java.io.PrintWriter error");
-
-            /* read response */
-            BufferedReader in = new BufferedReader(
-                                    new InputStreamReader(
-                                    socket.getInputStream()));
-
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                System.out.println(inputLine);
-
-            in.close();
-            out.close();
-            socket.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-	}
-	
 
 	@Override
-	public List<Exam> getUserExams(SessionId aSessionId) throws TException {
+	public IsaExamsListReply getUserExams(IsaRequest iRequest) throws TException {
 		System.out.println("getUserExams");
 		Document doc = null;
 		Cookie cookie = new Cookie();
-		cookie.importFromString(aSessionId.getIsaCookie());
+		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1371525543"), cookie);
@@ -214,18 +108,21 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new TException("getUserExams: Failed to get data from IS-Academia upstream server");
+			return new IsaExamsListReply(404);
 		}
 		
+		// TODO must do check if not logged in
+		// return new IsaExamsListReply(407);
+		
 		doc.getDocumentElement().normalize();
-		LinkedList<Exam> tExams = new LinkedList<Exam>();
+		LinkedList<IsaExam> tExams = new LinkedList<IsaExam>();
 		NodeList nList = doc.getElementsByTagName("tr");
 		for(int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
 				Element eElement = (Element) nNode;
 				NodeList nlList = eElement.getElementsByTagName("td");
-				Exam exm = new Exam();
+				IsaExam exm = new IsaExam();
 				exm.setCourse(nlList.item(0).getTextContent());
 				exm.setCode(getSubstringBetween(nlList.item(1).getTextContent(), "]", "["));
 				exm.setInstructor(getSubstringBetween(nlList.item(2).getTextContent(), "]", "["));
@@ -244,16 +141,18 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 				tExams.add(exm);
 			}
 		}
-		return tExams;
+		
+		IsaExamsListReply elr = new IsaExamsListReply(200);
+		elr.setIExams(tExams);
+		return elr;
 	}
 
-
 	@Override
-	public List<Seance> getUserSchedule(SessionId aSessionId) throws TException {
+	public IsaScheduleReply getUserSchedule(IsaRequest iRequest) throws TException {
 		System.out.println("getUserSchedule");
 		Document doc = null;
 		Cookie cookie = new Cookie();
-		cookie.importFromString(aSessionId.getIsaCookie());
+		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1210054559"), cookie);
@@ -262,17 +161,20 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new TException("getUserSchedule: Failed to get data from IS-Academia upstream server");
+			return new IsaScheduleReply(404);
 		}
 		
+		// TODO must do check if not logged in
+		// return new IsaScheduleReply(407);
+		
 		doc.getDocumentElement().normalize();
-		LinkedList<Seance> tSeances = new LinkedList<Seance>();
+		LinkedList<IsaSeance> tSeances = new LinkedList<IsaSeance>();
 		NodeList nList = doc.getElementsByTagName("seance");
 		for(int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
 				Element eElement = (Element) nNode;
-				Seance scnc = new Seance();
+				IsaSeance scnc = new IsaSeance();
 				scnc.setCourse(eElement.getElementsByTagName("matiere").item(0).getTextContent());
 				Element instructorElement = (Element) eElement.getElementsByTagName("infobulle").item(0);
 				scnc.setInstructor(instructorElement.getElementsByTagName("lib").item(0).getTextContent());
@@ -291,17 +193,38 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 				tSeances.add(scnc);
 			}
 		}
-		return tSeances;
+		
+		IsaScheduleReply sr = new IsaScheduleReply(200);
+		sr.setISeances(tSeances);
+		return sr;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 
+	/**
+	 * HELPER FUNCTIONS
+	 */
+	
+	private String executeCommand(String cmd) {
+		Runtime run = Runtime.getRuntime();
+		Process pr = null;
+		try {
+			pr = run.exec(cmd);
+			pr.waitFor();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		int byteRead;
+		StringBuilder builder = new StringBuilder();
+		try {
+			while ((byteRead = buf.read()) != -1)
+				builder.append((char) byteRead);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return builder.toString();
+	}
+	
 	private SeanceType mapSeanceType(String tp) throws TException {
 		if("LIP_COURS".equals(tp)) {
 			return SeanceType.SEANCE_LECTURE;
@@ -319,24 +242,8 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		throw new TException("mapSeanceType: Unknown Seance Type");
 	}
 	
-	/*private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-		conn.setRequestProperty("Cookie", cookie.cookie());
-		BufferedInputStream buffer = new BufferedInputStream(conn.getInputStream());
-		StringBuilder builder = new StringBuilder();
-		int byteRead;
-		while ((byteRead = buffer.read()) != -1)
-			builder.append((char) byteRead);
-		buffer.close();
-		conn.disconnect();
-		return builder.toString();
-	}*/
-	
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		//url = URLEncoder.encode(url, "UTF-8");
-		//String cmdLine = "php getPageWithCookie.php " + url + " " + cookie.cookie();
 		String cmdLine = "curl --sslv3 --cookie " + cookie.cookie() + " " + url;
-		//System.out.println(cmdLine);
 		String page = executeCommand(cmdLine);
 		System.out.println(page.substring(0, 60));
 		return page;
@@ -354,28 +261,4 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		return orig;
 	}
 	
-	/*private String getLastSubstringBetween(String orig, String before, String after) {
-		int a = orig.lastIndexOf(after);
-		if(a != -1) {
-			orig = orig.substring(0, a);
-		}
-		int b = orig.lastIndexOf(before);
-		if(b != -1) {
-			orig = orig.substring(b + before.length());
-		}
-		return orig;
-	}*/
-
-
-
-	static {
-		try {
-			docBuilderFactory = DocumentBuilderFactory.newInstance();
-			docBuilder = docBuilderFactory.newDocumentBuilder();
-		} catch (Exception e) {
-			System.out.println("grrrr, exception while running static code");
-			e.printStackTrace();
-		}
-	}
-
 }

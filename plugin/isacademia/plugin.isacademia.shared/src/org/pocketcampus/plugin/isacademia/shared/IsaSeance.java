@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Seance");
+public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaSeance");
 
   private static final org.apache.thrift.protocol.TField COURSE_FIELD_DESC = new org.apache.thrift.protocol.TField("course", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField INSTRUCTOR_FIELD_DESC = new org.apache.thrift.protocol.TField("instructor", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -140,13 +140,13 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Seance.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaSeance.class, metaDataMap);
   }
 
-  public Seance() {
+  public IsaSeance() {
   }
 
-  public Seance(
+  public IsaSeance(
     String course,
     String instructor,
     SeanceType type,
@@ -168,7 +168,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Seance(Seance other) {
+  public IsaSeance(IsaSeance other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetCourse()) {
@@ -187,8 +187,8 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     }
   }
 
-  public Seance deepCopy() {
-    return new Seance(this);
+  public IsaSeance deepCopy() {
+    return new IsaSeance(this);
   }
 
   @Override
@@ -207,7 +207,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return this.course;
   }
 
-  public Seance setCourse(String course) {
+  public IsaSeance setCourse(String course) {
     this.course = course;
     return this;
   }
@@ -231,7 +231,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return this.instructor;
   }
 
-  public Seance setInstructor(String instructor) {
+  public IsaSeance setInstructor(String instructor) {
     this.instructor = instructor;
     return this;
   }
@@ -263,7 +263,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
    * 
    * @see SeanceType
    */
-  public Seance setType(SeanceType type) {
+  public IsaSeance setType(SeanceType type) {
     this.type = type;
     return this;
   }
@@ -287,7 +287,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return this.weekDay;
   }
 
-  public Seance setWeekDay(int weekDay) {
+  public IsaSeance setWeekDay(int weekDay) {
     this.weekDay = weekDay;
     setWeekDayIsSet(true);
     return this;
@@ -310,7 +310,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return this.timeStart;
   }
 
-  public Seance setTimeStart(int timeStart) {
+  public IsaSeance setTimeStart(int timeStart) {
     this.timeStart = timeStart;
     setTimeStartIsSet(true);
     return this;
@@ -333,7 +333,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return this.room;
   }
 
-  public Seance setRoom(String room) {
+  public IsaSeance setRoom(String room) {
     this.room = room;
     return this;
   }
@@ -457,12 +457,12 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Seance)
-      return this.equals((Seance)that);
+    if (that instanceof IsaSeance)
+      return this.equals((IsaSeance)that);
     return false;
   }
 
-  public boolean equals(Seance that) {
+  public boolean equals(IsaSeance that) {
     if (that == null)
       return false;
 
@@ -560,13 +560,13 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
     return builder.toHashCode();
   }
 
-  public int compareTo(Seance other) {
+  public int compareTo(IsaSeance other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Seance typedOther = (Seance)other;
+    IsaSeance typedOther = (IsaSeance)other;
 
     lastComparison = Boolean.valueOf(isSetCourse()).compareTo(typedOther.isSetCourse());
     if (lastComparison != 0) {
@@ -742,7 +742,7 @@ public class Seance implements org.apache.thrift.TBase<Seance, Seance._Fields>, 
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Seance(");
+    StringBuilder sb = new StringBuilder("IsaSeance(");
     boolean first = true;
 
     sb.append("course:");

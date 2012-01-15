@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Exam");
+public class IsaExam implements org.apache.thrift.TBase<IsaExam, IsaExam._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaExam");
 
   private static final org.apache.thrift.protocol.TField COURSE_FIELD_DESC = new org.apache.thrift.protocol.TField("course", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("code", org.apache.thrift.protocol.TType.STRING, (short)2);
@@ -152,13 +152,13 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     tmpMap.put(_Fields.ACADEMIC_YEAR, new org.apache.thrift.meta_data.FieldMetaData("academicYear", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Exam.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaExam.class, metaDataMap);
   }
 
-  public Exam() {
+  public IsaExam() {
   }
 
-  public Exam(
+  public IsaExam(
     String course,
     String code,
     String instructor,
@@ -179,7 +179,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Exam(Exam other) {
+  public IsaExam(IsaExam other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetCourse()) {
@@ -209,8 +209,8 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     }
   }
 
-  public Exam deepCopy() {
-    return new Exam(this);
+  public IsaExam deepCopy() {
+    return new IsaExam(this);
   }
 
   @Override
@@ -231,7 +231,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.course;
   }
 
-  public Exam setCourse(String course) {
+  public IsaExam setCourse(String course) {
     this.course = course;
     return this;
   }
@@ -255,7 +255,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.code;
   }
 
-  public Exam setCode(String code) {
+  public IsaExam setCode(String code) {
     this.code = code;
     return this;
   }
@@ -279,7 +279,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.instructor;
   }
 
-  public Exam setInstructor(String instructor) {
+  public IsaExam setInstructor(String instructor) {
     this.instructor = instructor;
     return this;
   }
@@ -303,7 +303,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.rooms;
   }
 
-  public Exam setRooms(String rooms) {
+  public IsaExam setRooms(String rooms) {
     this.rooms = rooms;
     return this;
   }
@@ -327,7 +327,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.dateTime;
   }
 
-  public Exam setDateTime(String dateTime) {
+  public IsaExam setDateTime(String dateTime) {
     this.dateTime = dateTime;
     return this;
   }
@@ -351,7 +351,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.credits;
   }
 
-  public Exam setCredits(int credits) {
+  public IsaExam setCredits(int credits) {
     this.credits = credits;
     setCreditsIsSet(true);
     return this;
@@ -374,7 +374,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.grade;
   }
 
-  public Exam setGrade(String grade) {
+  public IsaExam setGrade(String grade) {
     this.grade = grade;
     return this;
   }
@@ -398,7 +398,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.semester;
   }
 
-  public Exam setSemester(String semester) {
+  public IsaExam setSemester(String semester) {
     this.semester = semester;
     return this;
   }
@@ -422,7 +422,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return this.academicYear;
   }
 
-  public Exam setAcademicYear(String academicYear) {
+  public IsaExam setAcademicYear(String academicYear) {
     this.academicYear = academicYear;
     return this;
   }
@@ -585,12 +585,12 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Exam)
-      return this.equals((Exam)that);
+    if (that instanceof IsaExam)
+      return this.equals((IsaExam)that);
     return false;
   }
 
-  public boolean equals(Exam that) {
+  public boolean equals(IsaExam that) {
     if (that == null)
       return false;
 
@@ -730,13 +730,13 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
     return builder.toHashCode();
   }
 
-  public int compareTo(Exam other) {
+  public int compareTo(IsaExam other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Exam typedOther = (Exam)other;
+    IsaExam typedOther = (IsaExam)other;
 
     lastComparison = Boolean.valueOf(isSetCourse()).compareTo(typedOther.isSetCourse());
     if (lastComparison != 0) {
@@ -982,7 +982,7 @@ public class Exam implements org.apache.thrift.TBase<Exam, Exam._Fields>, java.i
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Exam(");
+    StringBuilder sb = new StringBuilder("IsaExam(");
     boolean first = true;
 
     sb.append("course:");
