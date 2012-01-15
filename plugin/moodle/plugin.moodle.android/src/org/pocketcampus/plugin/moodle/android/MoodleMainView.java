@@ -90,7 +90,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			Uri aData = aIntent.getData();
 			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
 				String sessId = aData.getQueryParameter("sessid");
-				mController.setMoodleCookie(sessId);
+				mModel.setMoodleCookie(sessId);
 			}
 		}
 		
@@ -114,7 +114,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mController != null && mController.getMoodleCookie() == null) {
+		if(mModel != null && mModel.getMoodleCookie() == null) {
 			// Resumed and lot logged in? go back
 			finish();
 		}
@@ -134,7 +134,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			einfos.add(new CourseInfo(i.getITitle(), i.getIInstructor(), false));
 		}
 		ListView lv = new ListView(this);
-		lv.setAdapter(new CoursesListAdapter(this, R.layout.moodle_ebankinginfo, einfos));
+		lv.setAdapter(new CoursesListAdapter(this, R.layout.moodle_course_record, einfos));
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		lv.setLayoutParams(p);
 		
@@ -238,12 +238,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	        } else {
 	            v = li.inflate(rid, null);
 		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.moodle_ebankinginfo_title);
+		        tv = (TextView)v.findViewById(R.id.moodle_course_title);
 		        if(t.title != null)
 		        	tv.setText(t.title);
 		        else
 		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.moodle_ebankinginfo_value);
+		        tv = (TextView)v.findViewById(R.id.moodle_course_instructor);
 		        if(t.value != null)
 		        	tv.setText(t.value);
 		        else

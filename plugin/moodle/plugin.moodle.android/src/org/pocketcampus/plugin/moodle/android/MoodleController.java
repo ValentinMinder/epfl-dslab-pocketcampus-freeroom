@@ -40,14 +40,6 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return mModel;
 	}
 
-	public void setMoodleCookie(String sessId) {
-		mModel.setMoodleCookie(sessId);
-	}
-	
-	public String getMoodleCookie() {
-		return mModel.getMoodleCookie();
-	}
-	
 	public void refreshCoursesList() {
 		if(mModel.getMoodleCookie() == null)
 			return;
