@@ -128,7 +128,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		
 		ArrayList<CourseInfo> einfos = new ArrayList<CourseInfo>();
 		// add title
-		einfos.add(new CourseInfo(getResources().getString(R.string.moodle_ebanking_section_title), null, true));
+		einfos.add(new CourseInfo(getResources().getString(R.string.moodle_courses_section_title), null, true));
 		// add courses
 		for(MoodleCourse i : ltb) {
 			einfos.add(new CourseInfo(i.getITitle(), i.getIInstructor(), false));
