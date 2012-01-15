@@ -16,7 +16,7 @@ import android.util.Log;
 public class Config {
 	/** Server IP. */
 	// Mac Mini's IP, requires VPN
-	public static String SERVER_IP = "128.178.77.236/v3r1";
+	public static String SERVER_IP = "128.178.77.236";
 	
 	// pocketcampus.epfl.ch's IP, doesn't require VPN
 //	public final static String SERVER_IP = "128.178.132.3";
