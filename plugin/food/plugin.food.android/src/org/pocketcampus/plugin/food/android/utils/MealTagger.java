@@ -51,7 +51,7 @@ public class MealTagger {
 		// Pattern.compile(".*(ï¿½mincï¿½|roti|ragoï¿½t|gigot|escalope|steak|brochette).*",Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 		Pattern fishPatterns = Pattern
 				.compile(
-						".*(poisson|carrelet|grenadier|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|^bar$|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars|hoki|sandre|carpe|raie|silure|fl.?tan).*",
+						".*(poisson|Žglefin|aiglefin|eglefin|carrelet|grenadier|lotte|dorade|chevalier|cabillaud|saumon|pangasius|lieu|^bar$|mulet|truite|st.?Pierre|colin|perche|rougaille|calamars|hoki|sandre|carpe|raie|silure|fl.?tan).*",
 						Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 		Pattern vegetarianPatterns = Pattern.compile(".*v.?g.?tarienne.*",
 				Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);

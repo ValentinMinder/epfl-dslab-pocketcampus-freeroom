@@ -312,8 +312,8 @@ public class FoodSuggestionsView extends PluginView {
 		/**
 		 * Returns the name associated with the MealTag to be displayed.
 		 * 
-		 * @param mealTag.
-		 *            The MealTag to be displayed.
+		 * @param mealTag
+		 *            . The MealTag to be displayed.
 		 * @return The name of the MealTag
 		 */
 		@Override

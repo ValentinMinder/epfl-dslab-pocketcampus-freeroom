@@ -191,11 +191,14 @@ public class FoodMainView extends PluginView implements IFoodMainView {
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
 		if (item.getItemId() == R.id.food_by_suggestions) {
 			// Extras to add to the Intent
-			ArrayList<Meal> meals = (ArrayList<Meal>) mModel.getMeals();
+			List<Meal> meals = mModel.getMealsByRatings();
+			Vector<Meal> mealsV = new Vector<Meal>();
+			mealsV.addAll(meals);
+
 			// Intent to start the SuggestionsView
 			Intent suggestions = new Intent(getApplicationContext(),
 					FoodSuggestionsView.class);
-			suggestions.putExtra("org.pocketcampus.suggestions.meals", meals);
+			suggestions.putExtra("org.pocketcampus.suggestions.meals", mealsV);
 			startActivityForResult(suggestions, SUGGESTIONS_REQUEST_CODE);
 
 		} else if (item.getItemId() == R.id.food_by_settings) {
