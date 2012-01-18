@@ -47,6 +47,12 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	private AuthenticationModel mModel;
 	
 	/**
+	 * Boolean to check if we are already authenticating.
+	 * In this case we drop subsequent requests.
+	 */
+	private boolean iAuthenticating = false;
+	
+	/**
 	 * Specifies the Type of our Controller.
 	 * 
 	 * When we do that, the Controller will be automatically
@@ -116,7 +122,11 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			return;
 		Log.v("DEBUG", aData.toString());
 		if("pocketcampus-authenticate".equals(aData.getScheme())) {
-			// TODO add check if we are already authenticating, do not accept another request
+			if(iAuthenticating) {
+				Log.v("DEBUG", "request dropped: already authenticating");
+				return;
+			}
+			iAuthenticating = true;
 			TypeOfService tos = mapQueryParameterToTypeOfService(aData);
 			if(tos != null) {
 				mController.nSetTypeOfService(tos);
