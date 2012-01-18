@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.food.shared.Meal;
+import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 
@@ -156,7 +157,8 @@ public class MenuSorter {
 	/**
 	 * Sorts a list of Restaurant alphabetically.
 	 */
-	public ArrayList<Restaurant> sortByRestaurant(ArrayList<Restaurant> collection) {
+	public ArrayList<Restaurant> sortByRestaurant(
+			ArrayList<Restaurant> collection) {
 		Collections.sort(collection, new RestaurantComparator());
 		return collection;
 	}
@@ -172,13 +174,15 @@ public class MenuSorter {
 				String thisMealString = "" + thisMeal;
 				throw new IllegalArgumentException(thisMealString);
 			}
-			double d0 = thisMeal.getRating().getRatingValue();
-			double d1 = otherMeal.getRating().getRatingValue();
+
+			double d0 = round(thisMeal.getRating().getRatingValue());
+			double d1 = round(otherMeal.getRating().getRatingValue());
+
 			if (d0 != d1) {
 				return (d0 < d1 ? -1 : 1);
 			} else {
 				int n0 = thisMeal.getRating().getNumberOfVotes();
-				int n1 = thisMeal.getRating().getNumberOfVotes();
+				int n1 = otherMeal.getRating().getNumberOfVotes();
 				return (n0 < n1 ? -1 : 1);
 			}
 		}
@@ -197,5 +201,14 @@ public class MenuSorter {
 			return s1.compareToIgnoreCase(s2);
 		}
 
+	}
+
+	/**
+	 * Rounder
+	 */
+	private double round(double d) {
+		double f = 0.5;
+		double rounded = f * Math.round(d/f);
+		return rounded;
 	}
 }
