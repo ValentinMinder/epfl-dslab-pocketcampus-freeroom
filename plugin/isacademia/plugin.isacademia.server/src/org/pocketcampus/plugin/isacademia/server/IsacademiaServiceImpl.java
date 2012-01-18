@@ -53,6 +53,10 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1210075152"), cookie);
+			if(page == null) {
+				System.out.println("cookie timed out?");
+				return new IsaCoursesListReply(407);
+			}
 			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
@@ -60,9 +64,6 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			e.printStackTrace();
 			return new IsaCoursesListReply(404);
 		}
-		
-		// TODO must do check if not logged in
-		// return new IsaCoursesListReply(407);
 		
 		doc.getDocumentElement().normalize();
 		LinkedList<IsaCourse> tCourses = new LinkedList<IsaCourse>();
@@ -103,6 +104,10 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1371525543"), cookie);
+			if(page == null) {
+				System.out.println("cookie timed out?");
+				return new IsaExamsListReply(407);
+			}
 			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
@@ -110,9 +115,6 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			e.printStackTrace();
 			return new IsaExamsListReply(404);
 		}
-		
-		// TODO must do check if not logged in
-		// return new IsaExamsListReply(407);
 		
 		doc.getDocumentElement().normalize();
 		LinkedList<IsaExam> tExams = new LinkedList<IsaExam>();
@@ -156,6 +158,10 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		
 		try {
 			String page = getPageWithCookie(String.format(ISA_URL, "1210054559"), cookie);
+			if(page == null) {
+				System.out.println("cookie timed out?");
+				return new IsaScheduleReply(407);
+			}
 			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
 			doc = dBuilder.parse(new InputSource(new StringReader(page)));
@@ -163,9 +169,6 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			e.printStackTrace();
 			return new IsaScheduleReply(404);
 		}
-		
-		// TODO must do check if not logged in
-		// return new IsaScheduleReply(407);
 		
 		doc.getDocumentElement().normalize();
 		LinkedList<IsaSeance> tSeances = new LinkedList<IsaSeance>();
@@ -204,24 +207,21 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	 * HELPER FUNCTIONS
 	 */
 	
-	private String executeCommand(String cmd) {
+	private String executeCommand(String cmd) throws IOException {
 		Runtime run = Runtime.getRuntime();
 		Process pr = null;
+		pr = run.exec(cmd);
 		try {
-			pr = run.exec(cmd);
 			pr.waitFor();
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
+			throw new IOException("executeCommand: waitFor Interrupted");
 		}
 		BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 		int byteRead;
 		StringBuilder builder = new StringBuilder();
-		try {
-			while ((byteRead = buf.read()) != -1)
-				builder.append((char) byteRead);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		while ((byteRead = buf.read()) != -1)
+			builder.append((char) byteRead);
 		return builder.toString();
 	}
 	
@@ -243,8 +243,15 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	}
 	
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		String cmdLine = "curl --sslv3 --cookie " + cookie.cookie() + " " + url;
-		String page = executeCommand(cmdLine);
+		String cmdLine = "curl --sslv3 --include --cookie " + cookie.cookie() + " " + url;
+		System.out.println(cmdLine);
+		String resp = executeCommand(cmdLine);
+		String[] full = resp.split("\r\n\r\n", 2);
+		if(full.length != 2)
+			throw new IOException("getPageWithCookie: no header or body in http response");
+		if(full[0].contains("Set-Cookie"))
+			return null;
+		String page = full[1];
 		System.out.println(page.substring(0, 60));
 		return page;
 	}
