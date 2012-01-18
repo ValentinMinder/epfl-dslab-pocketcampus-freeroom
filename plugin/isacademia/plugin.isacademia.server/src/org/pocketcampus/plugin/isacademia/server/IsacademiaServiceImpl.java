@@ -1,14 +1,13 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
@@ -209,20 +208,15 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	
 	private String executeCommand(String cmd) throws IOException {
 		Runtime run = Runtime.getRuntime();
-		Process pr = null;
-		pr = run.exec(cmd);
+		Process pr = run.exec(cmd);
 		try {
 			pr.waitFor();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			throw new IOException("executeCommand: waitFor Interrupted");
 		}
-		BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		int byteRead;
-		StringBuilder builder = new StringBuilder();
-		while ((byteRead = buf.read()) != -1)
-			builder.append((char) byteRead);
-		return builder.toString();
+		// IS-Academia always returns data in ISO-8859-15 encoding
+		return IOUtils.toString(pr.getInputStream(), "ISO-8859-15");
 	}
 	
 	private SeanceType mapSeanceType(String tp) throws TException {
