@@ -24,39 +24,52 @@ import android.net.Uri;
 import android.util.Log;
 
 /**
- * AuthenticationController - Main logic for the Authentication Plugin.
+ * <b>AuthenticationController - Main logic for the Authentication Plugin.</b>
+ * <br><br>
  * 
  * This file contains the main logic behind the successful functioning
  * of the Authentication Plugin.
  * Here is how this Plugin works:
- * 1- We receive an Intent/Request to authenticate the user
- * for a certain service.
- * 2- We do the authentication magic.
- * In this step there are two cases:
- *   Case I: The service is not Tequila enabled. e.g. ISA.
- *   We follow the below steps.
- *     a) We ask the user for credentials.
- *     b) We send a GetSessionIdDirectlyFromProviderRequest.
- *     c) We either getSessionId or notifyBadCredentials or notifyNetworkError.
- *     If we get a sessionId we forward it to the specific plugin.
- *     In the other cases we let the user try again.
- *   Case II: The service is Tequila enabled. e.g. Camipro.
- *   We check if we have a TequilaCookie then we skip to step (d).
- *     a) We ask the user for credentials.
- *     b) We send a LoginToTequilaRequest.
- *     c) We either getTequilaCookie or notifyBadCredentials or notifyNetworkError.
- *     If we get a tequilaCookie we continue, otherwise we let the user try again.
- *     d) We send a GetTequilaKeyForServiceRequest
- *     e) We either getToken or notifyNetworkError. If we getToken we continue.
- *     f) We send an AuthenticateTokenWithTequilaRequest
- *     g) We either getAuthenticatedToken or notifyExpiredCookie or notifyNetworkError.
- *     If we getAuthenticatedToken we continue.
- *     If we notifyExpiredCookie we go back to (a).
- *     h) We send a GetSessionIdForServiceRequest
- *     i) We either getSessionId or notifyNetworkError.
- *     If we getSessionId we forward it to the specific plugin.
- * 3- We callback the requesting plugin and provide it with
- * a valid sessionId (using Intents too).
+ * 
+ * <ol type="1">
+ *   <li>We receive an Intent/Request to authenticate the user
+ *   for a certain service.</li>
+ *   <li>We do the authentication magic.<br>
+ *   In this step there are two cases:
+ *   <ol type="I">
+ *     <li>Case I: The service is not Tequila enabled. e.g. ISA.<br>
+ *     We follow the below steps.
+ *     <ol type="a">
+ *       <li>We ask the user for credentials.</li>
+ *       <li>We send a GetSessionIdDirectlyFromProviderRequest.</li>
+ *       <li>We either getSessionId or notifyBadCredentials or notifyNetworkError.<br>
+ *       If we get a sessionId we forward it to the specific plugin.<br>
+ *       In the other cases we let the user try again.</li>
+ *     </ol>
+ *     </li>
+ *     <li>Case II: The service is Tequila enabled. e.g. Camipro.<br>
+ *     We check if we have a TequilaCookie then we skip to step (d).
+ *     <ol type="a">
+ *       <li>We ask the user for credentials.</li>
+ *       <li>We send a LoginToTequilaRequest.</li>
+ *       <li>We either getTequilaCookie or notifyBadCredentials or notifyNetworkError.<br>
+ *       If we get a tequilaCookie we continue, otherwise we let the user try again.</li>
+ *       <li>We send a GetTequilaKeyForServiceRequest.</li>
+ *       <li>We either getToken or notifyNetworkError. If we getToken we continue.</li>
+ *       <li>We send an AuthenticateTokenWithTequilaRequest.</li>
+ *       <li>We either getAuthenticatedToken or notifyExpiredCookie or notifyNetworkError.<br>
+ *       If we getAuthenticatedToken we continue.<br>
+ *       If we notifyExpiredCookie we go back to (a).</li>
+ *       <li>We send a GetSessionIdForServiceRequest.</li>
+ *       <li>We either getSessionId or notifyNetworkError.<br>
+ *       If we getSessionId we forward it to the specific plugin.</li>
+ *     </ol>
+ *     </li>
+ *   </ol>
+ *   </li>
+ *   <li>We callback the requesting plugin and provide it with
+ *   a valid sessionId (using Intents too).</li>
+ * </ol>
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
