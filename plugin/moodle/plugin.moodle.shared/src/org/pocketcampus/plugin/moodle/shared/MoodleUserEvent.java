@@ -21,19 +21,28 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, MoodleCourse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleCourse");
+public class MoodleUserEvent implements org.apache.thrift.TBase<MoodleUserEvent, MoodleUserEvent._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleUserEvent");
 
   private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField I_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iTitle", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_DESC_FIELD_DESC = new org.apache.thrift.protocol.TField("iDesc", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField I_START_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iStartDate", org.apache.thrift.protocol.TType.I64, (short)4);
+  private static final org.apache.thrift.protocol.TField I_END_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iEndDate", org.apache.thrift.protocol.TType.I64, (short)5);
 
   public int iId; // required
   public String iTitle; // required
+  public String iDesc; // required
+  public long iStartDate; // required
+  public long iEndDate; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     I_ID((short)1, "iId"),
-    I_TITLE((short)2, "iTitle");
+    I_TITLE((short)2, "iTitle"),
+    I_DESC((short)3, "iDesc"),
+    I_START_DATE((short)4, "iStartDate"),
+    I_END_DATE((short)5, "iEndDate");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +61,12 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
           return I_ID;
         case 2: // I_TITLE
           return I_TITLE;
+        case 3: // I_DESC
+          return I_DESC;
+        case 4: // I_START_DATE
+          return I_START_DATE;
+        case 5: // I_END_DATE
+          return I_END_DATE;
         default:
           return null;
       }
@@ -93,7 +108,9 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   // isset id assignments
   private static final int __IID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __ISTARTDATE_ISSET_ID = 1;
+  private static final int __IENDDATE_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -102,37 +119,53 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_DESC, new org.apache.thrift.meta_data.FieldMetaData("iDesc", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_START_DATE, new org.apache.thrift.meta_data.FieldMetaData("iStartDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.I_END_DATE, new org.apache.thrift.meta_data.FieldMetaData("iEndDate", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleCourse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleUserEvent.class, metaDataMap);
   }
 
-  public MoodleCourse() {
+  public MoodleUserEvent() {
   }
 
-  public MoodleCourse(
+  public MoodleUserEvent(
     int iId,
-    String iTitle)
+    String iTitle,
+    String iDesc,
+    long iStartDate)
   {
     this();
     this.iId = iId;
     setIIdIsSet(true);
     this.iTitle = iTitle;
+    this.iDesc = iDesc;
+    this.iStartDate = iStartDate;
+    setIStartDateIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MoodleCourse(MoodleCourse other) {
+  public MoodleUserEvent(MoodleUserEvent other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.iId = other.iId;
     if (other.isSetITitle()) {
       this.iTitle = other.iTitle;
     }
+    if (other.isSetIDesc()) {
+      this.iDesc = other.iDesc;
+    }
+    this.iStartDate = other.iStartDate;
+    this.iEndDate = other.iEndDate;
   }
 
-  public MoodleCourse deepCopy() {
-    return new MoodleCourse(this);
+  public MoodleUserEvent deepCopy() {
+    return new MoodleUserEvent(this);
   }
 
   @Override
@@ -140,13 +173,18 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     setIIdIsSet(false);
     this.iId = 0;
     this.iTitle = null;
+    this.iDesc = null;
+    setIStartDateIsSet(false);
+    this.iStartDate = 0;
+    setIEndDateIsSet(false);
+    this.iEndDate = 0;
   }
 
   public int getIId() {
     return this.iId;
   }
 
-  public MoodleCourse setIId(int iId) {
+  public MoodleUserEvent setIId(int iId) {
     this.iId = iId;
     setIIdIsSet(true);
     return this;
@@ -169,7 +207,7 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     return this.iTitle;
   }
 
-  public MoodleCourse setITitle(String iTitle) {
+  public MoodleUserEvent setITitle(String iTitle) {
     this.iTitle = iTitle;
     return this;
   }
@@ -187,6 +225,76 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     if (!value) {
       this.iTitle = null;
     }
+  }
+
+  public String getIDesc() {
+    return this.iDesc;
+  }
+
+  public MoodleUserEvent setIDesc(String iDesc) {
+    this.iDesc = iDesc;
+    return this;
+  }
+
+  public void unsetIDesc() {
+    this.iDesc = null;
+  }
+
+  /** Returns true if field iDesc is set (has been assigned a value) and false otherwise */
+  public boolean isSetIDesc() {
+    return this.iDesc != null;
+  }
+
+  public void setIDescIsSet(boolean value) {
+    if (!value) {
+      this.iDesc = null;
+    }
+  }
+
+  public long getIStartDate() {
+    return this.iStartDate;
+  }
+
+  public MoodleUserEvent setIStartDate(long iStartDate) {
+    this.iStartDate = iStartDate;
+    setIStartDateIsSet(true);
+    return this;
+  }
+
+  public void unsetIStartDate() {
+    __isset_bit_vector.clear(__ISTARTDATE_ISSET_ID);
+  }
+
+  /** Returns true if field iStartDate is set (has been assigned a value) and false otherwise */
+  public boolean isSetIStartDate() {
+    return __isset_bit_vector.get(__ISTARTDATE_ISSET_ID);
+  }
+
+  public void setIStartDateIsSet(boolean value) {
+    __isset_bit_vector.set(__ISTARTDATE_ISSET_ID, value);
+  }
+
+  public long getIEndDate() {
+    return this.iEndDate;
+  }
+
+  public MoodleUserEvent setIEndDate(long iEndDate) {
+    this.iEndDate = iEndDate;
+    setIEndDateIsSet(true);
+    return this;
+  }
+
+  public void unsetIEndDate() {
+    __isset_bit_vector.clear(__IENDDATE_ISSET_ID);
+  }
+
+  /** Returns true if field iEndDate is set (has been assigned a value) and false otherwise */
+  public boolean isSetIEndDate() {
+    return __isset_bit_vector.get(__IENDDATE_ISSET_ID);
+  }
+
+  public void setIEndDateIsSet(boolean value) {
+    __isset_bit_vector.set(__IENDDATE_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -207,6 +315,30 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
       }
       break;
 
+    case I_DESC:
+      if (value == null) {
+        unsetIDesc();
+      } else {
+        setIDesc((String)value);
+      }
+      break;
+
+    case I_START_DATE:
+      if (value == null) {
+        unsetIStartDate();
+      } else {
+        setIStartDate((Long)value);
+      }
+      break;
+
+    case I_END_DATE:
+      if (value == null) {
+        unsetIEndDate();
+      } else {
+        setIEndDate((Long)value);
+      }
+      break;
+
     }
   }
 
@@ -217,6 +349,15 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
     case I_TITLE:
       return getITitle();
+
+    case I_DESC:
+      return getIDesc();
+
+    case I_START_DATE:
+      return Long.valueOf(getIStartDate());
+
+    case I_END_DATE:
+      return Long.valueOf(getIEndDate());
 
     }
     throw new IllegalStateException();
@@ -233,6 +374,12 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
       return isSetIId();
     case I_TITLE:
       return isSetITitle();
+    case I_DESC:
+      return isSetIDesc();
+    case I_START_DATE:
+      return isSetIStartDate();
+    case I_END_DATE:
+      return isSetIEndDate();
     }
     throw new IllegalStateException();
   }
@@ -241,12 +388,12 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MoodleCourse)
-      return this.equals((MoodleCourse)that);
+    if (that instanceof MoodleUserEvent)
+      return this.equals((MoodleUserEvent)that);
     return false;
   }
 
-  public boolean equals(MoodleCourse that) {
+  public boolean equals(MoodleUserEvent that) {
     if (that == null)
       return false;
 
@@ -268,6 +415,33 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
         return false;
     }
 
+    boolean this_present_iDesc = true && this.isSetIDesc();
+    boolean that_present_iDesc = true && that.isSetIDesc();
+    if (this_present_iDesc || that_present_iDesc) {
+      if (!(this_present_iDesc && that_present_iDesc))
+        return false;
+      if (!this.iDesc.equals(that.iDesc))
+        return false;
+    }
+
+    boolean this_present_iStartDate = true;
+    boolean that_present_iStartDate = true;
+    if (this_present_iStartDate || that_present_iStartDate) {
+      if (!(this_present_iStartDate && that_present_iStartDate))
+        return false;
+      if (this.iStartDate != that.iStartDate)
+        return false;
+    }
+
+    boolean this_present_iEndDate = true && this.isSetIEndDate();
+    boolean that_present_iEndDate = true && that.isSetIEndDate();
+    if (this_present_iEndDate || that_present_iEndDate) {
+      if (!(this_present_iEndDate && that_present_iEndDate))
+        return false;
+      if (this.iEndDate != that.iEndDate)
+        return false;
+    }
+
     return true;
   }
 
@@ -285,16 +459,31 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     if (present_iTitle)
       builder.append(iTitle);
 
+    boolean present_iDesc = true && (isSetIDesc());
+    builder.append(present_iDesc);
+    if (present_iDesc)
+      builder.append(iDesc);
+
+    boolean present_iStartDate = true;
+    builder.append(present_iStartDate);
+    if (present_iStartDate)
+      builder.append(iStartDate);
+
+    boolean present_iEndDate = true && (isSetIEndDate());
+    builder.append(present_iEndDate);
+    if (present_iEndDate)
+      builder.append(iEndDate);
+
     return builder.toHashCode();
   }
 
-  public int compareTo(MoodleCourse other) {
+  public int compareTo(MoodleUserEvent other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MoodleCourse typedOther = (MoodleCourse)other;
+    MoodleUserEvent typedOther = (MoodleUserEvent)other;
 
     lastComparison = Boolean.valueOf(isSetIId()).compareTo(typedOther.isSetIId());
     if (lastComparison != 0) {
@@ -312,6 +501,36 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     }
     if (isSetITitle()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTitle, typedOther.iTitle);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIDesc()).compareTo(typedOther.isSetIDesc());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIDesc()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iDesc, typedOther.iDesc);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIStartDate()).compareTo(typedOther.isSetIStartDate());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIStartDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iStartDate, typedOther.iStartDate);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIEndDate()).compareTo(typedOther.isSetIEndDate());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIEndDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iEndDate, typedOther.iEndDate);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -348,6 +567,29 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // I_DESC
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iDesc = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 4: // I_START_DATE
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.iStartDate = iprot.readI64();
+            setIStartDateIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 5: // I_END_DATE
+          if (field.type == org.apache.thrift.protocol.TType.I64) {
+            this.iEndDate = iprot.readI64();
+            setIEndDateIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -358,6 +600,9 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     // check for required fields of primitive type, which can't be checked in the validate method
     if (!isSetIId()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iId' was not found in serialized data! Struct: " + toString());
+    }
+    if (!isSetIStartDate()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iStartDate' was not found in serialized data! Struct: " + toString());
     }
     validate();
   }
@@ -374,13 +619,26 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
       oprot.writeString(this.iTitle);
       oprot.writeFieldEnd();
     }
+    if (this.iDesc != null) {
+      oprot.writeFieldBegin(I_DESC_FIELD_DESC);
+      oprot.writeString(this.iDesc);
+      oprot.writeFieldEnd();
+    }
+    oprot.writeFieldBegin(I_START_DATE_FIELD_DESC);
+    oprot.writeI64(this.iStartDate);
+    oprot.writeFieldEnd();
+    if (isSetIEndDate()) {
+      oprot.writeFieldBegin(I_END_DATE_FIELD_DESC);
+      oprot.writeI64(this.iEndDate);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MoodleCourse(");
+    StringBuilder sb = new StringBuilder("MoodleUserEvent(");
     boolean first = true;
 
     sb.append("iId:");
@@ -394,6 +652,24 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
       sb.append(this.iTitle);
     }
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("iDesc:");
+    if (this.iDesc == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iDesc);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("iStartDate:");
+    sb.append(this.iStartDate);
+    first = false;
+    if (isSetIEndDate()) {
+      if (!first) sb.append(", ");
+      sb.append("iEndDate:");
+      sb.append(this.iEndDate);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -404,6 +680,10 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     if (iTitle == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
     }
+    if (iDesc == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iDesc' was not present! Struct: " + toString());
+    }
+    // alas, we cannot check 'iStartDate' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {

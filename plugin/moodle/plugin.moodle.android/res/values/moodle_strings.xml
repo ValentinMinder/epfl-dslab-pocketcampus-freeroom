@@ -3,7 +3,7 @@
 
     <string name="moodle_plugin_title">Moodle</string>
     
-    <string name="moodle_courses_section_title">List of enrolled Moodle Courses</string>
+    <string name="moodle_courses_view_title">List of enrolled Moodle Courses</string>
         
     <string name="moodle_string_logout">Logout</string>
     

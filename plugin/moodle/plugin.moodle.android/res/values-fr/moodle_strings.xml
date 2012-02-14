@@ -3,7 +3,7 @@
 
     <string name="moodle_plugin_title">Moodle</string>
     
-    <string name="moodle_courses_section_title">Liste des Cours Moodle inscrits</string>
+    <string name="moodle_courses_view_title">Liste des Cours Moodle inscrits</string>
     
     <string name="moodle_string_logout">Déconnexion</string>
         

@@ -7,6 +7,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleEvent;
+import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -45,6 +47,8 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	 * Member variables containing required data for the plugin.
 	 */
 	private List<MoodleCourse> iCourses;
+	private List<MoodleEvent> iEvents;
+	private List<MoodleSection> iSections;
 	
 	/**
 	 * Data that need to be persistent.
@@ -69,12 +73,34 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	/**
 	 * Setter and getter for iCourses
 	 */
-	public List<MoodleCourse> getTransactions() {
+	public List<MoodleCourse> getCourses() {
 		return iCourses;
 	}
-	public void setTransactions(List<MoodleCourse> trans) {
-		iCourses = trans;
+	public void setCourses(List<MoodleCourse> obj) {
+		iCourses = obj;
 		mListeners.coursesListUpdated();
+	}
+	
+	/**
+	 * Setter and getter for iEvents
+	 */
+	public List<MoodleEvent> getEvents() {
+		return iEvents;
+	}
+	public void setEvents(List<MoodleEvent> obj) {
+		iEvents = obj;
+		mListeners.eventsListUpdated();
+	}
+	
+	/**
+	 * Setter and getter for iSections
+	 */
+	public List<MoodleSection> getSections() {
+		return iSections;
+	}
+	public void setSections(List<MoodleSection> obj) {
+		iSections = obj;
+		mListeners.sectionsListUpdated();
 	}
 	
 	/**

@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, MoodleCourse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleCourse");
+public class MoodleResource implements org.apache.thrift.TBase<MoodleResource, MoodleResource._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoodleResource");
 
-  private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField I_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iTitle", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("iName", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField I_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iUrl", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public int iId; // required
-  public String iTitle; // required
+  public String iName; // required
+  public String iUrl; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_ID((short)1, "iId"),
-    I_TITLE((short)2, "iTitle");
+    I_NAME((short)1, "iName"),
+    I_URL((short)2, "iUrl");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_ID
-          return I_ID;
-        case 2: // I_TITLE
-          return I_TITLE;
+        case 1: // I_NAME
+          return I_NAME;
+        case 2: // I_URL
+          return I_URL;
         default:
           return null;
       }
@@ -92,118 +92,115 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   }
 
   // isset id assignments
-  private static final int __IID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_ID, new org.apache.thrift.meta_data.FieldMetaData("iId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_NAME, new org.apache.thrift.meta_data.FieldMetaData("iName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_URL, new org.apache.thrift.meta_data.FieldMetaData("iUrl", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleCourse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleResource.class, metaDataMap);
   }
 
-  public MoodleCourse() {
+  public MoodleResource() {
   }
 
-  public MoodleCourse(
-    int iId,
-    String iTitle)
+  public MoodleResource(
+    String iName,
+    String iUrl)
   {
     this();
-    this.iId = iId;
-    setIIdIsSet(true);
-    this.iTitle = iTitle;
+    this.iName = iName;
+    this.iUrl = iUrl;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MoodleCourse(MoodleCourse other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
-    this.iId = other.iId;
-    if (other.isSetITitle()) {
-      this.iTitle = other.iTitle;
+  public MoodleResource(MoodleResource other) {
+    if (other.isSetIName()) {
+      this.iName = other.iName;
+    }
+    if (other.isSetIUrl()) {
+      this.iUrl = other.iUrl;
     }
   }
 
-  public MoodleCourse deepCopy() {
-    return new MoodleCourse(this);
+  public MoodleResource deepCopy() {
+    return new MoodleResource(this);
   }
 
   @Override
   public void clear() {
-    setIIdIsSet(false);
-    this.iId = 0;
-    this.iTitle = null;
+    this.iName = null;
+    this.iUrl = null;
   }
 
-  public int getIId() {
-    return this.iId;
+  public String getIName() {
+    return this.iName;
   }
 
-  public MoodleCourse setIId(int iId) {
-    this.iId = iId;
-    setIIdIsSet(true);
+  public MoodleResource setIName(String iName) {
+    this.iName = iName;
     return this;
   }
 
-  public void unsetIId() {
-    __isset_bit_vector.clear(__IID_ISSET_ID);
+  public void unsetIName() {
+    this.iName = null;
   }
 
-  /** Returns true if field iId is set (has been assigned a value) and false otherwise */
-  public boolean isSetIId() {
-    return __isset_bit_vector.get(__IID_ISSET_ID);
+  /** Returns true if field iName is set (has been assigned a value) and false otherwise */
+  public boolean isSetIName() {
+    return this.iName != null;
   }
 
-  public void setIIdIsSet(boolean value) {
-    __isset_bit_vector.set(__IID_ISSET_ID, value);
-  }
-
-  public String getITitle() {
-    return this.iTitle;
-  }
-
-  public MoodleCourse setITitle(String iTitle) {
-    this.iTitle = iTitle;
-    return this;
-  }
-
-  public void unsetITitle() {
-    this.iTitle = null;
-  }
-
-  /** Returns true if field iTitle is set (has been assigned a value) and false otherwise */
-  public boolean isSetITitle() {
-    return this.iTitle != null;
-  }
-
-  public void setITitleIsSet(boolean value) {
+  public void setINameIsSet(boolean value) {
     if (!value) {
-      this.iTitle = null;
+      this.iName = null;
+    }
+  }
+
+  public String getIUrl() {
+    return this.iUrl;
+  }
+
+  public MoodleResource setIUrl(String iUrl) {
+    this.iUrl = iUrl;
+    return this;
+  }
+
+  public void unsetIUrl() {
+    this.iUrl = null;
+  }
+
+  /** Returns true if field iUrl is set (has been assigned a value) and false otherwise */
+  public boolean isSetIUrl() {
+    return this.iUrl != null;
+  }
+
+  public void setIUrlIsSet(boolean value) {
+    if (!value) {
+      this.iUrl = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_ID:
+    case I_NAME:
       if (value == null) {
-        unsetIId();
+        unsetIName();
       } else {
-        setIId((Integer)value);
+        setIName((String)value);
       }
       break;
 
-    case I_TITLE:
+    case I_URL:
       if (value == null) {
-        unsetITitle();
+        unsetIUrl();
       } else {
-        setITitle((String)value);
+        setIUrl((String)value);
       }
       break;
 
@@ -212,11 +209,11 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_ID:
-      return Integer.valueOf(getIId());
+    case I_NAME:
+      return getIName();
 
-    case I_TITLE:
-      return getITitle();
+    case I_URL:
+      return getIUrl();
 
     }
     throw new IllegalStateException();
@@ -229,10 +226,10 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     }
 
     switch (field) {
-    case I_ID:
-      return isSetIId();
-    case I_TITLE:
-      return isSetITitle();
+    case I_NAME:
+      return isSetIName();
+    case I_URL:
+      return isSetIUrl();
     }
     throw new IllegalStateException();
   }
@@ -241,30 +238,30 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MoodleCourse)
-      return this.equals((MoodleCourse)that);
+    if (that instanceof MoodleResource)
+      return this.equals((MoodleResource)that);
     return false;
   }
 
-  public boolean equals(MoodleCourse that) {
+  public boolean equals(MoodleResource that) {
     if (that == null)
       return false;
 
-    boolean this_present_iId = true;
-    boolean that_present_iId = true;
-    if (this_present_iId || that_present_iId) {
-      if (!(this_present_iId && that_present_iId))
+    boolean this_present_iName = true && this.isSetIName();
+    boolean that_present_iName = true && that.isSetIName();
+    if (this_present_iName || that_present_iName) {
+      if (!(this_present_iName && that_present_iName))
         return false;
-      if (this.iId != that.iId)
+      if (!this.iName.equals(that.iName))
         return false;
     }
 
-    boolean this_present_iTitle = true && this.isSetITitle();
-    boolean that_present_iTitle = true && that.isSetITitle();
-    if (this_present_iTitle || that_present_iTitle) {
-      if (!(this_present_iTitle && that_present_iTitle))
+    boolean this_present_iUrl = true && this.isSetIUrl();
+    boolean that_present_iUrl = true && that.isSetIUrl();
+    if (this_present_iUrl || that_present_iUrl) {
+      if (!(this_present_iUrl && that_present_iUrl))
         return false;
-      if (!this.iTitle.equals(that.iTitle))
+      if (!this.iUrl.equals(that.iUrl))
         return false;
     }
 
@@ -275,43 +272,43 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iId = true;
-    builder.append(present_iId);
-    if (present_iId)
-      builder.append(iId);
+    boolean present_iName = true && (isSetIName());
+    builder.append(present_iName);
+    if (present_iName)
+      builder.append(iName);
 
-    boolean present_iTitle = true && (isSetITitle());
-    builder.append(present_iTitle);
-    if (present_iTitle)
-      builder.append(iTitle);
+    boolean present_iUrl = true && (isSetIUrl());
+    builder.append(present_iUrl);
+    if (present_iUrl)
+      builder.append(iUrl);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(MoodleCourse other) {
+  public int compareTo(MoodleResource other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MoodleCourse typedOther = (MoodleCourse)other;
+    MoodleResource typedOther = (MoodleResource)other;
 
-    lastComparison = Boolean.valueOf(isSetIId()).compareTo(typedOther.isSetIId());
+    lastComparison = Boolean.valueOf(isSetIName()).compareTo(typedOther.isSetIName());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iId, typedOther.iId);
+    if (isSetIName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iName, typedOther.iName);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetITitle()).compareTo(typedOther.isSetITitle());
+    lastComparison = Boolean.valueOf(isSetIUrl()).compareTo(typedOther.isSetIUrl());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetITitle()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTitle, typedOther.iTitle);
+    if (isSetIUrl()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iUrl, typedOther.iUrl);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,17 +330,16 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
         break;
       }
       switch (field.id) {
-        case 1: // I_ID
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.iId = iprot.readI32();
-            setIIdIsSet(true);
+        case 1: // I_NAME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iName = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_TITLE
+        case 2: // I_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iTitle = iprot.readString();
+            this.iUrl = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -356,9 +352,6 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
-    if (!isSetIId()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iId' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -366,12 +359,14 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    oprot.writeFieldBegin(I_ID_FIELD_DESC);
-    oprot.writeI32(this.iId);
-    oprot.writeFieldEnd();
-    if (this.iTitle != null) {
-      oprot.writeFieldBegin(I_TITLE_FIELD_DESC);
-      oprot.writeString(this.iTitle);
+    if (this.iName != null) {
+      oprot.writeFieldBegin(I_NAME_FIELD_DESC);
+      oprot.writeString(this.iName);
+      oprot.writeFieldEnd();
+    }
+    if (this.iUrl != null) {
+      oprot.writeFieldBegin(I_URL_FIELD_DESC);
+      oprot.writeString(this.iUrl);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -380,18 +375,22 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MoodleCourse(");
+    StringBuilder sb = new StringBuilder("MoodleResource(");
     boolean first = true;
 
-    sb.append("iId:");
-    sb.append(this.iId);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("iTitle:");
-    if (this.iTitle == null) {
+    sb.append("iName:");
+    if (this.iName == null) {
       sb.append("null");
     } else {
-      sb.append(this.iTitle);
+      sb.append(this.iName);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("iUrl:");
+    if (this.iUrl == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iUrl);
     }
     first = false;
     sb.append(")");
@@ -400,9 +399,11 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'iId' because it's a primitive and you chose the non-beans generator.
-    if (iTitle == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
+    if (iName == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iName' was not present! Struct: " + toString());
+    }
+    if (iUrl == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iUrl' was not present! Struct: " + toString());
     }
   }
 
@@ -416,8 +417,6 @@ public class MoodleCourse implements org.apache.thrift.TBase<MoodleCourse, Moodl
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

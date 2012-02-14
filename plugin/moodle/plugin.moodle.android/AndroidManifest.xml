@@ -47,6 +47,14 @@
 			    
 			    
 		</activity>
+		
+		    
+		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionsView"
+			xmlns:android="http://schemas.android.com/apk/res/android" />
+		
+		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionResourcesView"
+			xmlns:android="http://schemas.android.com/apk/res/android" />
+				    
 		<service android:name="org.pocketcampus.plugin.moodle.android.MoodleController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
             

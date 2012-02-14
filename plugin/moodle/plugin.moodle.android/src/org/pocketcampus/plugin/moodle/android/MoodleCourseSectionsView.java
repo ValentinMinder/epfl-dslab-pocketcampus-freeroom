@@ -8,8 +8,10 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
+import org.pocketcampus.plugin.moodle.android.MoodleMainView.CourseInfo;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
@@ -43,12 +45,15 @@ import com.markupartist.android.widget.ActionBar.Action;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class MoodleMainView extends PluginView implements IMoodleView {
+public class MoodleCourseSectionsView extends PluginView implements IMoodleView {
 
 	private MoodleController mController;
 	private MoodleModel mModel;
 	
 	private StandardTitledLayout mLayout;
+	
+	private Integer courseId;
+	private String courseTitle;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -81,83 +86,24 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	/**
 	 * Handles the intent that was used to start this plugin.
 	 * 
-	 * If we were pinged by auth plugin, then we must read the sessId.
-	 * Otherwise we do a normal startup, and if we do not have the
-	 * moodleCookie we ping the Authentication Plugin.
+	 * We need to read the Extras to know what is the courseId
 	 */
 	@Override
 	protected void handleIntent(Intent aIntent) {
-		// If we were pinged by auth plugin, then we must read the sessId
-		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
-			Uri aData = aIntent.getData();
-			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
-				String sessId = aData.getQueryParameter("sessid");
-				mModel.setMoodleCookie(sessId);
+		if(aIntent != null) {
+			Bundle aExtras = aIntent.getExtras();
+			if(aExtras != null && aExtras.containsKey("courseId")) {
+				courseId = aExtras.getInt("courseId");
+				courseTitle = aExtras.getString("courseTitle");
 			}
 		}
 		
-		// Normal start-up
-		if(mModel.getMoodleCookie() == null) { // if we don't have cookie
-			// get cookie (ping auth plugin)
-			pingAuthPlugin(this);
-		}
-		
-		mController.refreshCoursesList();
-		updateDisplay();
-	}
-
-	/**
-	 * This is called when the Activity is resumed.
-	 * 
-	 * If the user presses back on the Authentication window,
-	 * This Activity is resumed but we do not have the
-	 * moodleCookie. In this case we close the Activity.
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if(mModel != null && mModel.getMoodleCookie() == null) {
-			// Resumed and lot logged in? go back
-			finish();
-		}
+		mController.refreshSectionsList(courseId);
+		//updateDisplay(); // might contain data for a different course
 	}
 
 	@Override
 	public void coursesListUpdated() {
-		List<MoodleCourse> ltb = mModel.getCourses();
-		if(ltb == null)
-			return;
-		
-		ArrayList<CourseInfo> einfos = new ArrayList<CourseInfo>();
-		// add title
-		einfos.add(new CourseInfo(getResources().getString(R.string.moodle_courses_view_title), null, true));
-		// add courses
-		for(MoodleCourse i : ltb) {
-			einfos.add(new CourseInfo(i.getITitle(), i.getIId() + "", false));
-		}
-		ListView lv = new ListView(this);
-		lv.setAdapter(new CoursesListAdapter(this, R.layout.moodle_course_record, einfos));
-		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		lv.setLayoutParams(p);
-
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				CourseInfo courseInfo = ((CourseInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleMainView.this, MoodleCourseSectionsView.class);
-				i.putExtra("courseId", Integer.parseInt(courseInfo.value));
-				i.putExtra("courseTitle", courseInfo.title);
-				MoodleMainView.this.startActivity(i);
-			}
-		});
-		//lv.setItemsCanFocus(true);
-		//lv.setClickable(true);
-		//lv.setFocusableInTouchMode(true);
-		//lv.setDrawSelectorOnTop(true);
-		
-		mLayout.hideTitle();
-		mLayout.removeFillerView();
-		mLayout.addFillerView(lv);
 	}
 
 	@Override
@@ -166,37 +112,47 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public void sectionsListUpdated() {
+		List<MoodleSection> ltb = mModel.getSections();
+		if(ltb == null)
+			return;
+		
+		ArrayList<SectionInfo> einfos = new ArrayList<SectionInfo>();
+		// add title
+		einfos.add(new SectionInfo(courseTitle, null, true));
+		// add courses
+		int c = 0;
+		for(MoodleSection i : ltb) {
+			if(c == 0)
+				einfos.add(new SectionInfo(null, i.getIText(), false));
+			else
+				einfos.add(new SectionInfo(c + "", i.getIText(), false));
+			c++;
+		}
+		ListView lv = new ListView(this);
+		lv.setAdapter(new SectionsListAdapter(this, R.layout.moodle_course_section_record, einfos));
+		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		lv.setLayoutParams(p);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				//SectionInfo sectionInfo = ((SectionInfo) arg0.getItemAtPosition(arg2));
+				Intent i = new Intent(MoodleCourseSectionsView.this, MoodleCourseSectionResourcesView.class);
+				i.putExtra("sectionNbr", arg2 - 1);
+				i.putExtra("courseTitle", courseTitle);
+				MoodleCourseSectionsView.this.startActivity(i);
+				//MoodleCourseSectionResourcesDialog dialog = new MoodleCourseSectionResourcesDialog(MoodleCourseSectionsView.this, mModel.getSections(), arg2 - 1);
+				//dialog.show();
+			}
+		});
+		
+		mLayout.hideTitle();
+		mLayout.removeFillerView();
+		mLayout.addFillerView(lv);
 	}
 
 	private void updateDisplay() {
-		coursesListUpdated();
-	}
-	
-	public static void pingAuthPlugin(Context context) {
-		Intent authIntent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle"));
-		context.startActivity(authIntent);
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.moodle_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if(item.getItemId() == R.id.moodle_logout) {
-			//Tracker
-			Tracker.getInstance().trackPageView("moodle/menu/logout");
-			mModel.setMoodleCookie(null);
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
-			startService(authIntent);
-			finish();
-		}
-		return true;
+		sectionsListUpdated();
 	}
 	
 	@Override
@@ -214,7 +170,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
-		pingAuthPlugin(this);
+		MoodleMainView.pingAuthPlugin(this);
 	}
 	
 
@@ -222,8 +178,8 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
-	public class CourseInfo {
-		CourseInfo(String t, String v, boolean s) {
+	public class SectionInfo {
+		SectionInfo(String t, String v, boolean s) {
 			title = t;
 			value = v;
 			isSeparator = s;
@@ -233,12 +189,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		public boolean isSeparator;
 	}
 	
-	public class CoursesListAdapter extends ArrayAdapter<CourseInfo> {
+	public class SectionsListAdapter extends ArrayAdapter<SectionInfo> {
 
 		private LayoutInflater li;
 		private int rid;
 		
-		public CoursesListAdapter(Context context, int textViewResourceId, List<CourseInfo> list) {
+		public SectionsListAdapter(Context context, int textViewResourceId, List<SectionInfo> list) {
 			super(context, textViewResourceId, list);
 			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rid = textViewResourceId;
@@ -246,7 +202,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
-	        CourseInfo t = getItem(position);
+	        SectionInfo t = getItem(position);
 	        if(t.isSeparator) {
 				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
 		        TextView tv;
@@ -263,12 +219,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	        } else {
 	            v = li.inflate(rid, null);
 		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.moodle_course_title);
+		        tv = (TextView)v.findViewById(R.id.moodle_course_section_title);
 		        if(t.title != null)
 		        	tv.setText(t.title);
 		        else
 		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.moodle_course_instructor);
+		        tv = (TextView)v.findViewById(R.id.moodle_course_section_body);
 		        if(t.value != null)
 		        	tv.setText(t.value);
 		        else
@@ -308,8 +264,8 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		@Override
 		public void performAction(View view) {
 			//Tracker
-			Tracker.getInstance().trackPageView("moodle/refresh");
-			mController.refreshCoursesList();
+			Tracker.getInstance().trackPageView("moodle/sections/refresh");
+			mController.refreshSectionsList(courseId);
 		}
 	}
 

@@ -26,14 +26,17 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
 
   private static final org.apache.thrift.protocol.TField I_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseId", org.apache.thrift.protocol.TType.I32, (short)3);
 
   public org.pocketcampus.plugin.authentication.shared.SessionId iSessionId; // required
   public String iLanguage; // required
+  public int iCourseId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     I_SESSION_ID((short)1, "iSessionId"),
-    I_LANGUAGE((short)2, "iLanguage");
+    I_LANGUAGE((short)2, "iLanguage"),
+    I_COURSE_ID((short)3, "iCourseId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +55,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
           return I_SESSION_ID;
         case 2: // I_LANGUAGE
           return I_LANGUAGE;
+        case 3: // I_COURSE_ID
+          return I_COURSE_ID;
         default:
           return null;
       }
@@ -92,6 +97,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   }
 
   // isset id assignments
+  private static final int __ICOURSEID_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -100,6 +107,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
     tmpMap.put(_Fields.I_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("iLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_COURSE_ID, new org.apache.thrift.meta_data.FieldMetaData("iCourseId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleRequest.class, metaDataMap);
   }
@@ -120,12 +129,15 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
    * Performs a deep copy on <i>other</i>.
    */
   public MoodleRequest(MoodleRequest other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetISessionId()) {
       this.iSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.iSessionId);
     }
     if (other.isSetILanguage()) {
       this.iLanguage = other.iLanguage;
     }
+    this.iCourseId = other.iCourseId;
   }
 
   public MoodleRequest deepCopy() {
@@ -136,6 +148,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   public void clear() {
     this.iSessionId = null;
     this.iLanguage = null;
+    setICourseIdIsSet(false);
+    this.iCourseId = 0;
   }
 
   public org.pocketcampus.plugin.authentication.shared.SessionId getISessionId() {
@@ -186,6 +200,29 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     }
   }
 
+  public int getICourseId() {
+    return this.iCourseId;
+  }
+
+  public MoodleRequest setICourseId(int iCourseId) {
+    this.iCourseId = iCourseId;
+    setICourseIdIsSet(true);
+    return this;
+  }
+
+  public void unsetICourseId() {
+    __isset_bit_vector.clear(__ICOURSEID_ISSET_ID);
+  }
+
+  /** Returns true if field iCourseId is set (has been assigned a value) and false otherwise */
+  public boolean isSetICourseId() {
+    return __isset_bit_vector.get(__ICOURSEID_ISSET_ID);
+  }
+
+  public void setICourseIdIsSet(boolean value) {
+    __isset_bit_vector.set(__ICOURSEID_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case I_SESSION_ID:
@@ -204,6 +241,14 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
       }
       break;
 
+    case I_COURSE_ID:
+      if (value == null) {
+        unsetICourseId();
+      } else {
+        setICourseId((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -214,6 +259,9 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
 
     case I_LANGUAGE:
       return getILanguage();
+
+    case I_COURSE_ID:
+      return Integer.valueOf(getICourseId());
 
     }
     throw new IllegalStateException();
@@ -230,6 +278,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
       return isSetISessionId();
     case I_LANGUAGE:
       return isSetILanguage();
+    case I_COURSE_ID:
+      return isSetICourseId();
     }
     throw new IllegalStateException();
   }
@@ -265,6 +315,15 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
         return false;
     }
 
+    boolean this_present_iCourseId = true && this.isSetICourseId();
+    boolean that_present_iCourseId = true && that.isSetICourseId();
+    if (this_present_iCourseId || that_present_iCourseId) {
+      if (!(this_present_iCourseId && that_present_iCourseId))
+        return false;
+      if (this.iCourseId != that.iCourseId)
+        return false;
+    }
+
     return true;
   }
 
@@ -281,6 +340,11 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     builder.append(present_iLanguage);
     if (present_iLanguage)
       builder.append(iLanguage);
+
+    boolean present_iCourseId = true && (isSetICourseId());
+    builder.append(present_iCourseId);
+    if (present_iCourseId)
+      builder.append(iCourseId);
 
     return builder.toHashCode();
   }
@@ -309,6 +373,16 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     }
     if (isSetILanguage()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iLanguage, typedOther.iLanguage);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetICourseId()).compareTo(typedOther.isSetICourseId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetICourseId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCourseId, typedOther.iCourseId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -345,6 +419,14 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // I_COURSE_ID
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.iCourseId = iprot.readI32();
+            setICourseIdIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -368,6 +450,11 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     if (this.iLanguage != null) {
       oprot.writeFieldBegin(I_LANGUAGE_FIELD_DESC);
       oprot.writeString(this.iLanguage);
+      oprot.writeFieldEnd();
+    }
+    if (isSetICourseId()) {
+      oprot.writeFieldBegin(I_COURSE_ID_FIELD_DESC);
+      oprot.writeI32(this.iCourseId);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -394,6 +481,12 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
       sb.append(this.iLanguage);
     }
     first = false;
+    if (isSetICourseId()) {
+      if (!first) sb.append(", ");
+      sb.append("iCourseId:");
+      sb.append(this.iCourseId);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -418,6 +511,8 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

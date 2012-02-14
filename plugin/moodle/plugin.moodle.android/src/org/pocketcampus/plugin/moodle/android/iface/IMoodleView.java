@@ -21,6 +21,8 @@ public interface IMoodleView extends IView {
 	 * Methods called by the Model.
 	 */
 	void coursesListUpdated();
+	void eventsListUpdated();
+	void sectionsListUpdated();
 	
 	/**
 	 * Methods called by the "Request" classes.
