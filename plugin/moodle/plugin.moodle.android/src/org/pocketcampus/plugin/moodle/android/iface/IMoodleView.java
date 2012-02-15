@@ -30,5 +30,6 @@ public interface IMoodleView extends IView {
 	void networkErrorHappened();
 	void moodleServersDown();
 	void notLoggedIn();
+	void downloadComplete();
 	
 }

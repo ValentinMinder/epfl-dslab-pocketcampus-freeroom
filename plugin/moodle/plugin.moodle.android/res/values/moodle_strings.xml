@@ -4,10 +4,14 @@
     <string name="moodle_plugin_title">Moodle</string>
     
     <string name="moodle_courses_view_title">List of enrolled Moodle Courses</string>
+    <string name="moodle_events_view_title">Current Moodle Events</string>
         
     <string name="moodle_string_logout">Logout</string>
-    
+    <string name="moodle_string_events">Events</string>
+        
     <string name="moodle_error_moodle_down">PocketCampus tried to connect to Moodle servers, but they seem down.</string>
     <string name="moodle_connection_error_happened">We cannot fetch Moodle data right now, because you are not connected to the Internet.</string>
+    <string name="moodle_file_downloaded">File successfully downloaded.</string>
+    <string name="moodle_file_downloading">Downloading file... Please wait.</string>
         
 </resources>

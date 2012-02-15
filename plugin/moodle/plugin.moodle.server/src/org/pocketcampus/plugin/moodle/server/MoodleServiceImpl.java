@@ -389,7 +389,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			cal.setTime(sdf.parse(date));
 			return cal.getTimeInMillis();
 		} catch (ParseException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		try {
 			// lundi 9 janvier 2012, 18:05
@@ -397,7 +397,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			cal.setTime(sdf.parse(date));
 			return cal.getTimeInMillis();
 		} catch (ParseException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		try {
 			// Montag, 9. Januar 2012, 18:05
@@ -405,8 +405,9 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			cal.setTime(sdf.parse(date));
 			return cal.getTimeInMillis();
 		} catch (ParseException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
+		System.err.println("parseDate: failed to interpret date. what language you using? arabic?");
 		return null;
 	}
 	

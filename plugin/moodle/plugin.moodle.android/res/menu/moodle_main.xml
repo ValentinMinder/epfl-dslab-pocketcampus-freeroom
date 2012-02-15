@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+		
+	<item
+		android:id="@+id/moodle_menu_events"
+		android:icon="@android:drawable/ic_menu_agenda"
+		android:title="@+string/moodle_string_events"
+		/>
 	<item
 		android:id="@+id/moodle_logout"
-		android:icon="@drawable/moodle_menu_logout"
+		android:icon="@android:drawable/ic_lock_power_off"
 		android:title="@+string/moodle_string_logout"
 		/>
-		
+			
 </menu>

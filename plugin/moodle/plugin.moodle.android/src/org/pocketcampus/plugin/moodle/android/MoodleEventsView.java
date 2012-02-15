@@ -1,7 +1,11 @@
 package org.pocketcampus.plugin.moodle.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
@@ -10,8 +14,11 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.moodle.android.MoodleMainView.CourseInfo;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
+import org.pocketcampus.plugin.moodle.shared.MoodleAssignment;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleEvent;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
+import org.pocketcampus.plugin.moodle.shared.MoodleUserEvent;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,26 +41,19 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 /**
- * MoodleMainView - Main view that shows Moodle courses.
+ * MoodleEventsView
  * 
- * This is the main view in the Moodle Plugin.
- * It checks if the user is logged in, if not it pings
- * the Authentication Plugin.
- * When it gets back a valid SessionId it fetches the
- * user's Moodle data.
+ * This is the events view in the Moodle Plugin.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class MoodleCourseSectionsView extends PluginView implements IMoodleView {
+public class MoodleEventsView extends PluginView implements IMoodleView {
 
 	private MoodleController mController;
 	private MoodleModel mModel;
 	
 	private StandardTitledLayout mLayout;
-	
-	private Integer courseId;
-	private String courseTitle;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -63,7 +63,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-		Tracker.getInstance().trackPageView("moodle");
+		Tracker.getInstance().trackPageView("moodle/events");
 		
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;
@@ -81,25 +81,9 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 			RefreshAction refresh = new RefreshAction();
 			a.addAction(refresh, 0);
 		}
-	}
-
-	/**
-	 * Handles the intent that was used to start this plugin.
-	 * 
-	 * We need to read the Extras to know what is the courseId
-	 */
-	@Override
-	protected void handleIntent(Intent aIntent) {
-		if(aIntent != null) {
-			Bundle aExtras = aIntent.getExtras();
-			if(aExtras != null && aExtras.containsKey("courseId")) {
-				courseId = aExtras.getInt("courseId");
-				courseTitle = aExtras.getString("courseTitle");
-			}
-		}
 		
-		mController.refreshSectionsList(courseId);
-		//updateDisplay(); // might contain data for a different course
+		mController.refreshEventsList();
+		updateDisplay();
 	}
 
 	@Override
@@ -108,51 +92,51 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 
 	@Override
 	public void eventsListUpdated() {
-	}
-
-	@Override
-	public void sectionsListUpdated() {
-		List<MoodleSection> ltb = mModel.getSections();
+		List<MoodleEvent> ltb = mModel.getEvents();
 		if(ltb == null)
 			return;
 		
-		ArrayList<SectionInfo> einfos = new ArrayList<SectionInfo>();
+		ArrayList<EventInfo> einfos = new ArrayList<EventInfo>();
 		// add title
-		einfos.add(new SectionInfo(courseTitle, null, true));
+		einfos.add(new EventInfo(getResources().getString(R.string.moodle_events_view_title), null, true));
 		// add courses
-		int c = 0;
-		for(MoodleSection i : ltb) {
-			if(c == 0)
-				einfos.add(new SectionInfo(null, i.getIText(), false));
-			else
-				einfos.add(new SectionInfo(c + "", i.getIText(), false));
-			c++;
+		for(MoodleEvent i : ltb) {
+			String details = "";
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH'h'mm");
+			switch (i.getIType()) {
+			case MOODLE_EVENT_ASSIGNMENT:
+				MoodleAssignment ass = i.getIAssignment();
+				details += ass.getICourse().getITitle() + "\n";
+				details += sdf.format(new Date(ass.getIDueDate())) + "\n";
+				break;
+			case MOODLE_EVENT_USEREVENT:
+				MoodleUserEvent ue = i.getIUserEvent();
+				details += ue.getIDesc() + "\n";
+				details += sdf.format(new Date(ue.getIStartDate()));
+				if(ue.isSetIEndDate())
+					details += " - " + sdf.format(new Date(ue.getIEndDate()));
+				break;
+			default:
+				break;
+			}
+			einfos.add(new EventInfo(i.getITitle(), details, false));
 		}
 		ListView lv = new ListView(this);
-		lv.setAdapter(new SectionsListAdapter(this, R.layout.moodle_course_section_record, einfos));
+		lv.setAdapter(new EventsListAdapter(this, R.layout.moodle_event_record, einfos));
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		lv.setLayoutParams(p);
-		
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//SectionInfo sectionInfo = ((SectionInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleCourseSectionsView.this, MoodleCourseSectionResourcesView.class);
-				i.putExtra("sectionNbr", arg2 - 1);
-				i.putExtra("courseTitle", courseTitle);
-				MoodleCourseSectionsView.this.startActivity(i);
-				//MoodleCourseSectionResourcesDialog dialog = new MoodleCourseSectionResourcesDialog(MoodleCourseSectionsView.this, mModel.getSections(), arg2 - 1);
-				//dialog.show();
-			}
-		});
 		
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
 		mLayout.addFillerView(lv);
 	}
 
+	@Override
+	public void sectionsListUpdated() {
+	}
+
 	private void updateDisplay() {
-		sectionsListUpdated();
+		eventsListUpdated();
 	}
 	
 	@Override
@@ -184,8 +168,8 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
-	public class SectionInfo {
-		SectionInfo(String t, String v, boolean s) {
+	public class EventInfo {
+		EventInfo(String t, String v, boolean s) {
 			title = t;
 			value = v;
 			isSeparator = s;
@@ -195,12 +179,12 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		public boolean isSeparator;
 	}
 	
-	public class SectionsListAdapter extends ArrayAdapter<SectionInfo> {
+	public class EventsListAdapter extends ArrayAdapter<EventInfo> {
 
 		private LayoutInflater li;
 		private int rid;
 		
-		public SectionsListAdapter(Context context, int textViewResourceId, List<SectionInfo> list) {
+		public EventsListAdapter(Context context, int textViewResourceId, List<EventInfo> list) {
 			super(context, textViewResourceId, list);
 			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rid = textViewResourceId;
@@ -208,7 +192,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
-	        SectionInfo t = getItem(position);
+	        EventInfo t = getItem(position);
 	        if(t.isSeparator) {
 				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
 		        TextView tv;
@@ -225,12 +209,12 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	        } else {
 	            v = li.inflate(rid, null);
 		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.moodle_course_section_title);
+		        tv = (TextView)v.findViewById(R.id.moodle_event_title);
 		        if(t.title != null)
 		        	tv.setText(t.title);
 		        else
 		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.moodle_course_section_body);
+		        tv = (TextView)v.findViewById(R.id.moodle_event_details);
 		        if(t.value != null)
 		        	tv.setText(t.value);
 		        else
@@ -270,8 +254,8 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		@Override
 		public void performAction(View view) {
 			//Tracker
-			Tracker.getInstance().trackPageView("moodle/sections/refresh");
-			mController.refreshSectionsList(courseId);
+			Tracker.getInstance().trackPageView("moodle/events/refresh");
+			mController.refreshEventsList();
 		}
 	}
 

@@ -187,7 +187,10 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if(item.getItemId() == R.id.moodle_logout) {
+		if(item.getItemId() == R.id.moodle_menu_events) {
+			Intent i = new Intent(this, MoodleEventsView.class);
+			startActivity(i);
+		} else if(item.getItemId() == R.id.moodle_logout) {			
 			//Tracker
 			Tracker.getInstance().trackPageView("moodle/menu/logout");
 			mModel.setMoodleCookie(null);
@@ -209,6 +212,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	public void moodleServersDown() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_error_moodle_down), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void downloadComplete() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.moodle.android;
 
+import java.io.File;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 public class MoodleCourseSectionResourcesView extends PluginView implements IMoodleView {
 
 	private MoodleModel mModel;
+	private MoodleController mController;
 	
 	private StandardTitledLayout mLayout;
 	
@@ -59,7 +62,8 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 		//Tracker
 		Tracker.getInstance().trackPageView("moodle");
 		
-		// Get and cast the model
+		// Get and cast the controller and the model
+		mController = (MoodleController) controller;
 		mModel = (MoodleModel) controller.getModel();
 
 		// Setup the layout
@@ -112,13 +116,32 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 		// add courses
 		for(MoodleResource i : lmr) {
 			String basename = i.getIUrl();
-			basename = basename.substring(basename.lastIndexOf("/") + 1);
+			//basename = basename.substring(basename.lastIndexOf("/") + 1);
 			einfos.add(new ResourceInfo(i.getIName(), basename, false));
 		}
 		ListView lv = new ListView(this);
 		lv.setAdapter(new ResourcesListAdapter(this, R.layout.moodle_course_resource_record, einfos));
 		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		lv.setLayoutParams(p);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				ResourceInfo resourceInfo = ((ResourceInfo) arg0.getItemAtPosition(arg2));
+				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value));
+				if(resourceFile.exists()) {
+					Uri uri = Uri.fromFile(resourceFile);
+					Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
+					viewFileIntent.setDataAndType(uri, URLConnection.guessContentTypeFromName(resourceInfo.value));
+					viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(viewFileIntent);
+				} else {
+					Toast.makeText(getApplicationContext(), getResources().getString(
+							R.string.moodle_file_downloading), Toast.LENGTH_SHORT).show();
+					mController.fetchFileResource(resourceInfo.value);
+				}
+			}
+		});
 		
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
@@ -131,14 +154,26 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 	
 	@Override
 	public void networkErrorHappened() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
 	public void moodleServersDown() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_error_moodle_down), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void downloadComplete() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void notLoggedIn() {
+		mModel.setMoodleCookie(null);
+		MoodleMainView.pingAuthPlugin(this);
 	}
 	
 
