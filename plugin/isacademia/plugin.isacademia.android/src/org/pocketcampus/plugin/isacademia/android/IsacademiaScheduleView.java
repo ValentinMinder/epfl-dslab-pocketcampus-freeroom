@@ -9,18 +9,15 @@ import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaView;
-import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
+import org.pocketcampus.plugin.isacademia.shared.IsaSeance;
+
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -30,18 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * IsacademiaMainView - Main view that shows ISA courses.
- * 
- * This is the main view in the ISA Plugin.
- * It checks if the user is logged in, if not it pings
- * the Authentication Plugin.
- * When it gets back a valid SessionId it fetches the
- * user's ISA data.
+ * IsacademiaScheduleView - View that shows ISA schedule.
  * 
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class IsacademiaMainView extends PluginView implements IIsacademiaView {
+public class IsacademiaScheduleView extends PluginView implements IIsacademiaView {
 
 	private IsacademiaController mController;
 	private IsacademiaModel mModel;
@@ -74,68 +65,18 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 			RefreshAction refresh = new RefreshAction();
 			a.addAction(refresh, 0);
 		}
-	}
-	
-	/**
-	 * Handles the intent that was used to start this plugin.
-	 * 
-	 * If we were pinged by auth plugin, then we must read the sessId.
-	 * Otherwise we do a normal startup, and if we do not have the
-	 * isacademiaCookie we ping the Authentication Plugin.
-	 */
-	@Override
-	protected void handleIntent(Intent aIntent) {
-		// If we were pinged by auth plugin, then we must read the sessId
-		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
-			Uri aData = aIntent.getData();
-			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
-				String sessId = aData.getQueryParameter("sessid");
-				mModel.setIsacademiaCookie(sessId);
-			}
-		}
 		
-		// Normal start-up
 		if(mModel.getIsacademiaCookie() == null) { // if we don't have cookie
 			// get cookie (ping auth plugin)
-			pingAuthPlugin(this);
+			IsacademiaMainView.pingAuthPlugin(this);
 		}
 		
-		mController.refreshCourses();
+		mController.refreshSchedule();
 		updateDisplay();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if(mModel != null && mModel.getIsacademiaCookie() == null) {
-			// Resumed and lot logged in? go back
-			finish();
-		}
 	}
 
 	@Override
 	public void coursesUpdated() {
-		List<IsaCourse> lc = mModel.getCourses();
-		if(lc == null)
-			return;
-		
-		ArrayList<CourseInfo> einfos = new ArrayList<CourseInfo>();
-		// add title
-		einfos.add(new CourseInfo(getResources().getString(R.string.isacademia_courses_view_title), null, true));
-		// add courses
-		Log.v("DEBUG", "=========== COURSES ===========");
-		for(IsaCourse i : lc) {
-			Log.v("DEBUG", i.toString());
-			einfos.add(new CourseInfo(i.getName(), i.getInstructor(), false));
-		}
-		ListView lv = new ListView(this);
-		lv.setAdapter(new CoursesListAdapter(this, R.layout.isa_course_record, einfos));
-		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		lv.setLayoutParams(p);
-		
-		mLayout.hideTitle();
-		mLayout.removeFillerView();
-		mLayout.addFillerView(lv);
 	}
 	
 	@Override
@@ -144,44 +85,32 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 
 	@Override
 	public void scheduleUpdated() {
+		List<IsaSeance> ls = mModel.getSchedule();
+		if(ls == null)
+			return;
+		
+		ArrayList<SeanceInfo> einfos = new ArrayList<SeanceInfo>();
+		// add title
+		einfos.add(new SeanceInfo(getResources().getString(R.string.isacademia_schedule_view_title), null, true));
+		// add courses
+		Log.v("DEBUG", "=========== SCHEDULE ===========");
+		for(IsaSeance i : ls) {
+			Log.v("DEBUG", i.toString());
+			String details = i.getWeekDay() + " - " + i.getTimeStart() + " - " + i.getRoom();
+			einfos.add(new SeanceInfo(i.getCourse(), details, false));
+		}
+		ListView lv = new ListView(this);
+		lv.setAdapter(new SeancesListAdapter(this, R.layout.isa_seance_record, einfos));
+		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		lv.setLayoutParams(p);
+		
+		mLayout.hideTitle();
+		mLayout.removeFillerView();
+		mLayout.addFillerView(lv);
 	}
 	
 	private void updateDisplay() {
-		coursesUpdated();
-	}
-	
-	public static void pingAuthPlugin(Context context) {
-		Intent authIntent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=isacademia"));
-		context.startActivity(authIntent);
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.isacademia_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if(item.getItemId() == R.id.isacademia_menu_schedule) {
-			Intent i = new Intent(this, IsacademiaScheduleView.class);
-			startActivity(i);
-		} else if(item.getItemId() == R.id.isacademia_menu_exams) {
-			Intent i = new Intent(this, IsacademiaExamsView.class);
-			startActivity(i);
-		} else if(item.getItemId() == R.id.isacademia_logout) {
-			//Tracker
-			Tracker.getInstance().trackPageView("isa/menu/logout");
-			mModel.setIsacademiaCookie(null);
-			// Should not logout from Tequila because ISA is not Tequila based anyway
-			/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
-			startService(authIntent);*/
-			finish();
-		}
-		return true;
+		scheduleUpdated();
 	}
 	
 	@Override
@@ -199,7 +128,7 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 	@Override
 	public void notLoggedIn() {
 		mModel.setIsacademiaCookie(null);
-		pingAuthPlugin(this);
+		IsacademiaMainView.pingAuthPlugin(this);
 	}
 	
 
@@ -207,8 +136,8 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
-	public class CourseInfo {
-		CourseInfo(String t, String v, boolean s) {
+	public class SeanceInfo {
+		SeanceInfo(String t, String v, boolean s) {
 			title = t;
 			value = v;
 			isSeparator = s;
@@ -218,12 +147,12 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 		public boolean isSeparator;
 	}
 	
-	public class CoursesListAdapter extends ArrayAdapter<CourseInfo> {
+	public class SeancesListAdapter extends ArrayAdapter<SeanceInfo> {
 
 		private LayoutInflater li;
 		private int rid;
 		
-		public CoursesListAdapter(Context context, int textViewResourceId, List<CourseInfo> list) {
+		public SeancesListAdapter(Context context, int textViewResourceId, List<SeanceInfo> list) {
 			super(context, textViewResourceId, list);
 			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rid = textViewResourceId;
@@ -231,7 +160,7 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
-	        CourseInfo t = getItem(position);
+	        SeanceInfo t = getItem(position);
 	        if(t.isSeparator) {
 				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
 		        TextView tv;
@@ -248,12 +177,12 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 	        } else {
 	            v = li.inflate(rid, null);
 		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.isa_course_title);
+		        tv = (TextView)v.findViewById(R.id.isa_seance_title);
 		        if(t.title != null)
 		        	tv.setText(t.title);
 		        else
 		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.isa_course_instructor);
+		        tv = (TextView)v.findViewById(R.id.isa_seance_details);
 		        if(t.value != null)
 		        	tv.setText(t.value);
 		        else
@@ -293,8 +222,8 @@ public class IsacademiaMainView extends PluginView implements IIsacademiaView {
 		@Override
 		public void performAction(View view) {
 			//Tracker
-			Tracker.getInstance().trackPageView("isa/refresh");
-			mController.refreshCourses();
+			Tracker.getInstance().trackPageView("isa/schedule/refresh");
+			mController.refreshSchedule();
 		}
 	}
 

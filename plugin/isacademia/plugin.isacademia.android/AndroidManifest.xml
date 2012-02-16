@@ -47,6 +47,17 @@
 			    
 			    
 		</activity>
+		
+		    
+		    
+		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaScheduleView"
+			xmlns:android="http://schemas.android.com/apk/res/android" />
+ 
+		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaExamsView"
+			xmlns:android="http://schemas.android.com/apk/res/android" />
+ 
+				    		    
+		    
 		<service android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaController"
 			xmlns:android="http://schemas.android.com/apk/res/android"></service>
             

@@ -3,9 +3,13 @@
 
     <string name="isacademia_plugin_title">IS-Academia</string>
     
+    <string name="isacademia_string_schedule">Horaires</string>
+    <string name="isacademia_string_exams">Examens</string>
     <string name="isacademia_string_logout">Déconnexion</string>
         
-    <string name="isacademia_courses_section_title">Liste des Cours ISA inscrits</string>
+    <string name="isacademia_courses_view_title">Liste des Cours ISA inscrits</string>
+    <string name="isacademia_schedule_view_title">Horaires Courants</string>
+    <string name="isacademia_exams_view_title">Liste des Examens ISA inscrits</string>
         
     <string name="isacademia_error_isa_down">PocketCampus a essayé de se connecter aux serveurs ISA, mais ils semblent hors-ligne.</string>
     <string name="isacademia_connection_error_happened">Nous ne pouvons pas récupérer les données ISA maintenant, car vous n\'êtes pas connecté à Internet.</string>

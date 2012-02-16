@@ -3,9 +3,13 @@
 
     <string name="isacademia_plugin_title">IS-Academia</string>
     
+    <string name="isacademia_string_schedule">Schedule</string>
+    <string name="isacademia_string_exams">Exams</string>
     <string name="isacademia_string_logout">Logout</string>
         
-    <string name="isacademia_courses_section_title">List of registered ISA Courses</string>
+    <string name="isacademia_courses_view_title">List of registered ISA Courses</string>
+    <string name="isacademia_schedule_view_title">Current Schedule</string>
+    <string name="isacademia_exams_view_title">List of registered ISA Exams</string>
         
     <string name="isacademia_error_isa_down">PocketCampus tried to connect to ISA servers, but they seem down.</string>
     <string name="isacademia_connection_error_happened">We cannot fetch ISA data right now, because you are not connected to the Internet.</string>
