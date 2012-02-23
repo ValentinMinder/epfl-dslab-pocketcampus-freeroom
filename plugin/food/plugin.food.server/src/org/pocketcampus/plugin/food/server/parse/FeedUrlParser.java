@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Parses the contents of the Restaurant file which is stored on the server
@@ -14,38 +12,27 @@ import java.util.HashMap;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
-public class RestaurantListParser {
+public class FeedUrlParser {
 
 	/** The path to the file to parse */
 	private String mFile;
 
-	/** The list of feeds */
-	private HashMap<String, String> feeds;
+	/** The feed Url */
+	private String feed;
 
 	/** The whole restaurant file in one String */
 	private String feedString;
 
 	/** Constructor for the RestaurantListParser */
-	public RestaurantListParser(String file) {
+	public FeedUrlParser(String file) {
 		mFile = file;
 		feedString = getContents();
-		feeds = restaurantFeeds(feedString);
+		feed = restaurantFeed(feedString);
 	}
 
 	/** Returns the list of Strings and their corresponding Url */
-	public HashMap<String, String> getFeeds() {
-		return feeds;
-	}
-
-	/** Returns the list of Restaurants */
-	public ArrayList<String> getRestaurants() {
-		ArrayList<String> list = new ArrayList<String>();
-		
-		for(String r : feeds.keySet()) {
-			list.add(r);
-		}
-		
-		return list;
+	public String getFeed() {
+		return feed;
 	}
 
 	/**
@@ -92,29 +79,21 @@ public class RestaurantListParser {
 	 *            the path to the file to parse
 	 * @return a hashmap of Restaurant names and their String Url
 	 */
-	private HashMap<String, String> restaurantFeeds(String restaurantList) {
-		String tagRestaurant = "<Resto>";
-		String tagName = "<name>";
+	private String restaurantFeed(String restaurantList) {
+		String tagMenu = "<Menu>";
 		String tagUrl = "<rssfeed>";
 
-		String tagRestEnd = "</Resto>";
-		String tagNameEnd = "</name>";
+		String tagMenuEnd = "</Menu>";
 		String tagUrlEnd = "</rssfeed>";
 
-		HashMap<String, String> feeds = new HashMap<String, String>();
+		String feed = "";
 
 		while (restaurantList.length() > 1) {
-			// Restaurant
-			int startResto = restaurantList.indexOf(tagRestaurant);
-			int endResto = restaurantList.indexOf(tagRestEnd);
+			// Menu
+			int startResto = restaurantList.indexOf(tagMenu);
+			int endResto = restaurantList.indexOf(tagMenuEnd);
 			String restAttributes = restaurantList.substring(
-					startResto + tagRestaurant.length(), endResto).trim();
-
-			// Restaurant Names
-			int startName = restAttributes.indexOf(tagName);
-			int endName = restAttributes.indexOf(tagNameEnd);
-			String restaurantName = restAttributes.substring(
-					startName + tagName.length(), endName).trim();
+					startResto + tagMenu.length(), endResto).trim();
 
 			// Restaurant Feeds
 			int startUrl = restAttributes.indexOf(tagUrl);
@@ -122,12 +101,12 @@ public class RestaurantListParser {
 			String restaurantUrl = restAttributes.substring(
 					startUrl + tagUrl.length(), endUrl).trim();
 
-			feeds.put(restaurantName, restaurantUrl);
+			feed = restaurantUrl;
 			restaurantList = restaurantList.substring(
-					endResto + tagRestEnd.length(), restaurantList.length())
+					endResto + tagMenuEnd.length(), restaurantList.length())
 					.trim();
 		}
 
-		return feeds;
+		return feed;
 	}
 }

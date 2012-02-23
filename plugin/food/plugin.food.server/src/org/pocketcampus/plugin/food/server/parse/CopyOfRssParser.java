@@ -20,7 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Oriane <oriane.rodriguez@epfl.ch>
  * 
  */
-public class RssParser extends DefaultHandler {
+public class CopyOfRssParser extends DefaultHandler {
 	/** The Url to the RSS Feed to be parsed. */
 	private String urlString;
 
@@ -45,7 +45,7 @@ public class RssParser extends DefaultHandler {
 	 * @param url
 	 *            The Url to the feed to parse.
 	 */
-	public RssParser(String url, List<String> notCapitalized) {
+	public CopyOfRssParser(String url, List<String> notCapitalized) {
 		this.urlString = url;
 		this.notCapitalized = notCapitalized;
 		this.text = new StringBuilder();
@@ -197,6 +197,10 @@ public class RssParser extends DefaultHandler {
 		else if (localName.equalsIgnoreCase("copyright")
 				|| qName.equalsIgnoreCase("copyright"))
 			this.rssFeed.copyright = this.text.toString().trim();
+
+		else if ((localName.equalsIgnoreCase("pubDate") || qName
+				.equalsIgnoreCase("pubdate")) && (this.item != null))
+			this.item.pubDate = this.text.toString().trim();
 
 		else if ((localName.equalsIgnoreCase("category") || qName
 				.equalsIgnoreCase("category")) && (this.item != null))
@@ -386,12 +390,14 @@ public class RssParser extends DefaultHandler {
 		public String description;
 		/** The link of the Item */
 		public String link;
-		
+		/** The publication date of the Item */
+		public String pubDate;
+
 		/**
 		 * Returns the string representation of the Item
 		 */
 		public String toString() {
-			return (this.title + ": " + this.description);
+			return (this.title + ": " + this.pubDate + "n" + this.description);
 		}
 	}
 

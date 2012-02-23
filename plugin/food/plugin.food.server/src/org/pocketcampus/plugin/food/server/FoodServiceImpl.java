@@ -6,13 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.Utils;
 import org.pocketcampus.plugin.food.server.db.FoodDB;
-import org.pocketcampus.plugin.food.server.parse.RestaurantListParser;
+import org.pocketcampus.plugin.food.server.parse.FeedUrlParser;
 import org.pocketcampus.plugin.food.server.parse.RssParser;
 import org.pocketcampus.plugin.food.server.parse.RssParser.RssFeed;
 import org.pocketcampus.plugin.food.shared.FoodService;
@@ -36,14 +35,17 @@ public class FoodServiceImpl implements FoodService.Iface {
 	/** Interface to the database. */
 	private FoodDB mDatabase;
 
-	/** The list of Restaurants and the Url to their feeds. */
-	private HashMap<String, String> mRestaurantsFeeds;
+	/** The Url to the meal feed. */
+	private String mFeed;
 
 	/** The list of all Meals. */
 	private List<Meal> mAllMeals;
 
 	/** Ratings for all Meals, represents with their hashcode. */
 	private HashMap<Long, Rating> mMealRatings;
+
+	/** The list of all Restaurants */
+	private List<Restaurant> mRestaurantList;
 
 	/** The list of DeviceIds that have already voted for a meal today. */
 	private ArrayList<String> mDeviceIds;
@@ -71,8 +73,12 @@ public class FoodServiceImpl implements FoodService.Iface {
 		mSandwiches = new ArrayList<Sandwich>();
 		mMealRatings = new HashMap<Long, Rating>();
 		mDeviceIds = new ArrayList<String>();
+		mRestaurantList = new ArrayList<Restaurant>();
 
-		getRestaurantsList();
+		FeedUrlParser fup = new FeedUrlParser(
+				"epfl_meals.txt");
+		mFeed = fup.getFeed();
+
 		importMenus();
 		importSandwiches();
 	}
@@ -115,12 +121,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	@Override
 	public List<Restaurant> getRestaurants() throws TException {
 		System.out.println("<getRestaurants>: getting restaurants");
-		ArrayList<Restaurant> mRestaurantList = new ArrayList<Restaurant>();
-
-		for (String r : mRestaurantsFeeds.keySet()) {
-			Restaurant newResto = new Restaurant(r.hashCode(), r);
-			mRestaurantList.add(newResto);
-		}
 		return mRestaurantList;
 	}
 
@@ -270,16 +270,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
-	 * Initiates parsing of the restaurant list from the file stored on the
-	 * server
-	 */
-	private void getRestaurantsList() {
-		RestaurantListParser rlp = new RestaurantListParser(
-				"restaurants_list.txt");
-		mRestaurantsFeeds = rlp.getFeeds();
-	}
-
-	/**
 	 * Imports Menus from the RSS feed
 	 */
 	private void importMenus() {
@@ -313,54 +303,77 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	/**
+	 * Checks if the restaurant for the current meal is already in the list of
+	 * restaurants.
+	 * 
+	 * @return true if the restaurant exists, false if not
+	 */
+	private boolean restaurantExists(String restaurant) {
+		for (Restaurant r : mRestaurantList) {
+			if (r.getName().equals(restaurant)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Parse the menus from the RSS feeds
 	 * 
 	 * @return the list of meals that were just parsed and that were not in the
 	 *         list of meals previously on the server
 	 */
 	private List<Meal> parseMenus() {
-		Set<String> restaurants = mRestaurantsFeeds.keySet();
 		List<Meal> newlyParsedMeals = new ArrayList<Meal>();
 		List<String> notCapitalized = mDatabase.getNotCapitalized();
 
-		for (String r : restaurants) {
-			RssParser rp = new RssParser(mRestaurantsFeeds.get(r),
-					notCapitalized);
-			rp.parse();
-			RssFeed feed = rp.getFeed();
+		RssParser rp = new RssParser(mFeed, notCapitalized);
+		rp.parse();
+		RssFeed feed = rp.getFeed();
 
-			Restaurant newResto = new Restaurant(r.hashCode(), r);
+		if (feed != null && feed.items != null) {
+			for (int i = 0; i < feed.items.size(); i++) {
+				// New meal rating
+				Rating mealRating = new Rating(0, 0, 0);
+				// Meal title
+				String title = feed.items.get(i).title;
 
-			if (feed != null && feed.items != null) {
-				for (int i = 0; i < feed.items.size(); i++) {
-					// New meal rating
-					Rating mealRating = new Rating(0, 0, 0);
-					// Meal name
-					String name = feed.items.get(i).title;
-					// Meal description
-					String description = feed.items.get(i).description;
-					// Meal id
-					long id = generateMealId(name, description, newResto);
+				// Get the meal name and restaurant from the item title.
+				String[] items = title.split(":");
+				String name = "";
+				String restaurant = "";
+				if (items.length == 2) {
+					restaurant = items[0].trim();
+					name = items[1].trim();
+				}
 
-					Meal newMeal = new Meal(id, name, description, newResto,
-							mealRating);
-					if (!Utils.containsSpecialAscii(newMeal.mealDescription,
-							BAD_CHAR)
-							&& !Utils.containsSpecialAscii(newMeal.name,
-									BAD_CHAR)) {
-						if (!alreadyExist(newMeal)) {
-							mAllMeals.add(newMeal);
-							mMealRatings.put(newMeal.getMealId(), mealRating);
-							// Buffer list to then add to the database the new
-							// meals
-							newlyParsedMeals.add(newMeal);
-						}
+				Restaurant newResto = new Restaurant(restaurant.hashCode(), restaurant);
+				if (!restaurantExists(restaurant)) {
+					mRestaurantList.add(newResto);
+				}
+
+				// Meal description
+				String description = feed.items.get(i).description;
+				// Meal id
+				long id = generateMealId(name, description, newResto);
+
+				Meal newMeal = new Meal(id, name, description, newResto,
+						mealRating);
+				if (!Utils.containsSpecialAscii(newMeal.mealDescription,
+						BAD_CHAR)
+						&& !Utils.containsSpecialAscii(newMeal.name, BAD_CHAR)) {
+					if (!alreadyExist(newMeal)) {
+						mAllMeals.add(newMeal);
+						mMealRatings.put(newMeal.getMealId(), mealRating);
+						// Buffer list to then add to the database the new
+						// meals
+						newlyParsedMeals.add(newMeal);
 					}
 				}
-				mLastImportedMeals = new Date();
-			} else {
-				System.out.println("<importMenus>: Empty Feed for " + r);
 			}
+			mLastImportedMeals = new Date();
+		} else {
+			System.out.println("<importMenus>: Empty Feed");
 		}
 		if (mAllMeals.isEmpty()) {
 			mLastImportedMeals = new Date();
