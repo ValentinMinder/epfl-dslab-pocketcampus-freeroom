@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="sunrise_plugin_title">Sunrise</string>
+    
+    <string name="sunrise_string_settings">Settings</string>
+        
+    <string name="sunrise_error_server_error">Server error.</string>
+    <string name="sunrise_connection_error_happened">We cannot connect to Sunrise servers right now, because you are not connected to the Internet.</string>
+    <string name="sunrise_sms_sent">SMS sent successfully.</string>
+    <string name="sunrise_error_bad_credentials">Bad credentials.</string>
+        
+    <string name="sunrise_settings_phonenbr">Phone number</string>
+    <string name="sunrise_settings_password">Password</string>
+    <string name="sunrise_settings_title">Sunrise credentials</string>
+    <string name="sunrise_settings_login">Login</string>
+    <string name="sunrise_settings_logout">Logout</string>
+        
+    <string name="sunrise_button_send">Send</string>
+    <string name="sunrise_to_number">To number</string>
+    <string name="sunrise_send_sms_title">Send Sunrise SMS</string>
+    <string name="sunrise_sms_contents">Message</string>
+    <string name="sunrise_remaining_free_sms">Remaining free SMS</string>
+        
+</resources>
