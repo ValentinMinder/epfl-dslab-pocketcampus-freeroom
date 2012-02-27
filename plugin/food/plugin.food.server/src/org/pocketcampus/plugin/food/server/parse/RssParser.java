@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -178,6 +179,8 @@ public class RssParser extends DefaultHandler {
 				this.item.description = removeBadStuff(this.text.toString()
 						.trim());
 				this.item.description = capitalize(this.item.description);
+				this.item.description = removeExtraLineBreaks(this.item.description);
+				
 			} else
 				this.rssFeed.description = this.text.toString().trim();
 		}
@@ -204,7 +207,26 @@ public class RssParser extends DefaultHandler {
 
 		this.text.setLength(0);
 	}
-
+	
+	/**
+	 * Removes unneeded line breaks and spaces.
+	 * @param description
+	 * @return
+	 */
+	private String removeExtraLineBreaks(String description) {
+		description = StringEscapeUtils.unescapeHtml4(description);
+		description = description.replaceAll("[\\xA0]+", " "); // replace non-breaking spaces (code 160) with normal spaces (code 32)
+		description = description.replaceAll("[\\t\\r\\v\\f]+", ""); // remove some weird characters
+		description = description.replaceAll("[\\n][ ]+", "\n"); // remove spaces at the beginning of a line
+		description = description.replaceAll("[ ]+[\\n]", "\n"); // remove spaces at the end of a line
+		description = description.replaceAll("[ ]+", " "); // remove consecutive spaces
+		description = description.replaceAll("[\\n]+", "\n"); // remove consecutive new-lines
+		description = description.replaceAll("^[\\n]+", ""); // remove new-line characters at the beginning
+		description = description.replaceAll("[\\n]+$", ""); // remove new-line characters at the end
+		
+		return description;
+	}
+	
 	/**
 	 * Remove unwanted characters, such as apostrophes question marks, carrier
 	 * line feeds, html tags.
