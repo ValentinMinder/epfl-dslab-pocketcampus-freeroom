@@ -156,7 +156,7 @@ public class RssParser extends DefaultHandler {
 				|| qName.equalsIgnoreCase("title")) {
 			if (this.item != null) {
 				this.item.title = removeBadStuff(this.text.toString().trim());
-				this.item.title = capitalize(this.item.title);
+//				this.item.title = capitalize(this.item.title);
 			} else if (this.imgStatus)
 				this.rssFeed.imageTitle = this.text.toString().trim();
 			else
