@@ -94,7 +94,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 */
 	private TequilaKey getTequilaKeyForCamipro() throws IOException {
 		Cookie cookie = new Cookie();
-        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/client/serhome-en").openConnection();
+        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/ws/balance").openConnection();
         conn2.setInstanceFollowRedirects(false);
         conn2.getInputStream();
         URL url = new URL(conn2.getHeaderField("Location"));
@@ -201,12 +201,12 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	    	throw new IOException("getSessionIdForCamipro: loginCookie is null");
 	    cookie.importFromString(loginCookie);
 		
-        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/client/serhome-en").openConnection();
+        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/ws/balance").openConnection();
         conn2.setRequestProperty("Cookie", cookie.cookie());
         conn2.setInstanceFollowRedirects(false);
         conn2.getInputStream();
-        if(!"https://cmp2www.epfl.ch:443/client/serhome".equals(conn2.getHeaderField("Location")))
-        	System.out.println("getSessionIdForCamipro: WARNING Location field is not as expected, authentication has probably failed");
+        if(conn2.getHeaderField("Location") != null)
+        	System.out.println("getSessionIdForCamipro: WARNING got redirected, this should not happen, authentication has probably failed");
         
 	    // send back the session id
 	    SessionId si = new SessionId();

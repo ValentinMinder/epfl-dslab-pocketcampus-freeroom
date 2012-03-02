@@ -3,7 +3,10 @@ package org.pocketcampus.plugin.camipro.server;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -18,6 +21,9 @@ import org.pocketcampus.plugin.camipro.shared.SendMailResult;
 import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 /**
  * CamiproServiceImpl
  * 
@@ -31,14 +37,19 @@ import org.pocketcampus.plugin.camipro.shared.Transaction;
  */
 public class CamiproServiceImpl implements CamiproService.Iface {
 	
+	private boolean useAPI;
 	
 	public CamiproServiceImpl() {
 		System.out.println("Starting Camipro plugin server ...");
+		useAPI = true;
 	}
 	
 	@Override
 	public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws TException {
 		System.out.println("getBalanceAndTransactions");
+		if(useAPI)
+			return getBalanceAndTransactionsWAPI(iRequest);
+		
 		String page = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
@@ -86,6 +97,9 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	@Override
 	public StatsAndLoadingInfo getStatsAndLoadingInfo(CamiproRequest iRequest) throws TException {
 		System.out.println("getStatsAndLoadingInfo");
+		if(useAPI)
+			return getStatsAndLoadingInfoWAPI(iRequest);
+		
 		String page = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
@@ -124,6 +138,9 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	@Override
 	public SendMailResult sendLoadingInfoByEmail(CamiproRequest iRequest) throws TException {
 		System.out.println("sendLoadingInfoByEmail");
+		if(useAPI)
+			return sendLoadingInfoByEmailWAPI(iRequest);
+		
 		String page = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
@@ -163,6 +180,132 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		mr.setIResultText(page);
 		return mr;
 	}
+
+	public BalanceAndTransactions getBalanceAndTransactionsWAPI(CamiproRequest iRequest) throws TException {
+		String balPage = null;
+		String trxPage = null;
+		BalanceJson tBalance = null;
+		TransactionsJson tTransactions = null;
+		Gson gson = new Gson();
+		Cookie cookie = new Cookie();
+		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
+		
+		try {
+			balPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/balance", cookie);
+			trxPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/transactions", cookie);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new BalanceAndTransactions(404);
+		}
+		if(balPage == null || trxPage == null) {
+			System.out.println("not logged in");
+			return new BalanceAndTransactions(407);
+		}
+		
+		try {
+			tBalance = gson.fromJson(balPage, BalanceJson.class);
+			tTransactions = gson.fromJson(trxPage, TransactionsJson.class);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			return new BalanceAndTransactions(404);
+		}
+		if(!"Success".equals(tBalance.Status) || !"Success".equals(tTransactions.Status)) {
+			System.out.println("camipro upstream server has failed");
+			return new BalanceAndTransactions(404);
+		}
+        
+		LinkedList<Transaction> decodedTrx = new LinkedList<Transaction>();
+		SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat out = new SimpleDateFormat("dd.MM.yy HH'h'mm");
+		for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions) {
+			String trxDate = t.TransactionDate;
+			try {
+				trxDate = out.format(in.parse(trxDate));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			decodedTrx.add(new Transaction(trxDate, t.TransactionType, t.ElementDescription, t.TransactionAmount));
+		}
+		
+		BalanceAndTransactions bt = new BalanceAndTransactions(200);
+		bt.setIBalance(tBalance.PersonalAccountBalance);
+		bt.setITransactions(decodedTrx);
+		bt.setIDate("**TODO**"); // TODO
+		return bt;
+	}
+
+	public StatsAndLoadingInfo getStatsAndLoadingInfoWAPI(CamiproRequest iRequest) throws TException {
+		String ebnkPage = null;
+		EbankingJson tEbanking = null;
+		Gson gson = new Gson();
+		Cookie cookie = new Cookie();
+		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
+		
+		try {
+			ebnkPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/ebanking", cookie);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new StatsAndLoadingInfo(404);
+		}
+		if(ebnkPage == null) {
+			System.out.println("not logged in");
+			return new StatsAndLoadingInfo(407);
+		}
+		
+		try {
+			tEbanking = gson.fromJson(ebnkPage, EbankingJson.class);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			return new StatsAndLoadingInfo(404);
+		}
+		if(!"Success".equals(tEbanking.Status)) {
+			System.out.println("camipro upstream server has failed");
+			return new StatsAndLoadingInfo(404);
+		}
+        
+		CardStatistics tCardStatistics = new CardStatistics(tEbanking.TotalAmount1M, tEbanking.TotalAmount3M);
+		CardLoadingWithEbankingInfo tCardLoadingWithEbankingInfo = new CardLoadingWithEbankingInfo(tEbanking.PaidNameTo, tEbanking.AccountNr, tEbanking.BvrReadableReference);
+		
+		StatsAndLoadingInfo sl = new StatsAndLoadingInfo(200);
+		sl.setICardStatistics(tCardStatistics);
+		sl.setICardLoadingWithEbankingInfo(tCardLoadingWithEbankingInfo);
+		return sl;
+	}
+	
+	public SendMailResult sendLoadingInfoByEmailWAPI(CamiproRequest iRequest) throws TException {
+		String ebmPage = null;
+		EbankingemailJson tEbankingemail = null;
+		Gson gson = new Gson();
+		Cookie cookie = new Cookie();
+		cookie.importFromString(iRequest.getISessionId().getCamiproCookie());
+		
+		try {
+			ebmPage = getPageWithCookie("https://cmp2www.epfl.ch/ws/ebankingemail?lang=" + iRequest.getILanguage(), cookie);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new SendMailResult(404);
+		}
+		if(ebmPage == null) {
+			System.out.println("not logged in");
+			return new SendMailResult(407);
+		}
+		
+		try {
+			// TODO
+			tEbankingemail = gson.fromJson("{\"Message\":" + ebmPage + ",\"Status\":\"Success\"}", EbankingemailJson.class);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			return new SendMailResult(404);
+		}
+		if(!"Success".equals(tEbankingemail.Status)) {
+			System.out.println("camipro upstream server has failed");
+			return new SendMailResult(404);
+		}
+        
+		SendMailResult mr = new SendMailResult(200);
+		mr.setIResultText(tEbankingemail.Message);
+		return mr;
+	}
 	
 	
 	/**
@@ -173,7 +316,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.setInstanceFollowRedirects(false);
 		conn.setRequestProperty("Cookie", cookie.cookie());
-		if(conn.getResponseCode() == 302)
+		if(conn.getResponseCode() != 200)
 			return null;
 		return IOUtils.toString(conn.getInputStream(), "UTF-8");
 	}
@@ -200,6 +343,44 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 			orig = orig.substring(b + before.length());
 		}
 		return orig;
+	}
+
+	
+	/**
+	 * HELPER CLASSES
+	 */
+	
+	public class BalanceJson {
+		public double PersonalAccountBalance;
+		public String Status;
+	}
+
+	public class EbankingJson {
+		public String PaidNameTo;
+		public String AccountNr;
+		public String BvrReadableReference;
+		public double TotalAmount1M;
+		public double TotalAmount3M;
+		public String Status;
+	}
+	
+	public class TransactionsJson {
+		public TransactionsListJson LastTransactionsList;
+		public String Status;
+		public class TransactionsListJson {
+			public List<TransactionJson> LastTransactions;
+			public class TransactionJson {
+				public String TransactionType;
+				public String ElementDescription;
+				public String TransactionDate;
+				public double TransactionAmount;
+			}
+		}
+	}
+	
+	public class EbankingemailJson {
+		public String Message;
+		public String Status;
 	}
 
 }
