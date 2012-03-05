@@ -215,22 +215,13 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
         
 		LinkedList<Transaction> decodedTrx = new LinkedList<Transaction>();
-		SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		SimpleDateFormat out = new SimpleDateFormat("dd.MM.yy HH'h'mm");
-		for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions) {
-			String trxDate = t.TransactionDate;
-			try {
-				trxDate = out.format(in.parse(trxDate));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			decodedTrx.add(new Transaction(trxDate, t.TransactionType, t.ElementDescription, t.TransactionAmount));
-		}
+		for (TransactionsJson.TransactionsListJson.TransactionJson t : tTransactions.LastTransactionsList.LastTransactions)
+			decodedTrx.add(new Transaction(transcribeDate(t.TransactionDate), t.TransactionType, t.ElementDescription, t.TransactionAmount));
 		
 		BalanceAndTransactions bt = new BalanceAndTransactions(200);
 		bt.setIBalance(tBalance.PersonalAccountBalance);
 		bt.setITransactions(decodedTrx);
-		bt.setIDate("**TODO**"); // TODO
+		bt.setIDate(transcribeDate(tBalance.LastUpdated));
 		return bt;
 	}
 
@@ -291,8 +282,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
 		
 		try {
-			// TODO
-			tEbankingemail = gson.fromJson("{\"Message\":" + ebmPage + ",\"Status\":\"Success\"}", EbankingemailJson.class);
+			tEbankingemail = gson.fromJson(ebmPage, EbankingemailJson.class);
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 			return new SendMailResult(404);
@@ -344,6 +334,17 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		}
 		return orig;
 	}
+	
+	private String transcribeDate(String date) {
+		SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat out = new SimpleDateFormat("dd.MM.yy HH'h'mm");
+		try {
+			date = out.format(in.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 
 	
 	/**
@@ -352,6 +353,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	
 	public class BalanceJson {
 		public double PersonalAccountBalance;
+		public String LastUpdated;
 		public String Status;
 	}
 
