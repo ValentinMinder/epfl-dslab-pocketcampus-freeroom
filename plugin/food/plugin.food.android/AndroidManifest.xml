@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.pocketcampus"
+    package="org.pocketcampus.plugin.food"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,20 +13,20 @@
         android:label="@string/app_name"
         android:theme="@style/PocketCampusTheme" >
         <activity
-            android:name=".plugin.food.android.FoodMainView"
+            android:name="org.pocketcampus.plugin.food.android.FoodMainView"
             android:icon="@drawable/food_icon"
             android:label="@string/food_plugin_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-                <action android:name="pocketcampus.intent.action.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".plugin.food.android.FoodSuggestionsView" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodSuggestionsView" >
         </activity>
-        <activity android:name=".plugin.food.android.FoodPreferencesView" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodPreferencesView" >
         </activity>
-        <activity android:name=".plugin.food.android.FoodSettings" >
+        <activity android:name="org.pocketcampus.plugin.food.android.FoodSettings" >
         </activity>
 
         <service
