@@ -35,10 +35,9 @@
 
         <RatingBar
             android:id="@+id/sdk_dialog_menu_ratingBarIndicator"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerInParent="true"
-            android:layout_marginRight="10dip"
             android:layout_marginTop="3dip"
             android:numStars="5"
             android:rating="1"
