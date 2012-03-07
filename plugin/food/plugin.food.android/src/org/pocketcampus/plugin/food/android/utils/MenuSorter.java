@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.pocketcampus.plugin.food.shared.Meal;
-import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 import org.pocketcampus.plugin.food.shared.Sandwich;
 
@@ -183,7 +182,12 @@ public class MenuSorter {
 			} else {
 				int n0 = thisMeal.getRating().getNumberOfVotes();
 				int n1 = otherMeal.getRating().getNumberOfVotes();
-				return (n0 < n1 ? -1 : 1);
+				
+				if(n0 != n1) {
+					return (n0 < n1 ? -1 : 1);
+				}
+				
+				return 0;
 			}
 		}
 	}
