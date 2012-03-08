@@ -174,7 +174,7 @@ public class BikesMainView extends PluginView implements IBikesView {
 			if (pl > 0) {
 				RelativeLayout listElement = new RelativeLayout(this);
 //				int textAppearanceID = R.style.PocketCampusTheme_Primary_Title;
-				int layoutsWidth = 30;
+				int layoutsWidth = 40;
 				float textSize = 18f;
 				// bikeEmplacement name
 				TextView titleView = new TextView(this);
