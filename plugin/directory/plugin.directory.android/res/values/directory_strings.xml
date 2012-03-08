@@ -6,7 +6,7 @@
      
      <!-- Dialog buttons -->
      <string name="directory_dialog_button_call">Call</string>
-     <string name="directory_dialog_button_web">Webpage</string>
+     <string name="directory_dialog_button_web">Web</string>
      <string name="directory_dialog_button_map">Find on Map</string>
      <string name="directory_dialog_button_mail">Email</string>
     

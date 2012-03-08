@@ -9,7 +9,7 @@
 	<string name="news_no_news">Could not connect.</string>
 	<string name="news_loading">Loading news...</string>
 
-	<string name="news_no_feed_selected">No feed selected</string>
+	<string name="news_no_feed_selected">No feed selected.</string>
 	<string name="news_readmore">
 		<u>Read more...</u>
 	</string>

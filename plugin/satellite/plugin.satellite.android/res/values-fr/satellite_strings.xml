@@ -4,7 +4,7 @@
     <!-- General -->
     <string name="satellite_plugin_name">Satellite</string>
     <string name="satellite_nothing_to_display">Impossible de se connecter.</string>
-    <string name="satellite_no_beer_to_display">Pas de bière à afficher.</string>
+    <string name="satellite_no_beer_to_display">Pas de bière du mois pour l\'instant!</string>
     <string name="satellite_menu_main_page">Satellite</string>
     <string name="satellite_loading">Chargement...</string>
 

@@ -6,9 +6,9 @@
           
      <!-- Dialog buttons -->
      <string name="directory_dialog_button_call">Appeler</string>
-     <string name="directory_dialog_button_web">Page web</string>
+     <string name="directory_dialog_button_web">Web</string>
      <string name="directory_dialog_button_map">Sur la carte</string>
-     <string name="directory_dialog_button_mail">Mail</string>
+     <string name="directory_dialog_button_mail">Email</string>
      
      <string name="directory_call">Appeler</string>
      <string name="directory_yes">oui</string>
