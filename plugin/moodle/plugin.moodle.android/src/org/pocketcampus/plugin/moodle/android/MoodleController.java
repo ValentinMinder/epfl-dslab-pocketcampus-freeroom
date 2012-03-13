@@ -102,24 +102,24 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return fileName;
 	}
 
-	public void refreshCoursesList() {
+	public void refreshCoursesList(boolean skipCache) {
 		if(mModel.getMoodleCookie() == null)
 			return;
-		new CoursesListRequest().start(this, mClientCL, buildSessionId(null));
+		new CoursesListRequest().setBypassCache(skipCache).start(this, mClientCL, buildSessionId(null));
 	}
 	
-	public void refreshEventsList() {
+	public void refreshEventsList(boolean skipCache) {
 		if(mModel.getMoodleCookie() == null)
 			return;
-		new EventsListRequest().start(this, mClientEL, buildSessionId(null));
+		new EventsListRequest().setBypassCache(skipCache).start(this, mClientEL, buildSessionId(null));
 	}
 	
-	public void refreshSectionsList(Integer courseId) {
+	public void refreshSectionsList(boolean skipCache, Integer courseId) {
 		if(mModel.getMoodleCookie() == null)
 			return;
 		if(courseId == null)
 			return;
-		new SectionsListRequest().start(this, mClientSL, buildSessionId(courseId));
+		new SectionsListRequest().setBypassCache(skipCache).start(this, mClientSL, buildSessionId(courseId));
 	}
 	
 	public void fetchFileResource(String mr) {

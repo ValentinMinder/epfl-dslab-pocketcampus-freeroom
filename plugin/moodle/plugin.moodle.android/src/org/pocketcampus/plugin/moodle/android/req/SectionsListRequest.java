@@ -35,6 +35,10 @@ public class SectionsListRequest extends Request<MoodleController, Iface, Moodle
 			((MoodleModel) controller.getModel()).getListenersToNotify().moodleServersDown();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setSections(result.getISections());
+			if(!wasServicedFromCache())
+				keepInCache();
+			/*else
+				refreshAsWell();*/
 		}
 	}
 

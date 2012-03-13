@@ -82,7 +82,7 @@ public class MoodleEventsView extends PluginView implements IMoodleView {
 			a.addAction(refresh, 0);
 		}
 		
-		mController.refreshEventsList();
+		mController.refreshEventsList(false);
 		updateDisplay();
 	}
 
@@ -255,7 +255,7 @@ public class MoodleEventsView extends PluginView implements IMoodleView {
 		public void performAction(View view) {
 			//Tracker
 			Tracker.getInstance().trackPageView("moodle/events/refresh");
-			mController.refreshEventsList();
+			mController.refreshEventsList(true);
 		}
 	}
 

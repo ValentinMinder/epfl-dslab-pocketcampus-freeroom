@@ -32,6 +32,10 @@ public class CoursesListRequest extends Request<MoodleController, Iface, MoodleR
 			((MoodleModel) controller.getModel()).getListenersToNotify().notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setCourses(result.getICourses());
+			if(!wasServicedFromCache())
+				keepInCache();
+			/*else
+				refreshAsWell();*/
 		}
 	}
 

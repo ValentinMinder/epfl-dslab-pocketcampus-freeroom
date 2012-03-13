@@ -32,6 +32,10 @@ public class EventsListRequest extends Request<MoodleController, Iface, MoodleRe
 			((MoodleModel) controller.getModel()).getListenersToNotify().notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setEvents(result.getIEvents());
+			if(!wasServicedFromCache())
+				keepInCache();
+			/*else
+				refreshAsWell();*/
 		}
 	}
 

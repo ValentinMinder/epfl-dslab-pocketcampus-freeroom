@@ -98,7 +98,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 			}
 		}
 		
-		mController.refreshSectionsList(courseId);
+		mController.refreshSectionsList(false, courseId);
 		//updateDisplay(); // might contain data for a different course
 	}
 
@@ -271,7 +271,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		public void performAction(View view) {
 			//Tracker
 			Tracker.getInstance().trackPageView("moodle/sections/refresh");
-			mController.refreshSectionsList(courseId);
+			mController.refreshSectionsList(true, courseId);
 		}
 	}
 
