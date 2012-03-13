@@ -407,6 +407,7 @@ public class MenuDialog extends Dialog {
 			// Rating Bar
 			RatingBar ratingBar = ((RatingBar) layout
 					.findViewById(R.id.sdk_dialog_menu_ratingBarIndicator));
+			mHasVoted = false;
 			if (!mHasVoted) {
 				ratingBar.setRating(mRating);
 				ratingBar.setOnTouchListener(new OnTouchListener() {
@@ -425,9 +426,10 @@ public class MenuDialog extends Dialog {
 						return false;
 					}
 				});
-			} else {
-				ratingBar.setVisibility(View.GONE);
-			}
+			} 
+//			else {
+//				ratingBar.setVisibility(View.GONE);
+//			}
 			dialog.setContentView(layout);
 			return dialog;
 		}

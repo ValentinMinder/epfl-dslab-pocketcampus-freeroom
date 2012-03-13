@@ -259,11 +259,12 @@ public class RatingDialog extends Dialog {
 								}
 							});
 				}
-			} else {
-				// If no negative button just set the visibility to GONE
-				layout.findViewById(R.id.sdk_dialog_rating_negativeButton)
-						.setVisibility(View.GONE);
-			}
+			} 
+//			else {
+//				// If no negative button just set the visibility to GONE
+//				layout.findViewById(R.id.sdk_dialog_rating_negativeButton)
+//						.setVisibility(View.GONE);
+//			}
 
 			// Rating bar
 			mRatingBar = ((RatingBar) layout
