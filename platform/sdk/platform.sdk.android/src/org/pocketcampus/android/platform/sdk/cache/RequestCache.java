@@ -21,9 +21,10 @@ import android.content.Context;
 public class RequestCache {
 	
 	public static void invalidateCache(Context context, String prefix, Object request) {
-		String filename = prefix + request.hashCode();
-		if(context.getFileStreamPath(filename).exists())
-			context.deleteFile(filename);
+		if(request != null)
+			prefix += request.hashCode();
+		if(context.getFileStreamPath(prefix).exists())
+			context.deleteFile(prefix);
 	}
 	
 	public static void invalidateCache(Context context, String prefix) {
@@ -36,9 +37,10 @@ public class RequestCache {
 	
 	public static void pushToCache(Context context, String prefix, Object request, TBase reply) {
 		try {
-			String filename = prefix + request.hashCode();
-			context.openFileOutput(filename, Context.MODE_PRIVATE).close();
-			BufferedOutputStream bufferedOut = new BufferedOutputStream(new FileOutputStream(context.getFileStreamPath(filename)), 2048);
+			if(request != null)
+				prefix += request.hashCode();
+			context.openFileOutput(prefix, Context.MODE_PRIVATE).close();
+			BufferedOutputStream bufferedOut = new BufferedOutputStream(new FileOutputStream(context.getFileStreamPath(prefix)), 2048);
 			TBinaryProtocol binaryOut = new TBinaryProtocol(new TIOStreamTransport(bufferedOut));
 			ThriftObjectClassName className = new ThriftObjectClassName(reply.getClass().getCanonicalName());
 			className.write(binaryOut);
@@ -53,13 +55,14 @@ public class RequestCache {
 	}
 	
 	public static TBase queryCache(Context context, String prefix, Object request) {
-		String filename = prefix + request.hashCode();
-		if(!context.getFileStreamPath(filename).exists()) {
+		if(request != null)
+			prefix += request.hashCode();
+		if(!context.getFileStreamPath(prefix).exists()) {
 			return null;
 		}
 		try {
-			//FileInputStream fin = context.openFileInput(filename);
-			BufferedInputStream bufferedIn = new BufferedInputStream(new FileInputStream(context.getFileStreamPath(filename)));
+			//FileInputStream fin = context.openFileInput(prefix);
+			BufferedInputStream bufferedIn = new BufferedInputStream(new FileInputStream(context.getFileStreamPath(prefix)));
 			TBinaryProtocol binaryIn = new TBinaryProtocol(new TIOStreamTransport(bufferedIn));
 			ThriftObjectClassName className = new ThriftObjectClassName();
 			className.read(binaryIn);
