@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  PocketCampus
+
+  Created by Loïc Gardiol on 01.03.12.
+  Copyright (c) 2012 EPFL. All rights reserved.
+*/
+
+"PluginName" = "Restaurants";
+"MenusTableViewSectionName" = "Menus";
+"CenterLabelLoadingText" = "Chargement de la liste des restaurants";
+"NoMealsWeekend" = "Pas de menus pendant le weekend.";
+"NoVote" = "Aucun vote";
+"VoteNamePlural" = "votes";
+"VoteVerb" = "voter";
+"RatingSendingError" = "Désolé, une erreur est survenue. Veuillez réessayer.";
+"RatingTooEarly" = "Désolé, il est trop tôt pour voter.";
+"RatingAlreadyDone" = "Vous ne pouvez voter que pour un repas par jour.";
