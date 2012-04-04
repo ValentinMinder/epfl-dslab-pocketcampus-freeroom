@@ -80,7 +80,7 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 	@Override
 	public void beerUpdated() {
 		Beer beer = mModel.getBeerOfMonth();
-		if (beer != null && !beer.getPictureUrl().equals("")) {
+		if (beer != null) {
 			mLayout.hideText();
 			ImageTextView t = new ImageTextView(beer, getApplicationContext(),
 					mBeerLabeler);
@@ -301,8 +301,13 @@ public class SatelliteMainView extends PluginView implements ISatelliteMainView 
 		 */
 		@Override
 		public LinearLayout getPictureLayout(Beer beer) {
+			if(!beer.getPictureUrl().equals("")) {
+				
 			return new LoaderImageView(getApplicationContext(),
 					beer.getPictureUrl());
+			} else {
+				return null;
+			}
 		}
 
 	};

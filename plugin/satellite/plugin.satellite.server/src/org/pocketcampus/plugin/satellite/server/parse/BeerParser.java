@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.pocketcampus.plugin.satellite.shared.Beer;
 
@@ -18,7 +17,7 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
  */
 public class BeerParser {
 	/** The URL of the web site page we want to parse. */
-	private String BEER_URL = "http://sat.epfl.ch/";
+	private String BEER_URL = "http://sat.epfl.ch/pocket/flux.xml";
 	/** The document we get from the web site and that will be parsed. */
 	private Document mDoc;
 	/** The beer name. */
@@ -53,43 +52,21 @@ public class BeerParser {
 		}
 
 		if (mDoc != null) {
-			divs = mDoc.select("div.text_block_text");
+			divs = mDoc.select("biere");
 
 			if (divs != null && !divs.isEmpty()) {
 				for (Element div : divs) {
-					Elements h4s = div.select("h4");
 
-					if (h4s != null && !h4s.isEmpty()) {
-						for (Element h4 : h4s) {
-							int indexOfDoublePoints = h4.text().indexOf(":");
-							mBeerName = h4
-									.text()
-									.substring(indexOfDoublePoints + 1,
-											h4.text().length()).trim();
-							Element img = h4.nextElementSibling();
-							mBeerPictureLink = img
-									.getElementsByAttribute("src").attr("src");
-							Elements brr = img.getAllElements();
-							Node br = brr.last();
-
-							while (br != null && br.nextSibling() != null) {
-								Node n = br.nextSibling();
-								if (n != null) {
-									String nText = n.toString();
-									if (nText.length() > 2) {
-										mBeerDescription = mBeerDescription
-												.concat(n.toString().trim()
-														+ "\n");
-									}
-									br = br.nextSibling();
-								}
-								mBeerDescription = mBeerDescription.trim();
-							}
-						}
+					if (div.attributes().toString()
+							.equals(" contenant=\"mois_pression\"")) {
+						mBeerName = div.select("nom").text();
+						mBeerDescription = div.select("description").text();
 					}
+
 				}
 			}
 		}
+
 		cleantexts();
 		mBeer = new Beer((mBeerName + mBeerDescription).hashCode(), mBeerName,
 				mBeerDescription);
