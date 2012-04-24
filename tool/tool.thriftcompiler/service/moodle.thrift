@@ -69,6 +69,7 @@ struct MoodleSection {
 	2: required string iText;
 	3: optional i64 iStartDate;
 	4: optional i64 iEndDate;
+	5: optional bool iCurrent;
 }
 
 struct SectionsListReply {
