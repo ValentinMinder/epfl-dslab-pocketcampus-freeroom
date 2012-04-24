@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.moodle.android.iface;
 
+import java.io.File;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
 
 /**
@@ -30,6 +32,6 @@ public interface IMoodleView extends IView {
 	void networkErrorHappened();
 	void moodleServersDown();
 	void notLoggedIn();
-	void downloadComplete();
+	void downloadComplete(File localFile);
 	
 }

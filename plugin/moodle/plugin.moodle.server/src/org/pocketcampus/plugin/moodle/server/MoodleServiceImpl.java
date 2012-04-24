@@ -163,6 +163,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			processed = processed.replaceAll("class=\"accesshide[^<]+<", "");
 			MoodleSection ms = new MoodleSection(mrl, stripHtmlTags("<" + processed + ">"));
 			// TODO add optional fields (start date and end date)
+			ms.setICurrent(i.startsWith(" current"));
 			msl.add(ms);
 		}
 		
@@ -438,7 +439,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
 		for (String j : getAllSubstringsBetween(html, "href=\"", "</a>")) {
 			String url = j.substring(0, j.indexOf("\"")); // target
-			String name = j.substring(j.indexOf(">") + 1); // innerHTML
+			String name = stripHtmlTags(j.substring(j.indexOf(">") + 1)); // innerHTML
 			mrl.add(new MoodleResource(name, url));
 		}
 		return mrl;
@@ -461,7 +462,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		html = html.replaceAll("[\\n]+", "\n"); // remove consecutive new-lines
 		html = html.replaceAll("^[\\n]+", ""); // remove new-line characters at the beginning
 		html = html.replaceAll("[\\n]+$", ""); // remove new-line characters at the end
-		return html;
+		return html.trim();
 	}
 	
 }

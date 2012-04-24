@@ -165,9 +165,10 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 	}
 
 	@Override
-	public void downloadComplete() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
+	public void downloadComplete(File localFile) {
+		MoodleCurrentWeekView.openFile(this, localFile);
+		/*Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
 	@Override

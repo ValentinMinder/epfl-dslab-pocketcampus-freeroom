@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.moodle.android;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,7 +149,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				CourseInfo courseInfo = ((CourseInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleMainView.this, MoodleCourseSectionsView.class);
+				Intent i = new Intent(MoodleMainView.this, MoodleCurrentWeekView.class);
 				i.putExtra("courseId", Integer.parseInt(courseInfo.value));
 				i.putExtra("courseTitle", courseInfo.title);
 				MoodleMainView.this.startActivity(i);
@@ -222,9 +223,9 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	}
 
 	@Override
-	public void downloadComplete() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
+	public void downloadComplete(File localFile) {
+		/*Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
 	@Override
@@ -286,7 +287,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		        	tv.setVisibility(View.GONE);
 		        tv = (TextView)v.findViewById(R.id.moodle_course_instructor);
 		        if(t.value != null)
-		        	tv.setText(t.value);
+		        	tv.setVisibility(View.GONE);//tv.setText(t.value);
 		        else
 		        	tv.setVisibility(View.GONE);
 	        }

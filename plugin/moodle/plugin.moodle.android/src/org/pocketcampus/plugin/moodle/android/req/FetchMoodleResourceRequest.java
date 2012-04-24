@@ -23,13 +23,16 @@ import org.pocketcampus.plugin.moodle.android.MoodleModel;
  */
 public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, ResourceCookieComplex, Boolean> {
 	
+	File localFile;
+	
 	@Override
 	protected Boolean runInBackground(DefaultHttpClient client, ResourceCookieComplex param) throws Exception {
 		HttpGet get = new HttpGet(param.resource);
 		get.addHeader("Cookie", param.cookie);
 		HttpResponse resp = client.execute(get);
 		InputStream in = resp.getEntity().getContent();
-		FileOutputStream fos = new FileOutputStream(new File(MoodleController.getLocalPath(param.resource)));
+		localFile = new File(MoodleController.getLocalPath(param.resource));
+		FileOutputStream fos = new FileOutputStream(localFile);
 		byte[] buffer = new byte[4096];
 		int length; 
 		while((length = in.read(buffer)) > 0) {
@@ -43,7 +46,7 @@ public class FetchMoodleResourceRequest extends Request<MoodleController, Defaul
 	protected void onResult(MoodleController controller, Boolean result) {
 		MoodleModel am = ((MoodleModel) controller.getModel());
 		if(result) {
-			am.getListenersToNotify().downloadComplete();
+			am.getListenersToNotify().downloadComplete(localFile);
 		} else {
 			am.getListenersToNotify().moodleServersDown();
 		}

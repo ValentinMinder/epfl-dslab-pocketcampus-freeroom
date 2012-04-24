@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.moodle.android;
 
 import java.io.File;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.plugin.moodle.android.MoodleMainView.CourseInfo;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
+import org.pocketcampus.plugin.moodle.shared.MoodleResource;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 
 import android.content.Context;
@@ -19,8 +19,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -30,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
@@ -46,15 +45,18 @@ import com.markupartist.android.widget.ActionBar.Action;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class MoodleCourseSectionsView extends PluginView implements IMoodleView {
+public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 
 	private MoodleController mController;
 	private MoodleModel mModel;
 	
 	private StandardTitledLayout mLayout;
+	private ListView fillerView;
 	
 	private Integer courseId;
 	private String courseTitle;
+
+	private int current;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -77,10 +79,14 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		setContentView(mLayout);
 		mLayout.hideTitle();
 
+		current = -1;
+		
 		ActionBar a = getActionBar();
 		if (a != null) {
 			RefreshAction refresh = new RefreshAction();
+			ToggleShowAllAction toggle = new ToggleShowAllAction();
 			a.addAction(refresh, 0);
+			a.addAction(toggle, 0);
 		}
 	}
 
@@ -103,6 +109,21 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		//updateDisplay(); // might contain data for a different course
 	}
 
+	/**
+	 * This is called when the Activity is resumed.
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(fillerView != null) {
+			for(int i = fillerView.getFirstVisiblePosition(); i <= fillerView.getLastVisiblePosition(); i++) {
+				String file = ((ResourceInfo) fillerView.getItemAtPosition(i)).value;
+		        if(file != null && new File(MoodleController.getLocalPath(file)).exists())
+		        	((TextView) fillerView.getChildAt(i).findViewById(R.id.moodle_course_resource_state)).setText("Saved");
+			}
+		}
+	}
+
 	@Override
 	public void coursesListUpdated() {
 	}
@@ -113,43 +134,78 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 
 	@Override
 	public void sectionsListUpdated() {
-		List<MoodleSection> ltb = mModel.getSections();
-		if(ltb == null)
+		List<MoodleSection> lms = mModel.getSections();
+		if(lms == null)
 			return;
 		
-		ArrayList<SectionInfo> einfos = new ArrayList<SectionInfo>();
-		// add title
-		einfos.add(new SectionInfo(courseTitle, null, true));
-		// add courses
-		int c = 0;
-		for(MoodleSection i : ltb) {
-			if(c == 0)
-				einfos.add(new SectionInfo(null, i.getIText(), false));
-			else
-				einfos.add(new SectionInfo(c + "", i.getIText(), false));
-			c++;
+		if(current == -1) {
+			current = 0;
+			for(int i = 1; i < lms.size(); i++) {
+				List<MoodleResource> lmr = lms.get(i).getIResources();
+				if(lmr != null && lms.get(i).iCurrent) {
+					current = i;
+					break;
+				}
+			}
 		}
-		ListView lv = new ListView(this);
-		lv.setAdapter(new SectionsListAdapter(this, R.layout.moodle_course_section_record, einfos));
-		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		lv.setLayoutParams(p);
 		
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		ArrayList<ResourceInfo> einfos = new ArrayList<ResourceInfo>();
+		for(int i = 1; i < lms.size(); i++) {
+			List<MoodleResource> lmr = lms.get(i).getIResources();
+			if(lmr == null)
+				continue;
+			if(current != 0 && current != i)
+				continue;
+			if(current == 0 && lmr.size() == 0)
+				continue;
+			// add section title
+			einfos.add(new ResourceInfo((current == 0 ? "Week " + i + " - " + courseTitle : "Current Week - " + courseTitle), null, true));
+			// add section contents
+			boolean empty = true;
+			for(MoodleResource r : lmr) {
+				empty = false;
+				String basename = r.getIUrl();
+				//basename = basename.substring(basename.lastIndexOf("/") + 1);
+				einfos.add(new ResourceInfo(r.getIName(), basename, false));
+			}
+			if(empty)
+				einfos.add(new ResourceInfo("Empty", null, false));
+		}
+		fillerView = new ListView(this);
+		fillerView.setAdapter(new ResourcesListAdapter(this, R.layout.moodle_course_resource_record, einfos));
+		LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		fillerView.setLayoutParams(p);
+		
+		fillerView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//SectionInfo sectionInfo = ((SectionInfo) arg0.getItemAtPosition(arg2));
-				Intent i = new Intent(MoodleCourseSectionsView.this, MoodleCourseSectionResourcesView.class);
-				i.putExtra("sectionNbr", arg2 - 1);
+				ResourceInfo resourceInfo = ((ResourceInfo) arg0.getItemAtPosition(arg2));
+				if(resourceInfo.value == null)
+					return;
+				File resourceFile = new File(MoodleController.getLocalPath(resourceInfo.value));
+				if(resourceFile.exists()) {
+					openFile(MoodleCurrentWeekView.this, resourceFile);
+				} else {
+					/*Toast.makeText(getApplicationContext(), getResources().getString(
+							R.string.moodle_file_downloading), Toast.LENGTH_SHORT).show();*/
+					mController.fetchFileResource(resourceInfo.value);
+				}
+			}
+		});
+		fillerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Intent i = new Intent(MoodleCurrentWeekView.this, MoodleCourseSectionsView.class);
+				i.putExtra("courseId", courseId);
 				i.putExtra("courseTitle", courseTitle);
-				MoodleCourseSectionsView.this.startActivity(i);
-				//MoodleCourseSectionResourcesDialog dialog = new MoodleCourseSectionResourcesDialog(MoodleCourseSectionsView.this, mModel.getSections(), arg2 - 1);
-				//dialog.show();
+				MoodleCurrentWeekView.this.startActivity(i);
+				return true;
 			}
 		});
 		
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
-		mLayout.addFillerView(lv);
+		mLayout.addFillerView(fillerView);
 	}
 
 	private void updateDisplay() {
@@ -170,6 +226,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 
 	@Override
 	public void downloadComplete(File localFile) {
+		openFile(this, localFile);
 		/*Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
@@ -180,13 +237,21 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		MoodleMainView.pingAuthPlugin(this);
 	}
 	
+	public static void openFile(Context c, File file) {
+		Uri uri = Uri.fromFile(file);
+		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
+		viewFileIntent.setDataAndType(uri, URLConnection.guessContentTypeFromName(file.getName()));
+		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		c.startActivity(viewFileIntent);
+	}
+	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS
 	 */
 	
-	public class SectionInfo {
-		SectionInfo(String t, String v, boolean s) {
+	public class ResourceInfo {
+		ResourceInfo(String t, String v, boolean s) {
 			title = t;
 			value = v;
 			isSeparator = s;
@@ -196,12 +261,12 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		public boolean isSeparator;
 	}
 	
-	public class SectionsListAdapter extends ArrayAdapter<SectionInfo> {
+	public class ResourcesListAdapter extends ArrayAdapter<ResourceInfo> {
 
 		private LayoutInflater li;
 		private int rid;
 		
-		public SectionsListAdapter(Context context, int textViewResourceId, List<SectionInfo> list) {
+		public ResourcesListAdapter(Context context, int textViewResourceId, List<ResourceInfo> list) {
 			super(context, textViewResourceId, list);
 			li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rid = textViewResourceId;
@@ -209,7 +274,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
-	        SectionInfo t = getItem(position);
+	        ResourceInfo t = getItem(position);
 	        if(t.isSeparator) {
 				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
 		        TextView tv;
@@ -226,18 +291,30 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	        } else {
 	            v = li.inflate(rid, null);
 		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.moodle_course_section_title);
+		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_title);
 		        if(t.title != null)
 		        	tv.setText(t.title);
 		        else
 		        	tv.setVisibility(View.GONE);
-		        tv = (TextView)v.findViewById(R.id.moodle_course_section_body);
-		        if(t.value != null)
-		        	tv.setText(t.value);
-		        else
+		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_body);
+		        TextView tv2 = (TextView)v.findViewById(R.id.moodle_course_resource_state);
+		        if(t.value != null) {
+		        	tv.setText(basename(t.value));
+					File resourceFile = new File(MoodleController.getLocalPath(t.value));
+			        if(resourceFile.exists())
+			        	tv2.setText("Saved");
+		        } else {
 		        	tv.setVisibility(View.GONE);
+		        	tv2.setVisibility(View.GONE);
+		        }
 	        }
 	        return v;
+		}
+		
+		private String basename(String s) {
+			if(s.length() < 1)
+				return s;
+			return s.substring(s.lastIndexOf("/") + 1);
 		}
 		
 	}
@@ -270,9 +347,54 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		 */
 		@Override
 		public void performAction(View view) {
-			//Tracker
-			Tracker.getInstance().trackPageView("moodle/sections/refresh");
 			mController.refreshSectionsList(true, courseId);
+		}
+	}
+
+	/**
+	 * ToggleShowAllAction
+	 * 
+	 * @author Amer <amer.chamseddine@epfl.ch>
+	 * 
+	 */
+	private class ToggleShowAllAction implements Action {
+
+		/**
+		 * The constructor which doesn't do anything
+		 */
+		ToggleShowAllAction() {
+		}
+
+		/**
+		 * Returns the resource for the icon of the button in the action bar
+		 */
+		@Override
+		public int getDrawable() {
+			return R.drawable.moodle_sections_showall;
+		}
+
+		/**
+		 * Defines what is to be performed when the user clicks on the button in
+		 * the action bar
+		 */
+		@Override
+		public void performAction(View view) {
+			if(current != 0) {
+				current = 0;
+				sectionsListUpdated();
+				return;
+			}
+			List<MoodleSection> lms = mModel.getSections();
+			if(lms == null)
+				return;
+			for(int i = 1; i < lms.size(); i++) {
+				List<MoodleResource> lmr = lms.get(i).getIResources();
+				if(lmr != null && lms.get(i).iCurrent) {
+					current = i;
+					break;
+				}
+			}
+			sectionsListUpdated();
 		}
 	}
 

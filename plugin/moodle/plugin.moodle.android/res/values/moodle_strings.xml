@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="moodle_plugin_title">Moodle</string>
+    <string name="moodle_plugin_title">Study</string>
     
     <string name="moodle_courses_view_title">List of enrolled Moodle Courses</string>
     <string name="moodle_events_view_title">Current Moodle Events</string>

@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.moodle.android;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -152,9 +153,9 @@ public class MoodleEventsView extends PluginView implements IMoodleView {
 	}
 
 	@Override
-	public void downloadComplete() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
+	public void downloadComplete(File localFile) {
+		/*Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
 	@Override

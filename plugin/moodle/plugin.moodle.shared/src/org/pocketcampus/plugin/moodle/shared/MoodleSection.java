@@ -28,18 +28,21 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
   private static final org.apache.thrift.protocol.TField I_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("iText", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField I_START_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iStartDate", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField I_END_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("iEndDate", org.apache.thrift.protocol.TType.I64, (short)4);
+  private static final org.apache.thrift.protocol.TField I_CURRENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iCurrent", org.apache.thrift.protocol.TType.BOOL, (short)5);
 
   public List<MoodleResource> iResources; // required
   public String iText; // required
   public long iStartDate; // required
   public long iEndDate; // required
+  public boolean iCurrent; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     I_RESOURCES((short)1, "iResources"),
     I_TEXT((short)2, "iText"),
     I_START_DATE((short)3, "iStartDate"),
-    I_END_DATE((short)4, "iEndDate");
+    I_END_DATE((short)4, "iEndDate"),
+    I_CURRENT((short)5, "iCurrent");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +65,8 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
           return I_START_DATE;
         case 4: // I_END_DATE
           return I_END_DATE;
+        case 5: // I_CURRENT
+          return I_CURRENT;
         default:
           return null;
       }
@@ -104,7 +109,8 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
   // isset id assignments
   private static final int __ISTARTDATE_ISSET_ID = 0;
   private static final int __IENDDATE_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private static final int __ICURRENT_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -118,6 +124,8 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.I_END_DATE, new org.apache.thrift.meta_data.FieldMetaData("iEndDate", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+    tmpMap.put(_Fields.I_CURRENT, new org.apache.thrift.meta_data.FieldMetaData("iCurrent", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoodleSection.class, metaDataMap);
   }
@@ -152,6 +160,7 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
     }
     this.iStartDate = other.iStartDate;
     this.iEndDate = other.iEndDate;
+    this.iCurrent = other.iCurrent;
   }
 
   public MoodleSection deepCopy() {
@@ -166,6 +175,8 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
     this.iStartDate = 0;
     setIEndDateIsSet(false);
     this.iEndDate = 0;
+    setICurrentIsSet(false);
+    this.iCurrent = false;
   }
 
   public int getIResourcesSize() {
@@ -277,6 +288,29 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
     __isset_bit_vector.set(__IENDDATE_ISSET_ID, value);
   }
 
+  public boolean isICurrent() {
+    return this.iCurrent;
+  }
+
+  public MoodleSection setICurrent(boolean iCurrent) {
+    this.iCurrent = iCurrent;
+    setICurrentIsSet(true);
+    return this;
+  }
+
+  public void unsetICurrent() {
+    __isset_bit_vector.clear(__ICURRENT_ISSET_ID);
+  }
+
+  /** Returns true if field iCurrent is set (has been assigned a value) and false otherwise */
+  public boolean isSetICurrent() {
+    return __isset_bit_vector.get(__ICURRENT_ISSET_ID);
+  }
+
+  public void setICurrentIsSet(boolean value) {
+    __isset_bit_vector.set(__ICURRENT_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case I_RESOURCES:
@@ -311,6 +345,14 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
       }
       break;
 
+    case I_CURRENT:
+      if (value == null) {
+        unsetICurrent();
+      } else {
+        setICurrent((Boolean)value);
+      }
+      break;
+
     }
   }
 
@@ -327,6 +369,9 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
 
     case I_END_DATE:
       return Long.valueOf(getIEndDate());
+
+    case I_CURRENT:
+      return Boolean.valueOf(isICurrent());
 
     }
     throw new IllegalStateException();
@@ -347,6 +392,8 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
       return isSetIStartDate();
     case I_END_DATE:
       return isSetIEndDate();
+    case I_CURRENT:
+      return isSetICurrent();
     }
     throw new IllegalStateException();
   }
@@ -400,6 +447,15 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
         return false;
     }
 
+    boolean this_present_iCurrent = true && this.isSetICurrent();
+    boolean that_present_iCurrent = true && that.isSetICurrent();
+    if (this_present_iCurrent || that_present_iCurrent) {
+      if (!(this_present_iCurrent && that_present_iCurrent))
+        return false;
+      if (this.iCurrent != that.iCurrent)
+        return false;
+    }
+
     return true;
   }
 
@@ -426,6 +482,11 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
     builder.append(present_iEndDate);
     if (present_iEndDate)
       builder.append(iEndDate);
+
+    boolean present_iCurrent = true && (isSetICurrent());
+    builder.append(present_iCurrent);
+    if (present_iCurrent)
+      builder.append(iCurrent);
 
     return builder.toHashCode();
   }
@@ -474,6 +535,16 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
     }
     if (isSetIEndDate()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iEndDate, typedOther.iEndDate);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetICurrent()).compareTo(typedOther.isSetICurrent());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetICurrent()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCurrent, typedOther.iCurrent);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -536,6 +607,14 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // I_CURRENT
+          if (field.type == org.apache.thrift.protocol.TType.BOOL) {
+            this.iCurrent = iprot.readBool();
+            setICurrentIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -578,6 +657,11 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
       oprot.writeI64(this.iEndDate);
       oprot.writeFieldEnd();
     }
+    if (isSetICurrent()) {
+      oprot.writeFieldBegin(I_CURRENT_FIELD_DESC);
+      oprot.writeBool(this.iCurrent);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -612,6 +696,12 @@ public class MoodleSection implements org.apache.thrift.TBase<MoodleSection, Moo
       if (!first) sb.append(", ");
       sb.append("iEndDate:");
       sb.append(this.iEndDate);
+      first = false;
+    }
+    if (isSetICurrent()) {
+      if (!first) sb.append(", ");
+      sb.append("iCurrent:");
+      sb.append(this.iCurrent);
       first = false;
     }
     sb.append(")");
