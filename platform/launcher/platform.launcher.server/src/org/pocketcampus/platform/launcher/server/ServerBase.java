@@ -9,7 +9,12 @@ import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServlet;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -36,8 +41,6 @@ public abstract class ServerBase {
 		String encoding = "UTF-8";
 		context.addLocaleEncoding(locale, encoding);
 		
-		server.setHandler(context);
-
 		ArrayList<Processor> processors = getServiceProcessors();
 
 		for(Processor processor : processors) {
@@ -46,6 +49,20 @@ public abstract class ServerBase {
 			context.addServlet(new ServletHolder(thriftServlet), "/"+processor.getServiceName());
 		}
 		
+		NCSARequestLog requestLog = new NCSARequestLog("./jetty-yyyy_mm_dd.request.log");
+		requestLog.setRetainDays(90);
+		requestLog.setAppend(true);
+		requestLog.setExtended(false);
+		requestLog.setLogTimeZone("GMT");
+		RequestLogHandler requestLogHandler = new RequestLogHandler();
+		requestLogHandler.setRequestLog(requestLog);
+		
+		HandlerCollection handlers = new HandlerCollection();
+		ContextHandlerCollection contexts = new ContextHandlerCollection();
+		contexts.setHandlers(new Handler[]{context});
+		handlers.setHandlers(new Handler[]{contexts, requestLogHandler});
+		server.setHandler(handlers);
+
 		server.start();
 		server.join();
 	}
