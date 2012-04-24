@@ -37,6 +37,20 @@ import ch.epfl.tequila.client.service.TequilaService;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
+	private PersistentSessions usersSessions;
+	
+	/**
+	 * Constructor
+	 */
+	public AuthenticationServiceImpl() {
+		System.out.println("Starting Authentication plugin server ...");
+		usersSessions = new PersistentSessions();
+		usersSessions.loadFromFile();
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() { usersSessions.writeToFile(); }
+		});		
+	}
+	
 	/**
 	 * Gets a Tequila Token from the server of the service that is
 	 * requesting authentication.
