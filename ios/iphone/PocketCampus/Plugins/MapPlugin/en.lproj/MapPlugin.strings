@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  PocketCampus
+
+  Created by Loïc Gardiol on 01.03.12.
+  Copyright (c) 2012 EPFL. All rights reserved.
+*/
+
+"PluginName" = "Map";
+"CenterOnEPFL" = "Center on EPFL";
+"CenterOnResults" = "Center on results";
+"SearchPlaceholder" = "Search for a room, a person, a building";
+"RemoveElements" = "Clean results";
+"ShowBuildingsInside" = "Show buildings inside";
+"HideBuildingsInside" = "Hide buildings inside";
+"NoResult" = "No result";
+"TooManyResults" = "Too many results";
+"NarrowSearch" = "Try with a more precise request.";
+"Floor" = "Floor";

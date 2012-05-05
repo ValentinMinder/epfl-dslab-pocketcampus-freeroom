@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  PocketCampus
+
+  Created by Loïc Gardiol on 01.03.12.
+  Copyright (c) 2012 EPFL. All rights reserved.
+*/
+
+"PluginName" = "Plan";
+"CenterOnEPFL" = "Centrer sur l'EPFL";
+"CenterOnResults" = "Centrer sur les résultats";
+"SearchPlaceholder" = "Rechercher une salle, une personne, ...";
+"RemoveElements" = "Effacer les résultats";
+"ShowBuildingsInside" = "Afficher intérieur des bâtiments";
+"HideBuildingsInside" = "Masquer l'intérieur des bâtiments";
+"NoResult" = "Aucun résultat";
+"TooManyResults" = "Trop de résultats";
+"NarrowSearch" = "Précisez votre recherche.";
+"Floor" = "Niveau";
