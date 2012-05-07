@@ -12,22 +12,27 @@
 
 #import "news.h"
 
-@interface NewsItemViewController : UIViewController<NewsServiceDelegate> {
+#import "ASIHTTPRequest.h"
+
+@interface NewsItemViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate> {
+    UIScrollView* scrollView;
     UILabel* feedLabel;
-    UIImageView* imageView;
-    UILabel* titleLabel;
     UILabel* publishDateLabel;
-    UIActivityIndicatorView* centerActivityIndicatorView;
-    UIWebView* contentWebView;
+    UILabel* titleLabel;
+    UIImage* mainImage;
+    UIImageView* mainImageView;
+    UIActivityIndicatorView* centerActivityIndicator;
+    UILabel* centerMessageLabel;
     NewsItem* newsItem;
+    NewsService* newsService;
+    ASIHTTPRequest* thumbnailRequest;
 }
 
-@property (nonatomic, assign) IBOutlet UILabel* feedlabel;
-@property (nonatomic, assign) IBOutlet UIImageView* imageView;
-@property (nonatomic, assign) IBOutlet UILabel* titleLabel;
+@property (nonatomic, assign) IBOutlet UIScrollView* scrollView;
+@property (nonatomic, assign) IBOutlet UILabel* feedLabel;
 @property (nonatomic, assign) IBOutlet UILabel* publishDateLabel;
-@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicatorView;
-@property (nonatomic, assign) IBOutlet UIWebView* contentWebView;
+@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
+@property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 
 - (id)initWithNewsItem:(NewsItem*)newsItem;
 - (id)initWithNewsItem:(NewsItem *)newsItem andCachedImage:(UIImage*)image;

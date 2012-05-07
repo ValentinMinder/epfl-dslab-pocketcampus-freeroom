@@ -13,6 +13,6 @@
 @interface NewsUtils : NSObject
 
 + (NSArray*)eliminateDuplicateNewsItemsInArray:(NSArray*)newsItems;
-+ (NSString*)dateAndTimeLocaleStringForTimestamp:(NSTimeInterval)timestamp;
++ (NSString*)dateLocaleStringForTimestamp:(NSTimeInterval)timestamp;
 
 @end
