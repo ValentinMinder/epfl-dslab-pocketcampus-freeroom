@@ -151,10 +151,11 @@ public class NewsServiceImpl implements NewsService.Iface {
 				// Add the items to the list of News Items.
 				if (mLanguagesNewsItemsList.containsKey(language)) {
 					toKeep.addAll(mLanguagesNewsItemsList.get(language));
+					mLanguagesNewsItemsList.remove(language);
 				}
 
 				Collections.sort(toKeep, newsItemComparator);
-				mLanguagesNewsItemsList.clear();
+				//mLanguagesNewsItemsList.clear();
 				mLanguagesNewsItemsList.put(language, toKeep);
 				
 				// Add contents to list
