@@ -14,11 +14,14 @@
     NSMutableArray* mutableNewsItems = [NSMutableArray array];
     NSMutableDictionary* countDictionary = [NSMutableDictionary dictionaryWithCapacity:newsItems.count];
     for (NewsItem* item in newsItems) {
-        if ([countDictionary objectForKey:item.title] == nil) {
+        NSString* stringId = [NSString stringWithFormat:@"%lld", item.newsItemId];
+        if ([countDictionary objectForKey:stringId] == nil && [countDictionary objectForKey:item.title] == nil) {
             [mutableNewsItems addObject:item];
+            [countDictionary setObject:item forKey:stringId]; //object value is not important in dictionary
             [countDictionary setObject:item forKey:item.title]; //object value is not important in dictionary
         }
     }
+    //NSLog(@"%@", countDictionary);
     return mutableNewsItems;
 }
 

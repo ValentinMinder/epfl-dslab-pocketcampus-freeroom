@@ -12,12 +12,15 @@
 
 #import "ASIHTTPRequest.h"
 
+#import "ASINetworkQueue.h"
+
 @interface NewsListViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UITableViewDelegate, UITableViewDataSource> {
     UITableView* tableView;
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     NewsService* newsService;
     NSArray* newsItems;
+    ASINetworkQueue* networkQueue;
     NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
 }
 

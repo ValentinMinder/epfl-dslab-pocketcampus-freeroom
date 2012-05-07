@@ -8,6 +8,8 @@
 
 #import "Service.h"
 
+#import "Reachability.h"
+
 static NSTimeInterval requestTimeoutInterval;
 
 @implementation Service
@@ -46,6 +48,11 @@ static NSTimeInterval requestTimeoutInterval;
 
 + (NSTimeInterval)requestTimeoutInterval {
     return requestTimeoutInterval;
+}
+
++ (BOOL)serverIsReachable {
+    //TODO
+    return YES;
 }
 
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
@@ -143,9 +150,16 @@ static NSTimeInterval requestTimeoutInterval;
     });
 }
 
+
 - (void)main {
     
     @try {
+        
+        if (![Service serverIsReachable]) {
+            NSLog(@"-> Server is unreachable. Will return didTimeout message to delegate.");
+            [self didTimeout];
+        }
+        
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
         
         if ([self isCancelled])
@@ -404,6 +418,10 @@ static NSTimeInterval requestTimeoutInterval;
                 @throw [NSException exceptionWithName:@"-> Service request returned after timeout" reason:@"Thrift timeout is longer than ServiceRequest timeout." userInfo:nil];
             }
             
+            if ([self isCancelled]) {
+                @throw [NSException exceptionWithName:@"-> Cancelled operation handled" reason:@"" userInfo:nil];
+            }
+            
             if (![self delegateRespondsToSelector:self.delegateDidFailSelector]) {
                 @throw [NSException exceptionWithName:@"-> Bad delegate response" reason:@"Delegate does not respond to didFail selector. Ignoring" userInfo:nil];
             }
@@ -421,7 +439,7 @@ static NSTimeInterval requestTimeoutInterval;
             });
         }
         @catch (NSException *exception) {
-            NSLog(@"%@. %@", exception.name, exception.reason);
+            NSLog(@"%@ %@", exception.name, exception.reason);
             [self finishAndRelease];
         }
         

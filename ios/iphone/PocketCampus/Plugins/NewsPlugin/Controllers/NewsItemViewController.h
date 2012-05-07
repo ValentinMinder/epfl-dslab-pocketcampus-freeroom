@@ -14,7 +14,7 @@
 
 #import "ASIHTTPRequest.h"
 
-@interface NewsItemViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate> {
+@interface NewsItemViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UIWebViewDelegate> {
     UIScrollView* scrollView;
     UILabel* feedLabel;
     UILabel* publishDateLabel;
@@ -26,6 +26,7 @@
     NewsItem* newsItem;
     NewsService* newsService;
     ASIHTTPRequest* thumbnailRequest;
+    NSURL* urlClickedByUser;
 }
 
 @property (nonatomic, assign) IBOutlet UIScrollView* scrollView;

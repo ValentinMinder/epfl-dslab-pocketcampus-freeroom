@@ -14,6 +14,8 @@
 
 #import "ASIHTTPRequest.h"
 
+static int NEWS_FONT_SIZE = 14.0;
+
 @implementation NewsItemViewController
 
 @synthesize scrollView, feedLabel, publishDateLabel, centerActivityIndicator, centerMessageLabel;
@@ -22,11 +24,12 @@
 {
     self = [super initWithNibName:@"NewsItemView" bundle:nil];
     if (self) {
-        newsService = [NewsService sharedInstanceToRetain];
+        newsService = [[NewsService sharedInstanceToRetain] retain];
         newsItem = nil;
         mainImageView = nil;
         mainImage = nil;
         thumbnailRequest = nil;
+        urlClickedByUser = nil;
     }
     return self;
 }
@@ -54,20 +57,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = newsItem.title;
-    //self.view.backgroundColor = [PCValues backgroundColor1];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     [centerActivityIndicator startAnimating];
 
     feedLabel.text = newsItem.feed;
     publishDateLabel.text = [NewsUtils dateLocaleStringForTimestamp:newsItem.pubDate/1000.0];
     
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 40.0, 300.0, 50.0)];
+    UIFont* titleFont = [UIFont boldSystemFontOfSize:17.0];
+    
+    CGSize titleReqSize = [newsItem.title sizeWithFont:titleFont constrainedToSize:CGSizeMake(300.0, 200.0)];
+    
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 55.0, titleReqSize.width, titleReqSize.height)];
     titleLabel.text = newsItem.title;
-    titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    titleLabel.font = titleFont;
     titleLabel.textColor = [PCValues textColor1];
-    //titleLabel.shadowColor = nil;
-    //titleLabel.backgroundColor = [UIColor yellowColor];
     titleLabel.numberOfLines = 0;
-    [titleLabel sizeToFit];
     
     [scrollView addSubview:titleLabel];
     
@@ -77,6 +81,8 @@
             [newsService getNewsItemContentForId:newsItem.newsItemId delegate:self];
         } else { //thumbnail has to be downloaded. When it returns, the request for news content will be done
             thumbnailRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]] retain];
+            thumbnailRequest.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
+            thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
             thumbnailRequest.timeOutSeconds = 20.0;
             thumbnailRequest.delegate = self;
             [thumbnailRequest startAsynchronous];
@@ -86,14 +92,20 @@
     }
 }
 
+- (void)actionButtonPressed {
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
 - (void)addMainImageToScrollView {
     if (mainImage != nil) {
-        [mainImage autorelease];
         if (mainImage.size.width > 300.0) {
+            [mainImage autorelease];
             mainImage = [[UIImage imageWithCGImage:(CGImageRef)mainImage.CGImage scale:(mainImage.size.width/300.0) orientation:UIImageOrientationUp] retain]; //new resized image
         }
-        mainImageView = [[[UIImageView alloc] initWithImage:mainImage] autorelease];
-        mainImageView.center = CGPointMake(scrollView.center.x, titleLabel.frame.origin.y+titleLabel.frame.size.height+(mainImageView.frame.size.height/2.0)+15.0);
+        mainImageView = [[UIImageView alloc] initWithImage:mainImage];
+        mainImageView.center = CGPointMake(scrollView.center.x, titleLabel.frame.origin.y+titleLabel.frame.size.height+(mainImageView.frame.size.height/2.0)+7.0);
         [scrollView addSubview:mainImageView];
     }
 }
@@ -107,6 +119,18 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+/* UIActionSheetDelegate delegation */
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:newsItem.link]];
+            break;
+        default:
+            break;
+    }
 }
 
 /* ASIHTTPRequestDelegate delegation */
@@ -132,10 +156,28 @@
 /* NewsServiceDelegate delegation */
 
 - (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString *)content {
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(5.0, mainImageView.frame.origin.y+mainImageView.frame.size.height+10.0, 310.0, 300.0)];
-    [webView loadHTMLString:content baseURL:nil];
-    [webView sizeToFit];
+    CGSize reqSize = [content sizeWithFont:[UIFont systemFontOfSize:(CGFloat)NEWS_FONT_SIZE] constrainedToSize:CGSizeMake(310.0, 50000.0)];
+    CGFloat startY; 
+    if (mainImage != nil) {
+        startY = mainImageView.frame.origin.y+mainImageView.frame.size.height+5.0;
+    } else {
+        startY = titleLabel.frame.origin.y+titleLabel.frame.size.height+5.0;
+    }
+    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, reqSize.width, reqSize.height+20.0)];
+    webView.scrollView.scrollEnabled = NO;
+    webView.delegate = self;
+    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'>a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx; text-align:justify;'>%@</span>", NEWS_FONT_SIZE, content];
+    
+    [webView loadHTMLString:contentWithStyle baseURL:nil];
+    
     [scrollView addSubview:webView];
+    
+    CGFloat scrollViewContentHeight = webView.frame.origin.y+webView.frame.size.height;
+    
+    if (scrollViewContentHeight <= self.view.frame.size.height) {
+        scrollViewContentHeight = self.view.frame.size.height + 1.0;//to be able to scroll even if not necessary
+    }
+    [scrollView setContentSize:CGSizeMake(self.view.frame.size.width, scrollViewContentHeight)];
 }
 
 - (void)newsItemContentFailedForId:(Id)newsItemId {
@@ -150,6 +192,42 @@
     centerMessageLabel.hidden = NO;
 }
 
+/* UIWebViewDelegate delegation */
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [centerActivityIndicator stopAnimating];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        [urlClickedByUser release];
+        urlClickedByUser = [request.URL retain];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
+        [alertView show];
+        [alertView release];
+        return NO;
+    }
+    return YES;
+}
+
+/* UIAlertViewDelegate delegation */
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (urlClickedByUser != nil) {
+        switch (buttonIndex) {
+            case 0: //cancel
+                //Nothing to do
+                break;
+            case 1: //OK
+                [[UIApplication sharedApplication] openURL:urlClickedByUser];
+            default:
+                break;
+        }
+        [urlClickedByUser release];
+        urlClickedByUser = nil;
+    }
+}
+
 - (void)dealloc
 {
     [titleLabel release];
@@ -162,6 +240,7 @@
         thumbnailRequest.delegate = nil;
         [thumbnailRequest release];
     }
+    urlClickedByUser = nil;
     [super dealloc];
 }
 

@@ -41,6 +41,8 @@
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (id)thriftProtocolInstance;
 
++ (BOOL)serverIsReachable;
+
 @end
 
 typedef enum {

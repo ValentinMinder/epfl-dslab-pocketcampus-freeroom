@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>DEV_SERVER_URL</key>
-	<string>http://128.178.77.233:9090/v3r1/</string>
+	<string>http://128.178.77.236:9090/v3r1/</string>
 	<key>THRIFT_REQUEST_TIMEOUT</key>
 	<integer>15</integer>
 	<key>PROD_SERVER_URL</key>
 	<string>http://pocketcampus.epfl.ch:443/v3r1/</string>
 	<key>DEV_MODE</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

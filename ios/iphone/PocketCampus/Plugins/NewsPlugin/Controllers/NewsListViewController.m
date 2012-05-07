@@ -29,6 +29,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     if (self) {
         newsService = [[NewsService sharedInstanceToRetain] retain];
         newsItems = nil;
+        networkQueue = [[ASINetworkQueue alloc] init];
+        networkQueue.maxConcurrentOperationCount = 6;
         thumbnails = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -44,6 +46,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"NewsPlugin", @"Tell the user that the news are loading");
     [newsService getNewsItemsForLanguage:[self userLanguageIdentfier] delegate:self];
+    [networkQueue go];
     //[newsService getNewsItemContentForId:99119833152 delegate:self];
     //[newsService getFeedsForLanguage:[self userLanguageIdentfier] delegate:self];
 }
@@ -56,6 +59,11 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)viewDidAppear:(BOOL)animated {
     [tableView deselectRowAtIndexPath:[[tableView indexPathsForSelectedRows] objectAtIndex:0] animated:YES];
+    [networkQueue setSuspended:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [networkQueue setSuspended:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -67,13 +75,13 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems_ {
     //NSLog(@"%@", newsItems_);
-    
     [newsItems release];
     newsItems = [[NewsUtils eliminateDuplicateNewsItemsInArray:newsItems_] retain];
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     tableView.hidden = NO;
-    [tableView reloadData];
+    //[tableView reloadData];
+    [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {
@@ -148,10 +156,13 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         cell.imageView.image = [UIImage imageNamed:@"BackgroundNewsThumbnail.png"]; //Temporary thumbnail until image is loaded
         if (newsItem.imageUrl != nil) {
             ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]];
+            thumbnailRequest.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
+            thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
             thumbnailRequest.delegate = self;
             thumbnailRequest.userInfo = [NSDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];
             thumbnailRequest.timeOutSeconds = 5.0; //do not overload network with thumbnails that fail to load
-            [thumbnailRequest startAsynchronous];
+            [networkQueue addOperation:thumbnailRequest];
+            //[thumbnailRequest startAsynchronous];
         }
     } else {
         cell.imageView.image = [thumbnails objectForKey:indexPath];
@@ -174,8 +185,15 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)dealloc
 {
+    [newsService cancelOperationsForDelegate:self];
     [newsService release];
     [newsItems release];
+    for (ASIHTTPRequest* req in networkQueue.operations) {
+        req.delegate = nil;
+        [req cancel];
+    }
+    networkQueue.delegate = nil;
+    [networkQueue release];
     [thumbnails release];
     [super dealloc];
 }
