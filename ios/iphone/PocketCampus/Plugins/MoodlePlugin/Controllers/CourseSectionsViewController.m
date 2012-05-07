@@ -75,6 +75,7 @@
             pingedAuthPlugin = YES;
         }
     }
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidUnload

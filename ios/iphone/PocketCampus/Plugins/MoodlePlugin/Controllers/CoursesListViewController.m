@@ -71,6 +71,7 @@
             pingedAuthPlugin = YES;
         }
     }
+    [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidUnload
