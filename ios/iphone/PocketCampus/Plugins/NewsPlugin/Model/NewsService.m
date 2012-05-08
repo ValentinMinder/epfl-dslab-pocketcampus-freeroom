@@ -19,7 +19,6 @@ static NewsService* instance = nil;
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"news"];
-            [instance setThriftClient:[[[NewsServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
         }
     }
     return [instance autorelease];
@@ -33,7 +32,7 @@ static NewsService* instance = nil;
     if (![language isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getNewsItems:);
     operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);
@@ -45,7 +44,7 @@ static NewsService* instance = nil;
 
 - (void)getNewsItemContentForId:(Id)newsItemId delegate:(id)delegate {
     //cannot check int
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getNewsItemContent:);
     operation.delegateDidReturnSelector = @selector(newsItemContentForId:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemContentFailedForId:);
@@ -59,7 +58,7 @@ static NewsService* instance = nil;
     if (![language isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getFeedUrls:);
     operation.delegateDidReturnSelector = @selector(feedUrlsForLanguage:didReturn:);
     operation.delegateDidFailSelector = @selector(feedUrlsFailedForLanguage:);
@@ -73,7 +72,7 @@ static NewsService* instance = nil;
     if (![language isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getFeeds:);
     operation.delegateDidReturnSelector = @selector(feedsForLanguage:didReturn:);
     operation.delegateDidFailSelector = @selector(feedsFailedForLanguage:);

@@ -142,12 +142,12 @@
     int maxConnections = 0;
     NSArray* mostRepeatingLineConnections = [NSArray array];
     //long long minDuration = LLONG_MAX;
-    NSLog(@"-----------");
+    //NSLog(@"-----------");
     for (NSArray* lineConnections in [repeatingConnectionsForLines allValues]) {
-        TransportConnection* firstConnection = [lineConnections objectAtIndex:0];
-        NSLog(@"%@ %d %lld", firstConnection.line.name, lineConnections.count, (firstConnection.arrivalTime - firstConnection.departureTime));
+        //TransportConnection* firstConnection = [lineConnections objectAtIndex:0];
+        //NSLog(@"%@ %d %lld", firstConnection.line.name, lineConnections.count, (firstConnection.arrivalTime - firstConnection.departureTime));
         if (lineConnections.count >= maxConnections && lineConnections.count > 1) {
-            NSLog(@"test");
+            //NSLog(@"test");
             maxConnections = lineConnections.count;
             mostRepeatingLineConnections = lineConnections;
             //minDuration = firstConnection.arrivalTime - firstConnection.departureTime < minDuration;

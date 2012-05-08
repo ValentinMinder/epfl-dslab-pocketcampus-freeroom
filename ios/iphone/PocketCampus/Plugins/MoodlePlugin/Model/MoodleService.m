@@ -14,13 +14,15 @@ static MoodleService* instance = nil;
     }
     @synchronized(self) {
         if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"moodle"];
-            [instance setThriftClient:[[[MoodleServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
-            
+            instance = [[[self class] alloc] initWithServiceName:@"moodle"];            
             instance.moodleCookie = (NSString*) [[NSUserDefaults standardUserDefaults] objectForKey:@"moodleCookie"];
         }
     }
     return [instance autorelease];
+}
+
+- (id)thriftServiceClientInstance {
+    return [[[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
 - (NSString*)getLocalPath:(NSString*)url {
@@ -45,7 +47,7 @@ static MoodleService* instance = nil;
 }
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:self.thriftClient delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:DidReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
@@ -56,7 +58,7 @@ static MoodleService* instance = nil;
 }
 
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:self.thriftClient delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getEventsList:);
     operation.delegateDidReturnSelector = @selector(getEventsList:DidReturn:);
     operation.delegateDidFailSelector = @selector(getEventsListFailed:);
@@ -67,7 +69,7 @@ static MoodleService* instance = nil;
 }
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:self.thriftClient delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:DidReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);

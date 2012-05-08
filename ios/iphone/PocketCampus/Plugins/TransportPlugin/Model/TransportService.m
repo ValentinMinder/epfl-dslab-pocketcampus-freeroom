@@ -26,7 +26,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"transport"];
-            [instance setThriftClient:[[[TransportServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
         }
     }
     return [instance autorelease];;
@@ -40,7 +39,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![constraint isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor::);
@@ -54,7 +53,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![ids isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad ids" reason:@"ids is either nil or not of class NSArray" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLocationsFromIDs:);
     operation.delegateDidReturnSelector = @selector(locationsForIDs:didReturn:);
     operation.delegateDidFailSelector = @selector(locationsFailedForIDs:);
@@ -68,7 +67,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![names isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad names" reason:@"names is either nil or not of class NSArray" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLocationsFromNames:);
     operation.delegateDidReturnSelector = @selector(locationsForNames:didReturn:);
     operation.delegateDidFailSelector = @selector(locationsFailedForNames:);
@@ -82,7 +81,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![stationID isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad IDStation" reason:@"IDStation is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(nextDepartures:);
     operation.delegateDidReturnSelector = @selector(nextDeparturesForStationID:didReturn:);
     operation.delegateDidFailSelector = @selector(nextDeparturesFailedForStationID:);
@@ -100,7 +99,8 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![to isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.service = self;
     operation.customTimeout = kServiceRequestsTimeout;
     operation.serviceClientSelector = @selector(getTrips::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
@@ -120,7 +120,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![to isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTripsAtTime::::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:atTimestamp:isDeparture:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:atTimestamp:isDeparture:);
@@ -140,7 +140,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     if (![toStationID isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad toStationID" reason:@"toStationID is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTripsFromStationsIDs::);
     operation.delegateDidReturnSelector = @selector(tripsFromStationID:toStationID:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFromStationID:toStationID:);

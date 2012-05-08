@@ -14,7 +14,7 @@ static NSTimeInterval requestTimeoutInterval;
 
 @implementation Service
 
-@synthesize thriftProtocol, thriftClient;
+@synthesize thriftProtocol;
 
 - (id)initWithServiceName:(NSString*)serviceName_
 {
@@ -42,6 +42,9 @@ static NSTimeInterval requestTimeoutInterval;
         operationQueue = [[NSOperationQueue alloc] init];
         //[operationQueue setMaxConcurrentOperationCount:1];
         requestTimeoutInterval = [(NSNumber*)[config objectForKey:@"THRIFT_REQUEST_TIMEOUT"] floatValue];
+        semaphore = dispatch_semaphore_create(0);
+        checkServerRequest = nil;
+        serverIsReachable = NO; //by default
     }
     return self;
 }
@@ -50,10 +53,49 @@ static NSTimeInterval requestTimeoutInterval;
     return requestTimeoutInterval;
 }
 
-+ (BOOL)serverIsReachable {
-    //TODO
-    return YES;
+- (BOOL)serverIsReachable {
+    if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
+        return NO;
+    }
+    @synchronized(self) {
+        if (checkServerRequest == nil) {
+            checkServerRequest = [[ASIHTTPRequest requestWithURL:serverURL] retain];
+            checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+            checkServerRequest.timeOutSeconds = requestTimeoutInterval;
+            checkServerRequest.requestMethod = @"HEAD";
+            checkServerRequest.delegate = self;
+            [checkServerRequest startAsynchronous];
+        }
+    }
+    dispatch_semaphore_wait(semaphore,  DISPATCH_TIME_FOREVER); //timeout is managed by request
+    @synchronized(self) {
+        if (checkServerRequest != nil) {
+            [checkServerRequest release];
+            checkServerRequest = nil;
+        }
+    }
+    return serverIsReachable;
 }
+
+/* ASIHTTPRequestDelegate delegation */
+
+- (void)requestFinished:(ASIHTTPRequest *)request {
+    if (request.responseStatusCode == 500) {
+        serverIsReachable = YES;
+    } else {
+        serverIsReachable = NO;
+    }
+    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
+    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+    serverIsReachable = NO;
+    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
+    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
+}
+
+/* END */
 
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
@@ -64,7 +106,7 @@ static NSTimeInterval requestTimeoutInterval;
             nbOps++;
         }
     }
-    NSLog(@"-> All (%d) operations canceled for delegate %@", nbOps, delegate);
+    NSLog(@"-> Cancelling all operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
 }
 
 - (id)thriftProtocolInstance {
@@ -76,9 +118,12 @@ static NSTimeInterval requestTimeoutInterval;
 
 - (void)dealloc
 {
+    if (semaphore != nil) {
+        dispatch_release(semaphore);
+    }
+    semaphore = nil;
     [operationQueue release];
     [thriftProtocol release];
-    [self.thriftClient release];
     [serverURL release];
     NSLog(@"-> Service '%@' released. Some ServiceRequest may still be waiting for replies though. Those will be killed and released after thrift request timeout.", serviceName);
     [serviceName release];
@@ -107,13 +152,14 @@ static NSTimeInterval requestTimeoutInterval;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, delegateDidReturnSelector, delegateDidFailSelector, serviceClientSelector, returnType, customTimeout;
+@synthesize thriftServiceClient, timedOut, delegateDidReturnSelector, delegateDidFailSelector, serviceClientSelector, returnType, customTimeout, service;
 
-- (id)initWithThriftServiceClient:(id)serviceClient delegate:(id)delegate_
+- (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
     self = [super init];
     if (self) {
         self.thriftServiceClient = serviceClient;
+        self.service = service_;
         self.delegate = delegate_;
         self.timedOut = NO;
         self.serviceClientSelector = nil;
@@ -155,9 +201,9 @@ static NSTimeInterval requestTimeoutInterval;
     
     @try {
         
-        if (![Service serverIsReachable]) {
-            NSLog(@"-> Server is unreachable. Will return didTimeout message to delegate.");
+        if (self.service != nil && ![self.service serverIsReachable]) {
             [self didTimeout];
+            return;
         }
         
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
@@ -653,7 +699,7 @@ static NSTimeInterval requestTimeoutInterval;
     [self autorelease];
 }
 
-- (void)didTimeout {
+- (void)didTimeout { //serverIsReachable has passed but timeout has occured in thrift request
     NSLog(@"-> ServiceRequest timeout");
     if (self.timedOut) { 
         return;

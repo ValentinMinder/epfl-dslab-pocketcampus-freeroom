@@ -21,7 +21,6 @@ static MapService* instance = nil;
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"map"];
-            [instance setThriftClient:[[[MapServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
         }
     }
     return [instance autorelease];
@@ -32,7 +31,7 @@ static MapService* instance = nil;
 }
 
 - (void)getLayerListWithDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerList);
     operation.delegateDidReturnSelector = @selector(getLayerListDidReturn:);
     operation.delegateDidFailSelector = @selector(getLayerListFailed:);
@@ -42,7 +41,7 @@ static MapService* instance = nil;
 }
 
 - (void)getLayerItemsForLayerId:(Id)layerId delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLayerItems:);
     operation.delegateDidReturnSelector = @selector(getLayerItemsForLayerId:didReturn:);
     operation.delegateDidFailSelector = @selector(getLayerItemsFailedForLayerId:);
@@ -56,7 +55,7 @@ static MapService* instance = nil;
     if (![query isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad query" reason:@"query is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(search:);
     operation.delegateDidReturnSelector = @selector(searchFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedFor:);

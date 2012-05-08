@@ -11,6 +11,8 @@
 #import "THTTPClient.h"
 #import "TBinaryProtocol.h"
 
+#import "ASIHTTPRequest.h"
+
 @protocol ServiceDelegate <NSObject>
 
 - (void)serviceConnectionToServerTimedOut;
@@ -25,23 +27,25 @@
 
 @end
 
-@interface Service : NSObject {
+@interface Service : NSObject<ASIHTTPRequestDelegate> {
     NSString* serviceName;
     NSURL* serverURL;
     TBinaryProtocol* thriftProtocol;
     NSOperationQueue* operationQueue;
     id thriftClient;
+    dispatch_semaphore_t semaphore;
+    ASIHTTPRequest* checkServerRequest;
+    BOOL serverIsReachable;
 }
 
 @property (readonly) TBinaryProtocol* thriftProtocol;
-@property (retain) id thriftClient;
 
 - (id)initWithServiceName:(NSString*)serviceName;
 + (NSTimeInterval)requestTimeoutInterval;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (id)thriftProtocolInstance;
 
-+ (BOOL)serverIsReachable;
+- (BOOL)serverIsReachable;
 
 @end
 
@@ -89,9 +93,10 @@ typedef enum {
 @property SEL delegateDidReturnSelector;
 @property SEL delegateDidFailSelector;
 @property ReturnType returnType;
+@property (nonatomic, assign) Service* service;
 
 
-- (id)initWithThriftServiceClient:(id)serviceClient delegate:(id)delegate_;
+- (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service delegate:(id)delegate_;
 
 - (void)addObjectArgument:(id)object;
 

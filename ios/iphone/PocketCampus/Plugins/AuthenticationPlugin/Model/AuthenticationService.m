@@ -15,7 +15,6 @@ static AuthenticationService* instance = nil;
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"authentication"];
-            [instance setThriftClient:[[[AuthenticationServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
         }
     }
     return [instance autorelease];
@@ -26,7 +25,7 @@ static AuthenticationService* instance = nil;
 }
 
 - (void)getTequilaKeyForService:(int)service delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:self.thriftClient delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTequilaKeyForService:);
     operation.delegateDidReturnSelector = @selector(getTequilaKeyForService:didReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaKeyFailedForService:);
@@ -37,7 +36,7 @@ static AuthenticationService* instance = nil;
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)tequilaKey delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:self.thriftClient delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getSessionIdForService:);
     operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
     operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);

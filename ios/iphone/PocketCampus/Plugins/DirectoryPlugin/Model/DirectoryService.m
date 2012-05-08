@@ -19,7 +19,6 @@ static DirectoryService* instance = nil;
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"directory"];
-            [instance setThriftClient:[[[DirectoryServiceClient alloc] initWithProtocol:instance.thriftProtocol] autorelease]];
         }
     }
     return [instance autorelease];
@@ -33,7 +32,7 @@ static DirectoryService* instance = nil;
     if (![nameOrSciper isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(searchPersons:);
     operation.delegateDidReturnSelector = @selector(searchFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedFor:);
@@ -47,7 +46,7 @@ static DirectoryService* instance = nil;
     if (![sciper isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad sciper" reason:@"sciper is either nil or not of class NSString" userInfo:nil];
     }
-    ProfilePictureRequest* operation = [[ProfilePictureRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ProfilePictureRequest* operation = [[ProfilePictureRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getProfilePicture:);
     operation.delegateDidReturnSelector = @selector(profilePictureFor:didReturn:);
     operation.delegateDidFailSelector = @selector(profilePictureFailedFor:);
@@ -61,7 +60,7 @@ static DirectoryService* instance = nil;
     if (![constraint isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] delegate:delegate];
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);

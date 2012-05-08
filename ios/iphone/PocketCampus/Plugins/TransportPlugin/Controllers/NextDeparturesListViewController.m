@@ -159,7 +159,6 @@
 /* TransportServiceDelegate delegation */
 
 - (void)locationsForNames:(NSArray*)names didReturn:(NSArray*)locations {
-    NSLog(@"location did return");
     if (names != nil && names.count == 2 && [[names objectAtIndex:0] isEqualToString:@"EPFL"] && [[names objectAtIndex:1] isEqualToString:@"Lausanne-Flon"]) {
         //default stations request returned
         [favStations release];
@@ -233,7 +232,7 @@
 // Call this method everytime location might have changed or when favorite user stations have changed 
 - (void)updateAll {
     
-    NSLog(@"-> updateAll with states (%d, %d, %d)", favStationsState, locationState, schedulesState);
+    //NSLog(@"-> updateAll with states (%d, %d, %d)", favStationsState, locationState, schedulesState);
 
     if (isRefreshing) {
         self.navigationItem.rightBarButtonItem.enabled = NO;
