@@ -10,6 +10,7 @@
 "MenusTableViewSectionName" = "Menus";
 "CenterLabelLoadingText" = "Chargement de la liste des restaurants";
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
+"Map" = "Plan";
 "NoVote" = "Aucun vote";
 "VoteNamePlural" = "votes";
 "VoteVerb" = "voter";

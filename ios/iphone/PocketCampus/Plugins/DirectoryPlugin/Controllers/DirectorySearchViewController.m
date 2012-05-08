@@ -28,6 +28,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         autocompleteResults = nil;
         resultsMode = ResutlsModeNotStarted;
         personViewController = nil;
+        displayedPerson = nil;
     }
     return self;
 }
@@ -53,6 +54,8 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         [searchBar becomeFirstResponder];
     }
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    [displayedPerson release];
+    displayedPerson = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -415,6 +418,7 @@ error:
     CFRelease(abPerson);
     
     [self.navigationController pushViewController:viewController animated:YES];
+    displayedPerson = [person retain];
     [viewController release];
     
     
@@ -424,12 +428,11 @@ error:
 
 - (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     if (property == kABPersonAddressProperty) { //office was clicked
-        NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
-        NSString* mapQuery = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
-        [firstName release];
-        [lastName release];
-        [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:mapQuery] animated:YES];
+        /*NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);*/
+        if (displayedPerson != nil) {
+            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:displayedPerson.office] animated:YES];
+        }
         return NO;
     }
     return YES;

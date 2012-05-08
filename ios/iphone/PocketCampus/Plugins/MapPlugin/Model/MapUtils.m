@@ -120,6 +120,31 @@
         }
     }
     
+    NSLog(@"roomName : %@", roomName);
+    if ([roomName isEqualToString:@"Cafeteria BC"]) {
+        return 4;
+    }
+    
+    if ([roomName isEqualToString:@"Cafeteria MX"]) {
+        return 3;
+    }
+    
+    if ([roomName isEqualToString:@"L'Atlantide"]) {
+        return 2;
+    }
+    
+    if ([roomName isEqualToString:@"Le Corbusier"]) {
+        return 0;
+    }
+    
+    if ([roomName isEqualToString:@"Le Parmentier"]) {
+        return 2;
+    }
+    
+    if ([roomName isEqualToString:@"Le Vinci"]) {
+        return 2;
+    }
+    
     return INT_MAX; //means level could not determined
 }
 

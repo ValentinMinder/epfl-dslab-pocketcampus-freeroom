@@ -14,6 +14,7 @@
 
 @interface MenusListViewController : UIViewController {
     UITableView* tableView;
+    NSString* restaurantName;
     NSArray* meals;
     FoodService* service;
     VoteMode voteMode;

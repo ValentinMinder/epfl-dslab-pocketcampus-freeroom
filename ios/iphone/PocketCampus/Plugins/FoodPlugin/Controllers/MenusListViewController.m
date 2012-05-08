@@ -10,20 +10,26 @@
 
 #import "PCTableViewSectionHeader.h"
 
+#import "MapController.h"
+
 @implementation MenusListViewController
 
 @synthesize tableView;
 
 static NSString* kMealCellIdentifier = @"mealCell"; 
 
-- (id)initWithRestaurantName:(NSString*)restaurantName andMeals:(NSArray*)meals_
+- (id)initWithRestaurantName:(NSString*)restaurantName_ andMeals:(NSArray*)meals_
 {
     self = [super initWithNibName:@"MenusListView" bundle:nil];
     if (self) {
-        self.title = restaurantName;
-        if (meals_ == nil) {
-            @throw [NSException exceptionWithName:@"illegal argument" reason:@"meals argument cannot be nil" userInfo:nil];
+        if (![restaurantName_ isKindOfClass:[NSString class]]) {
+            @throw [NSException exceptionWithName:@"illegal argument" reason:@"restaurantName argument is not kind of class NSString" userInfo:nil];
         }
+        if (![meals_ isKindOfClass:[NSArray class]]) {
+            @throw [NSException exceptionWithName:@"illegal argument" reason:@"meals argument is not kind of class NSArray" userInfo:nil];
+        }
+        self.title = restaurantName_;
+        restaurantName = [restaurantName_ retain];
         meals = [meals_ retain];
         service = [[FoodService sharedInstanceToRetain] retain];
     }
@@ -33,7 +39,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 - (id)initWithMeals:(NSArray*)meals_ {
     self = [super initWithNibName:@"MenusListView" bundle:nil];
     if (self) {
-        //self.title = restaurantName;
+        restaurantName = nil;
         if (meals_ == nil) {
             @throw [NSException exceptionWithName:@"illegal argument" reason:@"meals argument cannot be nil" userInfo:nil];
         }
@@ -49,6 +55,9 @@ static NSString* kMealCellIdentifier = @"mealCell";
 	// Do any additional setup after loading the view.
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.sectionHeaderHeight = [PCValues tableViewSectionHeaderHeight];
+    if (restaurantName != nil && ![restaurantName isEqualToString:@"Bistro 31"] && ![restaurantName isEqualToString:@"Hong Thaï Rung"]) { //map plugin does not know these restaurants
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Map", @"FoodPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(mapButtonPressed)] autorelease];
+    }
 }
 
 - (void)viewDidUnload
@@ -60,6 +69,21 @@ static NSString* kMealCellIdentifier = @"mealCell";
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)mapButtonPressed {
+    if (restaurantName != nil) {
+        NSString* query = restaurantName;
+        if ([query isEqualToString:@"Le Puur Innovation"]) {
+            query = @"Puur Innovation"; //map plugin does not find it otherwise
+        } else if ([query isEqualToString:@"La Table de Vallotton"]) {
+            query = @"Table de Vallotton"; //map plugin does not find it otherwise
+        } else {
+            //OK
+        }
+        UIViewController* mapViewController = [MapController viewControllerWithInitialSearchQuery:query];
+        [self.navigationController pushViewController:mapViewController animated:YES];
+    }
 }
 
 - (void)setForAllCellsVoteMode:(VoteMode)newMode exceptCell:(MealCell*)exceptCell animated:(BOOL)animated; {
@@ -124,6 +148,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
     tableView.delegate = nil;
     tableView.dataSource = nil;
     [service release];
+    [restaurantName release];
     [meals release];
     [super dealloc];
 }

@@ -80,7 +80,6 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 /* FoodServiceDelegate delegation */
 
 - (void)getMealsDidReturn:(NSArray*)meals_ {
-    
     if (meals != nil && meals.count == meals_.count) {
         BOOL difference = NO;
         for (int i = 0; i<meals.count; i++) {

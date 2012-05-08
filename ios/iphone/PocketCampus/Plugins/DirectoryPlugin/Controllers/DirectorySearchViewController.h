@@ -33,6 +33,7 @@ typedef enum {
     NSArray* searchResults;
     ResultsMode resultsMode;
     ABUnknownPersonViewController* personViewController;
+    Person* displayedPerson;
 }
 
 @property (nonatomic, assign) IBOutlet UISearchBar* searchBar;

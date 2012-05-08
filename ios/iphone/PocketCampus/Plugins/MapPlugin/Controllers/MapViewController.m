@@ -71,8 +71,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [searchBar addSubview:searchActivityIndicator];
     [searchActivityIndicator release];
     if (initialQuery != nil) {
-        searchBar.text = initialQuery;
-        [self setSearchBarState:SearchBarStateVisible];
+        /*searchBar.text = initialQuery;
+        [self setSearchBarState:SearchBarStateVisible];*/
+        self.navigationItem.rightBarButtonItem = nil;
         [self startSearchForQuery:initialQuery];
     }
 }

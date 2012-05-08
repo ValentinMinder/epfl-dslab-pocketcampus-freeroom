@@ -162,7 +162,6 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
             thumbnailRequest.userInfo = [NSDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];
             thumbnailRequest.timeOutSeconds = 5.0; //do not overload network with thumbnails that fail to load
             [networkQueue addOperation:thumbnailRequest];
-            //[thumbnailRequest startAsynchronous];
         }
     } else {
         cell.imageView.image = [thumbnails objectForKey:indexPath];
