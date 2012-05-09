@@ -95,7 +95,7 @@ static NSTimeInterval requestTimeoutInterval;
     dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
 }
 
-/* END */
+/* END OF ASIHTTPRequestDelegate delegation */
 
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
@@ -106,7 +106,16 @@ static NSTimeInterval requestTimeoutInterval;
             nbOps++;
         }
     }
-    NSLog(@"-> Cancelling all operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
+    if (nbOps > 0) {
+        NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
+    }
+}
+
+- (void)cancelAllOperations {
+    for (NSOperationWithDelegate* operation in operationQueue.operations) {
+        operation.delegate = nil;
+        [operation cancel];
+    }
 }
 
 - (id)thriftProtocolInstance {
@@ -118,10 +127,15 @@ static NSTimeInterval requestTimeoutInterval;
 
 - (void)dealloc
 {
+    [self cancelAllOperations];
     if (semaphore != nil) {
         dispatch_release(semaphore);
+        semaphore = nil;
     }
-    semaphore = nil;
+    if (checkServerRequest != nil) {
+        checkServerRequest.delegate = nil;
+        [checkServerRequest release];
+    }
     [operationQueue release];
     [thriftProtocol release];
     [serverURL release];

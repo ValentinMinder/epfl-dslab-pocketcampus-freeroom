@@ -120,7 +120,6 @@
         }
     }
     
-    NSLog(@"roomName : %@", roomName);
     if ([roomName isEqualToString:@"Cafeteria BC"]) {
         return 4;
     }

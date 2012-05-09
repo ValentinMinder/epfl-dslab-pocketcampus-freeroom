@@ -55,9 +55,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 	// Do any additional setup after loading the view.
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.sectionHeaderHeight = [PCValues tableViewSectionHeaderHeight];
-    if (restaurantName != nil && ![restaurantName isEqualToString:@"Bistro 31"] && ![restaurantName isEqualToString:@"Hong Thaï Rung"]) { //map plugin does not know these restaurants
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Map", @"FoodPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(mapButtonPressed)] autorelease];
-    }
+    [self showMapButtonIfPossible];
 }
 
 - (void)viewDidUnload
@@ -69,6 +67,15 @@ static NSString* kMealCellIdentifier = @"mealCell";
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)showMapButtonIfPossible {
+    if (restaurantName == nil || [restaurantName isEqualToString:@"Bistro 31"] || [restaurantName isEqualToString:@"Hong Thaï Rung"]) { //map plugin does not know these restaurants
+        return;
+    }
+    UIBarButtonItem* mapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Map", @"FoodPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(mapButtonPressed)];
+    [self.navigationItem setRightBarButtonItem:mapButton animated:YES];
+    [mapButton release];
 }
 
 - (void)mapButtonPressed {

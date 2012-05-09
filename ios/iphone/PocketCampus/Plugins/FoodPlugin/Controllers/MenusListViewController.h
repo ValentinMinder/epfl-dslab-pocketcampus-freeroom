@@ -23,6 +23,7 @@
 - (id)initWithRestaurantName:(NSString*)restaurantName andMeals:(NSArray*)meals_;
 - (void)setForAllCellsVoteMode:(VoteMode)newMode exceptCell:(MealCell*)exceptCell animated:(BOOL)animated; //pass nil for exceptCell to include all cells
 - (void)setUpdatedRating:(Rating*)newRating forMeal:(Meal*)meal;
+- (void)showMapButtonIfPossible;
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 

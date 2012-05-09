@@ -136,6 +136,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
     [self updateRatingInfosRefreshForServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+    [controller showMapButtonIfPossible];
 }
 
 - (void)okPressed {
@@ -158,12 +159,14 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
         case SubmitStatus_TOO_EARLY:
             [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+            [controller showMapButtonIfPossible];
             [self updateRatingInfosRefreshForServer:NO];
             alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             break;
         case SubmitStatus_ALREADY_VOTED: //should not happen, as checked before already
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+            [controller showMapButtonIfPossible];
             [controller setForAllCellsVoteMode:VoteModeDisabled exceptCell:nil animated:YES];
             [self updateRatingInfosRefreshForServer:NO];
             alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -171,6 +174,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
             break;
         case SubmitStatus_VALID:
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+            [controller showMapButtonIfPossible];
             [controller setForAllCellsVoteMode:VoteModeDisabled exceptCell:nil animated:YES];
             [self updateRatingInfosRefreshForServer:YES];
             break;
@@ -280,6 +284,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
     [self updateRatingInfosRefreshForServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+    [controller showMapButtonIfPossible];
 }
 
 - (void)serviceConnectionToServerTimedOut {
@@ -291,6 +296,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
     [self updateRatingInfosRefreshForServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
+    [controller showMapButtonIfPossible];
 }
 
 /*
