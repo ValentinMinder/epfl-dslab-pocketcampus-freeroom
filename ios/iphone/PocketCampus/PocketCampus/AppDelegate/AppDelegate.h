@@ -10,7 +10,9 @@
 
 #import "MainController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "AuthenticationService.h" //TEST
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AuthenticationCallbackDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (assign) MainController* mainController;

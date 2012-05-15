@@ -43,7 +43,10 @@
 
 @protocol AuthenticationCallbackDelegate
 
+@optional
 - (int)getTypeOfService;
-- (void)gotSessionId:(SessionId*)aSessionId;
+- (void)gotSessionId:(SessionId*)sessionId;
+- (void)userCancelledAuthentication;
+- (void)authenticationTimeout;
 
 @end

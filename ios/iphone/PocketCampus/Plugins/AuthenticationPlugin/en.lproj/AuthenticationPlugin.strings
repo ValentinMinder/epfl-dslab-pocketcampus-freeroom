@@ -1,2 +1,7 @@
 
 "PluginName" = "Authentication";
+"GasparLogin" = "Gaspar login";
+"Login" = "Login";
+"Error" = "Error";
+"BadCredentials" = " Wrong user/password";
+"ErrorOccuredTryAgain" = "Sorry, an error occured";

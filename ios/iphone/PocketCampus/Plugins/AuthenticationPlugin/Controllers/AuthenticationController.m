@@ -2,6 +2,8 @@
 #import "AuthenticationController.h"
 #import "CredentialsViewController.h"
 
+#import "CredentialsAlertViewController.h"
+
 @implementation AuthenticationController
 
 static NSString* name = nil;
@@ -13,6 +15,8 @@ static NSString* name = nil;
         CredentialsViewController* credentialsViewController = [[CredentialsViewController alloc] initWithNibName:@"CredentialsView" bundle:nil];
         credentialsViewController.title = [[self class] localizedName];
         mainViewController = credentialsViewController;
+        
+        credentialsAlertViewController = [[CredentialsAlertViewController alloc] init];
     }
     return self;
 }
@@ -25,6 +29,10 @@ static NSString* name = nil;
         
     }
     return self;
+}
+
+- (void)loginToService:(int)typeOfService delegate:(id<AuthenticationCallbackDelegate>)delegate {
+    [credentialsAlertViewController askCredientialsForTypeOfService:typeOfService message:@"" delegate:delegate];
 }
 
 + (NSString*)localizedName {
@@ -45,6 +53,7 @@ static NSString* name = nil;
 
 - (void)dealloc
 {
+    [credentialsAlertViewController release];
     [name release];
     name = nil;
     [super dealloc];

@@ -12,8 +12,16 @@
 
 #import "authentication.h"
 
-@interface CredentialsAlertViewController : NSObject<AuthenticationServiceDelegate>
+@interface CredentialsAlertViewController : NSObject<UIAlertViewDelegate, AuthenticationServiceDelegate> {
+    UIAlertView* alertView;
+    AuthenticationService* authenticationService;
+    int typeOfService;
+    NSString* tequilaCookie;
+    TequilaKey* applicationTequilaKey;
+}
 
-- (id)initWithTypeOfService:(int)service;
+@property (assign) id<AuthenticationCallbackDelegate> delegate;
+
+- (void)askCredientialsForTypeOfService:(int)typeOfService message:(NSString*)messageOrNil delegate:(id<AuthenticationCallbackDelegate>)delegate;
 
 @end

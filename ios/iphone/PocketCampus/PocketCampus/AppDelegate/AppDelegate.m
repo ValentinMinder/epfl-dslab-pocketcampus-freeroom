@@ -22,6 +22,8 @@
 
 #import "NewsService.h"
 
+#import "AuthenticationController.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -64,6 +66,10 @@
     //NSString* lang = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     //NSLog(@"lang : %@", lang);
     //[service getNewsItemsForLanguage:@"fr-FR" delegate:self];
+    
+    //AuthenticationController* authController = [[AuthenticationController alloc] init];
+    
+    //[authController loginToService:TypeOfService_SERVICE_ISA delegate:self];
     
     /*END TEST*/
     
@@ -176,6 +182,19 @@
     NSLog(@"%@", newsItems);
 }
 */
+
+/*- (void)gotSessionId:(SessionId*)sessionId {
+    NSLog(@"SessionId : %@", sessionId);
+}
+
+- (void)userCancelledAuthentication {
+    NSLog(@"user cancelled auth");
+}
+
+- (void)authenticationTimeout {
+    NSLog(@"auth timeout");
+}*/
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
