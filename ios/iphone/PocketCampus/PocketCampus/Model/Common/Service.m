@@ -14,7 +14,7 @@ static NSTimeInterval requestTimeoutInterval;
 
 @implementation Service
 
-@synthesize thriftProtocol;
+@synthesize thriftProtocol, serviceWillBeReleased;
 
 - (id)initWithServiceName:(NSString*)serviceName_
 {
@@ -45,6 +45,7 @@ static NSTimeInterval requestTimeoutInterval;
         semaphore = dispatch_semaphore_create(0);
         checkServerRequest = nil;
         serverIsReachable = NO; //by default
+        serviceWillBeReleased = NO;
     }
     return self;
 }
@@ -68,6 +69,9 @@ static NSTimeInterval requestTimeoutInterval;
         }
     }
     dispatch_semaphore_wait(semaphore,  DISPATCH_TIME_FOREVER); //timeout is managed by request
+    if (self.serviceWillBeReleased) {
+        return NO;
+    }
     @synchronized(self) {
         if (checkServerRequest != nil) {
             [checkServerRequest release];
@@ -99,9 +103,9 @@ static NSTimeInterval requestTimeoutInterval;
 
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
-    for (NSOperationWithDelegate* operation in operationQueue.operations) {
-        if(operation.delegate == delegate) {
-            operation.delegate = nil;
+    for (NSOperation* operation in operationQueue.operations) {
+        if ([operation respondsToSelector:@selector(delegate)] && [operation respondsToSelector:@selector(setDelegate:)] && [(id)operation delegate] == delegate) {
+            [(id)operation setDelegate:nil];
             [operation cancel];
             nbOps++;
         }
@@ -116,6 +120,7 @@ static NSTimeInterval requestTimeoutInterval;
         operation.delegate = nil;
         [operation cancel];
     }
+    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
 }
 
 - (id)thriftProtocolInstance {
@@ -127,14 +132,16 @@ static NSTimeInterval requestTimeoutInterval;
 
 - (void)dealloc
 {
+    serviceWillBeReleased = YES;
     [self cancelAllOperations];
+    if (checkServerRequest != nil) {
+        checkServerRequest.delegate = nil;
+        [checkServerRequest cancel];
+        [checkServerRequest release];
+    }
     if (semaphore != nil) {
         dispatch_release(semaphore);
         semaphore = nil;
-    }
-    if (checkServerRequest != nil) {
-        checkServerRequest.delegate = nil;
-        [checkServerRequest release];
     }
     [operationQueue release];
     [thriftProtocol release];
@@ -150,7 +157,15 @@ static NSTimeInterval requestTimeoutInterval;
 
 @implementation NSOperationWithDelegate
 
-@synthesize delegate;
+@synthesize delegate, delegateDidReturnSelector, delegateDidFailSelector;
+
+- (id)initWithDelegate:(id)delegate_ {
+    self = [super init];
+    if (self) {
+        self.delegate = delegate_;
+    }
+    return self;
+}
 
 - (BOOL)delegateRespondsToSelector:(SEL)selector {
     if (self.delegate == nil) {
@@ -162,19 +177,30 @@ static NSTimeInterval requestTimeoutInterval;
     return YES;
 }
 
+- (BOOL)isCancelled {
+    return canceled;
+}
+
+- (BOOL)isExecuting {
+    return executing;
+}
+
+- (BOOL)isFinished {
+    return finished;
+}
+
 @end
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, delegateDidReturnSelector, delegateDidFailSelector, serviceClientSelector, returnType, customTimeout, service;
+@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
-    self = [super init];
+    self = [super initWithDelegate:delegate_];
     if (self) {
         self.thriftServiceClient = serviceClient;
         self.service = service_;
-        self.delegate = delegate_;
         self.timedOut = NO;
         self.serviceClientSelector = nil;
         arguments = [[NSMutableArray alloc] init];
@@ -666,21 +692,8 @@ static NSTimeInterval requestTimeoutInterval;
     return error;
 }
 
-
-- (BOOL)isCancelled {
-    return canceled;
-}
-
 - (BOOL)isConcurrent {
     return NO;
-}
-
-- (BOOL)isExecuting {
-    return executing;
-}
-
-- (BOOL)isFinished {
-    return finished;
 }
 
 //override

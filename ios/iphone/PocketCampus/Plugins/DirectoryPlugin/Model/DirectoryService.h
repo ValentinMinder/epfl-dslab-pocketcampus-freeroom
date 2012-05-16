@@ -10,7 +10,9 @@
 #import "Service.h"
 #import "directory.h"
 
-@interface DirectoryService : Service <ServiceProtocol>
+#import "ASIHTTPRequest.h"
+
+@interface DirectoryService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate;
 - (void)getProfilePicture:(NSString *)sciper delegate:(id)delegate;
@@ -32,9 +34,11 @@
 
 
 /* Internal class with modified main to generate NSData from image's URL returned by server */
-@interface ProfilePictureRequest : ServiceRequest {
+@interface ProfilePictureRequest : NSOperationWithDelegate<ASIHTTPRequestDelegate> {
     NSString* sciper;
 }
+
+- (id)initWithSciper:(NSString*)sciper delegate:(id)delegate;
 
 @property (retain) NSString* sciper;
 

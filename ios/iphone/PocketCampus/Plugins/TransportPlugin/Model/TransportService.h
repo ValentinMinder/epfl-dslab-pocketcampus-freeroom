@@ -76,8 +76,6 @@
     CLLocationManager* locationManager;
     NSArray* stations;
     BOOL blockedByAuthStatus; 
-    BOOL executing;
-    BOOL finished;
     BOOL delegateCallScheduled;
     int nbRounds;
 }

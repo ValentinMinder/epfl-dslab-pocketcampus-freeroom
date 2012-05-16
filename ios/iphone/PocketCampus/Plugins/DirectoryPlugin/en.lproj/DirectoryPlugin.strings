@@ -8,5 +8,5 @@
 
 "PluginName" = "Directory";
 "SearchFieldPlaceholder" = "Search EPFL directory";
-"SearchNoResult" = "No result";
+"SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
 "OfficeLabel" = "office";

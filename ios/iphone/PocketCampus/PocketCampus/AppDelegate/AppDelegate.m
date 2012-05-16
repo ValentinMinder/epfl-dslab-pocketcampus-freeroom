@@ -24,6 +24,8 @@
 
 #import "AuthenticationController.h"
 
+#import "AuthenticationService.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -67,9 +69,12 @@
     //NSLog(@"lang : %@", lang);
     //[service getNewsItemsForLanguage:@"fr-FR" delegate:self];
     
-    //AuthenticationController* authController = [[AuthenticationController alloc] init];
+    /*AuthenticationController* authController = [[AuthenticationController alloc] init];
     
-    //[authController loginToService:TypeOfService_SERVICE_ISA delegate:self];
+    [authController loginToService:TypeOfService_SERVICE_MOODLE delegate:self];*/
+    
+    //AuthenticationService* authService = [[AuthenticationService sharedInstanceToRetain] retain];
+    //                                                                   [authService getTequilaKeyForService:TypeOfService_SERVICE_CAMIPRO delegate:self];
     
     /*END TEST*/
     
@@ -193,6 +198,14 @@
 
 - (void)authenticationTimeout {
     NSLog(@"auth timeout");
+}*/
+
+/*- (void)getTequilaKeyForService:(int)service didReturn:(TequilaKey*)tequilaKey {
+    NSLog(@"tequilaKey : %@", tequilaKey);
+}
+
+- (void)getTequilaKeyFailedForService:(int)service {
+    NSLog(@"getTequilaKeyFailedForService:%d", service);
 }*/
 
 - (void)applicationWillResignActive:(UIApplication *)application
