@@ -302,13 +302,23 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	 * HELPER FUNCTIONS
 	 */
 	
+	private String executeCommand(String cmd, String encoding) throws IOException {
+		Runtime run = Runtime.getRuntime();
+		Process pr = run.exec(cmd);
+		try {
+			pr.waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			throw new IOException("executeCommand: waitFor Interrupted");
+		}
+		return IOUtils.toString(pr.getInputStream(), encoding);
+	}
+	
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-		conn.setInstanceFollowRedirects(false);
-		conn.setRequestProperty("Cookie", cookie.cookie());
-		if(conn.getResponseCode() != 200)
+		String resp = executeCommand("curl --cookie " + cookie.cookie() + " " + url, "UTF-8");
+		if(resp.length() == 0)
 			return null;
-		return IOUtils.toString(conn.getInputStream(), "UTF-8");
+		return resp;
 	}
 	
 	private String getSubstringBetween(String orig, String before, String after) {

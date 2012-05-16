@@ -3,7 +3,9 @@ package org.pocketcampus.authentication.server;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
@@ -107,15 +109,24 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get Tequila Token for Camipro.
 	 */
 	private TequilaKey getTequilaKeyForCamipro() throws IOException {
+		String cmdLine = "curl --include https://cmp2www.epfl.ch/ws/balance";
+		String resp = executeCommand(cmdLine, "UTF-8");
 		Cookie cookie = new Cookie();
-        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/ws/balance").openConnection();
-        conn2.setInstanceFollowRedirects(false);
-        conn2.getInputStream();
-        URL url = new URL(conn2.getHeaderField("Location"));
-        cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
-		MultiMap<String> params = new MultiMap<String>();
-		UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
-		TequilaKey teqKey = new TequilaKey(TypeOfService.SERVICE_CAMIPRO, params.getString("requestkey"));
+		TequilaKey teqKey = new TequilaKey();
+		teqKey.setTos(TypeOfService.SERVICE_CAMIPRO);
+		for(String header : resp.split("\r\n")) {
+			String shdr[] = header.split(":", 2);
+			if(shdr.length != 2)
+				continue;
+			if("Set-Cookie".equalsIgnoreCase(shdr[0])) {
+				cookie.setCookie(Arrays.asList(new String[]{shdr[1].trim()}));
+			} else if("Location".equalsIgnoreCase(shdr[0])) {
+		        URL url = new URL(shdr[1].trim());
+				MultiMap<String> params = new MultiMap<String>();
+				UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
+				teqKey.setITequilaKey(params.getString("requestkey"));
+			}
+		}
 		teqKey.setLoginCookie(cookie.cookie());
 		return teqKey;
 	}
@@ -206,27 +217,28 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get SessionId for Camipro.
 	 */
 	private SessionId getSessionIdForCamipro(TequilaKey aTequilaKey) throws IOException {
-	    if(aTequilaKey.getTos() != TypeOfService.SERVICE_CAMIPRO)
-	    	throw new IOException("getSessionIdForCamipro: Called with wrong TypeOfService");
+		if(aTequilaKey.getTos() != TypeOfService.SERVICE_CAMIPRO)
+			throw new IOException("getSessionIdForCamipro: Called with wrong TypeOfService");
 	    
-		Cookie cookie = new Cookie();
-		String loginCookie = aTequilaKey.getLoginCookie();
-	    if(loginCookie == null)
-	    	throw new IOException("getSessionIdForCamipro: loginCookie is null");
-	    cookie.importFromString(loginCookie);
-		
-        HttpURLConnection conn2 = (HttpURLConnection) new URL("https://cmp2www.epfl.ch/ws/balance").openConnection();
-        conn2.setRequestProperty("Cookie", cookie.cookie());
-        conn2.setInstanceFollowRedirects(false);
-        conn2.getInputStream();
-        if(conn2.getHeaderField("Location") != null)
-        	System.out.println("getSessionIdForCamipro: WARNING got redirected, this should not happen, authentication has probably failed");
-        
-	    // send back the session id
 	    SessionId si = new SessionId();
 	    si.setTos(TypeOfService.SERVICE_CAMIPRO);
-	    si.setCamiproCookie(cookie.cookie());
+	    si.setCamiproCookie(aTequilaKey.getLoginCookie());
 		return si;
+	}
+	
+	/**
+	 * Helper function to execute a UNIX command
+	 */
+	private String executeCommand(String cmd, String encoding) throws IOException {
+		Runtime run = Runtime.getRuntime();
+		Process pr = run.exec(cmd);
+		try {
+			pr.waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			throw new IOException("executeCommand: waitFor Interrupted");
+		}
+		return IOUtils.toString(pr.getInputStream(), encoding);
 	}
 	
 }
