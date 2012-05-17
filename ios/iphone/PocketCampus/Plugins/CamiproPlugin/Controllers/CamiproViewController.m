@@ -211,7 +211,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     if (indexPath.section == 0) {
         newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         newCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        newCell.backgroundColor = [UIColor clearColor];
+        newCell.backgroundColor = [PCValues backgroundColor1];
         UILabel* balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeight)];
         balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", balanceAndTransactions.iBalance];
         balanceLabel.textAlignment = UITextAlignmentCenter;

@@ -12,7 +12,7 @@
 
 @implementation CamiproService
 
-static NSString* kLastSessionIdKey = @"LastSessionId";
+static NSString* kLastSessionIdKey = @"lastSessionId";
 
 static CamiproService* instance = nil;
 
