@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @class PluginController;
+@class HomeViewController;
 
-@interface MainController : NSObject {
-    @private UINavigationController* navController;
-    @private UIWindow* window;
-    @private NSArray* pluginsList; //list of found plugins names (NSString*)
+@interface MainController : NSObject<UINavigationControllerDelegate> {
+    HomeViewController* homeViewController;
+    UINavigationController* navController;
+    PluginController* activePluginController;
+    UIWindow* window;
+    NSArray* pluginsList; //list of found plugins names (NSString*)
 }
 
 @property (readonly) NSArray* pluginsList;
-@property (assign) PluginController* activePluginController;
+@property (retain) PluginController* activePluginController;
 
 - (id)initWithWindow:(UIWindow*)window;
 - (NSString*)pluginControllerNameForIdentifier:(NSString*)identifier;

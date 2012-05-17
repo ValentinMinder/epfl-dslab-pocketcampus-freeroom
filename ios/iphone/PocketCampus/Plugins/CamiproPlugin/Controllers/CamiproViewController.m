@@ -180,7 +180,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     if (indexPath.section == 0) {
         return kBalanceCellHeight;
     }
-    return 44.0;
+    return 50.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -234,7 +234,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         newCell.selectionStyle = UITableViewCellSelectionStyleNone;
         newCell.backgroundColor = [UIColor clearColor];
         newCell.textLabel.textColor = [PCValues textColor1];
-        UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 24.0, 100.0, 17.0)];
+        UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 27.0, 100.0, 17.0)];
         priceLabel.backgroundColor = [UIColor clearColor];
         priceLabel.tag = kTransactionPriceViewTag;
         priceLabel.font = [UIFont systemFontOfSize:15.0];

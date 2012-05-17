@@ -19,9 +19,10 @@
     self = [super init];
     if (self) {
         window = window_;
+        homeViewController = nil;
+        activePluginController = nil;
         [self initPluginsList];
         [self initNavigationControllerAndPushHome];
-        
     }
     return self;
 }
@@ -58,23 +59,44 @@
 }
 
 - (void)initNavigationControllerAndPushHome {
-    HomeViewController* homeViewController = [[HomeViewController alloc] initWithMainController:self];
+    UIViewController* splashController = [[UIViewController alloc] initWithNibName:@"SplashView" bundle:nil];
+    homeViewController = [[HomeViewController alloc] initWithMainController:self];
     navController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+    navController.delegate = self;
     navController.navigationBar.tintColor = [PCValues pocketCampusRed];
-    
     [window addSubview:navController.view];
+    [window addSubview:splashController.view];
+    
+    /* Splashscreen animation */
+    [UIView animateWithDuration:0.4 animations:^{
+        splashController.view.alpha = 0.0;
+        splashController.view.frame = CGRectMake(-20.0, -20.0, 360.0, 520.0);;
+    } completion:^(BOOL finished) {
+        [splashController.view removeFromSuperview];
+        [splashController autorelease];
+    }];
 }
 
 - (void)refreshDisplayedPlugin {
-    if ([self.activePluginController respondsToSelector:@selector(refresh)]) {
-        [self.activePluginController performSelector:@selector(refresh)];
+    if ([activePluginController respondsToSelector:@selector(refresh)]) {
+        [activePluginController performSelector:@selector(refresh)];
+    }
+}
+
+/* UINavigationControllerDelegate delegation */
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (viewController == homeViewController) {
+        [activePluginController release];
+        activePluginController = nil;
     }
 }
 
 - (void)dealloc
 {
-    [pluginsList release];
+    [homeViewController release];
     [navController release];
+    [pluginsList release];
     [super dealloc];
 }
 

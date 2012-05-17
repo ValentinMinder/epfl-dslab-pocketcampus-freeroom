@@ -133,6 +133,7 @@
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
+		32BCACDE15657FED008415A1 /* SplashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDD15657FED008415A1 /* SplashView.xib */; };
 		32C739F9150158B900455CF0 /* SettingsToolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C739F8150158B900455CF0 /* SettingsToolbar.png */; };
 		32C739FB1501590600455CF0 /* SettingsToolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C739FA1501590600455CF0 /* SettingsToolbar@2x.png */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
@@ -392,6 +393,7 @@
 		32B8927F15458BAB0058E472 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		32B8928115458BD70058E472 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
+		32BCACDD15657FED008415A1 /* SplashView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashView.xib; sourceTree = "<group>"; };
 		32C739F8150158B900455CF0 /* SettingsToolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsToolbar.png; sourceTree = "<group>"; };
 		32C739FA1501590600455CF0 /* SettingsToolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsToolbar@2x.png"; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 		328869A914FE5AF400CC97DB /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				32BCACDD15657FED008415A1 /* SplashView.xib */,
 				32EF43871501260100899B86 /* HomeView.xib */,
 				32EF43891501272B00899B86 /* HomeIcon.h */,
 				32EF438A1501272B00899B86 /* HomeIcon.m */,
@@ -1556,6 +1559,7 @@
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */,
+				32BCACDE15657FED008415A1 /* SplashView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

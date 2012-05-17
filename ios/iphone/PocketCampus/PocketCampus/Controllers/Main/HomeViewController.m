@@ -59,6 +59,7 @@
     Class pluginClass = NSClassFromString([mainController pluginControllerNameForIndex:index]);
     PluginController* pluginController = [[pluginClass alloc] initWithMainController:mainController];
     [self.navigationController pushViewController:pluginController.mainViewController animated:YES];
+    mainController.activePluginController = pluginController;
     [pluginController release];
 }
 
