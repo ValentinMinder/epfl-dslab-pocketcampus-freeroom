@@ -26,6 +26,8 @@
 
 #import "AuthenticationService.h"
 
+#import "CamiproService.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -69,12 +71,13 @@
     //NSLog(@"lang : %@", lang);
     //[service getNewsItemsForLanguage:@"fr-FR" delegate:self];
     
-    /*AuthenticationController* authController = [[AuthenticationController alloc] init];
+    //AuthenticationController* authController = [[AuthenticationController alloc] init];
     
-    [authController loginToService:TypeOfService_SERVICE_MOODLE delegate:self];*/
+    //[authController loginToService:TypeOfService_SERVICE_CAMIPRO delegate:self];
     
     //AuthenticationService* authService = [[AuthenticationService sharedInstanceToRetain] retain];
-    //                                                                   [authService getTequilaKeyForService:TypeOfService_SERVICE_CAMIPRO delegate:self];
+    //[authService getTequilaKeyForService:TypeOfService_SERVICE_CAMIPRO delegate:self];    
+    
     
     /*END TEST*/
     
@@ -189,9 +192,12 @@
 */
 
 /*- (void)gotSessionId:(SessionId*)sessionId {
-    NSLog(@"SessionId : %@", sessionId);
-}
-
+    NSLog(@"gotSessionId:%@", sessionId);
+    CamiproRequest* request = [[[CamiproRequest alloc] initWithISessionId:sessionId iLanguage:@"en"] autorelease];
+    CamiproService* camiproService = [[CamiproService sharedInstanceToRetain] retain];
+    [camiproService sendLoadingInfoByEmail:request delegate:self];
+}*/
+/*
 - (void)userCancelledAuthentication {
     NSLog(@"user cancelled auth");
 }
@@ -208,6 +214,30 @@
     NSLog(@"getTequilaKeyFailedForService:%d", service);
 }*/
 
+/*- (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions {
+    NSLog(@"%@", balanceAndTransactions);
+}
+
+- (void)getBalanceAndTransactionsFailedForCamiproRequest:(CamiproRequest*)camiproRequest {
+    NSLog(@"getBalanceAndTransactionsFailedForCamiproRequest");
+}
+
+- (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(StatsAndLoadingInfo*)statsAndLoadingInfo {
+    NSLog(@"%@", statsAndLoadingInfo);
+}
+
+- (void)getStatsAndLoadingInfoFailedForCamiproRequest:(CamiproRequest*)camiproRequest {
+    NSLog(@"getStatsAndLoadingInfoFailedForCamiproRequest");
+}
+
+- (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(SendMailResult*)sendMailResult {
+    NSLog(@"%@", sendMailResult);
+}
+
+- (void)sendLoadingInfoByEmailFailedForCamiproRequest:(CamiproRequest*)camiproRequest {
+    NSLog(@"sendLoadingInfoByEmailFailedForCamiproRequest");
+}
+*/
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -30,7 +30,6 @@ static FoodService* instance = nil;
 
 - (void)getMealsWithDelegate:(id)delegate {    
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.service = self;
     operation.serviceClientSelector = @selector(getMeals);
     operation.delegateDidReturnSelector = @selector(getMealsDidReturn:);
     operation.delegateDidFailSelector = @selector(getMealsFailed);

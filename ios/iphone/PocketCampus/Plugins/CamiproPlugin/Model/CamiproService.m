@@ -1,0 +1,79 @@
+//
+//  CamiproService.m
+//  PocketCampus
+//
+//  Created by Loïc Gardiol on 17.05.12.
+//  Copyright (c) 2012 EPFL. All rights reserved.
+//
+
+#import "CamiproService.h"
+
+@implementation CamiproService
+
+static CamiproService* instance = nil;
+
++ (id)sharedInstanceToRetain {
+    if (instance != nil) {
+        return instance;
+    }
+    @synchronized(self) {
+        if (instance == nil) {
+            instance = [[[self class] alloc] initWithServiceName:@"camipro"];
+        }
+    }
+    return [instance autorelease];
+}
+
+- (id)thriftServiceClientInstance {
+    return [[[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+}
+
+- (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate {
+    if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
+        @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
+    }
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getBalanceAndTransactions:);
+    operation.delegateDidReturnSelector = @selector(getBalanceAndTransactionsForCamiproRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getBalanceAndTransactionsFailedForCamiproRequest:);
+    [operation addObjectArgument:camiproRequest];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
+- (void)getStatsAndLoadingInfo:(CamiproRequest*)camiproRequest delegate:(id)delegate {
+    if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
+        @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
+    }
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getStatsAndLoadingInfo:);
+    operation.delegateDidReturnSelector = @selector(getStatsAndLoadingInfoForCamiproRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getStatsAndLoadingInfoFailedForCamiproRequest:);
+    [operation addObjectArgument:camiproRequest];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
+- (void)sendLoadingInfoByEmail:(CamiproRequest*)camiproRequest delegate:(id)delegate {
+    if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
+        @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
+    }
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(sendLoadingInfoByEmail:);
+    operation.delegateDidReturnSelector = @selector(sendLoadingInfoByEmailForCamiproRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(sendLoadingInfoByEmailFailedForCamiproRequest:);
+    [operation addObjectArgument:camiproRequest];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
+- (void)dealloc
+{
+    instance = nil;
+    [super dealloc];
+}
+
+@end
