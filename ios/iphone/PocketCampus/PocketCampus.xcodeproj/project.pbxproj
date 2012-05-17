@@ -77,7 +77,6 @@
 		32704C7C15002F67002BCB75 /* Plugins.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32704C7B15002F67002BCB75 /* Plugins.plist */; };
 		32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E8C1564FC2400DE6984 /* CamiproService.m */; };
 		32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32710E90156507DA00DE6984 /* CamiproViewController.m */; };
-		32710E93156509EA00DE6984 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32710E92156509EA00DE6984 /* CamiproView.xib */; };
 		32710E951565129600DE6984 /* CamiproLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32710E941565129600DE6984 /* CamiproLarge.png */; };
 		3275435F153872DF00C94F3D /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3275435E153872DF00C94F3D /* MapUtils.m */; };
 		3276BE0B150BBA77001F2A88 /* RatingStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE09150BBA77001F2A88 /* RatingStarEmpty.png */; };
@@ -133,6 +132,7 @@
 		32B8927E15458BA10058E472 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
+		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
 		32C739F9150158B900455CF0 /* SettingsToolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C739F8150158B900455CF0 /* SettingsToolbar.png */; };
 		32C739FB1501590600455CF0 /* SettingsToolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C739FA1501590600455CF0 /* SettingsToolbar@2x.png */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
@@ -306,7 +306,6 @@
 		32710E8C1564FC2400DE6984 /* CamiproService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproService.m; sourceTree = "<group>"; };
 		32710E8F156507DA00DE6984 /* CamiproViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproViewController.h; sourceTree = "<group>"; };
 		32710E90156507DA00DE6984 /* CamiproViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproViewController.m; sourceTree = "<group>"; };
-		32710E92156509EA00DE6984 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
 		32710E941565129600DE6984 /* CamiproLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CamiproLarge.png; sourceTree = "<group>"; };
 		3275435D153872DF00C94F3D /* MapUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapUtils.h; sourceTree = "<group>"; };
 		3275435E153872DF00C94F3D /* MapUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUtils.m; sourceTree = "<group>"; };
@@ -392,6 +391,7 @@
 		32B8927D15458BA10058E472 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		32B8927F15458BAB0058E472 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		32B8928115458BD70058E472 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
 		32C739F8150158B900455CF0 /* SettingsToolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsToolbar.png; sourceTree = "<group>"; };
 		32C739FA1501590600455CF0 /* SettingsToolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsToolbar@2x.png"; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
@@ -953,7 +953,7 @@
 			isa = PBXGroup;
 			children = (
 				32B58719156458FA0051C57E /* Images */,
-				32710E92156509EA00DE6984 /* CamiproView.xib */,
+				32BCACDB15656D36008415A1 /* CamiproView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1554,8 +1554,8 @@
 				32B5871C156458FA0051C57E /* CamiproPlugin.strings in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
-				32710E93156509EA00DE6984 /* CamiproView.xib in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
+				32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

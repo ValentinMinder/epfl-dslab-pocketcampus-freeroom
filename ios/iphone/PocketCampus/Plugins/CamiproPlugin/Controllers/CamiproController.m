@@ -8,6 +8,8 @@
 
 #import "CamiproController.h"
 
+#import "CamiproViewController.h"
+
 @implementation CamiproController
 
 static NSString* name = nil;
@@ -16,9 +18,9 @@ static NSString* name = nil;
 {
     self = [super init];
     if (self) {
-        /*DirectorySearchViewController* directorySearchViewController = [[DirectorySearchViewController alloc] init];
-        directorySearchViewController.title = [[self class] localizedName];
-        mainViewController = directorySearchViewController;*/
+        CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
+        camiproViewController.title = [[self class] localizedName];
+        mainViewController = camiproViewController;
     }
     return self;
 }

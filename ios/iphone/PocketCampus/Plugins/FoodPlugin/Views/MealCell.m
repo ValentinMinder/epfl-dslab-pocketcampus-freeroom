@@ -24,8 +24,8 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
-        self.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1.0];
-        //self.backgroundColor = [UIColor yellowColor];
+        //self.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1.0];
+        self.backgroundColor = [UIColor whiteColor];
         if (meal_ == nil) {
             @throw [NSException exceptionWithName:@"illegal argument" reason:@"meal argument cannot be nil" userInfo:nil];
         }

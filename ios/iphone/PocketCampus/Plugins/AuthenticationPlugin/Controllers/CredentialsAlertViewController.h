@@ -14,14 +14,16 @@
 
 @interface CredentialsAlertViewController : NSObject<UIAlertViewDelegate, AuthenticationServiceDelegate> {
     UIAlertView* alertView;
+    UIAlertView* connectionErrorAlertView;
     AuthenticationService* authenticationService;
     int typeOfService;
     NSString* tequilaCookie;
     TequilaKey* applicationTequilaKey;
+    NSString* username;
 }
 
 @property (assign) id<AuthenticationCallbackDelegate> delegate;
 
-- (void)askCredientialsForTypeOfService:(int)typeOfService message:(NSString*)messageOrNil delegate:(id<AuthenticationCallbackDelegate>)delegate;
+- (void)askCredientialsForTypeOfService:(int)typeOfService_ message:(NSString*)messageOrNil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate_;
 
 @end

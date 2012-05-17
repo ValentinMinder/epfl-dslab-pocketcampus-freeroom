@@ -20,11 +20,12 @@
         authenticationService = [[AuthenticationService sharedInstanceToRetain] retain];
         tequilaCookie = nil;
         applicationTequilaKey = nil;
+        username = nil;
     }
     return self;
 }
 
-- (void)askCredientialsForTypeOfService:(int)typeOfService_ message:(NSString*)messageOrNil delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
+- (void)askCredientialsForTypeOfService:(int)typeOfService_ message:(NSString*)messageOrNil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
     if (delegate_ == nil) {
         @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
     }
@@ -34,16 +35,16 @@
     typeOfService = typeOfService_;
     switch (typeOfService) {
         case TypeOfService_SERVICE_CAMIPRO:
-            alertTitle = [NSString stringWithFormat:@"%@ (Camipro)", gasparLoginString];
+            alertTitle = [NSString stringWithFormat:@"%@", gasparLoginString];
             break;
         case TypeOfService_SERVICE_ISA:
-            alertTitle = [NSString stringWithFormat:@"%@ (IS-Academia)", gasparLoginString];
+            alertTitle = [NSString stringWithFormat:@"%@", gasparLoginString];
             break;
         case TypeOfService_SERVICE_MOODLE:
-            alertTitle = [NSString stringWithFormat:@"%@ (Moodle)", gasparLoginString];
+            alertTitle = [NSString stringWithFormat:@"%@", gasparLoginString];
             break;
         case TypeOfService_SERVICE_POCKETCAMPUS:
-            alertTitle = [NSString stringWithFormat:@"%@ (PocketCampus)", gasparLoginString];
+            alertTitle = [NSString stringWithFormat:@"%@", gasparLoginString];
             break;
         default:
             @throw [NSException exceptionWithName:@"CredentialsAlertViewController bad typeOfService" reason:@"unknown typeOfService" userInfo:nil];
@@ -54,14 +55,29 @@
     if (alertMessage == nil) {
         alertMessage = @"";
     }
-    alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMessage delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Login", @"", nil), nil];
+    alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMessage delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil), nil];
     alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    BOOL hasPrefilledUsername = NO;
+    if (prefillUsername) {
+        NSString* lastUsername = [AuthenticationService lastUsedUsernameForService:typeOfService_];
+        if (lastUsername != nil) {
+            [[alertView textFieldAtIndex:0] setText:lastUsername];
+            hasPrefilledUsername = YES;
+        }
+    }
     [alertView show];
+    if (hasPrefilledUsername) {
+        [[alertView textFieldAtIndex:1] becomeFirstResponder];
+    }
 }
 
 /* UIAlertViewDelegate delegation */
 
 - (void)alertView:(UIAlertView *)alertView_ didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (alertView_ == connectionErrorAlertView) {
+        [self askCredientialsForTypeOfService:typeOfService message:nil prefillWithLastUsedUsername:YES delegate:self.delegate];
+        return;
+    }
     switch (buttonIndex) {
         case 0: //Cancel button
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
@@ -70,9 +86,9 @@
             break;
         case 1: //OK button
         {
-            NSString* username = [[alertView textFieldAtIndex:0] text];
+            [username release];
+            username = [[[alertView textFieldAtIndex:0] text] retain];
             NSString* password = [[alertView textFieldAtIndex:1] text];
-            NSLog(@"username : %@ pass : %@", username, password);
             [authenticationService loginToTequilaWithUser:username password:password delegate:self];
             break;
         }
@@ -92,7 +108,9 @@
 }
 
 - (void)getTequilaKeyFailedForService:(int)aService {
-    NSLog(@"getTequilaKeyFailedForService:%d", aService);
+    NSLog(@"-> getTequilaKeyFailedForService:%d", aService);
+    [authenticationService release];
+    authenticationService = [[AuthenticationService sharedInstanceToRetain] retain];
     [self connectionError];
 }
 
@@ -103,8 +121,8 @@
     }
 }
 
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaKey*)aTequilaKey {
-    NSLog(@"getSessionIdForServiceFailedForTequilaKey");
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaKey*)tequilaKey {
+    NSLog(@"-> getSessionIdForServiceFailedForTequilaKey:%@", tequilaKey);
     [self connectionError];
 }
 
@@ -118,14 +136,17 @@
         }
     }
     if (tequilaCookie == nil) { //means bad credentials
-        [self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) delegate:self.delegate];
+        [username release];
+        username = nil;
+        [self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) prefillWithLastUsedUsername:NO delegate:self.delegate];
     } else {
+        [AuthenticationService saveLastUsedUsername:username forService:typeOfService]; //successfully authentified => save username for future prefill
         [authenticationService getTequilaKeyForService:typeOfService delegate:self];
     }
 }
 
 - (void)loginToTequilaFailed:(ASIHTTPRequest*)request {
-    NSLog(@"loginToTequilaFailed");
+    NSLog(@"-> loginToTequilaFailed");
     [self connectionError];
 }
 
@@ -145,7 +166,10 @@
 }
 
 - (void)connectionError {
-    [self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"ErrorOccuredTryAgain", @"AuthenticationPlugin", nil) delegate:self.delegate];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    connectionErrorAlertView = alert;
+    [alert show];
+    [alert release];
 }
 
 - (void)serviceConnectionToServerTimedOut {
@@ -160,6 +184,7 @@
     [authenticationService release];
     [tequilaCookie release];
     [applicationTequilaKey release];
+    [username release];
     [super dealloc];
 }
 

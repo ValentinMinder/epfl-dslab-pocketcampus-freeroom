@@ -4,7 +4,11 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 
+#import "ObjectArchiver.h"
+
 @implementation AuthenticationService
+
+static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
 
 static AuthenticationService* instance = nil;
 
@@ -22,6 +26,23 @@ static AuthenticationService* instance = nil;
 
 - (id)thriftServiceClientInstance {
     return [[[AuthenticationServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+}
+
++ (NSString*)lastUsedUsernameForService:(int)service {
+    NSMutableDictionary* lastUsernamesForService = (NSMutableDictionary*)[ObjectArchiver objectForKey:kLastUsedUseramesKey andPluginName:@"authentication"];
+    if (lastUsernamesForService == nil) {
+        return nil;
+    }
+    return [lastUsernamesForService objectForKey:[NSString stringWithFormat:@"%d", service]];
+}
+
++ (BOOL)saveLastUsedUsername:(NSString*)username forService:(int)service {
+    NSMutableDictionary* lastUsernamesForService = (NSMutableDictionary*)[ObjectArchiver objectForKey:kLastUsedUseramesKey andPluginName:@"authentication"];
+    if (lastUsernamesForService == nil) {
+        lastUsernamesForService = [NSMutableDictionary dictionary];
+    }
+    [lastUsernamesForService setObject:username forKey:[NSString stringWithFormat:@"%d", service]];
+    return [ObjectArchiver saveObject:lastUsernamesForService forKey:kLastUsedUseramesKey andPluginName:@"authentication"];
 }
 
 - (void)getTequilaKeyForService:(int)service delegate:(id)delegate {

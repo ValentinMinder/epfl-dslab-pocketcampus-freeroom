@@ -8,7 +8,11 @@
 
 #import "CamiproService.h"
 
+#import "ObjectArchiver.h"
+
 @implementation CamiproService
+
+static NSString* kLastSessionIdKey = @"LastSessionId";
 
 static CamiproService* instance = nil;
 
@@ -26,6 +30,14 @@ static CamiproService* instance = nil;
 
 - (id)thriftServiceClientInstance {
     return [[[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+}
+
++ (SessionId*)lastSessionId {
+    return (SessionId*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
+}
+
++ (BOOL)saveSessionId:(SessionId*)sessionId {
+    return [ObjectArchiver saveObject:sessionId forKey:kLastSessionIdKey andPluginName:@"camipro"];
 }
 
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate {

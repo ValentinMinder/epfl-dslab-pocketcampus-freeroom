@@ -15,6 +15,15 @@
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
     @try {
+        
+        if (object == nil) {
+            NSError* error = NULL;
+            NSFileManager* fileManager = [[NSFileManager alloc] init];
+            [fileManager removeItemAtPath:[self pathForKey:key pluginName:pluginName] error:&error];
+            [fileManager release];
+            return (error == NULL);
+        }
+        
         return [NSKeyedArchiver archiveRootObject:object toFile:[self pathForKey:key pluginName:pluginName]];
     }
     @catch (NSException *exception) {

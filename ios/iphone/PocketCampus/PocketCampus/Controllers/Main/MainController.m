@@ -10,13 +10,9 @@
 #import "PCValues.h"
 #import "HomeViewController.h"
 
-/* WARNING !! : must import <identifierName>Controller.h for each plugin*/
-
-#import "DirectoryController.h"
-
 @implementation MainController
 
-@synthesize pluginsList;
+@synthesize pluginsList, activePluginController;
 
 - (id)initWithWindow:(UIWindow *)window_
 {
@@ -70,9 +66,8 @@
 }
 
 - (void)refreshDisplayedPlugin {
-    id viewController = navController.visibleViewController;
-    if (viewController != nil && [viewController respondsToSelector:@selector(refresh)]) {
-        [viewController refresh];
+    if ([self.activePluginController respondsToSelector:@selector(refresh)]) {
+        [self.activePluginController performSelector:@selector(refresh)];
     }
 }
 

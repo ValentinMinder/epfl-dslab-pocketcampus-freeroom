@@ -1,7 +1,8 @@
 
 "PluginName" = "Authentification";
-"GasparLogin" = "Gaspar login";
+"GasparLogin" = "Login Gaspar";
 "Login" = "Connexion";
 "Error" = "Erreur";
-"BadCredentials" = " Nom d'utilisateur/mot de passe incorrect";
+"BadCredentials" = " User/pass incorrect";
 "ErrorOccuredTryAgain" = "Désolé, une erreur est survenue.";
+"Logout" = "Déconnexion";

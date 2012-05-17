@@ -20,10 +20,10 @@ static float SEPARATOR_HEIGHT = 1.0;
     if (self) {
         
         self.backgroundColor = [PCValues backgroundColor1];
-        UIView* separator1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, SEPARATOR_HEIGHT)];
+        UIView* separator1 = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0, self.frame.size.width, SEPARATOR_HEIGHT)];
         separator1.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
         
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 1.0, self.frame.size.width, VIEW_HEIGHT-(2*SEPARATOR_HEIGHT))];
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0.0, self.frame.size.width, VIEW_HEIGHT-(2*SEPARATOR_HEIGHT))];
         label.text = [NSString stringWithFormat:@"  %@", sectionTitle];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [PCValues textColor1];

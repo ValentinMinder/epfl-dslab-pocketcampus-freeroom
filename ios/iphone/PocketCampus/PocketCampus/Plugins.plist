@@ -36,6 +36,12 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>Camipro</string>
+			<key>enabled</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>Moodle</string>
 			<key>enabled</key>
 			<true/>

@@ -9,6 +9,6 @@
     CredentialsAlertViewController* credentialsAlertViewController;
 }
 
-- (void)loginToService:(int)typeOfService delegate:(id<AuthenticationCallbackDelegate>)delegate;
+- (void)loginToService:(int)typeOfService prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate;
 
 @end

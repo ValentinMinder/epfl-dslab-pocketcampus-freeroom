@@ -5,3 +5,4 @@
 "Error" = "Error";
 "BadCredentials" = " Wrong user/password";
 "ErrorOccuredTryAgain" = "Sorry, an error occured";
+"Logout" = "Logout";

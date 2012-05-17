@@ -20,6 +20,9 @@
  
 */
 
++ (SessionId*)lastSessionId;
++ (BOOL)saveSessionId:(SessionId*)sessionId;
+
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate;
 - (void)getStatsAndLoadingInfo:(CamiproRequest*)camiproRequest delegate:(id)delegate;
 - (void)sendLoadingInfoByEmail:(CamiproRequest*)camiproRequest delegate:(id)delegate;
@@ -28,6 +31,7 @@
 
 @protocol CamiproServiceDelegate <ServiceDelegate>
 
+@optional
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions;
 - (void)getBalanceAndTransactionsFailedForCamiproRequest:(CamiproRequest*)camiproRequest;
 - (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(StatsAndLoadingInfo*)statsAndLoadingInfo;

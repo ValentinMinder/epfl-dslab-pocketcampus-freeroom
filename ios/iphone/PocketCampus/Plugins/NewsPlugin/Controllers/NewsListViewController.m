@@ -79,9 +79,12 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     newsItems = [[NewsUtils eliminateDuplicateNewsItemsInArray:newsItems_] retain];
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
+    [tableView reloadData];
+    tableView.alpha = 0.0;
     tableView.hidden = NO;
-    //[tableView reloadData];
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+    [UIView transitionWithView:tableView duration:0.5 options:UIViewAnimationCurveEaseIn animations:^{
+        tableView.alpha = 1.0;
+    } completion:NULL];
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {

@@ -18,6 +18,9 @@
  - (SessionId *) getSessionIdForService: (TequilaKey *) aTequilaKey;  // throws TException
 */
 
++ (NSString*)lastUsedUsernameForService:(int)service;
++ (BOOL)saveLastUsedUsername:(NSString*)username forService:(int)service;
+
 - (void)getTequilaKeyForService:(int)service delegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)tequilaKey delegate:(id)delegate;
 

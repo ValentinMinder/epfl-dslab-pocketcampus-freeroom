@@ -7,3 +7,5 @@
 */
 
 "PluginName" = "Camipro";
+"CamiproBalance" = "Camipro balance";
+"TransactionsHistory" = "History";

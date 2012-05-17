@@ -31,8 +31,8 @@ static NSString* name = nil;
     return self;
 }
 
-- (void)loginToService:(int)typeOfService delegate:(id<AuthenticationCallbackDelegate>)delegate {
-    [credentialsAlertViewController askCredientialsForTypeOfService:typeOfService message:@"" delegate:delegate];
+- (void)loginToService:(int)typeOfService prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate {
+    [credentialsAlertViewController askCredientialsForTypeOfService:typeOfService message:nil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:delegate];
 }
 
 + (NSString*)localizedName {
