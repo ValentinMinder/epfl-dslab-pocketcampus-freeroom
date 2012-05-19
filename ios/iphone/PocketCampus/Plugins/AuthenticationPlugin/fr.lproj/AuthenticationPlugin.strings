@@ -5,4 +5,5 @@
 "Error" = "Erreur";
 "BadCredentials" = " User/pass incorrect";
 "ErrorOccuredTryAgain" = "Désolé, une erreur est survenue.";
-"Logout" = "Déconnexion";
+"SessionExpired" = "Votre session a expiré";
+"Logout" = "Se déconnecter";

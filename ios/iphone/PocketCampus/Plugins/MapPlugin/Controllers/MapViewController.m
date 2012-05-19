@@ -22,7 +22,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 @implementation MapViewController
 
-@synthesize mapView, searchBar, myLocationButton, floorDownButton, floorLabel, floorUpButton;
+@synthesize mapView, searchBar, myLocationButton, floorDownButton, floorLabel, floorUpButton, toolbar;
 
 - (id)init
 {
@@ -173,7 +173,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (IBAction)othersPressed {
     //NSLog(@"MapView region : %lf %lf, %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
     othersActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), nil];
-    [othersActionSheet showInView:self.view];
+    [othersActionSheet showFromToolbar:toolbar];
 }
 
 - (IBAction)floorDownPressed {

@@ -11,3 +11,4 @@
 "ConnectionToServerError" = "Sorry, an error occured. Try to reload."; 
 "Cancel" = "Cancel";
 "Error" = "Error";
+"Loading..." = "Loading...";

@@ -11,3 +11,4 @@
 "ConnectionToServerError" = "Désolé, une erreur est survenue.\nEssayez à nouveau.";
 "Cancel" = "Annuler";
 "Error" = "Erreur";
+"Loading..." = "Chargement...";

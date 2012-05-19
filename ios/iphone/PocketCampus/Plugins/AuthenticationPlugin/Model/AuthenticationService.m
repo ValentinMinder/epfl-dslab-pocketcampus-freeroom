@@ -70,6 +70,7 @@ static AuthenticationService* instance = nil;
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {
     NSURL *url = [NSURL URLWithString:TEQUILA_LOGIN_URL];    
     ASIFormDataRequest * request = [ASIFormDataRequest requestWithURL:url];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
     [request setRequestMethod:@"POST"];
     [request setPostValue:user forKey:@"username"];
     [request setPostValue:password forKey:@"password"];
@@ -83,6 +84,7 @@ static AuthenticationService* instance = nil;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:TEQUILA_AUTH_URL, token]];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
     [request addRequestHeader:@"Cookie" value:[NSString stringWithFormat:@"%@=%@", TEQUILA_COOKIE_NAME, tequilaCookie]];
     [request setDelegate:delegate];
     request.shouldRedirect = NO;

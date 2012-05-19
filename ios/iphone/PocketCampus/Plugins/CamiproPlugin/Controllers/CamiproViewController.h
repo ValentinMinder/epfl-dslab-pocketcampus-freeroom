@@ -14,11 +14,14 @@
 
 #import "authentication.h"
 
-@interface CamiproViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate> {
+@interface CamiproViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, AuthenticationCallbackDelegate, CamiproServiceDelegate> {
     UITableView* tableView;
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UIToolbar* toolbar;
+    UIBarButtonItem* logoutButton;
+    UIAlertView* sendMailAlertView;
+    UIAlertView* statsAlertView;
     AuthenticationController* authController;
     CamiproService* camiproService;
     BalanceAndTransactions* balanceAndTransactions;
@@ -28,4 +31,5 @@
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
+@property (nonatomic, assign) IBOutlet UIBarButtonItem* logoutButton;
 @end

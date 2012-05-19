@@ -20,7 +20,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 @implementation CamiproViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar, logoutButton;
 
 - (id)init
 {
@@ -45,6 +45,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [PCValues backgroundColor1];
+    self.logoutButton.title = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
     [self refresh];
 }
 
@@ -84,11 +85,18 @@ static CGFloat kBalanceCellHeight = 70.0;
     }];
 }
 
+- (IBAction)othersPressed {
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil), NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil), nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
 - (void)showLoginPopup {
     [authController loginToService:TypeOfService_SERVICE_CAMIPRO prefillWithLastUsedUsername:YES delegate:self];
 }
 
 - (void)startBalanceAndTransactionsRequestWithSessionId:(SessionId*)sessionId {
+    NSLog(@"startBalanceAndTransactionsRequestWithSessionId%@", sessionId);
     CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:sessionId iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
     [camiproService getBalanceAndTransactions:request delegate:self];
     [request release];
@@ -116,7 +124,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 /* CamiproServiceDelegate delegation */
 
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions_ {
-    NSLog(@"%@", balanceAndTransactions_);
     switch (balanceAndTransactions_.iStatus) {
         case 407: //user not authenticated (sessionId expired)
             NSLog(@"-> User session has expired. Requesting credientials...");
@@ -126,6 +133,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         case 404:
             NSLog(@"-> 404 error in status from getBalanceAndTransactionsForCamiproRequest:didReturn:");
             [self getBalanceAndTransactionsFailedForCamiproRequest:camiproRequest];
+            break;
         case 200: //OK
         {
             NSLog(@"-> BalanceAndTransactions received status success (200)");
@@ -164,7 +172,118 @@ static CGFloat kBalanceCellHeight = 70.0;
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
+- (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(SendMailResult *)sendMailResult {
+    if (sendMailAlertView == nil) {
+        return;
+    }
+    switch (sendMailResult.iStatus) {
+        case 407: //user not authenticated (sessionId expired)
+        {
+            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            break;
+        }
+        case 404:
+            NSLog(@"-> 404 error in status from sendLoadingInfoByEmailForCamiproRequest:didReturn:");
+            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            break;
+        case 200: //OK
+        {
+            sendMailAlertView.message = NSLocalizedStringFromTable(@"Sent", @"CamiproPlugin", nil);
+            [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            break;
+        }
+        default:
+            NSLog(@"!! Unknown status code %d in sendLoadingInfoByEmailForCamiproRequest:didReturn:", sendMailResult.iStatus);
+            break;
+    }
+}
+
+- (void)sendLoadingInfoByEmailFailedForCamiproRequest:(CamiproRequest *)camiproRequest {
+    if (sendMailAlertView == nil) {
+        return;
+    }
+    [sendMailAlertView dismissWithClickedButtonIndex:0 animated:NO];
+    UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
+}
+
+- (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(StatsAndLoadingInfo *)statsAndLoadingInfo {
+    if (statsAlertView == nil) {
+        return;
+    }
+    NSLog(@"%@", statsAndLoadingInfo);
+    switch (statsAndLoadingInfo.iStatus) {
+        case 407: //user not authenticated (sessionId expired)
+        {
+            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"SessionExpiredPleaseRefresh", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            break;
+        }
+        case 404:
+            NSLog(@"-> 404 error in status from getStatsAndLoadingInfoForCamiproRequest:didReturn:");
+            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"CamiproDown", @"CamiproPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            /* TEST */
+            /*
+            [statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
+            NSString* message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), 333.0, 1000.0, 320.0];
+            UIAlertView* statsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [statsAlert show];
+            [statsAlert release];
+             */
+             /* END OF TEST */
+            break;
+        case 200: //OK
+        {
+            [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+            NSString* message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"StatsWithFormat", @"CamiproPlugin", nil), statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastMonth, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths, statsAndLoadingInfo.iCardStatistics.iTotalPaymentsLastThreeMonths/3.0];
+            UIAlertView* statsAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [statsAlert show];
+            [statsAlert release];
+            break;
+        }
+        default:
+            NSLog(@"!! Unknown status code %d in getStatsAndLoadingInfoForCamiproRequest:didReturn:", statsAndLoadingInfo.iStatus);
+            break;
+    }
+}
+
+- (void)getStatsAndLoadingInfoFailedForCamiproRequest:(CamiproRequest *)camiproRequest {
+    if (statsAlertView == nil) {
+        return;
+    }
+    [statsAlertView dismissWithClickedButtonIndex:0 animated:NO];
+    UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
+}
+
 - (void)serviceConnectionToServerTimedOut {
+    if (sendMailAlertView != nil) {
+        [sendMailAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [errorAlert show];
+        [errorAlert release];
+        return;
+    }
+    if (statsAlertView != nil) {
+        [statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [errorAlert show];
+        [errorAlert release];
+        return;
+    }
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
@@ -173,6 +292,57 @@ static CGFloat kBalanceCellHeight = 70.0;
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
+/* UIActionSheetDelegate delegation */
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0: //reload instructions
+        {
+            sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
+            [sendMailAlertView show];
+            break;
+        }
+        case 1: //statistics
+        {
+            statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
+            [statsAlertView show];
+            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[CamiproService lastSessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+            [camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
+            [statsRequest release];
+            break;
+        }
+        default:
+            break;
+    }
+    
+}
+
+/* UIAlertViewDelegate delegation */
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (alertView == sendMailAlertView) {
+        [sendMailAlertView release];
+        sendMailAlertView = nil;
+        if (buttonIndex == 0) { //Cancel
+            [camiproService cancelOperationsForDelegate:self];
+            return;
+        }
+        sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
+        [sendMailAlertView show];
+        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[CamiproService lastSessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+        [camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
+        [mailRequest release];
+    } else if (alertView == statsAlertView) {
+        [statsAlertView release];
+        statsAlertView = nil;
+        if (buttonIndex == 0) { //Cancel
+            [camiproService cancelOperationsForDelegate:self];
+            return;
+        }
+    } else {
+        //nothing to do
+    }
+}
 
 /* UITableViewDelegation delegation */
 

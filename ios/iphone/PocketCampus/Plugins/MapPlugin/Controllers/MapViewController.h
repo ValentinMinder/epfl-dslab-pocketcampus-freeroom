@@ -24,6 +24,12 @@ typedef enum {
 } SearchBarState;
 
 @interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, MapServiceDelegate> {
+    UIBarButtonItem* myLocationButton;
+    UIBarButtonItem* floorDownButton;
+    UILabel* floorLabel;
+    UIBarButtonItem* floorUpButton;
+    UIActionSheet* othersActionSheet;
+    UIToolbar* toolbar;
     MapService* mapService;
     NSString* initialQuery;
     MKMapView* mapView;
@@ -36,11 +42,6 @@ typedef enum {
     SearchBarState searchBarState;
     CGRect searchBarHiddenFrame;
     CGRect searchBarVisibleFrame;
-    UIBarButtonItem* myLocationButton;
-    UIBarButtonItem* floorDownButton;
-    UILabel* floorLabel;
-    UIBarButtonItem* floorUpButton;
-    UIActionSheet* othersActionSheet;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;
@@ -49,6 +50,7 @@ typedef enum {
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* floorDownButton;
 @property (nonatomic, assign) IBOutlet UILabel* floorLabel;
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* floorUpButton;
+@property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
 
 - (id)initWithInitialQuery:(NSString*)query;
 
