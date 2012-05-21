@@ -25,17 +25,27 @@ static NSTimeInterval requestTimeoutInterval;
     if (self) {
         serviceName = [serviceName_ retain];
         NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
-        NSString* urlString = nil;
+
+        NSString* serverAddress = nil;
+        NSString* serverPort = nil;
+        NSString* serverVersion = nil;
         
         if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithInt:1]]) {
-            urlString = [config objectForKey:@"DEV_SERVER_URL"];
-            NSLog(@"-> Initializing service '%@' on DEV server (%@%@)", serviceName, urlString, serviceName);
+            //urlString = [config objectForKey:@"DEV_SERVER_URL"];
+            serverAddress = [config objectForKey:@"DEV_SERVER_ADDRESS"];
+            serverPort = [config objectForKey:@"DEV_SERVER_PORT"];
+            serverVersion = [config objectForKey:@"DEV_SERVER_VERSION"];
         } else {
-            urlString = [config objectForKey:@"PROD_SERVER_URL"];
-            NSLog(@"-> Initializing service '%@' on PRODUCTION server (%@%@)", serviceName, urlString, serviceName);
+            //urlString = [config objectForKey:@"PROD_SERVER_URL"];
+            serverAddress = [config objectForKey:@"PROD_SERVER_ADDRESS"];
+            serverPort = [config objectForKey:@"PROD_SERVER_PORT"];
+            serverVersion = [config objectForKey:@"PROD_SERVER_VERSION"];
+             
         }
-        NSString* stringURL = [NSString stringWithFormat:@"%@%@", urlString, serviceName];
-        serverURL = [[NSURL URLWithString:stringURL] retain];
+        NSString* serverURLString = [NSString stringWithFormat:@"http://%@:%@/%@", serverAddress, serverPort, serverVersion];
+        NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@", serverURLString, serviceName];
+        NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
+        serverURL = [[NSURL URLWithString:serviceURLString] retain];
         THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:10];
         thriftProtocol = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
         [client release];
