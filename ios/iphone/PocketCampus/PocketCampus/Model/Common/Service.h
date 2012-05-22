@@ -30,7 +30,8 @@
 
 @interface Service : NSObject<ASIHTTPRequestDelegate> {
     NSString* serviceName;
-    NSURL* serverURL;
+    NSString* serverAddressWithPort; //example 128.178.0.1:9090
+    NSURL* serverURL; //full URL with service extension (example ../v3r1/transport/)
     TBinaryProtocol* thriftProtocol;
     NSOperationQueue* operationQueue;
     id thriftClient;

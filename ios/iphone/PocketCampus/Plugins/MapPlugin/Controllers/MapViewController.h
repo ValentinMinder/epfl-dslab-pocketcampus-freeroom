@@ -23,7 +23,7 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, MapServiceDelegate> {
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, MapServiceDelegate> {
     UIBarButtonItem* myLocationButton;
     UIBarButtonItem* floorDownButton;
     UILabel* floorLabel;

@@ -53,6 +53,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:searchBar action:@selector(resignFirstResponder)];
+    mapTap.cancelsTouchesInView = NO;
+    mapTap.delegate = self;
+    [mapView addGestureRecognizer:mapTap];
+    [mapTap release];
     mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
     epflTileOverlay.mapView = mapView;
@@ -94,6 +99,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [mapService searchFor:query delegate:self];
     [searchActivityIndicator startAnimating];
     [searchBar resignFirstResponder];
+}
+
+/* UIGestureRecognizerDelegate delegation */
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 /* SearchBar animations */

@@ -42,8 +42,8 @@ static NSTimeInterval requestTimeoutInterval;
             serverVersion = [config objectForKey:@"PROD_SERVER_VERSION"];
              
         }
-        NSString* serverURLString = [NSString stringWithFormat:@"http://%@:%@/%@", serverAddress, serverPort, serverVersion];
-        NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@", serverURLString, serviceName];
+        serverAddressWithPort = [[NSString stringWithFormat:@"http://%@:%@", serverAddress, serverPort] retain];
+        NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@/%@", serverAddressWithPort, serverVersion, serviceName];
         NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
         serverURL = [[NSURL URLWithString:serviceURLString] retain];
         THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:10];
@@ -51,7 +51,7 @@ static NSTimeInterval requestTimeoutInterval;
         [client release];
         operationQueue = [[NSOperationQueue alloc] init];
         //[operationQueue setMaxConcurrentOperationCount:1];
-        requestTimeoutInterval = [(NSNumber*)[config objectForKey:@"THRIFT_REQUEST_TIMEOUT"] floatValue];
+        requestTimeoutInterval = [(NSNumber*)[config objectForKey:@"REQUEST_TIMEOUT"] floatValue];
         semaphore = dispatch_semaphore_create(0);
         checkServerRequest = nil;
         serverIsReachable = NO; //by default
@@ -70,7 +70,7 @@ static NSTimeInterval requestTimeoutInterval;
     }
     @synchronized(self) {
         if (checkServerRequest == nil) {
-            checkServerRequest = [[ASIHTTPRequest requestWithURL:serverURL] retain];
+            checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
             checkServerRequest.timeOutSeconds = requestTimeoutInterval;
             checkServerRequest.requestMethod = @"HEAD";
@@ -94,7 +94,7 @@ static NSTimeInterval requestTimeoutInterval;
 /* ASIHTTPRequestDelegate delegation */
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
-    if (request.responseStatusCode == 500) {
+    if (request.responseStatusCode == 404) { //correct. Means the server has responded
         serverIsReachable = YES;
     } else {
         serverIsReachable = NO;
@@ -104,6 +104,7 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
+    NSLog(@"-> Server reachability test failed. Returning timeout to delegate.");
     serverIsReachable = NO;
     while (dispatch_semaphore_signal(semaphore) != 0); //notify all
     dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
