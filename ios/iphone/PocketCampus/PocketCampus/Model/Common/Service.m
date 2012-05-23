@@ -124,18 +124,21 @@ static NSTimeInterval requestTimeoutInterval;
     if (nbOps > 0) {
         NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
+    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
 }
 
 - (void)cancelAllOperations {
-    for (NSOperationWithDelegate* operation in operationQueue.operations) {
-        operation.delegate = nil;
+    for (NSOperation* operation in operationQueue.operations) {
+        if ([operation respondsToSelector:@selector(setDelegate:)]) {
+            [(id)operation setDelegate:nil];
+        }
         [operation cancel];
     }
     while (dispatch_semaphore_signal(semaphore) != 0); //notify all
 }
 
 - (id)thriftProtocolInstance {
-    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:12.3];
+    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:requestTimeoutInterval];
     TBinaryProtocol* thriftProtocol_ = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
     [client release];
     return [thriftProtocol_ autorelease];
