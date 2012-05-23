@@ -9,7 +9,7 @@
 "PluginName" = "Transport";
 "FromLabel" = "From :";
 "NoStation" = "No station";
-"LocationNeedJustification" = "Your location will be used to find the nearest transport station. PocketCampus does not track your location history nor keep it.";
+"LocationNeedJustification" = "Your location will be used to find the nearest favorite transport station. PocketCampus does not track your location history nor keep it.";
 "ImpossibleLocateShort" = "Location error";
 "ImpossibleLocateLong" = "Impossible to find the nearest favorite station. Have you denied access to location ? If so, you can enable location in the Settings menu of your iPhone or manually select a departure station.";
 "WelcomeTouchInfoInstructions" = "Tap the info button to manage\nyour favorite stations.";

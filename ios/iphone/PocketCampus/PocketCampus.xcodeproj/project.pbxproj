@@ -263,8 +263,6 @@
 		324151EC1537692900CCFB22 /* MyLocationCercle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyLocationCercle@2x.png"; sourceTree = "<group>"; };
 		324151F215377B4C00CCFB22 /* MapItemAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapItemAnnotation.h; sourceTree = "<group>"; };
 		324151F315377B4C00CCFB22 /* MapItemAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapItemAnnotation.m; sourceTree = "<group>"; };
-		3242DE1C150571580082D720 /* Service_old.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service_old.h; sourceTree = "<group>"; };
-		3242DE1D150571580082D720 /* Service_old.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service_old.m; sourceTree = "<group>"; };
 		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
 		32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesListViewController.m; sourceTree = "<group>"; };
 		32442FEC151CFDED00685D10 /* Transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transport.png; sourceTree = "<group>"; };
@@ -719,8 +717,6 @@
 			children = (
 				32CFECED151CCB6800D8CBA6 /* ObjectArchiver.h */,
 				32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */,
-				3242DE1C150571580082D720 /* Service_old.h */,
-				3242DE1D150571580082D720 /* Service_old.m */,
 				324715AC15001381007C230C /* Service.h */,
 				324715AD15001381007C230C /* Service.m */,
 			);
