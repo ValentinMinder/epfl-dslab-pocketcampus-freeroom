@@ -33,6 +33,7 @@ static NewsService* instance = nil;
         @throw [NSException exceptionWithName:@"bad language" reason:@"language is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.customTimeout = 25.0; //fetch news can take much time
     operation.serviceClientSelector = @selector(getNewsItems:);
     operation.delegateDidReturnSelector = @selector(newsItemsForLanguage:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemsFailedForLanguage:);

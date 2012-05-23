@@ -97,17 +97,16 @@ static NSTimeInterval requestTimeoutInterval;
     if (request.responseStatusCode == 404) { //correct. Means the server has responded
         serverIsReachable = YES;
     } else {
+        NSLog(@"-> Server reachability test failed. Replied %d instead of 404. Returning timeout to delegate.", request.responseStatusCode);
         serverIsReachable = NO;
     }
-    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
-    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
+    [self notifyAll];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
     NSLog(@"-> Server reachability test failed. Returning timeout to delegate.");
     serverIsReachable = NO;
-    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
-    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
+    [self notifyAll];
 }
 
 /* END OF ASIHTTPRequestDelegate delegation */
@@ -124,7 +123,7 @@ static NSTimeInterval requestTimeoutInterval;
     if (nbOps > 0) {
         NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
-    while (dispatch_semaphore_signal(semaphore) != 0); //notify all
+    [self notifyAll];
 }
 
 - (void)cancelAllOperations {
@@ -134,7 +133,12 @@ static NSTimeInterval requestTimeoutInterval;
         }
         [operation cancel];
     }
+    [self notifyAll];
+}
+
+- (void)notifyAll {
     while (dispatch_semaphore_signal(semaphore) != 0); //notify all
+    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
 }
 
 - (id)thriftProtocolInstance {

@@ -74,9 +74,11 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 /* NewsServiceDelegate delegation */
 
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems_ {
-    //NSLog(@"%@", newsItems_);
+    NSLog(@"%d", newsItems_.count);
     [newsItems release];
     newsItems = [[NewsUtils eliminateDuplicateNewsItemsInArray:newsItems_] retain];
+    NSLog(@"count after : %d", newsItems.count);
+    NSLog(@"%@", newsItems);
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     [tableView reloadData];
