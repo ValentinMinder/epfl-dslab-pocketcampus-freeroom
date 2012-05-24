@@ -189,15 +189,15 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)dealloc
 {
-    [newsService cancelOperationsForDelegate:self];
-    [newsService release];
-    [newsItems release];
     for (ASIHTTPRequest* req in networkQueue.operations) {
         req.delegate = nil;
         [req cancel];
     }
     networkQueue.delegate = nil;
     [networkQueue release];
+    [newsService cancelOperationsForDelegate:self];
+    [newsService release];
+    [newsItems release];
     [thumbnails release];
     [super dealloc];
 }

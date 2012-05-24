@@ -205,13 +205,17 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 }
 
 - (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
-    ABPersonSetImageData(personViewController.displayedPerson,(CFDataRef)data, nil);
-    [personViewController loadView]; //reload view content to update picture
+    if (self.navigationController.visibleViewController == personViewController) {
+        ABPersonSetImageData(personViewController.displayedPerson,(CFDataRef)data, nil);
+        [personViewController loadView]; //reload view content to update picture
+    }
 }
 
 - (void)profilePictureFailedFor:(NSString*)sciper {
-    ABPersonSetImageData(personViewController.displayedPerson,NULL, nil);
-    [personViewController loadView]; //reload view content to remove loader png
+    if (self.navigationController.visibleViewController == personViewController) {
+        ABPersonSetImageData(personViewController.displayedPerson,NULL, nil);
+        [personViewController loadView]; //reload view content to remove loader png
+    }
 }
 
 - (void)resultsError {
