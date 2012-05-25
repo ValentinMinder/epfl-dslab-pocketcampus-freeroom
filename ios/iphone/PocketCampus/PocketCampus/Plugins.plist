@@ -44,7 +44,7 @@
 			<key>identifierName</key>
 			<string>Moodle</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 		</dict>
 	</array>
 </dict>
