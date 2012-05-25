@@ -28,6 +28,10 @@
 
 #import "CamiproService.h"
 
+
+
+#import "PocketCampusLogicTests.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -79,7 +83,14 @@
     //[authService getTequilaKeyForService:TypeOfService_SERVICE_CAMIPRO delegate:self];    
     
     
+    
     /*END TEST*/
+    
+    /* OFFICIAL TESTS */
+    
+    //[[[PocketCampusLogicTests alloc] init] testAll];
+    
+    /* END OF OFFICAL TESTS */
     
     [self.window makeKeyAndVisible];
 

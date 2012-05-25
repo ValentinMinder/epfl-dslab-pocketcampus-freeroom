@@ -7,3 +7,5 @@
 "ErrorOccuredTryAgain" = "Désolé, une erreur est survenue.";
 "SessionExpired" = "Votre session a expiré";
 "Logout" = "Se déconnecter";
+"Username" = "Nom d'utilisateur";
+"Password" = "Mot de passe";

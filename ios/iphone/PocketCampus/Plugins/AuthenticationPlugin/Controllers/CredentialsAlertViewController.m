@@ -57,6 +57,9 @@
     }
     alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMessage delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil), nil];
     alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    [[alertView textFieldAtIndex:0] setPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+    [[alertView textFieldAtIndex:1] setPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+    
     BOOL hasPrefilledUsername = NO;
     if (prefillUsername) {
         NSString* lastUsername = [AuthenticationService lastUsedUsernameForService:typeOfService_];

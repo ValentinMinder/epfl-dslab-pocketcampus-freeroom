@@ -65,6 +65,7 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 - (BOOL)serverIsReachable {
+    NSLog(@"-> Nb operations requesting server reachability : %d", operationQueue.operationCount);
     if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
         return NO;
     }
@@ -258,7 +259,6 @@ static NSTimeInterval requestTimeoutInterval;
 - (void)main {
     
     @try {
-        
         if (self.service != nil && ![self.service serverIsReachable]) {
             [self didTimeout];
             return;
@@ -722,7 +722,7 @@ static NSTimeInterval requestTimeoutInterval;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isCanceled"];
     executing = NO;
-    finished = YES;
+    finished = NO;
     canceled = YES;
     [self didChangeValueForKey:@"isCanceled"];
     [self didChangeValueForKey:@"isExecuting"];

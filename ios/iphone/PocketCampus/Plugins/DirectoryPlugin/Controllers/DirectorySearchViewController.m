@@ -160,7 +160,8 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     messageLabel.hidden = YES;
     
     [autocompleteResults release];
-    autocompleteResults = [results retain];
+    NSSet* autocompleteSet = [NSSet setWithArray:results]; //eliminate duplicates
+    autocompleteResults = [[autocompleteSet allObjects] retain];
     resultsMode = ResultsModeAutocomplete;
     [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     

@@ -7,3 +7,5 @@
 "ErrorOccuredTryAgain" = "Sorry, an error occured";
 "SessionExpired" = "Your session has expired";
 "Logout" = "Logout";
+"Username" = "Username";
+"Password" = "Password";

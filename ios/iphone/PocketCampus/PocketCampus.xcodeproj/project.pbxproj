@@ -171,6 +171,8 @@
 		32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */; };
 		32E1FDB715474F7E00B1B630 /* FloorUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB315474F7E00B1B630 /* FloorUp.png */; };
 		32E1FDB815474F7E00B1B630 /* FloorUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB415474F7E00B1B630 /* FloorUp@2x.png */; };
+		32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; };
+		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; };
 		32EF43881501260100899B86 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EF43871501260100899B86 /* HomeView.xib */; };
 		32EF438B1501272B00899B86 /* HomeIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EF438A1501272B00899B86 /* HomeIcon.m */; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; };
@@ -447,6 +449,14 @@
 		32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorDown@2x.png"; sourceTree = "<group>"; };
 		32E1FDB315474F7E00B1B630 /* FloorUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FloorUp.png; sourceTree = "<group>"; };
 		32E1FDB415474F7E00B1B630 /* FloorUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorUp@2x.png"; sourceTree = "<group>"; };
+		32E2809A156E52ED00B74825 /* PocketCampusLogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PocketCampusLogicTests-Info.plist"; sourceTree = "<group>"; };
+		32E2809C156E52ED00B74825 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32E2809E156E52ED00B74825 /* PocketCampusLogicTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PocketCampusLogicTests.h; sourceTree = "<group>"; };
+		32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PocketCampusLogicTests.m; sourceTree = "<group>"; };
+		32E280A1156E52ED00B74825 /* PocketCampusLogicTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketCampusLogicTests-Prefix.pch"; sourceTree = "<group>"; };
+		32E280A7156E583A00B74825 /* DirectoryServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServiceTests.h; sourceTree = "<group>"; };
+		32E280A8156E583A00B74825 /* DirectoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServiceTests.m; sourceTree = "<group>"; };
+		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32EF43871501260100899B86 /* HomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
 		32EF43891501272B00899B86 /* HomeIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeIcon.h; sourceTree = "<group>"; };
 		32EF438A1501272B00899B86 /* HomeIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeIcon.m; sourceTree = "<group>"; };
@@ -499,6 +509,7 @@
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,
 				32B2F18A153343B100FB8C79 /* Default@2x.png */,
+				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
 				3219EF4F14FCDE4900A271CD /* Frameworks */,
@@ -529,6 +540,7 @@
 				3219EF5014FCDE4900A271CD /* UIKit.framework */,
 				3219EF5214FCDE4900A271CD /* Foundation.framework */,
 				3219EF5414FCDE4900A271CD /* CoreGraphics.framework */,
+				32E280AA156E613100B74825 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1239,6 +1251,44 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		32E28098156E52ED00B74825 /* PocketCampusLogicTests */ = {
+			isa = PBXGroup;
+			children = (
+				32E2809E156E52ED00B74825 /* PocketCampusLogicTests.h */,
+				32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */,
+				32E280A5156E577900B74825 /* PluginsTests */,
+				32E28099156E52ED00B74825 /* Supporting Files */,
+			);
+			path = PocketCampusLogicTests;
+			sourceTree = "<group>";
+		};
+		32E28099156E52ED00B74825 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				32E2809A156E52ED00B74825 /* PocketCampusLogicTests-Info.plist */,
+				32E2809B156E52ED00B74825 /* InfoPlist.strings */,
+				32E280A1156E52ED00B74825 /* PocketCampusLogicTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		32E280A5156E577900B74825 /* PluginsTests */ = {
+			isa = PBXGroup;
+			children = (
+				32E280A6156E577900B74825 /* Directory */,
+			);
+			path = PluginsTests;
+			sourceTree = "<group>";
+		};
+		32E280A6156E577900B74825 /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				32E280A7156E583A00B74825 /* DirectoryServiceTests.h */,
+				32E280A8156E583A00B74825 /* DirectoryServiceTests.m */,
+			);
+			path = Directory;
+			sourceTree = "<group>";
+		};
 		32FAC0DF1500F40700925180 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -1647,6 +1697,8 @@
 				32B58723156459370051C57E /* CamiproController.m in Sources */,
 				32710E8D1564FC2400DE6984 /* CamiproService.m in Sources */,
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
+				32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */,
+				32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1725,6 +1777,14 @@
 			name = NewsPlugin.strings;
 			sourceTree = "<group>";
 		};
+		32E2809B156E52ED00B74825 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32E2809C156E52ED00B74825 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		32FAC0E81500F40700925180 /* DirectoryPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1767,7 +1827,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PROVISIONING_PROFILE = "0ED406E4-8D28-45DB-95EC-22345AFD5686";
+				PROVISIONING_PROFILE = "40FCF158-A97C-4B04-9230-08D5B966E0AB";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 			};
@@ -1788,7 +1848,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "0ED406E4-8D28-45DB-95EC-22345AFD5686";
+				PROVISIONING_PROFILE = "40FCF158-A97C-4B04-9230-08D5B966E0AB";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALIDATE_PRODUCT = YES;
