@@ -12,13 +12,17 @@
 
 #import "DestinationConnectionsListViewController.h"
 
+#import "HelpViewController.h"
+
 @implementation NextDeparturesListViewController
 
-@synthesize locationArrow, fromLabel, fromValueLabel, locationActivityIndicator, infoButton, tableView, welcomeTouchInfoInstructionsLabel, connectionErrorLabel;
+static double kSchedulesValidy = 20.0; //number of seconds that a schedule is considered valid and thus refresh is not necessary
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@synthesize locationArrow, fromLabel, fromValueLabel, locationActivityIndicator, infoButton, tableView, welcomeTouchInfoInstructionsLabel, connectionErrorLabel, toolbar, helpButton, settingsButton;
+
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"NextDeparturesListView" bundle:nil];
     if (self) {
         transportService = [[TransportService sharedInstanceToRetain] retain];
         favStations = nil;
@@ -28,7 +32,9 @@
         schedulesState = SchedulesStateUnset;
         favStationsState = FavStationsStateUnset;
         refreshTimer = nil;
-        isRefreshing = NO;
+        //isRefreshing = NO;
+        lastRefreshTimestamp = nil;
+        needToRefresh = NO;
     }
     
     return self;
@@ -40,9 +46,12 @@
 	// Do any additional setup after loading the view.
     tableView.hidden = YES;
     tableView.rowHeight = 60.0;
+    tableView.contentInset = tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     [refreshButton release];
+    helpButton.title = NSLocalizedStringFromTable(@"Help", @"PocketCampus", nil);
+    settingsButton.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     UITapGestureRecognizer* gestureRecognizer1 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)] autorelease];
     UITapGestureRecognizer* gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)] autorelease];
     [fromValueLabel addGestureRecognizer:gestureRecognizer1];
@@ -66,10 +75,11 @@
     } else {
         locationState = LocationStateUnset;
     }
-    //locationState = LocationStateUnset;
     schedulesState = SchedulesStateUnset;
     favStationsState = FavStationsStateUnset;
-    
+    if (!needToRefresh && lastRefreshTimestamp != nil && abs([lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
+        return;
+    }
     [self refresh];
     //[NSTimer scheduledTimerWithTimeInterval:0.85 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
     //refreshTimer = [[NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(refreshButtonPressed) userInfo:nil repeats:YES] retain];
@@ -84,16 +94,16 @@
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)refresh {
     NSLog(@"-> Refresh...");
-    if (isRefreshing) {
+    /*if (isRefreshing) {
         NSLog(@"-> Already refreshing. Returning.");
         return;
-    }
+    }*/
     if (favStationsState == FavStationsStateError) { //mean user has denied acces to location => no sense to reload, same error would appear
         NSLog(@"-> FavStationsStateError, will not refresh.");
         return;
@@ -104,21 +114,28 @@
         return;
     }
     
-    isRefreshing = YES;
+    //will refresh
+    
+    [transportService cancelOperationsForDelegate:self]; //cancel previous refresh if exists
+    
+    [lastRefreshTimestamp release];
+    lastRefreshTimestamp = [[NSDate date] retain];
+    needToRefresh = NO;
+    
+    //isRefreshing = YES;
     schedulesState = SchedulesStateUnset;
     favStationsState = FavStationsStateUnset;
     
-    [transportService cancelOperationsForDelegate:self];
     if (favStations == nil) { //request for default favorite stations
         NSLog(@"-> No previously saved favorite stations. Requesting default stations...");
         [transportService getLocationsForNames:[NSArray arrayWithObjects:@"EPFL", @"Lausanne-Flon", nil] delegate:self];
         favStationsState = FavStationsStateLoading;
         //schedulesState = SchedulesStateLoading;
     } else if (favStations.count == 0) {
-        isRefreshing = NO;
+        //isRefreshing = NO;
         favStationsState = FavStationsStateEmpty;
     } else if (favStations.count == 1) {
-        isRefreshing = NO;
+        //isRefreshing = NO;
         favStationsState = FavStationsStateNeedTwo;
         //Must have 2 stations, message will be shown by updateAll
     } else { //common case
@@ -184,7 +201,7 @@
 
 - (void)nearestFavoriteTransportStationFailed:(NSString*)reason {
     locationState = LocationStateError;
-    isRefreshing = NO;
+    //isRefreshing = NO;
     [self updateAll];
 }
 
@@ -195,14 +212,14 @@
     }
     
     [tripResults setObject:tripResult forKey:to];
+    if (schedulesState != SchedulesStateError) {
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
+    }
     if (tripResults.count == favStations.count - 1) { //all results have arrived
         NSLog(@"-> All trips returned => SchedulesStateLoaded");
         schedulesState = SchedulesStateLoaded;
-        isRefreshing = NO;
+        //isRefreshing = NO;
         [self updateAll];
-    }
-    if (schedulesState != SchedulesStateError) {
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
@@ -212,7 +229,7 @@
     if (tripResults.count == favStations.count - 1) { //all results have arrived
         NSLog(@"-> All trips returned (some with error) => SchedulesStateLoaded");
         schedulesState = SchedulesStateLoaded;
-        isRefreshing = NO;
+        //isRefreshing = NO;
         [self updateAll];
     }
 }
@@ -223,22 +240,22 @@
     }
     schedulesState = SchedulesStateError;
     connectionErrorLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
-    isRefreshing = NO;
+    //isRefreshing = NO;
     [self updateAll];
 }
 
 
-// Initialize and/or update all infos of the UI, according to current states (.
+// Initialize and/or update all infos of the UI, according to current states.
 // Call this method everytime location might have changed or when favorite user stations have changed 
 - (void)updateAll {
     
     //NSLog(@"-> updateAll with states (%d, %d, %d)", favStationsState, locationState, schedulesState);
 
-    if (isRefreshing) {
+    /*if (isRefreshing) {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     } else {
         self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
+    }*/
     
     switch (favStationsState) {
         case FavStationsStateEmpty:
@@ -377,7 +394,6 @@
             tableView.hidden = NO;
             welcomeTouchInfoInstructionsLabel.hidden = YES;
             connectionErrorLabel.hidden = YES;
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             break;
         case SchedulesStateLoading:
             //NSLog(@"SchedulesStateLoading");
@@ -420,6 +436,16 @@
     
     [favStationsViewController release];
     [modalNavController release];
+    needToRefresh = YES;
+}
+
+- (IBAction)presentHelpViewController:(id)sender {
+    HelpViewController* modalViewController = [[HelpViewController alloc] init];
+    if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
+        [self presentViewController:modalViewController animated:YES completion:NULL];
+    } else {
+        [self.navigationController presentModalViewController:modalViewController animated:YES];
+    }
 }
 
 
@@ -440,7 +466,7 @@
 /* UITableViewDataSource delegation */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    //
     NSIndexPath* biasedIndexPath = [self biasedIndexPathForIndexPath:indexPath];
     TransportStation* station = [favStations objectAtIndex:biasedIndexPath.row];
     
@@ -455,8 +481,10 @@
     }
     
     QueryTripsResult* trip = [tripResults objectForKey:station.name];
-    NextDeparturesCell* newCell = [[NextDeparturesCell alloc] initWithQueryTripResult:trip];
-    return [newCell autorelease];
+    NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
+    
+    return [[[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections] autorelease];
+   
 }
 
 
@@ -531,6 +559,7 @@
         [refreshTimer invalidate];
     }
     [refreshTimer release];
+    [lastRefreshTimestamp release];
     [super dealloc];
 }
 

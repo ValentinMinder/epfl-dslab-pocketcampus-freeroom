@@ -107,7 +107,6 @@
     
     if (queryTripResult.connections.count <= indexPath.row-1) { //should not happen, (-1 because header cell)
         return [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-        return nil;
     }
     
     TransportTrip* trip = [queryTripResult.connections objectAtIndex:indexPath.row-1];

@@ -49,6 +49,9 @@ typedef enum {
     UITableView* tableView;
     UILabel* welcomeTouchInfoInstructionsLabel;
     UILabel* connectionErrorLabel;
+    UIToolbar* toolbar;
+    UIBarButtonItem* helpButton;
+    UIBarButtonItem* settingsButton;
     TransportService* transportService;
     NSArray* favStations;
     NSMutableDictionary* tripResults; //key : destination station name, value : QueryTripResult
@@ -58,6 +61,8 @@ typedef enum {
     FavStationsState favStationsState;
     NSTimer* refreshTimer;
     BOOL isRefreshing;
+    NSDate* lastRefreshTimestamp;
+    BOOL needToRefresh;
 }
 
 - (IBAction)presentFavoriteStationsViewController:(id)sender;
@@ -71,5 +76,8 @@ typedef enum {
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UILabel* welcomeTouchInfoInstructionsLabel;
 @property (nonatomic, assign) IBOutlet UILabel* connectionErrorLabel;
+@property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
+@property (nonatomic, assign) IBOutlet UIBarButtonItem* helpButton;
+@property (nonatomic, assign) IBOutlet UIBarButtonItem* settingsButton;
 
 @end

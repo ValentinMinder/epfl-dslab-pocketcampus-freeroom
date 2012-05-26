@@ -68,6 +68,7 @@
     //MapService* mapService = [[MapService sharedInstanceToRetain] retain];
     
     //[mapService searchFor:@"candea" delegate:self];
+    //[mapService getLayerListWithDelegate:self];
     
     //NewsService* service = [[NewsService sharedInstanceToRetain] retain];
     

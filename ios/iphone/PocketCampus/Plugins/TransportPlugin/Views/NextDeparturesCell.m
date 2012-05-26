@@ -16,7 +16,7 @@
 
 @synthesize transportStation, loadingState;
 
-- (id)initWithQueryTripResult:(QueryTripsResult*)trip {
+- (id)initWithQueryTripResult:(QueryTripsResult*)trip redundantConnections:(NSArray*)redundantConnections {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
         
@@ -25,8 +25,8 @@
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        if (trip.connections == nil) {
-            return self;
+        if (trip.connections == nil || trip.connections.count == 0) {//should not happen
+            return self; 
         }
         
         transportStation = [trip.to retain];
@@ -65,59 +65,49 @@
         
         CGFloat fromStationLabelX = arrowImageView.frame.size.width+6.0;
         
-        UILabel* fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, 2.0, 310 - fromStationLabelX, 30.0)];
-        fromStationLabel.text = [TransportUtils nicerName:trip.to.name];
+        fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, 2.0, 310 - fromStationLabelX, 30.0)];
+        fromStationLabel.text = [TransportUtils nicerName:transportStation.name];
         fromStationLabel.font = [UIFont boldSystemFontOfSize:18];
         fromStationLabel.adjustsFontSizeToFitWidth = YES;
-        fromStationLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
         fromStationLabel.textAlignment = UITextAlignmentLeft;
         
         //fromStationLabel.backgroundColor = [UIColor yellowColor];
         
-        
-        NSArray* connections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
-        
-        
         NSString* timesString = @"";
-        UIFont* timeFont = [UIFont systemFontOfSize:20.0];
-        CGSize timeReqSize = [@"00:00" sizeWithFont:timeFont];
-        for (int i = 0; i<connections.count && i < 3; i++) {
-            TransportConnection* connection = [connections objectAtIndex:i];
-            timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
-            if ([timesString isEqualToString:@"Now"]) {
-                UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
-                busImageView.center = CGPointMake((fromStationLabelX+8.0)+(i*(70.0)), 43.0);
-                [self.contentView addSubview:busImageView];
-                [busImageView release];
-            } else {
-                UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX+(i*(timeReqSize.width+25.0)), 33.0, timeReqSize.width, 20.0)];
-                //timeLabel.backgroundColor = [UIColor grayColor];
-                timeLabel.text = timesString;
-                timeLabel.textAlignment = UITextAlignmentLeft;
-                timeLabel.textColor = [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0]; //detailTextLabel color
-                timeLabel.font = timeFont;
-                [self.contentView addSubview:timeLabel];
-                [timeLabel release];
+        UIFont* timeFont;
+        CGSize timeReqSize; 
+        bottomLabels = [[NSMutableArray arrayWithCapacity:3] retain];
+        
+        if (redundantConnections != nil && redundantConnections.count > 0) {
+            
+            timeFont = [UIFont systemFontOfSize:20.0];
+            timeReqSize = [@"00:00" sizeWithFont:timeFont];
+            
+            for (int i = 0; i<redundantConnections.count && i < 3; i++) {
+                TransportConnection* connection = [redundantConnections objectAtIndex:i];
+                timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                if ([timesString isEqualToString:@"Now"]) {
+                    //if (i == 0) { //show bus once only
+                        UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
+                        busImageView.center = CGPointMake(40.0+(i*(70.0)), 43.0);
+                        [self.contentView addSubview:busImageView];
+                        [busImageView release];
+                    //}
+                } else {
+                    UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0+(i*(timeReqSize.width+25.0)), 33.0, timeReqSize.width, 20.0)];
+                    //timeLabel.backgroundColor = [UIColor grayColor];
+                    timeLabel.text = timesString;
+                    timeLabel.textAlignment = UITextAlignmentLeft;
+                    timeLabel.font = timeFont;
+                    [self.contentView addSubview:timeLabel];
+                    [bottomLabels addObject:timeLabel];
+                    [timeLabel release];
+                }
             }
-        }
-        
-        UILabel* lineNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(247.0, 0, 42.0, 60.0)];
-        
-        if (connections.count == 0) {
-            lineNameLabel.frame = CGRectMake(0, 0, 0, 0);
-            NSString* complexTripString = NSLocalizedStringFromTable(@"CellMultiplePossibilitiesTrip", @"TransportPlugin", nil);
-            UIFont* font = [UIFont systemFontOfSize:16.0];
-            CGSize reqSize = [complexTripString sizeWithFont:font];
-            UILabel* complexTripLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, 30.0, reqSize.width, reqSize.height)];
-            complexTripLabel.adjustsFontSizeToFitWidth = YES; //should not be necessary
-            complexTripLabel.text = complexTripString;
-            complexTripLabel.textAlignment = UITextAlignmentLeft;
-            complexTripLabel.font = font;
-            complexTripLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
-            [self.contentView addSubview:complexTripLabel];
-            [complexTripLabel release];
-        } else {
-            TransportConnection* connection = [connections objectAtIndex:0]; //all have same line anyway
+            
+            lineNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(247.0, 0, 42.0, 60.0)];
+            
+            TransportConnection* connection = [redundantConnections objectAtIndex:0]; //all have same line anyway
             NSString* lineName = [TransportUtils nicerName:connection.line.name];
             if (connection.line.name == nil) {
                 lineNameLabel.frame = CGRectMake(0,0,0,0);
@@ -129,21 +119,75 @@
                 lineNameLabel.font = [UIFont systemFontOfSize:30];
                 lineNameLabel.adjustsFontSizeToFitWidth = YES;
                 lineNameLabel.textAlignment = UITextAlignmentCenter;
-                lineNameLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
                 
                 CGRect fromStationlabelFrame = fromStationLabel.frame;
                 fromStationlabelFrame.size.width = 210.0;
                 fromStationLabel.frame = fromStationlabelFrame;
                 
             }
+            
+            [self.contentView addSubview:lineNameLabel];
+            
+        } else { //redundantConnections = nil or is empty
+            
+            timeFont = [UIFont systemFontOfSize:17.0];
+            timeReqSize = [@"00:00 (M1)" sizeWithFont:timeFont];
+            
+            for (int i = 0; i<trip.connections.count && i < 3; i++) {
+                TransportTrip* transportTrip = [trip.connections objectAtIndex:i]; 
+                
+                TransportConnection* firstConnection;
+                
+                if (transportTrip.parts == nil || transportTrip.parts.count == 0) {
+                    timesString = [TransportUtils hourMinutesStringForTimestamp:transportTrip.departureTime/1000.0];
+                } else if ([TransportUtils isFeetConnection:[transportTrip.parts objectAtIndex:0]] && transportTrip.parts.count > 1) {
+                    firstConnection = [transportTrip.parts objectAtIndex:1];
+                    timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                } else {
+                    firstConnection = [transportTrip.parts objectAtIndex:0];
+                    timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                }
+                timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                
+                NSString* lineName = [TransportUtils nicerName:firstConnection.line.name];
+                if (lineName == nil) {
+                    lineName = @"";
+                }
+                
+                if ([timesString isEqualToString:@"Now"]) {
+                    UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
+                    busImageView.center = CGPointMake(40.0+(i*100.0), 43.0);
+                    [self.contentView addSubview:busImageView];
+                    [busImageView release];
+                    
+                    UILabel* lineLabel = [[[UILabel alloc] initWithFrame:CGRectMake(53.0+(i*100.0), 33.0, 30.0, 20.0)] autorelease];
+                    lineLabel.text = lineName;
+                    lineLabel.adjustsFontSizeToFitWidth = YES;
+                    lineLabel.textAlignment = UITextAlignmentLeft;
+                    lineLabel.font = timeFont;
+                    [self.contentView addSubview:lineLabel];
+                    [bottomLabels addObject:lineLabel];
+                } else {
+                    UILabel* timeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(30.0+(i*(timeReqSize.width+10.0)), 33.0, timeReqSize.width, 20.0)] autorelease];
+                    timeLabel.text = [NSString stringWithFormat:@"%@ (%@)",timesString, lineName];
+                    timeLabel.adjustsFontSizeToFitWidth = YES;
+                    timeLabel.minimumFontSize = 13.0;
+                    timeLabel.textAlignment = UITextAlignmentLeft;
+                    timeLabel.font = timeFont;
+                    [self.contentView addSubview:timeLabel];
+                    [bottomLabels addObject:timeLabel];
+                    
+                }
+            }
+            
+            lineNameLabel = nil;
+            
         }
+        
         
         [self.contentView addSubview:arrowImageView];
         [self.contentView addSubview:fromStationLabel];
-        [self.contentView addSubview:lineNameLabel];
         [arrowImageView release];
-        [fromStationLabel release];
-        [lineNameLabel release];
         
     }
     return self;
@@ -152,6 +196,8 @@
 - (id)initWithDestinationStation:(TransportStation*)destinationStation loadingState:(LoadingState)loadingState_; {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (self) {
+        bottomLabels = nil;
+        lineNameLabel = nil;
         
         loadingState = loadingState_;
         
@@ -165,7 +211,7 @@
         
         CGFloat fromStationLabelX = arrowImageView.frame.size.width+6.0;
         
-        UILabel* fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, arrowImageView.frame.origin.y-3.0, 200.0, 30.0)];
+        fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, arrowImageView.frame.origin.y-3.0, 200.0, 30.0)];
         fromStationLabel.text = [TransportUtils nicerName:destinationStation.name];
         fromStationLabel.font = [UIFont boldSystemFontOfSize:18];
         fromStationLabel.adjustsFontSizeToFitWidth = YES;
@@ -173,7 +219,6 @@
         fromStationLabel.textAlignment = UITextAlignmentLeft;
         
         [self.contentView addSubview:fromStationLabel];
-        [fromStationLabel release];
         
         [self.contentView addSubview:arrowImageView];
         [arrowImageView release];
@@ -209,12 +254,36 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+    [self setHighlighted:selected animated:animated];
+}
 
-    // Configure the view for the selected state
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    if (loadingState != LoadingStateLoaded) {
+        return;
+    }
+    if (highlighted) {
+        UIColor* white = [UIColor whiteColor];
+        fromStationLabel.textColor = white;
+        lineNameLabel.textColor = white;
+        for (UILabel* label in bottomLabels) {
+            label.textColor = white; //detailTextLabel color
+        }
+    } else {
+        fromStationLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+        lineNameLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+        for (UILabel* label in bottomLabels) {
+            label.textColor = [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0]; //detailTextLabel color
+            
+        }
+    }
 }
 
 - (void)dealloc
 {
+    [fromStationLabel release];
+    [bottomLabels release];
+    [lineNameLabel release];
     [transportStation release];
     [super dealloc];
 }

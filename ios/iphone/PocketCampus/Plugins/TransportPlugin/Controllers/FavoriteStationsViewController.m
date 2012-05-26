@@ -123,10 +123,10 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 - (void)doneButtonPressed {
     [transportService saveUserFavoriteTransportStations:favStations];
-    if ([self.navigationController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
-        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    if ([self.presentingViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     } else {
-        [self.navigationController dismissModalViewControllerAnimated:YES];
+        [self.presentingViewController dismissModalViewControllerAnimated:YES];
     }
 }
 

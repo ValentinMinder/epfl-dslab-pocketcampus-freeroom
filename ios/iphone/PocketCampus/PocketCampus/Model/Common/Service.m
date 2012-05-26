@@ -65,7 +65,6 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 - (BOOL)serverIsReachable {
-    NSLog(@"-> Nb operations requesting server reachability : %d", operationQueue.operationCount);
     if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
         return NO;
     }
@@ -187,6 +186,9 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 - (BOOL)delegateRespondsToSelector:(SEL)selector {
+    if ([self isCancelled]) {
+        return NO;
+    }
     if (self.delegate == nil) {
         return NO;
     }

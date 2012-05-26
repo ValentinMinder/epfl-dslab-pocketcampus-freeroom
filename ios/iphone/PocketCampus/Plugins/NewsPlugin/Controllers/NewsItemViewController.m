@@ -110,6 +110,10 @@ static int NEWS_FONT_SIZE = 14.0;
     }
 }
 
+- (void)viewWillUnload {
+    [webView stopLoading];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -163,7 +167,7 @@ static int NEWS_FONT_SIZE = 14.0;
     } else {
         startY = titleLabel.frame.origin.y+titleLabel.frame.size.height+5.0;
     }
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, reqSize.width, reqSize.height+20.0)];
+    webView = [[[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, reqSize.width, reqSize.height+20.0)] autorelease];
     webView.scrollView.scrollEnabled = NO;
     webView.delegate = self;
     NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'>a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx;'>%@</span>", NEWS_FONT_SIZE, content];

@@ -18,7 +18,7 @@ static NSString* name = nil;
     self = [super init];
     if (self) {
         mainController = mainController_;
-        NextDeparturesListViewController* viewController = [[NextDeparturesListViewController alloc] initWithNibName:@"NextDeparturesListView" bundle:nil];
+        NextDeparturesListViewController* viewController = [[NextDeparturesListViewController alloc] init];
         viewController.title = [[self class] localizedName];
         mainViewController = viewController;
     }

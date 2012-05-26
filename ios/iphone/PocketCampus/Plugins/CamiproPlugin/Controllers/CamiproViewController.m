@@ -46,6 +46,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [PCValues backgroundColor1];
     self.logoutButton.title = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
+    tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
     [self refresh];
 }
 

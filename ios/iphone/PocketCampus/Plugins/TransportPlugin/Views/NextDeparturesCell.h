@@ -17,11 +17,14 @@ typedef enum {
 } LoadingState;
 
 @interface NextDeparturesCell : UITableViewCell {
+    UILabel* fromStationLabel;
+    NSMutableArray* bottomLabels;
+    UILabel* lineNameLabel;
     TransportStation* transportStation;
     LoadingState loadingState;
 }
 
-- (id)initWithQueryTripResult:(QueryTripsResult*)trip;
+- (id)initWithQueryTripResult:(QueryTripsResult*)trip redundantConnections:(NSArray*)redundantConnections;
 - (id)initWithDestinationStation:(TransportStation*)destinationStation loadingState:(LoadingState)loadingState;
 
 @property (readonly) TransportStation* transportStation;

@@ -72,93 +72,119 @@
 }
 
 + (NSArray*)nextRedundantDeparturesFromMessyResult:(QueryTripsResult*)queryTripResult {
-    if (queryTripResult.connections == nil) {
-        @throw [NSException exceptionWithName:@"bad argument in nextRedundantDeparturesFromMessyResult:" reason:@"queryTripResult.connection is nil" userInfo:nil];
-    }
     
-    NSMutableArray* directTripsConnections = [NSMutableArray array]; //array of TransportConnection
-    for (TransportTrip* trip in queryTripResult.connections) {
-        if (trip.parts != nil && trip.parts.count == 1) {
-            [directTripsConnections addObject:[trip.parts objectAtIndex:0]];
-            //NSLog(@"found direct");
+    @try {
+        
+        if (queryTripResult.connections == nil) {
+            @throw [NSException exceptionWithName:@"bad argument in nextRedundantDeparturesFromMessyResult:" reason:@"queryTripResult.connection is nil" userInfo:nil];
         }
-    }
-    if (directTripsConnections.count > 0) {
-        NSMutableDictionary* connectionsForLine = [NSMutableDictionary dictionary];
-        for (TransportConnection* directConnection in directTripsConnections) {
-            if (directConnection.line == nil || directConnection.line.name == nil) {
-                continue;
+        
+        NSMutableArray* directTripsConnections = [NSMutableArray array]; //array of TransportConnection
+        for (TransportTrip* trip in queryTripResult.connections) {
+            if (trip.parts != nil && trip.parts.count == 1) {
+                [directTripsConnections addObject:[trip.parts objectAtIndex:0]];
+                //NSLog(@"found direct");
             }
-            NSString* lineNicerName = [[self class] nicerName:directConnection.line.name];
-            if ([connectionsForLine objectForKey:lineNicerName] == nil) {
-                [connectionsForLine setObject:[NSMutableArray arrayWithObject:directConnection] forKey:lineNicerName];
-                //NSLog(@"found new direct potentialRepeatingConnection line : %@", lineNicerName);
-            } else {
-                NSMutableArray* lineDirectConnections = [connectionsForLine objectForKey:lineNicerName];
-                [lineDirectConnections addObject:directConnection];
-                //NSLog(@"found existing direct potentialRepeatingConnection line : %@", lineNicerName);
+        }
+        if (directTripsConnections.count > 2) {
+            NSMutableDictionary* connectionsForLine = [NSMutableDictionary dictionary];
+            for (TransportConnection* directConnection in directTripsConnections) {
+                if (directConnection.line == nil || directConnection.line.name == nil) {
+                    continue;
+                }
+                NSString* lineNicerName = [[self class] nicerName:directConnection.line.name];
+                if ([connectionsForLine objectForKey:lineNicerName] == nil) {
+                    [connectionsForLine setObject:[NSMutableArray arrayWithObject:directConnection] forKey:lineNicerName];
+                    //NSLog(@"found new direct potentialRepeatingConnection line : %@", lineNicerName);
+                } else {
+                    NSMutableArray* lineDirectConnections = [connectionsForLine objectForKey:lineNicerName];
+                    [lineDirectConnections addObject:directConnection];
+                    //NSLog(@"found existing direct potentialRepeatingConnection line : %@", lineNicerName);
+                }
+            }
+            
+            int maxConnections = 0;
+            NSArray* maxLineDirectConnections = [NSArray array];
+            for (NSArray* lineDirectConnections in [connectionsForLine allValues]) {
+                if (lineDirectConnections.count > maxConnections) {
+                    maxConnections = lineDirectConnections.count;
+                    maxLineDirectConnections = lineDirectConnections;
+                }
+            }
+            TransportTrip* firstTrip = [queryTripResult.connections objectAtIndex:0];
+            TransportConnection* firstConnection = [firstTrip.parts objectAtIndex:0];
+            if ([self isFeetConnection:firstConnection]) {
+                firstConnection = [firstTrip.parts objectAtIndex:1];
+            }
+            TransportConnection* firstConnectionFromResult = [maxLineDirectConnections objectAtIndex:0];
+            if ((firstConnectionFromResult.departureTime/1000.0) < (firstConnection.departureTime/1000.0) + 5.0*60.0) { //returning direct must arrive at most 5 minutes later than the non-direct that arrives the first
+                return maxLineDirectConnections;
+            }
+        }
+        
+        
+        NSMutableDictionary* repeatingConnectionsForLines = [NSMutableDictionary dictionary];
+        for (TransportTrip* trip in queryTripResult.connections) {
+            if (trip.parts != nil && trip.parts.count >= 2) {
+                
+                TransportConnection* potentialFeetConnection = [trip.parts objectAtIndex:0];
+                TransportConnection* potentialRepeatingConnection = [trip.parts objectAtIndex:1];
+                
+                if (![self isFeetConnection:potentialFeetConnection]) {
+                    potentialRepeatingConnection = potentialFeetConnection;
+                }
+                
+                if (potentialRepeatingConnection.line != nil && potentialRepeatingConnection.line.name != nil) {
+                    NSString* lineNicerName = [self nicerName:potentialRepeatingConnection.line.name];
+                    //NSLog(@"Treating line : %@", lineNicerName);
+                    if ([repeatingConnectionsForLines objectForKey:lineNicerName] == nil) {
+                        [repeatingConnectionsForLines setObject:[NSMutableArray arrayWithObject:potentialRepeatingConnection] forKey:lineNicerName];
+                        //NSLog(@"found new potentialRepeatingConnection line : %@", lineNicerName);
+                    } else {
+                        NSMutableArray* potentialRepeatingConnections = [repeatingConnectionsForLines objectForKey:lineNicerName];
+                        [potentialRepeatingConnections addObject:potentialRepeatingConnection];
+                        //NSLog(@"found existing potentialRepeatingConnection line : %@", lineNicerName);
+                    }
+                }
+                
             }
         }
         
         int maxConnections = 0;
-        NSArray* maxLineDirectConnections = [NSArray array];
-        for (NSArray* lineDirectConnections in [connectionsForLine allValues]) {
-            if (lineDirectConnections.count > maxConnections) {
-                maxConnections = lineDirectConnections.count;
-                maxLineDirectConnections = lineDirectConnections;
+        NSArray* mostRepeatingLineConnections;
+        //long long minDuration = LLONG_MAX;
+        //NSLog(@"-----------");
+        for (NSArray* lineConnections in [repeatingConnectionsForLines allValues]) {
+            //TransportConnection* firstConnection = [lineConnections objectAtIndex:0];
+            //NSLog(@"%@ %d %lld", firstConnection.line.name, lineConnections.count, (firstConnection.arrivalTime - firstConnection.departureTime));
+            if (lineConnections.count >= maxConnections && lineConnections.count > 1) {
+                //NSLog(@"test");
+                maxConnections = lineConnections.count;
+                mostRepeatingLineConnections = lineConnections;
+                //minDuration = firstConnection.arrivalTime - firstConnection.departureTime < minDuration;
             }
         }
-        return maxLineDirectConnections;
-    }
-    
-    
-    NSMutableDictionary* repeatingConnectionsForLines = [NSMutableDictionary dictionary];
-    for (TransportTrip* trip in queryTripResult.connections) {
-        if (trip.parts != nil && trip.parts.count >= 2) {
-            
-            TransportConnection* potentialFeetConnection = [trip.parts objectAtIndex:0];
-            TransportConnection* potentialRepeatingConnection = [trip.parts objectAtIndex:1];
-            
-            if (![self isFeetConnection:potentialFeetConnection]) {
-                potentialRepeatingConnection = potentialFeetConnection;
+        
+        if (maxConnections > 2) {
+            TransportTrip* firstTrip = [queryTripResult.connections objectAtIndex:0];
+            TransportConnection* firstConnection = [firstTrip.parts objectAtIndex:0];
+            if ([self isFeetConnection:firstConnection]) {
+                firstConnection = [firstTrip.parts objectAtIndex:1];
             }
-            
-            if (potentialRepeatingConnection.line != nil && potentialRepeatingConnection.line.name != nil) {
-                NSString* lineNicerName = [self nicerName:potentialRepeatingConnection.line.name];
-                //NSLog(@"Treating line : %@", lineNicerName);
-                if ([repeatingConnectionsForLines objectForKey:lineNicerName] == nil) {
-                    [repeatingConnectionsForLines setObject:[NSMutableArray arrayWithObject:potentialRepeatingConnection] forKey:lineNicerName];
-                    //NSLog(@"found new potentialRepeatingConnection line : %@", lineNicerName);
-                } else {
-                    NSMutableArray* potentialRepeatingConnections = [repeatingConnectionsForLines objectForKey:lineNicerName];
-                    [potentialRepeatingConnections addObject:potentialRepeatingConnection];
-                    //NSLog(@"found existing potentialRepeatingConnection line : %@", lineNicerName);
-                }
-            }
-            
+            TransportConnection* firstConnectionFromResult = [mostRepeatingLineConnections objectAtIndex:0];
+            //NSLog(@"firstTrip : %@ - %@", [self hourMinutesStringForTimestamp:firstConnection.departureTime/1000.0], [self hourMinutesStringForTimestamp:firstConnection.arrivalTime/1000.0]);
+            //NSLog(@"result : %@ - %@", [self hourMinutesStringForTimestamp:firstConnectionFromResult.departureTime/1000.0], [self hourMinutesStringForTimestamp:firstConnectionFromResult.arrivalTime/1000.0]);
+            if ((firstConnectionFromResult.departureTime/1000.0) < (firstConnection.departureTime/1000.0) + 5.0*60.0) { //returning direct must leave at most 5 minutes later than the non-direct that arrives the first
+                return mostRepeatingLineConnections;
+            }        
         }
+        
+        return nil;
+        
     }
-    
-    int maxConnections = 0;
-    NSArray* mostRepeatingLineConnections = [NSArray array];
-    //long long minDuration = LLONG_MAX;
-    //NSLog(@"-----------");
-    for (NSArray* lineConnections in [repeatingConnectionsForLines allValues]) {
-        //TransportConnection* firstConnection = [lineConnections objectAtIndex:0];
-        //NSLog(@"%@ %d %lld", firstConnection.line.name, lineConnections.count, (firstConnection.arrivalTime - firstConnection.departureTime));
-        if (lineConnections.count >= maxConnections && lineConnections.count > 1) {
-            //NSLog(@"test");
-            maxConnections = lineConnections.count;
-            mostRepeatingLineConnections = lineConnections;
-            //minDuration = firstConnection.arrivalTime - firstConnection.departureTime < minDuration;
-        }
+    @catch (NSException *exception) {
+        return nil;
     }
-    
-    if (maxConnections > 0) {
-        return mostRepeatingLineConnections;
-    }
-    
-    return [NSArray array];
 }
 
 + (int)numberOfChangeForTrip:(TransportTrip*)trip {

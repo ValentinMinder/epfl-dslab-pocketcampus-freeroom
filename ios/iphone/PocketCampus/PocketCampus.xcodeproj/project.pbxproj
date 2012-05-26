@@ -66,6 +66,8 @@
 		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		3257C2091570F90100E626A4 /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3257C2081570F90100E626A4 /* HelpView.xib */; };
+		3257C20D1570F99C00E626A4 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* HelpViewController.m */; };
 		32662743151FC7CE002FA0E5 /* AppLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32662742151FC7CE002FA0E5 /* AppLogo@2x.png */; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
 		3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */; };
@@ -246,7 +248,7 @@
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
 		3236B5B1151F746100C43769 /* NextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesCell.h; sourceTree = "<group>"; };
-		3236B5B2151F746100C43769 /* NextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesCell.m; sourceTree = "<group>"; };
+		3236B5B2151F746100C43769 /* NextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; path = NextDeparturesCell.m; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
 		324151C815373A1700CCFB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MapPlugin.strings; sourceTree = "<group>"; };
 		324151CF15373A5B00CCFB22 /* MapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapController.h; sourceTree = "<group>"; };
@@ -289,6 +291,9 @@
 		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
+		3257C2081570F90100E626A4 /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
+		3257C20B1570F99C00E626A4 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		3257C20C1570F99C00E626A4 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		32662742151FC7CE002FA0E5 /* AppLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo@2x.png"; sourceTree = "<group>"; };
 		32663946150C00E100719F6E /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		32663947150C00E100719F6E /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
@@ -1399,6 +1404,8 @@
 				328872C61534D82C00330B54 /* DestinationConnectionsListViewController.m */,
 				32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */,
 				32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */,
+				3257C20B1570F99C00E626A4 /* HelpViewController.h */,
+				3257C20C1570F99C00E626A4 /* HelpViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1434,6 +1441,7 @@
 				328872C81534D85400330B54 /* DestinationConnectionsListView.xib */,
 				32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */,
 				32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */,
+				3257C2081570F90100E626A4 /* HelpView.xib */,
 				3236B5B1151F746100C43769 /* NextDeparturesCell.h */,
 				3236B5B2151F746100C43769 /* NextDeparturesCell.m */,
 				32488C901535F31B00BA49AB /* ConnectionSummaryCell.h */,
@@ -1602,6 +1610,7 @@
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */,
 				32BCACDE15657FED008415A1 /* SplashView.xib in Resources */,
+				3257C2091570F90100E626A4 /* HelpView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1699,6 +1708,7 @@
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */,
 				32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */,
+				3257C20D1570F99C00E626A4 /* HelpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1827,7 +1837,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PROVISIONING_PROFILE = "40FCF158-A97C-4B04-9230-08D5B966E0AB";
+				PROVISIONING_PROFILE = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 			};
@@ -1848,7 +1858,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "40FCF158-A97C-4B04-9230-08D5B966E0AB";
+				PROVISIONING_PROFILE = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALIDATE_PRODUCT = YES;

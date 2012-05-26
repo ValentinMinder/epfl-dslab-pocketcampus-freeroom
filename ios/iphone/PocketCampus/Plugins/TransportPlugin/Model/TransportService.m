@@ -292,7 +292,6 @@ static NSString* kLastLocationKey = @"lastLocation";
     
     CLLocation* lastLocation = (CLLocation*)[ObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneFavoriteStation:lastLocation]) {
-        NSLog(@"Last Location : %@", lastLocation);
         NSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
         [self handleLocationUpdate:lastLocation];
         return;
@@ -443,6 +442,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     /* From this point, newLocation is considered valid */
     
     /* DEV TEST */
+    /*
     if (stations.count == 5) {
         NSString* message = [NSString stringWithFormat:@"accuracy : %lf, desired accuracy : %lf, timestamp delta from now : %d", newLocation.horizontalAccuracy, locationManager.desiredAccuracy, abs((int)[newLocation.timestamp timeIntervalSinceNow])];
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"LOCATION" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -451,6 +451,7 @@ static NSString* kLastLocationKey = @"lastLocation";
             [alert release];
         });
     }
+    */
     /* END OF DEV TEST */
     
     NSLog(@"-> Location considered valid, will return to delegate.");

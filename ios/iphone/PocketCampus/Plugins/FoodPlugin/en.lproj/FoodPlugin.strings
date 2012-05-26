@@ -12,6 +12,7 @@
 "NoMealsWeekend" = "No menu during the weekend.";
 "Map" = "Map";
 "NoVote" = "No vote";
+"VoteNameSingular" = "vote";
 "VoteNamePlural" = "votes";
 "VoteVerb" = "vote";
 "RatingSendingError" = "Sorry, an error occured. Please try again.";

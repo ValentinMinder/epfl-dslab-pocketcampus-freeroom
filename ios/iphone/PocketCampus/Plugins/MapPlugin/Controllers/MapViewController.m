@@ -16,7 +16,7 @@
 
 #import "CustomOverlayView.h"
 
-static int MAX_DISPLAYED_ANNOTATIONS = 25;
+static int MAX_DISPLAYED_ANNOTATIONS = 100;
 static double MAX_LONGITUDE_DELTA_SHOW_EPFL_TILES = 0.0035;
 static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 

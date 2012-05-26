@@ -23,6 +23,7 @@
     UIImageView* mainImageView;
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
+    UIWebView* webView;
     NewsItem* newsItem;
     NewsService* newsService;
     ASIHTTPRequest* thumbnailRequest;

@@ -257,9 +257,11 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     }
     ratingView.rating = rint(meal.rating.ratingValue);
     [ratingView setEditable:NO resetRating:NO];
-    if (meal.rating.numberOfVotes > 0) {
+    if (meal.rating.numberOfVotes > 1) {
         votesLabel.text = [NSString stringWithFormat:@"  %d %@", meal.rating.numberOfVotes, NSLocalizedStringFromTable(@"VoteNamePlural", @"FoodPlugin", nil)];
-    } else {
+    } else if (meal.rating.numberOfVotes == 1) {
+        votesLabel.text = [NSString stringWithFormat:@"  %d %@", meal.rating.numberOfVotes, NSLocalizedStringFromTable(@"VoteNameSingular", @"FoodPlugin", nil)];
+    } else { //0 vote
         votesLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedStringFromTable(@"NoVote", @"FoodPlugin", nil)];
     }
 }
