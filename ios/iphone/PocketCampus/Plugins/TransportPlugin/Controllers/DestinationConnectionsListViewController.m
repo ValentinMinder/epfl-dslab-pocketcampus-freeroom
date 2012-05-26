@@ -18,6 +18,8 @@
 
 @implementation DestinationConnectionsListViewController
 
+static NSString* kConnectionCellIdentifier = @"ConnectionCell";
+
 @synthesize tableView;
 
 - (id)initWithQueryTripResult:(QueryTripsResult*)tripResult
@@ -97,7 +99,7 @@
 
 /*UITableViewDataSource delegation */
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) { //header cell
         UITableViewCell* headerCell = [[[NSBundle mainBundle] loadNibNamed:@"DestinationConnectionsHeaderCell" owner:self options:nil] objectAtIndex:0];
         headerCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -111,9 +113,15 @@
     
     TransportTrip* trip = [queryTripResult.connections objectAtIndex:indexPath.row-1];
     
-    ConnectionSummaryCell* newCell = [[ConnectionSummaryCell alloc] initWithTransportTrip:trip];
+    ConnectionSummaryCell* cell = [tableView dequeueReusableCellWithIdentifier:kConnectionCellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[[ConnectionSummaryCell alloc] initWithTransportTrip:trip reuseIdentifier:kConnectionCellIdentifier] autorelease];
+    } else {
+        [cell setTransportTrip:trip];
+    }
 
-    return [newCell autorelease];
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

@@ -13,9 +13,9 @@
 @implementation ConnectionSummaryCell
 
 
-- (id)initWithTransportTrip:(TransportTrip*)trip
+- (id)initWithTransportTrip:(TransportTrip*)trip reuseIdentifier:(NSString*)identifier
 {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     if (self) {
         
         if (trip == nil || ![trip isKindOfClass:[TransportTrip class]]) {
@@ -90,6 +90,30 @@
         
     }
     return self;
+}
+
+- (void)setTransportTrip:(TransportTrip*)trip {
+    if (trip == nil || ![trip isKindOfClass:[TransportTrip class]]) {
+        @throw [NSException exceptionWithName:@"bad trip argument in initWithTransportTrip" reason:@"trip is not kind of class TransportTrip" userInfo:nil];
+    }
+    
+    TransportConnection* firstConnection;
+    
+    if (trip.parts == nil || trip.parts.count == 0) {
+        depLabel.text = [TransportUtils hourMinutesStringForTimestamp:trip.departureTime/1000.0];
+    } else if ([TransportUtils isFeetConnection:[trip.parts objectAtIndex:0]] && trip.parts.count > 1) {
+        firstConnection = [trip.parts objectAtIndex:1];
+        depLabel.text = [TransportUtils hourMinutesStringForTimestamp:firstConnection.departureTime/1000.0];
+    } else {
+        firstConnection = [trip.parts objectAtIndex:0];
+        depLabel.text = [TransportUtils hourMinutesStringForTimestamp:firstConnection.departureTime/1000.0];
+    }
+    
+    arrLabel.text = [TransportUtils hourMinutesStringForTimestamp:trip.arrivalTime/1000.0];
+    durationLabel.text = [TransportUtils timeLeftStringForInterval:((trip.arrivalTime/1000.0) - (trip.departureTime/1000.0))];
+    nbChangeLabel.text = [NSString stringWithFormat:@"%d", [TransportUtils numberOfChangeForTrip:trip]];
+    firstLineLabel.text = [TransportUtils firstLineNameForTrip:trip];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

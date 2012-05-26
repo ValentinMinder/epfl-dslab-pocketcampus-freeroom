@@ -20,6 +20,7 @@
     UILabel* firstLineLabel;
 }
 
-- (id)initWithTransportTrip:(TransportTrip*)trip;
+- (id)initWithTransportTrip:(TransportTrip*)trip reuseIdentifier:(NSString*)identifier;
+- (void)setTransportTrip:(TransportTrip*)trip;
 
 @end
