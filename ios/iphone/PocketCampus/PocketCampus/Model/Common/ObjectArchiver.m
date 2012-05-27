@@ -11,24 +11,26 @@
 @implementation ObjectArchiver
 
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key andPluginName:(NSString*)pluginName {
-    if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
-    }
-    @try {
-        
-        if (object == nil) {
-            NSError* error = NULL;
-            NSFileManager* fileManager = [[NSFileManager alloc] init];
-            [fileManager removeItemAtPath:[self pathForKey:key pluginName:pluginName] error:&error];
-            [fileManager release];
-            return (error == NULL);
+    @synchronized(self) {
+        if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
+            @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
         }
-        
-        return [NSKeyedArchiver archiveRootObject:object toFile:[self pathForKey:key pluginName:pluginName]];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"-> Save object exception : impossible to save object");
-        return NO;
+        @try {
+            
+            if (object == nil) {
+                NSError* error = NULL;
+                NSFileManager* fileManager = [[NSFileManager alloc] init];
+                [fileManager removeItemAtPath:[self pathForKey:key pluginName:pluginName] error:&error];
+                [fileManager release];
+                return (error == NULL);
+            }
+            
+            return [NSKeyedArchiver archiveRootObject:object toFile:[self pathForKey:key pluginName:pluginName]];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"-> Save object exception : impossible to save object");
+            return NO;
+        }
     }
 }
 
@@ -83,15 +85,17 @@
 }
 
 + (void) createComponentsForPath:(NSString*)path {
-    if (![path isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad path" reason:@"bad path argument" userInfo:nil];
+    @synchronized(self) {
+        if (![path isKindOfClass:[NSString class]]) {
+            @throw [NSException exceptionWithName:@"bad path" reason:@"bad path argument" userInfo:nil];
+        }
+        NSFileManager* fileManager = [[NSFileManager alloc] init];
+        NSString* directoryPath = [path stringByDeletingLastPathComponent];
+        if (![fileManager fileExistsAtPath:directoryPath]) {
+            [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        [fileManager release];
     }
-    NSFileManager* fileManager = [[NSFileManager alloc] init];
-    NSString* directoryPath = [path stringByDeletingLastPathComponent];
-    if (![fileManager fileExistsAtPath:directoryPath]) {
-        [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    [fileManager release];
 }
 
 @end

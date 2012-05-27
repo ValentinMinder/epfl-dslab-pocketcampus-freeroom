@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HelpViewController : UIViewController {
+@interface TransportHelpViewController : UIViewController {
     UINavigationBar* navBar;
     UITextView* textView;
     

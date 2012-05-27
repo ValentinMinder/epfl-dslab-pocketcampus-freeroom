@@ -25,3 +25,7 @@
 "StationAlreadyFavorite" = "This station is already in you favorites.";
 "CellMultiplePossibilitiesTrip" = "Multiple possibilites";
 "Connections"="Connections";
+"TransportSettings" = "Transport Settings";
+"BestResults" = "Best result"; //chose singular finally
+"BestResultsExplanation" = "For each destination, if a trip is considered\nbetter than the others (direct, higher frequency), only the departures for the\ncorresponding transport line (ex. M1)\nare shown in the main list.";
+"Schedules" = "Schedules";

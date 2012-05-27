@@ -68,7 +68,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 /* NewsServiceDelegate delegation */

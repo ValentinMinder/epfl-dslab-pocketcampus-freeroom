@@ -10,7 +10,12 @@
 
 #import "NextDeparturesListViewController.h"
 
+#import "ObjectArchiver.h"
+
 @implementation TransportController
+
+static BOOL settingsAreDirty = NO;
+static NSMutableDictionary* settings = nil;
 
 static NSString* name = nil;
 
@@ -42,6 +47,32 @@ static NSString* name = nil;
         return;
     }
     [(NextDeparturesListViewController*)mainViewController refresh];
+}
+
++ (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey {
+    @synchronized(self) {
+        if (settings == nil) {
+            settings = [[NSMutableDictionary dictionary] retain];
+        }
+        [settings setObject:val forKey:settingKey];
+        settingsAreDirty = YES;
+        return [ObjectArchiver saveObject:settings forKey:kSettingsKey andPluginName:@"transport"];
+    }
+}
+
++ (id<NSCoding>)objectSettingForKey:(NSString*)settingKey {
+    @synchronized(self) {
+        if (settings == nil || settingsAreDirty) {
+            [settings release];
+            settings = (NSMutableDictionary*)[ObjectArchiver objectForKey:kSettingsKey andPluginName:@"transport"];
+            [settings retain];
+            settingsAreDirty = NO;
+        }
+        if (settings == nil) {
+            return nil;
+        }
+        return [settings objectForKey:settingKey];
+    }
 }
 
 - (void)dealloc {

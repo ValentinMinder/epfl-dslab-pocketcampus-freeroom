@@ -26,3 +26,7 @@
 "StationAlreadyFavorite" = "Cette station est déjà dans vos favoris.";
 "CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
 "Connections"="Connexions";
+"TransportSettings" = "Préférences";
+"BestResults" = "Meilleur résultat"; //chose singular finally
+"BestResultsExplanation" = "Pour chaque destination, si un trajet\n est meilleur (plus direct, plus fréquent),\nseuls les prochains départ pour la ligne correspondante (ex. M1) sont affichés\ndans la liste principale.";
+"Schedules" = "Horaires";

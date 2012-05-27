@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "HelpViewController.h"
+#import "TransportHelpViewController.h"
 
 #import "PCValues.h"
 
-@implementation HelpViewController
+@implementation TransportHelpViewController
 
 @synthesize navBar, textView;
 
 - (id)init
 {
-    self = [super initWithNibName:@"HelpView" bundle:nil];
+    self = [super initWithNibName:@"TransportHelpView" bundle:nil];
     if (self) {
         // Custom initialization
     }

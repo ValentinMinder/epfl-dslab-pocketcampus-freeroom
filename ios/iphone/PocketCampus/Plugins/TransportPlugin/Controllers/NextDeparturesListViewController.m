@@ -12,7 +12,11 @@
 
 #import "DestinationConnectionsListViewController.h"
 
-#import "HelpViewController.h"
+#import "TransportHelpViewController.h"
+
+#import "TransportSettingsViewController.h"
+
+#import "TransportController.h"
 
 @implementation NextDeparturesListViewController
 
@@ -421,8 +425,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     
 }
 
+/* IBActions */
+
 - (IBAction)presentFavoriteStationsViewController:(id)sender {
-    
     FavoriteStationsViewController* favStationsViewController = [[FavoriteStationsViewController alloc] initWithNibName:@"FavoriteStationsView" bundle:nil];
     favStationsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController* modalNavController = [[UINavigationController alloc] initWithRootViewController:favStationsViewController];
@@ -440,12 +445,30 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (IBAction)presentHelpViewController:(id)sender {
-    HelpViewController* modalViewController = [[HelpViewController alloc] init];
+    TransportHelpViewController* modalViewController = [[TransportHelpViewController alloc] init];
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
         [self presentViewController:modalViewController animated:YES completion:NULL];
     } else {
         [self.navigationController presentModalViewController:modalViewController animated:YES];
     }
+    [modalViewController release];
+}
+
+- (IBAction)presentSettingsViewController:(id)sender {
+    TransportSettingsViewController* viewController = [[TransportSettingsViewController alloc] init];
+    viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    UINavigationController* modalNavController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    modalNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    
+    if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
+        [self presentViewController:modalNavController animated:YES completion:NULL];
+    } else {
+        [self.navigationController presentModalViewController:modalNavController animated:YES];
+    }
+    
+    [viewController release];
+    [modalNavController release];
+    needToRefresh = YES;
 }
 
 
@@ -481,10 +504,14 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     
     QueryTripsResult* trip = [tripResults objectForKey:station.name];
-    NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
+    NSNumber* bestResultSetting = (NSNumber*)[TransportController objectSettingForKey:kTransportSettingsKeyBestResult];
     
-    return [[[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections] autorelease];
-   
+    if (bestResultSetting == nil || [bestResultSetting boolValue]) {
+        NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
+        return [[[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections] autorelease];
+    }
+    
+    return [[[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:nil] autorelease];
 }
 
 
