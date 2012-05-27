@@ -270,12 +270,20 @@
             label.textColor = white; //detailTextLabel color
         }
     } else {
-        fromStationLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
-        lineNameLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
-        for (UILabel* label in bottomLabels) {
-            label.textColor = [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0]; //detailTextLabel color
-            
+        if (animated) {
+            [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(unhighlight) userInfo:nil repeats:NO];
+        } else {
+            [self unhighlight];
         }
+    }
+}
+
+- (void)unhighlight {
+    fromStationLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+    lineNameLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+    for (UILabel* label in bottomLabels) {
+        label.textColor = [UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0]; //detailTextLabel color
+        
     }
 }
 

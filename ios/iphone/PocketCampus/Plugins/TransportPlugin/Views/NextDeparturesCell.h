@@ -22,6 +22,7 @@ typedef enum {
     UILabel* lineNameLabel;
     TransportStation* transportStation;
     LoadingState loadingState;
+    NSTimer* unhightlightTimer;
 }
 
 - (id)initWithQueryTripResult:(QueryTripsResult*)trip redundantConnections:(NSArray*)redundantConnections;
