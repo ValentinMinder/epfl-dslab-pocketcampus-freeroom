@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransportSettingsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
+@interface TransportSettingsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
     UITableView* tableView;
 }
 

@@ -158,9 +158,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 }
 
 - (BOOL)saveUserFavoriteTransportStations:(NSArray*)favStations { //NSArray of TransportStation
-    if (![favStations isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"bad argument" reason:@"bad favStations in saveUserFavoriteTransportStations:" userInfo:nil];
-    }
     return [ObjectArchiver saveObject:favStations forKey:kFavoriteTransportStationsKey andPluginName:@"transport"];
 }
 
@@ -169,9 +166,6 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 }
 
 - (BOOL)saveUserManualDepartureStation:(TransportStation*)station {
-    if (station != nil && ![station isKindOfClass:[TransportStation class]]) { //can be nil
-        @throw [NSException exceptionWithName:@"bad argument" reason:@"bad favStations in saveUserFavoriteTransportStations:" userInfo:nil];
-    }
     return [ObjectArchiver saveObject:station forKey:kManualDepartureStationKey andPluginName:@"transport"];
 }
 

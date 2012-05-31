@@ -12,6 +12,8 @@
 
 #import "TransportController.h"
 
+#import "TransportService.h"
+
 @implementation TransportSettingsViewController
 
 static int kBestResultSwitchTag = 2;
@@ -68,7 +70,39 @@ static int kBestResultSwitchTag = 2;
     }
 }
 
+/* UIAlertViewDelegate delegation */
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) { //OK
+        TransportService* transportService = [TransportService sharedInstanceToRetain];
+        [transportService saveUserFavoriteTransportStations:nil];
+        [transportService saveUserManualDepartureStation:nil];
+        UITableViewCell* cell = [tableView cellForRowAtIndexPath:[tableView indexPathForSelectedRow]];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.enabled = NO;
+    }
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+}
+
 /* UITableViewDelegate delegation */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:[tableView indexPathForSelectedRow]];
+    if (!cell.textLabel.enabled) {
+        return;
+    }
+    switch (indexPath.section) {
+        case 1:
+        {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Reset", @"TransportPlugin", nil) message:NSLocalizedStringFromTable(@"ResetFavStationsExplanations", @"TransportPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
+            [alertView show];
+            [alertView release];
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 0) {
@@ -110,6 +144,9 @@ static int kBestResultSwitchTag = 2;
         case 0:
             return NSLocalizedStringFromTable(@"Schedules", @"TransportPlugin", nil);
             break;
+        case 1:
+            return NSLocalizedStringFromTable(@"Reset", @"TransportPlugin", nil);
+            break;
         default:
             return @"";
             break;
@@ -138,6 +175,13 @@ static int kBestResultSwitchTag = 2;
             [switchView release];
             break;
         }
+        case 1: //restore stations section
+        {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            cell.textLabel.text = NSLocalizedStringFromTable(@"ResetFavStations", @"TransportPlugin", nil);
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            break;
+        }
         default:
             break;
     }
@@ -146,7 +190,10 @@ static int kBestResultSwitchTag = 2;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0: // best result cells setting
+        case 0: // schedules section
+            return 1;
+            break;
+        case 1: //restore default fav stations
             return 1;
             break;
         default:
@@ -156,7 +203,7 @@ static int kBestResultSwitchTag = 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 @end

@@ -30,3 +30,6 @@
 "BestResults" = "Meilleur résultat"; //chose singular finally
 "BestResultsExplanation" = "Pour chaque destination, si un trajet\n est meilleur (plus direct, plus fréquent),\nseuls les prochains départ pour la ligne correspondante (ex. M1) sont affichés\ndans la liste principale.";
 "Schedules" = "Horaires";
+"Reset" = "Réinitialiser";
+"ResetFavStations" = "Stations par défaut...";
+"ResetFavStationsExplanations" = "Vos stations favorites seront remplacées par les stations par défaut (EPFL, Lausanne-Flon).";

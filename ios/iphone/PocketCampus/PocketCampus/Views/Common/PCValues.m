@@ -11,7 +11,7 @@
 @implementation PCValues
 
 + (UIColor*)pocketCampusRed {
-    return [UIColor colorWithRed:0.66666 green:0 blue:0.101960 alpha:1.0];
+    return [UIColor colorWithRed:0.66666 green:0 blue:0.101960 alpha:1.0]; //170, 0, 26
 }
 
 + (UIColor*)backgroundColor1 {
