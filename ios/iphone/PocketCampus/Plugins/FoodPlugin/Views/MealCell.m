@@ -53,8 +53,8 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [self updateRatingInfosRefreshForServer:NO];
     
     ratingView = [[JSFavStarControl alloc] initWithCenter:CGPointMake(self.center.x, 14.0) dotImage:[UIImage imageNamed:@"RatingPoint"] starImage:[UIImage imageNamed:@"RatingStar"] emptyStarImage:[UIImage imageNamed:@"RatingStarEmpty"] editable:NO];
-    if ([meal.rating ratingValueIsSet]) {
-        [ratingView setRating:rint(meal.rating.ratingValue)];
+    if (meal.rating != nil) {
+        [ratingView setRating:round(meal.rating.ratingValue)];
     }
     [ratingView addTarget:self action:@selector(ratingValueChanged) forControlEvents:UIControlEventValueChanged];
     
@@ -77,18 +77,9 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     separator.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
     
     /*CGSize textViewSize = [meal.mealDescription sizeWithFont:[UIFont systemFontOfSize:MEAL_DESCRIPTION_FONT_SIZE] constrainedToSize:CGSizeMake(self.frame.size.width, 1000)];*/
-    CGFloat textViewHeight = [[self class] requiredHeightForMeal:meal];
-    CGFloat textViewWidth = 300.0;
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(0, separator.frame.origin.y+SEPARATOR_HEIGHT-5, textViewWidth, textViewHeight)];
-    textView.text = meal.mealDescription;
-    textView.scrollEnabled = NO;
-    textView.editable = NO;
-    textView.font = [UIFont systemFontOfSize:MEAL_DESCRIPTION_FONT_SIZE];
-    textView.textColor = [PCValues textColor1];
-    textView.contentInset = UIEdgeInsetsMake(0, 5, 5, 5);
     
 
-    [self.contentView addSubview:textView];
+    [self.contentView addSubview:[self.class textViewForMeal:meal]];
     [self.contentView addSubview:backgroundRatings];
     [self.contentView addSubview:votesLabel];
     [self.contentView addSubview:ratingView];
@@ -106,8 +97,24 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     if (![meal_ isKindOfClass:[Meal class]]) {
         @throw [NSException exceptionWithName:@"bad argument" reason:@"meal argument is nil or not kind of class Meal" userInfo:nil];
     }
-    CGSize textViewSize = [meal_.mealDescription sizeWithFont:[UIFont systemFontOfSize:MEAL_DESCRIPTION_FONT_SIZE] constrainedToSize:CGSizeMake(300.0, 1000)];
-    return RATINGS_HEIGHT+SEPARATOR_HEIGHT+textViewSize.height+7;
+    UITextView* textView = [self textViewForMeal:meal_];
+    return RATINGS_HEIGHT+SEPARATOR_HEIGHT+textView.frame.size.height;
+}
+
++ (UITextView*)textViewForMeal:(Meal*)meal_ {
+    if (![meal_ isKindOfClass:[Meal class]]) {
+        @throw [NSException exceptionWithName:@"bad argument" reason:@"meal argument is nil or not kind of class Meal" userInfo:nil];
+    }
+    UITextView* textView = [[UITextView alloc] initWithFrame:CGRectMake(0, RATINGS_HEIGHT+SEPARATOR_HEIGHT, 320.0, 1000.0)];
+    textView.text = meal_.mealDescription;
+    textView.font = [UIFont systemFontOfSize:MEAL_DESCRIPTION_FONT_SIZE];
+    textView.contentInset = UIEdgeInsetsMake(-2, 5, 2, 5);
+    textView.scrollEnabled = NO;
+    textView.editable = NO;
+    textView.textColor = [PCValues textColor1];
+    //textView.backgroundColor = [UIColor yellowColor];
+    [textView sizeToFit];
+    return [textView autorelease];
 }
 
 - (void)setMeal:(Meal*)newMeal {

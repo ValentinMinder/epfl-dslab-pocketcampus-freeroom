@@ -35,6 +35,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         overlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
         epflTileOverlayVisible = NO;
         initialQuery = nil;
+        initialQueryManualPinLabelText = nil;
         epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
         searchBarState = SearchBarStateHidden;
     }
@@ -45,6 +46,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     self = [self init];
     if (self) {
         initialQuery = [query retain];
+    }
+    return self;
+}
+
+- (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel {
+    self = [self initWithInitialQuery:query];
+    if (self) {
+        initialQueryManualPinLabelText = [pinTextLabel retain];
     }
     return self;
 }
@@ -86,7 +95,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    // Release any retained subviews of the main view
 }
 
 /* MapService access */
@@ -188,11 +197,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (IBAction)floorDownPressed {
+    for (id<MKAnnotation> annotation in mapView.annotations) {
+        [mapView deselectAnnotation:annotation animated:YES];
+    }
     [epflTileOverlay decreaseLayerLevel];
     [self updateFloorLabel];
 }
 
 - (IBAction)floorUpPressed {
+    for (id<MKAnnotation> annotation in mapView.annotations) {
+        [mapView deselectAnnotation:annotation animated:YES];
+    }
     [epflTileOverlay increaseLayerLevel];
     [self updateFloorLabel];
 }
@@ -382,6 +397,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
     NSMutableArray* annotations = [NSMutableArray arrayWithCapacity:mapItems.count];
     for(MapItem* item in mapItems) {
+        if (initialQuery != nil) {
+            if (initialQueryManualPinLabelText != nil && ![initialQueryManualPinLabelText isEqualToString:item.title]) {
+                [item.description release];
+                item.description = item.title;
+                [item.title release];
+                item.title = initialQueryManualPinLabelText;
+            }
+        }
         MapItemAnnotation* annotation = [[MapItemAnnotation alloc] initWithMapItem:item];
         [annotations addObject:annotation];
         [annotation release];
@@ -391,10 +414,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)dealloc
 {
+    mapView.delegate = nil;
     [mapService release];
     [epflTileOverlay release];
     [overlayView release];
     [initialQuery release];
+    [initialQueryManualPinLabelText release];
     [super dealloc];
 }
 

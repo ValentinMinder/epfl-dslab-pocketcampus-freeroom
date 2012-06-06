@@ -32,6 +32,7 @@ typedef enum {
     UIToolbar* toolbar;
     MapService* mapService;
     NSString* initialQuery;
+    NSString* initialQueryManualPinLabelText;
     MKMapView* mapView;
     EPFLTileOverlay* epflTileOverlay;
     CustomOverlayView* overlayView;
@@ -53,6 +54,7 @@ typedef enum {
 @property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
 
 - (id)initWithInitialQuery:(NSString*)query;
+- (id)initWithInitialQuery:(NSString*)query pinTextLabel:(NSString*)pinTextLabel;
 
 - (IBAction)myLocationPressed;
 - (IBAction)floorDownPressed;

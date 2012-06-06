@@ -13,19 +13,14 @@
 
 #import <MapKit/MapKit.h>
 
-@interface EPFLTileOverlay : NSObject<MKOverlay> {
-    CGFloat alpha;
+#import "OverlayWithURLs.h"
+
+@interface EPFLTileOverlay : NSObject<OverlayWithURLs> {
     NSInteger currentLayerLevel;
 }
 
-@property CGFloat alpha;
 @property (readonly) NSInteger currentLayerLevel;
 @property (nonatomic, assign) MKMapView* mapView;
-
-- (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom;
-- (NSString *)urlForPointWithX:(NSUInteger)x andY:(NSUInteger)y andZoomLevel:(NSUInteger)zoomLevel;
-
-- (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
 
 - (NSInteger)convertYCoord:(NSInteger)y withZoom:(NSInteger)zoom;
 - (NSString*)createCoordString:(NSInteger)coord;

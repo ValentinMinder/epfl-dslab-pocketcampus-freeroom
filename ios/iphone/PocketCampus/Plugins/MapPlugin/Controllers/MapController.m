@@ -36,6 +36,10 @@
     return [[[MapViewController alloc] initWithInitialQuery:query] autorelease];
 }
 
++ (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query pinLabelText:(NSString*)pinLabelText {
+    return [[[MapViewController alloc] initWithInitialQuery:query pinTextLabel:pinLabelText] autorelease];
+}
+
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"MapPlugin", @"");
 }

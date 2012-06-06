@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 
+/* TEST */
+
+#import "AuthenticationService.h"
+
 #import "FoodService.h"
 
 #import "food.h"
@@ -28,9 +32,9 @@
 
 #import "CamiproService.h"
 
-
-
 #import "PocketCampusLogicTests.h"
+
+/* END OF TEST */
 
 @implementation AppDelegate
 

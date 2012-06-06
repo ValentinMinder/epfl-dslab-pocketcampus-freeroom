@@ -11,5 +11,6 @@
 @interface MapController : PluginController<PluginControllerProtocol>
 
 + (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query;
++ (UIViewController*)viewControllerWithInitialSearchQuery:(NSString*)query pinLabelText:(NSString*)pinLabelText;
 
 @end

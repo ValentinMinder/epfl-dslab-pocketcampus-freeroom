@@ -436,7 +436,7 @@ error:
         /*NSString* firstName = (NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
         NSString* lastName = (NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);*/
         if (displayedPerson != nil) {
-            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:displayedPerson.office] animated:YES];
+            [self.navigationController pushViewController:[MapController viewControllerWithInitialSearchQuery:displayedPerson.office pinLabelText:[NSString stringWithFormat:@"%@ %@", displayedPerson.firstName, displayedPerson.lastName]] animated:YES];
         }
         return NO;
     }

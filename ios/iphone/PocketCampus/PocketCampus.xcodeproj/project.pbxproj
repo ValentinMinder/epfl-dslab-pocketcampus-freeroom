@@ -172,6 +172,7 @@
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; };
+		32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D57298157F7D780051230F /* EPFLLayersOverlay.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E1FDB515474F7E00B1B630 /* FloorDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB115474F7E00B1B630 /* FloorDown.png */; };
 		32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */; };
@@ -458,6 +459,9 @@
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		32CFECED151CCB6800D8CBA6 /* ObjectArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectArchiver.h; sourceTree = "<group>"; };
 		32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectArchiver.m; sourceTree = "<group>"; };
+		32D57296157F79650051230F /* OverlayWithURLs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverlayWithURLs.h; sourceTree = "<group>"; };
+		32D57297157F7D780051230F /* EPFLLayersOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLLayersOverlay.h; sourceTree = "<group>"; };
+		32D57298157F7D780051230F /* EPFLLayersOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLLayersOverlay.m; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32E1FDB115474F7E00B1B630 /* FloorDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FloorDown.png; sourceTree = "<group>"; };
 		32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorDown@2x.png"; sourceTree = "<group>"; };
@@ -698,8 +702,11 @@
 				324151DF15374FB100CCFB22 /* MapView.xib */,
 				324151F215377B4C00CCFB22 /* MapItemAnnotation.h */,
 				324151F315377B4C00CCFB22 /* MapItemAnnotation.m */,
+				32D57296157F79650051230F /* OverlayWithURLs.h */,
 				32B89252154584A90058E472 /* EPFLTileOverlay.h */,
 				32B89253154584A90058E472 /* EPFLTileOverlay.m */,
+				32D57297157F7D780051230F /* EPFLLayersOverlay.h */,
+				32D57298157F7D780051230F /* EPFLLayersOverlay.m */,
 				32B892561545892B0058E472 /* CustomOverlayView.h */,
 				32B892571545892B0058E472 /* CustomOverlayView.m */,
 			);
@@ -1727,6 +1734,7 @@
 				32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */,
+				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

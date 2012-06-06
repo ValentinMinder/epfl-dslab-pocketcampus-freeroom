@@ -14,13 +14,12 @@
 
 static NSString* URL_ENDING = @".png";
 
-@synthesize boundingMapRect, coordinate, alpha, currentLayerLevel, mapView;
+@synthesize boundingMapRect, coordinate, currentLayerLevel, mapView;
 
 - (id)init {
     self = [super init];
     
     if (self) {
-        alpha = 1.0;
         currentLayerLevel = 1;
         
         // I am still not well-versed in map projections, but the Google Mercator projection
@@ -43,12 +42,9 @@ static NSString* URL_ENDING = @".png";
 }
 
 - (NSString *)urlForPointWithX:(NSUInteger)x andY:(NSUInteger)y andZoomLevel:(NSUInteger)zoomLevel {
-    
     NSUInteger newY = [self convertYCoord:y withZoom:zoomLevel];
     
     NSString *returnString = [self urlForEpflTilesWithX:x andY:newY andZoom:zoomLevel];//zoomLevel];
-    
-    //    NSLog(@"EPFLUrl called, returned string: %@", returnString);
     
     return returnString;
 }
@@ -56,7 +52,6 @@ static NSString* URL_ENDING = @".png";
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
     // Limit this overlay to only display tiles over the general Swiss area.
     // Roughly within (48, 4), (44, 10), in degrees.
-    
     // Turn center to bounds
     MKCoordinateRegion _region = MKCoordinateRegionForMapRect(mapRect);
     CLLocationDegrees top_bound = _region.center.latitude + (_region.span.latitudeDelta / 2.0);
@@ -75,8 +70,7 @@ static NSString* URL_ENDING = @".png";
 }
 
 - (NSInteger)convertYCoord:(NSInteger)y withZoom:(NSInteger)zoom {
-    NSNumber* newY = [NSNumber numberWithDouble:floor(4194303 / (pow(2, (22 - zoom)))) - y];
-    return [newY intValue];
+    return floor(4194303 / (pow(2, (22 - zoom)))) - y;
 }
 
 - (NSString*)urlForEpflTilesWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
@@ -88,7 +82,6 @@ static NSString* URL_ENDING = @".png";
     
     //Build the final url string
     NSString* urlString = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",baseUrl,layerLevel,zoomLevel,xCoord,@"/",yCoord,URL_ENDING];
-    
     return urlString;
 }
 

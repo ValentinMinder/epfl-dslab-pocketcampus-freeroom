@@ -10,11 +10,11 @@
 
 #import "ASIDownloadCache.h"
 
-#import "EPFLTileOverlay.h"
-
 #import "ObjectArchiver.h"
 
 #import "MapUtils.h"
+
+#import "OverlayWithURLs.h"
 
 @implementation CustomOverlayView
 
@@ -23,18 +23,11 @@
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     self = [super initWithOverlay:overlay];
     if (self) {
-        
         self.tilesDataTmp = [NSMutableDictionary dictionary];
         self.requests = [NSMutableArray array];
         self.isCancellingAll = NO;
-        
-        [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(test) userInfo:nil repeats:NO];
     }
     return self;
-}
-
-- (void)test {
-    //[self.tilesDataTmp removeAllObjects];
 }
 
 - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
@@ -44,7 +37,7 @@
     CGPoint mercatorPoint = [MapUtils mercatorTileOriginForMapRect:mapRect];
     NSUInteger tileX = floor(mercatorPoint.x * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
     NSUInteger tileY = floor(mercatorPoint.y * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
-    NSString* urlString = [(EPFLTileOverlay*)self.overlay urlForPointWithX:tileX andY:tileY andZoomLevel:zoomLevel];
+    NSString* urlString = [(id<OverlayWithURLs>)self.overlay urlForPointWithX:tileX andY:tileY andZoomLevel:zoomLevel];
     return urlString;
 }
 
@@ -52,7 +45,7 @@
     if (self.isCancellingAll) {
         return NO;
     }
-    if (![(EPFLTileOverlay*)self.overlay canDrawMapRect:mapRect zoomScale:zoomScale]) {
+    if (![(id<OverlayWithURLs>)self.overlay canDrawMapRect:mapRect zoomScale:zoomScale]) {
         return NO;
     }
     
@@ -134,9 +127,8 @@
         /* END OF TEST */
 
         UIImage* image = [UIImage imageWithData:imageData];
-        EPFLTileOverlay* overlay = (EPFLTileOverlay*)self.overlay;
         UIGraphicsPushContext(context);
-        [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:overlay.alpha];
+        [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:1.0];
         UIGraphicsPopContext();
     }
 }

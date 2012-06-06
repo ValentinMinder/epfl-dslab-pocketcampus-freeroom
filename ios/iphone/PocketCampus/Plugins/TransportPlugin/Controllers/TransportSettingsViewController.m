@@ -86,7 +86,7 @@ static int kBestResultSwitchTag = 2;
 
 /* UITableViewDelegate delegation */
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:[tableView indexPathForSelectedRow]];
     if (!cell.textLabel.enabled) {
         return;

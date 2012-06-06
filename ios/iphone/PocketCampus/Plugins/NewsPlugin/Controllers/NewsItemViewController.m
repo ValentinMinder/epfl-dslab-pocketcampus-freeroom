@@ -160,14 +160,13 @@ static int NEWS_FONT_SIZE = 14.0;
 /* NewsServiceDelegate delegation */
 
 - (void)newsItemContentForId:(Id)newsItemId didReturn:(NSString *)content {
-    CGSize reqSize = [content sizeWithFont:[UIFont systemFontOfSize:(CGFloat)NEWS_FONT_SIZE] constrainedToSize:CGSizeMake(310.0, 50000.0)];
     CGFloat startY; 
     if (mainImage != nil) {
         startY = mainImageView.frame.origin.y+mainImageView.frame.size.height+5.0;
     } else {
         startY = titleLabel.frame.origin.y+titleLabel.frame.size.height+5.0;
     }
-    webView = [[[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, reqSize.width, reqSize.height+20.0)] autorelease];
+    webView = [[[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)] autorelease]; //height will be recomputed when HTML loaded in delegate call
     webView.scrollView.scrollEnabled = NO;
     webView.delegate = self;
     NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'>a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx;'>%@</span>", NEWS_FONT_SIZE, content];
@@ -176,12 +175,6 @@ static int NEWS_FONT_SIZE = 14.0;
     
     [scrollView addSubview:webView];
     
-    CGFloat scrollViewContentHeight = webView.frame.origin.y+webView.frame.size.height;
-    
-    if (scrollViewContentHeight <= self.view.frame.size.height) {
-        scrollViewContentHeight = self.view.frame.size.height + 1.0;//to be able to scroll even if not necessary
-    }
-    [scrollView setContentSize:CGSizeMake(self.view.frame.size.width, scrollViewContentHeight)];
 }
 
 - (void)newsItemContentFailedForId:(Id)newsItemId {
@@ -198,8 +191,15 @@ static int NEWS_FONT_SIZE = 14.0;
 
 /* UIWebViewDelegate delegation */
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [centerActivityIndicator stopAnimating];
+    [webView sizeToFit];
+    CGFloat scrollViewContentHeight = webView.frame.origin.y+webView.frame.size.height;
+    
+    if (scrollViewContentHeight <= self.view.frame.size.height) {
+        scrollViewContentHeight = self.view.frame.size.height + 1.0;//to be able to scroll even if not necessary
+    }
+    [scrollView setContentSize:CGSizeMake(self.view.frame.size.width, scrollViewContentHeight)];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -241,10 +241,11 @@ static int NEWS_FONT_SIZE = 14.0;
     [newsService cancelOperationsForDelegate:self];
     [newsService release];
     if (thumbnailRequest != nil) {
+        [thumbnailRequest cancel];
         thumbnailRequest.delegate = nil;
         [thumbnailRequest release];
     }
-    urlClickedByUser = nil;
+    [urlClickedByUser release];
     [super dealloc];
 }
 

@@ -44,6 +44,19 @@ static NSString* kMealCellIdentifier = @"mealCell";
             @throw [NSException exceptionWithName:@"illegal argument" reason:@"meals argument cannot be nil" userInfo:nil];
         }
         meals = [meals_ retain];
+        /*for (Meal* meal in meals) {
+            NSMutableString* stringDescr = [meal.mealDescription mutableCopy];
+            if ([[stringDescr substringToIndex:1] isEqualToString:@"\n"]) {
+                [stringDescr deleteCharactersInRange:NSMakeRange(0, 1)];
+            }
+            
+            if ([[stringDescr substringFromIndex:stringDescr.length] isEqualToString:@"\n"]) {
+                [stringDescr deleteCharactersInRange:NSMakeRange(stringDescr.length, 1)];
+            }
+            
+            //meal.mealDescription = stringDescr;
+            [stringDescr release];
+        }*/
         service = [[FoodService sharedInstanceToRetain] retain];
     }
     return self;
