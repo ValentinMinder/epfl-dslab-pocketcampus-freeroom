@@ -8,7 +8,14 @@
 
 #import "EPFLLayersOverlay.h"
 
+#import "CustomOverlayView.h"
+
+#import "MapUtils.h"
+
 @implementation EPFLLayersOverlay
+
+static int MAX_LAYER_LEVEL = 8;
+static int MIN_LAYER_LEVEL = -4;
 
 @synthesize boundingMapRect, coordinate, mapView;
 
@@ -31,26 +38,28 @@
         boundingMapRect.origin.y += 1048600.0;
         
         coordinate = CLLocationCoordinate2DMake(0, 0);
+        
+        currentLayerLevel = 1;
     }
     
     return self;
 }
 
-- (NSString *)urlForPointWithX:(NSUInteger)x andY:(NSUInteger)y andZoomLevel:(NSUInteger)zoomLevel {
+- (NSString *)urlForMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
     
-    NSUInteger newY = [self convertYCoord:y withZoom:zoomLevel];
+    CH1903BBox bbox = [MapUtils WGStoCH1903:mapRect];
     
-    NSString *returnString = [self urlForEpflLayerWithX:x andY:newY andZoom:zoomLevel];//zoomLevel];
-    
-    //    NSLog(@"EPFLUrl called, returned string: %@", returnString);
-    
-    return returnString;
+    return [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:mapRect.size.width*zoomScale height:mapRect.size.height*zoomScale];
 }
 
 
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
     // Limit this overlay to only display tiles over the general Swiss area.
     // Roughly within (48, 4), (44, 10), in degrees.
+    
+    if (zoomScale < 1.0) {
+        return NO;
+    }
     
     // Turn center to bounds
     MKCoordinateRegion _region = MKCoordinateRegionForMapRect(mapRect);
@@ -74,11 +83,56 @@
     return [newY intValue];
 }
 
-- (NSString*)urlForEpflLayerWithX:(NSInteger)x andY:(NSInteger)y andZoom:(NSInteger)zoom {
-    NSString* baseURLWithBBoxEmptyParameter = @"http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&LAYERS=events_surface,events_line,events_label,parkings_publicsall,arrets_metroall,informationall,evenements_scenesall,evenements_nourritureall,evenements_boissonsall,evenements_entreesall,evenements_informationsall,evenements_presseall,evenements_infirmerieall,locaux_hall,locaux_labelsall,batiments_routes_labels&TRANSPARENT=true&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A21781&BBOX=";
-     //TODO
-    return nil;
+- (NSString*)urlForEpflLayerWithCH1903StartX:(double)startX startY:(double)startY endX:(double)endX endY:(double)endY width:(double)width height:(double)height  {
+    NSString* baseURLWithBBoxEmptyParameter = @"http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&TRANSPARENT=false&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A21781&BBOX=";
     
+    return [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels%d,locaux_h%d", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, currentLayerLevel, currentLayerLevel];
+    
+}
+
+- (NSString*)identifier {
+    return @"EPFLLayers";
+}
+
+- (void)increaseLayerLevel {
+    if (currentLayerLevel < MAX_LAYER_LEVEL) {
+        //Redraw the overlay.
+        [self setLayerLevel:(currentLayerLevel+1)];
+    }
+}
+
+
+- (void)decreaseLayerLevel {
+    if (currentLayerLevel > MIN_LAYER_LEVEL) {
+        //Redraw the overlay.
+        [self setLayerLevel:(currentLayerLevel-1)];
+    }
+}
+
+- (void)setLayerLevel:(NSInteger)newLevel {
+    if (newLevel < MIN_LAYER_LEVEL || newLevel > MAX_LAYER_LEVEL) {
+        return;
+    }
+    currentLayerLevel = newLevel;
+    //Redraw the overlay.
+    
+    if (self.mapView == nil) {
+        NSLog(@"-> !! mapView property is nil, cannot setNeedsDisplay");
+        return;
+    }
+    
+    for(NSObject<MKOverlay>* overlay in mapView.overlays) {
+        if([overlay isKindOfClass:self.class]){
+            CustomOverlayView* customOverlayView = (CustomOverlayView*)[mapView viewForOverlay:overlay];
+            [customOverlayView cancelTilesDownload];
+            [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
+        }
+    }
+}
+
+- (void)dealloc
+{
+    [super dealloc];
 }
 
 @end

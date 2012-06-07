@@ -10,6 +10,8 @@
 
 #import "CustomOverlayView.h"
 
+#import "MapUtils.h"
+
 @implementation EPFLTileOverlay
 
 static NSString* URL_ENDING = @".png";
@@ -41,10 +43,14 @@ static NSString* URL_ENDING = @".png";
     return self;
 }
 
-- (NSString *)urlForPointWithX:(NSUInteger)x andY:(NSUInteger)y andZoomLevel:(NSUInteger)zoomLevel {
-    NSUInteger newY = [self convertYCoord:y withZoom:zoomLevel];
+- (NSString *)urlForMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
+    NSUInteger zoomLevel = [MapUtils zoomLevelForZoomScale:zoomScale];
+    CGPoint mercatorPoint = [MapUtils mercatorTileOriginForMapRect:mapRect];
+    NSUInteger tileX = floor(mercatorPoint.x * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
+    NSUInteger tileY = floor(mercatorPoint.y * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
+    NSUInteger newY = [self convertYCoord:tileY withZoom:zoomLevel];
     
-    NSString *returnString = [self urlForEpflTilesWithX:x andY:newY andZoom:zoomLevel];//zoomLevel];
+    NSString *returnString = [self urlForEpflTilesWithX:tileX andY:newY andZoom:zoomLevel];//zoomLevel];
     
     return returnString;
 }
@@ -133,6 +139,10 @@ static NSString* URL_ENDING = @".png";
             [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }
+}
+
+- (NSString*)identifier {
+    return @"EPFLTiles";
 }
 
 - (void)dealloc {

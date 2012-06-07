@@ -58,7 +58,7 @@
         
         durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(115.0, 2.0, 50.0, 35.0)];
         durationLabel.backgroundColor = [UIColor clearColor];
-        durationLabel.text = [TransportUtils timeLeftStringForInterval:((trip.arrivalTime/1000.0) - (trip.departureTime/1000.0))];
+        durationLabel.text = [TransportUtils durationgStringForInterval:((trip.arrivalTime/1000.0) - (trip.departureTime/1000.0))];
         durationLabel.textAlignment = UITextAlignmentCenter;
         durationLabel.textColor = [UIColor whiteColor];
         durationLabel.font = [UIFont systemFontOfSize:16.0];
@@ -110,7 +110,7 @@
     }
     
     arrLabel.text = [TransportUtils hourMinutesStringForTimestamp:trip.arrivalTime/1000.0];
-    durationLabel.text = [TransportUtils timeLeftStringForInterval:((trip.arrivalTime/1000.0) - (trip.departureTime/1000.0))];
+    durationLabel.text = [TransportUtils durationgStringForInterval:((trip.arrivalTime/1000.0) - (trip.departureTime/1000.0))];
     nbChangeLabel.text = [NSString stringWithFormat:@"%d", [TransportUtils numberOfChangeForTrip:trip]];
     firstLineLabel.text = [TransportUtils firstLineNameForTrip:trip];
     

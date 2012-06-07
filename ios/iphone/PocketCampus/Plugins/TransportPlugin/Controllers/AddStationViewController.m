@@ -167,7 +167,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
             return;
         }
     }
-    [favStations insertObject:newStation atIndex:0]; //inserting at top of list
+    [favStations addObject:newStation]; //inserting at end of list
     [transportService saveUserFavoriteTransportStations:favStations];
     [favStations release];
     [self dismiss];

@@ -85,7 +85,9 @@
             
             for (int i = 0; i<redundantConnections.count && i < 3; i++) {
                 TransportConnection* connection = [redundantConnections objectAtIndex:i];
-                timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                //timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                //timesString = [TransportUtils hourMinutesStringForTimestamp:(connection.departureTime)/1000.0];
+                timesString = [TransportUtils minutesLeftStringForTimestamp:(connection.departureTime)/1000.0];
                 if ([timesString isEqualToString:@"Now"]) {
                     //if (i == 0) { //show bus once only
                         UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];

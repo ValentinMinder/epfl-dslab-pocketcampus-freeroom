@@ -12,8 +12,14 @@
 
 #import "OverlayWithURLs.h"
 
-@interface EPFLLayersOverlay : NSObject<OverlayWithURLs>
+@interface EPFLLayersOverlay : NSObject<OverlayWithURLs> {
+    NSInteger currentLayerLevel;
+}
 
 @property (nonatomic, assign) MKMapView* mapView;
+
+- (void)increaseLayerLevel;
+- (void)decreaseLayerLevel;
+- (void)setLayerLevel:(NSInteger)newLevel;
 
 @end

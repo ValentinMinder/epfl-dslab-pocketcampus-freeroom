@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MapKit/MapKit.h>
+
 #import "map.h"
 
 #import "MapItemAnnotation.h"
@@ -15,6 +17,13 @@
 #define MINIMUM_ZOOM_ARC 0.0015
 #define ANNOTATION_REGION_PAD_FACTOR 1.15
 #define MAX_DEGREES_ARC 360
+
+typedef struct {
+    double start_x;
+    double start_y;
+    double end_x;
+    double end_y;
+} CH1903BBox;
 
 @interface MapUtils : NSObject
 
@@ -29,5 +38,7 @@
 + (NSUInteger)zoomLevelForZoomScale:(MKZoomScale)zoomScale;
 + (NSUInteger)worldTileWidthForZoomLevel:(NSUInteger)zoomLevel;
 + (CGPoint)mercatorTileOriginForMapRect:(MKMapRect)mapRect;
+
++ (CH1903BBox)WGStoCH1903:(MKMapRect)mapRect;
 
 @end

@@ -11,7 +11,7 @@
 @implementation TransportUtils
 
 
-+ (NSString*)timeLeftStringForInterval:(NSTimeInterval)interval {
++ (NSString*)durationgStringForInterval:(NSTimeInterval)interval {
     NSCalendar* systemCalendar = [NSCalendar currentCalendar];
     NSDate* date1 = [[[NSDate alloc] init] autorelease];
     NSDate* date2 = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:date1] autorelease]; 

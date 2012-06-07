@@ -16,6 +16,8 @@
 
 #import "EPFLTileOverlay.h"
 
+#import "EPFLLayersOverlay.h"
+
 #import "CustomOverlayView.h"
 
 typedef enum {
@@ -23,7 +25,7 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, MapServiceDelegate> {
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, MapServiceDelegate, CustomOverlayViewDelegate> {
     UIBarButtonItem* myLocationButton;
     UIBarButtonItem* floorDownButton;
     UILabel* floorLabel;
@@ -35,18 +37,22 @@ typedef enum {
     NSString* initialQueryManualPinLabelText;
     MKMapView* mapView;
     EPFLTileOverlay* epflTileOverlay;
-    CustomOverlayView* overlayView;
-    BOOL epflTileOverlayVisible;
+    EPFLLayersOverlay* epflLayersOverlay;
+    CustomOverlayView* tileOverlayView;
+    CustomOverlayView* layersOverlayView;
+    BOOL overlaysVisible;
     MKCoordinateRegion epflRegion;
     UISearchBar* searchBar;
     UIActivityIndicatorView* searchActivityIndicator; //no need to release it, the searchBar retains it
     SearchBarState searchBarState;
     CGRect searchBarHiddenFrame;
     CGRect searchBarVisibleFrame;
+    UIActivityIndicatorView* overlaysLoadingIndicator;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;
 @property (nonatomic, assign) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* overlaysLoadingIndicator;
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* myLocationButton;
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* floorDownButton;
 @property (nonatomic, assign) IBOutlet UILabel* floorLabel;

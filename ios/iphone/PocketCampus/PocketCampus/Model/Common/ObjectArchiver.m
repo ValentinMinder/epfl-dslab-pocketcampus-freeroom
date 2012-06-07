@@ -24,8 +24,9 @@
                 [fileManager release];
                 return (error == NULL);
             }
-            
-            return [NSKeyedArchiver archiveRootObject:object toFile:[self pathForKey:key pluginName:pluginName]];
+            NSString* path = [self pathForKey:key pluginName:pluginName];
+            [[self class] createComponentsForPath:path];
+            return [NSKeyedArchiver archiveRootObject:object toFile:path];
         }
         @catch (NSException *exception) {
             NSLog(@"-> Save object exception : impossible to save object");
@@ -79,12 +80,20 @@
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    /*NSArray* paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString* path = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@.save", pluginName, key]];
-    return path;
+    path = [path stringByAppendingPathComponent:@"Archived Objects"];
+    return path;*/
+    
+    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+	NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    path = [path stringByAppendingPathComponent:pluginName];
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.archive", key]];
+	return path;
+    
 }
 
-+ (void) createComponentsForPath:(NSString*)path {
++ (void)createComponentsForPath:(NSString*)path {
     @synchronized(self) {
         if (![path isKindOfClass:[NSString class]]) {
             @throw [NSException exceptionWithName:@"bad path" reason:@"bad path argument" userInfo:nil];

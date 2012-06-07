@@ -32,8 +32,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         self.title = [MapController localizedName];
         mapService = [[MapService sharedInstanceToRetain] retain];
         epflTileOverlay = [[EPFLTileOverlay alloc] init];
-        overlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
-        epflTileOverlayVisible = NO;
+        epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
+        tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
+        tileOverlayView.delegate = self;
+        layersOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
+        layersOverlayView.delegate = self;
+        overlaysVisible = NO;
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
         epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
@@ -70,6 +74,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
     epflTileOverlay.mapView = mapView;
+    epflLayersOverlay.mapView = mapView;
     [self updateFloorLabel];
     floorDownButton.enabled = NO;
     floorUpButton.enabled = NO;
@@ -201,6 +206,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         [mapView deselectAnnotation:annotation animated:YES];
     }
     [epflTileOverlay decreaseLayerLevel];
+    [epflLayersOverlay decreaseLayerLevel];
     [self updateFloorLabel];
 }
 
@@ -209,6 +215,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         [mapView deselectAnnotation:annotation animated:YES];
     }
     [epflTileOverlay increaseLayerLevel];
+    [epflLayersOverlay increaseLayerLevel];
     [self updateFloorLabel];
 }
 
@@ -270,7 +277,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
     if ([overlay isKindOfClass:[EPFLTileOverlay class]]) { 
-        return overlayView;
+        return tileOverlayView;
+    } else if ([overlay isKindOfClass:[EPFLLayersOverlay class]]) {
+        return layersOverlayView;
+    } else {
+        //other, not managed
     }
     return nil;
 }
@@ -312,6 +323,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             int level = [MapUtils levelToSelectForRoomName:roomName];
             if (level != INT_MAX) {
                 [epflTileOverlay setLayerLevel:level];
+                [epflLayersOverlay setLayerLevel:level];
                 [self updateFloorLabel];
             }
         }
@@ -320,17 +332,19 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView_ regionDidChangeAnimated:(BOOL)animated {
     if (mapView.region.span.longitudeDelta < MAX_LONGITUDE_DELTA_SHOW_EPFL_TILES) {
-        if (!epflTileOverlayVisible) {
+        if (!overlaysVisible) {
             [mapView addOverlay:epflTileOverlay];
-            epflTileOverlayVisible = YES;
+            [mapView addOverlay:epflLayersOverlay];
+            overlaysVisible = YES;
             floorDownButton.enabled = YES;
             floorLabel.hidden = NO;
             floorUpButton.enabled = YES;
         }
     } else {
-        if (epflTileOverlayVisible) {
+        if (overlaysVisible) {
             [mapView removeOverlay:epflTileOverlay];
-            epflTileOverlayVisible = NO;
+            [mapView removeOverlay:epflLayersOverlay];
+            overlaysVisible = NO;
             floorDownButton.enabled = NO;
             floorLabel.hidden = YES;
             floorUpButton.enabled = NO;
@@ -389,6 +403,16 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
 }
 
+/* CustomOverlayViewDelegate */
+
+- (void)customOverlayViewDidStartLoading:(CustomOverlayView *)overlayView {
+    [overlaysLoadingIndicator startAnimating];
+}
+
+- (void)customOverlayViewDidFinishLoading:(CustomOverlayView *)overlayView {
+    [overlaysLoadingIndicator stopAnimating];
+}
+
 /* Uitilities */
 
 - (NSArray*)mapItemAnnotationsForMapItems:(NSArray*)mapItems {
@@ -417,7 +441,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     mapView.delegate = nil;
     [mapService release];
     [epflTileOverlay release];
-    [overlayView release];
+    [epflLayersOverlay release];
+    [tileOverlayView release];
+    [layersOverlayView release];
     [initialQuery release];
     [initialQueryManualPinLabelText release];
     [super dealloc];

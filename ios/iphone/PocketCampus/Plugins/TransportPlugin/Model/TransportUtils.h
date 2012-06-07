@@ -12,7 +12,7 @@
 
 @interface TransportUtils : NSObject
 
-+ (NSString*)timeLeftStringForInterval:(NSTimeInterval)interval;
++ (NSString*)durationgStringForInterval:(NSTimeInterval)interval;
 + (NSString*)hourMinutesStringForTimestamp:(NSTimeInterval)timestamp;
 + (NSString*)minutesLeftStringForTimestamp:(NSTimeInterval)timestamp;
 + (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalSeconds;

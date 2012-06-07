@@ -18,27 +18,23 @@
 
 @implementation CustomOverlayView
 
-@synthesize tilesDataTmp, requests, isCancellingAll;
+@synthesize tilesDataTmp, requests, isCancellingAll, delegate;
 
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     self = [super initWithOverlay:overlay];
     if (self) {
-        self.tilesDataTmp = [NSMutableDictionary dictionary];
-        self.requests = [NSMutableArray array];
+        self.tilesDataTmp = (NSMutableDictionary*)[ObjectArchiver objectForKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map" nilIfDiffIntervalLargerThan:5184000]; //seconds = 60 days
+        if (self.tilesDataTmp == nil) {
+            self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
+        }
+        self.requests = [NSMutableArray array]; //retained in prop
         self.isCancellingAll = NO;
     }
     return self;
 }
 
 - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale {
-    /*EPFLTileOverlay* epflTileOverlay = (EPFLTileOverlay*)self.overlay;
-    return [NSString stringWithFormat:@"%lf%lf%lf%lf%f%d", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height, zoomScale, epflTileOverlay.currentLayerLevel];*/
-    NSUInteger zoomLevel = [MapUtils zoomLevelForZoomScale:zoomScale];
-    CGPoint mercatorPoint = [MapUtils mercatorTileOriginForMapRect:mapRect];
-    NSUInteger tileX = floor(mercatorPoint.x * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
-    NSUInteger tileY = floor(mercatorPoint.y * [MapUtils worldTileWidthForZoomLevel:zoomLevel]);
-    NSString* urlString = [(id<OverlayWithURLs>)self.overlay urlForPointWithX:tileX andY:tileY andZoomLevel:zoomLevel];
-    return urlString;
+    return [(id<OverlayWithURLs>)self.overlay urlForMapRect:mapRect andZoomScale:zoomScale];
 }
 
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
@@ -51,7 +47,8 @@
     
     NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
     
-    if ([self.tilesDataTmp objectForKey:key] != nil) {
+    
+    if ([self.tilesDataTmp objectForKey:key] != nil) { //tile has already been downloaded and is in memory
         return YES;
     }
     
@@ -60,11 +57,9 @@
     ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setDownloadCache:[ASIDownloadCache sharedCache]];
     [request setCachePolicy:ASIOnlyLoadIfNotCachedCachePolicy];
-    
     if ([[request downloadCache] isCachedDataCurrentForRequest:request]) {
         [request startSynchronous];
-        NSError *error = request.error;
-        if (error) {
+        if (request.error != nil) {
             return NO;
         }
         [self.tilesDataTmp setObject:request.responseData forKey:key];
@@ -87,6 +82,13 @@
     if (self.isCancellingAll) {
         return NO;
     }
+    
+    if ([self.requests count] == 0) {
+        if ([delegate respondsToSelector:@selector(customOverlayViewDidStartLoading:)]) {
+            [delegate customOverlayViewDidStartLoading:self];
+        }
+    }
+    
     [self.requests addObject:request];
     [request startAsynchronous];
     
@@ -137,7 +139,13 @@
     if (self.isCancellingAll) {
         return;
     }
-    if (request.responseData.length < 800) { //bytes, means it's not an image, but a 404 error page        
+    if (request.responseData.length < 800) { //bytes, means it's not an image, but a 404 error page or an empty image
+        [self.requests removeObject:request];
+        if ([self.requests count] == 0) {
+            if ([delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
+                [delegate customOverlayViewDidFinishLoading:self];
+            }
+        }
         return;
     }
     
@@ -155,6 +163,11 @@
     [self.tilesDataTmp setObject:request.responseData forKey:[self keyWithMapRect:mapRect andZoomScale:zoomScale]];
     [self setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
     [self.requests removeObject:request];
+    if ([self.requests count] == 0) {
+        if ([delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
+            [delegate customOverlayViewDidFinishLoading:self];
+        }
+    }
 }
 
 -(void)requestDidFail:(ASIHTTPRequest *)request {
@@ -162,18 +175,24 @@
         return;
     }
     [self.requests removeObject:request];
+    if ([self.requests count] == 0) {
+        if ([delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
+            [delegate customOverlayViewDidFinishLoading:self];
+        }
+    }
 }
 
 - (void)cancelTilesDownload {
-    [ASIHTTPRequest cancelPreviousPerformRequestsWithTarget:self];
+    for (ASIHTTPRequest* request in self.requests) {
+        request.delegate = nil;
+        [request cancel];
+    }
 }
 
 - (void)dealloc {
-    [self cancelTilesDownload];
     self.isCancellingAll = YES;
-    for (ASIHTTPRequest* request in self.requests) {
-        request.delegate = nil;
-    }
+    [self cancelTilesDownload];
+    [ObjectArchiver saveObject:tilesDataTmp forKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map"];
     [self.tilesDataTmp release];
     [self.requests release];
     [super dealloc];

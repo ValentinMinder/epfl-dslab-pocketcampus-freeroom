@@ -17,6 +17,7 @@
 			<string>IBUIToolbar</string>
 			<string>IBUISearchBar</string>
 			<string>IBUILabel</string>
+			<string>IBUIActivityIndicatorView</string>
 			<string>IBMKMapView</string>
 			<string>IBUIView</string>
 		</array>
@@ -202,6 +203,21 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIActivityIndicatorView" id="534463923">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrame">{{240, 384}, {20, 20}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIStyle">2</int>
+						<object class="NSColor" key="IBUIColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+						</object>
+					</object>
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
@@ -286,6 +302,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">overlaysLoadingIndicator</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="534463923"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="111674085"/>
 						<reference key="destination" ref="372490531"/>
@@ -350,6 +374,7 @@
 							<reference ref="515779079"/>
 							<reference ref="360078383"/>
 							<reference ref="912725871"/>
+							<reference ref="534463923"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -450,6 +475,12 @@
 						<reference key="object" ref="803606939"/>
 						<reference key="parent" ref="360078383"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">38</int>
+						<reference key="object" ref="534463923"/>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">overlays loading indicator</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -469,6 +500,7 @@
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="38.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -477,7 +509,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">37</int>
+			<int key="maxID">39</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -514,6 +546,7 @@
 						<string key="floorUpButton">UIBarButtonItem</string>
 						<string key="mapView">MKMapView</string>
 						<string key="myLocationButton">UIBarButtonItem</string>
+						<string key="overlaysLoadingIndicator">UIActivityIndicatorView</string>
 						<string key="searchBar">UISearchBar</string>
 						<string key="toolbar">UIToolbar</string>
 					</dictionary>
@@ -537,6 +570,10 @@
 						<object class="IBToOneOutletInfo" key="myLocationButton">
 							<string key="name">myLocationButton</string>
 							<string key="candidateClassName">UIBarButtonItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="overlaysLoadingIndicator">
+							<string key="name">overlaysLoadingIndicator</string>
+							<string key="candidateClassName">UIActivityIndicatorView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="searchBar">
 							<string key="name">searchBar</string>

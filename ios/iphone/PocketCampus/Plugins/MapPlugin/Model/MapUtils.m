@@ -8,6 +8,75 @@
 
 #import "MapUtils.h"
 
+// Convert decimal angle (degrees) to sexagesimal angle (degrees, minutes
+// and seconds dd.mmss,ss)
+double decToSexAngle(double dec) {
+    int deg = (int)floor(dec);
+    int min = (int)floor((dec - deg) * 60);
+    double sec = (((dec - deg) * 60) - min) * 60;
+    
+    // Output: dd.mmss(,)ss
+    return deg + ((double) min / 100.0) + (sec / 10000.0);
+}
+
+// Convert sexagesimal angle (degrees, minutes and seconds dd.mmss,ss) to
+// seconds
+double sexAngleToSeconds(double dms) {
+    double deg = 0, min = 0, sec = 0;
+    deg = floor(dms);
+    min = floor((dms - deg) * 100);
+    sec = (((dms - deg) * 100) - min) * 100;
+    
+    // Result in degrees sex (dd.mmss)
+    return sec + (min * 60) + (deg * 3600);
+}
+
+
+double WGStoCHx(double lat, double lng) {
+    // Converts degrees dec to sex
+    lat = decToSexAngle(lat);
+    lng = decToSexAngle(lng);
+    
+    // Converts degrees to seconds (sex)
+    lat = sexAngleToSeconds(lat);
+    lng = sexAngleToSeconds(lng);
+    
+    // Axiliary values (% Bern)
+    double lat_aux = (lat - 169028.66) / 10000.0;
+    double lng_aux = (lng - 26782.5) / 10000.0;
+    
+    // Process X
+    double x = ((200147.07 + (308807.95 * lat_aux)
+                 + (3745.25 * pow(lng_aux, 2)) + (76.63 * pow(lat_aux,
+                                                              2))) - (194.56 * pow(lng_aux, 2) * lat_aux))
+    + (119.79 * pow(lat_aux, 3));
+    
+    return x;
+}
+
+double WGStoCHy(double lat, double lng) {
+    // Converts degrees dec to sex
+    lat = decToSexAngle(lat);
+    lng = decToSexAngle(lng);
+    
+    // Converts degrees to seconds (sex)
+    lat = sexAngleToSeconds(lat);
+    lng = sexAngleToSeconds(lng);
+    
+    // Axiliary values (% Bern)
+    double lat_aux = (lat - 169028.66) / 10000.0;
+    double lng_aux = (lng - 26782.5) / 10000.0;
+    
+    // Process Y
+    double y = (600072.37 + (211455.93 * lng_aux))
+    - (10938.51 * lng_aux * lat_aux)
+    - (0.36 * lng_aux * pow(lat_aux, 2))
+    - (44.54 * pow(lng_aux, 3));
+    
+    return y;
+}
+
+
 @implementation MapUtils
 
 + (NSArray*)mapItemAnnotationsThatShouldBeDisplayed:(NSArray*)annotations forQuery:(NSString*)query {
@@ -287,6 +356,20 @@
     y = (1.0 - (y/M_PI)) / 2.0;
     
     return CGPointMake(x, y);
+}
+
++ (CH1903BBox)WGStoCH1903:(MKMapRect)mapRect {
+    CLLocationCoordinate2D topLeftWGS = MKCoordinateForMapPoint(mapRect.origin);
+    MKMapPoint bottomRightMapPoint = MKMapPointMake(mapRect.origin.x+mapRect.size.width, mapRect.origin.y+mapRect.size.height);
+    CLLocationCoordinate2D bottomRightWGS = MKCoordinateForMapPoint(bottomRightMapPoint);
+    
+    CH1903BBox bbox;
+    bbox.start_x = WGStoCHx(topLeftWGS.latitude, topLeftWGS.longitude);
+    bbox.start_y = WGStoCHy(topLeftWGS.latitude, topLeftWGS.longitude);
+    bbox.end_x = WGStoCHx(bottomRightWGS.latitude, bottomRightWGS.longitude);
+    bbox.end_y = WGStoCHy(bottomRightWGS.latitude, bottomRightWGS.longitude);
+    return bbox;
+    
 }
 
 @end
