@@ -55,7 +55,17 @@
 	        android:layout_marginRight="5dp"
 	        android:hint="@string/authentication_string_password_hint"
 	        android:inputType="textPassword" />
-	
+
+	    <CheckBox
+	        android:id="@+id/authentication_staylogged_cb"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/authentication_password"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginLeft="5dp"
+	        android:layout_marginRight="5dp"
+	        android:textColor="@android:color/primary_text_light"
+	        android:text="@string/authentication_string_staysignedin" />
 	    
     </LinearLayout>
 

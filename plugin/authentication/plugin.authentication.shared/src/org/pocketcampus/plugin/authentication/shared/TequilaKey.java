@@ -27,6 +27,7 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
   private static final org.apache.thrift.protocol.TField TOS_FIELD_DESC = new org.apache.thrift.protocol.TField("tos", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField I_TEQUILA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaKey", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField LOGIN_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("loginCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField I_TEQUILA_KEY_FOR_PC_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaKeyForPc", org.apache.thrift.protocol.TType.STRING, (short)4);
 
   /**
    * 
@@ -35,6 +36,7 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
   public TypeOfService tos; // required
   public String iTequilaKey; // required
   public String loginCookie; // required
+  public String iTequilaKeyForPc; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -44,7 +46,8 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
      */
     TOS((short)1, "tos"),
     I_TEQUILA_KEY((short)2, "iTequilaKey"),
-    LOGIN_COOKIE((short)3, "loginCookie");
+    LOGIN_COOKIE((short)3, "loginCookie"),
+    I_TEQUILA_KEY_FOR_PC((short)4, "iTequilaKeyForPc");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,6 +68,8 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
           return I_TEQUILA_KEY;
         case 3: // LOGIN_COOKIE
           return LOGIN_COOKIE;
+        case 4: // I_TEQUILA_KEY_FOR_PC
+          return I_TEQUILA_KEY_FOR_PC;
         default:
           return null;
       }
@@ -115,6 +120,8 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.LOGIN_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("loginCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_TEQUILA_KEY_FOR_PC, new org.apache.thrift.meta_data.FieldMetaData("iTequilaKeyForPc", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TequilaKey.class, metaDataMap);
   }
@@ -144,6 +151,9 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
     if (other.isSetLoginCookie()) {
       this.loginCookie = other.loginCookie;
     }
+    if (other.isSetITequilaKeyForPc()) {
+      this.iTequilaKeyForPc = other.iTequilaKeyForPc;
+    }
   }
 
   public TequilaKey deepCopy() {
@@ -155,6 +165,7 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
     this.tos = null;
     this.iTequilaKey = null;
     this.loginCookie = null;
+    this.iTequilaKeyForPc = null;
   }
 
   /**
@@ -237,6 +248,30 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
     }
   }
 
+  public String getITequilaKeyForPc() {
+    return this.iTequilaKeyForPc;
+  }
+
+  public TequilaKey setITequilaKeyForPc(String iTequilaKeyForPc) {
+    this.iTequilaKeyForPc = iTequilaKeyForPc;
+    return this;
+  }
+
+  public void unsetITequilaKeyForPc() {
+    this.iTequilaKeyForPc = null;
+  }
+
+  /** Returns true if field iTequilaKeyForPc is set (has been assigned a value) and false otherwise */
+  public boolean isSetITequilaKeyForPc() {
+    return this.iTequilaKeyForPc != null;
+  }
+
+  public void setITequilaKeyForPcIsSet(boolean value) {
+    if (!value) {
+      this.iTequilaKeyForPc = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case TOS:
@@ -263,6 +298,14 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
       }
       break;
 
+    case I_TEQUILA_KEY_FOR_PC:
+      if (value == null) {
+        unsetITequilaKeyForPc();
+      } else {
+        setITequilaKeyForPc((String)value);
+      }
+      break;
+
     }
   }
 
@@ -276,6 +319,9 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
 
     case LOGIN_COOKIE:
       return getLoginCookie();
+
+    case I_TEQUILA_KEY_FOR_PC:
+      return getITequilaKeyForPc();
 
     }
     throw new IllegalStateException();
@@ -294,6 +340,8 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
       return isSetITequilaKey();
     case LOGIN_COOKIE:
       return isSetLoginCookie();
+    case I_TEQUILA_KEY_FOR_PC:
+      return isSetITequilaKeyForPc();
     }
     throw new IllegalStateException();
   }
@@ -338,6 +386,15 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
         return false;
     }
 
+    boolean this_present_iTequilaKeyForPc = true && this.isSetITequilaKeyForPc();
+    boolean that_present_iTequilaKeyForPc = true && that.isSetITequilaKeyForPc();
+    if (this_present_iTequilaKeyForPc || that_present_iTequilaKeyForPc) {
+      if (!(this_present_iTequilaKeyForPc && that_present_iTequilaKeyForPc))
+        return false;
+      if (!this.iTequilaKeyForPc.equals(that.iTequilaKeyForPc))
+        return false;
+    }
+
     return true;
   }
 
@@ -359,6 +416,11 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
     builder.append(present_loginCookie);
     if (present_loginCookie)
       builder.append(loginCookie);
+
+    boolean present_iTequilaKeyForPc = true && (isSetITequilaKeyForPc());
+    builder.append(present_iTequilaKeyForPc);
+    if (present_iTequilaKeyForPc)
+      builder.append(iTequilaKeyForPc);
 
     return builder.toHashCode();
   }
@@ -401,6 +463,16 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetITequilaKeyForPc()).compareTo(typedOther.isSetITequilaKeyForPc());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetITequilaKeyForPc()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTequilaKeyForPc, typedOther.iTequilaKeyForPc);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -439,6 +511,13 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 4: // I_TEQUILA_KEY_FOR_PC
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iTequilaKeyForPc = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
       }
@@ -468,6 +547,13 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
       if (isSetLoginCookie()) {
         oprot.writeFieldBegin(LOGIN_COOKIE_FIELD_DESC);
         oprot.writeString(this.loginCookie);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.iTequilaKeyForPc != null) {
+      if (isSetITequilaKeyForPc()) {
+        oprot.writeFieldBegin(I_TEQUILA_KEY_FOR_PC_FIELD_DESC);
+        oprot.writeString(this.iTequilaKeyForPc);
         oprot.writeFieldEnd();
       }
     }
@@ -502,6 +588,16 @@ public class TequilaKey implements org.apache.thrift.TBase<TequilaKey, TequilaKe
         sb.append("null");
       } else {
         sb.append(this.loginCookie);
+      }
+      first = false;
+    }
+    if (isSetITequilaKeyForPc()) {
+      if (!first) sb.append(", ");
+      sb.append("iTequilaKeyForPc:");
+      if (this.iTequilaKeyForPc == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iTequilaKeyForPc);
       }
       first = false;
     }

@@ -11,6 +11,7 @@ struct TequilaKey {
 	1: required TypeOfService tos;
 	2: required string iTequilaKey;
 	3: optional string loginCookie;
+	4: optional string iTequilaKeyForPc;
 }
 
 struct SessionId {
@@ -25,5 +26,6 @@ service AuthenticationService {
 
 	TequilaKey getTequilaKeyForService(1: TypeOfService aService);
 	SessionId getSessionIdForService(1: TequilaKey aTequilaKey);
+	i32 logOutSession(1: SessionId aSessionId);
 	
 }

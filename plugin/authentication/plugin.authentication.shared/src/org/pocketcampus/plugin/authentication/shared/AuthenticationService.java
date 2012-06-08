@@ -29,6 +29,8 @@ public class AuthenticationService {
 
     public SessionId getSessionIdForService(TequilaKey aTequilaKey) throws org.apache.thrift.TException;
 
+    public int logOutSession(SessionId aSessionId) throws org.apache.thrift.TException;
+
   }
 
   public interface AsyncIface {
@@ -36,6 +38,8 @@ public class AuthenticationService {
     public void getTequilaKeyForService(TypeOfService aService, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTequilaKeyForService_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getSessionIdForService(TequilaKey aTequilaKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSessionIdForService_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void logOutSession(SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.logOutSession_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -103,6 +107,29 @@ public class AuthenticationService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSessionIdForService failed: unknown result");
+    }
+
+    public int logOutSession(SessionId aSessionId) throws org.apache.thrift.TException
+    {
+      send_logOutSession(aSessionId);
+      return recv_logOutSession();
+    }
+
+    public void send_logOutSession(SessionId aSessionId) throws org.apache.thrift.TException
+    {
+      logOutSession_args args = new logOutSession_args();
+      args.setASessionId(aSessionId);
+      sendBase("logOutSession", args);
+    }
+
+    public int recv_logOutSession() throws org.apache.thrift.TException
+    {
+      logOutSession_result result = new logOutSession_result();
+      receiveBase(result, "logOutSession");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "logOutSession failed: unknown result");
     }
 
   }
@@ -187,6 +214,38 @@ public class AuthenticationService {
       }
     }
 
+    public void logOutSession(SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<logOutSession_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      logOutSession_call method_call = new logOutSession_call(aSessionId, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class logOutSession_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private SessionId aSessionId;
+      public logOutSession_call(SessionId aSessionId, org.apache.thrift.async.AsyncMethodCallback<logOutSession_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.aSessionId = aSessionId;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("logOutSession", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        logOutSession_args args = new logOutSession_args();
+        args.setASessionId(aSessionId);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public int getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_logOutSession();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor implements org.apache.thrift.TProcessor {
@@ -202,6 +261,7 @@ public class AuthenticationService {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getTequilaKeyForService", new getTequilaKeyForService());
       processMap.put("getSessionIdForService", new getSessionIdForService());
+      processMap.put("logOutSession", new logOutSession());
       return processMap;
     }
 
@@ -233,6 +293,23 @@ public class AuthenticationService {
       protected getSessionIdForService_result getResult(I iface, getSessionIdForService_args args) throws org.apache.thrift.TException {
         getSessionIdForService_result result = new getSessionIdForService_result();
         result.success = iface.getSessionIdForService(args.aTequilaKey);
+        return result;
+      }
+    }
+
+    private static class logOutSession<I extends Iface> extends org.apache.thrift.ProcessFunction<I, logOutSession_args> {
+      public logOutSession() {
+        super("logOutSession");
+      }
+
+      protected logOutSession_args getEmptyArgsInstance() {
+        return new logOutSession_args();
+      }
+
+      protected logOutSession_result getResult(I iface, logOutSession_args args) throws org.apache.thrift.TException {
+        logOutSession_result result = new logOutSession_result();
+        result.success = iface.logOutSession(args.aSessionId);
+        result.setSuccessIsSet(true);
         return result;
       }
     }
@@ -1445,6 +1522,614 @@ public class AuthenticationService {
       } else {
         sb.append(this.success);
       }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class logOutSession_args implements org.apache.thrift.TBase<logOutSession_args, logOutSession_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("logOutSession_args");
+
+    private static final org.apache.thrift.protocol.TField A_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("aSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    public SessionId aSessionId; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      A_SESSION_ID((short)1, "aSessionId");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // A_SESSION_ID
+            return A_SESSION_ID;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.A_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("aSessionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionId.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(logOutSession_args.class, metaDataMap);
+    }
+
+    public logOutSession_args() {
+    }
+
+    public logOutSession_args(
+      SessionId aSessionId)
+    {
+      this();
+      this.aSessionId = aSessionId;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public logOutSession_args(logOutSession_args other) {
+      if (other.isSetASessionId()) {
+        this.aSessionId = new SessionId(other.aSessionId);
+      }
+    }
+
+    public logOutSession_args deepCopy() {
+      return new logOutSession_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.aSessionId = null;
+    }
+
+    public SessionId getASessionId() {
+      return this.aSessionId;
+    }
+
+    public logOutSession_args setASessionId(SessionId aSessionId) {
+      this.aSessionId = aSessionId;
+      return this;
+    }
+
+    public void unsetASessionId() {
+      this.aSessionId = null;
+    }
+
+    /** Returns true if field aSessionId is set (has been assigned a value) and false otherwise */
+    public boolean isSetASessionId() {
+      return this.aSessionId != null;
+    }
+
+    public void setASessionIdIsSet(boolean value) {
+      if (!value) {
+        this.aSessionId = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case A_SESSION_ID:
+        if (value == null) {
+          unsetASessionId();
+        } else {
+          setASessionId((SessionId)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case A_SESSION_ID:
+        return getASessionId();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case A_SESSION_ID:
+        return isSetASessionId();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof logOutSession_args)
+        return this.equals((logOutSession_args)that);
+      return false;
+    }
+
+    public boolean equals(logOutSession_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_aSessionId = true && this.isSetASessionId();
+      boolean that_present_aSessionId = true && that.isSetASessionId();
+      if (this_present_aSessionId || that_present_aSessionId) {
+        if (!(this_present_aSessionId && that_present_aSessionId))
+          return false;
+        if (!this.aSessionId.equals(that.aSessionId))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_aSessionId = true && (isSetASessionId());
+      builder.append(present_aSessionId);
+      if (present_aSessionId)
+        builder.append(aSessionId);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(logOutSession_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      logOutSession_args typedOther = (logOutSession_args)other;
+
+      lastComparison = Boolean.valueOf(isSetASessionId()).compareTo(typedOther.isSetASessionId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetASessionId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.aSessionId, typedOther.aSessionId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // A_SESSION_ID
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.aSessionId = new SessionId();
+              this.aSessionId.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.aSessionId != null) {
+        oprot.writeFieldBegin(A_SESSION_ID_FIELD_DESC);
+        this.aSessionId.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("logOutSession_args(");
+      boolean first = true;
+
+      sb.append("aSessionId:");
+      if (this.aSessionId == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.aSessionId);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class logOutSession_result implements org.apache.thrift.TBase<logOutSession_result, logOutSession_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("logOutSession_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
+
+    public int success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __SUCCESS_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(logOutSession_result.class, metaDataMap);
+    }
+
+    public logOutSession_result() {
+    }
+
+    public logOutSession_result(
+      int success)
+    {
+      this();
+      this.success = success;
+      setSuccessIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public logOutSession_result(logOutSession_result other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      this.success = other.success;
+    }
+
+    public logOutSession_result deepCopy() {
+      return new logOutSession_result(this);
+    }
+
+    @Override
+    public void clear() {
+      setSuccessIsSet(false);
+      this.success = 0;
+    }
+
+    public int getSuccess() {
+      return this.success;
+    }
+
+    public logOutSession_result setSuccess(int success) {
+      this.success = success;
+      setSuccessIsSet(true);
+      return this;
+    }
+
+    public void unsetSuccess() {
+      __isset_bit_vector.clear(__SUCCESS_ISSET_ID);
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((Integer)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return Integer.valueOf(getSuccess());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof logOutSession_result)
+        return this.equals((logOutSession_result)that);
+      return false;
+    }
+
+    public boolean equals(logOutSession_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true;
+      boolean that_present_success = true;
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (this.success != that.success)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true;
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(logOutSession_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      logOutSession_result typedOther = (logOutSession_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.I32) {
+              this.success = iprot.readI32();
+              setSuccessIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        oprot.writeI32(this.success);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("logOutSession_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      sb.append(this.success);
       first = false;
       sb.append(")");
       return sb.toString();

@@ -29,6 +29,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	 */
 	private static final String AUTH_STORAGE_NAME = "AUTH_STORAGE_NAME";
 	private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
+	private static final String STAYSIGNEDIN_KEY = "STAYSIGNEDIN_KEY";
 	
 	/**
 	 * Reference to the Views that need to be notified when the stored data changes.
@@ -45,12 +46,12 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	 */
 	private TequilaKey iTequilaKey;
 	private SessionId iSessionId;
-	private String iAuthenticatedToken;
 	
 	/**
 	 * Data that need to be persistent.
 	 */
 	private String tequilaCookie;
+	private boolean staySignedIn;
 
 	/**
 	 * Constructor with reference to the context.
@@ -64,6 +65,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	public AuthenticationModel(Context context) {
 		iStorage = context.getSharedPreferences(AUTH_STORAGE_NAME, 0);
 		tequilaCookie = iStorage.getString(TEQUILA_COOKIE_KEY, null);
+		staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
 	}
 
 	/**
@@ -75,17 +77,6 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	public void setTequilaKey(TequilaKey value) {
 		iTequilaKey = value;
 		mListeners.gotTequilaKey();
-	}
-
-	/**
-	 * Setter and getter for iAuthenticatedToken.
-	 */
-	public String getAuthenticatedToken() {
-		return iAuthenticatedToken;
-	}
-	public void setAuthenticatedToken(String value) {
-		iAuthenticatedToken = value;
-		mListeners.gotAuthenticatedToken();
 	}
 
 	/**
@@ -102,18 +93,29 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	/**
 	 * Setter and getter for tequilaCookie.
 	 */
+	public boolean getStaySignedIn() {
+		return staySignedIn;
+	}
+	public void setStaySignedIn(boolean value) {
+		staySignedIn = value;
+		savePersistentStuff();
+	}
+	
+	/**
+	 * Setter and getter for tequilaCookie.
+	 */
 	public String getTequilaCookie() {
 		return tequilaCookie;
 	}
 	public void setTequilaCookie(String value) {
 		tequilaCookie = value;
-		saveTequilaCookie();
+		savePersistentStuff();
 		mListeners.gotTequilaCookie();
 	}
 	public void destroyTequilaCookie() {
 		// Should not call gotTequilaCookie here
 		tequilaCookie = null;
-		saveTequilaCookie();
+		savePersistentStuff();
 	}
 
 	/**
@@ -132,11 +134,12 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	}
 	
 	/**
-	 * Helper function to save cookie in persistent storage.
+	 * Helper function to save persistent stuff.
 	 */
-	private void saveTequilaCookie() {
+	private void savePersistentStuff() {
 		Editor editor = iStorage.edit();
 		editor.putString(TEQUILA_COOKIE_KEY, tequilaCookie);
+		editor.putBoolean(STAYSIGNEDIN_KEY, staySignedIn);
 		editor.commit();
 	}
 	

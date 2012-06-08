@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/src.zip" sourcepath="lib/src.zip"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/jetty-util-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/platform.sdk.server"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

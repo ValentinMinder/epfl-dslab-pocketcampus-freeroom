@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
@@ -39,18 +40,14 @@ import ch.epfl.tequila.client.service.TequilaService;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
-	private PersistentSessions usersSessions;
+	private AuthDB authDB;
 	
 	/**
 	 * Constructor
 	 */
 	public AuthenticationServiceImpl() {
 		System.out.println("Starting Authentication plugin server ...");
-		usersSessions = new PersistentSessions();
-		usersSessions.loadFromFile();
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() { usersSessions.writeToFile(); }
-		});		
+		authDB = new AuthDB();
 	}
 	
 	/**
@@ -82,14 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get Tequila Token for PocketCampus.
 	 */
 	private TequilaKey getTequilaKeyForPocketCampus() throws IOException {
-	    ClientConfig config = new ClientConfig();
-	    config.setHost("tequila.epfl.ch");
-	    //config.setOrg("PocketCampus");
-	    config.setService("PocketCampus");
-	    config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where");
-	    //config.setAllows("categorie=epfl-guests");
-	    String keyStr = TequilaService.instance().createRequest(config, "pocketcampus-redirect://login.pocketcampus.org");
-		return new TequilaKey(TypeOfService.SERVICE_POCKETCAMPUS, keyStr);
+		return new TequilaKey(TypeOfService.SERVICE_POCKETCAMPUS, getTokenForPcFromTequila());
 	}
 
 	/**
@@ -102,7 +92,11 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
         URL url = new URL(conn2.getHeaderField("Location"));
 		MultiMap<String> params = new MultiMap<String>();
 		UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
-		return new TequilaKey(TypeOfService.SERVICE_MOODLE, params.getString("requestkey"));
+		TequilaKey teqKey = new TequilaKey();
+		teqKey.setTos(TypeOfService.SERVICE_MOODLE);
+		teqKey.setITequilaKey(params.getString("requestkey"));
+		teqKey.setITequilaKeyForPc(getTokenForPcFromTequila());
+		return teqKey;
 	}
 
 	/**
@@ -128,6 +122,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 			}
 		}
 		teqKey.setLoginCookie(cookie.cookie());
+		teqKey.setITequilaKeyForPc(getTokenForPcFromTequila());
 		return teqKey;
 	}
 
@@ -161,29 +156,14 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get SessionId for PocketCampus.
 	 */
 	private SessionId getSessionIdForPocketCampus(TequilaKey aTequilaKey) throws IOException {
-	    if(aTequilaKey.getTos() != TypeOfService.SERVICE_POCKETCAMPUS)
-	    	throw new IOException("getSessionIdForPocketCampus: Called with wrong TypeOfService");
-	    
-	    ClientConfig clientConfig = new ClientConfig();
-	    clientConfig.setHost("tequila.epfl.ch");
-
-	    TequilaPrincipal principal = TequilaService.instance().validateKey(clientConfig, aTequilaKey.getITequilaKey());
-	    
-		//System.out.println("principal = " + principal);
-		// principal = [user=chamsedd, org=EPFL, host=128.178.236.75, attributes={phone=+41 21 6938188, status=ok, firstname=Amer, where=IN-MA1/IN-S/ETU/EPFL/CH, requesthost=128.178.77.233, version=2.1.1, unit=IN-MA1,Section d'informatique - Master semestre 1, uniqueid=211338, username=chamsedd,chamsedd@in-ma1, email=amer.chamseddine@epfl.ch, name=Chamseddine, authorig=cookie, unixid=112338, groupid=30132}]
-
-	    // Create session contents
-	    TequilaSession ts = new TequilaSession();
-	    ts.setTequilaPrincipal(principal);
-
-	    // Create new session
-	    String newSessId = TequilaSessions.newSession(ts);
-	    // TODO need a way to delete inactive sessions
-
+		String sciper = getUserDataFromTequilaAndInsertInDB(aTequilaKey.getITequilaKey());
+		String sessId = UUID.randomUUID().toString();
+		System.out.println("PC SESS ID: " + sessId);
+		authDB.updateCookie("pc_cookie", sessId, sciper);
 	    // send back the session id
 	    SessionId si = new SessionId();
 	    si.setTos(TypeOfService.SERVICE_POCKETCAMPUS);
-	    si.setPocketCampusSessionId(newSessId);
+	    si.setPocketCampusSessionId(sessId);
 		return si;
 	}
 
@@ -191,9 +171,6 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get SessionId for Moodle.
 	 */
 	private SessionId getSessionIdForMoodle(TequilaKey aTequilaKey) throws IOException {
-	    if(aTequilaKey.getTos() != TypeOfService.SERVICE_MOODLE)
-	    	throw new IOException("getSessionIdForMoodle: Called with wrong TypeOfService");
-	    
 		Cookie cookie = new Cookie();
         HttpURLConnection conn = (HttpURLConnection) new URL("http://moodle.epfl.ch").openConnection();
         conn.setInstanceFollowRedirects(false);
@@ -206,6 +183,13 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
         conn2.getInputStream();
         cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
         
+        if(aTequilaKey.isSetITequilaKeyForPc()) {
+        	String sciper = getUserDataFromTequilaAndInsertInDB(aTequilaKey.getITequilaKeyForPc());
+        	if(sciper != null) {
+        		authDB.updateCookie("moodle_cookie", cookie.cookie(), sciper);
+        	}
+        }
+        
 	    // send back the session id
 	    SessionId si = new SessionId();
 	    si.setTos(TypeOfService.SERVICE_MOODLE);
@@ -217,13 +201,37 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Helper function to get SessionId for Camipro.
 	 */
 	private SessionId getSessionIdForCamipro(TequilaKey aTequilaKey) throws IOException {
-		if(aTequilaKey.getTos() != TypeOfService.SERVICE_CAMIPRO)
-			throw new IOException("getSessionIdForCamipro: Called with wrong TypeOfService");
-	    
+        if(aTequilaKey.isSetITequilaKeyForPc()) {
+        	String sciper = getUserDataFromTequilaAndInsertInDB(aTequilaKey.getITequilaKeyForPc());
+        	if(sciper != null) {
+        		authDB.updateCookie("camipro_cookie", aTequilaKey.getLoginCookie(), sciper);
+        	}
+        }
+        
 	    SessionId si = new SessionId();
 	    si.setTos(TypeOfService.SERVICE_CAMIPRO);
 	    si.setCamiproCookie(aTequilaKey.getLoginCookie());
 		return si;
+	}
+	
+	@Override
+	public int logOutSession(SessionId aSessionId) throws TException {
+		System.out.println("logOutSession");
+		try {
+			switch (aSessionId.getTos()) {
+			case SERVICE_POCKETCAMPUS:
+				return authDB.killCookie("pc_cookie", aSessionId.getPocketCampusSessionId());
+			case SERVICE_MOODLE:
+				return authDB.killCookie("moodle_cookie", aSessionId.getMoodleCookie());
+			case SERVICE_CAMIPRO:
+				return authDB.killCookie("camipro_cookie", aSessionId.getCamiproCookie());
+			default:
+				return 404;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 500;
+		}
 	}
 	
 	/**
@@ -241,4 +249,37 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		return IOUtils.toString(pr.getInputStream(), encoding);
 	}
 	
+	/**
+	 * Helper function to get a TequilaKey from Tequila for PocketCampus
+	 */
+	private String getTokenForPcFromTequila() throws IOException {
+	    ClientConfig config = new ClientConfig();
+	    config.setHost("tequila.epfl.ch");
+	    //config.setOrg("PocketCampus");
+	    config.setService("PocketCampus");
+	    config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where");
+	    //config.setAllows("categorie=epfl-guests");
+	    return TequilaService.instance().createRequest(config, "pocketcampus-redirect://login.pocketcampus.org");
+	}
+	
+	/**
+	 * Helper function to get user data from tequila and store it db
+	 */
+	private String getUserDataFromTequilaAndInsertInDB(String teqKey) throws IOException {
+	    
+	    ClientConfig clientConfig = new ClientConfig();
+	    clientConfig.setHost("tequila.epfl.ch");
+
+	    try {
+	    	TequilaPrincipal principal = TequilaService.instance().validateKey(clientConfig, teqKey);
+		    return authDB.insertUser(principal);
+	    } catch(SecurityException e) {
+	    	return null;
+	    }
+	    
+		//System.out.println("principal = " + principal);
+		// principal = [user=chamsedd, org=EPFL, host=128.178.236.75, attributes={phone=+41 21 6938188, status=ok, firstname=Amer, where=IN-MA1/IN-S/ETU/EPFL/CH, requesthost=128.178.77.233, version=2.1.1, unit=IN-MA1,Section d'informatique - Master semestre 1, uniqueid=211338, username=chamsedd,chamsedd@in-ma1, email=amer.chamseddine@epfl.ch, name=Chamseddine, authorig=cookie, unixid=112338, groupid=30132}]
+
+	}
+
 }

@@ -1,0 +1,92 @@
+package org.pocketcampus.authentication.server;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
+import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+
+public class AuthDB {
+	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
+	private static final String DB_USERNAME = "pocketcampus";
+	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
+	private ConnectionManager mConnectionManager;
+	
+	public AuthDB() {
+		try {
+			this.mConnectionManager = new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD);
+		} catch (ServerException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public String insertUser(TequilaPrincipal principal) {
+		if (principal == null)
+			return null;
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("INSERT IGNORE INTO auth_tokens (sciper, user, org, first, last, email, pc_cookie, moodle_cookie, camipro_cookie, isa_cookie) VALUES (?, ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL)");
+			sqlStm.setString(1, principal.getAttribute("uniqueid"));
+			sqlStm.setString(2, principal.getUser());
+			sqlStm.setString(3, principal.getOrg());
+			sqlStm.setString(4, principal.getAttribute("firstname"));
+			sqlStm.setString(5, principal.getAttribute("name"));
+			sqlStm.setString(6, principal.getAttribute("email"));
+			sqlStm.executeUpdate();
+			return principal.getAttribute("uniqueid");
+		} catch (SQLException e) {
+			System.out.println("<Auth> Problem in insert user.");
+			return null;
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateCookie(String colName, String cookieVal, String sciper) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("UPDATE auth_tokens SET " + colName + " = ? WHERE sciper = ?");
+			sqlStm.setString(1, cookieVal);
+			sqlStm.setString(2, sciper);
+			sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("<Auth> Problem in insert user.");
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public int killCookie(String colName, String cookieVal) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("UPDATE auth_tokens SET " + colName + " = NULL WHERE " + colName + " = ?");
+			sqlStm.setString(1, cookieVal);
+			sqlStm.executeUpdate();
+			return 200;
+		} catch (SQLException e) {
+			System.out.println("<Auth> Problem in delete user.");
+			return 500;
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}

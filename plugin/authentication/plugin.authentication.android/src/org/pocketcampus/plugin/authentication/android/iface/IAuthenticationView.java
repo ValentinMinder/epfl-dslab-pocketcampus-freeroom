@@ -22,13 +22,14 @@ public interface IAuthenticationView extends IView {
 	 */
 	void gotTequilaCookie();
 	void gotTequilaKey();
-	void gotAuthenticatedToken();
 	void gotSessionId();
 	
 	/**
 	 * Methods called from the "Request" classes
 	 * when something unusual happens.
 	 */
+	void doneAuthenticatingToken();
+	void doneAuthenticatingSecToken();
 	void notifyBadCredentials();
 	void notifyCookieTimedOut();
 	void networkErrorHappened();

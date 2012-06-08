@@ -13,14 +13,17 @@ import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithT
 import org.pocketcampus.plugin.authentication.android.req.GetSessionIdDirectlyFromProviderRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetSessionIdForServiceRequest;
 import org.pocketcampus.plugin.authentication.android.req.GetTequilaKeyForServiceRequest;
+import org.pocketcampus.plugin.authentication.android.req.LogOutSessionRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
+import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -169,14 +172,30 @@ public class AuthenticationController extends PluginController implements IAuthe
 	 */
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
+		SessionId sessId = null;
 		if("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE".equals(aIntent.getAction())) {
 			Uri intentUri = aIntent.getData();
+			Bundle extras = aIntent.getExtras();
 			if(intentUri != null && "pocketcampus-logout".equals(intentUri.getScheme())) {
 				Log.v("DEBUG", "AuthenticationController::onStartCommand {Logging out}");
 				mModel.destroyTequilaCookie();
 			}
+			if(extras != null && extras.getString("cookie") != null) {
+				if("camipro".equals(extras.getString("service"))) {
+					sessId = new SessionId(TypeOfService.SERVICE_CAMIPRO);
+					sessId.setCamiproCookie(extras.getString("cookie"));
+				} else if("moodle".equals(extras.getString("service"))) {
+					sessId = new SessionId(TypeOfService.SERVICE_MOODLE);
+					sessId.setMoodleCookie(extras.getString("cookie"));
+				}
+			}
 		}
-		stopSelf();
+		if(sessId == null) {
+			Log.v("DEBUG", "AuthenticationController::onStartCommand {Shutting down}");
+			stopSelf();
+		} else {
+			new LogOutSessionRequest().start(this, mClient, sessId);
+		}
 		return START_NOT_STICKY;
 	}
 	
@@ -302,11 +321,11 @@ public class AuthenticationController extends PluginController implements IAuthe
 	/**
 	 * Initiates a AuthenticateTokenWithTequilaRequest.
 	 */
-	public void nAuthenticateToken() {
+	public void nAuthenticateToken(boolean secondary) {
 		TokenCookieComplex tc = new TokenCookieComplex();
 		tc.cookie = mModel.getTequilaCookie();
 		tc.token = mModel.getTequilaKey();
-		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
+		new AuthenticateTokenWithTequilaRequest().setAuthSecToken(secondary).start(this, threadSafeClient, tc);
 	}
 	
 	/**
@@ -325,5 +344,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 		tc.credentials = iLocalCredentials;
 		new GetSessionIdDirectlyFromProviderRequest().start(this, threadSafeClient, tc);
 	}
-	
+
+	public void logoutFinished() {
+		Log.v("DEBUG", "AuthenticationController::logoutFinished {Shutting down}");
+		stopSelf();
+	}
+
 }

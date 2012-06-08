@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -188,6 +189,8 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 				// Tracker
 				Tracker.getInstance().trackPageView("authentication/login");
 				
+				CheckBox staySignedIn = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
+				mModel.setStaySignedIn(staySignedIn.isChecked());
 				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
 				mController.nSetLocalCredentials(usernameField.getText().toString(), passwordField.getText().toString());
@@ -241,7 +244,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 */
 	@Override
 	public void gotTequilaKey() {
-		mController.nAuthenticateToken();
+		mController.nAuthenticateToken(false);
 	}
 
 	/**
@@ -251,7 +254,23 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * service's token (that we got previously) with Tequila.
 	 */
 	@Override
-	public void gotAuthenticatedToken() {
+	public void doneAuthenticatingToken() {
+		if(mModel.getStaySignedIn() && mModel.getTequilaKey().isSetITequilaKeyForPc()) {
+			System.out.println("Stay signed in");
+			mController.nAuthenticateToken(true);
+		} else {
+			mController.nGetSessionId();
+		}
+	}
+
+	/**
+	 * Called after we successfully authenticate the PC token
+	 * 
+	 * Called after we successfully authenticate the
+	 * service's token (that we got previously) with Tequila.
+	 */
+	@Override
+	public void doneAuthenticatingSecToken() {
 		mController.nGetSessionId();
 	}
 
