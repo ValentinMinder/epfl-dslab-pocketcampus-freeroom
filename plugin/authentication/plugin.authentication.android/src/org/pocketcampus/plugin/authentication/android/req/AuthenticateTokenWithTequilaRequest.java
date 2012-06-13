@@ -5,7 +5,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCookieComplex;
 
 /**

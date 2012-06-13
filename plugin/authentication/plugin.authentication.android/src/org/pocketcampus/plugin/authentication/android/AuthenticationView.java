@@ -4,22 +4,16 @@ import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * AuthenticationView - Main view that opens up as a login dialog.
@@ -45,12 +39,6 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * Stores a reference to the Model associated with this plugin.
 	 */
 	private AuthenticationModel mModel;
-	
-	/**
-	 * Boolean to check if we are already authenticating.
-	 * In this case we drop subsequent requests.
-	 */
-	private boolean iAuthenticating = false;
 	
 	/**
 	 * Specifies the Type of our Controller.

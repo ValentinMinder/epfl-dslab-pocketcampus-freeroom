@@ -17,10 +17,7 @@ import org.pocketcampus.plugin.authentication.android.req.StartRefreshRequest;
 import org.pocketcampus.plugin.authentication.android.req.StopRefreshRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TequilaSession;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
 import android.content.Intent;
 import android.net.Uri;

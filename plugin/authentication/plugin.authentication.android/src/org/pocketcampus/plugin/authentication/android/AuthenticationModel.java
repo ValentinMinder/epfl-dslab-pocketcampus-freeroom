@@ -4,14 +4,10 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TequilaKey;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 /**
  * AuthenticationModel - The Model that stores the data of this plugin.
