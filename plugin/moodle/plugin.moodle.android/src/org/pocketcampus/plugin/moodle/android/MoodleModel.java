@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
@@ -34,6 +35,14 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	private static final String MOODLE_COOKIE_KEY = "MOODLE_COOKIE_KEY";
 	
 	/**
+	 * Utility class ResourceCookieComplex
+	 */
+	public static class ResourceCookieComplex {
+		public String resource;
+		public String cookie;
+	}
+	
+	/**
 	 * SharedPreferences object responsible for the persistent data storage.
 	 */
 	private SharedPreferences iStorage;
@@ -49,6 +58,7 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	private List<MoodleCourse> iCourses;
 	private List<MoodleEvent> iEvents;
 	private List<MoodleSection> iSections;
+	private TequilaToken tequilaToken;
 	
 	/**
 	 * Data that need to be persistent.
@@ -104,6 +114,17 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	}
 	
 	/**
+	 * Setter and getter for tequilaToken
+	 */
+	public TequilaToken getTequilaToken() {
+		return tequilaToken;
+	}
+	public void setTequilaToken(TequilaToken arg) {
+		tequilaToken = arg;
+		mListeners.tequilaTokenUpdated();
+	}
+	
+	/**
 	 * Setter and getter for moodleCookie
 	 */
 	public String getMoodleCookie() {
@@ -114,6 +135,7 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 		Editor editor = iStorage.edit();
 		editor.putString(MOODLE_COOKIE_KEY, moodleCookie);
 		editor.commit();
+		mListeners.moodleCookieUpdated();
 	}
 	
 	/**

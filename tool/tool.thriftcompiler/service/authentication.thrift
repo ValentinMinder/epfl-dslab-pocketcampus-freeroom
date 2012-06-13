@@ -7,6 +7,15 @@ enum TypeOfService {
 	SERVICE_ISA;
 }
 
+struct TequilaSession {
+	1: required string tequilaCookie;
+}
+
+struct TequilaToken {
+	1: required string iTequilaKey;
+	2: optional string loginCookie;
+}
+
 struct TequilaKey {
 	1: required TypeOfService tos;
 	2: required string iTequilaKey;
@@ -24,6 +33,9 @@ struct SessionId {
 
 service AuthenticationService {
 
+	i32 startRefresh(1: TequilaSession aTequilaSession);
+	i32 stopRefresh(1: TequilaSession aTequilaSession);
+	
 	TequilaKey getTequilaKeyForService(1: TypeOfService aService);
 	SessionId getSessionIdForService(1: TequilaKey aTequilaKey);
 	i32 logOutSession(1: SessionId aSessionId);

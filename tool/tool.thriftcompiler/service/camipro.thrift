@@ -9,6 +9,11 @@ struct CamiproRequest {
 }
 
 
+struct CamiproSession {
+	1: required string camiproCookie;
+}
+
+
 struct Transaction {
 	1: required string iDate;
 	2: required string iOperation;
@@ -49,6 +54,8 @@ struct SendMailResult {
 
 
 service CamiproService {
+	authentication.TequilaToken getTequilaToken();
+	CamiproSession getCamiproSession(1: authentication.TequilaToken iTequilaToken);
 	BalanceAndTransactions getBalanceAndTransactions(1: CamiproRequest iRequest);
 	StatsAndLoadingInfo getStatsAndLoadingInfo(1: CamiproRequest iRequest);
 	SendMailResult sendLoadingInfoByEmail(1: CamiproRequest iRequest);

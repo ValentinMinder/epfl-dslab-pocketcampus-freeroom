@@ -11,8 +11,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
-import org.pocketcampus.plugin.authentication.android.AuthenticationController.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 
 /**
  * LoginToTequilaRequest
@@ -40,7 +40,7 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 		for(Cookie c : lc) {
 			System.out.println("cookie=" + c.getName() + ": " + c.getValue());
 			if(AuthenticationController.tequilaCookieName.equals(c.getName())) {
-				return c.getValue();
+				return AuthenticationController.tequilaCookieName + "=" + c.getValue();
 			}
 		}
 		return null;
@@ -49,16 +49,17 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 	@Override
 	protected void onResult(AuthenticationController controller, String result) {
 		if(result != null) {
-			((AuthenticationModel) controller.getModel()).setTequilaCookie(result);
+			((AuthenticationModel) controller.getModel()).setTequilaCookie(result, false);
+			controller.tequilaLoginFinished();
 		} else {
-			((AuthenticationModel) controller.getModel()).getListenersToNotify().notifyBadCredentials();
+			controller.notifyBadCredentials();
 		}
 	}
 	
 	@Override
 	protected void onError(AuthenticationController controller, Exception e) {
-		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
+		controller.notifyNetworkError();
 	}
 	
 }

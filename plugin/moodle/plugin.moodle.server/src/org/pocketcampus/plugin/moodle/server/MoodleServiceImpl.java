@@ -14,6 +14,9 @@ import java.util.Locale;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
 import org.pocketcampus.plugin.moodle.shared.EventsListReply;
@@ -25,6 +28,7 @@ import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 import org.pocketcampus.plugin.moodle.shared.MoodleService;
+import org.pocketcampus.plugin.moodle.shared.MoodleSession;
 import org.pocketcampus.plugin.moodle.shared.MoodleUserEvent;
 import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
 
@@ -42,6 +46,47 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	
 	public MoodleServiceImpl() {
 		System.out.println("Starting Moodle plugin server ...");
+	}
+	
+	@Override
+	public TequilaToken getTequilaToken() throws TException {
+		System.out.println("getTequilaToken");
+		try {
+	        HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
+	        conn2.setInstanceFollowRedirects(false);
+	        conn2.getInputStream();
+	        URL url = new URL(conn2.getHeaderField("Location"));
+			MultiMap<String> params = new MultiMap<String>();
+			UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
+			return new TequilaToken(params.getString("requestkey"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("Failed to getTequilaToken from upstream server");
+		}
+	}
+
+	@Override
+	public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws TException {
+		System.out.println("getMoodleSession");
+		try {
+			Cookie cookie = new Cookie();
+	        HttpURLConnection conn = (HttpURLConnection) new URL("http://moodle.epfl.ch").openConnection();
+	        conn.setInstanceFollowRedirects(false);
+	        conn.getInputStream();
+	        cookie.setCookie(conn.getHeaderFields().get("Set-Cookie"));
+	        
+	        HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/teq_return.php?key=" + iTequilaToken.getITequilaKey()).openConnection();
+	        conn2.setRequestProperty("Cookie", cookie.cookie());
+	        conn2.setInstanceFollowRedirects(false);
+	        conn2.getInputStream();
+	        cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
+	        
+		    // send back the session id
+			return new MoodleSession(cookie.cookie());
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("Failed to getMoodleSession from upstream server");
+		}
 	}
 	
 	@Override
@@ -464,5 +509,5 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		html = html.replaceAll("[\\n]+$", ""); // remove new-line characters at the end
 		return html.trim();
 	}
-	
+
 }

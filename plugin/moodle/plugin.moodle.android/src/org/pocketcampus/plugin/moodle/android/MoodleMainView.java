@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -92,23 +93,12 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	 */
 	@Override
 	protected void handleIntent(Intent aIntent) {
-		// If we were pinged by auth plugin, then we must read the sessId
-		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
-			Uri aData = aIntent.getData();
-			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
-				String sessId = aData.getQueryParameter("sessid");
-				mModel.setMoodleCookie(sessId);
-			}
-		}
 		
-		// Normal start-up
-		if(mModel.getMoodleCookie() == null) { // if we don't have cookie
-			// get cookie (ping auth plugin)
-			pingAuthPlugin(this);
-		}
 		
 		mController.refreshCoursesList(false);
 		updateDisplay();
+		
+		
 	}
 
 	/**
@@ -121,10 +111,10 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mModel != null && mModel.getMoodleCookie() == null) {
+		/*if(mModel != null && mModel.getMoodleCookie() == null) {
 			// Resumed and lot logged in? go back
 			finish();
-		}
+		}*/
 	}
 
 	@Override
@@ -173,14 +163,41 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	public void sectionsListUpdated() {
 	}
 
+	@Override
+	public void tequilaTokenUpdated() {
+		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
+	}
+
+	@Override
+	public void moodleCookieUpdated() {
+		// TODO check if activity is visible
+		mController.refreshCoursesList(true);
+	}
+	
+	@Override
+	public void tokenAuthenticationFinished() {
+		// TODO check if activity is visible
+		mController.getMoodleSession();
+	}
+
 	private void updateDisplay() {
 		coursesListUpdated();
 	}
 	
-	public static void pingAuthPlugin(Context context) {
+	/*public static void pingAuthPlugin(Context context) {
 		Intent authIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle"));
 		context.startActivity(authIntent);
+	}*/
+	
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus-authenticated://moodle.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "moodle");
+		authIntent.putExtra("longname", "Moodle");
+		context.startService(authIntent);
 	}
 	
 	@Override
@@ -198,14 +215,14 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		} else if(item.getItemId() == R.id.moodle_logout) {			
 			//Tracker
 			Tracker.getInstance().trackPageView("moodle/menu/logout");
-			mModel.setMoodleCookie(null);
+			/*mModel.setMoodleCookie(null);
 			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, EventsListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
 			startService(authIntent);
-			finish();
+			finish();*/
 		}
 		return true;
 	}
@@ -231,7 +248,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
-		pingAuthPlugin(this);
 	}
 	
 

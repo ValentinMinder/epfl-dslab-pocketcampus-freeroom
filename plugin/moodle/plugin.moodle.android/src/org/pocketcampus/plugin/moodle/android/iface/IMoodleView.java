@@ -25,6 +25,10 @@ public interface IMoodleView extends IView {
 	void coursesListUpdated();
 	void eventsListUpdated();
 	void sectionsListUpdated();
+	void moodleCookieUpdated();
+	void tequilaTokenUpdated();
+	
+	void tokenAuthenticationFinished();
 	
 	/**
 	 * Methods called by the "Request" classes.

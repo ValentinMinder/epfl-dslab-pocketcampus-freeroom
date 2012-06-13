@@ -1,20 +1,24 @@
 package org.pocketcampus.plugin.camipro.server;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.thrift.TException;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;
 import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.CamiproService;
+import org.pocketcampus.plugin.camipro.shared.CamiproSession;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.SendMailResult;
@@ -44,6 +48,41 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 		useAPI = true;
 	}
 	
+	@Override
+	public TequilaToken getTequilaToken() throws TException {
+		System.out.println("getTequilaToken");
+		try {
+			String cmdLine = "curl --include https://cmp2www.epfl.ch/ws/balance";
+			String resp = executeCommand(cmdLine, "UTF-8");
+			Cookie cookie = new Cookie();
+			TequilaToken teqToken = new TequilaToken();
+			for(String header : resp.split("\r\n")) {
+				String shdr[] = header.split(":", 2);
+				if(shdr.length != 2)
+					continue;
+				if("Set-Cookie".equalsIgnoreCase(shdr[0])) {
+					cookie.setCookie(Arrays.asList(new String[]{shdr[1].trim()}));
+				} else if("Location".equalsIgnoreCase(shdr[0])) {
+			        URL url = new URL(shdr[1].trim());
+					MultiMap<String> params = new MultiMap<String>();
+					UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
+					teqToken.setITequilaKey(params.getString("requestkey"));
+				}
+			}
+			teqToken.setLoginCookie(cookie.cookie());
+			return teqToken;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("Failed to getTequilaToken from upstream server");
+		}
+	}
+
+	@Override
+	public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws TException {
+		System.out.println("getCamiproSession");
+		return new CamiproSession(iTequilaToken.getLoginCookie());
+	}
+
 	@Override
 	public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws TException {
 		System.out.println("getBalanceAndTransactions");

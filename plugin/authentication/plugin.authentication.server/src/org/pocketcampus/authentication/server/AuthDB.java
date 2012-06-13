@@ -89,4 +89,40 @@ public class AuthDB {
 		}
 	}
 
+	public void insertTequilaCookie(String tequilaCookie) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("INSERT IGNORE INTO cookies (tequila) VALUES (?)");
+			sqlStm.setString(1, tequilaCookie);
+			sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("<Auth> Problem in insertTequilaCookie");
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteTequilaCookie(String tequilaCookie) {
+		PreparedStatement sqlStm = null;
+		try {
+			sqlStm = mConnectionManager.getConnection().prepareStatement("DELETE FROM cookies WHERE tequila = ?");
+			sqlStm.setString(1, tequilaCookie);
+			sqlStm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("<Auth> Problem in deleteTequilaCookie");
+		} finally {
+			try {
+				if (sqlStm != null)
+					sqlStm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

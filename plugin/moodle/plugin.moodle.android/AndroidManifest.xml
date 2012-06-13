@@ -64,7 +64,14 @@
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 						    
 		<service android:name="org.pocketcampus.plugin.moodle.android.MoodleController"
-			xmlns:android="http://schemas.android.com/apk/res/android"></service>
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<intent-filter>
+				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
+				<category android:name="org.pocketcampus.plugin.authentication" />
+				<data android:scheme="pocketcampus-authenticated" android:host="moodle.plugin.pocketcampus.org" />
+			</intent-filter>
+		    		    
+		</service>
             
 		
 	</application>

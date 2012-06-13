@@ -50,7 +50,14 @@
 			    
 		</activity>
 		<service android:name="org.pocketcampus.plugin.camipro.android.CamiproController"
-			xmlns:android="http://schemas.android.com/apk/res/android"></service>
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<intent-filter>
+				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
+				<category android:name="org.pocketcampus.plugin.authentication" />
+				<data android:scheme="pocketcampus-authenticated" android:host="camipro.plugin.pocketcampus.org" />
+			</intent-filter>
+		    		    
+		</service>
             
 		<activity android:name="org.pocketcampus.plugin.camipro.android.CamiproCardRechargeView"
 			xmlns:android="http://schemas.android.com/apk/res/android" >

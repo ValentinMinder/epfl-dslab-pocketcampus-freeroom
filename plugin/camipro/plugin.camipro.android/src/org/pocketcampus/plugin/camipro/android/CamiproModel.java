@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
@@ -12,7 +13,6 @@ import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 /**
  * CamiproModel - The Model that stores the data of this plugin.
@@ -51,6 +51,7 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	private CardStatistics iCardStatistics;
 	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
 	private String lastUpdate;
+	private TequilaToken tequilaToken;
 	
 	/**
 	 * Data that need to be persistent.
@@ -135,9 +136,21 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	}
 	public void setCamiproCookie(String aCamiproCookie) {
 		camiproCookie = aCamiproCookie;
-		Editor editor = iStorage.edit();
-		editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
-		editor.commit();
+		//Editor editor = iStorage.edit();
+		//editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
+		//editor.commit();
+		mListeners.camiproCookieUpdated();
+	}
+	
+	/**
+	 * Setter and getter for tequilaToken
+	 */
+	public TequilaToken getTequilaToken() {
+		return tequilaToken;
+	}
+	public void setTequilaToken(TequilaToken arg) {
+		tequilaToken = arg;
+		mListeners.tequilaTokenUpdated();
 	}
 	
 	/**

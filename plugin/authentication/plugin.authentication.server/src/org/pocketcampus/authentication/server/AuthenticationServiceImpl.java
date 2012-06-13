@@ -13,6 +13,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
+import org.pocketcampus.plugin.authentication.shared.TequilaSession;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 
@@ -50,12 +51,41 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		authDB = new AuthDB();
 	}
 	
+	@Override
+	public int startRefresh(TequilaSession aTequilaSession) throws TException {
+		System.out.println("startRefresh");
+		try {
+	        HttpURLConnection conn = (HttpURLConnection) new URL("https://tequila.epfl.ch/cgi-bin/tequila/requestauth").openConnection();
+	        conn.setRequestProperty("Cookie", aTequilaSession.getTequilaCookie());
+	        String res = IOUtils.toString(conn.getInputStream(), "UTF-8");
+	        if(res.indexOf("https://tequila.epfl.ch/cgi-bin/tequila/logout") == -1) {
+		        // TODO fix me (tequila requires session to be from same ip)
+	        	System.out.println("NOOOOOOOOOOOOOO");
+	        	//return 400;
+	        }
+		} catch(IOException e) {
+			e.printStackTrace();
+			System.out.println("Failed to contact Tequila");
+			return 500;
+		}
+        authDB.insertTequilaCookie(aTequilaSession.getTequilaCookie());
+		return 200;
+	}
+
+	@Override
+	public int stopRefresh(TequilaSession aTequilaSession) throws TException {
+		System.out.println("stopRefresh");
+        authDB.deleteTequilaCookie(aTequilaSession.getTequilaCookie());
+		return 200;
+	}
+
 	/**
 	 * Gets a Tequila Token from the server of the service that is
 	 * requesting authentication.
 	 * Dispatches the job to the corresponding method.
 	 */
 	@Override
+	@Deprecated
 	public TequilaKey getTequilaKeyForService(TypeOfService aService) throws TException {
 		System.out.println("getTequilaKeyForService");
 		try {
@@ -133,6 +163,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	 * Dispatches the job to the corresponding method.
 	 */
 	@Override
+	@Deprecated
 	public SessionId getSessionIdForService(TequilaKey aTequilaKey) throws TException {
 		System.out.println("getSessionIdForService");
 		try {
@@ -215,6 +246,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 	
 	@Override
+	@Deprecated
 	public int logOutSession(SessionId aSessionId) throws TException {
 		System.out.println("logOutSession");
 		try {

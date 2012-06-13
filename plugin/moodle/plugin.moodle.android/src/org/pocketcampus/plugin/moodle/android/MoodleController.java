@@ -16,12 +16,18 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
 import org.pocketcampus.plugin.moodle.android.req.EventsListRequest;
 import org.pocketcampus.plugin.moodle.android.req.FetchMoodleResourceRequest;
+import org.pocketcampus.plugin.moodle.android.req.GetMoodleSessionRequest;
+import org.pocketcampus.plugin.moodle.android.req.GetTequilaTokenRequest;
 import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
 import org.pocketcampus.plugin.moodle.android.MoodleModel;
+import org.pocketcampus.plugin.moodle.android.MoodleModel.ResourceCookieComplex;
 import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 
 /**
@@ -45,14 +51,6 @@ public class MoodleController extends PluginController implements IMoodleControl
 	};
 
 	/**
-	 * Utility class ResourceCookieComplex
-	 */
-	public class ResourceCookieComplex {
-		public String resource;
-		public String cookie;
-	}
-	
-	/**
 	 *  This name must match given in the Server.java file in plugin.launcher.server.
 	 *  It's used to route the request to the right server implementation.
 	 */
@@ -73,6 +71,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 	 * HTTP Clients used to communicate with the PocketCampus server.
 	 * Use thrift to transport the data.
 	 */
+	private Iface mClient;
 	private Iface mClientCL;
 	private Iface mClientEL;
 	private Iface mClientSL;
@@ -80,11 +79,29 @@ public class MoodleController extends PluginController implements IMoodleControl
 	@Override
 	public void onCreate() {
 		mModel = new MoodleModel(getApplicationContext());
+		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientCL = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientEL = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientSL = (Iface) getClient(new Client.Factory(), mPluginName);
 		threadSafeClient = getThreadSafeClient();
 		threadSafeClient.setRedirectHandler(redirectNoFollow);
+	}
+	
+	@Override
+	public int onStartCommand(Intent aIntent, int flags, int startId) {
+		if("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE".equals(aIntent.getAction())) {
+			Uri intentUri = aIntent.getData();
+			if(intentUri != null && "pocketcampus-authenticated".equals(intentUri.getScheme())) {
+				Bundle extras = aIntent.getExtras();
+				if(extras != null && extras.getString("tequilatoken") != null) {
+					mModel.getListenersToNotify().tokenAuthenticationFinished();
+				} else {
+					// TODO figure out what to do
+				}
+			}
+		}
+		stopSelf();
+		return START_NOT_STICKY;
 	}
 	
 	@Override
@@ -102,24 +119,35 @@ public class MoodleController extends PluginController implements IMoodleControl
 		return fileName;
 	}
 
+	public void getTequilaToken() {
+		new GetTequilaTokenRequest().start(this, mClient, null);
+	}
+	
+	public void getMoodleSession() {
+		new GetMoodleSessionRequest().start(this, mClient, mModel.getTequilaToken());
+	}
+	
 	public void refreshCoursesList(boolean skipCache) {
 		if(mModel.getMoodleCookie() == null)
-			return;
-		new CoursesListRequest().setBypassCache(skipCache).start(this, mClientCL, buildSessionId(null));
+			getTequilaToken();
+		else
+			new CoursesListRequest().setBypassCache(skipCache).start(this, mClientCL, buildSessionId(null));
 	}
 	
 	public void refreshEventsList(boolean skipCache) {
 		if(mModel.getMoodleCookie() == null)
-			return;
-		new EventsListRequest().setBypassCache(skipCache).start(this, mClientEL, buildSessionId(null));
+			getTequilaToken();
+		else
+			new EventsListRequest().setBypassCache(skipCache).start(this, mClientEL, buildSessionId(null));
 	}
 	
 	public void refreshSectionsList(boolean skipCache, Integer courseId) {
-		if(mModel.getMoodleCookie() == null)
-			return;
 		if(courseId == null)
 			return;
-		new SectionsListRequest().setBypassCache(skipCache).start(this, mClientSL, buildSessionId(courseId));
+		if(mModel.getMoodleCookie() == null)
+			getTequilaToken();
+		else
+			new SectionsListRequest().setBypassCache(skipCache).start(this, mClientSL, buildSessionId(courseId));
 	}
 	
 	public void fetchFileResource(String mr) {

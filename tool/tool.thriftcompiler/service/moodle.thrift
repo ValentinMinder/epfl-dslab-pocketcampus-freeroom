@@ -9,6 +9,10 @@ struct MoodleRequest {
 	3: optional i32 iCourseId;
 }
 
+struct MoodleSession {
+	1: required string moodleCookie;
+}
+
 struct MoodleCourse {
 	1: required i32 iId;
 	2: required string iTitle;
@@ -79,6 +83,8 @@ struct SectionsListReply {
 
 
 service MoodleService {
+	authentication.TequilaToken getTequilaToken();
+	MoodleSession getMoodleSession(1: authentication.TequilaToken iTequilaToken);
 	CoursesListReply getCoursesList(1: MoodleRequest iRequest);
 	EventsListReply getEventsList(1: MoodleRequest iRequest);
 	SectionsListReply getCourseSections(1: MoodleRequest iRequest);

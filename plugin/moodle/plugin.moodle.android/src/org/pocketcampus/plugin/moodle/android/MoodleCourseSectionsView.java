@@ -152,6 +152,21 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 		mLayout.addFillerView(lv);
 	}
 
+	@Override
+	public void tequilaTokenUpdated() {
+		MoodleMainView.pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
+	}
+
+	@Override
+	public void moodleCookieUpdated() {
+		mController.refreshCoursesList(true);
+	}
+	
+	@Override
+	public void tokenAuthenticationFinished() {
+		mController.getMoodleSession();
+	}
+
 	private void updateDisplay() {
 		sectionsListUpdated();
 	}
@@ -177,7 +192,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	@Override
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
-		MoodleMainView.pingAuthPlugin(this);
+		//MoodleMainView.pingAuthPlugin(this);
 	}
 	
 

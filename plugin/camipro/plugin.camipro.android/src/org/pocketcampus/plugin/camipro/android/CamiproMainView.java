@@ -89,23 +89,45 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	 */
 	@Override
 	protected void handleIntent(Intent aIntent) {
-		// If we were pinged by auth plugin, then we must read the sessId
+		// check if pinged by auth plugin
+		// check if auth succeeded
+		/*boolean pinged = false;
+		boolean succ = false;
 		if(aIntent != null && Intent.ACTION_VIEW.equals(aIntent.getAction())) {
 			Uri aData = aIntent.getData();
 			if(aData != null && "pocketcampus-authenticate".equals(aData.getScheme())) {
-				String sessId = aData.getQueryParameter("sessid");
-				mModel.setCamiproCookie(sessId);
+				pinged = true;
+				//String sessId = aData.getQueryParameter("sessid");
+				//mModel.setCamiproCookie(sessId);
+				Bundle extras = aIntent.getExtras();
+				if(extras != null && extras.getString("tequilatoken") != null) {
+					succ = true;
+				}
 			}
 		}
 		
+		Log.v("DEBUG", "CamiproMainView::handleIntent " + pinged + succ);*/
+		
+		// startup logic
+		/*if(!pinged) {
+			mController.getTequilaToken();
+			return;
+		}
+		if(succ) {
+			mController.getCamiproSession();
+		} else {
+			finish();
+		}*/
+		mController.getTequilaToken();
+		
 		// Normal start-up
-		if(mModel.getCamiproCookie() == null) { // if we don't have cookie
+		/*if(mModel.getCamiproCookie() == null) { // if we don't have cookie
 			// get cookie (ping auth plugin)
 			pingAuthPlugin(this);
-		}
+		}*/
 		
-		mController.refreshBalanceAndTransactions();
-		updateDisplay();
+		/*mController.refreshBalanceAndTransactions();
+		updateDisplay();*/
 	}
 
 	/**
@@ -118,14 +140,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mModel != null && mModel.getCamiproCookie() == null) {
+		/*if(mModel != null && mModel.getCamiproCookie() == null) {
 			// Resumed and lot logged in? go back
 			finish();
 		}
 		if(mController != null) {
 			// Whenever we switch back to this activity, update contents
 			mController.refreshBalanceAndTransactions();
-		}
+		}*/
 	}
 
 	@Override
@@ -178,18 +200,42 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		}
 	}
 
-	private void updateDisplay() {
+	@Override
+	public void tequilaTokenUpdated() {
+		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
+	}
+
+	@Override
+	public void camiproCookieUpdated() {
+		// TODO check if activity is visible
+		mController.refreshBalanceAndTransactions();
+	}
+	
+	@Override
+	public void tokenAuthenticationFinished() {
+		// TODO check if activity is visible
+		mController.getCamiproSession();
+	}
+
+	/*private void updateDisplay() {
 		transactionsUpdated();
 		balanceUpdated();
 		cardLoadingWithEbankingInfoUpdated();
 		cardStatisticsUpdated();
 		lastUpdateDateUpdated();
-	}
+	}*/
 	
-	public static void pingAuthPlugin(Context context) {
-		Intent authIntent = new Intent(Intent.ACTION_VIEW,
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		/*Intent authIntent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-		context.startActivity(authIntent);
+		context.startActivity(authIntent);*/
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus-authenticated://camipro.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "camipro");
+		authIntent.putExtra("longname", "Camipro");
+		context.startService(authIntent);
 	}
 	
 	@Override
@@ -207,13 +253,13 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		} else if(item.getItemId() == R.id.camipro_logout) {			
 			//Tracker
 			Tracker.getInstance().trackPageView("camipro/menu/logout");
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+			/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
 			authIntent.putExtra("service", "camipro");
 			authIntent.putExtra("cookie", mModel.getCamiproCookie());
 			startService(authIntent);
 			mModel.setCamiproCookie(null);
-			finish();
+			finish();*/
 		}
 		return true;
 	}
@@ -237,8 +283,10 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public void notLoggedIn() {
-		mModel.setCamiproCookie(null);
-		pingAuthPlugin(this);
+		/*mModel.setCamiproCookie(null);
+		pingAuthPlugin(this);*/
+		mController.getTequilaToken();
+		// TODO fix me, should destroy cookie
 	}
 	
 
@@ -364,5 +412,5 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			mController.refreshBalanceAndTransactions();
 		}
 	}
-	
+
 }

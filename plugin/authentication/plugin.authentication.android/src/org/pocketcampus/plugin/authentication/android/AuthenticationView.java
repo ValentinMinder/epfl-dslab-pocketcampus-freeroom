@@ -1,11 +1,10 @@
 package org.pocketcampus.plugin.authentication.android;
 
-import static org.pocketcampus.plugin.authentication.android.AuthenticationController.mapQueryParameterToTypeOfService;
-
 import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
@@ -116,7 +115,13 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		 */
 		if(aIntent == null)
 			return;
-		if(!Intent.ACTION_VIEW.equals(aIntent.getAction()))
+		Bundle extras = aIntent.getExtras();
+		if(extras != null && extras.getInt("askpermission") != 0) {
+			askPermission();
+		} else {
+			displayForm();
+		}
+		/*if(!Intent.ACTION_VIEW.equals(aIntent.getAction()))
 			return;
 		Uri aData = aIntent.getData();
 		if(aData == null)
@@ -140,7 +145,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			} else {
 				Log.e("DEBUG", "mapQueryParameterToTypeOfService returned null");
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -151,7 +156,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * 
 	 * @param sessId The SessionId that we received after authentication 
 	 */
-	private void forwardSessionIdToCaller(SessionId sessId) {
+	/*private void forwardSessionIdToCaller(SessionId sessId) {
 		if(sessId == null) {
 			// error
 			return;
@@ -177,12 +182,12 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		Intent callerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		callerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(callerIntent);
-	}
+	}*/
 	
 	/**
 	 * Enables the login button and attaches the OnClickListener to it.
 	 */
-	private void enableLogin() {
+	/*private void enableLogin() {
 		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -205,35 +210,80 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 			}
 		});
 		loginButton.setEnabled(true);
-	}
+	}*/
 	
 	/**
 	 * Displays the authentication form.
 	 */
 	private void displayForm() {
 		setContentView(R.layout.authentication_customloginpage);
-		String user = mController.nGetLastUsername();
+		String user = mModel.getLocalCredentials().username;
 		if(user != null) {
 			TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 			usernameField.setText(user);
 		}
-		enableLogin();
+		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
+		loginButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				CheckBox staySignedIn = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
+				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+				mController.startLogin(usernameField.getText().toString(), passwordField.getText().toString(), staySignedIn.isChecked());
+				finish();
+			}
+		});
+		loginButton.setEnabled(true);
 	}
-	
+
+	private void askPermission() {
+		setContentView(R.layout.authentication_askpermissionpage);
+		TextView serviceName = (TextView) findViewById(R.id.authentication_servicelongname);
+		serviceName.setText(mModel.getLongName());
+		Button button;
+		button = (Button) findViewById(R.id.authentication_alwaysallowbutton);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mController.allowService(true);
+				finish();
+			}
+		});
+		button = (Button) findViewById(R.id.authentication_allowbutton);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mController.allowService(false);
+				finish();
+			}
+		});
+		button = (Button) findViewById(R.id.authentication_denybutton);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mController.denyService(false);
+				finish();
+			}
+		});
+		button = (Button) findViewById(R.id.authentication_alwaysdenybutton);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				mController.denyService(true);
+				finish();
+			}
+		});
+	}
+
 	/**
 	 * Displays the waiting (while authentication) screen.
 	 */
-	private void displayWait() {
+	/*private void displayWait() {
 		setContentView(R.layout.authentication_redirectionpage);
-	}
+	}*/
 
 	/**
 	 * Called when we successfully login the user to Tequila.
 	 */
-	@Override
+	/*@Override
 	public void gotTequilaCookie() {
 		mController.nGetTequilaKey();
-	}
+	}*/
 
 	/**
 	 * Called when we successfully get a token from the service's server
@@ -242,10 +292,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * of the service that is requesting authentication.
 	 * e.g. from the Camipro servers.
 	 */
-	@Override
+	/*@Override
 	public void gotTequilaKey() {
 		mController.nAuthenticateToken(false);
-	}
+	}*/
 
 	/**
 	 * Called after we successfully authenticate the token
@@ -253,7 +303,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * Called after we successfully authenticate the
 	 * service's token (that we got previously) with Tequila.
 	 */
-	@Override
+	/*@Override
 	public void doneAuthenticatingToken() {
 		if(mModel.getStaySignedIn() && mModel.getTequilaKey().isSetITequilaKeyForPc()) {
 			System.out.println("Stay signed in");
@@ -261,7 +311,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		} else {
 			mController.nGetSessionId();
 		}
-	}
+	}*/
 
 	/**
 	 * Called after we successfully authenticate the PC token
@@ -269,10 +319,10 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * Called after we successfully authenticate the
 	 * service's token (that we got previously) with Tequila.
 	 */
-	@Override
+	/*@Override
 	public void doneAuthenticatingSecToken() {
 		mController.nGetSessionId();
-	}
+	}*/
 
 	/**
 	 * Called when we successfully get a sessionId
@@ -281,22 +331,22 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * This usually signals the end of a successful
 	 * authentication procedure.
 	 */
-	@Override
+	/*@Override
 	public void gotSessionId() {
 		forwardSessionIdToCaller(mModel.getSessionId());
 		finish();
-	}
+	}*/
 
 	/**
 	 * Called when we fail to login the user
 	 * due to bad credentials.
 	 */
-	@Override
+	/*@Override
 	public void notifyBadCredentials() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT);
 		toast.show();
 		displayForm();
-	}
+	}*/
 
 	/**
 	 * Called when we fail to authenticate a token with Tequila
@@ -305,13 +355,13 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * in order to get a new Tequila cookie to be used to authenticate
 	 * the tokens.
 	 */
-	@Override
+	/*@Override
 	public void notifyCookieTimedOut() {
 		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_cookie_expired), Toast.LENGTH_SHORT);
 		toast.show();
 		mModel.destroyTequilaCookie();
 		displayForm();
-	}
+	}*/
 
 	/**
 	 * Called when an IOException occurs.
@@ -323,9 +373,9 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 */
 	@Override
 	public void networkErrorHappened() {
-		Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT);
+		/*Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT);
 		toast.show();
-		displayForm();
+		displayForm();*/
 	}
 
 }

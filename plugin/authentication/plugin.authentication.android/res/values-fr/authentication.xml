@@ -13,4 +13,11 @@
     <string name="authentication_cookie_expired">Votre session a expiré, s\'il vous plaît connectez vous de nouveau</string>
     <string name="authentication_connection_error_happened">Nous ne pouvons pas vous connecter maintenant, car vous n\'êtes pas connecté à Internet</string>
         
+    <string name="authentication_string_alwaysallow">Toujours Autoriser</string>
+    <string name="authentication_string_allow">Autoriser</string>
+    <string name="authentication_string_deny">Refuser</string>
+    <string name="authentication_string_alwaysdeny">Toujours Refuser</string>
+        
+    <string name="authentication_string_serviceaccessaccount">Le service suivant demande l\'accès à votre compte</string>
+        
 </resources>

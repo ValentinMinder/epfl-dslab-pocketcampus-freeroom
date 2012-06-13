@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="org/pocketcampus/plugin/authentication/android/req/GetSessionIdDirectlyFromProviderRequest.java|org/pocketcampus/plugin/authentication/android/req/GetSessionIdForServiceRequest.java|org/pocketcampus/plugin/authentication/android/req/GetTequilaKeyForServiceRequest.java|org/pocketcampus/plugin/authentication/android/req/LogOutSessionRequest.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>

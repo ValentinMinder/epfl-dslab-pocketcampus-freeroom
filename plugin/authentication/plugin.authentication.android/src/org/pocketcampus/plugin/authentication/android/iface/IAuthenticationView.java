@@ -20,18 +20,18 @@ public interface IAuthenticationView extends IView {
 	/**
 	 * Methods called from the Model when data is updated.
 	 */
-	void gotTequilaCookie();
+	/*void gotTequilaCookie();
 	void gotTequilaKey();
-	void gotSessionId();
+	void gotSessionId();*/
 	
 	/**
 	 * Methods called from the "Request" classes
 	 * when something unusual happens.
 	 */
-	void doneAuthenticatingToken();
+	/*void doneAuthenticatingToken();
 	void doneAuthenticatingSecToken();
 	void notifyBadCredentials();
 	void notifyCookieTimedOut();
-	void networkErrorHappened();
+	void networkErrorHappened();*/
 	
 }

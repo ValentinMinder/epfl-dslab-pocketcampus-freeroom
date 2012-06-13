@@ -13,4 +13,11 @@
     <string name="authentication_cookie_expired">Your session has timed out, please login again</string>
     <string name="authentication_connection_error_happened">We cannot log you in right now, because you are not connected to the Internet</string>
         
+    <string name="authentication_string_alwaysallow">Always Allow</string>
+    <string name="authentication_string_allow">Allow</string>
+    <string name="authentication_string_deny">Deny</string>
+    <string name="authentication_string_alwaysdeny">Always Deny</string>
+
+    <string name="authentication_string_serviceaccessaccount">The following service is requesting access to your account</string>
+        
 </resources>

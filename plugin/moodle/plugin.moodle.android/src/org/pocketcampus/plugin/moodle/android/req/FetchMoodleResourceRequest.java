@@ -9,7 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.moodle.android.MoodleController;
-import org.pocketcampus.plugin.moodle.android.MoodleController.ResourceCookieComplex;
+import org.pocketcampus.plugin.moodle.android.MoodleModel.ResourceCookieComplex;
 import org.pocketcampus.plugin.moodle.android.MoodleModel;
 
 /**

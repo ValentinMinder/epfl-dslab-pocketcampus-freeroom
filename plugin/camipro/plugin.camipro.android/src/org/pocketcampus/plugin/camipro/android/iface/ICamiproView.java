@@ -25,6 +25,10 @@ public interface ICamiproView extends IView {
 	void cardLoadingWithEbankingInfoUpdated();
 	void cardStatisticsUpdated();
 	void lastUpdateDateUpdated();
+	void tequilaTokenUpdated();
+	void camiproCookieUpdated();
+	
+	void tokenAuthenticationFinished();
 	
 	/**
 	 * Methods called by the "Request" classes.
