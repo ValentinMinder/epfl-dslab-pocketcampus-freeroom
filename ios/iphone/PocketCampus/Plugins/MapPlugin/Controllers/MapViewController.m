@@ -95,6 +95,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         self.navigationItem.rightBarButtonItem = nil;
         [self startSearchForQuery:initialQuery];
     }
+    
+    //[toolbar setItems:[NSArray arrayWithObject:[[MKUserTrackingBarButtonItem alloc] initWithMapView:mapView]]];
 }
 
 - (void)viewDidUnload
