@@ -116,10 +116,12 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	protected void onResume() {
 		super.onResume();
 		if(fillerView != null) {
+        	int j = fillerView.getHeaderViewsCount();
 			for(int i = fillerView.getFirstVisiblePosition(); i <= fillerView.getLastVisiblePosition(); i++) {
 				String file = ((ResourceInfo) fillerView.getItemAtPosition(i)).value;
 		        if(file != null && new File(MoodleController.getLocalPath(file)).exists())
-		        	((TextView) fillerView.getChildAt(i).findViewById(R.id.moodle_course_resource_state)).setText("Saved");
+		        	((TextView) fillerView.getChildAt(j).findViewById(R.id.moodle_course_resource_state)).setText("Saved");
+		        j++;
 			}
 		}
 	}
@@ -255,7 +257,13 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	public static void openFile(Context c, File file) {
 		Uri uri = Uri.fromFile(file);
 		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
-		viewFileIntent.setDataAndType(uri, URLConnection.guessContentTypeFromName(file.getName()));
+		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+		if(guessedContentType == null) {
+			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		viewFileIntent.setDataAndType(uri, guessedContentType);
 		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		c.startActivity(viewFileIntent);
 	}
@@ -289,39 +297,38 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
+			// TODO
+			// this is still not SUPER efficient
+			// the efficient way to do it is here
+			// http://jsharkey.org/blog/2008/08/18/separating-lists-with-headers-in-android-09/
 	        ResourceInfo t = getItem(position);
+	        TextView tv;
 	        if(t.isSeparator) {
-				v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
-		        TextView tv;
-		        tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_text);
-		        if(t.title != null)
-		        	tv.setText(t.title);
-		        else
-		        	tv.setVisibility(View.GONE);
+	        	if(v == null || v.findViewById(R.id.PCSectioned_list_item_section_text) == null)
+	        		v = li.inflate(R.layout.sdk_sectioned_list_item_section, null);
+	        	
+	        	tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_text);
+	        	tv.setText(t.title == null ? "" : t.title);
+	        	tv.setVisibility(t.title == null ? View.GONE : View.VISIBLE);
+	        	
 		        tv = (TextView)v.findViewById(R.id.PCSectioned_list_item_section_description);
-		        if(t.value != null)
-		        	tv.setText(t.value);
-		        else
-		        	tv.setVisibility(View.GONE);
+	        	tv.setText(t.value == null ? "" : t.value);
+	        	tv.setVisibility(t.value == null ? View.GONE : View.VISIBLE);
 	        } else {
-	            v = li.inflate(rid, null);
-		        TextView tv;
+	        	if(v == null || v.findViewById(R.id.moodle_course_resource_title) == null)
+	        		v = li.inflate(rid, null);
+	        	
 		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_title);
-		        if(t.title != null)
-		        	tv.setText(t.title);
-		        else
-		        	tv.setVisibility(View.GONE);
+	        	tv.setText(t.title == null ? "" : t.title);
+	        	tv.setVisibility(t.title == null ? View.GONE : View.VISIBLE);
+	        	
 		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_body);
-		        TextView tv2 = (TextView)v.findViewById(R.id.moodle_course_resource_state);
-		        if(t.value != null) {
-		        	tv.setText(basename(t.value));
-					File resourceFile = new File(MoodleController.getLocalPath(t.value));
-			        if(resourceFile.exists())
-			        	tv2.setText("Saved");
-		        } else {
-		        	tv.setVisibility(View.GONE);
-		        	tv2.setVisibility(View.GONE);
-		        }
+	        	tv.setText(t.value == null ? "" : basename(t.value));
+	        	tv.setVisibility(t.value == null ? View.GONE : View.VISIBLE);
+	        	
+		        tv = (TextView)v.findViewById(R.id.moodle_course_resource_state);
+	        	tv.setText(t.value != null && new File(MoodleController.getLocalPath(t.value)).exists() ? "Saved" : "");
+	        	tv.setVisibility(t.value == null ? View.GONE : View.VISIBLE);
 	        }
 	        return v;
 		}

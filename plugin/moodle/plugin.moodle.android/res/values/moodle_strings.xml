@@ -13,5 +13,7 @@
     <string name="moodle_connection_error_happened">We cannot fetch Moodle data right now, because you are not connected to the Internet.</string>
     <string name="moodle_file_downloaded">File successfully downloaded.</string>
     <string name="moodle_file_downloading">Downloading file... Please wait.</string>
+
+    <string name="moodle_no_app_to_handle_filetype">Could not find any application to open this file.</string>
         
 </resources>
