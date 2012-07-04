@@ -16,9 +16,9 @@
     self = [super init];
     if (self) {
         mapItem = [item retain];
-        title = [item.title copy];
+        title = [[NSString stringWithFormat:@"%@", mapItem.title] retain];
         if (item.description != nil) {
-            subtitle = [item.description copy];
+            subtitle = [[NSString stringWithFormat:@"%@", mapItem.description] retain];
         } else {
             subtitle = nil;
         }
@@ -32,9 +32,9 @@
 
 - (void)dealloc
 {
-    [mapItem release];
     [title release];
     [subtitle release];
+    [mapItem release];
     [super dealloc];
 }
 

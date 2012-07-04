@@ -16,5 +16,5 @@
 "Sending..." = "Envoi en cours...";
 "Sent" = "Envoyé";
 "SessionExpiredPleaseRefresh" = "Votre session a expiré. Rafraîchissez et essayez à nouveau.";
-"StatsWithFormat" = "Dépenses le mois passé\nCHF %.2lf\n\nTrois derniers mois cummulés\nCHF %.2lf (~%.2lf/mois)";
+"StatsWithFormat" = "30 derniers jours cumulés\nCHF %.2lf\n\n90 derniers jours cummulés\nCHF %.2lf (~%.2lf/mois)";
 "CamiproDown" = "Désolé, les serveurs de Camipro semblent inaccessibles. Réessayez plus tard.";

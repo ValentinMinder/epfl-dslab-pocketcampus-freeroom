@@ -12,10 +12,13 @@
 
 #import "MapUtils.h"
 
+#import "PCUtils.h"
+
 @implementation EPFLLayersOverlay
 
 static int MAX_LAYER_LEVEL = 8;
 static int MIN_LAYER_LEVEL = -4;
+static double MIN_ZOOM_SCALE_OVERLAY = 0.1;
 
 @synthesize boundingMapRect, coordinate, mapView;
 
@@ -49,7 +52,44 @@ static int MIN_LAYER_LEVEL = -4;
     
     CH1903BBox bbox = [MapUtils WGStoCH1903:mapRect];
     
-    return [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:mapRect.size.width*zoomScale height:mapRect.size.height*zoomScale];
+    if (![PCUtils isRetinaDevice]) {
+        zoomScale *= 2.0;
+    }
+    
+    //NSString* url = [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:mapRect.size.width*zoomScale height:mapRect.size.height*zoomScale];
+    
+    /*NSLog(@"------------");
+    NSLog(@"zoomScale : %lf", zoomScale);
+    NSLog(@"start_x : %lf", bbox.start_x);
+    NSLog(@"start_y : %lf", bbox.start_y);
+    
+    NSLog(@"end_x : %lf", bbox.end_x);
+    NSLog(@"end_y : %lf", bbox.end_y);*/
+    
+    double width;
+    double height;
+    
+    if (zoomScale > 0.75) { //showing each room name
+        if ([PCUtils isRetinaDevice]) {
+            width = mapRect.size.width*zoomScale;
+            height = mapRect.size.height*zoomScale;
+        } else { //room names text is too small and unclear on non-retina to be read
+            width = 0.0;
+            height = 0.0;
+        }
+    } else {
+        width = abs(bbox.start_x-bbox.end_x)*5.0*zoomScale;
+        height = abs(bbox.start_y-bbox.end_y)*5.0*zoomScale;
+    }
+    
+    //NSLog(@"width : %lf", width);
+    //NSLog(@"height : %lf", height);
+    
+    NSString* url = [self urlForEpflLayerWithCH1903StartX:bbox.start_x startY:bbox.start_y endX:bbox.end_x endY:bbox.end_y width:width height:height];
+    
+    //NSLog(@"url : %@", url);
+    
+    return url;
 }
 
 
@@ -57,7 +97,13 @@ static int MIN_LAYER_LEVEL = -4;
     // Limit this overlay to only display tiles over the general Swiss area.
     // Roughly within (48, 4), (44, 10), in degrees.
     
-    if (zoomScale < 1.0) {
+    //NSLog(@"ZoomScale : %lf", zoomScale);
+    
+    if (![PCUtils isRetinaDevice]) {
+        zoomScale *= 2.0;
+    }
+    
+    if (zoomScale < MIN_ZOOM_SCALE_OVERLAY) {
         return NO;
     }
     
@@ -86,7 +132,7 @@ static int MIN_LAYER_LEVEL = -4;
 - (NSString*)urlForEpflLayerWithCH1903StartX:(double)startX startY:(double)startY endX:(double)endX endY:(double)endY width:(double)width height:(double)height  {
     NSString* baseURLWithBBoxEmptyParameter = @"http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&TRANSPARENT=false&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A21781&BBOX=";
     
-    return [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels%d,locaux_h%d", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, currentLayerLevel, currentLayerLevel];
+    return [NSString stringWithFormat:@"%@%lf,%lf,%lf,%lf&WIDTH=%.0lf&HEIGHT=%.0lf&LAYERS=locaux_labels%d,locaux_h%d,batiments_routes_labels,parkings_publicsall", baseURLWithBBoxEmptyParameter, startY, endX, endY, startX, width, height, currentLayerLevel, currentLayerLevel];
     
 }
 

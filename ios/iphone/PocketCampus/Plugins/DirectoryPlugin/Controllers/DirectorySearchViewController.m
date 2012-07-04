@@ -333,20 +333,16 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
      NSData* imageData = UIImagePNGRepresentation(loadingImage);
      ABPersonSetImageData(abPerson, (CFDataRef)imageData, nil);
     
-    if ([person firstNameIsSet]) {
-        ABRecordSetValue(abPerson, kABPersonFirstNameProperty, person.firstName, &anError);
-    }
-    
-    if ([person lastNameIsSet]) {
-        ABRecordSetValue(abPerson, kABPersonLastNameProperty, person.lastName, &anError);
-    }
+    ABRecordSetValue(abPerson, kABPersonFirstNameProperty, person.firstName, &anError);
+
+    ABRecordSetValue(abPerson, kABPersonLastNameProperty, person.lastName, &anError);
     
     ABMultiValueRef phone = ABMultiValueCreateMutable(kABStringPropertyType);
-    if ([person officePhoneNumberIsSet]) {
+    if (person.officePhoneNumber) {
         couldCreate = ABMultiValueAddValueAndLabel(phone, person.officePhoneNumber, kABWorkLabel, NULL);
         
     }
-    if ([person privatePhoneNumberIsSet]) {
+    if (person.privatePhoneNumber) {
         couldCreate = ABMultiValueAddValueAndLabel(phone, person.privatePhoneNumber, kABHomeLabel, NULL);
         
     }
@@ -355,19 +351,19 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     }
     CFRelease(phone);
     
-    ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    
     if ([person emailIsSet]) {
+        ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
         couldCreate = ABMultiValueAddValueAndLabel(email, person.email, (CFStringRef)@"email", NULL);
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonEmailProperty, email, &anError);
         }
+        CFRelease(email);
     }
-    CFRelease(email);
     
-    
-    /* WARNING : This property makes the app crash when the viewController is pushed onto the nav stack. Why ??? */ 
+    /* WARNING : This property makes the app crash when the viewController is pushed onto the nav stack. Why ??? Seems to be a bug on iOS 5.1. Reported to Apple. */ 
     /*ABMultiValueRef office = ABMultiValueCreateMutable(kABStringPropertyType);
-    if ([person officeIsSet]) {
+    if (person.office) {
         NSMutableString* label = [NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room") mutableCopy];
         couldCreate = ABMultiValueAddValueAndLabel(office, [person.office mutableCopy], (CFStringRef)label, NULL);
         //couldCreate = ABMultiValueAddValueAndLabel(office, person.sciper, (CFStringRef)@"sciper", NULL);
@@ -378,9 +374,10 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     }*/
     
     
-    ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-    NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
+    
     if ([person officeIsSet]) {
+        ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+        NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
         [addressDictionary setObject:person.office forKey:(NSString *)kABPersonAddressCityKey];
         [addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
@@ -388,17 +385,18 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonAddressProperty, office, &anError);
         }
+        CFRelease(office);
     }
-    CFRelease(office);
     
-    ABMultiValueRef web = ABMultiValueCreateMutable(kABStringPropertyType);
-    if ([person webIsSet]) {
+    if (person.web) {
+        ABMultiValueRef web = ABMultiValueCreateMutable(kABStringPropertyType);
         couldCreate = ABMultiValueAddValueAndLabel(web, person.web, (CFStringRef)@"web", NULL);
         if (couldCreate) {
             ABRecordSetValue(abPerson, kABPersonURLProperty, web, &anError);
         }
+        CFRelease(web);
     }
-    CFRelease(web);
+    
     
     
     if (anError != NULL) {

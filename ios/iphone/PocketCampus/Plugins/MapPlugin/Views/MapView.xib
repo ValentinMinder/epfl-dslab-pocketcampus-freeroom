@@ -79,7 +79,7 @@
 							<object class="IBUIBarButtonItem" id="442360381">
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">MyLocationCercle.png</string>
+									<string key="NSResourceName">LocationArrow.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUIToolbar" ref="360078383"/>
@@ -171,6 +171,7 @@
 						<string key="NSFrame">{{128, 383}, {65, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="534463923"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -209,6 +210,7 @@
 						<string key="NSFrame">{{240, 384}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -602,7 +604,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="FloorDown.png">{16, 19}</string>
 			<string key="FloorUp.png">{16, 19}</string>
-			<string key="MyLocationCercle.png">{20, 20}</string>
+			<string key="LocationArrow.png">{20, 20}</string>
 			<string key="TopTableViewInnerShadow@2x.png">{640, 40}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1181</string>

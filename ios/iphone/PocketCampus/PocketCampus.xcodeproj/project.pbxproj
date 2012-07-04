@@ -43,6 +43,7 @@
 		3219EF9814FCE08300A271CD /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8B14FCE08300A271CD /* TSharedProcessorFactory.m */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
+		32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32311CF015A4A3E100E21C50 /* PCUtils.m */; };
 		3236B5B3151F746100C43769 /* NextDeparturesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3236B5B2151F746100C43769 /* NextDeparturesCell.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
 		324151D115373A5B00CCFB22 /* MapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151D015373A5B00CCFB22 /* MapController.m */; };
@@ -53,8 +54,6 @@
 		324151E21537527B00CCFB22 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324151E11537527B00CCFB22 /* MapKit.framework */; };
 		324151E515375BDD00CCFB22 /* Map.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E315375BDD00CCFB22 /* Map.png */; };
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
-		324151ED1537692900CCFB22 /* MyLocationCercle.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151EB1537692900CCFB22 /* MyLocationCercle.png */; };
-		324151EE1537692900CCFB22 /* MyLocationCercle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151EC1537692900CCFB22 /* MyLocationCercle@2x.png */; };
 		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
 		32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */; };
@@ -74,6 +73,8 @@
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
 		3257C2091570F90100E626A4 /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3257C2081570F90100E626A4 /* TransportHelpView.xib */; };
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
+		3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87915A46AE200D368AC /* LocationArrow.png */; };
+		3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87A15A46AE200D368AC /* LocationArrow@2x.png */; };
 		32662743151FC7CE002FA0E5 /* AppLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32662742151FC7CE002FA0E5 /* AppLogo@2x.png */; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
 		3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */; };
@@ -259,6 +260,8 @@
 		3219EF8B14FCE08300A271CD /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
+		32311CEF15A4A3E100E21C50 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
+		32311CF015A4A3E100E21C50 /* PCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUtils.m; sourceTree = "<group>"; };
 		3236B5B1151F746100C43769 /* NextDeparturesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesCell.h; sourceTree = "<group>"; };
 		3236B5B2151F746100C43769 /* NextDeparturesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesCell.m; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
@@ -275,8 +278,6 @@
 		324151E11537527B00CCFB22 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		324151E315375BDD00CCFB22 /* Map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Map.png; sourceTree = "<group>"; };
 		324151E415375BDD00CCFB22 /* Map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Map@2x.png"; sourceTree = "<group>"; };
-		324151EB1537692900CCFB22 /* MyLocationCercle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyLocationCercle.png; sourceTree = "<group>"; };
-		324151EC1537692900CCFB22 /* MyLocationCercle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyLocationCercle@2x.png"; sourceTree = "<group>"; };
 		324151F215377B4C00CCFB22 /* MapItemAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapItemAnnotation.h; sourceTree = "<group>"; };
 		324151F315377B4C00CCFB22 /* MapItemAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapItemAnnotation.m; sourceTree = "<group>"; };
 		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
@@ -306,6 +307,8 @@
 		3257C2081570F90100E626A4 /* TransportHelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
 		3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportHelpViewController.h; sourceTree = "<group>"; };
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
+		3258A87915A46AE200D368AC /* LocationArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow.png; sourceTree = "<group>"; };
+		3258A87A15A46AE200D368AC /* LocationArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow@2x.png"; sourceTree = "<group>"; };
 		32662742151FC7CE002FA0E5 /* AppLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo@2x.png"; sourceTree = "<group>"; };
 		32663946150C00E100719F6E /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		32663947150C00E100719F6E /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
@@ -722,8 +725,8 @@
 				32E1FDB415474F7E00B1B630 /* FloorUp@2x.png */,
 				324151E315375BDD00CCFB22 /* Map.png */,
 				324151E415375BDD00CCFB22 /* Map@2x.png */,
-				324151EB1537692900CCFB22 /* MyLocationCercle.png */,
-				324151EC1537692900CCFB22 /* MyLocationCercle@2x.png */,
+				3258A87915A46AE200D368AC /* LocationArrow.png */,
+				3258A87A15A46AE200D368AC /* LocationArrow@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -912,6 +915,8 @@
 				328B9EFC150BA23D00B50024 /* PCValues.m */,
 				3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */,
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
+				32311CEF15A4A3E100E21C50 /* PCUtils.h */,
+				32311CF015A4A3E100E21C50 /* PCUtils.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1602,8 +1607,6 @@
 				324151E015374FB100CCFB22 /* MapView.xib in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
-				324151ED1537692900CCFB22 /* MyLocationCercle.png in Resources */,
-				324151EE1537692900CCFB22 /* MyLocationCercle@2x.png in Resources */,
 				32E1FDB515474F7E00B1B630 /* FloorDown.png in Resources */,
 				32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */,
 				32E1FDB715474F7E00B1B630 /* FloorUp.png in Resources */,
@@ -1635,6 +1638,8 @@
 				32058AC81572ACC300F4D361 /* SettingsBarButton.png in Resources */,
 				32058AC91572ACC300F4D361 /* SettingsBarButton@2x.png in Resources */,
 				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
+				3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */,
+				3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1735,6 +1740,7 @@
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
 				32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */,
 				32D57299157F7D780051230F /* EPFLLayersOverlay.m in Sources */,
+				32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

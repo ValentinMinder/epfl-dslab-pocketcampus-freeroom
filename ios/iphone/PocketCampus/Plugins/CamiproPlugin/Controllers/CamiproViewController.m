@@ -408,9 +408,10 @@ static CGFloat kBalanceCellHeight = 70.0;
         UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 27.0, 100.0, 17.0)];
         priceLabel.backgroundColor = [UIColor clearColor];
         priceLabel.tag = kTransactionPriceViewTag;
+        priceLabel.textColor = [PCValues pocketCampusRed];
         priceLabel.font = [UIFont systemFontOfSize:15.0];
         priceLabel.textAlignment = UITextAlignmentRight;
-        priceLabel.textColor = [PCValues pocketCampusRed];
+        
         [newCell.contentView addSubview:priceLabel];
         [priceLabel release];
     }
@@ -418,6 +419,10 @@ static CGFloat kBalanceCellHeight = 70.0;
     newCell.detailTextLabel.text = transcation.iDate;
     UILabel* priceLabel = (UILabel*)[newCell.contentView viewWithTag:kTransactionPriceViewTag];
     priceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", transcation.iAmount];
+    
+    if (transcation.iAmount > 0.0) {
+        priceLabel.textColor = [UIColor colorWithRed:0.09 green:0.79 blue:0 alpha:1.0];
+    }
     
     return newCell;
 }

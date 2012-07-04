@@ -183,14 +183,19 @@
 }
 
 - (void)cancelTilesDownload {
+    if ([delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
+        [delegate customOverlayViewDidFinishLoading:self];
+    }
     for (ASIHTTPRequest* request in self.requests) {
         request.delegate = nil;
         [request cancel];
     }
+    [self.requests removeAllObjects];
 }
 
 - (void)dealloc {
     self.isCancellingAll = YES;
+    self.delegate = nil;
     [self cancelTilesDownload];
     [ObjectArchiver saveObject:tilesDataTmp forKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map"];
     [self.tilesDataTmp release];

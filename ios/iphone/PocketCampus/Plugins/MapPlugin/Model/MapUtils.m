@@ -189,6 +189,10 @@ double WGStoCHy(double lat, double lng) {
         }
     }
     
+    if ([roomName isEqualToString:@"RLC"]) {
+        return 1;
+    }
+    
     if ([roomName isEqualToString:@"Cafeteria BC"]) {
         return 4;
     }

@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "359718475.482338"
+         timestampString = "363100662.873838"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "372"
-         endingLineNumber = "372"
+         startingLineNumber = "368"
+         endingLineNumber = "368"
          landmarkName = "-pushViewControllerForPerson:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,7 +268,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "360779323.275182"
+         timestampString = "363097884.263274"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "65"
@@ -281,7 +281,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "360779323.275182"
+         timestampString = "363097884.263274"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "137"
@@ -294,7 +294,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "360779323.275182"
+         timestampString = "363097884.263274"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "81"
@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/EPFLTileOverlay.m"
-         timestampString = "360767683.414011"
+         timestampString = "363110638.180966"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "127"
-         endingLineNumber = "127"
+         startingLineNumber = "132"
+         endingLineNumber = "132"
          landmarkName = "-setLayerLevel:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -320,11 +320,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "361149071.797385"
+         timestampString = "363110211.176327"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "336"
-         endingLineNumber = "336"
+         startingLineNumber = "334"
+         endingLineNumber = "334"
          landmarkName = "-mapView:regionDidChangeAnimated:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -359,13 +359,61 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Model/MapUtils.m"
-         timestampString = "360767683.414011"
+         timestampString = "363101520.780833"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "367"
-         endingLineNumber = "367"
+         startingLineNumber = "371"
+         endingLineNumber = "371"
          landmarkName = "+WGStoCH1903:"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "363110211.176327"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "339"
+         endingLineNumber = "339"
+         landmarkName = "-mapView:regionDidChangeAnimated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "363110211.176327"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "348"
+         endingLineNumber = "348"
+         landmarkName = "-mapView:regionDidChangeAnimated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "363110211.176327"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "227"
+         endingLineNumber = "227"
+         landmarkName = "-updateFloorLabel"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
+   <SymbolicBreakpoints>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "malloc_error_break"
+         moduleName = "">
+      </SymbolicBreakpoint>
+   </SymbolicBreakpoints>
 </Bucket>

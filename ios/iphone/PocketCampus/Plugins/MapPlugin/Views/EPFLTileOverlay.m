@@ -59,6 +59,11 @@ static NSString* URL_ENDING = @".png";
     // Limit this overlay to only display tiles over the general Swiss area.
     // Roughly within (48, 4), (44, 10), in degrees.
     // Turn center to bounds
+    
+    if (zoomScale < MIN_ZOOM_SCALE) {
+        return NO;
+    }
+    
     MKCoordinateRegion _region = MKCoordinateRegionForMapRect(mapRect);
     CLLocationDegrees top_bound = _region.center.latitude + (_region.span.latitudeDelta / 2.0);
     CLLocationDegrees bottom_bound = _region.center.latitude - (_region.span.latitudeDelta / 2.0);

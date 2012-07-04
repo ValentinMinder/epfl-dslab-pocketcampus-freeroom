@@ -8,6 +8,7 @@
 
 #define MAX_LAYER_LEVEL 8
 #define MIN_LAYER_LEVEL -4
+#define MIN_ZOOM_SCALE 0.03
 
 #import <Foundation/Foundation.h>
 
