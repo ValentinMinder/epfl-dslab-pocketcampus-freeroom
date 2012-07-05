@@ -62,6 +62,10 @@
     //[str writeToFile:filePath atomically:YES   encoding:NSUTF8StringEncoding error:&error];
     NSLog(@"Documents directory: %@",   [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
     
+    
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Toggle" style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
+    self.navigationItem.rightBarButtonItem = anotherButton;
+    [anotherButton release];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -107,6 +111,28 @@
     self.navigationItem.rightBarButtonItem = nil;
     [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
     
+}
+
+- (void) computeCurrent {
+    if(iSections == nil)
+        return;
+    current = 0;
+    for (NSInteger i = 0; i < iSections.count; i++) {
+        MoodleSection* iSection = [iSections objectAtIndex:i];
+        if(iSection.iResources.count != 0 && iSection.iCurrent) {
+            current = i;
+            break;
+        }
+    }
+}
+
+- (void)toggleShowAll:(id)sender {
+    if (current != 0) {
+        current = 0;
+    } else {
+        [self computeCurrent];
+    }
+    [sectionsList reloadData];
 }
 
 /*
@@ -195,6 +221,9 @@
     if(sectionsListReply.iStatus == 200) {
         iSections = [sectionsListReply.iSections retain];
         if(iSections.count != 0) {
+            //MoodleSection* sec = [iSections objectAtIndex:2];
+            //sec.iCurrent = YES;
+            [self computeCurrent];
             sectionsList.hidden = NO;
             [sectionsList reloadData];
         } else {
@@ -286,11 +315,20 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if(iSections == nil)
+        return nil;
+    if(![self showSection:section])
+        return nil;
+    MoodleSection* secObj = [iSections objectAtIndex:section];
+    if(secObj.iResources.count == 0)
+        return nil;
     return [NSString stringWithFormat:@"Week %d", section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(iSections == nil)
+        return 0;
+    if(![self showSection:section])
         return 0;
     MoodleSection* secObj = [iSections objectAtIndex:section];
     return secObj.iResources.count;
@@ -300,6 +338,14 @@
     if(iSections == nil)
         return 0;
     return iSections.count;
+}
+
+- (BOOL) showSection:(NSInteger) section {
+    if(section == 0)
+        return NO;
+    if(current == 0)
+        return YES;
+    return (current == section);
 }
 
 /* end */

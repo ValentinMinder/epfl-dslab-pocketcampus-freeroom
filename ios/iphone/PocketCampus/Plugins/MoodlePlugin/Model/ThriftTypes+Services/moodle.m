@@ -222,6 +222,117 @@
 
 @end
 
+@implementation MoodleSession
+
+- (id) initWithMoodleCookie: (NSString *) moodleCookie
+{
+  self = [super init];
+  __moodleCookie = [moodleCookie retain];
+  __moodleCookie_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"moodleCookie"])
+  {
+    __moodleCookie = [[decoder decodeObjectForKey: @"moodleCookie"] retain];
+    __moodleCookie_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__moodleCookie_isset)
+  {
+    [encoder encodeObject: __moodleCookie forKey: @"moodleCookie"];
+  }
+}
+
+- (void) dealloc
+{
+  [__moodleCookie release];
+  [super dealloc];
+}
+
+- (NSString *) moodleCookie {
+  return [[__moodleCookie retain] autorelease];
+}
+
+- (void) setMoodleCookie: (NSString *) moodleCookie {
+  [moodleCookie retain];
+  [__moodleCookie release];
+  __moodleCookie = moodleCookie;
+  __moodleCookie_isset = YES;
+}
+
+- (BOOL) moodleCookieIsSet {
+  return __moodleCookie_isset;
+}
+
+- (void) unsetMoodleCookie {
+  [__moodleCookie release];
+  __moodleCookie = nil;
+  __moodleCookie_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setMoodleCookie: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MoodleSession"];
+  if (__moodleCookie_isset) {
+    if (__moodleCookie != nil) {
+      [outProtocol writeFieldBeginWithName: @"moodleCookie" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __moodleCookie];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MoodleSession("];
+  [ms appendString: @"moodleCookie:"];
+  [ms appendFormat: @"\"%@\"", __moodleCookie];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation MoodleCourse
 
 - (id) initWithIId: (int32_t) iId iTitle: (NSString *) iTitle
@@ -1913,7 +2024,7 @@
 
 @implementation MoodleSection
 
-- (id) initWithIResources: (NSArray *) iResources iText: (NSString *) iText iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate
+- (id) initWithIResources: (NSArray *) iResources iText: (NSString *) iText iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate iCurrent: (BOOL) iCurrent
 {
   self = [super init];
   __iResources = [iResources retain];
@@ -1924,6 +2035,8 @@
   __iStartDate_isset = YES;
   __iEndDate = iEndDate;
   __iEndDate_isset = YES;
+  __iCurrent = iCurrent;
+  __iCurrent_isset = YES;
   return self;
 }
 
@@ -1950,6 +2063,11 @@
     __iEndDate = [decoder decodeInt64ForKey: @"iEndDate"];
     __iEndDate_isset = YES;
   }
+  if ([decoder containsValueForKey: @"iCurrent"])
+  {
+    __iCurrent = [decoder decodeBoolForKey: @"iCurrent"];
+    __iCurrent_isset = YES;
+  }
   return self;
 }
 
@@ -1970,6 +2088,10 @@
   if (__iEndDate_isset)
   {
     [encoder encodeInt64: __iEndDate forKey: @"iEndDate"];
+  }
+  if (__iCurrent_isset)
+  {
+    [encoder encodeBool: __iCurrent forKey: @"iCurrent"];
   }
 }
 
@@ -2056,6 +2178,23 @@
   __iEndDate_isset = NO;
 }
 
+- (BOOL) iCurrent {
+  return __iCurrent;
+}
+
+- (void) setICurrent: (BOOL) iCurrent {
+  __iCurrent = iCurrent;
+  __iCurrent_isset = YES;
+}
+
+- (BOOL) iCurrentIsSet {
+  return __iCurrent_isset;
+}
+
+- (void) unsetICurrent {
+  __iCurrent_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -2115,6 +2254,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 5:
+        if (fieldType == TType_BOOL) {
+          BOOL fieldValue = [inProtocol readBool];
+          [self setICurrent: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -2158,6 +2305,11 @@
     [outProtocol writeI64: __iEndDate];
     [outProtocol writeFieldEnd];
   }
+  if (__iCurrent_isset) {
+    [outProtocol writeFieldBeginWithName: @"iCurrent" type: TType_BOOL fieldID: 5];
+    [outProtocol writeBool: __iCurrent];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -2172,6 +2324,8 @@
   [ms appendFormat: @"%qi", __iStartDate];
   [ms appendString: @",iEndDate:"];
   [ms appendFormat: @"%qi", __iEndDate];
+  [ms appendString: @",iCurrent:"];
+  [ms appendFormat: @"%i", __iCurrent];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

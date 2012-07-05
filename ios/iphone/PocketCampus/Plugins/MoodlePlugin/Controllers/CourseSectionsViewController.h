@@ -21,6 +21,7 @@
     bool pingedAuthPlugin;
     NSArray* iSections;
     int courseId;
+    int current;
     NSString* courseTitle;
 }
 

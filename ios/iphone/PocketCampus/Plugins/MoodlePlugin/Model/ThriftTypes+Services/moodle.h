@@ -55,6 +55,27 @@ enum MoodleEventType {
 
 @end
 
+@interface MoodleSession : NSObject <NSCoding> {
+  NSString * __moodleCookie;
+
+  BOOL __moodleCookie_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=moodleCookie, setter=setMoodleCookie:) NSString * moodleCookie;
+#endif
+
+- (id) initWithMoodleCookie: (NSString *) moodleCookie;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) moodleCookie;
+- (void) setMoodleCookie: (NSString *) moodleCookie;
+- (BOOL) moodleCookieIsSet;
+
+@end
+
 @interface MoodleCourse : NSObject <NSCoding> {
   int32_t __iId;
   NSString * __iTitle;
@@ -340,11 +361,13 @@ enum MoodleEventType {
   NSString * __iText;
   int64_t __iStartDate;
   int64_t __iEndDate;
+  BOOL __iCurrent;
 
   BOOL __iResources_isset;
   BOOL __iText_isset;
   BOOL __iStartDate_isset;
   BOOL __iEndDate_isset;
+  BOOL __iCurrent_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -352,9 +375,10 @@ enum MoodleEventType {
 @property (nonatomic, retain, getter=iText, setter=setIText:) NSString * iText;
 @property (nonatomic, getter=iStartDate, setter=setIStartDate:) int64_t iStartDate;
 @property (nonatomic, getter=iEndDate, setter=setIEndDate:) int64_t iEndDate;
+@property (nonatomic, getter=iCurrent, setter=setICurrent:) BOOL iCurrent;
 #endif
 
-- (id) initWithIResources: (NSArray *) iResources iText: (NSString *) iText iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate;
+- (id) initWithIResources: (NSArray *) iResources iText: (NSString *) iText iStartDate: (int64_t) iStartDate iEndDate: (int64_t) iEndDate iCurrent: (BOOL) iCurrent;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -374,6 +398,10 @@ enum MoodleEventType {
 - (int64_t) iEndDate;
 - (void) setIEndDate: (int64_t) iEndDate;
 - (BOOL) iEndDateIsSet;
+
+- (BOOL) iCurrent;
+- (void) setICurrent: (BOOL) iCurrent;
+- (BOOL) iCurrentIsSet;
 
 @end
 
