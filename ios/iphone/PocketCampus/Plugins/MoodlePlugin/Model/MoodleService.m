@@ -46,7 +46,7 @@ static MoodleService* instance = nil;
     return filePath;
 }
 
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
+- (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:DidReturn:);
@@ -57,7 +57,7 @@ static MoodleService* instance = nil;
     [operation release];
 }
 
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
+- (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getEventsList:);
     operation.delegateDidReturnSelector = @selector(getEventsList:DidReturn:);
@@ -68,7 +68,7 @@ static MoodleService* instance = nil;
     [operation release];
 }
 
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
+- (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.customTimeout = 35.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);

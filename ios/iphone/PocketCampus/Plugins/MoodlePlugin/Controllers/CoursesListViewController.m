@@ -94,7 +94,7 @@
     [req setILanguage:@"en"];
     //SessionId* sessId = [[SessionId alloc] initWithTos:TypeOfService_SERVICE_MOODLE pocketCampusSessionId:nil moodleCookie:moodleService.moodleCookie camiproCookie:nil isaCookie:nil];
     //[[MoodleRequest alloc] initWithISessionId:sessId iLanguage:@"en" iCourseId:0];
-    [moodleService getCoursesList:req WithDelegate:self];
+    [moodleService getCoursesList:req withDelegate:self];
     [req release];
     [sess release];
     
@@ -115,9 +115,17 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+/* service delegation */
+
+- (void)serviceConnectionToServerTimedOut {
+    [centerActivityIndicator stopAnimating];
+    centerActivityIndicator.hidden = YES;
+    centerMessageLabel.text = @"Connection timed out, check your internet connectivity";
+}
+
 /* MoodleServiceDelegate delegation */
 
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest DidReturn:(CoursesListReply*)coursesListReply {
+- (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = @"";

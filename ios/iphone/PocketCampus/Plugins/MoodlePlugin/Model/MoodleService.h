@@ -15,9 +15,9 @@
 
 - (NSString*)getLocalPath:(NSString*)url;
 
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate;
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate;
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate;
+- (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
+- (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
+- (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 
 - (void)fetchMoodleResource:(NSString*)cookie :(NSString*)url withDelegate:(id)delegate;
 
@@ -27,11 +27,11 @@
 @protocol MoodleServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)getCoursesList:(MoodleRequest*)aMoodleRequest DidReturn:(CoursesListReply*)coursesListReply;
+- (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply;
 - (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest;
-- (void)getEventsList:(MoodleRequest*)aMoodleRequest DidReturn:(EventsListReply*)eventsListReply;
+- (void)getEventsList:(MoodleRequest*)aMoodleRequest didReturn:(EventsListReply*)eventsListReply;
 - (void)getEventsListFailed:(MoodleRequest*)aMoodleRequest;
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest DidReturn:(SectionsListReply*)sectionsListReply;
+- (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply;
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest;
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request;

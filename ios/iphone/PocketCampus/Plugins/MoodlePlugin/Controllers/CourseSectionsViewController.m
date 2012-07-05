@@ -97,7 +97,7 @@
     [req setISessionId:sess];
     [req setILanguage:@"en"];
     [req setICourseId:courseId];
-    [moodleService getCourseSections:req WithDelegate:self];
+    [moodleService getCourseSections:req withDelegate:self];
     [req release];
     [sess release];
 }
@@ -188,7 +188,7 @@
 
 /* MoodleServiceDelegate delegation */
 
-- (void)getCourseSections:(MoodleRequest*)aMoodleRequest DidReturn:(SectionsListReply*)sectionsListReply {
+- (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = @"";
