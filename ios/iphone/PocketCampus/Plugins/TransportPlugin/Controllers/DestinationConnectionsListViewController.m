@@ -36,7 +36,11 @@ static NSString* kConnectionCellIdentifier = @"ConnectionCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //self.view.backgroundColor = [PCValues backgroundColor1];
+    tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
+    backgroundView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    tableView.backgroundView = backgroundView;
+    [backgroundView release];
     
 }
 
