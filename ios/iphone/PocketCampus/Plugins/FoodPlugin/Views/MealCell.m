@@ -50,7 +50,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     votesLabel.shadowColor = [PCValues shadowColor1];
     votesLabel.textAlignment = UITextAlignmentLeft;
     votesLabel.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
-    [self updateRatingInfosRefreshForServer:NO];
+    [self updateRatingInfosRefreshFromServer:NO];
     
     ratingView = [[JSFavStarControl alloc] initWithCenter:CGPointMake(self.center.x, 14.0) dotImage:[UIImage imageNamed:@"RatingPoint"] starImage:[UIImage imageNamed:@"RatingStar"] emptyStarImage:[UIImage imageNamed:@"RatingStarEmpty"] editable:NO];
     if (meal.rating != nil) {
@@ -78,8 +78,8 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     
     /*CGSize textViewSize = [meal.mealDescription sizeWithFont:[UIFont systemFontOfSize:MEAL_DESCRIPTION_FONT_SIZE] constrainedToSize:CGSizeMake(self.frame.size.width, 1000)];*/
     
-
-    [self.contentView addSubview:[self.class textViewForMeal:meal]];
+    textView = [[self.class textViewForMeal:meal] retain];
+    [self.contentView addSubview:textView];
     [self.contentView addSubview:backgroundRatings];
     [self.contentView addSubview:votesLabel];
     [self.contentView addSubview:ratingView];
@@ -123,8 +123,9 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     }
     [meal release];
     meal = [newMeal retain];
-    [self updateRatingInfosRefreshForServer:NO];
-    textView.text = meal.mealDescription;
+    [self updateRatingInfosRefreshFromServer:NO];
+    textView.frame = [[self class] textViewForMeal:newMeal].frame;
+    textView.text = newMeal.mealDescription;
 }
 
 - (void)votePressed {
@@ -141,7 +142,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 - (void)cancelPressed {
     [service cancelOperationsForDelegate:self];
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
-    [self updateRatingInfosRefreshForServer:NO];
+    [self updateRatingInfosRefreshFromServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
     [controller showMapButtonIfPossible];
 }
@@ -167,7 +168,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
             [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
             [controller showMapButtonIfPossible];
-            [self updateRatingInfosRefreshForServer:NO];
+            [self updateRatingInfosRefreshFromServer:NO];
             alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             break;
@@ -175,7 +176,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
             [controller showMapButtonIfPossible];
             [controller setForAllCellsVoteMode:VoteModeDisabled exceptCell:nil animated:YES];
-            [self updateRatingInfosRefreshForServer:NO];
+            [self updateRatingInfosRefreshFromServer:NO];
             alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             break;
@@ -183,7 +184,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
             [controller.navigationItem setRightBarButtonItem:nil animated:YES];
             [controller showMapButtonIfPossible];
             [controller setForAllCellsVoteMode:VoteModeDisabled exceptCell:nil animated:YES];
-            [self updateRatingInfosRefreshForServer:YES];
+            [self updateRatingInfosRefreshFromServer:YES];
             break;
         default:
             //Not supported
@@ -254,7 +255,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     }
 }
 
-- (void)updateRatingInfosRefreshForServer:(BOOL)refreshFromServer {
+- (void)updateRatingInfosRefreshFromServer:(BOOL)refreshFromServer {
     if (meal == nil) {
         return;
     }
@@ -291,7 +292,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [alert release];
     [service cancelOperationsForDelegate:self];
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
-    [self updateRatingInfosRefreshForServer:NO];
+    [self updateRatingInfosRefreshFromServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
     [controller showMapButtonIfPossible];
 }
@@ -303,7 +304,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [alert release];
     [service cancelOperationsForDelegate:self];
     [controller setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
-    [self updateRatingInfosRefreshForServer:NO];
+    [self updateRatingInfosRefreshFromServer:NO];
     [controller.navigationItem setRightBarButtonItem:nil animated:YES];
     [controller showMapButtonIfPossible];
 }
@@ -319,6 +320,7 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 
 - (void)dealloc
 {
+    [service cancelOperationsForDelegate:self];
     [service release];
     [meal release];
     [votesLabel release];

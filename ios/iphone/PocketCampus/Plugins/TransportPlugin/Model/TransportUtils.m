@@ -29,7 +29,7 @@
     return [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];
 }
 
-+ (NSString*)minutesLeftStringForTimestamp:(NSTimeInterval)timestamp {
++ (NSString*)automaticHoursMinutesLeftStringForTimestamp:(NSTimeInterval)timestamp {
     NSDate* nowDate = [NSDate date];
     NSTimeInterval seconds = timestamp - [nowDate timeIntervalSince1970];
     if (seconds < 0.0) {
@@ -39,6 +39,13 @@
     if (minutesLeft == 0.0) {
         return @"Now";
     }
+    
+    double hoursLeft = floor(minutesLeft/60.0);
+    if (hoursLeft > 0.0) {
+        NSLog(@"%@", [NSString stringWithFormat:@"%1.0lfh%2.0lf'",hoursLeft, minutesLeft]);
+        return [NSString stringWithFormat:@"%1.0lfh%2.0lf'",hoursLeft, minutesLeft];
+    }
+    
     return [NSString stringWithFormat:@"%2.0lf'", minutesLeft];
 }
 
@@ -62,7 +69,7 @@
     if (timestamp - [nowDate timeIntervalSince1970] > maxIntervalMinutes*60) {
         return [self hourMinutesStringForTimestamp:timestamp];
     } else {
-        return [self minutesLeftStringForTimestamp:timestamp];
+        return [self automaticHoursMinutesLeftStringForTimestamp:timestamp];
     }
 }
 

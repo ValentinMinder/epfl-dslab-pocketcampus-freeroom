@@ -11,7 +11,8 @@
 "NoStation" = "Aucune station";
 "LocationNeedJustification" = "Votre position sera utilisée pour trouver la station de transport la plus proche. PocketCampus n'enregistre pas l'historique de vos déplacement.";
 "ImpossibleLocateShort" = "Localisation impossible";
-"ImpossibleLocateLong" = "Impossible de trouver la station favorite la plus proche. Avez-vous refusé la localisation ? Si oui, vous pouvez activer la localisation dans le menu Réglages de votre iPhone ou choisir manuellement une station de départ.";
+"ImpossibleLocateUserDenied" = "Impossible de trouver la station favorite la plus proche. Avez-vous refusé la localisation ? Si oui, vous pouvez activer la localisation dans le menu Réglages de votre iPhone ou choisir manuellement une station de départ.";
+"ImpossibleLocateUnknown" = "Désolé, votre position n'a pas pu être déterminée. Essayez de rafraichir ou essayez plus tard.\n Vous pouvez choisir une station de départ manuellement en touchant le bouton bleu";
 "WelcomeTouchInfoInstructions" = "Touchez le bouton favoris pour gérer\n vos stations favorites.";
 "Need2StationsTouchInfoInstructions" = "You need at least two favorite stations\n to display the schedules. Tap the bookmarks button and add a station.";
 "Need2StationsTouchInfoInstructions" = "Il faut au minimum deux stations pour afficher les horaires. Touchez le bouton\nfavoris pour ajouter une deuxième station.";

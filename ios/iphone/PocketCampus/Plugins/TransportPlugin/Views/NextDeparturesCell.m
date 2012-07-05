@@ -85,9 +85,9 @@
             
             for (int i = 0; i<redundantConnections.count && i < 3; i++) {
                 TransportConnection* connection = [redundantConnections objectAtIndex:i];
-                //timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
                 //timesString = [TransportUtils hourMinutesStringForTimestamp:(connection.departureTime)/1000.0];
-                timesString = [TransportUtils minutesLeftStringForTimestamp:(connection.departureTime)/1000.0];
+                //timesString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:(connection.departureTime)/1000.0];
                 if ([timesString isEqualToString:@"Now"]) {
                     //if (i == 0) { //show bus once only
                         UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
@@ -130,7 +130,7 @@
             
             [self.contentView addSubview:lineNameLabel];
             
-        } else { //redundantConnections = nil or is empty
+        } else { //redundantConnections = nil or is empty OR user has disabled "best result" setting
             
             timeFont = [UIFont systemFontOfSize:17.0];
             timeReqSize = [@"00:00 (M1)" sizeWithFont:timeFont];
@@ -163,7 +163,7 @@
                     [busImageView release];
                     
                     UILabel* lineLabel = [[[UILabel alloc] initWithFrame:CGRectMake(53.0+(i*100.0), 33.0, 30.0, 20.0)] autorelease];
-                    lineLabel.text = lineName;
+                    lineLabel.text = [NSString stringWithFormat:@"(%@)", lineName];
                     lineLabel.adjustsFontSizeToFitWidth = YES;
                     lineLabel.textAlignment = UITextAlignmentLeft;
                     lineLabel.font = timeFont;

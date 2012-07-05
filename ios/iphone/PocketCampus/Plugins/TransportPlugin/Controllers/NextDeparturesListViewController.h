@@ -29,7 +29,9 @@ typedef enum {
     LocationStateManualSelection,
     LocationStateLocated,
     LocationStateLoading,
-    LocationStateError,
+    LocationStateErrorUserDenied,
+    LocationStateErrorTimeout,
+    LocationStateErrorUnknown,
     LocationStateUnset
 } LocationState;
 

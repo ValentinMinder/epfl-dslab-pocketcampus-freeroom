@@ -306,9 +306,11 @@ static NSString* kLastLocationKey = @"lastLocation";
     }
     nbRounds++;
     
-    if (nbRounds == 10) { //user should not have to wait longer than 10 seconds
+    if (nbRounds == 10) { //enlarge desiredAccurary, should give a result much faster
         locationManager.desiredAccuracy = 5000.0; //5KM
         [self handleLocationUpdate:locationManager.location];
+    } else if (nbRounds == 15) { //location timeout (15 seconds)
+        [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search
     } else if (nbRounds % 2 == 0) {
         CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
         if (nbRounds % 4 == 0 && accuracy < kCLLocationAccuracyBest) { //don't want to wait longer with this accuracy level
@@ -376,7 +378,7 @@ static NSString* kLastLocationKey = @"lastLocation";
         case kCLErrorDenied:
             if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestFavoriteTransportStationFailed:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate nearestFavoriteTransportStationFailed:@"User denied access to location"];
+                    [self.delegate nearestFavoriteTransportStationFailed:LocationFailureReasonUserDenied];
                     [self cancelAll];
                 });
             } else {
@@ -385,6 +387,15 @@ static NSString* kLastLocationKey = @"lastLocation";
             delegateCallScheduled = YES;
             break;
         default:
+            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestFavoriteTransportStationFailed:)]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate nearestFavoriteTransportStationFailed:LocationFailureReasonUnknown];
+                    [self cancelAll];
+                });
+            } else {
+                [self cancelAll];
+            }
+            delegateCallScheduled = YES;
             break;
     }
 }

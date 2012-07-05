@@ -81,7 +81,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText"/>
-						<object class="NSColor" key="IBUITextColor">
+						<object class="NSColor" key="IBUITextColor" id="68636411">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
 						</object>
@@ -116,7 +116,7 @@
 					<object class="IBUIImageView" id="1027360904">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{7, 13}, {19, 20}}</string>
+						<string key="NSFrame">{{6, 12}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="28779486"/>
@@ -131,7 +131,7 @@
 					<object class="IBUILabel" id="28779486">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{10, 6}, {90, 30}}</string>
+						<string key="NSFrame">{{0, 1}, {100, 41}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="483174275"/>
@@ -174,14 +174,8 @@
 						<int key="IBUIContentMode">7</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">EPFL</string>
-						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC41Mzk1NTQ1MzA1IDAuMTU2ODE3OTU0NSAwLjgwNzg0MzEzNzMAA</bytes>
-						</object>
-						<object class="NSColor" key="IBUIHighlightedColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwLjIwNTQ0MjAwNzkgMC44NTAwMDAwMjM4AA</bytes>
-						</object>
+						<reference key="IBUITextColor" ref="68636411"/>
+						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="833012921"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
@@ -493,7 +487,6 @@
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="740711607"/>
-							<reference ref="1027360904"/>
 							<reference ref="28779486"/>
 							<reference ref="483174275"/>
 							<reference ref="831768426"/>
@@ -503,6 +496,7 @@
 							<reference ref="14241750"/>
 							<reference ref="256811272"/>
 							<reference ref="383963687"/>
+							<reference ref="1027360904"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -718,7 +712,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="BookmarksBlue.png">{42, 30}</string>
 			<string key="HelpBarButton.png">{30, 30}</string>
-			<string key="LocationArrowActive.png">{19, 20}</string>
+			<string key="LocationArrowActive.png">{20, 20}</string>
 			<string key="SettingsBarButton.png">{30, 30}</string>
 			<string key="TopTableViewInnerShadow@2x.png">{640, 40}</string>
 		</dictionary>

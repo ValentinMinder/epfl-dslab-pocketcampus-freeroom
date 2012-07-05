@@ -448,6 +448,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [epflLayersOverlay release];
     tileOverlayView.delegate = nil;
     [tileOverlayView release];
+    layersOverlayView.delegate = nil;
     [layersOverlayView release];
     [initialQuery release];
     [initialQueryManualPinLabelText release];

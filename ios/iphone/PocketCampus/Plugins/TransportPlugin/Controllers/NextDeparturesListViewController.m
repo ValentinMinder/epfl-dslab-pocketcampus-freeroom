@@ -113,7 +113,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         return;
     }
     
-    if (locationState == LocationStateError && ![transportService appHasAccessToLocation]) { //previously denied location, need to check whether now has accepted
+    if (locationState == LocationStateErrorUserDenied && ![transportService appHasAccessToLocation]) { //previously denied location, need to check whether now has accepted
         NSLog(@"-> Access to location is still denied, will not refresh");
         return;
     }
@@ -203,8 +203,19 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     [self updateAll];
 }
 
-- (void)nearestFavoriteTransportStationFailed:(NSString*)reason {
-    locationState = LocationStateError;
+- (void)nearestFavoriteTransportStationFailed:(LocationFailureReason)reason {
+    
+    switch (reason) {
+        case LocationFailureReasonUserDenied:
+            locationState = LocationStateErrorUserDenied;
+            break;
+        case LocationFailureReasonTimeout:
+            locationState = LocationStateErrorTimeout;
+            break;
+        default:
+            locationState = LocationStateErrorUnknown;
+            break;
+    }
     //isRefreshing = NO;
     [self updateAll];
 }
@@ -336,7 +347,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             break;
     }
     
-    fromValueLabel.textColor = [UIColor colorWithRed:0.5411 green:0.1568 blue:0.8078 alpha:1.0];
+    //fromValueLabel.textColor = [UIColor colorWithRed:0.5411 green:0.1568 blue:0.8078 alpha:1.0];
+    
+    NSString* locationAlertMessage = nil;
     
     switch (locationState) {
         case LocationStateManualSelection:
@@ -366,22 +379,14 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             welcomeTouchInfoInstructionsLabel.hidden = YES;
             connectionErrorLabel.hidden = YES;
             break;
-        case LocationStateError:
-            //NSLog(@"LocationStateError");
-            locationArrow.hidden = YES;
-            fromLabel.text = NSLocalizedStringFromTable(@"FromLabel", @"TransportPlugin", nil);
-            fromLabel.hidden = NO;
-            fromValueLabel.textColor = [UIColor redColor];
-            fromValueLabel.text = NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil);
-            fromValueLabel.hidden = NO;
-            [locationActivityIndicator stopAnimating];
-            infoButton.enabled = YES; //so that user can switch to manual selection
-            tableView.hidden = YES;
-            welcomeTouchInfoInstructionsLabel.hidden = YES;
-            connectionErrorLabel.hidden = YES;
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"ImpossibleLocateLong", @"TransportPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
+        case LocationStateErrorUserDenied:
+            locationAlertMessage = @"ImpossibleLocateUserDenied";
+            break;
+        case LocationStateErrorTimeout:
+            locationAlertMessage = @"ImpossibleLocateUnknown";
+            break;
+        case LocationStateErrorUnknown:
+            locationAlertMessage = @"ImpossibleLocateUnknown";
             break;
         case LocationStateUnset:
             //NSLog(@"LocationStateUnset");
@@ -390,6 +395,23 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         default:
             //NSLog(@"!! Unsupported LocationState %d", locationState);
             break;
+    }
+    
+    if (locationAlertMessage) {
+        locationArrow.hidden = YES;
+        fromLabel.text = NSLocalizedStringFromTable(@"FromLabel", @"TransportPlugin", nil);
+        fromLabel.hidden = NO;
+        fromValueLabel.textColor = [UIColor redColor];
+        fromValueLabel.text = NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil);
+        fromValueLabel.hidden = NO;
+        [locationActivityIndicator stopAnimating];
+        infoButton.enabled = YES; //so that user can switch to manual selection
+        tableView.hidden = YES;
+        welcomeTouchInfoInstructionsLabel.hidden = YES;
+        connectionErrorLabel.hidden = YES;
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil) message:NSLocalizedStringFromTable(locationAlertMessage, @"TransportPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];   
     }
     
     switch (schedulesState) {
@@ -422,6 +444,25 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             //NSLog(@"!! Unsupported SchedulesState %d", schedulesState);
             break;
     }
+    
+    [fromLabel sizeToFit];
+    if (locationArrow.hidden) {
+        fromLabel.frame = CGRectMake(15.0, 0.0, fromLabel.frame.size.width, 43.0);
+    } else {
+        fromLabel.frame = CGRectMake(locationArrow.frame.origin.x+locationArrow.frame.size.width+4.0, 0.0, fromLabel.frame.size.width, 43.0);
+    }
+    
+    [fromValueLabel sizeToFit];
+    CGFloat x = fromLabel.frame.origin.x+fromLabel.frame.size.width+5.0;
+    CGFloat width = fromValueLabel.frame.size.width;
+    
+    if (x+width > infoButton.frame.origin.x - 3.0) {
+        width = width - ((x+width) - infoButton.frame.origin.x)-2.0;
+    }
+    
+    fromValueLabel.frame = CGRectMake(x, 0.0, width, 43.0);
+    
+    locationActivityIndicator.center = CGPointMake(fromLabel.frame.origin.x+fromLabel.frame.size.width+20.0, locationActivityIndicator.center.y);
     
 }
 

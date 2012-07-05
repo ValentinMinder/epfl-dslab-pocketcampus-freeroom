@@ -23,7 +23,7 @@
 }
 
 + (UIColor*)textColorLocationBlue {
-    return [UIColor colorWithRed:0.54 green:0.15 blue:0.8 alpha:1.0];
+    return [UIColor colorWithRed:0.141176 green:0.376471 blue:0.733333 alpha:1.0];
 }
 
 + (CGSize)shadowOffset1 {

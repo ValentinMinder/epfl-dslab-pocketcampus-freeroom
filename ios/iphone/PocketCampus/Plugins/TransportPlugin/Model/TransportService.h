@@ -46,6 +46,13 @@
 
 @end
 
+typedef enum {
+    LocationFailureReasonUnset = 0,
+    LocationFailureReasonUserDenied,
+    LocationFailureReasonTimeout,
+    LocationFailureReasonUnknown,
+} LocationFailureReason;
+
 @protocol TransportServiceDelegate <ServiceDelegate>
 
 @optional
@@ -66,7 +73,7 @@
 /* delegation for location utilities */
 
 - (void)nearestFavoriteTransportStationDidReturn:(TransportStation*)nearestStation;
-- (void)nearestFavoriteTransportStationFailed:(NSString*)reason;
+- (void)nearestFavoriteTransportStationFailed:(LocationFailureReason)reason;
 
 @end
 
