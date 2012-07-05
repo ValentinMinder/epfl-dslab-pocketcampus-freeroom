@@ -49,7 +49,7 @@ static MoodleService* instance = nil;
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCoursesList:);
-    operation.delegateDidReturnSelector = @selector(getCoursesList:DidReturn:);
+    operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
@@ -60,7 +60,7 @@ static MoodleService* instance = nil;
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getEventsList:);
-    operation.delegateDidReturnSelector = @selector(getEventsList:DidReturn:);
+    operation.delegateDidReturnSelector = @selector(getEventsList:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventsListFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
@@ -72,7 +72,7 @@ static MoodleService* instance = nil;
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.customTimeout = 35.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
-    operation.delegateDidReturnSelector = @selector(getCourseSections:DidReturn:);
+    operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
     [operation addObjectArgument:aMoodleRequest];
     operation.returnType = ReturnTypeObject;
