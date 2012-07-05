@@ -102,9 +102,70 @@
     [sess release];
 }
 
+- (void)hideWebView:(id)sender {
+    webView.hidden = YES;
+    self.navigationItem.rightBarButtonItem = nil;
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
+    
+}
+
+/*
+- (BOOL) documentInteractionController: (UIDocumentInteractionController *) controller canPerformAction: (SEL) action {
+    NSLog(@"documentInteractionController:canPerformAction:");
+    return YES;
+}
+
+- (void) documentInteractionController: (UIDocumentInteractionController *) controller didEndSendingToApplication: (NSString *) application {
+    NSLog(@"documentInteractionController:didEndSendingToApplication:");
+}
+
+- (void) documentInteractionController: (UIDocumentInteractionController *) controller willBeginSendingToApplication: (NSString *) application {
+    NSLog(@"documentInteractionController:willBeginSendingToApplication:");
+}
+
+- (void) documentInteractionControllerDidDismissOpenInMenu: (UIDocumentInteractionController *) controller {
+    NSLog(@"documentInteractionControllerDidDismissOpenInMenu:");
+}
+*/
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController {
+    NSLog(@"documentInteractionControllerViewControllerForPreview:");
+    return self;
+}
+
+- (void)initDocController:(NSURL *)url {
+    if (docController == nil) {
+        docController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        docController.delegate = self;
+    } else {
+        docController.URL = url;
+    }
+}
+
 - (void)openFile:(NSURL*)fileUrl {
-    webView.hidden = NO;
-    [webView loadRequest:[NSURLRequest requestWithURL:fileUrl]];
+    //webView.hidden = NO;
+    //[webView loadRequest:[NSURLRequest requestWithURL:fileUrl]];
+    //UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(hideWebView:)];
+    //self.navigationItem.rightBarButtonItem = anotherButton;
+    //[anotherButton release];
+    //self.navigationItem.title = @"Courses";
+
+    //NSURL *url = [NSURL fileURLWithPath:@"http://www.zilog.com/docs/z80/um0080.pdf"];
+    //UIDocumentInteractionController*
+    //docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
+    //[docController retain];
+    //docController.delegate = self;
+    //BOOL isValid = [docController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES];
+    //NSLog(@"isValid %d", isValid);
+    //[docController presentPreviewAnimated:YES];
+    
+    UIDocumentInteractionController* dicController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
+    //[dicController retain];
+    dicController.delegate = self;
+    [dicController presentPreviewAnimated:YES];
+    
+    //[self initDocController:fileUrl];
+    //[docController presentPreviewAnimated:YES];
     
     //TODO for some reason the below is not working, should make it work and switch to it
     //self.docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
@@ -115,6 +176,14 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+/* service delegation */
+
+- (void)serviceConnectionToServerTimedOut {
+    [centerActivityIndicator stopAnimating];
+    centerActivityIndicator.hidden = YES;
+    centerMessageLabel.text = @"Connection timed out, check your internet connectivity";
 }
 
 /* MoodleServiceDelegate delegation */

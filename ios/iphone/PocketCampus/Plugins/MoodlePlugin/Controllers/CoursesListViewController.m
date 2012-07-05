@@ -41,7 +41,7 @@
         [self go];
     }
     pingedAuthPlugin = NO;
-    coursesList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //coursesList.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     //CourseSectionsViewController* controller = [[CourseSectionsViewController alloc] initWithCourseId:0 andCourseTitle:@"bita3"];
     //[self.navigationController pushViewController:controller animated:YES];

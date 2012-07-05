@@ -12,7 +12,7 @@
 
 #import "AuthenticationService.h"
 
-@interface CourseSectionsViewController : UIViewController<UITableViewDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
+@interface CourseSectionsViewController : UIViewController<UITableViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
     IBOutlet UIActivityIndicatorView* centerActivityIndicator;
     IBOutlet UILabel* centerMessageLabel;
     IBOutlet UITableView* sectionsList;

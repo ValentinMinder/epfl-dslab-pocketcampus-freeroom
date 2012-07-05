@@ -70,6 +70,7 @@ static MoodleService* instance = nil;
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest WithDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.customTimeout = 35.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:DidReturn:);
     operation.delegateDidFailSelector = @selector(getCourseSectionsFailed:);
