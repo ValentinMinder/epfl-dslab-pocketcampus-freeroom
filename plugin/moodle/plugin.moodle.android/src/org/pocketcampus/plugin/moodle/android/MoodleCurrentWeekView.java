@@ -144,7 +144,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 			current = 0;
 			for(int i = 1; i < lms.size(); i++) {
 				List<MoodleResource> lmr = lms.get(i).getIResources();
-				if(lmr != null && lms.get(i).iCurrent) {
+				if(lmr.size() != 0 && lms.get(i).iCurrent) {
 					current = i;
 					break;
 				}
