@@ -126,6 +126,7 @@
 /* MoodleServiceDelegate delegation */
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
+    //NSLog(@"courselistreply %@", coursesListReply);
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = @"";

@@ -48,6 +48,7 @@ static MoodleService* instance = nil;
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
@@ -70,6 +71,7 @@ static MoodleService* instance = nil;
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
     operation.customTimeout = 35.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);

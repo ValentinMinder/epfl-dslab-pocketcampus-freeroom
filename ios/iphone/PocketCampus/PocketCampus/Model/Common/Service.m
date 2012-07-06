@@ -6,6 +6,10 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import <CommonCrypto/CommonDigest.h>
+
+#import "ObjectArchiver.h"
+
 #import "Service.h"
 
 #import "Reachability.h"
@@ -89,6 +93,10 @@ static NSTimeInterval requestTimeoutInterval;
         }
     }
     return serverIsReachable;
+}
+
+- (NSString*) serviceName {
+    return serviceName;
 }
 
 /* ASIHTTPRequestDelegate delegation */
@@ -214,7 +222,7 @@ static NSTimeInterval requestTimeoutInterval;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service;
+@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, skipCache;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -261,6 +269,48 @@ static NSTimeInterval requestTimeoutInterval;
 - (void)main {
     
     @try {
+        [self computeHashCode];
+        if(!skipCache) {
+            NSDictionary* cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+            if(cached) {
+                [self retain];
+                NSLog(@"REQ FOUND IN CACHE; SHOULD SERVE FROM CACHE");
+                
+                NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
+                [delegateInv setSelector:self.delegateDidReturnSelector];
+                [self setArgumentsForInvocation:delegateInv];
+                
+                if ([[cached objectForKey:@"primitive"] boolValue]) {
+                    void* result = [ServiceRequest unwrapArgument:cached];
+                    [delegateInv setArgument:result atIndex:arguments.count+2];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
+                            [delegateInv invokeWithTarget:self.delegate];
+                        }
+                        [delegateInv release];
+                        free(result);
+                        [self finishAndRelease];
+                    });
+                } else {
+                    id object = [ServiceRequest unwrapArgument:cached];
+                    [object retain];
+                    [delegateInv setArgument:&object atIndex:arguments.count+2];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.delegate != nil && [self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
+                            [delegateInv invokeWithTarget:self.delegate];
+                        }
+                        [delegateInv release];
+                        [object release];
+                        [self finishAndRelease];
+                    });
+                }
+                
+                NSLog(@"SERVED FROM CACHE");
+                
+                return;
+            }
+        }
+        
         if (self.service != nil && ![self.service serverIsReachable]) {
             [self didTimeout];
             return;
@@ -278,7 +328,6 @@ static NSTimeInterval requestTimeoutInterval;
         [self didChangeValueForKey:@"isExecuting"];
         
         [self checkPrimariesAndScheduleTimeoutTimer];
-        
         
         NSInvocation* serviceInv = [NSInvocation invocationWithMethodSignature:[[self.thriftServiceClient class] instanceMethodSignatureForSelector:self.serviceClientSelector]];
         [serviceInv setSelector:self.serviceClientSelector]; //must also be set
@@ -304,6 +353,7 @@ static NSTimeInterval requestTimeoutInterval;
                     id object;
                     [serviceInv getReturnValue:&object];
                     [object retain];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentObject:object] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:&object atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (self.delegate != nil && [self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -319,6 +369,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     int* result = malloc(sizeof(int));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentInt:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -334,6 +385,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     double* result = malloc(sizeof(double));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentDouble:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -349,6 +401,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     float* result = malloc(sizeof(float));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentFloat:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -364,6 +417,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     BOOL* result = malloc(sizeof(BOOL));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentBool:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -379,6 +433,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     char* result = malloc(sizeof(char));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentChar:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -394,6 +449,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     long* result = malloc(sizeof(long));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLong:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -409,6 +465,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     long long* result = malloc(sizeof(long long));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentLongLong:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -424,6 +481,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     short* result = malloc(sizeof(short));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentShort:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -439,6 +497,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     unsigned int* result = malloc(sizeof(unsigned int));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedInt:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -454,6 +513,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     unsigned char* result = malloc(sizeof(unsigned char));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedChar:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -469,6 +529,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     unsigned long* result = malloc(sizeof(unsigned long));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLong:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -484,6 +545,7 @@ static NSTimeInterval requestTimeoutInterval;
                 {
                     unsigned long long* result = malloc(sizeof(unsigned long long));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedLongLong:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -497,8 +559,9 @@ static NSTimeInterval requestTimeoutInterval;
                 break;
             case ReturnTypeUnsignedShort:
                 {
-                    short* result = malloc(sizeof(short));
+                    unsigned short* result = malloc(sizeof(unsigned short));
                     [serviceInv getReturnValue:result];
+                    if(keepInCache) [ObjectArchiver saveObject:[ServiceRequest wrapArgumentUnsignedShort:*result] forKey:hashCode andPluginName:[service serviceName]];
                     [delegateInv setArgument:result atIndex:arguments.count+2];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
@@ -552,6 +615,9 @@ static NSTimeInterval requestTimeoutInterval;
     }
     
 }
+
+
+// all below are deprecated
 
 - (void)addObjectArgument:(id)object {
     //OK, object not checked => can be nil
@@ -623,10 +689,240 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 
+
+//////////////////
+//////////////////
+
+- (void)addWrappedArgument:(NSDictionary*)argDic {
+    [arguments addObject:argDic];
+}
+
++ (NSDictionary*)wrapArgumentObject:(id)object {
+    //OK, object not checked => can be nil
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:NO] forKey:@"primitive"];
+    [argDic setObject:object forKey:@"value"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentBool:(BOOL)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithBool:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(boolValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentChar:(char)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithChar:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(charValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentUnsignedChar:(unsigned char)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithUnsignedChar:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(unsignedCharValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentDouble:(double)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithDouble:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(doubleValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentFloat:(float)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithFloat:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(floatValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentInt:(int)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithInt:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(intValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentUnsignedInt:(unsigned int)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithUnsignedInt:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(unsignedIntValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentLong:(long)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithLong:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(longValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentUnsignedLong:(unsigned long)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithUnsignedLong:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(unsignedLongValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentLongLong:(long long)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithLongLong:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(longLongValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentUnsignedLongLong:(unsigned long long)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithUnsignedLongLong:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(unsignedLongLongValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentShort:(short)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithShort:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(shortValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (NSDictionary*)wrapArgumentUnsignedShort:(unsigned short)val {
+    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
+    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
+    [argDic setObject:[NSNumber numberWithUnsignedShort:val] forKey:@"value"];
+    [argDic setObject:NSStringFromSelector(@selector(unsignedShortValue)) forKey:@"nsNumberSelectorString"];
+    return argDic;
+}
+
++ (void*)unwrapArgument:(NSDictionary*)argDic {
+    if (![[argDic objectForKey:@"primitive"] boolValue])
+        return [argDic objectForKey:@"value"];
+    
+    NSNumber* val = [argDic objectForKey:@"value"];
+    NSString* selectorString = [argDic objectForKey:@"nsNumberSelectorString"];
+    SEL selector = NSSelectorFromString(selectorString);
+    
+    
+    NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[NSNumber instanceMethodSignatureForSelector:selector]];
+    [inv setSelector:selector];
+    [inv invokeWithTarget:val];
+    
+    if ([selectorString isEqualToString:@"boolValue"]) {
+        BOOL* ret = malloc(sizeof(BOOL));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"charValue"]) {
+        char* ret = malloc(sizeof(char));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"unsignedCharValue"]) {
+        unsigned char* ret = malloc(sizeof(unsigned char));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"doubleValue"]) {
+        double* ret = malloc(sizeof(double));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"floatValue"]) {
+        float* ret = malloc(sizeof(float));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"intValue"]) {
+        int* ret = malloc(sizeof(int));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"unsignedIntValue"]) {
+        unsigned int* ret = malloc(sizeof(unsigned int));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"longValue"]) {
+        long* ret = malloc(sizeof(long));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"unsignedLongValue"]) {
+        unsigned long* ret = malloc(sizeof(unsigned long));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"longLongValue"]) {
+        long long* ret = malloc(sizeof(long long));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"unsignedLongLongValue"]) {
+        unsigned long long* ret = malloc(sizeof(unsigned long long));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"shortValue"]) {
+        short* ret = malloc(sizeof(short));
+        [inv getReturnValue:ret];
+        return ret;
+    } else if ([selectorString isEqualToString:@"unsignedShortValue"]) {
+        unsigned short* ret = malloc(sizeof(unsigned short));
+        [inv getReturnValue:ret];
+        return ret;
+    }
+    return NULL;
+}
+
+- (void)computeHashCode {
+    hashCode = [ServiceRequest md5HexDigest:NSStringFromSelector(serviceClientSelector)];
+    for (int i = 0; i < arguments.count; i++)
+        hashCode = [ServiceRequest md5HexDigest:[NSString stringWithFormat:@"%@%@", hashCode, [[arguments objectAtIndex:i] objectForKey:@"value"]]];
+    NSLog(@"COMPUTE HASH %@", hashCode);
+}
+
++ (NSString*)md5HexDigest:(NSString*)input {
+    const char* str = [input UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(str, strlen(str), result);
+    
+    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
+    for(int i = 0; i<CC_MD5_DIGEST_LENGTH; i++) {
+        [ret appendFormat:@"%02x",result[i]];
+    }
+    return ret;
+}
+
+- (void)setWrappedArgumentsForInvocation:(NSInvocation*)inv {
+    for (int i = 0; i < arguments.count; i++) {
+        NSDictionary* argDic = [arguments objectAtIndex:i];
+        if ([[argDic objectForKey:@"primitive"] boolValue]) {
+            void* ptr = [ServiceRequest unwrapArgument:argDic];
+            [inv setArgument:ptr atIndex:i+2];
+            free(ptr);
+        } else {
+            id object = [ServiceRequest unwrapArgument:argDic];
+            [inv setArgument:&object atIndex:i+2];
+        }
+    }
+}
+
+
+/////////////
+/////////////
+
+
+
+// deprecated
 - (void)setArgumentsForInvocation:(NSInvocation*)inv {
     int i;
     for (i = 0; i < arguments.count; i++) {
         NSDictionary* argDic = [arguments objectAtIndex:i];
+        //NSLog(@"hashcode1 %@", [argDic objectForKey:@"value"]);
         if ([[argDic objectForKey:@"primitive"] boolValue]) {
             [inv setArgument:[self argumentPrimitivePointerForIndex:i] atIndex:i+2];
             //WARNING : memory leak : argument is copied by NSInvocation and should thus bee freed with free(), cannot here here do not know type of argument at this place.
@@ -637,6 +933,7 @@ static NSTimeInterval requestTimeoutInterval;
     }
 }
 
+// deprecated
 - (void*)argumentPrimitivePointerForIndex:(NSUInteger)index {
     NSDictionary* argDic = [arguments objectAtIndex:index];
     if (![[argDic objectForKey:@"primitive"] boolValue]) {

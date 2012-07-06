@@ -43,12 +43,14 @@
 @property (readonly) TBinaryProtocol* thriftProtocol;
 @property BOOL serviceWillBeReleased;
 
+
 - (id)initWithServiceName:(NSString*)serviceName;
 + (NSTimeInterval)requestTimeoutInterval;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (id)thriftProtocolInstance;
 
 - (BOOL)serverIsReachable;
+- (NSString*) serviceName;
 
 @end
 
@@ -91,11 +93,14 @@ typedef enum {
     NSMutableArray* arguments;
     NSTimer* timeoutTimer;
     NSTimeInterval customTimeout;
+    NSString* hashCode;
 }
 
 @property (retain) id thriftServiceClient;
 @property BOOL timedOut;
 @property NSTimeInterval customTimeout;
+@property BOOL keepInCache;
+@property BOOL skipCache;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;
 @property (nonatomic, assign) Service* service;
