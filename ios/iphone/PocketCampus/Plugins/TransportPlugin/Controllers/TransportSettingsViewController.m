@@ -34,7 +34,11 @@ static int kBestResultSwitchTag = 2;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = NSLocalizedStringFromTable(@"TransportSettings", @"TransportPlugin", nil);
-    tableView.backgroundColor = [PCValues backgroundColor1];
+    tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
+    backgroundView.backgroundColor = [PCValues backgroundColor1];;
+    tableView.backgroundView = backgroundView;
+    [backgroundView release];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBarButtonPressed)] autorelease];
 }
 
