@@ -94,16 +94,32 @@
         return [[[UIView alloc] initWithFrame:CGRectMake(0, startingY, 0, 0)] autorelease];
     }
     
+    if (partType == 0) {
+        @throw [NSException exceptionWithName:@"bad partType" reason:@"partType cannot be 0 in partViewForTransportConnection:part:startingY:" userInfo:nil];
+    }
+    
     UIView* container = [[UIView alloc] initWithFrame:CGRectMake(10.0, startingY, 300.0, 25.0)];
     
-    UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80.0, container.frame.size.height)];
+    UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 64.0, container.frame.size.height)];
     timeLabel.backgroundColor = [UIColor clearColor];
     timeLabel.textColor = [UIColor whiteColor];
     timeLabel.textAlignment = UITextAlignmentRight;
     timeLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     timeLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
-    UILabel* stationLabel = [[UILabel alloc] initWithFrame:CGRectMake(100.0, 0.0, 200.0, container.frame.size.height)];
+    
+    UILabel* platformLabel = [[UILabel alloc] initWithFrame:CGRectMake(71.0, 0.0, 40.0, 25.0)];
+    platformLabel.backgroundColor = [UIColor clearColor];
+    platformLabel.textColor = [UIColor whiteColor];
+    platformLabel.font = [UIFont systemFontOfSize:13.0];
+    platformLabel.adjustsFontSizeToFitWidth = YES;
+    platformLabel.textAlignment = UITextAlignmentCenter;
+    platformLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    platformLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    
+
+    
+    UILabel* stationLabel = [[UILabel alloc] initWithFrame:CGRectMake(120.0, 0.0, 185.0, container.frame.size.height)];
     stationLabel.backgroundColor = [UIColor clearColor];
     stationLabel.textColor = [UIColor whiteColor];
     stationLabel.textAlignment = UITextAlignmentLeft;
@@ -111,10 +127,18 @@
     stationLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     stationLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
+    platformLabel.text = @"•";
+    
     if (partType == PartDeparture && connection.departureTime != 0) {
         timeLabel.text = [TransportUtils hourMinutesStringForTimestamp:connection.departureTime/1000.0];
+        if (connection.arrivalPosition) {
+            platformLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), connection.departurePosition];
+        }
     } else if(partType == PartArrival && connection.arrivalTime != 0) {
         timeLabel.text = [TransportUtils hourMinutesStringForTimestamp:connection.arrivalTime/1000.0];
+        if (connection.arrivalPosition) {
+            platformLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), connection.arrivalPosition];
+        }
     } else {
         /*stationLabel.frame = CGRectMake(0.0, 0.0, container.frame.size.width, container.frame.size.height); //center station name as no info to give on time
         stationLabel.textAlignment = UITextAlignmentCenter;*/
@@ -127,12 +151,14 @@
     } else if(partType == PartArrival && connection.arrival != nil && connection.arrival.name != nil) {
         stationLabel.text = [TransportUtils nicerName:connection.arrival.name];
     } else {
-        //too bad...
+        //cannot happen
     }
     
     [container addSubview:timeLabel];
+    [container addSubview:platformLabel];
     [container addSubview:stationLabel];
     [timeLabel release];
+    [platformLabel release];
     [stationLabel release];
     
     return [container autorelease];
@@ -168,7 +194,7 @@
 
 - (UIView*)feetConnectionStartingY:(CGFloat)startingY {
     UIImageView* person = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"FeetConnection"]];
-    person.center = CGPointMake(100.0, startingY-(person.frame.size.height/2.0));
+    person.center = CGPointMake(102.0, startingY-(person.frame.size.height/2.0));
     return [person autorelease];
 }
 

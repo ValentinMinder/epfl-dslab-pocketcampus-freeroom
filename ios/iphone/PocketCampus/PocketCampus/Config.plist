@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>REQUEST_TIMEOUT</key>
-	<integer>25</integer>
+	<integer>15</integer>
 	<key>DEV_MODE</key>
 	<false/>
 	<key>DEV_SERVER_ADDRESS</key>

@@ -83,17 +83,19 @@
     @try {
         
         if (queryTripResult.connections == nil) {
-            @throw [NSException exceptionWithName:@"bad argument in nextRedundantDeparturesFromMessyResult:" reason:@"queryTripResult.connection is nil" userInfo:nil];
+            @throw [NSException exceptionWithName:@"bad argument in nextRedundantDeparturesFromMessyResult:" reason:@"queryTripResult.connections is nil" userInfo:nil];
         }
         
-        NSMutableArray* directTripsConnections = [NSMutableArray array]; //array of TransportConnection
+        /* check for direct trips first */
+        
+        NSMutableArray* directTripsConnections = [NSMutableArray array]; //First and only TransportConnection of each direct trip from result
         for (TransportTrip* trip in queryTripResult.connections) {
             if (trip.parts != nil && trip.parts.count == 1) {
                 [directTripsConnections addObject:[trip.parts objectAtIndex:0]];
                 //NSLog(@"found direct");
             }
         }
-        if (directTripsConnections.count > 2) {
+        if (directTripsConnections.count >= 3) { //if at least 3 direct connections in QueryTripsResult 
             NSMutableDictionary* connectionsForLine = [NSMutableDictionary dictionary];
             for (TransportConnection* directConnection in directTripsConnections) {
                 if (directConnection.line == nil || directConnection.line.name == nil) {
@@ -111,13 +113,45 @@
             }
             
             int maxConnections = 0;
-            NSArray* maxLineDirectConnections = [NSArray array];
+            NSMutableArray* linesConnections = [NSMutableArray array];
             for (NSArray* lineDirectConnections in [connectionsForLine allValues]) {
-                if (lineDirectConnections.count > maxConnections) {
+                if (lineDirectConnections.count >= maxConnections && lineDirectConnections.count > 1) {
                     maxConnections = lineDirectConnections.count;
-                    maxLineDirectConnections = lineDirectConnections;
+                    [linesConnections addObject:lineDirectConnections];
                 }
             }
+            
+            [linesConnections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                NSArray* line1Connections = (NSArray*)obj1;
+                NSArray* line2Connections = (NSArray*)obj2;
+                
+                if (line1Connections.count < line2Connections.count) {
+                    return NSOrderedDescending; //inversed, so that connections that appear more often are at the beginning the array
+                } else if (line1Connections.count > line2Connections.count) {
+                    return NSOrderedAscending;
+                } else {
+                    return NSOrderedSame;
+                }
+            }];
+            
+            NSArray* maxLineDirectConnections;
+            
+            if (linesConnections.count == 0) {
+                return nil;
+            }
+            
+            if (linesConnections.count == 1) {
+                maxLineDirectConnections = [linesConnections objectAtIndex:0];
+            }
+            
+            if (linesConnections.count > 1) {
+                maxLineDirectConnections = [linesConnections objectAtIndex:0];
+                NSArray* line2Connections = [linesConnections objectAtIndex:1];
+                if (maxLineDirectConnections.count < 2*line2Connections.count) { //means number of connections of line 1 is not really dominant compared to second line that appears the most often => both line are considered important thus nil is returned
+                    return nil;
+                }
+            }
+            
             TransportTrip* firstTrip = [queryTripResult.connections objectAtIndex:0];
             TransportConnection* firstConnection = [firstTrip.parts objectAtIndex:0];
             if ([self isFeetConnection:firstConnection]) {
@@ -127,8 +161,11 @@
             if ((firstConnectionFromResult.departureTime/1000.0) < (firstConnection.departureTime/1000.0) + 5.0*60.0) { //returning direct must arrive at most 5 minutes later than the non-direct that arrives the first
                 return maxLineDirectConnections;
             }
+            
         }
         
+        
+        /* now dealing with non-direct trips if no good direct trip result */
         
         NSMutableDictionary* repeatingConnectionsForLines = [NSMutableDictionary dictionary];
         for (TransportTrip* trip in queryTripResult.connections) {
@@ -158,17 +195,44 @@
         }
         
         int maxConnections = 0;
-        NSArray* mostRepeatingLineConnections;
-        //long long minDuration = LLONG_MAX;
-        //NSLog(@"-----------");
+        NSMutableArray* linesConnections = [NSMutableArray array];
         for (NSArray* lineConnections in [repeatingConnectionsForLines allValues]) {
-            //TransportConnection* firstConnection = [lineConnections objectAtIndex:0];
-            //NSLog(@"%@ %d %lld", firstConnection.line.name, lineConnections.count, (firstConnection.arrivalTime - firstConnection.departureTime));
             if (lineConnections.count >= maxConnections && lineConnections.count > 1) {
-                //NSLog(@"test");
                 maxConnections = lineConnections.count;
-                mostRepeatingLineConnections = lineConnections;
-                //minDuration = firstConnection.arrivalTime - firstConnection.departureTime < minDuration;
+                [linesConnections addObject:lineConnections];
+                
+            }
+        }
+        
+        [linesConnections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSArray* line1Connections = (NSArray*)obj1;
+            NSArray* line2Connections = (NSArray*)obj2;
+            
+            if (line1Connections.count < line2Connections.count) {
+                return NSOrderedDescending; //inversed, so that connections that appear more often are at the beginning the array
+            } else if (line1Connections.count > line2Connections.count) {
+                return NSOrderedAscending;
+            } else {
+                return NSOrderedSame;
+            }
+        }];
+        
+        
+        NSArray* mostRepeatingLineConnections;
+        
+        if (linesConnections.count == 0) {
+            return nil;
+        }
+        
+        if (linesConnections.count == 1) {
+            mostRepeatingLineConnections = [linesConnections objectAtIndex:0];
+        }
+        
+        if (linesConnections.count > 1) {
+            mostRepeatingLineConnections = [linesConnections objectAtIndex:0];
+            NSArray* line2Connections = [linesConnections objectAtIndex:1];
+            if (mostRepeatingLineConnections.count < 2*line2Connections.count) { //means number of connections of line 1 is not really dominant compared to second line that appears the most often => both line are considered important thus nil is returned
+                return nil;
             }
         }
         

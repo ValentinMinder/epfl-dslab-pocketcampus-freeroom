@@ -68,7 +68,7 @@ static NSTimeInterval requestTimeoutInterval;
     return requestTimeoutInterval;
 }
 
-- (BOOL)serverIsReachable {
+- (BOOL)serverIsReachable:(NSTimeInterval)timeout {
     if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
         return NO;
     }
@@ -76,7 +76,7 @@ static NSTimeInterval requestTimeoutInterval;
         if (checkServerRequest == nil) {
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-            checkServerRequest.timeOutSeconds = requestTimeoutInterval;
+            checkServerRequest.timeOutSeconds = timeout;
             checkServerRequest.requestMethod = @"HEAD";
             checkServerRequest.delegate = self;
             [checkServerRequest startAsynchronous];
@@ -256,13 +256,17 @@ static NSTimeInterval requestTimeoutInterval;
         @throw [NSException exceptionWithName:@"Bad delegate" reason:@"delegate does not respond to didReturn selector" userInfo:nil];
     }
     
+    NSTimeInterval timeout = [self timeoutTime];
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSTimeInterval timeout = [Service requestTimeoutInterval];
-        if (customTimeout != 0.0) {
-            timeout = customTimeout;
-        }
         timeoutTimer = [[NSTimer scheduledTimerWithTimeInterval:timeout target:self selector:@selector(didTimeout) userInfo:nil repeats:NO] retain];
     });
+}
+
+- (NSTimeInterval)timeoutTime {
+    if (customTimeout != 0.0) {
+        return customTimeout;
+    }
+    return [Service requestTimeoutInterval];
 }
 
 
@@ -311,7 +315,7 @@ static NSTimeInterval requestTimeoutInterval;
             }
         }
         
-        if (self.service != nil && ![self.service serverIsReachable]) {
+        if (self.service != nil && ![self.service serverIsReachable:[self timeoutTime]]) {
             [self didTimeout];
             return;
         }
@@ -890,7 +894,7 @@ static NSTimeInterval requestTimeoutInterval;
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     CC_MD5(str, strlen(str), result);
     
-    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
+    NSMutableString* ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
     for(int i = 0; i<CC_MD5_DIGEST_LENGTH; i++) {
         [ret appendFormat:@"%02x",result[i]];
     }

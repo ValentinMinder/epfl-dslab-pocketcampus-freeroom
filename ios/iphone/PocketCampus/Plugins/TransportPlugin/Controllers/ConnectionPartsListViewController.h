@@ -11,8 +11,8 @@
 #import "transport.h"
 
 typedef enum {
-    PartDeparture,
-    PartArrival
+    PartDeparture = 1,
+    PartArrival = 2
 } PartType;
 
 @interface ConnectionPartsListViewController : UIViewController {

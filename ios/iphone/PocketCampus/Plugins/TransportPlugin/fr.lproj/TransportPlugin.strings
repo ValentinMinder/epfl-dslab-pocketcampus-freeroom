@@ -34,3 +34,4 @@
 "Reset" = "Réinitialiser";
 "ResetFavStations" = "Stations par défaut...";
 "ResetFavStationsExplanations" = "Vos stations favorites seront remplacées par les stations par défaut (EPFL, Lausanne-Flon).";
+"PlatformShort" = "voie";

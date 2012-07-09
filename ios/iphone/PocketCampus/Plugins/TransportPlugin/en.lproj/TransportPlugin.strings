@@ -33,3 +33,4 @@
 "Reset" = "Reset";
 "ResetFavStations" = "Restore default stations...";
 "ResetFavStationsExplanations" = "Your favorite stations will be replaced by default stations (EPFL, Lausanne-Flon).";
+"PlatformShort" = "plat.";
