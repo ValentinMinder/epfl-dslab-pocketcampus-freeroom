@@ -43,6 +43,11 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     touchAddInstructionsLabel.text = NSLocalizedStringFromTable(@"TouchAddStationInstructions", @"TransportPlugin", nil);
     self.title = NSLocalizedStringFromTable(@"FavoriteStationsTitle", @"TransportPlugin", nil);
     [self setNavBarNormalModeAnimated:NO];
+    tableView.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
+    backgroundView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    tableView.backgroundView = backgroundView;
+    [backgroundView release];
 }
 
 - (void)viewDidUnload
