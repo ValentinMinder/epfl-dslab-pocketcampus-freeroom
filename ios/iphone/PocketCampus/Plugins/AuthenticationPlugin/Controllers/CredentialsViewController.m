@@ -150,7 +150,7 @@
 
 - (void)getTequilaKeyForService:(int)aService didReturn:(TequilaKey*)aTequilaKey {
     applicationTequilaKey = [aTequilaKey retain];
-    centerMessageLabel.text = [aTequilaKey iTequilaKey];
+    //centerMessageLabel.text = [aTequilaKey iTequilaKey];
     [authenticationService authenticateToken:[applicationTequilaKey iTequilaKey] withTequilaCookie:tequilaCookie delegate:self];
     //[authenticationService getSessionIdForService:aTequilaKey WithDelegate:self];
 }
@@ -162,7 +162,7 @@
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)aTequilaKey didReturn:(SessionId*)aSessionId {
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = [aSessionId moodleCookie];
+    //centerMessageLabel.text = [aSessionId moodleCookie];
     // call back the bita3
     
     //[self.navigationController popToViewController:iViewController animated:YES];
@@ -198,7 +198,7 @@
         [centerActivityIndicator stopAnimating];
         centerMessageLabel.text = @"Bad credentials, please try again";
     }else{
-        centerMessageLabel.text = tequilaCookie;
+        //centerMessageLabel.text = tequilaCookie;
         //[authenticationService getTequilaKeyForService:TypeOfService_SERVICE_MOODLE WithDelegate:self];
         //[authenticationService getTequilaKeyForService:typeOfService WithDelegate:self];
         [authenticationService getTequilaKeyForService:[iViewController getTypeOfService] delegate:self];
@@ -216,7 +216,7 @@
         [centerActivityIndicator stopAnimating];
         centerMessageLabel.text = @"Unexpected error occured";
     } else {
-        centerMessageLabel.text = @"Token authenticated successfully";
+        //centerMessageLabel.text = @"Token authenticated successfully";
         [authenticationService getSessionIdForServiceWithTequilaKey:applicationTequilaKey delegate:self];
     }
 }

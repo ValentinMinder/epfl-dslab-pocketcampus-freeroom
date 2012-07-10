@@ -282,7 +282,7 @@ static NSTimeInterval requestTimeoutInterval;
                 
                 NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
                 [delegateInv setSelector:self.delegateDidReturnSelector];
-                [self setArgumentsForInvocation:delegateInv];
+                [self setWrappedArgumentsForInvocation:delegateInv];
                 
                 if ([[cached objectForKey:@"primitive"] boolValue]) {
                     void* result = [ServiceRequest unwrapArgument:cached];
@@ -335,7 +335,7 @@ static NSTimeInterval requestTimeoutInterval;
         
         NSInvocation* serviceInv = [NSInvocation invocationWithMethodSignature:[[self.thriftServiceClient class] instanceMethodSignatureForSelector:self.serviceClientSelector]];
         [serviceInv setSelector:self.serviceClientSelector]; //must also be set
-        [self setArgumentsForInvocation:serviceInv];
+        [self setWrappedArgumentsForInvocation:serviceInv];
         [serviceInv invokeWithTarget:self.thriftServiceClient];
         if ([self isCancelled])
         {
@@ -344,7 +344,7 @@ static NSTimeInterval requestTimeoutInterval;
         
         NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
         [delegateInv setSelector:self.delegateDidReturnSelector];
-        [self setArgumentsForInvocation:delegateInv];
+        [self setWrappedArgumentsForInvocation:delegateInv];
         
         if ([self isCancelled])
         {
@@ -601,7 +601,7 @@ static NSTimeInterval requestTimeoutInterval;
             
             NSInvocation* failInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidFailSelector]] retain];
             [failInv setSelector:self.delegateDidFailSelector];
-            [self setArgumentsForInvocation:failInv];
+            [self setWrappedArgumentsForInvocation:failInv];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([self delegateRespondsToSelector:self.delegateDidFailSelector]) {
@@ -624,72 +624,59 @@ static NSTimeInterval requestTimeoutInterval;
 // all below are deprecated
 
 - (void)addObjectArgument:(id)object {
-    //OK, object not checked => can be nil
-    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
-    [argDic setObject:object forKey:@"value"];
-    [argDic setObject:[NSNumber numberWithBool:NO] forKey:@"primitive"];
-    [arguments addObject:argDic];
-}
-
-//private
-- (void)addPrimitiveArgument:(NSNumber*)nsNumber withNSNumberValueSelector:(SEL)nsNumberSelector {
-    NSMutableDictionary* argDic = [NSMutableDictionary dictionary];
-    [argDic setObject:nsNumber forKey:@"value"];
-    [argDic setObject:[NSNumber numberWithBool:YES] forKey:@"primitive"];
-    [argDic setObject:NSStringFromSelector(nsNumberSelector) forKey:@"nsNumberSelectorString"];
-    [arguments addObject:argDic];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentObject:object]];
 }
 
 - (void)addBoolArgument:(BOOL)val {
-    [self addPrimitiveArgument:[NSNumber numberWithBool:val] withNSNumberValueSelector:@selector(boolValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentBool:val]];
 }
 
 - (void)addCharArgument:(char)val {
-    [self addPrimitiveArgument:[NSNumber numberWithChar:val] withNSNumberValueSelector:@selector(charValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentChar:val]];
 }
 
 - (void)addUnsignedCharArgument:(unsigned char)val {
-    [self addPrimitiveArgument:[NSNumber numberWithUnsignedChar:val] withNSNumberValueSelector:@selector(unsignedCharValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentUnsignedChar:val]];
 }
 
 - (void)addDoubleArgument:(double)val {
-    [self addPrimitiveArgument:[NSNumber numberWithDouble:val] withNSNumberValueSelector:@selector(doubleValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentDouble:val]];
 }
 
 - (void)addFloatArgument:(float)val {
-    [self addPrimitiveArgument:[NSNumber numberWithFloat:val] withNSNumberValueSelector:@selector(floatValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentFloat:val]];
 }
 
 - (void)addIntArgument:(int)val {
-    [self addPrimitiveArgument:[NSNumber numberWithInt:val] withNSNumberValueSelector:@selector(intValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentInt:val]];
 }
 
 - (void)addUnsignedIntArgument:(unsigned int)val {
-    [self addPrimitiveArgument:[NSNumber numberWithUnsignedInt:val] withNSNumberValueSelector:@selector(unsignedIntValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentUnsignedInt:val]];
 }
 
 - (void)addLongArgument:(long)val {
-    [self addPrimitiveArgument:[NSNumber numberWithLong:val] withNSNumberValueSelector:@selector(longValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentLong:val]];
 }
 
 - (void)addUnsignedLongArgument:(unsigned long) val {
-    [self addPrimitiveArgument:[NSNumber numberWithUnsignedLong:val] withNSNumberValueSelector:@selector(unsignedLongValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentUnsignedLong:val]];
 }
 
 - (void)addLongLongArgument:(long long)val {
-    [self addPrimitiveArgument:[NSNumber numberWithLongLong:val] withNSNumberValueSelector:@selector(longLongValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentLongLong:val]];
 }
 
 - (void)addUnsignedLongLongArgument:(unsigned long long)val {
-    [self addPrimitiveArgument:[NSNumber numberWithUnsignedLongLong:val] withNSNumberValueSelector:@selector(unsignedLongLongValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentUnsignedLongLong:val]];
 }
 
 - (void)addShortArgument:(short)val {
-    [self addPrimitiveArgument:[NSNumber numberWithShort:val] withNSNumberValueSelector:@selector(shortValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentShort:val]];
 }
 
 - (void)addUnsignedShortArgument:(unsigned short)val {
-    [self addPrimitiveArgument:[NSNumber numberWithUnsignedShort:val] withNSNumberValueSelector:@selector(unsignedShortValue)];
+    [self addWrappedArgument:[ServiceRequest wrapArgumentUnsignedShort:val]];
 }
 
 
@@ -821,10 +808,16 @@ static NSTimeInterval requestTimeoutInterval;
     NSString* selectorString = [argDic objectForKey:@"nsNumberSelectorString"];
     SEL selector = NSSelectorFromString(selectorString);
     
-    
     NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[NSNumber instanceMethodSignatureForSelector:selector]];
     [inv setSelector:selector];
     [inv invokeWithTarget:val];
+    
+    NSLog(@"HERE");
+    
+    void* ret = malloc(8);
+    [inv getReturnValue:ret];
+    return ret;
+
     
     if ([selectorString isEqualToString:@"boolValue"]) {
         BOOL* ret = malloc(sizeof(BOOL));
@@ -919,99 +912,6 @@ static NSTimeInterval requestTimeoutInterval;
 /////////////
 /////////////
 
-
-
-// deprecated
-- (void)setArgumentsForInvocation:(NSInvocation*)inv {
-    int i;
-    for (i = 0; i < arguments.count; i++) {
-        NSDictionary* argDic = [arguments objectAtIndex:i];
-        //NSLog(@"hashcode1 %@", [argDic objectForKey:@"value"]);
-        if ([[argDic objectForKey:@"primitive"] boolValue]) {
-            [inv setArgument:[self argumentPrimitivePointerForIndex:i] atIndex:i+2];
-            //WARNING : memory leak : argument is copied by NSInvocation and should thus bee freed with free(), cannot here here do not know type of argument at this place.
-        } else {
-            id object = [argDic objectForKey:@"value"];
-            [inv setArgument:&object atIndex:i+2];
-        }
-    }
-}
-
-// deprecated
-- (void*)argumentPrimitivePointerForIndex:(NSUInteger)index {
-    NSDictionary* argDic = [arguments objectAtIndex:index];
-    if (![[argDic objectForKey:@"primitive"] boolValue]) {
-        @throw [NSException exceptionWithName:@"Argument is not primitive" reason:[NSString stringWithFormat:@"calling argumentPrimitivePointerForIndex:%d on not primitive argument", index] userInfo:nil];
-    }
-    
-    NSNumber* val = [argDic objectForKey:@"value"];
-    NSString* selectorString = [argDic objectForKey:@"nsNumberSelectorString"];
-    SEL selector = NSSelectorFromString(selectorString);
-    
-    
-    NSInvocation* inv = [NSInvocation invocationWithMethodSignature:[NSNumber instanceMethodSignatureForSelector:selector]];
-    [inv setSelector:selector];
-    [inv invokeWithTarget:val];
-    
-    if ([selectorString isEqualToString:@"boolValue"]) {
-        BOOL* ret = malloc(sizeof(BOOL));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"charValue"]) {
-        char* ret = malloc(sizeof(char));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedCharValue"]) {
-        unsigned char* ret = malloc(sizeof(unsigned char));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"doubleValue"]) {
-        double* ret = malloc(sizeof(double));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"floatValue"]) {
-        float* ret = malloc(sizeof(float));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"intValue"]) {
-        int* ret = malloc(sizeof(int));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedIntValue"]) {
-        unsigned int* ret = malloc(sizeof(unsigned int));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"longValue"]) {
-        long* ret = malloc(sizeof(long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedLongValue"]) {
-        unsigned long* ret = malloc(sizeof(unsigned long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"longLongValue"]) {
-        long long* ret = malloc(sizeof(long long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedLongLongValue"]) {
-        unsigned long long* ret = malloc(sizeof(unsigned long long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"shortValue"]) {
-        short* ret = malloc(sizeof(short));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedShortValue"]) {
-        unsigned short* ret = malloc(sizeof(unsigned short));
-        [inv getReturnValue:ret];
-        return ret;
-    } else {
-        @throw [NSException exceptionWithName:@"Internal : bad selector set" reason:@"Unsupported <type>Value NSNumber selector" userInfo:nil];
-    }
-    
-    void* error = NULL;
-    return error;
-}
 
 - (BOOL)isConcurrent {
     return NO;
