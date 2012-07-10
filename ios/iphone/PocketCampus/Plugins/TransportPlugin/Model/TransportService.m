@@ -12,8 +12,6 @@
 
 @implementation TransportService
 
-static NSTimeInterval kServiceRequestsTimeout = 25.0;
-
 static TransportService* instance = nil;
 
 static NSString* kFavoriteTransportStationsKey = @"favoriteTransportStations";
