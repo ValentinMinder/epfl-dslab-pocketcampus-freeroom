@@ -284,6 +284,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             welcomeTouchInfoInstructionsLabel.text = NSLocalizedStringFromTable(@"WelcomeTouchInfoInstructions", @"TransportPlugin", nil);
             welcomeTouchInfoInstructionsLabel.hidden = NO;
             connectionErrorLabel.hidden = YES;
+            [self updateTopBar];
             return; //everything is set
             break;
         case FavStationsStateNeedTwo:
@@ -332,6 +333,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             tableView.hidden = YES;
             welcomeTouchInfoInstructionsLabel.hidden = YES;
             connectionErrorLabel.hidden = NO;
+            [self updateTopBar];
             return; //error => all UI has been updated to reflect error. Return from update method
             break;
         case FavStationsStateUnset:
@@ -411,7 +413,9 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         connectionErrorLabel.hidden = YES;
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImpossibleLocateShort", @"TransportPlugin", nil) message:NSLocalizedStringFromTable(locationAlertMessage, @"TransportPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-        [alert release];   
+        [alert release];
+        [self updateTopBar];
+        return;
     }
     
     switch (schedulesState) {
@@ -445,6 +449,11 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
             break;
     }
     
+    [self updateTopBar];
+    
+}
+
+- (void)updateTopBar {
     [fromLabel sizeToFit];
     if (locationArrow.hidden) {
         fromLabel.frame = CGRectMake(15.0, 0.0, fromLabel.frame.size.width, 43.0);
@@ -463,7 +472,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     fromValueLabel.frame = CGRectMake(x, 0.0, width, 43.0);
     
     locationActivityIndicator.center = CGPointMake(fromLabel.frame.origin.x+fromLabel.frame.size.width+20.0, locationActivityIndicator.center.y);
-    
 }
 
 /* IBActions */

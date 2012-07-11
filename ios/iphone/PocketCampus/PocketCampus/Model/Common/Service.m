@@ -14,7 +14,9 @@
 
 #import "Reachability.h"
 
-static NSTimeInterval requestTimeoutInterval;
+static NSTimeInterval thriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout a request before the system API times out
+static NSTimeInterval requestTimeout;
+static NSTimeInterval connectivityCheckTimeout;
 
 @implementation Service
 
@@ -55,20 +57,21 @@ static NSTimeInterval requestTimeoutInterval;
         [client release];
         operationQueue = [[NSOperationQueue alloc] init];
         //[operationQueue setMaxConcurrentOperationCount:1];
-        requestTimeoutInterval = [(NSNumber*)[config objectForKey:@"REQUEST_TIMEOUT"] floatValue];
+        requestTimeout = [(NSNumber*)[config objectForKey:@"REQUEST_TIMEOUT"] floatValue];
+        connectivityCheckTimeout = [(NSNumber*)[config objectForKey:@"CONNECTIVITY_CHECK_TIMEOUT"] floatValue];
         semaphore = dispatch_semaphore_create(0);
         checkServerRequest = nil;
-        serverIsReachable = NO; //by default
+        serverIsReachable = NO; //NO by default, before the check
         serviceWillBeReleased = NO;
     }
     return self;
 }
 
 + (NSTimeInterval)requestTimeoutInterval {
-    return requestTimeoutInterval;
+    return requestTimeout;
 }
 
-- (BOOL)serverIsReachable:(NSTimeInterval)timeout {
+- (BOOL)serverIsReachable {
     if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
         return NO;
     }
@@ -76,7 +79,7 @@ static NSTimeInterval requestTimeoutInterval;
         if (checkServerRequest == nil) {
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-            checkServerRequest.timeOutSeconds = timeout;
+            checkServerRequest.timeOutSeconds = connectivityCheckTimeout;
             checkServerRequest.requestMethod = @"HEAD";
             checkServerRequest.delegate = self;
             [checkServerRequest startAsynchronous];
@@ -150,7 +153,7 @@ static NSTimeInterval requestTimeoutInterval;
 }
 
 - (id)thriftProtocolInstance {
-    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:requestTimeoutInterval];
+    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:thriftRequestTimeout];
     TBinaryProtocol* thriftProtocol_ = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
     [client release];
     return [thriftProtocol_ autorelease];
@@ -315,7 +318,7 @@ static NSTimeInterval requestTimeoutInterval;
             }
         }
         
-        if (self.service != nil && ![self.service serverIsReachable:[self timeoutTime]]) {
+        if (self.service != nil && ![self.service serverIsReachable]) {
             [self didTimeout];
             return;
         }

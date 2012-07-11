@@ -100,7 +100,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     [self.navigationItem setLeftBarButtonItem:editButton animated:animated];
     [editButton release];
     
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"OK" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
     [self.navigationItem setRightBarButtonItem:doneButton animated:animated];
     [doneButton release];
 }

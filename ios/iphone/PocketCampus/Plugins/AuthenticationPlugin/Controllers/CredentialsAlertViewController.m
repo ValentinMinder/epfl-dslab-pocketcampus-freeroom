@@ -8,6 +8,8 @@
 
 #import "CredentialsAlertViewController.h"
 
+static NSInteger kSavePasswordSwitchTag = 5;
+
 @implementation CredentialsAlertViewController
 
 @synthesize delegate;
@@ -60,6 +62,33 @@
     [[alertView textFieldAtIndex:0] setPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
     [[alertView textFieldAtIndex:1] setPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
     
+    CGFloat offset = 0.0;
+    
+    if (![alertMessage isEqualToString:@""]) {
+        offset = 20.0;
+    }
+    
+    UILabel* keepPasswordLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0, 124.0+offset, 170.0, 25.0)];
+    keepPasswordLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
+    keepPasswordLabel.textColor = [UIColor whiteColor];
+    keepPasswordLabel.backgroundColor = [UIColor clearColor];
+    keepPasswordLabel.adjustsFontSizeToFitWidth = YES;
+    keepPasswordLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    
+    [alertView addSubview:keepPasswordLabel];
+    [keepPasswordLabel release];
+    
+    UISwitch* keepPasswordSwitch = [[UISwitch alloc] initWithFrame:CGRectNull];
+    keepPasswordSwitch.center = CGPointMake(233.0, 138.0+offset);
+    keepPasswordSwitch.on = YES;
+    keepPasswordSwitch.tag = kSavePasswordSwitchTag;
+    if ([keepPasswordSwitch respondsToSelector:@selector(setOnTintColor:)]) { //only available in iOS 5 and later
+        keepPasswordSwitch.onTintColor = [UIColor colorWithRed:0.000000 green:0.490196 blue:0.639216 alpha:1.0];
+    }
+    
+    [alertView addSubview:keepPasswordSwitch];
+    [keepPasswordSwitch release];
+    
     BOOL hasPrefilledUsername = NO;
     if (prefillUsername) {
         NSString* lastUsername = [AuthenticationService lastUsedUsernameForService:typeOfService_];
@@ -69,6 +98,16 @@
         }
     }
     [alertView show];
+    
+    CGFloat offset2 = 40.0;
+    
+    for (UIView* view in [alertView subviews]) {
+        if ([view isKindOfClass:[UIButton class]]) { //make place for the "keep password" switch
+            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y+offset2, view.frame.size.width, view.frame.size.height);
+        }
+    }
+    
+    alertView.frame = CGRectMake(alertView.frame.origin.x, alertView.frame.origin.y, alertView.frame.size.width, alertView.frame.size.height+offset2+5.0);
     if (hasPrefilledUsername) {
         [[alertView textFieldAtIndex:1] becomeFirstResponder];
     }
@@ -92,6 +131,11 @@
             [username release];
             username = [[[alertView textFieldAtIndex:0] text] retain];
             NSString* password = [[alertView textFieldAtIndex:1] text];
+            
+            BOOL savePassword = [(UISwitch*)[alertView viewWithTag:kSavePasswordSwitchTag] isOn];
+            
+            NSLog(@"savePassword was checked : %d", savePassword);
+            
             [authenticationService loginToTequilaWithUser:username password:password delegate:self];
             break;
         }

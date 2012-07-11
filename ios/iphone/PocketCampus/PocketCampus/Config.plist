@@ -4,6 +4,8 @@
 <dict>
 	<key>REQUEST_TIMEOUT</key>
 	<integer>15</integer>
+	<key>CONNECTIVITY_CHECK_TIMEOUT</key>
+	<string>10</string>
 	<key>DEV_MODE</key>
 	<false/>
 	<key>DEV_SERVER_ADDRESS</key>

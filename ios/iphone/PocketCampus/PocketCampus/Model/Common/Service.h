@@ -49,7 +49,7 @@
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
 - (id)thriftProtocolInstance;
 
-- (BOOL)serverIsReachable:(NSTimeInterval)timeout;
+- (BOOL)serverIsReachable;
 - (NSString*) serviceName;
 
 @end

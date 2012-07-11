@@ -10,6 +10,6 @@
 
 @interface PCUtils : NSObject
 
-+(BOOL)isRetinaDevice;
++ (BOOL)isRetinaDevice;
 
 @end

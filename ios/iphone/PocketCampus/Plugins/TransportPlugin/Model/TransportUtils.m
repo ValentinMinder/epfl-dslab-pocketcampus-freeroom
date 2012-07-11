@@ -346,11 +346,17 @@
     NSError* error = NULL;
     NSRange currentNameRange = NSMakeRange(0, [currentName length]);
     
+    /* From here : very repeated, ugly code. But not refractored for performances purposes */
+    
+    NSRegularExpression* regex;
+    NSTextCheckingResult* result;
+    NSRange range;
+    
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^BBus(\\d*)" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^BBus(\\d*)" options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }
@@ -358,10 +364,10 @@
     }
     
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^S(S\\d) " options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^S(S\\d) " options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }
@@ -369,10 +375,10 @@
     }
     
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^R(IR)\\d*" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^R(IR)\\d*" options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }
@@ -380,10 +386,10 @@
     }
     
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^R(RE)\\d*" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^R(RE)\\d*" options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }
@@ -391,10 +397,10 @@
     }
     
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^(ICN)*" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^(ICN)*" options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }
@@ -402,10 +408,10 @@
     }
     
     {
-        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"^I(IC)*" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSTextCheckingResult* result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"^I(IC)*" options:NSRegularExpressionCaseInsensitive error:&error];
+        result = [regex firstMatchInString:currentName options:0 range:currentNameRange];
         if (result.numberOfRanges > 1) {
-            NSRange range = [result rangeAtIndex:1];
+            range = [result rangeAtIndex:1];
             if (range.length != 0) {
                 return [currentName substringWithRange:range];
             }

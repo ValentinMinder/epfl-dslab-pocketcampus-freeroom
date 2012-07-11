@@ -211,9 +211,7 @@
         UIImageView* arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DestinationTransportArrow"]];
         arrowImageView.center = CGPointMake(16.0, 30.0);
         
-        CGFloat fromStationLabelX = arrowImageView.frame.size.width+6.0;
-        
-        fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(fromStationLabelX, arrowImageView.frame.origin.y-3.0, 200.0, 30.0)];
+        fromStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0, 15.0, 200.0, 30.0)];
         fromStationLabel.text = [TransportUtils nicerName:destinationStation.name];
         fromStationLabel.font = [UIFont boldSystemFontOfSize:18];
         fromStationLabel.adjustsFontSizeToFitWidth = YES;
