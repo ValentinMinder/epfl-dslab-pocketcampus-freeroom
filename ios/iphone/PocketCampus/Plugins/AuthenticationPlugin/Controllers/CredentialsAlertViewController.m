@@ -8,6 +8,8 @@
 
 #import "CredentialsAlertViewController.h"
 
+#import "STUtils.h"
+
 static NSInteger kSavePasswordSwitchTag = 5;
 
 @implementation CredentialsAlertViewController
@@ -134,7 +136,31 @@ static NSInteger kSavePasswordSwitchTag = 5;
             
             BOOL savePassword = [(UISwitch*)[alertView viewWithTag:kSavePasswordSwitchTag] isOn];
             
-            NSLog(@"savePassword was checked : %d", savePassword);
+            if (savePassword) {
+                
+                /* EXAMPLE of use */
+                
+                NSError* error = nil;
+                
+                NSString* password = [STKeychain getPasswordForUsername:username andServiceName:@"Gaspar" error:&error];
+                
+                if (error) {
+                    NSLog(@"Error while retrieving password");  
+                } else if (!password) {
+                    NSLog(@"No previously saved password");
+                } else {
+                    NSLog(@"Retrieved password : %@", password);
+                }
+                
+                [STKeychain storeUsername:username andPassword:password forServiceName:@"Gaspar" updateExisting:YES error:&error];
+                if (error) {
+                    NSLog(@"Error while storing password");
+                } else {
+                    NSLog(@"Password saved");
+                }
+                
+                /* END */
+            }
             
             [authenticationService loginToTequilaWithUser:username password:password delegate:self];
             break;

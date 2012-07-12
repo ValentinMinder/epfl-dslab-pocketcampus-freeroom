@@ -815,67 +815,10 @@ static NSTimeInterval connectivityCheckTimeout;
     [inv setSelector:selector];
     [inv invokeWithTarget:val];
     
-    NSLog(@"HERE");
-    
     void* ret = malloc(8);
     [inv getReturnValue:ret];
     return ret;
 
-    
-    if ([selectorString isEqualToString:@"boolValue"]) {
-        BOOL* ret = malloc(sizeof(BOOL));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"charValue"]) {
-        char* ret = malloc(sizeof(char));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedCharValue"]) {
-        unsigned char* ret = malloc(sizeof(unsigned char));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"doubleValue"]) {
-        double* ret = malloc(sizeof(double));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"floatValue"]) {
-        float* ret = malloc(sizeof(float));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"intValue"]) {
-        int* ret = malloc(sizeof(int));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedIntValue"]) {
-        unsigned int* ret = malloc(sizeof(unsigned int));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"longValue"]) {
-        long* ret = malloc(sizeof(long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedLongValue"]) {
-        unsigned long* ret = malloc(sizeof(unsigned long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"longLongValue"]) {
-        long long* ret = malloc(sizeof(long long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedLongLongValue"]) {
-        unsigned long long* ret = malloc(sizeof(unsigned long long));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"shortValue"]) {
-        short* ret = malloc(sizeof(short));
-        [inv getReturnValue:ret];
-        return ret;
-    } else if ([selectorString isEqualToString:@"unsignedShortValue"]) {
-        unsigned short* ret = malloc(sizeof(unsigned short));
-        [inv getReturnValue:ret];
-        return ret;
-    }
-    return NULL;
 }
 
 - (void)computeHashCode {
@@ -911,11 +854,7 @@ static NSTimeInterval connectivityCheckTimeout;
     }
 }
 
-
-/////////////
-/////////////
-
-
+//override
 - (BOOL)isConcurrent {
     return NO;
 }
