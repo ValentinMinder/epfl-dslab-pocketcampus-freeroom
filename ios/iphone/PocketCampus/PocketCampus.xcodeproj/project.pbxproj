@@ -11,10 +11,13 @@
 		3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 3203ECD31503C01E004C2A13 /* LoadingIndicator.png */; };
 		32058AC31572AA1000F4D361 /* HelpBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32058AC11572AA1000F4D361 /* HelpBarButton.png */; };
 		32058AC41572AA1000F4D361 /* HelpBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32058AC21572AA1000F4D361 /* HelpBarButton@2x.png */; };
-		32058AC81572ACC300F4D361 /* SettingsBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32058AC61572ACC300F4D361 /* SettingsBarButton.png */; };
-		32058AC91572ACC300F4D361 /* SettingsBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32058AC71572ACC300F4D361 /* SettingsBarButton@2x.png */; };
 		32058ACC1572B44D00F4D361 /* TransportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */; };
 		32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */; };
+		320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B115B02C240057B15C /* GlobalSettingsViewController.m */; };
+		320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 320A05B515B02D5F0057B15C /* HomeIcon.m */; };
+		320A05BA15B02D5F0057B15C /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320A05B615B02D5F0057B15C /* HomeView.xib */; };
+		320A05BB15B02D5F0057B15C /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320A05B715B02D5F0057B15C /* MainView.xib */; };
+		320A05BC15B02D5F0057B15C /* SplashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320A05B815B02D5F0057B15C /* SplashView.xib */; };
 		320AAC7514FD481E00F71CD7 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 320AAC7414FD481E00F71CD7 /* Config.plist */; };
 		32102B6615050B9D0076537E /* food.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6515050B9D0076537E /* food.m */; };
 		32102B6915050BB50076537E /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6815050BB50076537E /* common.m */; };
@@ -142,7 +145,6 @@
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
-		32BCACDE15657FED008415A1 /* SplashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDD15657FED008415A1 /* SplashView.xib */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
 		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
@@ -196,8 +198,6 @@
 		32E1FDB815474F7E00B1B630 /* FloorUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB415474F7E00B1B630 /* FloorUp@2x.png */; };
 		32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; };
 		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; };
-		32EF43881501260100899B86 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32EF43871501260100899B86 /* HomeView.xib */; };
-		32EF438B1501272B00899B86 /* HomeIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EF438A1501272B00899B86 /* HomeIcon.m */; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; };
 		32FAC0F61500F40700925180 /* DirectorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E51500F40700925180 /* DirectorySearchViewController.m */; };
 		32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32FAC0E81500F40700925180 /* DirectoryPlugin.strings */; };
@@ -215,11 +215,16 @@
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
 		32058AC11572AA1000F4D361 /* HelpBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelpBarButton.png; sourceTree = "<group>"; };
 		32058AC21572AA1000F4D361 /* HelpBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpBarButton@2x.png"; sourceTree = "<group>"; };
-		32058AC61572ACC300F4D361 /* SettingsBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBarButton.png; sourceTree = "<group>"; };
-		32058AC71572ACC300F4D361 /* SettingsBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton@2x.png"; sourceTree = "<group>"; };
 		32058ACA1572B44D00F4D361 /* TransportSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportSettingsViewController.h; sourceTree = "<group>"; };
 		32058ACB1572B44D00F4D361 /* TransportSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportSettingsViewController.m; sourceTree = "<group>"; };
 		32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransportSettingsView.xib; sourceTree = "<group>"; };
+		320A05B015B02C240057B15C /* GlobalSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettingsViewController.h; sourceTree = "<group>"; };
+		320A05B115B02C240057B15C /* GlobalSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettingsViewController.m; sourceTree = "<group>"; };
+		320A05B415B02D5F0057B15C /* HomeIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeIcon.h; sourceTree = "<group>"; };
+		320A05B515B02D5F0057B15C /* HomeIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeIcon.m; sourceTree = "<group>"; };
+		320A05B615B02D5F0057B15C /* HomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
+		320A05B715B02D5F0057B15C /* MainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
+		320A05B815B02D5F0057B15C /* SplashView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashView.xib; sourceTree = "<group>"; };
 		320AAC7414FD481E00F71CD7 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		32102B6415050B9D0076537E /* food.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = food.h; sourceTree = "<group>"; };
 		32102B6515050B9D0076537E /* food.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = food.m; sourceTree = "<group>"; };
@@ -426,7 +431,6 @@
 		32B8927F15458BAB0058E472 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		32B8928115458BD70058E472 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
-		32BCACDD15657FED008415A1 /* SplashView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashView.xib; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
 		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
@@ -523,9 +527,6 @@
 		32E280A7156E583A00B74825 /* DirectoryServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServiceTests.h; sourceTree = "<group>"; };
 		32E280A8156E583A00B74825 /* DirectoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServiceTests.m; sourceTree = "<group>"; };
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		32EF43871501260100899B86 /* HomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
-		32EF43891501272B00899B86 /* HomeIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeIcon.h; sourceTree = "<group>"; };
-		32EF438A1501272B00899B86 /* HomeIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeIcon.m; sourceTree = "<group>"; };
 		32FAC0E21500F40700925180 /* DirectoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryController.h; sourceTree = "<group>"; };
 		32FAC0E31500F40700925180 /* DirectoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryController.m; sourceTree = "<group>"; };
 		32FAC0E41500F40700925180 /* DirectorySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectorySearchViewController.h; sourceTree = "<group>"; };
@@ -570,6 +571,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		320A05B315B02D5F0057B15C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				320A05B415B02D5F0057B15C /* HomeIcon.h */,
+				320A05B515B02D5F0057B15C /* HomeIcon.m */,
+				320A05B615B02D5F0057B15C /* HomeView.xib */,
+				320A05B715B02D5F0057B15C /* MainView.xib */,
+				320A05B815B02D5F0057B15C /* SplashView.xib */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
@@ -933,6 +946,8 @@
 				32FAC1051500FE9F00925180 /* MainController.m */,
 				328869BB14FE6EBA00CC97DB /* HomeViewController.h */,
 				328869BC14FE6EBA00CC97DB /* HomeViewController.m */,
+				320A05B015B02C240057B15C /* GlobalSettingsViewController.h */,
+				320A05B115B02C240057B15C /* GlobalSettingsViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -949,8 +964,9 @@
 		328869A714FE5AF300CC97DB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				32C739F7150158B900455CF0 /* Images */,
 				328869A814FE5AF400CC97DB /* Common */,
-				328869A914FE5AF400CC97DB /* Home */,
+				320A05B315B02D5F0057B15C /* Main */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -958,7 +974,6 @@
 		328869A814FE5AF400CC97DB /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				32C739F7150158B900455CF0 /* Images */,
 				328B9EFB150BA23D00B50024 /* PCValues.h */,
 				328B9EFC150BA23D00B50024 /* PCValues.m */,
 				3247CAF615135FD800105A71 /* PCTableViewSectionHeader.h */,
@@ -967,17 +982,6 @@
 				32311CF015A4A3E100E21C50 /* PCUtils.m */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		328869A914FE5AF400CC97DB /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				32BCACDD15657FED008415A1 /* SplashView.xib */,
-				32EF43871501260100899B86 /* HomeView.xib */,
-				32EF43891501272B00899B86 /* HomeIcon.h */,
-				32EF438A1501272B00899B86 /* HomeIcon.m */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		32A6E25514FED6F10051736E /* Common */ = {
@@ -1107,12 +1111,11 @@
 			children = (
 				326B924915022D6700DB4AEE /* HomeNavbar.png */,
 				326B924615022C8A00DB4AEE /* HomeNavbar@2x.png */,
-				32058AC61572ACC300F4D361 /* SettingsBarButton.png */,
-				32058AC71572ACC300F4D361 /* SettingsBarButton@2x.png */,
 				32058AC11572AA1000F4D361 /* HelpBarButton.png */,
 				32058AC21572AA1000F4D361 /* HelpBarButton@2x.png */,
 			);
-			path = Images;
+			name = Images;
+			path = Common/Images;
 			sourceTree = "<group>";
 		};
 		32CCB4B6155520FE00220282 /* AuthenticationPlugin */ = {
@@ -1701,7 +1704,6 @@
 				32704C7C15002F67002BCB75 /* Plugins.plist in Resources */,
 				32FAC0F81500F40700925180 /* DirectoryPlugin.strings in Resources */,
 				32FAC0FD1500F40700925180 /* DirectorySearchView.xib in Resources */,
-				32EF43881501260100899B86 /* HomeView.xib in Resources */,
 				326B924815022C8A00DB4AEE /* HomeNavbar@2x.png in Resources */,
 				326B924A15022D6700DB4AEE /* HomeNavbar.png in Resources */,
 				3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */,
@@ -1771,17 +1773,17 @@
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
 				32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */,
-				32BCACDE15657FED008415A1 /* SplashView.xib in Resources */,
 				3257C2091570F90100E626A4 /* TransportHelpView.xib in Resources */,
 				32058AC31572AA1000F4D361 /* HelpBarButton.png in Resources */,
 				32058AC41572AA1000F4D361 /* HelpBarButton@2x.png in Resources */,
-				32058AC81572ACC300F4D361 /* SettingsBarButton.png in Resources */,
-				32058AC91572ACC300F4D361 /* SettingsBarButton@2x.png in Resources */,
 				32058ACE1572B4B800F4D361 /* TransportSettingsView.xib in Resources */,
 				3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */,
 				3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */,
 				32D97C8A15AF160D004384A5 /* README.md in Resources */,
 				32D97C8B15AF160D004384A5 /* entities.strings in Resources */,
+				320A05BA15B02D5F0057B15C /* HomeView.xib in Resources */,
+				320A05BB15B02D5F0057B15C /* MainView.xib in Resources */,
+				320A05BC15B02D5F0057B15C /* SplashView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1814,7 +1816,6 @@
 				32FAC0F91500F40700925180 /* DirectoryService.m in Sources */,
 				32FAC0FA1500F40700925180 /* directory.m in Sources */,
 				32FAC1061500FE9F00925180 /* MainController.m in Sources */,
-				32EF438B1501272B00899B86 /* HomeIcon.m in Sources */,
 				32102B6615050B9D0076537E /* food.m in Sources */,
 				32102B6915050BB50076537E /* common.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
@@ -1895,6 +1896,8 @@
 				32D97C8915AF160D004384A5 /* STRandomization.m in Sources */,
 				32D97C8C15AF160D004384A5 /* STKeychain.m in Sources */,
 				32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */,
+				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
+				320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

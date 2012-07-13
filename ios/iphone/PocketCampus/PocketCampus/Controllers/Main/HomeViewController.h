@@ -12,7 +12,6 @@
 
 @interface HomeViewController : UIViewController {
     @private MainController* mainController;
-    IBOutlet UIToolbar* toolbar;
 }
 
 - (id)initWithMainController:(MainController*)mainController_;

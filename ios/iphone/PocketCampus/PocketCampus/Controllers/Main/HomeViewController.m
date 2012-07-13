@@ -30,11 +30,6 @@
     UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"HomeNavbar"] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [backButton release];
-    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsToolbar"] style:UIBarButtonItemStylePlain target:nil action:nil];
-    toolbar.items = [NSArray arrayWithObject:settingsButton];
-    [settingsButton release];
-    toolbar.tintColor = [UIColor colorWithRed:0.26 green:0.305882 blue:0.321568  alpha:1.0];
-    toolbar.hidden = YES;
 
     [self initHomeIcons];
 	
