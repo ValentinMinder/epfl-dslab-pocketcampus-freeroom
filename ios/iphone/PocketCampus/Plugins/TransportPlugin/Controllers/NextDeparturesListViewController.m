@@ -494,29 +494,32 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (IBAction)presentHelpViewController:(id)sender {
-    TransportHelpViewController* modalViewController = [[TransportHelpViewController alloc] init];
+    TransportHelpViewController* viewController = [[TransportHelpViewController alloc] init];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
-        [self presentViewController:modalViewController animated:YES completion:NULL];
+        [self presentViewController:navController animated:YES completion:NULL];
     } else {
-        [self.navigationController presentModalViewController:modalViewController animated:YES];
+        [self.navigationController presentModalViewController:navController animated:YES];
     }
-    [modalViewController release];
+    [viewController release];
+    [navController release];
 }
 
 - (IBAction)presentSettingsViewController:(id)sender {
     TransportSettingsViewController* viewController = [[TransportSettingsViewController alloc] init];
     viewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    UINavigationController* modalNavController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    modalNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
-        [self presentViewController:modalNavController animated:YES completion:NULL];
+        [self presentViewController:navController animated:YES completion:NULL];
     } else {
-        [self.navigationController presentModalViewController:modalNavController animated:YES];
+        [self.navigationController presentModalViewController:navController animated:YES];
     }
     
     [viewController release];
-    [modalNavController release];
+    [navController release];
     needToRefresh = YES;
 }
 
@@ -557,6 +560,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     
     if (bestResultSetting == nil || [bestResultSetting boolValue]) {
         NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:trip];
+        redundantConnections = [TransportUtils connectionsWithoutAlreadyLeft:redundantConnections];
         return [[[NextDeparturesCell alloc] initWithQueryTripResult:trip redundantConnections:redundantConnections] autorelease];
     }
     

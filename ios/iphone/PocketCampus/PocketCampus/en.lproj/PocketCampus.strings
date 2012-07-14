@@ -15,3 +15,8 @@
 "Help" = "Help";
 "Settings" = "Settings";
 "Done" = "Done";
+"GasparAccount" = "Gaspar account";
+"Login" = "Login";
+"Logout" = "Logout";
+"LoggedInExplanationLong" = "Your credentials are stored securely\nin the iOS keychain.\n\n";
+"About" = "About";

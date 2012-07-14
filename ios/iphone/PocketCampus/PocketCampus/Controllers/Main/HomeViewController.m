@@ -9,6 +9,9 @@
 #import "HomeViewController.h"
 #import "HomeIcon.h"
 #import "PluginController.h"
+#import "PCValues.h"
+
+#import "GlobalSettingsViewController.h"
 
 @implementation HomeViewController
 
@@ -30,25 +33,14 @@
     UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"HomeNavbar"] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [backButton release];
-
     [self initHomeIcons];
-	
 }
-
-- (void)viewWillAppear:(BOOL)animated {
-    }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-
-/*- (void)viewDidAppear:(BOOL)animated {
-    UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
-    [self setToolbarItems:[NSArray arrayWithObject:settingsButton] animated:YES];
-}*/
 
 - (void)iconPressedWithIndex:(NSUInteger)index {
     Class pluginClass = NSClassFromString([mainController pluginControllerNameForIndex:index]);
@@ -69,6 +61,19 @@
         [self.view addSubview:icon];
         [icon release];
     }    
+}
+
+- (IBAction)settingsButtonPressed {
+    GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
+    UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    settingsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
+        [self presentViewController:settingsNavController animated:YES completion:NULL];
+    } else {
+        [self.navigationController presentModalViewController:settingsNavController animated:YES];
+    }
+    [settingsViewController release];
+    [settingsNavController release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

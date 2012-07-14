@@ -9,12 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface TransportHelpViewController : UIViewController {
-    UINavigationBar* navBar;
-    UITextView* textView;
+    UIWebView* webView;
     
 }
 
-@property (nonatomic, assign) IBOutlet UINavigationBar* navBar;
-@property (nonatomic, assign) IBOutlet UITextView* textView;
+@property (nonatomic, assign) IBOutlet UIWebView* webView;
 
 @end

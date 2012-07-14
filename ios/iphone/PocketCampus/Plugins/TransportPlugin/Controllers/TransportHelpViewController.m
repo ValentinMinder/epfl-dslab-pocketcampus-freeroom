@@ -12,7 +12,7 @@
 
 @implementation TransportHelpViewController
 
-@synthesize navBar, textView;
+@synthesize webView;
 
 - (id)init
 {
@@ -26,7 +26,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	navBar.topItem.title = NSLocalizedStringFromTable(@"Help", @"PocketCampus", nil);
+	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
+    self.view.backgroundColor = [PCValues backgroundColor1];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissViewController)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+    [doneButton release];
+    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"help" ofType:@"html"];
+    NSError* error = nil;
+    NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+    if (!error) {
+        [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
+    }
 }
 
 - (void)viewDidUnload
@@ -42,7 +52,7 @@
 
 /* IBActions */
 
-- (IBAction)dismissViewController:(id)sender {
+- (IBAction)dismissViewController {
     if ([self.presentingViewController respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) { // >= iOS 5.0
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     } else {

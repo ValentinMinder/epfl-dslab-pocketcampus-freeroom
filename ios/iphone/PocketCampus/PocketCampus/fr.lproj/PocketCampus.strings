@@ -15,3 +15,8 @@
 "Help" = "Aide";
 "Settings" = "Réglages";
 "Done" = "OK";
+"GasparAccount" = "Compte Gaspar";
+"Login" = "Connexion";
+"Logout" = "Déconnexion";
+"LoggedInExplanationLong" = "Vos identifiants sont stockés de manière sécurisée dans le trousseau iOS.\n\n";
+"About" = "À propos";

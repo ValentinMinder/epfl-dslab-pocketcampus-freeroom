@@ -86,15 +86,11 @@
             for (int i = 0; i<redundantConnections.count && i < 3; i++) {
                 TransportConnection* connection = [redundantConnections objectAtIndex:i];
                 timesString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
-                //timesString = [TransportUtils hourMinutesStringForTimestamp:(connection.departureTime)/1000.0];
-                //timesString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:(connection.departureTime)/1000.0];
                 if ([timesString isEqualToString:@"Now"]) {
-                    //if (i == 0) { //show bus once only
-                        UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
-                        busImageView.center = CGPointMake(40.0+(i*(70.0)), 43.0);
-                        [self.contentView addSubview:busImageView];
-                        [busImageView release];
-                    //}
+                    UIImageView* busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BusTransport"]];
+                    busImageView.center = CGPointMake(40.0+(i*(70.0)), 43.0);
+                    [self.contentView addSubview:busImageView];
+                    [busImageView release];
                 } else {
                     UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0+(i*(timeReqSize.width+25.0)), 33.0, timeReqSize.width, 20.0)];
                     //timeLabel.backgroundColor = [UIColor grayColor];
@@ -135,8 +131,10 @@
             timeFont = [UIFont systemFontOfSize:17.0];
             timeReqSize = [@"00:00 (M1)" sizeWithFont:timeFont];
             
+            NSArray* connections = [TransportUtils connectionsWithoutAlreadyLeft:trip.connections];
+            
             for (int i = 0; i<trip.connections.count && i < 3; i++) {
-                TransportTrip* transportTrip = [trip.connections objectAtIndex:i]; 
+                TransportTrip* transportTrip = [connections objectAtIndex:i]; 
                 
                 TransportConnection* firstConnection;
                 

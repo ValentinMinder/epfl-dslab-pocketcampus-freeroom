@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GlobalSettingsViewController : UIViewController
+@interface GlobalSettingsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
+    UITableView* tableView;
+}
+
+@property (nonatomic, assign) IBOutlet UITableView* tableView;
 
 @end

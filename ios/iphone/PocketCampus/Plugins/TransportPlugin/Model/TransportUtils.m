@@ -33,7 +33,13 @@
     NSDate* nowDate = [NSDate date];
     NSTimeInterval seconds = timestamp - [nowDate timeIntervalSince1970];
     if (seconds < 0.0) {
-        seconds = 0.0;
+        NSLog(@"seconds < 0.0 : %lf", seconds);
+        if (seconds > -60.0) { //might still consider that it (train, bus, ...) is not left yet
+            return @"Now";
+        } else {
+            NSLog(@"(left) seconds : %lf", seconds);
+            return @"Left"; //already left, should not show this result
+        }
     }
     double minutesLeft = floor((seconds/60.0)+0.5);
     if (minutesLeft == 0.0) {
@@ -47,6 +53,17 @@
     }
     
     return [NSString stringWithFormat:@"%2.0lf'", minutesLeft];
+}
+
++ (NSArray*)connectionsWithoutAlreadyLeft:(NSArray*)connections {
+    NSMutableArray* purgedConnections = [NSMutableArray arrayWithCapacity:connections.count]; //often, no connection to remove
+    for (TransportConnection* connection in connections) {
+        NSString* timeString = [self  automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+        if (![timeString isEqualToString:@"Left"]) {
+            [purgedConnections addObject:connection];
+        }
+    }
+    return purgedConnections;
 }
 
 + (NSString*)automaticTimeStringForTimestamp:(NSTimeInterval)timestamp maxIntervalForMinutesLeftString:(NSTimeInterval)maxIntervalMinutes {
