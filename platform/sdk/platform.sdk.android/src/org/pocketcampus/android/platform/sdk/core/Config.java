@@ -28,6 +28,9 @@ public class Config {
 	/** Server port. */
 	public static int SERVER_PORT = 9090;
 	
+	/** Use SSL. */
+	public static int USE_SSL = 0;
+	
 	/** Level of information reported by the logger, a lower number mean more. */
 	// XXX not used for now
 	public final static int LOG_LEVEL = Log.DEBUG;
@@ -58,12 +61,15 @@ public class Config {
 							SERVER_IP = param[1];
 						if("SERVER_PORT".equals(param[0]))
 							SERVER_PORT = Integer.parseInt(param[1]);
+						if("USE_SSL".equals(param[0]))
+							USE_SSL = Integer.parseInt(param[1]);
 					}
 				}
 			} else {
 				FileWriter fw = new FileWriter(configFile, false);
 				fw.write("SERVER_IP=" + SERVER_IP + "\n");
 				fw.write("SERVER_PORT=" + SERVER_PORT + "\n");
+				fw.write("USE_SSL=" + USE_SSL + "\n");
 				fw.close();
 			}
 		} catch (Exception e) {

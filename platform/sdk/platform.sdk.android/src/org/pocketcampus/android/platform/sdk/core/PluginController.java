@@ -31,11 +31,12 @@ public abstract class PluginController extends Service {
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
 		TServiceClient client = null;
-		String url = "http://" + Config.SERVER_IP + ":" + Config.SERVER_PORT + "/" + Config.VERSION
-				+ "/" + pluginName;
+		String url = (Config.USE_SSL == 0 ? "http://" : "https://") + Config.SERVER_IP + ":"
+				+ Config.SERVER_PORT + "/" + Config.VERSION + "/" + pluginName;
 
+		System.out.println(url);
 		try {
-			HttpClient httpInitialClient = new DefaultHttpClient();
+			HttpClient httpInitialClient = getThreadSafeClient();
 
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
 			httpClient.setConnectTimeout(Config.HTTP_CONNECT_TIMEOUT);
