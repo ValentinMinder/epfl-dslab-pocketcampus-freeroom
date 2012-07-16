@@ -15,9 +15,281 @@
 
 #import "authentication.h"
 
+@implementation TequilaSession
+
+- (id) initWithTequilaCookie: (NSString *) tequilaCookie
+{
+  self = [super init];
+  __tequilaCookie = [tequilaCookie retain];
+  __tequilaCookie_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"tequilaCookie"])
+  {
+    __tequilaCookie = [[decoder decodeObjectForKey: @"tequilaCookie"] retain];
+    __tequilaCookie_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__tequilaCookie_isset)
+  {
+    [encoder encodeObject: __tequilaCookie forKey: @"tequilaCookie"];
+  }
+}
+
+- (void) dealloc
+{
+  [__tequilaCookie release];
+  [super dealloc];
+}
+
+- (NSString *) tequilaCookie {
+  return [[__tequilaCookie retain] autorelease];
+}
+
+- (void) setTequilaCookie: (NSString *) tequilaCookie {
+  [tequilaCookie retain];
+  [__tequilaCookie release];
+  __tequilaCookie = tequilaCookie;
+  __tequilaCookie_isset = YES;
+}
+
+- (BOOL) tequilaCookieIsSet {
+  return __tequilaCookie_isset;
+}
+
+- (void) unsetTequilaCookie {
+  [__tequilaCookie release];
+  __tequilaCookie = nil;
+  __tequilaCookie_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setTequilaCookie: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"TequilaSession"];
+  if (__tequilaCookie_isset) {
+    if (__tequilaCookie != nil) {
+      [outProtocol writeFieldBeginWithName: @"tequilaCookie" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __tequilaCookie];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"TequilaSession("];
+  [ms appendString: @"tequilaCookie:"];
+  [ms appendFormat: @"\"%@\"", __tequilaCookie];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation TequilaToken
+
+- (id) initWithITequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie
+{
+  self = [super init];
+  __iTequilaKey = [iTequilaKey retain];
+  __iTequilaKey_isset = YES;
+  __loginCookie = [loginCookie retain];
+  __loginCookie_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iTequilaKey"])
+  {
+    __iTequilaKey = [[decoder decodeObjectForKey: @"iTequilaKey"] retain];
+    __iTequilaKey_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"loginCookie"])
+  {
+    __loginCookie = [[decoder decodeObjectForKey: @"loginCookie"] retain];
+    __loginCookie_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iTequilaKey_isset)
+  {
+    [encoder encodeObject: __iTequilaKey forKey: @"iTequilaKey"];
+  }
+  if (__loginCookie_isset)
+  {
+    [encoder encodeObject: __loginCookie forKey: @"loginCookie"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iTequilaKey release];
+  [__loginCookie release];
+  [super dealloc];
+}
+
+- (NSString *) iTequilaKey {
+  return [[__iTequilaKey retain] autorelease];
+}
+
+- (void) setITequilaKey: (NSString *) iTequilaKey {
+  [iTequilaKey retain];
+  [__iTequilaKey release];
+  __iTequilaKey = iTequilaKey;
+  __iTequilaKey_isset = YES;
+}
+
+- (BOOL) iTequilaKeyIsSet {
+  return __iTequilaKey_isset;
+}
+
+- (void) unsetITequilaKey {
+  [__iTequilaKey release];
+  __iTequilaKey = nil;
+  __iTequilaKey_isset = NO;
+}
+
+- (NSString *) loginCookie {
+  return [[__loginCookie retain] autorelease];
+}
+
+- (void) setLoginCookie: (NSString *) loginCookie {
+  [loginCookie retain];
+  [__loginCookie release];
+  __loginCookie = loginCookie;
+  __loginCookie_isset = YES;
+}
+
+- (BOOL) loginCookieIsSet {
+  return __loginCookie_isset;
+}
+
+- (void) unsetLoginCookie {
+  [__loginCookie release];
+  __loginCookie = nil;
+  __loginCookie_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setITequilaKey: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setLoginCookie: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"TequilaToken"];
+  if (__iTequilaKey_isset) {
+    if (__iTequilaKey != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTequilaKey" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __iTequilaKey];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__loginCookie_isset) {
+    if (__loginCookie != nil) {
+      [outProtocol writeFieldBeginWithName: @"loginCookie" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __loginCookie];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"TequilaToken("];
+  [ms appendString: @"iTequilaKey:"];
+  [ms appendFormat: @"\"%@\"", __iTequilaKey];
+  [ms appendString: @",loginCookie:"];
+  [ms appendFormat: @"\"%@\"", __loginCookie];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation TequilaKey
 
-- (id) initWithTos: (int) tos iTequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie
+- (id) initWithTos: (int) tos iTequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie iTequilaKeyForPc: (NSString *) iTequilaKeyForPc
 {
   self = [super init];
   __tos = tos;
@@ -26,6 +298,8 @@
   __iTequilaKey_isset = YES;
   __loginCookie = [loginCookie retain];
   __loginCookie_isset = YES;
+  __iTequilaKeyForPc = [iTequilaKeyForPc retain];
+  __iTequilaKeyForPc_isset = YES;
   return self;
 }
 
@@ -47,6 +321,11 @@
     __loginCookie = [[decoder decodeObjectForKey: @"loginCookie"] retain];
     __loginCookie_isset = YES;
   }
+  if ([decoder containsValueForKey: @"iTequilaKeyForPc"])
+  {
+    __iTequilaKeyForPc = [[decoder decodeObjectForKey: @"iTequilaKeyForPc"] retain];
+    __iTequilaKeyForPc_isset = YES;
+  }
   return self;
 }
 
@@ -64,12 +343,17 @@
   {
     [encoder encodeObject: __loginCookie forKey: @"loginCookie"];
   }
+  if (__iTequilaKeyForPc_isset)
+  {
+    [encoder encodeObject: __iTequilaKeyForPc forKey: @"iTequilaKeyForPc"];
+  }
 }
 
 - (void) dealloc
 {
   [__iTequilaKey release];
   [__loginCookie release];
+  [__iTequilaKeyForPc release];
   [super dealloc];
 }
 
@@ -132,6 +416,27 @@
   __loginCookie_isset = NO;
 }
 
+- (NSString *) iTequilaKeyForPc {
+  return [[__iTequilaKeyForPc retain] autorelease];
+}
+
+- (void) setITequilaKeyForPc: (NSString *) iTequilaKeyForPc {
+  [iTequilaKeyForPc retain];
+  [__iTequilaKeyForPc release];
+  __iTequilaKeyForPc = iTequilaKeyForPc;
+  __iTequilaKeyForPc_isset = YES;
+}
+
+- (BOOL) iTequilaKeyForPcIsSet {
+  return __iTequilaKeyForPc_isset;
+}
+
+- (void) unsetITequilaKeyForPc {
+  [__iTequilaKeyForPc release];
+  __iTequilaKeyForPc = nil;
+  __iTequilaKeyForPc_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -171,6 +476,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 4:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setITequilaKeyForPc: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -201,6 +514,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__iTequilaKeyForPc_isset) {
+    if (__iTequilaKeyForPc != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTequilaKeyForPc" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __iTequilaKeyForPc];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -213,6 +533,8 @@
   [ms appendFormat: @"\"%@\"", __iTequilaKey];
   [ms appendString: @",loginCookie:"];
   [ms appendFormat: @"\"%@\"", __loginCookie];
+  [ms appendString: @",iTequilaKeyForPc:"];
+  [ms appendFormat: @"\"%@\"", __iTequilaKeyForPc];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -527,6 +849,526 @@
 @implementation authenticationConstants
 + (void) initialize {
 }
+@end
+
+@interface startRefresh_args : NSObject <NSCoding> {
+  TequilaSession * __aTequilaSession;
+
+  BOOL __aTequilaSession_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=aTequilaSession, setter=setATequilaSession:) TequilaSession * aTequilaSession;
+#endif
+
+- (id) initWithATequilaSession: (TequilaSession *) aTequilaSession;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaSession *) aTequilaSession;
+- (void) setATequilaSession: (TequilaSession *) aTequilaSession;
+- (BOOL) aTequilaSessionIsSet;
+
+@end
+
+@implementation startRefresh_args
+
+- (id) initWithATequilaSession: (TequilaSession *) aTequilaSession
+{
+  self = [super init];
+  __aTequilaSession = [aTequilaSession retain];
+  __aTequilaSession_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"aTequilaSession"])
+  {
+    __aTequilaSession = [[decoder decodeObjectForKey: @"aTequilaSession"] retain];
+    __aTequilaSession_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__aTequilaSession_isset)
+  {
+    [encoder encodeObject: __aTequilaSession forKey: @"aTequilaSession"];
+  }
+}
+
+- (void) dealloc
+{
+  [__aTequilaSession release];
+  [super dealloc];
+}
+
+- (TequilaSession *) aTequilaSession {
+  return [[__aTequilaSession retain] autorelease];
+}
+
+- (void) setATequilaSession: (TequilaSession *) aTequilaSession {
+  [aTequilaSession retain];
+  [__aTequilaSession release];
+  __aTequilaSession = aTequilaSession;
+  __aTequilaSession_isset = YES;
+}
+
+- (BOOL) aTequilaSessionIsSet {
+  return __aTequilaSession_isset;
+}
+
+- (void) unsetATequilaSession {
+  [__aTequilaSession release];
+  __aTequilaSession = nil;
+  __aTequilaSession_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          TequilaSession *fieldValue = [[TequilaSession alloc] init];
+          [fieldValue read: inProtocol];
+          [self setATequilaSession: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"startRefresh_args"];
+  if (__aTequilaSession_isset) {
+    if (__aTequilaSession != nil) {
+      [outProtocol writeFieldBeginWithName: @"aTequilaSession" type: TType_STRUCT fieldID: 1];
+      [__aTequilaSession write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"startRefresh_args("];
+  [ms appendString: @"aTequilaSession:"];
+  [ms appendFormat: @"%@", __aTequilaSession];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface StartRefresh_result : NSObject <NSCoding> {
+  int32_t __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=success, setter=setSuccess:) int32_t success;
+#endif
+
+- (id) initWithSuccess: (int32_t) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) success;
+- (void) setSuccess: (int32_t) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation StartRefresh_result
+
+- (id) initWithSuccess: (int32_t) success
+{
+  self = [super init];
+  __success = success;
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [decoder decodeInt32ForKey: @"success"];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeInt32: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int32_t) success {
+  return __success;
+}
+
+- (void) setSuccess: (int32_t) success {
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setSuccess: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"StartRefresh_result"];
+
+  if (__success_isset) {
+    [outProtocol writeFieldBeginWithName: @"success" type: TType_I32 fieldID: 0];
+    [outProtocol writeI32: __success];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"StartRefresh_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%i", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface stopRefresh_args : NSObject <NSCoding> {
+  TequilaSession * __aTequilaSession;
+
+  BOOL __aTequilaSession_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=aTequilaSession, setter=setATequilaSession:) TequilaSession * aTequilaSession;
+#endif
+
+- (id) initWithATequilaSession: (TequilaSession *) aTequilaSession;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaSession *) aTequilaSession;
+- (void) setATequilaSession: (TequilaSession *) aTequilaSession;
+- (BOOL) aTequilaSessionIsSet;
+
+@end
+
+@implementation stopRefresh_args
+
+- (id) initWithATequilaSession: (TequilaSession *) aTequilaSession
+{
+  self = [super init];
+  __aTequilaSession = [aTequilaSession retain];
+  __aTequilaSession_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"aTequilaSession"])
+  {
+    __aTequilaSession = [[decoder decodeObjectForKey: @"aTequilaSession"] retain];
+    __aTequilaSession_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__aTequilaSession_isset)
+  {
+    [encoder encodeObject: __aTequilaSession forKey: @"aTequilaSession"];
+  }
+}
+
+- (void) dealloc
+{
+  [__aTequilaSession release];
+  [super dealloc];
+}
+
+- (TequilaSession *) aTequilaSession {
+  return [[__aTequilaSession retain] autorelease];
+}
+
+- (void) setATequilaSession: (TequilaSession *) aTequilaSession {
+  [aTequilaSession retain];
+  [__aTequilaSession release];
+  __aTequilaSession = aTequilaSession;
+  __aTequilaSession_isset = YES;
+}
+
+- (BOOL) aTequilaSessionIsSet {
+  return __aTequilaSession_isset;
+}
+
+- (void) unsetATequilaSession {
+  [__aTequilaSession release];
+  __aTequilaSession = nil;
+  __aTequilaSession_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          TequilaSession *fieldValue = [[TequilaSession alloc] init];
+          [fieldValue read: inProtocol];
+          [self setATequilaSession: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"stopRefresh_args"];
+  if (__aTequilaSession_isset) {
+    if (__aTequilaSession != nil) {
+      [outProtocol writeFieldBeginWithName: @"aTequilaSession" type: TType_STRUCT fieldID: 1];
+      [__aTequilaSession write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"stopRefresh_args("];
+  [ms appendString: @"aTequilaSession:"];
+  [ms appendFormat: @"%@", __aTequilaSession];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface StopRefresh_result : NSObject <NSCoding> {
+  int32_t __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=success, setter=setSuccess:) int32_t success;
+#endif
+
+- (id) initWithSuccess: (int32_t) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) success;
+- (void) setSuccess: (int32_t) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation StopRefresh_result
+
+- (id) initWithSuccess: (int32_t) success
+{
+  self = [super init];
+  __success = success;
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [decoder decodeInt32ForKey: @"success"];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeInt32: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int32_t) success {
+  return __success;
+}
+
+- (void) setSuccess: (int32_t) success {
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setSuccess: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"StopRefresh_result"];
+
+  if (__success_isset) {
+    [outProtocol writeFieldBeginWithName: @"success" type: TType_I32 fieldID: 0];
+    [outProtocol writeI32: __success];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"StopRefresh_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%i", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
 @end
 
 @interface getTequilaKeyForService_args : NSObject <NSCoding> {
@@ -1058,6 +1900,266 @@
 
 @end
 
+@interface logOutSession_args : NSObject <NSCoding> {
+  SessionId * __aSessionId;
+
+  BOOL __aSessionId_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=aSessionId, setter=setASessionId:) SessionId * aSessionId;
+#endif
+
+- (id) initWithASessionId: (SessionId *) aSessionId;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (SessionId *) aSessionId;
+- (void) setASessionId: (SessionId *) aSessionId;
+- (BOOL) aSessionIdIsSet;
+
+@end
+
+@implementation logOutSession_args
+
+- (id) initWithASessionId: (SessionId *) aSessionId
+{
+  self = [super init];
+  __aSessionId = [aSessionId retain];
+  __aSessionId_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"aSessionId"])
+  {
+    __aSessionId = [[decoder decodeObjectForKey: @"aSessionId"] retain];
+    __aSessionId_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__aSessionId_isset)
+  {
+    [encoder encodeObject: __aSessionId forKey: @"aSessionId"];
+  }
+}
+
+- (void) dealloc
+{
+  [__aSessionId release];
+  [super dealloc];
+}
+
+- (SessionId *) aSessionId {
+  return [[__aSessionId retain] autorelease];
+}
+
+- (void) setASessionId: (SessionId *) aSessionId {
+  [aSessionId retain];
+  [__aSessionId release];
+  __aSessionId = aSessionId;
+  __aSessionId_isset = YES;
+}
+
+- (BOOL) aSessionIdIsSet {
+  return __aSessionId_isset;
+}
+
+- (void) unsetASessionId {
+  [__aSessionId release];
+  __aSessionId = nil;
+  __aSessionId_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          SessionId *fieldValue = [[SessionId alloc] init];
+          [fieldValue read: inProtocol];
+          [self setASessionId: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"logOutSession_args"];
+  if (__aSessionId_isset) {
+    if (__aSessionId != nil) {
+      [outProtocol writeFieldBeginWithName: @"aSessionId" type: TType_STRUCT fieldID: 1];
+      [__aSessionId write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"logOutSession_args("];
+  [ms appendString: @"aSessionId:"];
+  [ms appendFormat: @"%@", __aSessionId];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface LogOutSession_result : NSObject <NSCoding> {
+  int32_t __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=success, setter=setSuccess:) int32_t success;
+#endif
+
+- (id) initWithSuccess: (int32_t) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) success;
+- (void) setSuccess: (int32_t) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation LogOutSession_result
+
+- (id) initWithSuccess: (int32_t) success
+{
+  self = [super init];
+  __success = success;
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [decoder decodeInt32ForKey: @"success"];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeInt32: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (int32_t) success {
+  return __success;
+}
+
+- (void) setSuccess: (int32_t) success {
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setSuccess: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"LogOutSession_result"];
+
+  if (__success_isset) {
+    [outProtocol writeFieldBeginWithName: @"success" type: TType_I32 fieldID: 0];
+    [outProtocol writeI32: __success];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"LogOutSession_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%i", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation AuthenticationServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -1077,6 +2179,86 @@
   [inProtocol release];
   [outProtocol release];
   [super dealloc];
+}
+
+- (void) send_startRefresh: (TequilaSession *) aTequilaSession
+{
+  [outProtocol writeMessageBeginWithName: @"startRefresh" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"startRefresh_args"];
+  if (aTequilaSession != nil)  {
+    [outProtocol writeFieldBeginWithName: @"aTequilaSession" type: TType_STRUCT fieldID: 1];
+    [aTequilaSession write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (int32_t) recv_startRefresh
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  StartRefresh_result * result = [[[StartRefresh_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"startRefresh failed: unknown result"];
+}
+
+- (int32_t) startRefresh: (TequilaSession *) aTequilaSession
+{
+  [self send_startRefresh: aTequilaSession];
+  return [self recv_startRefresh];
+}
+
+- (void) send_stopRefresh: (TequilaSession *) aTequilaSession
+{
+  [outProtocol writeMessageBeginWithName: @"stopRefresh" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"stopRefresh_args"];
+  if (aTequilaSession != nil)  {
+    [outProtocol writeFieldBeginWithName: @"aTequilaSession" type: TType_STRUCT fieldID: 1];
+    [aTequilaSession write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (int32_t) recv_stopRefresh
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  StopRefresh_result * result = [[[StopRefresh_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"stopRefresh failed: unknown result"];
+}
+
+- (int32_t) stopRefresh: (TequilaSession *) aTequilaSession
+{
+  [self send_stopRefresh: aTequilaSession];
+  return [self recv_stopRefresh];
 }
 
 - (void) send_getTequilaKeyForService: (int) aService
@@ -1157,6 +2339,46 @@
   return [self recv_getSessionIdForService];
 }
 
+- (void) send_logOutSession: (SessionId *) aSessionId
+{
+  [outProtocol writeMessageBeginWithName: @"logOutSession" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"logOutSession_args"];
+  if (aSessionId != nil)  {
+    [outProtocol writeFieldBeginWithName: @"aSessionId" type: TType_STRUCT fieldID: 1];
+    [aSessionId write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (int32_t) recv_logOutSession
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  LogOutSession_result * result = [[[LogOutSession_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"logOutSession failed: unknown result"];
+}
+
+- (int32_t) logOutSession: (SessionId *) aSessionId
+{
+  [self send_logOutSession: aSessionId];
+  return [self recv_logOutSession];
+}
+
 @end
 
 @implementation AuthenticationServiceProcessor
@@ -1169,6 +2391,22 @@
   }
   mService = [service retain];
   mMethodMap = [[NSMutableDictionary dictionary] retain];
+  {
+    SEL s = @selector(process_startRefresh_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"startRefresh"];
+  }
+  {
+    SEL s = @selector(process_stopRefresh_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"stopRefresh"];
+  }
   {
     SEL s = @selector(process_getTequilaKeyForService_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
@@ -1184,6 +2422,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getSessionIdForService"];
+  }
+  {
+    SEL s = @selector(process_logOutSession_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"logOutSession"];
   }
   return self;
 }
@@ -1226,6 +2472,40 @@
   return YES;
 }
 
+- (void) process_startRefresh_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  startRefresh_args * args = [[startRefresh_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  StartRefresh_result * result = [[StartRefresh_result alloc] init];
+  [result setSuccess: [mService startRefresh: [args aTequilaSession]]];
+  [outProtocol writeMessageBeginWithName: @"startRefresh"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_stopRefresh_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  stopRefresh_args * args = [[stopRefresh_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  StopRefresh_result * result = [[StopRefresh_result alloc] init];
+  [result setSuccess: [mService stopRefresh: [args aTequilaSession]]];
+  [outProtocol writeMessageBeginWithName: @"stopRefresh"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
 - (void) process_getTequilaKeyForService_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
 {
   getTequilaKeyForService_args * args = [[getTequilaKeyForService_args alloc] init];
@@ -1251,6 +2531,23 @@
   GetSessionIdForService_result * result = [[GetSessionIdForService_result alloc] init];
   [result setSuccess: [mService getSessionIdForService: [args aTequilaKey]]];
   [outProtocol writeMessageBeginWithName: @"getSessionIdForService"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_logOutSession_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  logOutSession_args * args = [[logOutSession_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  LogOutSession_result * result = [[LogOutSession_result alloc] init];
+  [result setSuccess: [mService logOutSession: [args aSessionId]]];
+  [outProtocol writeMessageBeginWithName: @"logOutSession"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

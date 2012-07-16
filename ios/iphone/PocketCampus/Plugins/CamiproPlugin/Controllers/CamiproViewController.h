@@ -25,6 +25,7 @@
     AuthenticationController* authController;
     CamiproService* camiproService;
     BalanceAndTransactions* balanceAndTransactions;
+    TequilaToken* tequilaKey;
 }
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;

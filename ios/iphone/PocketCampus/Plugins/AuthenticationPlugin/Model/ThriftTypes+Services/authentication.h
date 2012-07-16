@@ -20,23 +20,75 @@ enum TypeOfService {
   TypeOfService_SERVICE_ISA = 3
 };
 
+@interface TequilaSession : NSObject <NSCoding> {
+  NSString * __tequilaCookie;
+
+  BOOL __tequilaCookie_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=tequilaCookie, setter=setTequilaCookie:) NSString * tequilaCookie;
+#endif
+
+- (id) initWithTequilaCookie: (NSString *) tequilaCookie;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) tequilaCookie;
+- (void) setTequilaCookie: (NSString *) tequilaCookie;
+- (BOOL) tequilaCookieIsSet;
+
+@end
+
+@interface TequilaToken : NSObject <NSCoding> {
+  NSString * __iTequilaKey;
+  NSString * __loginCookie;
+
+  BOOL __iTequilaKey_isset;
+  BOOL __loginCookie_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iTequilaKey, setter=setITequilaKey:) NSString * iTequilaKey;
+@property (nonatomic, retain, getter=loginCookie, setter=setLoginCookie:) NSString * loginCookie;
+#endif
+
+- (id) initWithITequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) iTequilaKey;
+- (void) setITequilaKey: (NSString *) iTequilaKey;
+- (BOOL) iTequilaKeyIsSet;
+
+- (NSString *) loginCookie;
+- (void) setLoginCookie: (NSString *) loginCookie;
+- (BOOL) loginCookieIsSet;
+
+@end
+
 @interface TequilaKey : NSObject <NSCoding> {
   int __tos;
   NSString * __iTequilaKey;
   NSString * __loginCookie;
+  NSString * __iTequilaKeyForPc;
 
   BOOL __tos_isset;
   BOOL __iTequilaKey_isset;
   BOOL __loginCookie_isset;
+  BOOL __iTequilaKeyForPc_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=tos, setter=setTos:) int tos;
 @property (nonatomic, retain, getter=iTequilaKey, setter=setITequilaKey:) NSString * iTequilaKey;
 @property (nonatomic, retain, getter=loginCookie, setter=setLoginCookie:) NSString * loginCookie;
+@property (nonatomic, retain, getter=iTequilaKeyForPc, setter=setITequilaKeyForPc:) NSString * iTequilaKeyForPc;
 #endif
 
-- (id) initWithTos: (int) tos iTequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie;
+- (id) initWithTos: (int) tos iTequilaKey: (NSString *) iTequilaKey loginCookie: (NSString *) loginCookie iTequilaKeyForPc: (NSString *) iTequilaKeyForPc;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -52,6 +104,10 @@ enum TypeOfService {
 - (NSString *) loginCookie;
 - (void) setLoginCookie: (NSString *) loginCookie;
 - (BOOL) loginCookieIsSet;
+
+- (NSString *) iTequilaKeyForPc;
+- (void) setITequilaKeyForPc: (NSString *) iTequilaKeyForPc;
+- (BOOL) iTequilaKeyForPcIsSet;
 
 @end
 
@@ -105,8 +161,11 @@ enum TypeOfService {
 @end
 
 @protocol AuthenticationService <NSObject>
+- (int32_t) startRefresh: (TequilaSession *) aTequilaSession;  // throws TException
+- (int32_t) stopRefresh: (TequilaSession *) aTequilaSession;  // throws TException
 - (TequilaKey *) getTequilaKeyForService: (int) aService;  // throws TException
 - (SessionId *) getSessionIdForService: (TequilaKey *) aTequilaKey;  // throws TException
+- (int32_t) logOutSession: (SessionId *) aSessionId;  // throws TException
 @end
 
 @interface AuthenticationServiceClient : NSObject <AuthenticationService> {

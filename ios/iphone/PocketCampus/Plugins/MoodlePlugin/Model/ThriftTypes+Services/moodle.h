@@ -434,6 +434,8 @@ enum MoodleEventType {
 @end
 
 @protocol MoodleService <NSObject>
+- (TequilaToken *) getTequilaTokenForMoodle;  // throws TException
+- (MoodleSession *) getMoodleSession: (TequilaToken *) iTequilaToken;  // throws TException
 - (CoursesListReply *) getCoursesList: (MoodleRequest *) iRequest;  // throws TException
 - (EventsListReply *) getEventsList: (MoodleRequest *) iRequest;  // throws TException
 - (SectionsListReply *) getCourseSections: (MoodleRequest *) iRequest;  // throws TException

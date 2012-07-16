@@ -11,6 +11,7 @@
 #import "MoodleService.h"
 
 #import "AuthenticationService.h"
+#import "AuthenticationController.h"
 
 @interface CoursesListViewController : UIViewController<UITableViewDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
     IBOutlet UIActivityIndicatorView* centerActivityIndicator;
@@ -19,6 +20,8 @@
     MoodleService* moodleService;
     bool pingedAuthPlugin;
     NSArray* iCourses;
+    AuthenticationController* authController;
+    TequilaToken* tequilaKey;
 }
 
 @end

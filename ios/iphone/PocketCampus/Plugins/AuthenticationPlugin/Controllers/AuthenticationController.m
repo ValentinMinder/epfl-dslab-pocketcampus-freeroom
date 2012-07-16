@@ -35,6 +35,16 @@ static NSString* name = nil;
     [credentialsAlertViewController askCredientialsForTypeOfService:typeOfService message:nil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:delegate];
 }
 
+- (void)authToken:(NSString*)token delegate:(id<AuthenticationCallbackDelegate>)delegate {
+    NSLog(@"token to auth %@", token);
+    NSString* savedPassword = [AuthenticationService savedPassword];
+    if(savedPassword == nil) {
+        [credentialsAlertViewController askForCredentialsToken:token withMessage:nil delegate:delegate];
+    } else {
+        [credentialsAlertViewController authenticateSilentlyToken:token delegate:delegate];
+    }
+}
+
 + (NSString*)localizedName {
     if (name != nil) {
         return name;

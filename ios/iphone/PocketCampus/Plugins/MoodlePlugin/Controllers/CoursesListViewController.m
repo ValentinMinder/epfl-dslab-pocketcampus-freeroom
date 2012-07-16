@@ -21,7 +21,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        authController = [[AuthenticationController alloc] init];
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
+        tequilaKey = nil;
         
         //[[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
         //[[NSUserDefaults standardUserDefaults] synchronize];
@@ -63,12 +65,15 @@
 - (void)viewDidAppear:(BOOL)animated {
     if(moodleService.moodleCookie == nil) {
         if(pingedAuthPlugin) {
-            [self.navigationController popViewControllerAnimated:YES];
+            //[self.navigationController popViewControllerAnimated:YES];
         } else {
-            CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
+            /*CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
             [self.navigationController presentViewController:controller animated:YES completion:NULL];
             [controller release];
-            pingedAuthPlugin = YES;
+            pingedAuthPlugin = YES;*/
+            centerActivityIndicator.hidden = NO;
+            [centerActivityIndicator startAnimating];
+            [self startAuth];
         }
     }
     [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:YES];
@@ -83,7 +88,7 @@
 - (void)go {
     centerActivityIndicator.hidden = NO;
     [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = @"Loading";
+    centerMessageLabel.text = @"";
     coursesList.hidden = YES;
     
     SessionId* sess = [[SessionId alloc] init];
@@ -102,6 +107,10 @@
     self.navigationItem.rightBarButtonItem = anotherButton;
     [anotherButton release];
     self.navigationItem.title = @"Courses";
+}
+
+- (void) startAuth {
+    [moodleService getTequilaTokenForMoodleDelegate:self];
 }
 
 - (void)logoutFromMoodle:(id)sender {
@@ -125,6 +134,30 @@
 
 /* MoodleServiceDelegate delegation */
 
+- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken*)tequilaKey_ {
+    NSLog(@"-> getTequilaTokenForMoodleDidReturn:%@", tequilaKey_);
+    [tequilaKey release];
+    tequilaKey = [tequilaKey_ retain];
+    [authController authToken:tequilaKey.iTequilaKey delegate:self];
+}
+
+- (void)getTequilaTokenForMoodleFailed {
+    NSLog(@"-> getTequilaTokenForMoodleFailed");
+    [self serviceConnectionToServerTimedOut];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
+    //centerMessageLabel.text = sessionId.moodleCookie;
+    moodleService.moodleCookie = sessionId.moodleCookie;
+    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self go];
+}
+
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
+    [self serviceConnectionToServerTimedOut];
+}
+
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
     //NSLog(@"courselistreply %@", coursesListReply);
     [centerActivityIndicator stopAnimating];
@@ -146,10 +179,11 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         moodleService.moodleCookie = nil;
         // and re call auth
-        CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
+        /*CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
         [self.navigationController presentViewController:controller animated:YES completion:NULL];
         [controller release];
-        pingedAuthPlugin = YES;
+        pingedAuthPlugin = YES;*/
+        [self startAuth];
     }
 }
 
@@ -166,11 +200,22 @@
 }
 
 - (void)gotSessionId:(SessionId*)aSessionId {
-    centerMessageLabel.text = aSessionId.moodleCookie;
+    //centerMessageLabel.text = aSessionId.moodleCookie;
     moodleService.moodleCookie = aSessionId.moodleCookie;
     [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self go];
+}
+
+- (void)userCancelledAuthentication {
+    [centerActivityIndicator stopAnimating];
+    if (self.navigationController.visibleViewController == self) {
+        [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
+    }
+}
+
+- (void)authenticationSucceeded {
+    [moodleService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
 /* UITableViewDelegate delegation */
@@ -211,8 +256,10 @@
 
 - (void)dealloc
 {
+    [authController release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];
+    [tequilaKey release];
     [super dealloc];
 }
 

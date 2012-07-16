@@ -21,6 +21,11 @@
 + (NSString*)lastUsedUsernameForService:(int)service;
 + (BOOL)saveLastUsedUsername:(NSString*)username forService:(int)service;
 
++ (NSString*)savedUsername;
++ (BOOL)saveUsername:(NSString*)username;
++ (NSString*)savedPassword;
++ (BOOL)savePassword:(NSString*)password;
+
 - (void)getTequilaKeyForService:(int)service delegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)tequilaKey delegate:(id)delegate;
 
@@ -50,6 +55,7 @@
 - (int)getTypeOfService;
 - (void)gotSessionId:(SessionId*)sessionId;
 - (void)userCancelledAuthentication;
+- (void)authenticationSucceeded;
 - (void)authenticationTimeout;
 
 @end

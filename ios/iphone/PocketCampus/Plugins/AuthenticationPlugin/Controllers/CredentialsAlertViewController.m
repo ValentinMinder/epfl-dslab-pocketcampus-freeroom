@@ -25,6 +25,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
         tequilaCookie = nil;
         applicationTequilaKey = nil;
         username = nil;
+        password = nil;
     }
     return self;
 }
@@ -115,6 +116,88 @@ static NSInteger kSavePasswordSwitchTag = 5;
     }
 }
 
+- (void)askForCredentialsToken:(NSString*)token_ withMessage:(NSString*)messageOrNil delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
+    [token release];
+    token = [token_ retain];
+    if (delegate_ == nil) {
+        @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
+    }
+    self.delegate = delegate_;
+    NSString* alertTitle;
+    alertTitle = NSLocalizedStringFromTable(@"GasparLogin", @"AuthenticationPlugin", nil);
+    
+    NSString* alertMessage = messageOrNil;
+    if (alertMessage == nil) {
+        alertMessage = @"";
+    }
+    alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMessage delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil), nil];
+    alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    [[alertView textFieldAtIndex:0] setPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+    [[alertView textFieldAtIndex:1] setPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+    
+    CGFloat offset = 0.0;
+    
+    if (![alertMessage isEqualToString:@""]) {
+        offset = 20.0;
+    }
+    
+    UILabel* keepPasswordLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0, 124.0+offset, 170.0, 25.0)];
+    keepPasswordLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
+    keepPasswordLabel.textColor = [UIColor whiteColor];
+    keepPasswordLabel.backgroundColor = [UIColor clearColor];
+    keepPasswordLabel.adjustsFontSizeToFitWidth = YES;
+    keepPasswordLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    
+    [alertView addSubview:keepPasswordLabel];
+    [keepPasswordLabel release];
+    
+    UISwitch* keepPasswordSwitch = [[UISwitch alloc] initWithFrame:CGRectNull];
+    keepPasswordSwitch.center = CGPointMake(233.0, 138.0+offset);
+    keepPasswordSwitch.on = YES;
+    keepPasswordSwitch.tag = kSavePasswordSwitchTag;
+    if ([keepPasswordSwitch respondsToSelector:@selector(setOnTintColor:)]) { //only available in iOS 5 and later
+        keepPasswordSwitch.onTintColor = [UIColor colorWithRed:0.000000 green:0.490196 blue:0.639216 alpha:1.0];
+    }
+    
+    [alertView addSubview:keepPasswordSwitch];
+    [keepPasswordSwitch release];
+    
+    BOOL hasPrefilledUsername = NO;
+    NSString* lastUsername = [AuthenticationService savedUsername];
+    if (lastUsername != nil) {
+        [[alertView textFieldAtIndex:0] setText:lastUsername];
+        hasPrefilledUsername = YES;
+    }
+    [alertView show];
+    
+    CGFloat offset2 = 40.0;
+    
+    for (UIView* view in [alertView subviews]) {
+        if ([view isKindOfClass:[UIButton class]]) { //make place for the "keep password" switch
+            view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y+offset2, view.frame.size.width, view.frame.size.height);
+        }
+    }
+    
+    alertView.frame = CGRectMake(alertView.frame.origin.x, alertView.frame.origin.y, alertView.frame.size.width, alertView.frame.size.height+offset2+5.0);
+    if (hasPrefilledUsername) {
+        [[alertView textFieldAtIndex:1] becomeFirstResponder];
+    }
+}
+
+- (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
+    [token release];
+    token = [token_ retain];
+    if (delegate_ == nil) {
+        @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
+    }
+    self.delegate = delegate_;
+    [username release];
+    username = [[AuthenticationService savedUsername] retain];
+    [password release];
+    password = [[AuthenticationService savedPassword] retain];
+    [authenticationService loginToTequilaWithUser:username password:password delegate:self];
+}
+
 /* UIAlertViewDelegate delegation */
 
 - (void)alertView:(UIAlertView *)alertView_ didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -132,15 +215,16 @@ static NSInteger kSavePasswordSwitchTag = 5;
         {
             [username release];
             username = [[[alertView textFieldAtIndex:0] text] retain];
-            NSString* password = [[alertView textFieldAtIndex:1] text];
+            [password release];
+            password = [[[alertView textFieldAtIndex:1] text] retain];
             
-            BOOL savePassword = [(UISwitch*)[alertView viewWithTag:kSavePasswordSwitchTag] isOn];
+            savePassword = [(UISwitch*)[alertView viewWithTag:kSavePasswordSwitchTag] isOn];
             
             if (savePassword) {
                 
                 /* EXAMPLE of use */
                 
-                NSError* error = nil;
+                /*NSError* error = nil;
                 
                 NSString* password = [STKeychain getPasswordForUsername:username andServiceName:@"Gaspar" error:&error];
                 
@@ -157,7 +241,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
                     NSLog(@"Error while storing password");
                 } else {
                     NSLog(@"Password saved");
-                }
+                }*/
                 
                 /* END */
             }
@@ -201,6 +285,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
 
 /* STEP 1 */
 - (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request {
+    NSLog(@"-> loginToTequilaDidReturn");
     [tequilaCookie release];
     tequilaCookie = nil;
     for(NSHTTPCookie* cookie in request.responseCookies) {
@@ -208,14 +293,23 @@ static NSInteger kSavePasswordSwitchTag = 5;
             tequilaCookie = [cookie.value retain];
         }
     }
+    [AuthenticationService saveUsername:username];
+    [AuthenticationService savePassword:nil];
     if (tequilaCookie == nil) { //means bad credentials
-        [username release];
-        username = nil;
-        [self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) prefillWithLastUsedUsername:NO delegate:self.delegate];
+        [self askForCredentialsToken:token withMessage:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) delegate:self.delegate];
+        /*[self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) prefillWithLastUsedUsername:NO delegate:self.delegate];*/
     } else {
-        [AuthenticationService saveLastUsedUsername:username forService:typeOfService]; //successfully authentified => save username for future prefill
-        [authenticationService getTequilaKeyForService:typeOfService delegate:self];
+        //[AuthenticationService saveLastUsedUsername:username forService:typeOfService]; //successfully authentified => save username for future prefill
+        if(savePassword) {
+            [AuthenticationService savePassword:password];
+        }
+        [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];
+        //[authenticationService getTequilaKeyForService:typeOfService delegate:self];
     }
+    [username release];
+    username = nil;
+    [password release];
+    password = nil;
 }
 
 - (void)loginToTequilaFailed:(ASIHTTPRequest*)request {
@@ -225,11 +319,15 @@ static NSInteger kSavePasswordSwitchTag = 5;
 
 /* STEP 3 */
 - (void)authenticateTokenWithTequilaDidReturn:(ASIHTTPRequest*)request{
+    NSLog(@"-> authenticateTokenWithTequilaDidReturn");
     NSString* redir = [request.responseHeaders objectForKey:@"Location"];
     if(redir == nil) {
         [self connectionError];
     } else {
-        [authenticationService getSessionIdForServiceWithTequilaKey:applicationTequilaKey delegate:self];
+        //[authenticationService getSessionIdForServiceWithTequilaKey:applicationTequilaKey delegate:self];
+        if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
+            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:NO];
+        }
     }
 }
 
@@ -239,13 +337,14 @@ static NSInteger kSavePasswordSwitchTag = 5;
 }
 
 - (void)connectionError {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [self askForCredentialsToken:token withMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self.delegate];
+    /*UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     connectionErrorAlertView = alert;
     [alert show];
-    [alert release];
+    [alert release];*/
 }
 
-- (void)serviceConnectionToServerTimedOut {
+- (void)serviceConnectionToServerTimedOut { // ?? what's this function ??
     if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationTimeout)]) {
         [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationTimeout) withObject:nil waitUntilDone:NO];
     }
@@ -258,6 +357,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
     [tequilaCookie release];
     [applicationTequilaKey release];
     [username release];
+    [password release];
     [super dealloc];
 }
 

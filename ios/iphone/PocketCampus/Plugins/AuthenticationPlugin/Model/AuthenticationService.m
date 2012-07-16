@@ -10,6 +10,9 @@
 
 static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
 
+static NSString* kSavedUsernameKey = @"SAVED_USERNAME_KEY";
+static NSString* kSavedPasswordKey = @"SAVED_PASSWORD_KEY";
+
 static AuthenticationService* instance = nil;
 
 + (id)sharedInstanceToRetain {
@@ -43,6 +46,22 @@ static AuthenticationService* instance = nil;
     }
     [lastUsernamesForService setObject:username forKey:[NSString stringWithFormat:@"%d", service]];
     return [ObjectArchiver saveObject:lastUsernamesForService forKey:kLastUsedUseramesKey andPluginName:@"authentication"];
+}
+
++ (NSString*)savedUsername {
+    return (NSString*)[ObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
+}
+
++ (BOOL)saveUsername:(NSString*)username {
+    return [ObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
+}
+
++ (NSString*)savedPassword {
+    return (NSString*)[ObjectArchiver objectForKey:kSavedPasswordKey andPluginName:@"authentication"];
+}
+
++ (BOOL)savePassword:(NSString*)password {
+    return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
 }
 
 - (void)getTequilaKeyForService:(int)service delegate:(id)delegate {

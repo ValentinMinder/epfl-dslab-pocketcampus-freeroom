@@ -20,8 +20,11 @@
  
 */
 
-+ (SessionId*)lastSessionId;
-+ (BOOL)saveSessionId:(SessionId*)sessionId;
++ (CamiproSession*)lastSessionId;
++ (BOOL)saveSessionId:(CamiproSession*)sessionId;
+
+- (void)getTequilaTokenForCamiproDelegate:(id)delegate;
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;
 
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate;
 - (void)getStatsAndLoadingInfo:(CamiproRequest*)camiproRequest delegate:(id)delegate;
@@ -32,6 +35,11 @@
 @protocol CamiproServiceDelegate <ServiceDelegate>
 
 @optional
+- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey;
+- (void)getTequilaTokenForCamiproFailed;
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)aTequilaKey didReturn:(CamiproSession*)aSessionId;
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)aTequilaKey;
+
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions;
 - (void)getBalanceAndTransactionsFailedForCamiproRequest:(CamiproRequest*)camiproRequest;
 - (void)getStatsAndLoadingInfoForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(StatsAndLoadingInfo*)statsAndLoadingInfo;

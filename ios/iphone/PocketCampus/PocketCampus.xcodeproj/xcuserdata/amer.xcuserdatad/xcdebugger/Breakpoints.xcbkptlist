@@ -117,7 +117,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "50"
          endingLineNumber = "50"
-         landmarkName = "-getCoursesList:withDelegate:"
+         landmarkName = "-getTequilaTokenForMoodleDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -130,7 +130,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "49"
          endingLineNumber = "49"
-         landmarkName = "-getTequilaKeyForService:delegate:"
+         landmarkName = "+saveLastUsedUsername:forService:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -143,7 +143,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "60"
          endingLineNumber = "60"
-         landmarkName = "-getSessionIdForServiceWithTequilaKey:delegate:"
+         landmarkName = "+savedPassword"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -169,8 +169,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "50"
          endingLineNumber = "50"
-         landmarkName = "-getTequilaKeyForService:delegate:"
-         landmarkType = "5">
+         landmarkName = "@implementation AuthenticationService"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"

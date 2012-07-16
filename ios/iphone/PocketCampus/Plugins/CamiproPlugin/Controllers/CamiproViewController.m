@@ -14,6 +14,8 @@
 
 #import "ObjectArchiver.h"
 
+#import "authentication.h"
+
 static NSString* kHistoryCellIdentifier = @"CamiproHistoryCell";
 static NSUInteger kTransactionPriceViewTag = 15;
 static CGFloat kBalanceCellHeight = 70.0;
@@ -29,6 +31,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         authController = [[AuthenticationController alloc] init];
         camiproService = [[CamiproService sharedInstanceToRetain] retain];
         balanceAndTransactions = nil;
+        tequilaKey = nil;
         
         /* TEST */
         
@@ -66,7 +69,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     tableView.hidden = YES;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    SessionId* sessionId = [CamiproService lastSessionId];
+    CamiproSession* sessionId = [CamiproService lastSessionId];
     if (sessionId == nil) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
         [self showLoginPopup];
@@ -93,19 +96,24 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)showLoginPopup {
-    [authController loginToService:TypeOfService_SERVICE_CAMIPRO prefillWithLastUsedUsername:YES delegate:self];
+    [camiproService getTequilaTokenForCamiproDelegate:self];
+    //[authController loginToService:TypeOfService_SERVICE_CAMIPRO prefillWithLastUsedUsername:YES delegate:self];
 }
 
-- (void)startBalanceAndTransactionsRequestWithSessionId:(SessionId*)sessionId {
+- (SessionId*) buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {
+    return [[[SessionId alloc] initWithTos:TypeOfService_SERVICE_CAMIPRO pocketCampusSessionId:nil moodleCookie:nil camiproCookie:camiproSession.camiproCookie isaCookie:nil] autorelease];
+}
+
+- (void)startBalanceAndTransactionsRequestWithSessionId:(CamiproSession*)sessionId {
     NSLog(@"startBalanceAndTransactionsRequestWithSessionId%@", sessionId);
-    CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:sessionId iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+    CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:sessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
     [camiproService getBalanceAndTransactions:request delegate:self];
     [request release];
 }
 
 /* AuthenticationCallbackDelegate delegation */
 
-- (void)gotSessionId:(SessionId*)sessionId {
+- (void)gotSessionId:(CamiproSession*)sessionId {
     NSLog(@"-> gotSessionId");
     [CamiproService saveSessionId:sessionId];
     [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
@@ -118,11 +126,36 @@ static CGFloat kBalanceCellHeight = 70.0;
     }
 }
 
+- (void)authenticationSucceeded {
+    [camiproService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
+}
+
 - (void)authenticationTimeout {
     [self serviceConnectionToServerTimedOut];
 }
 
 /* CamiproServiceDelegate delegation */
+
+- (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey_ {
+    NSLog(@"-> getTequilaTokenForCamiproDidReturn:%@", tequilaKey_);
+    [tequilaKey release];
+    tequilaKey = [tequilaKey_ retain];
+    [authController authToken:tequilaKey.iTequilaKey delegate:self];
+}
+
+- (void)getTequilaTokenForCamiproFailed {
+    NSLog(@"-> getTequilaTokenForCamiproFailed");
+    [self serviceConnectionToServerTimedOut];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(CamiproSession*)sessionId {
+    [CamiproService saveSessionId:sessionId];
+    [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
+}
+
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
+    [self serviceConnectionToServerTimedOut];
+}
 
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions_ {
     switch (balanceAndTransactions_.iStatus) {
@@ -307,7 +340,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         {
             statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
             [statsAlertView show];
-            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[CamiproService lastSessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
             [camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
             [statsRequest release];
             break;
@@ -330,7 +363,8 @@ static CGFloat kBalanceCellHeight = 70.0;
         }
         sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [sendMailAlertView show];
-        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[CamiproService lastSessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+        
+        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
         [camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
         [mailRequest release];
     } else if (alertView == statsAlertView) {
@@ -456,8 +490,10 @@ static CGFloat kBalanceCellHeight = 70.0;
 - (void)dealloc
 {
     [authController release];
+    [camiproService cancelOperationsForDelegate:self];
     [camiproService release];
     [balanceAndTransactions release];
+    [tequilaKey release];
     [super dealloc];
 }
 

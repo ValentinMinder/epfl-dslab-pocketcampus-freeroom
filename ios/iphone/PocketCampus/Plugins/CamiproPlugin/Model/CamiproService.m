@@ -32,12 +32,34 @@ static CamiproService* instance = nil;
     return [[[CamiproServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
-+ (SessionId*)lastSessionId {
-    return (SessionId*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
++ (CamiproSession*)lastSessionId {
+    return (CamiproSession*)[ObjectArchiver objectForKey:kLastSessionIdKey andPluginName:@"camipro"];
 }
 
-+ (BOOL)saveSessionId:(SessionId*)sessionId {
++ (BOOL)saveSessionId:(CamiproSession*)sessionId {
     return [ObjectArchiver saveObject:sessionId forKey:kLastSessionIdKey andPluginName:@"camipro"];
+}
+
+- (void)getTequilaTokenForCamiproDelegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getTequilaTokenForCamipro);
+    operation.delegateDidReturnSelector = @selector(getTequilaTokenForCamiproDidReturn:);
+    operation.delegateDidFailSelector = @selector(getTequilaTokenForCamiproFailed);
+    //[operation addIntArgument:service];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getCamiproSession:);
+    operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
+    operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
+    [operation addObjectArgument:tequilaKey];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
 }
 
 - (void)getBalanceAndTransactions:(CamiproRequest*)camiproRequest delegate:(id)delegate {

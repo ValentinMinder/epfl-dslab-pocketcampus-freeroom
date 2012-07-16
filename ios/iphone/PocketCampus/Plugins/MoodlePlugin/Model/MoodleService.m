@@ -46,6 +46,28 @@ static MoodleService* instance = nil;
     return filePath;
 }
 
+- (void)getTequilaTokenForMoodleDelegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getTequilaTokenForMoodle);
+    operation.delegateDidReturnSelector = @selector(getTequilaTokenForMoodleDidReturn:);
+    operation.delegateDidFailSelector = @selector(getTequilaTokenForMoodleFailed);
+    //[operation addIntArgument:service];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getMoodleSession:);
+    operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
+    operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
+    [operation addObjectArgument:tequilaKey];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+    [operation release];
+}
+
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;

@@ -179,6 +179,117 @@
 
 @end
 
+@implementation CamiproSession
+
+- (id) initWithCamiproCookie: (NSString *) camiproCookie
+{
+  self = [super init];
+  __camiproCookie = [camiproCookie retain];
+  __camiproCookie_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"camiproCookie"])
+  {
+    __camiproCookie = [[decoder decodeObjectForKey: @"camiproCookie"] retain];
+    __camiproCookie_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__camiproCookie_isset)
+  {
+    [encoder encodeObject: __camiproCookie forKey: @"camiproCookie"];
+  }
+}
+
+- (void) dealloc
+{
+  [__camiproCookie release];
+  [super dealloc];
+}
+
+- (NSString *) camiproCookie {
+  return [[__camiproCookie retain] autorelease];
+}
+
+- (void) setCamiproCookie: (NSString *) camiproCookie {
+  [camiproCookie retain];
+  [__camiproCookie release];
+  __camiproCookie = camiproCookie;
+  __camiproCookie_isset = YES;
+}
+
+- (BOOL) camiproCookieIsSet {
+  return __camiproCookie_isset;
+}
+
+- (void) unsetCamiproCookie {
+  [__camiproCookie release];
+  __camiproCookie = nil;
+  __camiproCookie_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setCamiproCookie: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"CamiproSession"];
+  if (__camiproCookie_isset) {
+    if (__camiproCookie != nil) {
+      [outProtocol writeFieldBeginWithName: @"camiproCookie" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __camiproCookie];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"CamiproSession("];
+  [ms appendString: @"camiproCookie:"];
+  [ms appendFormat: @"\"%@\"", __camiproCookie];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation Transaction
 
 - (id) initWithIDate: (NSString *) iDate iOperation: (NSString *) iOperation iPlace: (NSString *) iPlace iAmount: (double) iAmount
@@ -1426,6 +1537,469 @@
 }
 @end
 
+@interface getTequilaTokenForCamipro_args : NSObject <NSCoding> {
+}
+
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+@end
+
+@implementation getTequilaTokenForCamipro_args
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getTequilaTokenForCamipro_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getTequilaTokenForCamipro_args("];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetTequilaTokenForCamipro_result : NSObject <NSCoding> {
+  TequilaToken * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) TequilaToken * success;
+#endif
+
+- (id) initWithSuccess: (TequilaToken *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaToken *) success;
+- (void) setSuccess: (TequilaToken *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetTequilaTokenForCamipro_result
+
+- (id) initWithSuccess: (TequilaToken *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (TequilaToken *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (TequilaToken *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          TequilaToken *fieldValue = [[TequilaToken alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetTequilaTokenForCamipro_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetTequilaTokenForCamipro_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface getCamiproSession_args : NSObject <NSCoding> {
+  TequilaToken * __iTequilaToken;
+
+  BOOL __iTequilaToken_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iTequilaToken, setter=setITequilaToken:) TequilaToken * iTequilaToken;
+#endif
+
+- (id) initWithITequilaToken: (TequilaToken *) iTequilaToken;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaToken *) iTequilaToken;
+- (void) setITequilaToken: (TequilaToken *) iTequilaToken;
+- (BOOL) iTequilaTokenIsSet;
+
+@end
+
+@implementation getCamiproSession_args
+
+- (id) initWithITequilaToken: (TequilaToken *) iTequilaToken
+{
+  self = [super init];
+  __iTequilaToken = [iTequilaToken retain];
+  __iTequilaToken_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iTequilaToken"])
+  {
+    __iTequilaToken = [[decoder decodeObjectForKey: @"iTequilaToken"] retain];
+    __iTequilaToken_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iTequilaToken_isset)
+  {
+    [encoder encodeObject: __iTequilaToken forKey: @"iTequilaToken"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iTequilaToken release];
+  [super dealloc];
+}
+
+- (TequilaToken *) iTequilaToken {
+  return [[__iTequilaToken retain] autorelease];
+}
+
+- (void) setITequilaToken: (TequilaToken *) iTequilaToken {
+  [iTequilaToken retain];
+  [__iTequilaToken release];
+  __iTequilaToken = iTequilaToken;
+  __iTequilaToken_isset = YES;
+}
+
+- (BOOL) iTequilaTokenIsSet {
+  return __iTequilaToken_isset;
+}
+
+- (void) unsetITequilaToken {
+  [__iTequilaToken release];
+  __iTequilaToken = nil;
+  __iTequilaToken_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          TequilaToken *fieldValue = [[TequilaToken alloc] init];
+          [fieldValue read: inProtocol];
+          [self setITequilaToken: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getCamiproSession_args"];
+  if (__iTequilaToken_isset) {
+    if (__iTequilaToken != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTequilaToken" type: TType_STRUCT fieldID: 1];
+      [__iTequilaToken write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getCamiproSession_args("];
+  [ms appendString: @"iTequilaToken:"];
+  [ms appendFormat: @"%@", __iTequilaToken];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetCamiproSession_result : NSObject <NSCoding> {
+  CamiproSession * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) CamiproSession * success;
+#endif
+
+- (id) initWithSuccess: (CamiproSession *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (CamiproSession *) success;
+- (void) setSuccess: (CamiproSession *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetCamiproSession_result
+
+- (id) initWithSuccess: (CamiproSession *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (CamiproSession *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (CamiproSession *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          CamiproSession *fieldValue = [[CamiproSession alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetCamiproSession_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetCamiproSession_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getBalanceAndTransactions_args : NSObject <NSCoding> {
   CamiproRequest * __iRequest;
 
@@ -2254,6 +2828,81 @@
   [super dealloc];
 }
 
+- (void) send_getTequilaTokenForCamipro
+{
+  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForCamipro" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getTequilaTokenForCamipro_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (TequilaToken *) recv_getTequilaTokenForCamipro
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetTequilaTokenForCamipro_result * result = [[[GetTequilaTokenForCamipro_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getTequilaTokenForCamipro failed: unknown result"];
+}
+
+- (TequilaToken *) getTequilaTokenForCamipro
+{
+  [self send_getTequilaTokenForCamipro];
+  return [self recv_getTequilaTokenForCamipro];
+}
+
+- (void) send_getCamiproSession: (TequilaToken *) iTequilaToken
+{
+  [outProtocol writeMessageBeginWithName: @"getCamiproSession" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getCamiproSession_args"];
+  if (iTequilaToken != nil)  {
+    [outProtocol writeFieldBeginWithName: @"iTequilaToken" type: TType_STRUCT fieldID: 1];
+    [iTequilaToken write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (CamiproSession *) recv_getCamiproSession
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetCamiproSession_result * result = [[[GetCamiproSession_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getCamiproSession failed: unknown result"];
+}
+
+- (CamiproSession *) getCamiproSession: (TequilaToken *) iTequilaToken
+{
+  [self send_getCamiproSession: iTequilaToken];
+  return [self recv_getCamiproSession];
+}
+
 - (void) send_getBalanceAndTransactions: (CamiproRequest *) iRequest
 {
   [outProtocol writeMessageBeginWithName: @"getBalanceAndTransactions" type: TMessageType_CALL sequenceID: 0];
@@ -2387,6 +3036,22 @@
   mService = [service retain];
   mMethodMap = [[NSMutableDictionary dictionary] retain];
   {
+    SEL s = @selector(process_getTequilaTokenForCamipro_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getTequilaTokenForCamipro"];
+  }
+  {
+    SEL s = @selector(process_getCamiproSession_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getCamiproSession"];
+  }
+  {
     SEL s = @selector(process_getBalanceAndTransactions_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
     NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
@@ -2449,6 +3114,40 @@
   [i setTarget: self];
   [i invoke];
   return YES;
+}
+
+- (void) process_getTequilaTokenForCamipro_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getTequilaTokenForCamipro_args * args = [[getTequilaTokenForCamipro_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetTequilaTokenForCamipro_result * result = [[GetTequilaTokenForCamipro_result alloc] init];
+  [result setSuccess: [mService getTequilaTokenForCamipro]];
+  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForCamipro"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getCamiproSession_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getCamiproSession_args * args = [[getCamiproSession_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetCamiproSession_result * result = [[GetCamiproSession_result alloc] init];
+  [result setSuccess: [mService getCamiproSession: [args iTequilaToken]]];
+  [outProtocol writeMessageBeginWithName: @"getCamiproSession"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
 }
 
 - (void) process_getBalanceAndTransactions_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol

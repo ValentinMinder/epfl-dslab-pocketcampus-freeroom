@@ -42,6 +42,27 @@
 
 @end
 
+@interface CamiproSession : NSObject <NSCoding> {
+  NSString * __camiproCookie;
+
+  BOOL __camiproCookie_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=camiproCookie, setter=setCamiproCookie:) NSString * camiproCookie;
+#endif
+
+- (id) initWithCamiproCookie: (NSString *) camiproCookie;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) camiproCookie;
+- (void) setCamiproCookie: (NSString *) camiproCookie;
+- (BOOL) camiproCookieIsSet;
+
+@end
+
 @interface Transaction : NSObject <NSCoding> {
   NSString * __iDate;
   NSString * __iOperation;
@@ -253,6 +274,8 @@
 @end
 
 @protocol CamiproService <NSObject>
+- (TequilaToken *) getTequilaTokenForCamipro;  // throws TException
+- (CamiproSession *) getCamiproSession: (TequilaToken *) iTequilaToken;  // throws TException
 - (BalanceAndTransactions *) getBalanceAndTransactions: (CamiproRequest *) iRequest;  // throws TException
 - (StatsAndLoadingInfo *) getStatsAndLoadingInfo: (CamiproRequest *) iRequest;  // throws TException
 - (SendMailResult *) sendLoadingInfoByEmail: (CamiproRequest *) iRequest;  // throws TException

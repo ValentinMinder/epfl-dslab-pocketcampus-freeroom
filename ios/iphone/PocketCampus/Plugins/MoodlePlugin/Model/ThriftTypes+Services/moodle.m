@@ -2512,6 +2512,469 @@
 }
 @end
 
+@interface getTequilaTokenForMoodle_args : NSObject <NSCoding> {
+}
+
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+@end
+
+@implementation getTequilaTokenForMoodle_args
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getTequilaTokenForMoodle_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getTequilaTokenForMoodle_args("];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetTequilaTokenForMoodle_result : NSObject <NSCoding> {
+  TequilaToken * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) TequilaToken * success;
+#endif
+
+- (id) initWithSuccess: (TequilaToken *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaToken *) success;
+- (void) setSuccess: (TequilaToken *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetTequilaTokenForMoodle_result
+
+- (id) initWithSuccess: (TequilaToken *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (TequilaToken *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (TequilaToken *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          TequilaToken *fieldValue = [[TequilaToken alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetTequilaTokenForMoodle_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetTequilaTokenForMoodle_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface getMoodleSession_args : NSObject <NSCoding> {
+  TequilaToken * __iTequilaToken;
+
+  BOOL __iTequilaToken_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iTequilaToken, setter=setITequilaToken:) TequilaToken * iTequilaToken;
+#endif
+
+- (id) initWithITequilaToken: (TequilaToken *) iTequilaToken;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (TequilaToken *) iTequilaToken;
+- (void) setITequilaToken: (TequilaToken *) iTequilaToken;
+- (BOOL) iTequilaTokenIsSet;
+
+@end
+
+@implementation getMoodleSession_args
+
+- (id) initWithITequilaToken: (TequilaToken *) iTequilaToken
+{
+  self = [super init];
+  __iTequilaToken = [iTequilaToken retain];
+  __iTequilaToken_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iTequilaToken"])
+  {
+    __iTequilaToken = [[decoder decodeObjectForKey: @"iTequilaToken"] retain];
+    __iTequilaToken_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iTequilaToken_isset)
+  {
+    [encoder encodeObject: __iTequilaToken forKey: @"iTequilaToken"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iTequilaToken release];
+  [super dealloc];
+}
+
+- (TequilaToken *) iTequilaToken {
+  return [[__iTequilaToken retain] autorelease];
+}
+
+- (void) setITequilaToken: (TequilaToken *) iTequilaToken {
+  [iTequilaToken retain];
+  [__iTequilaToken release];
+  __iTequilaToken = iTequilaToken;
+  __iTequilaToken_isset = YES;
+}
+
+- (BOOL) iTequilaTokenIsSet {
+  return __iTequilaToken_isset;
+}
+
+- (void) unsetITequilaToken {
+  [__iTequilaToken release];
+  __iTequilaToken = nil;
+  __iTequilaToken_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          TequilaToken *fieldValue = [[TequilaToken alloc] init];
+          [fieldValue read: inProtocol];
+          [self setITequilaToken: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getMoodleSession_args"];
+  if (__iTequilaToken_isset) {
+    if (__iTequilaToken != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTequilaToken" type: TType_STRUCT fieldID: 1];
+      [__iTequilaToken write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getMoodleSession_args("];
+  [ms appendString: @"iTequilaToken:"];
+  [ms appendFormat: @"%@", __iTequilaToken];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetMoodleSession_result : NSObject <NSCoding> {
+  MoodleSession * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) MoodleSession * success;
+#endif
+
+- (id) initWithSuccess: (MoodleSession *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MoodleSession *) success;
+- (void) setSuccess: (MoodleSession *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetMoodleSession_result
+
+- (id) initWithSuccess: (MoodleSession *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (MoodleSession *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (MoodleSession *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          MoodleSession *fieldValue = [[MoodleSession alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetMoodleSession_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetMoodleSession_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getCoursesList_args : NSObject <NSCoding> {
   MoodleRequest * __iRequest;
 
@@ -3340,6 +3803,81 @@
   [super dealloc];
 }
 
+- (void) send_getTequilaTokenForMoodle
+{
+  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForMoodle" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getTequilaTokenForMoodle_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (TequilaToken *) recv_getTequilaTokenForMoodle
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetTequilaTokenForMoodle_result * result = [[[GetTequilaTokenForMoodle_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getTequilaTokenForMoodle failed: unknown result"];
+}
+
+- (TequilaToken *) getTequilaTokenForMoodle
+{
+  [self send_getTequilaTokenForMoodle];
+  return [self recv_getTequilaTokenForMoodle];
+}
+
+- (void) send_getMoodleSession: (TequilaToken *) iTequilaToken
+{
+  [outProtocol writeMessageBeginWithName: @"getMoodleSession" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getMoodleSession_args"];
+  if (iTequilaToken != nil)  {
+    [outProtocol writeFieldBeginWithName: @"iTequilaToken" type: TType_STRUCT fieldID: 1];
+    [iTequilaToken write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (MoodleSession *) recv_getMoodleSession
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetMoodleSession_result * result = [[[GetMoodleSession_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getMoodleSession failed: unknown result"];
+}
+
+- (MoodleSession *) getMoodleSession: (TequilaToken *) iTequilaToken
+{
+  [self send_getMoodleSession: iTequilaToken];
+  return [self recv_getMoodleSession];
+}
+
 - (void) send_getCoursesList: (MoodleRequest *) iRequest
 {
   [outProtocol writeMessageBeginWithName: @"getCoursesList" type: TMessageType_CALL sequenceID: 0];
@@ -3473,6 +4011,22 @@
   mService = [service retain];
   mMethodMap = [[NSMutableDictionary dictionary] retain];
   {
+    SEL s = @selector(process_getTequilaTokenForMoodle_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getTequilaTokenForMoodle"];
+  }
+  {
+    SEL s = @selector(process_getMoodleSession_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getMoodleSession"];
+  }
+  {
     SEL s = @selector(process_getCoursesList_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
     NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
@@ -3535,6 +4089,40 @@
   [i setTarget: self];
   [i invoke];
   return YES;
+}
+
+- (void) process_getTequilaTokenForMoodle_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getTequilaTokenForMoodle_args * args = [[getTequilaTokenForMoodle_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetTequilaTokenForMoodle_result * result = [[GetTequilaTokenForMoodle_result alloc] init];
+  [result setSuccess: [mService getTequilaTokenForMoodle]];
+  [outProtocol writeMessageBeginWithName: @"getTequilaTokenForMoodle"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getMoodleSession_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getMoodleSession_args * args = [[getMoodleSession_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetMoodleSession_result * result = [[GetMoodleSession_result alloc] init];
+  [result setSuccess: [mService getMoodleSession: [args iTequilaToken]]];
+  [outProtocol writeMessageBeginWithName: @"getMoodleSession"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
 }
 
 - (void) process_getCoursesList_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
