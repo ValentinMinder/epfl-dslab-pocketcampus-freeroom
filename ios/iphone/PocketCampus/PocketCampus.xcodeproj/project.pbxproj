@@ -64,6 +64,8 @@
 		324151E515375BDD00CCFB22 /* Map.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E315375BDD00CCFB22 /* Map.png */; };
 		324151E615375BDD00CCFB22 /* Map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 324151E415375BDD00CCFB22 /* Map@2x.png */; };
 		324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 324151F315377B4C00CCFB22 /* MapItemAnnotation.m */; };
+		3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
+		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
 		32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */; };
 		32442FEE151CFDED00685D10 /* Transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FEC151CFDED00685D10 /* Transport.png */; };
@@ -311,6 +313,9 @@
 		324151E415375BDD00CCFB22 /* Map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Map@2x.png"; sourceTree = "<group>"; };
 		324151F215377B4C00CCFB22 /* MapItemAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapItemAnnotation.h; sourceTree = "<group>"; };
 		324151F315377B4C00CCFB22 /* MapItemAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapItemAnnotation.m; sourceTree = "<group>"; };
+		3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditableTableViewCell.xib; sourceTree = "<group>"; };
+		3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableTableViewCell.h; sourceTree = "<group>"; };
+		3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
 		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
 		32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesListViewController.m; sourceTree = "<group>"; };
 		32442FEC151CFDED00685D10 /* Transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transport.png; sourceTree = "<group>"; };
@@ -1007,6 +1012,9 @@
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
 				32311CEF15A4A3E100E21C50 /* PCUtils.h */,
 				32311CF015A4A3E100E21C50 /* PCUtils.m */,
+				3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */,
+				3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */,
+				3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1805,6 +1813,7 @@
 				321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */,
 				321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */,
 				32AF214815B197DE00BB445D /* help.html in Resources */,
+				3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1919,6 +1928,7 @@
 				32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */,
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
 				320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */,
+				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

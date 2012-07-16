@@ -325,7 +325,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "127"
          endingLineNumber = "127"
-         landmarkName = "-alertView:didDismissWithButtonIndex:"
+         landmarkName = "-askForCredentialsToken:withMessage:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

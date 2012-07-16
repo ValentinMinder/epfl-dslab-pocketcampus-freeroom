@@ -10,7 +10,11 @@
 
 #import "PCValues.h"
 
+#import "EditableTableViewCell.h"
+
 @implementation GlobalSettingsViewController
+
+static BOOL isLoggedInTest = NO;
 
 @synthesize tableView;
 
@@ -19,6 +23,8 @@
     self = [super initWithNibName:@"GlobalSettingsView" bundle:nil];
     if (self) {
         // Custom initialization
+        cancelButtonDisplayed = NO;
+        textEditing = NO;
     }
     return self;
 }
@@ -33,15 +39,31 @@
     backgroundView.backgroundColor = [PCValues backgroundColor1];;
     tableView.backgroundView = backgroundView;
     [backgroundView release];
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBarButtonPressed)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    [doneButton release];
+    [self setRightBarButtonItemDone];
+    
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+
+- (void)setRightBarButtonItemDone {
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
+    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    [button release];
+    cancelButtonDisplayed = NO;
+}
+
+- (void)setRightBarButtonItemCancel {
+    if (cancelButtonDisplayed) {
+        return;
+    }
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelBarButtonPressed)];
+    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    [button release];
+    cancelButtonDisplayed = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -57,20 +79,56 @@
     }  
 }
 
+- (void)cancelBarButtonPressed {
+    if (textEditing) {
+        [self.view endEditing:YES]; //resigns first responder (focus) from any text field
+        [self setRightBarButtonItemDone];
+    } else {
+        //TODO : cancel authentication and dismiss settings
+    }
+}
+
+/* UITextFieldDelegate delegation */
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    textEditing = YES;
+    [self setRightBarButtonItemCancel];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    textEditing = NO;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == usernameTextField) {
+        [passwordTextField becomeFirstResponder];
+    } else if (textField == passwordTextField) {
+        //TODO login
+    } else {
+        //nothing, unknown
+    }
+    return YES;
+}
+
 /* UITableViewDelegate delegation */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //TODO
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     switch (section) {
         case 0: //gaspar account
-        {   
-            BOOL isLoggedIn = YES; //TODO
-            
-            if (isLoggedIn) {
-                NSString* text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
-                UIFont* font = [UIFont systemFontOfSize:16.0];
-                CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-                return reqSize.height;
+        {               
+            NSString* text;
+            if (isLoggedInTest) {
+                text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
+            } else {
+                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"PocketCampus", nil);
             }
+            UIFont* font = [UIFont systemFontOfSize:16.0];
+            CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
+            return reqSize.height+15.0;
             break;
         }
             
@@ -86,25 +144,29 @@
     switch (section) {
         case 0:
         {
-            BOOL isLoggedIn = YES; //TODO
-            if (isLoggedIn) {
-                UILabel* label = [[UILabel alloc] init];
-                NSString* text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
-                UIFont* font = [UIFont systemFontOfSize:16.0];
-                CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-                
-                label.frame = CGRectMake(0, 0, 260.0, reqSize.height);
-                label.numberOfLines = 5;
-                label.textAlignment = UITextAlignmentCenter;
-                label.backgroundColor = [UIColor clearColor];
-                label.font = font;
-                label.textColor = [PCValues textColor1];
-                label.shadowOffset = [PCValues shadowOffset1];
-                label.shadowColor = [UIColor whiteColor];
-                label.adjustsFontSizeToFitWidth = NO;
-                label.text = text;
-                return [label autorelease];
+
+            NSString* text;
+            if (isLoggedInTest) {
+                text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
+            } else {
+                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"PocketCampus", nil);
             }
+            
+            UILabel* label = [[UILabel alloc] init];
+            label.text = text;
+            UIFont* font = [UIFont systemFontOfSize:16.0];
+            CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
+            label.frame = CGRectMake(0, 0, 260.0, reqSize.height);
+            label.numberOfLines = 5;
+            label.textAlignment = UITextAlignmentCenter;
+            label.backgroundColor = [UIColor clearColor];
+            label.font = font;
+            label.textColor = [PCValues textColor1];
+            label.shadowOffset = [PCValues shadowOffset1];
+            label.shadowColor = [UIColor whiteColor];
+            label.adjustsFontSizeToFitWidth = NO;
+            label.text = text;
+            return [label autorelease];
             break;
         }
         default:
@@ -120,7 +182,7 @@
     switch (section) {
         case 0: //gaspar account
         {
-            BOOL isLoggedIn = YES; //TODO
+            BOOL isLoggedIn = isLoggedInTest; //TODO
             NSString* username = @"test"; //TODO
             if (isLoggedIn) {
                 return [NSString stringWithFormat:@"%@ - %@",NSLocalizedStringFromTable(@"GasparAccount", @"PocketCampus", nil), username];
@@ -142,17 +204,52 @@
     switch (indexPath.section) {
         case 0: //gaspar account
         {
-            UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            BOOL isLoggedIn = YES; //TODO
             
-            if (isLoggedIn) {
+            
+            BOOL isLoggedIn = isLoggedInTest; //TODO
+            
+            if (isLoggedIn) { //logout button
+                UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
                 cell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"PocketCampus", nil);
+                cell.textLabel.textAlignment = UITextAlignmentCenter;
+                return cell;
             } else {
-                //TODO
+                switch (indexPath.row) {
+                    case 0: //username
+                    {
+                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+                        usernameTextField = cell.textField;
+                        usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                        usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                        usernameTextField.returnKeyType = UIReturnKeyNext;
+                        usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                        usernameTextField.delegate = self;
+                        return cell;
+                        break;
+                    }
+                    case 1: //password
+                    {
+                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+                        passwordTextField = cell.textField;
+                        passwordTextField.secureTextEntry = YES;
+                        passwordTextField.returnKeyType = UIReturnKeyGo;
+                        cell.textField.delegate = self;
+                        return cell;
+                        break;
+                    }
+                    case 2: //login button
+                    {
+                        UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+                        cell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"PocketCampus", nil);
+                        cell.textLabel.textAlignment = UITextAlignmentCenter;
+                        //cell.textLabel.textColor = [UIColor cyanColor];
+                        return cell;
+                        break;
+                    }
+                    default:
+                        break;
+                }
             }
-            return cell;
             break;   
         }
         case 1: //about
@@ -160,21 +257,25 @@
             UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
             cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
             return cell;
         }
         default:
-            return nil;
             break;
     }
-    
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0: //gaspar account
-            return 1; //TODO : different if logged out
+        {
+            if (isLoggedInTest) {
+                return 1; //only logout button
+            } else {
+                return 3; //username, password, login button
+            }
             break;
+        }
         case 1: //about
             return 1;
         default:

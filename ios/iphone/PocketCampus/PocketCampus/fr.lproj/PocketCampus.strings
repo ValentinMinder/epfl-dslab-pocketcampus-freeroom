@@ -20,3 +20,4 @@
 "Logout" = "Déconnexion";
 "LoggedInExplanationLong" = "Vos identifiants sont stockés de manière sécurisée dans le trousseau iOS.\n\n";
 "About" = "À propos";
+"GasparAccountRequiredFor" = "Vos identifiants Gaspar sont requis\npour les services Moodle et Camipro.";

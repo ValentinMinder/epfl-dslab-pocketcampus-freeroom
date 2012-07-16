@@ -20,3 +20,4 @@
 "Logout" = "Logout";
 "LoggedInExplanationLong" = "Your credentials are stored securely\nin the iOS keychain.\n\n";
 "About" = "About";
+"GasparAccountRequiredFor" = "Your Gaspar account is required\nfor Moodle and Camipro.";
