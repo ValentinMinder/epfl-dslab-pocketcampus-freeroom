@@ -218,6 +218,8 @@ static NSInteger kSavePasswordSwitchTag = 5;
             [password release];
             password = [[[alertView textFieldAtIndex:1] text] retain];
             
+            [AuthenticationService saveUsername:username];
+            
             savePassword = [(UISwitch*)[alertView viewWithTag:kSavePasswordSwitchTag] isOn];
             
             if (savePassword) {
@@ -293,9 +295,8 @@ static NSInteger kSavePasswordSwitchTag = 5;
             tequilaCookie = [cookie.value retain];
         }
     }
-    [AuthenticationService saveUsername:username];
-    [AuthenticationService savePassword:nil];
     if (tequilaCookie == nil) { //means bad credentials
+        [AuthenticationService savePassword:nil];
         [self askForCredentialsToken:token withMessage:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) delegate:self.delegate];
         /*[self askCredientialsForTypeOfService:typeOfService message:NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) prefillWithLastUsedUsername:NO delegate:self.delegate];*/
     } else {
