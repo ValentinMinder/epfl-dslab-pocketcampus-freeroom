@@ -16,7 +16,7 @@ public class GetTequilaTokenRequest extends Request<MoodleController, Iface, Obj
 
 	@Override
 	protected TequilaToken runInBackground(Iface client, Object param) throws Exception {
-		return client.getTequilaToken();
+		return client.getTequilaTokenForMoodle();
 	}
 
 	@Override

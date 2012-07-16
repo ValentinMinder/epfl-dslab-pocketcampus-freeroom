@@ -49,7 +49,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	}
 	
 	@Override
-	public TequilaToken getTequilaToken() throws TException {
+	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		System.out.println("getTequilaToken");
 		try {
 	        HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();

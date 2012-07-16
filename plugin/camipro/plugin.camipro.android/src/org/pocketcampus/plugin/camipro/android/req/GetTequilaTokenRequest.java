@@ -16,7 +16,7 @@ public class GetTequilaTokenRequest extends Request<CamiproController, Iface, Ob
 
 	@Override
 	protected TequilaToken runInBackground(Iface client, Object param) throws Exception {
-		return client.getTequilaToken();
+		return client.getTequilaTokenForCamipro();
 	}
 
 	@Override

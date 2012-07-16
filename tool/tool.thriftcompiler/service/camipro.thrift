@@ -54,7 +54,7 @@ struct SendMailResult {
 
 
 service CamiproService {
-	authentication.TequilaToken getTequilaToken();
+	authentication.TequilaToken getTequilaTokenForCamipro();
 	CamiproSession getCamiproSession(1: authentication.TequilaToken iTequilaToken);
 	BalanceAndTransactions getBalanceAndTransactions(1: CamiproRequest iRequest);
 	StatsAndLoadingInfo getStatsAndLoadingInfo(1: CamiproRequest iRequest);

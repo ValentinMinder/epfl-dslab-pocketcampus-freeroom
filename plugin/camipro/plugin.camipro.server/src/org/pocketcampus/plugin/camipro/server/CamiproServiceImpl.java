@@ -49,7 +49,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 	
 	@Override
-	public TequilaToken getTequilaToken() throws TException {
+	public TequilaToken getTequilaTokenForCamipro() throws TException {
 		System.out.println("getTequilaToken");
 		try {
 			String cmdLine = "curl --include https://cmp2www.epfl.ch/ws/balance";

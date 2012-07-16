@@ -83,7 +83,7 @@ struct SectionsListReply {
 
 
 service MoodleService {
-	authentication.TequilaToken getTequilaToken();
+	authentication.TequilaToken getTequilaTokenForMoodle();
 	MoodleSession getMoodleSession(1: authentication.TequilaToken iTequilaToken);
 	CoursesListReply getCoursesList(1: MoodleRequest iRequest);
 	EventsListReply getEventsList(1: MoodleRequest iRequest);
