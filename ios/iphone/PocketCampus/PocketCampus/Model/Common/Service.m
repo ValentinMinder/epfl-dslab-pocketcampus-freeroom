@@ -32,23 +32,26 @@ static NSTimeInterval connectivityCheckTimeout;
         serviceName = [serviceName_ retain];
         NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
 
+        NSString* serverProto = nil;
         NSString* serverAddress = nil;
         NSString* serverPort = nil;
         NSString* serverVersion = nil;
         
         if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithInt:1]]) {
             //urlString = [config objectForKey:@"DEV_SERVER_URL"];
+            serverProto = [config objectForKey:@"DEV_SERVER_PROTO"];
             serverAddress = [config objectForKey:@"DEV_SERVER_ADDRESS"];
             serverPort = [config objectForKey:@"DEV_SERVER_PORT"];
             serverVersion = [config objectForKey:@"DEV_SERVER_VERSION"];
         } else {
             //urlString = [config objectForKey:@"PROD_SERVER_URL"];
+            serverProto = [config objectForKey:@"PROD_SERVER_PROTO"];
             serverAddress = [config objectForKey:@"PROD_SERVER_ADDRESS"];
             serverPort = [config objectForKey:@"PROD_SERVER_PORT"];
             serverVersion = [config objectForKey:@"PROD_SERVER_VERSION"];
              
         }
-        serverAddressWithPort = [[NSString stringWithFormat:@"http://%@:%@", serverAddress, serverPort] retain];
+        serverAddressWithPort = [[NSString stringWithFormat:@"%@://%@:%@", serverProto, serverAddress, serverPort] retain];
         NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@/%@", serverAddressWithPort, serverVersion, serviceName];
         NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
         serverURL = [[NSURL URLWithString:serviceURLString] retain];
