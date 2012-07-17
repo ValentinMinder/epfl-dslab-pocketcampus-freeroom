@@ -60,7 +60,7 @@ public abstract class ServerBase {
 	        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
 	        ssl_connector.setPort(SSL_LISTEN_ON_PORT);
 	        SslContextFactory cf = ssl_connector.getSslContextFactory();
-	        cf.setKeyStore("ssl-keystore-pocketcampus");
+	        cf.setKeyStore("ssl-keystore-pocketcampus-chained");
 	        cf.setKeyStorePassword("pocketcampus");
 	        cf.setKeyManagerPassword("pocketcampus");
 	        conn_list.add(ssl_connector);
