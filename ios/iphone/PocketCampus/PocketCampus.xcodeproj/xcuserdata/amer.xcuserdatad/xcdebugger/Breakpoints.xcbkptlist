@@ -90,9 +90,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "963"
-         endingLineNumber = "963"
-         landmarkName = "-didTimeout"
-         landmarkType = "5">
+         endingLineNumber = "963">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -104,8 +102,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "161"
          endingLineNumber = "161"
-         landmarkName = "-dealloc"
-         landmarkType = "5">
+         landmarkName = "@implementation Service"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -125,24 +123,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-         timestampString = "363286182.642136"
+         timestampString = "364228129.885685"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "49"
-         endingLineNumber = "49"
-         landmarkName = "+saveLastUsedUsername:forService:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-         timestampString = "363286184.11552"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
          landmarkName = "+savedPassword"
          landmarkType = "5">
       </FileBreakpoint>
@@ -158,19 +143,6 @@
          endingLineNumber = "4790"
          landmarkName = "+runRequests"
          landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-         timestampString = "363286639.446867"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "50"
-         endingLineNumber = "50"
-         landmarkName = "@implementation AuthenticationService"
-         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -208,8 +180,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "105"
          endingLineNumber = "105"
-         landmarkName = "-requestFinished:"
-         landmarkType = "5">
+         landmarkName = "@implementation Service"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -221,7 +193,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "115"
          endingLineNumber = "115"
-         landmarkName = "-requestFailed:"
+         landmarkName = "-requestFinished:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -234,7 +206,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "148"
          endingLineNumber = "148"
-         landmarkName = "-notifyAll"
+         landmarkName = "-cancelAllOperations"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -247,7 +219,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "153"
          endingLineNumber = "153"
-         landmarkName = "-thriftProtocolInstance"
+         landmarkName = "-notifyAll"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -260,7 +232,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "72"
          endingLineNumber = "72"
-         landmarkName = "-serverIsReachable:"
+         landmarkName = "+requestTimeoutInterval"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -273,7 +245,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "246"
          endingLineNumber = "246"
-         landmarkName = "-checkPrimariesAndScheduleTimeoutTimer"
+         landmarkName = "-initWithThriftServiceClient:service:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -286,8 +258,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "272"
          endingLineNumber = "272"
-         landmarkName = "@implementation ServiceRequest"
-         landmarkType = "3">
+         landmarkName = "-timeoutTime"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -312,8 +284,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "123"
          endingLineNumber = "123"
-         landmarkName = "-cancelOperationsForDelegate:"
-         landmarkType = "5">
+         landmarkName = "@implementation Service"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -325,7 +297,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "138"
          endingLineNumber = "138"
-         landmarkName = "-cancelAllOperations"
+         landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

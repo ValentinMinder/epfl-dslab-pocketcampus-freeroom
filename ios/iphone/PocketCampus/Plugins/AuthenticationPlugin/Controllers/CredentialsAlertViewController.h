@@ -16,10 +16,10 @@
     UIAlertView* alertView;
     UIAlertView* connectionErrorAlertView;
     AuthenticationService* authenticationService;
-    int typeOfService;
+    //int typeOfService;
     BOOL savePassword;
     NSString* tequilaCookie;
-    TequilaKey* applicationTequilaKey;
+    //TequilaKey* applicationTequilaKey;
     NSString* username;
     NSString* password;
     NSString* token;
@@ -27,7 +27,6 @@
 
 @property (assign) id<AuthenticationCallbackDelegate> delegate;
 
-- (void)askCredientialsForTypeOfService:(int)typeOfService_ message:(NSString*)messageOrNil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate_;
 - (void)askForCredentialsToken:(NSString*)token_ withMessage:(NSString*)messageOrNil delegate:(id<AuthenticationCallbackDelegate>)delegate_;
 - (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_;
 

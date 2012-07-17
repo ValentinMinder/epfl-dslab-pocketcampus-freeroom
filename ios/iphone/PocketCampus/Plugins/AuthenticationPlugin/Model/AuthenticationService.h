@@ -13,21 +13,12 @@
 
 /*
  authentication service methods
- 
- - (TequilaKey *) getTequilaKeyForService: (int) aService;  // throws TException
- - (SessionId *) getSessionIdForService: (TequilaKey *) aTequilaKey;  // throws TException
-*/
-
-+ (NSString*)lastUsedUsernameForService:(int)service;
-+ (BOOL)saveLastUsedUsername:(NSString*)username forService:(int)service;
+ */
 
 + (NSString*)savedUsername;
 + (BOOL)saveUsername:(NSString*)username;
 + (NSString*)savedPassword;
 + (BOOL)savePassword:(NSString*)password;
-
-- (void)getTequilaKeyForService:(int)service delegate:(id)delegate;
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)tequilaKey delegate:(id)delegate;
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate;
@@ -37,11 +28,6 @@
 @protocol AuthenticationServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)getTequilaKeyForService:(int)service didReturn:(TequilaKey*)tequilaKey;
-- (void)getTequilaKeyFailedForService:(int)service;
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)aTequilaKey didReturn:(SessionId*)aSessionId;
-- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaKey*)aTequilaKey;
-
 - (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request;
 - (void)loginToTequilaFailed:(ASIHTTPRequest*)request;
 - (void)authenticateTokenWithTequilaDidReturn:(ASIHTTPRequest*)request;
@@ -52,10 +38,8 @@
 @protocol AuthenticationCallbackDelegate
 
 @optional
-- (int)getTypeOfService;
-- (void)gotSessionId:(SessionId*)sessionId;
 - (void)userCancelledAuthentication;
 - (void)authenticationSucceeded;
-- (void)authenticationTimeout;
+- (void)invalidToken;
 
 @end

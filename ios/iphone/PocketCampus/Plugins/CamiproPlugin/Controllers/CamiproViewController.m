@@ -97,7 +97,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)showLoginPopup {
     [camiproService getTequilaTokenForCamiproDelegate:self];
-    //[authController loginToService:TypeOfService_SERVICE_CAMIPRO prefillWithLastUsedUsername:YES delegate:self];
 }
 
 - (SessionId*) buildSessionIdFromCamiproSession:(CamiproSession*)camiproSession {

@@ -45,7 +45,6 @@ static CamiproService* instance = nil;
     operation.serviceClientSelector = @selector(getTequilaTokenForCamipro);
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForCamiproDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForCamiproFailed);
-    //[operation addIntArgument:service];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
     [operation release];

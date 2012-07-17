@@ -51,7 +51,6 @@ static MoodleService* instance = nil;
     operation.serviceClientSelector = @selector(getTequilaTokenForMoodle);
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForMoodleDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForMoodleFailed);
-    //[operation addIntArgument:service];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
     [operation release];

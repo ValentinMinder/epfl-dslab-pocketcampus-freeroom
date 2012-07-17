@@ -31,10 +31,6 @@ static NSString* name = nil;
     return self;
 }
 
-- (void)loginToService:(int)typeOfService prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:(id<AuthenticationCallbackDelegate>)delegate {
-    [credentialsAlertViewController askCredientialsForTypeOfService:typeOfService message:nil prefillWithLastUsedUsername:(BOOL)prefillUsername delegate:delegate];
-}
-
 - (void)authToken:(NSString*)token delegate:(id<AuthenticationCallbackDelegate>)delegate {
     NSLog(@"token to auth %@", token);
     NSString* savedPassword = [AuthenticationService savedPassword];
@@ -43,6 +39,11 @@ static NSString* name = nil;
     } else {
         [credentialsAlertViewController authenticateSilentlyToken:token delegate:delegate];
     }
+}
+
+- (void)deleteSavedCredentials {
+    [AuthenticationService saveUsername:nil];
+    [AuthenticationService savePassword:nil];
 }
 
 + (NSString*)localizedName {

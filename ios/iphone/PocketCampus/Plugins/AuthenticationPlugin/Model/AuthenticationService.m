@@ -31,23 +31,6 @@ static AuthenticationService* instance = nil;
     return [[[AuthenticationServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
-+ (NSString*)lastUsedUsernameForService:(int)service {
-    NSMutableDictionary* lastUsernamesForService = (NSMutableDictionary*)[ObjectArchiver objectForKey:kLastUsedUseramesKey andPluginName:@"authentication"];
-    if (lastUsernamesForService == nil) {
-        return nil;
-    }
-    return [lastUsernamesForService objectForKey:[NSString stringWithFormat:@"%d", service]];
-}
-
-+ (BOOL)saveLastUsedUsername:(NSString*)username forService:(int)service {
-    NSMutableDictionary* lastUsernamesForService = (NSMutableDictionary*)[ObjectArchiver objectForKey:kLastUsedUseramesKey andPluginName:@"authentication"];
-    if (lastUsernamesForService == nil) {
-        lastUsernamesForService = [NSMutableDictionary dictionary];
-    }
-    [lastUsernamesForService setObject:username forKey:[NSString stringWithFormat:@"%d", service]];
-    return [ObjectArchiver saveObject:lastUsernamesForService forKey:kLastUsedUseramesKey andPluginName:@"authentication"];
-}
-
 + (NSString*)savedUsername {
     return (NSString*)[ObjectArchiver objectForKey:kSavedUsernameKey andPluginName:@"authentication"];
 }
@@ -62,28 +45,6 @@ static AuthenticationService* instance = nil;
 
 + (BOOL)savePassword:(NSString*)password {
     return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
-}
-
-- (void)getTequilaKeyForService:(int)service delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getTequilaKeyForService:);
-    operation.delegateDidReturnSelector = @selector(getTequilaKeyForService:didReturn:);
-    operation.delegateDidFailSelector = @selector(getTequilaKeyFailedForService:);
-    [operation addIntArgument:service];
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-    [operation release];
-}
-
-- (void)getSessionIdForServiceWithTequilaKey:(TequilaKey*)tequilaKey delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(getSessionIdForService:);
-    operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
-    operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
-    [operation addObjectArgument:tequilaKey];
-    operation.returnType = ReturnTypeObject;
-    [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {
