@@ -138,7 +138,7 @@
     NSLog(@"-> getTequilaTokenForMoodleDidReturn:%@", tequilaKey_);
     [tequilaKey release];
     tequilaKey = [tequilaKey_ retain];
-    [authController authToken:tequilaKey.iTequilaKey delegate:self];
+    [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 
 - (void)getTequilaTokenForMoodleFailed {
@@ -195,16 +195,12 @@
 
 /* AuthenticationCallbackDelegate delegation */
 
-- (int)getTypeOfService {
-    return TypeOfService_SERVICE_MOODLE;
+- (void)authenticationSucceeded {
+    [moodleService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
-- (void)gotSessionId:(SessionId*)aSessionId {
-    //centerMessageLabel.text = aSessionId.moodleCookie;
-    moodleService.moodleCookie = aSessionId.moodleCookie;
-    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self go];
+- (void)invalidToken {
+    // TODO
 }
 
 - (void)userCancelledAuthentication {
@@ -212,10 +208,6 @@
     if (self.navigationController.visibleViewController == self) {
         [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
     }
-}
-
-- (void)authenticationSucceeded {
-    [moodleService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
 /* UITableViewDelegate delegation */
