@@ -12,6 +12,7 @@ static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
 
 static NSString* kSavedUsernameKey = @"SAVED_USERNAME_KEY";
 static NSString* kSavedPasswordKey = @"SAVED_PASSWORD_KEY";
+static NSString* kUserHasLoggedOutKey = @"USER_HAS_LOGGED_OUT_KEY";
 
 static AuthenticationService* instance = nil;
 
@@ -45,6 +46,14 @@ static AuthenticationService* instance = nil;
 
 + (BOOL)savePassword:(NSString*)password {
     return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
+}
+
++ (BOOL)userHasLoggedOut {
+    return [(NSNumber*)[ObjectArchiver objectForKey:kUserHasLoggedOutKey andPluginName:@"authentication"] boolValue];
+}
+
++ (BOOL)saveUserHasLoggedOut:(BOOL)loggedOut {
+    return [ObjectArchiver saveObject:[NSNumber numberWithBool:loggedOut] forKey:kUserHasLoggedOutKey andPluginName:@"authentication"];
 }
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {

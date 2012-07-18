@@ -4,6 +4,10 @@
 
 #import "CredentialsAlertViewController.h"
 
+#import "GasparViewController.h"
+
+#import "PCValues.h"
+
 @implementation AuthenticationController
 
 static NSString* name = nil;
@@ -17,6 +21,7 @@ static NSString* name = nil;
         mainViewController = credentialsViewController;
         
         credentialsAlertViewController = [[CredentialsAlertViewController alloc] init];
+        gasparViewController = nil;
     }
     return self;
 }
@@ -31,14 +36,38 @@ static NSString* name = nil;
     return self;
 }
 
-- (void)authToken:(NSString*)token delegate:(id<AuthenticationCallbackDelegate>)delegate {
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
     NSLog(@"token to auth %@", token);
     NSString* savedPassword = [AuthenticationService savedPassword];
-    if(savedPassword == nil) {
-        [credentialsAlertViewController askForCredentialsToken:token withMessage:nil delegate:delegate];
+    NSLog(@"savedPassword : %@", savedPassword);
+    [gasparViewController release];
+    gasparViewController = [[GasparViewController alloc] init];
+    if (savedPassword) {
+        gasparViewController.presentationMode = PresentationModeTryHidden;
+        gasparViewController.viewControllerForPresentation = presentationViewController;
+        gasparViewController.showSavePasswordSwitch = YES;
+        gasparViewController.hideGasparUsageAccountMessage = YES;
+        [gasparViewController authenticateSilentlyToken:token delegate:delegate];
     } else {
-        [credentialsAlertViewController authenticateSilentlyToken:token delegate:delegate];
+        gasparViewController.presentationMode = PresentationModeModal;
+        gasparViewController.showSavePasswordSwitch = YES;
+        gasparViewController.hideGasparUsageAccountMessage = YES;
+        gasparViewController.delegate = delegate;
+        gasparViewController.token = token;
+        UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:gasparViewController]; //so that nav bar is shown
+        tmpNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+        
+        if ([presentationViewController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
+            [presentationViewController presentViewController:tmpNavController animated:YES completion:^{
+                [gasparViewController focusOnInput];
+            }];
+        } else {
+            [presentationViewController presentModalViewController:tmpNavController animated:YES];
+        }
+        
+        [tmpNavController release];
     }
+    
 }
 
 - (void)deleteSavedCredentials {
@@ -65,6 +94,7 @@ static NSString* name = nil;
 - (void)dealloc
 {
     [credentialsAlertViewController release];
+    [gasparViewController release];
     [name release];
     name = nil;
     [super dealloc];

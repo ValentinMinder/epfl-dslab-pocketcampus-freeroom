@@ -135,7 +135,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
                 
                 /* EXAMPLE of use */
                 
-                /*NSError* error = nil;
+                NSError* error = nil;
                 
                 NSString* password = [STKeychain getPasswordForUsername:username andServiceName:@"Gaspar" error:&error];
                 
@@ -152,7 +152,7 @@ static NSInteger kSavePasswordSwitchTag = 5;
                     NSLog(@"Error while storing password");
                 } else {
                     NSLog(@"Password saved");
-                }*/
+                }
                 
                 /* END */
             }

@@ -70,9 +70,13 @@ static CGFloat kBalanceCellHeight = 70.0;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     CamiproSession* sessionId = [CamiproService lastSessionId];
+    if ([AuthenticationService userHasLoggedOut]) {
+        sessionId = nil;
+        [CamiproService saveSessionId:nil];
+    }
     if (sessionId == nil) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
-        [self showLoginPopup];
+        [self login];
     } else {
         NSLog(@"-> Trying to getBalanceAndTransactions with previously saved SessionId");
         [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
@@ -95,7 +99,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     [actionSheet release];
 }
 
-- (void)showLoginPopup {
+- (void)login {
     [camiproService getTequilaTokenForCamiproDelegate:self];
 }
 
@@ -112,12 +116,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 /* AuthenticationCallbackDelegate delegation */
 
-- (void)gotSessionId:(CamiproSession*)sessionId {
-    NSLog(@"-> gotSessionId");
-    [CamiproService saveSessionId:sessionId];
-    [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
-}
-
 - (void)userCancelledAuthentication {
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
@@ -129,8 +127,8 @@ static CGFloat kBalanceCellHeight = 70.0;
     [camiproService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
-- (void)authenticationTimeout {
-    [self serviceConnectionToServerTimedOut];
+- (void)invalidToken {
+    //TODO
 }
 
 /* CamiproServiceDelegate delegation */
@@ -139,7 +137,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     NSLog(@"-> getTequilaTokenForCamiproDidReturn:%@", tequilaKey_);
     [tequilaKey release];
     tequilaKey = [tequilaKey_ retain];
-    [authController authToken:tequilaKey.iTequilaKey delegate:self];
+    [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
@@ -161,7 +159,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         case 407: //user not authenticated (sessionId expired)
             NSLog(@"-> User session has expired. Requesting credientials...");
             [CamiproService saveSessionId:nil];
-            [self showLoginPopup];
+            [self login];
             break;
         case 404:
             NSLog(@"-> 404 error in status from getBalanceAndTransactionsForCamiproRequest:didReturn:");

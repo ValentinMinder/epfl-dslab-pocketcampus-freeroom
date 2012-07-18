@@ -5,11 +5,14 @@
 
 @class CredentialsAlertViewController;
 
+@class GasparViewController;
+
 @interface AuthenticationController : PluginController<PluginControllerProtocol> {
     CredentialsAlertViewController* credentialsAlertViewController;
+    GasparViewController* gasparViewController;
 }
 
-- (void)authToken:(NSString*)token delegate:(id<AuthenticationCallbackDelegate>)delegate;
+- (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate;
 - (void)deleteSavedCredentials;
 
 @end

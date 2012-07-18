@@ -19,6 +19,8 @@
 + (BOOL)saveUsername:(NSString*)username;
 + (NSString*)savedPassword;
 + (BOOL)savePassword:(NSString*)password;
++ (BOOL)userHasLoggedOut;
++ (BOOL)saveUserHasLoggedOut:(BOOL)loggedOut;
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate;
@@ -37,9 +39,9 @@
 
 @protocol AuthenticationCallbackDelegate
 
-@optional
-- (void)userCancelledAuthentication;
+@required
 - (void)authenticationSucceeded;
+- (void)userCancelledAuthentication;
 - (void)invalidToken;
 
 @end

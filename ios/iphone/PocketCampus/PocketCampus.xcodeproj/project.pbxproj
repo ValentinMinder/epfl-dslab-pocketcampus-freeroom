@@ -22,6 +22,7 @@
 		32102B6C15050C000076537E /* FoodService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32102B6B15050C000076537E /* FoodService.m */; };
 		32125BBF1536F215009B8D37 /* FeetConnection.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBD1536F215009B8D37 /* FeetConnection.png */; };
 		32125BC01536F215009B8D37 /* FeetConnection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32125BBE1536F215009B8D37 /* FeetConnection@2x.png */; };
+		3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; };
 		3217CE0C1508EB4D00BF94F7 /* RestaurantsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3217CE0B1508EB4D00BF94F7 /* RestaurantsListView.xib */; };
 		3217CE0F1508F92700BF94F7 /* RestaurantsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* RestaurantsListViewController.m */; };
@@ -42,7 +43,6 @@
 		3219EF9614FCE08300A271CD /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8614FCE08300A271CD /* TSocketClient.m */; };
 		3219EF9714FCE08300A271CD /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8914FCE08300A271CD /* TTransportException.m */; };
 		3219EF9814FCE08300A271CD /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3219EF8B14FCE08300A271CD /* TSharedProcessorFactory.m */; };
-		321F37E515B02FBE00E7BA6D /* AppLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E015B02FBE00E7BA6D /* AppLogo@2x.png */; };
 		321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E115B02FBE00E7BA6D /* HelpBarButton.png */; };
 		321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */; };
 		321F37E815B02FBE00E7BA6D /* HomeNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37E315B02FBE00E7BA6D /* HomeNavbar.png */; };
@@ -126,6 +126,8 @@
 		329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */; };
 		329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD0151F86D7000AC339 /* BusTransport.png */; };
 		329D4AD3151F86D7000AC339 /* BusTransport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD1151F86D7000AC339 /* BusTransport@2x.png */; };
+		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
+		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
 		32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
 		32AF214815B197DE00BB445D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* help.html */; };
@@ -156,7 +158,6 @@
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
 		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
 		32CCB4C9155520FE00220282 /* CredentialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4BB155520FE00220282 /* CredentialsViewController.m */; };
-		32CCB4CA155520FE00220282 /* AuthenticationPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4BC155520FE00220282 /* AuthenticationPlugin.strings */; };
 		32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
 		32CCB4CC155520FE00220282 /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; };
 		32CCB4CD155520FE00220282 /* CredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4C6155520FE00220282 /* CredentialsView.xib */; };
@@ -239,6 +240,8 @@
 		32102B6B15050C000076537E /* FoodService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodService.m; sourceTree = "<group>"; };
 		32125BBD1536F215009B8D37 /* FeetConnection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FeetConnection.png; sourceTree = "<group>"; };
 		32125BBE1536F215009B8D37 /* FeetConnection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FeetConnection@2x.png"; sourceTree = "<group>"; };
+		3215425515B5B75F0003C8B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
+		3215425715B5B7670003C8B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		3217CE081508E31200BF94F7 /* FoodController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodController.h; sourceTree = "<group>"; };
 		3217CE091508E31200BF94F7 /* FoodController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodController.m; sourceTree = "<group>"; };
 		3217CE0B1508EB4D00BF94F7 /* RestaurantsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RestaurantsListView.xib; sourceTree = "<group>"; };
@@ -283,7 +286,6 @@
 		3219EF8914FCE08300A271CD /* TTransportException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTransportException.m; sourceTree = "<group>"; };
 		3219EF8A14FCE08300A271CD /* TSharedProcessorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSharedProcessorFactory.h; sourceTree = "<group>"; };
 		3219EF8B14FCE08300A271CD /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
-		321F37E015B02FBE00E7BA6D /* AppLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo@2x.png"; sourceTree = "<group>"; };
 		321F37E115B02FBE00E7BA6D /* HelpBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelpBarButton.png; sourceTree = "<group>"; };
 		321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpBarButton@2x.png"; sourceTree = "<group>"; };
 		321F37E315B02FBE00E7BA6D /* HomeNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeNavbar.png; sourceTree = "<group>"; };
@@ -401,6 +403,9 @@
 		329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationTransportArrow@2x.png"; sourceTree = "<group>"; };
 		329D4AD0151F86D7000AC339 /* BusTransport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusTransport.png; sourceTree = "<group>"; };
 		329D4AD1151F86D7000AC339 /* BusTransport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BusTransport@2x.png"; sourceTree = "<group>"; };
+		32A54B7B15B5A8E100A7C882 /* GasparViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GasparViewController.h; sourceTree = "<group>"; };
+		32A54B7C15B5A8E100A7C882 /* GasparViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GasparViewController.m; sourceTree = "<group>"; };
+		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
 		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
 		32AF214515B193A200BB445D /* TransportHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
@@ -454,8 +459,6 @@
 		32CCB4B9155520FE00220282 /* AuthenticationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationController.m; sourceTree = "<group>"; };
 		32CCB4BA155520FE00220282 /* CredentialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsViewController.h; sourceTree = "<group>"; };
 		32CCB4BB155520FE00220282 /* CredentialsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsViewController.m; sourceTree = "<group>"; };
-		32CCB4BD155520FE00220282 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
-		32CCB4BE155520FE00220282 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AuthenticationPlugin.strings; sourceTree = "<group>"; };
 		32CCB4C0155520FE00220282 /* AuthenticationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationService.h; sourceTree = "<group>"; };
 		32CCB4C1155520FE00220282 /* AuthenticationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationService.m; sourceTree = "<group>"; };
 		32CCB4C3155520FE00220282 /* authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authentication.h; sourceTree = "<group>"; };
@@ -747,7 +750,6 @@
 			children = (
 				321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */,
 				321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */,
-				321F37E015B02FBE00E7BA6D /* AppLogo@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
 				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
 				321F37E315B02FBE00E7BA6D /* HomeNavbar.png */,
@@ -1161,6 +1163,8 @@
 				32CCB4BB155520FE00220282 /* CredentialsViewController.m */,
 				32CCB4F215553B2E00220282 /* CredentialsAlertViewController.h */,
 				32CCB4F315553B2E00220282 /* CredentialsAlertViewController.m */,
+				32A54B7B15B5A8E100A7C882 /* GasparViewController.h */,
+				32A54B7C15B5A8E100A7C882 /* GasparViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1187,8 +1191,9 @@
 		32CCB4C5155520FE00220282 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				32CCB4C6155520FE00220282 /* CredentialsView.xib */,
 				32CCB4C7155520FE00220282 /* Images */,
+				32CCB4C6155520FE00220282 /* CredentialsView.xib */,
+				32A54B7F15B5AA5900A7C882 /* GasparView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1203,7 +1208,7 @@
 		32CCB4CF1555211200220282 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				32CCB4BC155520FE00220282 /* AuthenticationPlugin.strings */,
+				3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1775,7 +1780,6 @@
 				32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */,
 				32E1FDB715474F7E00B1B630 /* FloorUp.png in Resources */,
 				32E1FDB815474F7E00B1B630 /* FloorUp@2x.png in Resources */,
-				32CCB4CA155520FE00220282 /* AuthenticationPlugin.strings in Resources */,
 				32CCB4CD155520FE00220282 /* CredentialsView.xib in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32CCB4ED1555237500220282 /* CourseSectionsView.xib in Resources */,
@@ -1804,7 +1808,6 @@
 				320A05BA15B02D5F0057B15C /* HomeView.xib in Resources */,
 				320A05BB15B02D5F0057B15C /* MainView.xib in Resources */,
 				320A05BC15B02D5F0057B15C /* SplashView.xib in Resources */,
-				321F37E515B02FBE00E7BA6D /* AppLogo@2x.png in Resources */,
 				321F37E615B02FBE00E7BA6D /* HelpBarButton.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				321F37E815B02FBE00E7BA6D /* HomeNavbar.png in Resources */,
@@ -1814,6 +1817,8 @@
 				321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */,
 				32AF214815B197DE00BB445D /* help.html in Resources */,
 				3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */,
+				32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */,
+				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1929,12 +1934,22 @@
 				320A05B215B02C240057B15C /* GlobalSettingsViewController.m in Sources */,
 				320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
+				32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		3215425415B5B75F0003C8B2 /* AuthenticationPlugin.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3215425515B5B75F0003C8B2 /* fr */,
+				3215425715B5B7670003C8B2 /* en */,
+			);
+			name = AuthenticationPlugin.strings;
+			sourceTree = "<group>";
+		};
 		324151C615373A1700CCFB22 /* MapPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1987,15 +2002,6 @@
 				32B58713156458FA0051C57E /* fr */,
 			);
 			name = CamiproPlugin.strings;
-			sourceTree = "<group>";
-		};
-		32CCB4BC155520FE00220282 /* AuthenticationPlugin.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				32CCB4BD155520FE00220282 /* en */,
-				32CCB4BE155520FE00220282 /* fr */,
-			);
-			name = AuthenticationPlugin.strings;
 			sourceTree = "<group>";
 		};
 		32CCB4D81555237500220282 /* MoodlePlugin.strings */ = {

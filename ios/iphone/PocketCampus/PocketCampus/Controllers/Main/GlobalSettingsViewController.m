@@ -12,9 +12,11 @@
 
 #import "EditableTableViewCell.h"
 
-@implementation GlobalSettingsViewController
+#import "GasparViewController.h"
 
-static BOOL isLoggedInTest = NO;
+static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
+
+@implementation GlobalSettingsViewController
 
 @synthesize tableView;
 
@@ -23,7 +25,6 @@ static BOOL isLoggedInTest = NO;
     self = [super initWithNibName:@"GlobalSettingsView" bundle:nil];
     if (self) {
         // Custom initialization
-        cancelButtonDisplayed = NO;
         textEditing = NO;
     }
     return self;
@@ -39,8 +40,15 @@ static BOOL isLoggedInTest = NO;
     backgroundView.backgroundColor = [PCValues backgroundColor1];;
     tableView.backgroundView = backgroundView;
     [backgroundView release];
-    [self setRightBarButtonItemDone];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
+    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    [button release];
+    cancelButtonDisplayed = NO;
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidUnload
@@ -49,22 +57,6 @@ static BOOL isLoggedInTest = NO;
     // Release any retained subviews of the main view.
 }
 
-- (void)setRightBarButtonItemDone {
-    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(doneBarButtonPressed)];
-    [self.navigationItem setRightBarButtonItem:button animated:YES];
-    [button release];
-    cancelButtonDisplayed = NO;
-}
-
-- (void)setRightBarButtonItemCancel {
-    if (cancelButtonDisplayed) {
-        return;
-    }
-    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelBarButtonPressed)];
-    [self.navigationItem setRightBarButtonItem:button animated:YES];
-    [button release];
-    cancelButtonDisplayed = YES;
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -79,101 +71,26 @@ static BOOL isLoggedInTest = NO;
     }  
 }
 
-- (void)cancelBarButtonPressed {
-    if (textEditing) {
-        [self.view endEditing:YES]; //resigns first responder (focus) from any text field
-        [self setRightBarButtonItemDone];
-    } else {
-        //TODO : cancel authentication and dismiss settings
-    }
-}
-
-/* UITextFieldDelegate delegation */
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    textEditing = YES;
-    [self setRightBarButtonItemCancel];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    textEditing = NO;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == usernameTextField) {
-        [passwordTextField becomeFirstResponder];
-    } else if (textField == passwordTextField) {
-        //TODO login
-    } else {
-        //nothing, unknown
-    }
-    return YES;
-}
-
 /* UITableViewDelegate delegation */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //TODO
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    switch (section) {
-        case 0: //gaspar account
-        {               
-            NSString* text;
-            if (isLoggedInTest) {
-                text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
-            } else {
-                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"PocketCampus", nil);
+    switch (indexPath.section) {
+        case 0: //accounts
+            switch (indexPath.row) {
+                case 0: //gaspar account
+                {
+                    GasparViewController* viewController = [[GasparViewController alloc] init];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                default:
+                    break;
             }
-            UIFont* font = [UIFont systemFontOfSize:16.0];
-            CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-            return reqSize.height+15.0;
             break;
-        }
             
         default:
             break;
     }
-    
-    return 0.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    
-    switch (section) {
-        case 0:
-        {
-
-            NSString* text;
-            if (isLoggedInTest) {
-                text = NSLocalizedStringFromTable(@"LoggedInExplanationLong", @"PocketCampus", nil);
-            } else {
-                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"PocketCampus", nil);
-            }
-            
-            UILabel* label = [[UILabel alloc] init];
-            label.text = text;
-            UIFont* font = [UIFont systemFontOfSize:16.0];
-            CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-            label.frame = CGRectMake(0, 0, 260.0, reqSize.height);
-            label.numberOfLines = 5;
-            label.textAlignment = UITextAlignmentCenter;
-            label.backgroundColor = [UIColor clearColor];
-            label.font = font;
-            label.textColor = [PCValues textColor1];
-            label.shadowOffset = [PCValues shadowOffset1];
-            label.shadowColor = [UIColor whiteColor];
-            label.adjustsFontSizeToFitWidth = NO;
-            label.text = text;
-            return [label autorelease];
-            break;
-        }
-        default:
-            break;
-    }
-    
-    return nil;
 }
 
 /* UITableViewDataSource delegation */
@@ -181,16 +98,7 @@ static BOOL isLoggedInTest = NO;
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0: //gaspar account
-        {
-            BOOL isLoggedIn = isLoggedInTest; //TODO
-            NSString* username = @"test"; //TODO
-            if (isLoggedIn) {
-                return [NSString stringWithFormat:@"%@ - %@",NSLocalizedStringFromTable(@"GasparAccount", @"PocketCampus", nil), username];
-            } else {
-                return NSLocalizedStringFromTable(@"GasparAccount", @"PocketCampus", nil);
-            }
-            break;
-        }
+            return NSLocalizedStringFromTable(@"Accounts", @"PocketCampus", nil);
         case 1: //about
             return @"PocketCampus";
             break;
@@ -200,63 +108,29 @@ static BOOL isLoggedInTest = NO;
     }
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell*)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell* cell;
+    
     switch (indexPath.section) {
         case 0: //gaspar account
         {
-            
-            
-            BOOL isLoggedIn = isLoggedInTest; //TODO
-            
-            if (isLoggedIn) { //logout button
-                UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"PocketCampus", nil);
-                cell.textLabel.textAlignment = UITextAlignmentCenter;
-                return cell;
-            } else {
-                switch (indexPath.row) {
-                    case 0: //username
-                    {
-                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
-                        usernameTextField = cell.textField;
-                        usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-                        usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                        usernameTextField.returnKeyType = UIReturnKeyNext;
-                        usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                        usernameTextField.delegate = self;
-                        return cell;
-                        break;
-                    }
-                    case 1: //password
-                    {
-                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
-                        passwordTextField = cell.textField;
-                        passwordTextField.secureTextEntry = YES;
-                        passwordTextField.returnKeyType = UIReturnKeyGo;
-                        cell.textField.delegate = self;
-                        return cell;
-                        break;
-                    }
-                    case 2: //login button
-                    {
-                        UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-                        cell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"PocketCampus", nil);
-                        cell.textLabel.textAlignment = UITextAlignmentCenter;
-                        //cell.textLabel.textColor = [UIColor cyanColor];
-                        return cell;
-                        break;
-                    }
-                    default:
-                        break;
-                }
+            cell = [tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
+            if (!cell) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kStandardSettingDefaultCell] autorelease];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            break;   
+            cell.textLabel.text = [GasparViewController localizedTitle];
+            return cell;
+            
         }
         case 1: //about
         {
-            UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+            cell = [tableView dequeueReusableCellWithIdentifier:kStandardSettingDefaultCell];
+            if (!cell) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kStandardSettingDefaultCell] autorelease];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
             cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             return cell;
         }
         default:
@@ -268,14 +142,7 @@ static BOOL isLoggedInTest = NO;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0: //gaspar account
-        {
-            if (isLoggedInTest) {
-                return 1; //only logout button
-            } else {
-                return 3; //username, password, login button
-            }
-            break;
-        }
+            return 1;
         case 1: //about
             return 1;
         default:
@@ -285,7 +152,7 @@ static BOOL isLoggedInTest = NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2; //TODO
+    return 2;
 }
 
 @end
