@@ -52,12 +52,22 @@
     if (![key isKindOfClass:[NSString class]] || ![pluginName isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad argument(s)" reason:@"bad key and/or pluginName argument" userInfo:nil];
     }
+    
+    id<NSCoding> object = [self objectForKey:key andPluginName:pluginName];
+    
+    if (!object) {
+        return nil;
+    }
+    
     NSDictionary* fileAttributes = [self fileAttributesForKey:key andPluginName:pluginName];
+    if (!fileAttributes) {
+        @throw [NSException exceptionWithName:@"-> objectForKey:andPluginName:nilIfDiffIntervalLargerThan: exception" reason:@"could not read file attributes" userInfo:nil];
+    }
     NSDate* modifDate = [fileAttributes objectForKey:@"NSFileModificationDate"];
     if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
         return nil;
     }
-    return [self objectForKey:key andPluginName:pluginName];
+    return object;
 }
 
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName {
