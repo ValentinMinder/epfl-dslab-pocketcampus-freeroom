@@ -228,7 +228,7 @@ static NSTimeInterval connectivityCheckTimeout;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, skipCache;
+@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -244,6 +244,8 @@ static NSTimeInterval connectivityCheckTimeout;
         executing = NO;
         canceled = NO;
         customTimeout = 0.0;
+        keepInCache = NO;
+        cacheValidity = 100.0 * 365 * 24 * 60 * 60; // hundred years in seconds (equivalent to the old skipCache = NO)
     }
     return self;
 }
@@ -280,45 +282,45 @@ static NSTimeInterval connectivityCheckTimeout;
     
     @try {
         [self computeHashCode];
-        if(!skipCache) {
-            NSDictionary* cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
-            if(cached) {
-                [self retain];
-                NSLog(@"REQ FOUND IN CACHE; SHOULD SERVE FROM CACHE");
-                
-                NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
-                [delegateInv setSelector:self.delegateDidReturnSelector];
-                [self setWrappedArgumentsForInvocation:delegateInv];
-                
-                if ([[cached objectForKey:@"primitive"] boolValue]) {
-                    void* result = [ServiceRequest unwrapArgument:cached];
-                    [delegateInv setArgument:result atIndex:arguments.count+2];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
-                            [delegateInv invokeWithTarget:self.delegate];
-                        }
-                        [delegateInv release];
-                        free(result);
-                        [self finishAndRelease];
-                    });
-                } else {
-                    id object = [ServiceRequest unwrapArgument:cached];
-                    [object retain];
-                    [delegateInv setArgument:&object atIndex:arguments.count+2];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (self.delegate != nil && [self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
-                            [delegateInv invokeWithTarget:self.delegate];
-                        }
-                        [delegateInv release];
-                        [object release];
-                        [self finishAndRelease];
-                    });
-                }
-                
-                NSLog(@"SERVED FROM CACHE");
-                
-                return;
+
+        NSDictionary* cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+        
+        if(cached) {
+            [self retain];
+            NSLog(@"REQ FOUND IN CACHE; SHOULD SERVE FROM CACHE");
+            
+            NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
+            [delegateInv setSelector:self.delegateDidReturnSelector];
+            [self setWrappedArgumentsForInvocation:delegateInv];
+            
+            if ([[cached objectForKey:@"primitive"] boolValue]) {
+                void* result = [ServiceRequest unwrapArgument:cached];
+                [delegateInv setArgument:result atIndex:arguments.count+2];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
+                        [delegateInv invokeWithTarget:self.delegate];
+                    }
+                    [delegateInv release];
+                    free(result);
+                    [self finishAndRelease];
+                });
+            } else {
+                id object = [ServiceRequest unwrapArgument:cached];
+                [object retain];
+                [delegateInv setArgument:&object atIndex:arguments.count+2];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.delegate != nil && [self delegateRespondsToSelector:self.delegateDidReturnSelector]) {
+                        [delegateInv invokeWithTarget:self.delegate];
+                    }
+                    [delegateInv release];
+                    [object release];
+                    [self finishAndRelease];
+                });
             }
+            
+            NSLog(@"SERVED FROM CACHE");
+            
+            return;
         }
         
         if (self.service != nil && ![self.service serverIsReachable]) {

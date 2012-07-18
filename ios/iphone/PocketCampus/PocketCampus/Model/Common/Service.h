@@ -100,7 +100,7 @@ typedef enum {
 @property BOOL timedOut;
 @property NSTimeInterval customTimeout;
 @property BOOL keepInCache;
-@property BOOL skipCache;
+@property NSTimeInterval cacheValidity;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;
 @property (nonatomic, assign) Service* service;
