@@ -30,7 +30,7 @@ static NSString* name = nil;
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
     NSLog(@"token to auth %@", token);
-    NSString* savedPassword = [AuthenticationService savedPassword];
+    NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
     [gasparViewController release];
     gasparViewController = [[GasparViewController alloc] init];
     if (savedPassword) {
@@ -59,11 +59,6 @@ static NSString* name = nil;
         [tmpNavController release];
     }
     
-}
-
-- (void)deleteSavedCredentials {
-    [AuthenticationService saveUsername:nil];
-    [AuthenticationService savePassword:nil];
 }
 
 + (NSString*)localizedName {

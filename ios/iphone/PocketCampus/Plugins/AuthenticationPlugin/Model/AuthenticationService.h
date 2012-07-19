@@ -17,8 +17,9 @@
 
 + (NSString*)savedUsername;
 + (BOOL)saveUsername:(NSString*)username;
-+ (NSString*)savedPassword;
-+ (BOOL)savePassword:(NSString*)password;
++ (NSString*)savedPasswordForUsername:(NSString*)username;
++ (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username;
++ (BOOL)deleteSavedPasswordForUsername:(NSString*)username;
 + (NSNumber*)savePasswordSwitchWasOn;
 + (BOOL)savePasswordSwitchState:(BOOL)isOn;
 + (NSString*)logoutNotificationName;

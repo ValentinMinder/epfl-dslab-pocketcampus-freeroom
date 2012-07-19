@@ -71,7 +71,6 @@
 
 - (void)cancelPressed {
     [authenticationService cancelOperationsForDelegate:self];
-    [AuthenticationService savePassword:nil];
     if (presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
@@ -142,8 +141,8 @@
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (isLoggedIn) {
         if (indexPath.section == 0) { //logout button
+            [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
             [AuthenticationService saveUsername:nil];
-            [AuthenticationService savePassword:nil];
             [AuthenticationService enqueueLogoutNotification];
             username = nil;
             [password release];
@@ -365,7 +364,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    isLoggedIn = ([AuthenticationService savedPassword] != nil);
+    isLoggedIn = ([AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]] != nil);
     if (isLoggedIn) {
         return 1; //only logout button
     } else {
@@ -400,7 +399,7 @@
     [username release];
     username = [[AuthenticationService savedUsername] retain];
     [password release];
-    password = [[AuthenticationService savedPassword] retain];
+    password = [[AuthenticationService savedPasswordForUsername:username] retain];
     [authenticationService loginToTequilaWithUser:username password:password delegate:self];
 }
 
@@ -417,7 +416,7 @@
         }
     }
     if (tequilaCookie == nil) { //means bad credentials
-        [AuthenticationService savePassword:nil];
+        [AuthenticationService deleteSavedPasswordForUsername:username];
         [errorMessage release];
         errorMessage = [NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) retain];
         if (presentationMode == PresentationModeTryHidden) {
@@ -438,7 +437,7 @@
         errorMessage = nil;
         [AuthenticationService saveUsername:username];
         if(!showSavePasswordSwitch || [savePasswordSwitch isOn]) { //TODO password switch
-            [AuthenticationService savePassword:password];
+            [AuthenticationService savePassword:password forUsername:username];
         }
         if (token) {
             [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];

@@ -1,3 +1,9 @@
 
 "PluginName" = "Moodle";
-"MoodleDown" = "Désolé, les serveurs de Moodle semblent inaccessibles. Réessayez plus tard.";
+"MoodleDown" = "Désolé, les serveurs de Moodle sont inaccessibles. Réessayez plus tard.";
+"MoodleNoCourse" = "Aucun cours";
+"MoodleEmptyCourse" = "Cours vide";
+"MoodleCourses" = "Cours";
+"MoodleWeek" = "Semaine %d";
+"MoodleAllWeeks" = "Toutes les semaines";
+"MoodleCurrentWeek" = "Semaine courante";

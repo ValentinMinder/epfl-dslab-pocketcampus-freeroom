@@ -6,10 +6,12 @@
 
 #import "ObjectArchiver.h"
 
+#import "STKeychain.h"
+
 @implementation AuthenticationService
 
 static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
-
+static NSString* kKeychainServiceKey = @"PCGasparPasswordKey";
 static NSString* kSavedUsernameKey = @"SAVED_USERNAME_KEY";
 static NSString* kSavedPasswordKey = @"SAVED_PASSWORD_KEY";
 static NSString* kSavePasswordSwitchStateKey = @"SavePasswordSwitch";
@@ -41,12 +43,32 @@ static AuthenticationService* instance = nil;
     return [ObjectArchiver saveObject:username forKey:kSavedUsernameKey andPluginName:@"authentication"];
 }
 
-+ (NSString*)savedPassword {
-    return (NSString*)[ObjectArchiver objectForKey:kSavedPasswordKey andPluginName:@"authentication"];
++ (NSString*)savedPasswordForUsername:(NSString*)username {
+    NSError* error = nil;
+    NSString* password = [STKeychain getPasswordForUsername:username andServiceName:kKeychainServiceKey error:&error];
+    if (error) {
+        return nil;
+    }
+    return password;
 }
 
-+ (BOOL)savePassword:(NSString*)password {
-    return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
++ (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username {
+    //return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
+    NSError* error = nil;
+    [STKeychain storeUsername:username andPassword:password forServiceName:kKeychainServiceKey updateExisting:YES error:&error];
+    if (error) {
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)deleteSavedPasswordForUsername:(NSString*)username {
+    NSError* error = nil;
+    [STKeychain deleteItemForUsername:username andServiceName:kKeychainServiceKey error:&error];
+    if (error) {
+        return NO;
+    }
+    return YES;
 }
 
 + (NSNumber*)savePasswordSwitchWasOn {

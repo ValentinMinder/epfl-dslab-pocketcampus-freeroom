@@ -34,6 +34,8 @@
 
 #import "PocketCampusLogicTests.h"
 
+#import "STKeychain.h"
+
 /* END OF TEST */
 
 @implementation AppDelegate
@@ -54,6 +56,18 @@
     self.window.backgroundColor = [UIColor blackColor];
     
     self.mainController = [[MainController alloc] initWithWindow:self.window];
+    
+    /*NSError* error = nil;
+    
+    [STKeychain storeUsername:@"test" andPassword:@"test" forServiceName:@"test" updateExisting:YES error:&error];
+    
+    if (error) {
+        NSLog(@"failed");
+    } else {
+        NSLog(@"succeeded");
+    }
+    
+    NSLog(@"%@", [STKeychain getPasswordForUsername:@"test" andServiceName:@"test" error:&error]);*/
     
     /*TEST*/
     

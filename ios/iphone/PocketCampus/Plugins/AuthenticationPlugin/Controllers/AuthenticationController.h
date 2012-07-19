@@ -13,6 +13,5 @@
 }
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate;
-- (void)deleteSavedCredentials;
 
 @end

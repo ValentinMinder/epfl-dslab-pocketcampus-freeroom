@@ -11,7 +11,7 @@
 "Login" = "Connexion";
 "Logout" = "Déconnexion";
 "LoggedInExplanationLong" = "Vos identifiants sont stockés de manière\nsécurisée dans le trousseau iOS.\n\n";
-"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour\nles services Moodle est Camipro.\n\nVos identifiants seront stockés de manière sécurisée dans le trousseau iOS.";
+"GasparAccountRequiredFor" = "Votre compte Gaspar est requis pour\nles services Moodle est Camipro.\n\nVos identifiants seront stockés de\nmanière sécurisée dans le trousseau iOS.";
 "LoggedInAs" = "Connecté en tant que";
 "UsernameCannotBeEmpty" = "Le nom d'utilisateur ne peut pas être vide.";
 "PasswordCannotBeEmpty" = "Le mot de passe ne peut pas être vide.";
