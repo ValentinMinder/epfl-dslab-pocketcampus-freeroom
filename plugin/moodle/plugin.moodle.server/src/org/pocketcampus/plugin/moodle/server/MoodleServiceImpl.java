@@ -194,19 +194,14 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 					mrl.add(j);
 				} else if(j.getIUrl().indexOf("/mod/resource/view.php?") != -1) {
 					// if it is a Moodle resource, get all files from it
-					String name = getSubstringBetween(j.getIName(), "<span>", "<");
 					int moodleResourceId = Integer.parseInt(getSubstringBetween(j.getIUrl(), "id=", "&"));
 					LinkedList<String> urls = getAllFilesFromMoodleResource(moodleResourceId, cookie);
 					for(String k : urls) {
-						mrl.add(new MoodleResource(name, k));
+						mrl.add(new MoodleResource(j.getIName(), k));
 					}
 				}
 			}
-			String processed = i;
-			processed = processed.replaceAll("class=\"left side[^<]+<", "");
-			processed = processed.replaceAll("class=\"weekdates[^<]+<", "");
-			processed = processed.replaceAll("class=\"accesshide[^<]+<", "");
-			MoodleSection ms = new MoodleSection(mrl, stripHtmlTags("<" + processed + ">"));
+			MoodleSection ms = new MoodleSection(mrl, stripHtmlTags("<" + i + ">"));
 			// TODO add optional fields (start date and end date)
 			ms.setICurrent(i.startsWith(" current"));
 			msl.add(ms);
@@ -493,6 +488,12 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	private String stripHtmlTags(String html) {
 		// or keep it client-side
 		// android.text.Html.fromHtml(instruction).toString()
+		
+		// should first remove invisible elements
+		html = html.replaceAll("class=\"left side[^<]+<", "");
+		html = html.replaceAll("class=\"weekdates[^<]+<", "");
+		html = html.replaceAll("class=\"accesshide[^<]+<", "");
+		
 		html = html.replaceAll("<br />", "\n");
 		html = html.replaceAll("<h2>", "\n");
 		html = html.replaceAll("</h2>", "\n");
