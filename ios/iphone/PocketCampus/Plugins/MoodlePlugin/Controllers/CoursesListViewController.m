@@ -25,8 +25,6 @@
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
         
-        //[[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-        //[[NSUserDefaults standardUserDefaults] synchronize];
     }
     return self;
 }
@@ -42,39 +40,15 @@
     } else {
         [self go];
     }
-    pingedAuthPlugin = NO;
-    //coursesList.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    //CourseSectionsViewController* controller = [[CourseSectionsViewController alloc] initWithCourseId:0 andCourseTitle:@"bita3"];
-    //[self.navigationController pushViewController:controller animated:YES];
     //[controller release];
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    /*SessionId* sess = [[SessionId alloc] init];
-    [sess setMoodleCookie:@"cookie"];
-    MoodleRequest* req = [[MoodleRequest alloc] init];
-    [req setISessionId:sess];
-    [req setILanguage:@"en"];
-    [moodleService getCoursesList:req WithDelegate:self];
-    [req release];
-    [sess release];*/
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     if(moodleService.moodleCookie == nil) {
-        if(pingedAuthPlugin) {
-            //[self.navigationController popViewControllerAnimated:YES];
-        } else {
-            /*CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
-            [self.navigationController presentViewController:controller animated:YES completion:NULL];
-            [controller release];
-            pingedAuthPlugin = YES;*/
-            centerActivityIndicator.hidden = NO;
-            [centerActivityIndicator startAnimating];
-            [self startAuth];
-        }
+        centerActivityIndicator.hidden = NO;
+        [centerActivityIndicator startAnimating];
+        [self startAuth];
     }
     [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:YES];
 }
@@ -97,8 +71,6 @@
     MoodleRequest* req = [[MoodleRequest alloc] init];
     [req setISessionId:sess];
     [req setILanguage:@"en"];
-    //SessionId* sessId = [[SessionId alloc] initWithTos:TypeOfService_SERVICE_MOODLE pocketCampusSessionId:nil moodleCookie:moodleService.moodleCookie camiproCookie:nil isaCookie:nil];
-    //[[MoodleRequest alloc] initWithISessionId:sessId iLanguage:@"en" iCourseId:0];
     [moodleService getCoursesList:req withDelegate:self];
     [req release];
     [sess release];
@@ -106,7 +78,7 @@
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logoutFromMoodle:)];          
     self.navigationItem.rightBarButtonItem = anotherButton;
     [anotherButton release];
-    self.navigationItem.title = @"Courses";
+    self.navigationItem.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
 }
 
 - (void) startAuth {
@@ -129,7 +101,7 @@
 - (void)serviceConnectionToServerTimedOut {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
-    centerMessageLabel.text = @"Connection timed out, check your internet connectivity";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 /* MoodleServiceDelegate delegation */
@@ -169,10 +141,10 @@
             coursesList.hidden = NO;
             [coursesList reloadData];
         } else {
-            centerMessageLabel.text = @"No courses";
+            centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleNoCourses", @"MoodlePlugin", nil);
         }
     } else if(coursesListReply.iStatus == 404) {
-        centerMessageLabel.text = @"Moodle is down";
+        centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);
     } else if(coursesListReply.iStatus == 407) { // session timed out
         // kill the cookie
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
@@ -190,7 +162,7 @@
 - (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
-    centerMessageLabel.text = @"Could not reach the server, check your internet connection and try again";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 /* AuthenticationCallbackDelegate delegation */

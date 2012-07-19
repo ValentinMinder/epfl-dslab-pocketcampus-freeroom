@@ -1,2 +1,7 @@
 
 "PluginName" = "Moodle";
+"MoodleDown" = "Sorry, Moodle servers seem to be down. Please try again later.";
+"MoodleNoCourse" = "No courses.";
+"MoodleEmptyCourse" = "Empty course.";
+"MoodleCourses" = "Courses";
+"MoodleWeek" = "Week %d";

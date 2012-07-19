@@ -12,17 +12,20 @@
 
 #import "AuthenticationService.h"
 
+#import "AuthenticationController.h"
+
 @interface CourseSectionsViewController : UIViewController<UITableViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
     IBOutlet UIActivityIndicatorView* centerActivityIndicator;
     IBOutlet UILabel* centerMessageLabel;
     IBOutlet UITableView* sectionsList;
     IBOutlet UIWebView* webView;
     MoodleService* moodleService;
-    bool pingedAuthPlugin;
     NSArray* iSections;
     int courseId;
     int current;
     NSString* courseTitle;
+    AuthenticationController* authController;
+    TequilaToken* tequilaKey;
 }
 
 @property (nonatomic, retain) UIDocumentInteractionController *docController;

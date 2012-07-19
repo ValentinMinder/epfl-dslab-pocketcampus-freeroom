@@ -18,7 +18,6 @@
     IBOutlet UILabel* centerMessageLabel;
     IBOutlet UITableView* coursesList;
     MoodleService* moodleService;
-    bool pingedAuthPlugin;
     NSArray* iCourses;
     AuthenticationController* authController;
     TequilaToken* tequilaKey;

@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/CourseSectionsViewController.m"
-         timestampString = "363209959.526269"
+         timestampString = "364334870.711828"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
+         startingLineNumber = "158"
+         endingLineNumber = "158"
          landmarkName = "-initDocController:"
          landmarkType = "5">
       </FileBreakpoint>

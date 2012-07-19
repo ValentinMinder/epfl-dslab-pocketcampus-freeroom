@@ -10,6 +10,8 @@
 
 #import "CredentialsViewController.h"
 
+#import "AuthenticationController.h"
+
 @interface CourseSectionsViewController ()
 
 @end
@@ -32,6 +34,8 @@
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
     if (self) {
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
+        authController = [[AuthenticationController alloc] init];
+        tequilaKey = nil;
         courseId = aCourseId;
         courseTitle = [aCourseTitle retain];
         self.title = courseTitle;
@@ -51,15 +55,12 @@
     } else {
         [self go];
     }
-    pingedAuthPlugin = NO;
     webView.hidden = YES;
+    sectionsList.hidden = YES;
 
     NSError *error;
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSString *documentsDirectory = [NSHomeDirectory()  stringByAppendingPathComponent:@"Documents"];
-    //NSString *filePath = [documentsDirectory  stringByAppendingPathComponent:@"file1.txt"];
-    //NSString *str = @"Hello";
-    //[str writeToFile:filePath atomically:YES   encoding:NSUTF8StringEncoding error:&error];
     NSLog(@"Documents directory: %@",   [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
     
     
@@ -70,14 +71,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     if(moodleService.moodleCookie == nil) {
-        if(pingedAuthPlugin) {
-            [self.navigationController popViewControllerAnimated:YES];
-        } else {
-            CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
-            [self.navigationController presentViewController:controller animated:YES completion:NULL];
-            [controller release];
-            pingedAuthPlugin = YES;
-        }
+        centerActivityIndicator.hidden = NO;
+        [centerActivityIndicator startAnimating];
+        [self startAuth];
     }
     [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
 }
@@ -91,7 +87,7 @@
 - (void)go {
     centerActivityIndicator.hidden = NO;
     [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = @"Loading";
+    centerMessageLabel.text = @"";
     sectionsList.hidden = YES;
     
     SessionId* sess = [[SessionId alloc] init];
@@ -185,18 +181,23 @@
     //NSLog(@"isValid %d", isValid);
     //[docController presentPreviewAnimated:YES];
     
-    UIDocumentInteractionController* dicController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
-    //[dicController retain];
-    dicController.delegate = self;
-    [dicController presentPreviewAnimated:YES];
-    
     //[self initDocController:fileUrl];
     //[docController presentPreviewAnimated:YES];
     
-    //TODO for some reason the below is not working, should make it work and switch to it
-    //self.docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
-    //self.docController.delegate = self;
-    //[self.docController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES];
+    // METHOD 1
+    self.docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
+    self.docController.delegate = self;
+    if(![self.docController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES]) {
+        // METHOD 2
+        UIDocumentInteractionController* dicController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
+        //[dicController retain];
+        dicController.delegate = self;
+        [dicController presentPreviewAnimated:YES];
+    }
+}
+
+- (void) startAuth {
+    [moodleService getTequilaTokenForMoodleDelegate:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -209,10 +210,34 @@
 - (void)serviceConnectionToServerTimedOut {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
-    centerMessageLabel.text = @"Connection timed out, check your internet connectivity";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 /* MoodleServiceDelegate delegation */
+
+- (void)getTequilaTokenForMoodleDidReturn:(TequilaToken*)tequilaKey_ {
+    NSLog(@"-> getTequilaTokenForMoodleDidReturn:%@", tequilaKey_);
+    [tequilaKey release];
+    tequilaKey = [tequilaKey_ retain];
+    [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
+}
+
+- (void)getTequilaTokenForMoodleFailed {
+    NSLog(@"-> getTequilaTokenForMoodleFailed");
+    [self serviceConnectionToServerTimedOut];
+}
+
+- (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
+    //centerMessageLabel.text = sessionId.moodleCookie;
+    moodleService.moodleCookie = sessionId.moodleCookie;
+    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self go];
+}
+
+- (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
+    [self serviceConnectionToServerTimedOut];
+}
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply {
     [centerActivityIndicator stopAnimating];
@@ -220,17 +245,23 @@
     centerMessageLabel.text = @"";
     if(sectionsListReply.iStatus == 200) {
         iSections = [sectionsListReply.iSections retain];
-        if(iSections.count != 0) {
+        int visibleCount = 0;
+        for (int i = 1; i < iSections.count; i++) {
+            MoodleSection* secObj = [iSections objectAtIndex:i];
+            visibleCount += secObj.iResources.count;
+        }
+        if(visibleCount != 0) {
             //MoodleSection* sec = [iSections objectAtIndex:2];
             //sec.iCurrent = YES;
             [self computeCurrent];
             sectionsList.hidden = NO;
             [sectionsList reloadData];
         } else {
-            centerMessageLabel.text = @"This course has 0 sections";
+            centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil);
+            NSLog(@"MoodleEmptyCourse");
         }
     } else if(sectionsListReply.iStatus == 404) {
-        centerMessageLabel.text = @"Moodle is down";
+        centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);
     } else if(sectionsListReply.iStatus == 405) {
         centerMessageLabel.text = @"No course specified";
     } else if(sectionsListReply.iStatus == 407) { // session timed out
@@ -239,24 +270,20 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         moodleService.moodleCookie = nil;
         // and re call auth
-        CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
-        [self.navigationController presentViewController:controller animated:YES completion:NULL];
-        [controller release];
-        pingedAuthPlugin = YES;
+        [self startAuth];
     }
 }
 
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
-    centerMessageLabel.text = @"Could not reach the server, check your internet connection and try again";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request{
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
     
-    //NSURL *fileUrl = [NSURL URLWithString:@"http://www.zilog.com/docs/z80/um0080.pdf"];
     NSString* urlStr = [moodleService getLocalPath:request.url.absoluteString];
     NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
     [self openFile:fileUrl];
@@ -265,20 +292,24 @@
 - (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
     [centerActivityIndicator stopAnimating];
     centerActivityIndicator.hidden = YES;
-    centerMessageLabel.text = @"Could not reach server, check Internet connectivity";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 /* AuthenticationCallbackDelegate delegation */
 
-- (int)getTypeOfService {
-    return TypeOfService_SERVICE_MOODLE;
+- (void)authenticationSucceeded {
+    [moodleService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
-- (void)gotSessionId:(SessionId*)aSessionId {
-    moodleService.moodleCookie = aSessionId.moodleCookie;
-    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self go];
+- (void)invalidToken {
+    // TODO
+}
+
+- (void)userCancelledAuthentication {
+    [centerActivityIndicator stopAnimating];
+    if (self.navigationController.visibleViewController == self) {
+        [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
+    }
 }
 
 /* UITableViewDelegate delegation */
@@ -322,7 +353,7 @@
     MoodleSection* secObj = [iSections objectAtIndex:section];
     if(secObj.iResources.count == 0)
         return nil;
-    return [NSString stringWithFormat:@"Week %d", section];
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -352,6 +383,8 @@
 
 - (void)dealloc
 {
+    [authController release];
+    [tequilaKey release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];
     [super dealloc];
