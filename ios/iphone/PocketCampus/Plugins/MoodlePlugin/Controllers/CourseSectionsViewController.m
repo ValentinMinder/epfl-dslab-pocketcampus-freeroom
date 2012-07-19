@@ -315,6 +315,10 @@
     // TODO
 }
 
+- (void) deleteSessionWhenFinished {
+    // TODO
+}
+
 - (void)userCancelledAuthentication {
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {

@@ -5,6 +5,7 @@
 @implementation MoodleController
 
 static NSString* name = nil;
+static BOOL initObserversDone = NO;
 
 - (id)init
 {
@@ -25,6 +26,19 @@ static NSString* name = nil;
         
     }
     return self;
+}
+
++ (void)initObservers {
+    @synchronized(self) {
+        if (initObserversDone) {
+            return;
+        }
+        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }];
+        initObserversDone = YES;
+    }
 }
 
 + (NSString*)localizedName {

@@ -75,9 +75,9 @@
     [req release];
     [sess release];
     
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logoutFromMoodle:)];          
+    /*UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logoutFromMoodle:)];          
     self.navigationItem.rightBarButtonItem = anotherButton;
-    [anotherButton release];
+    [anotherButton release];*/
     self.navigationItem.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
 }
 
@@ -172,6 +172,10 @@
 }
 
 - (void)invalidToken {
+    // TODO
+}
+
+- (void) deleteSessionWhenFinished {
     // TODO
 }
 

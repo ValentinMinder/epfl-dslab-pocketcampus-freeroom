@@ -3,4 +3,6 @@
 
 @interface MoodleController : PluginController<PluginControllerProtocol>
 
++ (void)initObservers;
+
 @end
