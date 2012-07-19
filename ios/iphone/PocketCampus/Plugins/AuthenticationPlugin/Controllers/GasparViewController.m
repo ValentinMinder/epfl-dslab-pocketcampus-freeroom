@@ -116,9 +116,9 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 220.0, 0.0);
-    if (textField == passwordTextField) {
+    /*if (textField == passwordTextField) {
         [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+    }*/
     
 }
 
@@ -218,7 +218,7 @@
         UIFont* font = [UIFont systemFontOfSize:16.0];
         CGSize reqSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
         label.frame = CGRectMake(0, 0, 260.0, reqSize.height);
-        label.numberOfLines = 5;
+        label.numberOfLines = 0;
         label.textAlignment = UITextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];
         label.font = font;
@@ -261,7 +261,7 @@
             
             if (isLoggedIn) { //logout button
                 UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"PocketCampus", nil);
+                cell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
                 cell.textLabel.textAlignment = UITextAlignmentCenter;
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 return cell;

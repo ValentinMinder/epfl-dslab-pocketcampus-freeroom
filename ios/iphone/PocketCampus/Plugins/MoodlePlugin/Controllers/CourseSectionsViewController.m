@@ -8,8 +8,6 @@
 
 #import "CourseSectionsViewController.h"
 
-#import "CredentialsViewController.h"
-
 #import "AuthenticationController.h"
 
 @interface CourseSectionsViewController ()

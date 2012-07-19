@@ -1,8 +1,5 @@
 
 #import "AuthenticationController.h"
-#import "CredentialsViewController.h"
-
-#import "CredentialsAlertViewController.h"
 
 #import "GasparViewController.h"
 
@@ -16,11 +13,6 @@ static NSString* name = nil;
 {
     self = [super init];
     if (self) {
-        CredentialsViewController* credentialsViewController = [[CredentialsViewController alloc] initWithNibName:@"CredentialsView" bundle:nil];
-        credentialsViewController.title = [[self class] localizedName];
-        mainViewController = credentialsViewController;
-        
-        credentialsAlertViewController = [[CredentialsAlertViewController alloc] init];
         gasparViewController = nil;
     }
     return self;

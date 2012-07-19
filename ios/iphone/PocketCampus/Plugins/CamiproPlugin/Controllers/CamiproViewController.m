@@ -22,7 +22,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 @implementation CamiproViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar, logoutButton;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar;
 
 - (id)init
 {
@@ -49,8 +49,16 @@ static CGFloat kBalanceCellHeight = 70.0;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [PCValues backgroundColor1];
-    self.logoutButton.title = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
     tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
+    lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0, 0.0, 240.0, self.toolbar.frame.size.height)];
+    lastUpdateLabel.textColor = [UIColor whiteColor];
+    lastUpdateLabel.font = [UIFont systemFontOfSize:15.0];
+    lastUpdateLabel.textAlignment = UITextAlignmentCenter;
+    lastUpdateLabel.backgroundColor = [UIColor clearColor];
+    lastUpdateLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    lastUpdateLabel.shadowColor = [UIColor blackColor];
+    [self.toolbar addSubview:lastUpdateLabel];
+    [lastUpdateLabel release];
     [self refresh];
 }
 
@@ -80,19 +88,9 @@ static CGFloat kBalanceCellHeight = 70.0;
     }
 }
 
-- (IBAction)logoutPressed {
-    [CamiproService saveSessionId:nil];
-    [UIView animateWithDuration:0.2 animations:^{
-        tableView.alpha = 0.0;
-        toolbar.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-}
-
 - (IBAction)othersPressed {
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil), NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil), nil];
-    [actionSheet showInView:self.view];
+    [actionSheet showFromToolbar:self.toolbar];
     [actionSheet release];
 }
 
@@ -125,12 +123,16 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)deleteSessionWhenFinished {
-    NSLog(@"METHOD CALLED");
     shouldDeleteSessionWhenFinished = YES;
 }
 
 - (void)invalidToken {
-    //TODO
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    centerMessageLabel.hidden = NO;
+    tableView.hidden = YES;
+    toolbar.hidden = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 /* CamiproServiceDelegate delegation */
@@ -176,11 +178,12 @@ static CGFloat kBalanceCellHeight = 70.0;
             centerMessageLabel.hidden = YES;
             [balanceAndTransactions release];
             balanceAndTransactions = [balanceAndTransactions_ retain];
-            [tableView reloadData];
             tableView.alpha = 0.0;
             tableView.hidden = NO;
             toolbar.alpha = 0.0;
             toolbar.hidden = NO;
+            lastUpdateLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"CamiproPlugin", nil),balanceAndTransactions.iDate];
+            [tableView reloadData];
             UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
             [self.navigationItem setRightBarButtonItem:refreshButton animated:YES];
             [refreshButton release];
@@ -365,7 +368,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [sendMailAlertView show];
         
-        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+        CamiproRequest* mailRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
         [camiproService sendLoadingInfoByEmail:mailRequest delegate:self];
         [mailRequest release];
     } else if (alertView == statsAlertView) {
@@ -443,7 +446,6 @@ static CGFloat kBalanceCellHeight = 70.0;
         UILabel* priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(211.0, 27.0, 100.0, 17.0)];
         priceLabel.backgroundColor = [UIColor clearColor];
         priceLabel.tag = kTransactionPriceViewTag;
-        priceLabel.textColor = [PCValues pocketCampusRed];
         priceLabel.font = [UIFont systemFontOfSize:15.0];
         priceLabel.textAlignment = UITextAlignmentRight;
         
@@ -456,7 +458,9 @@ static CGFloat kBalanceCellHeight = 70.0;
     priceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", transcation.iAmount];
     
     if (transcation.iAmount > 0.0) {
-        priceLabel.textColor = [UIColor colorWithRed:0.09 green:0.79 blue:0 alpha:1.0];
+        priceLabel.textColor = [UIColor colorWithRed:0.09 green:0.79 blue:0 alpha:1.0]; //light green
+    } else {
+        priceLabel.textColor = [PCValues pocketCampusRed];
     }
     
     return newCell;

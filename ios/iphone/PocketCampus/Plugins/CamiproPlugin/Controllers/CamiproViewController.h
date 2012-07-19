@@ -19,7 +19,7 @@
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UIToolbar* toolbar;
-    UIBarButtonItem* logoutButton;
+    UILabel* lastUpdateLabel;
     UIAlertView* sendMailAlertView;
     UIAlertView* statsAlertView;
     AuthenticationController* authController;
@@ -33,5 +33,4 @@
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
-@property (nonatomic, assign) IBOutlet UIBarButtonItem* logoutButton;
 @end

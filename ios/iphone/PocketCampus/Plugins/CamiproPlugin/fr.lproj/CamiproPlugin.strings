@@ -18,3 +18,4 @@
 "SessionExpiredPleaseRefresh" = "Votre session a expiré. Rafraîchissez et essayez à nouveau.";
 "StatsWithFormat" = "30 derniers jours cumulés\nCHF %.2lf\n\n90 derniers jours cummulés\nCHF %.2lf (~%.2lf/mois)";
 "CamiproDown" = "Désolé, les serveurs de Camipro semblent inaccessibles. Réessayez plus tard.";
+"LastUpdate" = "Dernière m.à.j.";

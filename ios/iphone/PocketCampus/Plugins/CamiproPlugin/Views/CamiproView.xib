@@ -140,16 +140,6 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIBarStyle">2</int>
 						<array class="NSMutableArray" key="IBUIItems">
-							<object class="IBUIBarButtonItem" id="252575263">
-								<string key="IBUITitle">Logout</string>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="84646185"/>
-								<object class="NSColor" key="IBUITintColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC40AA</bytes>
-								</object>
-							</object>
 							<object class="IBUIBarButtonItem" id="338060123">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUIToolbar" ref="84646185"/>
@@ -157,12 +147,8 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="691567677">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="84646185"/>
-								<object class="NSColor" key="IBUITintColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC40AA</bytes>
-								</object>
+								<reference key="IBUITintColor" ref="508074641"/>
 								<int key="IBUISystemItemIdentifier">9</int>
 							</object>
 						</array>
@@ -230,14 +216,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">logoutButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="252575263"/>
-					</object>
-					<int key="connectionID">34</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="903217301"/>
 						<reference key="destination" ref="372490531"/>
@@ -251,14 +229,6 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">20</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">logoutPressed</string>
-						<reference key="source" ref="252575263"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">31</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -325,16 +295,10 @@
 						<int key="objectID">26</int>
 						<reference key="object" ref="84646185"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="252575263"/>
 							<reference ref="691567677"/>
 							<reference ref="338060123"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">27</int>
-						<reference key="object" ref="252575263"/>
-						<reference key="parent" ref="84646185"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
@@ -358,7 +322,6 @@
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -367,7 +330,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">34</int>
+			<int key="maxID">35</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -377,7 +340,6 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="centerActivityIndicator">UIActivityIndicatorView</string>
 						<string key="centerMessageLabel">UILabel</string>
-						<string key="logoutButton">UIBarButtonItem</string>
 						<string key="tableView">UITableView</string>
 						<string key="toolbar">UIToolbar</string>
 					</dictionary>
@@ -389,10 +351,6 @@
 						<object class="IBToOneOutletInfo" key="centerMessageLabel">
 							<string key="name">centerMessageLabel</string>
 							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="logoutButton">
-							<string key="name">logoutButton</string>
-							<string key="candidateClassName">UIBarButtonItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="tableView">
 							<string key="name">tableView</string>

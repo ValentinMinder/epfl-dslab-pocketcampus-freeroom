@@ -10,8 +10,6 @@
 
 #import "CourseSectionsViewController.h"
 
-#import "CredentialsViewController.h"
-
 #import "MoodleService.h"
 
 @implementation CoursesListViewController

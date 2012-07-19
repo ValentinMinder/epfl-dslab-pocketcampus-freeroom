@@ -156,8 +156,9 @@
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
+		32CC7B3815B804D3004F0A31 /* SettingsBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */; };
+		32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */; };
 		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
-		32CCB4C9155520FE00220282 /* CredentialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4BB155520FE00220282 /* CredentialsViewController.m */; };
 		32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
 		32CCB4CC155520FE00220282 /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; };
 		32CCB4CD155520FE00220282 /* CredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4C6155520FE00220282 /* CredentialsView.xib */; };
@@ -171,7 +172,6 @@
 		32CCB4EE1555237500220282 /* CoursesListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4E31555237500220282 /* CoursesListView.xib */; };
 		32CCB4EF1555237500220282 /* Moodle.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4E51555237500220282 /* Moodle.png */; };
 		32CCB4F01555237500220282 /* Moodle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4E61555237500220282 /* Moodle@2x.png */; };
-		32CCB4F415553B2F00220282 /* CredentialsAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4F315553B2E00220282 /* CredentialsAlertViewController.m */; };
 		32CCB500155546C100220282 /* NewsPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4F7155546C100220282 /* NewsPlugin.strings */; };
 		32CCB501155546C100220282 /* news.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4FD155546C100220282 /* news.m */; };
 		32CCB50515554A6600220282 /* NewsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB50415554A6600220282 /* NewsService.m */; };
@@ -455,10 +455,10 @@
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
 		32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectionPartsListView.xib; sourceTree = "<group>"; };
+		32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsBarButton.png; sourceTree = "<group>"; };
+		32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsBarButton@2x.png"; sourceTree = "<group>"; };
 		32CCB4B8155520FE00220282 /* AuthenticationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationController.h; sourceTree = "<group>"; };
 		32CCB4B9155520FE00220282 /* AuthenticationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationController.m; sourceTree = "<group>"; };
-		32CCB4BA155520FE00220282 /* CredentialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsViewController.h; sourceTree = "<group>"; };
-		32CCB4BB155520FE00220282 /* CredentialsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsViewController.m; sourceTree = "<group>"; };
 		32CCB4C0155520FE00220282 /* AuthenticationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationService.h; sourceTree = "<group>"; };
 		32CCB4C1155520FE00220282 /* AuthenticationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationService.m; sourceTree = "<group>"; };
 		32CCB4C3155520FE00220282 /* authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authentication.h; sourceTree = "<group>"; };
@@ -480,8 +480,6 @@
 		32CCB4E31555237500220282 /* CoursesListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoursesListView.xib; sourceTree = "<group>"; };
 		32CCB4E51555237500220282 /* Moodle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Moodle.png; sourceTree = "<group>"; };
 		32CCB4E61555237500220282 /* Moodle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Moodle@2x.png"; sourceTree = "<group>"; };
-		32CCB4F215553B2E00220282 /* CredentialsAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsAlertViewController.h; sourceTree = "<group>"; };
-		32CCB4F315553B2E00220282 /* CredentialsAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsAlertViewController.m; sourceTree = "<group>"; };
 		32CCB4F8155546C100220282 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NewsPlugin.strings; sourceTree = "<group>"; };
 		32CCB4F9155546C100220282 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/NewsPlugin.strings; sourceTree = "<group>"; };
 		32CCB4FC155546C100220282 /* news.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = news.h; sourceTree = "<group>"; };
@@ -748,6 +746,8 @@
 		321F37DF15B02FBE00E7BA6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */,
+				32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */,
 				321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */,
 				321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
@@ -1159,10 +1159,6 @@
 			children = (
 				32CCB4B8155520FE00220282 /* AuthenticationController.h */,
 				32CCB4B9155520FE00220282 /* AuthenticationController.m */,
-				32CCB4BA155520FE00220282 /* CredentialsViewController.h */,
-				32CCB4BB155520FE00220282 /* CredentialsViewController.m */,
-				32CCB4F215553B2E00220282 /* CredentialsAlertViewController.h */,
-				32CCB4F315553B2E00220282 /* CredentialsAlertViewController.m */,
 				32A54B7B15B5A8E100A7C882 /* GasparViewController.h */,
 				32A54B7C15B5A8E100A7C882 /* GasparViewController.m */,
 			);
@@ -1819,6 +1815,8 @@
 				3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */,
 				32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */,
 				3215425615B5B75F0003C8B2 /* AuthenticationPlugin.strings in Resources */,
+				32CC7B3815B804D3004F0A31 /* SettingsBarButton.png in Resources */,
+				32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1894,7 +1892,6 @@
 				32B89279154589D70058E472 /* ASINetworkQueue.m in Sources */,
 				32B8927A154589D70058E472 /* Reachability.m in Sources */,
 				32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */,
-				32CCB4C9155520FE00220282 /* CredentialsViewController.m in Sources */,
 				32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */,
 				32CCB4CC155520FE00220282 /* authentication.m in Sources */,
 				32CCB4E71555237500220282 /* CourseSectionsViewController.m in Sources */,
@@ -1902,7 +1899,6 @@
 				32CCB4E91555237500220282 /* MoodleController.m in Sources */,
 				32CCB4EB1555237500220282 /* MoodleService.m in Sources */,
 				32CCB4EC1555237500220282 /* moodle.m in Sources */,
-				32CCB4F415553B2F00220282 /* CredentialsAlertViewController.m in Sources */,
 				32CCB501155546C100220282 /* news.m in Sources */,
 				32CCB50515554A6600220282 /* NewsService.m in Sources */,
 				32CCB50815555BBF00220282 /* NewsController.m in Sources */,
