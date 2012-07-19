@@ -47,8 +47,8 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
     
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+- (void)viewWillAppear:(BOOL)animated {
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
 }
 
 - (void)viewDidUnload

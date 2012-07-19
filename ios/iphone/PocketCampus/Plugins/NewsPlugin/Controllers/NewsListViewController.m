@@ -57,8 +57,9 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     // Release any retained subviews of the main view.
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [tableView deselectRowAtIndexPath:[[tableView indexPathsForSelectedRows] objectAtIndex:0] animated:YES];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [tableView deselectRowAtIndexPath:[[tableView indexPathsForSelectedRows] objectAtIndex:0] animated:animated];
     [networkQueue setSuspended:NO];
 }
 

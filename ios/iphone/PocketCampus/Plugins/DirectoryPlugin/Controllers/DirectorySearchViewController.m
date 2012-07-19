@@ -47,19 +47,20 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     // Release any retained subviews of the main view.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    [displayedPerson release];
+    displayedPerson = nil;
+    personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     if (resultsMode == ResutlsModeNotStarted) {
         [searchBar becomeFirstResponder];
     }
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-    [displayedPerson release];
-    displayedPerson = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    personViewController = nil; //so that profile picture request does not try to set picture for personViewController that is no longer displayed (and thus released)
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

@@ -62,13 +62,10 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     // Release any retained subviews of the main view.
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
     [foodService getMealsWithDelegate:self];
 }
 

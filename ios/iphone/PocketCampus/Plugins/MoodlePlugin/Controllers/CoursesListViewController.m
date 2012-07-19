@@ -12,11 +12,15 @@
 
 #import "MoodleService.h"
 
+#import "PCValues.h"
+
 @implementation CoursesListViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@synthesize coursesList, centerActivityIndicator, centerMessageLabel;
+
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"CoursesListView" bundle:nil];
     if (self) {
         // Custom initialization
         authController = [[AuthenticationController alloc] init];
@@ -32,10 +36,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [PCValues backgroundColor1];
+    coursesList.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:coursesList.frame];
+    backgroundView.backgroundColor = [PCValues backgroundColor1];;
+    coursesList.backgroundView = backgroundView;
+    [backgroundView release];
     if(moodleService.moodleCookie == nil) {
         centerMessageLabel.text = @"";
         coursesList.hidden = YES;
-        centerActivityIndicator.hidden = NO;
         [centerActivityIndicator startAnimating];
         [self startAuth];
     } else {
@@ -45,8 +54,8 @@
     
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:YES];
+- (void)viewWillAppear:(BOOL)animated {
+    [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:animated];
 }
 
 - (void)viewDidUnload
@@ -56,7 +65,6 @@
 }
 
 - (void)go {
-    centerActivityIndicator.hidden = NO;
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = @"";
     coursesList.hidden = YES;
@@ -74,7 +82,7 @@
     /*UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logoutFromMoodle:)];          
     self.navigationItem.rightBarButtonItem = anotherButton;
     [anotherButton release];*/
-    self.navigationItem.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
+    self.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
 }
 
 - (void) startAuth {
@@ -96,7 +104,6 @@
 
 - (void)serviceConnectionToServerTimedOut {
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
@@ -129,7 +136,6 @@
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
     //NSLog(@"courselistreply %@", coursesListReply);
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = @"";
     if(coursesListReply.iStatus == 200) {
         iCourses = [coursesListReply.iCourses retain];
@@ -157,7 +163,6 @@
 
 - (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest {
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
@@ -200,6 +205,7 @@
         newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MOODLE_COURSES_LIST"] autorelease];
         newCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        newCell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
     }
     newCell.textLabel.text = course.iTitle;
     return newCell;

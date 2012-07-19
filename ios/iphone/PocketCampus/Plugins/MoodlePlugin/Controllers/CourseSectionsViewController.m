@@ -10,27 +10,20 @@
 
 #import "AuthenticationController.h"
 
-@interface CourseSectionsViewController ()
+#import "PCValues.h"
 
-@end
+#import "PCTableViewSectionHeader.h"
+
+static int kCourseCellLoadingViewTag = 10;
 
 @implementation CourseSectionsViewController
 
-@synthesize docController;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        moodleService = [[MoodleService sharedInstanceToRetain] retain];
-    }
-    return self;
-}
+@synthesize centerActivityIndicator, centerMessageLabel, sectionsList, webView, docController;
 
 - (id)initWithCourseId:(int)aCourseId andCourseTitle:(NSString*)aCourseTitle {
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
     if (self) {
+        currentLoadingView = nil;
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         authController = [[AuthenticationController alloc] init];
         tequilaKey = nil;
@@ -45,10 +38,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.   
+    self.view.backgroundColor = [PCValues backgroundColor1];
+    sectionsList.backgroundColor = [UIColor clearColor];
+    UIView* backgroundView = [[UIView alloc] initWithFrame:sectionsList.frame];
+    backgroundView.backgroundColor = [UIColor whiteColor];;
+    sectionsList.backgroundView = backgroundView;
+    [backgroundView release];
     
     if(moodleService.moodleCookie == nil) {
         centerMessageLabel.text = @"";
-        centerActivityIndicator.hidden = YES;
+        [centerActivityIndicator stopAnimating];
         sectionsList.hidden = YES;
     } else {
         [self go];
@@ -64,13 +63,13 @@
     
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if(moodleService.moodleCookie == nil) {
-        centerActivityIndicator.hidden = NO;
         [centerActivityIndicator startAnimating];
         [self startAuth];
     }
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:animated];
 }
 
 - (void)viewDidUnload
@@ -80,9 +79,8 @@
 }
 
 - (void)go {
-    centerActivityIndicator.hidden = NO;
     [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = @"";
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil);
     sectionsList.hidden = YES;
     
     SessionId* sess = [[SessionId alloc] init];
@@ -216,7 +214,6 @@
 
 - (void)serviceConnectionToServerTimedOut {
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
@@ -248,7 +245,6 @@
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply {
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = @"";
     if(sectionsListReply.iStatus == 200) {
         iSections = [sectionsListReply.iSections retain];
@@ -284,22 +280,21 @@
 
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest {
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request{
-    [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
-    
+    /*[centerActivityIndicator stopAnimating];
+    centerActivityIndicator.hidden = YES;*/
+    [currentLoadingView stopAnimating];
     NSString* urlStr = [moodleService getLocalPath:request.url.absoluteString];
     NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
     [self openFile:fileUrl];
 }
 
 - (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
+    [currentLoadingView stopAnimating];
     [centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
 }
 
@@ -327,6 +322,7 @@
 /* UITableViewDelegate delegation */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     
@@ -336,10 +332,45 @@
         NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
         [self openFile:fileUrl];
     } else {
+        [currentLoadingView release];
+        currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
+        [currentLoadingView startAnimating];
         [moodleService fetchMoodleResource:moodleService.moodleCookie :resource.iUrl withDelegate:self];
-        centerActivityIndicator.hidden = NO;
-        [centerActivityIndicator startAnimating];
+        /*centerActivityIndicator.hidden = NO;
+        [centerActivityIndicator startAnimating];*/
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if(iSections == nil)
+        return 0.0;
+    if(![self showSection:section])
+        return 0.0;
+    MoodleSection* secObj = [iSections objectAtIndex:section];
+    if(secObj.iResources.count == 0)
+        return 0.0;
+    return [PCValues tableViewSectionHeaderHeight];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
+{
+    if(iSections == nil)
+        return nil;
+    if(![self showSection:section])
+        return nil;
+    MoodleSection* secObj = [iSections objectAtIndex:section];
+    if(secObj.iResources.count == 0)
+        return nil;
+    
+    NSString* title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
+    
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title];
+    return [sectionHeader autorelease];
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 40.0;
 }
 
 /* UITableViewDataSource */
@@ -349,15 +380,19 @@
     UITableViewCell* newCell = [sectionsList dequeueReusableCellWithIdentifier:@"MOODLE_SECTIONS_LIST"];
     if (newCell == nil) {
         newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
-        //newCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UIActivityIndicatorView* loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        loadingView.tag = kCourseCellLoadingViewTag;
+        newCell.accessoryView = loadingView;
+        [loadingView release];
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
     }
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     newCell.textLabel.text = resource.iName;
     return newCell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if(iSections == nil)
         return nil;
     if(![self showSection:section])
@@ -366,7 +401,7 @@
     if(secObj.iResources.count == 0)
         return nil;
     return [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
-}
+}*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(iSections == nil)
@@ -383,7 +418,7 @@
     return iSections.count;
 }
 
-- (BOOL) showSection:(NSInteger) section {
+- (BOOL)showSection:(NSInteger) section {
     if(section == 0)
         return NO;
     if(current <= 0)
@@ -399,6 +434,7 @@
     [tequilaKey release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];
+    [courseTitle release];
     [super dealloc];
 }
 

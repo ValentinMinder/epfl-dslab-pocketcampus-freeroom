@@ -7,3 +7,4 @@
 "MoodleWeek" = "Semaine %d";
 "MoodleAllWeeks" = "Toutes les semaines";
 "MoodleCurrentWeek" = "Semaine courante";
+"LoadingCourse" = "Chargement du cours\nVeuillez patienter";

@@ -123,6 +123,17 @@ static NSString* kMealCellIdentifier = @"mealCell";
     }
 }
 
+/* UITableViewDelegate delegation */
+
+- (UIView *) tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section 
+{
+    Meal* meal = [meals objectAtIndex:section];
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:meal.name];
+    return [sectionHeader autorelease];
+    
+}
+
+
 /* UITableViewDataSource delegation */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -153,14 +164,6 @@ static NSString* kMealCellIdentifier = @"mealCell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return meals.count;
-}
-
-- (UIView *) tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section 
-{
-    Meal* meal = [meals objectAtIndex:section];
-    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:meal.name];
-    return [sectionHeader autorelease];
-    
 }
 
 - (void)dealloc

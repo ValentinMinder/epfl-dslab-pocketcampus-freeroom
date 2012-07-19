@@ -22,7 +22,7 @@
 
 static double kSchedulesValidy = 20.0; //number of seconds that a schedule is considered valid and thus refresh is not necessary
 
-@synthesize locationArrow, fromLabel, fromValueLabel, locationActivityIndicator, infoButton, tableView, welcomeTouchInfoInstructionsLabel, connectionErrorLabel, toolbar, helpButton, settingsButton;
+@synthesize locationArrow, fromLabel, fromValueLabel, locationActivityIndicator, infoButton, tableView, welcomeTouchInfoInstructionsLabel, connectionErrorLabel, toolbar;
 
 - (id)init
 {
@@ -54,8 +54,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     [refreshButton release];
-    helpButton.title = NSLocalizedStringFromTable(@"Help", @"PocketCampus", nil);
-    settingsButton.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     UITapGestureRecognizer* gestureRecognizer1 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)] autorelease];
     UITapGestureRecognizer* gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)] autorelease];
     [fromValueLabel addGestureRecognizer:gestureRecognizer1];
@@ -70,6 +68,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
     [favStations release];
     favStations = [[transportService userFavoriteTransportStations] retain];
     [departureStation release];
@@ -96,10 +95,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
         [refreshTimer release];
         refreshTimer = nil;
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)refresh {

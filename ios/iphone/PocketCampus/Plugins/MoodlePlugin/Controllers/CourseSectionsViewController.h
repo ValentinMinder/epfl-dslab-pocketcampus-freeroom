@@ -15,10 +15,11 @@
 #import "AuthenticationController.h"
 
 @interface CourseSectionsViewController : UIViewController<UITableViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
-    IBOutlet UIActivityIndicatorView* centerActivityIndicator;
-    IBOutlet UILabel* centerMessageLabel;
-    IBOutlet UITableView* sectionsList;
-    IBOutlet UIWebView* webView;
+    UIActivityIndicatorView* centerActivityIndicator;
+    UILabel* centerMessageLabel;
+    UITableView* sectionsList;
+    UIWebView* webView;
+    UIActivityIndicatorView* currentLoadingView;
     MoodleService* moodleService;
     NSArray* iSections;
     int courseId;
@@ -27,6 +28,11 @@
     AuthenticationController* authController;
     TequilaToken* tequilaKey;
 }
+
+@property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
+@property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, assign) IBOutlet UITableView* sectionsList;
+@property (nonatomic, assign) IBOutlet UIWebView* webView;
 
 @property (nonatomic, retain) UIDocumentInteractionController *docController;
 

@@ -11,7 +11,7 @@ static BOOL initObserversDone = NO;
 {
     self = [super init];
     if (self) {
-        CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] initWithNibName:@"CoursesListView" bundle:nil];
+        CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
         coursesListViewController.title = [[self class] localizedName];
         mainViewController = coursesListViewController;
     }
@@ -55,14 +55,6 @@ static BOOL initObserversDone = NO;
 
 - (NSString*)localizedStringForKey:(NSString*)key {
     return NSLocalizedStringFromTable(key, [[self class] identifierName], @"");
-}
-
-- (void)cancelAllOperations {
-    //TODO
-}
-
-- (void)refresh {
-    //TODO
 }
 
 - (void)dealloc
