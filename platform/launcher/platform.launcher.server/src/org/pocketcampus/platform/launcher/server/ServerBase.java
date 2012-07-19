@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TJSONProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServlet;
 import org.eclipse.jetty.http.ssl.SslContextFactory;
@@ -36,7 +37,8 @@ public abstract class ServerBase {
 	public static int LISTEN_ON_PORT = 9090;
 	public static int SSL_LISTEN_ON_PORT = 0;
 	
-	private static TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
+	private static TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
+	private static TProtocolFactory jsonProtocolFactory = new TJSONProtocol.Factory();
 	
 	public void start() throws Exception {
 		Server server = new Server();
@@ -79,8 +81,10 @@ public abstract class ServerBase {
 
 		for(Processor processor : processors) {
 			TProcessor thriftProcessor = processor.getThriftProcessor();
-			TServlet thriftServlet = new TServlet(thriftProcessor, protocolFactory);
-			context.addServlet(new ServletHolder(thriftServlet), "/"+processor.getServiceName());
+			TServlet binThriftServlet = new TServlet(thriftProcessor, binProtocolFactory);
+			TServlet jsonThriftServlet = new TServlet(thriftProcessor, jsonProtocolFactory);
+			context.addServlet(new ServletHolder(binThriftServlet), "/" + processor.getServiceName());
+			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
 		}
 		
 		NCSARequestLog requestLog = new NCSARequestLog("./jetty-yyyy_mm_dd.request.log");
