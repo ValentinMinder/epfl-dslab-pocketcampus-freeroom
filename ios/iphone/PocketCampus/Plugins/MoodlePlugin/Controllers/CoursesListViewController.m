@@ -24,6 +24,7 @@
         authController = [[AuthenticationController alloc] init];
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
+        shouldDeleteSessionWhenFinished = NO;
         
     }
     return self;
@@ -35,8 +36,10 @@
 	// Do any additional setup after loading the view.
     if(moodleService.moodleCookie == nil) {
         centerMessageLabel.text = @"";
-        centerActivityIndicator.hidden = YES;
         coursesList.hidden = YES;
+        centerActivityIndicator.hidden = NO;
+        [centerActivityIndicator startAnimating];
+        [self startAuth];
     } else {
         [self go];
     }
@@ -45,11 +48,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    if(moodleService.moodleCookie == nil) {
-        centerActivityIndicator.hidden = NO;
-        [centerActivityIndicator startAnimating];
-        [self startAuth];
-    }
     [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:YES];
 }
 
@@ -176,7 +174,7 @@
 }
 
 - (void) deleteSessionWhenFinished {
-    // TODO
+    shouldDeleteSessionWhenFinished = YES;
 }
 
 - (void)userCancelledAuthentication {
@@ -224,6 +222,10 @@
 
 - (void)dealloc
 {
+    if(shouldDeleteSessionWhenFinished) {
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     [authController release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];

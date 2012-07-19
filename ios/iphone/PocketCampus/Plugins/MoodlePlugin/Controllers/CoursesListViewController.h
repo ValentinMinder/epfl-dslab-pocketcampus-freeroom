@@ -21,6 +21,7 @@
     NSArray* iCourses;
     AuthenticationController* authController;
     TequilaToken* tequilaKey;
+    BOOL shouldDeleteSessionWhenFinished;
 }
 
 @end
