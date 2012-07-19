@@ -12,7 +12,8 @@ static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
 
 static NSString* kSavedUsernameKey = @"SAVED_USERNAME_KEY";
 static NSString* kSavedPasswordKey = @"SAVED_PASSWORD_KEY";
-static NSString* kUserHasLoggedOutKey = @"USER_HAS_LOGGED_OUT_KEY";
+static NSString* kSavePasswordSwitchStateKey = @"SavePasswordSwitch";
+static NSString* kLogoutNotificationKey = @"PCLogoutNotification";
 
 static AuthenticationService* instance = nil;
 
@@ -48,12 +49,21 @@ static AuthenticationService* instance = nil;
     return [ObjectArchiver saveObject:password forKey:kSavedPasswordKey andPluginName:@"authentication"];
 }
 
-+ (BOOL)userHasLoggedOut {
-    return [(NSNumber*)[ObjectArchiver objectForKey:kUserHasLoggedOutKey andPluginName:@"authentication"] boolValue];
++ (NSNumber*)savePasswordSwitchWasOn {
+    return (NSNumber*)[ObjectArchiver objectForKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
 }
 
-+ (BOOL)saveUserHasLoggedOut:(BOOL)loggedOut {
-    return [ObjectArchiver saveObject:[NSNumber numberWithBool:loggedOut] forKey:kUserHasLoggedOutKey andPluginName:@"authentication"];
++ (BOOL)savePasswordSwitchState:(BOOL)isOn {
+    return [ObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
+}
+
++ (NSString*)logoutNotificationName {
+    return kLogoutNotificationKey;
+}
+
++ (void)enqueueLogoutNotification {
+    NSNotification* notification = [NSNotification notificationWithName:kLogoutNotificationKey object:nil];
+    [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
 }
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {

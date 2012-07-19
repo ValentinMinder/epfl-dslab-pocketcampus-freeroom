@@ -32,6 +32,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         camiproService = [[CamiproService sharedInstanceToRetain] retain];
         balanceAndTransactions = nil;
         tequilaKey = nil;
+        shouldDeleteSessionWhenFinished = NO;
         
         /* TEST */
         
@@ -70,10 +71,6 @@ static CGFloat kBalanceCellHeight = 70.0;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     CamiproSession* sessionId = [CamiproService lastSessionId];
-    if ([AuthenticationService userHasLoggedOut]) {
-        sessionId = nil;
-        [CamiproService saveSessionId:nil];
-    }
     if (sessionId == nil) {
         NSLog(@"-> No previously saved sessionId. Requesting credentials...");
         [self login];
@@ -127,6 +124,11 @@ static CGFloat kBalanceCellHeight = 70.0;
     [camiproService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
 }
 
+- (void)deleteSessionWhenFinished {
+    NSLog(@"METHOD CALLED");
+    shouldDeleteSessionWhenFinished = YES;
+}
+
 - (void)invalidToken {
     //TODO
 }
@@ -146,6 +148,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(CamiproSession*)sessionId {
+    NSLog(@"Saving sessionId");
     [CamiproService saveSessionId:sessionId];
     [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
 }
@@ -185,6 +188,7 @@ static CGFloat kBalanceCellHeight = 70.0;
                 tableView.alpha = 1.0;
                 toolbar.alpha = 1.0;
             }];
+            //[CamiproService saveSessionId:camiproRequest.]
             break;
         }
         default:
@@ -486,6 +490,10 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)dealloc
 {
+    if (shouldDeleteSessionWhenFinished) {
+        NSLog(@"-> Deleting Camipro sessionId...");
+        [CamiproService saveSessionId:nil];
+    }
     [authController release];
     [camiproService cancelOperationsForDelegate:self];
     [camiproService release];

@@ -1,7 +1,7 @@
 "PluginName" = "Authentication";
 "GasparLogin" = "Gaspar login";
 "Error" = "Error";
-"BadCredentials" = "Nom d'utilisateur ou mot de passe incorrecte.";
+"BadCredentials" = "Nom d'utilisateur ou mot\nde passe incorrect.";
 "ErrorOccuredTryAgain" = "Sorry, an error occured";
 "SessionExpired" = "Your session has expired";
 "Logout" = "Logout";

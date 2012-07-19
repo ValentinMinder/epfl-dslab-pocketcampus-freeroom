@@ -19,8 +19,10 @@
 + (BOOL)saveUsername:(NSString*)username;
 + (NSString*)savedPassword;
 + (BOOL)savePassword:(NSString*)password;
-+ (BOOL)userHasLoggedOut;
-+ (BOOL)saveUserHasLoggedOut:(BOOL)loggedOut;
++ (NSNumber*)savePasswordSwitchWasOn;
++ (BOOL)savePasswordSwitchState:(BOOL)isOn;
++ (NSString*)logoutNotificationName;
++ (void)enqueueLogoutNotification;
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate;
@@ -41,6 +43,7 @@
 
 @required
 - (void)authenticationSucceeded;
+- (void)deleteSessionWhenFinished;
 - (void)userCancelledAuthentication;
 - (void)invalidToken;
 

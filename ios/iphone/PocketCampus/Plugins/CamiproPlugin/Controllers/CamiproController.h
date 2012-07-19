@@ -10,4 +10,6 @@
 
 @interface CamiproController : PluginController<PluginControllerProtocol>
 
++ (void)initObservers;
+
 @end

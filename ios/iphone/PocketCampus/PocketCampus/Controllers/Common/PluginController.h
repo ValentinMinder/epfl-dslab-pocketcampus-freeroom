@@ -24,6 +24,12 @@
 
 @end
 
+@interface PluginController (PluginControllerWithObservers)
+
++ (void)initObservers;
+
+@end
+
 /* Protocol that each PluginController subclass should conform to */
 
 @protocol PluginControllerProtocol <NSObject>

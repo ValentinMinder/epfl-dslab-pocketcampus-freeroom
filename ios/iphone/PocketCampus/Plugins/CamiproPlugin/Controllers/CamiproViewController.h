@@ -26,6 +26,7 @@
     CamiproService* camiproService;
     BalanceAndTransactions* balanceAndTransactions;
     TequilaToken* tequilaKey;
+    BOOL shouldDeleteSessionWhenFinished;
 }
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;

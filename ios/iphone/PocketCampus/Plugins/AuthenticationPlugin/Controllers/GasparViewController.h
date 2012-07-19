@@ -23,7 +23,6 @@ typedef enum {
     UISwitch* savePasswordSwitch;
     UITableViewCell* loginCell;
     NSString* errorMessage;
-    BOOL textEditing;
     BOOL isLoggedIn;
     PresentationMode presentationMode;
     BOOL showSavePasswordSwitch; //if no, password is saved by default

@@ -9,6 +9,9 @@
 #import "MainController.h"
 #import "PCValues.h"
 #import "HomeViewController.h"
+#import "PluginController.h"
+
+#import <objc/message.h>
 
 @implementation MainController
 
@@ -22,6 +25,7 @@
         homeViewController = nil;
         activePluginController = nil;
         [self initPluginsList];
+        [self initPluginObservers];
         [self initNavigationControllerAndPushHome];
     }
     return self;
@@ -48,6 +52,16 @@
     
     pluginsList = [[NSArray arrayWithArray:pluginsTempArray] retain]; //creates a non-mutable copy of the dictionary
     
+}
+
+- (void)initPluginObservers {
+    for (int i = 0; i<pluginsList.count; i++) {
+        Class pluginClass = NSClassFromString([self pluginControllerNameForIndex:i]);
+        if (class_getClassMethod(pluginClass, @selector(initObservers))) {
+            NSLog(@"-> Found PluginController with observers : %@", pluginClass);
+            [pluginClass initObservers];
+        }
+    }
 }
 
 - (NSString*)pluginControllerNameForIdentifier:(NSString*)identifier {
