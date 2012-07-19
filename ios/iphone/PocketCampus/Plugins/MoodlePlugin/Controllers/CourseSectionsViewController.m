@@ -64,9 +64,6 @@
     NSLog(@"Documents directory: %@",   [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
     
     
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Toggle" style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
-    self.navigationItem.rightBarButtonItem = anotherButton;
-    [anotherButton release];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -112,7 +109,7 @@
 - (void) computeCurrent {
     if(iSections == nil)
         return;
-    current = 0;
+    current = -1;
     for (NSInteger i = 0; i < iSections.count; i++) {
         MoodleSection* iSection = [iSections objectAtIndex:i];
         if(iSection.iResources.count != 0 && iSection.iCurrent) {
@@ -122,12 +119,24 @@
     }
 }
 
+- (void)showToggleButton {
+    UIBarButtonItem *anotherButton = nil;
+    if (current > 0) {
+        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleAllWeeks", @"MoodlePlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
+    } else if (current == 0) {
+        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
+    }
+    self.navigationItem.rightBarButtonItem = anotherButton;
+    [anotherButton release];
+}
+
 - (void)toggleShowAll:(id)sender {
-    if (current != 0) {
+    if (current > 0) {
         current = 0;
     } else {
         [self computeCurrent];
     }
+    [self showToggleButton];
     [sectionsList reloadData];
 }
 
@@ -254,6 +263,7 @@
             //MoodleSection* sec = [iSections objectAtIndex:2];
             //sec.iCurrent = YES;
             [self computeCurrent];
+            [self showToggleButton];
             sectionsList.hidden = NO;
             [sectionsList reloadData];
         } else {
@@ -374,7 +384,7 @@
 - (BOOL) showSection:(NSInteger) section {
     if(section == 0)
         return NO;
-    if(current == 0)
+    if(current <= 0)
         return YES;
     return (current == section);
 }

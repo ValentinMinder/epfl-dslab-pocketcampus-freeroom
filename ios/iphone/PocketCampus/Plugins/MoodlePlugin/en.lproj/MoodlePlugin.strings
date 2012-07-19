@@ -5,3 +5,5 @@
 "MoodleEmptyCourse" = "Empty course.";
 "MoodleCourses" = "Courses";
 "MoodleWeek" = "Week %d";
+"MoodleAllWeeks" = "All weeks";
+"MoodleCurrentWeek" = "Current week";
