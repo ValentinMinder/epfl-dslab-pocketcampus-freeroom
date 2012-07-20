@@ -127,6 +127,8 @@
 		329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */; };
 		329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD0151F86D7000AC339 /* BusTransport.png */; };
 		329D4AD3151F86D7000AC339 /* BusTransport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD1151F86D7000AC339 /* BusTransport@2x.png */; };
+		32A47D6E15B9F48D00592477 /* DocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A47D6D15B9F48D00592477 /* DocumentViewController.m */; };
+		32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A47D7015B9F4A600592477 /* DocumentView.xib */; };
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
 		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
@@ -405,6 +407,9 @@
 		329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationTransportArrow@2x.png"; sourceTree = "<group>"; };
 		329D4AD0151F86D7000AC339 /* BusTransport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusTransport.png; sourceTree = "<group>"; };
 		329D4AD1151F86D7000AC339 /* BusTransport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BusTransport@2x.png"; sourceTree = "<group>"; };
+		32A47D6C15B9F48D00592477 /* DocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentViewController.h; sourceTree = "<group>"; };
+		32A47D6D15B9F48D00592477 /* DocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentViewController.m; sourceTree = "<group>"; };
+		32A47D7015B9F4A600592477 /* DocumentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentView.xib; sourceTree = "<group>"; };
 		32A54B7B15B5A8E100A7C882 /* GasparViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GasparViewController.h; sourceTree = "<group>"; };
 		32A54B7C15B5A8E100A7C882 /* GasparViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GasparViewController.m; sourceTree = "<group>"; };
 		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
@@ -1231,6 +1236,8 @@
 				32CCB4D51555237500220282 /* CoursesListViewController.m */,
 				32CCB4D21555237500220282 /* CourseSectionsViewController.h */,
 				32CCB4D31555237500220282 /* CourseSectionsViewController.m */,
+				32A47D6C15B9F48D00592477 /* DocumentViewController.h */,
+				32A47D6D15B9F48D00592477 /* DocumentViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1260,6 +1267,7 @@
 				32CCB4E41555237500220282 /* Images */,
 				32CCB4E31555237500220282 /* CoursesListView.xib */,
 				32CCB4E21555237500220282 /* CourseSectionsView.xib */,
+				32A47D7015B9F4A600592477 /* DocumentView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1821,6 +1829,7 @@
 				32CC7B3815B804D3004F0A31 /* SettingsBarButton.png in Resources */,
 				32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
+				32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1935,6 +1944,7 @@
 				320A05B915B02D5F0057B15C /* HomeIcon.m in Sources */,
 				3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */,
 				32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */,
+				32A47D6E15B9F48D00592477 /* DocumentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

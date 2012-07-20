@@ -8,3 +8,6 @@
 "MoodleAllWeeks" = "Toutes les semaines";
 "MoodleCurrentWeek" = "Semaine courante";
 "LoadingCourse" = "Chargement du cours\nVeuillez patienter";
+"FileCouldNotBeDisplayedTryOpenIn" = "Ce fichier ne peut pas être affiché.\nEssayez le bouton action.";
+"Sorry" = "Désolé";
+"NoActionForThisFile" = "Aucune action n'est disponible pour ce fichier.";

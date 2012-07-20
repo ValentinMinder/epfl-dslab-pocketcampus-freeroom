@@ -5,7 +5,7 @@
 	<key>REQUEST_TIMEOUT</key>
 	<integer>15</integer>
 	<key>CONNECTIVITY_CHECK_TIMEOUT</key>
-	<string>15</string>
+	<integer>15</integer>
 	<key>DEV_MODE</key>
 	<true/>
 	<key>DEV_SERVER_PROTO</key>

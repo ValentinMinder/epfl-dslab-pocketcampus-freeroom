@@ -14,6 +14,8 @@
 
 #import "PCTableViewSectionHeader.h"
 
+#import "DocumentViewController.h"
+
 static int kCourseCellLoadingViewTag = 10;
 
 @implementation CourseSectionsViewController
@@ -198,7 +200,15 @@ static int kCourseCellLoadingViewTag = 10;
         //[dicController retain];
         dicController.delegate = self;
         [dicController presentPreviewAnimated:YES];
-    }
+    } 
+    
+}
+
+- (void)presentDocumentViewControllerForFile:(NSURL*)fileURL {
+    DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentLocalURL:fileURL];
+    docViewController.title = @""; //TODO
+    [self.navigationController pushViewController:docViewController animated:YES];
+    [docViewController release];
 }
 
 - (void) startAuth {
@@ -289,13 +299,17 @@ static int kCourseCellLoadingViewTag = 10;
     [currentLoadingView stopAnimating];
     NSString* urlStr = [moodleService getLocalPath:request.url.absoluteString];
     NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
-    [self openFile:fileUrl];
+    //[self openFile:fileUrl];
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
+    [self presentDocumentViewControllerForFile:fileUrl];
 }
 
 - (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
     [currentLoadingView stopAnimating];
-    [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+    //TODO alert
+    /*[centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);*/
 }
 
 /* AuthenticationCallbackDelegate delegation */
@@ -322,15 +336,15 @@ static int kCourseCellLoadingViewTag = 10;
 /* UITableViewDelegate delegation */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    
     NSString* urlStr = [moodleService getLocalPath:resource.iUrl];
     NSFileManager *fileManager= [NSFileManager defaultManager]; 
     if([fileManager fileExistsAtPath:urlStr]) {
         NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
-        [self openFile:fileUrl];
+        //[self openFile:fileUrl];
+        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+        [self presentDocumentViewControllerForFile:fileUrl];
     } else {
         [currentLoadingView release];
         currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];

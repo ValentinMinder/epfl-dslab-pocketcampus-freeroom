@@ -81,9 +81,10 @@ static NSTimeInterval connectivityCheckTimeout;
     @synchronized(self) {
         if (checkServerRequest == nil) {
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
+            NSLog(@"-> Checking server connectivity : %@", serverAddressWithPort);
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
             checkServerRequest.timeOutSeconds = connectivityCheckTimeout;
-            checkServerRequest.requestMethod = @"HEAD";
+            //checkServerRequest.requestMethod = @"HEAD";
             checkServerRequest.delegate = self;
             [checkServerRequest startAsynchronous];
         }
@@ -327,7 +328,7 @@ static NSTimeInterval connectivityCheckTimeout;
             [self didTimeout];
             return;
         }
-        
+        NSLog(@"-> Server reachability test succeeded");
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
         
         if ([self isCancelled])
@@ -872,7 +873,7 @@ static NSTimeInterval connectivityCheckTimeout;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isCanceled"];
     executing = NO;
-    finished = NO;
+    finished = YES;
     canceled = YES;
     [self didChangeValueForKey:@"isCanceled"];
     [self didChangeValueForKey:@"isExecuting"];
@@ -894,7 +895,7 @@ static NSTimeInterval connectivityCheckTimeout;
     [self autorelease];
 }
 
-- (void)didTimeout { //serverIsReachable has passed but timeout has occured in thrift request
+- (void)didTimeout { //server not reachable or thrift request timer timed o ut
     NSLog(@"-> ServiceRequest timeout");
     if (self.timedOut) { 
         return;

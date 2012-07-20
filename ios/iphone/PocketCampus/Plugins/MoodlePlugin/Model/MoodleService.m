@@ -8,6 +8,8 @@
 
 static MoodleService* instance = nil;
 
+static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download heavy PDFs on 3G
+
 + (id)sharedInstanceToRetain {
     if (instance != nil) {
         return instance;
@@ -113,7 +115,7 @@ static MoodleService* instance = nil;
     [request setDownloadDestinationPath:filePath];
     
     [request addRequestHeader:@"Cookie" value:cookie];
-    
+    [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
     [request setDelegate:delegate];
     //request.shouldRedirect = NO;
     [request setDidFinishSelector:@selector(fetchMoodleResourceDidReturn:)];
