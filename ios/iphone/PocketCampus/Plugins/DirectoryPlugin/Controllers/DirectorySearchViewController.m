@@ -310,14 +310,14 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 
 - (void)pushViewControllerForPerson:(Person*)person {
     
+    ABRecordRef abPerson = ABPersonCreate();
+    
     if (![person isKindOfClass:[Person class]]) {
         goto error;
     }
     
     ABUnknownPersonViewController* viewController = [[ABUnknownPersonViewController alloc] init];
     personViewController = viewController;
-    
-    ABRecordRef abPerson = ABPersonCreate();
     
     viewController.unknownPersonViewDelegate = self;
     viewController.displayedPerson = abPerson;
@@ -403,12 +403,12 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     if (anError != NULL) {
 error:        
         NSLog(@"-> pushViewControllerForPerson: an error occured");
+        CFRelease(abPerson);
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Impossible to display this person, sorry." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [alert release];
         return;
-        
-        return;
+
     }
     
     

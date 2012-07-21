@@ -136,22 +136,26 @@
             for (int i = 0; i<trip.connections.count && i < 3; i++) {
                 TransportTrip* transportTrip = [connections objectAtIndex:i]; 
                 
-                TransportConnection* firstConnection;
+                TransportConnection* firstConnection = nil;
                 
                 if (transportTrip.parts == nil || transportTrip.parts.count == 0) {
-                    timesString = [TransportUtils hourMinutesStringForTimestamp:transportTrip.departureTime/1000.0];
-                } else if ([TransportUtils isFeetConnection:[transportTrip.parts objectAtIndex:0]] && transportTrip.parts.count > 1) {
-                    firstConnection = [transportTrip.parts objectAtIndex:1];
-                    timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+                    timesString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
                 } else {
-                    firstConnection = [transportTrip.parts objectAtIndex:0];
+                    if ([TransportUtils isFeetConnection:[transportTrip.parts objectAtIndex:0]] && transportTrip.parts.count > 1) {
+                        firstConnection = [transportTrip.parts objectAtIndex:1];
+                    } else {
+                        firstConnection = [transportTrip.parts objectAtIndex:0];
+                    }
                     timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
                 }
-                timesString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:15.0];
+
                 
-                NSString* lineName = [TransportUtils nicerName:firstConnection.line.name];
-                if (lineName == nil) {
+                NSString* lineName;
+                
+                if (!firstConnection) {
                     lineName = @"";
+                } else {
+                    lineName = [TransportUtils nicerName:firstConnection.line.name];
                 }
                 
                 if ([timesString isEqualToString:@"Now"]) {

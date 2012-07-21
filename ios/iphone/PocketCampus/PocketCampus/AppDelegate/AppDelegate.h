@@ -10,9 +10,11 @@
 
 #import "MainController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    MainController* mainController;
+}
 
 @property (strong, nonatomic) UIWindow *window;
-@property (assign) MainController* mainController;
+@property (retain) MainController* mainController;
 
 @end

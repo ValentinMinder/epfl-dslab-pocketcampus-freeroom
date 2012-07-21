@@ -104,7 +104,8 @@
 }
 
 - (void)dealloc
-{
+{   
+    [webView stopLoading];
     [documentURL release];
     [docInteractionController release];
     [super dealloc];

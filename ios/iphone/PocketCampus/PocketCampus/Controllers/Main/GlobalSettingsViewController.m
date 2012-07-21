@@ -81,6 +81,7 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
                 {
                     GasparViewController* viewController = [[GasparViewController alloc] init];
                     [self.navigationController pushViewController:viewController animated:YES];
+                    [viewController release];
                     break;
                 }
                 default:

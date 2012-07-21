@@ -439,7 +439,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     Transaction* transcation = [balanceAndTransactions.iTransactions objectAtIndex:indexPath.row];
     
     if (newCell == nil) {
-        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kHistoryCellIdentifier];
+        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kHistoryCellIdentifier] autorelease];
         newCell.selectionStyle = UITableViewCellSelectionStyleNone;
         newCell.backgroundColor = [UIColor clearColor];
         newCell.textLabel.textColor = [PCValues textColor1];

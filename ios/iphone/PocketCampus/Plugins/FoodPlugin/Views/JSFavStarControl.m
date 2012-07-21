@@ -46,7 +46,7 @@
 
 - (void)setRating:(NSInteger)newRating {
     if (newRating < 0) {
-        newRating = 0;
+        _rating = 0;
     } else if (newRating > RATING_MAX) {
         _rating = RATING_MAX;
     } else {

@@ -44,7 +44,7 @@
 
 - (void)dealloc
 {
-    [self.mainController release];
+    [mainController release];
     [_window release];
     [super dealloc];
 }
@@ -55,7 +55,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
     
-    self.mainController = [[MainController alloc] initWithWindow:self.window];
+    self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
     
     /*NSError* error = nil;
     

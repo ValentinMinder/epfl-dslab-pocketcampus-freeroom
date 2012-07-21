@@ -158,7 +158,7 @@ static int kBestResultSwitchTag = 2;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell;
+    UITableViewCell* cell = nil;
     switch (indexPath.section) {
         case 0: // best result cells setting
         {
@@ -187,6 +187,7 @@ static int kBestResultSwitchTag = 2;
             break;
         }
         default:
+            cell = nil;
             break;
     }
     return cell;

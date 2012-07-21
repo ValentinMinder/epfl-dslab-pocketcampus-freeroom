@@ -164,6 +164,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
             UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"StationAlreadyFavorite", @"TransportPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
             [alertView release];
+            [favStations release];
             return;
         }
     }

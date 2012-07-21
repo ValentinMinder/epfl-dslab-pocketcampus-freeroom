@@ -57,7 +57,9 @@ static int NEWS_FONT_SIZE = 14.0;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = newsItem.title;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    self.navigationItem.rightBarButtonItem = actionButton;
+    [actionButton release];
     [centerActivityIndicator startAnimating];
 
     feedLabel.text = newsItem.feed;
