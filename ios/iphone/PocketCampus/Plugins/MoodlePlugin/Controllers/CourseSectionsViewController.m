@@ -20,7 +20,7 @@ static int kCourseCellLoadingViewTag = 10;
 
 @implementation CourseSectionsViewController
 
-@synthesize centerActivityIndicator, centerMessageLabel, sectionsList, webView, docController;
+@synthesize centerActivityIndicator, centerMessageLabel, sectionsList;
 
 - (id)initWithCourseId:(int)aCourseId andCourseTitle:(NSString*)aCourseTitle {
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
@@ -29,9 +29,11 @@ static int kCourseCellLoadingViewTag = 10;
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         authController = [[AuthenticationController alloc] init];
         tequilaKey = nil;
+        iSections = nil;
         courseId = aCourseId;
         courseTitle = [aCourseTitle retain];
         self.title = courseTitle;
+        shouldDeleteSessionWhenFinished = NO;
     }
     return self;
 }
@@ -41,6 +43,7 @@ static int kCourseCellLoadingViewTag = 10;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.   
     self.view.backgroundColor = [PCValues backgroundColor1];
+    sectionsList.hidden = YES;
     sectionsList.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:sectionsList.frame];
     backgroundView.backgroundColor = [UIColor whiteColor];;
@@ -52,17 +55,8 @@ static int kCourseCellLoadingViewTag = 10;
         [centerActivityIndicator stopAnimating];
         sectionsList.hidden = YES;
     } else {
-        [self go];
+        [self startGetCourseSectionsRequest];
     }
-    webView.hidden = YES;
-    sectionsList.hidden = YES;
-
-    NSError *error;
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    NSString *documentsDirectory = [NSHomeDirectory()  stringByAppendingPathComponent:@"Documents"];
-    NSLog(@"Documents directory: %@",   [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,7 +74,7 @@ static int kCourseCellLoadingViewTag = 10;
     // Release any retained subviews of the main view.
 }
 
-- (void)go {
+- (void)startGetCourseSectionsRequest {
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil);
     sectionsList.hidden = YES;
@@ -97,14 +91,7 @@ static int kCourseCellLoadingViewTag = 10;
     [sess release];
 }
 
-- (void)hideWebView:(id)sender {
-    webView.hidden = YES;
-    self.navigationItem.rightBarButtonItem = nil;
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
-    
-}
-
-- (void) computeCurrent {
+- (void)computeCurrent {
     if(iSections == nil)
         return;
     current = -1;
@@ -138,71 +125,6 @@ static int kCourseCellLoadingViewTag = 10;
     [sectionsList reloadData];
 }
 
-/*
-- (BOOL) documentInteractionController: (UIDocumentInteractionController *) controller canPerformAction: (SEL) action {
-    NSLog(@"documentInteractionController:canPerformAction:");
-    return YES;
-}
-
-- (void) documentInteractionController: (UIDocumentInteractionController *) controller didEndSendingToApplication: (NSString *) application {
-    NSLog(@"documentInteractionController:didEndSendingToApplication:");
-}
-
-- (void) documentInteractionController: (UIDocumentInteractionController *) controller willBeginSendingToApplication: (NSString *) application {
-    NSLog(@"documentInteractionController:willBeginSendingToApplication:");
-}
-
-- (void) documentInteractionControllerDidDismissOpenInMenu: (UIDocumentInteractionController *) controller {
-    NSLog(@"documentInteractionControllerDidDismissOpenInMenu:");
-}
-*/
-
-- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController {
-    NSLog(@"documentInteractionControllerViewControllerForPreview:");
-    return self;
-}
-
-- (void)initDocController:(NSURL *)url {
-    if (docController == nil) {
-        docController = [UIDocumentInteractionController interactionControllerWithURL:url];
-        docController.delegate = self;
-    } else {
-        docController.URL = url;
-    }
-}
-
-- (void)openFile:(NSURL*)fileUrl {
-    //webView.hidden = NO;
-    //[webView loadRequest:[NSURLRequest requestWithURL:fileUrl]];
-    //UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(hideWebView:)];
-    //self.navigationItem.rightBarButtonItem = anotherButton;
-    //[anotherButton release];
-    //self.navigationItem.title = @"Courses";
-
-    //NSURL *url = [NSURL fileURLWithPath:@"http://www.zilog.com/docs/z80/um0080.pdf"];
-    //UIDocumentInteractionController*
-    //docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
-    //[docController retain];
-    //docController.delegate = self;
-    //BOOL isValid = [docController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES];
-    //NSLog(@"isValid %d", isValid);
-    //[docController presentPreviewAnimated:YES];
-    
-    //[self initDocController:fileUrl];
-    //[docController presentPreviewAnimated:YES];
-    
-    // METHOD 1
-    self.docController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
-    self.docController.delegate = self;
-    if(![self.docController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES]) {
-        // METHOD 2
-        UIDocumentInteractionController* dicController = [UIDocumentInteractionController interactionControllerWithURL:fileUrl];
-        //[dicController retain];
-        dicController.delegate = self;
-        [dicController presentPreviewAnimated:YES];
-    } 
-    
-}
 
 - (void)presentDocumentViewControllerForFile:(NSURL*)fileURL {
     DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentLocalURL:fileURL];
@@ -211,7 +133,7 @@ static int kCourseCellLoadingViewTag = 10;
     [docViewController release];
 }
 
-- (void) startAuth {
+- (void)startAuth {
     [moodleService getTequilaTokenForMoodleDelegate:self];
 }
 
@@ -238,25 +160,26 @@ static int kCourseCellLoadingViewTag = 10;
 
 - (void)getTequilaTokenForMoodleFailed {
     NSLog(@"-> getTequilaTokenForMoodleFailed");
-    [self serviceConnectionToServerTimedOut];
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
-    //centerMessageLabel.text = sessionId.moodleCookie;
-    moodleService.moodleCookie = sessionId.moodleCookie;
-    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self go];
+    [moodleService saveMoodleCookie:sessionId.moodleCookie];
+    [self startGetCourseSectionsRequest];
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    [self serviceConnectionToServerTimedOut];
+    NSLog(@"-> getSessionIdForServiceFailedForTequilaKey");
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest didReturn:(SectionsListReply*)sectionsListReply {
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     if(sectionsListReply.iStatus == 200) {
+        [iSections release];
         iSections = [sectionsListReply.iSections retain];
         int visibleCount = 0;
         for (int i = 1; i < iSections.count; i++) {
@@ -264,51 +187,45 @@ static int kCourseCellLoadingViewTag = 10;
             visibleCount += secObj.iResources.count;
         }
         if(visibleCount != 0) {
-            //MoodleSection* sec = [iSections objectAtIndex:2];
-            //sec.iCurrent = YES;
             [self computeCurrent];
             [self showToggleButton];
             sectionsList.hidden = NO;
             [sectionsList reloadData];
         } else {
             centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil);
-            NSLog(@"MoodleEmptyCourse");
+            NSLog(@"-> Moodle : empty course");
         }
     } else if(sectionsListReply.iStatus == 404) {
         centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);
     } else if(sectionsListReply.iStatus == 405) {
-        centerMessageLabel.text = @"No course specified";
+        centerMessageLabel.text = @"Error, no course specified"; //should never happen
     } else if(sectionsListReply.iStatus == 407) { // session timed out
         // kill the cookie
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        moodleService.moodleCookie = nil;
+        [moodleService saveMoodleCookie:nil];
         // and re call auth
         [self startAuth];
     }
 }
 
 - (void)getCourseSectionsFailed:(MoodleRequest*)aMoodleRequest {
+    NSLog(@"-> getCourseSectionsFailed");
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request{
-    /*[centerActivityIndicator stopAnimating];
-    centerActivityIndicator.hidden = YES;*/
     [currentLoadingView stopAnimating];
-    NSString* urlStr = [moodleService getLocalPath:request.url.absoluteString];
-    NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
-    //[self openFile:fileUrl];
-    [self presentDocumentViewControllerForFile:fileUrl];
+    NSString* localPath = [moodleService localPathForURL:request.url.absoluteString];
+    [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:localPath]];
 }
 
 - (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
+    NSLog(@"-> fetchMoodleResourceFailed");
     [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
     [currentLoadingView stopAnimating];
-    //TODO alert
-    /*[centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);*/
+    UIAlertView* downloadErrorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [downloadErrorAlert show];
+    [downloadErrorAlert release];
 }
 
 /* AuthenticationCallbackDelegate delegation */
@@ -318,11 +235,13 @@ static int kCourseCellLoadingViewTag = 10;
 }
 
 - (void)invalidToken {
-    // TODO
+    NSLog(@"-> invalidToken");
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void) deleteSessionWhenFinished {
-    // TODO
+    shouldDeleteSessionWhenFinished = YES;
 }
 
 - (void)userCancelledAuthentication {
@@ -337,19 +256,15 @@ static int kCourseCellLoadingViewTag = 10;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    NSString* urlStr = [moodleService getLocalPath:resource.iUrl];
+    NSString* urlStr = [moodleService localPathForURL:resource.iUrl];
     NSFileManager *fileManager= [NSFileManager defaultManager]; 
     if([fileManager fileExistsAtPath:urlStr]) {
-        NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
-        //[self openFile:fileUrl];
-        [self presentDocumentViewControllerForFile:fileUrl];
-    } else {
+        [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:urlStr]];
+    } else { //show file loading animation
         [currentLoadingView release];
         currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
         [currentLoadingView startAnimating];
         [moodleService fetchMoodleResource:moodleService.moodleCookie :resource.iUrl withDelegate:self];
-        /*centerActivityIndicator.hidden = NO;
-        [centerActivityIndicator startAnimating];*/
     }
 }
 
@@ -442,6 +357,9 @@ static int kCourseCellLoadingViewTag = 10;
 
 - (void)dealloc
 {
+    if (shouldDeleteSessionWhenFinished) {
+        [moodleService saveMoodleCookie:nil];
+    }
     [authController release];
     [tequilaKey release];
     [moodleService cancelOperationsForDelegate:self];

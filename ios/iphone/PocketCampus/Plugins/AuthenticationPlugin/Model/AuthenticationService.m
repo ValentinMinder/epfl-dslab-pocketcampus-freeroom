@@ -11,10 +11,9 @@
 @implementation AuthenticationService
 
 static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
-static NSString* kKeychainServiceKey = @"PCGasparPasswordKey";
-static NSString* kSavedUsernameKey = @"SAVED_USERNAME_KEY";
-static NSString* kSavedPasswordKey = @"SAVED_PASSWORD_KEY";
-static NSString* kSavePasswordSwitchStateKey = @"SavePasswordSwitch";
+static NSString* kKeychainServiceKey = @"PCGasparPassword";
+static NSString* kSavedUsernameKey = @"savedUsername";
+static NSString* kSavePasswordSwitchStateKey = @"savePasswordSwitch";
 static NSString* kLogoutNotificationKey = @"PCLogoutNotification";
 
 static AuthenticationService* instance = nil;

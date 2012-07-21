@@ -14,11 +14,10 @@
 
 #import "AuthenticationController.h"
 
-@interface CourseSectionsViewController : UIViewController<UITableViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
+@interface CourseSectionsViewController : UIViewController<UITableViewDelegate, MoodleServiceDelegate, AuthenticationCallbackDelegate> {
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UITableView* sectionsList;
-    UIWebView* webView;
     UIActivityIndicatorView* currentLoadingView;
     MoodleService* moodleService;
     NSArray* iSections;
@@ -27,14 +26,12 @@
     NSString* courseTitle;
     AuthenticationController* authController;
     TequilaToken* tequilaKey;
+    BOOL shouldDeleteSessionWhenFinished;
 }
 
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, assign) IBOutlet UITableView* sectionsList;
-@property (nonatomic, assign) IBOutlet UIWebView* webView;
-
-@property (nonatomic, retain) UIDocumentInteractionController *docController;
 
 - (id)initWithCourseId:(int)aCourseId andCourseTitle:(NSString*)aCourseTitle;
 

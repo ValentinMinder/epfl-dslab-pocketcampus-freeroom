@@ -33,6 +33,7 @@
         loginCell = nil;
         savePasswordSwitch = nil;
         authenticationService = [[AuthenticationService sharedInstanceToRetain] retain];
+        isLoggedIn = ([AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]] != nil);
     }
     return self;
 }
@@ -55,6 +56,10 @@
         UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
         self.navigationItem.rightBarButtonItem = cancelButton;
         [cancelButton release];
+    } else if (presentationMode == PresentationModeNavStack && isLoggedIn) {
+        [self showDoneButton];
+    } else {
+        //nothing, unknown
     }
 }
 
@@ -69,6 +74,12 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)showDoneButton {
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(donePressed)];
+    [self.navigationItem setRightBarButtonItem:doneButton animated:YES];
+    [doneButton release];
+}
+
 - (void)cancelPressed {
     [authenticationService cancelOperationsForDelegate:self];
     if (presentationMode == PresentationModeModal) {
@@ -77,6 +88,12 @@
                 [(NSObject*)self.delegate performSelectorOnMainThread:@selector(userCancelledAuthentication) withObject:nil waitUntilDone:YES];
             }
         }];
+    }
+}
+
+- (void)donePressed {
+    if (self.presentingViewController && presentationMode == PresentationModeNavStack) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }
 }
 
@@ -147,6 +164,10 @@
             username = nil;
             [password release];
             password = nil;
+            [usernameCell release];
+            usernameCell = nil;
+            [passwordCell release];
+            passwordCell = nil;
             [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(reloadTableViewWithEffect) userInfo:nil repeats:NO];
         }
     } else {
@@ -268,9 +289,12 @@
                 switch (indexPath.row) {
                     case 0: //username
                     {
-                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)];
+                        if (usernameCell) {
+                            return usernameCell;
+                        }
+                        usernameCell = [[EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Username", @"AuthenticationPlugin", nil)] retain];
                         [usernameTextField release];
-                        usernameTextField = [cell.textField retain];
+                        usernameTextField = [usernameCell.textField retain];
                         usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                         usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
                         usernameTextField.returnKeyType = UIReturnKeyNext;
@@ -284,18 +308,21 @@
                         if (text && presentationMode == PresentationModeModal) {
                             usernameTextField.text = text;
                         }
-                        return cell;
+                        return usernameCell;
                         break;
                     }
                     case 1: //password
                     {
-                        EditableTableViewCell* cell = [EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)];
+                        if (passwordCell) {
+                            return passwordCell;
+                        }
+                        passwordCell = [[EditableTableViewCell editableCellWithPlaceholder:NSLocalizedStringFromTable(@"Password", @"AuthenticationPlugin", nil)] retain];
                         [passwordTextField release];
-                        passwordTextField = [cell.textField retain];
+                        passwordTextField = [passwordCell.textField retain];
                         passwordTextField.secureTextEntry = YES;
                         passwordTextField.returnKeyType = UIReturnKeyGo;
-                        cell.textField.delegate = self;
-                        return cell;
+                        passwordCell.textField.delegate = self;
+                        return passwordCell;
                         break;
                     }
                     default:
@@ -366,6 +393,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     isLoggedIn = ([AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]] != nil);
     if (isLoggedIn) {
+        [self showDoneButton];
         return 1; //only logout button
     } else {
         if (showSavePasswordSwitch) {
@@ -390,8 +418,7 @@
 /* instance methods */
 
 - (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
-    [token release];
-    token = [token_ retain];
+    self.token = token_;
     if (delegate_ == nil) {
         @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
     }
@@ -428,6 +455,10 @@
             [self focusOnInput];
             }];
         } else {
+            [usernameCell release];
+            usernameCell = nil;
+            [passwordCell release];
+            passwordCell = nil;
             [tableView reloadData];
             [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(focusOnInput) userInfo:nil repeats:NO];
         }
@@ -442,6 +473,10 @@
         if (token) {
             [authenticationService authenticateToken:token withTequilaCookie:tequilaCookie delegate:self];
         } else { //mean user just wanted to login to tequila without loggin in to service. From settings for example.
+            [usernameCell release];
+            usernameCell = nil;
+            [passwordCell release];
+            passwordCell = nil;
             [self reloadTableViewWithEffect]; //will show logged-in UI then
         }
         
@@ -504,6 +539,8 @@
     [password release];
     [usernameTextField release];
     [passwordTextField release];
+    [usernameCell release];
+    [passwordCell release];
     [loginCell release];
     [savePasswordSwitch release];
     [token release];

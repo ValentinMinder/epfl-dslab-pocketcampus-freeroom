@@ -18,7 +18,7 @@ static float SEPARATOR_HEIGHT = 1.0;
     float VIEW_HEIGHT = [PCValues tableViewSectionHeaderHeight];
     self = [super initWithFrame:CGRectMake(0, 0, 320.0, VIEW_HEIGHT)];
     if (self) {
-        
+        self.alpha = 0.85;
         self.backgroundColor = [PCValues backgroundColor1];
         UIView* separator1 = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0, self.frame.size.width, SEPARATOR_HEIGHT)];
         separator1.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];

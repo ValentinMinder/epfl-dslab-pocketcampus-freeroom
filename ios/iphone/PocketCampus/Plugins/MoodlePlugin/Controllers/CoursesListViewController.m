@@ -27,7 +27,6 @@
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
         shouldDeleteSessionWhenFinished = NO;
-        
     }
     return self;
 }
@@ -48,13 +47,12 @@
         [centerActivityIndicator startAnimating];
         [self startAuth];
     } else {
-        [self go];
-    }
-    //[controller release];
-    
+        [self startGetCoursesListRequest];
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [coursesList deselectRowAtIndexPath:[coursesList indexPathForSelectedRow] animated:animated];
 }
 
@@ -64,7 +62,7 @@
     // Release any retained subviews of the main view.
 }
 
-- (void)go {
+- (void)startGetCoursesListRequest {
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = @"";
     coursesList.hidden = YES;
@@ -79,20 +77,11 @@
     [req release];
     [sess release];
     
-    /*UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logoutFromMoodle:)];          
-    self.navigationItem.rightBarButtonItem = anotherButton;
-    [anotherButton release];*/
     self.title = NSLocalizedStringFromTable(@"MoodleCourses", @"MoodlePlugin", nil);
 }
 
-- (void) startAuth {
+- (void)startAuth {
     [moodleService getTequilaTokenForMoodleDelegate:self];
-}
-
-- (void)logoutFromMoodle:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -118,19 +107,19 @@
 
 - (void)getTequilaTokenForMoodleFailed {
     NSLog(@"-> getTequilaTokenForMoodleFailed");
-    [self serviceConnectionToServerTimedOut];
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
-    //centerMessageLabel.text = sessionId.moodleCookie;
-    moodleService.moodleCookie = sessionId.moodleCookie;
-    [[NSUserDefaults standardUserDefaults] setObject:moodleService.moodleCookie forKey:@"moodleCookie"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self go];
+    [moodleService saveMoodleCookie:sessionId.moodleCookie];
+    [self startGetCoursesListRequest];
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    [self serviceConnectionToServerTimedOut];
+    NSLog(@"-> getSessionIdForServiceFailedForTequilaKey");
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
@@ -149,21 +138,16 @@
         centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);
     } else if(coursesListReply.iStatus == 407) { // session timed out
         // kill the cookie
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        moodleService.moodleCookie = nil;
+        [moodleService saveMoodleCookie:nil];
         // and re call auth
-        /*CredentialsViewController* controller = [[CredentialsViewController alloc] initWithCallback:self];
-        [self.navigationController presentViewController:controller animated:YES completion:NULL];
-        [controller release];
-        pingedAuthPlugin = YES;*/
         [self startAuth];
     }
 }
 
 - (void)getCoursesListFailed:(MoodleRequest*)aMoodleRequest {
+    NSLog(@"-> getCoursesListFailed");
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 /* AuthenticationCallbackDelegate delegation */
@@ -173,7 +157,9 @@
 }
 
 - (void)invalidToken {
-    // TODO
+    NSLog(@"-> invalidToken");
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
 - (void) deleteSessionWhenFinished {
@@ -227,8 +213,7 @@
 - (void)dealloc
 {
     if(shouldDeleteSessionWhenFinished) {
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [moodleService saveMoodleCookie:nil];
     }
     [authController release];
     [moodleService cancelOperationsForDelegate:self];

@@ -34,8 +34,8 @@ static BOOL initObserversDone = NO;
             return;
         }
         [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"moodleCookie"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
+            [[MoodleService sharedInstanceToRetain] saveMoodleCookie:nil];
         }];
         initObserversDone = YES;
     }

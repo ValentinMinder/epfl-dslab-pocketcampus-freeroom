@@ -192,6 +192,7 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
     pictureRequest.delegate = self;
+    pictureRequest.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
     pictureRequest.timeOutSeconds = [Service requestTimeoutInterval];
     [pictureRequest startAsynchronous];
 }

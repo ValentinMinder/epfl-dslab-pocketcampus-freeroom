@@ -8,6 +8,7 @@
 "MoodleAllWeeks" = "Toutes les semaines";
 "MoodleCurrentWeek" = "Semaine courante";
 "LoadingCourse" = "Chargement du cours\nVeuillez patienter";
+"ErrorWhileDownloadingFile" = "Désolé, une erreur est survenue pendant le téléchargement du fichier.";
 "FileCouldNotBeDisplayedTryOpenIn" = "Ce fichier ne peut pas être affiché.\nEssayez le bouton action.";
 "Sorry" = "Désolé";
 "NoActionForThisFile" = "Aucune action n'est disponible pour ce fichier.";

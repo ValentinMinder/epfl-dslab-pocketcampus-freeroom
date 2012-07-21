@@ -1,14 +1,17 @@
 
 #import "MoodleService.h"
 
-@implementation MoodleService
+#import "ObjectArchiver.h"
 
-@synthesize moodleCookie;
-//@synthesize value;
+@implementation MoodleService
 
 static MoodleService* instance = nil;
 
 static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download heavy PDFs on 3G
+
+static NSString* kMoodleCookieKey = @"moodleCookie";
+
+@synthesize moodleCookie;
 
 + (id)sharedInstanceToRetain {
     if (instance != nil) {
@@ -17,7 +20,7 @@ static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download 
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"moodle"];            
-            instance.moodleCookie = (NSString*) [[NSUserDefaults standardUserDefaults] objectForKey:@"moodleCookie"];
+            instance.moodleCookie = (NSString*)[ObjectArchiver objectForKey:kMoodleCookieKey andPluginName:@"moodle"];
         }
     }
     return [instance autorelease];
@@ -27,24 +30,27 @@ static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download 
     return [[[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
-- (NSString*)getLocalPath:(NSString*)url {
-    NSRange nsr = [url rangeOfString:@"/file.php/"];
-    NSString* nss = [url substringFromIndex:(nsr.location + nsr.length)];
-    NSString *documentsDirectory = [NSHomeDirectory()  stringByAppendingPathComponent:@"Documents/moodle"];
-    NSString *filePath = [documentsDirectory   stringByAppendingPathComponent:nss];
-    
-    /*NSRange nsr = [url rangeOfString:@"/" options:NSBackwardsSearch];
-    NSString* nss = [url substringFromIndex:(nsr.location + nsr.length)];
-    NSString *documentsDirectory = [NSHomeDirectory()  stringByAppendingPathComponent:@"Documents"];
-    NSString *filePath = [documentsDirectory   stringByAppendingPathComponent:nss];*/
-    
+- (BOOL)saveMoodleCookie:(NSString*)moodleCookie_ {
+    self.moodleCookie = moodleCookie_; //previous cookie is released by synthesized setter
+    return [ObjectArchiver saveObject:moodleCookie_ forKey:kMoodleCookieKey andPluginName:@"moodle"];
+}
+
+- (NSString*)localPathForURL:(NSString*)urlString {
+    NSRange nsr = [urlString rangeOfString:@"/file.php/"];
+    NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"Moodle"];
+    NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
+
     NSString* directory = [filePath substringToIndex:[filePath rangeOfString:@"/" options:NSBackwardsSearch].location];
     BOOL isDir = TRUE;
     NSFileManager *fileManager= [NSFileManager defaultManager]; 
-    if(![fileManager fileExistsAtPath:directory isDirectory:&isDir])
-        if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL])
-            NSLog(@"Error: Create folder failed %@", directory);
-    
+    if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
+        if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
+            NSLog(@"-> Error while creating directory in cache : %@", directory);
+        }
+    }
     return filePath;
 }
 
@@ -111,7 +117,7 @@ static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download 
     NSURL *nsurl = [NSURL URLWithString:url];
     ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:nsurl] autorelease];
     
-    NSString* filePath = [self getLocalPath:url];
+    NSString* filePath = [self localPathForURL:url];
     [request setDownloadDestinationPath:filePath];
     
     [request addRequestHeader:@"Cookie" value:cookie];
@@ -125,6 +131,7 @@ static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download 
 
 - (void)dealloc
 {
+    [moodleCookie release];
     instance = nil;
     [super dealloc];
 }

@@ -42,7 +42,7 @@ static BOOL initObserversDone = NO;
             return;
         }
         [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            NSLog(@"Camipro received notif");
+            NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
             [CamiproService saveSessionId:nil]; //removing stored session
         }];
         initObserversDone = YES;

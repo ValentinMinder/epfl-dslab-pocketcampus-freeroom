@@ -10,10 +10,11 @@
     NSString* moodleCookie;
 }
 
-@property(nonatomic, retain) NSString *moodleCookie;
-//@property(nonatomic, assign) int value;
+@property(nonatomic, retain) NSString* moodleCookie;
 
-- (NSString*)getLocalPath:(NSString*)url;
+- (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
+
+- (NSString*)localPathForURL:(NSString*)urlString;
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;

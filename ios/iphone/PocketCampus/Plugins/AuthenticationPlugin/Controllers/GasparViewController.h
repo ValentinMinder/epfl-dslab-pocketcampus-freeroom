@@ -10,6 +10,8 @@
 
 #import "AuthenticationService.h"
 
+@class EditableTableViewCell;
+
 typedef enum {
     PresentationModeModal, //when presented from bottom => will show cancel button in top bar
     PresentationModeNavStack, //when presented in nav stack normally. Will show a cancel button in the tableview
@@ -21,6 +23,8 @@ typedef enum {
     UITextField* usernameTextField;
     UITextField* passwordTextField;
     UISwitch* savePasswordSwitch;
+    EditableTableViewCell* usernameCell;
+    EditableTableViewCell* passwordCell;
     UITableViewCell* loginCell;
     NSString* errorMessage;
     BOOL isLoggedIn;

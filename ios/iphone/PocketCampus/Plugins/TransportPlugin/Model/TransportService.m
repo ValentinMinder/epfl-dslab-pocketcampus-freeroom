@@ -319,7 +319,7 @@ static NSString* kLastLocationKey = @"lastLocation";
 
 - (void)cancelAll {
     [self cancel];
-    if (self.checkCancellationAndAdaptDesiredAccuracyTimer != nil) {
+    if (self.checkCancellationAndAdaptDesiredAccuracyTimer) {
         [self.checkCancellationAndAdaptDesiredAccuracyTimer invalidate];
     }
     locationManager.delegate = nil;

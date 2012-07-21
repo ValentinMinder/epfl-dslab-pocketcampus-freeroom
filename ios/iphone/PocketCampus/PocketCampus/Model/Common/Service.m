@@ -38,13 +38,11 @@ static NSTimeInterval connectivityCheckTimeout;
         NSString* serverVersion = nil;
         
         if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithInt:1]]) {
-            //urlString = [config objectForKey:@"DEV_SERVER_URL"];
             serverProto = [config objectForKey:@"DEV_SERVER_PROTO"];
             serverAddress = [config objectForKey:@"DEV_SERVER_ADDRESS"];
             serverPort = [config objectForKey:@"DEV_SERVER_PORT"];
             serverVersion = [config objectForKey:@"DEV_SERVER_VERSION"];
         } else {
-            //urlString = [config objectForKey:@"PROD_SERVER_URL"];
             serverProto = [config objectForKey:@"PROD_SERVER_PROTO"];
             serverAddress = [config objectForKey:@"PROD_SERVER_ADDRESS"];
             serverPort = [config objectForKey:@"PROD_SERVER_PORT"];
@@ -109,6 +107,9 @@ static NSTimeInterval connectivityCheckTimeout;
 /* ASIHTTPRequestDelegate delegation */
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
+    if (self.serviceWillBeReleased) {
+        return;
+    }
     if (request.responseStatusCode == 404) { //correct. Means the server has responded
         serverIsReachable = YES;
     } else {
@@ -119,6 +120,9 @@ static NSTimeInterval connectivityCheckTimeout;
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
+    if (self.serviceWillBeReleased) {
+        return;
+    }
     NSLog(@"-> Server reachability test failed. Returning timeout to delegate.");
     serverIsReachable = NO;
     [self notifyAll];
@@ -165,7 +169,7 @@ static NSTimeInterval connectivityCheckTimeout;
 
 - (void)dealloc
 {
-    serviceWillBeReleased = YES;
+    self.serviceWillBeReleased = YES;
     [self cancelAllOperations];
     if (checkServerRequest != nil) {
         checkServerRequest.delegate = nil;
