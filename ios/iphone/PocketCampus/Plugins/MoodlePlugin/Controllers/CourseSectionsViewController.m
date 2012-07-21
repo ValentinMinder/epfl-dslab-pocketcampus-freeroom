@@ -300,7 +300,6 @@ static int kCourseCellLoadingViewTag = 10;
     NSString* urlStr = [moodleService getLocalPath:request.url.absoluteString];
     NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
     //[self openFile:fileUrl];
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
     [self presentDocumentViewControllerForFile:fileUrl];
 }
 
@@ -343,7 +342,6 @@ static int kCourseCellLoadingViewTag = 10;
     if([fileManager fileExistsAtPath:urlStr]) {
         NSURL *fileUrl = [NSURL fileURLWithPath:urlStr];
         //[self openFile:fileUrl];
-        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [self presentDocumentViewControllerForFile:fileUrl];
     } else {
         [currentLoadingView release];
