@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PCTableViewSectionHeader : UIView
+@interface PCTableViewSectionHeader : UIView {
+    UITableView* tableView;
+}
 
-- (id)initWithSectionTitle:(NSString*)sectionTitle;
+- (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView;
 
 @end

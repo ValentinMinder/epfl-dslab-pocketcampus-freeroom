@@ -33,6 +33,8 @@ static DirectoryService* instance = nil;
         @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    //operation.keepInCache = YES;
+    //operation.cacheValidity = 2*24*3600; //2 days
     operation.serviceClientSelector = @selector(searchPersons:);
     operation.delegateDidReturnSelector = @selector(searchFor:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedFor:);

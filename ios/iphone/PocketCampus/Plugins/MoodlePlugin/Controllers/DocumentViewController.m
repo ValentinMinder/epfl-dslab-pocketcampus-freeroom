@@ -27,9 +27,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     docInteractionController.delegate = self;
-    webView.hidden = YES;
+    //webView.hidden = YES;
     webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled
-    [centerActivityIndicator startAnimating];
+    //[centerActivityIndicator startAnimating];
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     self.navigationItem.rightBarButtonItem = actionButton;
     [actionButton release];
@@ -41,6 +41,10 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [webView stopLoading];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -89,7 +93,8 @@
     webView.hidden = NO;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
+    webView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"FileCouldNotBeDisplayedTryOpenIn", @"MoodlePlugin", nil);
     centerMessageLabel.hidden = NO;
@@ -105,7 +110,6 @@
 
 - (void)dealloc
 {   
-    [webView stopLoading];
     [documentURL release];
     [docInteractionController release];
     [super dealloc];

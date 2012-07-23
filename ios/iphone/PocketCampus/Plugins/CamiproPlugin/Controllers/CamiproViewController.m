@@ -396,14 +396,14 @@ static CGFloat kBalanceCellHeight = 70.0;
     return [PCValues tableViewSectionHeaderHeight];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
     PCTableViewSectionHeader* headerView = nil;
     switch (section) {
         case 0:
-            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"CamiproBalance", @"CamiproPlugin", nil)];
+            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"CamiproBalance", @"CamiproPlugin", nil) tableView:tableView];
             break;
         case 1:
-            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil)];
+            headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil) tableView:tableView];
             break;
         default:
             NSLog(@"!! Unexcepted tableview session");

@@ -41,14 +41,15 @@
     backgroundView.backgroundColor = [PCValues backgroundColor1];;
     coursesList.backgroundView = backgroundView;
     [backgroundView release];
+    [centerActivityIndicator startAnimating];
     if(moodleService.moodleCookie == nil) {
         centerMessageLabel.text = @"";
         coursesList.hidden = YES;
-        [centerActivityIndicator startAnimating];
         [self startAuth];
     } else {
         [self startGetCoursesListRequest];
-    }    
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,12 +82,13 @@
 }
 
 - (void)startAuth {
+    [centerActivityIndicator startAnimating];
     [moodleService getTequilaTokenForMoodleDelegate:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
 /* service delegation */
@@ -191,7 +193,6 @@
         newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MOODLE_COURSES_LIST"] autorelease];
         newCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;
-        newCell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
     }
     newCell.textLabel.text = course.iTitle;
     return newCell;

@@ -13,7 +13,7 @@
 @property(nonatomic, retain) NSString* moodleCookie;
 
 - (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
-
++ (NSString*)fileTypeForURL:(NSString*)urlString;
 - (NSString*)localPathForURL:(NSString*)urlString;
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate;

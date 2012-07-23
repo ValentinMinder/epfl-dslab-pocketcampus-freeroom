@@ -128,7 +128,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 - (UIView *) tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section 
 {
     Meal* meal = [meals objectAtIndex:section];
-    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:meal.name];
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:meal.name tableView:tableView];
     return [sectionHeader autorelease];
     
 }

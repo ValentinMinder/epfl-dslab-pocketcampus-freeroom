@@ -35,6 +35,14 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     return [ObjectArchiver saveObject:moodleCookie_ forKey:kMoodleCookieKey andPluginName:@"moodle"];
 }
 
++ (NSString*)fileTypeForURL:(NSString*)urlString {
+    NSString* ext = [urlString pathExtension];
+    if (ext) {
+        return [ext uppercaseString];
+    }
+    return @"";
+}
+
 - (NSString*)localPathForURL:(NSString*)urlString {
     NSRange nsr = [urlString rangeOfString:@"/file.php/"];
     NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
@@ -77,7 +85,8 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    //operation.keepInCache = YES;
+    operation.keepInCache = YES;
+    operation.cacheValidity = 5*3600.0; //5 hours
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
@@ -100,7 +109,8 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    //operation.keepInCache = YES;
+    operation.keepInCache = YES;
+    operation.cacheValidity = 10*60.0; // 10 minutes
     operation.customTimeout = 35.0; // might take time
     operation.serviceClientSelector = @selector(getCourseSections:);
     operation.delegateDidReturnSelector = @selector(getCourseSections:didReturn:);

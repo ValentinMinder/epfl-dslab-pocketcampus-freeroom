@@ -138,8 +138,8 @@ static int kCourseCellLoadingViewTag = 10;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+{    
+    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
 /* service delegation */
@@ -215,13 +215,16 @@ static int kCourseCellLoadingViewTag = 10;
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request{
     [currentLoadingView stopAnimating];
+    [[[sectionsList cellForRowAtIndexPath:[sectionsList indexPathForSelectedRow]] accessoryView] setHidden:NO];
     NSString* localPath = [moodleService localPathForURL:request.url.absoluteString];
     [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:localPath]];
 }
 
 - (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
     NSLog(@"-> fetchMoodleResourceFailed");
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
+    NSIndexPath* selectedIndexPath = [sectionsList indexPathForSelectedRow];
+    [sectionsList deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    [[[sectionsList cellForRowAtIndexPath:selectedIndexPath] accessoryView] setHidden:NO];
     [currentLoadingView stopAnimating];
     UIAlertView* downloadErrorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [downloadErrorAlert show];
@@ -261,8 +264,13 @@ static int kCourseCellLoadingViewTag = 10;
     if([fileManager fileExistsAtPath:urlStr]) {
         [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:urlStr]];
     } else { //show file loading animation
+        //currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
         [currentLoadingView release];
-        currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
+        UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        currentLoadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        currentLoadingView.center = cell.accessoryView.center;
+        [cell.contentView addSubview:currentLoadingView];
+        cell.accessoryView.hidden = YES;
         [currentLoadingView startAnimating];
         [moodleService fetchMoodleResource:moodleService.moodleCookie :resource.iUrl withDelegate:self];
     }
@@ -291,7 +299,7 @@ static int kCourseCellLoadingViewTag = 10;
     
     NSString* title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
     
-    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title];
+    PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
     return [sectionHeader autorelease];
     
 }
@@ -306,16 +314,27 @@ static int kCourseCellLoadingViewTag = 10;
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     UITableViewCell* newCell = [sectionsList dequeueReusableCellWithIdentifier:@"MOODLE_SECTIONS_LIST"];
     if (newCell == nil) {
-        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
-        UIActivityIndicatorView* loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
+        /*UIActivityIndicatorView* loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingView.tag = kCourseCellLoadingViewTag;
         newCell.accessoryView = loadingView;
-        [loadingView release];
-        newCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        [loadingView release];*/
+        newCell.selectionStyle = UITableViewCellSelectionStyleGray;        
         newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        newCell.textLabel.adjustsFontSizeToFitWidth = YES;
+        newCell.textLabel.minimumFontSize = 11.0;
+        UILabel* fileTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 35.0)];
+        fileTypeLabel.font = [UIFont systemFontOfSize:13.0];
+        fileTypeLabel.textAlignment = UITextAlignmentRight;
+        fileTypeLabel.adjustsFontSizeToFitWidth = YES;
+        fileTypeLabel.textColor = [PCValues textColorLocationBlue];
+        newCell.accessoryView = fileTypeLabel;
+        [fileTypeLabel release];
+
     }
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     newCell.textLabel.text = resource.iName;
+    ((UILabel*)newCell.accessoryView).text = [NSString stringWithFormat:@"%@  ", [MoodleService fileTypeForURL:resource.iUrl]];
     return newCell;
 }
 
@@ -357,6 +376,7 @@ static int kCourseCellLoadingViewTag = 10;
 
 - (void)dealloc
 {
+    [currentLoadingView release];
     if (shouldDeleteSessionWhenFinished) {
         [moodleService saveMoodleCookie:nil];
     }

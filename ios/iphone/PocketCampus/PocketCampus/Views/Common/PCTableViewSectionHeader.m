@@ -13,11 +13,12 @@ static float SEPARATOR_HEIGHT = 1.0;
 
 @implementation PCTableViewSectionHeader
 
-- (id)initWithSectionTitle:(NSString*)sectionTitle
+- (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView_
 {
     float VIEW_HEIGHT = [PCValues tableViewSectionHeaderHeight];
-    self = [super initWithFrame:CGRectMake(0, 0, 320.0, VIEW_HEIGHT)];
+    self = [super initWithFrame:CGRectMake(0, 0, 480.0, VIEW_HEIGHT)]; //so that landscape orientation is directly supported
     if (self) {
+        tableView = tableView_;
         self.alpha = 0.85;
         self.backgroundColor = [PCValues backgroundColor1];
         UIView* separator1 = [[UIView alloc] initWithFrame:CGRectMake(0, -1.0, self.frame.size.width, SEPARATOR_HEIGHT)];
@@ -43,6 +44,21 @@ static float SEPARATOR_HEIGHT = 1.0;
         [separator2 release];
     }
     return self;
+}
+
+- (void)setNeedsDisplayInRect:(CGRect)rect {
+    [super setNeedsDisplayInRect:rect];
+    NSLog(@"setNeedsLayout2");
+}
+
+- (void)setNeedsDisplay {
+    [super setNeedsDisplay];
+    NSLog(@"setNeedsDisplay");
+}
+
+- (void)setNeedsLayout {
+    [super setNeedsLayout];
+    NSLog(@"setNeedsLayout");
 }
 
 /*

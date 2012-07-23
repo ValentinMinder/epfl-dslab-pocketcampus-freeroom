@@ -141,6 +141,8 @@
 		32B5871E156458FA0051C57E /* Camipro.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B5871A156458FA0051C57E /* Camipro.png */; };
 		32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B5871B156458FA0051C57E /* Camipro@2x.png */; };
 		32B58723156459370051C57E /* CamiproController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B58722156459370051C57E /* CamiproController.m */; };
+		32B6A53A15BDF7BB000E7F3C /* PocketCampusStyled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */; };
+		32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */; };
 		32B89254154584A90058E472 /* EPFLTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B89253154584A90058E472 /* EPFLTileOverlay.m */; };
 		32B892581545892B0058E472 /* CustomOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B892571545892B0058E472 /* CustomOverlayView.m */; };
 		32B89272154589D70058E472 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B8925C154589D70058E472 /* ASIAuthenticationDialog.m */; };
@@ -428,6 +430,8 @@
 		32B5871B156458FA0051C57E /* Camipro@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camipro@2x.png"; sourceTree = "<group>"; };
 		32B58721156459370051C57E /* CamiproController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamiproController.h; sourceTree = "<group>"; };
 		32B58722156459370051C57E /* CamiproController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproController.m; sourceTree = "<group>"; };
+		32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketCampusStyled@2x.png"; sourceTree = "<group>"; };
+		32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PocketCampusStyled.png; sourceTree = "<group>"; };
 		32B89252154584A90058E472 /* EPFLTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLTileOverlay.h; sourceTree = "<group>"; };
 		32B89253154584A90058E472 /* EPFLTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPFLTileOverlay.m; sourceTree = "<group>"; };
 		32B892561545892B0058E472 /* CustomOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomOverlayView.h; sourceTree = "<group>"; };
@@ -753,6 +757,8 @@
 		321F37DF15B02FBE00E7BA6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */,
+				32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */,
 				32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */,
 				32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */,
 				321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */,
@@ -1830,6 +1836,8 @@
 				32CC7B3915B804D3004F0A31 /* SettingsBarButton@2x.png in Resources */,
 				3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */,
 				32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */,
+				32B6A53A15BDF7BB000E7F3C /* PocketCampusStyled@2x.png in Resources */,
+				32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
