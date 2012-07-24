@@ -38,7 +38,10 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
-    
+    [searchBar setIsAccessibilityElement:YES];
+    searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
+    [tableView setIsAccessibilityElement:YES];
+    tableView.accessibilityLabel = NSLocalizedStringFromTable(@"SearchResults", @"DirectoryPlugin", nil);
 }
 
 - (void)viewDidUnload

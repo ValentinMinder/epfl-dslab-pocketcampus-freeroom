@@ -10,3 +10,10 @@
 "SearchFieldPlaceholder" = "Search EPFL directory";
 "SearchNoResult" = "No result\nHave you tried with the exact spelling (accents) ?";
 "OfficeLabel" = "office";
+
+
+
+/* Accessiblity */
+
+"SearchBar" = "Search bar";
+"SearchResults" = "Search results";

@@ -16,8 +16,6 @@
 
 #import "DocumentViewController.h"
 
-static int kCourseCellLoadingViewTag = 10;
-
 @implementation CourseSectionsViewController
 
 @synthesize centerActivityIndicator, centerMessageLabel, sectionsList;

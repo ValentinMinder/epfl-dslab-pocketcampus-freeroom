@@ -45,9 +45,12 @@ static int ICON_FRAME_HEIGHT = 80;
         label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
         label.shadowColor = [UIColor whiteColor];
         label.shadowOffset = CGSizeMake(0.0, 1.0);
-        //label.backgroundColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         [label release];
+        [self setIsAccessibilityElement:YES];
+        self.accessibilityLabel = title;
+        self.tag = index_;
         
     }
     return self;
