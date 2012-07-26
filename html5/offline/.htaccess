@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^/(.*)   http://128.178.77.233/a/thrift-js/   [R]

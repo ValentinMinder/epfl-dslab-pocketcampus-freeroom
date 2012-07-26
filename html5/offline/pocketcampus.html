@@ -1,0 +1,86 @@
+<!DOCTYPE html> 
+<html manifest="manifest.php"> 
+	<head> 
+	<title>PocketCampus EPFL</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+	<link rel="stylesheet" href="jquery.mobile-1.1.1.min.css" />
+	<script src="jquery-1.7.1.min.js"></script>
+	<script src="jquery.mobile-1.1.1.min.js"></script>
+	
+	<script src="thrift.js" type="text/javascript"></script>
+	<script src="authentication_types.js" type="text/javascript"></script>
+	<script src="AuthenticationService.js" type="text/javascript"></script>
+	<script src="moodle_types.js" type="text/javascript"></script>
+	<script src="MoodleService.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" href="pc.css" />
+	<script src="pc.js"></script>
+	
+	<script src="moodle.js"></script>
+	<script src="authentication.js"></script>
+</head> 
+<body> 
+
+<div id="dashboard" data-role="page">
+	<div data-role="header"><h1>PocketCampus EPFL</h1></div>
+	<div data-role="content">
+		<div id="acc-center-dash">
+			<div id="acc-dashboard">
+				<a href="#directory"><div class="acc-dash-icon"><img src="directory.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Directory</span></div></a>
+				<a href="#food"><div class="acc-dash-icon"><img src="food.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Food</span></div></a>
+				<a href="#news"><div class="acc-dash-icon"><img src="news.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">News</span></div></a>
+				<a href="#map"><div class="acc-dash-icon"><img src="map.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Map</span></div></a>
+				<a href="#transport"><div class="acc-dash-icon"><img src="transport.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Transport</span></div></a>
+				<a href="#camipro"><div class="acc-dash-icon"><img src="camipro.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Camipro</span></div></a>
+				<a href="#moodle"><div class="acc-dash-icon"><img src="moodle.png" class="acc-dash-icon-img" /><span class="acc-dash-icon-txt">Moodle</span></div></a>
+			</div>
+		</div>
+		<!--<h2>Hello Campus</h2>
+		<div data-role="navbar">
+			<ul>
+				<li><a href="a.html" class="ui-btn-active">People</a></li>
+				<li><a href="a.html" class="ui-btn-active">Food</a></li>
+				<li><a href="a.html" class="ui-btn-active">News</a></li>
+				<li><a href="a.html" class="ui-btn-active">Map</a></li>
+				<li><a href="a.html" class="ui-btn-active">Transport</a></li>
+				<li><a href="a.html" class="ui-btn-active">Camipro</a></li>
+				<li><a href="a.html" class="ui-btn-active">Moodle</a></li>
+			</ul>
+		</div>-->
+		<!--<h2>Hello Campus</h2>
+		<ul data-role="listview" data-inset="true">
+			<li><a href="jqm1.html">Authentication</a></li>
+			<li><a href="#moodle">Moodle</a></li>
+		</ul>-->
+	</div>
+</div>
+
+<div id="authentication" data-role="dialog">
+	<div data-role="header"><h1>Tequila Authentication</h1></div>
+	<div data-role="content">
+		<form action="#" id="authForm">
+			<div data-role="fieldcontain">
+				<label for="username">Username:</label>
+				<input type="text" name="username" id="username" value=""  />
+			</div>	
+			<div data-role="fieldcontain">
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password" value="" />
+			</div>	
+			<a href="javascript:AuthenticationPlugin.loginUserToTequila()" data-role="button" data-icon="star">Login</a>
+		</form>
+	</div>
+</div>
+
+<div id="moodle" data-role="page">
+	<div data-role="header"><h1>Moodle</h1></div>
+	<div data-role="content"></div>
+</div>
+
+<div id="moodle-course" data-role="page">
+	<div data-role="header"><h1>Course</h1></div>
+	<div data-role="content"></div>
+</div>
+
+</body>
+</html>
