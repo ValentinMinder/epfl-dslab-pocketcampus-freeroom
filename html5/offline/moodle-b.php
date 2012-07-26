@@ -1,8 +1,6 @@
 <?php
 
-function getUrl($script_name) {
-	return "http://128.178.77.233" . dirname($_SERVER["SCRIPT_NAME"]) . "/$script_name" . (empty($_SERVER["PATH_INFO"]) ? "" : $_SERVER["PATH_INFO"]) . (empty($_SERVER["QUERY_STRING"]) ? "" : ("?" . $_SERVER["QUERY_STRING"]));
-}
+require_once "common.php";
 
 header('Content-Type: text/cache-manifest');
 
@@ -14,7 +12,7 @@ echo getUrl("moodle.php") . "\n";
 
 echo "\n";
 echo "FALLBACK:\n";
-echo "http://128.178.77.233" . dirname($_SERVER["SCRIPT_NAME"]) . "/sorry.html\n";
+echo "{$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/sorry.html\n";
 
 
 

@@ -1,11 +1,6 @@
 <?php
 
-
-$mapping = array (
-	"pc-server.php" => array("protto" => "http://", "url" => "dslabpc36.epfl.ch:9090"),
-	"tequila.php" => array("protto" => "https://", "url" => "tequila.epfl.ch"),
-	"moodle.php" => array("protto" => "http://", "url" => "moodle.epfl.ch"),
-);
+require_once "common.php";
 
 $self_basename = basename($_SERVER["SCRIPT_NAME"]);
 
@@ -15,7 +10,7 @@ $headers = "";
 foreach (apache_request_headers() as $header => $value) {
 	$log .= "$header: $value\n";
 	if($header == "Host") {
-		$headers .= "$header: " . $mapping[$self_basename]["url"] . "\r\n";
+		$headers .= "$header: " . $PC_PROXY_CONFIG[$self_basename]["url"] . "\r\n";
 	} else if($header == "Connection") {
 		$headers .= "$header: Close\r\n";
 	} else {
@@ -41,14 +36,14 @@ $context  = stream_context_create($opts);
 //$trans_uri = $_SERVER["QUERY_STRING"];
 $trans_uri = (empty($_SERVER["PATH_INFO"]) ? "/" : ($_SERVER["PATH_INFO"] . "?" . $_SERVER["QUERY_STRING"]));
  
-$result = file_get_contents($mapping[$self_basename]["protto"] . $mapping[$self_basename]["url"] . $trans_uri, false, $context);
+$result = file_get_contents($PC_PROXY_CONFIG[$self_basename]["protto"] . $PC_PROXY_CONFIG[$self_basename]["url"] . $trans_uri, false, $context);
 
 foreach($http_response_header as $h) {
 	$log .= "$h\n";
 	if(empty($REPLACE_REDIRECTS)) { // translate redirects
 		if(stripos($h, "Location: ") === 0) {
-			foreach($mapping as $k => $v) {
-				$h = str_replace($mapping[$k]["protto"] . $mapping[$k]["url"], "http://128.178.77.233" . dirname($_SERVER["SCRIPT_NAME"]) . "/$k", $h);
+			foreach($PC_PROXY_CONFIG as $k => $v) {
+				$h = str_replace($PC_PROXY_CONFIG[$k]["protto"] . $PC_PROXY_CONFIG[$k]["url"], "{$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/$k", $h);
 			}
 		}
 	} else { // replace redirects

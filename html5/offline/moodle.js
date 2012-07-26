@@ -150,7 +150,7 @@ MoodlePlugin.buildRequest = function () {
 
 MoodlePlugin.getTequilaTokenForMoodle = function () {
 	console.log("MoodlePlugin.getTequilaTokenForMoodle");
-	transport = new Thrift.Transport("http://128.178.77.233/a/thrift-js/pc-server.php/v3r1/json-moodle");
+	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
 	client.getTequilaTokenForMoodle(1).error(function(a){
@@ -169,7 +169,7 @@ MoodlePlugin.getTequilaTokenForMoodle = function () {
 
 MoodlePlugin.getMoodleSession = function () {
 	console.log("MoodlePlugin.getMoodleSession");
-	transport = new Thrift.Transport("http://128.178.77.233/a/thrift-js/pc-server.php/v3r1/json-moodle");
+	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
 	//teqToken = localStorage.getObject("MOODLE_TEQUILATOKEN");
@@ -191,7 +191,7 @@ MoodlePlugin.getMoodleSession = function () {
 
 MoodlePlugin.getCoursesList = function () {
 	console.log("MoodlePlugin.getCoursesList");
-	transport = new Thrift.Transport("http://128.178.77.233/a/thrift-js/pc-server.php/v3r1/json-moodle");
+	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
 	client.getCoursesList(MoodlePlugin.buildRequest(), 1).error(function(a){
@@ -216,7 +216,7 @@ MoodlePlugin.getCoursesList = function () {
 
 MoodlePlugin.getCourseSections = function () {
 	console.log("MoodlePlugin.getCourseSections");
-	transport = new Thrift.Transport("http://128.178.77.233/a/thrift-js/pc-server.php/v3r1/json-moodle");
+	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
 	client.getCourseSections(MoodlePlugin.buildRequest(), 1).error(function(a){
@@ -283,7 +283,7 @@ MoodlePlugin.displayCourseSections = function (sections) {
 		if(sections[i].iResources.length) {
 			markup += "<li data-role='list-divider'>Week " + i + " <span class='ui-li-count'>" + sections[i].iResources.length + "</span></li>";
 			for ( j = 0; j < sections[i].iResources.length; j++ ) {
-				translatedUrl = sections[i].iResources[j].iUrl.replace("http://moodle.epfl.ch", "http://128.178.77.233/a/thrift-js/moodle-a.php");
+				translatedUrl = sections[i].iResources[j].iUrl.replace("http://moodle.epfl.ch", "moodle-a.php");
 				markup += "<li><a target=\"_blank\" href=\"" + translatedUrl + "\">";
 				markup += "<h3>" + sections[i].iResources[j].iName + "</h3>";
 				basename = translatedUrl.substring(translatedUrl.lastIndexOf("/") + 1, translatedUrl.length);
