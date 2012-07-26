@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -129,6 +128,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	@Override
 	public List<Person> searchPersons(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		getNamesFromDatabase();
+		param = param.trim();
 		LinkedList<Person> results = new LinkedList<Person>();
 		String sciper;
 		
