@@ -1,7 +1,9 @@
 package org.pocketcampus.tool.ldapExtractor;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -31,7 +33,7 @@ public class LdapExtractor {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PrintWriter out;
+		Writer out;
 		
 		ldap = new LDAPConnection();
 		connectLdap();
@@ -44,7 +46,8 @@ public class LdapExtractor {
 		
 		/////////////////// given name
 		try {
-			out = new PrintWriter("../../platform/launcher/platform.launcher.server/data/EPFL-givenNames.txt");
+			
+			out = new OutputStreamWriter(new FileOutputStream("EPFL-givenNames.txt"), "UTF-8");
 			
 			String searchQuery = "(givenName=*)";
 			SearchResult searchResult;
@@ -71,12 +74,14 @@ public class LdapExtractor {
 			}
 			
 			Collections.sort(gn_results);
-			for(String name: gn_results)
-				out.println("\""+name+"\";");
+			for(String name: gn_results) {
+				out.write(name);
+				out.write("\n");
+			}
 			
 			out.close();
 			
-		} catch (FileNotFoundException e2) {
+		} catch (IOException e2) {
 			System.out.println("File problem: " + e2.getMessage());
 		} catch (LDAPSearchException e) {
 			System.out.println("Ldap problem: " + e.getMessage());
@@ -86,7 +91,7 @@ public class LdapExtractor {
 		/////////////////// last name
 		cpt=0;
 		try {
-			out = new PrintWriter("../../platform/launcher/platform.launcher.server/data/EPFL-lastNames.txt");
+			out = new OutputStreamWriter(new FileOutputStream("EPFL-lastNames.txt"), "UTF-8");
 			
 			String searchQuery = "(sn=*)";
 			SearchResult searchResult;
@@ -113,11 +118,12 @@ public class LdapExtractor {
 			
 			Collections.sort(sn_results);
 			for(String name: sn_results){
-				out.println("\""+name+"\";");
+				out.write(name);
+				out.write("\n");
 			}
 			out.close();
 			
-		} catch (FileNotFoundException e2) {
+		} catch (IOException e2) {
 			System.out.println("File problem: " + e2.getMessage());
 		} catch (LDAPSearchException e) {
 			System.out.println("Ldap problem: " + e.getMessage());

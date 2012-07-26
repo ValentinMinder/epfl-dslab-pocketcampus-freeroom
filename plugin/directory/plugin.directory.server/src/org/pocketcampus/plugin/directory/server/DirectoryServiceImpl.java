@@ -4,8 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,6 +65,8 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	/** Last names at epfl, used for autocompletion*/
 	private static ArrayList<String> second_names;
 	
+	private static String date_last_fetched = "";
+	
 	//database stuff
 	/** Directory database manager*/
 	DirectoryDatabase connectionManager = new DirectoryDatabase();
@@ -75,6 +80,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 		
 		
 		getNamesFromDatabase();
+		
 		
 		connectLdap();
 	}
@@ -95,6 +101,11 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 */
 	private void getNamesFromDatabase(){
 
+		if(date_last_fetched.equals(new SimpleDateFormat("d").format(new Date()))) {
+			return;
+		}
+		date_last_fetched = new SimpleDateFormat("d").format(new Date());
+		System.out.println("re-fetching names from DB");
 		
 		given_names = (ArrayList<String>) connectionManager.getFirstNames();
 		second_names = (ArrayList<String>) connectionManager.getLastNames();
@@ -117,6 +128,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 */
 	@Override
 	public List<Person> searchPersons(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
+		getNamesFromDatabase();
 		LinkedList<Person> results = new LinkedList<Person>();
 		String sciper;
 		
@@ -177,6 +189,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 */
 	@Override
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
+		getNamesFromDatabase();
 		byte[] sciperBytes = null;
 		byte[] digest = null;
 		
@@ -240,6 +253,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface {
 	 */
 	@Override
 	public List<String> autocomplete(String constraint) throws TException {
+		getNamesFromDatabase();
 		ArrayList<String> suggestions = new ArrayList<String>();
 //		suggestions.add("Pascal Scheiben");
 //		suggestions.add("Florian Laurent");
