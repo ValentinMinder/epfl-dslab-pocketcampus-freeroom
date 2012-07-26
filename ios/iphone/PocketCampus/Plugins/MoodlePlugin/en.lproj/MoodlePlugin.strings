@@ -1,8 +1,8 @@
 
 "PluginName" = "Moodle";
 "MoodleDown" = "Sorry, Moodle servers seem to be down. Please try again later.";
-"MoodleNoCourse" = "No courses.";
-"MoodleEmptyCourse" = "Empty course.";
+"MoodleNoCourse" = "You do not seem to be registered\nto any Moodle course.";
+"MoodleEmptyCourse" = "Empty course";
 "MoodleCourses" = "Courses";
 "MoodleWeek" = "Week %d";
 "MoodleAllWeeks" = "All weeks";

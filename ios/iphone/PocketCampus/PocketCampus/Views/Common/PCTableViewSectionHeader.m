@@ -46,21 +46,6 @@ static float SEPARATOR_HEIGHT = 1.0;
     return self;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)rect {
-    [super setNeedsDisplayInRect:rect];
-    NSLog(@"setNeedsLayout2");
-}
-
-- (void)setNeedsDisplay {
-    [super setNeedsDisplay];
-    NSLog(@"setNeedsDisplay");
-}
-
-- (void)setNeedsLayout {
-    [super setNeedsLayout];
-    NSLog(@"setNeedsLayout");
-}
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

@@ -79,7 +79,7 @@ static NSTimeInterval connectivityCheckTimeout;
     @synchronized(self) {
         if (checkServerRequest == nil) {
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
-            NSLog(@"-> Checking server connectivity : %@", serverAddressWithPort);
+            //NSLog(@"-> Checking server connectivity : %@", serverAddressWithPort);
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
             checkServerRequest.timeOutSeconds = connectivityCheckTimeout;
             //checkServerRequest.requestMethod = @"HEAD";
@@ -292,7 +292,7 @@ static NSTimeInterval connectivityCheckTimeout;
         
         if(cached) {
             [self retain];
-            NSLog(@"REQ FOUND IN CACHE; SHOULD SERVE FROM CACHE");
+            NSLog(@"-> Will return ServiceRequest from cache.");
             
             NSInvocation* delegateInv = [[NSInvocation invocationWithMethodSignature:[[self.delegate class] instanceMethodSignatureForSelector:self.delegateDidReturnSelector]] retain];
             [delegateInv setSelector:self.delegateDidReturnSelector];
@@ -323,8 +323,6 @@ static NSTimeInterval connectivityCheckTimeout;
                 });
             }
             
-            NSLog(@"SERVED FROM CACHE");
-            
             return;
         }
         
@@ -332,7 +330,7 @@ static NSTimeInterval connectivityCheckTimeout;
             [self didTimeout];
             return;
         }
-        NSLog(@"-> Server reachability test succeeded");
+        //NSLog(@"-> Server reachability test succeeded");
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
         
         if ([self isCancelled])
@@ -835,7 +833,7 @@ static NSTimeInterval connectivityCheckTimeout;
     hashCode = [ServiceRequest md5HexDigest:NSStringFromSelector(serviceClientSelector)];
     for (int i = 0; i < arguments.count; i++)
         hashCode = [ServiceRequest md5HexDigest:[NSString stringWithFormat:@"%@%@", hashCode, [[arguments objectAtIndex:i] objectForKey:@"value"]]];
-    NSLog(@"COMPUTE HASH %@", hashCode);
+    //NSLog(@"-> Hash computed for request %@ %@",NSStringFromSelector(self.serviceClientSelector), hashCode);
 }
 
 + (NSString*)md5HexDigest:(NSString*)input {
@@ -916,7 +914,6 @@ static NSTimeInterval connectivityCheckTimeout;
 
 - (void)dealloc
 {
-    NSLog(@"-> ServiceRequest released");
     [self.thriftServiceClient release];
     [arguments release];
     [super dealloc];

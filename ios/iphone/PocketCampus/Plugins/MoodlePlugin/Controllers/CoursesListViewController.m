@@ -88,6 +88,9 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (coursesList.hidden) {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
@@ -134,7 +137,7 @@
             coursesList.hidden = NO;
             [coursesList reloadData];
         } else {
-            centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleNoCourses", @"MoodlePlugin", nil);
+            centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleNoCourse", @"MoodlePlugin", nil);
         }
     } else if(coursesListReply.iStatus == 404) {
         centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleDown", @"MoodlePlugin", nil);

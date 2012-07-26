@@ -1,3 +1,11 @@
+/* Global vars */
+
+target = UIATarget.localTarget();
+
+window = target.frontMostApp().mainWindow();
+
+log = UIALogger;
+
 /*
  * Test
  */
@@ -50,6 +58,26 @@ function assertNotNull(thingie, message) {
 /*
  * Utils
  */
+ 
+function tapBack() {
+    window.navigationBar().leftButton().tap();
+}
+ 
+function isCurrentNavBarTitle(title) {
+    return window.navigationBar().name() == title;
+}
+ 
+function printElementsName(elements) {
+    for (var i = 0; i<elements.length; i++) {
+        log.logDebug("element : "+elements[i].name());
+    }
+}
+ 
+function randomVisibleRowIndex(tableView){
+    var cells = tableView.visibleCells();
+    var row = Math.round(Math.random()*(cells.length-1));
+    return row;
+}
  
 function randomString(string_length) {
     var chars = "abcdefghiklmnopqrstuvwxyz";

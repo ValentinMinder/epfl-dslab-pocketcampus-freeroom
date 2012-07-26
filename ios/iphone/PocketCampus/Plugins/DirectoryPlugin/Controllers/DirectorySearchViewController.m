@@ -29,6 +29,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         resultsMode = ResutlsModeNotStarted;
         personViewController = nil;
         displayedPerson = nil;
+        skipNextSearchBarValueChange = NO;
     }
     return self;
 }
@@ -40,8 +41,6 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
     [searchBar setIsAccessibilityElement:YES];
     searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
-    [tableView setIsAccessibilityElement:YES];
-    tableView.accessibilityLabel = NSLocalizedStringFromTable(@"SearchResults", @"DirectoryPlugin", nil);
 }
 
 - (void)viewDidUnload
@@ -104,6 +103,10 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 /* Search bar delegation */
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (skipNextSearchBarValueChange) {
+        skipNextSearchBarValueChange = NO;
+        return;
+    }
     messageLabel.text = @"";
     if (searchText.length == 0) {
         [barActivityIndicator stopAnimating];
@@ -121,7 +124,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     
     NSArray* words = [searchText componentsSeparatedByString:@" "];
     
-    if (words.count > 1 && ((NSString*)[words objectAtIndex:0]).length > 1 && ((NSString*)[words objectAtIndex:1]).length > 0) {
+    if (words.count > 1) { //would actually start an LDAP search on server instead of autocomplete anyway
         typingTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startSearchRequest) userInfo:nil repeats:NO] retain];
     } else {
         typingTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutocompleteRequest) userInfo:nil repeats:NO] retain];
@@ -159,20 +162,19 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         return;
     }
     
-    tableView.hidden = NO;
-    backgroundIcon.hidden = YES;
-    messageLabel.hidden = YES;
-    
     [autocompleteResults release];
     NSSet* autocompleteSet = [NSSet setWithArray:results]; //eliminate duplicates
     autocompleteResults = [[autocompleteSet allObjects] retain];
     resultsMode = ResultsModeAutocomplete;
-    [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    
     
     if (results.count == 1) {
-        NSString* searchString = [NSString stringWithFormat:@"%@ ", [results objectAtIndex:0]];
+        NSString* searchString = [NSString stringWithFormat:@"%@", [results objectAtIndex:0]];
         [directoryService searchPersons:searchString delegate:self];
+    } else {
+        tableView.hidden = NO;
+        backgroundIcon.hidden = YES;
+        messageLabel.hidden = YES;
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }
     
 }
@@ -247,7 +249,9 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     if (resultsMode == ResultsModeAutocomplete) {
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] accessoryView];
         [activityIndicatorView startAnimating];
-        NSString* searchString = [NSString stringWithFormat:@"%@ ", [tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        NSString* searchString = [NSString stringWithFormat:@"%@", [tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        skipNextSearchBarValueChange = YES;
+        searchBar.text = searchString;
         [directoryService searchPersons:searchString delegate:self];
         [searchBar resignFirstResponder];
     } else if (resultsMode == ResultsModeSearch) {
@@ -281,7 +285,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         }
         Person* person = [searchResults objectAtIndex:indexPath.row];
         newCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
-        if ([person OrganisationalUnitIsSet]) {
+        if (person.organisationalUnit) {
             newCell.detailTextLabel.text = [person.organisationalUnit objectAtIndex:0];
         }
         

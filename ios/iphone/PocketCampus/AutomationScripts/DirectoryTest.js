@@ -1,4 +1,4 @@
-#import "UIAutomationAddon.js"
+#import "AutomationUtilities.js"
 
 target = UIATarget.localTarget();
 
@@ -10,7 +10,7 @@ log.logStart("Enter Directory");
 
 window.elements()["Directory"].tap();
 
-if(!waitForLoaded(window, "Search bar")) {
+if(window.elements()["Search bar"] == UIAElementNil) {
 	log.logFail("Enter Directory"); 
 } else {
 	log.logPass("Enter Directory");
@@ -72,10 +72,8 @@ for (var i = 0; i<20; i++) {
 	delay(0.5);
 	if (waitForVisible(tableView, 4)) {
 		cells = tableView.cells();
-		var row = Math.round(Math.random()*4);
-		if (row >= cells.length) {
-			row = cells.length-1;
-		}
+		var row = randomVisibleRowIndex(tableView);
+	
 		log.logDebug("Found autocomplete result for : "+string+". Selecting row : "+cells[row].name());
 		var tappedName = cells[row].name();
 		if (tappedName.indexOf(",") != -1) { //direct result mode => skip
@@ -83,18 +81,15 @@ for (var i = 0; i<20; i++) {
 			continue;
 		}
 		cells[row].tap();
-		delay(Math.round(Math.random()+0.51)); //autocomplete request are fast
+		delay(Math.round(Math.random()+0.8)); //autocomplete request are fast
 		if (tableView.isVisible()) {
 			log.logPass("Autocomplete random : "+string);
 			cells = tableView.cells();
-			var row2 = Math.round(Math.random()*4);
-			if (row2 >= cells.length) {
-				row2 = cells.length-1;
-			}
+			var row2 = randomVisibleRowIndex(tableView);
 			var personName = cells[row2].name();
 			log.logStart("Search result selection : "+personName);
 			cells[row2].tap();
-			delay(Math.round(Math.random()+0.51));
+			delay(Math.round(Math.random()+0.2));
 			
 			window.navigationBar().leftButton().tap(); //back
 			log.logPass("Search result selection : "+personName);

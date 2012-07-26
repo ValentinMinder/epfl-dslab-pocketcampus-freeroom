@@ -34,6 +34,7 @@ typedef enum {
     ResultsMode resultsMode;
     ABUnknownPersonViewController* personViewController;
     Person* displayedPerson;
+    BOOL skipNextSearchBarValueChange;
 }
 
 @property (nonatomic, assign) IBOutlet UISearchBar* searchBar;

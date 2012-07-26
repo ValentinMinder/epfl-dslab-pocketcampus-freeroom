@@ -18,3 +18,8 @@
 "RatingSendingError" = "Désolé, une erreur est survenue. Veuillez réessayer.";
 "RatingTooEarly" = "Désolé, il est trop tôt pour voter.";
 "RatingAlreadyDone" = "Vous ne pouvez voter que pour un repas par jour.";
+
+
+/* Accessiblity */
+
+"RestaurantsList" = "Liste des restaurants";

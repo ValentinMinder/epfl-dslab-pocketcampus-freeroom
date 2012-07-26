@@ -44,7 +44,16 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 }
 
 - (NSString*)localPathForURL:(NSString*)urlString {
+    if (![urlString isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:@"bad urlString argument" reason:@"urlString is not kind of class NSString" userInfo:nil];
+    }
     NSRange nsr = [urlString rangeOfString:@"/file.php/"];
+    if (nsr.location == NSNotFound) {
+        nsr = [urlString rangeOfString:@"/resource.php/"];
+    }
+    if (nsr.location == NSNotFound) {
+        nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    }
     NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
     NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
@@ -86,7 +95,8 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    operation.cacheValidity = 5*3600.0; //5 hours
+    //operation.cacheValidity = 5*3600.0; //5 hours
+    operation.cacheValidity = 0.0;
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);

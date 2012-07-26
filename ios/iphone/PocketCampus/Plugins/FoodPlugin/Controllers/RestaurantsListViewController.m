@@ -107,7 +107,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 - (void)getMealsNoMeals {
     [centerActivityIndicator stopAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"NoMealsWeekend", @"FoodPlugin", @"Message that says that there is not meals today");
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"NoMealsWeekend", @"FoodPlugin", @"Message that says that there is no meals today");
 }
 
 - (void)getMealsFailed {
