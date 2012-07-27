@@ -4,7 +4,7 @@ require_once "common.php";
 
 $self_basename = basename($_SERVER["SCRIPT_NAME"]);
 
-$log = "";
+$log = "===========================" . basename($_SERVER["SCRIPT_NAME"]) . "\n";
 
 $headers = "";
 foreach (apache_request_headers() as $header => $value) {
@@ -65,6 +65,6 @@ $log .= "\n";
 
 echo $result;
 
-file_put_contents("log.log", file_get_contents("log.log") . $log);
+file_put_contents("log.log", $log, FILE_APPEND);
 
 ?>
