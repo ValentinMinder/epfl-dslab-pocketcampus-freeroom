@@ -7,7 +7,7 @@
 	<key>CONNECTIVITY_CHECK_TIMEOUT</key>
 	<integer>15</integer>
 	<key>DEV_MODE</key>
-	<true/>
+	<false/>
 	<key>DEV_SERVER_PROTO</key>
 	<string>http</string>
 	<key>DEV_SERVER_ADDRESS</key>

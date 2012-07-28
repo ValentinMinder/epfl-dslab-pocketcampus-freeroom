@@ -41,6 +41,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
     [searchBar setIsAccessibilityElement:YES];
     searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
+    tableView.accessibilityIdentifier = @"SearchResults";
 }
 
 - (void)viewDidUnload
@@ -316,7 +317,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 /* AdressBook and records creation stuff */
 
 - (void)pushViewControllerForPerson:(Person*)person {
-    
+    skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
     ABRecordRef abPerson = ABPersonCreate();
     
     if (![person isKindOfClass:[Person class]]) {

@@ -89,6 +89,16 @@ function randomString(string_length) {
     return randomstring;
 }
 
+//returns failing element index or true if check was ok
+function checkElementsName(elements, regEx) {
+    for (var i = 0; i<elements.length; i++) {
+        if (elements[i].name().toLowerCase().match(regEx) == null) {
+            return i;
+        }
+    }
+    return true;
+}
+
 function delay(seconds) {
     UIATarget.localTarget().delay(seconds);
 }

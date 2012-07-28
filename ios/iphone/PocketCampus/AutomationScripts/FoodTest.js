@@ -22,13 +22,15 @@ if (tableView.isVisible()) {
 	if (new Date().getDay()%6==0) { //is weekend
 		log.logPass("Restaurants list");
 		log.logDebug("Weekend, exiting...");
+		window.navigationBar().leftButton().tap(); //back
 		exit(0);
 	} else {
 		log.logFail("Restaurants list");
+		exit(0);
 	}
 }
 
-/*for (var i = 0; i<10; i++) {
+for (var i = 0; i<10; i++) {
 	delay(0.5);
 	tableView = window.tableViews()[0];
 	cells = tableView.cells();
@@ -43,9 +45,9 @@ if (tableView.isVisible()) {
 	} else {
 		log.logFail("Restaurant random selection : "+ restaurant);
 	}
-}*/
+}
 
-delay(1);
+/*delay(1);
 tableView = window.tableViews()[0];
 cells = tableView.cells();
 var rowRest = randomVisibleRowIndex(tableView);
@@ -56,8 +58,10 @@ delay(1);
 log.logDebug("test : "+window.tableViews().length);
 tableView = window.tableViews()[0];
 cells = tableView.cells();
-printElementsName(cell[0].elements());
+log.logDebug("test2 : "+cells[0].elements().length);
+log.logDebug("test3 : "+window.elements()["VotesLabel"].value());
 
 //log.logStart("Random meal rating (multiple times, must be enabled in app)");
-
+printElementsName(cells[0].elements());
+log.logDebug(cells[0].elements()["VotesLabel"].value());*/
 
