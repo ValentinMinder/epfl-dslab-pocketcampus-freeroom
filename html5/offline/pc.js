@@ -1,9 +1,12 @@
 Storage.prototype.setObject = function(key, value) {
-	this.setItem(key, JSON.stringify(value));
+	this.setItem(JSON.stringify(key), JSON.stringify(value));
 }
 Storage.prototype.getObject = function(key) {
-	var value = this.getItem(key);
+	var value = this.getItem(JSON.stringify(key));
 	return value && JSON.parse(value);
+}
+Storage.prototype.removeObject = function(key) {
+	this.removeItem(JSON.stringify(key));
 }
 
 

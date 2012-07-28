@@ -9,6 +9,7 @@ $( document ).delegate("#moodle", "pageinit", function() {
 });
 $( document ).delegate("#moodle", "pagebeforeshow", function(event, data) {
 	console.log("page #moodle pagebeforeshow");
+	MoodlePlugin.courseId = 0;
 	MoodlePlugin.setUpNavBar();
 });
 $( document ).delegate("#moodle", "pageshow", function(event, data) {
@@ -72,7 +73,7 @@ MoodlePlugin.authenticationCanceled = function () {
 //// BUTTONS HANDLERS
 
 MoodlePlugin.logoutUser = function () {
-	localStorage.removeItem("MOODLE_SESSION");
+	localStorage.removeObject("MOODLE_SESSION");
 	history.back();
 }
 
@@ -191,19 +192,22 @@ MoodlePlugin.getMoodleSession = function () {
 
 MoodlePlugin.getCoursesList = function () {
 	console.log("MoodlePlugin.getCoursesList");
+	var moodleRequestClosure = MoodlePlugin.buildRequest();
+	if(coursesListReplyCached = localStorage.getObject(moodleRequestClosure)) { MoodlePlugin.displayCourses(coursesListReplyCached.iCourses); return; }
 	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
-	client.getCoursesList(MoodlePlugin.buildRequest(), 1).error(function(a){
+	client.getCoursesList(moodleRequestClosure, 1).error(function(a){
 		console.log("ERROR");
 		$.mobile.hidePageLoadingMsg();
 		PocketCampus.showToast(Strings.CONNECTION_ERROR);
 	}).success(function(coursesListReply){
 		console.log("SUCCESS");
 		if(coursesListReply.iStatus == 200) {
+			localStorage.setObject(moodleRequestClosure, coursesListReply);
 			MoodlePlugin.displayCourses(coursesListReply.iCourses);
 		} else if (coursesListReply.iStatus == 407) {
-			localStorage.removeItem("MOODLE_SESSION");
+			localStorage.removeObject("MOODLE_SESSION");
 			MoodlePlugin.getTequilaTokenForMoodle();
 		} else { // 404
 			$.mobile.hidePageLoadingMsg();
@@ -216,19 +220,22 @@ MoodlePlugin.getCoursesList = function () {
 
 MoodlePlugin.getCourseSections = function () {
 	console.log("MoodlePlugin.getCourseSections");
+	var moodleRequestClosure = MoodlePlugin.buildRequest();
+	if(sectionsListReplyCached = localStorage.getObject(moodleRequestClosure)) { MoodlePlugin.displayCourseSections(sectionsListReplyCached.iSections); return; }
 	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
-	client.getCourseSections(MoodlePlugin.buildRequest(), 1).error(function(a){
+	client.getCourseSections(moodleRequestClosure, 1).error(function(a){
 		console.log("ERROR");
 		$.mobile.hidePageLoadingMsg();
 		PocketCampus.showToast(Strings.CONNECTION_ERROR);
 	}).success(function(sectionsListReply){
 		console.log("SUCCESS");
 		if(sectionsListReply.iStatus == 200) {
+			localStorage.setObject(moodleRequestClosure, sectionsListReply);
 			MoodlePlugin.displayCourseSections(sectionsListReply.iSections);
 		} else if(sectionsListReply.iStatus == 407) {
-			localStorage.removeItem("MOODLE_SESSION");
+			localStorage.removeObject("MOODLE_SESSION");
 			MoodlePlugin.getTequilaTokenForMoodle();
 		} else if(sectionsListReply.iStatus == 405) {
 			$.mobile.hidePageLoadingMsg();
