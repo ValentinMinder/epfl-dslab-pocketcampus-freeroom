@@ -33,4 +33,28 @@
     return [formatter stringFromDate:date];
 }
 
++ (NSString*)htmlReplaceWidthInContent:(NSString*)content ifWidthHeigherThan:(NSInteger)maxWidth {
+    NSError* error = nil;
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"width=\"(\\d{1,})\"" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+    NSArray* matches = [regex matchesInString:content options:0 range:NSMakeRange(0, content.length)];
+    NSString* maxWidthString = [NSString stringWithFormat:@"%d", maxWidth];
+    for (NSTextCheckingResult* match in matches) {
+        if (match.numberOfRanges < 1) { //range zero is whole pattern, not group
+            continue;
+        }
+        NSString* numbersString = [content substringWithRange:[match rangeAtIndex:1]];
+        NSInteger number = [numbersString integerValue];
+        if (number > maxWidth) {
+            content = [content stringByReplacingCharactersInRange:[match rangeAtIndex:1] withString:maxWidthString];
+        }
+    }
+    return content;
+    
+    /*if ([regex numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0 || [regexWithoutSpace numberOfMatchesInString:lowerTitle options:0 range:titleRange] > 0) {
+        [retAnnotations addObject:mapItemAnnotation];
+        return retAnnotations;
+    }*/
+}
+
 @end

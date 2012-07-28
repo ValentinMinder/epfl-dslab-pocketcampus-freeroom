@@ -1,5 +1,5 @@
 #import "AutomationUtilities.js"
 
-#import "FoodTest.js"
+#import "NewsTest.js"
 
-testFood();
+testNews();

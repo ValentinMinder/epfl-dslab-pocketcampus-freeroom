@@ -56,6 +56,7 @@ static int NEWS_FONT_SIZE = 14.0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    scrollView.accessibilityIdentifier = @"NewsItemScrollView";
     self.title = newsItem.title;
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     self.navigationItem.rightBarButtonItem = actionButton;
@@ -96,6 +97,7 @@ static int NEWS_FONT_SIZE = 14.0;
 
 - (void)actionButtonPressed {
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OpenInSafari", @"NewsPlugin", nil), nil];
+    actionSheet.accessibilityIdentifier = @"NewsItemActionSheet";
     [actionSheet showInView:self.view];
     [actionSheet release];
 }
@@ -171,9 +173,11 @@ static int NEWS_FONT_SIZE = 14.0;
     webView = [[[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)] autorelease]; //height will be recomputed when HTML loaded in delegate call
     webView.scrollView.scrollEnabled = NO;
     webView.delegate = self;
-    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'>a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx;'>%@</span>", NEWS_FONT_SIZE, content];
+    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx;'>%@</span>", NEWS_FONT_SIZE, [NewsUtils htmlReplaceWidthInContent:content ifWidthHeigherThan:300]];
     
     [webView loadHTMLString:contentWithStyle baseURL:nil];
+    
+    
     
     [scrollView addSubview:webView];
     

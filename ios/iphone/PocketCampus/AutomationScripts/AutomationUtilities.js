@@ -2,7 +2,9 @@
 
 target = UIATarget.localTarget();
 
-window = target.frontMostApp().mainWindow();
+app = target.frontMostApp();
+
+window = app.mainWindow();
 
 log = UIALogger;
 
@@ -67,12 +69,30 @@ function isCurrentNavBarTitle(title) {
     return window.navigationBar().name() == title;
 }
  
-function printElementsName(elements) {
+function printElementsName(elements, recursive, level) {
+    if (level == null) {
+        level = 0;
+    }
     for (var i = 0; i<elements.length; i++) {
-        log.logDebug("element : "+elements[i].name());
+        target.pushTimeout(0.1);
+        if (elements[i] == UIAElementNil) {
+            target.popTimeout();
+            break;
+        }
+        target.popTimeout();
+        log.logDebug(level+" : "+elements[i].name());
+        if (recursive && elements[i].elements().toArray().length > 0) {
+            printElementsName(elements[i].elements(), recursive, ++level);
+        }
     }
 }
- 
+
+function randomRowIndex(tableView){
+    var cells = tableView.cells();
+    var row = Math.round(Math.random()*(cells.length-1));
+    return row;
+}
+
 function randomVisibleRowIndex(tableView){
     var cells = tableView.visibleCells();
     var row = Math.round(Math.random()*(cells.length-1));

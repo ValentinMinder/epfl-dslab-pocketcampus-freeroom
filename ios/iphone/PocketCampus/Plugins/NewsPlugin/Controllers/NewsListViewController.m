@@ -85,6 +85,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [UIView transitionWithView:tableView duration:0.5 options:UIViewAnimationCurveEaseIn animations:^{
         tableView.alpha = 1.0;
     } completion:NULL];
+    tableView.accessibilityIdentifier = @"NewsList";
 }
 
 - (void)newsItemsFailedForLanguage:(NSString*)language {
