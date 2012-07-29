@@ -3,6 +3,13 @@ $( document ).delegate("#authentication", "pagebeforecreate", function() {
 });
 $( document ).delegate("#authentication", "pagecreate", function() {
 	console.log("page #authentication pagecreate");
+	$('input').keypress(function(e) {
+		var kc = (e.keyCode || e.which || e.charCode);
+		if(kc == 13) {
+			//$('#authForm').submit();
+			AuthenticationPlugin.loginUserToTequila();
+		}
+	});
 });
 $( document ).delegate("#authentication", "pageinit", function() {
 	console.log("page #authentication pageinit");
@@ -14,6 +21,7 @@ $( document ).delegate("#authentication", "pagebeforeshow", function(event, data
 $( document ).delegate("#authentication", "pageshow", function() {
 	console.log("page #authentication pageshow");
 	AuthenticationPlugin.authSucc = 0;
+	$(':input:first').focus();
 });
 $( document ).delegate("#authentication", "pagehide", function() {
 	console.log("page #authentication pagehide");

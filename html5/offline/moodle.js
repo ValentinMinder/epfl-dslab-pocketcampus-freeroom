@@ -288,13 +288,16 @@ MoodlePlugin.displayCourseSections = function (sections) {
 	markup = "<ul data-role='listview'>";
 	for ( i = 1; i < sections.length; i++ ) {
 		if(sections[i].iResources.length) {
-			markup += "<li data-role='list-divider'>Week " + i + " <span class='ui-li-count'>" + sections[i].iResources.length + "</span></li>";
+			markup += "<li data-role='list-divider'>Week " + i;
+			//markup += "<span class='ui-li-count'>" + sections[i].iResources.length + "</span>";
+			markup += "</li>";
 			for ( j = 0; j < sections[i].iResources.length; j++ ) {
 				translatedUrl = sections[i].iResources[j].iUrl.replace("http://moodle.epfl.ch", "moodle-a.php");
 				markup += "<li><a target=\"_blank\" href=\"" + translatedUrl + "\">";
 				markup += "<h3>" + sections[i].iResources[j].iName + "</h3>";
-				basename = translatedUrl.substring(translatedUrl.lastIndexOf("/") + 1, translatedUrl.length);
-				markup += "<p>" + basename + "</p>";
+				translatedUrl = translatedUrl.substring(0, ((translatedUrl.indexOf("?") + 1) || (translatedUrl.length + 1)) - 1);
+				translatedUrl = translatedUrl.substring(translatedUrl.lastIndexOf("/") + 1, translatedUrl.length);
+				markup += "<p>" + translatedUrl + "</p>";
 				//markup += "<p class='ui-li-aside'>SAVED</p>";
 				markup += "</a></li>";
 			}
