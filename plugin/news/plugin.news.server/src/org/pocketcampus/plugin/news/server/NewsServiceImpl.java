@@ -21,6 +21,7 @@ import org.pocketcampus.plugin.news.shared.NewsService;
  * Class that takes care of the services the News server provides to the client.
  * 
  * @author Elodie <elodienilane.triponez@epfl.ch>
+ * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
 public class NewsServiceImpl implements NewsService.Iface {
@@ -29,6 +30,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	private HashMap<String, HashMap<String, String>> mLanguagesFeedUrls;
 
 	/** HashMap of languages with their Feeds. */
+	@Deprecated
 	private HashMap<String, List<Feed>> mLanguagesFeedsList;
 
 	/** HashMap of languages with their NewsItems. */
@@ -87,6 +89,7 @@ public class NewsServiceImpl implements NewsService.Iface {
 	@Override
 	public HashMap<String, String> getFeedUrls(String language)
 			throws TException {
+		System.out.println("getFeedUrls");
 		if (mLanguagesFeedUrls != null
 				&& mLanguagesFeedUrls.containsKey(language)) {
 			return mLanguagesFeedUrls.get(language);
@@ -99,71 +102,88 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 * Imports newsItems from the RSS feeds.
 	 */
 	private void importFeeds() {
-		if (mLanguagesFeedUrls != null
+		if (!(mLanguagesFeedUrls != null
 				&& (!isUpToDate(mLastImportedFeeds)
 						|| mLanguagesNewsItemsList == null || mLanguagesNewsItemsList
-							.isEmpty())) {
-			Set<String> languages = mLanguagesFeedUrls.keySet();
-			for (String language : languages) {
-				importFeedForLanguage(language,
-						mLanguagesFeedUrls.get(language));
-			}
-			mLastImportedFeeds = new Date();
-		}
-	}
-
-	/**
-	 * Imports all feeds in the given language from the corresponding Urls.
-	 * 
-	 * @param language
-	 *            The language of the feeds to import.
-	 * @param mFeedUrls
-	 *            The url to the feeds.
-	 */
-	private void importFeedForLanguage(String language,
-			HashMap<String, String> mFeedUrls) {
-		System.out.println("<News> Reimporting Feeds for language " + language);
-		// There is no feed to download
-		if (mFeedUrls.isEmpty()) {
+							.isEmpty()))) {
 			return;
 		}
-
-		// Create a parser for each feed and put the items into the list
-		RssParser parser;
-		Feed feed;
-		Set<String> feedNames = mFeedUrls.keySet();
-		List<Feed> allFeeds = new ArrayList<Feed>();
-		for (String feedName : feedNames) {
-			parser = new RssParser(feedName, mFeedUrls.get(feedName));
-
-			parser.parse();
-			feed = parser.getFeed();
-
-			if (feed != null) {
-				// Add feed's items to the list
-				List<NewsItem> feedItems = feed.getItems();
-
-				// Keep only the 5 latest news.
-				List<NewsItem> toKeep = new ArrayList<NewsItem>();
-				for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
-					toKeep.add(feedItems.get(i));
-				}
-				// Add the items to the list of News Items.
-				if (mLanguagesNewsItemsList.containsKey(language)) {
-					toKeep.addAll(mLanguagesNewsItemsList.get(language));
-					mLanguagesNewsItemsList.remove(language);
-				}
-
-				Collections.sort(toKeep, newsItemComparator);
-				//mLanguagesNewsItemsList.clear();
-				mLanguagesNewsItemsList.put(language, toKeep);
-				
-				// Add contents to list
-				mNewsContents.putAll(parser.getNewsContents());
-				allFeeds.add(feed);
+		mLastImportedFeeds = new Date();
+		System.out.println("<News> Reimporting Feeds Asynchroneously");
+		final NewsServiceImpl instance = this;
+		new Thread(new Runnable() {
+			public void run() {
+				instance.importFeedsAsync();
 			}
+		}).start();
+	}
+	
+	private void importFeedsAsync() {
+		
+		
+		HashMap<String, List<Feed>> tLanguagesFeedsList = new HashMap<String, List<Feed>>();
+		HashMap<String, List<NewsItem>> tLanguagesNewsItemsList = new HashMap<String, List<NewsItem>>();
+		HashMap<Long, String> tNewsContents = new HashMap<Long, String>();
+		
+
+		
+		for (String language : mLanguagesFeedUrls.keySet()) {
+			HashMap<String, String> tFeedUrls = mLanguagesFeedUrls.get(language);
+			if (tFeedUrls.isEmpty()) { // There is no feed to download
+				continue;
+			}
+		
+		
+			// Create a parser for each feed and put the items into the list
+			RssParser parser;
+			Feed feed;
+			Set<String> feedNames = tFeedUrls.keySet();
+			List<Feed> allFeeds = new ArrayList<Feed>();
+			for (String feedName : feedNames) {
+				parser = new RssParser(feedName, tFeedUrls.get(feedName));
+	
+				parser.parse();
+				feed = parser.getFeed();
+	
+				if (feed != null) {
+					// Add feed's items to the list
+					List<NewsItem> feedItems = feed.getItems();
+	
+					// Keep only the 5 latest news.
+					List<NewsItem> toKeep = new ArrayList<NewsItem>();
+					for (int i = 0; i < MAX_NUMBER_RESULTS && i < feedItems.size(); i++) {
+						toKeep.add(feedItems.get(i));
+					}
+					
+					// Add the items to the list of News Items.
+					if (tLanguagesNewsItemsList.containsKey(language)) {
+						toKeep.addAll(tLanguagesNewsItemsList.get(language));
+						tLanguagesNewsItemsList.remove(language);
+					}
+					//System.out.println(language + "======" + feedName + "=======" + toKeep.size());
+	
+					Collections.sort(toKeep, newsItemComparator);
+					//mLanguagesNewsItemsList.clear();
+					tLanguagesNewsItemsList.put(language, toKeep);
+					
+					// Add contents to list
+					tNewsContents.putAll(parser.getNewsContents());
+					allFeeds.add(feed);
+				}
+			}
+			tLanguagesFeedsList.put(language, allFeeds);
+			
+			
 		}
-		mLanguagesFeedsList.put(language, allFeeds);
+		
+		
+		mLanguagesFeedsList = tLanguagesFeedsList;
+		mLanguagesNewsItemsList = tLanguagesNewsItemsList;
+		mNewsContents = tNewsContents;
+		
+
+		
+		System.out.println("<News> Asynchroneous Reimport Finished");
 	}
 
 	/**
@@ -177,13 +197,15 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 */
 	@Override
 	public List<NewsItem> getNewsItems(String language) throws TException {
+		System.out.println("getNewsItems");
 		importFeeds();
+		HashMap<String, List<NewsItem>> tLanguagesNewsItemsList = mLanguagesNewsItemsList;
 		List<NewsItem> toReturn = null;
-		if (mLanguagesNewsItemsList != null
-				&& mLanguagesNewsItemsList.containsKey(language)) {
-			toReturn = mLanguagesNewsItemsList.get(language);
+		if (tLanguagesNewsItemsList != null
+				&& tLanguagesNewsItemsList.containsKey(language)) {
+			toReturn = tLanguagesNewsItemsList.get(language);
 		} else {
-			toReturn = mLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
+			toReturn = tLanguagesNewsItemsList.get(DEFAULT_LANGUAGE);
 		}
 
 		return toReturn;
@@ -200,10 +222,12 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 */
 	@Override
 	public String getNewsItemContent(long newsItemId) throws TException {
+		System.out.println("getNewsItemContent");
 		importFeeds();
+		HashMap<Long, String> tNewsContents = mNewsContents;
 		String toReturn = null;
-		if (mNewsContents != null && mNewsContents.containsKey(newsItemId)) {
-			return mNewsContents.get(newsItemId);
+		if (tNewsContents != null && tNewsContents.containsKey(newsItemId)) {
+			return tNewsContents.get(newsItemId);
 		}
 
 		return toReturn;
@@ -237,13 +261,16 @@ public class NewsServiceImpl implements NewsService.Iface {
 	 *         not available.
 	 */
 	@Override
+	@Deprecated
 	public List<Feed> getFeeds(String language) throws TException {
+		System.out.println("getFeeds");
 		importFeeds();
-		if (mLanguagesFeedsList != null
-				&& mLanguagesFeedsList.containsKey(language)) {
-			return mLanguagesFeedsList.get(language);
+		HashMap<String, List<Feed>> tLanguagesFeedsList = mLanguagesFeedsList;
+		if (tLanguagesFeedsList != null
+				&& tLanguagesFeedsList.containsKey(language)) {
+			return tLanguagesFeedsList.get(language);
 		} else {
-			return mLanguagesFeedsList.get("en");
+			return tLanguagesFeedsList.get(DEFAULT_LANGUAGE);
 		}
 	}
 

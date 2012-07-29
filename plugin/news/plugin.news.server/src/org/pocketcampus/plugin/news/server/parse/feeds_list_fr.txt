@@ -5,7 +5,7 @@
 </Feed>
 <Feed>
 	<name>EPFL Toutes les Nouvelles</name>
-	<rssfeed>http://actu.epfl.ch/feeds/rss/mediacom/en/</rssfeed>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/mediacom/fr/</rssfeed>
 </Feed>
 <Feed>
 	<name>EPFL ENAC</name>
@@ -17,14 +17,14 @@
 </Feed>
 <Feed>
 	<name>EPFL Informatique et Communication</name>
-	<rssfeed>http://actu.epfl.ch/feeds/rss/ic/fr/</rssfeed>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/ic%20/fr/</rssfeed>
 </Feed>
 <Feed>
 	<name>EPFL Collège des Humanités</name>
 	<rssfeed>http://actu.epfl.ch/feeds/rss/cdh/fr/</rssfeed>
 </Feed>
 <Feed>
-	<name>EPFL Sciences et Techniques de l'Ing�nieur</name>
+	<name>EPFL Sciences et Techniques de l'Ingénieur</name>
 	<rssfeed>http://actu.epfl.ch/feeds/rss/sti/fr/</rssfeed>
 </Feed>
 <Feed>
