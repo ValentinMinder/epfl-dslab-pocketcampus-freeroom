@@ -72,6 +72,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     layersOverlayView.delegate = self;
     mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
+    mapView.accessibilityIdentifier = @"EPFLMapView";
     epflTileOverlay.mapView = mapView;
     epflLayersOverlay.mapView = mapView;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(toogleSearchBar)] autorelease];

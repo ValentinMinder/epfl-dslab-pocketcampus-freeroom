@@ -41,7 +41,7 @@ function testNews() {
 		
 		
 		var scrollView = window.scrollViews()["NewsItemScrollView"];
-		if (Math.random()<1.0) {
+		if (Math.random()<0.5) {
 			log.logStart("Scrolling into News item");
 			for (var j = 0; j<5; j++) {
 				scrollView.scrollDown();

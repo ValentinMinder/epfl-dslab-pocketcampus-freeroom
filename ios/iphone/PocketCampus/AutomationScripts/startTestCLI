@@ -1,0 +1,61 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+echo "usage : $0 [-x xcode.app_path (default /Applications/Xcode.app)] -d device_identifier [-o where_to_save_trace (default to <script_name_date>.trace)] -s path_to_js_script -a path_to_.app (see in ~/Library/Developer/Xcode/...) [-v verbose (shows instruments command)]"
+exit -1
+fi
+
+XCODE_PATH="/Applications/Xcode.app"
+DEVICE_IDENTIFIER=""
+TRACE_OUT_PATH="./default.trace"
+TEST_SCRIPT_PATH=""
+APP_PATH=""
+VERBOSE=0
+
+while getopts "x:d:o:s:a:v:" Option
+do
+  case $Option in
+	x		) XCODE_PATH="$OPTARG";;
+	d		) DEVICE_IDENTIFIER="$OPTARG";;
+	o 		) TRACE_OUT_PATH="$OPTARG";;
+	s		) TEST_SCRIPT_PATH="$OPTARG";;
+	a		) APP_PATH="$OPTARG";;
+	v		) VERBOSE=1;;
+  esac
+done
+
+if [ "$DEVICE_IDENTIFIER" = "" ]
+then
+	echo "ERROR : Device identifier required (use -d)" 
+	exit -1
+fi
+
+if [ "$TEST_SCRIPT_PATH" = "" ]
+then
+	echo "ERROR : Test script path required (use -s)" 
+	exit -1
+fi
+
+if [ "$APP_PATH" = "" ]
+then
+	echo "ERROR : App path required (use -a)"
+	exit -1
+fi
+
+if [ $TRACE_OUT_PATH = "./default.trace" ]
+then
+	base=`basename $TEST_SCRIPT_PATH`
+	filename="${base%.*}"
+	date=`date "+%Y-%m-%d_%Hh%M"`
+	TRACE_OUT_PATH="$filename""_$date.trace"
+	echo "$TRACE_OUT_PATH"
+fi
+
+if [ $VERBOSE -eq 1 ]
+then
+echo "command : instruments -t \"$XCODE_PATH/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate\" -w \"$DEVICE_IDENTIFIER\" -D \"$TRACE_OUT_PATH\" \"$APP_PATH\" -e UIASCRIPT \"$TEST_SCRIPT_PATH\""
+fi
+
+instruments -t "$XCODE_PATH/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate" -w "$DEVICE_IDENTIFIER" -D "$TRACE_OUT_PATH" "$APP_PATH" -e UIASCRIPT "$TEST_SCRIPT_PATH"
+
