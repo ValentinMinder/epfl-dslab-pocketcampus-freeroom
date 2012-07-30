@@ -1,11 +1,11 @@
 $( document ).delegate("#moodle", "pagebeforecreate", function() {
-	console.log("page moodle pagebeforecreate");
+	console.log("page #moodle pagebeforecreate");
 });
 $( document ).delegate("#moodle", "pagecreate", function() {
-	console.log("page moodle pagecreate");
+	console.log("page #moodle pagecreate");
 });
 $( document ).delegate("#moodle", "pageinit", function() {
-	console.log("page moodle pageinit");
+	console.log("page #moodle pageinit");
 });
 $( document ).delegate("#moodle", "pagebeforeshow", function(event, data) {
 	console.log("page #moodle pagebeforeshow");
@@ -13,9 +13,9 @@ $( document ).delegate("#moodle", "pagebeforeshow", function(event, data) {
 	MoodlePlugin.clearDisplayCourses();
 });
 $( document ).delegate("#moodle", "pageshow", function(event, data) {
-	console.log("page moodle pageshow");
+	console.log("page #moodle pageshow");
 	$.mobile.showPageLoadingMsg();
-	if(data.prevPage.length && data.prevPage[0].id == "authentication") {
+	if(data && data.prevPage.length && data.prevPage[0].id == "authentication") {
 		console.log("already authenticating, should get a separate callback");
 		return;
 	}
@@ -38,7 +38,7 @@ $( document ).delegate("#moodle-course", "pagebeforeshow", function(event, data)
 $( document ).delegate("#moodle-course", "pageshow", function(event, data) {
 	console.log("page #moodle-course pageshow");
 	$.mobile.showPageLoadingMsg();
-	if(data.prevPage.length && data.prevPage[0].id == "authentication") {
+	if(data && data.prevPage.length && data.prevPage[0].id == "authentication") {
 		console.log("already authenticating, should get a separate callback");
 		return;
 	}
@@ -186,8 +186,10 @@ MoodlePlugin.getMoodleSession = function () {
 	}).success(function(res){
 		console.log("SUCCESS");
 		localStorage.setObject("MOODLE_SESSION", res);
-		MoodlePlugin.injectMoodleCookies();
-		MoodlePlugin.getCoursesList(0, 1);
+		//MoodlePlugin.injectMoodleCookies();
+		//MoodlePlugin.getCoursesList(0, 1);
+		console.log("re-triggering pageshow on activePage");
+		$("#" + $.mobile.activePage.data("url")).trigger("pageshow");
 	}).complete(function(){
 		console.log("COMPLETE");
 	});
