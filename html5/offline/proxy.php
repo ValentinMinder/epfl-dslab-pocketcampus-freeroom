@@ -39,6 +39,8 @@ $trans_uri = (empty($_SERVER["PATH_INFO"]) ? "/" : ($_SERVER["PATH_INFO"] . "?" 
  
 $result = file_get_contents($PC_PROXY_CONFIG[$self_basename]["protto"] . $PC_PROXY_CONFIG[$self_basename]["url"] . $trans_uri, false, $context);
 
+$result_forged = array();
+
 foreach($http_response_header as $h) {
 	$log .= "$h\n";
 	if(empty($REPLACE_REDIRECTS)) { // translate redirects
@@ -51,7 +53,13 @@ foreach($http_response_header as $h) {
 		if(stripos($h, "HTTP/1.1 302") === 0 || stripos($h, "HTTP/1.1 303") === 0) {
 			$h = $REPLACE_REDIRECTS;
 		} else if(stripos($h, "Location: ") === 0) {
-			$result = $h;
+			$result_forged[] = $h;
+			continue;
+		}
+	}
+	if(!empty($TRANSLATE_SETCOOKIE)) {
+		if(stripos($h, "Set-Cookie: ") === 0) {
+			$result_forged[] = $h;
 			continue;
 		}
 	}
@@ -64,7 +72,12 @@ foreach($http_response_header as $h) {
 }
 $log .= "\n";
 
-echo $result;
+if(count($result_forged)) {
+	foreach($result_forged as $res)
+		echo $res . "\n";
+} else {
+	echo $result;
+}
 
 file_put_contents("log.log", $log, FILE_APPEND);
 

@@ -10,22 +10,22 @@ $( document ).delegate("#moodle", "pageinit", function() {
 $( document ).delegate("#moodle", "pagebeforeshow", function(event, data) {
 	console.log("page #moodle pagebeforeshow");
 	MoodlePlugin.courseId = 0;
-	MoodlePlugin.setUpNavBar();
+	MoodlePlugin.clearDisplayCourses();
 });
 $( document ).delegate("#moodle", "pageshow", function(event, data) {
 	console.log("page moodle pageshow");
 	$.mobile.showPageLoadingMsg();
 	if(data.prevPage.length && data.prevPage[0].id == "authentication") {
 		console.log("already authenticating, should get a separate callback");
+		return;
+	}
+	if(localStorage.getObject("MOODLE_SESSION")) {
+		console.log("already signed in, requesting courses list");
+		MoodlePlugin.injectMoodleCookies();
+		MoodlePlugin.getCoursesList(0, 1);
 	} else {
-		if(localStorage.getObject("MOODLE_SESSION")) {
-			console.log("already signed in, requesting courses list");
-			MoodlePlugin.injectMoodleCookies();
-			MoodlePlugin.getCoursesList();
-		} else {
-			console.log("not signed in, starting auth");
-			MoodlePlugin.getTequilaTokenForMoodle();
-		}
+		console.log("not signed in, starting auth");
+		MoodlePlugin.getTequilaTokenForMoodle();
 	}
 });
 
@@ -33,24 +33,24 @@ $( document ).delegate("#moodle", "pageshow", function(event, data) {
 $( document ).delegate("#moodle-course", "pagebeforeshow", function(event, data) {
 	console.log("page #moodle-course pagebeforeshow");
 	MoodlePlugin.courseId = parseInt(window.location.hash.replace( /.*id=/, "" ));
-	console.log("courseId: " + MoodlePlugin.courseId);
-	MoodlePlugin.displayCourseSections(new Array());
+	MoodlePlugin.clearDisplayCourseSections();
 });
 $( document ).delegate("#moodle-course", "pageshow", function(event, data) {
 	console.log("page #moodle-course pageshow");
 	$.mobile.showPageLoadingMsg();
+	if(data.prevPage.length && data.prevPage[0].id == "authentication") {
+		console.log("already authenticating, should get a separate callback");
+		return;
+	}
 	if(localStorage.getObject("MOODLE_SESSION")) {
 		console.log("already signed in, requesting course sections");
 		MoodlePlugin.injectMoodleCookies();
-		MoodlePlugin.getCourseSections();
+		MoodlePlugin.getCourseSections(0, 1);
 	} else {
 		console.log("not signed in, starting auth");
 		MoodlePlugin.getTequilaTokenForMoodle();
 	}
 });
-/*$("#moodle-course").live("pageshow", function(event) {
-	$.mobile.showPageLoadingMsg();
-});*/
 
 
 MoodlePlugin = function () {};
@@ -77,9 +77,14 @@ MoodlePlugin.logoutUser = function () {
 	history.back();
 }
 
-MoodlePlugin.refreshCourseList = function () {
+MoodlePlugin.refreshCoursesList = function () {
 	$.mobile.showPageLoadingMsg();
-	MoodlePlugin.getCoursesList();
+	MoodlePlugin.getCoursesList(1, 1);
+}
+
+MoodlePlugin.refreshSectionsList = function () {
+	$.mobile.showPageLoadingMsg();
+	MoodlePlugin.getCourseSections(1, 1);
 }
 
 //// DYNAMIC PAGES REGISTRATION AND DELEGATION
@@ -91,8 +96,8 @@ MoodlePlugin.showPage = function (urlObj, options) {
 	sections = MoodlePlugin.getCourseSections();*/
 	
 	$page = $( "#moodle-course" );
-	$header = $page.children( ":jqmData(role=header)" );
-	$content = $page.children( ":jqmData(role=content)" );
+	//$header = $page.children( ":jqmData(role=header)" );
+	//$content = $page.children( ":jqmData(role=content)" );
 	
 	/*markup = "<ul data-role='listview' data-theme='g'>";
 	for ( i = 1; i < sections.length; i++ ) {
@@ -109,8 +114,8 @@ MoodlePlugin.showPage = function (urlObj, options) {
 	$header.find( "h1" ).html( MoodlePlugin.coursesTitleMap[MoodlePlugin.courseId] );
 	$content.html( markup );*/
 	
-	$page.page();
-	$content.find( ":jqmData(role=listview)" ).listview();
+	//$page.page();
+	//$content.find( ":jqmData(role=listview)" ).listview();
 	options.dataUrl = urlObj.href;
 	$.mobile.changePage( $page, options );
 }
@@ -127,11 +132,10 @@ MoodlePlugin.injectMoodleCookies = function () {
 	}
 }
 
-MoodlePlugin.setUpNavBar = function () {
-	$("#moodle").children(":jqmData(role=header)").find(".ui-btn").remove();
-	if(localStorage.getObject("MOODLE_SESSION")) {
-		$("#moodle").children(":jqmData(role=header)").append("<a href='javascript:MoodlePlugin.logoutUser()' data-icon='delete' class='ui-btn-left'>Logout</a>" ).trigger("create");
-		$("#moodle").children(":jqmData(role=header)").append("<a href='javascript:MoodlePlugin.refreshCourseList()' data-icon='gear' class='ui-btn-right'>Refresh</a>" ).trigger("create");
+MoodlePlugin.destroyDocumentCookies = function () {
+	documentCookies = document.cookie.split(';');
+	for(i = 0; i < documentCookies.length; i++) {
+		document.cookie = documentCookies[i].split('=')[0] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 	}
 }
 
@@ -183,17 +187,18 @@ MoodlePlugin.getMoodleSession = function () {
 		console.log("SUCCESS");
 		localStorage.setObject("MOODLE_SESSION", res);
 		MoodlePlugin.injectMoodleCookies();
-		MoodlePlugin.setUpNavBar();
-		MoodlePlugin.getCoursesList();
+		MoodlePlugin.getCoursesList(0, 1);
 	}).complete(function(){
 		console.log("COMPLETE");
 	});
 }
 
-MoodlePlugin.getCoursesList = function () {
+MoodlePlugin.getCoursesList = function (bypassCacheFlag, useCacheFlag) {
 	console.log("MoodlePlugin.getCoursesList");
 	var moodleRequestClosure = MoodlePlugin.buildRequest();
-	if(coursesListReplyCached = localStorage.getObject(moodleRequestClosure)) { MoodlePlugin.displayCourses(coursesListReplyCached.iCourses); return; }
+	if(!bypassCacheFlag)
+		if(coursesListReplyCached = localStorage.getObject(moodleRequestClosure))
+			return MoodlePlugin.displayCourses(coursesListReplyCached.iCourses);
 	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
@@ -204,7 +209,8 @@ MoodlePlugin.getCoursesList = function () {
 	}).success(function(coursesListReply){
 		console.log("SUCCESS");
 		if(coursesListReply.iStatus == 200) {
-			localStorage.setObject(moodleRequestClosure, coursesListReply);
+			if(useCacheFlag)
+				localStorage.setObject(moodleRequestClosure, coursesListReply);
 			MoodlePlugin.displayCourses(coursesListReply.iCourses);
 		} else if (coursesListReply.iStatus == 407) {
 			localStorage.removeObject("MOODLE_SESSION");
@@ -218,10 +224,12 @@ MoodlePlugin.getCoursesList = function () {
 	});
 }
 
-MoodlePlugin.getCourseSections = function () {
+MoodlePlugin.getCourseSections = function (bypassCacheFlag, useCacheFlag) {
 	console.log("MoodlePlugin.getCourseSections");
 	var moodleRequestClosure = MoodlePlugin.buildRequest();
-	if(sectionsListReplyCached = localStorage.getObject(moodleRequestClosure)) { MoodlePlugin.displayCourseSections(sectionsListReplyCached.iSections); return; }
+	if(!bypassCacheFlag)
+		if(sectionsListReplyCached = localStorage.getObject(moodleRequestClosure))
+			return MoodlePlugin.displayCourseSections(sectionsListReplyCached.iSections);
 	transport = new Thrift.Transport("pc-server.php/v3r1/json-moodle");
 	protocol = new Thrift.Protocol(transport);
 	client = new MoodleServiceClient(protocol);
@@ -232,7 +240,8 @@ MoodlePlugin.getCourseSections = function () {
 	}).success(function(sectionsListReply){
 		console.log("SUCCESS");
 		if(sectionsListReply.iStatus == 200) {
-			localStorage.setObject(moodleRequestClosure, sectionsListReply);
+			if(useCacheFlag)
+				localStorage.setObject(moodleRequestClosure, sectionsListReply);
 			MoodlePlugin.displayCourseSections(sectionsListReply.iSections);
 		} else if(sectionsListReply.iStatus == 407) {
 			localStorage.removeObject("MOODLE_SESSION");
@@ -253,19 +262,20 @@ MoodlePlugin.getCourseSections = function () {
 
 MoodlePlugin.displayCourses = function (coursesList) {
 	console.log("MoodlePlugin.displayCourses");
-	//$( ...new markup that contains widgets... ).appendTo( ".ui-page" ).trigger( "create" );
 	
 	var $page = $( "#moodle" );
-	$header = $page.children( ":jqmData(role=header)" );
-	$content = $page.children( ":jqmData(role=content)" );
+	var $header = $page.children( ":jqmData(role=header)" );
+	var $content = $page.children( ":jqmData(role=content)" );
 	
-	markup = "<ul data-role='listview' data-inset='true'>";
+	var markup = "<ul data-role='listview' data-inset='true'>";
 	MoodlePlugin.coursesTitleMap = new Array();
 	for(i = 0; i < coursesList.length; i++) {
 		MoodlePlugin.coursesTitleMap[coursesList[i].iId] = coursesList[i].iTitle;
 		markup += "<li><a href=\"#moodle-course?id=" + coursesList[i].iId + "\">" + coursesList[i].iTitle + "</a></li>";
 	}
 	markup += "</ul>";
+	if(!coursesList.length)
+		markup += "<p class='middle-of-screen'>No courses.</p>";
 	
 	$header.find( "h1" ).html( "Courses" );
 	$content.html( markup );
@@ -273,6 +283,8 @@ MoodlePlugin.displayCourses = function (coursesList) {
 	$page.page();
 	$content.find( ":jqmData(role=listview)" ).listview();
 	
+	$("#moodle").children(":jqmData(role=header)").append("<a href='javascript:MoodlePlugin.logoutUser()' data-icon='delete' class='ui-btn-left'>Logout</a>" ).trigger("create");
+	$("#moodle").children(":jqmData(role=header)").append("<a href='javascript:MoodlePlugin.refreshCoursesList()' data-icon='gear' class='ui-btn-right'>Refresh</a>" ).trigger("create");
 	$.mobile.hidePageLoadingMsg();
 }
 
@@ -281,29 +293,32 @@ MoodlePlugin.displayCourseSections = function (sections) {
 	//$( ...new markup that contains widgets... ).appendTo( ".ui-page" ).trigger( "create" ); // not very much working
 	//$( "#dashboard" ).append("<markup />" ).trigger('create') // working
 	
-	$page = $( "#moodle-course" );
-	$header = $page.children( ":jqmData(role=header)" );
-	$content = $page.children( ":jqmData(role=content)" );
+	var $page = $( "#moodle-course" );
+	var $header = $page.children( ":jqmData(role=header)" );
+	var $content = $page.children( ":jqmData(role=content)" );
 	
-	markup = "<ul data-role='listview'>";
+	var markup = "<ul data-role='listview'>";
 	for ( i = 1; i < sections.length; i++ ) {
-		if(sections[i].iResources.length) {
-			markup += "<li data-role='list-divider'>Week " + i;
-			//markup += "<span class='ui-li-count'>" + sections[i].iResources.length + "</span>";
-			markup += "</li>";
-			for ( j = 0; j < sections[i].iResources.length; j++ ) {
-				translatedUrl = sections[i].iResources[j].iUrl.replace("http://moodle.epfl.ch", "moodle-a.php");
-				markup += "<li><a target=\"_blank\" href=\"" + translatedUrl + "\">";
-				markup += "<h3>" + sections[i].iResources[j].iName + "</h3>";
-				translatedUrl = translatedUrl.substring(0, ((translatedUrl.indexOf("?") + 1) || (translatedUrl.length + 1)) - 1);
-				translatedUrl = translatedUrl.substring(translatedUrl.lastIndexOf("/") + 1, translatedUrl.length);
-				markup += "<p>" + translatedUrl + "</p>";
-				//markup += "<p class='ui-li-aside'>SAVED</p>";
-				markup += "</a></li>";
-			}
+		if(!sections[i].iResources.length)
+			continue;
+		sections.notEmpty = 1;
+		markup += "<li data-role='list-divider'>Week " + i;
+		//markup += "<span class='ui-li-count'>" + sections[i].iResources.length + "</span>";
+		markup += "</li>";
+		for ( j = 0; j < sections[i].iResources.length; j++ ) {
+			translatedUrl = sections[i].iResources[j].iUrl.replace("http://moodle.epfl.ch", "moodle-a.php");
+			markup += "<li><a target=\"_blank\" href=\"" + translatedUrl + "\">";
+			markup += "<h3>" + sections[i].iResources[j].iName + "</h3>";
+			translatedUrl = translatedUrl.substring(0, ((translatedUrl.indexOf("?") + 1) || (translatedUrl.length + 1)) - 1);
+			translatedUrl = translatedUrl.substring(translatedUrl.lastIndexOf("/") + 1, translatedUrl.length);
+			markup += "<p>" + translatedUrl + "</p>";
+			//markup += "<p class='ui-li-aside'>SAVED</p>";
+			markup += "</a></li>";
 		}
 	}
 	markup += "</ul>";
+	if(!sections.notEmpty)
+		markup += "<p class='middle-of-screen'>No sections.</p>";
 	
 	$header.find( "h1" ).html( MoodlePlugin.coursesTitleMap[MoodlePlugin.courseId] );
 	$content.html( markup );
@@ -311,7 +326,38 @@ MoodlePlugin.displayCourseSections = function (sections) {
 	$page.page();
 	$content.find( ":jqmData(role=listview)" ).listview();
 	
+	$("#moodle-course").children(":jqmData(role=header)").append("<a href='javascript:MoodlePlugin.refreshSectionsList()' data-icon='gear' class='ui-btn-right'>Refresh</a>" ).trigger("create");
 	$.mobile.hidePageLoadingMsg();
+}
+
+MoodlePlugin.clearDisplayCourses = function () {
+	console.log("MoodlePlugin.clearDisplayCourses");
+	
+	var $page = $( "#moodle" );
+	var $header = $page.children( ":jqmData(role=header)" );
+	var $content = $page.children( ":jqmData(role=content)" );
+	
+	$header.find( "h1" ).html( "Courses" );
+	$content.html( "" );
+	
+	$page.page();
+	
+	$("#moodle").children(":jqmData(role=header)").find(".ui-btn").remove();
+}
+
+MoodlePlugin.clearDisplayCourseSections = function () {
+	console.log("MoodlePlugin.clearDisplayCourseSections");
+	
+	var $page = $( "#moodle-course" );
+	var $header = $page.children( ":jqmData(role=header)" );
+	var $content = $page.children( ":jqmData(role=content)" );
+	
+	$header.find( "h1" ).html( MoodlePlugin.coursesTitleMap[MoodlePlugin.courseId] );
+	$content.html( "" );
+	
+	$page.page();
+	
+	$("#moodle-course").children(":jqmData(role=header)").find(".ui-btn").remove();
 }
 
 
