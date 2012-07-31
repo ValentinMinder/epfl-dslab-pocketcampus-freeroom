@@ -75,16 +75,16 @@ AuthenticationPlugin.loginUserToTequila = function () {
 	$.mobile.showPageLoadingMsg();
 	username = $('#authForm').find( 'input[name="username"]' ).val();
 	password = $('#authForm').find( 'input[name="password"]' ).val();
-	document.cookie = "tequila_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 	$.post("tequila.php/cgi-bin/tequila/login", { username: username, password: password }).error(function(a){
 		console.log("ERROR");
 		$.mobile.hidePageLoadingMsg();
 		PocketCampus.showToast(Strings.CONNECTION_ERROR);
 	}).success(function(res){
 		console.log("SUCCESS");
-		if(document.cookie.indexOf("tequila_key") != -1) {
-			AuthenticationPlugin.authSucc = 1;
+		if(res.indexOf("Set-Cookie: tequila_key=") == 0) {
+			AuthenticationPlugin.tequilaCookie = res.split('=')[1].split(';')[0];
 			AuthenticationPlugin.authenticateTokenRequest();
+			AuthenticationPlugin.authSucc = 1;
 			$(".ui-dialog").dialog("close");
 		} else {
 			$.mobile.hidePageLoadingMsg();
@@ -98,6 +98,7 @@ AuthenticationPlugin.loginUserToTequila = function () {
 
 AuthenticationPlugin.authenticateTokenRequest = function () {
 	console.log("AuthenticationPlugin.authenticateTokenRequest");
+	document.cookie = "tequila_key=" + AuthenticationPlugin.tequilaCookie; // inject tequilaCookie
 	$.get("tequila.php/cgi-bin/tequila/requestauth", { requestkey: AuthenticationPlugin.tokenToAuthenticate }).error(function(a){
 		console.log("ERROR");
 		$.mobile.hidePageLoadingMsg();
@@ -106,11 +107,12 @@ AuthenticationPlugin.authenticateTokenRequest = function () {
 		console.log("SUCCESS");
 		if(res.indexOf("Location: ") == 0) { // if Tequila redirected
 			AuthenticationPlugin.callbackObject.authenticationSucceeded();
-		} else {
+		} else { // token timed out or user not signed in
 			$.mobile.hidePageLoadingMsg();
 			PocketCampus.showToast(Strings.BAD_TOKEN);
 		}
 	}).complete(function(){
 		console.log("COMPLETE");
+		document.cookie = "tequila_key=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"; // destroy tequilaCookie
 	});
 }

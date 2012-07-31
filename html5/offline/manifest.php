@@ -5,7 +5,7 @@ require_once "common.php";
 header('Content-Type: text/cache-manifest');
 
 echo "CACHE MANIFEST\n";
-echo "# v12\n";
+echo "# v13\n";
 echo "\n";
 echo "CACHE:\n";
 echo "{$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/\n";

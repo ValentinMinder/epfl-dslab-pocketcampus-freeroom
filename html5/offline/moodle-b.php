@@ -10,9 +10,10 @@ echo "CACHE:\n";
 echo getUrl("moodle-a.php") . "\n";
 echo getUrl("moodle.php") . "\n";
 
-echo "\n";
-echo "FALLBACK:\n";
-echo getUrl("moodle.php") . " {$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/sorry.html\n";
+//echo "\n";
+//echo "FALLBACK:\n";
+//echo getUrl("moodle-a.php") . " {$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/sorry.html\n";
+//echo getUrl("moodle.php") . " {$HTML5_APP_URL_PROTO}{$HTML5_APP_URL_HOST}" . dirname($_SERVER["SCRIPT_NAME"]) . "/sorry.html\n";
 
 
 

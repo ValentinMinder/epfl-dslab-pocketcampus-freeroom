@@ -21,7 +21,6 @@ $( document ).delegate("#moodle", "pageshow", function(event, data) {
 	}
 	if(localStorage.getObject("MOODLE_SESSION")) {
 		console.log("already signed in, requesting courses list");
-		MoodlePlugin.injectMoodleCookies();
 		MoodlePlugin.getCoursesList(0, 1);
 	} else {
 		console.log("not signed in, starting auth");
@@ -50,6 +49,10 @@ $( document ).delegate("#moodle-course", "pageshow", function(event, data) {
 		console.log("not signed in, starting auth");
 		MoodlePlugin.getTequilaTokenForMoodle();
 	}
+});
+$( document ).delegate("#moodle-course", "pagehide", function() {
+	console.log("page #moodle-course pagehide");
+	MoodlePlugin.destroyDocumentCookies();
 });
 
 
