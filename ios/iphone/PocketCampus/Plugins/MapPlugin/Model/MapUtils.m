@@ -108,12 +108,7 @@ double WGStoCHy(double lat, double lng) {
             
             NSRange titleRange = NSMakeRange(0, [lowerTitle length]);
             
-            if ([lowerTitle isEqualToString:lowerQuery]) {
-                [retAnnotations addObject:mapItemAnnotation];
-                return retAnnotations;
-            }
-            
-            if ([lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
+            if ([lowerTitle isEqualToString:lowerQuery] || [lowerTitleWithoutSpace isEqualToString:lowerQueryWithoutSpace]) {
                 [retAnnotations addObject:mapItemAnnotation];
                 return retAnnotations;
             }

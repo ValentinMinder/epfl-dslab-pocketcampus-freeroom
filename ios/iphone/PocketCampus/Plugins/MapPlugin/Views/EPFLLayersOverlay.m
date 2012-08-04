@@ -101,6 +101,9 @@ static double MIN_ZOOM_SCALE_OVERLAY = 0.1;
     
     if (![PCUtils isRetinaDevice]) {
         zoomScale *= 2.0;
+        if (zoomScale > 0.75) {
+            return NO;
+        }
     }
     
     if (zoomScale < MIN_ZOOM_SCALE_OVERLAY) {

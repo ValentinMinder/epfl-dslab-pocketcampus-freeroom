@@ -12,15 +12,21 @@
 
 #import "ASIHTTPRequest.h"
 
+#import "ASINetworkQueue.h"
+
 @protocol CustomOverlayViewDelegate;
 
-@interface CustomOverlayView : MKOverlayView
+@interface CustomOverlayView : MKOverlayView {
+    NSMutableDictionary* tilesDataTmp;
+    ASINetworkQueue* requestsQueue;
+}
 
 @property (retain) NSMutableDictionary* tilesDataTmp;  //key : - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale, value : NSData of corresponding tile image data
-@property (retain) NSMutableArray* requests;
+@property (retain) ASINetworkQueue* requestsQueue;
 @property BOOL isCancellingAll;
-@property (nonatomic, assign) id<CustomOverlayViewDelegate> delegate;
+@property (assign) id<CustomOverlayViewDelegate> delegate;
 
+- (void)didReceiveMemoryWarning;
 - (void)cancelTilesDownload;
 
 @end

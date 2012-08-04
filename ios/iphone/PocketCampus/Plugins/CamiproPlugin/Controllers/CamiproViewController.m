@@ -344,7 +344,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         {
             statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
             [statsAlertView show];
-            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
+            CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
             [camiproService getStatsAndLoadingInfo:statsRequest delegate:self];
             [statsRequest release];
             break;

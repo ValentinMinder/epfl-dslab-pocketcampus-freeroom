@@ -183,7 +183,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 /* Utilities */
 
 - (NSString*)userLanguageIdentfier {
-    return [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    return [[NSLocale preferredLanguages] objectAtIndex:0];
 }
 
 - (void)dealloc

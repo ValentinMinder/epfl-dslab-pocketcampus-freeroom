@@ -897,7 +897,7 @@ static NSTimeInterval connectivityCheckTimeout;
     [self autorelease];
 }
 
-- (void)didTimeout { //server not reachable or thrift request timer timed o ut
+- (void)didTimeout { //server not reachable or thrift request timer timed out
     NSLog(@"-> ServiceRequest timeout");
     if (self.timedOut) { 
         return;
@@ -914,7 +914,7 @@ static NSTimeInterval connectivityCheckTimeout;
 
 - (void)dealloc
 {
-    [self.thriftServiceClient release];
+    [thriftServiceClient release];
     [arguments release];
     [super dealloc];
 }

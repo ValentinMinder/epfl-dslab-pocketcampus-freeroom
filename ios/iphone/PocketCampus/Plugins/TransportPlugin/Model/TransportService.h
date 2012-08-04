@@ -85,6 +85,7 @@ typedef enum {
     BOOL blockedByAuthStatus; 
     BOOL delegateCallScheduled;
     int nbRounds;
+    NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
 }
 
 - (id)initWithTransportStations:(NSArray*)sations delegate:(id)delegate;

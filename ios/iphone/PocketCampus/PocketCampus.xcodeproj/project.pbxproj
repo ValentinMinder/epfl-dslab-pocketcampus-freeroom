@@ -434,7 +434,6 @@
 		32B58722156459370051C57E /* CamiproController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CamiproController.m; sourceTree = "<group>"; };
 		32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketCampusStyled@2x.png"; sourceTree = "<group>"; };
 		32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PocketCampusStyled.png; sourceTree = "<group>"; };
-		32B7322315C206C00091757D /* libMonkeyTalk-1.0.11.beta5c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMonkeyTalk-1.0.11.beta5c.a"; path = "MonkeyTalk/libMonkeyTalk-1.0.11.beta5c.a"; sourceTree = "<group>"; };
 		32B7322515C206F30091757D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		32B7322715C2070E0091757D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		32B89252154584A90058E472 /* EPFLTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPFLTileOverlay.h; sourceTree = "<group>"; };
@@ -620,10 +619,10 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
+				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,
 				32B2F18A153343B100FB8C79 /* Default@2x.png */,
-				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
 				3219EF5614FCDE4900A271CD /* PocketCampus */,
 				32FAC0DF1500F40700925180 /* Plugins */,
@@ -691,7 +690,6 @@
 		3219EF6714FCE02F00A271CD /* ExternalFrameworks */ = {
 			isa = PBXGroup;
 			children = (
-				32B7322315C206C00091757D /* libMonkeyTalk-1.0.11.beta5c.a */,
 				32B89259154589D70058E472 /* ASIHTTPRequest */,
 				32663945150C00E100719F6E /* UIDeviceUniqueID */,
 				3219EF6814FCE08300A271CD /* ThriftFramework */,
@@ -2084,8 +2082,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: EPFL SDP (T3VMJ9JGA4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: EPFL SDP (T3VMJ9JGA4)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2100,8 +2098,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 			};
@@ -2112,8 +2110,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: EPFL SDP (T3VMJ9JGA4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: EPFL SDP (T3VMJ9JGA4)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2122,8 +2120,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A2204D84-A74E-4E3F-98C8-AD364DAB50ED";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BB0D8B5F-18D7-4C59-874A-476114F336D6";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "Plugins/**";
 				VALIDATE_PRODUCT = YES;

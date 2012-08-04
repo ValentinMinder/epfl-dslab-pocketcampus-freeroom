@@ -234,7 +234,7 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
 
 - (void)dealloc
 {
-    [self.sciper release];
+    [sciper release];
     [super dealloc];
 }
 

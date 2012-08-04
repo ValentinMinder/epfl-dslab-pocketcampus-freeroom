@@ -167,6 +167,7 @@
                     UILabel* lineLabel = [[[UILabel alloc] initWithFrame:CGRectMake(53.0+(i*100.0), 33.0, 30.0, 20.0)] autorelease];
                     lineLabel.text = [NSString stringWithFormat:@"(%@)", lineName];
                     lineLabel.adjustsFontSizeToFitWidth = YES;
+                    lineLabel.minimumFontSize = 13.0;
                     lineLabel.textAlignment = UITextAlignmentLeft;
                     lineLabel.font = timeFont;
                     [self.contentView addSubview:lineLabel];

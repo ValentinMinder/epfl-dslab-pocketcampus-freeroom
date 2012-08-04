@@ -119,6 +119,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     } else {
         [self presentModalViewController:viewController animated:YES];
     }
+    [viewController release];
 }
 
 - (void)editButtonPressed {
@@ -205,7 +206,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        UITableViewCell* newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        UITableViewCell* newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         newCell.textLabel.textColor = [PCValues textColorLocationBlue];
         newCell.textLabel.text = NSLocalizedStringFromTable(@"Automatic", @"TransportPlugin", nil);
         if (selectedStation == nil) {
@@ -216,7 +217,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     TransportStation* station = [favStations objectAtIndex:indexPath.row];
     UITableViewCell* newCell = [tableView dequeueReusableCellWithIdentifier:kTransportStationNameCellIdentifier];
     if (newCell == nil) {
-        newCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTransportStationNameCellIdentifier];
+        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTransportStationNameCellIdentifier] autorelease];
     }
     if (selectedStation != nil && selectedStation.id == station.id) {
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;

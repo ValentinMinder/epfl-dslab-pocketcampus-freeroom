@@ -94,6 +94,7 @@ typedef enum {
     NSTimer* timeoutTimer;
     NSTimeInterval customTimeout;
     NSString* hashCode;
+    id thriftServiceClient;
 }
 
 @property (retain) id thriftServiceClient;

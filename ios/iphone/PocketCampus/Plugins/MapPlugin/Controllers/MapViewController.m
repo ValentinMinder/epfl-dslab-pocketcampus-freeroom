@@ -69,7 +69,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [mapView addGestureRecognizer:mapTap];
     [mapTap release];
     tileOverlayView.delegate = self;
-    layersOverlayView.delegate = self;
+    //layersOverlayView.delegate = self;
     mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
     mapView.accessibilityIdentifier = @"EPFLMapView";
@@ -101,6 +101,13 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [tileOverlayView didReceiveMemoryWarning];
+    [layersOverlayView didReceiveMemoryWarning];
 }
 
 /* MapService access */

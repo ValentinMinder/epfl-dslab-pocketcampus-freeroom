@@ -474,6 +474,7 @@ static NSString* kLastLocationKey = @"lastLocation";
             [self cancelAll];
         });
     } else {
+        [retStation release];
         [self cancelAll];
     }
     delegateCallScheduled = YES;
@@ -552,7 +553,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     NSLog(@"-> NearestFavoriteStationRequest released");
     [locationManager release];
     [stations release];
-    [self.checkCancellationAndAdaptDesiredAccuracyTimer release];
+    [checkCancellationAndAdaptDesiredAccuracyTimer release];
     [super dealloc];
 }
 
