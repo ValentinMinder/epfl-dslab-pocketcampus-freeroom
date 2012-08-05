@@ -23,7 +23,7 @@
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     self = [super initWithOverlay:overlay];
     if (self) {
-        //self.tilesDataTmp = (NSMutableDictionary*)[ObjectArchiver objectForKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map" nilIfDiffIntervalLargerThan:5184000]; //seconds = 60 days
+        self.tilesDataTmp = (NSMutableDictionary*)[ObjectArchiver objectForKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map" nilIfDiffIntervalLargerThan:5184000]; //seconds = 60 days
         if (self.tilesDataTmp == nil) {
             self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
         }
@@ -64,8 +64,8 @@
         
         ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         [urlString release];
-        /*request.downloadCache = [ASIDownloadCache sharedCache];
-        request.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;*/
+        request.downloadCache = [ASIDownloadCache sharedCache];
+        request.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
         request.numberOfTimesToRetryOnTimeout = 3;
 
         if ([request.downloadCache isCachedDataCurrentForRequest:request]) {

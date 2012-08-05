@@ -16,6 +16,8 @@
 
 #import "DocumentViewController.h"
 
+static int kActivityIndicatorViewTag = 3;
+
 @implementation CourseSectionsViewController
 
 @synthesize centerActivityIndicator, centerMessageLabel, sectionsList;
@@ -26,6 +28,7 @@
         currentLoadingView = nil;
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         authController = [[AuthenticationController alloc] init];
+        currentLoadingView = nil;
         tequilaKey = nil;
         iSections = nil;
         courseId = aCourseId;
@@ -125,6 +128,7 @@
 
 
 - (void)presentDocumentViewControllerForFile:(NSURL*)fileURL {
+    currentLoadingView = nil;
     DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentLocalURL:fileURL];
     docViewController.title = @""; //TODO
     [self.navigationController pushViewController:docViewController animated:YES];
@@ -252,6 +256,20 @@
 /* UITableViewDelegate delegation */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    UIActivityIndicatorView* cellActivityIndicatorView = (UIActivityIndicatorView*)[cell.contentView viewWithTag:kActivityIndicatorViewTag];
+    
+    if (cellActivityIndicatorView == currentLoadingView && [cellActivityIndicatorView isAnimating]) {
+        return;
+    }
+    if (currentLoadingView && [currentLoadingView isAnimating]) {
+        UITableViewCell* prevSelectedCell = (UITableViewCell*)[[currentLoadingView superview] superview];
+        prevSelectedCell.accessoryView.hidden = NO;
+        [moodleService cancelOperationsForDelegate:self];
+        [currentLoadingView stopAnimating];
+    }
+    
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     NSString* urlStr = [moodleService localPathForURL:resource.iUrl];
@@ -261,9 +279,10 @@
     } else { //show file loading animation
         //currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
         [currentLoadingView release];
-        UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        
         currentLoadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         currentLoadingView.center = cell.accessoryView.center;
+        currentLoadingView.tag = kActivityIndicatorViewTag;
         [cell.contentView addSubview:currentLoadingView];
         cell.accessoryView.hidden = YES;
         [currentLoadingView startAnimating];

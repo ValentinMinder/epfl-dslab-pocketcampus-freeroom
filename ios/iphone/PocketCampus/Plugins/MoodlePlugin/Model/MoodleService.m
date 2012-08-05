@@ -95,8 +95,7 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    //operation.cacheValidity = 5*3600.0; //5 hours
-    operation.cacheValidity = 0.0;
+    operation.cacheValidity = 5*3600.0; //5 hours
     operation.serviceClientSelector = @selector(getCoursesList:);
     operation.delegateDidReturnSelector = @selector(getCoursesList:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesListFailed:);
@@ -131,11 +130,9 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     [operation release];
 }
 
-- (void)fetchMoodleResource:(NSString*)cookie :(NSString*)url withDelegate:(id)delegate {
-    //ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    
+- (void)fetchMoodleResource:(NSString*)cookie :(NSString*)url withDelegate:(id)delegate {    
     NSURL *nsurl = [NSURL URLWithString:url];
-    ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:nsurl] autorelease];
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
     
     NSString* filePath = [self localPathForURL:url];
     [request setDownloadDestinationPath:filePath];
@@ -147,6 +144,7 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     [request setDidFinishSelector:@selector(fetchMoodleResourceDidReturn:)];
     [request setDidFailSelector:@selector(fetchMoodleResourceFailed:)];
     [operationQueue addOperation:request];
+    [request release];
 }
 
 - (void)dealloc
