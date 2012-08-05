@@ -169,6 +169,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     resultsMode = ResultsModeAutocomplete;
     
     if (results.count == 1) {
+        [barActivityIndicator startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [results objectAtIndex:0]];
         [directoryService searchPersons:searchString delegate:self];
     } else {
