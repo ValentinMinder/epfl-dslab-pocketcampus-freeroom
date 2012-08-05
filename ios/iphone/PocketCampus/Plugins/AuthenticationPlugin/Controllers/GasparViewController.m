@@ -450,7 +450,6 @@
 
 /* STEP 1 */
 - (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request {
-    NSLog(@"-> loginToTequilaDidReturn");
     [tequilaCookie release];
     tequilaCookie = nil;
     for(NSHTTPCookie* cookie in request.responseCookies) {
@@ -512,7 +511,6 @@
 
 /* STEP 2 */
 - (void)authenticateTokenWithTequilaDidReturn:(ASIHTTPRequest*)request{
-    NSLog(@"-> authenticateTokenWithTequilaDidReturn");
     NSString* redir = [request.responseHeaders objectForKey:@"Location"];
     if(redir == nil) {
         if ([(NSObject*)self.delegate respondsToSelector:@selector(invalidToken)]) {
@@ -546,7 +544,6 @@
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    NSLog(@"serviceConnectionToServerTimedOut");
     [self connectionError];
 }
 

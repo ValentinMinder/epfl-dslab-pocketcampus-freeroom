@@ -18,16 +18,16 @@
 
 @interface CustomOverlayView : MKOverlayView {
     NSMutableDictionary* tilesDataTmp;
-    ASINetworkQueue* requestsQueue;
+    NSMutableArray* requests;
+    NSTimer* callDelegateTimer;
 }
 
 @property (retain) NSMutableDictionary* tilesDataTmp;  //key : - (NSString*)keyWithMapRect:(MKMapRect)mapRect andZoomScale:(MKZoomScale)zoomScale, value : NSData of corresponding tile image data
-@property (retain) ASINetworkQueue* requestsQueue;
-@property BOOL isCancellingAll;
+@property BOOL willBeDeallocated;
 @property (assign) id<CustomOverlayViewDelegate> delegate;
 
 - (void)didReceiveMemoryWarning;
-- (void)cancelTilesDownload;
+- (void)cancelTilesDownload:(BOOL)willBeDeallocated;
 
 @end
 

@@ -17,3 +17,9 @@
 "TooManyResults" = "Trop de résultats";
 "NarrowSearch" = "Précisez votre recherche.";
 "Floor" = "Étage";
+
+/* Accessibility */
+
+"FloorUp" = "Étage supérieur";
+"FloorDown" = "Étage inférieur";
+"Other" = "Autres";

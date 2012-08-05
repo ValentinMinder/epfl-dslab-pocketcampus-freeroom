@@ -18,7 +18,7 @@
 
 @implementation CustomOverlayView
 
-@synthesize tilesDataTmp, requestsQueue, isCancellingAll, delegate;
+@synthesize tilesDataTmp, willBeDeallocated, delegate;
 
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     self = [super initWithOverlay:overlay];
@@ -27,9 +27,9 @@
         if (self.tilesDataTmp == nil) {
             self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
         }
-        self.requestsQueue = [ASINetworkQueue queue]; //retained in prop
-        self.requestsQueue.shouldCancelAllRequestsOnFailure = NO;
-        self.isCancellingAll = NO;
+        requests = [[NSMutableArray array] retain];
+        callDelegateTimer = [[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(callDelegateAccordingToRequestsState) userInfo:nil repeats:YES] retain];
+        self.willBeDeallocated = NO;
     }
     return self;
 }
@@ -46,7 +46,7 @@
 
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
     @synchronized (self) {
-        if (self.isCancellingAll) {
+        if (self.willBeDeallocated) {
             return NO;
         }
         if (![(id<OverlayWithURLs>)self.overlay canDrawMapRect:mapRect zoomScale:zoomScale]) {
@@ -61,7 +61,6 @@
         }
         
         NSString* urlString = [key copy];
-        
         
         ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         [urlString release];
@@ -91,20 +90,12 @@
                                   nil];
         request.userInfo = metaData;
         
-        if (self.isCancellingAll) {
+        if (self.willBeDeallocated) {
             return NO;
         }
-
         
-        if (self.requestsQueue.operationCount == 0) {
-            [self.requestsQueue go];
-            if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidStartLoading:)]) {
-                [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidStartLoading:) withObject:self waitUntilDone:NO];
-            }
-        }
-
-        [self.requestsQueue addOperation:request];
-        
+        [requests addObject:request];
+        [request startAsynchronous];
         return NO;
     }
     
@@ -112,7 +103,7 @@
 
 - (void)drawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale inContext:(CGContextRef)context {
     @synchronized(self) {
-        if (self.isCancellingAll) {
+        if (self.willBeDeallocated) {
             return;
         }
         NSString* key = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
@@ -122,26 +113,32 @@
             [self canDrawMapRect:mapRect zoomScale:zoomScale];
             return;
         }
-        if (self.isCancellingAll) {
+        if (self.willBeDeallocated) {
             return;
         }
+        
+        UIImage* image = [[UIImage alloc] initWithData:imageData];
         
         /*TEST*/
         /*
         NSString *urlString = [self keyWithMapRect:mapRect andZoomScale:zoomScale];
         NSString* fileName = [urlString lastPathComponent];   
         */
-        /* END OF TEST */
-
-        UIImage* image = [UIImage imageWithData:imageData];
         
         /*if ([urlString rangeOfString:@".png"].location != NSNotFound) {
             image = [self addText:image text:fileName];
         }*/
         
+        //NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        
+        //[imageData writeToFile:[dir stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.png", [urlString hash]]] atomically:NO];
+        
+        /* END OF TEST */
+        
         UIGraphicsPushContext(context);
         [image drawInRect:[self rectForMapRect:mapRect] blendMode:kCGBlendModeNormal alpha:1.0];
         UIGraphicsPopContext();
+        [image release];
     }
 }
  
@@ -181,74 +178,72 @@
 /* END OF TEST */
 
 - (void)requestDidFinishLoad:(ASIHTTPRequest *)request {
+    request.delegate = nil;
+    [request retain];
+    [requests removeObject:request];
+    if (self.willBeDeallocated) {
+        [request release];
+        return;
+    }
+    
+    if (request.responseStatusCode == 404) {
+        return;
+    }
+    
+    NSNumber* mr_origin_x = [(NSDictionary *)[request userInfo] objectForKey:@"mr_origin_x"];
+    NSNumber* mr_origin_y = [(NSDictionary *)[request userInfo] objectForKey:@"mr_origin_y"];
+    NSNumber* mr_size_w = [(NSDictionary *)[request userInfo] objectForKey:@"mr_size_w"];
+    NSNumber* mr_size_h = [(NSDictionary *)[request userInfo] objectForKey:@"mr_size_h"];
+    
+    MKMapRect mapRect = MKMapRectMake([mr_origin_x doubleValue],[mr_origin_y doubleValue],[mr_size_w doubleValue],[mr_size_h doubleValue]);
+    
+    NSNumber* zoomScaleNumber = [(NSDictionary *)[request userInfo] objectForKey:@"zoomScale"];
+    MKZoomScale zoomScale = [zoomScaleNumber floatValue];
+    
     @synchronized (self) {
-        if (self.isCancellingAll) {
-            return;
-        }
-        if (request.responseStatusCode == 404) {
-            if (self.requestsQueue.operationCount == 0) {
-                if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
-                    [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
-                }
-            }
-            return;
-        }
-        
-        NSNumber* mr_origin_x = [(NSDictionary *)[request userInfo] objectForKey:@"mr_origin_x"];
-        NSNumber* mr_origin_y = [(NSDictionary *)[request userInfo] objectForKey:@"mr_origin_y"];
-        NSNumber* mr_size_w = [(NSDictionary *)[request userInfo] objectForKey:@"mr_size_w"];
-        NSNumber* mr_size_h = [(NSDictionary *)[request userInfo] objectForKey:@"mr_size_h"];
-        
-        MKMapRect mapRect = MKMapRectMake([mr_origin_x doubleValue],[mr_origin_y doubleValue],[mr_size_w doubleValue],[mr_size_h doubleValue]);
-        
-        NSNumber* zoomScaleNumber = [(NSDictionary *)[request userInfo] objectForKey:@"zoomScale"];
-        MKZoomScale zoomScale = [zoomScaleNumber floatValue];
-        
-        
         [self.tilesDataTmp setObject:request.responseData forKey:[self keyWithMapRect:mapRect andZoomScale:zoomScale]];
-        [self setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
-        if (self.requestsQueue.operationCount == 0) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
-                [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
-            }
-        }
     }
-    
+    [self setNeedsDisplayInMapRect:mapRect zoomScale:zoomScale];
+    [request release];
 }
 
--(void)requestDidFail:(ASIHTTPRequest *)request {
-    @synchronized (self) {
-        if (self.isCancellingAll) {
-            return;
-        }
-        
-        if (self.requestsQueue.operationCount == 0) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
-                [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
-            }
-        }
+- (void)requestDidFail:(ASIHTTPRequest*)request {
+    request.delegate = nil;
+    [requests removeObject:request];
+    if (self.willBeDeallocated) {
+        return;
     }
 }
 
-- (void)cancelTilesDownload {
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
-        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
+
+- (void)callDelegateAccordingToRequestsState {
+    if ([requests count] == 0) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidFinishLoading:)]) {
+            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidFinishLoading:) withObject:self waitUntilDone:NO];
+        }
+    } else {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(customOverlayViewDidStartLoading:)]) {
+            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(customOverlayViewDidStartLoading:) withObject:self waitUntilDone:NO];
+        }
     }
-    [self.requestsQueue cancelAllOperations];
-    for (ASIHTTPRequest* request in self.requestsQueue.operations) {
+}
+
+- (void)cancelTilesDownload:(BOOL)willBeDeallocated_ {
+    self.willBeDeallocated = willBeDeallocated_;
+
+    for (ASIHTTPRequest* request in requests) {
         request.delegate = nil;
+        [request cancel];
+    }
+    @synchronized(self) {
+        [requests removeAllObjects];
     }
 }
 
 - (void)dealloc {
-    @synchronized (self) {
-        self.isCancellingAll = YES;
-        self.delegate = nil;
-        [self.requestsQueue setSuspended:YES];
-        [self cancelTilesDownload];
-        [requestsQueue release];
-    }
+    [callDelegateTimer invalidate];
+    [callDelegateTimer release];
+    [requests release];
     [ObjectArchiver saveObject:tilesDataTmp forKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map"];
     [tilesDataTmp release];
     [super dealloc];

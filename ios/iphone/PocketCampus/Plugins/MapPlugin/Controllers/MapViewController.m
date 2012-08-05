@@ -16,7 +16,7 @@
 
 #import "CustomOverlayView.h"
 
-static int MAX_DISPLAYED_ANNOTATIONS = 100;
+static int MAX_DISPLAYED_ANNOTATIONS = 70;
 static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 @implementation MapViewController
@@ -73,6 +73,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
     mapView.accessibilityIdentifier = @"EPFLMapView";
+    floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);
+    floorUpButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorUp", @"MapPlugin", nil);
+    othersButton.accessibilityLabel = NSLocalizedStringFromTable(@"Others", @"MapPlugin", nil);
     epflTileOverlay.mapView = mapView;
     epflLayersOverlay.mapView = mapView;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(toogleSearchBar)] autorelease];
@@ -81,6 +84,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     tmpFrame.origin.y = 0.0;
     searchBarVisibleFrame = tmpFrame;
     searchBar.placeholder = NSLocalizedStringFromTable(@"SearchPlaceholder", @"MapPlugin", nil);
+    searchBar.isAccessibilityElement = YES;
+    searchBar.accessibilityIdentifier = @"SearchBar";
     searchActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     searchActivityIndicator.center = CGPointMake(searchBar.frame.size.width-43.0, (searchBar.frame.size.height/2.0));
     searchActivityIndicator.hidesWhenStopped = YES;
@@ -389,6 +394,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     NSArray* mapItemAnnotations = [MapUtils mapItemAnnotationsThatShouldBeDisplayed:[self mapItemAnnotationsForMapItems:results] forQuery:query];
     
     if (mapItemAnnotations.count > MAX_DISPLAYED_ANNOTATIONS) {
+        NSLog(@"-> Search for %@ returned too many results (%d)", query, mapItemAnnotations.count);
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"TooManyResults", @"MapPlugin", nil) message:NSLocalizedStringFromTable(@"NarrowSearch", @"MapPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [alert release];
@@ -454,8 +460,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [mapService release];
     [epflTileOverlay release];
     [epflLayersOverlay release];
+    [tileOverlayView cancelTilesDownload:YES];
     tileOverlayView.delegate = nil;
     [tileOverlayView release];
+    [layersOverlayView cancelTilesDownload:YES];
     layersOverlayView.delegate = nil;
     [layersOverlayView release];
     [initialQuery release];

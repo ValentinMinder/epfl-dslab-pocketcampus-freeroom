@@ -150,14 +150,12 @@
 /* MoodleServiceDelegate delegation */
 
 - (void)getTequilaTokenForMoodleDidReturn:(TequilaToken*)tequilaKey_ {
-    NSLog(@"-> getTequilaTokenForMoodleDidReturn:%@", tequilaKey_);
     [tequilaKey release];
     tequilaKey = [tequilaKey_ retain];
     [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 
 - (void)getTequilaTokenForMoodleFailed {
-    NSLog(@"-> getTequilaTokenForMoodleFailed");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
@@ -168,7 +166,6 @@
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
-    NSLog(@"-> getSessionIdForServiceFailedForTequilaKey");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }

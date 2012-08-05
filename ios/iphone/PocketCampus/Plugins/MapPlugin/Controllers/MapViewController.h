@@ -30,6 +30,7 @@ typedef enum {
     UIBarButtonItem* floorDownButton;
     UILabel* floorLabel;
     UIBarButtonItem* floorUpButton;
+    UIBarButtonItem* othersButton;
     UIActionSheet* othersActionSheet;
     UIToolbar* toolbar;
     MapService* mapService;
@@ -57,6 +58,7 @@ typedef enum {
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* floorDownButton;
 @property (nonatomic, assign) IBOutlet UILabel* floorLabel;
 @property (nonatomic, assign) IBOutlet UIBarButtonItem* floorUpButton;
+@property (nonatomic, assign) IBOutlet UIBarButtonItem* othersButton;
 @property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
 
 - (id)initWithInitialQuery:(NSString*)query;

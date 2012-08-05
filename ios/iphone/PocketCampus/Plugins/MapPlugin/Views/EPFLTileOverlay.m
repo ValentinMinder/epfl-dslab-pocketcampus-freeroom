@@ -140,7 +140,7 @@ static NSString* URL_ENDING = @".png";
     for(NSObject<MKOverlay>* overlay in mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
             CustomOverlayView* customOverlayView = (CustomOverlayView*)[mapView viewForOverlay:overlay];
-            [customOverlayView cancelTilesDownload];
+            [customOverlayView cancelTilesDownload:NO];
             [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }

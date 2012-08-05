@@ -8,6 +8,8 @@ window = app.mainWindow();
 
 log = UIALogger;
 
+backButtonRect = null;
+
 /*
  * Test
  */
@@ -61,12 +63,34 @@ function assertNotNull(thingie, message) {
  * Utils
  */
  
+function enterPluginAndTest(pluginName, dontTest) {
+    if(!dontTest) {
+        log.logStart("Enter "+pluginName);
+    }
+    window.elements()[pluginName].tap();
+    delay(2.5);
+    if(!dontTest) {
+        if(isCurrentNavBarTitle(pluginName)) {
+            log.logPass("Enter "+pluginName); 
+        } else {
+            log.logFail("Enter "+pluginName);
+        }
+    }
+}
+ 
 function tapBack() {
-    window.navigationBar().leftButton().tap();
+    if (backButtonRect == null) {
+        backButtonRect = window.navigationBar().leftButton().rect();
+    }
+    target.tap(backButtonRect);
 }
  
 function isCurrentNavBarTitle(title) {
     return window.navigationBar().name() == title;
+}
+
+function chance(chance) {
+    return (Math.random() <= chance);
 }
  
 function printElementsName(elements, recursive, level) {

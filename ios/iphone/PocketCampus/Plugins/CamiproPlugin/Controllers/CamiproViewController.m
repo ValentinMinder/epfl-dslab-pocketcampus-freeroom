@@ -103,7 +103,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)startBalanceAndTransactionsRequestWithSessionId:(CamiproSession*)sessionId {
-    NSLog(@"startBalanceAndTransactionsRequestWithSessionId%@", sessionId);
     CamiproRequest* request = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:sessionId] iLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]];
     [camiproService getBalanceAndTransactions:request delegate:self];
     [request release];
@@ -138,19 +137,16 @@ static CGFloat kBalanceCellHeight = 70.0;
 /* CamiproServiceDelegate delegation */
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey_ {
-    NSLog(@"-> getTequilaTokenForCamiproDidReturn:%@", tequilaKey_);
     [tequilaKey release];
     tequilaKey = [tequilaKey_ retain];
     [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
-    NSLog(@"-> getTequilaTokenForCamiproFailed");
     [self serviceConnectionToServerTimedOut];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(CamiproSession*)sessionId {
-    NSLog(@"Saving sessionId");
     [CamiproService saveSessionId:sessionId];
     [self startBalanceAndTransactionsRequestWithSessionId:sessionId];
 }
@@ -172,7 +168,6 @@ static CGFloat kBalanceCellHeight = 70.0;
             break;
         case 200: //OK
         {
-            NSLog(@"-> BalanceAndTransactions received status success (200)");
             [centerActivityIndicator stopAnimating];
             self.navigationItem.rightBarButtonItem.enabled = YES;
             centerMessageLabel.hidden = YES;
@@ -191,7 +186,6 @@ static CGFloat kBalanceCellHeight = 70.0;
                 tableView.alpha = 1.0;
                 toolbar.alpha = 1.0;
             }];
-            //[CamiproService saveSessionId:camiproRequest.]
             break;
         }
         default:
@@ -256,7 +250,6 @@ static CGFloat kBalanceCellHeight = 70.0;
     if (statsAlertView == nil) {
         return;
     }
-    NSLog(@"%@", statsAndLoadingInfo);
     switch (statsAndLoadingInfo.iStatus) {
         case 407: //user not authenticated (sessionId expired)
         {
@@ -357,7 +350,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 /* UIAlertViewDelegate delegation */
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView == sendMailAlertView) {
         [sendMailAlertView release];
         sendMailAlertView = nil;

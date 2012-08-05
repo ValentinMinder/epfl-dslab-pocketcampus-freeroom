@@ -29,7 +29,6 @@ static NSString* name = nil;
 }
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
-    NSLog(@"token to auth %@", token);
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
     [gasparViewController release];
     gasparViewController = [[GasparViewController alloc] init];

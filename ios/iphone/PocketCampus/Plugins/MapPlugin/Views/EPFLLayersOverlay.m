@@ -173,7 +173,7 @@ static double MIN_ZOOM_SCALE_OVERLAY = 0.1;
     for(NSObject<MKOverlay>* overlay in mapView.overlays) {
         if([overlay isKindOfClass:self.class]){
             CustomOverlayView* customOverlayView = (CustomOverlayView*)[mapView viewForOverlay:overlay];
-            [customOverlayView cancelTilesDownload];
+            [customOverlayView cancelTilesDownload:NO];
             [customOverlayView setNeedsDisplayInMapRect:MKMapRectWorld];
         }
     }

@@ -33,11 +33,9 @@
     NSDate* nowDate = [NSDate date];
     NSTimeInterval seconds = timestamp - [nowDate timeIntervalSince1970];
     if (seconds < 0.0) {
-        NSLog(@"seconds < 0.0 : %lf", seconds);
         if (seconds > -60.0) { //might still consider that it (train, bus, ...) is not left yet
             return @"Now";
         } else {
-            NSLog(@"(left) seconds : %lf", seconds);
             return @"Left"; //already left, should not show this result
         }
     }
@@ -48,7 +46,6 @@
     
     double hoursLeft = floor(minutesLeft/60.0);
     if (hoursLeft > 0.0) {
-        NSLog(@"%@", [NSString stringWithFormat:@"%1.0lfh%2.0lf'",hoursLeft, minutesLeft]);
         return [NSString stringWithFormat:@"%1.0lfh%2.0lf'",hoursLeft, minutesLeft];
     }
     
