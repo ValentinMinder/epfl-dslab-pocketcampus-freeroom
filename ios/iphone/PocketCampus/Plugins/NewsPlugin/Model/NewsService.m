@@ -46,6 +46,8 @@ static NewsService* instance = nil;
 - (void)getNewsItemContentForId:(Id)newsItemId delegate:(id)delegate {
     //cannot check int
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.keepInCache = YES;
+    operation.cacheValidity = 2419200; //seconds = 4 weeks. Could theoritically put more as News item is not likely to change
     operation.serviceClientSelector = @selector(getNewsItemContent:);
     operation.delegateDidReturnSelector = @selector(newsItemContentForId:didReturn:);
     operation.delegateDidFailSelector = @selector(newsItemContentFailedForId:);

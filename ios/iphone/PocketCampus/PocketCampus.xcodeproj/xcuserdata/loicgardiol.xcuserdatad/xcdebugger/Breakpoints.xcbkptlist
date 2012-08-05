@@ -447,11 +447,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectorySearchViewController.m"
-         timestampString = "365182515.972029"
+         timestampString = "365894491.659416"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "373"
-         endingLineNumber = "373"
+         startingLineNumber = "379"
+         endingLineNumber = "379"
          landmarkName = "-pushViewControllerForPerson:"
          landmarkType = "5">
       </FileBreakpoint>

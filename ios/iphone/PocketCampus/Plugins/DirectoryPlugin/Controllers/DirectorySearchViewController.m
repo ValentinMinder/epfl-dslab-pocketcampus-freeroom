@@ -249,6 +249,9 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (resultsMode == ResultsModeAutocomplete) {
         UIActivityIndicatorView* activityIndicatorView = (UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] accessoryView];
+        if ([activityIndicatorView isAnimating]) {
+            return; //means cell was already selected
+        }
         [activityIndicatorView startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [tableView cellForRowAtIndexPath:indexPath].textLabel.text];
         skipNextSearchBarValueChange = YES;
@@ -317,6 +320,9 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 /* AdressBook and records creation stuff */
 
 - (void)pushViewControllerForPerson:(Person*)person {
+    if ([self.navigationController.topViewController isKindOfClass:[ABUnknownPersonViewController class]]) {
+        return;
+    }
     skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
     ABRecordRef abPerson = ABPersonCreate();
     
