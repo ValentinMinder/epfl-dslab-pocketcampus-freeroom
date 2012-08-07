@@ -31,7 +31,7 @@
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissViewController)];
     self.navigationItem.rightBarButtonItem = doneButton;
     [doneButton release];
-    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"help" ofType:@"html"];
+    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
     if (!error) {

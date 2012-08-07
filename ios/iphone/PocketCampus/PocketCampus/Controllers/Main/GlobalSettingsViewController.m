@@ -14,6 +14,8 @@
 
 #import "GasparViewController.h"
 
+#import "AboutPCViewController.h"
+
 static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 
 @implementation GlobalSettingsViewController
@@ -88,7 +90,18 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
                     break;
             }
             break;
-            
+        case 1: //about
+            switch (indexPath.row) {
+                case 0: //About PC
+                {
+                    AboutPCViewController* viewController = [[AboutPCViewController alloc] init];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    [viewController release];
+                    break;
+                }
+                default:
+                    break;
+            }
         default:
             break;
     }
