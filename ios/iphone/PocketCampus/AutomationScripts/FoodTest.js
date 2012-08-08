@@ -1,17 +1,6 @@
 
 function testFood() {
-	log.logStart("Enter Food");
-	
-	window.elements()["Restaurants"].tap();
-	delay(2);
-	if(isCurrentNavBarTitle("Restaurants")) {
-		log.logPass("Enter Food"); 
-	} else {
-		log.logFail("Enter Food");
-		return false;
-	}
-	
-	delay(1);
+	enterPluginAndTest("Restaurants");
 	
 	log.logStart("Restaurants list");
 	
@@ -30,21 +19,51 @@ function testFood() {
 			return false;
 		}
 	}
-	log.logDebug("test");
-	for (var i = 0; i<10; i++) {
+	
+	var nbCells = tableView.cells().toArray().length;
+	log.logDebug("Found "+nbCells+" restaurants to test");
+	for (var i = 0; i<nbCells; i++) {
 		delay(0.5);
 		tableView = window.tableViews()[0];
 		cells = tableView.cells();
-		var row = randomVisibleRowIndex(tableView);
+		var row = i;
 		var restaurant = cells[row].name();
-		log.logStart("Restaurant random selection : "+ restaurant);
+		log.logStart("Restaurant "+row+" selection : "+ restaurant);
 		cells[row].tap();
 		delay(0.5);
 		if (isCurrentNavBarTitle(restaurant)) {
-			log.logPass("Restaurant random selection : "+ restaurant);
+			log.logPass("Restaurant "+row+" selection : "+ restaurant);
+			tableView = window.tableViews()[0];
+			for (var j = 0; j<Math.random()*8; j++) {
+				tableView.scrollDown();	
+			}
+			var mapButton = window.navigationBar().rightButton();
+			if (chance(1) && mapButton != null && mapButton.isValid()) { //some restaurants cannot be displayed on map
+				log.logStart("Displaying restaurant on Map: "+ restaurant);
+				mapButton.tap();
+				delay(1);
+				var mapView = window.elements()["EPFLMapView"];
+				delay(4);
+				var staticTexts = mapView.scrollViews()[0].popover().staticTexts();
+				var found = false;
+				for (var k = 0; k<staticTexts.length; k++) {
+					var name = staticTexts[k].name();
+					if (name != null && (name.indexOf(restaurant) != -1 || restaurant.indexOf(name) != -1)) {
+						found = true;
+						break;
+					}
+				}
+				if (found) {
+					log.logPass("Displaying restaurant on Map: "+ restaurant);
+				} else {
+					log.logFail("Displaying restaurant on Map: "+ restaurant);
+				}
+				tapBack();
+			}
+			delay(0.5);
 			tapBack();
 		} else {
-			log.logFail("Restaurant random selection : "+ restaurant);
+			log.logFail("Restaurant "+row+" selection : "+ restaurant);
 		}
 	}
 	

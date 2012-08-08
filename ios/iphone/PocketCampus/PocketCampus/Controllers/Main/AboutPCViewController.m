@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = NSLocalizedStringFromTable(@"About ", @"PocketCampus", nil);
+	self.title = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.delegate = self;
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"AboutPC" ofType:@"html"];
