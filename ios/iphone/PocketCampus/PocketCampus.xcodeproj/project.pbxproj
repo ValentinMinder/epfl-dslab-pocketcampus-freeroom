@@ -87,9 +87,9 @@
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87915A46AE200D368AC /* LocationArrow.png */; };
 		3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87A15A46AE200D368AC /* LocationArrow@2x.png */; };
-		32662743151FC7CE002FA0E5 /* AppLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32662742151FC7CE002FA0E5 /* AppLogo@2x.png */; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
 		3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */; };
+		32686E7315D598EF00564786 /* AppLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32662742151FC7CE002FA0E5 /* AppLogo@2x.png */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
 		326B925215027A1400DB4AEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B925115027A1400DB4AEE /* AddressBook.framework */; };
 		32704C67150016B3002BCB75 /* PluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32704C66150016B3002BCB75 /* PluginController.m */; };
@@ -102,7 +102,6 @@
 		3276BE0C150BBA77001F2A88 /* RatingStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0A150BBA77001F2A88 /* RatingStarEmpty@2x.png */; };
 		3276BE10150BBEE9001F2A88 /* RatingPoint.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0E150BBEE9001F2A88 /* RatingPoint.png */; };
 		3276BE11150BBEE9001F2A88 /* RatingPoint@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3276BE0F150BBEE9001F2A88 /* RatingPoint@2x.png */; };
-		32777B4415D1BFB400A29F56 /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
 		32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */ = {isa = PBXBuildFile; fileRef = 32777B4215D1BFB400A29F56 /* AboutPC.html */; };
 		328869AC14FE5AF400CC97DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3288699214FE5AF300CC97DB /* AppDelegate.m */; };
 		328869BD14FE6EBA00CC97DB /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 328869BC14FE6EBA00CC97DB /* HomeViewController.m */; };
@@ -1795,7 +1794,6 @@
 				329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */,
 				329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */,
 				329D4AD3151F86D7000AC339 /* BusTransport@2x.png in Resources */,
-				32662743151FC7CE002FA0E5 /* AppLogo@2x.png in Resources */,
 				322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */,
 				322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */,
 				32B2F1891533439E00FB8C79 /* Default.png in Resources */,
@@ -1860,8 +1858,8 @@
 				32B6A53C15BDFB86000E7F3C /* PocketCampusStyled.png in Resources */,
 				27D7B8ED15C95BB500F4E9FE /* AppLogo.png in Resources */,
 				3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */,
-				32777B4415D1BFB400A29F56 /* AboutPC.html in Resources */,
 				32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */,
+				32686E7315D598EF00564786 /* AppLogo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

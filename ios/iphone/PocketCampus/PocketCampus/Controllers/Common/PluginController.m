@@ -10,11 +10,10 @@
 
 @implementation PluginController
 
-@synthesize toolbarItems, mainViewController;
+@synthesize mainViewController;
 
 - (void)dealloc
 {
-    [toolbarItems release];
     [mainViewController release];
     [super dealloc];
 }

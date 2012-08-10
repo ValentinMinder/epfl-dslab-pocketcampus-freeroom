@@ -350,7 +350,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
         if (!overlaysVisible) {
             [mapView addOverlay:epflTileOverlay];
-            [mapView addOverlay:epflLayersOverlay];
+            //[mapView addOverlay:epflLayersOverlay];
             floorDownButton.enabled = YES;
             floorLabel.hidden = NO;
             floorUpButton.enabled = YES;
@@ -359,7 +359,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     } else {
         if (overlaysVisible) {
             [mapView removeOverlay:epflTileOverlay];
-            [mapView removeOverlay:epflLayersOverlay];
+            //[mapView removeOverlay:epflLayersOverlay];
             floorDownButton.enabled = NO;
             floorLabel.hidden = YES;
             floorUpButton.enabled = NO;

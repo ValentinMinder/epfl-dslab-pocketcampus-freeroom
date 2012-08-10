@@ -22,7 +22,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 @implementation CamiproViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel, toolbar, shouldRefresh;
 
 - (id)init
 {
@@ -74,6 +74,8 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)refresh {
+    shouldRefresh = NO;
+    centerMessageLabel.text = @"";
     [centerActivityIndicator startAnimating];
     tableView.hidden = YES;
     toolbar.hidden = YES;
@@ -315,6 +317,7 @@ static CGFloat kBalanceCellHeight = 70.0;
         [errorAlert release];
         return;
     }
+    shouldRefresh = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;

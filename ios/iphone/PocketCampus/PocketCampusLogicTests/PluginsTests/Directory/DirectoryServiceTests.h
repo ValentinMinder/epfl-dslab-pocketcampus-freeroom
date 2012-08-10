@@ -22,7 +22,7 @@ typedef enum {
     TestType testType;
     
 }
-
+- (void)tempTest;
 - (void)test;
 
 @end

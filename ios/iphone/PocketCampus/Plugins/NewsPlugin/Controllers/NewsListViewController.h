@@ -22,8 +22,12 @@
     NSArray* newsItems;
     ASINetworkQueue* networkQueue;
     NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
+    BOOL shouldRefresh;
 }
 
+- (void)refresh;
+
+@property (readonly) BOOL shouldRefresh;
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;

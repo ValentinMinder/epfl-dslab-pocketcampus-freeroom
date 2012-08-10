@@ -16,12 +16,14 @@
 
 #import "NewsItemViewController.h"
 
+#import "ASIDownloadCache.h"
+
 static NSString* kNewsCellIdentifier = @"NewsCell";
 static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 @implementation NewsListViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel, shouldRefresh;
 
 - (id)init 
 {
@@ -43,10 +45,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.rowHeight = 50.0;
     tableView.backgroundColor = [UIColor clearColor];
-    [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"NewsPlugin", @"Tell the user that the news are loading");
-    [newsService getNewsItemsForLanguage:[self userLanguageIdentfier] delegate:self];
-    [networkQueue go];
+    [self refresh];
     //[newsService getNewsItemContentForId:99119833152 delegate:self];
     //[newsService getFeedsForLanguage:[self userLanguageIdentfier] delegate:self];
 }
@@ -70,6 +69,15 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)refresh {
+    shouldRefresh = NO;
+    tableView.hidden = YES;
+    [centerActivityIndicator startAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"NewsPlugin", @"Tell the user that the news are loading");
+    [newsService getNewsItemsForLanguage:[self userLanguageIdentfier] delegate:self];
+    [networkQueue go];
 }
 
 /* NewsServiceDelegate delegation */
@@ -105,6 +113,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 }*/
 
 - (void)serviceConnectionToServerTimedOut {
+    shouldRefresh = YES;
     tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
@@ -160,8 +169,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         cell.imageView.image = [UIImage imageNamed:@"BackgroundNewsThumbnail.png"]; //Temporary thumbnail until image is loaded
         if (newsItem.imageUrl != nil) {
             ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]];
-            thumbnailRequest.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-            thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+            thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
+            thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
             thumbnailRequest.delegate = self;
             thumbnailRequest.userInfo = [NSDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];
             thumbnailRequest.timeOutSeconds = 5.0; //do not overload network with thumbnails that fail to load

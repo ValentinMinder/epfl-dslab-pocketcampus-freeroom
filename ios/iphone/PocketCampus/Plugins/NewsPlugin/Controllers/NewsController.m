@@ -35,6 +35,15 @@ static NSString* name = nil;
     return self;
 }
 
+- (void)refresh {
+    if (mainViewController == nil || ![mainViewController isKindOfClass:[NewsListViewController class]]) {
+        return;
+    }
+    if (((NewsListViewController*)mainViewController).shouldRefresh) {
+        [(NewsListViewController*)mainViewController refresh];
+    }
+}
+
 + (NSString*)localizedName {
     if (name != nil) {
         return name;

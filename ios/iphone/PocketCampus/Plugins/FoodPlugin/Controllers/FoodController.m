@@ -17,7 +17,7 @@ static NSString* name = nil;
 {
     self = [super init];
     if (self) {
-        RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] initWithNibName:@"RestaurantsListView" bundle:nil];
+        RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
         restaurantsListViewController.title = [[self class] localizedName];
         mainViewController = restaurantsListViewController;
     }
@@ -32,6 +32,15 @@ static NSString* name = nil;
         
     }
     return self;
+}
+
+- (void)refresh {
+    if (mainViewController == nil || ![mainViewController isKindOfClass:[RestaurantsListViewController class]]) {
+        return;
+    }
+    if (((RestaurantsListViewController*)mainViewController).shouldRefresh) {
+        [(RestaurantsListViewController*)mainViewController refresh];
+    }
 }
 
 + (NSString*)localizedName {

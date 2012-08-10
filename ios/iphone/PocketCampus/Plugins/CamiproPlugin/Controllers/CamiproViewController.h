@@ -27,10 +27,14 @@
     BalanceAndTransactions* balanceAndTransactions;
     TequilaToken* tequilaKey;
     BOOL shouldDeleteSessionWhenFinished;
+    BOOL shouldRefresh;
 }
+
+- (void)refresh;
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 @property (nonatomic, assign) IBOutlet UIToolbar* toolbar;
+@property (readonly) BOOL shouldRefresh;
 @end

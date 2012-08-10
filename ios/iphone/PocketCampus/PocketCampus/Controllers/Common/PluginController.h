@@ -14,7 +14,6 @@
 /*Each plugin must have a controller named <plugin_name>Controller, and that subclasses PluginController. Is it not an instance of UIViewController*/
 
 @interface PluginController : NSObject {
-    NSArray* toolbarItems;
     MainController* mainController;
     UIViewController* mainViewController;
 }

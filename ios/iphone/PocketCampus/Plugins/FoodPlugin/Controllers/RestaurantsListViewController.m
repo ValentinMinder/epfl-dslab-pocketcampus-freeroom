@@ -14,16 +14,17 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 @implementation RestaurantsListViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel, shouldRefresh;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"RestaurantsListView" bundle:nil];
     if (self) {
         foodService = [[FoodService sharedInstanceToRetain] retain];
         meals = nil;
         restaurants = nil;
         restaurantsAndMeals = nil;
+        shouldRefresh = NO;
     }
     return self;
 }
@@ -66,6 +67,14 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     [super viewWillAppear:animated];
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
+    [foodService getMealsWithDelegate:self];
+}
+
+- (void)refresh {
+    shouldRefresh = NO;
+    tableView.hidden = YES;
+    [centerActivityIndicator startAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
     [foodService getMealsWithDelegate:self];
 }
 
@@ -116,6 +125,8 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 }
 
 - (void)serviceConnectionToServerTimedOut {
+    shouldRefresh = YES;
+    tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
 }

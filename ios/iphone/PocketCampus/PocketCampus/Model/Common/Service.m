@@ -37,7 +37,7 @@ static NSTimeInterval connectivityCheckTimeout;
         NSString* serverPort = nil;
         NSString* serverVersion = nil;
         
-        if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithInt:1]]) {
+        if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]] || [[NSUserDefaults standardUserDefaults] boolForKey:@"PC_DEV_MODE"]) {
             serverProto = [config objectForKey:@"DEV_SERVER_PROTO"];
             serverAddress = [config objectForKey:@"DEV_SERVER_ADDRESS"];
             serverPort = [config objectForKey:@"DEV_SERVER_PORT"];

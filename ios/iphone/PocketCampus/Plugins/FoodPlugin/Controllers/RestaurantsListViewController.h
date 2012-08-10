@@ -22,10 +22,14 @@
     NSArray* meals; //Array of Meal as returned by FoodService
     NSArray* restaurants; //Array of Restaurant for which menus are available
     NSDictionary* restaurantsAndMeals; //key : restaurant name, value : NSArray of corresponding meals
+    BOOL shouldRefresh;
 }
+
+- (void)refresh;
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
+@property (readonly) BOOL shouldRefresh;
 
 @end

@@ -36,6 +36,15 @@ static BOOL initObserversDone = NO;
     return self;
 }
 
+- (void)refresh {
+    if (mainViewController == nil || ![mainViewController isKindOfClass:[CamiproViewController class]]) {
+        return;
+    }
+    if (((CamiproViewController*)mainViewController).shouldRefresh) {
+        [(CamiproViewController*)mainViewController refresh];
+    }
+}
+
 + (void)initObservers {
     @synchronized(self) {
         if (initObserversDone) {

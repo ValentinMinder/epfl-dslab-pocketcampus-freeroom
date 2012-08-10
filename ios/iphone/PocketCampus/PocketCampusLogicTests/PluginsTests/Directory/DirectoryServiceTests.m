@@ -24,6 +24,10 @@ static int NB_TESTS = 30;
     return self;
 }
 
+- (void)tempTest {
+    [directoryService searchPersons:@"loic" delegate:self];
+}
+
 - (void)test {
     [self testStress];
 }
@@ -82,6 +86,7 @@ static int NB_TESTS = 30;
 /* delegation */
 
 - (void)searchFor:(NSString*)searchPattern didReturn:(NSArray*)results; {
+        NSLog(@"%@", results);
     switch (testType) {
         case TestTypeStress:
         {
@@ -146,6 +151,7 @@ static int NB_TESTS = 30;
 }
 
 - (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results {
+    NSLog(@"%@", results);
     switch (testType) {
         case TestTypeStress:
         {
