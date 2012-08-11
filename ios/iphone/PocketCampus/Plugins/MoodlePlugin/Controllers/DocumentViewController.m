@@ -108,8 +108,9 @@
     return NO;
 }
 
-- (void)dealloc
-{   
+- (void)dealloc {
+    webView.delegate = nil;
+    [webView stopLoading];
     [documentURL release];
     [docInteractionController release];
     [super dealloc];

@@ -45,6 +45,9 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.rowHeight = 50.0;
     tableView.backgroundColor = [UIColor clearColor];
+    UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshButton;
+    [refreshButton release];
     [self refresh];
     //[newsService getNewsItemContentForId:99119833152 delegate:self];
     //[newsService getFeedsForLanguage:[self userLanguageIdentfier] delegate:self];
@@ -76,6 +79,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     tableView.hidden = YES;
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"NewsPlugin", @"Tell the user that the news are loading");
+    [newsService cancelOperationsForDelegate:self];
     [newsService getNewsItemsForLanguage:[self userLanguageIdentfier] delegate:self];
     [networkQueue go];
 }

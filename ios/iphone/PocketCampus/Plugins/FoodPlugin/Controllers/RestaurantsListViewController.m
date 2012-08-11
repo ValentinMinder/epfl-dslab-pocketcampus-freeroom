@@ -35,6 +35,9 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 	// Do any additional setup after loading the view.
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
+    UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshButton;
+    [refreshButton release];
     /* TEST */
     /*
     Rating* rating = [[Rating alloc] initWithRatingValue:3.0 numberOfVotes:10 sumOfRatings:20];
@@ -67,6 +70,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     [super viewWillAppear:animated];
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [foodService getMealsWithDelegate:self];
 }
 
@@ -75,6 +79,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     tableView.hidden = YES;
     [centerActivityIndicator startAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
+    [foodService cancelOperationsForDelegate:self];
     [foodService getMealsWithDelegate:self];
 }
 
@@ -86,6 +91,11 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 /* FoodServiceDelegate delegation */
 
 - (void)getMealsDidReturn:(NSArray*)meals_ {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    if (meals.count == 0) {
+        [self getMealsNoMeals];
+        return;
+    }
     if (meals != nil && meals.count == meals_.count) {
         BOOL difference = NO;
         for (int i = 0; i<meals.count; i++) {
@@ -102,10 +112,6 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     }
     [meals release];
     meals = [meals_ retain];
-    if (meals.count == 0) {
-        [self getMealsNoMeals];
-        return;
-    }
     
     [self populateRestaurantsAndMeals];
     [centerActivityIndicator stopAnimating];
@@ -115,17 +121,22 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 }
 
 - (void)getMealsNoMeals {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"NoMealsWeekend", @"FoodPlugin", @"Message that says that there is no meals today");
 }
 
 - (void)getMealsFailed {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server throw an error");
 }
 
 - (void)serviceConnectionToServerTimedOut {
     shouldRefresh = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
     tableView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");

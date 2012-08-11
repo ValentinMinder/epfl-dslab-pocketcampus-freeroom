@@ -170,17 +170,13 @@ static int NEWS_FONT_SIZE = 14.0;
     } else {
         startY = titleLabel.frame.origin.y+titleLabel.frame.size.height+5.0;
     }
-    webView = [[[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)] autorelease]; //height will be recomputed when HTML loaded in delegate call
+    webView = [[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)]; //height will be recomputed when HTML loaded in delegate call
     webView.scrollView.scrollEnabled = NO;
     webView.delegate = self;
-    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx;'>%@</span>", NEWS_FONT_SIZE, [NewsUtils htmlReplaceWidthInContent:content ifWidthHeigherThan:300]];
+    NSString* contentWithStyle = [NSString stringWithFormat:@"<meta charset='utf-8'><meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx; word-wrap:break-word; text-align:left;'>%@</span>", NEWS_FONT_SIZE, [NewsUtils htmlReplaceWidthInContent:content ifWidthHeigherThan:300]];
     
     [webView loadHTMLString:contentWithStyle baseURL:nil];
-    
-    
-    
     [scrollView addSubview:webView];
-    
 }
 
 - (void)newsItemContentFailedForId:(Id)newsItemId {
@@ -240,12 +236,15 @@ static int NEWS_FONT_SIZE = 14.0;
 
 - (void)dealloc
 {
+    webView.delegate = nil;
+    [webView stopLoading];
+    [webView release];
+    [newsService cancelOperationsForDelegate:self];
+    [newsService release];
     [titleLabel release];
     [mainImageView release];
     [mainImage release];
     [newsItem release];
-    [newsService cancelOperationsForDelegate:self];
-    [newsService release];
     if (thumbnailRequest != nil) {
         [thumbnailRequest cancel];
         thumbnailRequest.delegate = nil;
