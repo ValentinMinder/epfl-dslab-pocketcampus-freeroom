@@ -16,9 +16,9 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 
 @synthesize tableView, messageLabel, barActivityIndicator, searchBar;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"AddStationView" bundle:nil];
     if (self) {
         // Custom initialization
         transportService = [[TransportService sharedInstanceToRetain] retain];
@@ -33,7 +33,8 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     searchBar.prompt = NSLocalizedStringFromTable(@"SearchBarStationPrompt", @"TransportPlugin", nil);
-    
+    searchBar.isAccessibilityElement = YES;
+    searchBar.accessibilityIdentifier = @"SearchBar";
 }
 
 - (void)viewDidUnload

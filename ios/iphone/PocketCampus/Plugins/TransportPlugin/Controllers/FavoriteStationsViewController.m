@@ -14,6 +14,8 @@
 
 #import "TransportUtils.h"
 
+static int MAX_NB_FAV_STATIONS = 10;
+
 static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 @implementation FavoriteStationsViewController
@@ -22,9 +24,9 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 @synthesize dev_location_test; //DEV, to remove
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"FavoriteStationsView" bundle:nil];
     if (self) {
         
         transportService = [[TransportService sharedInstanceToRetain] retain];
@@ -90,6 +92,9 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     [saveButton release];
     
     UIBarButtonItem* addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
+    if ([favStations count] == MAX_NB_FAV_STATIONS) {
+        addButton.enabled = NO;
+    }
     [self.navigationItem setRightBarButtonItem:addButton animated:animated];
     [addButton release];
 
@@ -113,7 +118,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 - (void)addButtonPressed {
     tableView.editing = YES;
     [self setNavBarEditingModeAnimated:YES];
-    AddStationViewController* viewController = [[AddStationViewController alloc] initWithNibName:@"AddStationView" bundle:nil];
+    AddStationViewController* viewController = [[AddStationViewController alloc] init];
     if([self respondsToSelector:@selector(presentingViewController)]) {
         [self presentViewController:viewController animated:YES completion:NULL]; //only available in iOS 5.0
     } else {
@@ -257,6 +262,11 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
             }
         }
         [transportService saveUserFavoriteTransportStations:favStations];
+        if ([favStations count] == MAX_NB_FAV_STATIONS) {
+            self.navigationItem.rightBarButtonItem.enabled = NO; //add station button
+        } else {
+            self.navigationItem.rightBarButtonItem.enabled = YES; //add station button
+        }
     }
 }
 

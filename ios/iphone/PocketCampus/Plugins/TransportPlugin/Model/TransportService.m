@@ -89,7 +89,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     [operation release];
 }
 
-- (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate {
+- (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate priority:(NSInteger)priority {
     if (![from isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'from' argument" reason:@"'from' argument is either nil or not of class NSString" userInfo:nil];
     }
@@ -97,6 +97,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    [operation setQueuePriority:priority];
     operation.serviceClientSelector = @selector(getTrips::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:);

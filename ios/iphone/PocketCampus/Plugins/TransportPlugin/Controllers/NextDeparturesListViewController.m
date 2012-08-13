@@ -163,10 +163,24 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     }
     [tripResults release];
     tripResults = [[NSMutableDictionary dictionaryWithCapacity:favStations.count-1] retain];
+    NSInteger index = 0;
     for (TransportStation* station in favStations) {
-        if (station.id != departureStation.id) {
-            [transportService getTripsFrom:departureStation.name to:station.name delegate:self];
+        NSInteger priority; // see NSOperationQueuePriority
+        if (index <= 1) {
+            priority = 8;
+        } else if (index == 2) {
+            priority = 4;
+        } else if (index <= 3) {
+            priority = 0;
+        } else if (index <= 5) {
+            priority = -4;
+        } else {
+            priority = -8;
         }
+        if (station.id != departureStation.id) {
+            [transportService getTripsFrom:departureStation.name to:station.name delegate:self priority:priority];
+        }
+        index++;
     }
     schedulesState = SchedulesStateLoading;
     [self updateAll];
@@ -473,7 +487,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 /* IBActions */
 
 - (IBAction)presentFavoriteStationsViewController:(id)sender {
-    FavoriteStationsViewController* favStationsViewController = [[FavoriteStationsViewController alloc] initWithNibName:@"FavoriteStationsView" bundle:nil];
+    FavoriteStationsViewController* favStationsViewController = [[FavoriteStationsViewController alloc] init];
     favStationsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController* modalNavController = [[UINavigationController alloc] initWithRootViewController:favStationsViewController];
     modalNavController.navigationBar.tintColor = [PCValues pocketCampusRed];

@@ -143,6 +143,16 @@ function checkElementsName(elements, regEx) {
     return true;
 }
 
+function tableViewContainsCellWithNameSubstring(tableView, name) {
+    var cells = tableView.cells();
+    for (var i = 0; i<cells.length; i++) {
+        if (cells[i].name().toLowerCase().match(new RegExp(name, "i")) != null) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function delay(seconds) {
     UIATarget.localTarget().delay(seconds);
 }

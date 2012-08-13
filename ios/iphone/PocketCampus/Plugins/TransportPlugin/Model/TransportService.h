@@ -30,7 +30,7 @@
 - (void)autocomplete:(NSString*)constraint delegate:(id)delegate;
 - (void)getLocationsForIDs:(NSArray*)ids delegate:(id)delegate;
 - (void)getLocationsForNames:(NSArray*)names delegate:(id)delegate;
-- (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate;
+- (void)getTripsFrom:(NSString*)from to:(NSString*)to delegate:(id)delegate priority:(NSInteger)priority; //priority between -8 (lowest) and +8 (highest). Off bounds will be set to closest matching. See NSOperationQueuePriority
 - (void)getTripsFrom:(NSString*)from to:(NSString*)to atTimestamp:(timestamp)time isDeparture:(BOOL)isDeparture delegate:(id)delegate;
 - (void)getTripsFromStationID:(NSString*)fromStationID toStationID:(NSString*)toStationID delegate:(id)delegate;
 
