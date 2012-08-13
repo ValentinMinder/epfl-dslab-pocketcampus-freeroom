@@ -16,6 +16,8 @@
 
 #import "OverlayWithURLs.h"
 
+static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
+
 @implementation CustomOverlayView
 
 @synthesize tilesDataTmp, willBeDeallocated, delegate;
@@ -23,10 +25,7 @@
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     self = [super initWithOverlay:overlay];
     if (self) {
-        self.tilesDataTmp = (NSMutableDictionary*)[ObjectArchiver objectForKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map" nilIfDiffIntervalLargerThan:5184000]; //seconds = 60 days
-        if (self.tilesDataTmp == nil) {
-            self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
-        }
+        self.tilesDataTmp = [NSMutableDictionary dictionary]; //retained in prop
         requests = [[NSMutableArray array] retain];
         callDelegateTimer = [[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(callDelegateAccordingToRequestsState) userInfo:nil repeats:YES] retain];
         self.willBeDeallocated = NO;
@@ -36,6 +35,7 @@
 
 - (void)didReceiveMemoryWarning {
     @synchronized(self) {
+        NSLog(@"CustomOverlayView didReceiveMemoryWarning. Removing tilesDataTmp objects...");
         [self.tilesDataTmp removeAllObjects];
     }
 }
@@ -65,7 +65,8 @@
         ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         [urlString release];
         request.downloadCache = [ASIDownloadCache sharedCache];
-        request.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+        request.secondsToCache = TILES_VALIDITY;
+        request.cachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
         request.numberOfTimesToRetryOnTimeout = 3;
 
         if ([request.downloadCache isCachedDataCurrentForRequest:request]) {
@@ -244,7 +245,6 @@
     [callDelegateTimer invalidate];
     [callDelegateTimer release];
     [requests release];
-    [ObjectArchiver saveObject:tilesDataTmp forKey:[(id<OverlayWithURLs>)self.overlay identifier] andPluginName:@"map"];
     [tilesDataTmp release];
     [super dealloc];
 }

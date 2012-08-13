@@ -487,7 +487,7 @@
         [errorMessage release];
         errorMessage = nil;
         [AuthenticationService saveUsername:username];
-        if(!showSavePasswordSwitch || [savePasswordSwitch isOn]) {
+        if(!showSavePasswordSwitch || (showSavePasswordSwitch && [savePasswordSwitch isOn])) {
             [AuthenticationService savePassword:password forUsername:username];
         }
         if (token) {
