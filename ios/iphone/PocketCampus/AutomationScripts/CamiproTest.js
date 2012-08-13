@@ -8,14 +8,14 @@
 	
 function testCamipro(){
 	return (
-		testCamiproReloadCardDONTSavePasswd() &&
+		testCamiproLogInLogOutSavePasswd() &&
+		testCamiproLogInLogOutDONTSavePasswd() &&  
+		
 		testCamiproReloadCardSavePasswd() &&
+		testCamiproReloadCardDONTSavePasswd() &&
 		
 		testStatisticsSavePasswd() &&
 		testStatisticsDONTSavePasswd() && 
-		 
-		testCamiproLogInleaveCamiproSavePasswd() && 
-		testCamiproLogInleaveCamiproDONTSavePasswd() && 
 		
 		testCamiproReloadBalanceSavePasswd() &&
 		testCamiproReloadBalanceDONTSavePasswd() &&
@@ -49,7 +49,7 @@ function leaveCamipro(savePasswd){
 }	
 
 ///////////////////////////
-function testCamiproLogInleaveCamipro(savePasswd){
+function testCamiproLogInLogOut(savePasswd){
 	printFunctionName();
 	if(!logIn(username, password, "Camipro", savePasswd)){
 		log.logDebug("Failed to log in");
@@ -58,12 +58,12 @@ function testCamiproLogInleaveCamipro(savePasswd){
 	return leaveCamipro(savePasswd);
 }
 
-function testCamiproLogInleaveCamiproSavePasswd(){
-	return testCamiproLogInleaveCamipro(true);
+function testCamiproLogInLogOutSavePasswd(){
+	return testCamiproLogInLogOut(true);
 }
 
-function testCamiproLogInleaveCamiproDONTSavePasswd(){
-	return testCamiproLogInleaveCamipro(false);
+function testCamiproLogInLogOutDONTSavePasswd(){
+	return testCamiproLogInLogOut(false);
 }
 
 
