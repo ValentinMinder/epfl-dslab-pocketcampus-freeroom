@@ -36,9 +36,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         layersOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
-        overlaysVisible = NO;
         epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
         searchBarState = SearchBarStateHidden;
+        centerLoadingIndicator = nil;
+        showBuildingsInterior = YES; //default  
     }
     return self;
 }
@@ -95,6 +96,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         /*searchBar.text = initialQuery;
         [self setSearchBarState:SearchBarStateVisible];*/
         self.navigationItem.rightBarButtonItem = nil;
+        centerLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        centerLoadingIndicator.center = CGPointMake(296.0, 21.0);
+        [self.navigationController.navigationBar addSubview:centerLoadingIndicator];
+        [centerLoadingIndicator release];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:centerLoadingIndicator selector:@selector(startAnimating) userInfo:nil repeats:NO];
+        //[centerLoadingIndicator startAnimating];
         [self startSearchForQuery:initialQuery];
     }
     [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
@@ -102,10 +109,17 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     //[toolbar setItems:[NSArray arrayWithObject:[[MKUserTrackingBarButtonItem alloc] initWithMapView:mapView]]];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    if (centerLoadingIndicator) {
+        [centerLoadingIndicator removeFromSuperview];
+        centerLoadingIndicator = nil;
+    }
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view
+     // Release any retained subviews of the main view
 }
 
 - (void)didReceiveMemoryWarning
@@ -209,7 +223,13 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (IBAction)othersPressed {
     //NSLog(@"MapView region : %lf %lf, %lf %lf", mapView.region.center.latitude, mapView.region.center.longitude, mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-    othersActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), nil];
+    NSString* localizedStringFromBuildings;
+    if (showBuildingsInterior) {
+        localizedStringFromBuildings = NSLocalizedStringFromTable(@"HideBuildingsInterior", @"MapPlugin", nil);
+    } else {
+        localizedStringFromBuildings = NSLocalizedStringFromTable(@"ShowBuildingsInterior", @"MapPlugin", nil);
+    }
+    othersActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"CenterOnEPFL", @"MapPlugin", nil), localizedStringFromBuildings, nil];
     [othersActionSheet showFromToolbar:toolbar];
 }
 
@@ -260,6 +280,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             [mapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
             myLocationButton.tintColor = [UIColor whiteColor];
             [mapView setRegion:epflRegion animated:YES];
+            break;
+        }
+        case 1: //show/hide buildings interior
+        {
+            showBuildingsInterior = !showBuildingsInterior;
+            [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh layer visibility
             break;
         }
         default:
@@ -347,24 +373,46 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
     MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
     
-    if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
-        if (!overlaysVisible) {
-            [mapView addOverlay:epflTileOverlay];
+    /*if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
+        if ([mapView.overlays count] == 0) {
+            if (showBuildingsInterior) {
+                [mapView addOverlay:epflTileOverlay];
+            }
             //[mapView addOverlay:epflLayersOverlay];
             floorDownButton.enabled = YES;
             floorLabel.hidden = NO;
             floorUpButton.enabled = YES;
-            overlaysVisible = YES;
+        } else {
+            [mapView removeOverlay:epflTileOverlay];
         }
     } else {
-        if (overlaysVisible) {
+        if ([mapView.overlays count] > 0) {
             [mapView removeOverlay:epflTileOverlay];
             //[mapView removeOverlay:epflLayersOverlay];
             floorDownButton.enabled = NO;
             floorLabel.hidden = YES;
             floorUpButton.enabled = NO;
-            overlaysVisible = NO;
         }
+    }*/
+    
+    if (![epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale] || !showBuildingsInterior) {
+        if ([mapView.overlays count] > 0) {
+            [mapView removeOverlay:epflTileOverlay];
+            //[mapView removeOverlay:epflLayersOverlay];
+            floorDownButton.enabled = NO;
+            floorLabel.hidden = YES;
+            floorUpButton.enabled = NO;
+        }
+    } else if (showBuildingsInterior) {
+        if ([mapView.overlays count] == 0) {
+            [mapView addOverlay:epflTileOverlay];
+            //[mapView addOverlay:epflLayersOverlay];
+            floorDownButton.enabled = YES;
+            floorLabel.hidden = NO;
+            floorUpButton.enabled = YES;
+        }
+    } else {
+        //nothing
     }
 }
 
@@ -381,6 +429,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     /* END OF TEST */
     
     [searchActivityIndicator stopAnimating];
+    [NSTimer scheduledTimerWithTimeInterval:1.5 target:centerLoadingIndicator selector:@selector(stopAnimating) userInfo:nil repeats:NO];
     
     [mapView setUserTrackingMode:MKUserTrackingModeNone];
     

@@ -49,6 +49,8 @@ typedef enum {
     CGRect searchBarHiddenFrame;
     CGRect searchBarVisibleFrame;
     UIActivityIndicatorView* overlaysLoadingIndicator;
+    UIActivityIndicatorView* centerLoadingIndicator;
+    BOOL showBuildingsInterior;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;
