@@ -52,6 +52,8 @@
 		321F37EB15B0307700E7BA6D /* GlobalSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */; };
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
+		322D8E0615D6A9EB001474A8 /* AppLogo2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */; };
+		322D8E0B15D6B4EA001474A8 /* AppLogo3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
 		32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32311CF015A4A3E100E21C50 /* PCUtils.m */; };
@@ -84,6 +86,7 @@
 		324A5998151DFDD200977F33 /* AddStationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A5997151DFDD200977F33 /* AddStationViewController.m */; };
 		324A599A151DFDF700977F33 /* AddStationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324A5999151DFDF700977F33 /* AddStationView.xib */; };
 		324A59A0151E453300977F33 /* TransportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 324A599F151E453300977F33 /* TransportUtils.m */; };
+		324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */; };
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87915A46AE200D368AC /* LocationArrow.png */; };
 		3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87A15A46AE200D368AC /* LocationArrow@2x.png */; };
@@ -304,6 +307,8 @@
 		321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlobalSettingsView.xib; sourceTree = "<group>"; };
 		321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsHomeButton@2x.png"; sourceTree = "<group>"; };
 		321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsHomeButton.png; sourceTree = "<group>"; };
+		322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo2@2x.png"; sourceTree = "<group>"; };
+		322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo3@2x.png"; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
 		32311CEF15A4A3E100E21C50 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
@@ -353,6 +358,8 @@
 		324A5999151DFDF700977F33 /* AddStationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStationView.xib; sourceTree = "<group>"; };
 		324A599E151E453300977F33 /* TransportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportUtils.h; sourceTree = "<group>"; };
 		324A599F151E453300977F33 /* TransportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportUtils.m; sourceTree = "<group>"; };
+		324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapServiceTests.h; sourceTree = "<group>"; };
+		324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapServiceTests.m; sourceTree = "<group>"; };
 		3257C20B1570F99C00E626A4 /* TransportHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportHelpViewController.h; sourceTree = "<group>"; };
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
 		3258A87915A46AE200D368AC /* LocationArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow.png; sourceTree = "<group>"; };
@@ -631,6 +638,8 @@
 			children = (
 				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
+				322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */,
+				322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,
 				32B2F18A153343B100FB8C79 /* Default@2x.png */,
 				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
@@ -972,6 +981,15 @@
 				3247C3B01504F2E10079522A /* FoodPlugin.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		324F6B2D15D7B55F00CFB8B5 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				324F6B2E15D7B55F00CFB8B5 /* MapServiceTests.h */,
+				324F6B2F15D7B55F00CFB8B5 /* MapServiceTests.m */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		32663945150C00E100719F6E /* UIDeviceUniqueID */ = {
@@ -1507,6 +1525,7 @@
 			isa = PBXGroup;
 			children = (
 				32E280A6156E577900B74825 /* Directory */,
+				324F6B2D15D7B55F00CFB8B5 /* Map */,
 			);
 			path = PluginsTests;
 			sourceTree = "<group>";
@@ -1860,6 +1879,8 @@
 				3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */,
 				32686E7315D598EF00564786 /* AppLogo@2x.png in Resources */,
+				322D8E0615D6A9EB001474A8 /* AppLogo2@2x.png in Resources */,
+				322D8E0B15D6B4EA001474A8 /* AppLogo3@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1976,6 +1997,7 @@
 				32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */,
 				32A47D6E15B9F48D00592477 /* DocumentViewController.m in Sources */,
 				3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */,
+				324F6B3015D7B55F00CFB8B5 /* MapServiceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

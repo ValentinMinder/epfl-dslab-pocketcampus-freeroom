@@ -22,7 +22,7 @@ function testNews() {
 	
 	var tableView = window.tableViews()["NewsList"];
 	
-	for (var i = 0; i<20; i++) {
+	for (var i = 0; i<1000; i++) {
 		
 		var row = randomRowIndex(tableView);
 		var name = tableView.cells()[row].name();

@@ -58,6 +58,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     UITapGestureRecognizer* gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentFavoriteStationsViewController:)] autorelease];
     [fromValueLabel addGestureRecognizer:gestureRecognizer1];
     [fromLabel addGestureRecognizer:gestureRecognizer2];
+    infoButton.accessibilityIdentifier = @"BookmarksButton";
 }
 
 - (void)viewDidUnload

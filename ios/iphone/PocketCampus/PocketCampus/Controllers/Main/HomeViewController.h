@@ -12,9 +12,12 @@
 
 @interface HomeViewController : UIViewController {
     @private MainController* mainController;
+    UIButton* settingsButton;
 }
 
 - (id)initWithMainController:(MainController*)mainController_;
 - (void)iconPressedWithIndex:(NSUInteger)index;
+
+@property (nonatomic, assign) IBOutlet UIButton* settingsButton;
 
 @end

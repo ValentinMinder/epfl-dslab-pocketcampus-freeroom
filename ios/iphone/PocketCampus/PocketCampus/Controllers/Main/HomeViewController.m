@@ -29,7 +29,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.title = NSLocalizedStringFromTable(@"HomeViewControllerTitle", @"PocketCampus", @"Text that will be displayed in nav bar of Home");
-    
     UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"HomeNavbar"] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [backButton release];

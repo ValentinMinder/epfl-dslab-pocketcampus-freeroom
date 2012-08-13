@@ -10,6 +10,8 @@
 
 #import "DirectoryServiceTests.h"
 
+#import "MapServiceTests.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -26,7 +28,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
-    
+    [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
 
     
@@ -37,6 +39,8 @@
     //[[[PocketCampusLogicTests alloc] init] testAll];
     
     //[[[DirectoryServiceTests alloc] init] tempTest];
+    
+    //[[[MapServiceTests alloc] init] tempTest];
     
     /* END OF OFFICAL TESTS */
     

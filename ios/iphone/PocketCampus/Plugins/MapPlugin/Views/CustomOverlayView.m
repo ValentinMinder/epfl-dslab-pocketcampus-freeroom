@@ -231,7 +231,7 @@
 - (void)cancelTilesDownload:(BOOL)willBeDeallocated_ {
     self.willBeDeallocated = willBeDeallocated_;
 
-    for (ASIHTTPRequest* request in requests) {
+    for (ASIHTTPRequest* request in [[requests copy] autorelease]) {
         request.delegate = nil;
         [request cancel];
     }

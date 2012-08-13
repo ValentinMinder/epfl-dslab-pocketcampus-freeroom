@@ -366,6 +366,7 @@
         {
             UITableViewCell* cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
             cell.textLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [savePasswordSwitch release];
             savePasswordSwitch = [[UISwitch alloc] init];
             BOOL on = YES; //default

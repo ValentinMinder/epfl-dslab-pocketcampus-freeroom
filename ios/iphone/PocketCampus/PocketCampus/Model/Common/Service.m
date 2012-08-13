@@ -76,6 +76,7 @@ static NSTimeInterval connectivityCheckTimeout;
     if (![[Reachability reachabilityForInternetConnection] isReachable]) { //check internet connection first
         return NO;
     }
+    [self retain];
     @synchronized(self) {
         if (checkServerRequest == nil) {
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
@@ -87,6 +88,7 @@ static NSTimeInterval connectivityCheckTimeout;
             [checkServerRequest startAsynchronous];
         }
     }
+    //NSLog(@"req : %@, cancelled : %d", checkServerRequest, checkServerRequest.isCancelled);
     dispatch_semaphore_wait(semaphore,  DISPATCH_TIME_FOREVER); //timeout is managed by request
     if (self.serviceWillBeReleased) {
         return NO;
@@ -97,6 +99,7 @@ static NSTimeInterval connectivityCheckTimeout;
             checkServerRequest = nil;
         }
     }
+    [self release];
     return serverIsReachable;
 }
 
@@ -130,29 +133,39 @@ static NSTimeInterval connectivityCheckTimeout;
 
 /* END OF ASIHTTPRequestDelegate delegation */
 
+/* pass nil to cancel all operations */
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
-    for (NSOperation* operation in operationQueue.operations) {
-        if ([operation respondsToSelector:@selector(delegate)] && [operation respondsToSelector:@selector(setDelegate:)] && [(id)operation delegate] == delegate) {
-            [(id)operation setDelegate:nil];
+    for (NSOperation* operation in operationQueue.operations) {        
+        if (delegate == nil || ([operation respondsToSelector:@selector(delegate)] && [(id)operation delegate] == delegate)) {
+            if ([operation respondsToSelector:@selector(setDelegate:)]) {
+                [(id)operation setDelegate:nil];
+            }
+            if ([operation respondsToSelector:@selector(setService:)]) {
+                [(id)operation setService:nil];
+            }
             [operation cancel];
             nbOps++;
         }
     }
-    if (nbOps > 0) {
+    [operationQueue release];
+    operationQueue = [[NSOperationQueue alloc] init];
+    if (nbOps > 0 && delegate) {
         NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
+    @synchronized(self) {
+        if (checkServerRequest) {
+            checkServerRequest.delegate = nil;
+            [checkServerRequest cancel];
+            checkServerRequest = nil;
+        }
+    }
+    serverIsReachable = NO;
     [self notifyAll];
 }
 
 - (void)cancelAllOperations {
-    for (NSOperation* operation in operationQueue.operations) {
-        if ([operation respondsToSelector:@selector(setDelegate:)]) {
-            [(id)operation setDelegate:nil];
-        }
-        [operation cancel];
-    }
-    [self notifyAll];
+    [self cancelOperationsForDelegate:nil];
 }
 
 - (void)notifyAll {
@@ -170,11 +183,13 @@ static NSTimeInterval connectivityCheckTimeout;
 - (void)dealloc
 {
     self.serviceWillBeReleased = YES;
+    [operationQueue setSuspended:YES];
     [self cancelAllOperations];
     if (checkServerRequest != nil) {
         checkServerRequest.delegate = nil;
         [checkServerRequest cancel];
         [checkServerRequest release];
+        checkServerRequest = nil;
     }
     if (semaphore != nil) {
         dispatch_release(semaphore);
@@ -330,7 +345,6 @@ static NSTimeInterval connectivityCheckTimeout;
             [self didTimeout];
             return;
         }
-        //NSLog(@"-> Server reachability test succeeded");
         [self retain]; //So that the NSOperation is kept alive to receive service timeout (POST timeout) even after service release
         
         if ([self isCancelled])

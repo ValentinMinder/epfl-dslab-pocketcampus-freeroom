@@ -70,7 +70,8 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     [super viewWillAppear:animated];
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    //self.navigationItem.rightBarButtonItem.enabled = NO;
+    [foodService cancelOperationsForDelegate:self];
     [foodService getMealsWithDelegate:self];
 }
 
@@ -92,12 +93,12 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 - (void)getMealsDidReturn:(NSArray*)meals_ {
     self.navigationItem.rightBarButtonItem.enabled = YES;
-    if (meals.count == 0) {
+    if (meals_.count == 0) {
         [self getMealsNoMeals];
         return;
     }
+    BOOL difference = NO;
     if (meals != nil && meals.count == meals_.count) {
-        BOOL difference = NO;
         for (int i = 0; i<meals.count; i++) {
             Meal* prevMeal = [meals objectAtIndex:i];
             Meal* newMeal = [meals_ objectAtIndex:i];
@@ -106,7 +107,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
                 break;
             }
         }
-        if (!difference) {
+        if (!difference && !self.tableView.hidden) {
             return;
         }
     }
