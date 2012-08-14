@@ -101,7 +101,7 @@ function testCamiproReloadCard(savePasswd){
 	//the alert still doesnt work
 	element.tap();
 	//target.frontMostApp().actionSheet().cancelButton().tap();		
-	delay(10);
+	delay(2);
 	return leavePlugin(savePasswd);
 }	
 
@@ -125,8 +125,8 @@ function testStatistics(savePasswd){
 	element = target.frontMostApp().actionSheet().buttons()["Statistics"];
 	assertTrue(element.isValid() && element.isVisible() && element.isEnabled());
 	//the alert still doesnt work
-	//element.tap();
-	target.frontMostApp().actionSheet().cancelButton().tap();
+	element.tap();
+	delay(2);
 	return leavePlugin(savePasswd);
 }
 
@@ -175,6 +175,7 @@ function testCancel(savePasswd){
 		return false;
 	}
 	target.frontMostApp().toolbar().buttons()["Action"].tap();
+	delay(1);
 	target.frontMostApp().actionSheet().cancelButton().tap();
 	return leavePlugin(savePasswd);
 }
