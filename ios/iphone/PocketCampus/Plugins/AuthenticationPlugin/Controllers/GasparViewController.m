@@ -83,6 +83,8 @@
 - (void)cancelPressed {
     [authenticationService cancelOperationsForDelegate:self];
     [AuthenticationService enqueueLogoutNotificationDelayed:NO];
+    [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
+    [AuthenticationService saveUsername:nil];
     if (presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
