@@ -12,6 +12,7 @@
 
 @property(nonatomic, retain) NSString* moodleCookie;
 
++ (BOOL)deleteMoodleCookie;
 - (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
 + (NSString*)fileTypeForURL:(NSString*)urlString;
 - (NSString*)localPathForURL:(NSString*)urlString;

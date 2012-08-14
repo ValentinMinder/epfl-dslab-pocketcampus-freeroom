@@ -26,7 +26,6 @@
     CamiproService* camiproService;
     BalanceAndTransactions* balanceAndTransactions;
     TequilaToken* tequilaKey;
-    BOOL shouldDeleteSessionWhenFinished;
     BOOL shouldRefresh;
 }
 

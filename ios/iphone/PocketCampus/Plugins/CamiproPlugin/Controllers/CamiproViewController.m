@@ -32,7 +32,6 @@ static CGFloat kBalanceCellHeight = 70.0;
         camiproService = [[CamiproService sharedInstanceToRetain] retain];
         balanceAndTransactions = nil;
         tequilaKey = nil;
-        shouldDeleteSessionWhenFinished = NO;
         
         /* TEST */
         
@@ -121,10 +120,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)authenticationSucceeded {
     [camiproService getSessionIdForServiceWithTequilaKey:tequilaKey delegate:self];
-}
-
-- (void)deleteSessionWhenFinished {
-    shouldDeleteSessionWhenFinished = YES;
 }
 
 - (void)invalidToken {
@@ -490,10 +485,6 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)dealloc
 {
-    if (shouldDeleteSessionWhenFinished) {
-        NSLog(@"-> Deleting Camipro sessionId...");
-        [CamiproService saveSessionId:nil];
-    }
     [authController release];
     [camiproService cancelOperationsForDelegate:self];
     [camiproService release];

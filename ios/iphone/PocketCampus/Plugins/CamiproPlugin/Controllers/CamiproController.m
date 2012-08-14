@@ -10,15 +10,19 @@
 
 #import "CamiproViewController.h"
 
+#import "ObjectArchiver.h"
+
 @implementation CamiproController
 
 static NSString* name = nil;
 static BOOL initObserversDone = NO;
+static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
 {
     self = [super init];
     if (self) {
+        [[self class] deleteSessionIfNecessary];
         CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
         camiproViewController.title = [[self class] localizedName];
         mainViewController = camiproViewController;
@@ -45,14 +49,29 @@ static BOOL initObserversDone = NO;
     }
 }
 
++ (void)deleteSessionIfNecessary {
+    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+    if (deleteSession && [deleteSession boolValue]) {
+        NSLog(@"-> Delayed logout notification on Camipro now applied : deleting sessionId");
+        [CamiproService saveSessionId:nil];
+        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+    }
+}
+
 + (void)initObservers {
     @synchronized(self) {
         if (initObserversDone) {
             return;
         }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
-            [CamiproService saveSessionId:nil]; //removing stored session
+        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+            if ([delayed boolValue]) {
+                NSLog(@"-> Camipro received %@ notification delayed", [AuthenticationService logoutNotificationName]);
+                [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"camipro"];
+            } else {
+                NSLog(@"-> Camipro received %@ notification", [AuthenticationService logoutNotificationName]);
+                [CamiproService saveSessionId:nil]; //removing stored session
+            }
         }];
         initObserversDone = YES;
     }
@@ -72,6 +91,7 @@ static BOOL initObserversDone = NO;
 
 - (void)dealloc
 {
+    [[self class] deleteSessionIfNecessary];
     [name release];
     name = nil;
     [super dealloc];

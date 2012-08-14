@@ -30,6 +30,10 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     return [[[MoodleServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
 }
 
++ (BOOL)deleteMoodleCookie {
+    return [ObjectArchiver saveObject:nil forKey:kMoodleCookieKey andPluginName:@"moodle"];
+}
+
 - (BOOL)saveMoodleCookie:(NSString*)moodleCookie_ {
     self.moodleCookie = moodleCookie_; //previous cookie is released by synthesized setter
     return [ObjectArchiver saveObject:moodleCookie_ forKey:kMoodleCookieKey andPluginName:@"moodle"];

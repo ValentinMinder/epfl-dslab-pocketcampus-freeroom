@@ -23,7 +23,8 @@
 + (NSNumber*)savePasswordSwitchWasOn;
 + (BOOL)savePasswordSwitchState:(BOOL)isOn;
 + (NSString*)logoutNotificationName;
-+ (void)enqueueLogoutNotification;
++ (NSString*)delayedUserInfoKey;
++ (void)enqueueLogoutNotificationDelayed:(BOOL)delayed; //set delayed to YES to inform the receiver of the notif. that it should logout only when user has finished (leaving plugin)
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate;
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSString*)tequilaCookie delegate:(id)delegate;
@@ -44,7 +45,6 @@
 
 @required
 - (void)authenticationSucceeded;
-- (void)deleteSessionWhenFinished;
 - (void)userCancelledAuthentication;
 - (void)invalidToken;
 

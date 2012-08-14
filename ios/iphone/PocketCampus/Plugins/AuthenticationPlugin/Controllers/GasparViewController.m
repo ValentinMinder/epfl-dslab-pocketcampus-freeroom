@@ -82,6 +82,7 @@
 
 - (void)cancelPressed {
     [authenticationService cancelOperationsForDelegate:self];
+    [AuthenticationService enqueueLogoutNotificationDelayed:NO];
     if (presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
@@ -172,7 +173,7 @@
         if (indexPath.section == 0) { //logout button
             [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
             [AuthenticationService saveUsername:nil];
-            [AuthenticationService enqueueLogoutNotification];
+            [AuthenticationService enqueueLogoutNotificationDelayed:NO];
             username = nil;
             [password release];
             password = nil;
@@ -534,8 +535,8 @@
         if ([(NSObject*)self.delegate respondsToSelector:@selector(authenticationSucceeded)]) {
             [(NSObject*)self.delegate performSelectorOnMainThread:@selector(authenticationSucceeded) withObject:nil waitUntilDone:YES];
         }
-        if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn]) && [(NSObject*)self.delegate respondsToSelector:@selector(deleteSessionWhenFinished)]) {
-            [(NSObject*)self.delegate performSelectorOnMainThread:@selector(deleteSessionWhenFinished) withObject:nil waitUntilDone:YES];
+        if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn])) {
+            [AuthenticationService enqueueLogoutNotificationDelayed:YES];
         }
         [loadingIndicator stopAnimating];
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];

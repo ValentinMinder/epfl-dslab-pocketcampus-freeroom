@@ -26,7 +26,6 @@
         authController = [[AuthenticationController alloc] init];
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
-        shouldDeleteSessionWhenFinished = NO;
     }
     return self;
 }
@@ -165,10 +164,6 @@
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
-- (void) deleteSessionWhenFinished {
-    shouldDeleteSessionWhenFinished = YES;
-}
-
 - (void)userCancelledAuthentication {
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
@@ -214,9 +209,6 @@
 
 - (void)dealloc
 {
-    if(shouldDeleteSessionWhenFinished) {
-        [moodleService saveMoodleCookie:nil];
-    }
     [authController release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];

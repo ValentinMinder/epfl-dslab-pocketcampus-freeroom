@@ -2,15 +2,19 @@
 #import "MoodleController.h"
 #import "CoursesListViewController.h"
 
+#import "ObjectArchiver.h"
+
 @implementation MoodleController
 
 static NSString* name = nil;
 static BOOL initObserversDone = NO;
+static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
 {
     self = [super init];
     if (self) {
+        [[self class] deleteSessionIfNecessary];
         CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
         coursesListViewController.title = [[self class] localizedName];
         mainViewController = coursesListViewController;
@@ -28,14 +32,29 @@ static BOOL initObserversDone = NO;
     return self;
 }
 
++ (void)deleteSessionIfNecessary {
+    NSNumber* deleteSession = (NSNumber*)[ObjectArchiver objectForKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+    if (deleteSession && [deleteSession boolValue]) {
+        NSLog(@"-> Delayed logout notification on Moodle now applied : deleting sessionId");
+        [MoodleService deleteMoodleCookie];
+        [ObjectArchiver saveObject:nil forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+    }
+}
+
 + (void)initObservers {
     @synchronized(self) {
         if (initObserversDone) {
             return;
         }
-        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
-            [[MoodleService sharedInstanceToRetain] saveMoodleCookie:nil];
+        [[NSNotificationCenter defaultCenter] addObserverForName:[AuthenticationService logoutNotificationName] object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            NSNumber* delayed = [notification.userInfo objectForKey:[AuthenticationService delayedUserInfoKey]];
+            if ([delayed boolValue]) {
+                NSLog(@"-> Moodle received %@ notification delayed", [AuthenticationService logoutNotificationName]);
+                [ObjectArchiver saveObject:[NSNumber numberWithBool:YES] forKey:kDeleteSessionAtInitKey andPluginName:@"moodle"];
+            } else {
+                NSLog(@"-> Moodle received %@ notification", [AuthenticationService logoutNotificationName]);
+                [MoodleService deleteMoodleCookie]; //removing stored session
+            }
         }];
         initObserversDone = YES;
     }
@@ -59,6 +78,7 @@ static BOOL initObserversDone = NO;
 
 - (void)dealloc
 {
+    [[self class] deleteSessionIfNecessary];
     [name release];
     name = nil;
     [super dealloc];

@@ -21,7 +21,6 @@
     NSArray* iCourses;
     AuthenticationController* authController;
     TequilaToken* tequilaKey;
-    BOOL shouldDeleteSessionWhenFinished;
 }
 
 @property (nonatomic, assign) IBOutlet UITableView* coursesList;
