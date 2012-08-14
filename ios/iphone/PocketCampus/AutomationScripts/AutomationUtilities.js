@@ -253,9 +253,25 @@ function dumpElements(elements) {
     }
 }
 
-function printFunctionName(){
-	var myName = arguments.callee.caller.caller.toString();
-   	myName = myName.substr('function '.length);
-   	myName = myName.substr(0, myName.indexOf('('));
-	log.logDebug("====start "+myName+"====");
+
+function searchForText(root, text){
+	if(!root.checkIsValid()){
+		return false;
+	}
+	log.logDebug("Exploring: "+root.toString()+" with value: "+root.value()+ " and name: "+root.name());
+	toCheck = root.value();
+	if(toCheck != undefined && toCheck != null && toCheck.indexOf(text)!=-1){
+ 		return true;
+ 	}	
+ 	toCheck = root.name();
+ 	if(toCheck != undefined && toCheck != null && toCheck.indexOf(text)!=-1){
+ 		return true;
+ 	}
+	for(var index = 0; index < root.elements().length; index++){
+		elem = root.elements()[index];
+		if(searchForText(elem, text)){
+			return true;
+		}
+	}
+	return false;
 }

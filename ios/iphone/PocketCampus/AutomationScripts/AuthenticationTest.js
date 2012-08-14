@@ -1,5 +1,6 @@
 #import "AuthenticationUtils.js"
 #import "Credentials.js"
+#import "AutomationUtilities.js"
 
 // in Credentials.js, put 2 fields
 // username = "username";
@@ -20,6 +21,8 @@ nbOfTimes = 5;
 //////////////
 function testAuthentication(){
 	return (
+	testCancelLoggingInSavePasswd() && 
+	testAuthenticationFailed() &&	
 	testAuthenticateMissingPassword() && 
 	testAuthenticateMissingUsername() &&
 	testAuthenticationSuccessfulMultipleTimes(true) &&
@@ -86,4 +89,60 @@ function testAuthenticateMissingPassword(){
 	window.navigationBar().rightButton().tap();
 	delay(2);
 	return true;
+}
+
+///////////////
+function testAuthenticationFailed(){
+	logStart("testAuthenticationFailed");
+	fillInCredentials("username", "password", "Camipro", false);
+	login = window.tableViews()[0].cells()[2].staticTexts()[0];
+	login.tap();
+	if(isCurrentNavBarTitle("Gaspar account")){
+		log.logDebug("Login button is not enabled"); 
+	}else{
+		log.logFail("Login button IS enabled");
+		return false;
+	}
+	if(searchForText(window, "Wrong username or password")){
+		log.logDebug("Wrong username or password"); 
+	}else{
+		log.logFail("Wrong username or password");
+		return false;
+	}
+	window.navigationBar().rightButton().tap();
+	delay(2);
+	return true;
+}
+
+///////////////////
+function testCancelLoggingIn(savePasswd){
+	fillInCredentials(username, password, "Camipro", savePasswd);
+	target.frontMostApp().mainWindow().tableViews()["Empty list"].cells()["Login"].tap();
+	target.frontMostApp().navigationBar().rightButton().tap();
+	delay(1.5);
+	if(!isCurrentNavBarTitle("PocketCampus EPFL")){
+		log.logFail("Not back to Dashboard");
+		return false;
+	}
+	window.elements()["Camipro"].tap();
+	delay(2);
+	if(!isCurrentNavBarTitle("Camipro")){
+		log.logPass("Could NOT enter Camipro");
+	}else{
+		log.logFail("Could enter Camipro");
+		return false;
+	}
+	window.navigationBar().rightButton().tap();
+	return true;
+}
+
+///////////////////
+function testCancelLoggingInSavePasswd(){
+	logStart("testCancelLoggingInSavePasswd");
+	return testCancelLoggingIn(true);
+}
+
+///////////////////
+function testCancelLoggingInDONTSavePasswd(){
+	return testCancelLoggingIn(false);
 }
