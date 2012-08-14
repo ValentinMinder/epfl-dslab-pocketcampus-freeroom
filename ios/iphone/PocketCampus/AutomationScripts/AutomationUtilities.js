@@ -252,3 +252,10 @@ function dumpElements(elements) {
         UIALogger.logDebug(elements[i].toString());
     }
 }
+
+function printFunctionName(){
+	var myName = arguments.callee.caller.caller.toString();
+   	myName = myName.substr('function '.length);
+   	myName = myName.substr(0, myName.indexOf('('));
+	log.logDebug("====start "+myName+"====");
+}

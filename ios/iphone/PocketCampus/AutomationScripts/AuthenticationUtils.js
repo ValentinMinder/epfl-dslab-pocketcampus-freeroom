@@ -1,4 +1,19 @@
 function logIn(username, password, pluginName, savePassword){
+	fillInCredentials(username, password, pluginName, savePassword);
+	login = window.tableViews()[0].cells()[2].staticTexts()[0];
+	login.tap();
+	delay(5);
+	log.logDebug("Getting to Camipro");
+	result = isCurrentNavBarTitle(pluginName);
+	if(result){
+		log.logPass("Enter "+pluginName); 
+	}else{
+		log.logFail("Enter "+pluginName); 
+	}
+	return result;
+}
+
+function fillInCredentials(username, password, pluginName, savePassword){
 	window.elements()[pluginName].tap();
 	delay(2);
 	if(isCurrentNavBarTitle("Gaspar account")) {
@@ -16,12 +31,7 @@ function logIn(username, password, pluginName, savePassword){
 	
 	saveSwitch=window.tableViews()[0].cells()[3].switches()[0];
 	saveSwitch.setValue(savePassword);
-	login = window.tableViews()[0].cells()[2].staticTexts()[0];
-	login.tap();
-	delay(5);
-	log.logDebug("Getting to Camipro");
-	return isCurrentNavBarTitle(pluginName);
-		log.logPass("Enter "+pluginName); 
+	return true;
 }
 
 function logOut(){
@@ -35,3 +45,14 @@ function logOut(){
 	target.frontMostApp().navigationBar().rightButton().tap();
 	return true;
 }
+
+function leavePlugin(savePasswd){
+	log.logDebug("Save passwd? "+savePasswd);
+	if(savePasswd){
+		return logOut();
+	}else{
+		window.navigationBar().leftButton().tap();
+		delay(2);
+	}
+	return true;
+}	

@@ -8,17 +8,17 @@
 	
 function testCamipro(){
 	return (
-		testCamiproLogInLogOutSavePasswd() &&
-		testCamiproLogInLogOutDONTSavePasswd() &&  
-		
 		testCamiproReloadCardSavePasswd() &&
 		testCamiproReloadCardDONTSavePasswd() &&
 		
-		testStatisticsSavePasswd() &&
-		testStatisticsDONTSavePasswd() && 
-		
 		testCamiproReloadBalanceSavePasswd() &&
 		testCamiproReloadBalanceDONTSavePasswd() &&
+		
+		testCamiproLogInLogOutSavePasswd() &&
+		testCamiproLogInLogOutDONTSavePasswd() &&  
+		
+		testStatisticsSavePasswd() &&
+		testStatisticsDONTSavePasswd() && 
 		
 		testScrollUpAndDownSavePasswd() && 
 		testScrollUpAndDownDONTSavePasswd() && 
@@ -37,17 +37,6 @@ function printFunctionName(){
 	log.logDebug("====start "+myName+"====");
 }
 
-function leaveCamipro(savePasswd){
-	log.logDebug("Save passwd? "+savePasswd);
-	if(savePasswd){
-		return logOut();
-	}else{
-		window.navigationBar().leftButton().tap();
-		delay(2);
-	}
-	return true;
-}	
-
 ///////////////////////////
 function testCamiproLogInLogOut(savePasswd){
 	printFunctionName();
@@ -55,7 +44,7 @@ function testCamiproLogInLogOut(savePasswd){
 		log.logDebug("Failed to log in");
 		return false;
 	}
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testCamiproLogInLogOutSavePasswd(){
@@ -75,7 +64,7 @@ function testCamiproReloadBalance(savePasswd){
 		return false;
 	}
 	reload();
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testCamiproReloadBalanceSavePasswd(){
@@ -110,9 +99,10 @@ function testCamiproReloadCard(savePasswd){
 	element = target.frontMostApp().actionSheet().buttons()["Reload the card"];
 	assertTrue(element.isValid() && element.isVisible() && element.isEnabled());
 	//the alert still doesnt work
-	//element.tap();
-	target.frontMostApp().actionSheet().cancelButton().tap();		
-	return leaveCamipro(savePasswd);
+	element.tap();
+	//target.frontMostApp().actionSheet().cancelButton().tap();		
+	delay(10);
+	return leavePlugin(savePasswd);
 }	
 
 function testCamiproReloadCardSavePasswd(){
@@ -137,7 +127,7 @@ function testStatistics(savePasswd){
 	//the alert still doesnt work
 	//element.tap();
 	target.frontMostApp().actionSheet().cancelButton().tap();
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testStatisticsSavePasswd(){
@@ -165,7 +155,7 @@ function testScrollUpAndDown(savePasswd){
 		table.scrollUp();
 		delay(0.5);
 	}
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testScrollUpAndDownSavePasswd(){
@@ -186,7 +176,7 @@ function testCancel(savePasswd){
 	}
 	target.frontMostApp().toolbar().buttons()["Action"].tap();
 	target.frontMostApp().actionSheet().cancelButton().tap();
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testCancelSavePasswd(){
@@ -213,7 +203,7 @@ function testScrollDownActionStillAvailable(savePasswd){
 	}
 	target.frontMostApp().toolbar().buttons()["Action"].tap();
 	target.frontMostApp().actionSheet().cancelButton().tap();
-	return leaveCamipro(savePasswd);
+	return leavePlugin(savePasswd);
 }
 
 function testScrollDownActionStillAvailableSavePasswd(){
