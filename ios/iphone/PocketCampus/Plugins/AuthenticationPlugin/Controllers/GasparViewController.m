@@ -201,6 +201,18 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        if (presentationMode == PresentationModeNavStack && isLoggedIn) {
+            return 40.0;
+        } else {
+            return 5.0;
+        }
+        
+    }
+    return 0.0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     NSString* text;
@@ -217,6 +229,7 @@
                 text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
             } else {
                 text = @"";
+                return 0.0;
             }
         }
         UIFont* font = [UIFont systemFontOfSize:16.0];

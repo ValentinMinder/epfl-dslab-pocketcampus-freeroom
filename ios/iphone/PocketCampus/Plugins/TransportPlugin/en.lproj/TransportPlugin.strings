@@ -9,12 +9,12 @@
 "PluginName" = "Transport";
 "FromLabel" = "From :";
 "NoStation" = "No station";
-"LocationNeedJustification" = "Your location will be used to find the nearest favorite transport station. PocketCampus does not track your location history nor keep it.";
+"LocationNeedJustification" = "Your location will be used to find the nearest favorite transport station. PocketCampus does not track your location history.";
 "ImpossibleLocateShort" = "Location error";
 "ImpossibleLocateUserDenied" = "Impossible to find the nearest favorite station. Have you denied access to location ? If so, you can enable location in the Settings menu of your iPhone or manually select a departure station.";
-"ImpossibleLocateUnknown" = "Sorry, impossible to find you current location. Try to refresh or try again later.\nYou can select a departure station manually by touching the bookmarks icon.";
+"ImpossibleLocateUnknown" = "Sorry, impossible to find you current location. Try to refresh or try again later.\nYou can select a departure station manually by touching the favorites icon.";
 "WelcomeTouchInfoInstructions" = "Tap the favorites button to manage\nyour favorite stations.";
-"Need2StationsTouchInfoInstructions" = "You need at least two favorite stations\n to compute a schedule. Tap the favorites button and add another a station.";
+"Need2StationsTouchInfoInstructions" = "At least two favorite stations are\nrequired to compute a schedule.\n\nTap the favorites button and\nadd another station.";
 "FavoriteStationsTitle" = "Favorite stations";
 "TouchAddStationInstructions" = "Touch the plus buton to add a station.";
 "FavoriteStationsExplanations" = "Automatically selects the closest\nfavorite station as departure.";

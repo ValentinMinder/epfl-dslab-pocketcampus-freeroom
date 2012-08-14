@@ -11,7 +11,7 @@
 "CenterOnResults" = "Centrer sur les résultats";
 "SearchPlaceholder" = "Rechercher une salle, une personne, ...";
 "RemoveElements" = "Effacer les résultats";
-"ShowBuildingsInterior" = "Intérieur des bâtiments";
+"ShowBuildingsInterior" = "Aff. l'int. des bâtiments";
 "HideBuildingsInterior" = "Masquer l'int. des bâtiments";
 "NoResult" = "Aucun résultat";
 "TooManyResults" = "Trop de résultats";

@@ -20,7 +20,7 @@ static NSTimeInterval connectivityCheckTimeout;
 
 @implementation Service
 
-@synthesize thriftProtocol, serviceWillBeReleased;
+@synthesize operationQueue, thriftProtocol, serviceWillBeReleased;
 
 - (id)initWithServiceName:(NSString*)serviceName_
 {

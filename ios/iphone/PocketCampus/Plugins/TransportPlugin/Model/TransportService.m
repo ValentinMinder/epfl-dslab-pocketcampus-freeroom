@@ -24,6 +24,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     @synchronized(self) {
         if (instance == nil) {
             instance = [[[self class] alloc] initWithServiceName:@"transport"];
+            //[instance.operationQueue setMaxConcurrentOperationCount:1];
         }
     }
     return [instance autorelease];;

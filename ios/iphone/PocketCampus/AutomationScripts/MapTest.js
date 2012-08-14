@@ -18,7 +18,7 @@ function testMap() {
 	
 	/* end of prep */
 	
-	for (var i = 0; i<2000; i++) {
+	for (var i = 0; i<1000; i++) {
 		log.logStart("Random map mouvements");
 		randomMapMovementAndZoom(mapView);
 		log.logPass("Random map mouvements");
@@ -54,6 +54,13 @@ function testMap() {
 		log.logDebug("index : "+index+", string : "+searchStrings[index]);
 		window.elements()["SearchBar"].setValue(searchStrings[index]);
 		app.keyboard().buttons()["search"].tap();
+		if (chance(0.6)) {
+			delay(Math.random()*2);
+			tapBack();
+			delay(2);
+			enterPluginAndTest("Map", true);
+			return;
+		}
 		if (chance(0.2)) {
 			log.logDebug("Test canceling search");
 			window.navigationBar().rightButton().tap(); //cancel button

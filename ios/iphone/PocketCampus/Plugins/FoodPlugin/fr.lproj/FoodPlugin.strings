@@ -8,7 +8,8 @@
 
 "PluginName" = "Restaurants";
 "MenusTableViewSectionName" = "Menus";
-"CenterLabelLoadingText" = "Chargement de la liste des restaurants";
+"CenterLabelLoadingText" = "Chargement des menus";
+"NoMealsToday" = "Aucun menu aujourd'hui.";
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
 "Map" = "Plan";
 "NoVote" = "Aucun vote";
@@ -17,7 +18,7 @@
 "VoteVerb" = "voter";
 "RatingSendingError" = "Désolé, une erreur est survenue. Veuillez réessayer.";
 "RatingTooEarly" = "Désolé, il est trop tôt pour voter.";
-"RatingAlreadyDone" = "Vous ne pouvez voter que pour un repas par jour.";
+"RatingAlreadyDone" = "Vous ne pouvez voter qu'une fois par jour";
 
 
 /* Accessiblity */

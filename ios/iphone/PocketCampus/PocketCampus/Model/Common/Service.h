@@ -40,6 +40,7 @@
     BOOL serverIsReachable;
 }
 
+@property (readonly) NSOperationQueue* operationQueue;
 @property (readonly) TBinaryProtocol* thriftProtocol;
 @property BOOL serviceWillBeReleased;
 
