@@ -235,7 +235,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     if (favStations == nil || departureStation == nil) {
         return; //should not happen
     }
-    
+    NSLog(@"to : %@, lat : %d, long : %d", to, tripResult.to.latitude, tripResult.to.longitude);
     [tripResults setObject:tripResult forKey:to];
     if (schedulesState != SchedulesStateError) {
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];

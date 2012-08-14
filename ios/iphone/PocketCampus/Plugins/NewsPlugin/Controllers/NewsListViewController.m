@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import "NewsUtils.h"
 
 #import "NewsItemViewController.h"
@@ -91,12 +93,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     newsItems = [[NewsUtils eliminateDuplicateNewsItemsInArray:newsItems_] retain];
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
-    [tableView reloadData];
-    tableView.alpha = 0.0;
-    tableView.hidden = NO;
-    [UIView transitionWithView:tableView duration:0.5 options:UIViewAnimationCurveEaseIn animations:^{
-        tableView.alpha = 1.0;
-    } completion:NULL];
+    [PCUtils reloadTableView:tableView withFadingDuration:0.5];
     tableView.accessibilityIdentifier = @"NewsList";
 }
 

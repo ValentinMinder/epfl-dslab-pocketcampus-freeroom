@@ -14,4 +14,13 @@
     return ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))?1:0;
 }
 
++ (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {
+    tableView.alpha = 0.0;
+    [tableView reloadData];
+    tableView.hidden = NO;
+    [UIView transitionWithView:tableView duration:duration options:UIViewAnimationCurveEaseIn animations:^{
+        tableView.alpha = 1.0;
+    } completion:NULL];
+}
+
 @end

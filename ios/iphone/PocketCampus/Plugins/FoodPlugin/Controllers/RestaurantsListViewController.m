@@ -10,6 +10,8 @@
 
 #import "MealCell.h"
 
+#import "PCUtils.h"
+
 static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 @implementation RestaurantsListViewController
@@ -76,6 +78,8 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 }
 
 - (void)refresh {
+    [meals release];
+    meals = nil;
     shouldRefresh = NO;
     tableView.hidden = YES;
     [centerActivityIndicator startAnimating];
@@ -98,6 +102,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
         return;
     }
     BOOL difference = NO;
+    BOOL mealsWasNil = (meals == nil);
     if (meals != nil && meals.count == meals_.count) {
         for (int i = 0; i<meals.count; i++) {
             Meal* prevMeal = [meals objectAtIndex:i];
@@ -118,7 +123,11 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     tableView.hidden = NO;
-    [tableView reloadData];
+    if (mealsWasNil) {
+        [PCUtils reloadTableView:tableView withFadingDuration:0.2];
+    } else {
+        [tableView reloadData];
+    }
 }
 
 - (void)getMealsNoMeals {

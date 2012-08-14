@@ -11,5 +11,6 @@
 @interface PCUtils : NSObject
 
 + (BOOL)isRetinaDevice;
++ (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 
 @end

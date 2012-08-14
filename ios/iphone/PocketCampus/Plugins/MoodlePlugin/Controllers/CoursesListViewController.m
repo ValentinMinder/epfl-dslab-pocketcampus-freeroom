@@ -14,6 +14,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 @implementation CoursesListViewController
 
 @synthesize coursesList, centerActivityIndicator, centerMessageLabel;
@@ -131,8 +133,7 @@
     if(coursesListReply.iStatus == 200) {
         iCourses = [coursesListReply.iCourses retain];
         if(iCourses.count != 0) {
-            coursesList.hidden = NO;
-            [coursesList reloadData];
+            [PCUtils reloadTableView:coursesList withFadingDuration:0.2];
         } else {
             centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleNoCourse", @"MoodlePlugin", nil);
         }

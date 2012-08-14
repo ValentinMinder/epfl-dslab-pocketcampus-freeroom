@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import "PCTableViewSectionHeader.h"
 
 #import "DocumentViewController.h"
@@ -188,8 +190,7 @@ static int kActivityIndicatorViewTag = 3;
         if(visibleCount != 0) {
             [self computeCurrent];
             [self showToggleButton];
-            sectionsList.hidden = NO;
-            [sectionsList reloadData];
+            [PCUtils reloadTableView:sectionsList withFadingDuration:0.2];
         } else {
             centerMessageLabel.text = NSLocalizedStringFromTable(@"MoodleEmptyCourse", @"MoodlePlugin", nil);
             NSLog(@"-> Moodle : empty course");
