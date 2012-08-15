@@ -96,7 +96,7 @@ static int kActivityIndicatorViewTag = 3;
 - (void)computeCurrentWeek {
     if(iSections == nil)
         return;
-    currentWeek = 2;
+    currentWeek = -1;
     for (NSInteger i = 0; i < iSections.count; i++) {
         MoodleSection* iSection = [iSections objectAtIndex:i];
         if(iSection.iResources.count != 0 && iSection.iCurrent) {
