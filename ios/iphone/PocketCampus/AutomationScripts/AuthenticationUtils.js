@@ -15,7 +15,7 @@ function logIn(username, password, pluginName, savePassword){
 
 function fillInCredentials(username, password, pluginName, savePassword){
 	window.elements()[pluginName].tap();
-	delay(2);
+	delay(3);
 	if(isCurrentNavBarTitle("Gaspar account")) {
 		log.logPass("Enter "+pluginName); 
 	} else {

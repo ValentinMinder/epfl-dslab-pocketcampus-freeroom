@@ -3,7 +3,7 @@
 
 function testMoodle() {
 
-	if(!logIn(username, password, "Camipro", savePasswd)){
+	if(!logIn(username, password, "Moodle", false)){
 		log.logDebug("Failed to log in");
 		return false;
 	}

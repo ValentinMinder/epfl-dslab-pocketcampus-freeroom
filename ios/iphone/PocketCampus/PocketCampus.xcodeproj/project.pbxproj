@@ -52,8 +52,6 @@
 		321F37EB15B0307700E7BA6D /* GlobalSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */; };
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
-		322D8E0615D6A9EB001474A8 /* AppLogo2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */; };
-		322D8E0B15D6B4EA001474A8 /* AppLogo3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
 		32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32311CF015A4A3E100E21C50 /* PCUtils.m */; };
@@ -307,8 +305,6 @@
 		321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlobalSettingsView.xib; sourceTree = "<group>"; };
 		321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsHomeButton@2x.png"; sourceTree = "<group>"; };
 		321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsHomeButton.png; sourceTree = "<group>"; };
-		322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo2@2x.png"; sourceTree = "<group>"; };
-		322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo3@2x.png"; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
 		32311CEF15A4A3E100E21C50 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
@@ -638,8 +634,6 @@
 			children = (
 				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
-				322D8E0515D6A9EB001474A8 /* AppLogo2@2x.png */,
-				322D8E0A15D6B4EA001474A8 /* AppLogo3@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,
 				32B2F18A153343B100FB8C79 /* Default@2x.png */,
 				32E28098156E52ED00B74825 /* PocketCampusLogicTests */,
@@ -1879,8 +1873,6 @@
 				3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */,
 				32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */,
 				32686E7315D598EF00564786 /* AppLogo@2x.png in Resources */,
-				322D8E0615D6A9EB001474A8 /* AppLogo2@2x.png in Resources */,
-				322D8E0B15D6B4EA001474A8 /* AppLogo3@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

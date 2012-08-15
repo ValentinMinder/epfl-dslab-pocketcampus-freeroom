@@ -22,11 +22,10 @@
     MoodleService* moodleService;
     NSArray* iSections;
     int courseId;
-    int current;
+    int currentWeek;
     NSString* courseTitle;
     AuthenticationController* authController;
     TequilaToken* tequilaKey;
-    BOOL shouldDeleteSessionWhenFinished;
 }
 
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;

@@ -149,8 +149,8 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 
 - (void)okPressed {
     [ratingActivityIndicator startAnimating];
-    [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];
-    //[service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[[UIDevice currentDevice] uniqueDeviceIdentifier]  delegate:self];
+    //[service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];
+    [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[[UIDevice currentDevice] uniqueDeviceIdentifier]  delegate:self];
     
 }
 

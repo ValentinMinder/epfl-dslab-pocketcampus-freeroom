@@ -36,7 +36,6 @@ static int kActivityIndicatorViewTag = 3;
         courseId = aCourseId;
         courseTitle = [aCourseTitle retain];
         self.title = courseTitle;
-        shouldDeleteSessionWhenFinished = NO;
     }
     return self;
 }
@@ -49,7 +48,7 @@ static int kActivityIndicatorViewTag = 3;
     sectionsList.hidden = YES;
     sectionsList.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:sectionsList.frame];
-    backgroundView.backgroundColor = [UIColor whiteColor];;
+    backgroundView.backgroundColor = [UIColor whiteColor];
     sectionsList.backgroundView = backgroundView;
     [backgroundView release];
     
@@ -94,14 +93,14 @@ static int kActivityIndicatorViewTag = 3;
     [sess release];
 }
 
-- (void)computeCurrent {
+- (void)computeCurrentWeek {
     if(iSections == nil)
         return;
-    current = -1;
+    currentWeek = 2;
     for (NSInteger i = 0; i < iSections.count; i++) {
         MoodleSection* iSection = [iSections objectAtIndex:i];
         if(iSection.iResources.count != 0 && iSection.iCurrent) {
-            current = i;
+            currentWeek = i;
             break;
         }
     }
@@ -109,23 +108,24 @@ static int kActivityIndicatorViewTag = 3;
 
 - (void)showToggleButton {
     UIBarButtonItem *anotherButton = nil;
-    if (current > 0) {
-        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleAllWeeks", @"MoodlePlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
-    } else if (current == 0) {
-        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(toggleShowAll:)];
+    if (currentWeek > 0) {
+        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleAllWeeks", @"MoodlePlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(toggleShowAll:)];
+    } else if (currentWeek == 0) {
+        anotherButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"MoodleCurrentWeek", @"MoodlePlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(toggleShowAll:)];
     }
-    self.navigationItem.rightBarButtonItem = anotherButton;
+    [self.navigationItem setRightBarButtonItem:anotherButton animated:YES];
     [anotherButton release];
 }
 
 - (void)toggleShowAll:(id)sender {
-    if (current > 0) {
-        current = 0;
+    if (currentWeek > 0) {
+        currentWeek = 0;
     } else {
-        [self computeCurrent];
+        [self computeCurrentWeek];
     }
     [self showToggleButton];
-    [sectionsList reloadData];
+    [self cancelCurrentDownloadingDocument];
+    [PCUtils reloadTableView:sectionsList withFadingDuration:0.3];
 }
 
 
@@ -144,6 +144,16 @@ static int kActivityIndicatorViewTag = 3;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {    
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+- (void)cancelCurrentDownloadingDocument {
+    if (currentLoadingView && [currentLoadingView isAnimating]) {
+        UITableViewCell* prevSelectedCell = (UITableViewCell*)[[currentLoadingView superview] superview];
+        prevSelectedCell.accessoryView.hidden = NO;
+        [moodleService cancelOperationsForDelegate:self];
+        [currentLoadingView stopAnimating];
+        currentLoadingView = nil;
+    }
 }
 
 /* service delegation */
@@ -188,7 +198,7 @@ static int kActivityIndicatorViewTag = 3;
             visibleCount += secObj.iResources.count;
         }
         if(visibleCount != 0) {
-            [self computeCurrent];
+            [self computeCurrentWeek];
             [self showToggleButton];
             [PCUtils reloadTableView:sectionsList withFadingDuration:0.2];
         } else {
@@ -243,10 +253,6 @@ static int kActivityIndicatorViewTag = 3;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
-- (void) deleteSessionWhenFinished {
-    shouldDeleteSessionWhenFinished = YES;
-}
-
 - (void)userCancelledAuthentication {
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
@@ -264,12 +270,8 @@ static int kActivityIndicatorViewTag = 3;
     if (cellActivityIndicatorView == currentLoadingView && [cellActivityIndicatorView isAnimating]) {
         return;
     }
-    if (currentLoadingView && [currentLoadingView isAnimating]) {
-        UITableViewCell* prevSelectedCell = (UITableViewCell*)[[currentLoadingView superview] superview];
-        prevSelectedCell.accessoryView.hidden = NO;
-        [moodleService cancelOperationsForDelegate:self];
-        [currentLoadingView stopAnimating];
-    }
+    
+    [self cancelCurrentDownloadingDocument];
     
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
@@ -382,9 +384,9 @@ static int kActivityIndicatorViewTag = 3;
 - (BOOL)showSection:(NSInteger) section {
     if(section == 0)
         return NO;
-    if(current <= 0)
+    if(currentWeek <= 0)
         return YES;
-    return (current == section);
+    return (currentWeek == section);
 }
 
 /* end */
@@ -392,9 +394,6 @@ static int kActivityIndicatorViewTag = 3;
 - (void)dealloc
 {
     [currentLoadingView release];
-    if (shouldDeleteSessionWhenFinished) {
-        [moodleService saveMoodleCookie:nil];
-    }
     [authController release];
     [tequilaKey release];
     [moodleService cancelOperationsForDelegate:self];
