@@ -11,8 +11,6 @@
 
 @implementation FoodController
 
-static NSString* name = nil;
-
 - (id)init
 {
     self = [super init];
@@ -44,11 +42,7 @@ static NSString* name = nil;
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"FoodPlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"FoodPlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -61,8 +55,6 @@ static NSString* name = nil;
 
 - (void)dealloc
 {
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

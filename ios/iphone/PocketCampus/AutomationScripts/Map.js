@@ -2,4 +2,4 @@
 
 #import "MapTest.js"
 
-testMap();
+testMap()

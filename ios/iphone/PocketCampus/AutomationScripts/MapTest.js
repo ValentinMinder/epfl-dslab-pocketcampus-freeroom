@@ -9,7 +9,8 @@ function testMap() {
 	
 	var searchBar = window.elements()["SearchBar"];
 	
-	var actionsButtonRect = window.toolbar().elements()["Action"].rect();
+	var actionsButtonRect = window.toolbar().elements()["Others"].rect();
+	//window.logElementTree();
 	
 	var floorDownButtonRect = window.toolbar().elements()["Floor down"].rect();
 	var floorUpButtonRect = window.toolbar().elements()["Floor up"].rect();
@@ -99,6 +100,7 @@ function testMap() {
 	}
 
 	function centerOnEPFL() {
+		log.logDebug("Centering on EPFL");
 		target.tap(actionsButtonRect);
 		var actionSheet = app.actionSheet();
 		

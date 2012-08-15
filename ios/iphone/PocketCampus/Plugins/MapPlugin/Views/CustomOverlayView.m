@@ -180,7 +180,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
 
 - (void)requestDidFinishLoad:(ASIHTTPRequest *)request {
     request.delegate = nil;
-    [request retain];
+    [request retain]; //released at end of method
     [requests removeObject:request];
     if (self.willBeDeallocated) {
         [request release];
@@ -188,6 +188,7 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
     }
     
     if (request.responseStatusCode == 404) {
+        [request release];
         return;
     }
     

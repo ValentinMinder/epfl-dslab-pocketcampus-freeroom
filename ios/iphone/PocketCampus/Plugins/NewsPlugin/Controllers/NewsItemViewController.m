@@ -30,6 +30,7 @@ static int NEWS_FONT_SIZE = 14.0;
         mainImage = nil;
         thumbnailRequest = nil;
         urlClickedByUser = nil;
+        reachability = nil;
     }
     return self;
 }
@@ -61,7 +62,6 @@ static int NEWS_FONT_SIZE = 14.0;
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     self.navigationItem.rightBarButtonItem = actionButton;
     [actionButton release];
-    [centerActivityIndicator startAnimating];
 
     feedLabel.text = newsItem.feed;
     publishDateLabel.text = [NewsUtils dateLocaleStringForTimestamp:newsItem.pubDate/1000.0];
@@ -78,6 +78,13 @@ static int NEWS_FONT_SIZE = 14.0;
     
     [scrollView addSubview:titleLabel];
     
+    [self loadNews];
+    
+}
+
+- (void)loadNews {
+    [centerActivityIndicator startAnimating];
+    centerMessageLabel.hidden = YES;
     if (newsItem.imageUrl != nil) {
         if (mainImage != nil) {
             [self addMainImageToScrollView];
@@ -87,6 +94,7 @@ static int NEWS_FONT_SIZE = 14.0;
             thumbnailRequest.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
             thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
             thumbnailRequest.timeOutSeconds = 20.0;
+            thumbnailRequest.numberOfTimesToRetryOnTimeout = 2;
             thumbnailRequest.delegate = self;
             [thumbnailRequest startAsynchronous];
         }
@@ -189,6 +197,11 @@ static int NEWS_FONT_SIZE = 14.0;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
+    if (!reachability) {
+        reachability = [[Reachability reachabilityForInternetConnection] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadNews) name:kReachabilityChangedNotification object:reachability];
+        [reachability startNotifier];
+    }
 }
 
 /* UIWebViewDelegate delegation */
@@ -202,6 +215,12 @@ static int NEWS_FONT_SIZE = 14.0;
         scrollViewContentHeight = self.view.frame.size.height + 1.0;//to be able to scroll even if not necessary
     }
     [scrollView setContentSize:CGSizeMake(self.view.frame.size.width, scrollViewContentHeight)];
+    if (reachability) {
+        [reachability stopNotifier];
+    }
+    [reachability release];
+    reachability = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -236,6 +255,12 @@ static int NEWS_FONT_SIZE = 14.0;
 
 - (void)dealloc
 {
+    if (reachability) {
+        [reachability stopNotifier];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:reachability];
+    [reachability release];
+    reachability = nil;
     webView.delegate = nil;
     [webView stopLoading];
     [webView release];

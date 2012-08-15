@@ -12,8 +12,6 @@
 
 @implementation NewsController
 
-static NSString* name = nil;
-
 - (id)init
 {
     self = [super init];
@@ -45,11 +43,7 @@ static NSString* name = nil;
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"NewsPlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"NewsPlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -58,8 +52,6 @@ static NSString* name = nil;
 
 - (void)dealloc
 {
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

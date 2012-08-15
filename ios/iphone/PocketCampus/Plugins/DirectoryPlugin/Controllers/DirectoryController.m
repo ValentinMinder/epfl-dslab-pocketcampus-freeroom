@@ -11,8 +11,6 @@
 
 @implementation DirectoryController
 
-static NSString* name = nil;
-
 - (id)init
 {
     self = [super init];
@@ -35,11 +33,7 @@ static NSString* name = nil;
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"DirectoryPlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"DirectoryPlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -48,8 +42,6 @@ static NSString* name = nil;
 
 - (void)dealloc
 {
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

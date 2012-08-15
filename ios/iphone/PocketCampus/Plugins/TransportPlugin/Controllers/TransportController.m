@@ -17,8 +17,6 @@
 static BOOL settingsAreDirty = NO;
 static NSMutableDictionary* settings = nil;
 
-static NSString* name = nil;
-
 - (id)initWithMainController:(MainController*)mainController_ {
     self = [super init];
     if (self) {
@@ -31,11 +29,7 @@ static NSString* name = nil;
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"TransportPlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"TransportPlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -76,8 +70,6 @@ static NSString* name = nil;
 }
 
 - (void)dealloc {
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

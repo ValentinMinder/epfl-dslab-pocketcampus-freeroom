@@ -346,8 +346,8 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     BOOL couldCreate = true;
     
     UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
-     NSData* imageData = UIImagePNGRepresentation(loadingImage);
-     ABPersonSetImageData(abPerson, (CFDataRef)imageData, nil);
+    NSData* imageData = UIImagePNGRepresentation(loadingImage);
+    ABPersonSetImageData(abPerson, (CFDataRef)imageData, nil);
     
     ABRecordSetValue(abPerson, kABPersonFirstNameProperty, person.firstName, &anError);
 
@@ -368,7 +368,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     CFRelease(phone);
     
     
-    if ([person emailIsSet]) {
+    if (person.email) {
         ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
         couldCreate = ABMultiValueAddValueAndLabel(email, person.email, (CFStringRef)@"email", NULL);
         if (couldCreate) {
@@ -391,7 +391,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     
     
     
-    if ([person officeIsSet]) {
+    if (person.office) {
         ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
@@ -427,7 +427,7 @@ error:
     }
     
     
-    if ([person OrganisationalUnitIsSet]) {
+    if (person.OrganisationalUnit) {
         NSString* message = @"";
         for (NSString* unit in person.OrganisationalUnit) {
             message = [message stringByAppendingFormat:@"%@ ", unit];

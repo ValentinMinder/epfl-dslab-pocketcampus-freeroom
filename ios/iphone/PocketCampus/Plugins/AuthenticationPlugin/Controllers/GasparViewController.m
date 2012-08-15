@@ -228,11 +228,11 @@
         if (errorMessage) {
             text = errorMessage;
         } else {
-            if (!hideGasparUsageAccountMessage) {
-                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
-            } else {
-                text = @"";
+            if (hideGasparUsageAccountMessage) {
                 return 0.0;
+            } else {
+                text = NSLocalizedStringFromTable(@"GasparAccountRequiredFor", @"AuthenticationPlugin", nil);
+                
             }
         }
         UIFont* font = [UIFont systemFontOfSize:16.0];

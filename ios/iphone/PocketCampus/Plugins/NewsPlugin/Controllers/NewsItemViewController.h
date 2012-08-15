@@ -14,6 +14,8 @@
 
 #import "ASIHTTPRequest.h"
 
+#import "Reachability.h"
+
 @interface NewsItemViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UIWebViewDelegate> {
     UIScrollView* scrollView;
     UILabel* feedLabel;
@@ -28,6 +30,7 @@
     NewsService* newsService;
     ASIHTTPRequest* thumbnailRequest;
     NSURL* urlClickedByUser;
+    Reachability* reachability;
 }
 
 @property (nonatomic, assign) IBOutlet UIScrollView* scrollView;

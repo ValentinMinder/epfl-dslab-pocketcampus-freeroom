@@ -7,8 +7,6 @@
 
 @implementation AuthenticationController
 
-static NSString* name = nil;
-
 - (id)init
 {
     self = [super init];
@@ -61,11 +59,7 @@ static NSString* name = nil;
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"AuthenticationPlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"AuthenticationPlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -80,8 +74,6 @@ static NSString* name = nil;
 {
     [credentialsAlertViewController release];
     [gasparViewController release];
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

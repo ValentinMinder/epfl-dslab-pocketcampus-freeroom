@@ -6,7 +6,6 @@
 
 @implementation MoodleController
 
-static NSString* name = nil;
 static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
@@ -61,11 +60,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 }
 
 + (NSString*)localizedName {
-    if (name != nil) {
-        return name;
-    }
-    name = [NSLocalizedStringFromTable(@"PluginName", @"MoodlePlugin", @"") retain];
-    return name;
+    return NSLocalizedStringFromTable(@"PluginName", @"MoodlePlugin", @"");
 }
 
 + (NSString*)identifierName {
@@ -79,8 +74,6 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 - (void)dealloc
 {
     [[self class] deleteSessionIfNecessary];
-    [name release];
-    name = nil;
     [super dealloc];
 }
 

@@ -36,6 +36,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
         networkQueue = [[ASINetworkQueue alloc] init];
         networkQueue.maxConcurrentOperationCount = 6;
         thumbnails = [[NSMutableDictionary alloc] init];
+        reachability = nil;
+        failedThumbsIndexPaths = nil;
     }
     return self;
 }
@@ -86,6 +88,10 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [networkQueue go];
 }
 
+- (void)reloadFailedThumbnailsCells {
+    [tableView reloadRowsAtIndexPaths:[failedThumbsIndexPaths allObjects] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 /* NewsServiceDelegate delegation */
 
 - (void)newsItemsForLanguage:(NSString*)language didReturn:(NSArray*)newsItems_ {
@@ -127,10 +133,29 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     if (indexPath == nil) { //should never happen
         return;
     }
+    if (failedThumbsIndexPaths) {
+        [failedThumbsIndexPaths removeObject:indexPath];
+    }
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
     UIImage* image = [UIImage imageWithData:request.responseData];
     cell.imageView.image = image;
     [thumbnails setObject:image forKey:indexPath];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+    NSIndexPath* reqIndexPath = [request.userInfo objectForKey:kThumbnailIndexPathKey];
+    
+    if (!failedThumbsIndexPaths) {
+        failedThumbsIndexPaths = [[NSMutableSet setWithObject:reqIndexPath] retain];
+    } else {
+        [failedThumbsIndexPaths addObject:reqIndexPath];
+    }
+    
+    if (!reachability) {
+        reachability = [[Reachability reachabilityForInternetConnection] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFailedThumbnailsCells) name:kReachabilityChangedNotification object:reachability];
+        [reachability startNotifier];
+    }
 }
 
 /* UITableViewDelegate delegation */
@@ -172,9 +197,10 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
             ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]];
             thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
             thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+            //thumbnailRequest.cachePolicy = ASIDoNotReadFromCacheCachePolicy; //FOR TESTS
             thumbnailRequest.delegate = self;
-            thumbnailRequest.userInfo = [NSDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];
-            thumbnailRequest.timeOutSeconds = 5.0; //do not overload network with thumbnails that fail to load
+            thumbnailRequest.userInfo = [NSMutableDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];
+            thumbnailRequest.timeOutSeconds = 10.0; //do not overload network with thumbnails that fail to load
             [networkQueue addOperation:thumbnailRequest];
         }
     } else {
@@ -198,10 +224,17 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 
 - (void)dealloc
 {
+    if (reachability) {
+        [reachability stopNotifier];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:reachability];
+    [reachability release];
+    reachability = nil;
     for (ASIHTTPRequest* req in networkQueue.operations) {
         req.delegate = nil;
         [req cancel];
     }
+    [failedThumbsIndexPaths release];
     networkQueue.delegate = nil;
     [networkQueue release];
     [newsService cancelOperationsForDelegate:self];

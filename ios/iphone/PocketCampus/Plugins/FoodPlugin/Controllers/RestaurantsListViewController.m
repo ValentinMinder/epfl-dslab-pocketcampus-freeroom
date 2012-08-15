@@ -171,7 +171,9 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
             [mealsOfRestaurant addObject:meal];
         }
     }
+    [restaurantsAndMeals release];
     restaurantsAndMeals = [[NSDictionary dictionaryWithDictionary:temp] retain]; //creates non-mutable copy
+    [restaurants release];
     restaurants = [[[tempRestaurantsSet allObjects] sortedArrayUsingComparator:^(Restaurant* rest1, Restaurant* rest2) {
         return [rest1.name localizedCaseInsensitiveCompare:rest2.name];
     }] retain];

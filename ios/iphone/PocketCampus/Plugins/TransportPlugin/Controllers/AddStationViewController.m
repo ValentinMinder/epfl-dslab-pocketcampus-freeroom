@@ -201,9 +201,10 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 
 - (void)dealloc
 {
+    [transportService cancelOperationsForDelegate:self];
     tableView.delegate = nil;
     tableView.dataSource = nil;
-    [transportService cancelOperationsForDelegate:self];
+    [stations release];
     [transportService release];
     [typingTimer release];
     [super dealloc];

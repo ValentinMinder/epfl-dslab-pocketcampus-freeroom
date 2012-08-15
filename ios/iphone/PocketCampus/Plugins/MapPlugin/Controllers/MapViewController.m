@@ -21,7 +21,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 @implementation MapViewController
 
-@synthesize mapView, searchBar, myLocationButton, floorDownButton, floorLabel, floorUpButton, toolbar, overlaysLoadingIndicator;
+@synthesize mapView, searchBar, myLocationButton, floorDownButton, floorLabel, floorUpButton, othersButton, toolbar, overlaysLoadingIndicator;
 
 - (id)init
 {
@@ -39,7 +39,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
         searchBarState = SearchBarStateHidden;
         centerLoadingIndicator = nil;
-        showBuildingsInterior = YES; //default  
+        showBuildingsInterior = YES; //default
     }
     return self;
 }
@@ -71,7 +71,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [mapTap release];
     tileOverlayView.delegate = self;
     //layersOverlayView.delegate = self;
-    mapView.showsUserLocation = YES;
     [mapView setRegion:epflRegion animated:NO];
     mapView.accessibilityIdentifier = @"EPFLMapView";
     floorDownButton.accessibilityLabel = NSLocalizedStringFromTable(@"FloorDown", @"MapPlugin", nil);

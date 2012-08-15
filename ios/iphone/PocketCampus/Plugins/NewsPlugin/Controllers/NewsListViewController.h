@@ -14,6 +14,8 @@
 
 #import "ASINetworkQueue.h"
 
+#import "Reachability.h"
+
 @interface NewsListViewController : UIViewController<NewsServiceDelegate, ASIHTTPRequestDelegate, UITableViewDelegate, UITableViewDataSource> {
     UITableView* tableView;
     UIActivityIndicatorView* centerActivityIndicator;
@@ -23,6 +25,8 @@
     ASINetworkQueue* networkQueue;
     NSMutableDictionary* thumbnails; //key : NSIndexPath , value : UIImage
     BOOL shouldRefresh;
+    Reachability* reachability;
+    NSMutableSet* failedThumbsIndexPaths;
 }
 
 - (void)refresh;
