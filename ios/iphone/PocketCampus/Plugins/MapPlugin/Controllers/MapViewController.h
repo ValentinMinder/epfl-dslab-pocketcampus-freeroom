@@ -25,7 +25,7 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, MapServiceDelegate, CustomOverlayViewDelegate> {
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate> {
     UIBarButtonItem* myLocationButton;
     UIBarButtonItem* floorDownButton;
     UILabel* floorLabel;
@@ -33,6 +33,7 @@ typedef enum {
     UIBarButtonItem* othersButton;
     UIActionSheet* othersActionSheet;
     UIToolbar* toolbar;
+    UIAlertView* internetConnectionAlert;
     MapService* mapService;
     NSString* initialQuery;
     NSString* initialQueryManualPinLabelText;
@@ -49,7 +50,7 @@ typedef enum {
     CGRect searchBarHiddenFrame;
     CGRect searchBarVisibleFrame;
     UIActivityIndicatorView* overlaysLoadingIndicator;
-    UIActivityIndicatorView* centerLoadingIndicator;
+    UIActivityIndicatorView* navBarLoadingIndicator;
     BOOL showBuildingsInterior;
 }
 

@@ -131,7 +131,7 @@
     
     if (partType == PartDeparture && connection.departureTime != 0) {
         timeLabel.text = [TransportUtils hourMinutesStringForTimestamp:connection.departureTime/1000.0];
-        if (connection.arrivalPosition) {
+        if (connection.departurePosition) {
             platformLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), connection.departurePosition];
         }
     } else if(partType == PartArrival && connection.arrivalTime != 0) {

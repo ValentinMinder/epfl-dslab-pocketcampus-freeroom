@@ -34,11 +34,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
         tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
         layersOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflLayersOverlay];
+        internetConnectionAlert = nil;
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
         epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
         searchBarState = SearchBarStateHidden;
-        centerLoadingIndicator = nil;
+        navBarLoadingIndicator = nil;
         showBuildingsInterior = YES; //default
     }
     return self;
@@ -91,16 +92,15 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     searchActivityIndicator.hidesWhenStopped = YES;
     [searchBar addSubview:searchActivityIndicator];
     [searchActivityIndicator release];
-    if (initialQuery != nil) {
+    if (initialQuery) {
         /*searchBar.text = initialQuery;
         [self setSearchBarState:SearchBarStateVisible];*/
         self.navigationItem.rightBarButtonItem = nil;
-        centerLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        centerLoadingIndicator.center = CGPointMake(296.0, 21.0);
-        [self.navigationController.navigationBar addSubview:centerLoadingIndicator];
-        [centerLoadingIndicator release];
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:centerLoadingIndicator selector:@selector(startAnimating) userInfo:nil repeats:NO];
-        //[centerLoadingIndicator startAnimating];
+        navBarLoadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        navBarLoadingIndicator.center = CGPointMake(296.0, 21.0);
+        [self.navigationController.navigationBar addSubview:navBarLoadingIndicator];
+        [navBarLoadingIndicator release];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:navBarLoadingIndicator selector:@selector(startAnimating) userInfo:nil repeats:NO];
         [self startSearchForQuery:initialQuery];
     }
     [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
@@ -109,9 +109,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (centerLoadingIndicator) {
-        [centerLoadingIndicator removeFromSuperview];
-        centerLoadingIndicator = nil;
+    if (navBarLoadingIndicator) {
+        [navBarLoadingIndicator removeFromSuperview];
+        navBarLoadingIndicator = nil;
     }
 }
 
@@ -428,7 +428,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     /* END OF TEST */
     
     [searchActivityIndicator stopAnimating];
-    [NSTimer scheduledTimerWithTimeInterval:1.5 target:centerLoadingIndicator selector:@selector(stopAnimating) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:1.5 target:navBarLoadingIndicator selector:@selector(stopAnimating) userInfo:nil repeats:NO];
     
     [mapView setUserTrackingMode:MKUserTrackingModeNone];
     
@@ -461,11 +461,23 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 }
 
 - (void)serviceConnectionToServerTimedOut {
+    [navBarLoadingIndicator stopAnimating];
     [searchActivityIndicator stopAnimating];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    [alert release];
-    
+    [internetConnectionAlert release];
+    internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [internetConnectionAlert show];    
+}
+
+/* UIAlertViewDelegate */
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (alertView == internetConnectionAlert) {
+        [internetConnectionAlert release];
+        internetConnectionAlert = nil;
+        if (initialQuery && self.navigationController.visibleViewController == self) { //leave map if initial search query was not successful
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
 }
 
 /* CustomOverlayViewDelegate */
@@ -514,6 +526,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [layersOverlayView cancelTilesDownload:YES];
     layersOverlayView.delegate = nil;
     [layersOverlayView release];
+    if (internetConnectionAlert) {
+        internetConnectionAlert.delegate = nil;
+    }
+    [internetConnectionAlert release];
     [initialQuery release];
     [initialQueryManualPinLabelText release];
     [super dealloc];
