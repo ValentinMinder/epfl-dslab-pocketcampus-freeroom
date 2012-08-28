@@ -133,7 +133,9 @@ static NSTimeInterval connectivityCheckTimeout;
 
 /* END OF ASIHTTPRequestDelegate delegation */
 
-/* pass nil to cancel all operations */
+/* pass nil to cancel all operations
+ * KNOW BUG : if checkServerRequest is still in progress, calling cancelOperationsForDelegate will cancel operations for ALL delegates !!
+ */
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
     for (NSOperation* operation in operationQueue.operations) {        
@@ -170,7 +172,10 @@ static NSTimeInterval connectivityCheckTimeout;
 
 - (void)notifyAll {
     while (dispatch_semaphore_signal(semaphore) != 0); //notify all
-    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrease it
+    dispatch_semaphore_wait(semaphore, 0); //the while has incremented the counter one too much, so must decrement it once
+    /*dispatch_release(semaphore);
+    semaphore = nil;
+    semaphore = dispatch_semaphore_create(0);*/
 }
 
 - (id)thriftProtocolInstance {
@@ -342,6 +347,7 @@ static NSTimeInterval connectivityCheckTimeout;
         }
         
         if (self.service != nil && ![self.service serverIsReachable]) {
+            NSLog(@"-> Server not reachable");
             [self didTimeout];
             return;
         }

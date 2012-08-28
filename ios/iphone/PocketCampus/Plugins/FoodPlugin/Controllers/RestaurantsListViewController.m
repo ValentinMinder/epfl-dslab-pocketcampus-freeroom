@@ -35,8 +35,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [centerActivityIndicator startAnimating];
-    centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
+    [self refresh];
     UIBarButtonItem* refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     [refreshButton release];
@@ -72,9 +71,6 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     [super viewWillAppear:animated];
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
-    //self.navigationItem.rightBarButtonItem.enabled = NO;
-    [foodService cancelOperationsForDelegate:self];
-    [foodService getMealsWithDelegate:self];
 }
 
 - (void)refresh {
@@ -101,7 +97,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
         [self getMealsNoMeals];
         return;
     }
-    BOOL difference = NO;
+    /*BOOL difference = NO;
     BOOL mealsWasNil = (meals == nil);
     if (meals != nil && meals.count == meals_.count) {
         for (int i = 0; i<meals.count; i++) {
@@ -115,19 +111,14 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
         if (!difference && !self.tableView.hidden) {
             return;
         }
-    }
+    }*/
     [meals release];
     meals = [meals_ retain];
-    
     [self populateRestaurantsAndMeals];
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     tableView.hidden = NO;
-    if (mealsWasNil) {
-        [PCUtils reloadTableView:tableView withFadingDuration:0.2];
-    } else {
-        [tableView reloadData];
-    }
+    [PCUtils reloadTableView:tableView withFadingDuration:0.2];
 }
 
 - (void)getMealsNoMeals {
@@ -183,7 +174,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Restaurant* restaurant = [restaurants objectAtIndex:indexPath.row];
-    MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:[restaurantsAndMeals objectForKey:restaurant.name]];
+    MenusListViewController* controller = [[MenusListViewController alloc] initWithRestaurantName:restaurant.name andMeals:[restaurantsAndMeals objectForKey:restaurant.name]]; //must not give a copy but current reference, so that rating can be updated on this instance directly
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

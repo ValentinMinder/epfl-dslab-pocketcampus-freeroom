@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "309"
-         endingLineNumber = "309"
+         startingLineNumber = "314"
+         endingLineNumber = "314"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "589"
-         endingLineNumber = "589"
+         startingLineNumber = "595"
+         endingLineNumber = "595"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "669"
-         endingLineNumber = "669"
+         startingLineNumber = "675"
+         endingLineNumber = "675"
          landmarkName = "-addDoubleArgument:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "735"
-         endingLineNumber = "735"
+         startingLineNumber = "741"
+         endingLineNumber = "741"
          landmarkName = "+wrapArgumentChar:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "295"
-         endingLineNumber = "295"
+         startingLineNumber = "300"
+         endingLineNumber = "300"
          landmarkName = "-timeoutTime"
          landmarkType = "5">
       </FileBreakpoint>
@@ -190,11 +190,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "543"
-         endingLineNumber = "543"
+         startingLineNumber = "549"
+         endingLineNumber = "549"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -229,7 +229,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "179"
@@ -254,19 +254,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "366710058.975497"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "370"
-         endingLineNumber = "370"
-         landmarkName = "@implementation MapViewController"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Model/MapUtils.m"
          timestampString = "365457783.702366"
          startingColumnNumber = "9223372036854775807"
@@ -274,45 +261,6 @@
          startingLineNumber = "366"
          endingLineNumber = "366"
          landmarkName = "+WGStoCH1903:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "366710058.975497"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "375"
-         endingLineNumber = "375"
-         landmarkName = "-mapView:regionDidChangeAnimated:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "366710058.975497"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "387"
-         endingLineNumber = "387"
-         landmarkName = "-mapView:regionDidChangeAnimated:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "366710058.975497"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "257"
-         endingLineNumber = "257"
-         landmarkName = "-updateFloorLabel"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -346,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "933"
-         endingLineNumber = "933"
+         startingLineNumber = "939"
+         endingLineNumber = "939"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -482,7 +430,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "48"
@@ -504,7 +452,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "181"
@@ -532,7 +480,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "52"
@@ -554,7 +502,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366731703.379941"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "209"
@@ -582,7 +530,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "102"
@@ -604,7 +552,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "181"
@@ -617,7 +565,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "39"
@@ -639,7 +587,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366584497.50701"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "64"
@@ -702,7 +650,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366731703.379941"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "246"
@@ -724,7 +672,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Views/CustomOverlayView.m"
-         timestampString = "366731703.379941"
+         timestampString = "366890798.321676"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "222"
@@ -867,19 +815,6 @@
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
-         timestampString = "366665672.527785"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "148"
-         endingLineNumber = "148"
-         landmarkName = "-serviceConnectionToServerTimedOut"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
          timestampString = "366543363.001214"
@@ -948,11 +883,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "173"
-         endingLineNumber = "173"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "-notifyAll"
          landmarkType = "5">
          <Actions>
@@ -1014,11 +949,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545950.182438"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
+         startingLineNumber = "159"
+         endingLineNumber = "159"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -1064,11 +999,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "366545995.270428"
+         timestampString = "367873170.706783"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "345"
-         endingLineNumber = "345"
+         startingLineNumber = "351"
+         endingLineNumber = "351"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -1121,11 +1056,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/NewsPlugin/Controllers/NewsItemViewController.m"
-         timestampString = "366728981.411358"
+         timestampString = "367874022.22085"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "258"
-         endingLineNumber = "258"
+         startingLineNumber = "268"
+         endingLineNumber = "268"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -1143,13 +1078,101 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Controllers/RestaurantsListViewController.m"
-         timestampString = "366730025.608321"
+         timestampString = "367873078.356808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "99"
-         endingLineNumber = "99"
+         startingLineNumber = "95"
+         endingLineNumber = "95"
          landmarkName = "-getMealsDidReturn:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Controllers/Common/PluginController.m"
+         timestampString = "366764226.688917"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "17"
+         endingLineNumber = "17"
+         landmarkName = "-dealloc"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "dealloc PluginController"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "367864381.289796"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "116"
+         endingLineNumber = "116"
+         landmarkName = "-requestFinished:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "request returned"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "367864466.746012"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "77"
+         endingLineNumber = "77"
+         landmarkName = "-serverIsReachable"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "Reachability returned no connection"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "367873170.706783"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "166"
+         endingLineNumber = "166"
+         landmarkName = "-cancelOperationsForDelegate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "cancelOpsForDelegate finished"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

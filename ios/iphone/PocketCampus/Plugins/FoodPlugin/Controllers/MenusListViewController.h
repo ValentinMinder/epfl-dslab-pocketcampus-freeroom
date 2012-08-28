@@ -12,6 +12,8 @@
 
 #import "MealCell.h"
 
+@class RestaurantsListViewController;
+
 @interface MenusListViewController : UIViewController {
     UITableView* tableView;
     NSString* restaurantName;

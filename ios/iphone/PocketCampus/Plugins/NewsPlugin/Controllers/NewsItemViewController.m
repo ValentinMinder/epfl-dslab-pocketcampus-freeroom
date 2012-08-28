@@ -181,6 +181,7 @@ static int NEWS_FONT_SIZE = 14.0;
     webView = [[UIWebView alloc] initWithFrame:CGRectMake(2.0, startY, 310.0, 50.0)]; //height will be recomputed when HTML loaded in delegate call
     webView.scrollView.scrollEnabled = NO;
     webView.delegate = self;
+    webView.hidden = YES;
     NSString* contentWithStyle = [NSString stringWithFormat:@"<meta charset='utf-8'><meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx; word-wrap:break-word; text-align:left;'>%@</span>", NEWS_FONT_SIZE, [NewsUtils htmlReplaceWidthInContent:content ifWidthHeigherThan:300]];
     
     [webView loadHTMLString:contentWithStyle baseURL:nil];
@@ -194,6 +195,7 @@ static int NEWS_FONT_SIZE = 14.0;
 }
 
 - (void)serviceConnectionToServerTimedOut {
+    webView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
@@ -209,6 +211,7 @@ static int NEWS_FONT_SIZE = 14.0;
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [centerActivityIndicator stopAnimating];
     [webView sizeToFit];
+    webView.hidden = NO;
     CGFloat scrollViewContentHeight = webView.frame.origin.y+webView.frame.size.height;
     
     if (scrollViewContentHeight <= self.view.frame.size.height) {
@@ -221,6 +224,13 @@ static int NEWS_FONT_SIZE = 14.0;
     [reachability release];
     reachability = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+- (void)webView:(UIWebView *)webView_ didFailLoadWithError:(NSError *)error {
+    webView.hidden = YES;
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    centerMessageLabel.hidden = NO;
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

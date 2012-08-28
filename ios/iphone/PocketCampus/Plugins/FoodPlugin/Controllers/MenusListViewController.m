@@ -12,6 +12,8 @@
 
 #import "MapController.h"
 
+#import "RestaurantsListViewController.h"
+
 @implementation MenusListViewController
 
 @synthesize tableView;
@@ -83,7 +85,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 }
 
 - (void)showMapButtonIfPossible {
-    if (restaurantName == nil || [restaurantName isEqualToString:@"Bistro 31"] || [restaurantName isEqualToString:@"Hong Thaï Rung"]) { //map plugin does not know these restaurants
+    if (restaurantName == nil || [restaurantName isEqualToString:@"Bistro 31"] || [restaurantName isEqualToString:@"Hong Thaï Rung"] || [restaurantName isEqualToString:@"Maharaja"]) { //map plugin does not know these restaurants
         return;
     }
     UIBarButtonItem* mapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Map", @"FoodPlugin", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(mapButtonPressed)];
@@ -118,7 +120,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 - (void)setUpdatedRating:(Rating*)newRating forMeal:(Meal*)meal {
     for (Meal* meal2 in meals) {
         if (meal.mealId == meal2.mealId) {
-            [meal2 setRating:newRating];
+            [meal2 setRating:newRating]; // instance shared with RestaurantsListViewController so that if this restaurant is poped from stacked and pushed again, new rating is kept  
         }
     }
 }
