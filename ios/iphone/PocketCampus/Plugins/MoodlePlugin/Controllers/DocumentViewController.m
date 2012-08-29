@@ -112,6 +112,7 @@
     webView.delegate = nil;
     [webView stopLoading];
     [documentURL release];
+    docInteractionController.delegate = nil;
     [docInteractionController release];
     [super dealloc];
 }

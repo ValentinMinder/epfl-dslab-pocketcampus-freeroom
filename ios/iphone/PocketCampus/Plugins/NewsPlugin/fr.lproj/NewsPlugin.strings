@@ -7,6 +7,6 @@
 */
 
 "PluginName" = "News";
-"CenterLabelLoadingText" = "Chargement des news\nVeuillez patienter";
+"CenterLabelLoadingText" = "Chargement des news";
 "OpenInSafari" = "Ouvrir dans Safari";
 "ClickLinkLeaveApplicationExplanation" = "Vous allez quitter l'application. Continuer ?";
