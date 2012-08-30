@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1997124615EFC2BF00E2A679 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1997124515EFC2BF00E2A679 /* libGoogleAnalytics.a */; };
+		1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B7322515C206F30091757D /* libsqlite3.dylib */; };
 		27D7B8ED15C95BB500F4E9FE /* AppLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D7B8EC15C95BB500F4E9FE /* AppLogo.png */; };
 		32015037150401E000FF87B6 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32015036150401E000FF87B6 /* DirectoryLarge.png */; };
 		3203ECD41503C01E004C2A13 /* LoadingIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 3203ECD31503C01E004C2A13 /* LoadingIndicator.png */; };
@@ -229,6 +231,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1997124215EFC29C00E2A679 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = GALib/GANTracker.h; sourceTree = "<group>"; };
+		1997124515EFC2BF00E2A679 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = GALib/libGoogleAnalytics.a; sourceTree = "<group>"; };
+		1997124B15EFC9A200E2A679 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		27D7B8EC15C95BB500F4E9FE /* AppLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogo.png; sourceTree = "<group>"; };
 		32015036150401E000FF87B6 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
@@ -596,6 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */,
 				32B8928215458BD70058E472 /* libz.dylib in Frameworks */,
 				32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */,
 				32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */,
@@ -608,12 +614,22 @@
 				3219EF5114FCDE4900A271CD /* UIKit.framework in Frameworks */,
 				3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */,
 				3219EF5514FCDE4900A271CD /* CoreGraphics.framework in Frameworks */,
+				1997124615EFC2BF00E2A679 /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1997124415EFC2A500E2A679 /* GALib */ = {
+			isa = PBXGroup;
+			children = (
+				1997124515EFC2BF00E2A679 /* libGoogleAnalytics.a */,
+				1997124215EFC29C00E2A679 /* GANTracker.h */,
+			);
+			name = GALib;
+			sourceTree = "<group>";
+		};
 		320A05B315B02D5F0057B15C /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +648,7 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
+				1997124B15EFC9A200E2A679 /* libsqlite3.0.dylib */,
 				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,
@@ -703,6 +720,7 @@
 		3219EF6714FCE02F00A271CD /* ExternalFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1997124415EFC2A500E2A679 /* GALib */,
 				32B89259154589D70058E472 /* ASIHTTPRequest */,
 				32663945150C00E100719F6E /* UIDeviceUniqueID */,
 				3219EF6814FCE08300A271CD /* ThriftFramework */,
@@ -2173,6 +2191,10 @@
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				INFOPLIST_FILE = "PocketCampus/PocketCampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/GALib\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2185,6 +2207,10 @@
 				GCC_PREFIX_HEADER = "PocketCampus/PocketCampus-Prefix.pch";
 				INFOPLIST_FILE = "PocketCampus/PocketCampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/GALib\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

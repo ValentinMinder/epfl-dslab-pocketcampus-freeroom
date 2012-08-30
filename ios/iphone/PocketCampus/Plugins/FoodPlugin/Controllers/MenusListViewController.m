@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "MenusListViewController.h"
 
 #import "PCTableViewSectionHeader.h"
@@ -68,6 +70,7 @@ static NSString* kMealCellIdentifier = @"mealCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/food/restaurant" withError:NULL];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.sectionHeaderHeight = [PCValues tableViewSectionHeaderHeight];
     [self showMapButtonIfPossible];

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "NewsItemViewController.h"
 
 #import "PCValues.h"
@@ -57,6 +59,7 @@ static int NEWS_FONT_SIZE = 14.0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/news/item" withError:NULL];
     scrollView.accessibilityIdentifier = @"NewsItemScrollView";
     self.title = newsItem.title;
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];

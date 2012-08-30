@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "DocumentViewController.h"
 
 @implementation DocumentViewController
@@ -26,6 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
     docInteractionController.delegate = self;
     //webView.hidden = YES;
     webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled

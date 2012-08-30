@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "MealCell.h"
 
 #import "food.h"
@@ -148,7 +150,8 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [controller showMapButtonIfPossible];
 }
 
-- (void)okPressed {
+- (void)okPressed {    
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/food/restaurant/click/rate" withError:NULL];
     [ratingActivityIndicator startAnimating];
     [self setVoteMode:VoteModeDisabled animated:YES];
     //[service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];

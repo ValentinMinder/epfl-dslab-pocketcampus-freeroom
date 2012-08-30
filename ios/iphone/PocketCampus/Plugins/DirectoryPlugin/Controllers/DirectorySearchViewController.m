@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "DirectorySearchViewController.h"
 
 #import "MapController.h"
@@ -38,6 +40,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/directory" withError:NULL];
     searchBar.placeholder = NSLocalizedStringFromTable(@"SearchFieldPlaceholder", @"DirectoryPlugin", @"");
     [searchBar setIsAccessibilityElement:YES];
     searchBar.accessibilityLabel = NSLocalizedStringFromTable(@"SearchBar", @"DirectoryPlugin", nil);
@@ -321,6 +324,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 /* AdressBook and records creation stuff */
 
 - (void)pushViewControllerForPerson:(Person*)person {
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/directory/click/person" withError:NULL];
     if ([self.navigationController.topViewController isKindOfClass:[ABUnknownPersonViewController class]]) {
         return;
     }

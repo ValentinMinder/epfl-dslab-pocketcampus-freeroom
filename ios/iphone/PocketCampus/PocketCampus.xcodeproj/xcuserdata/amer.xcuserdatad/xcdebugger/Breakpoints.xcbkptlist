@@ -4,17 +4,17 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MoodlePlugin/Controllers/CourseSectionsViewController.m"
-         timestampString = "364384165.259351"
+         timestampString = "368046737.443181"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "167"
-         endingLineNumber = "167"
-         landmarkName = "-initDocController:"
-         landmarkType = "5">
+         startingLineNumber = "170"
+         endingLineNumber = "170"
+         landmarkName = "@implementation CourseSectionsViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -26,7 +26,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "284"
          endingLineNumber = "284"
-         landmarkName = "-main"
+         landmarkName = "-checkPrimariesAndScheduleTimeoutTimer"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -63,8 +63,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "164"
          endingLineNumber = "164"
-         landmarkName = "@implementation Service"
-         landmarkType = "3">
+         landmarkName = "-cancelOperationsForDelegate:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -89,7 +89,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "43"
          endingLineNumber = "43"
-         landmarkName = "+savedPassword"
+         landmarkName = "+saveUsername:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -141,8 +141,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "108"
          endingLineNumber = "108"
-         landmarkName = "@implementation Service"
-         landmarkType = "3">
+         landmarkName = "-serviceName"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -167,7 +167,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "151"
          endingLineNumber = "151"
-         landmarkName = "-cancelAllOperations"
+         landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -180,7 +180,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "156"
          endingLineNumber = "156"
-         landmarkName = "-notifyAll"
+         landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -193,7 +193,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "75"
          endingLineNumber = "75"
-         landmarkName = "+requestTimeoutInterval"
+         landmarkName = "-serverIsReachable"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -206,8 +206,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "251"
          endingLineNumber = "251"
-         landmarkName = "-initWithThriftServiceClient:service:delegate:"
-         landmarkType = "5">
+         landmarkName = "@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;"
+         landmarkType = "19">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -219,7 +219,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "277"
          endingLineNumber = "277"
-         landmarkName = "-timeoutTime"
+         landmarkName = "-checkPrimariesAndScheduleTimeoutTimer"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -232,8 +232,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "126"
          endingLineNumber = "126"
-         landmarkName = "@implementation Service"
-         landmarkType = "3">
+         landmarkName = "-requestFailed:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -249,7 +249,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "CamiproViewController.h"
 
 #import "PCValues.h"
@@ -47,6 +49,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.contentInset = UIEdgeInsetsMake(0, 0, toolbar.frame.size.height, 0);
     lastUpdateLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0, 0.0, 240.0, self.toolbar.frame.size.height)];
@@ -327,12 +330,14 @@ static CGFloat kBalanceCellHeight = 70.0;
     switch (buttonIndex) {
         case 0: //reload instructions
         {
+            [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/reload" withError:NULL];
             sendMailAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ReloadInstructions", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"ReloadInstructionsSendMailExplanations", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:NSLocalizedStringFromTable(@"Send", @"CamiproPlugin", nil), nil];
             [sendMailAlertView show];
             break;
         }
         case 1: //statistics
         {
+            [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/stats" withError:NULL];
             statsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Statistics", @"CamiproPlugin", nil) message:NSLocalizedStringFromTable(@"Loading...", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:nil];
             [statsAlertView show];
             CamiproRequest* statsRequest = [[CamiproRequest alloc] initWithISessionId:[self buildSessionIdFromCamiproSession:[CamiproService lastSessionId]] iLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]];
@@ -356,6 +361,7 @@ static CGFloat kBalanceCellHeight = 70.0;
             [camiproService cancelOperationsForDelegate:self];
             return;
         }
+        [[GANTracker sharedTracker] trackPageview:@"/v3r1/camipro/click/email" withError:NULL];
         sendMailAlertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"Sending...", @"CamiproPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles: nil];
         [sendMailAlertView show];
         

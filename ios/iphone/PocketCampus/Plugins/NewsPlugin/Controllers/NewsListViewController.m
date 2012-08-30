@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "NewsListViewController.h"
 
 #import "news.h"
@@ -46,6 +48,7 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/news" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     tableView.rowHeight = 50.0;
     tableView.backgroundColor = [UIColor clearColor];

@@ -12,12 +12,18 @@
 
 #import "MapServiceTests.h"
 
+#import "GANTracker.h"
+
+static const NSInteger kGANDispatchPeriodSec = 10;
+static NSString* const kAnalyticsAccountId = @"UA-22135241-3";
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
 
 - (void)dealloc
 {
+    [[GANTracker sharedTracker] stopTracker];
     [mainController release];
     [_window release];
     [super dealloc];
@@ -25,6 +31,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
+                                           dispatchPeriod:kGANDispatchPeriodSec
+                                                 delegate:self];
+    /*NSError *error;
+    
+    if (![[GANTracker sharedTracker] setCustomVariableAtIndex:1
+                                                         name:@"iOS1"
+                                                        value:@"iv1"
+                                                    withError:&error]) {
+        NSLog(@"error in setCustomVariableAtIndex");
+    }
+    
+    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
+                                         action:@"Launch iOS"
+                                          label:@"Example iOS"
+                                          value:99
+                                      withError:&error]) {
+        NSLog(@"error in trackEvent");
+    }
+    
+    if (![[GANTracker sharedTracker] trackPageview:@"/app_entry_point"
+                                         withError:&error]) {
+        NSLog(@"error in trackPageview");
+    }*/
+    
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
@@ -78,6 +110,16 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"PC_DEV_MODE"];
+}
+
+// Google Analytics Delegation
+
+- (void)trackerDispatchDidComplete:(GANTracker *)tracker eventsDispatched:(NSUInteger)eventsDispatched eventsFailedDispatch:(NSUInteger)eventsFailedDispatch {
+    NSLog(@"Google Analytics Dispatch: succeeded:%i, failed:%i",eventsDispatched,eventsFailedDispatch);
+}
+
+- (void)hitDispatched:(NSString *)hitString {
+    //NSLog(@"Google Analytics hitDispatched: %@",hitString);
 }
 
 @end

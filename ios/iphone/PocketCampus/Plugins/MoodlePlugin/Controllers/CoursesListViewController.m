@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "CoursesListViewController.h"
 
 #import "CourseSectionsViewController.h"
@@ -36,6 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     coursesList.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:coursesList.frame];

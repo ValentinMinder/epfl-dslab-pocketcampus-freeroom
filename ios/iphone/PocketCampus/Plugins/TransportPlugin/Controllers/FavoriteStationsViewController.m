@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "FavoriteStationsViewController.h"
 
 #import "AddStationViewController.h"
@@ -41,6 +43,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/favorites" withError:NULL];
     tableView.editing = NO;
     touchAddInstructionsLabel.text = NSLocalizedStringFromTable(@"TouchAddStationInstructions", @"TransportPlugin", nil);
     self.title = NSLocalizedStringFromTable(@"FavoriteStationsTitle", @"TransportPlugin", nil);

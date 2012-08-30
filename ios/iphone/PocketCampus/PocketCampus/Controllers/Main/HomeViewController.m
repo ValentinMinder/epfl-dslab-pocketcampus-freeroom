@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "HomeViewController.h"
 #import "HomeIcon.h"
 #import "PluginController.h"
@@ -28,6 +30,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard" withError:NULL];
     self.title = NSLocalizedStringFromTable(@"HomeViewControllerTitle", @"PocketCampus", @"Text that will be displayed in nav bar of Home");
     UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"HomeNavbar"] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;

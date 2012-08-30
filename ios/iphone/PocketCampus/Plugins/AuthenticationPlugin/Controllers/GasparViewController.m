@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "GasparViewController.h"
 
 #import "AuthenticationService.h"
@@ -46,6 +48,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/authentication" withError:NULL];
     self.title = [[self class] localizedTitle];
     tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];
@@ -187,6 +190,7 @@
         }
     } else {
         if (indexPath.section == 1 && loginCell.textLabel.enabled) { //login button
+            [[GANTracker sharedTracker] trackPageview:@"/v3r1/authentication/click/login" withError:NULL];
             [loadingIndicator startAnimating];
             [usernameTextField resignFirstResponder];
             usernameTextField.enabled = NO;

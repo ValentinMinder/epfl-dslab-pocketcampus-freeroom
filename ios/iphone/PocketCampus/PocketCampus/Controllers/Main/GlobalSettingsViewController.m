@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "GlobalSettingsViewController.h"
 
 #import "PCValues.h"
@@ -36,6 +38,7 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/dashboard/settings" withError:NULL];
     self.title = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     tableView.backgroundColor = [UIColor clearColor];
     UIView* backgroundView = [[UIView alloc] initWithFrame:tableView.frame];

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "MapViewController.h"
 
 #import "MapItemAnnotation.h"
@@ -65,6 +67,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    if (initialQuery)
+        [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/results" withError:NULL];
+    else
+        [[GANTracker sharedTracker] trackPageview:@"/v3r1/map" withError:NULL];
     UITapGestureRecognizer* mapTap = [[UITapGestureRecognizer alloc] initWithTarget:searchBar action:@selector(resignFirstResponder)];
     mapTap.cancelsTouchesInView = NO;
     mapTap.delegate = self;
@@ -189,6 +195,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             break;
         case SearchBarStateVisible:
         {
+            [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/search" withError:NULL];
             searchBarState = SearchBarStateVisible;
             UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(toogleSearchBar)];
             [self.navigationItem setRightBarButtonItem:button animated:YES];
@@ -211,6 +218,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (IBAction)myLocationPressed {    
     if (mapView.userTrackingMode == MKUserTrackingModeNone) {
+        [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/mylocation" withError:NULL];
         [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
         mapView.showsUserLocation = YES;
         [mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];

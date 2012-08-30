@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "AddStationViewController.h"
 
 #import "TransportUtils.h"
@@ -32,6 +34,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/favorites/add" withError:NULL];
     searchBar.prompt = NSLocalizedStringFromTable(@"SearchBarStationPrompt", @"TransportPlugin", nil);
     searchBar.isAccessibilityElement = YES;
     searchBar.accessibilityIdentifier = @"SearchBar";

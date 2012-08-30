@@ -10,7 +10,9 @@
 
 #import "MainController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+#import "GANTracker.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, GANTrackerDelegate> {
     MainController* mainController;
 }
 

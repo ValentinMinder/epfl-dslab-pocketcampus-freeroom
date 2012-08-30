@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "CourseSectionsViewController.h"
 
 #import "AuthenticationController.h"
@@ -44,6 +46,7 @@ static int kActivityIndicatorViewTag = 3;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.   
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course" withError:NULL];
     self.view.backgroundColor = [PCValues backgroundColor1];
     sectionsList.hidden = YES;
     sectionsList.backgroundColor = [UIColor clearColor];

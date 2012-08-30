@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import "GANTracker.h"
+
 #import "TransportHelpViewController.h"
 
 #import "PCValues.h"
@@ -26,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/help" withError:NULL];
 	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissViewController)];
