@@ -206,8 +206,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "251"
          endingLineNumber = "251"
-         landmarkName = "@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;"
-         landmarkType = "19">
+         landmarkName = "@implementation NSOperationWithDelegate"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -219,8 +219,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "277"
          endingLineNumber = "277"
-         landmarkName = "-checkPrimariesAndScheduleTimeoutTimer"
-         landmarkType = "5">
+         landmarkName = "@implementation ServiceRequest"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"

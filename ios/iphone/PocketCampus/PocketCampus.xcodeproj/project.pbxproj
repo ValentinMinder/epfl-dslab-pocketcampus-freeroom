@@ -233,7 +233,6 @@
 /* Begin PBXFileReference section */
 		1997124215EFC29C00E2A679 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = GALib/GANTracker.h; sourceTree = "<group>"; };
 		1997124515EFC2BF00E2A679 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = GALib/libGoogleAnalytics.a; sourceTree = "<group>"; };
-		1997124B15EFC9A200E2A679 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		27D7B8EC15C95BB500F4E9FE /* AppLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogo.png; sourceTree = "<group>"; };
 		32015036150401E000FF87B6 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		3203ECD31503C01E004C2A13 /* LoadingIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoadingIndicator.png; sourceTree = "<group>"; };
@@ -648,7 +647,6 @@
 		3219EF4114FCDE4800A271CD = {
 			isa = PBXGroup;
 			children = (
-				1997124B15EFC9A200E2A679 /* libsqlite3.0.dylib */,
 				27D7B8EC15C95BB500F4E9FE /* AppLogo.png */,
 				32662742151FC7CE002FA0E5 /* AppLogo@2x.png */,
 				32B2F1881533439E00FB8C79 /* Default.png */,

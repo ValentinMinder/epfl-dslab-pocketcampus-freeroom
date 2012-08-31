@@ -15,7 +15,7 @@
 #import "GANTracker.h"
 
 static const NSInteger kGANDispatchPeriodSec = 10;
-static NSString* const kAnalyticsAccountId = @"UA-22135241-3";
+//static NSString* const kAnalyticsAccountId = @"UA-22135241-3";
 
 @implementation AppDelegate
 
@@ -31,6 +31,13 @@ static NSString* const kAnalyticsAccountId = @"UA-22135241-3";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
+    NSString* kAnalyticsAccountId = nil;
+    if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]]) {
+        kAnalyticsAccountId = [config objectForKey:@"DEV_ANALYTICS_TRACKINGCODE"];
+    } else {
+        kAnalyticsAccountId = [config objectForKey:@"PROD_ANALYTICS_TRACKINGCODE"];
+    }
     [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
                                            dispatchPeriod:kGANDispatchPeriodSec
                                                  delegate:self];

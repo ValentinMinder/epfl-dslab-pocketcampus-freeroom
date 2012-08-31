@@ -16,6 +16,8 @@
 	<string>9090</string>
 	<key>DEV_SERVER_VERSION</key>
 	<string>v3r1</string>
+	<key>DEV_ANALYTICS_TRACKINGCODE</key>
+	<string>UA-123456-1</string>
 	<key>PROD_SERVER_PROTO</key>
 	<string>http</string>
 	<key>PROD_SERVER_ADDRESS</key>
@@ -24,5 +26,7 @@
 	<string>443</string>
 	<key>PROD_SERVER_VERSION</key>
 	<string>v3r1</string>
+	<key>PROD_ANALYTICS_TRACKINGCODE</key>
+	<string>UA-22135241-3</string>
 </dict>
 </plist>
