@@ -10,16 +10,26 @@
 
 #import "DocumentViewController.h"
 
+
+
 @implementation DocumentViewController
 
 @synthesize webView, centerActivityIndicator, centerMessageLabel;
 
-- (id)initWithDocumentLocalURL:(NSURL*)documentURL_
+- (id)initWithDocumentRemoteURLString:(NSString*)documentRemoteURL;
 {
     self = [super initWithNibName:@"DocumentView" bundle:nil];
     if (self) {
-        documentURL = [documentURL_ retain];
-        docInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:documentURL] retain];
+        documentRemoteURLString = [documentRemoteURL retain];
+        documentLocalURL = nil;
+        docInteractionController = nil;
+        moodleService = [[MoodleService sharedInstanceToRetain] retain];
+        NSString* tmpLocalURL = [moodleService localPathForURL:documentRemoteURLString];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:tmpLocalURL]) { //check if downloaded already
+            documentLocalURL = [[NSURL fileURLWithPath:tmpLocalURL] retain];
+            docInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:documentLocalURL] retain];
+            docInteractionController.delegate = self;
+        }
     }
     return self;
 }
@@ -29,15 +39,20 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
-    docInteractionController.delegate = self;
-    //webView.hidden = YES;
     webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled
-    //[centerActivityIndicator startAnimating];
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     self.navigationItem.rightBarButtonItem = actionButton;
     [actionButton release];
-    
-    [webView loadRequest:[NSURLRequest requestWithURL:documentURL]];
+    [centerActivityIndicator startAnimating];
+    webView.hidden = YES;
+    if (documentLocalURL) {
+        [webView loadRequest:[NSURLRequest requestWithURL:documentLocalURL]];
+    } else { //needs to be downloaded
+        [centerActivityIndicator startAnimating];
+        centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
+        [moodleService fetchMoodleResourceWithURL:documentRemoteURLString cookie:moodleService.moodleCookie delegate:self];
+        actionButton.enabled = NO;
+    }
 }
 
 - (void)viewDidUnload
@@ -62,6 +77,29 @@
         [alertView show];
         [alertView release];
     }
+}
+
+/* MoodleServiceDelegate delegation */
+
+- (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest *)request {
+    centerMessageLabel.hidden = YES;
+    documentLocalURL = [[NSURL fileURLWithPath:[moodleService localPathForURL:request.url.absoluteString]] retain];
+    docInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:documentLocalURL] retain];
+    docInteractionController.delegate = self;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [webView loadRequest:[NSURLRequest requestWithURL:documentLocalURL]];
+}
+
+- (void)fetchMoodleResourceFailed:(ASIHTTPRequest *)request {
+    webView.hidden = YES;
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
+}
+
+- (void)serviceConnectionToServerTimedOut {
+    webView.hidden = YES;
+    [centerActivityIndicator stopAnimating];
+    centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
 }
 
 /* UIDocumentInteractionControllerDelegate delegation */
@@ -104,7 +142,7 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([request.URL.path isEqualToString:documentURL.path]) {
+    if ([request.URL.path isEqualToString:documentLocalURL.path]) {
         return YES;
     }
     [[UIApplication sharedApplication] openURL:request.URL]; //open in Safari so that current webview does not leave document
@@ -112,9 +150,12 @@
 }
 
 - (void)dealloc {
+    [moodleService cancelOperationsForDelegate:self];
+    [moodleService release];
     webView.delegate = nil;
     [webView stopLoading];
-    [documentURL release];
+    [documentRemoteURLString release];
+    [documentLocalURL release];
     docInteractionController.delegate = nil;
     [docInteractionController release];
     [super dealloc];

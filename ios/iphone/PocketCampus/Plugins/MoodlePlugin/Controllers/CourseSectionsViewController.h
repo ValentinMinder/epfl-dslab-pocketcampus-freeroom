@@ -18,7 +18,6 @@
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UITableView* sectionsList;
-    UIActivityIndicatorView* currentLoadingView;
     MoodleService* moodleService;
     NSArray* iSections;
     int courseId;

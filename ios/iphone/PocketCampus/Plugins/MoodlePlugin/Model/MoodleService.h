@@ -24,7 +24,7 @@
 - (void)getEventsList:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 - (void)getCourseSections:(MoodleRequest*)aMoodleRequest withDelegate:(id)delegate;
 
-- (void)fetchMoodleResource:(NSString*)cookie :(NSString*)url withDelegate:(id)delegate;
+- (void)fetchMoodleResourceWithURL:(NSString*)url cookie:(NSString*)cookie delegate:(id)delegate;
 
 @end
 

@@ -7,7 +7,7 @@
 
 static MoodleService* instance = nil;
 
-static int kFetchMoodleResourceTimeoutSeconds = 120; //must be long to download heavy PDFs on 3G
+static int kFetchMoodleResourceTimeoutSeconds = 20;
 
 static NSString* kMoodleCookieKey = @"moodleCookie";
 
@@ -132,7 +132,7 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     [operation release];
 }
 
-- (void)fetchMoodleResource:(NSString*)cookie :(NSString*)url withDelegate:(id)delegate {    
+- (void)fetchMoodleResourceWithURL:(NSString*)url cookie:(NSString*)cookie delegate:(id)delegate {    
     NSURL *nsurl = [NSURL URLWithString:url];
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
     

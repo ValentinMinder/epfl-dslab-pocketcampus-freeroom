@@ -31,38 +31,8 @@ static const NSInteger kGANDispatchPeriodSec = 10;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
-    NSString* kAnalyticsAccountId = nil;
-    if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]]) {
-        kAnalyticsAccountId = [config objectForKey:@"DEV_ANALYTICS_TRACKINGCODE"];
-    } else {
-        kAnalyticsAccountId = [config objectForKey:@"PROD_ANALYTICS_TRACKINGCODE"];
-    }
-    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
-                                           dispatchPeriod:kGANDispatchPeriodSec
-                                                 delegate:self];
-    /*NSError *error;
     
-    if (![[GANTracker sharedTracker] setCustomVariableAtIndex:1
-                                                         name:@"iOS1"
-                                                        value:@"iv1"
-                                                    withError:&error]) {
-        NSLog(@"error in setCustomVariableAtIndex");
-    }
-    
-    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
-                                         action:@"Launch iOS"
-                                          label:@"Example iOS"
-                                          value:99
-                                      withError:&error]) {
-        NSLog(@"error in trackEvent");
-    }
-    
-    if (![[GANTracker sharedTracker] trackPageview:@"/app_entry_point"
-                                         withError:&error]) {
-        NSLog(@"error in trackPageview");
-    }*/
-    
+    [self startGANTracker];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
@@ -119,10 +89,26 @@ static const NSInteger kGANDispatchPeriodSec = 10;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"PC_DEV_MODE"];
 }
 
-// Google Analytics Delegation
+/* Google Analytics init */
+
+- (void)startGANTracker {
+    NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
+    NSString* kAnalyticsAccountId = nil;
+    if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]]) {
+        kAnalyticsAccountId = [config objectForKey:@"DEV_ANALYTICS_TRACKINGCODE"];
+    } else {
+        kAnalyticsAccountId = [config objectForKey:@"PROD_ANALYTICS_TRACKINGCODE"];
+    }
+    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
+                                           dispatchPeriod:kGANDispatchPeriodSec
+                                                 delegate:self];
+
+}
+
+/* Google Analytics Delegation */
 
 - (void)trackerDispatchDidComplete:(GANTracker *)tracker eventsDispatched:(NSUInteger)eventsDispatched eventsFailedDispatch:(NSUInteger)eventsFailedDispatch {
-    NSLog(@"Google Analytics Dispatch: succeeded:%i, failed:%i",eventsDispatched,eventsFailedDispatch);
+    NSLog(@"-> Google Analytics Dispatch: succeeded:%i, failed:%i",eventsDispatched,eventsFailedDispatch);
 }
 
 - (void)hitDispatched:(NSString *)hitString {

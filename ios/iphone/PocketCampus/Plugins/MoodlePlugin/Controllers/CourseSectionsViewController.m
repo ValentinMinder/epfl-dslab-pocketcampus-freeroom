@@ -20,8 +20,6 @@
 
 #import "DocumentViewController.h"
 
-static int kActivityIndicatorViewTag = 3;
-
 @implementation CourseSectionsViewController
 
 @synthesize centerActivityIndicator, centerMessageLabel, sectionsList;
@@ -29,10 +27,8 @@ static int kActivityIndicatorViewTag = 3;
 - (id)initWithCourseId:(int)aCourseId andCourseTitle:(NSString*)aCourseTitle {
     self = [super initWithNibName:@"CourseSectionsView" bundle:nil];
     if (self) {
-        currentLoadingView = nil;
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         authController = [[AuthenticationController alloc] init];
-        currentLoadingView = nil;
         tequilaKey = nil;
         iSections = nil;
         courseId = aCourseId;
@@ -127,14 +123,12 @@ static int kActivityIndicatorViewTag = 3;
         [self computeCurrentWeek];
     }
     [self showToggleButton];
-    [self cancelCurrentDownloadingDocument];
     [PCUtils reloadTableView:sectionsList withFadingDuration:0.3];
 }
 
 
-- (void)presentDocumentViewControllerForFile:(NSURL*)fileURL {
-    currentLoadingView = nil;
-    DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentLocalURL:fileURL];
+- (void)presentDocumentViewControllerForFileRemoteURLString:(NSString*)fileURL {
+    DocumentViewController* docViewController = [[DocumentViewController alloc] initWithDocumentRemoteURLString:fileURL];
     docViewController.title = @""; //TODO
     [self.navigationController pushViewController:docViewController animated:YES];
     [docViewController release];
@@ -147,16 +141,6 @@ static int kActivityIndicatorViewTag = 3;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {    
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-}
-
-- (void)cancelCurrentDownloadingDocument {
-    if (currentLoadingView && [currentLoadingView isAnimating]) {
-        UITableViewCell* prevSelectedCell = (UITableViewCell*)[[currentLoadingView superview] superview];
-        prevSelectedCell.accessoryView.hidden = NO;
-        [moodleService cancelOperationsForDelegate:self];
-        [currentLoadingView stopAnimating];
-        currentLoadingView = nil;
-    }
 }
 
 /* service delegation */
@@ -226,24 +210,6 @@ static int kActivityIndicatorViewTag = 3;
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
 }
 
-- (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest*)request{
-    [currentLoadingView stopAnimating];
-    [[[sectionsList cellForRowAtIndexPath:[sectionsList indexPathForSelectedRow]] accessoryView] setHidden:NO];
-    NSString* localPath = [moodleService localPathForURL:request.url.absoluteString];
-    [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:localPath]];
-}
-
-- (void)fetchMoodleResourceFailed:(ASIHTTPRequest*)request {
-    NSLog(@"-> fetchMoodleResourceFailed");
-    NSIndexPath* selectedIndexPath = [sectionsList indexPathForSelectedRow];
-    [sectionsList deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    [[[sectionsList cellForRowAtIndexPath:selectedIndexPath] accessoryView] setHidden:NO];
-    [currentLoadingView stopAnimating];
-    UIAlertView* downloadErrorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [downloadErrorAlert show];
-    [downloadErrorAlert release];
-}
-
 /* AuthenticationCallbackDelegate delegation */
 
 - (void)authenticationSucceeded {
@@ -266,34 +232,10 @@ static int kActivityIndicatorViewTag = 3;
 /* UITableViewDelegate delegation */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    UIActivityIndicatorView* cellActivityIndicatorView = (UIActivityIndicatorView*)[cell.contentView viewWithTag:kActivityIndicatorViewTag];
-    
-    if (cellActivityIndicatorView == currentLoadingView && [cellActivityIndicatorView isAnimating]) {
-        return;
-    }
-    
-    [self cancelCurrentDownloadingDocument];
-    
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
-    NSString* urlStr = [moodleService localPathForURL:resource.iUrl];
-    NSFileManager *fileManager= [NSFileManager defaultManager]; 
-    if([fileManager fileExistsAtPath:urlStr]) {
-        [self presentDocumentViewControllerForFile:[NSURL fileURLWithPath:urlStr]];
-    } else { //show file loading animation
-        //currentLoadingView = [(UIActivityIndicatorView*)[[tableView cellForRowAtIndexPath:indexPath] viewWithTag:kCourseCellLoadingViewTag] retain];
-        [currentLoadingView release];
-        
-        currentLoadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        currentLoadingView.center = cell.accessoryView.center;
-        currentLoadingView.tag = kActivityIndicatorViewTag;
-        [cell.contentView addSubview:currentLoadingView];
-        cell.accessoryView.hidden = YES;
-        [currentLoadingView startAnimating];
-        [moodleService fetchMoodleResource:moodleService.moodleCookie :resource.iUrl withDelegate:self];
-    }
+    [self presentDocumentViewControllerForFileRemoteURLString:resource.iUrl];
+    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -335,10 +277,6 @@ static int kActivityIndicatorViewTag = 3;
     UITableViewCell* newCell = [sectionsList dequeueReusableCellWithIdentifier:@"MOODLE_SECTIONS_LIST"];
     if (newCell == nil) {
         newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
-        /*UIActivityIndicatorView* loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        loadingView.tag = kCourseCellLoadingViewTag;
-        newCell.accessoryView = loadingView;
-        [loadingView release];*/
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;        
         newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
         newCell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -396,7 +334,6 @@ static int kActivityIndicatorViewTag = 3;
 
 - (void)dealloc
 {
-    [currentLoadingView release];
     [authController release];
     [tequilaKey release];
     [moodleService cancelOperationsForDelegate:self];

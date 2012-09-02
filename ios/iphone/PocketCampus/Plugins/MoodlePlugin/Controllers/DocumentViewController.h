@@ -8,18 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DocumentViewController : UIViewController<UIWebViewDelegate, UIDocumentInteractionControllerDelegate> {
+#import "MoodleService.h"
+
+@interface DocumentViewController : UIViewController<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate> {
     UIWebView* webView;
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UIDocumentInteractionController* docInteractionController;
-    NSURL* documentURL;
+    NSString* documentRemoteURLString;
+    NSURL* documentLocalURL;
+    MoodleService* moodleService;
 }
 
 @property (nonatomic, assign) IBOutlet UIWebView* webView;
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView* centerActivityIndicator;
 @property (nonatomic, assign) IBOutlet UILabel* centerMessageLabel;
 
-- (id)initWithDocumentLocalURL:(NSURL*)documentURL;
+- (id)initWithDocumentRemoteURLString:(NSString*)documentRemoteURL;
 
 @end

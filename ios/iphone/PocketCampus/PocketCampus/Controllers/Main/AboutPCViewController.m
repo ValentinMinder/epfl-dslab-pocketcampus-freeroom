@@ -37,6 +37,11 @@
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"AboutPC" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+    
+    NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    
+    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:version];
+    
     if (!error) {
         [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
     }

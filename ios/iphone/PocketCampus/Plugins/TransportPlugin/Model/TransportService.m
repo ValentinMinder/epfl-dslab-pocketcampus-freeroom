@@ -99,7 +99,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
     }
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     [operation setQueuePriority:priority];
-    operation.customTimeout = 30.0;
+    operation.customTimeout = 40.0;
     operation.serviceClientSelector = @selector(getTrips::);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:);
