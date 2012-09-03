@@ -14,9 +14,11 @@
 
 #import "Reachability.h"
 
-static NSTimeInterval thriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout a request before the system API times out
-static NSTimeInterval requestTimeout;
-static NSTimeInterval connectivityCheckTimeout;
+#import "PCConfig.h"
+
+static NSTimeInterval kThriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout () a request before the system API times out
+static NSTimeInterval kRequestTimeout = 15.0; //is official timeout time for all ServiceRequest that do not have customTimeout specified
+static NSTimeInterval kConnectivityCheckTimeout;
 
 @implementation Service
 
@@ -30,25 +32,15 @@ static NSTimeInterval connectivityCheckTimeout;
     self = [super init];
     if (self) {
         serviceName = [serviceName_ retain];
-        NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
-
-        NSString* serverProto = nil;
-        NSString* serverAddress = nil;
-        NSString* serverPort = nil;
-        NSString* serverVersion = nil;
         
-        if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]] || [[NSUserDefaults standardUserDefaults] boolForKey:@"PC_DEV_MODE"]) {
-            serverProto = [config objectForKey:@"DEV_SERVER_PROTO"];
-            serverAddress = [config objectForKey:@"DEV_SERVER_ADDRESS"];
-            serverPort = [config objectForKey:@"DEV_SERVER_PORT"];
-            serverVersion = [config objectForKey:@"DEV_SERVER_VERSION"];
-        } else {
-            serverProto = [config objectForKey:@"PROD_SERVER_PROTO"];
-            serverAddress = [config objectForKey:@"PROD_SERVER_ADDRESS"];
-            serverPort = [config objectForKey:@"PROD_SERVER_PORT"];
-            serverVersion = [config objectForKey:@"PROD_SERVER_VERSION"];
-             
-        }
+        NSUserDefaults* defaults = [PCConfig defaults];
+
+        NSString* serverProto = [defaults objectForKey:PC_CONFIG_SERVER_PROTOCOL_KEY];
+        NSString* serverAddress = [defaults objectForKey:PC_CONFIG_SERVER_ADDRESS_KEY];
+        NSString* serverPort = [defaults objectForKey:PC_CONFIG_SERVER_PORT_KEY];
+        NSString* serverVersion = [defaults objectForKey:PC_CONFIG_SERVER_URI_KEY];
+        
+        
         serverAddressWithPort = [[NSString stringWithFormat:@"%@://%@:%@", serverProto, serverAddress, serverPort] retain];
         NSString* serviceURLString = [NSString stringWithFormat:@"%@/%@/%@", serverAddressWithPort, serverVersion, serviceName];
         NSLog(@"-> Initializing service '%@' on server (%@)", serviceName, serviceURLString);
@@ -58,8 +50,6 @@ static NSTimeInterval connectivityCheckTimeout;
         [client release];
         operationQueue = [[NSOperationQueue alloc] init];
         //[operationQueue setMaxConcurrentOperationCount:1];
-        requestTimeout = [(NSNumber*)[config objectForKey:@"REQUEST_TIMEOUT"] floatValue];
-        connectivityCheckTimeout = [(NSNumber*)[config objectForKey:@"CONNECTIVITY_CHECK_TIMEOUT"] floatValue];
         semaphore = dispatch_semaphore_create(0);
         checkServerRequest = nil;
         serverIsReachable = NO; //NO by default, before the check
@@ -69,7 +59,7 @@ static NSTimeInterval connectivityCheckTimeout;
 }
 
 + (NSTimeInterval)requestTimeoutInterval {
-    return requestTimeout;
+    return kRequestTimeout;
 }
 
 - (BOOL)serverIsReachable {
@@ -82,7 +72,7 @@ static NSTimeInterval connectivityCheckTimeout;
             checkServerRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:serverAddressWithPort]] retain];
             //NSLog(@"-> Checking server connectivity : %@", serverAddressWithPort);
             checkServerRequest.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-            checkServerRequest.timeOutSeconds = connectivityCheckTimeout;
+            checkServerRequest.timeOutSeconds = kConnectivityCheckTimeout;
             //checkServerRequest.requestMethod = @"HEAD";
             checkServerRequest.delegate = self;
             [checkServerRequest startAsynchronous];
@@ -179,7 +169,7 @@ static NSTimeInterval connectivityCheckTimeout;
 }
 
 - (id)thriftProtocolInstance {
-    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:thriftRequestTimeout];
+    THTTPClient* client = [[THTTPClient alloc] initWithURL:serverURL userAgent:nil timeout:kThriftRequestTimeout];
     TBinaryProtocol* thriftProtocol_ = [[TBinaryProtocol alloc] initWithTransport:client strictRead:YES strictWrite:YES];
     [client release];
     return [thriftProtocol_ autorelease];

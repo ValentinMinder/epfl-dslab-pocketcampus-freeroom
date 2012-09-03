@@ -8,14 +8,9 @@
 
 #import "AppDelegate.h"
 
-#import "DirectoryServiceTests.h"
-
-#import "MapServiceTests.h"
+#import "PCConfig.h"
 
 #import "GANTracker.h"
-
-static const NSInteger kGANDispatchPeriodSec = 10;
-//static NSString* const kAnalyticsAccountId = @"UA-22135241-3";
 
 @implementation AppDelegate
 
@@ -31,8 +26,18 @@ static const NSInteger kGANDispatchPeriodSec = 10;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /* Initialize defaults with PC config */
+    [PCConfig initConfig];
     
-    [self startGANTracker];
+    /* Start Google Analytics tracker if no config value prevents it */
+    if (![[PCConfig defaults] boolForKey:PC_GAN_DISABLED_KEY]) {
+        [[GANTracker sharedTracker] startTrackerWithAccountID:PC_PROD_GAN_ACCOUNT_ID
+                                               dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
+                                                     delegate:self];
+    }
+    
+    NSLog(@"%@", [[PCConfig defaults] dictionaryRepresentation]);
+    
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
@@ -87,22 +92,6 @@ static const NSInteger kGANDispatchPeriodSec = 10;
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"PC_DEV_MODE"];
-}
-
-/* Google Analytics init */
-
-- (void)startGANTracker {
-    NSDictionary* config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"]];
-    NSString* kAnalyticsAccountId = nil;
-    if ([[config objectForKey:@"DEV_MODE"] isEqual:[NSNumber numberWithBool:YES]]) {
-        kAnalyticsAccountId = [config objectForKey:@"DEV_ANALYTICS_TRACKINGCODE"];
-    } else {
-        kAnalyticsAccountId = [config objectForKey:@"PROD_ANALYTICS_TRACKINGCODE"];
-    }
-    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
-                                           dispatchPeriod:kGANDispatchPeriodSec
-                                                 delegate:self];
-
 }
 
 /* Google Analytics Delegation */
