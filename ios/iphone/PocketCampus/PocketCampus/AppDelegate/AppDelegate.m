@@ -31,9 +31,12 @@
     
     /* Start Google Analytics tracker if no config value prevents it */
     if (![[PCConfig defaults] boolForKey:PC_GAN_DISABLED_KEY]) {
+        NSLog(@"-> Starting Google Analytics tracker");
         [[GANTracker sharedTracker] startTrackerWithAccountID:PC_PROD_GAN_ACCOUNT_ID
                                                dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
                                                      delegate:self];
+    } else {
+        NSLog(@"-> Google Analytics tracker will not be started because GAN_disabled = YES in Config");
     }
     
     NSLog(@"%@", [[PCConfig defaults] dictionaryRepresentation]);

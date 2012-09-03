@@ -28,7 +28,7 @@ static NSString* PC_CONFIG_SERVER_URI_KEY = @"server_uri";
 
 static NSString* PC_OPTIONAL_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY = @"meals_multi_votes";
 
-static NSString* PC_GAN_DISABLED_KEY = @"gan_disabled"; //GAN is Google Analytics
+static NSString* PC_GAN_DISABLED_KEY = @"GAN_disabled"; //GAN is Google Analytics
 
 /* VALUES FOR SOME DEFAULTS THINGS */
 

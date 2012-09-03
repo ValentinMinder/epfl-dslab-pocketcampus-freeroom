@@ -20,7 +20,7 @@
    
     NSString* path = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
 	path = [path stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    path = [path stringByAppendingString:@"Config.plist"];
+    path = [path stringByAppendingPathComponent:@"Config.plist"];
     
     NSFileManager* fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:path]) { //check if a Config.plist is present in ApplicationSupport/<bundle_identifier>/
