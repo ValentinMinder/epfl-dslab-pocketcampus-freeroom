@@ -17,7 +17,7 @@
 </Feed>
 <Feed>
 	<name>EPFL Informatique et Communication</name>
-	<rssfeed>http://actu.epfl.ch/feeds/rss/ic%20/fr/</rssfeed>
+	<rssfeed>http://actu.epfl.ch/feeds/rss/ic/fr/</rssfeed>
 </Feed>
 <Feed>
 	<name>EPFL Collège des Humanités</name>
