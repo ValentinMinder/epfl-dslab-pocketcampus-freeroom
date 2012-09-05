@@ -130,6 +130,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 
 	@Override
 	public EventsListReply getEventsList(MoodleRequest iRequest) throws TException {
+		// TODO this method was not checked against the new moodle
 		System.out.println("getEventsList");
 		String page = null;
 		Cookie cookie = new Cookie();
@@ -191,10 +192,9 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 				if(j.getIUrl().indexOf("/pluginfile.php/") != -1) {
 					// if it is a Moodle file, perfect
 					mrl.add(j);
-				} else if(j.getIUrl().indexOf("/mod/resource/view.php?") != -1) {
+				} else if(j.getIUrl().indexOf("/mod/resource/view.php?") != -1 || j.getIUrl().indexOf("/mod/folder/view.php?") != -1) {
 					// if it is a Moodle resource, get all files from it
-					int moodleResourceId = Integer.parseInt(getSubstringBetween(j.getIUrl(), "id=", "&"));
-					LinkedList<String> urls = getAllFilesFromMoodleResource(moodleResourceId, cookie);
+					LinkedList<String> urls = getAllFilesFromMoodleResource(j.getIUrl(), cookie);
 					for(String k : urls) {
 						mrl.add(new MoodleResource(j.getIName(), k));
 					}
@@ -453,11 +453,11 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	}
 	
 	
-	private LinkedList<String> getAllFilesFromMoodleResource(int id, Cookie cookie) {
+	private LinkedList<String> getAllFilesFromMoodleResource(String resourceUrl, Cookie cookie) {
 		LinkedList<String> urls = new LinkedList<String>();
 		HttpPageReply httpReply = null;
 		try {
-			httpReply = getHttpReplyWithCookie("http://moodle.epfl.ch/mod/resource/view.php?inpopup=true&id=" + id, cookie);
+			httpReply = getHttpReplyWithCookie(resourceUrl, cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return urls; // failed, do not crash
@@ -466,13 +466,19 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			for (MoodleResource j : getLinks(httpReply.getPage())) {
 				if(j.getIUrl().indexOf("/pluginfile.php/") != -1)
 					if(!urls.contains(j.getIUrl()))
-						urls.add(j.getIUrl());
+						urls.add(stripOffQueryString(j.getIUrl()));
 			}
 		} else {
 			if(httpReply.getLocation().indexOf("/pluginfile.php/") != -1)
-				urls.add(httpReply.getLocation());
+				urls.add(stripOffQueryString(httpReply.getLocation()));
 		}
 		return urls;
+	}
+	
+	private String stripOffQueryString(String url) {
+		if(url.indexOf("?") == -1)
+			return url;
+		return url.substring(0, url.indexOf("?"));
 	}
 
 	private LinkedList<MoodleResource> getLinks(String html) {
