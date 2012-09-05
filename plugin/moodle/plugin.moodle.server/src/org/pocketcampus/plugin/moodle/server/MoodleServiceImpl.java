@@ -52,13 +52,17 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		System.out.println("getTequilaToken");
 		try {
-	        HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
-	        conn2.setInstanceFollowRedirects(false);
-	        conn2.getInputStream();
-	        URL url = new URL(conn2.getHeaderField("Location"));
+			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
+			conn2.setInstanceFollowRedirects(false);
+			conn2.getInputStream();
+			URL url = new URL(conn2.getHeaderField("Location"));
 			MultiMap<String> params = new MultiMap<String>();
 			UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
-			return new TequilaToken(params.getString("requestkey"));
+			TequilaToken teqToken = new TequilaToken(params.getString("requestkey"));
+			Cookie cookie = new Cookie();
+			cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
+			teqToken.setLoginCookie(cookie.cookie());
+			return teqToken;
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new TException("Failed to getTequilaToken from upstream server");
@@ -69,20 +73,14 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws TException {
 		System.out.println("getMoodleSession");
 		try {
-			Cookie cookie = new Cookie();
-	        HttpURLConnection conn = (HttpURLConnection) new URL("http://moodle.epfl.ch").openConnection();
-	        conn.setInstanceFollowRedirects(false);
-	        conn.getInputStream();
-	        cookie.setCookie(conn.getHeaderFields().get("Set-Cookie"));
-	        
-	        HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/teq_return.php?key=" + iTequilaToken.getITequilaKey()).openConnection();
-	        conn2.setRequestProperty("Cookie", cookie.cookie());
-	        conn2.setInstanceFollowRedirects(false);
-	        conn2.getInputStream();
-	        cookie.setCookie(conn2.getHeaderFields().get("Set-Cookie"));
-	        
-		    // send back the session id
-			return new MoodleSession(cookie.cookie());
+			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
+			conn2.setRequestProperty("Cookie", iTequilaToken.getLoginCookie());
+			conn2.setInstanceFollowRedirects(false);
+			conn2.getInputStream();
+			if("http://moodle.epfl.ch/my/".equals(conn2.getHeaderField("Location")))
+				return new MoodleSession(iTequilaToken.getLoginCookie());
+			else
+				throw new TException("Authentication failed");
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new TException("Failed to getMoodleSession from upstream server");
@@ -110,11 +108,12 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			e.printStackTrace();
 			return new CoursesListReply(404);
 		}
-		if(page == null || page.indexOf("notloggedin") != -1) {
+		if(page == null || page.indexOf("login/index.php") != -1) {
 			System.out.println("not logged in");
 			return new CoursesListReply(407);
 		}
 		
+		page = getSubstringBetween(page, "block_course_overview", "block_course_list");
 		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
 		for (String i : getAllSubstringsBetween(page, "course/view.php", "/a>")) {
 			MoodleCourse mc = new MoodleCourse();
@@ -142,7 +141,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			e.printStackTrace();
 			return new EventsListReply(404);
 		}
-		if(page == null || page.indexOf("notloggedin") != -1) {
+		if(page == null || page.indexOf("login/index.php") != -1) {
 			System.out.println("not logged in");
 			return new EventsListReply(407);
 		}
@@ -179,17 +178,17 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			e.printStackTrace();
 			return new SectionsListReply(404);
 		}
-		if(page == null || page.indexOf("notloggedin") != -1) {
+		if(page == null || page.indexOf("login/index.php") != -1) {
 			System.out.println("not logged in");
 			return new SectionsListReply(407);
 		}
 		
 		LinkedList<MoodleSection> msl = new LinkedList<MoodleSection>();
 		// don't close the quote because some sections have more style classes such as hidden
-		for (String i : getAllSubstringsBetween(page, "class=\"section main", "class=\"section separator")) {
+		for (String i : getAllSubstringsBetween(page, "class=\"section main", "<!--class='section'-->")) {
 			LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
 			for (MoodleResource j : getLinks(i)) {
-				if(j.getIUrl().indexOf("/file.php/") != -1) {
+				if(j.getIUrl().indexOf("/pluginfile.php/") != -1) {
 					// if it is a Moodle file, perfect
 					mrl.add(j);
 				} else if(j.getIUrl().indexOf("/mod/resource/view.php?") != -1) {
@@ -238,6 +237,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	
 	private HttpPageReply getHttpReplyWithCookie(String url, Cookie cookie) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 		conn.setInstanceFollowRedirects(false);
 		conn.setRequestProperty("Cookie", cookie.cookie());
 		if(conn.getResponseCode() != 200)
@@ -464,12 +464,12 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		}
 		if(httpReply.getPage() != null) {
 			for (MoodleResource j : getLinks(httpReply.getPage())) {
-				if(j.getIUrl().indexOf("/file.php/") != -1)
+				if(j.getIUrl().indexOf("/pluginfile.php/") != -1)
 					if(!urls.contains(j.getIUrl()))
 						urls.add(j.getIUrl());
 			}
 		} else {
-			if(httpReply.getLocation().indexOf("/file.php/") != -1)
+			if(httpReply.getLocation().indexOf("/pluginfile.php/") != -1)
 				urls.add(httpReply.getLocation());
 		}
 		return urls;
