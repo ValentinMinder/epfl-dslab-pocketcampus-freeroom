@@ -17,7 +17,7 @@
 "Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton\nfavoris pour ajouter une deuxième station.";
 "FavoriteStationsTitle" = "Stations favorites";
 "TouchAddStationInstructions" = "Touchez le plus pour ajouter une station.";
-"FavoriteStationsExplanations" = "Séléctionne automatiquement la station favorite la plus proche comme point de départ.";
+"FavoriteStationsExplanations" = "Sélectionne automatiquement la station favorite la plus proche comme point de départ.";
 "Automatic" = "Automatique";
 "ManualDepartureSelection" = "Choisir le point de départ manuellement";
 "SearchFieldPlaceholder" = "Rechercher une station";

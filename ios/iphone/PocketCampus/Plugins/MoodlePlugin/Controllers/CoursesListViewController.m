@@ -117,6 +117,7 @@
     NSLog(@"-> getTequilaTokenForMoodleFailed");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    [MoodleService deleteMoodleCookie];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
@@ -128,6 +129,7 @@
     NSLog(@"-> getSessionIdForServiceFailedForTequilaKey");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    [MoodleService deleteMoodleCookie];
 }
 
 - (void)getCoursesList:(MoodleRequest*)aMoodleRequest didReturn:(CoursesListReply*)coursesListReply {
@@ -154,6 +156,7 @@
     NSLog(@"-> getCoursesListFailed");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    [MoodleService deleteMoodleCookie];
 }
 
 /* AuthenticationCallbackDelegate delegation */
@@ -166,9 +169,11 @@
     NSLog(@"-> invalidToken");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
+    [MoodleService deleteMoodleCookie];
 }
 
 - (void)userCancelledAuthentication {
+    [MoodleService deleteMoodleCookie];
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
         [self.navigationController popViewControllerAnimated:YES]; //leaving plugin

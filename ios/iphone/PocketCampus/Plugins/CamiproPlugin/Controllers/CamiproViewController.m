@@ -115,6 +115,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 /* AuthenticationCallbackDelegate delegation */
 
 - (void)userCancelledAuthentication {
+    [CamiproService saveSessionId:nil];
     [centerActivityIndicator stopAnimating];
     if (self.navigationController.visibleViewController == self) {
         [self.navigationController popViewControllerAnimated:YES]; //leaving plugin
@@ -153,6 +154,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken*)tequilaKey {
     [self serviceConnectionToServerTimedOut];
+    [CamiproService saveSessionId:nil];
 }
 
 - (void)getBalanceAndTransactionsForCamiproRequest:(CamiproRequest*)camiproRequest didReturn:(BalanceAndTransactions*)balanceAndTransactions_ {
@@ -202,6 +204,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     tableView.hidden = YES;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
+    [CamiproService saveSessionId:nil];
 }
 
 - (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(SendMailResult *)sendMailResult {

@@ -138,7 +138,6 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     
     NSString* filePath = [self localPathForURL:url];
     [request setDownloadDestinationPath:filePath];
-    
     [request addRequestHeader:@"Cookie" value:cookie];
     [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
     [request setDelegate:delegate];

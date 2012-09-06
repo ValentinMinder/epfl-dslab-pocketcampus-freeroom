@@ -30,7 +30,7 @@
     [PCConfig initConfig];
     
     /* Start Google Analytics tracker if no config value prevents it */
-    if (![[PCConfig defaults] boolForKey:PC_GAN_DISABLED_KEY]) {
+    if (![[PCConfig defaults] boolForKey:PC_OPTIONAL_GAN_DISABLED_KEY]) {
         NSLog(@"-> Starting Google Analytics tracker");
         [[GANTracker sharedTracker] startTrackerWithAccountID:PC_PROD_GAN_ACCOUNT_ID
                                                dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
@@ -38,8 +38,6 @@
     } else {
         NSLog(@"-> Google Analytics tracker will not be started because GAN_disabled = YES in Config");
     }
-    
-    NSLog(@"%@", [[PCConfig defaults] dictionaryRepresentation]);
     
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
@@ -94,7 +92,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"PC_DEV_MODE"];
 }
 
 /* Google Analytics Delegation */

@@ -25,6 +25,7 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:path]) { //check if a Config.plist is present in ApplicationSupport/<bundle_identifier>/
         [[self defaults] registerDefaults:[NSDictionary dictionaryWithContentsOfFile:path]];
+        [[self defaults] setObject:PC_CONFIG_TYPE_FROM_APPLICATION_SUPPORT forKey:PC_CONFIG_TYPE_KEY];
         NSLog(@"-> Overriding Config defaults initialized from %@", path);
         return;
     }
@@ -32,6 +33,7 @@
     if (![[Reachability reachabilityForInternetConnection] isReachable]) {
         /* No connection => use bundle Config.plist */
         [self registerDefaultsFromBundle];
+        [[self defaults] setObject:PC_CONFIG_TYPE_FROM_BUNDLE forKey:PC_CONFIG_TYPE_KEY];
         NSLog(@"-> No internet connection : Config defaults initialized from bundle");
         return;
     }
@@ -58,10 +60,12 @@
     @try {
         config = [request.responseString JSONValue];
         [[self defaults] registerDefaults:config];
+        [[self defaults] setObject:PC_CONFIG_TYPE_FROM_SERVER forKey:PC_CONFIG_TYPE_KEY];
         NSLog(@"-> Config successfully loaded from server and registered in defaults");
     }
     @catch (NSException *exception) {
         [self registerDefaultsFromBundle];
+        [[self defaults] setObject:PC_CONFIG_TYPE_FROM_BUNDLE forKey:PC_CONFIG_TYPE_KEY];
         NSLog(@"-> Error when parsing config received from server. Config loaded from bundle");
     }
     

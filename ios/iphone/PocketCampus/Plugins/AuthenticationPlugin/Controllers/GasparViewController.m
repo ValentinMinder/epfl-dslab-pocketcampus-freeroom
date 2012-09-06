@@ -87,7 +87,6 @@
     [authenticationService cancelOperationsForDelegate:self];
     [AuthenticationService enqueueLogoutNotificationDelayed:NO];
     [AuthenticationService deleteSavedPasswordForUsername:[AuthenticationService savedUsername]];
-    [AuthenticationService saveUsername:nil];
     if (presentationMode == PresentationModeModal) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             if ([(NSObject*)self.delegate respondsToSelector:@selector(userCancelledAuthentication)]) {
@@ -135,7 +134,10 @@
 }
 
 - (void)inputFieldsDidChange {
-    if ([usernameTextField.text isEqualToString:@""] || [passwordTextField.text isEqualToString:@""]) {
+    if (usernameTextField.text.length == 0 || passwordTextField.text.length == 0) {
+        if (usernameTextField.text.length == 0 && !savePasswordSwitch.isOn) { //means user has cleared field to remove his username
+            [AuthenticationService saveUsername:nil];
+        }
         loginCell.textLabel.enabled = NO;
         loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
@@ -330,7 +332,7 @@
                         usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                         usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
                         usernameTextField.returnKeyType = UIReturnKeyNext;
-                        usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                        usernameTextField.clearButtonMode = UITextFieldViewModeAlways;
                         usernameTextField.delegate = self;
                         
                         NSString* text = [AuthenticationService savedUsername];

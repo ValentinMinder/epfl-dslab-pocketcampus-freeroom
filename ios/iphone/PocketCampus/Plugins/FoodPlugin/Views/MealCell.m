@@ -14,6 +14,8 @@
 
 #import "MenusListViewController.h"
 
+#import "PCConfig.h"
+
 static float SEPARATOR_HEIGHT = 1.0;
 static float RATINGS_HEIGHT = 28.0;
 static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
@@ -154,9 +156,11 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/food/restaurant/click/rate" withError:NULL];
     [ratingActivityIndicator startAnimating];
     [self setVoteMode:VoteModeDisabled animated:YES];
-    //[service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];
-    [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[[UIDevice currentDevice] uniqueDeviceIdentifier]  delegate:self];
-    
+    if ([[PCConfig defaults] boolForKey:PC_OPTIONAL_CONFIG_ALLOW_MEALS_MULTI_VOTES_KEY]) {
+        [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[NSString stringWithFormat:@"%ld",time(NULL)]  delegate:self];
+    } else {
+        [service setRatingForMeal:meal.mealId rating:(double)ratingView.rating deviceId:[[UIDevice currentDevice] uniqueDeviceIdentifier]  delegate:self];
+    }
 }
 
 - (void)setRatingForMeal:(Id)mealId rating:(double)rating deviceId:(NSString*)deviceId didReturn:(int)status {

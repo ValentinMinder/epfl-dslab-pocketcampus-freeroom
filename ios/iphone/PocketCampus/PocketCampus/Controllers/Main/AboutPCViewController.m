@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCConfig.h"
+
 @implementation AboutPCViewController
 
 @synthesize webView;
@@ -34,6 +36,7 @@
     self.view.backgroundColor = [PCValues backgroundColor1];
     webView.delegate = self;
     webView.scrollView.scrollEnabled = NO;
+    webView.alpha = 0.0;
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"AboutPC" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
@@ -46,11 +49,11 @@
         [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
     }
     
-    /*UITapGestureRecognizer* gestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleDevMode)];
+    UITapGestureRecognizer* gestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showInfos)];
     gestureRec.numberOfTapsRequired = 3;
     gestureRec.numberOfTouchesRequired = 2;
     [webView addGestureRecognizer:gestureRec];
-    [gestureRec release];*/
+    [gestureRec release];
 }
 
 - (void)viewDidUnload
@@ -64,7 +67,19 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)showInfos {
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"PC_CONFIG_TYPE" message:[[PCConfig defaults] objectForKey:PC_CONFIG_TYPE_KEY] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
 /* UIWebViewDelegate delegation */
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView_ {
+    [UIView animateWithDuration:0.2 animations:^{
+        webView.alpha = 1.0;
+    }];
+}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
