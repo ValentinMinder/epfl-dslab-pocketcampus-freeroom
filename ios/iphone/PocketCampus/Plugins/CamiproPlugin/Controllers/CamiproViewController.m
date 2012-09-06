@@ -127,6 +127,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)invalidToken {
+    [CamiproService saveSessionId:nil];
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
@@ -204,7 +205,7 @@ static CGFloat kBalanceCellHeight = 70.0;
     tableView.hidden = YES;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
-    [CamiproService saveSessionId:nil];
+    //[CamiproService saveSessionId:nil];
 }
 
 - (void)sendLoadingInfoByEmailForCamiproRequest:(CamiproRequest *)camiproRequest didReturn:(SendMailResult *)sendMailResult {

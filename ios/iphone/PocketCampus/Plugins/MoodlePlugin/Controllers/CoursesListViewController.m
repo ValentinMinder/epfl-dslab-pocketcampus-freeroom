@@ -117,7 +117,7 @@
     NSLog(@"-> getTequilaTokenForMoodleFailed");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    [MoodleService deleteMoodleCookie];
+    //[MoodleService deleteMoodleCookie];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey didReturn:(MoodleSession*)sessionId {
@@ -156,7 +156,6 @@
     NSLog(@"-> getCoursesListFailed");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
-    [MoodleService deleteMoodleCookie];
 }
 
 /* AuthenticationCallbackDelegate delegation */
