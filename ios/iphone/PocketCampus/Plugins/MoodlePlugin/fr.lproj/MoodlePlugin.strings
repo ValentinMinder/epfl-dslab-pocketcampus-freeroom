@@ -14,3 +14,5 @@
 "Sorry" = "Désolé";
 "NoActionForThisFile" = "Aucune action n'est disponible pour ce fichier.";
 "DownloadingFile" = "Téléchargement du fichier...";
+"DeleteFileFromCacheQuestion" = "Supprimer le fichier du stockage local ?\nVous devrez le télécharger à nouveau pour pouvoir le lire.";
+"ImpossibleDeleteFile" = "Désolé, une erreur s'est produite lors de la suppression du fichier.";

@@ -23,8 +23,9 @@
         documentRemoteURLString = [documentRemoteURL retain];
         documentLocalURL = nil;
         docInteractionController = nil;
+        deleteActionSheet = nil;
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
-        NSString* tmpLocalURL = [moodleService localPathForURL:documentRemoteURLString];
+        NSString* tmpLocalURL = [MoodleService localPathForURL:documentRemoteURLString];
         if ([[NSFileManager defaultManager] fileExistsAtPath:tmpLocalURL]) { //check if downloaded already
             documentLocalURL = [[NSURL fileURLWithPath:tmpLocalURL] retain];
             docInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:documentLocalURL] retain];
@@ -40,9 +41,19 @@
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/moodle/course/document" withError:NULL];
     webView.scalesPageToFit = YES; //otherwise, pinching zoom is disabled
+    
+    NSMutableArray* rightButtons = [NSMutableArray arrayWithCapacity:2];
+    
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
-    self.navigationItem.rightBarButtonItem = actionButton;
+    [rightButtons addObject:actionButton];
     [actionButton release];
+    
+    UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
+    [rightButtons addObject:deleteButton];
+    [deleteButton release];
+    
+    self.navigationItem.rightBarButtonItems = rightButtons;
+    
     [centerActivityIndicator startAnimating];
     webView.hidden = YES;
     if (documentLocalURL) {
@@ -51,7 +62,8 @@
         [centerActivityIndicator startAnimating];
         centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
         [moodleService fetchMoodleResourceWithURL:documentRemoteURLString cookie:moodleService.moodleCookie delegate:self];
-        actionButton.enabled = NO;
+        [self deleteButton].enabled = NO;
+        [self actionButton].enabled = NO;
     }
 }
 
@@ -69,9 +81,29 @@
 {
     return YES; //support all orientations
 }
+
+- (UIBarButtonItem*)actionButton {
+    if (self.navigationItem.rightBarButtonItems.count < 1) {
+        return nil;
+    }
+    return [self.navigationItem.rightBarButtonItems objectAtIndex:0];
+}
+
+- (UIBarButtonItem*)deleteButton {
+    if (self.navigationItem.rightBarButtonItems.count < 2) {
+        return nil;
+    }
+    return [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+}
+
+- (void)deleteButtonPressed {
+    [deleteActionSheet release];
+    deleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"DeleteFileFromCacheQuestion", @"MoodlePlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"PocketCampus", nil) otherButtonTitles:nil];
+    [deleteActionSheet showFromBarButtonItem:[self deleteButton] animated:YES];
+}
                                 
 - (void)actionButtonPressed {
-    BOOL couldShowMenu = [docInteractionController presentOptionsMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    BOOL couldShowMenu = [docInteractionController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
     if (!couldShowMenu) {
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Sorry", @"MoodlePlugin", nil) message:NSLocalizedStringFromTable(@"NoActionForThisFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
@@ -83,10 +115,11 @@
 
 - (void)fetchMoodleResourceDidReturn:(ASIHTTPRequest *)request {
     centerMessageLabel.hidden = YES;
-    documentLocalURL = [[NSURL fileURLWithPath:[moodleService localPathForURL:request.url.absoluteString]] retain];
+    documentLocalURL = [[NSURL fileURLWithPath:[MoodleService localPathForURL:request.url.absoluteString]] retain];
     docInteractionController = [[UIDocumentInteractionController interactionControllerWithURL:documentLocalURL] retain];
     docInteractionController.delegate = self;
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self deleteButton].enabled = YES;
+    [self actionButton].enabled = YES;
     [webView loadRequest:[NSURLRequest requestWithURL:documentLocalURL]];
 }
 
@@ -100,6 +133,27 @@
     webView.hidden = YES;
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
+}
+
+/* UIActionSheetDelegate */
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) { //delete button, starts from the top, cancel button not included
+        if (![MoodleService deleteFileAtPath:documentLocalURL.path]) {
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            return;
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet {
+    if (actionSheet == deleteActionSheet) {
+        [deleteActionSheet release];
+        deleteActionSheet = nil;
+    }
 }
 
 /* UIDocumentInteractionControllerDelegate delegation */
@@ -158,6 +212,8 @@
     [documentLocalURL release];
     docInteractionController.delegate = nil;
     [docInteractionController release];
+    deleteActionSheet.delegate = nil;
+    [deleteActionSheet release];
     [super dealloc];
 }
 

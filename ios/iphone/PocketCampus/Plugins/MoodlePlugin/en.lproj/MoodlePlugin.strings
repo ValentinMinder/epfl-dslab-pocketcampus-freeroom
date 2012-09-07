@@ -14,3 +14,5 @@
 "Sorry" = "Sorry";
 "NoActionForThisFile" = "No action is available for this file.";
 "DownloadingFile" = "Downloading file...";
+"DeleteFileFromCacheQuestion" = "Delete file from local storage ?\nYou'll have to download it again to read it.";
+"ImpossibleDeleteFile" = "Sorry, an error occured while deleting file.";

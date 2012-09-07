@@ -20,6 +20,8 @@
 
 #import "DocumentViewController.h"
 
+//static int kDownloadedCornerImageViewTag = 3;
+
 @implementation CourseSectionsViewController
 
 @synthesize centerActivityIndicator, centerMessageLabel, sectionsList;
@@ -235,6 +237,7 @@
 
 /* UITableViewDelegate delegation */
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
@@ -282,6 +285,30 @@
     return 44.0;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        MoodleSection* section = [iSections objectAtIndex:indexPath.section];
+        MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
+        NSString* localPath = [MoodleService localPathForURL:resource.iUrl];
+        if (![MoodleService deleteFileAtPath:localPath]) {
+            UIAlertView* errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ImpossibleDeleteFile", @"MoodlePlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            return;
+        }
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView_ editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MoodleSection* section = [iSections objectAtIndex:indexPath.section];
+    MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
+    if ([MoodleService isFileCached:[MoodleService localPathForURL:resource.iUrl]]) {
+        return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
+}
+
 /* UITableViewDataSource */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -293,11 +320,12 @@
         newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
         newCell.textLabel.adjustsFontSizeToFitWidth = YES;
         newCell.textLabel.minimumFontSize = 11.0;
-        UILabel* savedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80.0, 35.0)];
+        UILabel* savedLabel = [[UILabel alloc] initWithFrame:CGRectNull];
+        savedLabel.text = NSLocalizedStringFromTable(@"Saved", @"MoodlePlugin", nil);
         savedLabel.font = [UIFont systemFontOfSize:13.0];
         savedLabel.textAlignment = UITextAlignmentRight;
         savedLabel.adjustsFontSizeToFitWidth = YES;
-        savedLabel.textColor = [UIColor colorWithWhite:0.45 alpha:1.0];
+        savedLabel.textColor = [UIColor colorWithWhite:0.6 alpha:1.0];
         newCell.accessoryView = savedLabel;
         [savedLabel release];
 
@@ -306,28 +334,24 @@
     newCell.textLabel.text = resource.iName;
     NSArray* pathComponents = [resource.iUrl pathComponents];
     newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
-    NSString* localPath = [moodleService localPathForURL:resource.iUrl];
+    NSString* localPath = [MoodleService localPathForURL:resource.iUrl];
     if ([MoodleService isFileCached:localPath]) {
-        ((UILabel*)newCell.accessoryView).text = NSLocalizedStringFromTable(@"Saved", @"MoodlePlugin", nil);
-        /*UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Downloaded"]];
-        newCell.accessoryView = imageView;
-        [imageView release];*/
+        [newCell.accessoryView sizeToFit];
+        /*if (![newCell.contentView viewWithTag:kDownloadedCornerImageViewTag]) { //if image view is already present, do not add it a second time
+            UIImage* image = [UIImage imageNamed:@"DownloadedCorner"];
+            UIImageView* imageView = [[UIImageView alloc] initWithImage:image];
+            //imageView.alpha = 0.7;
+            imageView.frame = CGRectMake(tableView_.frame.size.width-image.size.width, -1.0, image.size.width, image.size.height);
+            imageView.tag = kDownloadedCornerImageViewTag;
+            [newCell.contentView addSubview:imageView];
+            [imageView release];
+        }*/
     } else {
-        ((UILabel*)newCell.accessoryView).text = @""; //remove previous text if reused cell
+        newCell.accessoryView.frame = CGRectNull;
+        //[[newCell.contentView viewWithTag:kDownloadedCornerImageViewTag] removeFromSuperview];
     }
     return newCell;
 }
-
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if(iSections == nil)
-        return nil;
-    if(![self showSection:section])
-        return nil;
-    MoodleSection* secObj = [iSections objectAtIndex:section];
-    if(secObj.iResources.count == 0)
-        return nil;
-    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
-}*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(iSections == nil)

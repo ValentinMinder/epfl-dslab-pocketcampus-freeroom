@@ -47,7 +47,11 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     return @"";
 }
 
-- (NSString*)localPathForURL:(NSString*)urlString {
++ (NSString*)localPathForURL:(NSString*)urlString {
+    return [self localPathForURL:urlString createIntermediateDirectories:NO];
+}
+
++ (NSString*)localPathForURL:(NSString*)urlString createIntermediateDirectories:(BOOL)createIntermediateDirectories {
     if (![urlString isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad urlString argument" reason:@"urlString is not kind of class NSString" userInfo:nil];
     }
@@ -59,17 +63,20 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
         nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     }
     NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"Moodle"];
+    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"moodle"];
+    cacheMoodlePath = [cacheMoodlePath stringByAppendingPathComponent:@"downloads"];
     NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
-
-    NSString* directory = [filePath substringToIndex:[filePath rangeOfString:@"/" options:NSBackwardsSearch].location];
-    BOOL isDir = TRUE;
-    NSFileManager *fileManager= [NSFileManager defaultManager]; 
-    if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
-        if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
-            NSLog(@"-> Error while creating directory in cache : %@", directory);
+    
+    if (createIntermediateDirectories) {
+        NSString* directory = [filePath substringToIndex:[filePath rangeOfString:@"/" options:NSBackwardsSearch].location];
+        BOOL isDir = TRUE;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        if(![fileManager fileExistsAtPath:directory isDirectory:&isDir]) {
+            if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:NULL]) {
+                NSLog(@"-> Error while creating directory in cache : %@", directory);
+            }
         }
     }
     return filePath;
@@ -77,6 +84,10 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
 
 + (BOOL)isFileCached:(NSString*)localPath {
     return [[NSFileManager defaultManager] fileExistsAtPath:localPath];
+}
+
++ (BOOL)deleteFileAtPath:(NSString*)localPath {
+    return [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil]; //OK to pass nil for error, method returns aleary YES/NO is case of success/failure
 }
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate {
@@ -140,12 +151,11 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     NSURL *nsurl = [NSURL URLWithString:url];
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:nsurl];
     
-    NSString* filePath = [self localPathForURL:url];
+    NSString* filePath = [[self class] localPathForURL:url createIntermediateDirectories:YES];
     [request setDownloadDestinationPath:filePath];
     [request addRequestHeader:@"Cookie" value:cookie];
     [request setTimeOutSeconds:kFetchMoodleResourceTimeoutSeconds];
     [request setDelegate:delegate];
-    //request.shouldRedirect = NO;
     [request setDidFinishSelector:@selector(fetchMoodleResourceDidReturn:)];
     [request setDidFailSelector:@selector(fetchMoodleResourceFailed:)];
     [operationQueue addOperation:request];

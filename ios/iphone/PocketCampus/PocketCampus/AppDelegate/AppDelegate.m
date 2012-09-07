@@ -36,7 +36,7 @@
                                                dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
                                                      delegate:self];
     } else {
-        NSLog(@"-> Google Analytics tracker will not be started because GAN_disabled = YES in Config");
+        NSLog(@"-> Google Analytics tracker will NO be started because GAN_disabled = YES in Config");
     }
     
     

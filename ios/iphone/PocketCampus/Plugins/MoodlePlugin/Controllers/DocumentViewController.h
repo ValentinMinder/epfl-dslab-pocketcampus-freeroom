@@ -10,11 +10,12 @@
 
 #import "MoodleService.h"
 
-@interface DocumentViewController : UIViewController<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, MoodleServiceDelegate> {
+@interface DocumentViewController : UIViewController<UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate> {
     UIWebView* webView;
     UIActivityIndicatorView* centerActivityIndicator;
     UILabel* centerMessageLabel;
     UIDocumentInteractionController* docInteractionController;
+    UIActionSheet* deleteActionSheet;
     NSString* documentRemoteURLString;
     NSURL* documentLocalURL;
     MoodleService* moodleService;

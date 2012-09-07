@@ -296,66 +296,13 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     return NO;
 }
 
-/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        NSString* explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations", @"TransportPlugin", nil);
-        UIFont* font = [UIFont systemFontOfSize:16.0];
-        CGSize reqSize = [explanation sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-        return reqSize.height+20.0;
-    }
-    if (section == 1) {
-        return 40.0;
-    }
-    return 0.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if(section == 0) {
-        UILabel* label = [[UILabel alloc] init];
-        NSString* explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations", @"TransportPlugin", nil);
-        UIFont* font = [UIFont systemFontOfSize:16.0];
-        CGSize reqSize = [explanation sizeWithFont:font constrainedToSize:CGSizeMake(260.0, 600.0)];
-        
-        label.frame = CGRectMake(0, 0, 260.0, reqSize.height+20.0);
-        label.numberOfLines = 5;
-        label.textAlignment = UITextAlignmentCenter;
-        label.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = font;
-        label.adjustsFontSizeToFitWidth = NO;
-        label.text = explanation;
-        return [label autorelease];
-    }
-    
-    if (section == 1) {
-        UILabel* label = [[UILabel alloc] init];
-        label.text = NSLocalizedStringFromTable(@"ManualDepartureSelection", @"TransportPlugin", nil);
-        label.textAlignment = UITextAlignmentCenter;
-        label.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize:16.0];;
-        label.adjustsFontSizeToFitWidth = NO;
-        return [label autorelease];
-    }
-    
-    return nil;
-}*/
-
 - (CGFloat)tableView:(UITableView *)tableView_ heightForHeaderInSection:(NSInteger)section {
     if (section == 0 && !tableView.editing) {
         return 42.0;
     }
     return 0.0;
 }
-/*NSString* explanation;
- if (selectedStation) {
- explanation = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FavoriteStationsExplanations_ManualWithFormat", @"TransportPlugin", nil), selectedStation.name];
- } else {
- explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations_NearestSelected", @"TransportPlugin", nil);
- }
- UIFont* font = [UIFont systemFontOfSize:16.0];
- CGSize reqSize = [explanation sizeWithFont:font constrainedToSize:CGSizeMake(280.0, 600.0)];
- return reqSize.height+20.0;*/
+
 - (CGFloat)tableView:(UITableView *)tableView_ heightForFooterInSection:(NSInteger)section {
     
     if (section == 0) {
@@ -385,27 +332,6 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     }
     return nil;
 }
-
-/*UILabel* label1 = [[UILabel alloc] init];
- NSString* explanation;
- if (selectedStation) {
- explanation = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FavoriteStationsExplanations_ManualWithFormat", @"TransportPlugin", nil), selectedStation.name];
- } else {
- explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations_NearestSelected", @"TransportPlugin", nil);
- }
- 
- label1.frame = CGRectMake(20.0, 0, 280.0, [self tableView:tableView heightForFooterInSection:1]);
- label1.numberOfLines = 0;
- label1.textAlignment = UITextAlignmentCenter;
- label1.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
- label1.backgroundColor = [UIColor clearColor];
- label1.font = [UIFont systemFontOfSize:16.0];;
- label1.adjustsFontSizeToFitWidth = NO;
- label1.text = explanation;
- UIView* containerView = [[UIView alloc] init];
- [containerView addSubview:label1]; //need container view because frame of returned view is not taken into account (=> width is tableview width, height is one returned by heightForHeaderInSection)
- [label1 release];
- return [containerView autorelease];*/
 
 - (UIView*)tableView:(UITableView *)tableView_ viewForFooterInSection:(NSInteger)section {
     if (section == 1 && !tableView.editing) {

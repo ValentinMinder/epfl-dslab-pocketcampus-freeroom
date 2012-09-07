@@ -15,8 +15,10 @@
 + (BOOL)deleteMoodleCookie;
 - (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
 + (NSString*)fileTypeForURL:(NSString*)urlString;
-- (NSString*)localPathForURL:(NSString*)urlString;
++ (NSString*)localPathForURL:(NSString*)urlString; //same as next with second argument NO
++ (NSString*)localPathForURL:(NSString*)urlString createIntermediateDirectories:(BOOL)createIntermediateDirectories;
 + (BOOL)isFileCached:(NSString*)localPath;
++ (BOOL)deleteFileAtPath:(NSString*)localPath;
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;
