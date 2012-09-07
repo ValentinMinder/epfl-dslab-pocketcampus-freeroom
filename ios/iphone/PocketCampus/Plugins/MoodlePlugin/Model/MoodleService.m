@@ -75,6 +75,10 @@ static NSString* kMoodleCookieKey = @"moodleCookie";
     return filePath;
 }
 
++ (BOOL)isFileCached:(NSString*)localPath {
+    return [[NSFileManager defaultManager] fileExistsAtPath:localPath];
+}
+
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTequilaTokenForMoodle);

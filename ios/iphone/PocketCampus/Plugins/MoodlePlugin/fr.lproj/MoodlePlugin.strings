@@ -4,9 +4,10 @@
 "MoodleNoCourse" = "Vous ne semblez être inscrit\nà aucun cours Moodle.";
 "MoodleEmptyCourse" = "Cours vide";
 "MoodleCourses" = "Cours";
-"MoodleWeek" = "Semaine %d";
+"MoodleWeek" = "Semaine";
 "MoodleAllWeeks" = "Toutes les semaines";
 "MoodleCurrentWeek" = "Semaine courante";
+"Saved" = "téléchargé ";
 "LoadingCourse" = "Chargement du cours\nVeuillez patienter";
 "ErrorWhileDownloadingFile" = "Une erreur est survenue pendant le téléchargement du fichier.\n\n Vérifier votre connexion internet.";
 "FileCouldNotBeDisplayedTryOpenIn" = "Ce fichier ne peut pas être affiché.\nEssayez le bouton action.";

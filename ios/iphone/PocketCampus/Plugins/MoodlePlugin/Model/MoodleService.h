@@ -16,6 +16,7 @@
 - (BOOL)saveMoodleCookie:(NSString*)moodleCookie;
 + (NSString*)fileTypeForURL:(NSString*)urlString;
 - (NSString*)localPathForURL:(NSString*)urlString;
++ (BOOL)isFileCached:(NSString*)localPath;
 
 - (void)getTequilaTokenForMoodleDelegate:(id)delegate;
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate;

@@ -66,7 +66,11 @@
         [centerActivityIndicator startAnimating];
         [self startAuth];
     }
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:animated];
+    NSIndexPath* selectedIndexPath = [sectionsList indexPathForSelectedRow];
+    if (selectedIndexPath) {
+        [sectionsList deselectRowAtIndexPath:selectedIndexPath animated:animated];
+        [sectionsList reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)viewDidUnload
@@ -235,7 +239,6 @@
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     [self presentDocumentViewControllerForFileRemoteURLString:resource.iUrl];
-    [sectionsList deselectRowAtIndexPath:[sectionsList indexPathForSelectedRow] animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -259,7 +262,16 @@
     if(secObj.iResources.count == 0)
         return nil;
     
-    NSString* title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
+    /*NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    [dateFormatter setLocale:[NSLocale systemLocale]];
+    [dateFormatter setDateFormat:@"dd/MM"];
+    //NSLog(@"%lld", secObj.iStartDate);
+    NSString* startDate = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:secObj.iStartDate]];*/
+    
+    /* startDate and endDate are not filled by server yet */
+    
+    NSString* title = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"MoodleWeek", @"MoodlePlugin", nil), section];
     
     PCTableViewSectionHeader* sectionHeader = [[PCTableViewSectionHeader alloc] initWithSectionTitle:title tableView:tableView];
     return [sectionHeader autorelease];
@@ -267,7 +279,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 40.0;
+    return 44.0;
 }
 
 /* UITableViewDataSource */
@@ -276,23 +288,33 @@
     MoodleSection* section = [iSections objectAtIndex:indexPath.section];
     UITableViewCell* newCell = [sectionsList dequeueReusableCellWithIdentifier:@"MOODLE_SECTIONS_LIST"];
     if (newCell == nil) {
-        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
+        newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MOODLE_SECTIONS_LIST"] autorelease];
         newCell.selectionStyle = UITableViewCellSelectionStyleGray;        
         newCell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
         newCell.textLabel.adjustsFontSizeToFitWidth = YES;
         newCell.textLabel.minimumFontSize = 11.0;
-        UILabel* fileTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 35.0)];
-        fileTypeLabel.font = [UIFont systemFontOfSize:13.0];
-        fileTypeLabel.textAlignment = UITextAlignmentRight;
-        fileTypeLabel.adjustsFontSizeToFitWidth = YES;
-        fileTypeLabel.textColor = [PCValues textColorLocationBlue];
-        newCell.accessoryView = fileTypeLabel;
-        [fileTypeLabel release];
+        UILabel* savedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 80.0, 35.0)];
+        savedLabel.font = [UIFont systemFontOfSize:13.0];
+        savedLabel.textAlignment = UITextAlignmentRight;
+        savedLabel.adjustsFontSizeToFitWidth = YES;
+        savedLabel.textColor = [UIColor colorWithWhite:0.45 alpha:1.0];
+        newCell.accessoryView = savedLabel;
+        [savedLabel release];
 
     }
     MoodleResource* resource = [section.iResources objectAtIndex:indexPath.row];
     newCell.textLabel.text = resource.iName;
-    ((UILabel*)newCell.accessoryView).text = [NSString stringWithFormat:@"%@  ", [MoodleService fileTypeForURL:resource.iUrl]];
+    NSArray* pathComponents = [resource.iUrl pathComponents];
+    newCell.detailTextLabel.text = [pathComponents objectAtIndex:pathComponents.count-1];
+    NSString* localPath = [moodleService localPathForURL:resource.iUrl];
+    if ([MoodleService isFileCached:localPath]) {
+        ((UILabel*)newCell.accessoryView).text = NSLocalizedStringFromTable(@"Saved", @"MoodlePlugin", nil);
+        /*UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Downloaded"]];
+        newCell.accessoryView = imageView;
+        [imageView release];*/
+    } else {
+        ((UILabel*)newCell.accessoryView).text = @""; //remove previous text if reused cell
+    }
     return newCell;
 }
 
