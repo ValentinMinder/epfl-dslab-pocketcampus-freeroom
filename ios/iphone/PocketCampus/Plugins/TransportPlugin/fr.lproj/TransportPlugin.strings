@@ -14,15 +14,20 @@
 "ImpossibleLocateUserDenied" = "Impossible de trouver la station favorite la plus proche. Avez-vous refusé la localisation ? Si oui, vous pouvez activer la localisation dans le menu Réglages de votre iPhone ou choisir manuellement une station de départ.";
 "ImpossibleLocateUnknown" = "Désolé, votre position n'a pas pu être déterminée. Essayez de rafraichir ou essayez plus tard.\n Vous pouvez choisir une station de départ manuellement en touchant le bouton bleu (favoris)";
 "WelcomeTouchInfoInstructions" = "Touchez le bouton favoris pour gérer\n vos stations favorites.";
-"Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le bouton\nfavoris pour ajouter une deuxième station.";
+"Need2StationsTouchInfoInstructions" = "Deux stations sont au minimum nécessaires pour afficher les horaires. Touchez le boutton favoris\npour ajouter une deuxième station.";
 "FavoriteStationsTitle" = "Stations favorites";
-"TouchAddStationInstructions" = "Touchez le plus pour ajouter une station.";
-"FavoriteStationsExplanations" = "Sélectionne automatiquement la station favorite la plus proche comme point de départ.";
-"Automatic" = "Automatique";
-"ManualDepartureSelection" = "Choisir le point de départ manuellement";
+"TouchAddStationInstructions" = "Touchez le ✚ pour ajouter une station favorite.";
+"DepartureStation" = "Station de départ";
+
+"NearestFavoriteStation" = "Automatique (la plus proche)";
+"FavoriteStationsExplanations_NearestSelected" = "Choix actuel : la station la plus proche de vous dans cette liste sera choisie comme point de départ. Les horaires depuis cette station vers toutes les autres stations de la liste seront affichés.";
+"FavoriteStationsExplanations_ManualWithFormat" = "Choix actuel : %@ est séléctioné comme point de départ. Les horaires depuis cette station vers toutes les autres stations de la liste seront affichés.";
+"FavoriteStationsManagementExplanations" = "☞  Touchez le ✚ pour ajouter une station\n      favorite.\n☞  Touchez \"Modifier\" pour supprimer\n      ou réordonner des stations favorites.";
+
+"ClearAll" = "Tout effacer";
 "SearchFieldPlaceholder" = "Rechercher une station";
 "SearchStationNoResult" = "Aucun résultat";
-"SearchBarStationPrompt" = "Tapez le nom d'une station ou d'un arrêt.";
+"SearchBarStationPrompt" = "Entrez le nom d'une station ou d'un arrêt.";
 "StationAlreadyFavorite" = "Cette station est déjà dans vos favoris.";
 "CellMultiplePossibilitiesTrip" = "Plusieurs possibilités";
 "Connections"="Connexions";

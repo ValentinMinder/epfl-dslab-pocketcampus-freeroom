@@ -22,7 +22,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 @implementation FavoriteStationsViewController
 
-@synthesize tableView, touchAddInstructionsLabel;
+@synthesize tableView, touchAddInstructionsLabel, addButton;
 
 @synthesize dev_location_test; //DEV, to remove
 
@@ -45,6 +45,8 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 	// Do any additional setup after loading the view.
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/favorites" withError:NULL];
     tableView.editing = NO;
+    tableView.sectionHeaderHeight = 0.0;
+    tableView.sectionFooterHeight = 10.0;
     touchAddInstructionsLabel.text = NSLocalizedStringFromTable(@"TouchAddStationInstructions", @"TransportPlugin", nil);
     self.title = NSLocalizedStringFromTable(@"FavoriteStationsTitle", @"TransportPlugin", nil);
     [self setNavBarNormalModeAnimated:NO];
@@ -79,14 +81,11 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 }
 
 - (void)setNavBarNoStationMode:(BOOL)animated  {
-    UIBarButtonItem* addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
-    [self.navigationItem setLeftBarButtonItem:addButton animated:animated];
-    [addButton release];
+    [self.navigationItem setLeftBarButtonItem:nil animated:animated];
     
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
+    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
     [self.navigationItem setRightBarButtonItem:doneButton animated:animated];
     [doneButton release];
-    
 }
 
 - (void)setNavBarEditingModeAnimated:(BOOL)animated  {
@@ -94,13 +93,9 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     [self.navigationItem setLeftBarButtonItem:saveButton animated:animated];
     [saveButton release];
     
-    UIBarButtonItem* addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
-    if ([favStations count] == MAX_NB_FAV_STATIONS) {
-        addButton.enabled = NO;
-    }
-    [self.navigationItem setRightBarButtonItem:addButton animated:animated];
-    [addButton release];
-
+    UIBarButtonItem* clearAllButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"ClearAll", @"TransportPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(clearAllButtonPressed)];
+    [self.navigationItem setRightBarButtonItem:clearAllButton animated:animated];
+    [clearAllButton release];
 }
 
 - (void)setNavBarNormalModeAnimated:(BOOL)animated {
@@ -116,11 +111,20 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 - (void)saveButtonPressed{
     [self setNavBarNormalModeAnimated:YES];
     [tableView setEditing:NO animated:YES];
+    [tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)addButtonPressed {
-    tableView.editing = YES;
-    [self setNavBarEditingModeAnimated:YES];
+- (void)clearAllButtonPressed {
+    [favStations removeAllObjects];
+    [transportService saveUserFavoriteTransportStations:favStations]; //empty array. Not saving nil because nil will make NextDeparturesViewController download defaults stations
+    [selectedStation release];
+    selectedStation = nil;
+    [transportService saveUserManualDepartureStation:nil];
+    NSIndexSet* sectionsSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+    [tableView deleteSections:sectionsSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (IBAction)addButtonPressed {
     AddStationViewController* viewController = [[AddStationViewController alloc] init];
     if([self respondsToSelector:@selector(presentingViewController)]) {
         [self presentViewController:viewController animated:YES completion:NULL]; //only available in iOS 5.0
@@ -133,6 +137,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 - (void)editButtonPressed {
     [self setNavBarEditingModeAnimated:YES];
     [tableView setEditing:YES animated:YES];
+    [tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)doneButtonPressed {
@@ -166,8 +171,8 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 /* UITableViewDelegate delegation */
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView_ editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 || !tableView.editing) {
         return UITableViewCellEditingStyleNone;
     }
     return UITableViewCellEditingStyleDelete;
@@ -189,6 +194,18 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 
 - (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([[tableView cellForRowAtIndexPath:indexPath] accessoryType] == UITableViewCellAccessoryCheckmark) {
+        if (indexPath.section == 0) {
+            /* if user tries to tap "Automatic" when it's already selected, help him understand he can also select manually another station => select the first one */
+            [transportService saveUserManualDepartureStation:nil];
+            [selectedStation release];
+            selectedStation = [[favStations objectAtIndex:0] retain];
+            [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+            [[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        return;
+    }
     [[tableView cellForRowAtIndexPath:[self indexPathOfSelectedCell]] setAccessoryType:UITableViewCellAccessoryNone];
     [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
     [selectedStation release];
@@ -198,11 +215,13 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
         [transportService saveUserManualDepartureStation:nil];
         [selectedStation release];
         selectedStation = nil;
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
     } else if (indexPath.section == 1) {
         TransportStation* station = [favStations objectAtIndex:indexPath.row];
         [transportService saveUserManualDepartureStation:station];
         [selectedStation release];
         selectedStation = [station retain];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
     } else {
         //should not happen
     }
@@ -216,7 +235,8 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     if (indexPath.section == 0) {
         UITableViewCell* newCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         newCell.textLabel.textColor = [PCValues textColorLocationBlue];
-        newCell.textLabel.text = NSLocalizedStringFromTable(@"Automatic", @"TransportPlugin", nil);
+        newCell.textLabel.text = NSLocalizedStringFromTable(@"NearestFavoriteStation", @"TransportPlugin", nil);
+        newCell.textLabel.adjustsFontSizeToFitWidth = YES;
         if (selectedStation == nil) {
             newCell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
@@ -248,7 +268,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     if (indexPath.section == 1 && editingStyle == UITableViewCellEditingStyleDelete) {
         NSIndexPath* selectedIndexPath = [self indexPathOfSelectedCell];
         [favStations removeObjectAtIndex:indexPath.row];
-        
+        NSLog(@"%@ %d", selectedIndexPath, tableView.editing);
         if (favStations.count == 0) {
             NSIndexSet* sectionsSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
             [tableView deleteSections:sectionsSet withRowAnimation:UITableViewRowAnimationFade];
@@ -265,11 +285,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
             }
         }
         [transportService saveUserFavoriteTransportStations:favStations];
-        if ([favStations count] == MAX_NB_FAV_STATIONS) {
-            self.navigationItem.rightBarButtonItem.enabled = NO; //add station button
-        } else {
-            self.navigationItem.rightBarButtonItem.enabled = YES; //add station button
-        }
+        [self enableAndDisableAddButtonIfNecessary];
     }
 }
 
@@ -280,7 +296,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     return NO;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
         NSString* explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations", @"TransportPlugin", nil);
         UIFont* font = [UIFont systemFontOfSize:16.0];
@@ -323,6 +339,133 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     }
     
     return nil;
+}*/
+
+- (CGFloat)tableView:(UITableView *)tableView_ heightForHeaderInSection:(NSInteger)section {
+    if (section == 0 && !tableView.editing) {
+        return 42.0;
+    }
+    return 0.0;
+}
+/*NSString* explanation;
+ if (selectedStation) {
+ explanation = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FavoriteStationsExplanations_ManualWithFormat", @"TransportPlugin", nil), selectedStation.name];
+ } else {
+ explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations_NearestSelected", @"TransportPlugin", nil);
+ }
+ UIFont* font = [UIFont systemFontOfSize:16.0];
+ CGSize reqSize = [explanation sizeWithFont:font constrainedToSize:CGSizeMake(280.0, 600.0)];
+ return reqSize.height+20.0;*/
+- (CGFloat)tableView:(UITableView *)tableView_ heightForFooterInSection:(NSInteger)section {
+    
+    if (section == 0) {
+        return 0.0;
+    }
+    
+    if (section == 1) {
+        return [self tableView:tableView viewForFooterInSection:section].frame.size.height;
+    }
+    
+    return 0.0;
+}
+
+- (UIView*)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
+    if (section == 0 && !tableView.editing) {
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(17.0, 5.0, 280.0, 35.0)];
+        titleLabel.text = NSLocalizedStringFromTable(@"DepartureStation", @"TransportPlugin", nil);
+        titleLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.9];
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        titleLabel.shadowColor = [UIColor blackColor];
+        titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        UIView* containerView = [[UIView alloc] init];
+        [containerView addSubview:titleLabel]; //need container view because frame of returned view is not taken into account (=> width is tableview width, height is one returned by heightForHeaderInSection)
+        [titleLabel release];
+        return [containerView autorelease];
+    }
+    return nil;
+}
+
+/*UILabel* label1 = [[UILabel alloc] init];
+ NSString* explanation;
+ if (selectedStation) {
+ explanation = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FavoriteStationsExplanations_ManualWithFormat", @"TransportPlugin", nil), selectedStation.name];
+ } else {
+ explanation = NSLocalizedStringFromTable(@"FavoriteStationsExplanations_NearestSelected", @"TransportPlugin", nil);
+ }
+ 
+ label1.frame = CGRectMake(20.0, 0, 280.0, [self tableView:tableView heightForFooterInSection:1]);
+ label1.numberOfLines = 0;
+ label1.textAlignment = UITextAlignmentCenter;
+ label1.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
+ label1.backgroundColor = [UIColor clearColor];
+ label1.font = [UIFont systemFontOfSize:16.0];;
+ label1.adjustsFontSizeToFitWidth = NO;
+ label1.text = explanation;
+ UIView* containerView = [[UIView alloc] init];
+ [containerView addSubview:label1]; //need container view because frame of returned view is not taken into account (=> width is tableview width, height is one returned by heightForHeaderInSection)
+ [label1 release];
+ return [containerView autorelease];*/
+
+- (UIView*)tableView:(UITableView *)tableView_ viewForFooterInSection:(NSInteger)section {
+    if (section == 1 && !tableView.editing) {
+        NSString* explanations1;
+                
+        if (selectedStation) {
+            explanations1 = [NSString stringWithFormat:NSLocalizedStringFromTable(@"FavoriteStationsExplanations_ManualWithFormat", @"TransportPlugin", nil), [TransportUtils nicerName:selectedStation.name]];
+        } else {
+            explanations1 = NSLocalizedStringFromTable(@"FavoriteStationsExplanations_NearestSelected", @"TransportPlugin", nil);
+        }
+        UIFont* font1 = [UIFont systemFontOfSize:15.0];
+        CGSize reqSize1 = [explanations1 sizeWithFont:font1 constrainedToSize:CGSizeMake(280.0, 600.0)];
+        UILabel* label1 = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 280.0, reqSize1.height)];
+        label1.numberOfLines = 0;
+        label1.textAlignment = UITextAlignmentCenter;
+        label1.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
+        label1.backgroundColor = [UIColor clearColor];
+        label1.font = font1;
+        label1.text = explanations1;
+        
+        NSString* explanations2 = NSLocalizedStringFromTable(@"FavoriteStationsManagementExplanations", @"TransportPlugin", nil);
+        UIFont* font2 = [UIFont systemFontOfSize:15.0];
+        CGSize reqSize2 = [explanations2 sizeWithFont:font2 constrainedToSize:CGSizeMake(290.0, 600.0)];
+        UILabel* label2 = [[UILabel alloc] initWithFrame:CGRectMake(15.0, label1.frame.origin.y + reqSize1.height + 16.0, reqSize2.width, reqSize2.height)];
+        label2.numberOfLines = 0;
+        label2.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
+        label2.backgroundColor = [UIColor clearColor];
+        label2.font = font2;
+        label2.text = explanations2;
+        
+        UIView* containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, label2.frame.origin.y+label2.frame.size.height+20.0)]; //gives some margin
+        //containerView.backgroundColor = [UIColor blueColor];
+        [containerView addSubview:label1];
+        [containerView addSubview:label2];
+        [label1 release];
+        [label2 release];
+        return [containerView autorelease];
+        
+    }
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView_ numberOfRowsInSection:(NSInteger)section {
+    [self enableAndDisableAddButtonIfNecessary];
+    if (favStations == nil || favStations.count == 0) {
+        touchAddInstructionsLabel.hidden = NO;
+        [self setNavBarNoStationMode:NO];
+        return 0;
+    }
+    touchAddInstructionsLabel.hidden = YES;
+    if (section == 0) {
+        if (tableView.editing) {
+            return 0;
+        }
+        return 1;
+    } else if (section == 1) {
+        return favStations.count;
+    } else {
+        return 0; //should not happen
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -334,19 +477,11 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (favStations == nil || favStations.count == 0) {
-        touchAddInstructionsLabel.hidden = NO;
-        [self setNavBarNoStationMode:NO];
-        return 0;
-    }
-    touchAddInstructionsLabel.hidden = YES;
-    if (section == 0) {
-        return 1;
-    } else if (section == 1) {
-        return favStations.count;
+- (void)enableAndDisableAddButtonIfNecessary {
+    if ([favStations count] == MAX_NB_FAV_STATIONS) {
+        addButton.enabled = NO;
     } else {
-        return 0; //should not happen
+        addButton.enabled = YES;
     }
 }
 

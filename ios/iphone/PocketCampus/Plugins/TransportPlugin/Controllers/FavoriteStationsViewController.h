@@ -13,6 +13,7 @@
 @interface FavoriteStationsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
     UITableView* tableView;
     UILabel* touchAddInstructionsLabel;
+    UIBarButtonItem* addButton;
     NSMutableArray* favStations;
     TransportService* transportService;
     TransportStation* selectedStation;
@@ -20,6 +21,7 @@
 
 @property (nonatomic, assign) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) IBOutlet UILabel* touchAddInstructionsLabel;
+@property (nonatomic, assign) IBOutlet UIBarButtonItem* addButton;
 
 /* DEV */
 @property (nonatomic, retain) NSString* dev_location_test;

@@ -18,7 +18,7 @@
 "VoteVerb" = "vote";
 "RatingSendingError" = "Sorry, an error occured. Please try again.";
 "RatingTooEarly" = "Sorry, it's too early to vote.";
-"RatingAlreadyDone" = "You can vote only once every day";
+"RatingAlreadyDone" = "You can vote only once a day";
 
 
 /* Accessiblity */
