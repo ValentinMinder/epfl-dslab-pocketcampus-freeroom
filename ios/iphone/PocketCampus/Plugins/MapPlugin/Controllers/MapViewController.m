@@ -222,6 +222,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
         mapView.showsUserLocation = YES;
         [mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
+    } else if (mapView.userTrackingMode == MKUserTrackingModeFollow) {
+        [mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
     } else {
         [mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
         mapView.showsUserLocation = NO;
@@ -315,9 +317,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
     if (mode == MKUserTrackingModeNone) {
+        myLocationButton.image = [UIImage imageNamed:@"LocationArrow"];
         myLocationButton.tintColor = [UIColor whiteColor];
-    } else {
+    } else if (mode == MKUserTrackingModeFollow) {
         myLocationButton.tintColor = [UIColor colorWithRed:0.7215 green:0.6745 blue:0.9921 alpha:1.0];
+    } else if (mode == MKUserTrackingModeFollowWithHeading) {
+        myLocationButton.image = [UIImage imageNamed:@"Compass"];
+    } else {
+        //no other mode
     }
 }
 

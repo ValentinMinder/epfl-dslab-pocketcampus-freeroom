@@ -138,6 +138,9 @@
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
 		3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
+		32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB115FB92FC0051EF9A /* MyStationsHelp.html */; };
+		32969ABB15FBA9150051EF9A /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
+		32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABA15FBA9150051EF9A /* Compass@2x.png */; };
 		3297E017155571F80054F790 /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
 		3297E01B15557FE10054F790 /* NewsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E01A15557FE10054F790 /* NewsUtils.m */; };
 		3297E02415558BE40054F790 /* BackgroundNewsThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E02215558BE40054F790 /* BackgroundNewsThumbnail.png */; };
@@ -457,6 +460,10 @@
 		3293AD2215D1BC930097D414 /* AboutPCView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutPCView.xib; sourceTree = "<group>"; };
 		3296570A14FF9DDB00C44C12 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PocketCampus.strings; sourceTree = "<group>"; };
 		3296570C14FF9DE300C44C12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PocketCampus.strings; sourceTree = "<group>"; };
+		32969AB215FB92FD0051EF9A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
+		32969AB515FB93060051EF9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
+		32969AB915FBA9150051EF9A /* Compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Compass.png; sourceTree = "<group>"; };
+		32969ABA15FBA9150051EF9A /* Compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Compass@2x.png"; sourceTree = "<group>"; };
 		3297E016155571F80054F790 /* NewsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewsLarge.png; sourceTree = "<group>"; };
 		3297E01915557FE10054F790 /* NewsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsUtils.h; sourceTree = "<group>"; };
 		3297E01A15557FE10054F790 /* NewsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsUtils.m; sourceTree = "<group>"; };
@@ -916,6 +923,8 @@
 				324151E415375BDD00CCFB22 /* Map@2x.png */,
 				3258A87915A46AE200D368AC /* LocationArrow.png */,
 				3258A87A15A46AE200D368AC /* LocationArrow@2x.png */,
+				32969AB915FBA9150051EF9A /* Compass.png */,
+				32969ABA15FBA9150051EF9A /* Compass@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -1784,6 +1793,7 @@
 				32488C911535F31B00BA49AB /* ConnectionSummaryCell.m */,
 				32AF214515B193A200BB445D /* TransportHelpView.xib */,
 				32AF214615B197DE00BB445D /* TransportHelp.html */,
+				32969AB115FB92FC0051EF9A /* MyStationsHelp.html */,
 				32058ACD1572B4B800F4D361 /* TransportSettingsView.xib */,
 			);
 			path = Views;
@@ -1970,6 +1980,9 @@
 				32777B4615D1BFBC00A29F56 /* AboutPC.html in Resources */,
 				32686E7315D598EF00564786 /* AppLogo@2x.png in Resources */,
 				32675C2415F50F4A00880387 /* Config.plist in Resources */,
+				32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */,
+				32969ABB15FBA9150051EF9A /* Compass.png in Resources */,
+				32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2149,6 +2162,15 @@
 				3296570C14FF9DE300C44C12 /* en */,
 			);
 			name = PocketCampus.strings;
+			sourceTree = "<group>";
+		};
+		32969AB115FB92FC0051EF9A /* MyStationsHelp.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32969AB215FB92FD0051EF9A /* en */,
+				32969AB515FB93060051EF9A /* fr */,
+			);
+			name = MyStationsHelp.html;
 			sourceTree = "<group>";
 		};
 		32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */ = {

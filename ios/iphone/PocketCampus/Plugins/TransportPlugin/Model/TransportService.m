@@ -27,7 +27,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
             //[instance.operationQueue setMaxConcurrentOperationCount:1];
         }
     }
-    return [instance autorelease];;
+    return [instance autorelease];
 }
 
 - (id)thriftServiceClientInstance {
@@ -206,7 +206,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 @implementation NearestFavoriteStationRequest
 
-static int kLocationValidity = 20.0; //nb seconds a cached location can be used
+static int kLocationValidity = 20; //nb seconds a cached location can be used
 static NSString* kLastLocationKey = @"lastLocation";
 
 @synthesize stations, checkCancellationAndAdaptDesiredAccuracyTimer;
@@ -289,11 +289,11 @@ static NSString* kLastLocationKey = @"lastLocation";
         return;
     }
     
-    if ([self locationIsStillValid:locationManager.location] && [self locationEnglobesOnlyOneFavoriteStation:locationManager.location]) {
+    /*if ([self locationIsStillValid:locationManager.location] && [self locationEnglobesOnlyOneFavoriteStation:locationManager.location]) { //commented because CLLocationManange sometimes says location is fresh (timestamp diff 0) when it's not. Do not trust it !
         NSLog(@"-> Initial locationManager location still valid, will return to delegate.");
         [self handleLocationUpdate:locationManager.location];
         return;
-    }
+    }*/
     
 }
 
@@ -308,7 +308,7 @@ static NSString* kLastLocationKey = @"lastLocation";
         locationManager.desiredAccuracy = 5000.0; //5KM
         [self handleLocationUpdate:locationManager.location];
     } else if (nbRounds == 15) { //location timeout (15 seconds)
-        [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search
+        [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search and return error to delegate
     } else if (nbRounds % 2 == 0) {
         CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
         if (nbRounds % 4 == 0 && accuracy < kCLLocationAccuracyBest) { //don't want to wait longer with this accuracy level

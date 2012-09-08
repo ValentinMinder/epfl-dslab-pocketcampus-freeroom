@@ -192,6 +192,7 @@ static NSTimeInterval kConnectivityCheckTimeout;
     }
     [operationQueue release];
     [thriftProtocol release];
+    [serverAddressWithPort release];
     [serverURL release];
     NSLog(@"-> Service '%@' released. Some ServiceRequest may still be waiting for replies though. Those will be killed and released after thrift request timeout.", serviceName);
     [serviceName release];

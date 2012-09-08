@@ -37,7 +37,7 @@ static NSMutableDictionary* settings = nil;
 }
 
 - (void)refresh {
-    if (mainViewController == nil || ![mainViewController isKindOfClass:[NextDeparturesListViewController class]]) {
+    if (mainViewController == nil || ![mainViewController isKindOfClass:[NextDeparturesListViewController class]] || mainViewController.navigationController.visibleViewController != mainViewController) {
         return;
     }
     [(NextDeparturesListViewController*)mainViewController refresh];

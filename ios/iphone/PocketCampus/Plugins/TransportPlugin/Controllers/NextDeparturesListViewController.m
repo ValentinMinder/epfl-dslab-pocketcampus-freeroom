@@ -238,7 +238,6 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     if (favStations == nil || departureStation == nil) {
         return; //should not happen
     }
-    NSLog(@"to : %@, lat : %d, long : %d", to, tripResult.to.latitude, tripResult.to.longitude);
     [tripResults setObject:tripResult forKey:to];
     if (schedulesState != SchedulesStateError) {
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[self biasedIndexPathForStationName:to]] withRowAnimation:UITableViewRowAnimationFade];
@@ -507,7 +506,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 }
 
 - (IBAction)presentHelpViewController:(id)sender {
-    TransportHelpViewController* viewController = [[TransportHelpViewController alloc] init];
+    TransportHelpViewController* viewController = [[TransportHelpViewController alloc] initWithHTMLFilePath:[[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"]];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
     navController.navigationBar.tintColor = [PCValues pocketCampusRed];
     if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0

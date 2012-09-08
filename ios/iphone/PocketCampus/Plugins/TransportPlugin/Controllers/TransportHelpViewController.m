@@ -16,11 +16,11 @@
 
 @synthesize webView;
 
-- (id)init
+- (id)initWithHTMLFilePath:(NSString*)htmlFilePath_;
 {
     self = [super initWithNibName:@"TransportHelpView" bundle:nil];
     if (self) {
-        // Custom initialization
+        htmlFilePath = [htmlFilePath_ retain];
     }
     return self;
 }
@@ -32,12 +32,12 @@
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/help" withError:NULL];
 	self.title = NSLocalizedStringFromTable(@"TransportHelp", @"TransportPlugin", nil);
     self.view.backgroundColor = [PCValues backgroundColor1];
+    webView.backgroundColor = [UIColor clearColor];
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissViewController)];
     self.navigationItem.rightBarButtonItem = doneButton;
     [doneButton release];
-    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"TransportHelp" ofType:@"html"];
     NSError* error = nil;
-    NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFilePath encoding:NSUTF8StringEncoding error:&error];
     if (!error) {
         [webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
     }
@@ -62,6 +62,13 @@
     } else {
         [self.presentingViewController dismissModalViewControllerAnimated:YES];
     }
+}
+
+- (void)dealloc {
+    webView.delegate = nil;
+    [webView stopLoading];
+    [htmlFilePath release];
+    [super dealloc];
 }
 
 @end

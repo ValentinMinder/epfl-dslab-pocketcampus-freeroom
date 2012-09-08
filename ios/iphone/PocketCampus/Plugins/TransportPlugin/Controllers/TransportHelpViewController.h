@@ -10,8 +10,10 @@
 
 @interface TransportHelpViewController : UIViewController {
     UIWebView* webView;
-    
+    NSString* htmlFilePath;
 }
+
+- (id)initWithHTMLFilePath:(NSString*)htmlFilePath;
 
 @property (nonatomic, assign) IBOutlet UIWebView* webView;
 

@@ -30,6 +30,7 @@
         authController = [[AuthenticationController alloc] init];
         moodleService = [[MoodleService sharedInstanceToRetain] retain];
         tequilaKey = nil;
+        iCourses = nil;
     }
     return self;
 }
@@ -136,6 +137,7 @@
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = @"";
     if(coursesListReply.iStatus == 200) {
+        [iCourses release];
         iCourses = [coursesListReply.iCourses retain];
         if(iCourses.count != 0) {
             [PCUtils reloadTableView:coursesList withFadingDuration:0.2];
@@ -220,6 +222,7 @@
     [authController release];
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];
+    [iCourses release];
     [tequilaKey release];
     [super dealloc];
 }

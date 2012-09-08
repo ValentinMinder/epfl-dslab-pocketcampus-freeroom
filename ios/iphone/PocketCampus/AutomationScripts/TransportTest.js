@@ -14,6 +14,7 @@ function testTransport() {
 	testNearestFavoriteStation();
 
 	log.logDebug("Transport test finished");
+	tapBack();
 	return true;
 
 	function selectDestinationAndDetailsAndReturn(destination) {
@@ -65,7 +66,7 @@ function testTransport() {
 	 * returns name of add station
 	 */ 
 	function addStation(stationOrNullForRandom) {
-		if (!isCurrentNavBarTitle("Favorite stations")) {
+		if (!isCurrentNavBarTitle("My stations")) {
 			tapBookmarks();	
 		}
 		target.pushTimeout(1);
@@ -73,13 +74,16 @@ function testTransport() {
 			log.logDebug("Cannot add more than 10 stations.");
 			return false;
 		}
-		if (window.tableViews()[0].cells().isValid()) {
-			window.navigationBar().leftButton().tap(); //edit button
-			window.navigationBar().rightButton().tap(); //add (+) station button
-		} else {
-			log.logDebug("No station yet.");
-			window.navigationBar().leftButton().tap(); //add (+) station button
+		
+		var didEnterEditMode = false;
+		
+		if (chance(0.4) && window.tableViews()[0].cells().length > 0) {
+			didEnterEditMode = true; //add station can be done in both modes. Test both
+			log.logDebug("Try add station in edit mode");
+			window.navigationBar().elements()['Edit'].tap(); //edit button	
 		}
+		
+		window.toolbar().elements()['Add'].tap(); //add (+) station button
 		delay(1);
 		var searchBar = window.elements()['SearchBar'];
 		var selectedAlreadyFavorite = false;
@@ -114,13 +118,15 @@ function testTransport() {
 			}
 		} while (selectedAlreadyFavorite);
 		delay(1)
-		window.navigationBar().leftButton().tap(); //done edit button
+		if (didEnterEditMode) {
+			window.navigationBar().leftButton().tap(); //done edit button	
+		}
 		return selectedStation;
 	}
 	
 	function testAddRandomStation() {
 		log.logStart("Add random station and test");
-		if (!isCurrentNavBarTitle("Favorite stations")) {
+		if (!isCurrentNavBarTitle("My stations")) {
 			tapBookmarks();	
 		}
 		var addedStation = addStation(null);
@@ -139,10 +145,11 @@ function testTransport() {
 			log.logPass("Add random station and test"); //mean should add another station before checking main lsit
 			return true;
 		}
-		window.navigationBar().rightButton().tap();
+		window.navigationBar().rightButton().tap(); //done button
 		delay(1);
 		tableView = window.tableViews()[0];
 		if(!tableViewContainsCellWithNameSubstring(tableView, addedStation) && !window.elements()[addedStation].isValid()) {
+			target.captureScreenWithName("TestingStationPresence-"+addedStation);
 			log.logDebug("Fail case 2");
 			log.logFail("Add random station and test");
 			return false;
@@ -155,12 +162,12 @@ function testTransport() {
 	
 	
 	function testRemoveRandomStation() {
-		if (!isCurrentNavBarTitle("Favorite stations")) {
+		if (!isCurrentNavBarTitle("My stations")) {
 			tapBookmarks();	
 		}
 		log.logStart("Remove random station");
-		if (app.navigationBar().leftButton().name() == "Edit") {
-			app.navigationBar().leftButton().tap(); //entering in edit mode
+		if (app.navigationBar().elements()['Edit'].isValid()) {
+			app.navigationBar().elements()['Edit'].tap();	
 		}
 		delay(1);
 		tableView = window.tableViews()[0];
@@ -168,14 +175,11 @@ function testTransport() {
 		var nbCellsBeforeRemoval = cells.length;
 		if (nbCellsBeforeRemoval == 0) {
 			log.logDebug("No station, cannot remove station");
-			window.navigationBar().rightButton().tap(); //done button
+			app.navigationBar().rightButton().tap(); //done button
 			log.logPass("Remove random station");
 			return false;
 		}
 		var index = randomVisibleRowIndex(tableView);
-		if (index == 0) {
-			index = 1; //cannot chose "Automatic" cell
-		}
 		var removedStation = cells[index].name();
 		log.logDebug("Removing station : "+removedStation);
 		var cell = cells[index];
@@ -183,13 +187,14 @@ function testTransport() {
 		cell.buttons()[0].tap(); //tap delete button
 		delay(0.5);
 		cells = tableView.cells();
-		if (nbCellsBeforeRemoval > 2 && cells.length != nbCellsBeforeRemoval-1) { //> 2 because of "Automatic" cell
-			log.logDebug("Excpected "+(nbCellsBeforeRemoval-1)+"after removal, found "+cells.length);
+		if (nbCellsBeforeRemoval > 1 && cells.length != nbCellsBeforeRemoval-1) {
+			log.logDebug("Excpected "+(nbCellsBeforeRemoval-1)+", after removal found "+cells.length);
+			log.logDebug("Fail case 1");
 			log.logFail("Remove random station");
 			app.navigationBar().leftButton().tap(); //leaving edit mode
 			app.navigationBar().rightButton().tap(); //leaving fav stations view
 			return false;
-		} else if ((nbCellsBeforeRemoval == 2 && cells.length != 0) || (nbCellsBeforeRemoval == 0 && !window.elements().firstWithPredicate("name CONTAINS 'Touch the plus buton to add a station'").isValid())) {
+		} else if ((nbCellsBeforeRemoval == 1 && cells.length != 0) || (nbCellsBeforeRemoval == 0 && !window.elements().firstWithPredicate("name CONTAINS 'Touch the plus buton to add a station'").isValid())) {
 			log.logDebug("Fail case 2");
 			log.logFail("Remove random station");
 			app.navigationBar().rightButton().tap(); //leaving fav stations view
@@ -197,23 +202,23 @@ function testTransport() {
 			//OK, continue
 		}
 		delay(1);
-		if (nbCellsBeforeRemoval > 2) {
-			window.navigationBar().leftButton().tap(); //done edit button	
+		if (cells.length > 0) {
+			app.navigationBar().leftButton().tap(); //done edit button	
 		}
-		window.navigationBar().rightButton().tap(); //done button
+		app.navigationBar().rightButton().tap(); //done button
 		delay(1.5);
 		tableView = window.tableViews()[0];
-		if (nbCellsBeforeRemoval > 3 && tableView.cells().length == nbCellsBeforeRemoval-3 && !tableViewContainsCellWithNameSubstring(tableView, removedStation)) { //-1 for removed stationa and -1 because dep station is on top label
+		if (nbCellsBeforeRemoval > 2 && tableView.cells().length == nbCellsBeforeRemoval-2 && !tableViewContainsCellWithNameSubstring(tableView, removedStation)) { //-1 for removed stationa and -1 because dep station is on top ("From :") label
 			log.logDebug("State of test : removed station and at least 2 are remaining");
 			log.logPass("Remove random station");
-		} else if (nbCellsBeforeRemoval == 3 && window.elements().firstWithPredicate("name CONTAINS 'At least two favorite stations are'").isValid() && !tableView.isVisible()) {
+		} else if (nbCellsBeforeRemoval == 2 && window.elements().firstWithPredicate("name CONTAINS 'At least two stations are'").isValid() && !tableView.isVisible()) {
 			log.logDebug("State of test : removed station and only 1 remaining");
 			log.logPass("Remove random station");
-		} else if (nbCellsBeforeRemoval == 2 && window.elements().firstWithPredicate("name CONTAINS 'Tap the favorites button to manage'").isValid() && !tableView.isVisible()) {
+		} else if (nbCellsBeforeRemoval == 1 && window.elements().firstWithPredicate("name CONTAINS 'Tap the bookmarks button to manage'").isValid() && !tableView.isVisible()) {
 			log.logDebug("State of test : removed station and no station remaining");
 			log.logPass("Remove random station");
 		} else {
-			log.logDebug("nbCellsBeforeRemoval : "+nbCellsBeforeRemoval);
+			log.logDebug("Fail case 3, nbCellsBeforeRemoval : "+nbCellsBeforeRemoval);
 			log.logFail("Remove random station");
 		}
 		return true;
@@ -225,8 +230,9 @@ function testTransport() {
 		addStation("Lausanne-Flon");
 		addStation("EPFL");
 		addStation("Bern");
-		window.tableViews()[0].cells()["Automatic"].tap();
-		window.navigationBar().rightButton().tap(); //done button
+		window.tableViews()[0].cells()[1].tap(); //select another cell (need to do that because if automatic cell is already selected, tapping it selects the first in stations
+		window.tableViews()[0].cells()[0].tap(); //select "Automatic" cell 
+		app.navigationBar().rightButton().tap(); //done button
 		delay(1);
 		
 		log.logStart("Testing nearest station, location Lausanne-Flon");

@@ -385,6 +385,7 @@
     [moodleService cancelOperationsForDelegate:self];
     [moodleService release];
     [courseTitle release];
+    [iSections release];
     [super dealloc];
 }
 

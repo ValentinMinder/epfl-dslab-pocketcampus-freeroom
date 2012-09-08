@@ -16,6 +16,8 @@
 
 #import "TransportUtils.h"
 
+#import "TransportHelpViewController.h"
+
 static int MAX_NB_FAV_STATIONS = 10;
 
 static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
@@ -133,6 +135,20 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     }
     [viewController release];
 }
+
+- (IBAction)presentHelpViewController:(id)sender {
+    TransportHelpViewController* viewController = [[TransportHelpViewController alloc] initWithHTMLFilePath:[[NSBundle mainBundle] pathForResource:@"MyStationsHelp" ofType:@"html"]];
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    if ([self.navigationController respondsToSelector:@selector(presentViewController:animated:completion:)]) { // >= iOS 5.0
+        [self presentViewController:navController animated:YES completion:NULL];
+    } else {
+        [self.navigationController presentModalViewController:navController animated:YES];
+    }
+    [viewController release];
+    [navController release];
+}
+
 
 - (void)editButtonPressed {
     [self setNavBarEditingModeAnimated:YES];
@@ -352,7 +368,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
         label1.font = font1;
         label1.text = explanations1;
         
-        NSString* explanations2 = NSLocalizedStringFromTable(@"FavoriteStationsManagementExplanations", @"TransportPlugin", nil);
+        /*NSString* explanations2 = NSLocalizedStringFromTable(@"FavoriteStationsManagementExplanations", @"TransportPlugin", nil);
         UIFont* font2 = [UIFont systemFontOfSize:15.0];
         CGSize reqSize2 = [explanations2 sizeWithFont:font2 constrainedToSize:CGSizeMake(290.0, 600.0)];
         UILabel* label2 = [[UILabel alloc] initWithFrame:CGRectMake(15.0, label1.frame.origin.y + reqSize1.height + 16.0, reqSize2.width, reqSize2.height)];
@@ -360,14 +376,14 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
         label2.textColor = [UIColor colorWithWhite:1.0 alpha:0.85];
         label2.backgroundColor = [UIColor clearColor];
         label2.font = font2;
-        label2.text = explanations2;
+        label2.text = explanations2;*/
         
-        UIView* containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, label2.frame.origin.y+label2.frame.size.height+20.0)]; //gives some margin
+        UIView* containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, label1.frame.origin.y+label1.frame.size.height+20.0)]; //gives some margin
         //containerView.backgroundColor = [UIColor blueColor];
         [containerView addSubview:label1];
-        [containerView addSubview:label2];
+        //[containerView addSubview:label2];
         [label1 release];
-        [label2 release];
+        //[label2 release];
         return [containerView autorelease];
         
     }
