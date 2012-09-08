@@ -141,6 +141,8 @@
 		32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB115FB92FC0051EF9A /* MyStationsHelp.html */; };
 		32969ABB15FBA9150051EF9A /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
 		32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABA15FBA9150051EF9A /* Compass@2x.png */; };
+		32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABD15FBBB170051EF9A /* BookmarksBlueHighlighted.png */; };
+		32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969ABE15FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png */; };
 		3297E017155571F80054F790 /* NewsLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E016155571F80054F790 /* NewsLarge.png */; };
 		3297E01B15557FE10054F790 /* NewsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3297E01A15557FE10054F790 /* NewsUtils.m */; };
 		3297E02415558BE40054F790 /* BackgroundNewsThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 3297E02215558BE40054F790 /* BackgroundNewsThumbnail.png */; };
@@ -464,6 +466,8 @@
 		32969AB515FB93060051EF9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
 		32969AB915FBA9150051EF9A /* Compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Compass.png; sourceTree = "<group>"; };
 		32969ABA15FBA9150051EF9A /* Compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Compass@2x.png"; sourceTree = "<group>"; };
+		32969ABD15FBBB170051EF9A /* BookmarksBlueHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlueHighlighted.png; sourceTree = "<group>"; };
+		32969ABE15FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlueHighlighted@2x.png"; sourceTree = "<group>"; };
 		3297E016155571F80054F790 /* NewsLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewsLarge.png; sourceTree = "<group>"; };
 		3297E01915557FE10054F790 /* NewsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsUtils.h; sourceTree = "<group>"; };
 		3297E01A15557FE10054F790 /* NewsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsUtils.m; sourceTree = "<group>"; };
@@ -1804,6 +1808,8 @@
 			children = (
 				322F32681532F06300E53C6F /* BookmarksBlue.png */,
 				322F32691532F06300E53C6F /* BookmarksBlue@2x.png */,
+				32969ABD15FBBB170051EF9A /* BookmarksBlueHighlighted.png */,
+				32969ABE15FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png */,
 				329D4AD0151F86D7000AC339 /* BusTransport.png */,
 				329D4AD1151F86D7000AC339 /* BusTransport@2x.png */,
 				329D4ACB151F810E000AC339 /* DestinationTransportArrow.png */,
@@ -1983,6 +1989,8 @@
 				32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */,
 				32969ABB15FBA9150051EF9A /* Compass.png in Resources */,
 				32969ABC15FBA9150051EF9A /* Compass@2x.png in Resources */,
+				32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */,
+				32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
