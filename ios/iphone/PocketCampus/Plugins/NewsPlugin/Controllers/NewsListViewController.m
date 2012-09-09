@@ -200,6 +200,8 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
             ASIHTTPRequest* thumbnailRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:newsItem.imageUrl]];
             thumbnailRequest.downloadCache = [ASIDownloadCache sharedCache];
             thumbnailRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+            thumbnailRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+            thumbnailRequest.secondsToCache = 7257600.0; //seconds == 3 months. Images are not likely to change
             //thumbnailRequest.cachePolicy = ASIDoNotReadFromCacheCachePolicy; //FOR TESTS
             thumbnailRequest.delegate = self;
             thumbnailRequest.userInfo = [NSMutableDictionary dictionaryWithObject:indexPath forKey:kThumbnailIndexPathKey];

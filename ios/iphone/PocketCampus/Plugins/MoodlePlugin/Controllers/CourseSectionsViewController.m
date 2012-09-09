@@ -101,7 +101,7 @@
 - (void)computeCurrentWeek {
     if(iSections == nil)
         return;
-    currentWeek = -1;
+    currentWeek = -1; //-1 means outside semester time, all weeks will be displayed and toggle button hidden
     for (NSInteger i = 0; i < iSections.count; i++) {
         MoodleSection* iSection = [iSections objectAtIndex:i];
         if(iSection.iResources.count != 0 && iSection.iCurrent) {

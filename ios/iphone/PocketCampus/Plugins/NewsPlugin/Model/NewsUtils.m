@@ -15,10 +15,11 @@
     NSMutableDictionary* countDictionary = [NSMutableDictionary dictionaryWithCapacity:newsItems.count];
     for (NewsItem* item in newsItems) {
         NSString* stringId = [NSString stringWithFormat:@"%lld", item.newsItemId];
-        if ([countDictionary objectForKey:stringId] == nil && [countDictionary objectForKey:item.title] == nil) {
+        NSString* lowerTitle = [item.title lowercaseString];
+        if ([countDictionary objectForKey:stringId] == nil && [countDictionary objectForKey:lowerTitle] == nil) {
             [mutableNewsItems addObject:item];
-            [countDictionary setObject:item forKey:stringId]; //object value is not important in dictionary
-            [countDictionary setObject:item forKey:item.title]; //object value is not important in dictionary
+            [countDictionary setObject:[NSNull null] forKey:stringId]; //object value is not important in dictionary
+            [countDictionary setObject:[NSNull null] forKey:lowerTitle]; //object value is not important in dictionary
         }
     }
     //NSLog(@"%@", countDictionary);
