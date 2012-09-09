@@ -188,7 +188,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 /* UITableViewDelegate delegation */
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView_ editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0 || !tableView.editing) {
+    if (indexPath.section == 0) {
         return UITableViewCellEditingStyleNone;
     }
     return UITableViewCellEditingStyleDelete;
@@ -284,7 +284,6 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
     if (indexPath.section == 1 && editingStyle == UITableViewCellEditingStyleDelete) {
         NSIndexPath* selectedIndexPath = [self indexPathOfSelectedCell];
         [favStations removeObjectAtIndex:indexPath.row];
-        NSLog(@"%@ %d", selectedIndexPath, tableView.editing);
         if (favStations.count == 0) {
             NSIndexSet* sectionsSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
             [tableView deleteSections:sectionsSet withRowAnimation:UITableViewRowAnimationFade];
@@ -292,12 +291,16 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
             selectedStation = nil;
             [transportService saveUserManualDepartureStation:nil];
         } else {
+            if ([tableView numberOfRowsInSection:0] == 1) { /* ugly trick to make deletion work both in edit mode or if the user swipes a row in normal mode. Otherwise the math is wrong (see exception) */
+                tableView.editing = NO;
+            }
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             if ([indexPath isEqual:selectedIndexPath]) {
                 [selectedStation release];
                 selectedStation = nil;
                 [transportService saveUserManualDepartureStation:nil];
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
             }
         }
         [transportService saveUserFavoriteTransportStations:favStations];

@@ -206,7 +206,7 @@ static NSString* kManualDepartureStationKey = @"manualDepartureStation";
 
 @implementation NearestFavoriteStationRequest
 
-static int kLocationValidity = 20; //nb seconds a cached location can be used
+static int kLocationValidity = 30; //nb seconds a cached location can be used / is considered that user has not moved
 static NSString* kLastLocationKey = @"lastLocation";
 
 @synthesize stations, checkCancellationAndAdaptDesiredAccuracyTimer;
@@ -247,6 +247,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     if (![stations isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad stations" reason:@"bad stations in NearestFavoriteStationRequest" userInfo:nil];
     }
+    
     locationManager.delegate = self;
     [locationManager startUpdatingLocation];
     
@@ -264,17 +265,13 @@ static NSString* kLastLocationKey = @"lastLocation";
     
     blockedByAuthStatus = NO;
     
-    //CLLocationDistance minDistance = [self minimumDistanceBetweenStations];
+    CLLocationDistance minDistance = [self minimumDistanceBetweenStations];
     
-    /*if (minDistance > 1000.0) {
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer; //to be sure locationManager "works"
-    } else if (minDistance < 100.0) {
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    if (minDistance > 1000) {
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; //improves reliability
     } else {
-        locationManager.desiredAccuracy = minDistance;
-    }*/
-    
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    }
     
     locationManager.distanceFilter =  kCLDistanceFilterNone;
     
@@ -285,7 +282,7 @@ static NSString* kLastLocationKey = @"lastLocation";
     CLLocation* lastLocation = (CLLocation*)[ObjectArchiver objectForKey:kLastLocationKey andPluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneFavoriteStation:lastLocation]) {
         NSLog(@"-> Last location still valid (%@), will return to delegate.", lastLocation.timestamp);
-        [self handleLocationUpdate:lastLocation];
+        [self returnLocationToDelegate:lastLocation];
         return;
     }
     
@@ -310,12 +307,19 @@ static NSString* kLastLocationKey = @"lastLocation";
     } else if (nbRounds == 15) { //location timeout (15 seconds)
         [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search and return error to delegate
     } else if (nbRounds % 2 == 0) {
-        CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
+        /*CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
         if (nbRounds % 4 == 0 && accuracy < kCLLocationAccuracyBest) { //don't want to wait longer with this accuracy level
             accuracy = 80.0;
         }
-        accuracy = accuracy*2.0;
-        locationManager.desiredAccuracy = accuracy;
+        accuracy = accuracy*2.0;*/
+        if (locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
+            if (nbRounds == 4) { //do not wait longer than 4 seconds in this best accuracy mode
+                locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+            }
+        } else {
+            locationManager.desiredAccuracy *= 2.0;
+        }
+        
         [self handleLocationUpdate:locationManager.location];
     }
 }
@@ -418,8 +422,13 @@ static NSString* kLastLocationKey = @"lastLocation";
     
     NSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
     
-    if (newLocation.horizontalAccuracy == 0.0) {
-        NSLog(@"-> Useless location (accuracy 0.0). Ignoring.");
+    if (newLocation.horizontalAccuracy <= 0.0) {
+        NSLog(@"-> Useless/invalid location (accuracy <= 0.0). Ignoring.");
+        return;
+    }
+    
+    if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy && locationManager.desiredAccuracy != kCLLocationAccuracyBest) {
+        NSLog(@"-> Location accuracy (%lf) not sufficient. %lf required.", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
         return;
     }
     
@@ -429,12 +438,6 @@ static NSString* kLastLocationKey = @"lastLocation";
         return;
     }
     
-    
-    /*if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy && ![self locationEnglobesOnlyOneFavoriteStation:newLocation]) { //second condition to prevent infinite waiting because accuracy cannot be achieved (desiredAccurary is increased by timer regularly)
-        NSLog(@"-> Location not accurate enough. Ignoring.");
-        return;
-    }*/
-    
     if (![self locationEnglobesOnlyOneFavoriteStation:newLocation]) {
         if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy) { //second condition to prevent infinite waiting because accuracy cannot be achieved (desiredAccurary is deacreased by timer)
             NSLog(@"-> Location not accurate enough. Ignoring.");
@@ -442,7 +445,7 @@ static NSString* kLastLocationKey = @"lastLocation";
         }
     }
     
-    /* From this point, newLocation is considered valid */
+    /* From this point, newLocation is considered valid, will return to delegate */
     
     /* DEV TEST */
     /*
@@ -458,11 +461,14 @@ static NSString* kLastLocationKey = @"lastLocation";
     /* END OF DEV TEST */
     
     NSLog(@"-> Location considered valid, will return to delegate.");
-    
     [ObjectArchiver saveObject:newLocation forKey:kLastLocationKey andPluginName:@"transport"];
-
+    [self returnLocationToDelegate:newLocation];
     
-    TransportStation* retStation = [[self nearestStationFromLocation:newLocation] retain];
+}
+
+- (void)returnLocationToDelegate:(CLLocation*)validLocation {
+    
+    TransportStation* retStation = [[self nearestStationFromLocation:validLocation] retain];
     if ([self isCancelled])
     {
         [retStation release],
@@ -485,6 +491,9 @@ static NSString* kLastLocationKey = @"lastLocation";
 
 - (BOOL)locationIsStillValid:(CLLocation*)location {
     if (location == nil || location.timestamp == nil) {
+        return NO;
+    }
+    if (location.horizontalAccuracy < 0) { //from documentation, means invalid location
         return NO;
     }
     if (abs((int)[location.timestamp timeIntervalSinceNow]) > kLocationValidity) {

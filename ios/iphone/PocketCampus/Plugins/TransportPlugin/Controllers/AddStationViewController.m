@@ -46,9 +46,9 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
     // Release any retained subviews of the main view.
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [searchBar becomeFirstResponder];
 }
 
@@ -82,6 +82,14 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
     tableView.hidden = YES;
     messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
     messageLabel.hidden = NO;
+}
+
+- (void)enableCancelButton {
+    for (UIView* view in searchBar.subviews) {
+        if ([view isKindOfClass:[UIButton class]]) {
+            ((UIButton*)view).enabled = YES;
+        }
+    }
 }
 
 /* TransportServiceDelegate delegation */
@@ -142,6 +150,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar_ {
     [searchBar resignFirstResponder];
+    [self enableCancelButton];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -152,6 +161,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [searchBar resignFirstResponder];
+    [self enableCancelButton];
 }
 
 /* UITableViewDelegate delegation */
