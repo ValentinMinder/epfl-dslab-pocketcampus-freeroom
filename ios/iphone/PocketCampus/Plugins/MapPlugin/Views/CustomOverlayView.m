@@ -66,7 +66,9 @@ static NSTimeInterval TILES_VALIDITY = 604800.0; //seconds = 4 weeks
         [urlString release];
         request.downloadCache = [ASIDownloadCache sharedCache];
         request.secondsToCache = TILES_VALIDITY;
+        request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
         request.cachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
+        
         request.numberOfTimesToRetryOnTimeout = 3;
 
         if ([request.downloadCache isCachedDataCurrentForRequest:request]) {
