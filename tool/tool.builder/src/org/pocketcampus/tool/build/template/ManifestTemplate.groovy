@@ -32,6 +32,11 @@ class ManifestTemplate {
         </receiver>
 
 	</application>
+		
+	<supports-screens android:smallScreens="true"
+                  android:normalScreens="true"
+                  android:largeScreens="true"
+                  android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -41,34 +46,5 @@ class ManifestTemplate {
 
 </manifest>
 		"""
-		/*
-		 <service android:name=".C2DMReceiver" />
-		 <receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
-		 <intent-filter>
-		 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-		 <category android:name="org.pocketcampus" />
-		 </intent-filter>
-		 <intent-filter>
-		 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-		 <category android:name="org.pocketcampus" />
-		 </intent-filter>
-		 </receiver>
-		 */
-
-		/*
-		 <permission
-		 android:name="org.pocketcampus.permission.C2D_MESSAGE"
-		 android:protectionLevel="signature" />
-		 */
-
-		/*
-		 <uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />
-		 <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-		 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-		 <uses-permission android:name="android.permission.VIBRATE" />
-		 <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-		 <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-		 <uses-permission android:name="android.permission.WAKE_LOCK" />
-		 */
 	}
 }
