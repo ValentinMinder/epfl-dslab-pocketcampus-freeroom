@@ -34,7 +34,7 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/favorites/add" withError:NULL];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/mystations/add" withError:NULL];
     searchBar.prompt = NSLocalizedStringFromTable(@"SearchBarStationPrompt", @"TransportPlugin", nil);
     searchBar.isAccessibilityElement = YES;
     searchBar.accessibilityIdentifier = @"SearchBar";

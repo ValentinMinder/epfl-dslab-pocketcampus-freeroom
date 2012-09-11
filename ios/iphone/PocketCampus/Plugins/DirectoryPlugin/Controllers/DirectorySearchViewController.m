@@ -399,7 +399,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
         NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
         NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
-        [addressDictionary setObject:person.office forKey:(NSString *)kABPersonAddressCityKey];
+        [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
         [addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
         couldCreate = ABMultiValueAddValueAndLabel(office, addressDictionary, (CFStringRef)label, NULL);
         if (couldCreate) {

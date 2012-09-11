@@ -45,7 +45,7 @@ static NSString* kTransportStationNameCellIdentifier = @"StationNameCell";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/favorites" withError:NULL];
+    [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/mystations" withError:NULL];
     tableView.editing = NO;
     tableView.sectionHeaderHeight = 0.0;
     tableView.sectionFooterHeight = 10.0;

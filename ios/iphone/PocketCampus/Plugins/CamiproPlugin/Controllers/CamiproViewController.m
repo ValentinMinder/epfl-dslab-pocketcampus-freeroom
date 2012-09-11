@@ -127,13 +127,14 @@ static CGFloat kBalanceCellHeight = 70.0;
 }
 
 - (void)invalidToken {
-    [CamiproService saveSessionId:nil];
+    NSLog(@"-> invalid token");
     [centerActivityIndicator stopAnimating];
     centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
     centerMessageLabel.hidden = NO;
     tableView.hidden = YES;
     toolbar.hidden = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
+    [CamiproService saveSessionId:nil];
 }
 
 /* CamiproServiceDelegate delegation */

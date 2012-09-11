@@ -34,7 +34,7 @@ static NSString* PC_OPTIONAL_GAN_DISABLED_KEY = @"GAN_disabled"; //GAN is Google
 
 static NSString* PC_PROD_GAN_ACCOUNT_ID = @"UA-22135241-3";
 
-static NSInteger PC_PROD_GAN_DISPATCH_PERIOD_SEC = 10; //IMPORTANT NOTE : if Xcode shows a unused warning, this is BULLSHIT !! The constant is used in AppDelegate when starting the GAN tracker 
+static NSInteger PC_PROD_GAN_DISPATCH_PERIOD_SEC = 10; //IMPORTANT NOTE : if Xcode shows a "unused" warning, this is BULLSHIT !! The constant is used in AppDelegate when starting the GAN tracker 
 
 /* CONFIG TYPES - Defined in user defaults after + (void)initConfig has been called */
 

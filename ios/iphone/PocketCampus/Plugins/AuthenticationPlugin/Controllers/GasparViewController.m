@@ -546,10 +546,9 @@
         if (presentationMode != PresentationModeTryHidden && (showSavePasswordSwitch && ![savePasswordSwitch isOn])) {
             [AuthenticationService enqueueLogoutNotificationDelayed:YES];
         }
-        [loadingIndicator stopAnimating];
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-
     }
+    [loadingIndicator stopAnimating];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)authenticateTokenWithTequilaFailed:(ASIHTTPRequest*)request {
