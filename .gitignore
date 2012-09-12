@@ -1,0 +1,828 @@
+
+# /
+/.metadata
+
+# /html5/offline/
+/html5/offline/log.log
+
+# /ios/iphone/PocketCampus/AutomationScripts/
+/ios/iphone/PocketCampus/AutomationScripts/Instruments Device.trace
+/ios/iphone/PocketCampus/AutomationScripts/Instruments Simulator.trace
+/ios/iphone/PocketCampus/AutomationScripts/*.trace
+/ios/iphone/PocketCampus/AutomationScripts/Credentials.js
+
+# /lib/
+
+# /lib/actionbar/
+
+# /lib/actionbar/lib.actionbar.android/
+/lib/actionbar/lib.actionbar.android/.settings
+/lib/actionbar/lib.actionbar.android/bin
+/lib/actionbar/lib.actionbar.android/gen
+/lib/actionbar/lib.actionbar.android/target
+
+# /lib/actionbar/lib.actionbar.android/assets/
+
+# /lib/actionbar/lib.actionbar.android/res/
+
+# /lib/actionbar/lib.actionbar.android/res/drawable/
+
+# /lib/actionbar/lib.actionbar.android/res/drawable-hdpi/
+
+# /lib/actionbar/lib.actionbar.android/res/layout/
+
+# /lib/actionbar/lib.actionbar.android/res/values/
+
+# /lib/actionbar/lib.actionbar.android/src/
+
+# /lib/actionbar/lib.actionbar.android/src/com/
+
+# /lib/actionbar/lib.actionbar.android/src/com/markupartist/
+
+# /lib/actionbar/lib.actionbar.android/src/com/markupartist/android/
+
+# /lib/actionbar/lib.actionbar.android/src/com/markupartist/android/widget/
+
+# /lib/facebook/
+
+# /lib/facebook/lib.facebook.android/
+/lib/facebook/lib.facebook.android/bin
+/lib/facebook/lib.facebook.android/gen
+/lib/facebook/lib.facebook.android/target
+
+# /lib/facebook/lib.facebook.android/res/
+
+# /lib/facebook/lib.facebook.android/res/drawable/
+
+# /lib/facebook/lib.facebook.android/res/drawable-hdpi/
+
+# /lib/facebook/lib.facebook.android/res/drawable-ldpi/
+
+# /lib/facebook/lib.facebook.android/src/
+
+# /lib/facebook/lib.facebook.android/src/com/
+
+# /lib/facebook/lib.facebook.android/src/com/facebook/
+
+# /lib/facebook/lib.facebook.android/src/com/facebook/android/
+
+# /lib/touchlist/lib.touchlist.android/
+/lib/touchlist/lib.touchlist.android/bin
+/lib/touchlist/lib.touchlist.android/gen
+/lib/touchlist/lib.touchlist.android/target
+
+# /lib/transport/
+
+# /lib/transport/lib.transport.server/
+/lib/transport/lib.transport.server/bin
+/lib/transport/lib.transport.server/gen
+/lib/transport/lib.transport.server/target
+
+# /lib/transport/lib.transport.server/lib/
+
+# /lib/transport/lib.transport.server/src/
+
+# /lib/transport/lib.transport.server/src/de/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/pte/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/pte/dto/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/pte/exception/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/pte/geo/
+
+# /lib/transport/lib.transport.server/src/de/schildbach/pte/util/
+
+# /merged/
+/merged/*
+/merged/android
+/merged/shared
+
+# /platform/
+
+# /platform/launcher/
+
+# /platform/launcher/platform.launcher.android/
+/platform/launcher/platform.launcher.android/bin
+/platform/launcher/platform.launcher.android/gen
+/platform/launcher/platform.launcher.android/target
+
+# /platform/launcher/platform.launcher.android/.externalToolBuilders/
+
+# /platform/launcher/platform.launcher.android/libs/
+
+# /platform/launcher/platform.launcher.android/res/
+
+# /platform/launcher/platform.launcher.android/res/drawable/
+
+# /platform/launcher/platform.launcher.android/res/drawable-hdpi/
+
+# /platform/launcher/platform.launcher.android/res/values/
+
+# /platform/launcher/platform.launcher.android/src/
+
+# /platform/launcher/platform.launcher.server/
+/platform/launcher/platform.launcher.server/bin
+/platform/launcher/platform.launcher.server/build
+/platform/launcher/platform.launcher.server/*.log
+/platform/launcher/platform.launcher.server/ssl-keystore-pocketcampus
+
+# /platform/launcher/platform.launcher.server/.settings/
+
+# /platform/launcher/platform.launcher.server/certificate/
+
+# /platform/launcher/platform.launcher.server/pkg/
+/platform/launcher/platform.launcher.server/pkg/*.jar
+
+# /platform/launcher/platform.launcher.server/src/
+
+# /platform/launcher/platform.launcher.server/src/org/
+
+# /platform/launcher/platform.launcher.server/src/org/pocketcampus/
+
+# /platform/launcher/platform.launcher.server/src/org/pocketcampus/platform/
+
+# /platform/launcher/platform.launcher.server/src/org/pocketcampus/platform/launcher/
+
+# /platform/launcher/platform.launcher.server/src/org/pocketcampus/platform/launcher/server/
+
+# /platform/sdk/
+
+# /platform/sdk/platform.sdk.android/
+/platform/sdk/platform.sdk.android/bin
+/platform/sdk/platform.sdk.android/gen
+/platform/sdk/platform.sdk.android/target
+
+# /platform/sdk/platform.sdk.android/res/
+
+# /platform/sdk/platform.sdk.android/res/anim/
+
+# /platform/sdk/platform.sdk.android/res/drawable-hdpi/
+
+# /platform/sdk/platform.sdk.android/res/layout/
+
+# /platform/sdk/platform.sdk.android/res/values/
+
+# /platform/sdk/platform.sdk.android/src/
+
+# /platform/sdk/platform.sdk.server/
+/platform/sdk/platform.sdk.server/bin
+
+# /platform/sdk/platform.sdk.server/.settings/
+
+# /platform/sdk/platform.sdk.server/src/
+
+# /platform/sdk/platform.sdk.server/src/META-INF/
+
+# /platform/sdk/platform.sdk.server/src/org/
+
+# /platform/sdk/platform.sdk.server/src/org/pocketcampus/
+
+# /platform/sdk/platform.sdk.server/src/org/pocketcampus/platform/
+
+# /platform/sdk/platform.sdk.server/src/org/pocketcampus/platform/sdk/
+
+# /platform/sdk/platform.sdk.server/src/org/pocketcampus/platform/sdk/server/
+
+# /platform/sdk/platform.sdk.shared/
+/platform/sdk/platform.sdk.shared/bin
+/platform/sdk/platform.sdk.shared/target
+
+# /platform/sdk/platform.sdk.shared/.settings/
+
+# /platform/sdk/platform.sdk.shared/lib/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/META-INF/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/lib/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/async/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/meta_data/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/protocol/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/server/
+
+# /platform/sdk/platform.sdk.shared/lib/libthrift-0.7.0-multiplex/org/apache/thrift/transport/
+
+# /platform/sdk/platform.sdk.shared/src/
+
+# /platform/sdk/platform.sdk.shared/src/META-INF/
+
+# /platform/sdk/platform.sdk.shared/src/org/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/platform/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/platform/sdk/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/platform/sdk/shared/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/platform/sdk/shared/common/
+
+# /platform/sdk/platform.sdk.shared/src/org/pocketcampus/platform/sdk/shared/restaurant/
+
+# /plugin/
+
+# /plugin/authentication/
+
+# /plugin/authentication/plugin.authentication.android/
+/plugin/authentication/plugin.authentication.android/bin
+/plugin/authentication/plugin.authentication.android/gen
+
+# /plugin/authentication/plugin.authentication.server/
+/plugin/authentication/plugin.authentication.server/bin
+
+# /plugin/authentication/plugin.authentication.server/.settings/
+
+# /plugin/authentication/plugin.authentication.server/lib/
+
+# /plugin/authentication/plugin.authentication.server/src/
+
+# /plugin/authentication/plugin.authentication.server/src/org/
+
+# /plugin/authentication/plugin.authentication.server/src/org/pocketcampus/
+
+# /plugin/authentication/plugin.authentication.server/src/org/pocketcampus/authentication/
+
+# /plugin/authentication/plugin.authentication.server/src/org/pocketcampus/authentication/server/
+
+# /plugin/authentication/plugin.authentication.shared/
+/plugin/authentication/plugin.authentication.shared/bin
+
+# /plugin/authentication/plugin.authentication.shared/.settings/
+
+# /plugin/authentication/plugin.authentication.shared/src/
+
+# /plugin/authentication/plugin.authentication.shared/src/org/
+
+# /plugin/authentication/plugin.authentication.shared/src/org/pocketcampus/
+
+# /plugin/authentication/plugin.authentication.shared/src/org/pocketcampus/plugin/
+
+# /plugin/authentication/plugin.authentication.shared/src/org/pocketcampus/plugin/authentication/
+
+# /plugin/authentication/plugin.authentication.shared/src/org/pocketcampus/plugin/authentication/shared/
+
+# /plugin/bikes/
+
+# /plugin/bikes/plugin.bikes.android/
+/plugin/bikes/plugin.bikes.android/bin
+/plugin/bikes/plugin.bikes.android/gen
+
+# /plugin/bikes/plugin.bikes.android/assets/
+
+# /plugin/bikes/plugin.bikes.android/res/
+
+# /plugin/bikes/plugin.bikes.android/res/drawable-hdpi/
+
+# /plugin/bikes/plugin.bikes.android/res/drawable-ldpi/
+
+# /plugin/bikes/plugin.bikes.android/res/drawable-mdpi/
+
+# /plugin/bikes/plugin.bikes.android/res/layout/
+
+# /plugin/bikes/plugin.bikes.android/res/values/
+
+# /plugin/bikes/plugin.bikes.android/src/
+
+# /plugin/bikes/plugin.bikes.android/src/org/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/plugin/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/plugin/bikes/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/plugin/bikes/android/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/plugin/bikes/android/iface/
+
+# /plugin/bikes/plugin.bikes.android/src/org/pocketcampus/plugin/bikes/android/req/
+
+# /plugin/bikes/plugin.bikes.server/
+/plugin/bikes/plugin.bikes.server/bin
+
+# /plugin/bikes/plugin.bikes.server/src/
+
+# /plugin/bikes/plugin.bikes.server/src/org/
+
+# /plugin/bikes/plugin.bikes.server/src/org/pocketcampus/
+
+# /plugin/bikes/plugin.bikes.server/src/org/pocketcampus/plugin/
+
+# /plugin/bikes/plugin.bikes.server/src/org/pocketcampus/plugin/bikes/
+
+# /plugin/bikes/plugin.bikes.server/src/org/pocketcampus/plugin/bikes/server/
+
+# /plugin/bikes/plugin.bikes.shared/
+/plugin/bikes/plugin.bikes.shared/bin
+
+# /plugin/bikes/plugin.bikes.shared/src/
+
+# /plugin/bikes/plugin.bikes.shared/src/org/
+
+# /plugin/bikes/plugin.bikes.shared/src/org/pocketcampus/
+
+# /plugin/bikes/plugin.bikes.shared/src/org/pocketcampus/plugin/
+
+# /plugin/bikes/plugin.bikes.shared/src/org/pocketcampus/plugin/bikes/
+
+# /plugin/bikes/plugin.bikes.shared/src/org/pocketcampus/plugin/bikes/shared/
+
+# /plugin/camipro/plugin.camipro.android/
+/plugin/camipro/plugin.camipro.android/bin
+/plugin/camipro/plugin.camipro.android/gen
+
+# /plugin/camipro/plugin.camipro.server/
+/plugin/camipro/plugin.camipro.server/bin
+
+# /plugin/camipro/plugin.camipro.shared/
+/plugin/camipro/plugin.camipro.shared/bin
+
+# /plugin/camipro/plugin.camipro.shared/src/org/
+
+# /plugin/camipro/plugin.camipro.shared/src/org/pocketcampus/
+
+# /plugin/camipro/plugin.camipro.shared/src/org/pocketcampus/plugin/
+
+# /plugin/camipro/plugin.camipro.shared/src/org/pocketcampus/plugin/camipro/
+
+# /plugin/camipro/plugin.camipro.shared/src/org/pocketcampus/plugin/camipro/shared/
+
+# /plugin/dashboard/
+
+# /plugin/dashboard/plugin.dashboard.android/
+/plugin/dashboard/plugin.dashboard.android/bin
+/plugin/dashboard/plugin.dashboard.android/gen
+/plugin/dashboard/plugin.dashboard.android/target
+
+# /plugin/dashboard/plugin.dashboard.android/res/
+
+# /plugin/dashboard/plugin.dashboard.android/res/drawable/
+
+# /plugin/dashboard/plugin.dashboard.android/res/drawable-hdpi/
+
+# /plugin/dashboard/plugin.dashboard.android/res/layout/
+
+# /plugin/dashboard/plugin.dashboard.android/res/values/
+
+# /plugin/dashboard/plugin.dashboard.android/src/
+
+# /plugin/dashboard/plugin.dashboard.android/src/org/
+
+# /plugin/dashboard/plugin.dashboard.android/src/org/pocketcampus/
+
+# /plugin/directory/plugin.directory.android/
+/plugin/directory/plugin.directory.android/bin
+/plugin/directory/plugin.directory.android/gen
+
+# /plugin/directory/plugin.directory.server/
+/plugin/directory/plugin.directory.server/bin
+
+# /plugin/directory/plugin.directory.shared/
+/plugin/directory/plugin.directory.shared/bin
+
+# /plugin/events/plugin.events.android/
+/plugin/events/plugin.events.android/bin
+/plugin/events/plugin.events.android/gen
+
+# /plugin/events/plugin.events.server/
+/plugin/events/plugin.events.server/bin
+
+# /plugin/events/plugin.events.shared/
+/plugin/events/plugin.events.shared/bin
+
+# /plugin/food/
+
+# /plugin/food/plugin.food.android/
+/plugin/food/plugin.food.android/bin
+/plugin/food/plugin.food.android/gen
+
+# /plugin/food/plugin.food.server/
+/plugin/food/plugin.food.server/bin
+
+# /plugin/food/plugin.food.shared/
+/plugin/food/plugin.food.shared/bin
+
+# /plugin/isacademia/plugin.isacademia.android/
+/plugin/isacademia/plugin.isacademia.android/bin
+/plugin/isacademia/plugin.isacademia.android/gen
+
+# /plugin/isacademia/plugin.isacademia.server/
+/plugin/isacademia/plugin.isacademia.server/bin
+
+# /plugin/isacademia/plugin.isacademia.shared/
+/plugin/isacademia/plugin.isacademia.shared/bin
+
+# /plugin/map/plugin.map.android/
+/plugin/map/plugin.map.android/bin
+/plugin/map/plugin.map.android/gen
+
+# /plugin/map/plugin.map.server/
+/plugin/map/plugin.map.server/bin
+
+# /plugin/map/plugin.map.shared/
+/plugin/map/plugin.map.shared/bin
+
+# /plugin/moodle/plugin.moodle.android/
+/plugin/moodle/plugin.moodle.android/bin
+/plugin/moodle/plugin.moodle.android/gen
+
+# /plugin/moodle/plugin.moodle.server/
+/plugin/moodle/plugin.moodle.server/bin
+
+# /plugin/moodle/plugin.moodle.shared/
+/plugin/moodle/plugin.moodle.shared/bin
+
+# /plugin/news/
+
+# /plugin/news/plugin.news.android/
+/plugin/news/plugin.news.android/bin
+/plugin/news/plugin.news.android/gen
+
+# /plugin/news/plugin.news.server/
+/plugin/news/plugin.news.server/bin
+
+# /plugin/news/plugin.news.shared/
+/plugin/news/plugin.news.shared/bin
+
+# /plugin/satellite/plugin.satellite.android/
+/plugin/satellite/plugin.satellite.android/bin
+/plugin/satellite/plugin.satellite.android/gen
+
+# /plugin/satellite/plugin.satellite.server/
+/plugin/satellite/plugin.satellite.server/bin
+
+# /plugin/satellite/plugin.satellite.shared/
+/plugin/satellite/plugin.satellite.shared/bin
+
+# /plugin/sunrise/plugin.sunrise.android/
+/plugin/sunrise/plugin.sunrise.android/bin
+/plugin/sunrise/plugin.sunrise.android/gen
+
+# /plugin/takeout/
+
+# /plugin/takeout/plugin.takeout.server/
+/plugin/takeout/plugin.takeout.server/bin
+
+# /plugin/takeout/plugin.takeout.server/.settings/
+
+# /plugin/takeout/plugin.takeout.server/certificate/
+
+# /plugin/takeout/plugin.takeout.server/src/
+
+# /plugin/takeout/plugin.takeout.server/src/org/
+
+# /plugin/takeout/plugin.takeout.server/src/org/pocketcampus/
+
+# /plugin/takeout/plugin.takeout.server/src/org/pocketcampus/server/
+
+# /plugin/takeout/plugin.takeout.server/src/org/pocketcampus/server/plugin/
+
+# /plugin/takeout/plugin.takeout.server/src/org/pocketcampus/server/plugin/takeout/
+
+# /plugin/takeout/plugin.takeout.shared/
+/plugin/takeout/plugin.takeout.shared/bin
+
+# /plugin/takeout/plugin.takeout.shared/.settings/
+
+# /plugin/takeout/plugin.takeout.shared/src/
+
+# /plugin/takeout/plugin.takeout.shared/src/org/
+
+# /plugin/takeout/plugin.takeout.shared/src/org/pocketcampus/
+
+# /plugin/takeout/plugin.takeout.shared/src/org/pocketcampus/plugin/
+
+# /plugin/takeout/plugin.takeout.shared/src/org/pocketcampus/plugin/takeoutreceiver/
+
+# /plugin/takeout/plugin.takeout.shared/src/org/pocketcampus/plugin/takeoutreceiver/shared/
+
+# /plugin/takeoutreceiver/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/
+/plugin/takeoutreceiver/plugin.takeoutreceiver.android/bin
+/plugin/takeoutreceiver/plugin.takeoutreceiver.android/gen
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/assets/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/drawable-hdpi/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/drawable-ldpi/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/drawable-mdpi/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/layout/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/menu/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/res/values/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/plugin/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/plugin/takeoutreceiver/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/plugin/takeoutreceiver/android/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/plugin/takeoutreceiver/android/iface/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.android/src/org/pocketcampus/plugin/takeoutreceiver/android/request/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/
+/plugin/takeoutreceiver/plugin.takeoutreceiver.server/bin
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/lib/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/org/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/org/pocketcampus/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/org/pocketcampus/server/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/org/pocketcampus/server/plugin/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.server/src/org/pocketcampus/server/plugin/takeoutreceiver/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/
+/plugin/takeoutreceiver/plugin.takeoutreceiver.shared/bin
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/org/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/org/pocketcampus/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/org/pocketcampus/plugin/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/org/pocketcampus/plugin/takeoutreceiver/
+
+# /plugin/takeoutreceiver/plugin.takeoutreceiver.shared/src/org/pocketcampus/plugin/takeoutreceiver/shared/
+
+# /plugin/test/
+
+# /plugin/test/plugin.test.android/
+/plugin/test/plugin.test.android/bin
+/plugin/test/plugin.test.android/gen
+
+# /plugin/test/plugin.test.android/assets/
+
+# /plugin/test/plugin.test.android/res/
+
+# /plugin/test/plugin.test.android/res/drawable-hdpi/
+
+# /plugin/test/plugin.test.android/res/drawable-ldpi/
+
+# /plugin/test/plugin.test.android/res/drawable-mdpi/
+
+# /plugin/test/plugin.test.android/res/layout/
+
+# /plugin/test/plugin.test.android/res/menu/
+
+# /plugin/test/plugin.test.android/res/values/
+
+# /plugin/test/plugin.test.android/src/
+
+# /plugin/test/plugin.test.android/src/org/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/plugin/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/plugin/test/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/plugin/test/android/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/plugin/test/android/iface/
+
+# /plugin/test/plugin.test.android/src/org/pocketcampus/plugin/test/android/req/
+
+# /plugin/test/plugin.test.server/
+/plugin/test/plugin.test.server/bin
+
+# /plugin/test/plugin.test.server/.settings/
+
+# /plugin/test/plugin.test.server/src/
+
+# /plugin/test/plugin.test.server/src/META-INF/
+
+# /plugin/test/plugin.test.server/src/org/
+
+# /plugin/test/plugin.test.server/src/org/pocketcampus/
+
+# /plugin/test/plugin.test.server/src/org/pocketcampus/plugin/
+
+# /plugin/test/plugin.test.server/src/org/pocketcampus/plugin/foo/
+
+# /plugin/test/plugin.test.server/src/org/pocketcampus/plugin/foo/server/
+
+# /plugin/test/plugin.test.shared/
+/plugin/test/plugin.test.shared/bin
+
+# /plugin/test/plugin.test.shared/.settings/
+
+# /plugin/test/plugin.test.shared/src/
+
+# /plugin/test/plugin.test.shared/src/META-INF/
+
+# /plugin/test/plugin.test.shared/src/org/
+
+# /plugin/test/plugin.test.shared/src/org/pocketcampus/
+
+# /plugin/test/plugin.test.shared/src/org/pocketcampus/plugin/
+
+# /plugin/test/plugin.test.shared/src/org/pocketcampus/plugin/test/
+
+# /plugin/test/plugin.test.shared/src/org/pocketcampus/plugin/test/shared/
+
+# /plugin/transport/
+
+# /plugin/transport/plugin.transport.android/
+/plugin/transport/plugin.transport.android/bin
+/plugin/transport/plugin.transport.android/gen
+
+# /plugin/transport/plugin.transport.android/assets/
+
+# /plugin/transport/plugin.transport.android/res/
+
+# /plugin/transport/plugin.transport.android/res/drawable-hdpi/
+
+# /plugin/transport/plugin.transport.android/res/drawable-ldpi/
+
+# /plugin/transport/plugin.transport.android/res/drawable-mdpi/
+
+# /plugin/transport/plugin.transport.android/res/layout/
+
+# /plugin/transport/plugin.transport.android/res/values/
+
+# /plugin/transport/plugin.transport.android/src/
+
+# /plugin/transport/plugin.transport.android/src/org/
+
+# /plugin/transport/plugin.transport.android/src/org/pocketcampus/
+
+# /plugin/transport/plugin.transport.android/src/org/pocketcampus/plugin/
+
+# /plugin/transport/plugin.transport.android/src/org/pocketcampus/plugin/transport/
+
+# /plugin/transport/plugin.transport.android/src/org/pocketcampus/plugin/transport/android/
+
+# /plugin/transport/plugin.transport.android/src/org/pocketcampus/plugin/transport/android/iface/
+
+# /plugin/transport/plugin.transport.server/
+/plugin/transport/plugin.transport.server/bin
+
+# /plugin/transport/plugin.transport.server/.settings/
+
+# /plugin/transport/plugin.transport.server/src/
+
+# /plugin/transport/plugin.transport.shared/
+/plugin/transport/plugin.transport.shared/bin
+
+# /plugin/transport/plugin.transport.shared/.settings/
+
+# /plugin/transport/plugin.transport.shared/src/
+
+# /plugin/transport/plugin.transport.shared/src/org/
+
+# /plugin/transport/plugin.transport.shared/src/org/pocketcampus/
+
+# /plugin/transport/plugin.transport.shared/src/org/pocketcampus/plugin/
+
+# /plugin/transport/plugin.transport.shared/src/org/pocketcampus/plugin/transport/
+
+# /plugin/transport/plugin.transport.shared/src/org/pocketcampus/plugin/transport/shared/
+
+# /tool/
+
+# /tool/tool.builder/
+/tool/tool.builder/bin
+
+# /tool/tool.builder/.settings/
+
+# /tool/tool.builder/src/
+
+# /tool/tool.builder/src/org/
+
+# /tool/tool.builder/src/org/pocketcampus/
+
+# /tool/tool.builder/src/org/pocketcampus/tool/
+
+# /tool/tool.builder/src/org/pocketcampus/tool/build/
+
+# /tool/tool.ldapextractor/
+/tool/tool.ldapextractor/bin
+
+# /tool/tool.ldapextractor/.settings/
+
+# /tool/tool.ldapextractor/src/
+
+# /tool/tool.ldapextractor/src/org/
+
+# /tool/tool.ldapextractor/src/org/pocketcampus/
+
+# /tool/tool.ldapextractor/src/org/pocketcampus/tool/
+
+# /tool/tool.ldapextractor/src/org/pocketcampus/tool/ldapExtractor/
+
+# /tool/tool.plugincreator/
+/tool/tool.plugincreator/bin
+
+# /tool/tool.plugincreator/src/
+
+# /tool/tool.plugincreator/src/org/
+
+# /tool/tool.plugincreator/src/org/pocketcampus/
+
+# /tool/tool.plugincreator/src/org/pocketcampus/tool/
+
+# /tool/tool.plugincreator/src/org/pocketcampus/tool/build/
+
+# /tool/tool.plugincreator/temp/
+
+# /tool/tool.plugincreator/template/
+
+# /tool/tool.plugincreator/template/android/
+
+# /tool/tool.plugincreator/template/android/assets/
+
+# /tool/tool.plugincreator/template/android/bin/
+
+# /tool/tool.plugincreator/template/android/gen/
+
+# /tool/tool.plugincreator/template/android/res/
+
+# /tool/tool.plugincreator/template/android/res/drawable-hdpi/
+
+# /tool/tool.plugincreator/template/android/res/drawable-ldpi/
+
+# /tool/tool.plugincreator/template/android/res/drawable-mdpi/
+
+# /tool/tool.plugincreator/template/android/res/layout/
+
+# /tool/tool.plugincreator/template/android/res/menu/
+
+# /tool/tool.plugincreator/template/android/res/values/
+
+# /tool/tool.plugincreator/template/android/src/
+
+# /tool/tool.plugincreator/template/android/src/org/
+
+# /tool/tool.plugincreator/template/android/src/org/pocketcampus/
+
+# /tool/tool.plugincreator/template/android/src/org/pocketcampus/plugin/
+
+# /tool/tool.plugincreator/template/android/src/org/pocketcampus/plugin/test/
+
+# /tool/tool.plugincreator/template/android/src/org/pocketcampus/plugin/test/android/
+
+# /tool/tool.plugincreator/template/server/
+
+# /tool/tool.plugincreator/template/shared/
+
+# /tool/tool.thriftcompiler/
+/tool/tool.thriftcompiler/bin
+
+# /tool/tool.thriftcompiler/.settings/
+
+# /tool/tool.thriftcompiler/include/
+
+# /tool/tool.thriftcompiler/old/
+
+# /tool/tool.thriftcompiler/service/
+
+# /tool/tool.thriftcompiler/src/
+
+# /tool/tool.thriftcompiler/src/org/
+
+# /tool/tool.thriftcompiler/src/org/pocketcampus/
+
+# /tool/tool.thriftcompiler/src/org/pocketcampus/tool/
+
+# /tool/tool.thriftcompiler/src/org/pocketcampus/tool/thriftcompiler/
+/tool/tool.thriftcompiler/src/org/pocketcampus/tool/thriftcompiler/LocalConfig.java
+
+# /tool/tool.thriftcompiler/wip/
