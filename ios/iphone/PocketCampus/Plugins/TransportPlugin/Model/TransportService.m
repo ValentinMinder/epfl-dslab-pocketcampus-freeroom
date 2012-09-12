@@ -306,17 +306,17 @@ static NSString* kLastLocationKey = @"lastLocation";
         [self handleLocationUpdate:locationManager.location];
     } else if (nbRounds == 15) { //location timeout (15 seconds)
         [self locationManager:locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorLocationUnknown userInfo:nil]]; //normally delegate method, but used to properly terminate location search and return error to delegate
-    } else if (nbRounds % 2 == 0) {
+    } else {
         /*CLLocationAccuracy accuracy = locationManager.desiredAccuracy;
         if (nbRounds % 4 == 0 && accuracy < kCLLocationAccuracyBest) { //don't want to wait longer with this accuracy level
             accuracy = 80.0;
         }
         accuracy = accuracy*2.0;*/
         if (locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
-            if (nbRounds == 4) { //do not wait longer than 4 seconds in this best accuracy mode
+            if (nbRounds == 3) { //do not wait longer than 3 seconds in this best accuracy mode
                 locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
             }
-        } else {
+        } else if (nbRounds % 2 == 0) {
             locationManager.desiredAccuracy *= 2.0;
         }
         
@@ -422,19 +422,24 @@ static NSString* kLastLocationKey = @"lastLocation";
     
     NSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
     
+    if (![self locationIsStillValid:newLocation]) {
+        NSLog(@"-> Old location. Ignoring.");
+        [ObjectArchiver saveObject:nil forKey:kLastLocationKey andPluginName:@"transport"];
+        return;
+    }
+    
     if (newLocation.horizontalAccuracy <= 0.0) {
         NSLog(@"-> Useless/invalid location (accuracy <= 0.0). Ignoring.");
         return;
     }
     
-    if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy && locationManager.desiredAccuracy != kCLLocationAccuracyBest) {
-        NSLog(@"-> Location accuracy (%lf) not sufficient. %lf required.", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
+    if (locationManager.desiredAccuracy == kCLLocationAccuracyBest) {
+        NSLog(@"-> Waiting for best accuracy to be achieved : desired accuracy will be switched to 100m in %d seconds.", (3-nbRounds));
         return;
     }
     
-    if (![self locationIsStillValid:newLocation]) {
-        NSLog(@"-> Old location. Ignoring.");
-        [ObjectArchiver saveObject:nil forKey:kLastLocationKey andPluginName:@"transport"];
+    if (newLocation.horizontalAccuracy > locationManager.desiredAccuracy) {
+        NSLog(@"-> Location accuracy (%lf) not sufficient, %lf required.", newLocation.horizontalAccuracy, locationManager.desiredAccuracy);
         return;
     }
     
