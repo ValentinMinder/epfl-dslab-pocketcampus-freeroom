@@ -62,6 +62,10 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
     // Release any retained subviews of the main view.
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

@@ -8,6 +8,7 @@
 
 #import "MainController.h"
 #import "PCValues.h"
+#import "PCUtils.h"
 #import "HomeViewController.h"
 #import "PluginController.h"
 
@@ -72,22 +73,30 @@
     return [self pluginControllerNameForIdentifier:[pluginsList objectAtIndex:index]];
 }
 
-- (void)initNavigationControllerAndPushHome {
-    UIViewController* splashController = [[UIViewController alloc] initWithNibName:@"SplashView" bundle:nil];
+- (void)initNavigationControllerAndPushHome {    
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    UIImageView* splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height)];
+    if ([PCUtils is4inchDevice]) {
+        splashView.image = [UIImage imageNamed:@"Default-568h@2x"];
+    } else {
+        splashView.image = [UIImage imageNamed:@"Default"];
+    }
+    
     homeViewController = [[HomeViewController alloc] initWithMainController:self];
     navController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
     navController.delegate = self;
     navController.navigationBar.tintColor = [PCValues pocketCampusRed];
-    [window addSubview:navController.view];
-    [window addSubview:splashController.view];
+    window.rootViewController = navController;
+    [window addSubview:splashView];
+    [splashView release];
     
     /* Splashscreen animation */
+    homeViewController.view.alpha = 0.0;
     [UIView animateWithDuration:0.4 animations:^{
-        splashController.view.alpha = 0.0;
-        splashController.view.frame = CGRectMake(-20.0, -20.0, 360.0, 520.0);;
+        homeViewController.view.alpha = 1.0;
+        splashView.frame = CGRectMake(-20.0, -20.0, screenSize.width+40.0, screenSize.height+40.0);;
     } completion:^(BOOL finished) {
-        [splashController.view removeFromSuperview];
-        [splashController autorelease];
+        [splashView removeFromSuperview];
     }];
 }
 

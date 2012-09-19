@@ -245,15 +245,43 @@ double WGStoCHy(double lat, double lng) {
     }
 }
 
++ (BOOL)isRegion:(MKCoordinateRegion)region1 equalToRegion:(MKCoordinateRegion)region2 {
+    if (fabs(region1.center.latitude - region2.center.latitude) > 0.0001) {
+        return NO;
+    }
+    
+    if (fabs(region1.center.longitude - region2.center.longitude) > 0.0001) {
+        return NO;
+    }
+    
+    if (fabs(region1.span.latitudeDelta - region2.span.latitudeDelta) > 0.0001) {
+        return NO;
+    }
+    
+    if (fabs(region1.span.longitudeDelta - region2.span.longitudeDelta) > 0.0001) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 //size the mapView region to fit its annotations
 + (void)zoomMapView:(MKMapView*)mapView toFitMapItemAnnotationsAnimated:(BOOL)animated { 
     if (mapView == nil || ![mapView isKindOfClass:[MKMapView class]]) {
         @throw [NSException exceptionWithName:@"bad mapView argument in zoomMapView:toFitMapItemAnnotationsAnimated:" reason:@"mapView is not kind of class MKMapView" userInfo:nil];
     }
     NSArray* annotations = [self mapItemAnnotations:mapView.annotations];
+    
+    if (annotations.count > 0) {
+        MKCoordinateRegion region = [self regionToFitMapItemAnnotations:annotations];
+        [mapView setRegion:region animated:animated];
+    }
+}
+
++ (MKCoordinateRegion)regionToFitMapItemAnnotations:(NSArray*)annotations {
     int count = annotations.count;
     if (count == 0) {
-        return;
+        return MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(0, 0));
     }
     
     //convert NSArray of id <MKAnnotation> into an MKCoordinateRegion that can be used to set the map size
@@ -281,11 +309,12 @@ double WGStoCHy(double lat, double lng) {
     if( region.span.longitudeDelta < MINIMUM_ZOOM_ARC ) { region.span.longitudeDelta = MINIMUM_ZOOM_ARC; }
     //and if there is a sample of 1 we want the max zoom-in instead of max zoom-out
     if( count == 1 )
-    { 
+    {
         region.span.latitudeDelta = MINIMUM_ZOOM_ARC;
         region.span.longitudeDelta = MINIMUM_ZOOM_ARC;
     }
-    [mapView setRegion:region animated:animated];
+    
+    return region;
 }
 
 /**

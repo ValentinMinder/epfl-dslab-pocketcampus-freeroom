@@ -52,6 +52,7 @@ typedef enum {
     UIActivityIndicatorView* overlaysLoadingIndicator;
     UIActivityIndicatorView* navBarLoadingIndicator;
     BOOL showBuildingsInterior;
+    NSArray* annotationsToAdd;
 }
 
 @property (nonatomic, assign) IBOutlet MKMapView* mapView;

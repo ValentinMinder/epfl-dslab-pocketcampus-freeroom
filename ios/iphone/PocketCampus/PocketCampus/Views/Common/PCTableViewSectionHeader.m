@@ -16,7 +16,7 @@ static float SEPARATOR_HEIGHT = 1.0;
 - (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView_
 {
     float VIEW_HEIGHT = [PCValues tableViewSectionHeaderHeight];
-    self = [super initWithFrame:CGRectMake(0, 0, 480.0, VIEW_HEIGHT)]; //so that landscape orientation is directly supported
+    self = [super initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.height, VIEW_HEIGHT)]; //screen height so that landscape orientation is directly supported
     if (self) {
         tableView = tableView_;
         self.alpha = 0.85;

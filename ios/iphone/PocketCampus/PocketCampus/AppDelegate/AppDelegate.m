@@ -10,6 +10,8 @@
 
 #import "PCConfig.h"
 
+#import "PCUtils.h"
+
 #import "GANTracker.h"
 
 @implementation AppDelegate
@@ -36,14 +38,17 @@
                                                dispatchPeriod:PC_PROD_GAN_DISPATCH_PERIOD_SEC
                                                      delegate:self];
     } else {
-        NSLog(@"-> Google Analytics tracker will NO be started because GAN_disabled = YES in Config");
+        NSLog(@"-> Google Analytics tracker will NOT be started because GAN_disabled = YES in Config");
     }
     
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
-    [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+
+    if ([PCUtils isOSVersionSmallerThan:6.0]) {
+        [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    }
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
 
     

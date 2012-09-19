@@ -91,7 +91,19 @@
     [moodleService getTequilaTokenForMoodleDelegate:self];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotate {
+    if (coursesList.hidden) {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5 and earlier
 {
     if (coursesList.hidden) {
         return (interfaceOrientation == UIInterfaceOrientationPortrait);

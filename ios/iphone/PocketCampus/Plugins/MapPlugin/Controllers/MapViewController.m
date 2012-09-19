@@ -14,6 +14,8 @@
 
 #import "MapUtils.h"
 
+#import "PCUtils.h"
+
 #import "MapController.h"
 
 #import "CustomOverlayView.h"
@@ -39,9 +41,14 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         internetConnectionAlert = nil;
         initialQuery = nil;
         initialQueryManualPinLabelText = nil;
-        epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+        if ([PCUtils isOSVersionSmallerThan:6.0]) {
+            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.006544, 0.007316));
+        } else {
+            epflRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(46.518747, 6.565683), MKCoordinateSpanMake(0.012285, 0.013733));
+        }
         searchBarState = SearchBarStateHidden;
         navBarLoadingIndicator = nil;
+        annotationsToAdd = nil;
         showBuildingsInterior = YES; //default
     }
     return self;
@@ -221,7 +228,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/mylocation" withError:NULL];
         [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
         mapView.showsUserLocation = YES;
-        [mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
+        //[mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
     } else if (mapView.userTrackingMode == MKUserTrackingModeFollow) {
         [mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
     } else {
@@ -275,7 +282,12 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), epflTileOverlay.currentLayerLevel];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
@@ -385,6 +397,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView_ regionDidChangeAnimated:(BOOL)animated {
     
+    //NSLog(@"%lf, %lf", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
+    
     MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
     
     /*if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
@@ -428,6 +442,13 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     } else {
         //nothing
     }
+    
+    if (annotationsToAdd) {
+        [mapView addAnnotations:annotationsToAdd];
+        [annotationsToAdd release];
+        annotationsToAdd = nil;
+    }
+    
 }
 
 /* MapServiceDelegate delegation */
@@ -464,8 +485,18 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         return;
     }
     
-    [mapView addAnnotations:mapItemAnnotations];
-    [MapUtils zoomMapView:mapView toFitMapItemAnnotationsAnimated:YES];  
+    MKCoordinateRegion reqRegion = [MapUtils regionToFitMapItemAnnotations:mapItemAnnotations];
+    
+    [annotationsToAdd release];
+    annotationsToAdd = [mapItemAnnotations retain];
+    
+    if ([MapUtils isRegion:mapView.region equalToRegion:[mapView regionThatFits:reqRegion]]) {
+        [self mapView:mapView regionDidChangeAnimated:NO]; //force this call to redraw annotations (not called because region has not changed)
+    } else {
+        [mapView setRegion:reqRegion animated:YES];
+    }
+    
+    //[MapUtils zoomMapView:mapView toFitMapItemAnnotationsAnimated:YES];
 }
 
 - (void)searchFailedFor:(NSString *)query {

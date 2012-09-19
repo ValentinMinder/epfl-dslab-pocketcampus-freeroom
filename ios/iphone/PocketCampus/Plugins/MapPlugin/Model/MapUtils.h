@@ -33,7 +33,9 @@ typedef struct {
 + (NSArray*)mapItemAnnotations:(NSArray*)annotations;
 + (BOOL)mapViewHasMapItemAnnotations:(MKMapView*)mapView;
 + (void)removeMapItemAnnotationsOnMapView:(MKMapView*)mapView;
++ (BOOL)isRegion:(MKCoordinateRegion)region1 equalToRegion:(MKCoordinateRegion)region2;
 + (void)zoomMapView:(MKMapView*)mapView toFitMapItemAnnotationsAnimated:(BOOL)animated;
++ (MKCoordinateRegion)regionToFitMapItemAnnotations:(NSArray*)annotations; //returns 0 values if no annotation
 + (NSUInteger)zoomLevelForMapRect:(MKMapRect)mapRect;
 + (NSUInteger)zoomLevelForZoomScale:(MKZoomScale)zoomScale;
 + (NSUInteger)worldTileWidthForZoomLevel:(NSUInteger)zoomLevel;

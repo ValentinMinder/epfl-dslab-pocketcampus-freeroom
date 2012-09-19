@@ -11,6 +11,8 @@
 @interface PCUtils : NSObject
 
 + (BOOL)isRetinaDevice;
++ (BOOL)is4inchDevice;
++ (BOOL)isOSVersionSmallerThan:(CGFloat)version;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 
 @end

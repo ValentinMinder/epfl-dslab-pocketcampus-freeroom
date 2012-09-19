@@ -14,6 +14,17 @@
     return ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))?1:0;
 }
 
++ (BOOL)is4inchDevice {
+    if ([UIScreen mainScreen].bounds.size.height == 568) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)isOSVersionSmallerThan:(float)version {
+    return [[UIDevice currentDevice].systemVersion floatValue] < version;
+}
+
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {
     tableView.alpha = 0.0;
     [tableView reloadData];
