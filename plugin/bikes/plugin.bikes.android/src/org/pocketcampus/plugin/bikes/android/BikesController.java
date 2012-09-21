@@ -4,8 +4,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.bikes.android.iface.IBikesController;
 import org.pocketcampus.plugin.bikes.android.req.BikesRequest;
-import org.pocketcampus.plugin.bikes.shared.BikeService.Client;
-import org.pocketcampus.plugin.bikes.shared.BikeService.Iface;
+import org.pocketcampus.plugin.bikes.shared.BikesService.Client;
+import org.pocketcampus.plugin.bikes.shared.BikesService.Iface;
 
 /**
  * Controller for the bikes plugin.

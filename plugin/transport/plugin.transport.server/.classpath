@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex.jar" sourcepath="/platform.sdk.shared/lib/libthrift-0.7.0-multiplex"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/lib.transport.server"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/bcprov-jdk15-146.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
@@ -42,5 +41,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-api-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -18,6 +18,6 @@ exception WebParseException {
 	1: string message;
 }
 
-service BikeService {
+service BikesService {
 	list<BikeEmplacement> getBikeStations() throws (1: WebParseException wpe);
 }

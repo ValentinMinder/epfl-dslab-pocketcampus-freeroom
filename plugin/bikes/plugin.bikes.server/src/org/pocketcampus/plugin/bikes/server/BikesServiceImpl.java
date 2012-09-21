@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
-import org.pocketcampus.plugin.bikes.shared.BikeService;
+import org.pocketcampus.plugin.bikes.shared.BikesService;
 import org.pocketcampus.plugin.bikes.shared.WebParseException;
 
 /**
@@ -15,7 +15,7 @@ import org.pocketcampus.plugin.bikes.shared.WebParseException;
  * @author Pascal <pascal.scheiben@gmail.com>
  * @author Guillaumd <guillaume.ulrich@epfl.ch>
  */
-public class BikesServiceImpl implements BikeService.Iface{
+public class BikesServiceImpl implements BikesService.Iface{
 
 	/** Refresh time in ms*/
 	private final static long REFRESH_TIME = 5 * 60 * 1000;

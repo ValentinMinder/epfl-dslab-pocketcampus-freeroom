@@ -6,7 +6,7 @@ import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.bikes.android.BikesController;
 import org.pocketcampus.plugin.bikes.android.BikesModel;
 import org.pocketcampus.plugin.bikes.shared.BikeEmplacement;
-import org.pocketcampus.plugin.bikes.shared.BikeService.Iface;
+import org.pocketcampus.plugin.bikes.shared.BikesService.Iface;
 
 import android.util.Log;
 
