@@ -1,9 +1,9 @@
 <?php
 
-$template_plugin_dir = "/home/amer/epfl/svn/pocketcampus/trunk/plugin/moodle";
-$new_plugin_dir = "/home/amer/epfl/svn/pocketcampus/trunk/plugin/sunrise";
+$template_plugin_dir = "../../plugin/sunrise";
+$new_plugin_dir = "../../plugin/blank";
 
-$replacements = array("moodle" => "sunrise", "Moodle" => "Sunrise", "MOODLE" => "SUNRISE");
+$replacements = array("sunrise" => "blank", "Sunrise" => "Blank", "SUNRISE" => "BLANK");
 
 $to_delete_dirs = array(".svn");
 $to_empty_dirs = array("bin", "gen");

@@ -4,10 +4,12 @@ $plugins_to_merge = array("camipro", "moodle", "authentication", "dashboard", "f
 
 $libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0-multiplex.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
 
-$path_to_plugin_dir = "../plugin";
-$path_to_platform_dir = "../platform";
-$path_to_lib_dir = "../platform/sdk/platform.sdk.shared/lib";
+$path_to_plugin_dir = "../../plugin";
+$path_to_platform_dir = "../../platform";
+$path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
+$output_dir = "../../android/PocketCampus";
+$project_name = "PocketCampus";
 
 
 function get_nodes($file, $tag) {
@@ -392,23 +394,23 @@ function collect_src_platform($output_dir) {
 
 
 
-generate_android_manifest("PocketCampus", false);
-generate_ant_properties("PocketCampus");
-generate_build_xml("PocketCampus", "PocketCampus");
-generate_proguard_cfg("PocketCampus");
-//generate_project_properties("PocketCampus", false, array("../PocketCampusLib"));
-generate_project_properties("PocketCampus", false, array());
-generate_dot_classpath("PocketCampus");
-generate_dot_project("PocketCampus", "PocketCampus");
+generate_android_manifest($output_dir, false);
+generate_ant_properties($output_dir);
+generate_build_xml($output_dir, "$project_name");
+generate_proguard_cfg($output_dir);
+//generate_project_properties($output_dir, false, array("../PocketCampusLib"));
+generate_project_properties($output_dir, false, array());
+generate_dot_classpath($output_dir);
+generate_dot_project($output_dir, "$project_name");
 // need to manually generate local.properties;
 
-delete_dir("PocketCampus/src");
-delete_dir("PocketCampus/res");
-collect_res("PocketCampus");
-collect_src("PocketCampus");
+delete_dir("$output_dir/src");
+delete_dir("$output_dir/res");
+collect_res("$output_dir");
+collect_src("$output_dir");
 
-delete_dir("PocketCampus/libs");
-export_libs("PocketCampus");
+delete_dir("$output_dir/libs");
+export_libs("$output_dir");
 
 
 /*
