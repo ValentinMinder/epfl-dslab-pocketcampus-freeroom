@@ -22,6 +22,7 @@
 	<string name="sdk_connection_error_happened">Erreur de connexion!</string>
 	<string name="sdk_authentication_invalid_credentials">Identifiants non valides!</string>
 	<string name="sdk_authentication_invalid_token">Token invalide!</string>
+	<string name="sdk_authentication_failed">L\'authentification a échoué</string>
 	<string name="sdk_authentication_unexpected_error">Erreur inattendue!</string>
 
 </resources>

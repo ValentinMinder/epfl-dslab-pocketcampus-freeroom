@@ -15,37 +15,33 @@ import android.util.Log;
  */
 public class Config {
 	/** Server IP. */
-	// Mac Mini's IP, requires VPN
-	public static String SERVER_IP = "128.178.77.236";
-	
-	// pocketcampus.epfl.ch's IP, doesn't require VPN
-//	public final static String SERVER_IP = "128.178.132.3";
-//	public final static String SERVER_IP = "pocketcampus.epfl.ch/v3r1";
-
-	// Dev server (Florian)
-//	public static String SERVER_IP = "192.168.0.5";
+	public static String SERVER_IP = "pocketcampus.epfl.ch";
 	
 	/** Server port. */
 	public static int SERVER_PORT = 9090;
 	
-	/** Use SSL. */
-	public static int USE_SSL = 0;
+	/** Server proto. */
+	public static String SERVER_PROTO = "http";
+	
+	/** Version of the Application */
+	public static String SERVER_URI = "v3r1";
 	
 	/** Level of information reported by the logger, a lower number mean more. */
 	// XXX not used for now
 	public final static int LOG_LEVEL = Log.DEBUG;
 
 	/** Time before giving up HTTP connection (ms). */
-	public static final int HTTP_CONNECT_TIMEOUT = 20000;
+	public static final int HTTP_CONNECT_TIMEOUT = 5000;
 
 	/** Time before giving up HTTP read operation (ms). */
-	public static final int HTTP_READ_TIMEOUT = 20000;
+	public static final int HTTP_READ_TIMEOUT = 60000;
 	
 	/** DEBUG or not */
-	public static boolean DEBUG = true;
+	// XXX not used for now
+	public static boolean DEBUG = false;
 	
-	/** Version of the Application */
-	public static String VERSION = "v3r1";
+	/** Google Analytics Tracking Code */
+	public static String GA_TRACKING_CODE = "UA-22135241-3"; // put dummy one when debugging
 	
 	static {
 		try {
@@ -61,16 +57,18 @@ public class Config {
 							SERVER_IP = param[1];
 						if("SERVER_PORT".equals(param[0]))
 							SERVER_PORT = Integer.parseInt(param[1]);
-						if("USE_SSL".equals(param[0]))
-							USE_SSL = Integer.parseInt(param[1]);
+						if("SERVER_URI".equals(param[0]))
+							SERVER_URI = param[1];
+						if("SERVER_PROTO".equals(param[0]))
+							SERVER_PROTO = param[1];
 					}
 				}
 			} else {
-				FileWriter fw = new FileWriter(configFile, false);
+				/*FileWriter fw = new FileWriter(configFile, false);
 				fw.write("SERVER_IP=" + SERVER_IP + "\n");
 				fw.write("SERVER_PORT=" + SERVER_PORT + "\n");
 				fw.write("USE_SSL=" + USE_SSL + "\n");
-				fw.close();
+				fw.close();*/
 			}
 		} catch (Exception e) {
 			Log.e("DEBUG", "grrrrrrrrr Exception while running static code!?!?");

@@ -3,7 +3,7 @@ package org.pocketcampus.android.platform.sdk.tracker;
 import android.content.Context;
 import org.pocketcampus.android.platform.sdk.core.Config;
 
-//import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 /**
  * The Tracker used to send Google analytics about what the user uses in the
@@ -20,10 +20,8 @@ public class Tracker {
 	 * The GoogleTracker used here to call methods to send data to the google
 	 * analytics.
 	 */
-	// private GoogleAnalyticsTracker mGoogleTracker = null;
+	private GoogleAnalyticsTracker mGoogleTracker = null;
 
-	private final String DEVELOPMENT_GA_PROFILE = "UA-22135241-2";
-	private final String RELEASE_GA_PROFILE = "UA-22135241-3";
 	private final int DISPATCH_PERIOD = 10;
 
 	/**
@@ -33,7 +31,7 @@ public class Tracker {
 	 * <code>GoogleAnalyticsTracker.getInstance()</code> method.
 	 */
 	private Tracker() {
-		// mGoogleTracker = GoogleAnalyticsTracker.getInstance();
+		mGoogleTracker = GoogleAnalyticsTracker.getInstance();
 	}
 
 	/**
@@ -54,13 +52,7 @@ public class Tracker {
 	 */
 	public void start(Context context) {
 		try {
-			if (Config.DEBUG) {
-				// mGoogleTracker.start(DEVELOPMENT_GA_PROFILE, DISPATCH_PERIOD,
-				// context);
-			} else {
-				// mGoogleTracker.start(RELEASE_GA_PROFILE, DISPATCH_PERIOD,
-				// context);
-			}
+			mGoogleTracker.start(Config.GA_TRACKING_CODE, DISPATCH_PERIOD, context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,7 +66,7 @@ public class Tracker {
 	 */
 	public void trackPageView(String pageView) {
 		try {
-			// mGoogleTracker.trackPageView(Config.VERSION + "/" + pageView);
+			mGoogleTracker.trackPageView(Config.SERVER_URI + "/" + pageView);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,7 +93,7 @@ public class Tracker {
 	public void trackEvent(String category, String action, String label,
 			int value) {
 		try {
-			// mGoogleTracker.trackEvent(category, action, label, value);
+			mGoogleTracker.trackEvent(category, action, label, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,7 +122,7 @@ public class Tracker {
 	 */
 	public void setCustomVar(int index, String name, String value) {
 		try {
-			// mGoogleTracker.setCustomVar(index, name, value);
+			mGoogleTracker.setCustomVar(index, name, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,7 +156,7 @@ public class Tracker {
 	 */
 	public void setCustomVar(int index, String name, String value, int scope) {
 		try {
-			// mGoogleTracker.setCustomVar(index, name, value, scope);
+			mGoogleTracker.setCustomVar(index, name, value, scope);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -175,7 +167,7 @@ public class Tracker {
 	 */
 	public void stop() {
 		try {
-			// mGoogleTracker.stop();
+			mGoogleTracker.stop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

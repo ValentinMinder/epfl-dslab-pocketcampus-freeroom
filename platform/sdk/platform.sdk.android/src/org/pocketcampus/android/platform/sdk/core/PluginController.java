@@ -31,8 +31,8 @@ public abstract class PluginController extends Service {
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
 		TServiceClient client = null;
-		String url = (Config.USE_SSL == 0 ? "http://" : "https://") + Config.SERVER_IP + ":"
-				+ Config.SERVER_PORT + "/" + Config.VERSION + "/" + pluginName;
+		String url = Config.SERVER_PROTO + "://" + Config.SERVER_IP + ":"
+				+ Config.SERVER_PORT + "/" + Config.SERVER_URI + "/" + pluginName;
 
 		System.out.println(url);
 		try {
