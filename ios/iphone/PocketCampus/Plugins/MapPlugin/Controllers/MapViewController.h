@@ -14,6 +14,8 @@
 
 #import "MapService.h"
 
+#import "DirectoryService.h"
+
 #import "EPFLTileOverlay.h"
 
 #import "EPFLLayersOverlay.h"
@@ -25,7 +27,7 @@ typedef enum {
     SearchBarStateHidden
 } SearchBarState;
 
-@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate> {
+@interface MapViewController : UIViewController<MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, MapServiceDelegate, CustomOverlayViewDelegate, DirectoryServiceDelegate> {
     UIBarButtonItem* myLocationButton;
     UIBarButtonItem* floorDownButton;
     UILabel* floorLabel;
@@ -35,6 +37,8 @@ typedef enum {
     UIToolbar* toolbar;
     UIAlertView* internetConnectionAlert;
     MapService* mapService;
+    DirectoryService* directoryService;
+    Person* personToDisplay;
     NSString* initialQuery;
     NSString* initialQueryManualPinLabelText;
     MKMapView* mapView;

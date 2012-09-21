@@ -59,8 +59,8 @@ static MapService* instance = nil;
     //operation.keepInCache = YES;
     //operation.cacheValidity = 4*24*3600.0; //4 weeks
     operation.serviceClientSelector = @selector(search:);
-    operation.delegateDidReturnSelector = @selector(searchFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(searchFailedFor:);
+    operation.delegateDidReturnSelector = @selector(searchMapFor:didReturn:);
+    operation.delegateDidFailSelector = @selector(searchMapFailedFor:);
     [operation addObjectArgument:query];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];

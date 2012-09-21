@@ -10,7 +10,7 @@
 
 #import "DocumentViewController.h"
 
-
+#import "PCUtils.h"
 
 @implementation DocumentViewController
 
@@ -19,7 +19,7 @@
 - (id)initWithDocumentRemoteURLString:(NSString*)documentRemoteURL;
 {
     self = [super initWithNibName:@"DocumentView" bundle:nil];
-    if (self) {
+    if (self) {        
         documentRemoteURLString = [documentRemoteURL retain];
         documentLocalURL = nil;
         docInteractionController = nil;
@@ -164,8 +164,10 @@
 
 /* UIDocumentInteractionControllerDelegate delegation */
 
+
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller canPerformAction:(SEL)action
 {
+    
     if (action == @selector (print:) && [UIPrintInteractionController canPrintURL:controller.URL]) {
         return YES;
     }
@@ -174,6 +176,7 @@
 
 - (BOOL)documentInteractionController:(UIDocumentInteractionController *)controller performAction:(SEL)action
 {
+    
     bool __block success = NO;
     if (action == @selector(print:)) {
         UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];

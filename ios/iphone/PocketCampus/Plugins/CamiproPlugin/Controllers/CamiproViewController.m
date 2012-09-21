@@ -69,6 +69,11 @@ static CGFloat kBalanceCellHeight = 70.0;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
                                               
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

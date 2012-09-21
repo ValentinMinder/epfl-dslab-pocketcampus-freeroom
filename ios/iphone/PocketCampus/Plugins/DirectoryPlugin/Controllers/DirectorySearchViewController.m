@@ -73,6 +73,11 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [searchBar resignFirstResponder];
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -188,7 +193,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [self resultsError];
 }
 
-- (void)searchFor:(NSString*)searchPattern didReturn:(NSArray*)results {
+- (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
     [barActivityIndicator stopAnimating];
     if (results.count == 0) {
         [self showNoResultMessage];
@@ -212,7 +217,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
-- (void)searchFailedFor:(NSString*)searchPattern {
+- (void)searchDirectoryFailedFor:(NSString*)searchPattern {
     [self resultsError];
 }
 

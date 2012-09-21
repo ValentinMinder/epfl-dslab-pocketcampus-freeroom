@@ -8,12 +8,15 @@
 
 #import "HomeIcon.h"
 
+#import "PCUtils.h"
+
 @implementation HomeIcon
 
 static int LEFTMOST_MARGIN = 3;
 static int LEFT_MARGIN = 0;
 static int TOPMOST_MARGIN = 25;
 static int TOP_MARGIN = 30;
+static int TOP_MARGIN_4_INCH = 30; //same as normal margin, but could be changed in the future
 static int ICON_FRAME_WIDTH = 105;
 static int ICON_FRAME_HEIGHT = 80;
 
@@ -76,7 +79,12 @@ static int ICON_FRAME_HEIGHT = 80;
     //row = 1;
     
     int x = LEFTMOST_MARGIN + col * (ICON_FRAME_WIDTH + LEFT_MARGIN);
-    int y = TOPMOST_MARGIN + row * (ICON_FRAME_HEIGHT + TOP_MARGIN);
+    int y; 
+    if ([PCUtils is4inchDevice]) {
+        y = TOPMOST_MARGIN + row * (ICON_FRAME_HEIGHT + TOP_MARGIN_4_INCH);
+    } else {
+        y = TOPMOST_MARGIN + row * (ICON_FRAME_HEIGHT + TOP_MARGIN);
+    }
     //NSLog(@"Frame : x : %d, y : %d, row : %d, col : %d, index : %d", x, y, row, col, index);
     return CGRectMake(x, y, ICON_FRAME_WIDTH, ICON_FRAME_HEIGHT);
 }

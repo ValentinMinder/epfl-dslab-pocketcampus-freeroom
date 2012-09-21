@@ -135,7 +135,12 @@ static int NEWS_FONT_SIZE = 14.0;
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // <= iOS 5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }

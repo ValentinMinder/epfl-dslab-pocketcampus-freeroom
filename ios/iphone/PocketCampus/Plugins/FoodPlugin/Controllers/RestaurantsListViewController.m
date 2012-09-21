@@ -87,7 +87,12 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     [foodService getMealsWithDelegate:self];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }

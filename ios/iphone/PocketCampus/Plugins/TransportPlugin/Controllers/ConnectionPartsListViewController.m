@@ -33,6 +33,12 @@
     [[GANTracker sharedTracker] trackPageview:@"/v3r1/transport/connections/parts" withError:NULL];
     
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
+    | UIViewAutoresizingFlexibleWidth
+    | UIViewAutoresizingFlexibleRightMargin
+    | UIViewAutoresizingFlexibleTopMargin
+    | UIViewAutoresizingFlexibleHeight
+    | UIViewAutoresizingFlexibleBottomMargin;
     
     CGFloat currentY = 30.0; //start with amrgin from top
     
@@ -83,6 +89,11 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

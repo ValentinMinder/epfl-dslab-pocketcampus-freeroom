@@ -20,6 +20,8 @@
 
 #import "CustomOverlayView.h"
 
+#import "DirectoryUtils.h"
+
 static int MAX_DISPLAYED_ANNOTATIONS = 70;
 static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
@@ -34,6 +36,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         // Custom initialization
         self.title = [MapController localizedName];
         mapService = [[MapService sharedInstanceToRetain] retain];
+        directoryService = nil; //will be instancied if needed
+        personToDisplay = nil;
         epflTileOverlay = [[EPFLTileOverlay alloc] init];
         epflLayersOverlay = [[EPFLLayersOverlay alloc] init];
         tileOverlayView = [[CustomOverlayView alloc] initWithOverlay:epflTileOverlay];
@@ -118,7 +122,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     }
     [self mapView:mapView regionDidChangeAnimated:NO]; //to refresh UI controls and add overlays
     [self updateFloorLabel];
-    //[toolbar setItems:[NSArray arrayWithObject:[[MKUserTrackingBarButtonItem alloc] initWithMapView:mapView]]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -139,6 +142,16 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [super didReceiveMemoryWarning];
     [tileOverlayView didReceiveMemoryWarning];
     [layersOverlayView didReceiveMemoryWarning];
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 /* MapService access */
@@ -228,9 +241,13 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         [[GANTracker sharedTracker] trackPageview:@"/v3r1/map/click/mylocation" withError:NULL];
         [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
         mapView.showsUserLocation = YES;
-        //[mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
+        [mapView setRegion:MKCoordinateRegionMake(mapView.userLocation.coordinate, MKCoordinateSpanMake(0.003, 0.003)) animated:YES];
     } else if (mapView.userTrackingMode == MKUserTrackingModeFollow) {
         [mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+        if (mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading) { //means heading not supported
+            [mapView setUserTrackingMode:MKUserTrackingModeNone];
+            mapView.showsUserLocation = NO;
+        }
     } else {
         [mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
         mapView.showsUserLocation = NO;
@@ -280,16 +297,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         }
     }
     floorLabel.text = [NSString stringWithFormat:@"%@ %d", NSLocalizedStringFromTable(@"Floor", @"MapPlugin", nil), epflTileOverlay.currentLayerLevel];
-}
-
-- (NSUInteger)supportedInterfaceOrientations //iOS 6
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 /* UIActionSheetDelegate delegation */
@@ -365,6 +372,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         pin.enabled = YES;
     } else {
         pin.annotation = annotation;
+        pin.rightCalloutAccessoryView = nil;
     }
     return pin;
     
@@ -381,10 +389,20 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     if ([view isKindOfClass:[MKAnnotationView class]]) {
         MKAnnotationView* annView = (MKAnnotationView*)view;
         NSString* roomName = annView.annotation.subtitle;
-        if (roomName == nil || [roomName isEqualToString:@""]) {
+        if (roomName == nil || roomName.length == 0) {
             roomName = annView.annotation.title;
         }
-        if (roomName != nil && ![roomName isEqualToString:@""]) {
+        if (directoryService) {
+            [directoryService cancelOperationsForDelegate:self];
+        }
+        if (roomName != nil && !roomName.length == 0) {
+            //both title and subtitle are indicated, might be a person => look in directory
+            if (!initialQuery) {
+                if (!directoryService) {
+                    directoryService = [[DirectoryService sharedInstanceToRetain] retain];
+                }
+                [directoryService searchPersons:annView.annotation.title delegate:self];
+            }
             int level = [MapUtils levelToSelectForRoomName:roomName];
             if (level != INT_MAX) {
                 [epflTileOverlay setLayerLevel:level];
@@ -398,7 +416,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 - (void)mapView:(MKMapView *)mapView_ regionDidChangeAnimated:(BOOL)animated {
     
     //NSLog(@"%lf, %lf", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-    
+
     MKZoomScale zoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
     
     /*if ([epflTileOverlay canDrawMapRect:mapView.visibleMapRect zoomScale:zoomScale]) { //is normally a delegate method, but used here to know whether layer UI controls should be shown
@@ -451,9 +469,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
 }
 
+
+
 /* MapServiceDelegate delegation */
 
-- (void)searchFor:(NSString*)query didReturn:(NSArray*)results{
+- (void)searchMapFor:(NSString*)query didReturn:(NSArray*)results{
     
     /* TEST */
     /*
@@ -499,7 +519,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     //[MapUtils zoomMapView:mapView toFitMapItemAnnotationsAnimated:YES];
 }
 
-- (void)searchFailedFor:(NSString *)query {
+- (void)searchMapFailedFor:(NSString *)query {
     [searchActivityIndicator stopAnimating];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -512,6 +532,57 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [internetConnectionAlert release];
     internetConnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [internetConnectionAlert show];    
+}
+
+/* DirectoryServiceDelegate delegation */
+
+- (void)searchDirectoryFor:(NSString *)searchPattern didReturn:(NSArray *)results {
+    NSLog(@"%@", results);
+    if (mapView.selectedAnnotations.count == 0 || results.count == 0) {
+        [self searchDirectoryFailedFor:searchPattern];
+        return;
+    }
+    
+    id<MKAnnotation> selectedAnnotation = [mapView.selectedAnnotations objectAtIndex:0];
+    
+    MKAnnotationView* selectedAnnotationView = [mapView viewForAnnotation:selectedAnnotation];
+    
+    Person* person = [results objectAtIndex:0];
+    
+    NSString* firstAndLastName = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
+    
+    if (![firstAndLastName isEqualToString:selectedAnnotation.title]) {
+        [self searchDirectoryFailedFor:searchPattern];
+    }
+
+    UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+    disclosureButton.titleLabel.text = firstAndLastName;
+    selectedAnnotationView.rightCalloutAccessoryView = disclosureButton;
+    [personToDisplay release];
+    personToDisplay = [person retain];
+
+}
+
+- (void)searchDirectoryFailedFor:(NSString *)searchPattern {
+    if (mapView.selectedAnnotations.count == 0) {
+        return;
+    }
+    id<MKAnnotation> selectedAnnotation = [mapView.selectedAnnotations objectAtIndex:0];
+
+    MKAnnotationView* selectedAnnotationView = [mapView viewForAnnotation:selectedAnnotation];
+    
+    selectedAnnotationView.rightCalloutAccessoryView = nil;
+    [personToDisplay release];
+    personToDisplay = nil;
+    
+}
+
+- (void)annotationAccessoryTapped:(UIButton*)button {
+    if (![button isKindOfClass:[UIButton class]] || !personToDisplay) {
+        return;
+    }
+    [self.navigationController pushViewController:[DirectoryUtils viewControllerForPerson:personToDisplay] animated:YES];
 }
 
 /* UIAlertViewDelegate */
@@ -564,6 +635,8 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 {
     mapView.delegate = nil;
     [mapService release];
+    [directoryService release];
+    [personToDisplay release];
     [epflTileOverlay release];
     [epflLayersOverlay release];
     [tileOverlayView cancelTilesDownload:YES];
@@ -578,6 +651,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [internetConnectionAlert release];
     [initialQuery release];
     [initialQueryManualPinLabelText release];
+    [annotationsToAdd release];
     [super dealloc];
 }
 

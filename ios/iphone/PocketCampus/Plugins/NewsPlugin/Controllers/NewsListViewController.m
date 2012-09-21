@@ -76,7 +76,12 @@ static NSString* kThumbnailIndexPathKey = @"ThumbnailIndexPath";
     [networkQueue setSuspended:YES];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS 5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
