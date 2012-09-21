@@ -328,7 +328,7 @@ function copyr($source, $dest) {
 }
 
 function delete_dir($path) {
-	return is_file($path) ? unlink($path) : array_map(__FUNCTION__, glob($path.'/*')) == rmdir($path);
+	return is_file($path) ? @unlink($path) : array_map(__FUNCTION__, glob($path.'/*')) == @rmdir($path);
 }
 
 function collect_res($output_dir) {
@@ -354,7 +354,8 @@ function collect_src($output_dir) {
 
 	foreach($plugins_to_merge as $plugin) {
 		copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src", "$output_dir/src");
-		copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has shared proj
+			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
 	}
 
 }
