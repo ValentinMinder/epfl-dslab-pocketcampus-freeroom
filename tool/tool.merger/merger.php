@@ -353,8 +353,9 @@ function collect_src($output_dir) {
 	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
 
 	foreach($plugins_to_merge as $plugin) {
-		copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src", "$output_dir/src");
-		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has shared proj
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src")) // if has .android proj
+			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src", "$output_dir/src");
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
 	}
 

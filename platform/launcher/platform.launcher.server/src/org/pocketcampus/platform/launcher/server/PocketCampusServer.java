@@ -1,10 +1,8 @@
 package org.pocketcampus.platform.launcher.server;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.pocketcampus.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
 import org.pocketcampus.plugin.bikes.server.BikesServiceImpl;
 import org.pocketcampus.plugin.bikes.shared.BikeService;
@@ -33,12 +31,6 @@ public class PocketCampusServer extends ServerBase {
 
 	@Override
 	protected ArrayList<Processor> getServiceProcessors() {
-		try {
-			String thisIp = InetAddress.getLocalHost().getHostAddress();
-			System.out.println("Local address: " + thisIp);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
 		
 		ArrayList<Processor> processors = new ArrayList<Processor>();
 		

@@ -1,4 +1,4 @@
-package org.pocketcampus.authentication.server;
+package org.pocketcampus.plugin.authentication.server;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
