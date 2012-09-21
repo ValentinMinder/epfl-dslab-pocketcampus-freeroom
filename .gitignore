@@ -832,4 +832,5 @@
 
 plugin/authentication/plugin.authentication.android/local.properties
 platform/sdk/platform.sdk.android/local.properties
+android/PocketCampus/local.properties
 
