@@ -1,0 +1,285 @@
+<?php
+
+// GLOBALS
+$plugins_to_merge = array("camipro", "moodle", "authentication");
+
+$libs_to_export = array("libthrift-0.7.0-multiplex.jar");
+
+$path_to_plugin_dir = "../../plugin";
+$path_to_platform_dir = "../../platform";
+$path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
+
+// LOCALS
+$output_dir = "../../server/PocketCampusServer";
+$project_name = "PocketCampusServer";
+
+function create_elem_w_attrib($doc, $tag, $attrib) {
+	$elem = $doc->createElement($tag);
+	foreach($attrib as $k => $v)
+		$elem->setAttribute($k, $v);
+	return $elem;
+}
+
+function generate_build_xml($output_dir, $project_name){
+	global $libs_to_export;
+	global $path_to_lib_dir;
+	
+	$doc = new DOMDocument("1.0", "utf-8");
+	$doc->formatOutput = true;
+
+	$doc->appendChild($proj = create_elem_w_attrib($doc, "project", array("basedir" => ".", "name" => "$project_name", "default" => "build")));
+
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("environment" => "env")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "debuglevel", "value" => "source,lines,vars")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "target", "value" => "1.6")));
+	$proj->appendChild(create_elem_w_attrib($doc, "property", array("name" => "source", "value" => "1.6")));
+
+	$proj->appendChild($path = create_elem_w_attrib($doc, "path", array("id" => "$project_name.classpath")));
+	$path->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "bin")));
+	foreach($libs_to_export as $lib)
+		$path->appendChild(create_elem_w_attrib($doc, "pathelement", array("location" => "$path_to_lib_dir/$lib")));
+
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("name" => "init")));
+	$target->appendChild(create_elem_w_attrib($doc, "mkdir", array("dir" => "bin")));
+	$target->appendChild($copy = create_elem_w_attrib($doc, "copy", array("includeemptydirs" => "false", "todir" => "bin")));
+	$copy->appendChild($fileset = create_elem_w_attrib($doc, "fileset", array("dir" => "src")));
+	$fileset->appendChild(create_elem_w_attrib($doc, "exclude", array("name" => "**/*.java")));
+
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("name" => "clean")));
+	$target->appendChild(create_elem_w_attrib($doc, "delete", array("dir" => "bin")));
+
+	$proj->appendChild(create_elem_w_attrib($doc, "target", array("depends" => "clean", "name" => "cleanall")));
+	$proj->appendChild(create_elem_w_attrib($doc, "target", array("depends" => "build-subprojects,build-project", "name" => "build")));
+	$proj->appendChild(create_elem_w_attrib($doc, "target", array("name" => "build-subprojects")));
+
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "init", "name" => "build-project")));
+	$target->appendChild(create_elem_w_attrib($doc, "echo", array("message" => "\${ant.project.name}: \${ant.file}")));
+	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("debug" => "true", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
+	$javac->appendChild(create_elem_w_attrib($doc, "src", array("path" => "src")));
+	$javac->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "$project_name.classpath")));
+
+	$proj->appendChild(create_elem_w_attrib($doc, "target", array("description" => "Build all projects which reference this project. Useful to propagate changes.", "name" => "build-refprojects")));
+
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("name" => "$project_name")));
+	$target->appendChild($java = create_elem_w_attrib($doc, "java", array("classname" => "org.pocketcampus.platform.launcher.server.ServerLauncher", "failonerror" => "true", "fork" => "yes")));
+	$java->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "$project_name.classpath")));
+
+	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "build", "name" => "create_run_jar")));
+	$target->appendChild($jar = create_elem_w_attrib($doc, "jar", array("destfile" => "$output_dir/$project_name.jar", "filesetmanifest" => "mergewithoutmain")));
+	$jar->appendChild($manifest = create_elem_w_attrib($doc, "manifest", array()));
+	$manifest->appendChild(create_elem_w_attrib($doc, "attribute", array("name" => "Main-Class", "value" => "org.pocketcampus.platform.launcher.server.ServerLauncher")));
+	$manifest->appendChild(create_elem_w_attrib($doc, "attribute", array("name" => "Class-Path", "value" => ".")));
+	$jar->appendChild(create_elem_w_attrib($doc, "fileset", array("dir" => "$output_dir/bin")));
+	foreach($libs_to_export as $lib)
+		$jar->appendChild(create_elem_w_attrib($doc, "zipfileset", array("excludes" => "META-INF/*.SF", "src" => "$path_to_lib_dir/$lib")));
+
+	file_put_contents("$output_dir/build.xml", $doc->saveXML());
+}
+
+function generate_dot_classpath($output_dir){
+	global $libs_to_export;
+	global $path_to_lib_dir;
+	
+	$doc = new DOMDocument("1.0", "utf-8");
+	$doc->formatOutput = true;
+
+	$cp = $doc->createElement("classpath");
+	$doc->appendChild($cp);
+	
+	$cpe = $doc->createElement("classpathentry");
+	$cp->appendChild($cpe);
+	$cpe->setAttribute("kind", "src");
+	$cpe->setAttribute("path", "src");
+
+	$cpe = $doc->createElement("classpathentry");
+	$cp->appendChild($cpe);
+	$cpe->setAttribute("kind", "con");
+	$cpe->setAttribute("path", "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6");
+
+	foreach($libs_to_export as $lib) {
+		$cpe = $doc->createElement("classpathentry");
+		$cp->appendChild($cpe);
+		$cpe->setAttribute("kind", "lib");
+		$cpe->setAttribute("path", "$path_to_lib_dir/$lib");
+	}
+
+	$cpe = $doc->createElement("classpathentry");
+	$cp->appendChild($cpe);
+	$cpe->setAttribute("kind", "output");
+	$cpe->setAttribute("path", "bin");
+
+	file_put_contents("$output_dir/.classpath", $doc->saveXML());
+}
+
+function generate_dot_project($output_dir, $project_name){
+	$doc = new DOMDocument("1.0", "utf-8");
+	$doc->formatOutput = true;
+
+	$projectDescription = $doc->createElement("projectDescription");
+	$doc->appendChild($projectDescription);
+	
+	$name = $doc->createElement("name");
+	$name->appendChild($doc->createTextNode($project_name));
+	$projectDescription->appendChild($name);
+	$comment = $doc->createElement("comment");
+	$comment->appendChild($doc->createTextNode(""));
+	$projectDescription->appendChild($comment);
+	$projects = $doc->createElement("projects");
+	$projects->appendChild($doc->createTextNode(""));
+	$projectDescription->appendChild($projects);
+
+	$buildSpec = $doc->createElement("buildSpec");
+	$projectDescription->appendChild($buildSpec);
+
+	$buildCommand = $doc->createElement("buildCommand");
+	$buildSpec->appendChild($buildCommand);
+	$name = $doc->createElement("name");
+	$name->appendChild($doc->createTextNode("org.eclipse.jdt.core.javabuilder"));
+	$buildCommand->appendChild($name);
+	$arguments = $doc->createElement("arguments");
+	$arguments->appendChild($doc->createTextNode(""));
+	$buildCommand->appendChild($arguments);
+
+	$natures = $doc->createElement("natures");
+	$projectDescription->appendChild($natures);
+
+	$nature = $doc->createElement("nature");
+	$nature->appendChild($doc->createTextNode("org.eclipse.jdt.core.javanature"));
+	$natures->appendChild($nature);
+
+	file_put_contents("$output_dir/.project", $doc->saveXML());
+}
+
+
+/**
+ * Copy a file, or recursively copy a folder and its contents
+ *
+ * @author      Aidan Lister <aidan@php.net>
+ * @version     1.0.1
+ * @link        http://aidanlister.com/2004/04/recursively-copying-directories-in-php/
+ * @param       string   $source    Source path
+ * @param       string   $dest      Destination path
+ * @return      bool     Returns TRUE on success, FALSE on failure
+ */
+function copyr($source, $dest) {
+	// Check for symlinks
+	if (is_link($source)) {
+		return symlink(readlink($source), $dest);
+	}
+	
+	// Simple copy for a file
+	if (is_file($source)) {
+		return copy($source, $dest);
+	}
+
+	// Make destination directory
+	if (!is_dir($dest)) {
+		mkdir($dest);
+	}
+
+	// Loop through the folder
+	$dir = dir($source);
+	while (false !== $entry = $dir->read()) {
+		// Skip pointers
+		if ($entry == '.' || $entry == '..') {
+			continue;
+		}
+
+		// Deep copy directories
+		copyr("$source/$entry", "$dest/$entry");
+	}
+
+	// Clean up
+	$dir->close();
+	return true;
+}
+
+function delete_dir($path) {
+	return is_file($path) ? @unlink($path) : array_map(__FUNCTION__, glob($path.'/*')) == @rmdir($path);
+}
+
+function collect_src($output_dir) {
+	global $plugins_to_merge;
+	global $path_to_plugin_dir;
+	global $path_to_platform_dir;
+
+	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
+
+	foreach($plugins_to_merge as $plugin) {
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src")) // if has .server proj
+			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src", "$output_dir/src");
+		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
+			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
+	}
+
+}
+
+function export_libs($output_dir) {
+	global $libs_to_export;
+	global $path_to_lib_dir;
+
+	if(!is_dir("$output_dir/lib")) {
+		mkdir("$output_dir/lib");
+	}
+
+	foreach($libs_to_export as $lib) {
+		copy("$path_to_lib_dir/$lib", "$output_dir/lib/$lib");
+	}
+
+
+}
+
+function generate_server_launcher($output_dir) {
+	global $plugins_to_merge;
+
+	$content = <<<EOS
+package org.pocketcampus.platform.launcher.server;
+import java.util.ArrayList;
+IMPORTS
+public class ServerLauncher {
+	public static class PocketCampusServer extends ServerBase {
+		protected ArrayList<Processor> getServiceProcessors() {
+			ArrayList<Processor> processors = new ArrayList<Processor>();
+			PROCESSORS
+			return processors;
+		}
+	}
+	public static void main(String[] args) throws Exception {
+		ServerBase server = new PocketCampusServer();
+		server.start();
+	}
+}
+EOS;
+
+	$imports = "";
+	$processors = "";
+	foreach($plugins_to_merge as $plugin) {
+		$plugin_cap = ucfirst($plugin);
+		$imports .= "import org.pocketcampus.plugin.$plugin.server.{$plugin_cap}ServiceImpl;\n";
+		$imports .= "import org.pocketcampus.plugin.$plugin.shared.{$plugin_cap}Service;\n";
+		$processors .= "			processors.add(new Processor(new {$plugin_cap}Service.Processor<{$plugin_cap}ServiceImpl>(new {$plugin_cap}ServiceImpl()), \"$plugin\"));\n";
+	}
+	$content = str_replace("IMPORTS", "$imports", $content);
+	$content = str_replace("PROCESSORS", "$processors", $content);
+
+	file_put_contents("$output_dir/src/org/pocketcampus/platform/launcher/server/ServerLauncher.java", $content);
+
+}
+
+
+generate_build_xml($output_dir, "$project_name");
+generate_dot_classpath($output_dir);
+generate_dot_project($output_dir, "$project_name");
+
+delete_dir("$output_dir/src");
+collect_src("$output_dir");
+
+generate_server_launcher($output_dir);
+
+delete_dir("$output_dir/lib");
+export_libs("$output_dir");
+
+
+
+?>
