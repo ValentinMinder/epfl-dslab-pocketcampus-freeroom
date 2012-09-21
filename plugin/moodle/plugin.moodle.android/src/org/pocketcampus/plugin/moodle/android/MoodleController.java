@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.pocketcampus.android.platform.sdk.cache.RequestCache;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
@@ -25,10 +26,13 @@ import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * MoodleController - Main logic for the Moodle Plugin.
@@ -40,6 +44,16 @@ import android.os.Environment;
  * 
  */
 public class MoodleController extends PluginController implements IMoodleController{
+
+	public static class Logouter extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.v("DEBUG", "MoodleController$Logouter logging out");
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
+					Uri.parse("pocketcampus://moodle.plugin.pocketcampus.org/logout"));
+			context.startService(authIntent);
+		}
+	};
 
 	final public static RedirectHandler redirectNoFollow = new RedirectHandler() {
 		public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
@@ -89,16 +103,27 @@ public class MoodleController extends PluginController implements IMoodleControl
 	
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
-		if("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE".equals(aIntent.getAction())) {
-			Uri intentUri = aIntent.getData();
-			if(intentUri != null && "pocketcampus-authenticated".equals(intentUri.getScheme())) {
-				Bundle extras = aIntent.getExtras();
-				if(extras != null && extras.getString("tequilatoken") != null) {
-					mModel.getListenersToNotify().tokenAuthenticationFinished();
-				} else {
-					// TODO figure out what to do
-				}
+		if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
+			Bundle extras = aIntent.getExtras();
+			if(extras != null && extras.getInt("usercancelled") != 0) {
+				Log.v("DEBUG", "MoodleController::onStartCommand user cancelled");
+				mModel.getListenersToNotify().userCancelledAuthentication();
+			} else if(extras != null && extras.getString("tequilatoken") != null) {
+				Log.v("DEBUG", "MoodleController::onStartCommand auth succ");
+				if(extras.getInt("forcereauth") != 0)
+					mModel.setForceReauth(true);
+				mModel.getListenersToNotify().tokenAuthenticationFinished();
+			} else {
+				Log.v("DEBUG", "MoodleController::onStartCommand auth failed");
+				mModel.getListenersToNotify().authenticationFailed();
 			}
+		}
+		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
+			Log.v("DEBUG", "MoodleController::onStartCommand logout");
+			mModel.setMoodleCookie(null);
+			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
+			RequestCache.invalidateCache(this, EventsListRequest.class.getCanonicalName());
+			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
 		}
 		stopSelf();
 		return START_NOT_STICKY;

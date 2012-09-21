@@ -26,9 +26,12 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	 * Some constants.
 	 */
 	private static final String AUTH_STORAGE_NAME = "AUTH_STORAGE_NAME";
-	private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
+	//private static final String TEQUILA_COOKIE_KEY = "TEQUILA_COOKIE_KEY";
 	private static final String TEQUILA_SERVICE_PREFIX = "TEQUILA_SERVICE_";
 	//private static final String STAYSIGNEDIN_KEY = "STAYSIGNEDIN_KEY";
+	private static final String GASPAR_USERNAME_KEY = "GASPAR_USERNAME_KEY";
+	private static final String GASPAR_PASSWORD_KEY = "GASPAR_PASSWORD_KEY";
+	private static final String AUTH_STORE_PASSWORD_KEY = "AUTH_STORE_PASSWORD_KEY";
 	
 	/**
 	 * Some utility classes.
@@ -65,13 +68,18 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	private String callbackUrl;
 	private String shortName;
 	private String longName;
-	private LocalCredentials iLocalCredentials = new LocalCredentials();
-	private boolean staySignedIn;
+	
+	private String tequilaCookie;
+	private String tempPassword;
+	//private LocalCredentials iLocalCredentials = new LocalCredentials();
+	//private boolean staySignedIn;
 	
 	/**
 	 * Data that need to be persistent.
 	 */
-	private String tequilaCookie;
+	private String gasparUsername;
+	private String gasparPassword;
+	private boolean storePassword;
 	//private boolean staySignedIn;
 
 	/**
@@ -85,8 +93,17 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 	 */
 	public AuthenticationModel(Context context) {
 		iStorage = context.getSharedPreferences(AUTH_STORAGE_NAME, 0);
-		tequilaCookie = iStorage.getString(TEQUILA_COOKIE_KEY, null);
+		//tequilaCookie = iStorage.getString(TEQUILA_COOKIE_KEY, null);
+		gasparUsername = iStorage.getString(GASPAR_USERNAME_KEY, null);
+		gasparPassword = iStorage.getString(GASPAR_PASSWORD_KEY, null);
+		storePassword = iStorage.getBoolean(AUTH_STORE_PASSWORD_KEY, true);
 		//staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
+		
+		// WHITELIST
+		setServiceAllowedLevel("moodle", 1);
+		setServiceAllowedLevel("camipro", 1);
+		// BLACKLIST
+		setServiceAllowedLevel("attacker", -1);
 	}
 
 	/**
@@ -120,24 +137,64 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		longName = value;
 	}
 	
-	public LocalCredentials getLocalCredentials() {
-		return iLocalCredentials;
+	public String getTequilaCookie() {
+		return tequilaCookie;
 	}
-	public void setLocalCredentials(LocalCredentials val) {
-		iLocalCredentials = val;
+	public void setTequilaCookie(String value) {
+		tequilaCookie = value;
+	}
+
+	public String getTempGasparPassword() {
+		return tempPassword;
+	}
+	public void setTempGasparPassword(String val) {
+		tempPassword = val;
 	}
 	
-	public boolean getStaySignedIn() {
+	/**
+	 * Persistent stuff
+	 */
+	public String getSavedGasparPassword() {
+		return gasparPassword;
+	}
+	public void setSavedGasparPassword(String val) {
+		gasparPassword = val;
+		Editor editor = iStorage.edit();
+		editor.putString(GASPAR_PASSWORD_KEY, gasparPassword);
+		editor.commit();
+	}
+	
+	public String getGasparUsername() {
+		return gasparUsername;
+	}
+	public void setGasparUsername(String val) {
+		gasparUsername = val;
+		Editor editor = iStorage.edit();
+		editor.putString(GASPAR_USERNAME_KEY, gasparUsername);
+		editor.commit();
+	}
+	
+	public boolean getStorePassword() {
+		return storePassword;
+	}
+	public void setStorePassword(boolean val) {
+		storePassword = val;
+		Editor editor = iStorage.edit();
+		editor.putBoolean(AUTH_STORE_PASSWORD_KEY, storePassword);
+		editor.commit();
+	}
+	
+	/*public boolean getStaySignedIn() {
 		return staySignedIn;
 	}
 	public void setStaySignedIn(boolean val) {
 		staySignedIn = val;
-	}
+	}*/
 
 	/**
 	 * Setter and getter for tequilaCookie.
 	 */
-	public String getTequilaCookie() {
+	/*public String getTequilaCookie() {
 		return tequilaCookie;
 	}
 	public void setTequilaCookie(String value, boolean save) {
@@ -149,7 +206,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		}
 		//savePersistentStuff();
 		//mListeners.gotTequilaCookie();
-	}
+	}*/
 	/*public void destroyTequilaCookie() {
 		// Should not call gotTequilaCookie here
 		tequilaCookie = null;

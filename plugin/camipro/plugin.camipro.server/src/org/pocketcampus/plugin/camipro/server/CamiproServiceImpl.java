@@ -221,6 +221,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 	}
 
 	public BalanceAndTransactions getBalanceAndTransactionsWAPI(CamiproRequest iRequest) throws TException {
+		System.out.println(iRequest.toString()); // TODO remove this
 		String balPage = null;
 		String trxPage = null;
 		BalanceJson tBalance = null;

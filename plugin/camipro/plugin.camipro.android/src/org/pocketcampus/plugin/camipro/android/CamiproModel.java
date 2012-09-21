@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 /**
  * CamiproModel - The Model that stores the data of this plugin.
@@ -52,6 +53,7 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
 	private String lastUpdate;
 	private TequilaToken tequilaToken;
+	private boolean forceReauth;
 	
 	/**
 	 * Data that need to be persistent.
@@ -71,6 +73,13 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 		iStorage = context.getSharedPreferences(CAMIPRO_STORAGE_NAME, 0);
 		camiproCookie = iStorage.getString(CAMIPRO_COOKIE_KEY, null);
 		
+	}
+	
+	public boolean getForceReauth() {
+		return forceReauth;
+	}
+	public void setForceReauth(boolean val) {
+		forceReauth = val;
 	}
 	
 	/**
@@ -136,9 +145,11 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	}
 	public void setCamiproCookie(String aCamiproCookie) {
 		camiproCookie = aCamiproCookie;
-		//Editor editor = iStorage.edit();
-		//editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
-		//editor.commit();
+		if(!forceReauth) {
+			Editor editor = iStorage.edit();
+			editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
+			editor.commit();
+		}
 		mListeners.camiproCookieUpdated();
 	}
 	

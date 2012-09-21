@@ -118,16 +118,14 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		} else {
 			finish();
 		}*/
-		mController.getTequilaToken();
 		
 		// Normal start-up
-		/*if(mModel.getCamiproCookie() == null) { // if we don't have cookie
-			// get cookie (ping auth plugin)
-			pingAuthPlugin(this);
-		}*/
+		if(mModel.getCamiproCookie() == null) {
+			mController.getTequilaToken();
+		} else {
+			mController.refreshBalanceAndTransactions();
+		}
 		
-		/*mController.refreshBalanceAndTransactions();
-		updateDisplay();*/
 	}
 
 	/**
@@ -230,9 +228,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
 		context.startActivity(authIntent);*/
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/authenticatetoken"));
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
 		authIntent.putExtra("tequilatoken", tequilaToken);
-		authIntent.putExtra("callbackurl", "pocketcampus-authenticated://camipro.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("callbackurl", "pocketcampus://camipro.plugin.pocketcampus.org/tokenauthenticated");
 		authIntent.putExtra("shortname", "camipro");
 		authIntent.putExtra("longname", "Camipro");
 		context.startService(authIntent);
@@ -276,6 +274,17 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	}
 	
 	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
+	}
+	
+	@Override
 	public void camiproServersDown() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
@@ -283,10 +292,9 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public void notLoggedIn() {
-		/*mModel.setCamiproCookie(null);
-		pingAuthPlugin(this);*/
+		mModel.setCamiproCookie(null);
+		//pingAuthPlugin(this);
 		mController.getTequilaToken();
-		// TODO fix me, should destroy cookie
 	}
 	
 

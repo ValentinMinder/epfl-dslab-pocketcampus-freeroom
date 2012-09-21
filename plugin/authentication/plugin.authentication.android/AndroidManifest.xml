@@ -63,9 +63,9 @@
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
+				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
 				<category android:name="org.pocketcampus.plugin.authentication" />
-				<data android:scheme="pocketcampus-logout" android:host="authentication.plugin.pocketcampus.org" />
-				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" />
+				<data android:scheme="pocketcampus" android:host="authentication.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
 		</service>
@@ -77,11 +77,20 @@
 <!-- 				<data android:scheme="pocketcampus-authenticate" android:host="authentication.plugin.pocketcampus.org" /> -->
 <!-- 			</intent-filter> -->
 		</service>
-            
+		
+		    
+		<receiver android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController$Logouter" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+            </intent-filter>
+        </receiver>		    
+		    
+		    
     </application>
     
         
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	    	
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+		    	
 </manifest>

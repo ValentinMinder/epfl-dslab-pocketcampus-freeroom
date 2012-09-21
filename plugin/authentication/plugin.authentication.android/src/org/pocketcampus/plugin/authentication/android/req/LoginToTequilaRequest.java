@@ -38,7 +38,7 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 		client.execute(post);
 		List<Cookie> lc = client.getCookieStore().getCookies();
 		for(Cookie c : lc) {
-			System.out.println("cookie=" + c.getName() + ": " + c.getValue());
+			//System.out.println("cookie=" + c.getName() + ": " + c.getValue());
 			if(AuthenticationController.tequilaCookieName.equals(c.getName())) {
 				return AuthenticationController.tequilaCookieName + "=" + c.getValue();
 			}
@@ -49,8 +49,7 @@ public class LoginToTequilaRequest extends Request<AuthenticationController, Def
 	@Override
 	protected void onResult(AuthenticationController controller, String result) {
 		if(result != null) {
-			((AuthenticationModel) controller.getModel()).setTequilaCookie(result, false);
-			controller.tequilaLoginFinished();
+			controller.tequilaLoginFinished(result);
 		} else {
 			controller.notifyBadCredentials();
 		}

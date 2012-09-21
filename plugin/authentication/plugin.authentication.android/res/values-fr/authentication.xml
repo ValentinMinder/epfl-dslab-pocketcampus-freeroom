@@ -6,7 +6,7 @@
     
     <string name="authentication_string_username_hint">Nom d\'utilisateur</string>
     <string name="authentication_string_password_hint">Mot de passe</string>
-    <string name="authentication_string_staysignedin">Rester connecté</string>
+    <string name="authentication_string_staysignedin">Enregistrer mot de passe</string>
     <string name="authentication_string_login">Connexion</string>
         
     <string name="authentication_invalid_credentials">Nom d\'utilisateur ou mot de passe invalides, essayer de nouveau</string>

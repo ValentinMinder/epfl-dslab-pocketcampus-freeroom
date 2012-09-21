@@ -178,8 +178,8 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	@Override
 	public void notLoggedIn() {
-		/*mModel.setCamiproCookie(null);
-		CamiproMainView.pingAuthPlugin(this);*/
+		mModel.setCamiproCookie(null);
+		//CamiproMainView.pingAuthPlugin(this);
 		mController.getTequilaToken();
 	}
 	@Override
@@ -189,6 +189,17 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_connection_error_happened), Toast.LENGTH_SHORT).show();
 	}
 
+	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
+	}
+	
 	
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

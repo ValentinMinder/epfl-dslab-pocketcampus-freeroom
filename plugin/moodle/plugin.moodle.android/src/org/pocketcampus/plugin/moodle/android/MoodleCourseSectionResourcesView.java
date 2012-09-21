@@ -174,6 +174,17 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 	}
 	
 	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
+	}
+	
+	@Override
 	public void moodleServersDown() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_error_moodle_down), Toast.LENGTH_SHORT).show();
@@ -189,6 +200,7 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 	@Override
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
+		mController.getTequilaToken();
 		//MoodleMainView.pingAuthPlugin(this);
 	}
 	

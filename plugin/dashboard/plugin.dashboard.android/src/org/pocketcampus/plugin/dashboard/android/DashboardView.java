@@ -62,6 +62,11 @@ public class DashboardView extends PluginView {
 			startActivity(new Intent(this, AboutView.class));
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		}
+		if (item.getItemId() == R.id.dashboard_logout) {
+			Intent intent = new Intent();
+			intent.setAction("org.pocketcampus.plugin.authentication.LOGOUT");
+			sendBroadcast(intent); 
+		}
 
 		return true;
 	}

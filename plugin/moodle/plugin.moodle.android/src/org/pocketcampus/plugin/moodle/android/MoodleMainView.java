@@ -192,9 +192,9 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	
 	public static void pingAuthPlugin(Context context, String tequilaToken) {
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/authenticatetoken"));
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
 		authIntent.putExtra("tequilatoken", tequilaToken);
-		authIntent.putExtra("callbackurl", "pocketcampus-authenticated://moodle.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("callbackurl", "pocketcampus://moodle.plugin.pocketcampus.org/tokenauthenticated");
 		authIntent.putExtra("shortname", "moodle");
 		authIntent.putExtra("longname", "Moodle");
 		context.startService(authIntent);
@@ -214,11 +214,11 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 			startActivity(i);
 		} else if(item.getItemId() == R.id.moodle_logout) {			
 			//Tracker
-			Tracker.getInstance().trackPageView("moodle/menu/logout");
-			/*mModel.setMoodleCookie(null);
+			/*Tracker.getInstance().trackPageView("moodle/menu/logout");
 			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, EventsListRequest.class.getCanonicalName());
-			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
+			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());*/
+			/*mModel.setMoodleCookie(null);
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
 			startService(authIntent);
@@ -231,6 +231,17 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.moodle_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
 	}
 	
 	@Override
@@ -248,6 +259,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
+		mController.getTequilaToken();
 	}
 	
 

@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
@@ -13,16 +14,17 @@ import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenC
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationController;
 import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithTequilaRequest;
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
-import org.pocketcampus.plugin.authentication.android.req.StartRefreshRequest;
-import org.pocketcampus.plugin.authentication.android.req.StopRefreshRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
 import org.pocketcampus.plugin.authentication.shared.TequilaSession;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * <b>AuthenticationController - Main logic for the Authentication Plugin.</b>
@@ -77,6 +79,16 @@ import android.util.Log;
  */
 public class AuthenticationController extends PluginController implements IAuthenticationController {
 	
+	public static class Logouter extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.v("DEBUG", "AuthenticationController$Logouter logging out");
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
+					Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/logout"));
+			context.startService(authIntent);
+		}
+	};
+
 	/**
 	 * Some constants.
 	 */
@@ -154,11 +166,20 @@ public class AuthenticationController extends PluginController implements IAuthe
 	 */
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
+		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
+			Log.v("DEBUG", "AuthenticationController::onStartCommand logout");
+			mModel.setSavedGasparPassword(null);
+			mModel.setGasparUsername(null);
+			mModel.setStorePassword(true);
+			stopSelf();
+			return START_NOT_STICKY;
+		}
+		
 		boolean argsOk = false;
 		// parse args
 		if("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE".equals(aIntent.getAction())) {
 			Uri intentUri = aIntent.getData();
-			if(intentUri != null && "pocketcampus-authenticate".equals(intentUri.getScheme())) {
+			if(intentUri != null && "pocketcampus".equals(intentUri.getScheme())) {
 				Bundle extras = aIntent.getExtras();
 				if(extras != null &&
 						extras.getString("tequilatoken") != null &&
@@ -179,16 +200,18 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 		if(mModel.getServiceAllowedLevel(mModel.getShortName()) < 0) {
 			// refuse silently
-			pingBack(null);
+			pingBack(null, "userdenied");
 			stopSelf();
 			return START_NOT_STICKY;
 		}
-		if(mModel.getTequilaCookie() == null) {
-			// open dialog to login
-			openDialog(null);
+		if(mModel.getSavedGasparPassword() != null) {
+			// use saved password
+			mModel.setTempGasparPassword(mModel.getSavedGasparPassword());
+			startLogin();
 			return START_NOT_STICKY;
 		}
-		askUserPermission();
+		// ELSE open dialog to login
+		openDialog(null);
 		return START_NOT_STICKY;
 	}
 	
@@ -208,10 +231,12 @@ public class AuthenticationController extends PluginController implements IAuthe
 		startActivity(intenteye);
 	}
 	
-	private void pingBack(String tequilaToken) {
-		Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE", Uri.parse(mModel.getCallbackUrl()));
+	private void pingBack(String tequilaToken, String extra) {
+		Intent intenteye = new Intent("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED", Uri.parse(mModel.getCallbackUrl()));
 		if(tequilaToken != null)
-			intenteye.putExtra("tequilatoken", tequilaToken);
+			intenteye.putExtra("tequilatoken", tequilaToken); // success
+		if(extra != null)
+			intenteye.putExtra(extra, 1); // user cancelled, user denied, or invalid token (in case of success this could indicate if plugin should not store session)
 		startService(intenteye);
 		/*Intent intenteye = new Intent(Intent.ACTION_VIEW, Uri.parse(mModel.getCallbackUrl()));
 		if(tequilaToken != null)
@@ -327,34 +352,10 @@ public class AuthenticationController extends PluginController implements IAuthe
 	/**
 	 * Initiates a LoginToTequilaRequest.
 	 */
-	public void nGetTequilaCookie() {
-		new LoginToTequilaRequest().start(this, threadSafeClient, mModel.getLocalCredentials());
-	}
 	
 	/**
 	 * Initiates a AuthenticateTokenWithTequilaRequest.
 	 */
-	public void nAuthenticateToken() {
-		
-		TokenCookieComplex tc = new TokenCookieComplex();
-		tc.cookie = mModel.getTequilaCookie();
-		tc.token = mModel.getTequilaToken();
-		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
-	}
-	
-	/**
-	 * Initiates a StartRefreshRequest.
-	 */
-	public void nStartRefresh() {
-		new StartRefreshRequest().start(this, mClient, new TequilaSession(mModel.getTequilaCookie()));
-	}
-	
-	/**
-	 * Initiates a StopRefreshRequest.
-	 */
-	public void nStopRefresh() {
-		new StopRefreshRequest().start(this, mClient, new TequilaSession(mModel.getTequilaCookie()));
-	}
 	
 	/**
 	 * Initiates a GetSessionIdForServiceRequest.
@@ -378,8 +379,8 @@ public class AuthenticationController extends PluginController implements IAuthe
 		stopSelf();
 	}*/
 	
-	private void askUserPermission() {
-		Log.v("DEBUG", "askUserPermission");
+	private void checkServiceAuthorized() {
+		Log.v("DEBUG", "checkServiceAuthorized");
 		if(mModel.getTequilaToken() == null) {
 			Log.v("DEBUG", "[fatal] no tequila token {shutting down}");
 			stopSelf();
@@ -400,84 +401,82 @@ public class AuthenticationController extends PluginController implements IAuthe
 		if(mModel.getServiceAllowedLevel(mModel.getShortName()) > 0) {
 			// allow silently
 			Log.v("DEBUG", "authenticating tequila token");
-			nAuthenticateToken();
+			authenticateToken();
 		} else {
 			// refuse silently
 			Log.v("DEBUG", "token authentication refused");
-			pingBack(null);
+			pingBack(null, "userdenied");
 			stopSelf();
 		}
 	}
 	
-	//////////////
+	public void authenticateToken() {
+		TokenCookieComplex tc = new TokenCookieComplex();
+		tc.cookie = mModel.getTequilaCookie();
+		tc.token = mModel.getTequilaToken();
+		new AuthenticateTokenWithTequilaRequest().start(this, threadSafeClient, tc);
+	}
 	
-	public void startLogin(String user, String pass, boolean stay) {
+	public void cancelAuth() {
+		pingBack(null, "usercancelled");
+	}
+	
+	////////////// BUTTON HANDLERS
+	
+	public void startLogin() {
 		LocalCredentials lc = new LocalCredentials();
-		lc.username = user;
-		lc.password = pass;
-		mModel.setLocalCredentials(lc);
-		mModel.setStaySignedIn(stay);
-		nGetTequilaCookie();
+		lc.username = mModel.getGasparUsername();
+		lc.password = mModel.getTempGasparPassword();
+		new LoginToTequilaRequest().start(this, threadSafeClient, lc);
 	}
 
 	public void allowService(boolean always) {
 		if(always)
 			mModel.setServiceAllowedLevel(mModel.getShortName(), 1);
-		nAuthenticateToken();
+		authenticateToken();
 	}
 	
 	public void denyService(boolean always) {
 		if(always)
 			mModel.setServiceAllowedLevel(mModel.getShortName(), -1);
-		pingBack(null);
+		pingBack(null, "userdenied");
 		stopSelf();
 	}
 	
-	/////////////
+	///////////// CALLBACKS
 	
-	public void startRefreshFinished(boolean succ) {
-		Log.v("DEBUG", "startRefreshFinished");
-		if(succ) {
-			Log.v("DEBUG", "saving tequila cookie");
-			mModel.setTequilaCookie(mModel.getTequilaCookie(), true);
-		}
-		askUserPermission();
-	}
-
-	public void stopRefreshFinished() {
-		Log.v("DEBUG", "AuthenticationController::stopRefreshFinished {Shutting down}");
-		stopSelf();
-	}
-	
-	public void tequilaLoginFinished() {
+	public void tequilaLoginFinished(String tequilaCookie) {
 		Log.v("DEBUG", "tequilaLoginFinished");
-		if(mModel.getStaySignedIn()) {
-			Log.v("DEBUG", "requesting to refresh cookie");
-			nStartRefresh();
-		} else {
-			askUserPermission();
+		mModel.setTequilaCookie(tequilaCookie);
+		if(mModel.getStorePassword()) {
+			mModel.setSavedGasparPassword(mModel.getTempGasparPassword());
 		}
+		checkServiceAuthorized();
 	}
 	
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "tokenAuthenticationFinished");
-		pingBack(mModel.getTequilaToken());
+		pingBack(mModel.getTequilaToken(), ( mModel.getStorePassword() ? null : "forcereauth" ));
 		stopSelf();
 	}
 	
-	public void notifyCookieTimedOut() {
-		Log.v("DEBUG", "notifyCookieTimedOut");
-		mModel.setTequilaCookie(null, true);
-		openDialog(null);
+	//// NACKS
+	
+	public void notifyInvalidToken() {
+		Log.v("DEBUG", "notifyInvalidToken");
+		pingBack(null, "invalidtoken");
+		stopSelf();
 	}
 	
 	public void notifyNetworkError() {
 		Log.v("DEBUG", "notifyNetworkError");
-		// TODO
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT).show();
+		stopSelf();
 	}
 	
 	public void notifyBadCredentials() {
 		Log.v("DEBUG", "notifyBadCredentials");
+		Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_invalid_credentials), Toast.LENGTH_SHORT).show();
 		openDialog(null);
 	}
 

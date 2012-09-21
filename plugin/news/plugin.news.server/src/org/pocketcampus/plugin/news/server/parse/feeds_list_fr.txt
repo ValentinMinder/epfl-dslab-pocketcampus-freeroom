@@ -1,9 +1,5 @@
 <Language>fr</Language>
 <Feed>
-	<name>PocketCampus</name>
-	<rssfeed>http://www.pocketcampus.org/feed/</rssfeed>
-</Feed>
-<Feed>
 	<name>EPFL Toutes les Nouvelles</name>
 	<rssfeed>http://actu.epfl.ch/feeds/rss/mediacom/fr/</rssfeed>
 </Feed>

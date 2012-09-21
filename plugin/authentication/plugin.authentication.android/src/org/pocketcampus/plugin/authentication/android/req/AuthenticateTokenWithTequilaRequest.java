@@ -32,7 +32,7 @@ public class AuthenticateTokenWithTequilaRequest extends Request<AuthenticationC
 		if(result) {
 			controller.tokenAuthenticationFinished();
 		} else {
-			controller.notifyCookieTimedOut();
+			controller.notifyInvalidToken();
 		}
 	}
 	

@@ -8,6 +8,7 @@ import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -205,22 +206,33 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 */
 	private void displayForm() {
 		setContentView(R.layout.authentication_customloginpage);
-		String user = mModel.getLocalCredentials().username;
+		/*String user = mModel.getLocalCredentials().username;
 		if(user != null) {
 			TextView usernameField = (TextView) findViewById(R.id.authentication_username);
 			usernameField.setText(user);
-		}
+		}*/
+		
+		TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+		usernameField.setText(mModel.getGasparUsername());
+		TextView passwordField = (TextView) findViewById(R.id.authentication_password);
+		passwordField.setText("");
+		CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
+		storePasswordField.setChecked(mModel.getStorePassword());
+		
 		Button loginButton = (Button) findViewById(R.id.authentication_loginbutton);
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				CheckBox staySignedIn = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
 				TextView usernameField = (TextView) findViewById(R.id.authentication_username);
+				mModel.setGasparUsername(usernameField.getText().toString());
 				TextView passwordField = (TextView) findViewById(R.id.authentication_password);
-				mController.startLogin(usernameField.getText().toString(), passwordField.getText().toString(), staySignedIn.isChecked());
+				mModel.setTempGasparPassword(passwordField.getText().toString());
+				CheckBox storePasswordField = (CheckBox) findViewById(R.id.authentication_staylogged_cb);
+				mModel.setStorePassword(storePasswordField.isChecked());
+				mController.startLogin();
 				finish();
 			}
 		});
-		loginButton.setEnabled(true);
+		//loginButton.setEnabled(true);
 	}
 
 	private void askPermission() {
@@ -364,6 +376,12 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 		/*Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_connection_error_happened), Toast.LENGTH_SHORT);
 		toast.show();
 		displayForm();*/
+	}
+	
+	@Override
+	public void onBackPressed() {
+		mController.cancelAuth();
+		finish();
 	}
 
 }

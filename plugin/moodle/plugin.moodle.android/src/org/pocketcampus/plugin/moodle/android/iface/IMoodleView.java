@@ -29,6 +29,8 @@ public interface IMoodleView extends IView {
 	void tequilaTokenUpdated();
 	
 	void tokenAuthenticationFinished();
+	void authenticationFailed();
+	void userCancelledAuthentication();
 	
 	/**
 	 * Methods called by the "Request" classes.

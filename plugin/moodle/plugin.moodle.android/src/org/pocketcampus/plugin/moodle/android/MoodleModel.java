@@ -59,6 +59,7 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	private List<MoodleEvent> iEvents;
 	private List<MoodleSection> iSections;
 	private TequilaToken tequilaToken;
+	private boolean forceReauth;
 	
 	/**
 	 * Data that need to be persistent.
@@ -78,6 +79,13 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 		iStorage = context.getSharedPreferences(MOODLE_STORAGE_NAME, 0);
 		moodleCookie = iStorage.getString(MOODLE_COOKIE_KEY, null);
 		
+	}
+	
+	public boolean getForceReauth() {
+		return forceReauth;
+	}
+	public void setForceReauth(boolean val) {
+		forceReauth = val;
 	}
 	
 	/**
@@ -132,9 +140,11 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	}
 	public void setMoodleCookie(String aMoodleCookie) {
 		moodleCookie = aMoodleCookie;
-		Editor editor = iStorage.edit();
-		editor.putString(MOODLE_COOKIE_KEY, moodleCookie);
-		editor.commit();
+		if(!forceReauth) {
+			Editor editor = iStorage.edit();
+			editor.putString(MOODLE_COOKIE_KEY, moodleCookie);
+			editor.commit();
+		}
 		mListeners.moodleCookieUpdated();
 	}
 	

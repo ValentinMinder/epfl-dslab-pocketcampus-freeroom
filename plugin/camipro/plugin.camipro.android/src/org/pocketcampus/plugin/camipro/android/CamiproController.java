@@ -17,9 +17,12 @@ import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * CamiproController - Main logic for the Camipro Plugin.
@@ -33,6 +36,16 @@ import android.os.Bundle;
  * 
  */
 public class CamiproController extends PluginController implements ICamiproController{
+	
+	public static class Logouter extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.v("DEBUG", "CamiproController$Logouter logging out");
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
+					Uri.parse("pocketcampus://camipro.plugin.pocketcampus.org/logout"));
+			context.startService(authIntent);
+		}
+	};
 
 	private String mPluginName = "camipro";
 	
@@ -53,16 +66,24 @@ public class CamiproController extends PluginController implements ICamiproContr
 	
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
-		if("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE".equals(aIntent.getAction())) {
-			Uri intentUri = aIntent.getData();
-			if(intentUri != null && "pocketcampus-authenticated".equals(intentUri.getScheme())) {
-				Bundle extras = aIntent.getExtras();
-				if(extras != null && extras.getString("tequilatoken") != null) {
-					mModel.getListenersToNotify().tokenAuthenticationFinished();
-				} else {
-					// TODO figure out what to do
-				}
+		if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
+			Bundle extras = aIntent.getExtras();
+			if(extras != null && extras.getInt("usercancelled") != 0) {
+				Log.v("DEBUG", "CamiproController::onStartCommand user cancelled");
+				mModel.getListenersToNotify().userCancelledAuthentication();
+			} else if(extras != null && extras.getString("tequilatoken") != null) {
+				Log.v("DEBUG", "CamiproController::onStartCommand auth succ");
+				if(extras.getInt("forcereauth") != 0)
+					mModel.setForceReauth(true);
+				mModel.getListenersToNotify().tokenAuthenticationFinished();
+			} else {
+				Log.v("DEBUG", "CamiproController::onStartCommand auth failed");
+				mModel.getListenersToNotify().authenticationFailed();
 			}
+		}
+		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
+			Log.v("DEBUG", "CamiproController::onStartCommand logout");
+			mModel.setCamiproCookie(null);
 		}
 		stopSelf();
 		return START_NOT_STICKY;

@@ -29,6 +29,8 @@ public interface ICamiproView extends IView {
 	void camiproCookieUpdated();
 	
 	void tokenAuthenticationFinished();
+	void authenticationFailed();
+	void userCancelledAuthentication();
 	
 	/**
 	 * Methods called by the "Request" classes.
