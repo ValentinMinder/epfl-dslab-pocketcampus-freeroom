@@ -81,7 +81,12 @@ function generate_android_manifest($output_dir, $is_lib){
 }
 
 function generate_ant_properties($output_dir){
-	file_put_contents("$output_dir/ant.properties", "");
+	$content = "";
+	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
+	$content .= "key.alias=mykey\n";
+	$content .= "key.store.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
+	//$content .= "key.alias.password=xxxx\n";
+	file_put_contents("$output_dir/ant.properties", $content);
 }
 
 function generate_build_xml($output_dir, $project_name){
