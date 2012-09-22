@@ -1,5 +1,7 @@
 <?php
 
+chdir(dirname(__FILE__));
+
 $plugins_to_merge = array("camipro", "moodle", "authentication", "dashboard", "food", "transport", "news", "satellite", "map", "bikes", "directory");
 
 $libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0-multiplex.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
@@ -7,9 +9,6 @@ $libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libth
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
-
-$output_dir = "../../android/PocketCampus";
-$project_name = "PocketCampus";
 
 
 function get_nodes($file, $tag) {
@@ -400,6 +399,10 @@ function collect_src_platform($output_dir) {
 */
 
 
+// LOGIC
+
+$output_dir = "../../android/PocketCampus";
+$project_name = "PocketCampus";
 
 generate_android_manifest($output_dir, false);
 generate_ant_properties($output_dir);
