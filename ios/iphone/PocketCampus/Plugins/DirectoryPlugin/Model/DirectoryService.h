@@ -12,6 +12,8 @@
 
 #import "ASIHTTPRequest.h"
 
+#import "ASIDownloadCache.h"
+
 @interface DirectoryService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate;
@@ -34,6 +36,9 @@
 
 
 /* Internal class with modified main to generate NSData from image's URL returned by server */
+
+static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
+
 @interface ProfilePictureRequest : NSOperationWithDelegate<ASIHTTPRequestDelegate> {
     NSString* sciper;
 }

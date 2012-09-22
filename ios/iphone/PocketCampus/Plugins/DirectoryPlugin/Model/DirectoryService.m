@@ -70,7 +70,6 @@ static DirectoryService* instance = nil;
     [operation release];
 }
 
-
 - (void)dealloc
 {
     instance = nil;
@@ -172,8 +171,6 @@ static DirectoryService* instance = nil;
 
 @implementation ProfilePictureRequest
 
-static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
-
 @synthesize sciper;
 
 - (id)initWithSciper:(NSString*)sciper_ delegate:(id)delegate_ {
@@ -194,7 +191,10 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
     pictureRequest.delegate = self;
-    pictureRequest.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
+    pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
+    pictureRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+    pictureRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+    pictureRequest.secondsToCache = 86400; //seconds == 1 day. Should not cache an profile picture too long if it was changed
     pictureRequest.timeOutSeconds = [Service requestTimeoutInterval];
     [pictureRequest startAsynchronous];
 }

@@ -386,6 +386,7 @@
             [loginCell.contentView addSubview:loadingIndicator];
             loadingIndicator.center = CGPointMake(275.0, 22.0);
             [loadingIndicator release];
+            [self inputFieldsDidChange];
             return cell;
             break;
         }
@@ -463,7 +464,7 @@
 
 - (void)authenticateSilentlyToken:(NSString*)token_ delegate:(id<AuthenticationCallbackDelegate>)delegate_ {
     self.token = token_;
-    if (delegate_ == nil) {
+    if (!delegate_) {
         @throw [NSException exceptionWithName:@"askCredientialsForTypeOfService:delegate: bad delegate" reason:@"delegate cannot be nil" userInfo:nil];
     }
     self.delegate = delegate_;
@@ -485,7 +486,7 @@
             tequilaCookie = [cookie.value retain];
         }
     }
-    if (tequilaCookie == nil) { //means bad credentials
+    if (!tequilaCookie) { //means bad credentials
         [AuthenticationService deleteSavedPasswordForUsername:username];
         [errorMessage release];
         errorMessage = [NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil) retain];
@@ -496,9 +497,13 @@
             presentationMode = PresentationModeModal;
             usernameTextField.enabled = YES;
             passwordTextField.enabled = YES;
-            [viewControllerForPresentation presentViewController:self animated:YES completion:^{
+            
+            UINavigationController* tmpNavController = [[UINavigationController alloc] initWithRootViewController:self]; //so that nav bar is shown
+            tmpNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+            [viewControllerForPresentation presentViewController:tmpNavController animated:YES completion:^{
                 [self focusOnInput];
             }];
+            [tmpNavController release];
         } else {
             [usernameCell release];
             usernameCell = nil;
@@ -568,6 +573,10 @@
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView show];
     [alertView release];
+    
+    if (presentationMode == PresentationModeTryHidden && [(NSObject*)self.delegate respondsToSelector:@selector(serviceConnectionToServerTimedOut)]) {
+        [(NSObject*)self.delegate performSelectorOnMainThread:@selector(serviceConnectionToServerTimedOut) withObject:nil waitUntilDone:YES];
+    }
 }
 
 - (void)serviceConnectionToServerTimedOut {

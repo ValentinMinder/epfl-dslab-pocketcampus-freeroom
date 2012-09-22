@@ -20,7 +20,7 @@
 
 #import "CustomOverlayView.h"
 
-#import "DirectoryUtils.h"
+#import "PCUnkownPersonViewController.h"
 
 static int MAX_DISPLAYED_ANNOTATIONS = 70;
 static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
@@ -210,6 +210,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             [searchBar resignFirstResponder];
             animBlock = ^{
                 searchBar.frame = searchBarHiddenFrame;
+                //mapView.frame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y-searchBar.frame.size.height, mapView.frame.size.width, mapView.frame.size.height+searchBar.frame.size.height);
             };
         }
             break;
@@ -223,6 +224,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
             [searchBar becomeFirstResponder];
             animBlock = ^{
                 searchBar.frame = searchBarVisibleFrame;
+                //mapView.frame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y+searchBar.frame.size.height, mapView.frame.size.width, mapView.frame.size.height-searchBar.frame.size.height);
             };
         }
             break;
@@ -332,6 +334,11 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     [self startSearchForQuery:searchBar.text];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [MapUtils removeMapItemAnnotationsOnMapView:mapView];
+}
+
+
 /* MKMapViewDelegate delegation */
 
 - (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
@@ -387,10 +394,10 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[MKAnnotationView class]]) {
-        MKAnnotationView* annView = (MKAnnotationView*)view;
-        NSString* roomName = annView.annotation.subtitle;
+        view.rightCalloutAccessoryView = nil;
+        NSString* roomName = view.annotation.subtitle;
         if (roomName == nil || roomName.length == 0) {
-            roomName = annView.annotation.title;
+            roomName = view.annotation.title;
         }
         if (directoryService) {
             [directoryService cancelOperationsForDelegate:self];
@@ -401,7 +408,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
                 if (!directoryService) {
                     directoryService = [[DirectoryService sharedInstanceToRetain] retain];
                 }
-                [directoryService searchPersons:annView.annotation.title delegate:self];
+                [directoryService searchPersons:view.annotation.title delegate:self];
             }
             int level = [MapUtils levelToSelectForRoomName:roomName];
             if (level != INT_MAX) {
@@ -537,7 +544,6 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
 /* DirectoryServiceDelegate delegation */
 
 - (void)searchDirectoryFor:(NSString *)searchPattern didReturn:(NSArray *)results {
-    NSLog(@"%@", results);
     if (mapView.selectedAnnotations.count == 0 || results.count == 0) {
         [self searchDirectoryFailedFor:searchPattern];
         return;
@@ -553,8 +559,9 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
     if (![firstAndLastName isEqualToString:selectedAnnotation.title]) {
         [self searchDirectoryFailedFor:searchPattern];
+        return;
     }
-
+    
     UIButton* disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     [disclosureButton addTarget:self action:@selector(annotationAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
     disclosureButton.titleLabel.text = firstAndLastName;
@@ -578,11 +585,27 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
     
 }
 
+- (void)profilePictureFor:(NSString *)sciper didReturn:(NSData *)data {
+    if (personToDisplay && [personToDisplay.sciper isEqualToString:sciper] && [self.navigationController.topViewController isKindOfClass:[PCUnkownPersonViewController class]]) {
+        [(PCUnkownPersonViewController*)self.navigationController.visibleViewController setProfilePictureData:data];
+    }
+}
+
+- (void)profilePictureFailedFor:(NSString *)sciper {
+    if (personToDisplay && [personToDisplay.sciper isEqualToString:sciper] && [self.navigationController.topViewController isKindOfClass:[PCUnkownPersonViewController class]]) {
+        [(PCUnkownPersonViewController*)self.navigationController.visibleViewController setProfilePictureData:NULL]; //no picture => will show default icon
+    }
+}
+
 - (void)annotationAccessoryTapped:(UIButton*)button {
     if (![button isKindOfClass:[UIButton class]] || !personToDisplay) {
         return;
     }
-    [self.navigationController pushViewController:[DirectoryUtils viewControllerForPerson:personToDisplay] animated:YES];
+    [directoryService getProfilePicture:personToDisplay.sciper delegate:self];
+    PCUnkownPersonViewController* personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:nil];
+    [personViewController setPerson:personToDisplay];
+    [self.navigationController pushViewController:personViewController animated:YES];
+    [personViewController release];
 }
 
 /* UIAlertViewDelegate */

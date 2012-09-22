@@ -6,8 +6,18 @@
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
+#import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 
-@interface PCUnkownPersonViewController : ABUnknownPersonViewController
+#import "directory.h"
+
+@interface PCUnkownPersonViewController : ABUnknownPersonViewController {
+    Person* person;
+}
+
+@property (nonatomic, retain) Person* person;
+
+- (id)initWithDelegate:(id<ABUnknownPersonViewControllerDelegate>)delegate;
+- (void)setProfilePictureData:(NSData*)data;
 
 @end
