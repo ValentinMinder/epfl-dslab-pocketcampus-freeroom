@@ -209,21 +209,10 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		if(item.getItemId() == R.id.moodle_menu_events) {
+		/*if(item.getItemId() == R.id.moodle_menu_events) {
 			Intent i = new Intent(this, MoodleEventsView.class);
 			startActivity(i);
-		} else if(item.getItemId() == R.id.moodle_logout) {			
-			//Tracker
-			/*Tracker.getInstance().trackPageView("moodle/menu/logout");
-			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
-			RequestCache.invalidateCache(this, EventsListRequest.class.getCanonicalName());
-			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());*/
-			/*mModel.setMoodleCookie(null);
-			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
-			startService(authIntent);
-			finish();*/
-		}
+		}*/
 		return true;
 	}
 	

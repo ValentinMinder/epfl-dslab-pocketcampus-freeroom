@@ -248,16 +248,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		if(item.getItemId() == R.id.camipro_recharge) {
 			Intent i = new Intent(this, CamiproCardRechargeView.class);
 			startActivity(i);
-		} else if(item.getItemId() == R.id.camipro_logout) {			
-			//Tracker
-			Tracker.getInstance().trackPageView("camipro/menu/logout");
-			/*Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-					Uri.parse("pocketcampus-logout://authentication.plugin.pocketcampus.org/tequila_logout"));
-			authIntent.putExtra("service", "camipro");
-			authIntent.putExtra("cookie", mModel.getCamiproCookie());
-			startService(authIntent);
-			mModel.setCamiproCookie(null);
-			finish();*/
 		}
 		return true;
 	}
