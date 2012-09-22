@@ -5,6 +5,8 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -29,6 +31,15 @@ public class AboutView extends PluginView {
 				+ getString(R.string.website_url) + "\">"
 				+ getString(R.string.website_url) + "</a>"));
 		link.setMovementMethod(LinkMovementMethod.getInstance());
+		
+		Context context = getApplicationContext();
+		try {
+			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0 ).versionName;
+			TextView version = (TextView) findViewById(R.id.version);
+			version.setText(versionName);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
