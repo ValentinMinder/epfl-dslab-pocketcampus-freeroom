@@ -11,7 +11,7 @@ ant -f server/PocketCampusServer/build.xml create_run_jar
 
 # INSTALL THE CLIENT
 adb uninstall org.pocketcampus
-adb install android/PocketCampus/bin/PocketCampus-release.apk 
+adb install android/PocketCampus/bin/PocketCampus-debug.apk 
 
 # RUN THE SERVER
 java -jar server/PocketCampusServer/PocketCampusServer.jar 
