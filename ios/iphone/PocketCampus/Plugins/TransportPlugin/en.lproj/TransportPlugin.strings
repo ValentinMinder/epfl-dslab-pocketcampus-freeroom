@@ -7,7 +7,7 @@
 */
 
 "PluginName" = "Transport";
-"FromLabel" = "From :";
+"FromLabel" = "From:";
 "NoStation" = "No station";
 "LocationNeedJustification" = "Your location will be used to find the nearest transport station (EPFL or Lausanne-Flon by default). PocketCampus does not track your location history.\n Give it a try before denying ;)";
 "ImpossibleLocateShort" = "Location error";
@@ -20,8 +20,8 @@
 "DepartureStation" = "Departure station";
 
 "NearestFavoriteStation" = "Automatic (nearest)";
-"FavoriteStationsExplanations_NearestSelected" = "Current choice : the station nearest to you in this list will be set as departure. Next departures schedules from this station to all other stations in the list will be displayed.";
-"FavoriteStationsExplanations_ManualWithFormat" = "Current choice : %@ is selected as departure. Next departures schedules from there to all other stations in the list will be displayed.";
+"FavoriteStationsExplanations_NearestSelected" = "Current choice: the station nearest to you in this list will be set as departure. Next departures schedules from this station to all other stations in the list will be displayed.";
+"FavoriteStationsExplanations_ManualWithFormat" = "Current choice: %@ is selected as departure. Next departures schedules from there to all other stations in the list will be displayed.";
 "FavoriteStationsManagementExplanations" = "☞  Tap the ✚ to add a station.\n☞  Tap \"Edit\" to remove or reorder\n      your stations.";
 
 "ClearAll" = "Clear all";

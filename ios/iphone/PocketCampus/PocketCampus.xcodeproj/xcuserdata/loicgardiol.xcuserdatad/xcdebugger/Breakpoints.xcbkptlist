@@ -1298,11 +1298,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370014218.64496"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "485"
-         endingLineNumber = "485"
+         startingLineNumber = "486"
+         endingLineNumber = "486"
          landmarkName = "-searchMapFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -1319,11 +1319,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370014218.64496"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "489"
-         endingLineNumber = "489"
+         startingLineNumber = "490"
+         endingLineNumber = "490"
          landmarkName = "-searchMapFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -1414,11 +1414,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370014218.64496"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "425"
-         endingLineNumber = "425"
+         startingLineNumber = "426"
+         endingLineNumber = "426"
          landmarkName = "-mapView:regionDidChangeAnimated:"
          landmarkType = "5">
          <Actions>
@@ -1436,11 +1436,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370014218.64496"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "518"
-         endingLineNumber = "518"
+         startingLineNumber = "519"
+         endingLineNumber = "519"
          landmarkName = "-searchMapFor:didReturn:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1471,11 +1471,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370014218.64496"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "601"
-         endingLineNumber = "601"
+         startingLineNumber = "602"
+         endingLineNumber = "602"
          landmarkName = "-annotationAccessoryTapped:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1519,11 +1519,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-         timestampString = "370019758.472608"
+         timestampString = "370025875.352531"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "547"
-         endingLineNumber = "547"
+         startingLineNumber = "548"
+         endingLineNumber = "548"
          landmarkName = "-searchDirectoryFor:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -1531,6 +1531,50 @@
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
                <ActionContent
                   consoleCommand = "po results">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "370025828.373196"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "376"
+         endingLineNumber = "376"
+         landmarkName = "-mapView:viewForAnnotation:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "new"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "370025837.194787"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "382"
+         endingLineNumber = "382"
+         landmarkName = "-mapView:viewForAnnotation:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "reuse"
+                  conveyanceType = "0">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>

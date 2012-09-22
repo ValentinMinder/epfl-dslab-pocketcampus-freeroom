@@ -377,6 +377,7 @@ static NSString* kMapItemAnnotationIdentifier = @"mapItemAnnotation";
         pin.animatesDrop = YES;
         pin.canShowCallout = YES;
         pin.enabled = YES;
+        pin.rightCalloutAccessoryView = nil;
     } else {
         pin.annotation = annotation;
         pin.rightCalloutAccessoryView = nil;
