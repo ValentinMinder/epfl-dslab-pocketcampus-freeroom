@@ -246,7 +246,6 @@ static int NEWS_FONT_SIZE = 14.0;
         [urlClickedByUser release];
         urlClickedByUser = [request.URL retain];
         NSString* title = urlClickedByUser.host;
-        NSLog(@"%@", urlClickedByUser.path);
         if (urlClickedByUser.path.length > 1) { //empty path is "/"
             title = [title stringByAppendingString:@"/..."];
         }

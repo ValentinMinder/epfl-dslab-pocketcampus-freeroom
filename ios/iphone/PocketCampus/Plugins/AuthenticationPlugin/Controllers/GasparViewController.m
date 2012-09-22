@@ -479,11 +479,10 @@
 
 /* STEP 1 */
 - (void)loginToTequilaDidReturn:(ASIHTTPRequest*)request {
-    [tequilaCookie release];
-    tequilaCookie = nil;
+    NSString* tequilaCookie = nil;
     for(NSHTTPCookie* cookie in request.responseCookies) {
         if ([cookie.name isEqualToString:TEQUILA_COOKIE_NAME]) {
-            tequilaCookie = [cookie.value retain];
+            tequilaCookie = cookie.value;
         }
     }
     if (!tequilaCookie) { //means bad credentials
