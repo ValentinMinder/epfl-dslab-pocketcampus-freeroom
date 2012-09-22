@@ -4,7 +4,7 @@ chdir(dirname(__FILE__));
 
 $plugins_to_merge = array("camipro", "moodle", "authentication", "dashboard", "food", "transport", "news", "satellite", "map", "bikes", "directory");
 
-$libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0-multiplex.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
+$libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -50,7 +50,7 @@ function generate_android_manifest($output_dir, $is_lib){
 	$doc->appendChild($manif);
 	$manif->setAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
 	$manif->setAttribute("package", "org.pocketcampus");
-	$manif->setAttribute("android:versionCode", "1");
+	$manif->setAttribute("android:versionCode", "15");
 	$manif->setAttribute("android:versionName", "0.3.15");
 
 	$app = $doc->createElement("application");

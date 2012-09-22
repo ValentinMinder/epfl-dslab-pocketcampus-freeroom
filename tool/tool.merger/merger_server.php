@@ -55,7 +55,7 @@ function generate_build_xml($output_dir, $project_name){
 
 	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "init", "name" => "build-project")));
 	$target->appendChild(create_elem_w_attrib($doc, "echo", array("message" => "\${ant.project.name}: \${ant.file}")));
-	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("debug" => "true", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
+	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("includeantruntime" => "false", "debug" => "true", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
 	$javac->appendChild(create_elem_w_attrib($doc, "src", array("path" => "src")));
 	$javac->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "$project_name.classpath")));
 
