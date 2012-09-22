@@ -16,9 +16,11 @@
 
 static NSString* kRestaurantCellIdentifier = @"restaurant";
 
+static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
+
 @implementation RestaurantsListViewController
 
-@synthesize tableView, centerActivityIndicator, centerMessageLabel, shouldRefresh;
+@synthesize tableView, centerActivityIndicator, centerMessageLabel;
 
 - (id)init
 {
@@ -29,6 +31,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
         restaurants = nil;
         restaurantsAndMeals = nil;
         shouldRefresh = NO;
+        lastRefreshDate = nil;
     }
     return self;
 }
@@ -76,6 +79,16 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
 }
 
+- (BOOL)shouldRefresh {
+    if (!lastRefreshDate || shouldRefresh) {
+        return YES;
+    }
+    if ([[NSDate date] timeIntervalSinceDate:lastRefreshDate] > kMealsValidityTimeSeconds) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)refresh {
     [meals release];
     meals = nil;
@@ -85,9 +98,16 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
     centerMessageLabel.text = NSLocalizedStringFromTable(@"CenterLabelLoadingText", @"FoodPlugin", @"Tell the user that the list of restaurants is loading");
     [foodService cancelOperationsForDelegate:self];
     [foodService getMealsWithDelegate:self];
+    [lastRefreshDate release];
+    lastRefreshDate = [[NSDate date] retain];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
@@ -225,6 +245,7 @@ static NSString* kRestaurantCellIdentifier = @"restaurant";
 {
     tableView.delegate = nil;
     tableView.dataSource = nil;
+    [lastRefreshDate release];
     [meals release];
     [restaurants release];
     [restaurantsAndMeals release];

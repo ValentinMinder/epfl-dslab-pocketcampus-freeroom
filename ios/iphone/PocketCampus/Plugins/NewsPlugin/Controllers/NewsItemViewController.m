@@ -135,7 +135,12 @@ static int NEWS_FONT_SIZE = 14.0;
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation // <= iOS 5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
@@ -240,7 +245,11 @@ static int NEWS_FONT_SIZE = 14.0;
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         [urlClickedByUser release];
         urlClickedByUser = [request.URL retain];
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
+        NSString* title = urlClickedByUser.host;
+        if (urlClickedByUser.path.length > 1) { //empty path is "/"
+            title = [title stringByAppendingString:@"/..."];
+        }
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:NSLocalizedStringFromTable(@"ClickLinkLeaveApplicationExplanation", @"NewsPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) otherButtonTitles:@"OK", nil];
         [alertView show];
         [alertView release];
         return NO;

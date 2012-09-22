@@ -36,8 +36,8 @@ static DirectoryService* instance = nil;
     //operation.keepInCache = YES;
     //operation.cacheValidity = 2*24*3600; //2 days
     operation.serviceClientSelector = @selector(searchPersons:);
-    operation.delegateDidReturnSelector = @selector(searchFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(searchFailedFor:);
+    operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
+    operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
     [operation addObjectArgument:nameOrSciper];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
@@ -69,7 +69,6 @@ static DirectoryService* instance = nil;
     [operationQueue addOperation:operation];
     [operation release];
 }
-
 
 - (void)dealloc
 {
@@ -172,8 +171,6 @@ static DirectoryService* instance = nil;
 
 @implementation ProfilePictureRequest
 
-static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
-
 @synthesize sciper;
 
 - (id)initWithSciper:(NSString*)sciper_ delegate:(id)delegate_ {
@@ -194,7 +191,10 @@ static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people
     NSString* fullURLStringWithSciper = [NSString stringWithFormat:@"%@%@", kProfilePictureURLbase, self.sciper];
     ASIHTTPRequest* pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLStringWithSciper]];
     pictureRequest.delegate = self;
-    pictureRequest.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
+    pictureRequest.downloadCache = [ASIDownloadCache sharedCache];
+    pictureRequest.cachePolicy = ASIOnlyLoadIfNotCachedCachePolicy;
+    pictureRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+    pictureRequest.secondsToCache = 86400; //seconds == 1 day. Should not cache an profile picture too long if it was changed
     pictureRequest.timeOutSeconds = [Service requestTimeoutInterval];
     [pictureRequest startAsynchronous];
 }

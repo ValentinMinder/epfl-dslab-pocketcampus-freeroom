@@ -54,7 +54,7 @@ function testMap() {
 		var index = Math.abs(Math.ceil(Math.random()*searchStrings.length)-1);
 		log.logDebug("index : "+index+", string : "+searchStrings[index]);
 		window.elements()["SearchBar"].setValue(searchStrings[index]);
-		app.keyboard().buttons()["search"].tap();
+		app.keyboard().buttons()["Search"].tap();
 		if (chance(0.6)) {
 			delay(Math.random()*2);
 			tapBack();
@@ -66,7 +66,8 @@ function testMap() {
 			log.logDebug("Test canceling search");
 			window.navigationBar().rightButton().tap(); //cancel button
 		} else {
-			delay(2.5);
+			delay(3.0);
+			//printElementsName(mapView.elements(), false, 4);
 			window.navigationBar().rightButton().tap(); //cancel button	
 		}
 	}

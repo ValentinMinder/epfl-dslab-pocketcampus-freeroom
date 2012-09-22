@@ -31,7 +31,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         resultsMode = ResutlsModeNotStarted;
         personViewController = nil;
         displayedPerson = nil;
-        skipNextSearchBarValueChange = NO;
+        //skipNextSearchBarValueChange = NO;
     }
     return self;
 }
@@ -73,6 +73,11 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [searchBar resignFirstResponder];
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -107,10 +112,10 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
 /* Search bar delegation */
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if (skipNextSearchBarValueChange) {
+    /*if (skipNextSearchBarValueChange) {
         skipNextSearchBarValueChange = NO;
         return;
-    }
+    }*/
     messageLabel.text = @"";
     if (searchText.length == 0) {
         [barActivityIndicator stopAnimating];
@@ -188,7 +193,7 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [self resultsError];
 }
 
-- (void)searchFor:(NSString*)searchPattern didReturn:(NSArray*)results {
+- (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results {
     [barActivityIndicator stopAnimating];
     if (results.count == 0) {
         [self showNoResultMessage];
@@ -212,21 +217,19 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
-- (void)searchFailedFor:(NSString*)searchPattern {
+- (void)searchDirectoryFailedFor:(NSString*)searchPattern {
     [self resultsError];
 }
 
 - (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data {
-    if (self.navigationController.visibleViewController == personViewController) {
-        ABPersonSetImageData(personViewController.displayedPerson,(CFDataRef)data, nil);
-        [personViewController loadView]; //reload view content to update picture
+    if (self.navigationController.topViewController == personViewController) {
+        [personViewController setProfilePictureData:data];
     }
 }
 
 - (void)profilePictureFailedFor:(NSString*)sciper {
-    if (self.navigationController.visibleViewController == personViewController) {
-        ABPersonSetImageData(personViewController.displayedPerson,NULL, nil);
-        [personViewController loadView]; //reload view content to remove loader png
+    if (self.navigationController.topViewController == personViewController) {
+        [personViewController setProfilePictureData:NULL];
     }
 }
 
@@ -258,12 +261,22 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
         }
         [activityIndicatorView startAnimating];
         NSString* searchString = [NSString stringWithFormat:@"%@", [tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        skipNextSearchBarValueChange = YES;
+        //skipNextSearchBarValueChange = YES;
         searchBar.text = searchString;
         [directoryService searchPersons:searchString delegate:self];
         [searchBar resignFirstResponder];
     } else if (resultsMode == ResultsModeSearch) {
-        [self pushViewControllerForPerson:[searchResults objectAtIndex:indexPath.row]];
+        Person* person = [searchResults objectAtIndex:indexPath.row];
+        personViewController = [[PCUnkownPersonViewController alloc] initWithDelegate:self];
+        [personViewController setPerson:person];
+        UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
+        NSData* imageData = UIImagePNGRepresentation(loadingImage);
+        [personViewController setProfilePictureData:imageData];
+        [self.navigationController pushViewController:personViewController animated:YES];
+        [personViewController release];
+        displayedPerson = [person retain];
+        [directoryService getProfilePicture:person.sciper delegate:self];
+        //skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
     } else {
         //Not supported mode
     }
@@ -321,131 +334,6 @@ static NSString* kSearchResultCellIdentifier = @"searchResult";
     }
 }
 
-/* AdressBook and records creation stuff */
-
-- (void)pushViewControllerForPerson:(Person*)person {
-    [[GANTracker sharedTracker] trackPageview:@"/v3r1/directory/click/person" withError:NULL];
-    if ([self.navigationController.topViewController isKindOfClass:[ABUnknownPersonViewController class]]) {
-        return;
-    }
-    skipNextSearchBarValueChange = NO; //prevent bug in UIAutomation where sometimes search bar delegation is not called
-    ABRecordRef abPerson = ABPersonCreate();
-    
-    if (![person isKindOfClass:[Person class]]) {
-        goto error;
-    }
-    
-    ABUnknownPersonViewController* viewController = [[ABUnknownPersonViewController alloc] init];
-    personViewController = viewController;
-    
-    viewController.unknownPersonViewDelegate = self;
-    viewController.displayedPerson = abPerson;
-    viewController.allowsAddingToAddressBook = YES;
-    viewController.allowsActions = YES;
-    viewController.title = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
-    
-    [directoryService getProfilePicture:person.sciper delegate:self];
-    
-	CFErrorRef anError = NULL;
-    BOOL couldCreate = true;
-    
-    UIImage* loadingImage = [UIImage imageNamed:@"LoadingIndicator"];
-    NSData* imageData = UIImagePNGRepresentation(loadingImage);
-    ABPersonSetImageData(abPerson, (CFDataRef)imageData, nil);
-    
-    ABRecordSetValue(abPerson, kABPersonFirstNameProperty, person.firstName, &anError);
-
-    ABRecordSetValue(abPerson, kABPersonLastNameProperty, person.lastName, &anError);
-    
-    ABMultiValueRef phone = ABMultiValueCreateMutable(kABStringPropertyType);
-    if (person.officePhoneNumber) {
-        couldCreate = ABMultiValueAddValueAndLabel(phone, person.officePhoneNumber, kABWorkLabel, NULL);
-        
-    }
-    if (person.privatePhoneNumber) {
-        couldCreate = ABMultiValueAddValueAndLabel(phone, person.privatePhoneNumber, kABHomeLabel, NULL);
-        
-    }
-    if (couldCreate) {
-        ABRecordSetValue(abPerson, kABPersonPhoneProperty, phone, &anError);
-    }
-    CFRelease(phone);
-    
-    
-    if (person.email) {
-        ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        couldCreate = ABMultiValueAddValueAndLabel(email, person.email, (CFStringRef)@"email", NULL);
-        if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonEmailProperty, email, &anError);
-        }
-        CFRelease(email);
-    }
-    
-    /* WARNING : This property makes the app crash when the viewController is pushed onto the nav stack. Why ??? Seems to be a bug on iOS 5.1. Reported to Apple. */ 
-    /*ABMultiValueRef office = ABMultiValueCreateMutable(kABStringPropertyType);
-    if (person.office) {
-        NSMutableString* label = [NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room") mutableCopy];
-        couldCreate = ABMultiValueAddValueAndLabel(office, [person.office mutableCopy], (CFStringRef)label, NULL);
-        //couldCreate = ABMultiValueAddValueAndLabel(office, person.sciper, (CFStringRef)@"sciper", NULL);
-        if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonInstantMessageProperty, office, &anError);
-            CFRelease(office);
-        }
-    }*/
-    
-    
-    
-    if (person.office) {
-        ABMultiValueRef office = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-        NSMutableDictionary *addressDictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        NSString* label = NSLocalizedStringFromTable(@"OfficeLabel", @"DirectoryPlugin", @"Short name to describe label of office room");
-        [addressDictionary setObject:[NSString stringWithFormat:@"%@ %@", person.office, NSLocalizedStringFromTable(@"(showOnMap)", @"DirectoryPlugin", nil)] forKey:(NSString *)kABPersonAddressCityKey];
-        [addressDictionary setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
-        couldCreate = ABMultiValueAddValueAndLabel(office, addressDictionary, (CFStringRef)label, NULL);
-        if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonAddressProperty, office, &anError);
-        }
-        CFRelease(office);
-    }
-    
-    if (person.web) {
-        ABMultiValueRef web = ABMultiValueCreateMutable(kABStringPropertyType);
-        couldCreate = ABMultiValueAddValueAndLabel(web, person.web, (CFStringRef)@"web", NULL);
-        if (couldCreate) {
-            ABRecordSetValue(abPerson, kABPersonURLProperty, web, &anError);
-        }
-        CFRelease(web);
-    }
-    
-    
-    
-    if (anError != NULL) {
-error:        
-        NSLog(@"-> pushViewControllerForPerson: an error occured");
-        CFRelease(abPerson);
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Impossible to display this person, sorry." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        return;
-
-    }
-    
-    
-    if (person.OrganisationalUnit) {
-        NSString* message = @"";
-        for (NSString* unit in person.OrganisationalUnit) {
-            message = [message stringByAppendingFormat:@"%@ ", unit];
-        }
-        viewController.message = message;
-    }
-    CFRelease(abPerson);
-    
-    [self.navigationController pushViewController:viewController animated:YES];
-    displayedPerson = [person retain];
-    [viewController release];
-    
-    
-}
 
 /* ABUnknownPersonViewControllerDelegate delegation */
 

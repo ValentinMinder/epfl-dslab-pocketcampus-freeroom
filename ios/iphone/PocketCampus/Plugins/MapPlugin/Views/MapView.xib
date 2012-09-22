@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
+		<string key="IBDocument.SystemVersion">12C54</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">1926</string>
@@ -15,7 +15,6 @@
 			<string>IBProxyObject</string>
 			<string>IBUIActivityIndicatorView</string>
 			<string>IBUIBarButtonItem</string>
-			<string>IBUIImageView</string>
 			<string>IBUILabel</string>
 			<string>IBUISearchBar</string>
 			<string>IBUIToolbar</string>
@@ -47,7 +46,6 @@
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="515779079"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -130,22 +128,6 @@
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
 						</array>
-					</object>
-					<object class="IBUIImageView" id="515779079">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrameSize">{320, 20}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="360078383"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<float key="IBUIAlpha">0.60000002384185791</float>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">TopTableViewInnerShadow@2x.png</string>
-						</object>
 					</object>
 					<object class="IBUISearchBar" id="861789050">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -382,7 +364,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="111674085"/>
 							<reference ref="861789050"/>
-							<reference ref="515779079"/>
 							<reference ref="360078383"/>
 							<reference ref="912725871"/>
 							<reference ref="534463923"/>
@@ -459,11 +440,6 @@
 						<reference key="parent" ref="360078383"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">24</int>
-						<reference key="object" ref="515779079"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
 						<reference key="object" ref="104390499"/>
 						<reference key="parent" ref="360078383"/>
@@ -505,7 +481,6 @@
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -619,7 +594,6 @@
 			<string key="FloorDown.png">{16, 19}</string>
 			<string key="FloorUp.png">{16, 19}</string>
 			<string key="LocationArrow.png">{20, 20}</string>
-			<string key="TopTableViewInnerShadow@2x.png">{640, 40}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1926</string>
 	</data>

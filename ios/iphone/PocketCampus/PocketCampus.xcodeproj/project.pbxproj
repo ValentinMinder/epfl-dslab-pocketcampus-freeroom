@@ -89,6 +89,7 @@
 		3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */; };
 		3258A87B15A46AE200D368AC /* LocationArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87915A46AE200D368AC /* LocationArrow.png */; };
 		3258A87C15A46AE200D368AC /* LocationArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3258A87A15A46AE200D368AC /* LocationArrow@2x.png */; };
+		32649B23160DD7DA002E6498 /* PCUnkownPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */; };
 		3266394A150C00E100719F6E /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663947150C00E100719F6E /* NSString+MD5Addition.m */; };
 		3266394B150C00E100719F6E /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 32663949150C00E100719F6E /* UIDevice+IdentifierAddition.m */; };
 		32675BFA15F4FB1F00880387 /* PCConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 32675BF915F4FB1F00880387 /* PCConfig.m */; };
@@ -191,7 +192,6 @@
 		32CCB4C8155520FE00220282 /* AuthenticationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4B9155520FE00220282 /* AuthenticationController.m */; };
 		32CCB4CB155520FE00220282 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C1155520FE00220282 /* AuthenticationService.m */; };
 		32CCB4CC155520FE00220282 /* authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4C4155520FE00220282 /* authentication.m */; };
-		32CCB4CD155520FE00220282 /* CredentialsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB4C6155520FE00220282 /* CredentialsView.xib */; };
 		32CCB4E71555237500220282 /* CourseSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4D31555237500220282 /* CourseSectionsViewController.m */; };
 		32CCB4E81555237500220282 /* CoursesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4D51555237500220282 /* CoursesListViewController.m */; };
 		32CCB4E91555237500220282 /* MoodleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CCB4D71555237500220282 /* MoodleController.m */; };
@@ -212,8 +212,6 @@
 		32CCB511155567CB00220282 /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
 		32CDAF70160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CDAF6F160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m */; };
 		32CFCF7E160900E60094784A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF7D160900E60094784A /* Default-568h@2x.png */; };
-		32CFCF821609049A0094784A /* DefaultCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF801609049A0094784A /* DefaultCenter.png */; };
-		32CFCF831609049A0094784A /* DefaultCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF811609049A0094784A /* DefaultCenter@2x.png */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; };
@@ -385,6 +383,8 @@
 		3257C20C1570F99C00E626A4 /* TransportHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportHelpViewController.m; sourceTree = "<group>"; };
 		3258A87915A46AE200D368AC /* LocationArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationArrow.png; sourceTree = "<group>"; };
 		3258A87A15A46AE200D368AC /* LocationArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationArrow@2x.png"; sourceTree = "<group>"; };
+		32649B21160DD7DA002E6498 /* PCUnkownPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUnkownPersonViewController.h; sourceTree = "<group>"; };
+		32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCUnkownPersonViewController.m; sourceTree = "<group>"; };
 		32662742151FC7CE002FA0E5 /* AppLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppLogo@2x.png"; sourceTree = "<group>"; };
 		32663946150C00E100719F6E /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		32663947150C00E100719F6E /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
@@ -549,7 +549,6 @@
 		32CCB4C1155520FE00220282 /* AuthenticationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationService.m; sourceTree = "<group>"; };
 		32CCB4C3155520FE00220282 /* authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authentication.h; sourceTree = "<group>"; };
 		32CCB4C4155520FE00220282 /* authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = authentication.m; sourceTree = "<group>"; };
-		32CCB4C6155520FE00220282 /* CredentialsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CredentialsView.xib; sourceTree = "<group>"; };
 		32CCB4D21555237500220282 /* CourseSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseSectionsViewController.h; sourceTree = "<group>"; };
 		32CCB4D31555237500220282 /* CourseSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseSectionsViewController.m; sourceTree = "<group>"; };
 		32CCB4D41555237500220282 /* CoursesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesListViewController.h; sourceTree = "<group>"; };
@@ -582,8 +581,6 @@
 		32CDAF6E160A6AEE00253D10 /* UINavigationController+SupportedOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+SupportedOrientations.h"; sourceTree = "<group>"; };
 		32CDAF6F160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+SupportedOrientations.m"; sourceTree = "<group>"; };
 		32CFCF7D160900E60094784A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		32CFCF801609049A0094784A /* DefaultCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DefaultCenter.png; path = "../../../../../../../../UI/Splash screen/DefaultCenter.png"; sourceTree = "<group>"; };
-		32CFCF811609049A0094784A /* DefaultCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DefaultCenter@2x.png"; path = "../../../../../../../../UI/Splash screen/DefaultCenter@2x.png"; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportController.h; sourceTree = "<group>"; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportController.m; sourceTree = "<group>"; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -856,8 +853,6 @@
 		321F37DF15B02FBE00E7BA6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				32CFCF801609049A0094784A /* DefaultCenter.png */,
-				32CFCF811609049A0094784A /* DefaultCenter@2x.png */,
 				32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */,
 				32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */,
 				32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */,
@@ -1352,7 +1347,6 @@
 			isa = PBXGroup;
 			children = (
 				32CCB4C7155520FE00220282 /* Images */,
-				32CCB4C6155520FE00220282 /* CredentialsView.xib */,
 				32A54B7F15B5AA5900A7C882 /* GasparView.xib */,
 			);
 			path = Views;
@@ -1686,6 +1680,8 @@
 				32FAC0E31500F40700925180 /* DirectoryController.m */,
 				32FAC0E41500F40700925180 /* DirectorySearchViewController.h */,
 				32FAC0E51500F40700925180 /* DirectorySearchViewController.m */,
+				32649B21160DD7DA002E6498 /* PCUnkownPersonViewController.h */,
+				32649B22160DD7DA002E6498 /* PCUnkownPersonViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1947,7 +1943,6 @@
 				32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */,
 				32E1FDB715474F7E00B1B630 /* FloorUp.png in Resources */,
 				32E1FDB815474F7E00B1B630 /* FloorUp@2x.png in Resources */,
-				32CCB4CD155520FE00220282 /* CredentialsView.xib in Resources */,
 				32CCB4EA1555237500220282 /* MoodlePlugin.strings in Resources */,
 				32CCB4ED1555237500220282 /* CourseSectionsView.xib in Resources */,
 				32CCB4EE1555237500220282 /* CoursesListView.xib in Resources */,
@@ -2002,8 +1997,6 @@
 				32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */,
 				32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */,
 				32CFCF7E160900E60094784A /* Default-568h@2x.png in Resources */,
-				32CFCF821609049A0094784A /* DefaultCenter.png in Resources */,
-				32CFCF831609049A0094784A /* DefaultCenter@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2135,6 +2128,7 @@
 				32675C2115F508E400880387 /* SBJsonUTF8Stream.m in Sources */,
 				32675C2215F508E400880387 /* SBJsonWriter.m in Sources */,
 				32CDAF70160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m in Sources */,
+				32649B23160DD7DA002E6498 /* PCUnkownPersonViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

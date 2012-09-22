@@ -34,7 +34,6 @@ typedef enum {
     UIActivityIndicatorView* loadingIndicator;
     UIViewController* viewControllerForPresentation;
     AuthenticationService* authenticationService;
-    NSString* tequilaCookie;
     NSString* username;
     NSString* password;
     NSString* token;

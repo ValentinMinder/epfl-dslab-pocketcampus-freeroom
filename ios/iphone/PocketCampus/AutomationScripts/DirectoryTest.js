@@ -19,6 +19,9 @@ function testDirectory() {
 	log.logStart("Autocomplete kjhsagdfkjhagsdjfh");
 	
 	searchBar.setValue("kjhsagdfkjhagsdjfh"); //no result
+	delay(0.3);
+	//app.keyboard().logElementTree();
+	app.keyboard().buttons()["Search"].tap();
 	target.delay(1);
 	if (waitVisible(tableView, 2)) { //tableView visible
 		log.logDebug("tableView should not visible (no result)");
@@ -39,6 +42,8 @@ function testDirectory() {
 		
 		log.logStart("Autocomplete random : "+string);
 		searchBar.setValue(string);
+		delay(0.3);
+		app.keyboard().buttons()["Search"].tap();
 		delay(Math.random()+1); //autocomplete request are fast
 		if (!waitForVisible(tableView, 4)) {
 			log.logDebug("No autocomplete result for : "+string+". Continuing.");

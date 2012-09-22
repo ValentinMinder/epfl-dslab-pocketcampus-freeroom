@@ -12,6 +12,8 @@
 
 #import "ASIHTTPRequest.h"
 
+#import "ASIDownloadCache.h"
+
 @interface DirectoryService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
 
 - (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate;
@@ -23,8 +25,8 @@
 @protocol DirectoryServiceDelegate <ServiceDelegate>
 
 @optional
-- (void)searchFor:(NSString*)searchPattern didReturn:(NSArray*)results;
-- (void)searchFailedFor:(NSString*)searchPattern;
+- (void)searchDirectoryFor:(NSString*)searchPattern didReturn:(NSArray*)results;
+- (void)searchDirectoryFailedFor:(NSString*)searchPattern;
 - (void)profilePictureFor:(NSString*)sciper didReturn:(NSData*)data;
 - (void)profilePictureFailedFor:(NSString*)sciper;
 - (void)autocompleteFor:(NSString *)constraint didReturn:(NSArray*)results;
@@ -34,6 +36,9 @@
 
 
 /* Internal class with modified main to generate NSData from image's URL returned by server */
+
+static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
+
 @interface ProfilePictureRequest : NSOperationWithDelegate<ASIHTTPRequestDelegate> {
     NSString* sciper;
 }

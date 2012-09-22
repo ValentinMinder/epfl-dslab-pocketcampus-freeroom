@@ -151,9 +151,6 @@
 }
 
 - (BOOL)shouldAutorotate {
-    if (sectionsList.hidden) {
-        return NO;
-    }
     return YES;
 }
 

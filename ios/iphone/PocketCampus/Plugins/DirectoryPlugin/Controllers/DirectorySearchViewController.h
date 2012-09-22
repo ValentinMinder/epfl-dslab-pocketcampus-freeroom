@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AddressBook/AddressBook.h>
-#import <AddressBookUI/AddressBookUI.h>
+
+#import "PCUnkownPersonViewController.h"
 
 #import "DirectoryService.h"
 
@@ -32,7 +32,7 @@ typedef enum {
     NSArray* autocompleteResults;
     NSArray* searchResults;
     ResultsMode resultsMode;
-    ABUnknownPersonViewController* personViewController;
+    PCUnkownPersonViewController* personViewController;
     Person* displayedPerson;
     BOOL skipNextSearchBarValueChange;
 }

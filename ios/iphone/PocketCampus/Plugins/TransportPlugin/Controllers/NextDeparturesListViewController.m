@@ -633,7 +633,12 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //<= iOS5
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }

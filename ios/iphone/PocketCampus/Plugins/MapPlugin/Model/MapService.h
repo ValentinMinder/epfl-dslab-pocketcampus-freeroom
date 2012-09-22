@@ -36,7 +36,7 @@
 - (void)getLayerListFailed;
 - (void)getLayerItemsForLayerId:(Id)layerID didReturn:(NSArray*)layerItems; //array of MapItem
 - (void)getLayerItemsFailedForLayerId:(Id)layerID;
-- (void)searchFor:(NSString*)query didReturn:(NSArray*)results; //array of MapItem
-- (void)searchFailedFor:(NSString*)query;
+- (void)searchMapFor:(NSString*)query didReturn:(NSArray*)results; //array of MapItem
+- (void)searchMapFailedFor:(NSString*)query;
 
 @end

@@ -36,7 +36,10 @@
     if (mainViewController == nil || ![mainViewController isKindOfClass:[RestaurantsListViewController class]]) {
         return;
     }
-    if (((RestaurantsListViewController*)mainViewController).shouldRefresh) {
+    if ([((RestaurantsListViewController*)mainViewController) shouldRefresh]) {
+        if (mainViewController.navigationController.topViewController != mainViewController) {
+            [mainViewController.navigationController popToViewController:mainViewController animated:NO];
+        }
         [(RestaurantsListViewController*)mainViewController refresh];
     }
 }

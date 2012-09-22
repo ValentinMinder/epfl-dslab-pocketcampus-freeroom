@@ -207,6 +207,11 @@ static NSString* kStationNameAutocompleteResult = @"StationNameAutocompleteCell"
     return stations.count;
 }
 
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
