@@ -212,8 +212,6 @@
 		32CCB511155567CB00220282 /* News@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CCB50F155567CB00220282 /* News@2x.png */; };
 		32CDAF70160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CDAF6F160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m */; };
 		32CFCF7E160900E60094784A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF7D160900E60094784A /* Default-568h@2x.png */; };
-		32CFCF821609049A0094784A /* DefaultCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF801609049A0094784A /* DefaultCenter.png */; };
-		32CFCF831609049A0094784A /* DefaultCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CFCF811609049A0094784A /* DefaultCenter@2x.png */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* ObjectArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* ObjectArchiver.m */; };
@@ -583,8 +581,6 @@
 		32CDAF6E160A6AEE00253D10 /* UINavigationController+SupportedOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+SupportedOrientations.h"; sourceTree = "<group>"; };
 		32CDAF6F160A6AEE00253D10 /* UINavigationController+SupportedOrientations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+SupportedOrientations.m"; sourceTree = "<group>"; };
 		32CFCF7D160900E60094784A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		32CFCF801609049A0094784A /* DefaultCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DefaultCenter.png; path = "../../../../../../../../UI/Splash screen/DefaultCenter.png"; sourceTree = "<group>"; };
-		32CFCF811609049A0094784A /* DefaultCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DefaultCenter@2x.png"; path = "../../../../../../../../UI/Splash screen/DefaultCenter@2x.png"; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportController.h; sourceTree = "<group>"; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportController.m; sourceTree = "<group>"; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -857,8 +853,6 @@
 		321F37DF15B02FBE00E7BA6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				32CFCF801609049A0094784A /* DefaultCenter.png */,
-				32CFCF811609049A0094784A /* DefaultCenter@2x.png */,
 				32B6A53B15BDFB86000E7F3C /* PocketCampusStyled.png */,
 				32B6A53915BDF7BB000E7F3C /* PocketCampusStyled@2x.png */,
 				32CC7B3615B804D3004F0A31 /* SettingsBarButton.png */,
@@ -2003,8 +1997,6 @@
 				32969ABF15FBBB170051EF9A /* BookmarksBlueHighlighted.png in Resources */,
 				32969AC015FBBB170051EF9A /* BookmarksBlueHighlighted@2x.png in Resources */,
 				32CFCF7E160900E60094784A /* Default-568h@2x.png in Resources */,
-				32CFCF821609049A0094784A /* DefaultCenter.png in Resources */,
-				32CFCF831609049A0094784A /* DefaultCenter@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
