@@ -1,21 +1,17 @@
 <?php
 
-// GLOBALS
+chdir(dirname(__FILE__));
+
 $plugins_to_merge = array("camipro", "moodle", "authentication", "food", "transport", "news", "satellite", "map", "bikes", "directory");
 
 $libs_to_export = array("commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "gson-1.7.1.jar", "javapns_2.0_Beta_4.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
 		"jsoup-1.6.1.jar", "kxml2-2.3.0.jar", "libthrift-0.7.0-multiplex.jar", "mysql-connector-java-5.1.15-bin.jar", "servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar", "unboundid-ldapsdk-se.jar");
 
-
-
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
-// LOCALS
-$output_dir = "../../server/PocketCampusServer";
-$project_name = "PocketCampusServer";
 
 function create_elem_w_attrib($doc, $tag, $attrib) {
 	$elem = $doc->createElement($tag);
@@ -59,7 +55,7 @@ function generate_build_xml($output_dir, $project_name){
 
 	$proj->appendChild($target = create_elem_w_attrib($doc, "target", array("depends" => "init", "name" => "build-project")));
 	$target->appendChild(create_elem_w_attrib($doc, "echo", array("message" => "\${ant.project.name}: \${ant.file}")));
-	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("debug" => "true", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
+	$target->appendChild($javac = create_elem_w_attrib($doc, "javac", array("includeantruntime" => "false", "debug" => "true", "debuglevel" => "\${debuglevel}", "destdir" => "bin", "source" => "\${source}", "target" => "\${target}")));
 	$javac->appendChild(create_elem_w_attrib($doc, "src", array("path" => "src")));
 	$javac->appendChild(create_elem_w_attrib($doc, "classpath", array("refid" => "$project_name.classpath")));
 
@@ -272,6 +268,11 @@ EOS;
 
 }
 
+
+// LOGIC
+
+$output_dir = "../../server/PocketCampusServer";
+$project_name = "PocketCampusServer";
 
 generate_build_xml($output_dir, "$project_name");
 generate_dot_classpath($output_dir);

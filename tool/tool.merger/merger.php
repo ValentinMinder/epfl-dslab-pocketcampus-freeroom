@@ -1,41 +1,38 @@
 <?php
 
-$plugins_to_merge = array("camipro", "moodle", "authentication", "dashboard", "food", "transport", "news", "satellite", "map", "bikes", "directory");
+chdir(dirname(__FILE__));
 
-$libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0-multiplex.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
+$plugins_to_merge = array("dashboard", "camipro", "moodle", "authentication", "food", "transport", "news", "satellite", "map", "bikes", "directory");
+
+$libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/sdk/platform.sdk.shared/lib";
 
-$output_dir = "../../android/PocketCampus";
-$project_name = "PocketCampus";
 
+function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
+	$doc2 = new DOMDocument();
+	$doc2->preserveWhiteSpace = false;
+	$doc2->loadXML(file_get_contents($file));
+	//print_r($doc2->saveXML());
 
-function get_nodes($file, $tag) {
-	$doc = new DOMDocument();
-	$doc->preserveWhiteSpace = false;
-	$doc->loadXML(file_get_contents($file));
-	
-
-	//print_r($doc->saveXML());
-
-	$xpath = new DOMXPath($doc);
-	$data = $xpath->query($tag);
-	//print_r($doc->getElementsByTagName("//activity"));
-	$list = array();
-	foreach($data as $node) {
-		$list[] = $node;
-		//print_r($doc->saveXML($node));
+	if($nodes_to_remove) {
+		$xpath = new DOMXPath($doc2);
+		$data = $xpath->query($nodes_to_remove);
+		foreach($data as $node) {
+			$node->parentNode->removeChild($node);
+		}
 	}
-	return $list;
-}
 
-function import_nodes($file, $tag, $doc, $node) {
-	foreach(get_nodes($file, $tag) as $nn) {
-		$n = $doc->importNode($nn, true);
+	$xpath = new DOMXPath($doc2);
+	$data = $xpath->query($tag);
+	//print_r($doc2->getElementsByTagName("//activity"));
+	foreach($data as $node) {
+		//print_r($doc2->saveXML($node));
+		$n = $doc->importNode($node, true);
 		//$n->removeAttribute("xmlns:android");
-		$node->appendChild($n);
+		$parent_node->appendChild($n);
 	}
 }
 
@@ -51,8 +48,8 @@ function generate_android_manifest($output_dir, $is_lib){
 	$doc->appendChild($manif);
 	$manif->setAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
 	$manif->setAttribute("package", "org.pocketcampus");
-	$manif->setAttribute("android:versionCode", "1");
-	$manif->setAttribute("android:versionName", "1.0");
+	$manif->setAttribute("android:versionCode", "15");
+	$manif->setAttribute("android:versionName", "0.3.15");
 
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
@@ -68,11 +65,11 @@ function generate_android_manifest($output_dir, $is_lib){
 	if(!$is_lib) {
 		foreach($plugins_to_merge as $plugin) {
 			$manifest_file = "$path_to_plugin_dir/$plugin/plugin.$plugin.android/AndroidManifest.xml";
-			import_nodes($manifest_file, "/manifest/application/activity", $doc, $app);
-			import_nodes($manifest_file, "/manifest/application/service", $doc, $app);
-			import_nodes($manifest_file, "/manifest/application/receiver", $doc, $app);
+			import_nodes($manifest_file, "/manifest/application/activity", $doc, $app, ($plugin == "dashboard" ? "" : "//category[@android:name='android.intent.category.LAUNCHER']"));
+			import_nodes($manifest_file, "/manifest/application/service", $doc, $app, "");
+			import_nodes($manifest_file, "/manifest/application/receiver", $doc, $app, "");
 
-			import_nodes($manifest_file, "/manifest/uses-permission", $doc, $manif);
+			import_nodes($manifest_file, "/manifest/uses-permission", $doc, $manif, "");
 		}
 	}
 
@@ -400,6 +397,10 @@ function collect_src_platform($output_dir) {
 */
 
 
+// LOGIC
+
+$output_dir = "../../android/PocketCampus";
+$project_name = "PocketCampus";
 
 generate_android_manifest($output_dir, false);
 generate_ant_properties($output_dir);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.pocketcampus"
+    package="org.pocketcampus.plugin.transport"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -12,6 +12,7 @@
     <application
         android:label="@string/app_name"
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext"
+        android:icon="@drawable/transport_icon"
         android:theme="@style/PocketCampusTheme" >
 
         <activity
@@ -21,12 +22,13 @@
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-            </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
         </activity>
 	
-        <activity android:name=".plugin.transport.android.TransportAddView" >
+        <activity android:name="org.pocketcampus.plugin.transport.android.TransportAddView" >
         </activity>  
-        <activity android:name=".plugin.transport.android.TransportEditView" >
+        <activity android:name="org.pocketcampus.plugin.transport.android.TransportEditView" >
         </activity>    
            
         <service

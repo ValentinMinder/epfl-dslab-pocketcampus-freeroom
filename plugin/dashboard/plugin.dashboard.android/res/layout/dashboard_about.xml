@@ -24,7 +24,7 @@
         android:layout_below="@+id/app_name"
         android:gravity="center"
         android:paddingBottom="20dp"
-        android:text="@string/mainscreen_preview_version"
+        android:text=""
         android:textColor="@color/darker_gray" >
     </TextView>
 

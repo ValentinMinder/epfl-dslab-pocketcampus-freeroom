@@ -66,7 +66,7 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		//Tracker
-		Tracker.getInstance().trackPageView("moodle");
+		Tracker.getInstance().trackPageView("moodle/course");
 		
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;

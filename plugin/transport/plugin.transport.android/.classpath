@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libGoogleAnalytics.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
