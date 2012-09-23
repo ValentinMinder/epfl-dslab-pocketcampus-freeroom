@@ -26,7 +26,7 @@
 
 "ClearAll" = "Clear all";
 "SearchFieldPlaceholder" = "Search for a station";
-"SearchStationNoResult" = "No result";
+"SearchStationNoResult" = "No results";
 "SearchBarStationPrompt" = "Type a station name.";
 "StationAlreadyFavorite" = "This station is already in your stations.";
 "CellMultiplePossibilitiesTrip" = "Multiple possibilites";
