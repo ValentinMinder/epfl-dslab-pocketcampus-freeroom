@@ -69,6 +69,8 @@ function generate_android_manifest($output_dir, $is_lib){
 			import_nodes($manifest_file, "/manifest/application/service", $doc, $app, "");
 			import_nodes($manifest_file, "/manifest/application/receiver", $doc, $app, "");
 
+			import_nodes($manifest_file, "/manifest/permission-group", $doc, $manif, "");
+			import_nodes($manifest_file, "/manifest/permission", $doc, $manif, "");
 			import_nodes($manifest_file, "/manifest/uses-permission", $doc, $manif, "");
 		}
 	}
