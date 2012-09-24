@@ -6,11 +6,14 @@
     <uses-sdk android:minSdkVersion="8" />
 
     <application android:label="@string/app_name"
-        android:theme="@style/PocketCampusTheme" android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
+        android:theme="@style/PocketCampusTheme"
+        android:icon="@drawable/authentication_icon"
+        android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
         
         
 		<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:icon="@drawable/authentication_icon"
 			android:label="@string/authentication_plugin_title"
 			android:launchMode="singleTask"
 			 android:theme="@android:style/Theme.Dialog"
@@ -60,6 +63,7 @@
 			    
 		</activity>
 		<service android:name="org.pocketcampus.plugin.authentication.android.AuthenticationController"
+		    android:permission="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
 			xmlns:android="http://schemas.android.com/apk/res/android">
 			<intent-filter>
 				<action android:name="org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE" />
@@ -88,9 +92,22 @@
 		    
     </application>
     
+	<permission-group android:description="@string/authentication_permission_group_description"
+	                  android:icon="@drawable/authentication_icon"
+	                  android:label="@string/authentication_permission_group_label"
+	                  android:name="org.pocketcampus.permission_groups.AUTHENTICATION" />        
+        
+	<permission android:description="@string/authentication_permission_description"
+			    android:icon="@drawable/authentication_icon"
+			    android:label="@string/authentication_permission_label"
+			    android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA"
+			    android:permissionGroup="org.pocketcampus.permission_groups.AUTHENTICATION"
+			    android:protectionLevel="dangerous" />
         
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-		    	
+
+	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+				    	
 </manifest>

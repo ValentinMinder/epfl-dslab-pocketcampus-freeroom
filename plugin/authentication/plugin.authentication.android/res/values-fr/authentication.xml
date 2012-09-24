@@ -18,6 +18,11 @@
     <string name="authentication_string_deny">Refuser</string>
     <string name="authentication_string_alwaysdeny">Toujours Refuser</string>
         
-    <string name="authentication_string_serviceaccessaccount">Le service suivant demande l\'accès à votre compte</string>
-        
+    <string name="authentication_string_serviceaccessaccount">Le service suivant demande l\'accès à votre compte. PocketCampus n\'est pas affilié à cette application. Nous vous recommandons d\'accorder l\'accès uniquement si vous faites confiance au service.</string>
+
+    <string name="authentication_permission_description">Cette autorisation doit être utilisé lorsqu\'une application tierce veut authentifier les utilisateurs avec Tequila</string>
+    <string name="authentication_permission_label">authentifier les utilisateurs avec Tequila</string>
+    <string name="authentication_permission_group_description">Ce groupe d\'autorisations est utilisé pour les autorisations PocketCampus liés à l\'authentification</string>
+    <string name="authentication_permission_group_label">Authentification</string>
+    
 </resources>
