@@ -187,7 +187,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		
 		LinkedList<MoodleSection> msl = new LinkedList<MoodleSection>();
 		// don't close the quote because some sections have more style classes such as hidden
-		for (String i : getAllSubstringsBetween(page, "class=\"section main", "<!--class='section'-->")) {
+		for (String i : getAllSubstringsBetween(page, "class=\"section main clearfix", "<!--class='section'-->")) {
 			LinkedList<MoodleResource> mrl = new LinkedList<MoodleResource>();
 			for (MoodleResource j : getLinks(i)) {
 				if(j.getIUrl().indexOf("/pluginfile.php/") != -1) {
