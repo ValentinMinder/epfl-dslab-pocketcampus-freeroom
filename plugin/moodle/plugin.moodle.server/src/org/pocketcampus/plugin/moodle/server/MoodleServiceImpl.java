@@ -113,13 +113,14 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			return new CoursesListReply(407);
 		}
 		
-		page = getSubstringBetween(page, "block_course_overview", "block_course_list");
+		//page = getSubstringBetween(page, "block_course_overview", "block_course_list");
 		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
-		for (String i : getAllSubstringsBetween(page, "course/view.php", "/a>")) {
+		for (String i : getAllSubstringsBetween(page, "coursebox", "</h3>")) {
 			MoodleCourse mc = new MoodleCourse();
 			//mc.setITitle(StringEscapeUtils.unescapeHtml4(getLastSubstringBetween(i, ">", "</a>")));
-			mc.setITitle(getSubstringBetween(i, ">", "<"));
-			mc.setIId(Integer.parseInt(getSubstringBetween(i, "id=", "\"")));
+			String data = getSubstringBetween(i, "course/view.php", "</a>");
+			mc.setITitle(getSubstringBetween(data, ">", "<")); // "<" will not be found
+			mc.setIId(Integer.parseInt(getSubstringBetween(data, "id=", "\"")));
 			tCourses.add(mc);
 		}
 		
