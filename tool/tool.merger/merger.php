@@ -60,7 +60,7 @@ function generate_android_manifest($output_dir, $is_lib){
 
 	$sdk = $doc->createElement("uses-sdk");
 	$manif->appendChild($sdk);
-	$sdk->setAttribute("android:minSdkVersion", "9");
+	$sdk->setAttribute("android:minSdkVersion", "8");
 
 	if(!$is_lib) {
 		foreach($plugins_to_merge as $plugin) {
