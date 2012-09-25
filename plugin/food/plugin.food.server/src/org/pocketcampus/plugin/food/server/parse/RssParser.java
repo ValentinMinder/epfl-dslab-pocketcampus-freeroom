@@ -178,7 +178,7 @@ public class RssParser extends DefaultHandler {
 			if (this.item != null) {
 				this.item.description = removeBadStuff(this.text.toString()
 						.trim());
-				this.item.description = capitalize(this.item.description);
+				//this.item.description = capitalize(this.item.description);
 				this.item.description = removeExtraLineBreaks(this.item.description);
 				
 			} else

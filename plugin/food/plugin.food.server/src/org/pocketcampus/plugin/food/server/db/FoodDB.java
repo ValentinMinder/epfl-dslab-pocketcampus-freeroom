@@ -53,67 +53,6 @@ public class FoodDB {
 	}
 
 	/**
-	 * Insert a meal into the database.
-	 * 
-	 * @param meal
-	 *            the meal to insert
-	 * @return
-	 */
-	public boolean insertMeal(Meal meal) {
-		String name = meal.getName();
-		String description = meal.getMealDescription();
-		String restaurant = meal.getRestaurant().getName();
-		double totalRating = meal.getRating().getSumOfRatings();
-		int numberOfVotes = meal.getRating().getNumberOfVotes();
-		long mealId = meal.getMealId();
-
-		// Get today's date
-		Calendar cal = Calendar.getInstance();
-		String dateString = cal.get(Calendar.YEAR) + "."
-				+ (cal.get(Calendar.MONTH) + 1) + "."
-				+ cal.get(Calendar.DAY_OF_MONTH);
-
-		PreparedStatement insertMeal = null;
-		try {
-			Connection dbConnection = mConnectionManager.getConnection();
-
-			String insertString = "INSERT INTO campusmenus (Title, Description, Restaurant, TotalRating, NumberOfVotes, MealId, stamp_created)"
-					+ " VALUES (?,?,?,?,?,?,?)";
-
-			dbConnection.setAutoCommit(false);
-
-			insertMeal = dbConnection.prepareStatement(insertString);
-
-			// Insert values in corresponding fields
-			insertMeal.setString(1, name);
-			insertMeal.setString(2, description);
-			insertMeal.setString(3, restaurant);
-			insertMeal.setFloat(4, (float) totalRating);
-			insertMeal.setInt(5, numberOfVotes);
-			insertMeal.setLong(6, mealId);
-			insertMeal.setString(7, dateString);
-
-			// Insert meal in database
-			insertMeal.execute();
-			dbConnection.commit();
-
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("#Food Database: Problem in insert meal.");
-			return false;
-		} finally {
-			try {
-				if (insertMeal != null) {
-					insertMeal.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
 	 * Insert a list of Meals into the database.
 	 * 
 	 * @param mMeals
