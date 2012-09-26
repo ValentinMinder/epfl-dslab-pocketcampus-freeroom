@@ -16,7 +16,7 @@
 
 static NSString* kRestaurantCellIdentifier = @"restaurant";
 
-static NSTimeInterval kMealsValidityTimeSeconds = 0;//14400; // 4 hours.
+static NSTimeInterval kMealsValidityTimeSeconds = 14400; // 4 hours.
 
 @implementation RestaurantsListViewController
 
