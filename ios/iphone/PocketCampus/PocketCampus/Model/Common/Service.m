@@ -129,19 +129,23 @@ static NSTimeInterval kConnectivityCheckTimeout;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
     int nbOps = 0;
     for (NSOperation* operation in operationQueue.operations) {        
-        if (delegate == nil || ([operation respondsToSelector:@selector(delegate)] && [(id)operation delegate] == delegate)) {
-            if ([operation respondsToSelector:@selector(setDelegate:)]) {
-                [(id)operation setDelegate:nil];
+        if (delegate == nil || ([operation respondsToSelector:@selector(delegate)])) {
+            if ([(id)operation delegate] == delegate) {
+                if ([operation respondsToSelector:@selector(setDelegate:)]) {
+                    [(id)operation setDelegate:nil];
+                }
+                if ([operation respondsToSelector:@selector(setService:)]) {
+                    [(id)operation setService:nil];
+                }
+                [operation cancel];
+                nbOps++;
+            } else {
+                if ([operation isKindOfClass:[ServiceRequest class]]) {
+                    [(ServiceRequest*)operation setShouldRestart:YES]; //the operation needs to recheck server availability because it
+                }
             }
-            if ([operation respondsToSelector:@selector(setService:)]) {
-                [(id)operation setService:nil];
-            }
-            [operation cancel];
-            nbOps++;
         }
     }
-    [operationQueue release];
-    operationQueue = [[NSOperationQueue alloc] init];
     if (nbOps > 0 && delegate) {
         NSLog(@"-> All operations canceled for delegate %@ (%d cancelled)", delegate, nbOps);
     }
@@ -152,8 +156,10 @@ static NSTimeInterval kConnectivityCheckTimeout;
             checkServerRequest = nil;
         }
     }
+    
     serverIsReachable = NO;
     [self notifyAll];
+    
 }
 
 - (void)cancelAllOperations {
@@ -244,7 +250,7 @@ static NSTimeInterval kConnectivityCheckTimeout;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;
+@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -253,6 +259,7 @@ static NSTimeInterval kConnectivityCheckTimeout;
         self.thriftServiceClient = serviceClient;
         self.service = service_;
         self.timedOut = NO;
+        self.shouldRestart = NO;
         self.serviceClientSelector = nil;
         arguments = [[NSMutableArray alloc] init];
         self.returnType = ReturnTypeNotSet;
@@ -338,6 +345,11 @@ static NSTimeInterval kConnectivityCheckTimeout;
         }
         
         if (self.service != nil && ![self.service serverIsReachable]) {
+            if (self.shouldRestart) {
+                self.shouldRestart = NO;
+                [self main];
+                return;
+            }
             NSLog(@"-> Server not reachable");
             [self didTimeout];
             return;

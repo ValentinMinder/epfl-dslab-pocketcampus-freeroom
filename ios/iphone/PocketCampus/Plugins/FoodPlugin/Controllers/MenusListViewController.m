@@ -35,7 +35,6 @@ static NSString* kMealCellIdentifier = @"mealCell";
         self.title = restaurantName_;
         restaurantName = [restaurantName_ retain];
         meals = [meals_ retain];
-        service = [[FoodService sharedInstanceToRetain] retain];
     }
     return self;
 }
@@ -61,7 +60,6 @@ static NSString* kMealCellIdentifier = @"mealCell";
             //meal.mealDescription = stringDescr;
             [stringDescr release];
         }*/
-        service = [[FoodService sharedInstanceToRetain] retain];
     }
     return self;
 }
@@ -143,6 +141,12 @@ static NSString* kMealCellIdentifier = @"mealCell";
     
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self setForAllCellsVoteMode:VoteModeVote exceptCell:nil animated:YES];
+    [self.navigationItem setRightBarButtonItem:nil animated:YES];
+    [self showMapButtonIfPossible];
+}
+
 
 /* UITableViewDataSource delegation */
 
@@ -180,7 +184,6 @@ static NSString* kMealCellIdentifier = @"mealCell";
 {
     tableView.delegate = nil;
     tableView.dataSource = nil;
-    [service release];
     [restaurantName release];
     [meals release];
     [super dealloc];

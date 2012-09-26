@@ -100,6 +100,7 @@ typedef enum {
 
 @property (retain) id thriftServiceClient;
 @property BOOL timedOut;
+@property BOOL shouldRestart; //will be checked if server availaility returns NO. If shouldRestart==YES, operation will be restarted
 @property NSTimeInterval customTimeout;
 @property BOOL keepInCache;
 @property NSTimeInterval cacheValidity;
