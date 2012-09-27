@@ -102,6 +102,7 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		// WHITELIST
 		setServiceAllowedLevel("moodle", 1);
 		setServiceAllowedLevel("camipro", 1);
+		setServiceAllowedLevel("isacademia", 1);
 		// BLACKLIST
 		setServiceAllowedLevel("attacker", -1);
 	}
