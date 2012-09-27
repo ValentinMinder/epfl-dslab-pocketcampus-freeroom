@@ -15,6 +15,8 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,15 +68,13 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 			a.addAction(refresh, 0);
 		}
 		
-		if(mModel.getIsacademiaCookie() == null) { // if we don't have cookie
-			// get cookie (ping auth plugin)
-			IsacademiaMainView.pingAuthPlugin(this);
-		}
-		
+	}
+
+	@Override
+	protected void handleIntent(Intent aIntent) {
 		mController.refreshSchedule();
 		updateDisplay();
 	}
-
 	@Override
 	public void coursesUpdated() {
 	}
@@ -96,8 +96,8 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 		Log.v("DEBUG", "=========== SCHEDULE ===========");
 		for(IsaSeance i : ls) {
 			Log.v("DEBUG", i.toString());
-			String details = i.getWeekDay() + " - " + i.getTimeStart() + " - " + i.getRoom();
-			einfos.add(new SeanceInfo(i.getCourse(), details, false));
+			String details = i.getSeanceDate() + " - " + i.getSeanceRoom() + " - " + i.getStartTime() + " - " + i.getEndTime();
+			einfos.add(new SeanceInfo(i.getCourseName(), details, false));
 		}
 		ListView lv = new ListView(this);
 		lv.setAdapter(new SeancesListAdapter(this, R.layout.isa_seance_record, einfos));
@@ -109,14 +109,52 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 		mLayout.addFillerView(lv);
 	}
 	
+	@Override
+	public void tequilaTokenUpdated() {
+		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
+	}
+
+	@Override
+	public void isaCookieUpdated() {
+		// TODO check if activity is visible
+		mController.refreshSchedule();
+	}
+	
+	@Override
+	public void tokenAuthenticationFinished() {
+		// TODO check if activity is visible
+		mController.getIsacademiaSession();
+	}
+
 	private void updateDisplay() {
 		scheduleUpdated();
+	}
+	
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus://isacademia.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "isacademia");
+		authIntent.putExtra("longname", "IS-Academia");
+		context.startService(authIntent);
 	}
 	
 	@Override
 	public void networkErrorHappened() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.isacademia_connection_error_happened), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
 	}
 	
 	@Override
@@ -128,7 +166,7 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 	@Override
 	public void notLoggedIn() {
 		mModel.setIsacademiaCookie(null);
-		IsacademiaMainView.pingAuthPlugin(this);
+		mController.getTequilaToken();
 	}
 	
 

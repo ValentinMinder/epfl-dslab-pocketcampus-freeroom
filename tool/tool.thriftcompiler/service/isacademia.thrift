@@ -12,8 +12,12 @@ enum SeanceType {
 	SEANCE_CONFLICT; // CONFLIT;
 }
 
+struct IsaSession {
+	1: required string isaCookie;
+}
+
 struct IsaRequest {
-	1: required authentication.SessionId iSessionId;
+	1: required IsaSession isaSession;
 	2: required string iLanguage;
 }
 
@@ -39,12 +43,13 @@ struct IsaExam {
 }
 
 struct IsaSeance {
-	1: required string course;
-	2: required string instructor;
-	3: required SeanceType type;
-	4: required i32 weekDay;
-	5: required i32 timeStart;
-	6: required string room;
+	1: required string courseName;
+	2: required SeanceType seanceType;
+	3: required i32 weekDay;
+	4: required string startTime;
+	5: required string endTime;
+	6: required string seanceDate;
+	7: required string seanceRoom;
 }
 
 struct IsaCoursesListReply {
@@ -62,7 +67,11 @@ struct IsaScheduleReply {
 	2: required i32 iStatus;
 }
 
+
 service IsacademiaService {
+	authentication.TequilaToken getTequilaTokenForIsa();
+	IsaSession getIsaSession(1: authentication.TequilaToken iTequilaToken);
+	
 	IsaCoursesListReply getUserCourses(1: IsaRequest iRequest);
 	IsaExamsListReply getUserExams(1: IsaRequest iRequest);
 	IsaScheduleReply getUserSchedule(1: IsaRequest iRequest);

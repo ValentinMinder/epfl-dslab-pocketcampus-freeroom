@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaModel;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaView;
 import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
@@ -49,6 +50,8 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	private List<IsaCourse> iCourses;
 	private List<IsaExam> iExams;
 	private List<IsaSeance> iSchedule;
+	private boolean forceReauth;
+	private TequilaToken tequilaToken;
 	
 	/**
 	 * Data that need to be persistent.
@@ -67,6 +70,21 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	public IsacademiaModel(Context context) {
 		iStorage = context.getSharedPreferences(ISA_STORAGE_NAME, 0);
 		isacademiaCookie = iStorage.getString(ISA_COOKIE_KEY, null);
+	}
+	
+	public boolean getForceReauth() {
+		return forceReauth;
+	}
+	public void setForceReauth(boolean val) {
+		forceReauth = val;
+	}
+	
+	public TequilaToken getTequilaToken() {
+		return tequilaToken;
+	}
+	public void setTequilaToken(TequilaToken arg) {
+		tequilaToken = arg;
+		mListeners.tequilaTokenUpdated();
 	}
 	
 	/**
@@ -110,9 +128,12 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	}
 	public void setIsacademiaCookie(String aCookie) {
 		isacademiaCookie = aCookie;
-		Editor editor = iStorage.edit();
-		editor.putString(ISA_COOKIE_KEY, isacademiaCookie);
-		editor.commit();
+		if(!forceReauth) {
+			Editor editor = iStorage.edit();
+			editor.putString(ISA_COOKIE_KEY, isacademiaCookie);
+			editor.commit();
+		}
+		mListeners.isaCookieUpdated();
 	}
 	
 	/**

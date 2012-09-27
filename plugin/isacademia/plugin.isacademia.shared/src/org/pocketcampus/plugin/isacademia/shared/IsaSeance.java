@@ -24,36 +24,39 @@ import org.slf4j.LoggerFactory;
 public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaSeance");
 
-  private static final org.apache.thrift.protocol.TField COURSE_FIELD_DESC = new org.apache.thrift.protocol.TField("course", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField INSTRUCTOR_FIELD_DESC = new org.apache.thrift.protocol.TField("instructor", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField WEEK_DAY_FIELD_DESC = new org.apache.thrift.protocol.TField("weekDay", org.apache.thrift.protocol.TType.I32, (short)4);
-  private static final org.apache.thrift.protocol.TField TIME_START_FIELD_DESC = new org.apache.thrift.protocol.TField("timeStart", org.apache.thrift.protocol.TType.I32, (short)5);
-  private static final org.apache.thrift.protocol.TField ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("room", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField COURSE_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("courseName", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField SEANCE_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("seanceType", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField WEEK_DAY_FIELD_DESC = new org.apache.thrift.protocol.TField("weekDay", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField START_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("startTime", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField END_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("endTime", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField SEANCE_DATE_FIELD_DESC = new org.apache.thrift.protocol.TField("seanceDate", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField SEANCE_ROOM_FIELD_DESC = new org.apache.thrift.protocol.TField("seanceRoom", org.apache.thrift.protocol.TType.STRING, (short)7);
 
-  public String course; // required
-  public String instructor; // required
+  public String courseName; // required
   /**
    * 
    * @see SeanceType
    */
-  public SeanceType type; // required
+  public SeanceType seanceType; // required
   public int weekDay; // required
-  public int timeStart; // required
-  public String room; // required
+  public String startTime; // required
+  public String endTime; // required
+  public String seanceDate; // required
+  public String seanceRoom; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    COURSE((short)1, "course"),
-    INSTRUCTOR((short)2, "instructor"),
+    COURSE_NAME((short)1, "courseName"),
     /**
      * 
      * @see SeanceType
      */
-    TYPE((short)3, "type"),
-    WEEK_DAY((short)4, "weekDay"),
-    TIME_START((short)5, "timeStart"),
-    ROOM((short)6, "room");
+    SEANCE_TYPE((short)2, "seanceType"),
+    WEEK_DAY((short)3, "weekDay"),
+    START_TIME((short)4, "startTime"),
+    END_TIME((short)5, "endTime"),
+    SEANCE_DATE((short)6, "seanceDate"),
+    SEANCE_ROOM((short)7, "seanceRoom");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -68,18 +71,20 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // COURSE
-          return COURSE;
-        case 2: // INSTRUCTOR
-          return INSTRUCTOR;
-        case 3: // TYPE
-          return TYPE;
-        case 4: // WEEK_DAY
+        case 1: // COURSE_NAME
+          return COURSE_NAME;
+        case 2: // SEANCE_TYPE
+          return SEANCE_TYPE;
+        case 3: // WEEK_DAY
           return WEEK_DAY;
-        case 5: // TIME_START
-          return TIME_START;
-        case 6: // ROOM
-          return ROOM;
+        case 4: // START_TIME
+          return START_TIME;
+        case 5: // END_TIME
+          return END_TIME;
+        case 6: // SEANCE_DATE
+          return SEANCE_DATE;
+        case 7: // SEANCE_ROOM
+          return SEANCE_ROOM;
         default:
           return null;
       }
@@ -121,23 +126,24 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
 
   // isset id assignments
   private static final int __WEEKDAY_ISSET_ID = 0;
-  private static final int __TIMESTART_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.COURSE, new org.apache.thrift.meta_data.FieldMetaData("course", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.COURSE_NAME, new org.apache.thrift.meta_data.FieldMetaData("courseName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.INSTRUCTOR, new org.apache.thrift.meta_data.FieldMetaData("instructor", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.SEANCE_TYPE, new org.apache.thrift.meta_data.FieldMetaData("seanceType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, SeanceType.class)));
     tmpMap.put(_Fields.WEEK_DAY, new org.apache.thrift.meta_data.FieldMetaData("weekDay", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.TIME_START, new org.apache.thrift.meta_data.FieldMetaData("timeStart", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.ROOM, new org.apache.thrift.meta_data.FieldMetaData("room", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.START_TIME, new org.apache.thrift.meta_data.FieldMetaData("startTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.END_TIME, new org.apache.thrift.meta_data.FieldMetaData("endTime", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SEANCE_DATE, new org.apache.thrift.meta_data.FieldMetaData("seanceDate", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SEANCE_ROOM, new org.apache.thrift.meta_data.FieldMetaData("seanceRoom", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IsaSeance.class, metaDataMap);
@@ -147,22 +153,23 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
   }
 
   public IsaSeance(
-    String course,
-    String instructor,
-    SeanceType type,
+    String courseName,
+    SeanceType seanceType,
     int weekDay,
-    int timeStart,
-    String room)
+    String startTime,
+    String endTime,
+    String seanceDate,
+    String seanceRoom)
   {
     this();
-    this.course = course;
-    this.instructor = instructor;
-    this.type = type;
+    this.courseName = courseName;
+    this.seanceType = seanceType;
     this.weekDay = weekDay;
     setWeekDayIsSet(true);
-    this.timeStart = timeStart;
-    setTimeStartIsSet(true);
-    this.room = room;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.seanceDate = seanceDate;
+    this.seanceRoom = seanceRoom;
   }
 
   /**
@@ -171,19 +178,24 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
   public IsaSeance(IsaSeance other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetCourse()) {
-      this.course = other.course;
+    if (other.isSetCourseName()) {
+      this.courseName = other.courseName;
     }
-    if (other.isSetInstructor()) {
-      this.instructor = other.instructor;
-    }
-    if (other.isSetType()) {
-      this.type = other.type;
+    if (other.isSetSeanceType()) {
+      this.seanceType = other.seanceType;
     }
     this.weekDay = other.weekDay;
-    this.timeStart = other.timeStart;
-    if (other.isSetRoom()) {
-      this.room = other.room;
+    if (other.isSetStartTime()) {
+      this.startTime = other.startTime;
+    }
+    if (other.isSetEndTime()) {
+      this.endTime = other.endTime;
+    }
+    if (other.isSetSeanceDate()) {
+      this.seanceDate = other.seanceDate;
+    }
+    if (other.isSetSeanceRoom()) {
+      this.seanceRoom = other.seanceRoom;
     }
   }
 
@@ -193,61 +205,37 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
 
   @Override
   public void clear() {
-    this.course = null;
-    this.instructor = null;
-    this.type = null;
+    this.courseName = null;
+    this.seanceType = null;
     setWeekDayIsSet(false);
     this.weekDay = 0;
-    setTimeStartIsSet(false);
-    this.timeStart = 0;
-    this.room = null;
+    this.startTime = null;
+    this.endTime = null;
+    this.seanceDate = null;
+    this.seanceRoom = null;
   }
 
-  public String getCourse() {
-    return this.course;
+  public String getCourseName() {
+    return this.courseName;
   }
 
-  public IsaSeance setCourse(String course) {
-    this.course = course;
+  public IsaSeance setCourseName(String courseName) {
+    this.courseName = courseName;
     return this;
   }
 
-  public void unsetCourse() {
-    this.course = null;
+  public void unsetCourseName() {
+    this.courseName = null;
   }
 
-  /** Returns true if field course is set (has been assigned a value) and false otherwise */
-  public boolean isSetCourse() {
-    return this.course != null;
+  /** Returns true if field courseName is set (has been assigned a value) and false otherwise */
+  public boolean isSetCourseName() {
+    return this.courseName != null;
   }
 
-  public void setCourseIsSet(boolean value) {
+  public void setCourseNameIsSet(boolean value) {
     if (!value) {
-      this.course = null;
-    }
-  }
-
-  public String getInstructor() {
-    return this.instructor;
-  }
-
-  public IsaSeance setInstructor(String instructor) {
-    this.instructor = instructor;
-    return this;
-  }
-
-  public void unsetInstructor() {
-    this.instructor = null;
-  }
-
-  /** Returns true if field instructor is set (has been assigned a value) and false otherwise */
-  public boolean isSetInstructor() {
-    return this.instructor != null;
-  }
-
-  public void setInstructorIsSet(boolean value) {
-    if (!value) {
-      this.instructor = null;
+      this.courseName = null;
     }
   }
 
@@ -255,31 +243,31 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
    * 
    * @see SeanceType
    */
-  public SeanceType getType() {
-    return this.type;
+  public SeanceType getSeanceType() {
+    return this.seanceType;
   }
 
   /**
    * 
    * @see SeanceType
    */
-  public IsaSeance setType(SeanceType type) {
-    this.type = type;
+  public IsaSeance setSeanceType(SeanceType seanceType) {
+    this.seanceType = seanceType;
     return this;
   }
 
-  public void unsetType() {
-    this.type = null;
+  public void unsetSeanceType() {
+    this.seanceType = null;
   }
 
-  /** Returns true if field type is set (has been assigned a value) and false otherwise */
-  public boolean isSetType() {
-    return this.type != null;
+  /** Returns true if field seanceType is set (has been assigned a value) and false otherwise */
+  public boolean isSetSeanceType() {
+    return this.seanceType != null;
   }
 
-  public void setTypeIsSet(boolean value) {
+  public void setSeanceTypeIsSet(boolean value) {
     if (!value) {
-      this.type = null;
+      this.seanceType = null;
     }
   }
 
@@ -306,76 +294,117 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     __isset_bit_vector.set(__WEEKDAY_ISSET_ID, value);
   }
 
-  public int getTimeStart() {
-    return this.timeStart;
+  public String getStartTime() {
+    return this.startTime;
   }
 
-  public IsaSeance setTimeStart(int timeStart) {
-    this.timeStart = timeStart;
-    setTimeStartIsSet(true);
+  public IsaSeance setStartTime(String startTime) {
+    this.startTime = startTime;
     return this;
   }
 
-  public void unsetTimeStart() {
-    __isset_bit_vector.clear(__TIMESTART_ISSET_ID);
+  public void unsetStartTime() {
+    this.startTime = null;
   }
 
-  /** Returns true if field timeStart is set (has been assigned a value) and false otherwise */
-  public boolean isSetTimeStart() {
-    return __isset_bit_vector.get(__TIMESTART_ISSET_ID);
+  /** Returns true if field startTime is set (has been assigned a value) and false otherwise */
+  public boolean isSetStartTime() {
+    return this.startTime != null;
   }
 
-  public void setTimeStartIsSet(boolean value) {
-    __isset_bit_vector.set(__TIMESTART_ISSET_ID, value);
-  }
-
-  public String getRoom() {
-    return this.room;
-  }
-
-  public IsaSeance setRoom(String room) {
-    this.room = room;
-    return this;
-  }
-
-  public void unsetRoom() {
-    this.room = null;
-  }
-
-  /** Returns true if field room is set (has been assigned a value) and false otherwise */
-  public boolean isSetRoom() {
-    return this.room != null;
-  }
-
-  public void setRoomIsSet(boolean value) {
+  public void setStartTimeIsSet(boolean value) {
     if (!value) {
-      this.room = null;
+      this.startTime = null;
+    }
+  }
+
+  public String getEndTime() {
+    return this.endTime;
+  }
+
+  public IsaSeance setEndTime(String endTime) {
+    this.endTime = endTime;
+    return this;
+  }
+
+  public void unsetEndTime() {
+    this.endTime = null;
+  }
+
+  /** Returns true if field endTime is set (has been assigned a value) and false otherwise */
+  public boolean isSetEndTime() {
+    return this.endTime != null;
+  }
+
+  public void setEndTimeIsSet(boolean value) {
+    if (!value) {
+      this.endTime = null;
+    }
+  }
+
+  public String getSeanceDate() {
+    return this.seanceDate;
+  }
+
+  public IsaSeance setSeanceDate(String seanceDate) {
+    this.seanceDate = seanceDate;
+    return this;
+  }
+
+  public void unsetSeanceDate() {
+    this.seanceDate = null;
+  }
+
+  /** Returns true if field seanceDate is set (has been assigned a value) and false otherwise */
+  public boolean isSetSeanceDate() {
+    return this.seanceDate != null;
+  }
+
+  public void setSeanceDateIsSet(boolean value) {
+    if (!value) {
+      this.seanceDate = null;
+    }
+  }
+
+  public String getSeanceRoom() {
+    return this.seanceRoom;
+  }
+
+  public IsaSeance setSeanceRoom(String seanceRoom) {
+    this.seanceRoom = seanceRoom;
+    return this;
+  }
+
+  public void unsetSeanceRoom() {
+    this.seanceRoom = null;
+  }
+
+  /** Returns true if field seanceRoom is set (has been assigned a value) and false otherwise */
+  public boolean isSetSeanceRoom() {
+    return this.seanceRoom != null;
+  }
+
+  public void setSeanceRoomIsSet(boolean value) {
+    if (!value) {
+      this.seanceRoom = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case COURSE:
+    case COURSE_NAME:
       if (value == null) {
-        unsetCourse();
+        unsetCourseName();
       } else {
-        setCourse((String)value);
+        setCourseName((String)value);
       }
       break;
 
-    case INSTRUCTOR:
+    case SEANCE_TYPE:
       if (value == null) {
-        unsetInstructor();
+        unsetSeanceType();
       } else {
-        setInstructor((String)value);
-      }
-      break;
-
-    case TYPE:
-      if (value == null) {
-        unsetType();
-      } else {
-        setType((SeanceType)value);
+        setSeanceType((SeanceType)value);
       }
       break;
 
@@ -387,19 +416,35 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
       }
       break;
 
-    case TIME_START:
+    case START_TIME:
       if (value == null) {
-        unsetTimeStart();
+        unsetStartTime();
       } else {
-        setTimeStart((Integer)value);
+        setStartTime((String)value);
       }
       break;
 
-    case ROOM:
+    case END_TIME:
       if (value == null) {
-        unsetRoom();
+        unsetEndTime();
       } else {
-        setRoom((String)value);
+        setEndTime((String)value);
+      }
+      break;
+
+    case SEANCE_DATE:
+      if (value == null) {
+        unsetSeanceDate();
+      } else {
+        setSeanceDate((String)value);
+      }
+      break;
+
+    case SEANCE_ROOM:
+      if (value == null) {
+        unsetSeanceRoom();
+      } else {
+        setSeanceRoom((String)value);
       }
       break;
 
@@ -408,23 +453,26 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case COURSE:
-      return getCourse();
+    case COURSE_NAME:
+      return getCourseName();
 
-    case INSTRUCTOR:
-      return getInstructor();
-
-    case TYPE:
-      return getType();
+    case SEANCE_TYPE:
+      return getSeanceType();
 
     case WEEK_DAY:
       return Integer.valueOf(getWeekDay());
 
-    case TIME_START:
-      return Integer.valueOf(getTimeStart());
+    case START_TIME:
+      return getStartTime();
 
-    case ROOM:
-      return getRoom();
+    case END_TIME:
+      return getEndTime();
+
+    case SEANCE_DATE:
+      return getSeanceDate();
+
+    case SEANCE_ROOM:
+      return getSeanceRoom();
 
     }
     throw new IllegalStateException();
@@ -437,18 +485,20 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     }
 
     switch (field) {
-    case COURSE:
-      return isSetCourse();
-    case INSTRUCTOR:
-      return isSetInstructor();
-    case TYPE:
-      return isSetType();
+    case COURSE_NAME:
+      return isSetCourseName();
+    case SEANCE_TYPE:
+      return isSetSeanceType();
     case WEEK_DAY:
       return isSetWeekDay();
-    case TIME_START:
-      return isSetTimeStart();
-    case ROOM:
-      return isSetRoom();
+    case START_TIME:
+      return isSetStartTime();
+    case END_TIME:
+      return isSetEndTime();
+    case SEANCE_DATE:
+      return isSetSeanceDate();
+    case SEANCE_ROOM:
+      return isSetSeanceRoom();
     }
     throw new IllegalStateException();
   }
@@ -466,30 +516,21 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     if (that == null)
       return false;
 
-    boolean this_present_course = true && this.isSetCourse();
-    boolean that_present_course = true && that.isSetCourse();
-    if (this_present_course || that_present_course) {
-      if (!(this_present_course && that_present_course))
+    boolean this_present_courseName = true && this.isSetCourseName();
+    boolean that_present_courseName = true && that.isSetCourseName();
+    if (this_present_courseName || that_present_courseName) {
+      if (!(this_present_courseName && that_present_courseName))
         return false;
-      if (!this.course.equals(that.course))
-        return false;
-    }
-
-    boolean this_present_instructor = true && this.isSetInstructor();
-    boolean that_present_instructor = true && that.isSetInstructor();
-    if (this_present_instructor || that_present_instructor) {
-      if (!(this_present_instructor && that_present_instructor))
-        return false;
-      if (!this.instructor.equals(that.instructor))
+      if (!this.courseName.equals(that.courseName))
         return false;
     }
 
-    boolean this_present_type = true && this.isSetType();
-    boolean that_present_type = true && that.isSetType();
-    if (this_present_type || that_present_type) {
-      if (!(this_present_type && that_present_type))
+    boolean this_present_seanceType = true && this.isSetSeanceType();
+    boolean that_present_seanceType = true && that.isSetSeanceType();
+    if (this_present_seanceType || that_present_seanceType) {
+      if (!(this_present_seanceType && that_present_seanceType))
         return false;
-      if (!this.type.equals(that.type))
+      if (!this.seanceType.equals(that.seanceType))
         return false;
     }
 
@@ -502,21 +543,39 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
         return false;
     }
 
-    boolean this_present_timeStart = true;
-    boolean that_present_timeStart = true;
-    if (this_present_timeStart || that_present_timeStart) {
-      if (!(this_present_timeStart && that_present_timeStart))
+    boolean this_present_startTime = true && this.isSetStartTime();
+    boolean that_present_startTime = true && that.isSetStartTime();
+    if (this_present_startTime || that_present_startTime) {
+      if (!(this_present_startTime && that_present_startTime))
         return false;
-      if (this.timeStart != that.timeStart)
+      if (!this.startTime.equals(that.startTime))
         return false;
     }
 
-    boolean this_present_room = true && this.isSetRoom();
-    boolean that_present_room = true && that.isSetRoom();
-    if (this_present_room || that_present_room) {
-      if (!(this_present_room && that_present_room))
+    boolean this_present_endTime = true && this.isSetEndTime();
+    boolean that_present_endTime = true && that.isSetEndTime();
+    if (this_present_endTime || that_present_endTime) {
+      if (!(this_present_endTime && that_present_endTime))
         return false;
-      if (!this.room.equals(that.room))
+      if (!this.endTime.equals(that.endTime))
+        return false;
+    }
+
+    boolean this_present_seanceDate = true && this.isSetSeanceDate();
+    boolean that_present_seanceDate = true && that.isSetSeanceDate();
+    if (this_present_seanceDate || that_present_seanceDate) {
+      if (!(this_present_seanceDate && that_present_seanceDate))
+        return false;
+      if (!this.seanceDate.equals(that.seanceDate))
+        return false;
+    }
+
+    boolean this_present_seanceRoom = true && this.isSetSeanceRoom();
+    boolean that_present_seanceRoom = true && that.isSetSeanceRoom();
+    if (this_present_seanceRoom || that_present_seanceRoom) {
+      if (!(this_present_seanceRoom && that_present_seanceRoom))
+        return false;
+      if (!this.seanceRoom.equals(that.seanceRoom))
         return false;
     }
 
@@ -527,35 +586,40 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_course = true && (isSetCourse());
-    builder.append(present_course);
-    if (present_course)
-      builder.append(course);
+    boolean present_courseName = true && (isSetCourseName());
+    builder.append(present_courseName);
+    if (present_courseName)
+      builder.append(courseName);
 
-    boolean present_instructor = true && (isSetInstructor());
-    builder.append(present_instructor);
-    if (present_instructor)
-      builder.append(instructor);
-
-    boolean present_type = true && (isSetType());
-    builder.append(present_type);
-    if (present_type)
-      builder.append(type.getValue());
+    boolean present_seanceType = true && (isSetSeanceType());
+    builder.append(present_seanceType);
+    if (present_seanceType)
+      builder.append(seanceType.getValue());
 
     boolean present_weekDay = true;
     builder.append(present_weekDay);
     if (present_weekDay)
       builder.append(weekDay);
 
-    boolean present_timeStart = true;
-    builder.append(present_timeStart);
-    if (present_timeStart)
-      builder.append(timeStart);
+    boolean present_startTime = true && (isSetStartTime());
+    builder.append(present_startTime);
+    if (present_startTime)
+      builder.append(startTime);
 
-    boolean present_room = true && (isSetRoom());
-    builder.append(present_room);
-    if (present_room)
-      builder.append(room);
+    boolean present_endTime = true && (isSetEndTime());
+    builder.append(present_endTime);
+    if (present_endTime)
+      builder.append(endTime);
+
+    boolean present_seanceDate = true && (isSetSeanceDate());
+    builder.append(present_seanceDate);
+    if (present_seanceDate)
+      builder.append(seanceDate);
+
+    boolean present_seanceRoom = true && (isSetSeanceRoom());
+    builder.append(present_seanceRoom);
+    if (present_seanceRoom)
+      builder.append(seanceRoom);
 
     return builder.toHashCode();
   }
@@ -568,32 +632,22 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     int lastComparison = 0;
     IsaSeance typedOther = (IsaSeance)other;
 
-    lastComparison = Boolean.valueOf(isSetCourse()).compareTo(typedOther.isSetCourse());
+    lastComparison = Boolean.valueOf(isSetCourseName()).compareTo(typedOther.isSetCourseName());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetCourse()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.course, typedOther.course);
+    if (isSetCourseName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.courseName, typedOther.courseName);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetInstructor()).compareTo(typedOther.isSetInstructor());
+    lastComparison = Boolean.valueOf(isSetSeanceType()).compareTo(typedOther.isSetSeanceType());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetInstructor()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.instructor, typedOther.instructor);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetType()).compareTo(typedOther.isSetType());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.type, typedOther.type);
+    if (isSetSeanceType()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.seanceType, typedOther.seanceType);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -608,22 +662,42 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetTimeStart()).compareTo(typedOther.isSetTimeStart());
+    lastComparison = Boolean.valueOf(isSetStartTime()).compareTo(typedOther.isSetStartTime());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetTimeStart()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.timeStart, typedOther.timeStart);
+    if (isSetStartTime()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.startTime, typedOther.startTime);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetRoom()).compareTo(typedOther.isSetRoom());
+    lastComparison = Boolean.valueOf(isSetEndTime()).compareTo(typedOther.isSetEndTime());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetRoom()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.room, typedOther.room);
+    if (isSetEndTime()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.endTime, typedOther.endTime);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSeanceDate()).compareTo(typedOther.isSetSeanceDate());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSeanceDate()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.seanceDate, typedOther.seanceDate);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSeanceRoom()).compareTo(typedOther.isSetSeanceRoom());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSeanceRoom()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.seanceRoom, typedOther.seanceRoom);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -645,28 +719,21 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
         break;
       }
       switch (field.id) {
-        case 1: // COURSE
+        case 1: // COURSE_NAME
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.course = iprot.readString();
+            this.courseName = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // INSTRUCTOR
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.instructor = iprot.readString();
-          } else { 
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 3: // TYPE
+        case 2: // SEANCE_TYPE
           if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.type = SeanceType.findByValue(iprot.readI32());
+            this.seanceType = SeanceType.findByValue(iprot.readI32());
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // WEEK_DAY
+        case 3: // WEEK_DAY
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.weekDay = iprot.readI32();
             setWeekDayIsSet(true);
@@ -674,17 +741,30 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // TIME_START
-          if (field.type == org.apache.thrift.protocol.TType.I32) {
-            this.timeStart = iprot.readI32();
-            setTimeStartIsSet(true);
+        case 4: // START_TIME
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.startTime = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // ROOM
+        case 5: // END_TIME
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.room = iprot.readString();
+            this.endTime = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 6: // SEANCE_DATE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.seanceDate = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 7: // SEANCE_ROOM
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.seanceRoom = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -700,9 +780,6 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     if (!isSetWeekDay()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'weekDay' was not found in serialized data! Struct: " + toString());
     }
-    if (!isSetTimeStart()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'timeStart' was not found in serialized data! Struct: " + toString());
-    }
     validate();
   }
 
@@ -710,30 +787,37 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.course != null) {
-      oprot.writeFieldBegin(COURSE_FIELD_DESC);
-      oprot.writeString(this.course);
+    if (this.courseName != null) {
+      oprot.writeFieldBegin(COURSE_NAME_FIELD_DESC);
+      oprot.writeString(this.courseName);
       oprot.writeFieldEnd();
     }
-    if (this.instructor != null) {
-      oprot.writeFieldBegin(INSTRUCTOR_FIELD_DESC);
-      oprot.writeString(this.instructor);
-      oprot.writeFieldEnd();
-    }
-    if (this.type != null) {
-      oprot.writeFieldBegin(TYPE_FIELD_DESC);
-      oprot.writeI32(this.type.getValue());
+    if (this.seanceType != null) {
+      oprot.writeFieldBegin(SEANCE_TYPE_FIELD_DESC);
+      oprot.writeI32(this.seanceType.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(WEEK_DAY_FIELD_DESC);
     oprot.writeI32(this.weekDay);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(TIME_START_FIELD_DESC);
-    oprot.writeI32(this.timeStart);
-    oprot.writeFieldEnd();
-    if (this.room != null) {
-      oprot.writeFieldBegin(ROOM_FIELD_DESC);
-      oprot.writeString(this.room);
+    if (this.startTime != null) {
+      oprot.writeFieldBegin(START_TIME_FIELD_DESC);
+      oprot.writeString(this.startTime);
+      oprot.writeFieldEnd();
+    }
+    if (this.endTime != null) {
+      oprot.writeFieldBegin(END_TIME_FIELD_DESC);
+      oprot.writeString(this.endTime);
+      oprot.writeFieldEnd();
+    }
+    if (this.seanceDate != null) {
+      oprot.writeFieldBegin(SEANCE_DATE_FIELD_DESC);
+      oprot.writeString(this.seanceDate);
+      oprot.writeFieldEnd();
+    }
+    if (this.seanceRoom != null) {
+      oprot.writeFieldBegin(SEANCE_ROOM_FIELD_DESC);
+      oprot.writeString(this.seanceRoom);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -745,27 +829,19 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     StringBuilder sb = new StringBuilder("IsaSeance(");
     boolean first = true;
 
-    sb.append("course:");
-    if (this.course == null) {
+    sb.append("courseName:");
+    if (this.courseName == null) {
       sb.append("null");
     } else {
-      sb.append(this.course);
+      sb.append(this.courseName);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("instructor:");
-    if (this.instructor == null) {
+    sb.append("seanceType:");
+    if (this.seanceType == null) {
       sb.append("null");
     } else {
-      sb.append(this.instructor);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("type:");
-    if (this.type == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.type);
+      sb.append(this.seanceType);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -773,15 +849,35 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
     sb.append(this.weekDay);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("timeStart:");
-    sb.append(this.timeStart);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("room:");
-    if (this.room == null) {
+    sb.append("startTime:");
+    if (this.startTime == null) {
       sb.append("null");
     } else {
-      sb.append(this.room);
+      sb.append(this.startTime);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("endTime:");
+    if (this.endTime == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.endTime);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("seanceDate:");
+    if (this.seanceDate == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.seanceDate);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("seanceRoom:");
+    if (this.seanceRoom == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.seanceRoom);
     }
     first = false;
     sb.append(")");
@@ -790,19 +886,24 @@ public class IsaSeance implements org.apache.thrift.TBase<IsaSeance, IsaSeance._
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (course == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'course' was not present! Struct: " + toString());
+    if (courseName == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'courseName' was not present! Struct: " + toString());
     }
-    if (instructor == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'instructor' was not present! Struct: " + toString());
-    }
-    if (type == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'type' was not present! Struct: " + toString());
+    if (seanceType == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'seanceType' was not present! Struct: " + toString());
     }
     // alas, we cannot check 'weekDay' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'timeStart' because it's a primitive and you chose the non-beans generator.
-    if (room == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'room' was not present! Struct: " + toString());
+    if (startTime == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'startTime' was not present! Struct: " + toString());
+    }
+    if (endTime == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'endTime' was not present! Struct: " + toString());
+    }
+    if (seanceDate == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'seanceDate' was not present! Struct: " + toString());
+    }
+    if (seanceRoom == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'seanceRoom' was not present! Struct: " + toString());
     }
   }
 

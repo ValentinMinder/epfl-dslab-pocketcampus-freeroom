@@ -1,5 +1,7 @@
 package org.pocketcampus.plugin.isacademia.android.iface;
 
+import java.io.File;
+
 import org.pocketcampus.android.platform.sdk.core.IView;
 
 /**
@@ -23,6 +25,13 @@ public interface IIsacademiaView extends IView {
 	void coursesUpdated();
 	void examsUpdated();
 	void scheduleUpdated();
+	
+	void isaCookieUpdated();
+	void tequilaTokenUpdated();
+	
+	void tokenAuthenticationFinished();
+	void authenticationFailed();
+	void userCancelledAuthentication();
 	
 	/**
 	 * Methods called by the "Request" classes.
