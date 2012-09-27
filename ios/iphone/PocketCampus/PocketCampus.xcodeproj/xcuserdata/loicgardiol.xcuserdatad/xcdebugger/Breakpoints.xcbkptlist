@@ -58,26 +58,41 @@
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
+         continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "305"
          endingLineNumber = "305"
          landmarkName = "-main"
          landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "main"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po self">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "586"
-         endingLineNumber = "586"
+         startingLineNumber = "598"
+         endingLineNumber = "598"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +114,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "666"
-         endingLineNumber = "666"
+         startingLineNumber = "678"
+         endingLineNumber = "678"
          landmarkName = "-addDoubleArgument:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +127,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "732"
-         endingLineNumber = "732"
+         startingLineNumber = "744"
+         endingLineNumber = "744"
          landmarkName = "+wrapArgumentChar:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +192,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "291"
-         endingLineNumber = "291"
+         startingLineNumber = "298"
+         endingLineNumber = "298"
          landmarkName = "-timeoutTime"
          landmarkType = "5">
       </FileBreakpoint>
@@ -190,11 +205,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "540"
-         endingLineNumber = "540"
+         startingLineNumber = "552"
+         endingLineNumber = "552"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -294,11 +309,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "930"
-         endingLineNumber = "930"
+         startingLineNumber = "942"
+         endingLineNumber = "942"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -769,7 +784,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Controllers/FoodController.m"
-         timestampString = "370015494.157728"
+         timestampString = "370201081.368722"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "43"
@@ -848,11 +863,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
+         startingLineNumber = "171"
+         endingLineNumber = "171"
          landmarkName = "-notifyAll"
          landmarkType = "5">
          <Actions>
@@ -914,11 +929,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "149"
-         endingLineNumber = "149"
+         startingLineNumber = "153"
+         endingLineNumber = "153"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -964,11 +979,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368801023.302715"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "342"
-         endingLineNumber = "342"
+         startingLineNumber = "354"
+         endingLineNumber = "354"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -1122,11 +1137,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "370383482.667969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -1575,6 +1590,56 @@
                <ActionContent
                   message = "reuse"
                   conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "370383482.667969"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "144"
+         endingLineNumber = "144"
+         landmarkName = "-cancelOperationsForDelegate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "setShouldRestart:YES"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Model/Common/Service.m"
+         timestampString = "370383482.667969"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "349"
+         endingLineNumber = "349"
+         landmarkName = "-main"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "will restart"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "po self">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
