@@ -145,7 +145,9 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 			editor.putString(MOODLE_COOKIE_KEY, moodleCookie);
 			editor.commit();
 		}
-		mListeners.moodleCookieUpdated();
+		if(moodleCookie != null) {
+			mListeners.moodleCookieUpdated();
+		}
 	}
 	
 	/**

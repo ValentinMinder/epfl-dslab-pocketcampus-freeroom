@@ -150,7 +150,9 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 			editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
 			editor.commit();
 		}
-		mListeners.camiproCookieUpdated();
+		if(camiproCookie != null) {
+			mListeners.camiproCookieUpdated();
+		}
 	}
 	
 	/**

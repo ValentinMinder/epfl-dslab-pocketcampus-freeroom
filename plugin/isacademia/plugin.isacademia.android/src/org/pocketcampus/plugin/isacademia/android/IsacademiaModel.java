@@ -133,7 +133,9 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 			editor.putString(ISA_COOKIE_KEY, isacademiaCookie);
 			editor.commit();
 		}
-		mListeners.isaCookieUpdated();
+		if(isacademiaCookie != null) {
+			mListeners.isaCookieUpdated();
+		}
 	}
 	
 	/**
