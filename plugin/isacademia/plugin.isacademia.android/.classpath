@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="org/pocketcampus/plugin/isacademia/android/IsacademiaExamsView.java|org/pocketcampus/plugin/isacademia/android/IsacademiaMainView.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.isacademia.shared"/>
@@ -11,5 +11,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/libGoogleAnalytics.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

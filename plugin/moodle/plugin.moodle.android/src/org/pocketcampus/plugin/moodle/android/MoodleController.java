@@ -112,7 +112,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 				Log.v("DEBUG", "MoodleController::onStartCommand auth succ");
 				if(extras.getInt("forcereauth") != 0)
 					mModel.setForceReauth(true);
-				mModel.getListenersToNotify().tokenAuthenticationFinished();
+				tokenAuthenticationFinished();
 			} else {
 				Log.v("DEBUG", "MoodleController::onStartCommand auth failed");
 				mModel.getListenersToNotify().authenticationFailed();
@@ -195,6 +195,29 @@ public class MoodleController extends PluginController implements IMoodleControl
 		if(courseId != null)
 			cr.setICourseId(courseId);
 		return cr;
+	}
+	
+	public void gotTequilaToken() {
+		pingAuthPlugin(getApplicationContext(), mModel.getTequilaToken().getITequilaKey());
+	}
+
+	public void tokenAuthenticationFinished() {
+		getMoodleSession();
+	}
+
+	public void notLoggedIn() {
+		mModel.setMoodleCookie(null);
+		getTequilaToken();
+	}
+	
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus://moodle.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "moodle");
+		authIntent.putExtra("longname", "Moodle");
+		context.startService(authIntent);
 	}
 	
 }

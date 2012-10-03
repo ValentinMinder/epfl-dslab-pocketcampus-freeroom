@@ -18,17 +18,23 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 public interface IIsacademiaView extends IView {
 	
 	/**
-	 * Methods called by the Model.
+	 * Update display when we get new data.
 	 */
 	void coursesUpdated();
 	void examsUpdated();
 	void scheduleUpdated();
 	
 	/**
-	 * Methods called by the "Request" classes.
+	 * Authentication callbacks.
+	 */
+	void gotIsaCookie();
+	void authenticationFailed();
+	void userCancelledAuthentication();
+	
+	/**
+	 * Display errors and notices.
 	 */
 	void networkErrorHappened();
 	void isaServersDown();
-	void notLoggedIn();
 	
 }

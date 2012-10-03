@@ -11,9 +11,10 @@
         android:name="org.pocketcampus.android.platform.sdk.core.GlobalContext">
         
         
-		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaMainView"
+		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaScheduleView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/isacademia_icon"
+			android:screenOrientation="nosensor"
 			android:label="@string/isacademia_plugin_title">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -52,21 +53,44 @@
 		
 		    
 		    
-		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaScheduleView"
-			xmlns:android="http://schemas.android.com/apk/res/android" />
+<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaScheduleView" -->
+<!-- 		    android:screenOrientation="nosensor" -->
+<!-- 			xmlns:android="http://schemas.android.com/apk/res/android" /> -->
  
-		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaExamsView"
-			xmlns:android="http://schemas.android.com/apk/res/android" />
+<!-- 		<activity android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaExamsView" -->
+<!-- 		    android:screenOrientation="nosensor" -->
+<!-- 			xmlns:android="http://schemas.android.com/apk/res/android" /> -->
  
 				    		    
 		    
+
 		<service android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaController"
-			xmlns:android="http://schemas.android.com/apk/res/android"></service>
-            
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<intent-filter>
+				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+				<category android:name="org.pocketcampus.plugin.authentication" />
+				<data  android:scheme="pocketcampus" android:host="isacademia.plugin.pocketcampus.org" />
+			</intent-filter>
+		    		    
+		</service>
+        
+		    
+
+		<receiver android:name="org.pocketcampus.plugin.isacademia.android.IsacademiaController$Logouter" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+            </intent-filter>
+        </receiver>		    
+		    		    
+		    
     </application>
     
         
 	<uses-permission android:name="android.permission.INTERNET" />
-	
-	
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+		
 </manifest>

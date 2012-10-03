@@ -22,6 +22,7 @@ public class GetTequilaTokenRequest extends Request<CamiproController, Iface, Ob
 	@Override
 	protected void onResult(CamiproController controller, TequilaToken result) {
 		((CamiproModel) controller.getModel()).setTequilaToken(result);
+		controller.gotTequilaToken();
 	}
 
 	@Override

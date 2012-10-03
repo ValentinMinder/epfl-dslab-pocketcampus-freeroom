@@ -15,6 +15,7 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,15 +67,13 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 			a.addAction(refresh, 0);
 		}
 		
-		if(mModel.getIsacademiaCookie() == null) { // if we don't have cookie
-			// get cookie (ping auth plugin)
-			IsacademiaMainView.pingAuthPlugin(this);
-		}
-		
+	}
+
+	@Override
+	protected void handleIntent(Intent aIntent) {
 		mController.refreshSchedule();
 		updateDisplay();
 	}
-
 	@Override
 	public void coursesUpdated() {
 	}
@@ -96,8 +95,8 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 		Log.v("DEBUG", "=========== SCHEDULE ===========");
 		for(IsaSeance i : ls) {
 			Log.v("DEBUG", i.toString());
-			String details = i.getWeekDay() + " - " + i.getTimeStart() + " - " + i.getRoom();
-			einfos.add(new SeanceInfo(i.getCourse(), details, false));
+			String details = i.getSeanceDate() + " - " + i.getSeanceRoom() + " - " + i.getStartTime() + " - " + i.getEndTime();
+			einfos.add(new SeanceInfo(i.getCourseName(), details, false));
 		}
 		ListView lv = new ListView(this);
 		lv.setAdapter(new SeancesListAdapter(this, R.layout.isa_seance_record, einfos));
@@ -107,6 +106,12 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 		mLayout.hideTitle();
 		mLayout.removeFillerView();
 		mLayout.addFillerView(lv);
+	}
+	
+	@Override
+	public void gotIsaCookie() {
+		// TODO check if activity is visible
+		mController.refreshSchedule();
 	}
 	
 	private void updateDisplay() {
@@ -120,17 +125,22 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 	}
 	
 	@Override
+	public void authenticationFailed() {
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.sdk_authentication_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void userCancelledAuthentication() {
+		finish();
+	}
+	
+	@Override
 	public void isaServersDown() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.isacademia_error_isa_down), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setIsacademiaCookie(null);
-		IsacademiaMainView.pingAuthPlugin(this);
-	}
-	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

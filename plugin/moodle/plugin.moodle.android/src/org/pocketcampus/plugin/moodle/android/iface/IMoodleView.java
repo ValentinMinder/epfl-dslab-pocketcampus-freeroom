@@ -20,24 +20,24 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 public interface IMoodleView extends IView {
 	
 	/**
-	 * Methods called by the Model.
+	 * Update display when we get data.
 	 */
 	void coursesListUpdated();
 	void eventsListUpdated();
 	void sectionsListUpdated();
-	void moodleCookieUpdated();
-	void tequilaTokenUpdated();
 	
-	void tokenAuthenticationFinished();
+	/**
+	 * Authentication callbacks.
+	 */
+	void gotMoodleCookie();
 	void authenticationFailed();
 	void userCancelledAuthentication();
 	
 	/**
-	 * Methods called by the "Request" classes.
+	 * Display errors and notices.
 	 */
 	void networkErrorHappened();
 	void moodleServersDown();
-	void notLoggedIn();
 	void downloadComplete(File localFile);
 	
 }

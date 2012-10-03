@@ -28,7 +28,7 @@ public class GetUserCoursesRequest extends Request<IsacademiaController, Iface, 
 		if(result.getIStatus() == 404) {
 			((IsacademiaModel) controller.getModel()).getListenersToNotify().isaServersDown();
 		} else if(result.getIStatus() == 407) {
-			((IsacademiaModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((IsacademiaModel) controller.getModel()).setCourses(result.getICourses());
 		}

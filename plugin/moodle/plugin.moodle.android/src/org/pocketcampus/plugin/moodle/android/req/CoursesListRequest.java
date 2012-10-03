@@ -29,7 +29,7 @@ public class CoursesListRequest extends Request<MoodleController, Iface, MoodleR
 		if(result.getIStatus() == 404) {
 			((MoodleModel) controller.getModel()).getListenersToNotify().moodleServersDown();
 		} else if(result.getIStatus() == 407) {
-			((MoodleModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((MoodleModel) controller.getModel()).setCourses(result.getICourses());
 			if(!wasServicedFromCache())

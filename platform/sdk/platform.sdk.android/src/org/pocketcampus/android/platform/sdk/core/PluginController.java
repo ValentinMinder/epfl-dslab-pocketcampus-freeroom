@@ -62,6 +62,11 @@ public abstract class PluginController extends Service {
 		DefaultHttpClient client = new DefaultHttpClient();
 		ClientConnectionManager mgr = client.getConnectionManager();
 		HttpParams params = client.getParams();
+		// PROXY
+		// one way to do it
+		//params.setParameter(ConnRoutePNames.DEFAULT_PROXY, new HttpHost("localhost", 8080));
+		// another way to do it
+		//HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(proxy);
 		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
 				mgr.getSchemeRegistry()), params);
 

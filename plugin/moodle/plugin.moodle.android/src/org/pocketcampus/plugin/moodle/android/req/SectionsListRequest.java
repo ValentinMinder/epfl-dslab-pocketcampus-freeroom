@@ -29,7 +29,7 @@ public class SectionsListRequest extends Request<MoodleController, Iface, Moodle
 		if(result.getIStatus() == 404) {
 			((MoodleModel) controller.getModel()).getListenersToNotify().moodleServersDown();
 		} else if(result.getIStatus() == 407) {
-			((MoodleModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+			controller.notLoggedIn();
 		} else if(result.getIStatus() == 405) { // course id was not given as an argument
 			// TODO display appropriate error
 			((MoodleModel) controller.getModel()).getListenersToNotify().moodleServersDown();

@@ -211,23 +211,13 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 	}
 
 	@Override
-	public void tequilaTokenUpdated() {
-		MoodleMainView.pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void moodleCookieUpdated() {
+	public void gotMoodleCookie() {
 		mController.refreshCoursesList(true);
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		mController.getMoodleSession();
-	}
-
-	private void updateDisplay() {
+	/*private void updateDisplay() {
 		sectionsListUpdated();
-	}
+	}*/
 	
 	@Override
 	public void networkErrorHappened() {
@@ -259,13 +249,6 @@ public class MoodleCurrentWeekView extends PluginView implements IMoodleView {
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setMoodleCookie(null);
-		mController.getTequilaToken();
-		//MoodleMainView.pingAuthPlugin(this);
-	}
-	
 	public static void openFile(Context c, File file) {
 		Uri uri = Uri.fromFile(file);
 		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);

@@ -9,14 +9,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
+import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
-import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
 import org.pocketcampus.plugin.isacademia.shared.IsaCoursesListReply;
-import org.pocketcampus.plugin.isacademia.shared.IsaExam;
 import org.pocketcampus.plugin.isacademia.shared.IsaExamsListReply;
 import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsaScheduleReply;
 import org.pocketcampus.plugin.isacademia.shared.IsaSeance;
+import org.pocketcampus.plugin.isacademia.shared.IsaSession;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService;
 import org.pocketcampus.plugin.isacademia.shared.SeanceType;
 import org.w3c.dom.Document;
@@ -37,126 +37,70 @@ import org.xml.sax.InputSource;
  */
 public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	
-	final public static String ISA_URL = "https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_cell=%s";
+	final public static String ISA_TIMETABLE_URL = "https://isa.epfl.ch/service/secure/student/timetable/week";
 	
 	public IsacademiaServiceImpl() {
 		System.out.println("Starting IS-Academia plugin server ...");
 	}
 
 	@Override
+	public TequilaToken getTequilaTokenForIsa() throws TException {
+		System.out.println("getTequilaTokenForIsa");
+		try {
+			String page = getHeadersWithCookie(ISA_TIMETABLE_URL, new Cookie());
+			//System.out.println("getTequilaTokenForIsa page=" + page);
+			String reqKey = getSubstringBetween(page, "requestkey=", "\r\n");
+			String kuki = getSubstringBetween(page, "Set-Cookie: ", ";");
+			//System.out.println("getTequilaTokenForIsa reqKey=" + reqKey);
+			//System.out.println("getTequilaTokenForIsa kuki=" + kuki);
+			TequilaToken teqToken = new TequilaToken(reqKey);
+			teqToken.setLoginCookie(kuki);
+			return teqToken;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("Failed to getTequilaToken from upstream server");
+		}
+	}
+
+	@Override
+	public IsaSession getIsaSession(TequilaToken iTequilaToken) throws TException {
+		System.out.println("getIsaSession");
+		return new IsaSession(iTequilaToken.getLoginCookie());
+		/*try {
+			Cookie cookie = new Cookie();
+			cookie.importFromString(iTequilaToken.getLoginCookie());
+			String page = getHeadersWithCookie(ISA_TIMETABLE_URL, cookie);
+			String kuki = getSubstringBetween(page, "Set-Cookie: ", ";");
+			//System.out.println("getIsaSession kuki=" + kuki);
+			return new IsaSession(kuki);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TException("Failed to getIsaSession from upstream server");
+		}*/
+	}
+	
+	@Override
 	public IsaCoursesListReply getUserCourses(IsaRequest iRequest) throws TException {
 		System.out.println("getUserCourses");
-		Document doc = null;
-		Cookie cookie = new Cookie();
-		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
-		
-		try {
-			String page = getPageWithCookie(String.format(ISA_URL, "1210075152"), cookie);
-			if(page == null) {
-				System.out.println("cookie timed out?");
-				return new IsaCoursesListReply(407);
-			}
-			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
-			doc = dBuilder.parse(new InputSource(new StringReader(page)));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new IsaCoursesListReply(404);
-		}
-		
-		doc.getDocumentElement().normalize();
-		LinkedList<IsaCourse> tCourses = new LinkedList<IsaCourse>();
-		NodeList nList = doc.getElementsByTagName("tr");
-		for(int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
-				Element eElement = (Element) nNode;
-				NodeList nlList = eElement.getElementsByTagName("td");
-				IsaCourse crs = new IsaCourse();
-				crs.setName(nlList.item(0).getTextContent());
-				crs.setCode(getSubstringBetween(nlList.item(1).getTextContent(), "]", "["));
-				crs.setInstructor(getSubstringBetween(nlList.item(2).getTextContent(), "]", "["));
-				String rooms = "";
-				for(String room : nlList.item(3).getTextContent().split(",")) {
-					if(rooms.length() > 0)
-						rooms += ", ";
-					rooms += getSubstringBetween(room, "]", "[");
-				}
-				crs.setRooms(rooms);
-				crs.setDateTime(nlList.item(4).getTextContent());
-				crs.setCredits(Integer.parseInt(getSubstringBetween(nlList.item(5).getTextContent(), "]", "[")));
-				tCourses.add(crs);
-			}
-		}
-		
-		IsaCoursesListReply clr = new IsaCoursesListReply(200);
-		clr.setICourses(tCourses);
-		return clr;
+		return null;
 	}
 
 	@Override
 	public IsaExamsListReply getUserExams(IsaRequest iRequest) throws TException {
 		System.out.println("getUserExams");
-		Document doc = null;
-		Cookie cookie = new Cookie();
-		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
-		
-		try {
-			String page = getPageWithCookie(String.format(ISA_URL, "1371525543"), cookie);
-			if(page == null) {
-				System.out.println("cookie timed out?");
-				return new IsaExamsListReply(407);
-			}
-			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
-			doc = dBuilder.parse(new InputSource(new StringReader(page)));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new IsaExamsListReply(404);
-		}
-		
-		doc.getDocumentElement().normalize();
-		LinkedList<IsaExam> tExams = new LinkedList<IsaExam>();
-		NodeList nList = doc.getElementsByTagName("tr");
-		for(int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
-				Element eElement = (Element) nNode;
-				NodeList nlList = eElement.getElementsByTagName("td");
-				IsaExam exm = new IsaExam();
-				exm.setCourse(nlList.item(0).getTextContent());
-				exm.setCode(getSubstringBetween(nlList.item(1).getTextContent(), "]", "["));
-				exm.setInstructor(getSubstringBetween(nlList.item(2).getTextContent(), "]", "["));
-				String rooms = "";
-				for(String room : nlList.item(3).getTextContent().split(",")) {
-					if(rooms.length() > 0)
-						rooms += ", ";
-					rooms += getSubstringBetween(room, "]", "[");
-				}
-				exm.setRooms(rooms);
-				exm.setDateTime(nlList.item(4).getTextContent());
-				exm.setCredits(Integer.parseInt(getSubstringBetween(nlList.item(5).getTextContent(), "]", "[")));
-				//crs.setGrade(nlList.item(6).getTextContent());
-				exm.setSemester(nlList.item(7).getTextContent());
-				exm.setAcademicYear(nlList.item(8).getTextContent());
-				tExams.add(exm);
-			}
-		}
-		
-		IsaExamsListReply elr = new IsaExamsListReply(200);
-		elr.setIExams(tExams);
-		return elr;
+		return null;
 	}
 
 	@Override
 	public IsaScheduleReply getUserSchedule(IsaRequest iRequest) throws TException {
 		System.out.println("getUserSchedule");
+		
 		Document doc = null;
 		Cookie cookie = new Cookie();
-		cookie.importFromString(iRequest.getISessionId().getIsaCookie());
+		cookie.importFromString(iRequest.getIsaSession().getIsaCookie());
 		
 		try {
-			String page = getPageWithCookie(String.format(ISA_URL, "1210054559"), cookie);
+			String page = getPageWithCookie(ISA_TIMETABLE_URL, cookie);
 			if(page == null) {
 				System.out.println("cookie timed out?");
 				return new IsaScheduleReply(407);
@@ -171,10 +115,22 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		
 		doc.getDocumentElement().normalize();
 		LinkedList<IsaSeance> tSeances = new LinkedList<IsaSeance>();
-		NodeList nList = doc.getElementsByTagName("seance");
+		NodeList nList = doc.getElementsByTagName("study-period");
 		for(int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
-			if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
+			System.out.println(getElementByTagName((Element) nNode, "id").getTextContent());
+			IsaSeance scnc = new IsaSeance();
+			scnc.setSeanceDate(getElementByTagName((Element) nNode, "date").getTextContent());
+			scnc.setWeekDay(Integer.parseInt(getElementByTagName((Element) nNode, "day").getTextContent()));
+			scnc.setStartTime(getElementByTagName((Element) nNode, "startTime").getTextContent());
+			scnc.setEndTime(getElementByTagName((Element) nNode, "endTime").getTextContent());
+			scnc.setSeanceType(mapSeanceType(getElementByTagName(getElementByTagName((Element) nNode, "type"), "text").getTextContent()));
+			scnc.setCourseName(getElementByTagName(getElementByTagName(getElementByTagName((Element) nNode, "course"), "name"), "text").getTextContent());
+			// TODO sometimes there are many rooms
+			scnc.setSeanceRoom(getElementByTagName(getElementByTagName((Element) nNode, "room"), "code").getTextContent());
+			
+			tSeances.add(scnc);
+			/*if(nNode.getAttributes() != null && nNode.getAttributes().getNamedItem("id") != null) {
 				Element eElement = (Element) nNode;
 				IsaSeance scnc = new IsaSeance();
 				scnc.setCourse(eElement.getElementsByTagName("matiere").item(0).getTextContent());
@@ -193,7 +149,7 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 				}
 				scnc.setRoom(rooms);
 				tSeances.add(scnc);
-			}
+			}*/
 		}
 		
 		IsaScheduleReply sr = new IsaScheduleReply(200);
@@ -206,6 +162,10 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	 * HELPER FUNCTIONS
 	 */
 	
+	private Element getElementByTagName(Element e, String tag) {
+		return (Element) e.getElementsByTagName(tag).item(0);
+	}
+	
 	private String executeCommand(String cmd) throws IOException {
 		Runtime run = Runtime.getRuntime();
 		Process pr = run.exec(cmd);
@@ -216,7 +176,7 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			throw new IOException("executeCommand: waitFor Interrupted");
 		}
 		// IS-Academia always returns data in ISO-8859-15 encoding
-		return IOUtils.toString(pr.getInputStream(), "ISO-8859-15");
+		return IOUtils.toString(pr.getInputStream(), "ISO-8859-1");
 	}
 	
 	private SeanceType mapSeanceType(String tp) throws TException {
@@ -233,21 +193,60 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		} else if ("CONFLIT".equals(tp)) {
 			return SeanceType.SEANCE_CONFLICT;
 		}
-		throw new TException("mapSeanceType: Unknown Seance Type");
+		return SeanceType.SEANCE_CONFLICT;
+		//throw new TException("mapSeanceType: Unknown Seance Type");
 	}
 	
+	/*private class HttpPageReply {
+		private String page;
+		private String location;
+		public HttpPageReply(String page, String location) {
+			this.page = page;
+			this.location = location;
+		}
+		public String getPage() {
+			return page;
+		}
+		public String getLocation() {
+			return location;
+		}
+	}*/
+	
+	/*private String getPageWithCookie(String url, Cookie cookie) throws IOException {
+		return getHttpReplyWithCookie(url, cookie).getPage();
+	}
+	
+	private HttpPageReply getHttpReplyWithCookie(String url, Cookie cookie) throws IOException {
+		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+		conn.setInstanceFollowRedirects(false);
+		conn.setRequestProperty("Cookie", cookie.cookie());
+		if(conn.getResponseCode() != 200)
+			return new HttpPageReply(null, conn.getHeaderField("Location"));
+		return new HttpPageReply(IOUtils.toString(conn.getInputStream(), "ISO-8859-1"), null);
+	}*/
+	
 	private String getPageWithCookie(String url, Cookie cookie) throws IOException {
-		String cmdLine = "curl --sslv3 --include --cookie " + cookie.cookie() + " " + url;
+		String[] full = getReplyWithCookie(url, cookie);
+		if(full[0].contains("Location"))
+			return null;
+		return full[1];
+	}
+	
+	private String getHeadersWithCookie(String url, Cookie cookie) throws IOException {
+		String[] full = getReplyWithCookie(url, cookie);
+		return full[0];
+	}
+	
+	private String[] getReplyWithCookie(String url, Cookie cookie) throws IOException {
+		String cookieStr = cookie.cookie().trim();
+		if(cookieStr.length() > 0)
+			cookieStr = "--cookie " + cookieStr + " ";
+		String cmdLine = "curl --sslv3 --include " + cookieStr + url;
 		System.out.println(cmdLine);
 		String resp = executeCommand(cmdLine);
 		String[] full = resp.split("\r\n\r\n", 2);
-		if(full.length != 2)
-			throw new IOException("getPageWithCookie: no header or body in http response");
-		if(full[0].contains("Set-Cookie"))
-			return null;
-		String page = full[1];
-		System.out.println(page.substring(0, 60));
-		return page;
+		return full;
 	}
 	
 	private String getSubstringBetween(String orig, String before, String after) {
@@ -261,5 +260,5 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		}
 		return orig;
 	}
-	
+
 }

@@ -14,6 +14,7 @@
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/moodle_icon"
+			android:screenOrientation="nosensor"
 			android:label="@string/moodle_plugin_title">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -52,15 +53,19 @@
 		
 		    
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionsView"
+		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 		
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCourseSectionResourcesView"
+		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 		
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleEventsView"
+		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 		
 		<activity android:name="org.pocketcampus.plugin.moodle.android.MoodleCurrentWeekView"
+		    android:screenOrientation="nosensor"
 			xmlns:android="http://schemas.android.com/apk/res/android" />
 						    
 		<service android:name="org.pocketcampus.plugin.moodle.android.MoodleController"

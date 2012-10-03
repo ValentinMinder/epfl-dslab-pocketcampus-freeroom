@@ -24,15 +24,15 @@ import org.slf4j.LoggerFactory;
 public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("IsaRequest");
 
-  private static final org.apache.thrift.protocol.TField I_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField ISA_SESSION_FIELD_DESC = new org.apache.thrift.protocol.TField("isaSession", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public org.pocketcampus.plugin.authentication.shared.SessionId iSessionId; // required
+  public IsaSession isaSession; // required
   public String iLanguage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_SESSION_ID((short)1, "iSessionId"),
+    ISA_SESSION((short)1, "isaSession"),
     I_LANGUAGE((short)2, "iLanguage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -48,8 +48,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_SESSION_ID
-          return I_SESSION_ID;
+        case 1: // ISA_SESSION
+          return ISA_SESSION;
         case 2: // I_LANGUAGE
           return I_LANGUAGE;
         default:
@@ -96,8 +96,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("iSessionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+    tmpMap.put(_Fields.ISA_SESSION, new org.apache.thrift.meta_data.FieldMetaData("isaSession", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, IsaSession.class)));
     tmpMap.put(_Fields.I_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("iLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -108,11 +108,11 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
   }
 
   public IsaRequest(
-    org.pocketcampus.plugin.authentication.shared.SessionId iSessionId,
+    IsaSession isaSession,
     String iLanguage)
   {
     this();
-    this.iSessionId = iSessionId;
+    this.isaSession = isaSession;
     this.iLanguage = iLanguage;
   }
 
@@ -120,8 +120,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
    * Performs a deep copy on <i>other</i>.
    */
   public IsaRequest(IsaRequest other) {
-    if (other.isSetISessionId()) {
-      this.iSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.iSessionId);
+    if (other.isSetIsaSession()) {
+      this.isaSession = new IsaSession(other.isaSession);
     }
     if (other.isSetILanguage()) {
       this.iLanguage = other.iLanguage;
@@ -134,31 +134,31 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
 
   @Override
   public void clear() {
-    this.iSessionId = null;
+    this.isaSession = null;
     this.iLanguage = null;
   }
 
-  public org.pocketcampus.plugin.authentication.shared.SessionId getISessionId() {
-    return this.iSessionId;
+  public IsaSession getIsaSession() {
+    return this.isaSession;
   }
 
-  public IsaRequest setISessionId(org.pocketcampus.plugin.authentication.shared.SessionId iSessionId) {
-    this.iSessionId = iSessionId;
+  public IsaRequest setIsaSession(IsaSession isaSession) {
+    this.isaSession = isaSession;
     return this;
   }
 
-  public void unsetISessionId() {
-    this.iSessionId = null;
+  public void unsetIsaSession() {
+    this.isaSession = null;
   }
 
-  /** Returns true if field iSessionId is set (has been assigned a value) and false otherwise */
-  public boolean isSetISessionId() {
-    return this.iSessionId != null;
+  /** Returns true if field isaSession is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsaSession() {
+    return this.isaSession != null;
   }
 
-  public void setISessionIdIsSet(boolean value) {
+  public void setIsaSessionIsSet(boolean value) {
     if (!value) {
-      this.iSessionId = null;
+      this.isaSession = null;
     }
   }
 
@@ -188,11 +188,11 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_SESSION_ID:
+    case ISA_SESSION:
       if (value == null) {
-        unsetISessionId();
+        unsetIsaSession();
       } else {
-        setISessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+        setIsaSession((IsaSession)value);
       }
       break;
 
@@ -209,8 +209,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_SESSION_ID:
-      return getISessionId();
+    case ISA_SESSION:
+      return getIsaSession();
 
     case I_LANGUAGE:
       return getILanguage();
@@ -226,8 +226,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
     }
 
     switch (field) {
-    case I_SESSION_ID:
-      return isSetISessionId();
+    case ISA_SESSION:
+      return isSetIsaSession();
     case I_LANGUAGE:
       return isSetILanguage();
     }
@@ -247,12 +247,12 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
     if (that == null)
       return false;
 
-    boolean this_present_iSessionId = true && this.isSetISessionId();
-    boolean that_present_iSessionId = true && that.isSetISessionId();
-    if (this_present_iSessionId || that_present_iSessionId) {
-      if (!(this_present_iSessionId && that_present_iSessionId))
+    boolean this_present_isaSession = true && this.isSetIsaSession();
+    boolean that_present_isaSession = true && that.isSetIsaSession();
+    if (this_present_isaSession || that_present_isaSession) {
+      if (!(this_present_isaSession && that_present_isaSession))
         return false;
-      if (!this.iSessionId.equals(that.iSessionId))
+      if (!this.isaSession.equals(that.isaSession))
         return false;
     }
 
@@ -272,10 +272,10 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iSessionId = true && (isSetISessionId());
-    builder.append(present_iSessionId);
-    if (present_iSessionId)
-      builder.append(iSessionId);
+    boolean present_isaSession = true && (isSetIsaSession());
+    builder.append(present_isaSession);
+    if (present_isaSession)
+      builder.append(isaSession);
 
     boolean present_iLanguage = true && (isSetILanguage());
     builder.append(present_iLanguage);
@@ -293,12 +293,12 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
     int lastComparison = 0;
     IsaRequest typedOther = (IsaRequest)other;
 
-    lastComparison = Boolean.valueOf(isSetISessionId()).compareTo(typedOther.isSetISessionId());
+    lastComparison = Boolean.valueOf(isSetIsaSession()).compareTo(typedOther.isSetIsaSession());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetISessionId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iSessionId, typedOther.iSessionId);
+    if (isSetIsaSession()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isaSession, typedOther.isaSession);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -330,10 +330,10 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
         break;
       }
       switch (field.id) {
-        case 1: // I_SESSION_ID
+        case 1: // ISA_SESSION
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
-            this.iSessionId.read(iprot);
+            this.isaSession = new IsaSession();
+            this.isaSession.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -360,9 +360,9 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iSessionId != null) {
-      oprot.writeFieldBegin(I_SESSION_ID_FIELD_DESC);
-      this.iSessionId.write(oprot);
+    if (this.isaSession != null) {
+      oprot.writeFieldBegin(ISA_SESSION_FIELD_DESC);
+      this.isaSession.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.iLanguage != null) {
@@ -379,11 +379,11 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
     StringBuilder sb = new StringBuilder("IsaRequest(");
     boolean first = true;
 
-    sb.append("iSessionId:");
-    if (this.iSessionId == null) {
+    sb.append("isaSession:");
+    if (this.isaSession == null) {
       sb.append("null");
     } else {
-      sb.append(this.iSessionId);
+      sb.append(this.isaSession);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -400,8 +400,8 @@ public class IsaRequest implements org.apache.thrift.TBase<IsaRequest, IsaReques
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (iSessionId == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iSessionId' was not present! Struct: " + toString());
+    if (isaSession == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'isaSession' was not present! Struct: " + toString());
     }
     if (iLanguage == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iLanguage' was not present! Struct: " + toString());

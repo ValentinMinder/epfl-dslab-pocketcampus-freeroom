@@ -29,7 +29,7 @@ public class StatsAndLoadingInfoRequest extends Request<CamiproController, Iface
 		if(result.getIStatus() == 404) {
 			((CamiproModel) controller.getModel()).getListenersToNotify().camiproServersDown();
 		} else if(result.getIStatus() == 407) {
-			((CamiproModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((CamiproModel) controller.getModel()).setCardStatistics(result.getICardStatistics());
 			((CamiproModel) controller.getModel()).setCardLoadingWithEbankingInfo(result.getICardLoadingWithEbankingInfo());

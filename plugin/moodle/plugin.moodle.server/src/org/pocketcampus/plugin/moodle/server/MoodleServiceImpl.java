@@ -50,7 +50,7 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 	
 	@Override
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
-		System.out.println("getTequilaToken");
+		System.out.println("getTequilaTokenForMoodle");
 		try {
 			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
 			conn2.setInstanceFollowRedirects(false);
@@ -103,24 +103,24 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
 		
 		try {
-			page = getPageWithCookie("http://moodle.epfl.ch/my/", cookie);
+			page = getPageWithCookie("http://moodle.epfl.ch/?redirect=0", cookie);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new CoursesListReply(404);
 		}
-		if(page == null || page.indexOf("login/index.php") != -1) {
+		if(page == null || page.indexOf("login/logout.php") == -1) {
 			System.out.println("not logged in");
 			return new CoursesListReply(407);
 		}
 		
 		//page = getSubstringBetween(page, "block_course_overview", "block_course_list");
 		LinkedList<MoodleCourse> tCourses = new LinkedList<MoodleCourse>();
-		for (String i : getAllSubstringsBetween(page, "coursebox", "</h3>")) {
+		for (String i : getAllSubstringsBetween(page, "<a", "course/view.php", "a>")) {
 			MoodleCourse mc = new MoodleCourse();
 			//mc.setITitle(StringEscapeUtils.unescapeHtml4(getLastSubstringBetween(i, ">", "</a>")));
-			String data = getSubstringBetween(i, "course/view.php", "</a>");
-			mc.setITitle(getSubstringBetween(data, ">", "<")); // "<" will not be found
-			mc.setIId(Integer.parseInt(getSubstringBetween(data, "id=", "\"")));
+			//String data = getSubstringBetween(i, "course/view.php", "</a>");
+			mc.setITitle(getSubstringBetween(i, "title=\"", "\""));
+			mc.setIId(Integer.parseInt(getSubstringBetween(i, "id=", "\"")));
 			tCourses.add(mc);
 		}
 		
@@ -284,6 +284,25 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 			if(a == -1)
 				return ssl;
 			b = orig.lastIndexOf(before, a - before.length());
+			ssl.add(orig.substring(b + before.length(), a));
+			orig = orig.substring(a + after.length());
+		}
+	}
+	
+	private LinkedList<String> getAllSubstringsBetween(String orig, String before, String middle, String after) {
+		LinkedList<String> ssl = new LinkedList<String>();
+		if(orig.length() == 0 || before.length() == 0 || middle.length() == 0 || after.length() == 0)
+			return ssl;
+		while(true) {
+			int m = orig.indexOf(middle);
+			if(m == -1)
+				return ssl;
+			int a = orig.indexOf(after, m + middle.length());
+			if(a == -1)
+				return ssl;
+			int b = orig.lastIndexOf(before, m - before.length());
+			if(b == -1)
+				return ssl;
 			ssl.add(orig.substring(b + before.length(), a));
 			orig = orig.substring(a + after.length());
 		}
