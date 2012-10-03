@@ -99,20 +99,10 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	}
 
 	@Override
-	public void tequilaTokenUpdated() {
-		CamiproMainView.pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void camiproCookieUpdated() {
+	public void gotCamiproCookie() {
 		mController.refreshStatsAndLoadingInfo();
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		mController.getCamiproSession();
-	}
-
 	private void updateDisplay() {
 		CardLoadingWithEbankingInfo ebanking = mModel.getCardLoadingWithEbankingInfo();
 		CardStatistics stats = mModel.getCardStatistics();
@@ -176,12 +166,6 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setCamiproCookie(null);
-		//CamiproMainView.pingAuthPlugin(this);
-		mController.getTequilaToken();
-	}
 	@Override
 	public void networkErrorHappened() {
 		//Tracker

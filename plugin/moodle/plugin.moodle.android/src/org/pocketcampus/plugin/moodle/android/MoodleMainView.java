@@ -5,22 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pocketcampus.R;
-import org.pocketcampus.android.platform.sdk.cache.RequestCache;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
-import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
-import org.pocketcampus.plugin.moodle.android.req.EventsListRequest;
-import org.pocketcampus.plugin.moodle.android.req.SectionsListRequest;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -164,22 +158,11 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	}
 
 	@Override
-	public void tequilaTokenUpdated() {
-		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void moodleCookieUpdated() {
+	public void gotMoodleCookie() {
 		// TODO check if activity is visible
 		mController.refreshCoursesList(true);
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		// TODO check if activity is visible
-		mController.getMoodleSession();
-	}
-
 	private void updateDisplay() {
 		coursesListUpdated();
 	}
@@ -189,16 +172,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=moodle"));
 		context.startActivity(authIntent);
 	}*/
-	
-	public static void pingAuthPlugin(Context context, String tequilaToken) {
-		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
-		authIntent.putExtra("tequilatoken", tequilaToken);
-		authIntent.putExtra("callbackurl", "pocketcampus://moodle.plugin.pocketcampus.org/tokenauthenticated");
-		authIntent.putExtra("shortname", "moodle");
-		authIntent.putExtra("longname", "Moodle");
-		context.startService(authIntent);
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -245,12 +218,6 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setMoodleCookie(null);
-		mController.getTequilaToken();
-	}
-	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

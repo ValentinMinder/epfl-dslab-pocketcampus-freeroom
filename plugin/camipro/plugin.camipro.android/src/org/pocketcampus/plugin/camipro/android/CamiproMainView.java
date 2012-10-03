@@ -14,7 +14,6 @@ import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -199,22 +198,11 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 	}
 
 	@Override
-	public void tequilaTokenUpdated() {
-		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void camiproCookieUpdated() {
+	public void gotCamiproCookie() {
 		// TODO check if activity is visible
 		mController.refreshBalanceAndTransactions();
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		// TODO check if activity is visible
-		mController.getCamiproSession();
-	}
-
 	/*private void updateDisplay() {
 		transactionsUpdated();
 		balanceUpdated();
@@ -222,19 +210,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		cardStatisticsUpdated();
 		lastUpdateDateUpdated();
 	}*/
-	
-	public static void pingAuthPlugin(Context context, String tequilaToken) {
-		/*Intent authIntent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("pocketcampus-authenticate://authentication.plugin.pocketcampus.org/do_auth?service=camipro"));
-		context.startActivity(authIntent);*/
-		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
-		authIntent.putExtra("tequilatoken", tequilaToken);
-		authIntent.putExtra("callbackurl", "pocketcampus://camipro.plugin.pocketcampus.org/tokenauthenticated");
-		authIntent.putExtra("shortname", "camipro");
-		authIntent.putExtra("longname", "Camipro");
-		context.startService(authIntent);
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,13 +255,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 				R.string.camipro_error_camipro_down), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setCamiproCookie(null);
-		//pingAuthPlugin(this);
-		mController.getTequilaToken();
-	}
-	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

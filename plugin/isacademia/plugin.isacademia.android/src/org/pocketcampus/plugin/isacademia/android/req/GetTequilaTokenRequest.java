@@ -22,6 +22,7 @@ public class GetTequilaTokenRequest extends Request<IsacademiaController, Iface,
 	@Override
 	protected void onResult(IsacademiaController controller, TequilaToken result) {
 		((IsacademiaModel) controller.getModel()).setTequilaToken(result);
+		controller.gotTequilaToken();
 	}
 
 	@Override

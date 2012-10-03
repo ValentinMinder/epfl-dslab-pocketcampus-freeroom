@@ -2,8 +2,6 @@ package org.pocketcampus.plugin.isacademia.server;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,13 +9,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.plugin.authentication.shared.TequilaToken;
 import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
-import org.pocketcampus.plugin.isacademia.shared.IsaCourse;
 import org.pocketcampus.plugin.isacademia.shared.IsaCoursesListReply;
-import org.pocketcampus.plugin.isacademia.shared.IsaExam;
 import org.pocketcampus.plugin.isacademia.shared.IsaExamsListReply;
 import org.pocketcampus.plugin.isacademia.shared.IsaRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsaScheduleReply;
@@ -57,8 +51,8 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 			//System.out.println("getTequilaTokenForIsa page=" + page);
 			String reqKey = getSubstringBetween(page, "requestkey=", "\r\n");
 			String kuki = getSubstringBetween(page, "Set-Cookie: ", ";");
-			System.out.println("getTequilaTokenForIsa reqKey=" + reqKey);
-			System.out.println("getTequilaTokenForIsa kuki=" + kuki);
+			//System.out.println("getTequilaTokenForIsa reqKey=" + reqKey);
+			//System.out.println("getTequilaTokenForIsa kuki=" + kuki);
 			TequilaToken teqToken = new TequilaToken(reqKey);
 			teqToken.setLoginCookie(kuki);
 			return teqToken;
@@ -71,17 +65,18 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 	@Override
 	public IsaSession getIsaSession(TequilaToken iTequilaToken) throws TException {
 		System.out.println("getIsaSession");
-		try {
+		return new IsaSession(iTequilaToken.getLoginCookie());
+		/*try {
 			Cookie cookie = new Cookie();
 			cookie.importFromString(iTequilaToken.getLoginCookie());
 			String page = getHeadersWithCookie(ISA_TIMETABLE_URL, cookie);
 			String kuki = getSubstringBetween(page, "Set-Cookie: ", ";");
-			System.out.println("getIsaSession kuki=" + kuki);
+			//System.out.println("getIsaSession kuki=" + kuki);
 			return new IsaSession(kuki);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new TException("Failed to getIsaSession from upstream server");
-		}
+		}*/
 	}
 	
 	@Override
@@ -202,7 +197,7 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		//throw new TException("mapSeanceType: Unknown Seance Type");
 	}
 	
-	private class HttpPageReply {
+	/*private class HttpPageReply {
 		private String page;
 		private String location;
 		public HttpPageReply(String page, String location) {
@@ -215,7 +210,7 @@ public class IsacademiaServiceImpl implements IsacademiaService.Iface {
 		public String getLocation() {
 			return location;
 		}
-	}
+	}*/
 	
 	/*private String getPageWithCookie(String url, Cookie cookie) throws IOException {
 		return getHttpReplyWithCookie(url, cookie).getPage();

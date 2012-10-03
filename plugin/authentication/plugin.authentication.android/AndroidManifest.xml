@@ -15,6 +15,7 @@
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:icon="@drawable/authentication_icon"
 			android:label="@string/authentication_plugin_title"
+			android:screenOrientation="nosensor"
 			android:launchMode="singleTask"
 			 android:theme="@android:style/Theme.Dialog"
 			 android:excludeFromRecents="true">

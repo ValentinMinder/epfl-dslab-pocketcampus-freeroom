@@ -18,26 +18,26 @@ import org.pocketcampus.android.platform.sdk.core.IView;
 public interface ICamiproView extends IView {
 	
 	/**
-	 * Methods called by the Model.
+	 * Update display when we have data.
 	 */
 	void transactionsUpdated();
 	void balanceUpdated();
 	void cardLoadingWithEbankingInfoUpdated();
 	void cardStatisticsUpdated();
 	void lastUpdateDateUpdated();
-	void tequilaTokenUpdated();
-	void camiproCookieUpdated();
 	
-	void tokenAuthenticationFinished();
+	/**
+	 * Authentication callbacks.
+	 */
+	void gotCamiproCookie();
 	void authenticationFailed();
 	void userCancelledAuthentication();
 	
 	/**
-	 * Methods called by the "Request" classes.
+	 * Display errors and notices.
 	 */
 	void networkErrorHappened();
 	void camiproServersDown();
-	void notLoggedIn();
 	void emailSent(String result);
 	
 }

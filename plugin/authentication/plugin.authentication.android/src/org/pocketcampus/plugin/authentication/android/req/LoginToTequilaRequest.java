@@ -11,7 +11,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
-import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 
 /**

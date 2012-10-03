@@ -129,7 +129,6 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 	}
 	public void setTequilaToken(TequilaToken arg) {
 		tequilaToken = arg;
-		mListeners.tequilaTokenUpdated();
 	}
 	
 	/**
@@ -144,9 +143,6 @@ public class MoodleModel extends PluginModel implements IMoodleModel {
 			Editor editor = iStorage.edit();
 			editor.putString(MOODLE_COOKIE_KEY, moodleCookie);
 			editor.commit();
-		}
-		if(moodleCookie != null) {
-			mListeners.moodleCookieUpdated();
 		}
 	}
 	

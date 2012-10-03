@@ -23,6 +23,7 @@ public class GetCamiproSessionRequest extends Request<CamiproController, Iface, 
 	@Override
 	protected void onResult(CamiproController controller, CamiproSession result) {
 		((CamiproModel) controller.getModel()).setCamiproCookie(result.getCamiproCookie());
+		((CamiproModel) controller.getModel()).getListenersToNotify().gotCamiproCookie();
 	}
 
 	@Override

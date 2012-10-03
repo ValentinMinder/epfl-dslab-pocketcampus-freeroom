@@ -150,9 +150,6 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 			editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
 			editor.commit();
 		}
-		if(camiproCookie != null) {
-			mListeners.camiproCookieUpdated();
-		}
 	}
 	
 	/**
@@ -163,7 +160,6 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	}
 	public void setTequilaToken(TequilaToken arg) {
 		tequilaToken = arg;
-		mListeners.tequilaTokenUpdated();
 	}
 	
 	/**

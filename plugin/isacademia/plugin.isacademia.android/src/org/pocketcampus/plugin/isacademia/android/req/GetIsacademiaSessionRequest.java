@@ -23,6 +23,7 @@ public class GetIsacademiaSessionRequest extends Request<IsacademiaController, I
 	@Override
 	protected void onResult(IsacademiaController controller, IsaSession result) {
 		((IsacademiaModel) controller.getModel()).setIsacademiaCookie(result.getIsaCookie());
+		((IsacademiaModel) controller.getModel()).getListenersToNotify().gotIsaCookie();
 	}
 
 	@Override

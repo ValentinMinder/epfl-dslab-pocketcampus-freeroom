@@ -16,7 +16,6 @@ import com.markupartist.android.widget.ActionBar.Action;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,34 +109,13 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 	}
 	
 	@Override
-	public void tequilaTokenUpdated() {
-		pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void isaCookieUpdated() {
+	public void gotIsaCookie() {
 		// TODO check if activity is visible
 		mController.refreshSchedule();
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		// TODO check if activity is visible
-		mController.getIsacademiaSession();
-	}
-
 	private void updateDisplay() {
 		scheduleUpdated();
-	}
-	
-	public static void pingAuthPlugin(Context context, String tequilaToken) {
-		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
-				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
-		authIntent.putExtra("tequilatoken", tequilaToken);
-		authIntent.putExtra("callbackurl", "pocketcampus://isacademia.plugin.pocketcampus.org/tokenauthenticated");
-		authIntent.putExtra("shortname", "isacademia");
-		authIntent.putExtra("longname", "IS-Academia");
-		context.startService(authIntent);
 	}
 	
 	@Override
@@ -163,12 +141,6 @@ public class IsacademiaScheduleView extends PluginView implements IIsacademiaVie
 				R.string.isacademia_error_isa_down), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setIsacademiaCookie(null);
-		mController.getTequilaToken();
-	}
-	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

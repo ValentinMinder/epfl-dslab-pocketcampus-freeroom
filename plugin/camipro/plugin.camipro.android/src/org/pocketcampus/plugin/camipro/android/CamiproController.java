@@ -75,7 +75,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 				Log.v("DEBUG", "CamiproController::onStartCommand auth succ");
 				if(extras.getInt("forcereauth") != 0)
 					mModel.setForceReauth(true);
-				mModel.getListenersToNotify().tokenAuthenticationFinished();
+				tokenAuthenticationFinished();
 			} else {
 				Log.v("DEBUG", "CamiproController::onStartCommand auth failed");
 				mModel.getListenersToNotify().authenticationFailed();
@@ -127,6 +127,30 @@ public class CamiproController extends PluginController implements ICamiproContr
 		cr.setILanguage(Locale.getDefault().getLanguage());
 		cr.setISessionId(sessId);
 		return cr;
+	}
+	
+
+	public void gotTequilaToken() {
+		pingAuthPlugin(getApplicationContext(), mModel.getTequilaToken().getITequilaKey());
+	}
+
+	public void tokenAuthenticationFinished() {
+		getCamiproSession();
+	}
+
+	public void notLoggedIn() {
+		mModel.setCamiproCookie(null);
+		getTequilaToken();
+	}
+	
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus://camipro.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "camipro");
+		authIntent.putExtra("longname", "Camipro");
+		context.startService(authIntent);
 	}
 	
 }

@@ -84,7 +84,6 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 	}
 	public void setTequilaToken(TequilaToken arg) {
 		tequilaToken = arg;
-		mListeners.tequilaTokenUpdated();
 	}
 	
 	/**
@@ -132,9 +131,6 @@ public class IsacademiaModel extends PluginModel implements IIsacademiaModel {
 			Editor editor = iStorage.edit();
 			editor.putString(ISA_COOKIE_KEY, isacademiaCookie);
 			editor.commit();
-		}
-		if(isacademiaCookie != null) {
-			mListeners.isaCookieUpdated();
 		}
 	}
 	

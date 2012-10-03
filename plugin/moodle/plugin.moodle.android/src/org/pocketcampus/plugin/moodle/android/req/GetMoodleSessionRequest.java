@@ -23,6 +23,7 @@ public class GetMoodleSessionRequest extends Request<MoodleController, Iface, Te
 	@Override
 	protected void onResult(MoodleController controller, MoodleSession result) {
 		((MoodleModel) controller.getModel()).setMoodleCookie(result.getMoodleCookie());
+		((MoodleModel) controller.getModel()).getListenersToNotify().gotMoodleCookie();
 	}
 
 	@Override

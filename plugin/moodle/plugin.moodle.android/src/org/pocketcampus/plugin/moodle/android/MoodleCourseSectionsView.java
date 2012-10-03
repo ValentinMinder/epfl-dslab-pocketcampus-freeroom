@@ -9,18 +9,13 @@ import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginView;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
-import org.pocketcampus.plugin.moodle.android.MoodleMainView.CourseInfo;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
 import org.pocketcampus.plugin.moodle.shared.MoodleSection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -153,23 +148,13 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 	}
 
 	@Override
-	public void tequilaTokenUpdated() {
-		MoodleMainView.pingAuthPlugin(this, mModel.getTequilaToken().getITequilaKey());
-	}
-
-	@Override
-	public void moodleCookieUpdated() {
+	public void gotMoodleCookie() {
 		mController.refreshCoursesList(true);
 	}
 	
-	@Override
-	public void tokenAuthenticationFinished() {
-		mController.getMoodleSession();
-	}
-
-	private void updateDisplay() {
+	/*private void updateDisplay() {
 		sectionsListUpdated();
-	}
+	}*/
 	
 	@Override
 	public void networkErrorHappened() {
@@ -200,13 +185,6 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 
-	@Override
-	public void notLoggedIn() {
-		mModel.setMoodleCookie(null);
-		mController.getTequilaToken();
-		//MoodleMainView.pingAuthPlugin(this);
-	}
-	
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

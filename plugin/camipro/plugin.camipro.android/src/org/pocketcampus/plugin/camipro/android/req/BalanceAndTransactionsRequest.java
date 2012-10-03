@@ -29,7 +29,7 @@ public class BalanceAndTransactionsRequest extends Request<CamiproController, If
 		if(result.getIStatus() == 404) {
 			((CamiproModel) controller.getModel()).getListenersToNotify().camiproServersDown();
 		} else if(result.getIStatus() == 407) {
-			((CamiproModel) controller.getModel()).getListenersToNotify().notLoggedIn();
+			controller.notLoggedIn();
 		} else if(result.getIStatus() == 200) {
 			((CamiproModel) controller.getModel()).setBalance(result.getIBalance());
 			((CamiproModel) controller.getModel()).setTransactions(result.getITransactions());

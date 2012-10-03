@@ -84,7 +84,7 @@ public class IsacademiaController extends PluginController implements IIsacademi
 				Log.v("DEBUG", "IsacademiaController::onStartCommand auth succ");
 				if(extras.getInt("forcereauth") != 0)
 					mModel.setForceReauth(true);
-				mModel.getListenersToNotify().tokenAuthenticationFinished();
+				tokenAuthenticationFinished();
 			} else {
 				Log.v("DEBUG", "IsacademiaController::onStartCommand auth failed");
 				mModel.getListenersToNotify().authenticationFailed();
@@ -137,6 +137,29 @@ public class IsacademiaController extends PluginController implements IIsacademi
 		ir.setIsaSession(new IsaSession(mModel.getIsacademiaCookie()));
 		ir.setILanguage(Locale.getDefault().getLanguage());
 		return ir;
+	}
+	
+	public void gotTequilaToken() {
+		pingAuthPlugin(getApplicationContext(), mModel.getTequilaToken().getITequilaKey());
+	}
+
+	public void tokenAuthenticationFinished() {
+		getIsacademiaSession();
+	}
+
+	public void notLoggedIn() {
+		mModel.setIsacademiaCookie(null);
+		getTequilaToken();
+	}
+	
+	public static void pingAuthPlugin(Context context, String tequilaToken) {
+		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
+		authIntent.putExtra("tequilatoken", tequilaToken);
+		authIntent.putExtra("callbackurl", "pocketcampus://isacademia.plugin.pocketcampus.org/tokenauthenticated");
+		authIntent.putExtra("shortname", "isacademia");
+		authIntent.putExtra("longname", "IS-Academia");
+		context.startService(authIntent);
 	}
 	
 }

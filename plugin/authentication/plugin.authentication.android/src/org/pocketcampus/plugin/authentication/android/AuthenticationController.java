@@ -16,7 +16,6 @@ import org.pocketcampus.plugin.authentication.android.req.AuthenticateTokenWithT
 import org.pocketcampus.plugin.authentication.android.req.LoginToTequilaRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Client;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService.Iface;
-import org.pocketcampus.plugin.authentication.shared.TequilaSession;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

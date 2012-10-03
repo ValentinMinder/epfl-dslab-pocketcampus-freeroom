@@ -22,6 +22,7 @@ public class GetTequilaTokenRequest extends Request<MoodleController, Iface, Obj
 	@Override
 	protected void onResult(MoodleController controller, TequilaToken result) {
 		((MoodleModel) controller.getModel()).setTequilaToken(result);
+		controller.gotTequilaToken();
 	}
 
 	@Override
