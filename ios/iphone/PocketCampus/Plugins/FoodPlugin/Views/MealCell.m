@@ -140,7 +140,11 @@ static float MEAL_DESCRIPTION_FONT_SIZE = 16.0;
 }
 
 - (void)ratingValueChanged {
-    [self setVoteMode:VoteModeOK animated:YES];
+    if (ratingView.rating > 0) {
+        [self setVoteMode:VoteModeOK animated:YES];
+    } else {
+        [self setVoteMode:VoteModeDisabled animated:YES];
+    }
 }
 
 - (void)cancelPressed {

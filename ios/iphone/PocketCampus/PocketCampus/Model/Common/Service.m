@@ -248,9 +248,11 @@ static NSTimeInterval kConnectivityCheckTimeout;
 
 @end
 
+/*----------------------------------------------------------------------------------------------*/
+
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, cacheValidity;
+@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, returnCacheIfServerIsUnreachable, cacheValidity;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -268,6 +270,7 @@ static NSTimeInterval kConnectivityCheckTimeout;
         canceled = NO;
         customTimeout = 0.0;
         keepInCache = NO;
+        returnCacheIfServerIsUnreachable = NO;
         cacheValidity = 100.0 * 365 * 24 * 60 * 60; // hundred years in seconds (equivalent to the old skipCache = NO)
     }
     return self;
@@ -307,6 +310,11 @@ static NSTimeInterval kConnectivityCheckTimeout;
         [self computeHashCode];
 
         NSDictionary* cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+        if (self.returnCacheIfServerIsUnreachable) {
+            cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+        } else {
+            cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+        }
         
         if(cached) {
             [self retain];
@@ -854,8 +862,9 @@ static NSTimeInterval kConnectivityCheckTimeout;
 
 - (void)computeHashCode {
     hashCode = [ServiceRequest md5HexDigest:NSStringFromSelector(serviceClientSelector)];
-    for (int i = 0; i < arguments.count; i++)
+    for (int i = 0; i < arguments.count; i++) {
         hashCode = [ServiceRequest md5HexDigest:[NSString stringWithFormat:@"%@%@", hashCode, [[arguments objectAtIndex:i] objectForKey:@"value"]]];
+    }
     //NSLog(@"-> Hash computed for request %@ %@",NSStringFromSelector(self.serviceClientSelector), hashCode);
 }
 

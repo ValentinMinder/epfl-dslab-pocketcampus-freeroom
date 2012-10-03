@@ -103,6 +103,7 @@ typedef enum {
 @property BOOL shouldRestart; //will be checked if server availaility returns NO. If shouldRestart==YES, operation will be restarted
 @property NSTimeInterval customTimeout;
 @property BOOL keepInCache;
+@property BOOL returnCacheIfServerIsUnreachable;
 @property NSTimeInterval cacheValidity;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;

@@ -41,7 +41,7 @@
 					<object class="IBUILabel" id="258731206">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{0, 139}, {320, 84}}</string>
+						<string key="NSFrame">{{0, 163}, {320, 84}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="477758134"/>
@@ -83,9 +83,10 @@
 					<object class="IBUIActivityIndicatorView" id="346041389">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">-2147483347</int>
-						<string key="NSFrame">{{143, 126}, {37, 37}}</string>
+						<string key="NSFrame">{{143, 143}, {37, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -98,7 +99,7 @@
 					<object class="IBUIImageView" id="477758134">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{79, 95}, {162, 172}}</string>
+						<string key="NSFrame">{{79, 113}, {162, 172}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="346041389"/>
@@ -302,10 +303,6 @@
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
-		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
