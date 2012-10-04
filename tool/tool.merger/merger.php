@@ -168,7 +168,7 @@ EOS;
 }
 
 function generate_project_properties($output_dir, $is_lib, $refs){
-	$content = "target=android-9\n";
+	$content = "target=android-10\n";
 	if($is_lib)
 		$content .= "android.library=true\n";
 	$i = 1;
