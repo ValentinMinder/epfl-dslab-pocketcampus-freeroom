@@ -4,7 +4,7 @@ chdir(dirname(__FILE__));
 
 $plugins_to_merge = array("dashboard", "camipro", "moodle", "authentication", "food", "transport", "news", "satellite", "map", "bikes", "directory");
 
-$libs_to_export = array("commons-lang-2.6.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
+$libs_to_export = array("commons-lang-2.6.jar", "gcm.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -84,7 +84,7 @@ function generate_ant_properties($output_dir){
 	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
 	$content .= "key.alias=mykey\n";
 	$content .= "key.store.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
-	//$content .= "key.alias.password=xxxx\n";
+	$content .= "key.alias.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
 	file_put_contents("$output_dir/ant.properties", $content);
 }
 
