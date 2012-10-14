@@ -4,8 +4,7 @@ import java.util.Locale;
 
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
+import org.pocketcampus.plugin.camipro.shared.SessionId;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
 import org.pocketcampus.plugin.camipro.android.req.BalanceAndTransactionsRequest;
 import org.pocketcampus.plugin.camipro.android.req.GetCamiproSessionRequest;
@@ -121,7 +120,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 	}
 	
 	private CamiproRequest buildSessionId() {
-		SessionId sessId = new SessionId(TypeOfService.SERVICE_CAMIPRO);
+		SessionId sessId = new SessionId(0);
 		sessId.setCamiproCookie(mModel.getCamiproCookie());
 		CamiproRequest cr = new CamiproRequest();
 		cr.setILanguage(Locale.getDefault().getLanguage());

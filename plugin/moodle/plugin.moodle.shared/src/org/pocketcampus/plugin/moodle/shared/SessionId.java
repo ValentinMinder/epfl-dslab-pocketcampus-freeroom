@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.camipro.shared;
+package org.pocketcampus.plugin.moodle.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, CamiproRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CamiproRequest");
+public class SessionId implements org.apache.thrift.TBase<SessionId, SessionId._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SessionId");
 
-  private static final org.apache.thrift.protocol.TField I_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField TOS_FIELD_DESC = new org.apache.thrift.protocol.TField("tos", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField MOODLE_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("moodleCookie", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public SessionId iSessionId; // required
-  public String iLanguage; // required
+  public int tos; // required
+  public String moodleCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_SESSION_ID((short)1, "iSessionId"),
-    I_LANGUAGE((short)2, "iLanguage");
+    TOS((short)1, "tos"),
+    MOODLE_COOKIE((short)3, "moodleCookie");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_SESSION_ID
-          return I_SESSION_ID;
-        case 2: // I_LANGUAGE
-          return I_LANGUAGE;
+        case 1: // TOS
+          return TOS;
+        case 3: // MOODLE_COOKIE
+          return MOODLE_COOKIE;
         default:
           return null;
       }
@@ -92,115 +92,116 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   }
 
   // isset id assignments
+  private static final int __TOS_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("iSessionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionId.class)));
-    tmpMap.put(_Fields.I_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("iLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.TOS, new org.apache.thrift.meta_data.FieldMetaData("tos", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.MOODLE_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("moodleCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CamiproRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SessionId.class, metaDataMap);
   }
 
-  public CamiproRequest() {
+  public SessionId() {
   }
 
-  public CamiproRequest(
-    SessionId iSessionId,
-    String iLanguage)
+  public SessionId(
+    int tos)
   {
     this();
-    this.iSessionId = iSessionId;
-    this.iLanguage = iLanguage;
+    this.tos = tos;
+    setTosIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CamiproRequest(CamiproRequest other) {
-    if (other.isSetISessionId()) {
-      this.iSessionId = new SessionId(other.iSessionId);
-    }
-    if (other.isSetILanguage()) {
-      this.iLanguage = other.iLanguage;
+  public SessionId(SessionId other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.tos = other.tos;
+    if (other.isSetMoodleCookie()) {
+      this.moodleCookie = other.moodleCookie;
     }
   }
 
-  public CamiproRequest deepCopy() {
-    return new CamiproRequest(this);
+  public SessionId deepCopy() {
+    return new SessionId(this);
   }
 
   @Override
   public void clear() {
-    this.iSessionId = null;
-    this.iLanguage = null;
+    setTosIsSet(false);
+    this.tos = 0;
+    this.moodleCookie = null;
   }
 
-  public SessionId getISessionId() {
-    return this.iSessionId;
+  public int getTos() {
+    return this.tos;
   }
 
-  public CamiproRequest setISessionId(SessionId iSessionId) {
-    this.iSessionId = iSessionId;
+  public SessionId setTos(int tos) {
+    this.tos = tos;
+    setTosIsSet(true);
     return this;
   }
 
-  public void unsetISessionId() {
-    this.iSessionId = null;
+  public void unsetTos() {
+    __isset_bit_vector.clear(__TOS_ISSET_ID);
   }
 
-  /** Returns true if field iSessionId is set (has been assigned a value) and false otherwise */
-  public boolean isSetISessionId() {
-    return this.iSessionId != null;
+  /** Returns true if field tos is set (has been assigned a value) and false otherwise */
+  public boolean isSetTos() {
+    return __isset_bit_vector.get(__TOS_ISSET_ID);
   }
 
-  public void setISessionIdIsSet(boolean value) {
-    if (!value) {
-      this.iSessionId = null;
-    }
+  public void setTosIsSet(boolean value) {
+    __isset_bit_vector.set(__TOS_ISSET_ID, value);
   }
 
-  public String getILanguage() {
-    return this.iLanguage;
+  public String getMoodleCookie() {
+    return this.moodleCookie;
   }
 
-  public CamiproRequest setILanguage(String iLanguage) {
-    this.iLanguage = iLanguage;
+  public SessionId setMoodleCookie(String moodleCookie) {
+    this.moodleCookie = moodleCookie;
     return this;
   }
 
-  public void unsetILanguage() {
-    this.iLanguage = null;
+  public void unsetMoodleCookie() {
+    this.moodleCookie = null;
   }
 
-  /** Returns true if field iLanguage is set (has been assigned a value) and false otherwise */
-  public boolean isSetILanguage() {
-    return this.iLanguage != null;
+  /** Returns true if field moodleCookie is set (has been assigned a value) and false otherwise */
+  public boolean isSetMoodleCookie() {
+    return this.moodleCookie != null;
   }
 
-  public void setILanguageIsSet(boolean value) {
+  public void setMoodleCookieIsSet(boolean value) {
     if (!value) {
-      this.iLanguage = null;
+      this.moodleCookie = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_SESSION_ID:
+    case TOS:
       if (value == null) {
-        unsetISessionId();
+        unsetTos();
       } else {
-        setISessionId((SessionId)value);
+        setTos((Integer)value);
       }
       break;
 
-    case I_LANGUAGE:
+    case MOODLE_COOKIE:
       if (value == null) {
-        unsetILanguage();
+        unsetMoodleCookie();
       } else {
-        setILanguage((String)value);
+        setMoodleCookie((String)value);
       }
       break;
 
@@ -209,11 +210,11 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_SESSION_ID:
-      return getISessionId();
+    case TOS:
+      return Integer.valueOf(getTos());
 
-    case I_LANGUAGE:
-      return getILanguage();
+    case MOODLE_COOKIE:
+      return getMoodleCookie();
 
     }
     throw new IllegalStateException();
@@ -226,10 +227,10 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
     }
 
     switch (field) {
-    case I_SESSION_ID:
-      return isSetISessionId();
-    case I_LANGUAGE:
-      return isSetILanguage();
+    case TOS:
+      return isSetTos();
+    case MOODLE_COOKIE:
+      return isSetMoodleCookie();
     }
     throw new IllegalStateException();
   }
@@ -238,30 +239,30 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CamiproRequest)
-      return this.equals((CamiproRequest)that);
+    if (that instanceof SessionId)
+      return this.equals((SessionId)that);
     return false;
   }
 
-  public boolean equals(CamiproRequest that) {
+  public boolean equals(SessionId that) {
     if (that == null)
       return false;
 
-    boolean this_present_iSessionId = true && this.isSetISessionId();
-    boolean that_present_iSessionId = true && that.isSetISessionId();
-    if (this_present_iSessionId || that_present_iSessionId) {
-      if (!(this_present_iSessionId && that_present_iSessionId))
+    boolean this_present_tos = true;
+    boolean that_present_tos = true;
+    if (this_present_tos || that_present_tos) {
+      if (!(this_present_tos && that_present_tos))
         return false;
-      if (!this.iSessionId.equals(that.iSessionId))
+      if (this.tos != that.tos)
         return false;
     }
 
-    boolean this_present_iLanguage = true && this.isSetILanguage();
-    boolean that_present_iLanguage = true && that.isSetILanguage();
-    if (this_present_iLanguage || that_present_iLanguage) {
-      if (!(this_present_iLanguage && that_present_iLanguage))
+    boolean this_present_moodleCookie = true && this.isSetMoodleCookie();
+    boolean that_present_moodleCookie = true && that.isSetMoodleCookie();
+    if (this_present_moodleCookie || that_present_moodleCookie) {
+      if (!(this_present_moodleCookie && that_present_moodleCookie))
         return false;
-      if (!this.iLanguage.equals(that.iLanguage))
+      if (!this.moodleCookie.equals(that.moodleCookie))
         return false;
     }
 
@@ -272,43 +273,43 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iSessionId = true && (isSetISessionId());
-    builder.append(present_iSessionId);
-    if (present_iSessionId)
-      builder.append(iSessionId);
+    boolean present_tos = true;
+    builder.append(present_tos);
+    if (present_tos)
+      builder.append(tos);
 
-    boolean present_iLanguage = true && (isSetILanguage());
-    builder.append(present_iLanguage);
-    if (present_iLanguage)
-      builder.append(iLanguage);
+    boolean present_moodleCookie = true && (isSetMoodleCookie());
+    builder.append(present_moodleCookie);
+    if (present_moodleCookie)
+      builder.append(moodleCookie);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(CamiproRequest other) {
+  public int compareTo(SessionId other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    CamiproRequest typedOther = (CamiproRequest)other;
+    SessionId typedOther = (SessionId)other;
 
-    lastComparison = Boolean.valueOf(isSetISessionId()).compareTo(typedOther.isSetISessionId());
+    lastComparison = Boolean.valueOf(isSetTos()).compareTo(typedOther.isSetTos());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetISessionId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iSessionId, typedOther.iSessionId);
+    if (isSetTos()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tos, typedOther.tos);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetILanguage()).compareTo(typedOther.isSetILanguage());
+    lastComparison = Boolean.valueOf(isSetMoodleCookie()).compareTo(typedOther.isSetMoodleCookie());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetILanguage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iLanguage, typedOther.iLanguage);
+    if (isSetMoodleCookie()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.moodleCookie, typedOther.moodleCookie);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -330,17 +331,17 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
         break;
       }
       switch (field.id) {
-        case 1: // I_SESSION_ID
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iSessionId = new SessionId();
-            this.iSessionId.read(iprot);
+        case 1: // TOS
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.tos = iprot.readI32();
+            setTosIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_LANGUAGE
+        case 3: // MOODLE_COOKIE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iLanguage = iprot.readString();
+            this.moodleCookie = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -353,6 +354,9 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
     iprot.readStructEnd();
 
     // check for required fields of primitive type, which can't be checked in the validate method
+    if (!isSetTos()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'tos' was not found in serialized data! Struct: " + toString());
+    }
     validate();
   }
 
@@ -360,15 +364,15 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iSessionId != null) {
-      oprot.writeFieldBegin(I_SESSION_ID_FIELD_DESC);
-      this.iSessionId.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.iLanguage != null) {
-      oprot.writeFieldBegin(I_LANGUAGE_FIELD_DESC);
-      oprot.writeString(this.iLanguage);
-      oprot.writeFieldEnd();
+    oprot.writeFieldBegin(TOS_FIELD_DESC);
+    oprot.writeI32(this.tos);
+    oprot.writeFieldEnd();
+    if (this.moodleCookie != null) {
+      if (isSetMoodleCookie()) {
+        oprot.writeFieldBegin(MOODLE_COOKIE_FIELD_DESC);
+        oprot.writeString(this.moodleCookie);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -376,36 +380,29 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CamiproRequest(");
+    StringBuilder sb = new StringBuilder("SessionId(");
     boolean first = true;
 
-    sb.append("iSessionId:");
-    if (this.iSessionId == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iSessionId);
-    }
+    sb.append("tos:");
+    sb.append(this.tos);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("iLanguage:");
-    if (this.iLanguage == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iLanguage);
+    if (isSetMoodleCookie()) {
+      if (!first) sb.append(", ");
+      sb.append("moodleCookie:");
+      if (this.moodleCookie == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.moodleCookie);
+      }
+      first = false;
     }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (iSessionId == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iSessionId' was not present! Struct: " + toString());
-    }
-    if (iLanguage == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iLanguage' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'tos' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -418,6 +415,8 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);

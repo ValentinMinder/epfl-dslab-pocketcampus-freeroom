@@ -37,6 +37,5 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/slf4j-simple-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/commons-lang-2.6.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugin.authentication.shared"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

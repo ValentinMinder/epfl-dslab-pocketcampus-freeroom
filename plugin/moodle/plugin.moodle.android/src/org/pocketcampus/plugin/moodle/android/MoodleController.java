@@ -11,8 +11,7 @@ import org.apache.http.protocol.HttpContext;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.authentication.shared.SessionId;
-import org.pocketcampus.plugin.authentication.shared.TypeOfService;
+import org.pocketcampus.plugin.moodle.shared.SessionId;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleController;
 import org.pocketcampus.plugin.moodle.android.req.CoursesListRequest;
 import org.pocketcampus.plugin.moodle.android.req.EventsListRequest;
@@ -187,7 +186,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 	}
 	
 	private MoodleRequest buildSessionId(Integer courseId) {
-		SessionId sessId = new SessionId(TypeOfService.SERVICE_MOODLE);
+		SessionId sessId = new SessionId(0);
 		sessId.setMoodleCookie(mModel.getMoodleCookie());
 		MoodleRequest cr = new MoodleRequest();
 		cr.setILanguage(Locale.getDefault().getLanguage());

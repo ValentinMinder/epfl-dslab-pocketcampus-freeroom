@@ -10,12 +10,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
 import org.pocketcampus.plugin.authentication.shared.SessionId;
 import org.pocketcampus.plugin.authentication.shared.TequilaKey;
 import org.pocketcampus.plugin.authentication.shared.TequilaSession;
 import org.pocketcampus.plugin.authentication.shared.TypeOfService;
-import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;

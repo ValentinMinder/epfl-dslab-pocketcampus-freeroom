@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.isacademia.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.plugin.authentication.shared.TequilaToken;
+import org.pocketcampus.plugin.isacademia.shared.TequilaToken;
 import org.pocketcampus.plugin.isacademia.android.IsacademiaController;
 import org.pocketcampus.plugin.isacademia.android.IsacademiaModel;
 import org.pocketcampus.plugin.isacademia.shared.IsacademiaService.Iface;

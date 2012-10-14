@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.authentication.shared.TequilaToken;
+import org.pocketcampus.plugin.moodle.shared.TequilaToken;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleModel;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse;

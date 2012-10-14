@@ -9,8 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
-import org.pocketcampus.plugin.authentication.shared.TequilaToken;
-import org.pocketcampus.plugin.authentication.shared.utils.Cookie;
+import org.pocketcampus.plugin.isacademia.shared.TequilaToken;
+import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.isacademia.shared.IsaCoursesListReply;
 import org.pocketcampus.plugin.isacademia.shared.IsaExamsListReply;
 import org.pocketcampus.plugin.isacademia.shared.IsaRequest;

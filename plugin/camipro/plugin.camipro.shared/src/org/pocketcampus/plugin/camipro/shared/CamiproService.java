@@ -25,9 +25,9 @@ public class CamiproService {
 
   public interface Iface {
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getTequilaTokenForCamipro() throws org.apache.thrift.TException;
+    public TequilaToken getTequilaTokenForCamipro() throws org.apache.thrift.TException;
 
-    public CamiproSession getCamiproSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException;
+    public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException;
 
     public BalanceAndTransactions getBalanceAndTransactions(CamiproRequest iRequest) throws org.apache.thrift.TException;
 
@@ -41,7 +41,7 @@ public class CamiproService {
 
     public void getTequilaTokenForCamipro(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTequilaTokenForCamipro_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getCamiproSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getCamiproSession_call> resultHandler) throws org.apache.thrift.TException;
+    public void getCamiproSession(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getCamiproSession_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getBalanceAndTransactions(CamiproRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBalanceAndTransactions_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -71,7 +71,7 @@ public class CamiproService {
       super(iprot, oprot);
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getTequilaTokenForCamipro() throws org.apache.thrift.TException
+    public TequilaToken getTequilaTokenForCamipro() throws org.apache.thrift.TException
     {
       send_getTequilaTokenForCamipro();
       return recv_getTequilaTokenForCamipro();
@@ -83,7 +83,7 @@ public class CamiproService {
       sendBase("getTequilaTokenForCamipro", args);
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken recv_getTequilaTokenForCamipro() throws org.apache.thrift.TException
+    public TequilaToken recv_getTequilaTokenForCamipro() throws org.apache.thrift.TException
     {
       getTequilaTokenForCamipro_result result = new getTequilaTokenForCamipro_result();
       receiveBase(result, "getTequilaTokenForCamipro");
@@ -93,13 +93,13 @@ public class CamiproService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTequilaTokenForCamipro failed: unknown result");
     }
 
-    public CamiproSession getCamiproSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException
+    public CamiproSession getCamiproSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException
     {
       send_getCamiproSession(iTequilaToken);
       return recv_getCamiproSession();
     }
 
-    public void send_getCamiproSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException
+    public void send_getCamiproSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException
     {
       getCamiproSession_args args = new getCamiproSession_args();
       args.setITequilaToken(iTequilaToken);
@@ -222,7 +222,7 @@ public class CamiproService {
         prot.writeMessageEnd();
       }
 
-      public org.pocketcampus.plugin.authentication.shared.TequilaToken getResult() throws org.apache.thrift.TException {
+      public TequilaToken getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -232,7 +232,7 @@ public class CamiproService {
       }
     }
 
-    public void getCamiproSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getCamiproSession_call> resultHandler) throws org.apache.thrift.TException {
+    public void getCamiproSession(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getCamiproSession_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getCamiproSession_call method_call = new getCamiproSession_call(iTequilaToken, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -240,8 +240,8 @@ public class CamiproService {
     }
 
     public static class getCamiproSession_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken;
-      public getCamiproSession_call(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getCamiproSession_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private TequilaToken iTequilaToken;
+      public getCamiproSession_call(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getCamiproSession_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.iTequilaToken = iTequilaToken;
       }
@@ -672,7 +672,7 @@ public class CamiproService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken success; // required
+    public TequilaToken success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -738,7 +738,7 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.TequilaToken.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaToken.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaTokenForCamipro_result.class, metaDataMap);
     }
@@ -747,7 +747,7 @@ public class CamiproService {
     }
 
     public getTequilaTokenForCamipro_result(
-      org.pocketcampus.plugin.authentication.shared.TequilaToken success)
+      TequilaToken success)
     {
       this();
       this.success = success;
@@ -758,7 +758,7 @@ public class CamiproService {
      */
     public getTequilaTokenForCamipro_result(getTequilaTokenForCamipro_result other) {
       if (other.isSetSuccess()) {
-        this.success = new org.pocketcampus.plugin.authentication.shared.TequilaToken(other.success);
+        this.success = new TequilaToken(other.success);
       }
     }
 
@@ -771,11 +771,11 @@ public class CamiproService {
       this.success = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getSuccess() {
+    public TequilaToken getSuccess() {
       return this.success;
     }
 
-    public getTequilaTokenForCamipro_result setSuccess(org.pocketcampus.plugin.authentication.shared.TequilaToken success) {
+    public getTequilaTokenForCamipro_result setSuccess(TequilaToken success) {
       this.success = success;
       return this;
     }
@@ -801,7 +801,7 @@ public class CamiproService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((org.pocketcampus.plugin.authentication.shared.TequilaToken)value);
+          setSuccess((TequilaToken)value);
         }
         break;
 
@@ -904,7 +904,7 @@ public class CamiproService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new org.pocketcampus.plugin.authentication.shared.TequilaToken();
+              this.success = new TequilaToken();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -976,7 +976,7 @@ public class CamiproService {
 
     private static final org.apache.thrift.protocol.TField I_TEQUILA_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaToken", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken; // required
+    public TequilaToken iTequilaToken; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1042,7 +1042,7 @@ public class CamiproService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.I_TEQUILA_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("iTequilaToken", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.TequilaToken.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaToken.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getCamiproSession_args.class, metaDataMap);
     }
@@ -1051,7 +1051,7 @@ public class CamiproService {
     }
 
     public getCamiproSession_args(
-      org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken)
+      TequilaToken iTequilaToken)
     {
       this();
       this.iTequilaToken = iTequilaToken;
@@ -1062,7 +1062,7 @@ public class CamiproService {
      */
     public getCamiproSession_args(getCamiproSession_args other) {
       if (other.isSetITequilaToken()) {
-        this.iTequilaToken = new org.pocketcampus.plugin.authentication.shared.TequilaToken(other.iTequilaToken);
+        this.iTequilaToken = new TequilaToken(other.iTequilaToken);
       }
     }
 
@@ -1075,11 +1075,11 @@ public class CamiproService {
       this.iTequilaToken = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getITequilaToken() {
+    public TequilaToken getITequilaToken() {
       return this.iTequilaToken;
     }
 
-    public getCamiproSession_args setITequilaToken(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) {
+    public getCamiproSession_args setITequilaToken(TequilaToken iTequilaToken) {
       this.iTequilaToken = iTequilaToken;
       return this;
     }
@@ -1105,7 +1105,7 @@ public class CamiproService {
         if (value == null) {
           unsetITequilaToken();
         } else {
-          setITequilaToken((org.pocketcampus.plugin.authentication.shared.TequilaToken)value);
+          setITequilaToken((TequilaToken)value);
         }
         break;
 
@@ -1208,7 +1208,7 @@ public class CamiproService {
         switch (field.id) {
           case 1: // I_TEQUILA_TOKEN
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.iTequilaToken = new org.pocketcampus.plugin.authentication.shared.TequilaToken();
+              this.iTequilaToken = new TequilaToken();
               this.iTequilaToken.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

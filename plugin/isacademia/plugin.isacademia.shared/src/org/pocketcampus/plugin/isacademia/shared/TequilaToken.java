@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.camipro.shared;
+package org.pocketcampus.plugin.isacademia.shared;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
@@ -21,19 +21,19 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, CamiproRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CamiproRequest");
+public class TequilaToken implements org.apache.thrift.TBase<TequilaToken, TequilaToken._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TequilaToken");
 
-  private static final org.apache.thrift.protocol.TField I_SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSessionId", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_TEQUILA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaKey", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField LOGIN_COOKIE_FIELD_DESC = new org.apache.thrift.protocol.TField("loginCookie", org.apache.thrift.protocol.TType.STRING, (short)2);
 
-  public SessionId iSessionId; // required
-  public String iLanguage; // required
+  public String iTequilaKey; // required
+  public String loginCookie; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_SESSION_ID((short)1, "iSessionId"),
-    I_LANGUAGE((short)2, "iLanguage");
+    I_TEQUILA_KEY((short)1, "iTequilaKey"),
+    LOGIN_COOKIE((short)2, "loginCookie");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -48,10 +48,10 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_SESSION_ID
-          return I_SESSION_ID;
-        case 2: // I_LANGUAGE
-          return I_LANGUAGE;
+        case 1: // I_TEQUILA_KEY
+          return I_TEQUILA_KEY;
+        case 2: // LOGIN_COOKIE
+          return LOGIN_COOKIE;
         default:
           return null;
       }
@@ -96,111 +96,109 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("iSessionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionId.class)));
-    tmpMap.put(_Fields.I_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("iLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_TEQUILA_KEY, new org.apache.thrift.meta_data.FieldMetaData("iTequilaKey", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.LOGIN_COOKIE, new org.apache.thrift.meta_data.FieldMetaData("loginCookie", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CamiproRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TequilaToken.class, metaDataMap);
   }
 
-  public CamiproRequest() {
+  public TequilaToken() {
   }
 
-  public CamiproRequest(
-    SessionId iSessionId,
-    String iLanguage)
+  public TequilaToken(
+    String iTequilaKey)
   {
     this();
-    this.iSessionId = iSessionId;
-    this.iLanguage = iLanguage;
+    this.iTequilaKey = iTequilaKey;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CamiproRequest(CamiproRequest other) {
-    if (other.isSetISessionId()) {
-      this.iSessionId = new SessionId(other.iSessionId);
+  public TequilaToken(TequilaToken other) {
+    if (other.isSetITequilaKey()) {
+      this.iTequilaKey = other.iTequilaKey;
     }
-    if (other.isSetILanguage()) {
-      this.iLanguage = other.iLanguage;
+    if (other.isSetLoginCookie()) {
+      this.loginCookie = other.loginCookie;
     }
   }
 
-  public CamiproRequest deepCopy() {
-    return new CamiproRequest(this);
+  public TequilaToken deepCopy() {
+    return new TequilaToken(this);
   }
 
   @Override
   public void clear() {
-    this.iSessionId = null;
-    this.iLanguage = null;
+    this.iTequilaKey = null;
+    this.loginCookie = null;
   }
 
-  public SessionId getISessionId() {
-    return this.iSessionId;
+  public String getITequilaKey() {
+    return this.iTequilaKey;
   }
 
-  public CamiproRequest setISessionId(SessionId iSessionId) {
-    this.iSessionId = iSessionId;
+  public TequilaToken setITequilaKey(String iTequilaKey) {
+    this.iTequilaKey = iTequilaKey;
     return this;
   }
 
-  public void unsetISessionId() {
-    this.iSessionId = null;
+  public void unsetITequilaKey() {
+    this.iTequilaKey = null;
   }
 
-  /** Returns true if field iSessionId is set (has been assigned a value) and false otherwise */
-  public boolean isSetISessionId() {
-    return this.iSessionId != null;
+  /** Returns true if field iTequilaKey is set (has been assigned a value) and false otherwise */
+  public boolean isSetITequilaKey() {
+    return this.iTequilaKey != null;
   }
 
-  public void setISessionIdIsSet(boolean value) {
+  public void setITequilaKeyIsSet(boolean value) {
     if (!value) {
-      this.iSessionId = null;
+      this.iTequilaKey = null;
     }
   }
 
-  public String getILanguage() {
-    return this.iLanguage;
+  public String getLoginCookie() {
+    return this.loginCookie;
   }
 
-  public CamiproRequest setILanguage(String iLanguage) {
-    this.iLanguage = iLanguage;
+  public TequilaToken setLoginCookie(String loginCookie) {
+    this.loginCookie = loginCookie;
     return this;
   }
 
-  public void unsetILanguage() {
-    this.iLanguage = null;
+  public void unsetLoginCookie() {
+    this.loginCookie = null;
   }
 
-  /** Returns true if field iLanguage is set (has been assigned a value) and false otherwise */
-  public boolean isSetILanguage() {
-    return this.iLanguage != null;
+  /** Returns true if field loginCookie is set (has been assigned a value) and false otherwise */
+  public boolean isSetLoginCookie() {
+    return this.loginCookie != null;
   }
 
-  public void setILanguageIsSet(boolean value) {
+  public void setLoginCookieIsSet(boolean value) {
     if (!value) {
-      this.iLanguage = null;
+      this.loginCookie = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_SESSION_ID:
+    case I_TEQUILA_KEY:
       if (value == null) {
-        unsetISessionId();
+        unsetITequilaKey();
       } else {
-        setISessionId((SessionId)value);
+        setITequilaKey((String)value);
       }
       break;
 
-    case I_LANGUAGE:
+    case LOGIN_COOKIE:
       if (value == null) {
-        unsetILanguage();
+        unsetLoginCookie();
       } else {
-        setILanguage((String)value);
+        setLoginCookie((String)value);
       }
       break;
 
@@ -209,11 +207,11 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_SESSION_ID:
-      return getISessionId();
+    case I_TEQUILA_KEY:
+      return getITequilaKey();
 
-    case I_LANGUAGE:
-      return getILanguage();
+    case LOGIN_COOKIE:
+      return getLoginCookie();
 
     }
     throw new IllegalStateException();
@@ -226,10 +224,10 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
     }
 
     switch (field) {
-    case I_SESSION_ID:
-      return isSetISessionId();
-    case I_LANGUAGE:
-      return isSetILanguage();
+    case I_TEQUILA_KEY:
+      return isSetITequilaKey();
+    case LOGIN_COOKIE:
+      return isSetLoginCookie();
     }
     throw new IllegalStateException();
   }
@@ -238,30 +236,30 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CamiproRequest)
-      return this.equals((CamiproRequest)that);
+    if (that instanceof TequilaToken)
+      return this.equals((TequilaToken)that);
     return false;
   }
 
-  public boolean equals(CamiproRequest that) {
+  public boolean equals(TequilaToken that) {
     if (that == null)
       return false;
 
-    boolean this_present_iSessionId = true && this.isSetISessionId();
-    boolean that_present_iSessionId = true && that.isSetISessionId();
-    if (this_present_iSessionId || that_present_iSessionId) {
-      if (!(this_present_iSessionId && that_present_iSessionId))
+    boolean this_present_iTequilaKey = true && this.isSetITequilaKey();
+    boolean that_present_iTequilaKey = true && that.isSetITequilaKey();
+    if (this_present_iTequilaKey || that_present_iTequilaKey) {
+      if (!(this_present_iTequilaKey && that_present_iTequilaKey))
         return false;
-      if (!this.iSessionId.equals(that.iSessionId))
+      if (!this.iTequilaKey.equals(that.iTequilaKey))
         return false;
     }
 
-    boolean this_present_iLanguage = true && this.isSetILanguage();
-    boolean that_present_iLanguage = true && that.isSetILanguage();
-    if (this_present_iLanguage || that_present_iLanguage) {
-      if (!(this_present_iLanguage && that_present_iLanguage))
+    boolean this_present_loginCookie = true && this.isSetLoginCookie();
+    boolean that_present_loginCookie = true && that.isSetLoginCookie();
+    if (this_present_loginCookie || that_present_loginCookie) {
+      if (!(this_present_loginCookie && that_present_loginCookie))
         return false;
-      if (!this.iLanguage.equals(that.iLanguage))
+      if (!this.loginCookie.equals(that.loginCookie))
         return false;
     }
 
@@ -272,43 +270,43 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iSessionId = true && (isSetISessionId());
-    builder.append(present_iSessionId);
-    if (present_iSessionId)
-      builder.append(iSessionId);
+    boolean present_iTequilaKey = true && (isSetITequilaKey());
+    builder.append(present_iTequilaKey);
+    if (present_iTequilaKey)
+      builder.append(iTequilaKey);
 
-    boolean present_iLanguage = true && (isSetILanguage());
-    builder.append(present_iLanguage);
-    if (present_iLanguage)
-      builder.append(iLanguage);
+    boolean present_loginCookie = true && (isSetLoginCookie());
+    builder.append(present_loginCookie);
+    if (present_loginCookie)
+      builder.append(loginCookie);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(CamiproRequest other) {
+  public int compareTo(TequilaToken other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    CamiproRequest typedOther = (CamiproRequest)other;
+    TequilaToken typedOther = (TequilaToken)other;
 
-    lastComparison = Boolean.valueOf(isSetISessionId()).compareTo(typedOther.isSetISessionId());
+    lastComparison = Boolean.valueOf(isSetITequilaKey()).compareTo(typedOther.isSetITequilaKey());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetISessionId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iSessionId, typedOther.iSessionId);
+    if (isSetITequilaKey()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTequilaKey, typedOther.iTequilaKey);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetILanguage()).compareTo(typedOther.isSetILanguage());
+    lastComparison = Boolean.valueOf(isSetLoginCookie()).compareTo(typedOther.isSetLoginCookie());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetILanguage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iLanguage, typedOther.iLanguage);
+    if (isSetLoginCookie()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.loginCookie, typedOther.loginCookie);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -330,17 +328,16 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
         break;
       }
       switch (field.id) {
-        case 1: // I_SESSION_ID
-          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iSessionId = new SessionId();
-            this.iSessionId.read(iprot);
+        case 1: // I_TEQUILA_KEY
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iTequilaKey = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_LANGUAGE
+        case 2: // LOGIN_COOKIE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iLanguage = iprot.readString();
+            this.loginCookie = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -360,15 +357,17 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iSessionId != null) {
-      oprot.writeFieldBegin(I_SESSION_ID_FIELD_DESC);
-      this.iSessionId.write(oprot);
+    if (this.iTequilaKey != null) {
+      oprot.writeFieldBegin(I_TEQUILA_KEY_FIELD_DESC);
+      oprot.writeString(this.iTequilaKey);
       oprot.writeFieldEnd();
     }
-    if (this.iLanguage != null) {
-      oprot.writeFieldBegin(I_LANGUAGE_FIELD_DESC);
-      oprot.writeString(this.iLanguage);
-      oprot.writeFieldEnd();
+    if (this.loginCookie != null) {
+      if (isSetLoginCookie()) {
+        oprot.writeFieldBegin(LOGIN_COOKIE_FIELD_DESC);
+        oprot.writeString(this.loginCookie);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -376,35 +375,34 @@ public class CamiproRequest implements org.apache.thrift.TBase<CamiproRequest, C
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CamiproRequest(");
+    StringBuilder sb = new StringBuilder("TequilaToken(");
     boolean first = true;
 
-    sb.append("iSessionId:");
-    if (this.iSessionId == null) {
+    sb.append("iTequilaKey:");
+    if (this.iTequilaKey == null) {
       sb.append("null");
     } else {
-      sb.append(this.iSessionId);
+      sb.append(this.iTequilaKey);
     }
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("iLanguage:");
-    if (this.iLanguage == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iLanguage);
+    if (isSetLoginCookie()) {
+      if (!first) sb.append(", ");
+      sb.append("loginCookie:");
+      if (this.loginCookie == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.loginCookie);
+      }
+      first = false;
     }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    if (iSessionId == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iSessionId' was not present! Struct: " + toString());
-    }
-    if (iLanguage == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iLanguage' was not present! Struct: " + toString());
+    if (iTequilaKey == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTequilaKey' was not present! Struct: " + toString());
     }
   }
 
