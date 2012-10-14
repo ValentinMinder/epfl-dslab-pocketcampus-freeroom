@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="blank_plugin_title">Blank</string>
+    
+    <string name="blank_courses_view_title">List of enrolled Blank Courses</string>
+    <string name="blank_events_view_title">Current Blank Events</string>
+        
+    <string name="blank_string_logout">Logout</string>
+    <string name="blank_string_events">Events</string>
+        
+    <string name="blank_error_blank_down">PocketCampus tried to connect to Blank servers, but they seem down.</string>
+    <string name="blank_connection_error_happened">We cannot fetch Blank data right now, because you are not connected to the Internet.</string>
+    <string name="blank_file_downloaded">File successfully downloaded.</string>
+    <string name="blank_file_downloading">Downloading file... Please wait.</string>
+
+    <string name="blank_no_app_to_handle_filetype">Could not find any application to open this file.</string>
+        
+</resources>

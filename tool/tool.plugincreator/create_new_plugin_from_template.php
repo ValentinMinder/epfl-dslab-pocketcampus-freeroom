@@ -1,9 +1,11 @@
 <?php
 
-$template_plugin_dir = "../../plugin/sunrise";
-$new_plugin_dir = "../../plugin/blank";
+chdir(dirname(__FILE__));
 
-$replacements = array("sunrise" => "blank", "Sunrise" => "Blank", "SUNRISE" => "BLANK");
+$template_plugin_dir = "../../plugin/blank";
+$new_plugin_dir = "../../plugin/myplugin";
+
+$replacements = array("blank" => "myplugin", "Blank" => "MyPlugin", "BLANK" => "MYPLUGIN");
 
 $to_delete_dirs = array(".svn");
 $to_empty_dirs = array("bin", "gen");
