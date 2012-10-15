@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pushnotif_plugin_title">PushNotif</string>
+    
+    <string name="pushnotif_courses_view_title">Liste des Cours PushNotif inscrits</string>
+    <string name="pushnotif_events_view_title">Événements PushNotif Actuels</string>
+        
+    <string name="pushnotif_string_logout">Déconnexion</string>
+    <string name="pushnotif_string_events">Événements</string>
+        
+    <string name="pushnotif_error_pushnotif_down">PocketCampus a essayé de se connecter aux serveurs PushNotif, mais ils semblent hors-ligne.</string>
+    <string name="pushnotif_connection_error_happened">Nous ne pouvons pas récupérer les données PushNotif maintenant, car vous n\'êtes pas connecté à Internet.</string>
+    <string name="pushnotif_file_downloaded">Fichier téléchargé avec succès.</string>
+    <string name="pushnotif_file_downloading">Téléchargement du fichier... Patienter.</string>
+    
+    <string name="pushnotif_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
+        
+</resources>
