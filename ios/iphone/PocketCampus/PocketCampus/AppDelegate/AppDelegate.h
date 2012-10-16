@@ -10,6 +10,8 @@
 
 #import "MainController.h"
 
+#import "MainController2.h"
+
 #import "GANTracker.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GANTrackerDelegate> {
@@ -18,5 +20,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (retain) MainController* mainController;
+@property (retain) MainController2* mainController2;
 
 @end
