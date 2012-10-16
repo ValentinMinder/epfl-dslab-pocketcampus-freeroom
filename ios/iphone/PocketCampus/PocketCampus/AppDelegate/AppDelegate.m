@@ -50,7 +50,7 @@
         [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     }
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
-
+    //self.mainController2 = [[[MainController2 alloc] initWithWindow:self.window] autorelease];
     
     /*END TEST*/
     
