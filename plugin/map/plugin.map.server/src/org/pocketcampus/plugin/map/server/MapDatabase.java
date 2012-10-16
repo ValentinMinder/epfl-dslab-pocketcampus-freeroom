@@ -12,11 +12,9 @@ import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
 import org.pocketcampus.plugin.map.shared.MapItem;
 import org.pocketcampus.plugin.map.shared.MapLayer;
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 public class MapDatabase {	
-	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
-	private static final String DB_USERNAME = "pocketcampus";
-	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
 	
 	private static final String TABLE_LAYERS = "map_layers";
 	private static final String TABLE_POIS = "map_pois";
@@ -32,7 +30,7 @@ public class MapDatabase {
 	private static final String POI_DESCRIPTION = "description";
 	private static final String POI_LATITUDE = "centerX";
 	private static final String POI_LONGITUDE = "centerY";
-	private static final String POI_ALTITUDE = "altitude";
+//	private static final String POI_ALTITUDE = "altitude";
 	private static final String POI_ID = "id";
 	private static final String POI_PLUGIN = "plugin_package";
 //	private static final String POI_ = "";
@@ -42,7 +40,8 @@ public class MapDatabase {
 	
 	public MapDatabase() {
 		try {
-			this.connectionManager_ = new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD);
+			this.connectionManager_ = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}

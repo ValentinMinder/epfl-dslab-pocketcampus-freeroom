@@ -4,7 +4,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.apache.thrift.TBase;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
-import org.pocketcampus.android.platform.sdk.core.Config;
 import org.pocketcampus.android.platform.sdk.core.GlobalContext;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 
@@ -77,9 +76,6 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 			}
 			
 			ResultType result = runInBackground(mClient, iParam);
-			if(Config.LOG_LEVEL <= Log.VERBOSE) {
-				System.out.println("Received result: " + result);
-			}
 			
 			return result;
 

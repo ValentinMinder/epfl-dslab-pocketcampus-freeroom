@@ -1,7 +1,8 @@
 package org.pocketcampus.android.platform.sdk.tracker;
 
 import android.content.Context;
-import org.pocketcampus.android.platform.sdk.core.Config;
+
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
@@ -52,7 +53,7 @@ public class Tracker {
 	 */
 	public void start(Context context) {
 		try {
-			mGoogleTracker.start(Config.GA_TRACKING_CODE, DISPATCH_PERIOD, context);
+			mGoogleTracker.startNewSession(PC_ANDR_CFG.getString("GA_TRACKING_CODE"), DISPATCH_PERIOD, context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,7 +67,7 @@ public class Tracker {
 	 */
 	public void trackPageView(String pageView) {
 		try {
-			mGoogleTracker.trackPageView(Config.SERVER_URI + "/" + pageView);
+			mGoogleTracker.trackPageView("v3r1/" + pageView);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -167,7 +168,7 @@ public class Tracker {
 	 */
 	public void stop() {
 		try {
-			mGoogleTracker.stop();
+			mGoogleTracker.stopSession();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

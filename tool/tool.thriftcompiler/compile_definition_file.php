@@ -14,12 +14,13 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.8.0";
 }
+$plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/" . ucfirst($plugin_name) . "Plugin/Model/ThriftTypes+Services";
 $string_plugin = "plugin";
 if($plugin_name == "sdk") {
 	$string_plugin = "platform";
+	$plugin_ios_dir = "../../ios/iphone/PocketCampus/PocketCampus/Model/SharedThriftTypes+Services";
 }
 $plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_name.shared";
-$plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/" . ucfirst($plugin_name) . "Plugin/Model/ThriftTypes+Services";
 
 foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
 	//echo "Compiling $def_file\n";

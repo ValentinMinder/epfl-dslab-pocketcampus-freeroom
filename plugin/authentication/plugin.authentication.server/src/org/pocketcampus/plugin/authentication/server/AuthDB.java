@@ -5,18 +5,17 @@ import java.sql.SQLException;
 
 import org.pocketcampus.platform.sdk.server.database.ConnectionManager;
 import org.pocketcampus.platform.sdk.server.database.handlers.exceptions.ServerException;
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 public class AuthDB {
-	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
-	private static final String DB_USERNAME = "pocketcampus";
-	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
 	private ConnectionManager mConnectionManager;
 	
 	public AuthDB() {
 		try {
-			this.mConnectionManager = new ConnectionManager(DB_URL, DB_USERNAME, DB_PASSWORD);
+			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}

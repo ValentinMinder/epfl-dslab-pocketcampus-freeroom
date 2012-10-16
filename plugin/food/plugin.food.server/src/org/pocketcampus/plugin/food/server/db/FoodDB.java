@@ -15,6 +15,8 @@ import org.pocketcampus.plugin.food.shared.Meal;
 import org.pocketcampus.plugin.food.shared.Rating;
 import org.pocketcampus.plugin.food.shared.Restaurant;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
+
 /**
  * Class that handles interactions with the test database to store and retrieve
  * meals, user ids and ratings
@@ -24,15 +26,6 @@ import org.pocketcampus.plugin.food.shared.Restaurant;
  * 
  */
 public class FoodDB {
-	/** The URL to the database */
-	private static final String DB_URL = "jdbc:mysql://pocketcampus.epfl.ch:3306/pocketcampus";
-
-	/** The user name to be used at the database */
-	private static final String DB_USERNAME = "pocketcampus";
-
-	/** The password to be used at the database */
-	private static final String DB_PASSWORD = "pHEcNhrKAZMS5Hdp";
-
 	/** The connection to the database */
 	private ConnectionManager mConnectionManager;
 
@@ -44,8 +37,8 @@ public class FoodDB {
 	 */
 	public FoodDB() {
 		try {
-			this.mConnectionManager = new ConnectionManager(DB_URL,
-					DB_USERNAME, DB_PASSWORD);
+			this.mConnectionManager = new ConnectionManager(PC_SRV_CONFIG.getString("DB_URL"),
+					PC_SRV_CONFIG.getString("DB_USERNAME"), PC_SRV_CONFIG.getString("DB_PASSWORD"));
 		} catch (ServerException e) {
 			e.printStackTrace();
 		}

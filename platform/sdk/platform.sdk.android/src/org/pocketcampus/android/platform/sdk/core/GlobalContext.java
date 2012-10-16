@@ -1,5 +1,9 @@
 package org.pocketcampus.android.platform.sdk.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +11,15 @@ import java.util.List;
 import org.apache.thrift.TServiceClient;
 import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.Icon;
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
+import org.pocketcampus.R;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
+import android.os.Environment;
 
 /**
  * Core PocketCampus class, handles the plugin discovery and initialization. 
@@ -31,6 +38,8 @@ public class GlobalContext extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		initializeConfig();
 		
 		//Starts the Tracker for the google analytics
 		Tracker.getInstance().start(getApplicationContext());
@@ -197,4 +206,29 @@ public class GlobalContext extends Application {
 		mRequestActivityListener = requestActivityListener;
 	}
 
+	private void initializeConfig() {
+		
+		try {
+			System.out.println("Init Config");
+			String configFile = Environment.getExternalStorageDirectory() + "/pocketcampus.config";
+			if(new File(configFile).exists()) {
+				PC_ANDR_CFG.load(new FileInputStream(configFile));
+				return;
+			}
+			System.out.println("No Config File on SD Card");
+			// when we get config update from server we should write it in private dir
+			try {
+				PC_ANDR_CFG.load(openFileInput("pocketcampus.config"));
+				return;
+			} catch (FileNotFoundException e) {
+			}
+			System.out.println("No Config File in private dir");
+			PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus));
+			//PC_ANDR_CFG.putStringIfNull("SERVER_PROTO", "http");
+			//PC_ANDR_CFG.store(new FileOutputStream(""), null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

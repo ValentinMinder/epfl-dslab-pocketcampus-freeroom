@@ -1,9 +1,5 @@
 package org.pocketcampus.platform.launcher.server;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -27,28 +23,21 @@ import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 public abstract class ServerBase {
-	
-	/****
-	 * DO NOT EDIT THE PORT NUMBER HERE
-	 * INSTEAD CREATE A CONFIG FILE IN THE CURRENT DIRECTORY pocketcampus-server.config
-	 * A SAMPLE OF THE FILE IS IN THIS PROJECT'S ROOT DIRECTORY
-	 */
-	
-	public static int LISTEN_ON_PORT = 9090;
-	public static int SSL_LISTEN_ON_PORT = 0;
 	
 	private static TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
 	private static TProtocolFactory jsonProtocolFactory = new TJSONProtocol.Factory();
 	
 	public void start() throws Exception {
+		
 		Server server = new Server();
 		
         LinkedList<Connector> conn_list = new LinkedList<Connector>();
 
         SelectChannelConnector connector0 = new SelectChannelConnector();
-        connector0.setPort(LISTEN_ON_PORT);
+        connector0.setPort(PC_SRV_CONFIG.getInteger("LISTEN_ON_PORT"));
         connector0.setMaxIdleTime(30000);
         connector0.setRequestHeaderSize(8192);
         conn_list.add(connector0);
@@ -60,13 +49,14 @@ public abstract class ServerBase {
         connector1.setName("admin");
         conn_list.add(connector1);*/
 
-        if(SSL_LISTEN_ON_PORT != 0) {
+        
+        if(PC_SRV_CONFIG.getInteger("SSL_LISTEN_ON_PORT") != 0) {
 	        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
-	        ssl_connector.setPort(SSL_LISTEN_ON_PORT);
+	        ssl_connector.setPort(PC_SRV_CONFIG.getInteger("SSL_LISTEN_ON_PORT"));
 	        SslContextFactory cf = ssl_connector.getSslContextFactory();
-	        cf.setKeyStore("ssl-keystore-pocketcampus-chained");
-	        cf.setKeyStorePassword("pocketcampus");
-	        cf.setKeyManagerPassword("pocketcampus");
+	        cf.setKeyStore(PC_SRV_CONFIG.getString("SSL_KEYSTORE"));
+	        cf.setKeyStorePassword(PC_SRV_CONFIG.getString("SSL_KEYSTORE_PASS"));
+	        cf.setKeyManagerPassword(PC_SRV_CONFIG.getString("SSL_KEYMGR_PASS"));
 	        conn_list.add(ssl_connector);
         }
 
@@ -96,7 +86,7 @@ public abstract class ServerBase {
 			context.addServlet(new ServletHolder(jsonThriftServlet), "/json-" + processor.getServiceName());
 		}
 		
-		NCSARequestLog requestLog = new NCSARequestLog("./jetty-yyyy_mm_dd.request.log");
+		NCSARequestLog requestLog = new NCSARequestLog(PC_SRV_CONFIG.getString("JETTY_LOGFILES_PATH") + "/jetty-yyyy_mm_dd.request.log");
 		requestLog.setRetainDays(90);
 		requestLog.setAppend(true);
 		requestLog.setExtended(false);
@@ -115,33 +105,5 @@ public abstract class ServerBase {
 	}
 	
 	protected abstract ArrayList<Processor> getServiceProcessors();
-	
-	static {
-		try {
-			String configFile = "pocketcampus-server.config";
-			if(new File(configFile).exists()) {
-				FileReader fr = new FileReader(configFile);
-				BufferedReader br = new BufferedReader(fr);
-				String line;
-				while((line = br.readLine()) != null) {
-					String[] param = line.trim().split("=");
-					if(param.length == 2) {
-						if("LISTEN_ON_PORT".equals(param[0]))
-							LISTEN_ON_PORT = Integer.parseInt(param[1]);
-						if("SSL_LISTEN_ON_PORT".equals(param[0]))
-							SSL_LISTEN_ON_PORT = Integer.parseInt(param[1]);
-					}
-				}
-			} else {
-				FileWriter fw = new FileWriter(configFile, false);
-				fw.write("LISTEN_ON_PORT=" + LISTEN_ON_PORT + "\n");
-				fw.write("SSL_LISTEN_ON_PORT=" + SSL_LISTEN_ON_PORT + "\n");
-				fw.close();
-			}
-		} catch (Exception e) {
-			System.err.println("grrrrrrrrr Exception while running static code!?!?");
-			e.printStackTrace();
-		}
-	}
 	
 }

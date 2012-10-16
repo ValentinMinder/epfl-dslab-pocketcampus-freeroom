@@ -1,0 +1,2 @@
+	$content .= "key.store.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
+	$content .= "key.alias.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
