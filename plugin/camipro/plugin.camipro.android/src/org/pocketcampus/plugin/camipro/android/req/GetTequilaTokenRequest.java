@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.camipro.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.plugin.authentication.shared.TequilaToken;
+import org.pocketcampus.plugin.camipro.shared.TequilaToken;
 import org.pocketcampus.plugin.camipro.android.CamiproController;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;

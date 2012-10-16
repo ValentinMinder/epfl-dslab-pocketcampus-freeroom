@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.authentication.shared.TequilaToken;
+import org.pocketcampus.plugin.isacademia.shared.TequilaToken;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaModel;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsacademiaView;
 import org.pocketcampus.plugin.isacademia.shared.IsaCourse;

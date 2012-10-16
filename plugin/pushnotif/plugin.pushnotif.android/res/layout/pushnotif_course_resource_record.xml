@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	style="@style/PocketCampusTheme.Secondary.MainLayout"
+	android:paddingTop="2dp"
+	android:paddingBottom="5dp"
+	android:paddingRight="10dp"
+	android:paddingLeft="10dp"
+	android:background="@android:drawable/list_selector_background"
+	android:orientation="vertical" >
+	
+		<TextView android:id="@+id/pushnotif_course_resource_title"
+			android:textColor="#000"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="20dp"
+			android:paddingRight="10dp" />
+					
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="horizontal" >
+			
+				<TextView android:id="@+id/pushnotif_course_resource_body"
+					android:textColor="#000"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="14dp"
+					android:layout_weight="1"
+					android:paddingRight="10dp" />
+
+				<TextView android:id="@+id/pushnotif_course_resource_state"
+					android:textColor="#ccc"
+					android:gravity="right"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="14dp"
+					android:layout_weight="1"
+					android:paddingRight="10dp" />
+													
+		</LinearLayout>
+		
+</LinearLayout>

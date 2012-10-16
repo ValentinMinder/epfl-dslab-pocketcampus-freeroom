@@ -28,7 +28,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   private static final org.apache.thrift.protocol.TField I_LANGUAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("iLanguage", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField I_COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseId", org.apache.thrift.protocol.TType.I32, (short)3);
 
-  public org.pocketcampus.plugin.authentication.shared.SessionId iSessionId; // required
+  public SessionId iSessionId; // required
   public String iLanguage; // required
   public int iCourseId; // required
 
@@ -104,7 +104,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.I_SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("iSessionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.SessionId.class)));
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SessionId.class)));
     tmpMap.put(_Fields.I_LANGUAGE, new org.apache.thrift.meta_data.FieldMetaData("iLanguage", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_COURSE_ID, new org.apache.thrift.meta_data.FieldMetaData("iCourseId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -117,7 +117,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
   }
 
   public MoodleRequest(
-    org.pocketcampus.plugin.authentication.shared.SessionId iSessionId,
+    SessionId iSessionId,
     String iLanguage)
   {
     this();
@@ -132,7 +132,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetISessionId()) {
-      this.iSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId(other.iSessionId);
+      this.iSessionId = new SessionId(other.iSessionId);
     }
     if (other.isSetILanguage()) {
       this.iLanguage = other.iLanguage;
@@ -152,11 +152,11 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
     this.iCourseId = 0;
   }
 
-  public org.pocketcampus.plugin.authentication.shared.SessionId getISessionId() {
+  public SessionId getISessionId() {
     return this.iSessionId;
   }
 
-  public MoodleRequest setISessionId(org.pocketcampus.plugin.authentication.shared.SessionId iSessionId) {
+  public MoodleRequest setISessionId(SessionId iSessionId) {
     this.iSessionId = iSessionId;
     return this;
   }
@@ -229,7 +229,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
       if (value == null) {
         unsetISessionId();
       } else {
-        setISessionId((org.pocketcampus.plugin.authentication.shared.SessionId)value);
+        setISessionId((SessionId)value);
       }
       break;
 
@@ -406,7 +406,7 @@ public class MoodleRequest implements org.apache.thrift.TBase<MoodleRequest, Moo
       switch (field.id) {
         case 1: // I_SESSION_ID
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iSessionId = new org.pocketcampus.plugin.authentication.shared.SessionId();
+            this.iSessionId = new SessionId();
             this.iSessionId.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);

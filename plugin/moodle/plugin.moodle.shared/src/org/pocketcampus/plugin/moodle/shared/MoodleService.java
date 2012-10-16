@@ -25,9 +25,9 @@ public class MoodleService {
 
   public interface Iface {
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getTequilaTokenForMoodle() throws org.apache.thrift.TException;
+    public TequilaToken getTequilaTokenForMoodle() throws org.apache.thrift.TException;
 
-    public MoodleSession getMoodleSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException;
+    public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException;
 
     public CoursesListReply getCoursesList(MoodleRequest iRequest) throws org.apache.thrift.TException;
 
@@ -41,7 +41,7 @@ public class MoodleService {
 
     public void getTequilaTokenForMoodle(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTequilaTokenForMoodle_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void getMoodleSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getMoodleSession_call> resultHandler) throws org.apache.thrift.TException;
+    public void getMoodleSession(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getMoodleSession_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getCoursesList(MoodleRequest iRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getCoursesList_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -71,7 +71,7 @@ public class MoodleService {
       super(iprot, oprot);
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getTequilaTokenForMoodle() throws org.apache.thrift.TException
+    public TequilaToken getTequilaTokenForMoodle() throws org.apache.thrift.TException
     {
       send_getTequilaTokenForMoodle();
       return recv_getTequilaTokenForMoodle();
@@ -83,7 +83,7 @@ public class MoodleService {
       sendBase("getTequilaTokenForMoodle", args);
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken recv_getTequilaTokenForMoodle() throws org.apache.thrift.TException
+    public TequilaToken recv_getTequilaTokenForMoodle() throws org.apache.thrift.TException
     {
       getTequilaTokenForMoodle_result result = new getTequilaTokenForMoodle_result();
       receiveBase(result, "getTequilaTokenForMoodle");
@@ -93,13 +93,13 @@ public class MoodleService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTequilaTokenForMoodle failed: unknown result");
     }
 
-    public MoodleSession getMoodleSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException
+    public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException
     {
       send_getMoodleSession(iTequilaToken);
       return recv_getMoodleSession();
     }
 
-    public void send_getMoodleSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) throws org.apache.thrift.TException
+    public void send_getMoodleSession(TequilaToken iTequilaToken) throws org.apache.thrift.TException
     {
       getMoodleSession_args args = new getMoodleSession_args();
       args.setITequilaToken(iTequilaToken);
@@ -222,7 +222,7 @@ public class MoodleService {
         prot.writeMessageEnd();
       }
 
-      public org.pocketcampus.plugin.authentication.shared.TequilaToken getResult() throws org.apache.thrift.TException {
+      public TequilaToken getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -232,7 +232,7 @@ public class MoodleService {
       }
     }
 
-    public void getMoodleSession(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getMoodleSession_call> resultHandler) throws org.apache.thrift.TException {
+    public void getMoodleSession(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getMoodleSession_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getMoodleSession_call method_call = new getMoodleSession_call(iTequilaToken, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -240,8 +240,8 @@ public class MoodleService {
     }
 
     public static class getMoodleSession_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken;
-      public getMoodleSession_call(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getMoodleSession_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private TequilaToken iTequilaToken;
+      public getMoodleSession_call(TequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<getMoodleSession_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.iTequilaToken = iTequilaToken;
       }
@@ -672,7 +672,7 @@ public class MoodleService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken success; // required
+    public TequilaToken success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -738,7 +738,7 @@ public class MoodleService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.TequilaToken.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaToken.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTequilaTokenForMoodle_result.class, metaDataMap);
     }
@@ -747,7 +747,7 @@ public class MoodleService {
     }
 
     public getTequilaTokenForMoodle_result(
-      org.pocketcampus.plugin.authentication.shared.TequilaToken success)
+      TequilaToken success)
     {
       this();
       this.success = success;
@@ -758,7 +758,7 @@ public class MoodleService {
      */
     public getTequilaTokenForMoodle_result(getTequilaTokenForMoodle_result other) {
       if (other.isSetSuccess()) {
-        this.success = new org.pocketcampus.plugin.authentication.shared.TequilaToken(other.success);
+        this.success = new TequilaToken(other.success);
       }
     }
 
@@ -771,11 +771,11 @@ public class MoodleService {
       this.success = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getSuccess() {
+    public TequilaToken getSuccess() {
       return this.success;
     }
 
-    public getTequilaTokenForMoodle_result setSuccess(org.pocketcampus.plugin.authentication.shared.TequilaToken success) {
+    public getTequilaTokenForMoodle_result setSuccess(TequilaToken success) {
       this.success = success;
       return this;
     }
@@ -801,7 +801,7 @@ public class MoodleService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((org.pocketcampus.plugin.authentication.shared.TequilaToken)value);
+          setSuccess((TequilaToken)value);
         }
         break;
 
@@ -904,7 +904,7 @@ public class MoodleService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new org.pocketcampus.plugin.authentication.shared.TequilaToken();
+              this.success = new TequilaToken();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -976,7 +976,7 @@ public class MoodleService {
 
     private static final org.apache.thrift.protocol.TField I_TEQUILA_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("iTequilaToken", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken; // required
+    public TequilaToken iTequilaToken; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1042,7 +1042,7 @@ public class MoodleService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.I_TEQUILA_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("iTequilaToken", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.plugin.authentication.shared.TequilaToken.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaToken.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getMoodleSession_args.class, metaDataMap);
     }
@@ -1051,7 +1051,7 @@ public class MoodleService {
     }
 
     public getMoodleSession_args(
-      org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken)
+      TequilaToken iTequilaToken)
     {
       this();
       this.iTequilaToken = iTequilaToken;
@@ -1062,7 +1062,7 @@ public class MoodleService {
      */
     public getMoodleSession_args(getMoodleSession_args other) {
       if (other.isSetITequilaToken()) {
-        this.iTequilaToken = new org.pocketcampus.plugin.authentication.shared.TequilaToken(other.iTequilaToken);
+        this.iTequilaToken = new TequilaToken(other.iTequilaToken);
       }
     }
 
@@ -1075,11 +1075,11 @@ public class MoodleService {
       this.iTequilaToken = null;
     }
 
-    public org.pocketcampus.plugin.authentication.shared.TequilaToken getITequilaToken() {
+    public TequilaToken getITequilaToken() {
       return this.iTequilaToken;
     }
 
-    public getMoodleSession_args setITequilaToken(org.pocketcampus.plugin.authentication.shared.TequilaToken iTequilaToken) {
+    public getMoodleSession_args setITequilaToken(TequilaToken iTequilaToken) {
       this.iTequilaToken = iTequilaToken;
       return this;
     }
@@ -1105,7 +1105,7 @@ public class MoodleService {
         if (value == null) {
           unsetITequilaToken();
         } else {
-          setITequilaToken((org.pocketcampus.plugin.authentication.shared.TequilaToken)value);
+          setITequilaToken((TequilaToken)value);
         }
         break;
 
@@ -1208,7 +1208,7 @@ public class MoodleService {
         switch (field.id) {
           case 1: // I_TEQUILA_TOKEN
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.iTequilaToken = new org.pocketcampus.plugin.authentication.shared.TequilaToken();
+              this.iTequilaToken = new TequilaToken();
               this.iTequilaToken.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
