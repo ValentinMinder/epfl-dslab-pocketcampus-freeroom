@@ -48,9 +48,17 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		System.out.println("Starting PushNotif plugin server ...");
 	}
 
+	public Boolean securityCheck(String ip, String method) {
+		System.out.println("securityCheck");
+		if(method.startsWith("secure") && !ip.startsWith("127"))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public TequilaToken getTequilaTokenForPushNotif() throws TException {
 		System.out.println("getTequilaTokenForPushNotif");
+		
 		try {
 			return new TequilaToken(getTokenFromTequila());
 		} catch (IOException e) {
@@ -138,7 +146,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 	}
 
 	static {
-		doSend();
+		//doSend();
 	}
 	
 	/**
