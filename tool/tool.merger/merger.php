@@ -2,7 +2,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("dashboard", "camipro", "moodle", "authentication", "food", "transport", "news", "satellite", "map", "bikes", "directory");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory");
 
 $libs_to_export = array("commons-lang-2.6.jar", "gcm.jar", "libGoogleAnalytics.jar", "libthrift-0.7.0.jar", "osmdroid-android-3.0.3.jar", "slf4j-api-1.6.2.jar");
 
@@ -63,7 +63,8 @@ function generate_android_manifest($output_dir, $is_lib){
 	$sdk->setAttribute("android:minSdkVersion", "8");
 
 	if(!$is_lib) {
-		foreach($plugins_to_merge as $plugin) {
+		foreach($plugins_to_merge as $plgn) {
+			$plugin = strtolower($plgn);
 			$manifest_file = "$path_to_plugin_dir/$plugin/plugin.$plugin.android/AndroidManifest.xml";
 			import_nodes($manifest_file, "/manifest/application/activity", $doc, $app, ($plugin == "dashboard" ? "" : "//category[@android:name='android.intent.category.LAUNCHER']"));
 			import_nodes($manifest_file, "/manifest/application/service", $doc, $app, "");
@@ -342,7 +343,8 @@ function collect_res($output_dir) {
 
 	copyr("$path_to_platform_dir/sdk/platform.sdk.android/res", "$output_dir/res");
 
-	foreach($plugins_to_merge as $plugin) {
+	foreach($plugins_to_merge as $plgn) {
+		$plugin = strtolower($plgn);
 		copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.android/res", "$output_dir/res");
 	}
 
@@ -356,7 +358,8 @@ function collect_src($output_dir) {
 	copyr("$path_to_platform_dir/sdk/platform.sdk.android/src", "$output_dir/src");
 	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
 
-	foreach($plugins_to_merge as $plugin) {
+	foreach($plugins_to_merge as $plgn) {
+		$plugin = strtolower($plgn);
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src")) // if has .android proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.android/src", "$output_dir/src");
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
@@ -379,30 +382,15 @@ function export_libs($output_dir) {
 
 
 }
-/*
-function collect_res_platform($output_dir) {
-	global $plugins_to_merge;
-	global $path_to_plugin_dir;
-	global $path_to_platform_dir;
-
-	copyr("$path_to_platform_dir/sdk/platform.sdk.android/res", "$output_dir/res");
-}
-
-function collect_src_platform($output_dir) {
-	global $plugins_to_merge;
-	global $path_to_plugin_dir;
-	global $path_to_platform_dir;
-
-	copyr("$path_to_platform_dir/sdk/platform.sdk.android/src", "$output_dir/src");
-
-}
-*/
 
 
 // LOGIC
 
 $output_dir = "../../android/PocketCampus";
 $project_name = "PocketCampus";
+
+if(!is_dir("$output_dir"))
+	mkdir("$output_dir", 0755, true);
 
 generate_android_manifest($output_dir, false);
 generate_ant_properties($output_dir);
@@ -421,28 +409,6 @@ collect_src("$output_dir");
 
 delete_dir("$output_dir/libs");
 export_libs("$output_dir");
-
-
-/*
-
-generate_android_manifest("PocketCampusLib", true);
-generate_ant_properties("PocketCampusLib");
-generate_build_xml("PocketCampusLib", "PocketCampusLib");
-generate_proguard_cfg("PocketCampusLib");
-generate_project_properties("PocketCampusLib", true, array());
-generate_dot_classpath("PocketCampusLib");
-generate_dot_project("PocketCampusLib", "PocketCampusLib");
-// need to manually generate local.properties;
-
-delete_dir("PocketCampusLib/src");
-delete_dir("PocketCampusLib/res");
-collect_res_platform("PocketCampusLib");
-collect_src_platform("PocketCampusLib");
-
-delete_dir("PocketCampusLib/libs");
-export_libs("PocketCampusLib");
-*/
-
 
 
 ?>

@@ -2,7 +2,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("camipro", "moodle", "authentication", "food", "transport", "news", "satellite", "map", "bikes", "directory");
+$plugins_to_merge = array("Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory");
 
 $libs_to_export = array("commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "gson-1.7.1.jar", "gcm-server.jar", "javapns_2.0_Beta_4.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
@@ -207,7 +207,8 @@ function collect_src($output_dir) {
 	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
 	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
 
-	foreach($plugins_to_merge as $plugin) {
+	foreach($plugins_to_merge as $plgn) {
+		$plugin = strtolower($plgn);
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src")) // if has .server proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src", "$output_dir/src");
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
@@ -255,8 +256,8 @@ EOS;
 
 	$imports = "";
 	$processors = "";
-	foreach($plugins_to_merge as $plugin) {
-		$plugin_cap = ucfirst($plugin);
+	foreach($plugins_to_merge as $plugin_cap) {
+		$plugin = strtolower($plugin_cap);
 		$imports .= "import org.pocketcampus.plugin.$plugin.server.{$plugin_cap}ServiceImpl;\n";
 		$imports .= "import org.pocketcampus.plugin.$plugin.shared.{$plugin_cap}Service;\n";
 		$processors .= "			processors.add(new Processor(new {$plugin_cap}Service.Processor<{$plugin_cap}ServiceImpl>(new {$plugin_cap}ServiceImpl()), \"$plugin\"));\n";
@@ -273,6 +274,9 @@ EOS;
 
 $output_dir = "../../server/PocketCampusServer";
 $project_name = "PocketCampusServer";
+
+if(!is_dir("$output_dir"))
+	mkdir("$output_dir", 0755, true);
 
 generate_build_xml($output_dir, "$project_name");
 generate_dot_classpath($output_dir);

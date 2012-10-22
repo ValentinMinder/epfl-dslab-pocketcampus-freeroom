@@ -2,19 +2,19 @@
 
 chdir(dirname(__FILE__));
 
-$template_plugin_dir = "../../plugin/blank";
-$new_plugin_dir = "../../plugin/myplugin";
-
-$replacements = array("blank" => "myplugin", "Blank" => "MyPlugin", "BLANK" => "MYPLUGIN");
-
-$to_delete_dirs = array(".svn");
-$to_empty_dirs = array("bin", "gen");
+$template_plugin = "Blank";
+$new_plugin = "MyPlugin";
 
 $deleted_dirs = array();
 $emptied_dirs = array();
 $processed_dirs = array();
 $processed_files = array();
 $weird_cases = array();
+
+$replacements = array();
+
+$to_delete_dirs = array(".svn");
+$to_empty_dirs = array("bin", "gen");
 
 function process_dir($dir) {
 
@@ -81,9 +81,21 @@ function process_file($file) {
 	file_put_contents($file, $contents);
 }
 
+function augment_replacements() {
+	global $replacements;
+	global $template_plugin;
+	global $new_plugin;
+	$replacements[strtolower($template_plugin)] = strtolower($new_plugin);
+	$replacements[$template_plugin] = $new_plugin;
+	$replacements[strtoupper($template_plugin)] = strtoupper($new_plugin);
+}
+
 
 // ================ LOGIC ================ \\
 
+$path_to_plugins_dir = "../../plugin";
+$template_plugin_dir = "$path_to_plugins_dir/" . strtolower($template_plugin);
+$new_plugin_dir = "$path_to_plugins_dir/" . strtolower($new_plugin);
 
 if(is_dir($new_plugin_dir) || is_file($new_plugin_dir)) {
 	echo "ERROR `$new_plugin_dir` already exists\n";
@@ -92,6 +104,7 @@ if(is_dir($new_plugin_dir) || is_file($new_plugin_dir)) {
 
 system("cp -R $template_plugin_dir $new_plugin_dir");
 
+augment_replacements();
 process_dir($new_plugin_dir);
 
 echo "================= deleted_dirs ======================\n";
