@@ -11,6 +11,7 @@ import org.pocketcampus.android.platform.sdk.tracker.Tracker;
 import org.pocketcampus.android.platform.sdk.ui.layout.StandardTitledLayout;
 import org.pocketcampus.plugin.pushnotif.GCMIntentService;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifView;
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
 import android.content.Context;
 import android.content.Intent;
@@ -85,7 +86,7 @@ public class PushNotifMainView extends PluginView implements IPushNotifView {
         if (regId.equals("")) {
 			Log.v("DEBUG", "PushNotifMainView::onDisplay not reg with gcm");
             // Automatically registers application on startup.
-            GCMRegistrar.register(this, GCMIntentService.SENDER_ID);
+            GCMRegistrar.register(this, PC_ANDR_CFG.getString("GCM_SENDER_ID"));
         } else {
 			Log.v("DEBUG", "PushNotifMainView::onDisplay reg with gcm");
             // Device is already registered on GCM, check server.

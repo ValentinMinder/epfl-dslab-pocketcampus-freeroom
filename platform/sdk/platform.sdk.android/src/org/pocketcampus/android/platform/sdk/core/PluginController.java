@@ -13,6 +13,8 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.THttpClient;
 import org.apache.thrift.transport.TSocket;
 
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -31,16 +33,16 @@ public abstract class PluginController extends Service {
 			TServiceClientFactory<? extends TServiceClient> clientFactory,
 			String pluginName) {
 		TServiceClient client = null;
-		String url = Config.SERVER_PROTO + "://" + Config.SERVER_IP + ":"
-				+ Config.SERVER_PORT + "/" + Config.SERVER_URI + "/" + pluginName;
+		String url = PC_ANDR_CFG.getString("SERVER_PROTO") + "://" + PC_ANDR_CFG.getString("SERVER_IP") + ":"
+				+ PC_ANDR_CFG.getInteger("SERVER_PORT") + "/v3r1/" + pluginName;
 
 		System.out.println(url);
 		try {
 			HttpClient httpInitialClient = getThreadSafeClient();
 
 			THttpClient httpClient = new THttpClient(url, httpInitialClient);
-			httpClient.setConnectTimeout(Config.HTTP_CONNECT_TIMEOUT);
-			httpClient.setReadTimeout(Config.HTTP_READ_TIMEOUT);
+			httpClient.setConnectTimeout(5000);
+			httpClient.setReadTimeout(60000);
 
 			TProtocol protocol = new TBinaryProtocol(httpClient);
 			client = clientFactory.getClient(protocol);

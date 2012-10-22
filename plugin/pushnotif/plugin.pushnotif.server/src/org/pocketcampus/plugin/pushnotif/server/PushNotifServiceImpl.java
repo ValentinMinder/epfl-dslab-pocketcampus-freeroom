@@ -13,6 +13,7 @@ import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifReply;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifRequest;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
+import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
 
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
@@ -38,7 +39,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 
 	private static final int MULTICAST_SIZE = 1000;
 
-	private static final Sender sender = new Sender("AIzaSyBw2ORa_rjo4J8y1_2_MTtYSm6wqrxU8I0");
+	private static final Sender sender = new Sender(PC_SRV_CONFIG.getString("GCM_SERVER_KEY"));
 
 	private static final Executor threadPool = Executors.newFixedThreadPool(5);
 

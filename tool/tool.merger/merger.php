@@ -83,8 +83,8 @@ function generate_ant_properties($output_dir){
 	$content = "";
 	$content .= "key.store=../../misc/keystore/pocketcampus-key.keystore\n";
 	$content .= "key.alias=mykey\n";
-	$content .= "key.store.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
-	$content .= "key.alias.password=my3tlPhMaJXW1Mjpzwy0sFFie\n";
+	//$content .= "key.store.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
+	//$content .= "key.alias.password=XXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	file_put_contents("$output_dir/ant.properties", $content);
 }
 

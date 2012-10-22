@@ -26,16 +26,17 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
+
 /**
  * IntentService responsible for handling GCM messages.
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
     private static final String TAG = "GCMIntentService";
-    public static final String SENDER_ID = "781576745760";
 
     public GCMIntentService() {
-        super(SENDER_ID);
+        super(PC_ANDR_CFG.getString("GCM_SENDER_ID"));
     }
 
     @Override
