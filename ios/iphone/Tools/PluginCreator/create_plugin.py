@@ -67,8 +67,8 @@ if len(sys.argv) < 2:
 	exit(-1)
 
 xcode_project_path = "../../PocketCampus"
-if (len(sys.argv) == 3):
-	xcode_project_path = sys.argv[1]
+if (len(sys.argv) > 2):
+	xcode_project_path = sys.argv[2]
 pbxproj_path = os.path.join(xcode_project_path, "PocketCampus.xcodeproj", "project.pbxproj")
 
 if not os.path.isfile(pbxproj_path):
@@ -86,8 +86,12 @@ if " " in plugin_identifier:
 	exit(-1)
 	
 if not plugin_identifier.istitle():
-	print("\nError : bad plugin name. Must be titlecased (satisfy python str.istitle()).")
-	exit(-1)
+	while True:
+		choice = raw_input('\nError : bad plugin name. Should be titlecased (satisfy python str.istitle()). Continue anyway ? (y/N) [N]: ')
+		if choice == 'y':
+			break
+		if choice == 'N' or choice == '':
+			exit(0)
 
 plugin_identifier_low = plugin_identifier.lower()
 
@@ -139,4 +143,4 @@ except Exception as exs:
 	exit(-1)
 
 print("--> Plugin base created in: "+plugin_folder_path_within_PC)	
-print("--> You can now add Thrift generated files in: "+plugin_folder_path_within_PC+"/Model/ThriftTypes+Services/")
+print("--> You can now add Thrift generated files in: "+plugin_folder_path_within_PC+"/Model/ThriftTypes+Services/\nThis can done automatically by runnig the Thrift compiler script.")

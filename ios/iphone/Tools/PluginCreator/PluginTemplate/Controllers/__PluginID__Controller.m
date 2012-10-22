@@ -35,11 +35,11 @@
 }
 
 - (void)refresh {
-    //TODO: refresh infos displayed be plugin if necessary
+    //TODO: refresh infos displayed by plugin if necessary
 }
 
 + (NSString*)localizedName {
-    return NSLocalizedStringFromTable(@"PluginName", @"__PluginID_Plugin", @"");
+    return NSLocalizedStringFromTable(@"PluginName", @"__PluginID__Plugin", @"");
 }
 
 + (NSString*)identifierName {

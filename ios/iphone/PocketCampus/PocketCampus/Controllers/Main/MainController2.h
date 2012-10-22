@@ -15,4 +15,6 @@
 
 - (void)setActivePluginWithIdentifier:(NSString*)identifier;
 
+- (void)mainMenuIsReady;
+
 @end

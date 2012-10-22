@@ -14,6 +14,8 @@
 
 #import "GANTracker.h"
 
+#import "MyEduServiceTests.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window, mainController;
@@ -52,7 +54,6 @@
     self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
     //self.mainController2 = [[[MainController2 alloc] initWithWindow:self.window] autorelease];
     
-    /*END TEST*/
     
     /* OFFICIAL TESTS */
     
@@ -61,6 +62,8 @@
     //[[[DirectoryServiceTests alloc] init] tempTest];
     
     //[[[MapServiceTests alloc] init] tempTest];
+    
+    //[[[MyEduServiceTests alloc] init] tempTest];
     
     /* END OF OFFICAL TESTS */
     

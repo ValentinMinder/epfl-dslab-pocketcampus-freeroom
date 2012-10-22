@@ -8,6 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MyEduServiceTests : NSObject
+#import "MyEduService.h"
+
+#import "AuthenticationController.h"
+
+#import "AuthenticationService.h"
+
+@interface MyEduServiceTests : NSObject<MyEduServiceDelegate, AuthenticationCallbackDelegate> {
+    AuthenticationController* authController;
+    MyEduService* service;
+    MyEduTequilaToken* tequilaToken;
+}
+
+- (void)tempTest;
 
 @end

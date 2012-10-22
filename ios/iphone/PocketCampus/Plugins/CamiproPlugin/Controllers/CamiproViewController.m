@@ -147,6 +147,7 @@ static CGFloat kBalanceCellHeight = 70.0;
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken*)tequilaKey_ {
     [tequilaKey release];
     tequilaKey = [tequilaKey_ retain];
+    NSLog(@"%@", tequilaKey_);
     [authController authToken:tequilaKey.iTequilaKey presentationViewController:self.navigationController delegate:self];
 }
 

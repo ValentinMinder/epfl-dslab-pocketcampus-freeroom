@@ -20,6 +20,8 @@
 
 #import "PCUtils.h"
 
+#import "SplashViewController.h"
+
 #import <objc/message.h>
 
 @interface MainController2 ()
@@ -27,10 +29,15 @@
 @property (nonatomic, assign) UIWindow* window;
 @property (nonatomic, retain) MainMenuViewController* mainMenuViewController;
 @property (nonatomic, retain) ZUUIRevealController* revealController;
+@property (nonatomic) CGFloat revealWidth;
 @property (nonatomic, retain) NSArray* pluginsList;
 @property (nonatomic, retain) PluginController* activePluginController;
 
 @end
+
+static NSString* kSupportedIdiomPhone = @"phone";
+static NSString* kSupportedIdiomPad = @"pad";
+static NSString* kSupportedIdiomPhonePad = @"phone+pad";
 
 @implementation MainController2
 
@@ -43,30 +50,49 @@
         [self initPluginsList];
         [self initPluginObservers];
         [self initMainMenu];
+        if ([PCUtils isIdiomPad]) {
+            self.revealWidth = 320.0;
+        } else {
+            self.revealWidth = 261.0;
+        }
         [self initRevealController];
-        self.revealController.toggleAnimationDuration = 1.0;
-        //self.revealController.frontViewShadowRadius = 0.0;
+        self.revealController.toggleAnimationDuration = 0.8;
         self.window.rootViewController = self.revealController;
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
     }
     return self;
 }
 
+- (void)mainMenuIsReady {
+    if (![self.revealController.frontViewController isViewLoaded]) {
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(mainMenuIsReady) userInfo:nil repeats:NO];
+    } else {
+        [self revealMenuAfterSplash];
+    }
+}
+
 - (void)revealMenuAfterSplash {
-    [self.revealController hideFrontView];
+    [(SplashViewController*)(self.revealController.frontViewController) willMoveToRightWithDuration:self.revealController.toggleAnimationDuration];
+    if ([PCUtils isIdiomPad]) {
+        [self.revealController revealToggle:self];
+    } else {
+        [self.revealController hideFrontView];
+    }
     self.revealController.toggleAnimationDuration = 0.25;
-    self.revealController.frontViewShadowRadius = 2.5f;
 }
 
 - (void)initPluginsList {
     NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Plugins" ofType:@"plist"]];
     NSArray* pluginsFromPlist = [plist objectForKey:@"Plugins"];
     NSMutableArray* pluginsTempArray = [NSMutableArray arrayWithCapacity:pluginsFromPlist.count];
+    BOOL isPadIdiom = [PCUtils isIdiomPad];
     for (NSDictionary* pluginDic in pluginsFromPlist) {
         NSString* identifierName = [pluginDic objectForKey:@"identifierName"];
         if ([[pluginDic objectForKey:@"enabled"] boolValue]) {
-            NSLog(@"-> Detected enabled plugin : %@", identifierName);
-            [pluginsTempArray addObject:identifierName];
+            NSString* idiom = [pluginDic objectForKey:@"supportedIdioms"];
+            if (idiom && ([idiom isEqualToString:kSupportedIdiomPhonePad] || (isPadIdiom && [idiom isEqualToString:kSupportedIdiomPad]) || (!isPadIdiom && [idiom isEqualToString:kSupportedIdiomPhone]))) {
+                NSLog(@"-> Detected enabled plugin : '%@' with idiom '%@'", identifierName, idiom);
+                [pluginsTempArray addObject:identifierName];
+            }
         }
     }
     
@@ -121,25 +147,9 @@
 }
 
 - (void)initRevealController {
-    //UIViewController* blankPluginViewController = [[UIViewController alloc] initWithNibName:@"BlankPluginView" bundle:nil];
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    UIView* splashView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenSize.width, screenSize.height)];
-    splashView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    UIImageView* splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
-    splashViewImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
-    | UIViewAutoresizingFlexibleTopMargin;
-    //| UIViewAutoresizingFlexibleRightMargin
-    //| UIViewAutoresizingFlexibleBottomMargin;
-    splashView.center = splashView.center;
-    splashView.autoresizesSubviews = YES;
-    splashView.backgroundColor = [UIColor colorWithRed:0.961 green:0.957 blue:0.941 alpha:1];
-    [splashView addSubview:splashViewImage];
-    [splashViewImage release];
-    UIViewController* splashViewController = [[UIViewController alloc] init];
-    splashViewController.view = splashView;
+    SplashViewController* splashViewController = [[SplashViewController alloc] initWithRightHiddenOffset:self.revealWidth];
     ZUUIRevealController* revealController = [[ZUUIRevealController alloc] initWithFrontViewController:splashViewController rearViewController:self.mainMenuViewController];
-    revealController.rearViewRevealWidth = 287.0;
-    [splashViewController release];
+    revealController.rearViewRevealWidth = self.revealWidth;
     self.revealController = revealController;
     [revealController release];
 }
@@ -157,7 +167,7 @@
 - (void)setActivePluginWithIdentifier:(NSString*)identifier {
     Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifier]);
     PluginController* pluginController = [[pluginClass alloc] initWithMainController:nil];
-    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"HomeNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
+    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
     pluginController.mainViewController.navigationItem.leftBarButtonItem = menuButton;
     [menuButton release];
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:pluginController.mainViewController];
@@ -167,9 +177,12 @@
     [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
     [navigationBarPanGestureRecognizer release];
     
+    /*UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    [navController.view addGestureRecognizer:tapGestureRecognizer];
+    [tapGestureRecognizer release];*/
+    
     [self.revealController setFrontViewController:navController];
     [navController release];
-    //[self.revealController revealToggle:self];
     self.activePluginController = pluginController;
 }
 

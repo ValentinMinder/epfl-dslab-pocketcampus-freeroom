@@ -10,4 +10,9 @@
 
 @interface SplashViewController : UIViewController
 
+@property (nonatomic) CGFloat rightHiddenOffset;
+
+- (id)initWithRightHiddenOffset:(CGFloat)rightHiddenOffset;
+- (void)willMoveToRightWithDuration:(NSTimeInterval)duration;
+
 @end

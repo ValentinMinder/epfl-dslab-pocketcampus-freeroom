@@ -708,11 +708,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/CamiproPlugin/Controllers/CamiproViewController.m"
-         timestampString = "369932715.169719"
+         timestampString = "372503118.367242"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "377"
-         endingLineNumber = "377"
+         startingLineNumber = "378"
+         endingLineNumber = "378"
          landmarkName = "-alertView:willDismissWithButtonIndex:"
          landmarkType = "5">
          <Actions>
@@ -1608,11 +1608,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-         timestampString = "371575014.216009"
+         timestampString = "372549472.841332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "120"
-         endingLineNumber = "120"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1621,11 +1621,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-         timestampString = "371331406.717899"
+         timestampString = "372549472.841332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "73"
-         endingLineNumber = "73"
+         startingLineNumber = "74"
+         endingLineNumber = "74"
          landmarkName = "-fillCollections"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1634,11 +1634,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainMenuViewController.m"
-         timestampString = "371331406.717899"
+         timestampString = "372549472.841332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "88"
-         endingLineNumber = "88"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
          landmarkName = "-fillCollections"
          landmarkType = "5">
          <Actions>
@@ -1655,26 +1655,35 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController2.m"
-         timestampString = "371574364.94652"
+         timestampString = "372552419.760036"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "113"
-         endingLineNumber = "113"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
          landmarkName = "-initMainMenu"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "PocketCampus/Controllers/Main/MainController2.m"
-         timestampString = "371574364.94652"
+         continueAfterRunningActions = "Yes"
+         filePath = "PocketCampus/Controllers/Main/SplashViewController.m"
+         timestampString = "372541971.553525"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "126"
-         endingLineNumber = "126"
-         landmarkName = "-initRevealController"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
+         landmarkName = "-loadView"
          landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "loadView"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

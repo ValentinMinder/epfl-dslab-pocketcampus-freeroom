@@ -21,6 +21,14 @@
     return NO;
 }
 
++ (BOOL)isIdiomPad {
+    BOOL pad = NO;
+#ifdef UI_USER_INTERFACE_IDIOM
+    pad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+#endif
+    return pad;
+}
+
 + (BOOL)isOSVersionSmallerThan:(float)version {
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
 }

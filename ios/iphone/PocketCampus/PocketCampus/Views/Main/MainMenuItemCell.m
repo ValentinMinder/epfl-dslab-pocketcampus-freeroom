@@ -39,7 +39,17 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [self setSelected:highlighted animated:animated];
+    
+    [super setHighlighted:highlighted animated:animated];
+    if (self.menuItemType == MainMenuItemTypeThinSeparator) {
+        return;
+    }
+    // Configure the view for the selected state
+    if (highlighted) {
+        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+    } else {
+        self.backgroundView.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

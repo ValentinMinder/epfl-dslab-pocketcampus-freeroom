@@ -1,5 +1,5 @@
 //
-//  UINavigationController+SupportedOrientations.h
+//  UINavigationController+Extras.h
 //  PocketCampus
 //
 //  Created by Loïc Gardiol on 19.09.12.
@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UINavigationController (SupportedOrientations)
+#import <QuartzCore/QuartzCore.h>
+
+@interface UINavigationController (Extras)
 
 - (NSUInteger)supportedInterfaceOrientations;
 - (BOOL)shouldAutorotate;
+- (void)viewDidLoad;
 
 @end

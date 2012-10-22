@@ -54,6 +54,7 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.backgroundView = backgroundView;
     [backgroundView release];
+    [self.mainController mainMenuIsReady];
 }
 
 - (void)didReceiveMemoryWarning

@@ -189,6 +189,7 @@
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewRevealWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
+        self.frontView.alpha = 1.0;
 	}
 	completion:^(BOOL finished)
 	{
@@ -205,6 +206,7 @@
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(0.0f, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
+        self.frontView.alpha = 1.0;
 	}
 	completion:^(BOOL finished)
 	{
@@ -230,6 +232,7 @@
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewRevealWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
+        self.frontView.alpha = 1.0;
 	}
 	completion:^(BOOL finished)
 	{
@@ -249,6 +252,7 @@
 	}
 	completion:^(BOOL finished)
 	{
+        self.frontView.alpha = 0.0;
 		// Dispatch message to delegate, telling it the 'rearView' _DID_ enter its full-screen presentation mode, if appropriate:
 		if ([self.delegate respondsToSelector:@selector(revealController:didEnterRearViewControllerPresentationMode:)])
 		{
@@ -761,6 +765,9 @@
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 - (NSUInteger)supportedInterfaceOrientations {
+    if (self.frontViewController) {
+        return [self.frontViewController supportedInterfaceOrientations];
+    }
     return UIInterfaceOrientationMaskAll;
 }
 #endif
