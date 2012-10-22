@@ -12,6 +12,8 @@
 #import <TProcessor.h>
 
 
+typedef int64_t timestamp;
+
 @interface MyEduTequilaToken : NSObject <NSCoding> {
   NSString * __iTequilaKey;
   NSString * __iLoginCookie;
@@ -89,9 +91,94 @@
 
 @end
 
+@interface MyEduCourse : NSObject <NSCoding> {
+  int32_t __iId;
+  NSString * __iCode;
+  NSString * __iTitle;
+  NSString * __iDescription;
+  timestamp __iCreationTimestamp;
+  timestamp __iLastUpdateTimestamp;
+
+  BOOL __iId_isset;
+  BOOL __iCode_isset;
+  BOOL __iTitle_isset;
+  BOOL __iDescription_isset;
+  BOOL __iCreationTimestamp_isset;
+  BOOL __iLastUpdateTimestamp_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
+@property (nonatomic, retain, getter=iCode, setter=setICode:) NSString * iCode;
+@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
+@property (nonatomic, retain, getter=iDescription, setter=setIDescription:) NSString * iDescription;
+@property (nonatomic, getter=iCreationTimestamp, setter=setICreationTimestamp:) timestamp iCreationTimestamp;
+@property (nonatomic, getter=iLastUpdateTimestamp, setter=setILastUpdateTimestamp:) timestamp iLastUpdateTimestamp;
+#endif
+
+- (id) initWithIId: (int32_t) iId iCode: (NSString *) iCode iTitle: (NSString *) iTitle iDescription: (NSString *) iDescription iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) iId;
+- (void) setIId: (int32_t) iId;
+- (BOOL) iIdIsSet;
+
+- (NSString *) iCode;
+- (void) setICode: (NSString *) iCode;
+- (BOOL) iCodeIsSet;
+
+- (NSString *) iTitle;
+- (void) setITitle: (NSString *) iTitle;
+- (BOOL) iTitleIsSet;
+
+- (NSString *) iDescription;
+- (void) setIDescription: (NSString *) iDescription;
+- (BOOL) iDescriptionIsSet;
+
+- (timestamp) iCreationTimestamp;
+- (void) setICreationTimestamp: (timestamp) iCreationTimestamp;
+- (BOOL) iCreationTimestampIsSet;
+
+- (timestamp) iLastUpdateTimestamp;
+- (void) setILastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+- (BOOL) iLastUpdateTimestampIsSet;
+
+@end
+
+@interface SubscribedCoursesListReply : NSObject <NSCoding> {
+  NSArray * __iSubscribedCourses;
+  int32_t __iStatus;
+
+  BOOL __iSubscribedCourses_isset;
+  BOOL __iStatus_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iSubscribedCourses, setter=setISubscribedCourses:) NSArray * iSubscribedCourses;
+@property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
+#endif
+
+- (id) initWithISubscribedCourses: (NSArray *) iSubscribedCourses iStatus: (int32_t) iStatus;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSArray *) iSubscribedCourses;
+- (void) setISubscribedCourses: (NSArray *) iSubscribedCourses;
+- (BOOL) iSubscribedCoursesIsSet;
+
+- (int32_t) iStatus;
+- (void) setIStatus: (int32_t) iStatus;
+- (BOOL) iStatusIsSet;
+
+@end
+
 @protocol MyEduService <NSObject>
 - (MyEduTequilaToken *) getTequilaTokenForMyEdu;  // throws TException
 - (MyEduSession *) getMyEduSession: (MyEduTequilaToken *) iTequilaToken;  // throws TException
+- (SubscribedCoursesListReply *) getSubscribedCoursesList: (MyEduRequest *) iMyEduRequest;  // throws TException
 @end
 
 @interface MyEduServiceClient : NSObject <MyEduService> {

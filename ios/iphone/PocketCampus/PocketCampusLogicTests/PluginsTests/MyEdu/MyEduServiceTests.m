@@ -15,6 +15,7 @@
 - (void)tempTest {
     service = [[MyEduService sharedInstanceToRetain] retain];
     authController = [[AuthenticationController alloc] init];
+    [service getSubscribedCoursesListForRequest:[[[MyEduRequest alloc] initWithIMyEduSession:[[[MyEduSession alloc] initWithIMyEduCookie:@"fsdfsdf"] autorelease] iLanguage:@""] autorelease] delegate:self];
     [service getTequilaTokenForMyEduWithDelegate:self];
 }
 
@@ -33,16 +34,22 @@
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken didReturn:(MyEduSession*)myEduSession {
     NSLog(@"getSessionIdForServiceWithTequilaKey:didReturn: %@", myEduSession);
-    
-    ASIHTTPRequest* req = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"https://myedu.epfl.ch/courses/SwEng.json"]];
-    [req addRequestHeader:@"Cookie" value:myEduSession.iMyEduCookie];
-    [req startSynchronous];
-    
-    NSLog(@"%@", req.responseString);
+    MyEduRequest* req = [[[MyEduRequest alloc] initWithIMyEduSession:myEduSession iLanguage:@"en"] autorelease];
+    [service getSubscribedCoursesListForRequest:req delegate:self];
+
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken*)tequilaToken {
     NSLog(@"getSessionIdForServiceFailedForTequilaKey");
+}
+
+- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(SubscribedCoursesListReply *)reply {
+    NSLog(@"getSubscribedCoursesListForRequest:didReturn:");
+    NSLog(@"statusCode:%d coursesList:%@", reply.iStatus, reply.iSubscribedCourses);
+}
+
+- (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
+    NSLog(@"getSubscribedCoursesListFailedForRequest");
 }
 
 - (void)serviceConnectionToServerTimedOut {
