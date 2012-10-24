@@ -204,9 +204,6 @@ function collect_src($output_dir) {
 	global $path_to_plugin_dir;
 	global $path_to_platform_dir;
 
-	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
-	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
-
 	foreach($plugins_to_merge as $plgn) {
 		$plugin = strtolower($plgn);
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src")) // if has .server proj
@@ -214,6 +211,9 @@ function collect_src($output_dir) {
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
 	}
+
+	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
 
 }
 
@@ -285,7 +285,7 @@ generate_dot_project($output_dir, "$project_name");
 delete_dir("$output_dir/src");
 collect_src("$output_dir");
 
-generate_server_launcher($output_dir);
+//generate_server_launcher($output_dir);
 
 delete_dir("$output_dir/lib");
 export_libs("$output_dir");
