@@ -455,6 +455,520 @@
 
 @end
 
+@implementation MyEduCourse
+
+- (id) initWithIId: (int32_t) iId iCode: (NSString *) iCode iTitle: (NSString *) iTitle iDescription: (NSString *) iDescription iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
+{
+  self = [super init];
+  __iId = iId;
+  __iId_isset = YES;
+  __iCode = [iCode retain];
+  __iCode_isset = YES;
+  __iTitle = [iTitle retain];
+  __iTitle_isset = YES;
+  __iDescription = [iDescription retain];
+  __iDescription_isset = YES;
+  __iCreationTimestamp = iCreationTimestamp;
+  __iCreationTimestamp_isset = YES;
+  __iLastUpdateTimestamp = iLastUpdateTimestamp;
+  __iLastUpdateTimestamp_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iId"])
+  {
+    __iId = [decoder decodeInt32ForKey: @"iId"];
+    __iId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iCode"])
+  {
+    __iCode = [[decoder decodeObjectForKey: @"iCode"] retain];
+    __iCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iTitle"])
+  {
+    __iTitle = [[decoder decodeObjectForKey: @"iTitle"] retain];
+    __iTitle_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iDescription"])
+  {
+    __iDescription = [[decoder decodeObjectForKey: @"iDescription"] retain];
+    __iDescription_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iCreationTimestamp"])
+  {
+    __iCreationTimestamp = [decoder decodeInt64ForKey: @"iCreationTimestamp"];
+    __iCreationTimestamp_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iLastUpdateTimestamp"])
+  {
+    __iLastUpdateTimestamp = [decoder decodeInt64ForKey: @"iLastUpdateTimestamp"];
+    __iLastUpdateTimestamp_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iId_isset)
+  {
+    [encoder encodeInt32: __iId forKey: @"iId"];
+  }
+  if (__iCode_isset)
+  {
+    [encoder encodeObject: __iCode forKey: @"iCode"];
+  }
+  if (__iTitle_isset)
+  {
+    [encoder encodeObject: __iTitle forKey: @"iTitle"];
+  }
+  if (__iDescription_isset)
+  {
+    [encoder encodeObject: __iDescription forKey: @"iDescription"];
+  }
+  if (__iCreationTimestamp_isset)
+  {
+    [encoder encodeInt64: __iCreationTimestamp forKey: @"iCreationTimestamp"];
+  }
+  if (__iLastUpdateTimestamp_isset)
+  {
+    [encoder encodeInt64: __iLastUpdateTimestamp forKey: @"iLastUpdateTimestamp"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iCode release];
+  [__iTitle release];
+  [__iDescription release];
+  [super dealloc];
+}
+
+- (int32_t) iId {
+  return __iId;
+}
+
+- (void) setIId: (int32_t) iId {
+  __iId = iId;
+  __iId_isset = YES;
+}
+
+- (BOOL) iIdIsSet {
+  return __iId_isset;
+}
+
+- (void) unsetIId {
+  __iId_isset = NO;
+}
+
+- (NSString *) iCode {
+  return [[__iCode retain] autorelease];
+}
+
+- (void) setICode: (NSString *) iCode {
+  [iCode retain];
+  [__iCode release];
+  __iCode = iCode;
+  __iCode_isset = YES;
+}
+
+- (BOOL) iCodeIsSet {
+  return __iCode_isset;
+}
+
+- (void) unsetICode {
+  [__iCode release];
+  __iCode = nil;
+  __iCode_isset = NO;
+}
+
+- (NSString *) iTitle {
+  return [[__iTitle retain] autorelease];
+}
+
+- (void) setITitle: (NSString *) iTitle {
+  [iTitle retain];
+  [__iTitle release];
+  __iTitle = iTitle;
+  __iTitle_isset = YES;
+}
+
+- (BOOL) iTitleIsSet {
+  return __iTitle_isset;
+}
+
+- (void) unsetITitle {
+  [__iTitle release];
+  __iTitle = nil;
+  __iTitle_isset = NO;
+}
+
+- (NSString *) iDescription {
+  return [[__iDescription retain] autorelease];
+}
+
+- (void) setIDescription: (NSString *) iDescription {
+  [iDescription retain];
+  [__iDescription release];
+  __iDescription = iDescription;
+  __iDescription_isset = YES;
+}
+
+- (BOOL) iDescriptionIsSet {
+  return __iDescription_isset;
+}
+
+- (void) unsetIDescription {
+  [__iDescription release];
+  __iDescription = nil;
+  __iDescription_isset = NO;
+}
+
+- (int64_t) iCreationTimestamp {
+  return __iCreationTimestamp;
+}
+
+- (void) setICreationTimestamp: (int64_t) iCreationTimestamp {
+  __iCreationTimestamp = iCreationTimestamp;
+  __iCreationTimestamp_isset = YES;
+}
+
+- (BOOL) iCreationTimestampIsSet {
+  return __iCreationTimestamp_isset;
+}
+
+- (void) unsetICreationTimestamp {
+  __iCreationTimestamp_isset = NO;
+}
+
+- (int64_t) iLastUpdateTimestamp {
+  return __iLastUpdateTimestamp;
+}
+
+- (void) setILastUpdateTimestamp: (int64_t) iLastUpdateTimestamp {
+  __iLastUpdateTimestamp = iLastUpdateTimestamp;
+  __iLastUpdateTimestamp_isset = YES;
+}
+
+- (BOOL) iLastUpdateTimestampIsSet {
+  return __iLastUpdateTimestamp_isset;
+}
+
+- (void) unsetILastUpdateTimestamp {
+  __iLastUpdateTimestamp_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setIId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setICode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setITitle: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 4:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setIDescription: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setICreationTimestamp: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 6:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setILastUpdateTimestamp: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"MyEduCourse"];
+  if (__iId_isset) {
+    [outProtocol writeFieldBeginWithName: @"iId" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __iId];
+    [outProtocol writeFieldEnd];
+  }
+  if (__iCode_isset) {
+    if (__iCode != nil) {
+      [outProtocol writeFieldBeginWithName: @"iCode" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __iCode];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iTitle_isset) {
+    if (__iTitle != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTitle" type: TType_STRING fieldID: 3];
+      [outProtocol writeString: __iTitle];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iDescription_isset) {
+    if (__iDescription != nil) {
+      [outProtocol writeFieldBeginWithName: @"iDescription" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __iDescription];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iCreationTimestamp_isset) {
+    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 5];
+    [outProtocol writeI64: __iCreationTimestamp];
+    [outProtocol writeFieldEnd];
+  }
+  if (__iLastUpdateTimestamp_isset) {
+    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 6];
+    [outProtocol writeI64: __iLastUpdateTimestamp];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"MyEduCourse("];
+  [ms appendString: @"iId:"];
+  [ms appendFormat: @"%i", __iId];
+  [ms appendString: @",iCode:"];
+  [ms appendFormat: @"\"%@\"", __iCode];
+  [ms appendString: @",iTitle:"];
+  [ms appendFormat: @"\"%@\"", __iTitle];
+  [ms appendString: @",iDescription:"];
+  [ms appendFormat: @"\"%@\"", __iDescription];
+  [ms appendString: @",iCreationTimestamp:"];
+  [ms appendFormat: @"%qi", __iCreationTimestamp];
+  [ms appendString: @",iLastUpdateTimestamp:"];
+  [ms appendFormat: @"%qi", __iLastUpdateTimestamp];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation SubscribedCoursesListReply
+
+- (id) initWithISubscribedCourses: (NSArray *) iSubscribedCourses iStatus: (int32_t) iStatus
+{
+  self = [super init];
+  __iSubscribedCourses = [iSubscribedCourses retain];
+  __iSubscribedCourses_isset = YES;
+  __iStatus = iStatus;
+  __iStatus_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iSubscribedCourses"])
+  {
+    __iSubscribedCourses = [[decoder decodeObjectForKey: @"iSubscribedCourses"] retain];
+    __iSubscribedCourses_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iStatus"])
+  {
+    __iStatus = [decoder decodeInt32ForKey: @"iStatus"];
+    __iStatus_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iSubscribedCourses_isset)
+  {
+    [encoder encodeObject: __iSubscribedCourses forKey: @"iSubscribedCourses"];
+  }
+  if (__iStatus_isset)
+  {
+    [encoder encodeInt32: __iStatus forKey: @"iStatus"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iSubscribedCourses release];
+  [super dealloc];
+}
+
+- (NSArray *) iSubscribedCourses {
+  return [[__iSubscribedCourses retain] autorelease];
+}
+
+- (void) setISubscribedCourses: (NSArray *) iSubscribedCourses {
+  [iSubscribedCourses retain];
+  [__iSubscribedCourses release];
+  __iSubscribedCourses = iSubscribedCourses;
+  __iSubscribedCourses_isset = YES;
+}
+
+- (BOOL) iSubscribedCoursesIsSet {
+  return __iSubscribedCourses_isset;
+}
+
+- (void) unsetISubscribedCourses {
+  [__iSubscribedCourses release];
+  __iSubscribedCourses = nil;
+  __iSubscribedCourses_isset = NO;
+}
+
+- (int32_t) iStatus {
+  return __iStatus;
+}
+
+- (void) setIStatus: (int32_t) iStatus {
+  __iStatus = iStatus;
+  __iStatus_isset = YES;
+}
+
+- (BOOL) iStatusIsSet {
+  return __iStatus_isset;
+}
+
+- (void) unsetIStatus {
+  __iStatus_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_LIST) {
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
+          {
+            MyEduCourse *_elem2 = [[MyEduCourse alloc] init];
+            [_elem2 read: inProtocol];
+            [fieldValue addObject: _elem2];
+            [_elem2 release];
+          }
+          [inProtocol readListEnd];
+          [self setISubscribedCourses: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setIStatus: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"SubscribedCoursesListReply"];
+  if (__iSubscribedCourses_isset) {
+    if (__iSubscribedCourses != nil) {
+      [outProtocol writeFieldBeginWithName: @"iSubscribedCourses" type: TType_LIST fieldID: 1];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iSubscribedCourses count]];
+        int i4;
+        for (i4 = 0; i4 < [__iSubscribedCourses count]; i4++)
+        {
+          [[__iSubscribedCourses objectAtIndex: i4] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iStatus_isset) {
+    [outProtocol writeFieldBeginWithName: @"iStatus" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __iStatus];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"SubscribedCoursesListReply("];
+  [ms appendString: @"iSubscribedCourses:"];
+  [ms appendFormat: @"%@", __iSubscribedCourses];
+  [ms appendString: @",iStatus:"];
+  [ms appendFormat: @"%i", __iStatus];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @interface getTequilaTokenForMyEdu_args : NSObject <NSCoding> {
 }
 
@@ -918,6 +1432,275 @@
 
 @end
 
+@interface getSubscribedCoursesList_args : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
+
+  BOOL __iMyEduRequest_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
+#endif
+
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
+
+@end
+
+@implementation getSubscribedCoursesList_args
+
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest
+{
+  self = [super init];
+  __iMyEduRequest = [iMyEduRequest retain];
+  __iMyEduRequest_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"iMyEduRequest"])
+  {
+    __iMyEduRequest = [[decoder decodeObjectForKey: @"iMyEduRequest"] retain];
+    __iMyEduRequest_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__iMyEduRequest_isset)
+  {
+    [encoder encodeObject: __iMyEduRequest forKey: @"iMyEduRequest"];
+  }
+}
+
+- (void) dealloc
+{
+  [__iMyEduRequest release];
+  [super dealloc];
+}
+
+- (MyEduRequest *) iMyEduRequest {
+  return [[__iMyEduRequest retain] autorelease];
+}
+
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest {
+  [iMyEduRequest retain];
+  [__iMyEduRequest release];
+  __iMyEduRequest = iMyEduRequest;
+  __iMyEduRequest_isset = YES;
+}
+
+- (BOOL) iMyEduRequestIsSet {
+  return __iMyEduRequest_isset;
+}
+
+- (void) unsetIMyEduRequest {
+  [__iMyEduRequest release];
+  __iMyEduRequest = nil;
+  __iMyEduRequest_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MyEduRequest *fieldValue = [[MyEduRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setIMyEduRequest: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getSubscribedCoursesList_args"];
+  if (__iMyEduRequest_isset) {
+    if (__iMyEduRequest != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+      [__iMyEduRequest write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getSubscribedCoursesList_args("];
+  [ms appendString: @"iMyEduRequest:"];
+  [ms appendFormat: @"%@", __iMyEduRequest];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetSubscribedCoursesList_result : NSObject <NSCoding> {
+  SubscribedCoursesListReply * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) SubscribedCoursesListReply * success;
+#endif
+
+- (id) initWithSuccess: (SubscribedCoursesListReply *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (SubscribedCoursesListReply *) success;
+- (void) setSuccess: (SubscribedCoursesListReply *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetSubscribedCoursesList_result
+
+- (id) initWithSuccess: (SubscribedCoursesListReply *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (SubscribedCoursesListReply *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (SubscribedCoursesListReply *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          SubscribedCoursesListReply *fieldValue = [[SubscribedCoursesListReply alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetSubscribedCoursesList_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetSubscribedCoursesList_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation MyEduServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -1014,6 +1797,46 @@
   return [self recv_getMyEduSession];
 }
 
+- (void) send_getSubscribedCoursesList: (MyEduRequest *) iMyEduRequest
+{
+  [outProtocol writeMessageBeginWithName: @"getSubscribedCoursesList" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getSubscribedCoursesList_args"];
+  if (iMyEduRequest != nil)  {
+    [outProtocol writeFieldBeginWithName: @"iMyEduRequest" type: TType_STRUCT fieldID: 1];
+    [iMyEduRequest write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (SubscribedCoursesListReply *) recv_getSubscribedCoursesList
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetSubscribedCoursesList_result * result = [[[GetSubscribedCoursesList_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getSubscribedCoursesList failed: unknown result"];
+}
+
+- (SubscribedCoursesListReply *) getSubscribedCoursesList: (MyEduRequest *) iMyEduRequest
+{
+  [self send_getSubscribedCoursesList: iMyEduRequest];
+  return [self recv_getSubscribedCoursesList];
+}
+
 @end
 
 @implementation MyEduServiceProcessor
@@ -1041,6 +1864,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getMyEduSession"];
+  }
+  {
+    SEL s = @selector(process_getSubscribedCoursesList_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getSubscribedCoursesList"];
   }
   return self;
 }
@@ -1108,6 +1939,23 @@
   GetMyEduSession_result * result = [[GetMyEduSession_result alloc] init];
   [result setSuccess: [mService getMyEduSession: [args iTequilaToken]]];
   [outProtocol writeMessageBeginWithName: @"getMyEduSession"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getSubscribedCoursesList_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getSubscribedCoursesList_args * args = [[getSubscribedCoursesList_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetSubscribedCoursesList_result * result = [[GetSubscribedCoursesList_result alloc] init];
+  [result setSuccess: [mService getSubscribedCoursesList: [args iMyEduRequest]]];
+  [outProtocol writeMessageBeginWithName: @"getSubscribedCoursesList"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

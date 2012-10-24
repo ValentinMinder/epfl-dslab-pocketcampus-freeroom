@@ -4,7 +4,7 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "moodle";
+$plugin_name = "myedu";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
@@ -12,7 +12,7 @@ $thrift_bin = "binaries/thrift-linux-0.8.0-dev";
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$thrift_bin = "binaries/thrift-win-0.7.0.exe";
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
-	$thrift_bin = "binaries/thrift-mac-0.8.0";
+	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }
 $plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/" . ucfirst($plugin_name) . "Plugin/Model/ThriftTypes+Services";
 $string_plugin = "plugin";

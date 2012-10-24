@@ -37,6 +37,8 @@
 - (id)initWithMainController:(MainController*)mainController_;
 + (NSString*)localizedName;
 + (NSString*)identifierName;
+//- (void)pluginWillBecomePassive;
+//- (void)pluginWillRegainActive;
 @optional
 - (void)refresh;
 
