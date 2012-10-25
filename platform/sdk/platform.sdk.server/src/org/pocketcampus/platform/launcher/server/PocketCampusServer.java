@@ -48,7 +48,7 @@ public class PocketCampusServer extends ServerBase {
 		return processors;
 	}
 
-	public static Object invokePlugin(String pluginName, String methodName, Object arg) throws NoSuchObjectException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static Object invokeOnPlugin(String pluginName, String methodName, Object arg) throws NoSuchObjectException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if(!pluginsImpl.containsKey(pluginName.toLowerCase())) {
 			throw new NoSuchObjectException("Plugin not found: " + pluginName);
 		}

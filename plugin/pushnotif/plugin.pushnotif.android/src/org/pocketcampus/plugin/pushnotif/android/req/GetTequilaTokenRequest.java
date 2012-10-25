@@ -1,9 +1,8 @@
 package org.pocketcampus.plugin.pushnotif.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
-import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
+import org.pocketcampus.platform.sdk.shared.authentication.TequilaToken;
 import org.pocketcampus.plugin.pushnotif.android.PushNotifController;
-import org.pocketcampus.plugin.pushnotif.android.PushNotifModel;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Iface;
 
 /**
@@ -27,6 +26,7 @@ public class GetTequilaTokenRequest extends Request<PushNotifController, Iface, 
 	@Override
 	protected void onError(PushNotifController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
+		controller.networkError();
 		e.printStackTrace();
 	}
 	

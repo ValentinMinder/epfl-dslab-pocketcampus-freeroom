@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
-package org.pocketcampus.plugin.pushnotif.shared;
+package org.pocketcampus.platform.sdk.shared.authentication;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;

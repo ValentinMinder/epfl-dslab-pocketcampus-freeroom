@@ -21,20 +21,20 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifRequest, PushNotifRequest._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PushNotifRequest");
+public class PushNotifRegReq implements org.apache.thrift.TBase<PushNotifRegReq, PushNotifRegReq._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("PushNotifRegReq");
 
   private static final org.apache.thrift.protocol.TField I_AUTHENTICATED_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("iAuthenticatedToken", org.apache.thrift.protocol.TType.STRUCT, (short)1);
   private static final org.apache.thrift.protocol.TField I_PLATFORM_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("iPlatformType", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField I_ANDROID_REGISTRATION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iAndroidRegistrationId", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField REGISTRATION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("RegistrationId", org.apache.thrift.protocol.TType.STRING, (short)3);
 
-  public TequilaToken iAuthenticatedToken; // required
+  public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken iAuthenticatedToken; // required
   /**
    * 
    * @see PlatformType
    */
   public PlatformType iPlatformType; // required
-  public String iAndroidRegistrationId; // required
+  public String RegistrationId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -44,7 +44,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
      * @see PlatformType
      */
     I_PLATFORM_TYPE((short)2, "iPlatformType"),
-    I_ANDROID_REGISTRATION_ID((short)3, "iAndroidRegistrationId");
+    REGISTRATION_ID((short)3, "RegistrationId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -63,8 +63,8 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
           return I_AUTHENTICATED_TOKEN;
         case 2: // I_PLATFORM_TYPE
           return I_PLATFORM_TYPE;
-        case 3: // I_ANDROID_REGISTRATION_ID
-          return I_ANDROID_REGISTRATION_ID;
+        case 3: // REGISTRATION_ID
+          return REGISTRATION_ID;
         default:
           return null;
       }
@@ -109,57 +109,61 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_AUTHENTICATED_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("iAuthenticatedToken", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TequilaToken.class)));
+    tmpMap.put(_Fields.I_AUTHENTICATED_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("iAuthenticatedToken", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, org.pocketcampus.platform.sdk.shared.authentication.TequilaToken.class)));
     tmpMap.put(_Fields.I_PLATFORM_TYPE, new org.apache.thrift.meta_data.FieldMetaData("iPlatformType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, PlatformType.class)));
-    tmpMap.put(_Fields.I_ANDROID_REGISTRATION_ID, new org.apache.thrift.meta_data.FieldMetaData("iAndroidRegistrationId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.REGISTRATION_ID, new org.apache.thrift.meta_data.FieldMetaData("RegistrationId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PushNotifRequest.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PushNotifRegReq.class, metaDataMap);
   }
 
-  public PushNotifRequest() {
+  public PushNotifRegReq() {
   }
 
-  public PushNotifRequest(
-    PlatformType iPlatformType)
+  public PushNotifRegReq(
+    org.pocketcampus.platform.sdk.shared.authentication.TequilaToken iAuthenticatedToken,
+    PlatformType iPlatformType,
+    String RegistrationId)
   {
     this();
+    this.iAuthenticatedToken = iAuthenticatedToken;
     this.iPlatformType = iPlatformType;
+    this.RegistrationId = RegistrationId;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public PushNotifRequest(PushNotifRequest other) {
+  public PushNotifRegReq(PushNotifRegReq other) {
     if (other.isSetIAuthenticatedToken()) {
-      this.iAuthenticatedToken = new TequilaToken(other.iAuthenticatedToken);
+      this.iAuthenticatedToken = new org.pocketcampus.platform.sdk.shared.authentication.TequilaToken(other.iAuthenticatedToken);
     }
     if (other.isSetIPlatformType()) {
       this.iPlatformType = other.iPlatformType;
     }
-    if (other.isSetIAndroidRegistrationId()) {
-      this.iAndroidRegistrationId = other.iAndroidRegistrationId;
+    if (other.isSetRegistrationId()) {
+      this.RegistrationId = other.RegistrationId;
     }
   }
 
-  public PushNotifRequest deepCopy() {
-    return new PushNotifRequest(this);
+  public PushNotifRegReq deepCopy() {
+    return new PushNotifRegReq(this);
   }
 
   @Override
   public void clear() {
     this.iAuthenticatedToken = null;
     this.iPlatformType = null;
-    this.iAndroidRegistrationId = null;
+    this.RegistrationId = null;
   }
 
-  public TequilaToken getIAuthenticatedToken() {
+  public org.pocketcampus.platform.sdk.shared.authentication.TequilaToken getIAuthenticatedToken() {
     return this.iAuthenticatedToken;
   }
 
-  public PushNotifRequest setIAuthenticatedToken(TequilaToken iAuthenticatedToken) {
+  public PushNotifRegReq setIAuthenticatedToken(org.pocketcampus.platform.sdk.shared.authentication.TequilaToken iAuthenticatedToken) {
     this.iAuthenticatedToken = iAuthenticatedToken;
     return this;
   }
@@ -191,7 +195,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
    * 
    * @see PlatformType
    */
-  public PushNotifRequest setIPlatformType(PlatformType iPlatformType) {
+  public PushNotifRegReq setIPlatformType(PlatformType iPlatformType) {
     this.iPlatformType = iPlatformType;
     return this;
   }
@@ -211,27 +215,27 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
     }
   }
 
-  public String getIAndroidRegistrationId() {
-    return this.iAndroidRegistrationId;
+  public String getRegistrationId() {
+    return this.RegistrationId;
   }
 
-  public PushNotifRequest setIAndroidRegistrationId(String iAndroidRegistrationId) {
-    this.iAndroidRegistrationId = iAndroidRegistrationId;
+  public PushNotifRegReq setRegistrationId(String RegistrationId) {
+    this.RegistrationId = RegistrationId;
     return this;
   }
 
-  public void unsetIAndroidRegistrationId() {
-    this.iAndroidRegistrationId = null;
+  public void unsetRegistrationId() {
+    this.RegistrationId = null;
   }
 
-  /** Returns true if field iAndroidRegistrationId is set (has been assigned a value) and false otherwise */
-  public boolean isSetIAndroidRegistrationId() {
-    return this.iAndroidRegistrationId != null;
+  /** Returns true if field RegistrationId is set (has been assigned a value) and false otherwise */
+  public boolean isSetRegistrationId() {
+    return this.RegistrationId != null;
   }
 
-  public void setIAndroidRegistrationIdIsSet(boolean value) {
+  public void setRegistrationIdIsSet(boolean value) {
     if (!value) {
-      this.iAndroidRegistrationId = null;
+      this.RegistrationId = null;
     }
   }
 
@@ -241,7 +245,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       if (value == null) {
         unsetIAuthenticatedToken();
       } else {
-        setIAuthenticatedToken((TequilaToken)value);
+        setIAuthenticatedToken((org.pocketcampus.platform.sdk.shared.authentication.TequilaToken)value);
       }
       break;
 
@@ -253,11 +257,11 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       }
       break;
 
-    case I_ANDROID_REGISTRATION_ID:
+    case REGISTRATION_ID:
       if (value == null) {
-        unsetIAndroidRegistrationId();
+        unsetRegistrationId();
       } else {
-        setIAndroidRegistrationId((String)value);
+        setRegistrationId((String)value);
       }
       break;
 
@@ -272,8 +276,8 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
     case I_PLATFORM_TYPE:
       return getIPlatformType();
 
-    case I_ANDROID_REGISTRATION_ID:
-      return getIAndroidRegistrationId();
+    case REGISTRATION_ID:
+      return getRegistrationId();
 
     }
     throw new IllegalStateException();
@@ -290,8 +294,8 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       return isSetIAuthenticatedToken();
     case I_PLATFORM_TYPE:
       return isSetIPlatformType();
-    case I_ANDROID_REGISTRATION_ID:
-      return isSetIAndroidRegistrationId();
+    case REGISTRATION_ID:
+      return isSetRegistrationId();
     }
     throw new IllegalStateException();
   }
@@ -300,12 +304,12 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof PushNotifRequest)
-      return this.equals((PushNotifRequest)that);
+    if (that instanceof PushNotifRegReq)
+      return this.equals((PushNotifRegReq)that);
     return false;
   }
 
-  public boolean equals(PushNotifRequest that) {
+  public boolean equals(PushNotifRegReq that) {
     if (that == null)
       return false;
 
@@ -327,12 +331,12 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
         return false;
     }
 
-    boolean this_present_iAndroidRegistrationId = true && this.isSetIAndroidRegistrationId();
-    boolean that_present_iAndroidRegistrationId = true && that.isSetIAndroidRegistrationId();
-    if (this_present_iAndroidRegistrationId || that_present_iAndroidRegistrationId) {
-      if (!(this_present_iAndroidRegistrationId && that_present_iAndroidRegistrationId))
+    boolean this_present_RegistrationId = true && this.isSetRegistrationId();
+    boolean that_present_RegistrationId = true && that.isSetRegistrationId();
+    if (this_present_RegistrationId || that_present_RegistrationId) {
+      if (!(this_present_RegistrationId && that_present_RegistrationId))
         return false;
-      if (!this.iAndroidRegistrationId.equals(that.iAndroidRegistrationId))
+      if (!this.RegistrationId.equals(that.RegistrationId))
         return false;
     }
 
@@ -353,21 +357,21 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
     if (present_iPlatformType)
       builder.append(iPlatformType.getValue());
 
-    boolean present_iAndroidRegistrationId = true && (isSetIAndroidRegistrationId());
-    builder.append(present_iAndroidRegistrationId);
-    if (present_iAndroidRegistrationId)
-      builder.append(iAndroidRegistrationId);
+    boolean present_RegistrationId = true && (isSetRegistrationId());
+    builder.append(present_RegistrationId);
+    if (present_RegistrationId)
+      builder.append(RegistrationId);
 
     return builder.toHashCode();
   }
 
-  public int compareTo(PushNotifRequest other) {
+  public int compareTo(PushNotifRegReq other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    PushNotifRequest typedOther = (PushNotifRequest)other;
+    PushNotifRegReq typedOther = (PushNotifRegReq)other;
 
     lastComparison = Boolean.valueOf(isSetIAuthenticatedToken()).compareTo(typedOther.isSetIAuthenticatedToken());
     if (lastComparison != 0) {
@@ -389,12 +393,12 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIAndroidRegistrationId()).compareTo(typedOther.isSetIAndroidRegistrationId());
+    lastComparison = Boolean.valueOf(isSetRegistrationId()).compareTo(typedOther.isSetRegistrationId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIAndroidRegistrationId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iAndroidRegistrationId, typedOther.iAndroidRegistrationId);
+    if (isSetRegistrationId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.RegistrationId, typedOther.RegistrationId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -418,7 +422,7 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       switch (field.id) {
         case 1: // I_AUTHENTICATED_TOKEN
           if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-            this.iAuthenticatedToken = new TequilaToken();
+            this.iAuthenticatedToken = new org.pocketcampus.platform.sdk.shared.authentication.TequilaToken();
             this.iAuthenticatedToken.read(iprot);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -431,9 +435,9 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // I_ANDROID_REGISTRATION_ID
+        case 3: // REGISTRATION_ID
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iAndroidRegistrationId = iprot.readString();
+            this.RegistrationId = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -454,23 +458,19 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
 
     oprot.writeStructBegin(STRUCT_DESC);
     if (this.iAuthenticatedToken != null) {
-      if (isSetIAuthenticatedToken()) {
-        oprot.writeFieldBegin(I_AUTHENTICATED_TOKEN_FIELD_DESC);
-        this.iAuthenticatedToken.write(oprot);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(I_AUTHENTICATED_TOKEN_FIELD_DESC);
+      this.iAuthenticatedToken.write(oprot);
+      oprot.writeFieldEnd();
     }
     if (this.iPlatformType != null) {
       oprot.writeFieldBegin(I_PLATFORM_TYPE_FIELD_DESC);
       oprot.writeI32(this.iPlatformType.getValue());
       oprot.writeFieldEnd();
     }
-    if (this.iAndroidRegistrationId != null) {
-      if (isSetIAndroidRegistrationId()) {
-        oprot.writeFieldBegin(I_ANDROID_REGISTRATION_ID_FIELD_DESC);
-        oprot.writeString(this.iAndroidRegistrationId);
-        oprot.writeFieldEnd();
-      }
+    if (this.RegistrationId != null) {
+      oprot.writeFieldBegin(REGISTRATION_ID_FIELD_DESC);
+      oprot.writeString(this.RegistrationId);
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -478,18 +478,16 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("PushNotifRequest(");
+    StringBuilder sb = new StringBuilder("PushNotifRegReq(");
     boolean first = true;
 
-    if (isSetIAuthenticatedToken()) {
-      sb.append("iAuthenticatedToken:");
-      if (this.iAuthenticatedToken == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.iAuthenticatedToken);
-      }
-      first = false;
+    sb.append("iAuthenticatedToken:");
+    if (this.iAuthenticatedToken == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iAuthenticatedToken);
     }
+    first = false;
     if (!first) sb.append(", ");
     sb.append("iPlatformType:");
     if (this.iPlatformType == null) {
@@ -498,24 +496,28 @@ public class PushNotifRequest implements org.apache.thrift.TBase<PushNotifReques
       sb.append(this.iPlatformType);
     }
     first = false;
-    if (isSetIAndroidRegistrationId()) {
-      if (!first) sb.append(", ");
-      sb.append("iAndroidRegistrationId:");
-      if (this.iAndroidRegistrationId == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.iAndroidRegistrationId);
-      }
-      first = false;
+    if (!first) sb.append(", ");
+    sb.append("RegistrationId:");
+    if (this.RegistrationId == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.RegistrationId);
     }
+    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (iAuthenticatedToken == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iAuthenticatedToken' was not present! Struct: " + toString());
+    }
     if (iPlatformType == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iPlatformType' was not present! Struct: " + toString());
+    }
+    if (RegistrationId == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'RegistrationId' was not present! Struct: " + toString());
     }
   }
 

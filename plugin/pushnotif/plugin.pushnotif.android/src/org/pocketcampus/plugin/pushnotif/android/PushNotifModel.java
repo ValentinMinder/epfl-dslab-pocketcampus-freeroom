@@ -1,16 +1,11 @@
 package org.pocketcampus.plugin.pushnotif.android;
 
-import java.util.List;
-
 import org.pocketcampus.android.platform.sdk.core.IView;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
-import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifModel;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifView;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 /**
  * PushNotifModel - The Model that stores the data of this plugin.

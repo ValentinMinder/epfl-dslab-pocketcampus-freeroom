@@ -1,7 +1,5 @@
 package org.pocketcampus.plugin.pushnotif.android.iface;
 
-import java.io.File;
-
 import org.pocketcampus.android.platform.sdk.core.IView;
 
 /**

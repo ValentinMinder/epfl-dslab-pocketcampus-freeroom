@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -42,17 +43,16 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
-		Intent regIntent = new Intent("org.pocketcampus.plugin.pushnotif.REGISTRATION_ID",
-				Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/registration_id"));
-		regIntent.putExtra("registrationid", registrationId);
-		context.startService(regIntent);
+        fwdGCMIntent(context, registrationId, null);
     }
 
     @Override
     protected void onUnregistered(Context context, String registrationId) {
         Log.i(TAG, "Device unregistered");
         if (GCMRegistrar.isRegisteredOnServer(context)) {
-            // TODO unreg from PC
+            // no need to unreg from PC server
+        	// coz google will tell us to remove the token
+        	// the next time we try to send something to this guy
         } else {
             // This callback results from the call to unregister made on
             // ServerUtilities when the registration to the server failed.
@@ -63,6 +63,14 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
+        Bundle extras = intent.getExtras();
+        if(extras != null && extras.getString("pluginName") != null && extras.getString("pluginMessage") != null) {
+        	Log.i(TAG, "Fwding it to plugin");
+        	sendPluginMessage(context, extras.getString("pluginName"), extras.getString("pluginMessage"));
+        } else {
+        	Log.i(TAG, "Couldn't understand it");
+        	// don't understand this msg
+        }
     }
 
     @Override
@@ -73,6 +81,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     public void onError(Context context, String errorId) {
         Log.i(TAG, "Received error: " + errorId);
+        fwdGCMIntent(context, null, "error");
     }
 
     @Override
@@ -82,4 +91,22 @@ public class GCMIntentService extends GCMBaseIntentService {
         return super.onRecoverableError(context, errorId);
     }
 
+	private void fwdGCMIntent(Context context, String regId, String extra) {
+		Intent regIntent = new Intent("org.pocketcampus.plugin.pushnotif.GCM_INTENT",
+				Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/gcm_intent"));
+		if(regId != null)
+			regIntent.putExtra("registrationid", regId);
+		if(extra != null)
+			regIntent.putExtra(extra, 1); // error
+		context.startService(regIntent);
+	}
+	
+	private void sendPluginMessage(Context context, String plugin, String message) {
+		Log.i(TAG, "Sending '" + message + "' to '" + plugin + "'");
+		Intent regIntent = new Intent("org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE",
+				Uri.parse("pocketcampus://" + plugin + ".plugin.pocketcampus.org/pushnotif_message"));
+		regIntent.putExtra("servermsg", message);
+		context.startService(regIntent);
+	}
+	
 }

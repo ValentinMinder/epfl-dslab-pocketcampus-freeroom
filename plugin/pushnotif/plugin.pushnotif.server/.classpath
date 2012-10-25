@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/gcm-server.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/json_simple-1.1.jar"/>
 	<classpathentry kind="lib" path="/platform.sdk.shared/lib/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="/platform.sdk.shared/lib/mysql-connector-java-5.1.15-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
