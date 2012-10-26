@@ -1,0 +1,64 @@
+USING THE PUSHNOTIF PLUGIN
+==========================
+
+To use the pushnotif plugin:
+
+You should handle 2 extra actions in your controller; you do so by adding them to the intent-filter in the service tag
+
+	<intent-filter>
+		<action android:name="org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED" />
+		<action android:name="org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE" />
+		<category android:name="org.pocketcampus" />
+		<data  android:scheme="pocketcampus" android:host="<your_plugin_name>.plugin.pocketcampus.org" />
+	</intent-filter>
+
+
+Then you should add the following permission in the manifest tag
+
+	<uses-permission android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF" />
+
+
+Then in your onStartCommand function you should handle
+
+	if("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED".equals(aIntent.getAction())) {
+		Bundle extras = aIntent.getExtras();
+		if(extras != null && extras.getInt("succeeded") != 0) {
+		} else if(extras != null && extras.getInt("failed") != 0) {
+		} else if(extras != null && extras.getInt("networkerror") != 0) {
+		} else {
+		}
+	}
+	if("org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE".equals(aIntent.getAction())) {
+		Bundle extras = aIntent.getExtras();
+		if(extras != null && extras.getString("servermsg") != null) {
+		} else {
+		}
+	}
+
+
+Then to make sure the phone is registered, use
+
+	Intent authIntent = new Intent("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH",
+			Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/reg_for_push"));
+	authIntent.putExtra("callbackurl", "pocketcampus://<your_plugin_name>.plugin.pocketcampus.org/reg_finished");
+	startService(authIntent);
+
+
+On the server when you want to send a message, use
+
+	try {
+		PocketCampusServer.invokeOnPlugin("pushnotif", "pushMessage", new PushNotifRequest("<your_plugin_name>", Arrays.asList("<list_of_gaspar_usernames>"), "<message_to_send>"));
+	} catch (NoSuchObjectException e) {
+	} catch (SecurityException e) {
+	} catch (IllegalArgumentException e) {
+	} catch (NoSuchMethodException e) {
+	} catch (IllegalAccessException e) {
+	} catch (InvocationTargetException e) {
+	}
+
+
+And finally on the server implement the following function if you want to know which devices failed
+
+	public void appendToFailedDevicesList(PushNotifResponse resp) {
+	}
+
