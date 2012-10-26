@@ -78,18 +78,19 @@ public class PushNotifController extends PluginController implements IPushNotifC
 			if(extras != null && extras.getInt("usercancelled") != 0) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand user cancelled");
 				GCMRegistrar.unregister(this);
-				pingBack("failed");
+				pingBackAndStop("failed");
 			} else if(extras != null && extras.getString("tequilatoken") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand auth succ");
 				tokenAuthenticationFinished();
 			} else {
 				Log.v("DEBUG", "PushNotifController::onStartCommand auth failed");
 				GCMRegistrar.unregister(this);
-				pingBack("failed");
+				pingBackAndStop("failed");
 			}
 		} else if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "PushNotifController::onStartCommand logout");
 			GCMRegistrar.unregister(this);
+			stopSelf();
 			// no need to do anything else, google will tell us to delete the token
 			// next time we try to send something to this guy
 		} else if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
@@ -99,9 +100,10 @@ public class PushNotifController extends PluginController implements IPushNotifC
 				getTequilaToken();
 			} else if(extras != null && extras.getInt("error") != 0) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand GCM Intent error");
-				pingBack("failed");
+				pingBackAndStop("failed");
 			} else {
-				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id but no regisrationid");
+				Log.v("DEBUG", "PushNotifController::onStartCommand malformed gcm intent");
+				pingBackAndStop("failed");
 			}
 		} else if("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH".equals(aIntent.getAction())) {
 			if(extras != null && extras.getString("callbackurl") != null) {
@@ -110,9 +112,12 @@ public class PushNotifController extends PluginController implements IPushNotifC
 				startRegistrationProcess();
 			} else {
 				Log.v("DEBUG", "PushNotifController::onStartCommand malformed request to register");
+				stopSelf();
 			}
+		} else {
+			Log.v("DEBUG", "PushNotifController::onStartCommand malformed action");
+			stopSelf();
 		}
-		stopSelf();
 		return START_NOT_STICKY;
 	}
 	
@@ -142,6 +147,7 @@ public class PushNotifController extends PluginController implements IPushNotifC
             if (GCMRegistrar.isRegisteredOnServer(this)) {
     			Log.v("DEBUG", "PushNotifMainView::onDisplay reg with PC");
                 // Skips registration.
+    			pingBackAndStop("succeeded");
             } else {
     			Log.v("DEBUG", "PushNotifMainView::onDisplay not reg with PC");
                 // Try to register again, but not in the UI thread.
@@ -174,17 +180,17 @@ public class PushNotifController extends PluginController implements IPushNotifC
 		Log.v("DEBUG", "PushNotifController::registrationFinished");
 		if(success) {
 			GCMRegistrar.setRegisteredOnServer(this, true);
-			pingBack("succeeded");
+			pingBackAndStop("succeeded");
 		} else {
 			Log.v("DEBUG", "PushNotifController::registrationFinished failed to reg on PC server");
 			GCMRegistrar.unregister(this);
-			pingBack("failed");
+			pingBackAndStop("failed");
 		}
 	}
 	public void networkError() {
 		Log.v("DEBUG", "PushNotifController::networkError");
 		GCMRegistrar.unregister(this);
-		pingBack("networkerror");
+		pingBackAndStop("networkerror");
 	}
 
 	public static void pingAuthPlugin(Context context, String tequilaToken) {
@@ -197,13 +203,17 @@ public class PushNotifController extends PluginController implements IPushNotifC
 		context.startService(authIntent);
 	}
 	
-	private void pingBack(String extra) {
-		if(callbackUrl == null)
+	private void pingBackAndStop(String extra) {
+		if(callbackUrl == null) {
+			Log.v("DEBUG", "PushNotifController::pingBack SORRY we don't have a callbackUrl");
+			stopSelf();
 			return;
+		}
 		Intent intenteye = new Intent("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED", Uri.parse(callbackUrl));
 		if(extra != null)
 			intenteye.putExtra(extra, 1); // failed or succeeded or networkerror
 		startService(intenteye);
+		stopSelf();
 	}
 	
 }

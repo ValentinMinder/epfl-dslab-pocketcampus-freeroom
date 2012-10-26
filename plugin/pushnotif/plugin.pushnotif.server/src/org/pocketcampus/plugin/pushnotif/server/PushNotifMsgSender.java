@@ -33,8 +33,7 @@ public class PushNotifMsgSender {
 
 	private static final Logger logger = Logger.getLogger(PushNotifServiceImpl.class.getName());
 	
-	public static synchronized void sendToAndroidDevices(PushNotifDataStore dataStore, List<String> devices, String plugin, String msg) {
-
+	public static void sendToAndroidDevices(PushNotifDataStore dataStore, List<String> devices, String plugin, String msg) {
 		Message message = new Message.Builder().addData("pluginName", plugin).addData("pluginMessage", msg).build();
 		// send a multicast message using JSON
 		// must split in chunks of 1000 devices (GCM limit)

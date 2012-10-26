@@ -19,11 +19,11 @@
 			android:icon="@drawable/pushnotif_icon"
 			android:screenOrientation="nosensor"
 			android:label="@string/pushnotif_plugin_title">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-			</intent-filter>
+<!-- 			<intent-filter> -->
+<!-- 				<action android:name="android.intent.action.MAIN" /> -->
+<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
+<!-- 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
+<!-- 			</intent-filter> -->
 			
 
 			    
@@ -55,15 +55,15 @@
         </receiver>		    
 		    		
 		
-		<receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+		<receiver android:name="org.pocketcampus.plugin.pushnotif.gcm.PCGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 			<intent-filter>
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="org.pocketcampus.plugin.pushnotif" />
+				<category android:name="org.pocketcampus" />
 			</intent-filter>
 		</receiver>		
 		
-		<service android:name="org.pocketcampus.plugin.pushnotif.GCMIntentService" />
+		<service android:name="org.pocketcampus.plugin.pushnotif.gcm.GCMIntentService" />
 		
 	</application>
     
@@ -82,7 +82,8 @@
 	
     
 	<permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />     
+	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />
+	<permission android:name="org.pocketcampus.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />     
 	
         

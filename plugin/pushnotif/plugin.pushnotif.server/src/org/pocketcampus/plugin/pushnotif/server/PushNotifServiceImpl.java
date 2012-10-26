@@ -45,6 +45,8 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		System.out.println("pushMessage");
 		List<String> androidTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_ANDROID);
 		List<String> iosTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_IOS);
+		if(androidTokens == null || iosTokens == null)
+			return;
 		PushNotifMsgSender.sendToAndroidDevices(dataStore, androidTokens, req.getPluginName(), req.getMessage());
 		// TODO send for IOS as well
 	}

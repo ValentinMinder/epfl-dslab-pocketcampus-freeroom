@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pocketcampus.plugin.pushnotif;
+package org.pocketcampus.plugin.pushnotif.gcm;
 
 import android.app.Notification;
 import android.app.NotificationManager;
