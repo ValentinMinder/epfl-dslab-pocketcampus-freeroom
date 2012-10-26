@@ -1,5 +1,6 @@
-ANDROID & SERVER
-================
+ *************************** ANDROID & SERVER ***************************
+           @Author:    Amer C (amer.chamseddine@epfl.ch)
+ ========================================================================
 
 In order to write a plugin for PocketCampus one should first understand its
 architecture. The diagram above shows the plugin-oriented client-server
@@ -85,8 +86,9 @@ jar file, respectively. You can read the README_MERGE_AND_BUILD file in the root
 directory for more info.
 
 
-IOS
-===
+ ********************************* IOS *********************************
+           @Author:    Loïc G (loic.gardiol@epfl.ch)
+ =======================================================================
 
 The plugin creation for iOS clients is a bit different than on Android. The 
 PocketCampus app is made of one Xcode project. The classes and files 

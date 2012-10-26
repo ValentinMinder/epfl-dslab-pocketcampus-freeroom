@@ -1,4 +1,15 @@
 <?php
+/**
+  PLUGIN CREATOR
+  
+  This script creates a new blank plugin from a template
+  It copies all the files from the blank's plugin directory
+  and renames everything
+  
+  You should specify $new_plugin
+  
+  @Author: Amer C (amer.chamseddine@epfl.ch)
+*/
 
 chdir(dirname(__FILE__));
 

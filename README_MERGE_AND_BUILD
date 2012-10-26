@@ -1,3 +1,13 @@
+# ============================================================
+#      @Author:    Amer C (amer.chamseddine@epfl.ch)
+# ============================================================
+#
+# Note: after merging the client, make sue to create the file
+# android/PocketCampus/local.properties and use it to specify
+# the path to your android SDK installation directory:
+# sdk.dir=/path/to/android-sdk
+#
+
 
 # BUILD THE CLIENT
 php tool/tool.merger/merger.php 

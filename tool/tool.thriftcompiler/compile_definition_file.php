@@ -1,4 +1,16 @@
 <?php
+/**
+  THRIFT COMPILER
+  
+  This script compiles the thrift definition files of a plugin
+  It places the generated files in the appropriate directories
+  as per PocketCampus directory structure
+  
+  You should specify $plugin_name
+  You can set it to "sdk" to compile the thrift files of the SDK
+  
+  @Author: Amer C (amer.chamseddine@epfl.ch)
+*/
 
 chdir(dirname(__FILE__));
 

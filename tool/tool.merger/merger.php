@@ -1,4 +1,15 @@
 <?php
+/**
+  ANDROID CLIENT MERGER
+  
+  This script merges the PocketCampus android client
+  It transforms all the plugins into a single project
+  that you can build using ANT or imoprt it in eclipse
+  
+  You should specify $plugins_to_merge and $libs_to_export
+  
+  @Author: Amer C (amer.chamseddine@epfl.ch)
+*/
 
 chdir(dirname(__FILE__));
 
