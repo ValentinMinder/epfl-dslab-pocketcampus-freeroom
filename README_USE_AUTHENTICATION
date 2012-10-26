@@ -1,0 +1,70 @@
+USING THE AUTHENTICATION PLUGIN
+===============================
+
+To use the authentication plugin:
+
+You should handle 2 extra actions in your controller; you do so by adding them to the intent-filter in the service tag
+
+	<intent-filter>
+		<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+		<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+		<category android:name="org.pocketcampus" />
+		<data  android:scheme="pocketcampus" android:host="<your_plugin_name>.plugin.pocketcampus.org" />
+	</intent-filter>
+
+
+Then you should add the following permission in the manifest tag
+
+	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+
+
+You should also add a BroadcastReceiver for log out purposes
+
+	<receiver android:name="org.pocketcampus.plugin.<your_plugin_name>.android.<your_capitalized_plugin_name>Controller$Logouter" >
+		<intent-filter>
+			<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+		</intent-filter>
+	</receiver>
+
+
+Add this class in the Controller of your plugin
+
+	public static class Logouter extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
+					Uri.parse("pocketcampus://<your_plugin_name>.plugin.pocketcampus.org/logout"));
+			context.startService(authIntent);
+		}
+	};
+
+
+To start the authentication (after you get a TequilaToken from your own server), use
+
+	Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
+			Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticatetoken"));
+	authIntent.putExtra("tequilatoken", "<your_tequila_token>");
+	authIntent.putExtra("callbackurl", "pocketcampus://<your_plugin_name>.plugin.pocketcampus.org/tokenauthenticated");
+	authIntent.putExtra("shortname", "<your_plugin_name>");
+	authIntent.putExtra("longname", "<your_plugin_capitalized_name>");
+	context.startService(authIntent);
+
+
+Finally you should handle the following actions in your onStartCommand function in your plugin's Controller
+
+	if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
+		Bundle extras = aIntent.getExtras();
+		if(extras != null && extras.getInt("usercancelled") != 0) {
+		} else if(extras != null && extras.getInt("userdenied") != 0) {
+		} else if(extras != null && extras.getInt("invalidtoken") != 0) {
+		} else if(extras != null && extras.getString("tequilatoken") != null) {
+			if(extras.getInt("forcereauth") != 0) {
+			}
+		} else {
+		}
+	}
+	if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
+	}
+
+
+For more info, take a look at the Camipro plugin or Moodle plugin.
