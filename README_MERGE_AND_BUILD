@@ -1,0 +1,27 @@
+# ============================================================
+#      @Author:    Amer C (amer.chamseddine@epfl.ch)
+# ============================================================
+#
+# Note: after merging the client, make sue to create the file
+# android/PocketCampus/local.properties and use it to specify
+# the path to your android SDK installation directory:
+# sdk.dir=/path/to/android-sdk
+#
+
+
+# BUILD THE CLIENT
+php tool/tool.merger/merger.php 
+ant -f android/PocketCampus/build.xml clean
+ant -f android/PocketCampus/build.xml debug
+
+# BUILD THE SERVER
+php tool/tool.merger/merger_server.php 
+ant -f server/PocketCampusServer/build.xml clean
+ant -f server/PocketCampusServer/build.xml create_run_jar
+
+# INSTALL THE CLIENT
+adb uninstall org.pocketcampus
+adb install android/PocketCampus/bin/PocketCampus-debug.apk 
+
+# RUN THE SERVER
+java -jar server/PocketCampusServer/PocketCampusServer.jar 

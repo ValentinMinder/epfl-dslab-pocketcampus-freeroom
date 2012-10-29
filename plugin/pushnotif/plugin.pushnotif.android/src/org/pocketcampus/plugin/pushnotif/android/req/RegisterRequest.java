@@ -2,10 +2,8 @@ package org.pocketcampus.plugin.pushnotif.android.req;
 
 import org.pocketcampus.android.platform.sdk.io.Request;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifReply;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifRequest;
-import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
+import org.pocketcampus.plugin.pushnotif.shared.PushNotifRegReq;
 import org.pocketcampus.plugin.pushnotif.android.PushNotifController;
-import org.pocketcampus.plugin.pushnotif.android.PushNotifModel;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Iface;
 
 /**
@@ -14,10 +12,10 @@ import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Iface;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class RegisterRequest extends Request<PushNotifController, Iface, PushNotifRequest, PushNotifReply> {
+public class RegisterRequest extends Request<PushNotifController, Iface, PushNotifRegReq, PushNotifReply> {
 
 	@Override
-	protected PushNotifReply runInBackground(Iface client, PushNotifRequest param) throws Exception {
+	protected PushNotifReply runInBackground(Iface client, PushNotifRegReq param) throws Exception {
 		return client.registerPushNotif(param);
 	}
 
@@ -29,6 +27,7 @@ public class RegisterRequest extends Request<PushNotifController, Iface, PushNot
 	@Override
 	protected void onError(PushNotifController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
+		controller.networkError();
 		e.printStackTrace();
 	}
 	

@@ -19,37 +19,13 @@
 			android:icon="@drawable/pushnotif_icon"
 			android:screenOrientation="nosensor"
 			android:label="@string/pushnotif_plugin_title">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-			</intent-filter>
+<!-- 			<intent-filter> -->
+<!-- 				<action android:name="android.intent.action.MAIN" /> -->
+<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
+<!-- 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
+<!-- 			</intent-filter> -->
 			
-			    
-			    
-			    
-			    
-<!-- 			Communication with authentication plugin     -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus-authenticate" android:host="pushnotif.plugin.pocketcampus.org" />
-			</intent-filter>
-			
-			    			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
+
 			    
 			    
 		</activity>
@@ -61,9 +37,10 @@
 				<action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
 				<action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
 				
-				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTRATION_ID" />
+				<action android:name="org.pocketcampus.plugin.pushnotif.GCM_INTENT" />
+				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH" />
 								
-				<category android:name="org.pocketcampus.plugin.authentication" />
+				<category android:name="org.pocketcampus.plugin.pushnotif" />
 				<data  android:scheme="pocketcampus" android:host="pushnotif.plugin.pocketcampus.org" />
 			</intent-filter>
 		    		    
@@ -78,23 +55,37 @@
         </receiver>		    
 		    		
 		
-		<receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+		<receiver android:name="org.pocketcampus.plugin.pushnotif.gcm.PCGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 			<intent-filter>
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="org.pocketcampus.plugin.pushnotif" />
+				<category android:name="org.pocketcampus" />
 			</intent-filter>
 		</receiver>		
 		
-		<service android:name="org.pocketcampus.plugin.pushnotif.GCMIntentService" />
+		<service android:name="org.pocketcampus.plugin.pushnotif.gcm.GCMIntentService" />
 		
 	</application>
     
     
+	<permission-group android:description="@string/pushnotif_permission_group_description"
+	                  android:icon="@drawable/pushnotif_icon"
+	                  android:label="@string/pushnotif_permission_group_label"
+	                  android:name="org.pocketcampus.permission_groups.PUSHNOTIF" />        
+        
+	<permission android:description="@string/pushnotif_permission_description"
+			    android:icon="@drawable/pushnotif_icon"
+			    android:label="@string/pushnotif_permission_label"
+			    android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF"
+			    android:permissionGroup="org.pocketcampus.permission_groups.PUSHNOTIF"
+			    android:protectionLevel="dangerous" />
+	
     
 	<permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />     
-    
+	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />
+	<permission android:name="org.pocketcampus.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />     
+	
         
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -105,5 +96,6 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />	
 	
 	<uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
+	<uses-permission android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF" />
 
 </manifest>

@@ -1,12 +1,23 @@
 <?php
+/**
+  SERVER MERGER
+  
+  This script merges the PocketCampus java server
+  It transforms all the plugins into a single project
+  that you can build using ANT or imoprt it in eclipse
+  
+  You should specify $plugins_to_merge and $libs_to_export
+  
+  @Author: Amer C (amer.chamseddine@epfl.ch)
+*/
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory");
+$plugins_to_merge = array("Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Satellite", "Map", "Bikes", "Directory", "PushNotif");
 
 $libs_to_export = array("commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar", "gson-1.7.1.jar", "gcm-server.jar", "javapns_2.0_Beta_4.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
-		"jsoup-1.6.1.jar", "kxml2-2.3.0.jar", "libthrift-0.7.0-multiplex.jar", "mysql-connector-java-5.1.15-bin.jar", "servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar", "unboundid-ldapsdk-se.jar");
+		"json_simple-1.1.jar", "jsoup-1.6.1.jar", "kxml2-2.3.0.jar", "libthrift-0.7.0-multiplex.jar", "mysql-connector-java-5.1.15-bin.jar", "servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", "slf4j-simple-1.6.2.jar", "unboundid-ldapsdk-se.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
@@ -204,9 +215,6 @@ function collect_src($output_dir) {
 	global $path_to_plugin_dir;
 	global $path_to_platform_dir;
 
-	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
-	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
-
 	foreach($plugins_to_merge as $plgn) {
 		$plugin = strtolower($plgn);
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.server/src")) // if has .server proj
@@ -214,6 +222,9 @@ function collect_src($output_dir) {
 		if(is_dir("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src")) // if has .shared proj
 			copyr("$path_to_plugin_dir/$plugin/plugin.$plugin.shared/src", "$output_dir/src");
 	}
+
+	copyr("$path_to_platform_dir/sdk/platform.sdk.server/src", "$output_dir/src");
+	copyr("$path_to_platform_dir/sdk/platform.sdk.shared/src", "$output_dir/src");
 
 }
 
@@ -285,7 +296,7 @@ generate_dot_project($output_dir, "$project_name");
 delete_dir("$output_dir/src");
 collect_src("$output_dir");
 
-generate_server_launcher($output_dir);
+//generate_server_launcher($output_dir);
 
 delete_dir("$output_dir/lib");
 export_libs("$output_dir");

@@ -8,16 +8,6 @@
 /ios/iphone/PocketCampus/AutomationScripts/*.trace
 /ios/iphone/PocketCampus/AutomationScripts/Credentials.js
 
-/merged/*
-
-/platform/launcher/platform.launcher.server/bin
-/platform/launcher/platform.launcher.server/build
-/platform/launcher/platform.launcher.server/*.log
-/platform/launcher/platform.launcher.server/ssl-keystore-pocketcampus
-/platform/launcher/platform.launcher.server/pkg/*.jar
-
-/tool/tool.thriftcompiler/src/org/pocketcampus/tool/thriftcompiler/LocalConfig.java
-
 
 
 android/PocketCampus/*

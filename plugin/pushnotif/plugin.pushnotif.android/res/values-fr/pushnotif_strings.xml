@@ -16,4 +16,11 @@
     
     <string name="pushnotif_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
         
+    
+    <string name="pushnotif_permission_description">Cette autorisation doit être utilisée lorsqu\'une application souhaite utiliser le service de notification push fourni par PocketCampus</string>
+    <string name="pushnotif_permission_label">utiliser le service de notifications Push de PocketCampus</string>
+    <string name="pushnotif_permission_group_description">Ce groupe est utilisé pour les autorisation liés au service de notifications Push de PocketCampus</string>
+    <string name="pushnotif_permission_group_label">Service de notifications Push</string>
+    
+    
 </resources>

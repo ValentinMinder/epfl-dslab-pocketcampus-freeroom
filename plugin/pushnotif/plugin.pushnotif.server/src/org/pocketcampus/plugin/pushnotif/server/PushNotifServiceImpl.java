@@ -1,25 +1,15 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.thrift.TException;
-import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
+import org.pocketcampus.platform.sdk.shared.authentication.TequilaToken;
+import org.pocketcampus.platform.sdk.shared.pushnotif.PushNotifRequest;
+import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifReply;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifRequest;
+import org.pocketcampus.plugin.pushnotif.shared.PushNotifRegReq;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
-import static org.pocketcampus.platform.launcher.server.PCServerConfig.PC_SRV_CONFIG;
-
-import com.google.android.gcm.server.Constants;
-import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.MulticastResult;
-import com.google.android.gcm.server.Result;
-import com.google.android.gcm.server.Sender;
 
 import ch.epfl.tequila.client.model.ClientConfig;
 import ch.epfl.tequila.client.model.TequilaPrincipal;
@@ -37,16 +27,11 @@ import ch.epfl.tequila.client.service.TequilaService;
  */
 public class PushNotifServiceImpl implements PushNotifService.Iface {
 
-	private static final int MULTICAST_SIZE = 1000;
-
-	private static final Sender sender = new Sender(PC_SRV_CONFIG.getString("GCM_SERVER_KEY"));
-
-	private static final Executor threadPool = Executors.newFixedThreadPool(5);
-
-	private static final Logger logger = Logger.getLogger(PushNotifServiceImpl.class.getName());
+	private PushNotifDataStore dataStore;
 
 	public PushNotifServiceImpl() {
 		System.out.println("Starting PushNotif plugin server ...");
+		dataStore = new PushNotifDataStore();
 	}
 
 	public Boolean securityCheck(String ip, String method) {
@@ -54,6 +39,16 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		if(method.startsWith("secure") && !ip.startsWith("127"))
 			return false;
 		return true;
+	}
+	
+	public void pushMessage(PushNotifRequest req) {
+		System.out.println("pushMessage");
+		List<String> androidTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_ANDROID);
+		List<String> iosTokens = dataStore.selectTokens(req.getGasparList(), PlatformType.PC_PLATFORM_IOS);
+		if(androidTokens == null || iosTokens == null)
+			return;
+		PushNotifMsgSender.sendToAndroidDevices(dataStore, androidTokens, req.getPluginName(), req.getMessage());
+		// TODO send for IOS as well
 	}
 	
 	@Override
@@ -69,12 +64,12 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 	}
 
 	@Override
-	public PushNotifReply registerPushNotif(PushNotifRequest aPushNotifRequest)
+	public PushNotifReply registerPushNotif(PushNotifRegReq aPushNotifRequest)
 			throws TException {
 		System.out.println("registerPushNotif");
-		if (!aPushNotifRequest.isSetIAuthenticatedToken()) {
+		/*if (!aPushNotifRequest.isSetIAuthenticatedToken()) {
 			return new PushNotifReply(404);
-		}
+		}*/
 		TequilaPrincipal principal = null;
 		try {
 			principal = getTequilaPrincipal(aPushNotifRequest
@@ -93,7 +88,27 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		// 1, uniqueid=211338, username=chamsedd,chamsedd@in-ma1,
 		// email=amer.chamseddine@epfl.ch, name=Chamseddine, authorig=cookie,
 		// unixid=112338, groupid=30132}]
-		switch (aPushNotifRequest.getIPlatformType()) {
+		/**
+		 * principal = [user=self@accandme.com, org=EPFL, host=128.179.148.89, 
+		 * attributes={status=ok, firstname=Amer, 
+		 * where=EPFL-GUESTS/CH, requesthost=128.178.77.233, version=2.1.1, 
+		 * unit=epfl-guests,EPFL Guests, 
+		 * uniqueid=G17095, 
+		 * username=self@accandme.com,G17095, 
+		 * email=self@accandme.com, 
+		 * name=Chamseddine, authorig=cookie, 
+		 * unixid=517095, groupid=500000}]
+		 * regId = APA91bGs1MJdynn2OIUsyw3EJrTRnFl4XHvPwwEDt8iSj--1l09jzVMB90jnW9dsKrYF1hHhtaRvwfnVtN6VGIL7oaBzDoaBNj4w1IU9ZbfWaaPmY1zls0ZBeZ9sUl5PmHCUtgtetQorCAr8P_7BVBRuuBzWmBMHcm9Je-NeGVbZFxPrliO6qQQ
+		 */
+		boolean st;
+		st = dataStore.insertUser(principal);
+		if(!st)
+			return new PushNotifReply(504);
+		st = dataStore.insertPushToken(principal.getUser(), aPushNotifRequest.getIPlatformType(), aPushNotifRequest.getRegistrationId());
+		if(!st)
+			return new PushNotifReply(504);
+		return new PushNotifReply(200);
+		/*switch (aPushNotifRequest.getIPlatformType()) {
 		case PC_PLATFORM_ANDROID:
 			System.out.println("principal = " + principal);
 			if (!aPushNotifRequest.isSetIAndroidRegistrationId()) {
@@ -103,19 +118,10 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 					+ aPushNotifRequest.getIAndroidRegistrationId());
 			return new PushNotifReply(200);
 		case PC_PLATFORM_IOS:
-			// TODO
 			return new PushNotifReply(200);
 		default:
 			return new PushNotifReply(404);
-		}
-	}
-
-	@Override
-	public PushNotifReply unregisterPushNotif(PushNotifRequest aPushNotifRequest)
-			throws TException {
-		System.out.println("unregisterPushNotif");
-		// TODO
-		return null;
+		}*/
 	}
 
 	/**
@@ -127,7 +133,8 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		// config.setOrg("PocketCampus");
 		config.setService("PocketCampus Push Notification Service");
 		config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where");
-		// config.setAllows("categorie=epfl-guests");
+		config.setAllows("categorie=epfl-guests");
+		// config.setAllows("categorie=Shibboleth");
 		return TequilaService.instance().createRequest(config,
 				"pocketcampus://pushnotif.pocketcampus.org");
 	}
@@ -146,90 +153,5 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		}
 	}
 
-	static {
-		//doSend();
-	}
-	
-	/**
-	 * Helper func to send message to device
-	 */
-	
-	private static synchronized void doSend() {
-		List<String> devices = new ArrayList<String>();
-		devices.add("APA91bGc1ZAQQ-DScg4cn9JLK72-uve3Xm5RFMhgqgGZmP9nUycyPrV3QmwvRo0-L4GBZqKwFK-gUXUjVt7Y7ln7_hhZxzoX3lv-p_WF4oJSXJSJSAC3512OwNOL8D5cnckDaFjwt4VspssxEbwv0leOshixUdX3DXdp-Z1zHTsne0pIxjEM35I");
-		sendMsg(devices, "test", "testos");
-	}
-	
-	private static void sendMsg(List<String> devices, String plugin, String msg) {
-
-		Message message = new Message.Builder().addData(plugin, msg).build();
-		// send a multicast message using JSON
-		// must split in chunks of 1000 devices (GCM limit)
-		int total = devices.size();
-		List<String> partialDevices = new ArrayList<String>(total);
-		int counter = 0;
-		int tasks = 0;
-		for (String device : devices) {
-			counter++;
-			partialDevices.add(device);
-			int partialSize = partialDevices.size();
-			if (partialSize == MULTICAST_SIZE || counter == total) {
-				asyncSend(partialDevices, message);
-				partialDevices.clear();
-				tasks++;
-			}
-		}
-		logger.info("Asynchronously sending " + tasks
-				+ " multicast messages to " + total + " devices");
-	}
-
-	private static void asyncSend(List<String> partialDevices, Message dupMessage) {
-		// make a copy
-		final List<String> devices = new ArrayList<String>(partialDevices);
-		final Message message = dupMessage;
-		threadPool.execute(new Runnable() {
-
-			public void run() {
-				// Message message = new Message.Builder().build();
-				MulticastResult multicastResult;
-				try {
-					multicastResult = sender.send(message, devices, 5);
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, "Error posting messages", e);
-					return;
-				}
-				List<Result> results = multicastResult.getResults();
-				// analyze the results
-				for (int i = 0; i < devices.size(); i++) {
-					String regId = devices.get(i);
-					Result result = results.get(i);
-					String messageId = result.getMessageId();
-					if (messageId != null) {
-						logger.fine("Succesfully sent message to device: "
-								+ regId + "; messageId = " + messageId);
-						String canonicalRegId = result
-								.getCanonicalRegistrationId();
-						if (canonicalRegId != null) {
-							// same device has more than on registration id:
-							// update it
-							logger.info("canonicalRegId " + canonicalRegId);
-							//Datastore.updateRegistration(regId, canonicalRegId);
-						}
-					} else {
-						String error = result.getErrorCodeName();
-						if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
-							// application has been removed from device -
-							// unregister it
-							logger.info("Unregistered device: " + regId);
-							//Datastore.unregister(regId);
-						} else {
-							logger.severe("Error sending message to " + regId
-									+ ": " + error);
-						}
-					}
-				}
-			}
-		});
-	}
 
 }

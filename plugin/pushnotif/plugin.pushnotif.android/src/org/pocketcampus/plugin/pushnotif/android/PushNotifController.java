@@ -1,23 +1,16 @@
 package org.pocketcampus.plugin.pushnotif.android;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Locale;
+import static org.pocketcampus.android.platform.sdk.core.PCAndroidConfig.PC_ANDR_CFG;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.RedirectHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HttpContext;
-import org.pocketcampus.android.platform.sdk.cache.RequestCache;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
+import org.pocketcampus.platform.sdk.shared.authentication.TequilaToken;
 import org.pocketcampus.plugin.pushnotif.android.iface.IPushNotifController;
 import org.pocketcampus.plugin.pushnotif.android.req.RegisterRequest;
 import org.pocketcampus.plugin.pushnotif.android.req.GetTequilaTokenRequest;
 import org.pocketcampus.plugin.pushnotif.android.PushNotifModel;
 import org.pocketcampus.plugin.pushnotif.shared.PlatformType;
-import org.pocketcampus.plugin.pushnotif.shared.PushNotifRequest;
-import org.pocketcampus.plugin.pushnotif.shared.TequilaToken;
+import org.pocketcampus.plugin.pushnotif.shared.PushNotifRegReq;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Client;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService.Iface;
 
@@ -28,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -71,6 +63,7 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	
 	private TequilaToken teqToken;
 	private String registrationId; 
+	private String callbackUrl;
 	
 	@Override
 	public void onCreate() {
@@ -85,35 +78,84 @@ public class PushNotifController extends PluginController implements IPushNotifC
 			if(extras != null && extras.getInt("usercancelled") != 0) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand user cancelled");
 				GCMRegistrar.unregister(this);
-				// TODO
+				pingBackAndStop("failed");
 			} else if(extras != null && extras.getString("tequilatoken") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand auth succ");
 				tokenAuthenticationFinished();
 			} else {
 				Log.v("DEBUG", "PushNotifController::onStartCommand auth failed");
 				GCMRegistrar.unregister(this);
-				// TODO
+				pingBackAndStop("failed");
 			}
 		} else if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "PushNotifController::onStartCommand logout");
 			GCMRegistrar.unregister(this);
-			// TODO
-		} else if("org.pocketcampus.plugin.pushnotif.REGISTRATION_ID".equals(aIntent.getAction())) {
+			stopSelf();
+			// no need to do anything else, google will tell us to delete the token
+			// next time we try to send something to this guy
+		} else if("org.pocketcampus.plugin.pushnotif.GCM_INTENT".equals(aIntent.getAction())) {
 			if(extras != null && extras.getString("registrationid") != null) {
 				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id ok");
 				registrationId = extras.getString("registrationid");
 				getTequilaToken();
+			} else if(extras != null && extras.getInt("error") != 0) {
+				Log.v("DEBUG", "PushNotifController::onStartCommand GCM Intent error");
+				pingBackAndStop("failed");
 			} else {
-				Log.v("DEBUG", "PushNotifController::onStartCommand regisration_id but no regisrationid");
+				Log.v("DEBUG", "PushNotifController::onStartCommand malformed gcm intent");
+				pingBackAndStop("failed");
 			}
+		} else if("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH".equals(aIntent.getAction())) {
+			if(extras != null && extras.getString("callbackurl") != null) {
+				Log.v("DEBUG", "PushNotifController::onStartCommand received request to register");
+				callbackUrl = extras.getString("callbackurl");
+				startRegistrationProcess();
+			} else {
+				Log.v("DEBUG", "PushNotifController::onStartCommand malformed request to register");
+				stopSelf();
+			}
+		} else {
+			Log.v("DEBUG", "PushNotifController::onStartCommand malformed action");
+			stopSelf();
 		}
-		stopSelf();
 		return START_NOT_STICKY;
 	}
 	
 	@Override
 	public PluginModel getModel() {
 		return mModel;
+	}
+	
+	public void startRegistrationProcess() {
+		
+
+        // Make sure the device has the proper dependencies.
+        GCMRegistrar.checkDevice(this);
+        // Make sure the manifest was properly set - comment out this line
+        // while developing the app, then uncomment it when it's ready.
+        GCMRegistrar.checkManifest(this);
+
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        if (regId.equals("")) {
+			Log.v("DEBUG", "PushNotifMainView::onDisplay not reg with gcm");
+            // Automatically registers application on startup.
+            GCMRegistrar.register(this, PC_ANDR_CFG.getString("GCM_SENDER_ID"));
+        } else {
+			Log.v("DEBUG", "PushNotifMainView::onDisplay reg with gcm");
+            // Device is already registered on GCM, check server.
+			setRegistrationId(regId);
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+    			Log.v("DEBUG", "PushNotifMainView::onDisplay reg with PC");
+                // Skips registration.
+    			pingBackAndStop("succeeded");
+            } else {
+    			Log.v("DEBUG", "PushNotifMainView::onDisplay not reg with PC");
+                // Try to register again, but not in the UI thread.
+                // It's also necessary to cancel the thread onDestroy(),
+                // hence the use of AsyncTask instead of a raw thread.
+            	getTequilaToken();
+            }        	
+        }
 	}
 	
 	public void setRegistrationId(String val) {
@@ -131,21 +173,24 @@ public class PushNotifController extends PluginController implements IPushNotifC
 	}
 	public void tokenAuthenticationFinished() {
 		Log.v("DEBUG", "PushNotifController::tokenAuthenticationFinished");
-		PushNotifRequest req = new PushNotifRequest(PlatformType.PC_PLATFORM_ANDROID);
-		req.setIAndroidRegistrationId(registrationId);
-		req.setIAuthenticatedToken(teqToken);
+		PushNotifRegReq req = new PushNotifRegReq(teqToken, PlatformType.PC_PLATFORM_ANDROID, registrationId);
 		new RegisterRequest().start(this, mClient, req);
 	}
 	public void registrationFinished(boolean success) {
 		Log.v("DEBUG", "PushNotifController::registrationFinished");
 		if(success) {
 			GCMRegistrar.setRegisteredOnServer(this, true);
+			pingBackAndStop("succeeded");
 		} else {
 			Log.v("DEBUG", "PushNotifController::registrationFinished failed to reg on PC server");
+			GCMRegistrar.unregister(this);
+			pingBackAndStop("failed");
 		}
 	}
-	public void unregistrationFinished(boolean success) {
-		// TODO
+	public void networkError() {
+		Log.v("DEBUG", "PushNotifController::networkError");
+		GCMRegistrar.unregister(this);
+		pingBackAndStop("networkerror");
 	}
 
 	public static void pingAuthPlugin(Context context, String tequilaToken) {
@@ -156,6 +201,19 @@ public class PushNotifController extends PluginController implements IPushNotifC
 		authIntent.putExtra("shortname", "pushnotif");
 		authIntent.putExtra("longname", "PushNotif");
 		context.startService(authIntent);
+	}
+	
+	private void pingBackAndStop(String extra) {
+		if(callbackUrl == null) {
+			Log.v("DEBUG", "PushNotifController::pingBack SORRY we don't have a callbackUrl");
+			stopSelf();
+			return;
+		}
+		Intent intenteye = new Intent("org.pocketcampus.plugin.pushnotif.REGISTRATION_FINISHED", Uri.parse(callbackUrl));
+		if(extra != null)
+			intenteye.putExtra(extra, 1); // failed or succeeded or networkerror
+		startService(intenteye);
+		stopSelf();
 	}
 	
 }
