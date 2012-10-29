@@ -5,6 +5,6 @@
 
 #import "PluginController.h"
 
-@interface MyEduController : PluginController<PluginControllerProtocol>
+@interface MyEduController : PluginController<PluginControllerProtocol, UISplitViewControllerDelegate>
 
 @end

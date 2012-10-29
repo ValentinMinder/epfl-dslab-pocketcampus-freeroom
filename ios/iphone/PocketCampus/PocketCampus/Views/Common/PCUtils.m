@@ -33,6 +33,10 @@
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
 }
 
++ (NSString*)userLanguageCode {
+    return [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+}
+
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {
     tableView.alpha = 0.0;
     [tableView reloadData];

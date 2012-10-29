@@ -14,9 +14,10 @@
 
 @property (nonatomic) MainMenuItemType menuItemType;
 @property (nonatomic, copy) NSString* reuseIdentifier;
-@property (nonatomic, assign) IBOutlet  UIImageView* leftImageView;
-@property (nonatomic, assign) IBOutlet  UILabel* titleLabel;
+@property (nonatomic, weak) IBOutlet  UIImageView* leftImageView;
+@property (nonatomic, weak) IBOutlet  UILabel* titleLabel;
 
 + (MainMenuItemCell*)cellWithMainMenuItemType:(MainMenuItemType)type reuseIdentifier:(NSString *)reuseIdentifier;
++ (CGFloat)heightForMainMenuItemType:(MainMenuItemType)type;
 
 @end

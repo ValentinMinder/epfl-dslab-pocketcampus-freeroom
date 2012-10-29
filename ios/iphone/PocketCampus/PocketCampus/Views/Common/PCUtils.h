@@ -14,6 +14,7 @@
 + (BOOL)is4inchDevice;
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(CGFloat)version;
++ (NSString*)userLanguageCode;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 
 @end

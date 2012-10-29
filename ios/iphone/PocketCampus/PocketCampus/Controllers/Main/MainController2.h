@@ -8,13 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MainController2 : NSObject
+#import "ZUUIRevealController.h"
+
+@class PluginController;
+
+@interface MainController2 : NSObject<ZUUIRevealControllerDelegate>
 
 - (id)initWithWindow:(UIWindow*)window;
 - (void)refreshDisplayedPlugin;
 
-- (void)setActivePluginWithIdentifier:(NSString*)identifier;
+- (BOOL)setActivePluginWithIdentifier:(NSString*)identifier animated:(BOOL)animated; //returns YES if plugin must be indeed marked as selected. NO otherwise
 
 - (void)mainMenuIsReady;
+
+- (void)adaptInitializedNavigationOrSplitViewControllerOfPluginController:(PluginController*)pluginController;
 
 @end

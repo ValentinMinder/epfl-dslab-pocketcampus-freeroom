@@ -2,9 +2,22 @@
 //  MyEduService.m
 //  PocketCampus
 //
+//  ARC enabled
 //
 
 #import "MyEduService.h"
+
+#import "ObjectArchiver.h"
+
+#import "PCUtils.h"
+
+@interface MyEduService ()
+
+@property (strong) MyEduSession* session;
+
+@end
+
+static NSString* kMyEduSessionIdentifier = @"myEduSession";
 
 @implementation MyEduService
 
@@ -19,11 +32,30 @@ static MyEduService* instance = nil;
             instance = [[[self class] alloc] initWithServiceName:@"myedu"];
         }
     }
-    return [instance autorelease];
+    return instance;
 }
 
 - (id)thriftServiceClientInstance {
-    return [[[MyEduServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]] autorelease];
+    return [[MyEduServiceClient alloc] initWithProtocol:[self thriftProtocolInstance]];
+}
+
+- (MyEduRequest*)createMyEduRequest {
+    return [[MyEduRequest alloc] initWithIMyEduSession:[self lastSession] iLanguage:[PCUtils userLanguageCode]];
+}
+
+- (MyEduSession*)lastSession {
+    if (self.session) {
+        return self.session;
+    }
+    return (MyEduSession*)[ObjectArchiver objectForKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
+}
+
+- (BOOL)saveSession:(MyEduSession*)session {
+    return [ObjectArchiver saveObject:session forKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
+}
+
+- (BOOL)deleteSession {
+    return [ObjectArchiver saveObject:nil forKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
 }
 
 - (void)getTequilaTokenForMyEduWithDelegate:(id)delegate {
@@ -33,7 +65,6 @@ static MyEduService* instance = nil;
     operation.delegateDidFailSelector = @selector(getTequilaTokenForMyEduFailed);
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken delegate:(id)delegate {
@@ -44,7 +75,6 @@ static MyEduService* instance = nil;
     [operation addObjectArgument:tequilaToken];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest*)request delegate:(id)delegate {
@@ -55,13 +85,11 @@ static MyEduService* instance = nil;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
-    [operation release];
 }
 
 - (void)dealloc
 {
     instance = nil;
-    [super dealloc];
 }
 
 @end

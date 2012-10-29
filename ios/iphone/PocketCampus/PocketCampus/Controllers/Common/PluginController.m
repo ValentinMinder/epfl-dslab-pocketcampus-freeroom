@@ -10,12 +10,6 @@
 
 @implementation PluginController
 
-@synthesize mainViewController;
-
-- (void)dealloc
-{
-    [mainViewController release];
-    [super dealloc];
-}
+@synthesize mainViewController, mainNavigationController, mainSplitViewController, menuRevealingGesureRecognizers;
 
 @end

@@ -12,6 +12,8 @@
 
 #import "PCValues.h"
 
+#import "PCUtils.h"
+
 #import "EditableTableViewCell.h"
 
 #import "GasparViewController.h"
@@ -64,12 +66,21 @@ static NSString* kStandardSettingDefaultCell = @"StandardSettingDefaultCell";
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
 {
-    return UIInterfaceOrientationMaskPortrait;
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation //iOS 5
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if ([PCUtils isIdiomPad]) {
+        return YES;
+    } else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 - (void)doneBarButtonPressed {

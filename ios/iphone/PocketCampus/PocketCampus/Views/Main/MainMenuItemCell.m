@@ -17,12 +17,25 @@
     NSArray* topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MainMenuItemCell" owner:self options:nil];
     MainMenuItemCell* instance = [topLevelObjects objectAtIndex:0];
     instance.menuItemType = type;
-    instance.selectionStyle = UITableViewCellSelectionStyleNone;
     instance.reuseIdentifier = reuseIdentifier;
+    [instance load];
     return instance;
 }
 
-- (void)awakeFromNib
++ (CGFloat)heightForMainMenuItemType:(MainMenuItemType)type {
+    if (type == MainMenuItemTypeButton) {
+        return 60.0;
+    } else if (type == MainMenuItemTypeSectionHeader) {
+        return 60.0;
+    } else if (type == MainMenuItemTypeThinSeparator) {
+        return 4.0;
+    } else {
+        NSLog(@"-> ERROR: unsupported MainMenuItem type property");
+        return 0.0;
+    }
+}
+
+- (void)load
 {
     UIView* colorView = [[UIView alloc] init];
     if (self.menuItemType == MainMenuItemTypeButton) {
@@ -31,39 +44,20 @@
         self.titleLabel.font = [UIFont boldSystemFontOfSize:19.0];
         self.titleLabel.shadowColor = [UIColor whiteColor];
         self.titleLabel.shadowOffset = [PCValues shadowOffset1];
+        UIView* selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
+        selectedBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+        self.selectedBackgroundView = selectedBackgroundView;
+    } else if (self.menuItemType == MainMenuItemTypeSectionHeader) {
+        //TODO
+    } else if (self.menuItemType == MainMenuItemTypeThinSeparator) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        colorView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
     } else {
-        colorView.backgroundColor = [PCValues textColor1];
+        NSLog(@"-> ERROR: unsupported MainMenuItem type property");
     }
     self.backgroundView = colorView;
     
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    
-    [super setHighlighted:highlighted animated:animated];
-    if (self.menuItemType == MainMenuItemTypeThinSeparator) {
-        return;
-    }
-    // Configure the view for the selected state
-    if (highlighted) {
-        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-    } else {
-        self.backgroundView.backgroundColor = [UIColor clearColor];
-    }
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    if (self.menuItemType == MainMenuItemTypeThinSeparator) {
-        return;
-    }
-    // Configure the view for the selected state
-    if (selected) {
-        self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-    } else {
-        self.backgroundView.backgroundColor = [UIColor clearColor];
-    }
-}
+} 
 
 @end

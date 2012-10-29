@@ -760,17 +760,18 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-	return (toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    if (self.frontViewController) {
+        return [self.frontViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    }
+    return (toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 - (NSUInteger)supportedInterfaceOrientations {
     if (self.frontViewController) {
         return [self.frontViewController supportedInterfaceOrientations];
     }
     return UIInterfaceOrientationMaskAll;
 }
-#endif
 
 #pragma mark - Memory Management
 

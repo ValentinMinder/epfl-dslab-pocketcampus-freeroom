@@ -31,13 +31,13 @@
 
 - (void)loadView {
     [super loadView];
-    self.view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)] autorelease]; //any non-null size. AutoresizingMask will stretch to full screen size
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)]; //any non-null size. AutoresizingMask will stretch to full screen size
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
     self.view.layer.cornerRadius = 5;
     self.view.layer.masksToBounds = YES;
     
-    self.splashViewImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]] autorelease];
+    self.splashViewImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PocketCampusDrawing"]];
     self.splashViewImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
     | UIViewAutoresizingFlexibleTopMargin
     | UIViewAutoresizingFlexibleRightMargin
@@ -55,7 +55,7 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    NSLog(@"%lf", self.view.frame.size.height);
+    //NSLog(@"%lf, %lf, %lf x %lf", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 - (void)willMoveToRightWithDuration:(NSTimeInterval)duration {
@@ -68,6 +68,14 @@
             self.splashViewImage.alpha = 0.0;
         }];
     }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning

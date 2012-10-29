@@ -10,7 +10,15 @@
 
 #import "myedu.h"
 
+static NSString* kMyEduSubscribedCoursesListIdentifier = @"myEduSubscribedCoursesList";
+
 @interface MyEduService : Service <ServiceProtocol>
+
+/* Utilitiy methods */
+- (MyEduRequest*)createMyEduRequest;
+- (MyEduSession*)lastSession;
+- (BOOL)saveSession:(MyEduSession*)session;
+- (BOOL)deleteSession;
 
 /* Service methods
 - (MyEduTequilaToken *) getTequilaTokenForMyEdu;  // throws TException
@@ -21,6 +29,7 @@
 - (void)getTequilaTokenForMyEduWithDelegate:(id)delegate;
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken delegate:(id)delegate;
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest*)request delegate:(id)delegate;
+
 
 @end
 

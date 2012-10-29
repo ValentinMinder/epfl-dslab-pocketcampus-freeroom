@@ -15,7 +15,7 @@
 - (void)tempTest {
     service = [[MyEduService sharedInstanceToRetain] retain];
     authController = [[AuthenticationController alloc] init];
-    [service getSubscribedCoursesListForRequest:[[[MyEduRequest alloc] initWithIMyEduSession:[[[MyEduSession alloc] initWithIMyEduCookie:@"fsdfsdf"] autorelease] iLanguage:@""] autorelease] delegate:self];
+    //[service getSubscribedCoursesListForRequest:[[[MyEduRequest alloc] initWithIMyEduSession:[[[MyEduSession alloc] initWithIMyEduCookie:@"fsdfsdf"] autorelease] iLanguage:@""] autorelease] delegate:self];
     [service getTequilaTokenForMyEduWithDelegate:self];
 }
 
