@@ -4,3 +4,5 @@
 */
 
 "PluginName" = "MyEdu";
+"MyCourses" = "Mes cours";
+"DownloadingCourseList" = "Téléchargement de la liste des cours...";

@@ -133,7 +133,7 @@
             
             NSArray* connections = [TransportUtils connectionsWithoutAlreadyLeft:trip.connections];
             
-            for (int i = 0; i<trip.connections.count && i < 3; i++) {
+            for (int i = 0; i<connections.count && i < 3; i++) {
                 TransportTrip* transportTrip = [connections objectAtIndex:i]; 
                 
                 TransportConnection* firstConnection = nil;

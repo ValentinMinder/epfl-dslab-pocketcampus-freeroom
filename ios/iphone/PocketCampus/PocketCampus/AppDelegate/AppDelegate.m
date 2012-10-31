@@ -51,8 +51,9 @@
     if ([PCUtils isOSVersionSmallerThan:6.0]) {
         [application setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     }
-    self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
-    //self.mainController2 = [[[MainController2 alloc] initWithWindow:self.window] autorelease];
+    
+    //self.mainController = [[[MainController alloc] initWithWindow:self.window] autorelease];
+    self.mainController2 = [[[MainController2 alloc] initWithWindow:self.window] autorelease];
     
     
     /* OFFICIAL TESTS */
@@ -100,6 +101,10 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [window.rootViewController supportedInterfaceOrientations];
 }
 
 /* Google Analytics Delegation */

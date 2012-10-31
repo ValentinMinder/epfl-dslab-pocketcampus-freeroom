@@ -21,8 +21,11 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 @interface MainMenuViewController ()
 
+@property (nonatomic, strong) NSArray* menuItems; //array of MainMenuItem
+@property (nonatomic, weak) MainController2* mainController;
 @property (nonatomic, copy) NSArray* sections;
 @property (nonatomic, copy) NSArray* rowsForSection;
+@property (nonatomic, strong) NSMutableDictionary* cells; //key: NSIndexPath, value:corresponding MainMenuItemCell
 
 @end
 
@@ -33,9 +36,10 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     self = [super initWithNibName:@"MainMenuView" bundle:nil];
     if (self) {
         // Custom initialization
-        _menuItems = [menuItems retain];
-        _mainController = mainController;
+        self.menuItems = menuItems;
+        self.mainController = mainController;
         [self fillCollections];
+        self.cells = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -53,7 +57,6 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
     | UIViewAutoresizingFlexibleHeight
     | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.backgroundView = backgroundView;
-    [backgroundView release];
     [self.mainController mainMenuIsReady];
 }
 
@@ -92,20 +95,24 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 }
 
-/* UITableViewDelegate delegation */
+#pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* item = self.rowsForSection[indexPath.section][indexPath.row];
     if (item.type == MainMenuItemTypeButton) {
-        [self.mainController setActivePluginWithIdentifier:item.identifier];
+        if(![self.mainController setActivePluginWithIdentifier:item.identifier animated:YES]) {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
 }
 
 
-/* UITableViewDataSource delegation */
+#pragma mark UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60.0;
+    MainMenuItem* item = self.rowsForSection[indexPath.section][indexPath.row];
+    return [MainMenuItemCell heightForMainMenuItemType:item.type];
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -119,22 +126,20 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MainMenuItem* menuItem = self.rowsForSection[indexPath.section][indexPath.row];
-    MainMenuItemCell* cell = nil;
-    if (menuItem.type == MainMenuItemTypeThinSeparator) {
-        cell = [tableView dequeueReusableCellWithIdentifier:kMenuItemThinSeparatorIdentifier];
-        if (!cell) {
+    MainMenuItemCell* cell = [self.cells objectForKey:indexPath];
+    if (!cell) {
+        if (menuItem.type == MainMenuItemTypeThinSeparator) {
             cell = [MainMenuItemCell cellWithMainMenuItemType:MainMenuItemTypeThinSeparator reuseIdentifier:kMenuItemThinSeparatorIdentifier];
-        }
-    } else if (menuItem.type == MainMenuItemTypeButton) {
-        cell = [tableView dequeueReusableCellWithIdentifier:kMenuItemButtonIdentifier];
-        if (!cell) {
+        } else if (menuItem.type == MainMenuItemTypeButton) {
             cell = [MainMenuItemCell cellWithMainMenuItemType:MainMenuItemTypeButton reuseIdentifier:kMenuItemButtonIdentifier];
+            cell.titleLabel.text = menuItem.title;
+            cell.leftImageView.image = menuItem.leftImage;
+        } else {
+            //No other supported types
+            NSLog(@"-> ERROR: Unsupported menu item type (%d)", menuItem.type);
         }
-        cell.titleLabel.text = menuItem.title;
-        cell.leftImageView.image = menuItem.leftImage;
-    } else {
-        //No other supported types
     }
+    [self.cells setObject:cell forKey:indexPath];
     return cell;
 }
 
@@ -144,6 +149,16 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.sections count];
+}
+
+- (NSUInteger)supportedInterfaceOrientations //iOS 6
+{
+    return [self.parentViewController supportedInterfaceOrientations];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 

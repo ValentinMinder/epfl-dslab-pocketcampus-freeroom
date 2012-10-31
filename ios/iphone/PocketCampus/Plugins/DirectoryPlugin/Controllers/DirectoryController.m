@@ -7,27 +7,21 @@
 //
 
 #import "DirectoryController.h"
+#import "PluginNavigationController.h"
 #import "DirectorySearchViewController.h"
 
 @implementation DirectoryController
 
-- (id)init
+- (id)initWithMainController:(MainController2 *)mainController_
 {
     self = [super init];
     if (self) {
+        mainController = mainController_;
         DirectorySearchViewController* directorySearchViewController = [[DirectorySearchViewController alloc] init];
         directorySearchViewController.title = [[self class] localizedName];
-        mainViewController = directorySearchViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-    
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:directorySearchViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        mainNavigationController = navController;
     }
     return self;
 }
@@ -40,9 +34,20 @@
     return @"Directory";
 }
 
-- (void)dealloc
-{
-    [super dealloc];
+- (void)pluginDidBecomePassive {
+    //nothing
+}
+
+- (void)pluginWillLoseFocus {
+    //NSLog(@"%@", mainNavigationController.visibleViewController);
+    if ([mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
+        [[(DirectorySearchViewController*)mainNavigationController.visibleViewController searchBar] resignFirstResponder];
+    }
+}
+- (void)pluginDidRegainActive {
+    if ([mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
+        [[(DirectorySearchViewController*)mainNavigationController.visibleViewController searchBar] becomeFirstResponder];
+    }
 }
 
 @end

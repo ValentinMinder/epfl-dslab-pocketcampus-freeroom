@@ -12,9 +12,9 @@
 
 @interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, assign) IBOutlet UITableView* tableView;
-@property (nonatomic, readonly) NSArray* menuItems; //array of MainMenuItem
-@property (nonatomic, assign) MainController2* mainController;
+@property (nonatomic, strong) IBOutlet UITableView* tableView;
+@property (nonatomic, strong, readonly) NSArray* menuItems; //array of MainMenuItem
+@property (nonatomic, weak, readonly) MainController2* mainController;
 
 - (id)initWithMenuItems:(NSArray*)menuItems mainController:(MainController2*)mainController;
 

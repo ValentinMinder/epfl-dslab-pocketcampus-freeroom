@@ -26,13 +26,13 @@
 
 + (MainMenuItem*)menuItemThinSeparator {
     MainMenuItem* instance = [[[self class] alloc] initWithType:MainMenuItemTypeThinSeparator];
-    return [instance autorelease];
+    return instance;
 }
 
 + (MainMenuItem*)menuItemSectionHeaderWithTitle:(NSString*)title {
     MainMenuItem* instance = [[[self class] alloc] initWithType:MainMenuItemTypeSectionHeader];
     instance.title = title;
-    return [instance autorelease];
+    return instance;
 }
 
 + (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier {
@@ -40,7 +40,7 @@
     instance.title = title;
     instance.leftImage = image;
     instance.identifier = identifier;
-    return [instance autorelease];
+    return instance;
 }
 
 - (NSString*)description {

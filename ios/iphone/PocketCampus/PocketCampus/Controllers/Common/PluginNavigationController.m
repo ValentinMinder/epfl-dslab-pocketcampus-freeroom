@@ -1,14 +1,20 @@
 //
-//  UINavigationController+Extras.m
+//  PluginNavigationController.m
 //  PocketCampus
 //
-//  Created by Loïc Gardiol on 19.09.12.
+//  Created by Loïc Gardiol on 23.10.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "UINavigationController+Extras.h"
+#import "PluginNavigationController.h"
 
-@implementation UINavigationController (Extras)
+@interface PluginNavigationController ()
+
+@end
+
+@implementation PluginNavigationController
+
+@synthesize pluginIdentifier;
 
 - (NSUInteger)supportedInterfaceOrientations {
     return [self.topViewController supportedInterfaceOrientations];
@@ -19,9 +25,9 @@
 }
 
 - (void)viewDidLoad {
-    self.view.layer.cornerRadius = 5;
+    [super viewDidLoad];
+    self.view.layer.cornerRadius = 3;
     self.view.layer.masksToBounds = YES;
 }
-
 
 @end

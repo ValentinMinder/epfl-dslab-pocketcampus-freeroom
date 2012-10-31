@@ -5,12 +5,16 @@
 //  Created by Loïc Gardiol on 07.10.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
+//  ARC enabled
+//
 
 #import "MainController2.h"
 
-#import "ZUUIRevealController.h"
-
 #import "PluginController.h"
+
+#import "PluginNavigationController.h"
+
+#import "PluginSplitViewController.h"
 
 #import "MainMenuViewController.h"
 
@@ -22,22 +26,30 @@
 
 #import "SplashViewController.h"
 
+#import "GlobalSettingsViewController.h"
+
 #import <objc/message.h>
 
 @interface MainController2 ()
 
-@property (nonatomic, assign) UIWindow* window;
-@property (nonatomic, retain) MainMenuViewController* mainMenuViewController;
-@property (nonatomic, retain) ZUUIRevealController* revealController;
+@property (nonatomic, weak) UIWindow* window;
+@property (nonatomic, strong) MainMenuViewController* mainMenuViewController;
+@property (nonatomic, strong) ZUUIRevealController* revealController;
 @property (nonatomic) CGFloat revealWidth;
-@property (nonatomic, retain) NSArray* pluginsList;
-@property (nonatomic, retain) PluginController* activePluginController;
+@property (nonatomic, strong) NSArray* pluginsList;
+@property (nonatomic, weak) PluginController<PluginControllerProtocol>* activePluginController;
+@property (nonatomic, strong) NSMutableDictionary* pluginsControllers; //key: plugin identifier, value: PluginController subclass.
 
 @end
 
+/* Corresponds to supportedIdioms possible values in config file Plugins.plist */
 static NSString* kSupportedIdiomPhone = @"phone";
 static NSString* kSupportedIdiomPad = @"pad";
 static NSString* kSupportedIdiomPhonePad = @"phone+pad";
+
+static int kGesturesViewTag = 50;
+
+static NSString* kSettingsIdentifier = @"SETTINGS";
 
 @implementation MainController2
 
@@ -48,6 +60,7 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
         self.window = window;
         self.activePluginController = nil;
         [self initPluginsList];
+        self.pluginsControllers = [NSMutableDictionary dictionaryWithCapacity:self.pluginsList.count];
         [self initPluginObservers];
         [self initMainMenu];
         if ([PCUtils isIdiomPad]) {
@@ -56,8 +69,11 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
             self.revealWidth = 261.0;
         }
         [self initRevealController];
-        self.revealController.toggleAnimationDuration = 0.8;
+        self.revealController.toggleAnimationDuration = 0.65;
+        self.revealController.delegate = self;
+        
         self.window.rootViewController = self.revealController;
+        //[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
     }
     return self;
 }
@@ -141,9 +157,14 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
         
     }
     
+    [menuItems addObject:[MainMenuItem menuItemThinSeparator]];
+    
+    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"SettingsHomeButton"] identifier:kSettingsIdentifier];
+    
+    [menuItems addObject:settingsButton];
+    
     MainMenuViewController* mainMenuViewController = [[MainMenuViewController alloc] initWithMenuItems:menuItems mainController:self];
     self.mainMenuViewController = mainMenuViewController;
-    [mainMenuViewController release];
 }
 
 - (void)initRevealController {
@@ -151,7 +172,6 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
     ZUUIRevealController* revealController = [[ZUUIRevealController alloc] initWithFrontViewController:splashViewController rearViewController:self.mainMenuViewController];
     revealController.rearViewRevealWidth = self.revealWidth;
     self.revealController = revealController;
-    [revealController release];
 }
 
 - (NSString*)pluginControllerClassNameForIdentifier:(NSString*)identifier {
@@ -164,26 +184,157 @@ static NSString* kSupportedIdiomPhonePad = @"phone+pad";
     }
 }
 
-- (void)setActivePluginWithIdentifier:(NSString*)identifier {
-    Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifier]);
-    PluginController* pluginController = [[pluginClass alloc] initWithMainController:nil];
-    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
-    pluginController.mainViewController.navigationItem.leftBarButtonItem = menuButton;
-    [menuButton release];
-    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:pluginController.mainViewController];
-    navController.navigationBar.tintColor = [PCValues pocketCampusRed];
+- (BOOL)setActivePluginWithIdentifier:(NSString*)identifier animated:(BOOL)animated {
+    if ([identifier isEqualToString:kSettingsIdentifier]) {
+        GlobalSettingsViewController* settingsViewController = [[GlobalSettingsViewController alloc] init];
+        UINavigationController* settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+        settingsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+        settingsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+        [self.revealController presentViewController:settingsNavController animated:YES completion:NULL];
+        return NO;
+    }
     
-    UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-    [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-    [navigationBarPanGestureRecognizer release];
-    
-    /*UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
-    [navController.view addGestureRecognizer:tapGestureRecognizer];
-    [tapGestureRecognizer release];*/
-    
-    [self.revealController setFrontViewController:navController];
-    [navController release];
+    PluginController<PluginControllerProtocol>* pluginController = [self.pluginsControllers objectForKey:identifier];
+    if (pluginController) {
+        UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:pluginController];
+        /*if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
+            [(UINavigationController*)pluginRootViewController popToRootViewControllerAnimated:NO];
+        }*/
+        
+        [self.revealController setFrontViewController:pluginRootViewController animated:NO]; //check on whether this is already the front one is done in the method implementation
+        
+    } else {
+        Class pluginClass = NSClassFromString([self pluginControllerClassNameForIdentifier:identifier]);
+        pluginController = [[pluginClass alloc] initWithMainController:self];
+        [self adaptInitializedNavigationOrSplitViewControllerOfPluginController:pluginController];
+        UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:pluginController];
+        
+        if (pluginRootViewController) {
+            [self.pluginsControllers setObject:pluginController forKey:identifier];
+            [self.revealController setFrontViewController:pluginRootViewController];
+        }
+    }
     self.activePluginController = pluginController;
+    return YES;
+}
+
++ (UIViewController*)rootViewControllerForPluginController:(PluginController*)pluginController {
+    UIViewController* pluginRootViewController = nil;
+    if (pluginController.mainViewController) {
+        pluginRootViewController = pluginController.mainViewController;
+    } else if (pluginController.mainNavigationController) {
+        pluginRootViewController = pluginController.mainNavigationController;
+    } else if (pluginController.mainSplitViewController) {
+        pluginRootViewController = pluginController.mainSplitViewController;
+    } else {
+        NSLog(@"-> ERROR : PluginController '%@' has no initialized view controller (mainViewController, mainNavigationController, mainSplitViewController are nil)", [(id<PluginControllerProtocol>)pluginController identifierName]);
+    }
+    return pluginRootViewController;
+}
+
+- (void)adaptInitializedNavigationOrSplitViewControllerOfPluginController:(PluginController*)pluginController {
+    
+    if (!pluginController) {
+        @throw [NSException exceptionWithName:@"bad pluginController argument" reason:@"cannot be nil" userInfo:nil];
+    }
+    
+    if (pluginController.mainNavigationController && pluginController.mainSplitViewController) {
+        @throw [NSException exceptionWithName:@"incorrect attributes" reason:@"pluginController properties mainNavigationController and mainSplitViewController cannot be both instancied" userInfo:nil];
+    }
+    
+    if (!pluginController.mainNavigationController && !pluginController.mainSplitViewController) {
+        @throw [NSException exceptionWithName:@"incorrect attributes" reason:@"pluginController properties mainNavigationController and mainSplitViewController cannot be both nil" userInfo:nil];
+    }
+    
+    UIViewController* pluginRootViewController = [[self  class] rootViewControllerForPluginController:pluginController];
+    
+    if (!pluginRootViewController || ![pluginRootViewController respondsToSelector:@selector(pluginIdentifier)] || ![(id)pluginRootViewController pluginIdentifier]) {
+        @throw [NSException exceptionWithName:@"incorrect attribute pluginIdentifier" reason:@"root view controller of pluginController must have initialized pluginIdentifier property" userInfo:nil];
+    }
+    
+    UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealToggle:)];
+    UIView* gesturesView = [[UIView alloc] initWithFrame:CGRectNull];
+    gesturesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    //gesturesView.hidden = YES;
+    //gesturesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    gesturesView.tag = kGesturesViewTag;
+    gesturesView.gestureRecognizers = @[panGestureRecognizer, tapGestureRecognizer];
+    
+    
+    if ([pluginRootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* navController = (UINavigationController*)pluginRootViewController;
+        
+        navController.navigationBar.tintColor = [PCValues pocketCampusRed];
+        UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+        [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
+        
+        [navController.view addSubview:gesturesView];
+        
+        UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
+        [[(UIViewController*)(navController.viewControllers[0]) navigationItem] setLeftBarButtonItem:menuButton];
+    }
+    
+    if ([pluginRootViewController isKindOfClass:[UISplitViewController class]]) {
+        UISplitViewController* splitController = (UISplitViewController*)pluginRootViewController;
+        splitController.view.autoresizesSubviews = YES;
+        [splitController.view addSubview:gesturesView];
+        
+        for (int i = 0; i<splitController.viewControllers.count; i++) {
+            if([splitController.viewControllers[i] isKindOfClass:[UINavigationController class]]) {
+                UINavigationController* navController = (UINavigationController*)splitController.viewControllers[i];
+                if (i == 0) {
+                    UIBarButtonItem* menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MainMenuNavbar"] style:UIBarButtonItemStylePlain target:self.revealController action:@selector(revealToggle:)];
+                    [navController.viewControllers[0] navigationItem].leftBarButtonItem = menuButton;
+                }
+                navController.navigationBar.tintColor = [PCValues pocketCampusRed];
+                UIPanGestureRecognizer* navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController action:@selector(revealGesture:)];
+                [navController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
+            }
+        }
+    }
+
+}
+
+/* ZUUIRevealControllerDelegate delegation */
+
+- (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController {
+    if ([self.activePluginController respondsToSelector:@selector(pluginWillLoseFocus)]) {
+        [self.activePluginController pluginWillLoseFocus];
+    }
+}
+
+- (void)revealController:(ZUUIRevealController *)revealController didRevealRearViewController:(UIViewController *)rearViewController {
+    if (!self.activePluginController) {
+        return;
+    }
+    UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:self.activePluginController];
+    UIView* gesturesView = [pluginRootViewController.view viewWithTag:kGesturesViewTag];
+    gesturesView.frame = pluginRootViewController.view.frame;
+    gesturesView.hidden = NO;
+}
+
+- (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController {
+    
+}
+
+- (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController {
+    if (!self.activePluginController) {
+        return;
+    }
+    if ([self.activePluginController respondsToSelector:@selector(pluginDidRegainActive)]) {
+        [self.activePluginController pluginDidRegainActive];
+    }
+    UIViewController* pluginRootViewController = [[self class] rootViewControllerForPluginController:self.activePluginController];
+    UIView* gesturesView = [pluginRootViewController.view viewWithTag:kGesturesViewTag];
+    gesturesView.hidden = YES;
+}
+
+- (void)revealController:(ZUUIRevealController *)revealController willSwapToFrontViewController:(UIViewController *)frontViewController {
+    
+}
+
+- (void)revealController:(ZUUIRevealController *)revealController didSwapToFrontViewController:(UIViewController *)frontViewController {
 }
 
 @end

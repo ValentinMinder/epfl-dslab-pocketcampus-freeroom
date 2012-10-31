@@ -17,7 +17,7 @@
 static BOOL settingsAreDirty = NO;
 static NSMutableDictionary* settings = nil;
 
-- (id)initWithMainController:(MainController*)mainController_ {
+- (id)initWithMainController:(MainController2*)mainController_ {
     self = [super init];
     if (self) {
         mainController = mainController_;

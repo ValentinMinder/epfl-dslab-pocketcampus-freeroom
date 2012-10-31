@@ -16,7 +16,7 @@
     return self;
 }
 
-- (id)initWithMainController:(MainController *)mainController_
+- (id)initWithMainController:(MainController2 *)mainController_
 {
     self = [self init];
     if (self) {
