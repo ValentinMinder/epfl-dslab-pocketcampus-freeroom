@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AuthenticationController.h"
-
 #import "MyEduService.h"
+
+#import "AuthenticationController.h"
 
 @interface MyEduCourseListViewController : UITableViewController<MyEduServiceDelegate, AuthenticationCallbackDelegate>
 

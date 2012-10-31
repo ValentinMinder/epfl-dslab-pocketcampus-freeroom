@@ -20,6 +20,8 @@
     MyEduTequilaToken* tequilaToken;
 }
 
+@property (nonatomic, retain) MyEduRequest* myEduRequest;
+
 - (void)tempTest;
 
 @end

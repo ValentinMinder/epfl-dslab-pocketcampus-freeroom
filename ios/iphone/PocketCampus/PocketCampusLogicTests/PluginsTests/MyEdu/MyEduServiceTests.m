@@ -12,6 +12,8 @@
 
 @implementation MyEduServiceTests
 
+@synthesize myEduRequest;
+
 - (void)tempTest {
     service = [[MyEduService sharedInstanceToRetain] retain];
     authController = [[AuthenticationController alloc] init];
@@ -34,8 +36,8 @@
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken didReturn:(MyEduSession*)myEduSession {
     NSLog(@"getSessionIdForServiceWithTequilaKey:didReturn: %@", myEduSession);
-    MyEduRequest* req = [[[MyEduRequest alloc] initWithIMyEduSession:myEduSession iLanguage:@"en"] autorelease];
-    [service getSubscribedCoursesListForRequest:req delegate:self];
+    self.myEduRequest = [[[MyEduRequest alloc] initWithIMyEduSession:myEduSession iLanguage:@"en"] autorelease];
+    [service getSubscribedCoursesListForRequest:self.myEduRequest delegate:self];
 
 }
 
@@ -43,13 +45,24 @@
     NSLog(@"getSessionIdForServiceFailedForTequilaKey");
 }
 
-- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(SubscribedCoursesListReply *)reply {
-    NSLog(@"getSubscribedCoursesListForRequest:didReturn:");
-    NSLog(@"statusCode:%d coursesList:%@", reply.iStatus, reply.iSubscribedCourses);
+- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(MyEduSubscribedCoursesListReply *)reply {
+    NSLog(@"getSubscribedCoursesListForRequest:didReturn: %@", reply);
+    for (MyEduCourse* course in reply.iSubscribedCourses) {
+        [service getCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithICourseCode:course.iCode] myeduRequest:self.myEduRequest delegate:self];
+    }
+    
 }
 
 - (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
     NSLog(@"getSubscribedCoursesListFailedForRequest");
+}
+
+- (void)getCourseDetailsForRequest:(MyEduCourseDetailsRequest *)request myeduRequest:(MyEduRequest*)myeduRequest didReturn:(MyEduCourseDetailsReply *)reply {
+    NSLog(@"getSubscribedCoursesListForRequest:didReturn: %@", reply);
+}
+
+- (void)getCourseDetailsFailedForRequest:(MyEduCourseDetailsRequest *)request myeduRequest:(MyEduRequest*)myeduRequest {
+    NSLog(@"getCourseDetailsFailedForRequest");
 }
 
 - (void)serviceConnectionToServerTimedOut {

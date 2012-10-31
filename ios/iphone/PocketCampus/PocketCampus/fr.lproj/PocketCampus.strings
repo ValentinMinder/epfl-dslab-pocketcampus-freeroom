@@ -8,7 +8,9 @@
 
 "HomeViewControllerTitle" = "PocketCampus EPFL";
 "ConnectionToServerTimedOut" = "Impossible de se connecter au serveur.\nVérifiez votre connexion internet.";
+"ConnectionToServerTimedOutShort" = "Connexion impossible";
 "ConnectionToServerError" = "Désolé, une erreur est survenue.\nEssayez à nouveau.";
+"ConnectionToServerErrorShort" = "Désolé, une erreur est survenue";
 "Cancel" = "Annuler";
 "Error" = "Erreur";
 "Loading..." = "Chargement...";
@@ -19,3 +21,4 @@
 "About" = "À propos";
 "Delete" = "Supprimer";
 "Settings" = "Réglages";
+"LastUpdate" = "Denière mise à jour";

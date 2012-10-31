@@ -18,7 +18,7 @@
 
 static NSTimeInterval kThriftRequestTimeout = 75.0; //is the minimum for POST request prior the iOS 6. A timer with requestTimeoutInterval is used to remove this limitation and timeout () a request before the system API times out
 static NSTimeInterval kRequestTimeout = 15.0; //is official timeout time for all ServiceRequest that do not have customTimeout specified
-static NSTimeInterval kConnectivityCheckTimeout;
+static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 @implementation Service
 
@@ -252,7 +252,7 @@ static NSTimeInterval kConnectivityCheckTimeout;
 
 @implementation ServiceRequest
 
-@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, returnCacheIfServerIsUnreachable, cacheValidity;
+@synthesize thriftServiceClient, timedOut, shouldRestart, serviceClientSelector, returnType, customTimeout, service, keepInCache, returnCacheIfServerIsUnreachable, skipCache, cacheValidity;
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service_ delegate:(id)delegate_
 {
@@ -271,7 +271,18 @@ static NSTimeInterval kConnectivityCheckTimeout;
         customTimeout = 0.0;
         keepInCache = NO;
         returnCacheIfServerIsUnreachable = NO;
+        skipCache = NO;
         cacheValidity = 100.0 * 365 * 24 * 60 * 60; // hundred years in seconds (equivalent to the old skipCache = NO)
+    }
+    return self;
+}
+
+- (id)initForCachedResponseOnlyWithService:(Service*)service_ {
+    self = [super init];
+    if (self) {
+        self.service = service_;
+        arguments = [[NSMutableArray alloc] init];
+        self.returnType = ReturnTypeNotSet;
     }
     return self;
 }
@@ -303,17 +314,41 @@ static NSTimeInterval kConnectivityCheckTimeout;
     return [Service requestTimeoutInterval];
 }
 
+- (id)cachedResponseObjectEvenIfStale:(BOOL)evenIfStale {
+    if (self.returnType != ReturnTypeObject) {
+        @throw [NSException exceptionWithName:@"unsupported operation" reason:@"cachedResponseObject is not supported when returnType is not ReturnTypeObject" userInfo:nil];
+    }
+    [self computeHashCode];
+    
+    NSDictionary* cached;
+    if(evenIfStale) {
+        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+    } else {
+        cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+    }
+    
+    if ([[cached objectForKey:@"primitive"] boolValue]) {
+        @throw [NSException exceptionWithName:@"unsupported operation" reason:@"cachedResponseObject is not supported when returnType is not ReturnTypeObject" userInfo:nil];
+    }
+    
+    id object = [ServiceRequest unwrapArgument:cached];
+    
+    return object;
+}
 
 - (void)main {
     
     @try {
         [self computeHashCode];
 
-        NSDictionary* cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
-        if (self.returnCacheIfServerIsUnreachable) {
-            cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
-        } else {
-            cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+        NSDictionary* cached = nil;
+        
+        if (!self.skipCache) {
+            if (self.returnCacheIfServerIsUnreachable) {
+                cached = (NSDictionary*)[ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName]];
+            } else {
+                cached = (NSDictionary*) [ObjectArchiver objectForKey:hashCode andPluginName:[service serviceName] nilIfDiffIntervalLargerThan:cacheValidity];
+            }
         }
         
         if(cached) {

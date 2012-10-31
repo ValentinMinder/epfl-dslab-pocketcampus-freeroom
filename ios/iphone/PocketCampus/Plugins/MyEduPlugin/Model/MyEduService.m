@@ -77,11 +77,80 @@ static MyEduService* instance = nil;
     [operationQueue addOperation:operation];
 }
 
-- (void)getSubscribedCoursesListForRequest:(MyEduRequest*)request delegate:(id)delegate {
+- (void)getSubscribedCoursesListForRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
     ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getSubscribedCoursesList:);
     operation.delegateDidReturnSelector = @selector(getSubscribedCoursesListForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getSubscribedCoursesListFailedForRequest:);
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
+    [operation addObjectArgument:myeduRequest];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+}
+
+- (MyEduSubscribedCoursesListReply*)getFromCacheSubscribedCoursesListForRequest:(MyEduRequest*)myeduRequest {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getSubscribedCoursesList:);
+    operation.delegateDidReturnSelector = @selector(getSubscribedCoursesListForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getSubscribedCoursesListFailedForRequest:);
+    [operation addObjectArgument:myeduRequest];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
+}
+
+- (void)getCourseDetailsForRequest:(MyEduCourseDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getCourseDetails::);
+    operation.delegateDidReturnSelector = @selector(getCourseDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCourseDetailsFailedForRequest:myeduRequest:);
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+}
+
+- (MyEduCourseDetailsReply*)getFromCacheCourseDetailsForRequest:(MyEduCourseDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getCourseDetails::);
+    operation.delegateDidReturnSelector = @selector(getCourseDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getCourseDetailsFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
+}
+
+- (void)getSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getSectionDetails::);
+    operation.delegateDidReturnSelector = @selector(getSectionDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getSectionDetailsFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+}
+
+- (void)getModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getModuleDetails::);
+    operation.delegateDidReturnSelector = @selector(getModuleDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getModuleDetailsFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [operationQueue addOperation:operation];
+}
+
+- (void)submitFeedbackWithRequest:(MyEduSubmitFeedbackRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
+    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(submitFeedback::);
+    operation.delegateDidReturnSelector = @selector(submitFeedbackForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(submitFeedbackFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];

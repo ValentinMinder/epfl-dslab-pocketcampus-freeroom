@@ -15,6 +15,8 @@
 + (BOOL)isIdiomPad;
 + (BOOL)isOSVersionSmallerThan:(CGFloat)version;
 + (NSString*)userLanguageCode;
++ (NSString*)lastUpdateNowString;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
++ (void)printFrame:(CGRect)frame;
 
 @end

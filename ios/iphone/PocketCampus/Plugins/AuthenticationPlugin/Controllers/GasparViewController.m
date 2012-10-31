@@ -27,6 +27,7 @@
     self = [super initWithNibName:@"GasparView" bundle:nil];
     if (self) {
         presentationMode = PresentationModeNavStack; //default
+        self.modalPresentationStyle = UIModalPresentationFormSheet; //prevents full-screen on iPad
         showSavePasswordSwitch = NO; //default
         hideGasparUsageAccountMessage = NO; //default
         viewControllerForPresentation = nil;
@@ -395,7 +396,7 @@
             loginCell.textLabel.enabled = NO;
             loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [loginCell.contentView addSubview:loadingIndicator];
-            loadingIndicator.center = CGPointMake(275.0, 22.0);
+            loadingIndicator.center = CGPointMake(30.0, 22.0);
             [loadingIndicator release];
             [self inputFieldsDidChange];
             return cell;

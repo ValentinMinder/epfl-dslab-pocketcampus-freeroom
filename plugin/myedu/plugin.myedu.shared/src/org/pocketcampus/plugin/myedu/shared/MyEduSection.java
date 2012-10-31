@@ -21,31 +21,34 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCourse._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MyEduCourse");
+public class MyEduSection implements org.apache.thrift.TBase<MyEduSection, MyEduSection._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MyEduSection");
 
   private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField I_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("iCode", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_COURSE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseId", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField I_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iTitle", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField I_DESCRIPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("iDescription", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)5);
-  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)6);
+  private static final org.apache.thrift.protocol.TField I_SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("iSequence", org.apache.thrift.protocol.TType.I32, (short)5);
+  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)6);
+  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)7);
 
   public int iId; // required
-  public String iCode; // required
+  public int iCourseId; // required
   public String iTitle; // required
   public String iDescription; // required
+  public int iSequence; // required
   public long iCreationTimestamp; // required
   public long iLastUpdateTimestamp; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     I_ID((short)1, "iId"),
-    I_CODE((short)2, "iCode"),
+    I_COURSE_ID((short)2, "iCourseId"),
     I_TITLE((short)3, "iTitle"),
     I_DESCRIPTION((short)4, "iDescription"),
-    I_CREATION_TIMESTAMP((short)5, "iCreationTimestamp"),
-    I_LAST_UPDATE_TIMESTAMP((short)6, "iLastUpdateTimestamp");
+    I_SEQUENCE((short)5, "iSequence"),
+    I_CREATION_TIMESTAMP((short)6, "iCreationTimestamp"),
+    I_LAST_UPDATE_TIMESTAMP((short)7, "iLastUpdateTimestamp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,15 +65,17 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
       switch(fieldId) {
         case 1: // I_ID
           return I_ID;
-        case 2: // I_CODE
-          return I_CODE;
+        case 2: // I_COURSE_ID
+          return I_COURSE_ID;
         case 3: // I_TITLE
           return I_TITLE;
         case 4: // I_DESCRIPTION
           return I_DESCRIPTION;
-        case 5: // I_CREATION_TIMESTAMP
+        case 5: // I_SEQUENCE
+          return I_SEQUENCE;
+        case 6: // I_CREATION_TIMESTAMP
           return I_CREATION_TIMESTAMP;
-        case 6: // I_LAST_UPDATE_TIMESTAMP
+        case 7: // I_LAST_UPDATE_TIMESTAMP
           return I_LAST_UPDATE_TIMESTAMP;
         default:
           return null;
@@ -113,46 +118,54 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
 
   // isset id assignments
   private static final int __IID_ISSET_ID = 0;
-  private static final int __ICREATIONTIMESTAMP_ISSET_ID = 1;
-  private static final int __ILASTUPDATETIMESTAMP_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private static final int __ICOURSEID_ISSET_ID = 1;
+  private static final int __ISEQUENCE_ISSET_ID = 2;
+  private static final int __ICREATIONTIMESTAMP_ISSET_ID = 3;
+  private static final int __ILASTUPDATETIMESTAMP_ISSET_ID = 4;
+  private BitSet __isset_bit_vector = new BitSet(5);
 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.I_ID, new org.apache.thrift.meta_data.FieldMetaData("iId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.I_CODE, new org.apache.thrift.meta_data.FieldMetaData("iCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_COURSE_ID, new org.apache.thrift.meta_data.FieldMetaData("iCourseId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_DESCRIPTION, new org.apache.thrift.meta_data.FieldMetaData("iDescription", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("iSequence", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_CREATION_TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("iCreationTimestamp", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
     tmpMap.put(_Fields.I_LAST_UPDATE_TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("iLastUpdateTimestamp", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MyEduCourse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MyEduSection.class, metaDataMap);
   }
 
-  public MyEduCourse() {
+  public MyEduSection() {
   }
 
-  public MyEduCourse(
+  public MyEduSection(
     int iId,
-    String iCode,
+    int iCourseId,
     String iTitle,
     String iDescription,
+    int iSequence,
     long iCreationTimestamp,
     long iLastUpdateTimestamp)
   {
     this();
     this.iId = iId;
     setIIdIsSet(true);
-    this.iCode = iCode;
+    this.iCourseId = iCourseId;
+    setICourseIdIsSet(true);
     this.iTitle = iTitle;
     this.iDescription = iDescription;
+    this.iSequence = iSequence;
+    setISequenceIsSet(true);
     this.iCreationTimestamp = iCreationTimestamp;
     setICreationTimestampIsSet(true);
     this.iLastUpdateTimestamp = iLastUpdateTimestamp;
@@ -162,34 +175,36 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MyEduCourse(MyEduCourse other) {
+  public MyEduSection(MyEduSection other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.iId = other.iId;
-    if (other.isSetICode()) {
-      this.iCode = other.iCode;
-    }
+    this.iCourseId = other.iCourseId;
     if (other.isSetITitle()) {
       this.iTitle = other.iTitle;
     }
     if (other.isSetIDescription()) {
       this.iDescription = other.iDescription;
     }
+    this.iSequence = other.iSequence;
     this.iCreationTimestamp = other.iCreationTimestamp;
     this.iLastUpdateTimestamp = other.iLastUpdateTimestamp;
   }
 
-  public MyEduCourse deepCopy() {
-    return new MyEduCourse(this);
+  public MyEduSection deepCopy() {
+    return new MyEduSection(this);
   }
 
   @Override
   public void clear() {
     setIIdIsSet(false);
     this.iId = 0;
-    this.iCode = null;
+    setICourseIdIsSet(false);
+    this.iCourseId = 0;
     this.iTitle = null;
     this.iDescription = null;
+    setISequenceIsSet(false);
+    this.iSequence = 0;
     setICreationTimestampIsSet(false);
     this.iCreationTimestamp = 0;
     setILastUpdateTimestampIsSet(false);
@@ -200,7 +215,7 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     return this.iId;
   }
 
-  public MyEduCourse setIId(int iId) {
+  public MyEduSection setIId(int iId) {
     this.iId = iId;
     setIIdIsSet(true);
     return this;
@@ -219,35 +234,34 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     __isset_bit_vector.set(__IID_ISSET_ID, value);
   }
 
-  public String getICode() {
-    return this.iCode;
+  public int getICourseId() {
+    return this.iCourseId;
   }
 
-  public MyEduCourse setICode(String iCode) {
-    this.iCode = iCode;
+  public MyEduSection setICourseId(int iCourseId) {
+    this.iCourseId = iCourseId;
+    setICourseIdIsSet(true);
     return this;
   }
 
-  public void unsetICode() {
-    this.iCode = null;
+  public void unsetICourseId() {
+    __isset_bit_vector.clear(__ICOURSEID_ISSET_ID);
   }
 
-  /** Returns true if field iCode is set (has been assigned a value) and false otherwise */
-  public boolean isSetICode() {
-    return this.iCode != null;
+  /** Returns true if field iCourseId is set (has been assigned a value) and false otherwise */
+  public boolean isSetICourseId() {
+    return __isset_bit_vector.get(__ICOURSEID_ISSET_ID);
   }
 
-  public void setICodeIsSet(boolean value) {
-    if (!value) {
-      this.iCode = null;
-    }
+  public void setICourseIdIsSet(boolean value) {
+    __isset_bit_vector.set(__ICOURSEID_ISSET_ID, value);
   }
 
   public String getITitle() {
     return this.iTitle;
   }
 
-  public MyEduCourse setITitle(String iTitle) {
+  public MyEduSection setITitle(String iTitle) {
     this.iTitle = iTitle;
     return this;
   }
@@ -271,7 +285,7 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     return this.iDescription;
   }
 
-  public MyEduCourse setIDescription(String iDescription) {
+  public MyEduSection setIDescription(String iDescription) {
     this.iDescription = iDescription;
     return this;
   }
@@ -291,11 +305,34 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     }
   }
 
+  public int getISequence() {
+    return this.iSequence;
+  }
+
+  public MyEduSection setISequence(int iSequence) {
+    this.iSequence = iSequence;
+    setISequenceIsSet(true);
+    return this;
+  }
+
+  public void unsetISequence() {
+    __isset_bit_vector.clear(__ISEQUENCE_ISSET_ID);
+  }
+
+  /** Returns true if field iSequence is set (has been assigned a value) and false otherwise */
+  public boolean isSetISequence() {
+    return __isset_bit_vector.get(__ISEQUENCE_ISSET_ID);
+  }
+
+  public void setISequenceIsSet(boolean value) {
+    __isset_bit_vector.set(__ISEQUENCE_ISSET_ID, value);
+  }
+
   public long getICreationTimestamp() {
     return this.iCreationTimestamp;
   }
 
-  public MyEduCourse setICreationTimestamp(long iCreationTimestamp) {
+  public MyEduSection setICreationTimestamp(long iCreationTimestamp) {
     this.iCreationTimestamp = iCreationTimestamp;
     setICreationTimestampIsSet(true);
     return this;
@@ -318,7 +355,7 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     return this.iLastUpdateTimestamp;
   }
 
-  public MyEduCourse setILastUpdateTimestamp(long iLastUpdateTimestamp) {
+  public MyEduSection setILastUpdateTimestamp(long iLastUpdateTimestamp) {
     this.iLastUpdateTimestamp = iLastUpdateTimestamp;
     setILastUpdateTimestampIsSet(true);
     return this;
@@ -347,11 +384,11 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
       }
       break;
 
-    case I_CODE:
+    case I_COURSE_ID:
       if (value == null) {
-        unsetICode();
+        unsetICourseId();
       } else {
-        setICode((String)value);
+        setICourseId((Integer)value);
       }
       break;
 
@@ -368,6 +405,14 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
         unsetIDescription();
       } else {
         setIDescription((String)value);
+      }
+      break;
+
+    case I_SEQUENCE:
+      if (value == null) {
+        unsetISequence();
+      } else {
+        setISequence((Integer)value);
       }
       break;
 
@@ -395,14 +440,17 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     case I_ID:
       return Integer.valueOf(getIId());
 
-    case I_CODE:
-      return getICode();
+    case I_COURSE_ID:
+      return Integer.valueOf(getICourseId());
 
     case I_TITLE:
       return getITitle();
 
     case I_DESCRIPTION:
       return getIDescription();
+
+    case I_SEQUENCE:
+      return Integer.valueOf(getISequence());
 
     case I_CREATION_TIMESTAMP:
       return Long.valueOf(getICreationTimestamp());
@@ -423,12 +471,14 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     switch (field) {
     case I_ID:
       return isSetIId();
-    case I_CODE:
-      return isSetICode();
+    case I_COURSE_ID:
+      return isSetICourseId();
     case I_TITLE:
       return isSetITitle();
     case I_DESCRIPTION:
       return isSetIDescription();
+    case I_SEQUENCE:
+      return isSetISequence();
     case I_CREATION_TIMESTAMP:
       return isSetICreationTimestamp();
     case I_LAST_UPDATE_TIMESTAMP:
@@ -441,12 +491,12 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MyEduCourse)
-      return this.equals((MyEduCourse)that);
+    if (that instanceof MyEduSection)
+      return this.equals((MyEduSection)that);
     return false;
   }
 
-  public boolean equals(MyEduCourse that) {
+  public boolean equals(MyEduSection that) {
     if (that == null)
       return false;
 
@@ -459,12 +509,12 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
         return false;
     }
 
-    boolean this_present_iCode = true && this.isSetICode();
-    boolean that_present_iCode = true && that.isSetICode();
-    if (this_present_iCode || that_present_iCode) {
-      if (!(this_present_iCode && that_present_iCode))
+    boolean this_present_iCourseId = true;
+    boolean that_present_iCourseId = true;
+    if (this_present_iCourseId || that_present_iCourseId) {
+      if (!(this_present_iCourseId && that_present_iCourseId))
         return false;
-      if (!this.iCode.equals(that.iCode))
+      if (this.iCourseId != that.iCourseId)
         return false;
     }
 
@@ -483,6 +533,15 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
       if (!(this_present_iDescription && that_present_iDescription))
         return false;
       if (!this.iDescription.equals(that.iDescription))
+        return false;
+    }
+
+    boolean this_present_iSequence = true;
+    boolean that_present_iSequence = true;
+    if (this_present_iSequence || that_present_iSequence) {
+      if (!(this_present_iSequence && that_present_iSequence))
+        return false;
+      if (this.iSequence != that.iSequence)
         return false;
     }
 
@@ -516,10 +575,10 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     if (present_iId)
       builder.append(iId);
 
-    boolean present_iCode = true && (isSetICode());
-    builder.append(present_iCode);
-    if (present_iCode)
-      builder.append(iCode);
+    boolean present_iCourseId = true;
+    builder.append(present_iCourseId);
+    if (present_iCourseId)
+      builder.append(iCourseId);
 
     boolean present_iTitle = true && (isSetITitle());
     builder.append(present_iTitle);
@@ -530,6 +589,11 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     builder.append(present_iDescription);
     if (present_iDescription)
       builder.append(iDescription);
+
+    boolean present_iSequence = true;
+    builder.append(present_iSequence);
+    if (present_iSequence)
+      builder.append(iSequence);
 
     boolean present_iCreationTimestamp = true;
     builder.append(present_iCreationTimestamp);
@@ -544,13 +608,13 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     return builder.toHashCode();
   }
 
-  public int compareTo(MyEduCourse other) {
+  public int compareTo(MyEduSection other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MyEduCourse typedOther = (MyEduCourse)other;
+    MyEduSection typedOther = (MyEduSection)other;
 
     lastComparison = Boolean.valueOf(isSetIId()).compareTo(typedOther.isSetIId());
     if (lastComparison != 0) {
@@ -562,12 +626,12 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetICode()).compareTo(typedOther.isSetICode());
+    lastComparison = Boolean.valueOf(isSetICourseId()).compareTo(typedOther.isSetICourseId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetICode()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCode, typedOther.iCode);
+    if (isSetICourseId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iCourseId, typedOther.iCourseId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -588,6 +652,16 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     }
     if (isSetIDescription()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iDescription, typedOther.iDescription);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetISequence()).compareTo(typedOther.isSetISequence());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetISequence()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iSequence, typedOther.iSequence);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -637,9 +711,10 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_CODE
-          if (field.type == org.apache.thrift.protocol.TType.STRING) {
-            this.iCode = iprot.readString();
+        case 2: // I_COURSE_ID
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.iCourseId = iprot.readI32();
+            setICourseIdIsSet(true);
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
@@ -658,7 +733,15 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // I_CREATION_TIMESTAMP
+        case 5: // I_SEQUENCE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.iSequence = iprot.readI32();
+            setISequenceIsSet(true);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 6: // I_CREATION_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iCreationTimestamp = iprot.readI64();
             setICreationTimestampIsSet(true);
@@ -666,7 +749,7 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // I_LAST_UPDATE_TIMESTAMP
+        case 7: // I_LAST_UPDATE_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iLastUpdateTimestamp = iprot.readI64();
             setILastUpdateTimestampIsSet(true);
@@ -685,6 +768,12 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     if (!isSetIId()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iId' was not found in serialized data! Struct: " + toString());
     }
+    if (!isSetICourseId()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iCourseId' was not found in serialized data! Struct: " + toString());
+    }
+    if (!isSetISequence()) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iSequence' was not found in serialized data! Struct: " + toString());
+    }
     if (!isSetICreationTimestamp()) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iCreationTimestamp' was not found in serialized data! Struct: " + toString());
     }
@@ -701,11 +790,9 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     oprot.writeFieldBegin(I_ID_FIELD_DESC);
     oprot.writeI32(this.iId);
     oprot.writeFieldEnd();
-    if (this.iCode != null) {
-      oprot.writeFieldBegin(I_CODE_FIELD_DESC);
-      oprot.writeString(this.iCode);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(I_COURSE_ID_FIELD_DESC);
+    oprot.writeI32(this.iCourseId);
+    oprot.writeFieldEnd();
     if (this.iTitle != null) {
       oprot.writeFieldBegin(I_TITLE_FIELD_DESC);
       oprot.writeString(this.iTitle);
@@ -716,6 +803,9 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
       oprot.writeString(this.iDescription);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(I_SEQUENCE_FIELD_DESC);
+    oprot.writeI32(this.iSequence);
+    oprot.writeFieldEnd();
     oprot.writeFieldBegin(I_CREATION_TIMESTAMP_FIELD_DESC);
     oprot.writeI64(this.iCreationTimestamp);
     oprot.writeFieldEnd();
@@ -728,19 +818,15 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MyEduCourse(");
+    StringBuilder sb = new StringBuilder("MyEduSection(");
     boolean first = true;
 
     sb.append("iId:");
     sb.append(this.iId);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("iCode:");
-    if (this.iCode == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iCode);
-    }
+    sb.append("iCourseId:");
+    sb.append(this.iCourseId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("iTitle:");
@@ -759,6 +845,10 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
     }
     first = false;
     if (!first) sb.append(", ");
+    sb.append("iSequence:");
+    sb.append(this.iSequence);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("iCreationTimestamp:");
     sb.append(this.iCreationTimestamp);
     first = false;
@@ -773,15 +863,14 @@ public class MyEduCourse implements org.apache.thrift.TBase<MyEduCourse, MyEduCo
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // alas, we cannot check 'iId' because it's a primitive and you chose the non-beans generator.
-    if (iCode == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iCode' was not present! Struct: " + toString());
-    }
+    // alas, we cannot check 'iCourseId' because it's a primitive and you chose the non-beans generator.
     if (iTitle == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
     }
     if (iDescription == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iDescription' was not present! Struct: " + toString());
     }
+    // alas, we cannot check 'iSequence' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iCreationTimestamp' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iLastUpdateTimestamp' because it's a primitive and you chose the non-beans generator.
   }
