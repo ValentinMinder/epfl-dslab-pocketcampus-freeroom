@@ -25,6 +25,12 @@
         <activity android:name="org.pocketcampus.plugin.dashboard.android.AboutView" 
             android:screenOrientation="nosensor">
         </activity>
+        
+        <service xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.dashboard.android.DashboardController" >
+        </service>
+        
+        
     </application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

@@ -209,21 +209,35 @@ public class GlobalContext extends Application {
 	private void initializeConfig() {
 		
 		try {
-			System.out.println("Init Config");
+			
+			/**
+			* First load internal config.
+			*   This should be exhaustive/comprehensive
+			*   meaning all config params should be assigned a value here.
+			*/
+			PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus));
+			
+			/**
+			* Then override with server config.
+			*   The server config file is in the private dir;
+			*   It is downloaded and written by the dashboard plugin.
+			*/
+			try {
+				PC_ANDR_CFG.load(openFileInput("pocketcampus.config"));
+			} catch (FileNotFoundException e) {
+			}
+			
+			/**
+			* Finally override with config file on sdcard.
+			*   This is mainly used for development or
+			*   debugging purposes.
+			*/
 			String configFile = Environment.getExternalStorageDirectory() + "/pocketcampus.config";
 			if(new File(configFile).exists()) {
 				PC_ANDR_CFG.load(new FileInputStream(configFile));
-				return;
 			}
-			System.out.println("No Config File on SD Card");
-			// when we get config update from server we should write it in private dir
-			try {
-				PC_ANDR_CFG.load(openFileInput("pocketcampus.config"));
-				return;
-			} catch (FileNotFoundException e) {
-			}
-			System.out.println("No Config File in private dir");
-			PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus));
+			
+			
 			//PC_ANDR_CFG.putStringIfNull("SERVER_PROTO", "http");
 			//PC_ANDR_CFG.store(new FileOutputStream(""), null);
 		} catch (IOException e) {

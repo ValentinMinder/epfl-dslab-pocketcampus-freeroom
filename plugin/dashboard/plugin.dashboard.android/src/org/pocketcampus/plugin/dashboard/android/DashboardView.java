@@ -26,10 +26,18 @@ import android.widget.RelativeLayout.LayoutParams;
 public class DashboardView extends PluginView {
 
 	private PluginDashboard	mDashboard;
+	private DashboardController	mController;
 	
+	@Override
+	protected Class<? extends PluginController> getMainControllerClass() {
+		return DashboardController.class;
+	}
+
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		Tracker.getInstance().trackPageView("dashboard");
+		
+		mController = (DashboardController) controller;
 		
 		setContentView(R.layout.dashboard_main);
 		
@@ -41,6 +49,8 @@ public class DashboardView extends PluginView {
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.dashboard_main);
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.addView(mDashboard.getView(), layoutParams);
+		
+		mController.fetchDynamicConfig();
 	}
 
 	@Override
