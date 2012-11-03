@@ -27,16 +27,18 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
   private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField I_SECTION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSectionId", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField I_SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("iSequence", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField I_VISIBLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iVisible", org.apache.thrift.protocol.TType.BOOL, (short)4);
-  private static final org.apache.thrift.protocol.TField I_TEXT_CONTENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iTextContent", org.apache.thrift.protocol.TType.STRING, (short)5);
-  private static final org.apache.thrift.protocol.TField I_VIDEO_SOURCE_PROVIDER_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoSourceProvider", org.apache.thrift.protocol.TType.STRING, (short)6);
-  private static final org.apache.thrift.protocol.TField I_VIDEO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoURL", org.apache.thrift.protocol.TType.STRING, (short)7);
-  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)8);
-  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)9);
+  private static final org.apache.thrift.protocol.TField I_TITLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iTitle", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField I_VISIBLE_FIELD_DESC = new org.apache.thrift.protocol.TField("iVisible", org.apache.thrift.protocol.TType.BOOL, (short)5);
+  private static final org.apache.thrift.protocol.TField I_TEXT_CONTENT_FIELD_DESC = new org.apache.thrift.protocol.TField("iTextContent", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField I_VIDEO_SOURCE_PROVIDER_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoSourceProvider", org.apache.thrift.protocol.TType.STRING, (short)7);
+  private static final org.apache.thrift.protocol.TField I_VIDEO_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iVideoURL", org.apache.thrift.protocol.TType.STRING, (short)8);
+  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)9);
+  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)10);
 
   public int iId; // required
   public int iSectionId; // required
   public int iSequence; // required
+  public String iTitle; // required
   public boolean iVisible; // required
   public String iTextContent; // required
   public String iVideoSourceProvider; // required
@@ -49,12 +51,13 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     I_ID((short)1, "iId"),
     I_SECTION_ID((short)2, "iSectionId"),
     I_SEQUENCE((short)3, "iSequence"),
-    I_VISIBLE((short)4, "iVisible"),
-    I_TEXT_CONTENT((short)5, "iTextContent"),
-    I_VIDEO_SOURCE_PROVIDER((short)6, "iVideoSourceProvider"),
-    I_VIDEO_URL((short)7, "iVideoURL"),
-    I_CREATION_TIMESTAMP((short)8, "iCreationTimestamp"),
-    I_LAST_UPDATE_TIMESTAMP((short)9, "iLastUpdateTimestamp");
+    I_TITLE((short)4, "iTitle"),
+    I_VISIBLE((short)5, "iVisible"),
+    I_TEXT_CONTENT((short)6, "iTextContent"),
+    I_VIDEO_SOURCE_PROVIDER((short)7, "iVideoSourceProvider"),
+    I_VIDEO_URL((short)8, "iVideoURL"),
+    I_CREATION_TIMESTAMP((short)9, "iCreationTimestamp"),
+    I_LAST_UPDATE_TIMESTAMP((short)10, "iLastUpdateTimestamp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -75,17 +78,19 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
           return I_SECTION_ID;
         case 3: // I_SEQUENCE
           return I_SEQUENCE;
-        case 4: // I_VISIBLE
+        case 4: // I_TITLE
+          return I_TITLE;
+        case 5: // I_VISIBLE
           return I_VISIBLE;
-        case 5: // I_TEXT_CONTENT
+        case 6: // I_TEXT_CONTENT
           return I_TEXT_CONTENT;
-        case 6: // I_VIDEO_SOURCE_PROVIDER
+        case 7: // I_VIDEO_SOURCE_PROVIDER
           return I_VIDEO_SOURCE_PROVIDER;
-        case 7: // I_VIDEO_URL
+        case 8: // I_VIDEO_URL
           return I_VIDEO_URL;
-        case 8: // I_CREATION_TIMESTAMP
+        case 9: // I_CREATION_TIMESTAMP
           return I_CREATION_TIMESTAMP;
-        case 9: // I_LAST_UPDATE_TIMESTAMP
+        case 10: // I_LAST_UPDATE_TIMESTAMP
           return I_LAST_UPDATE_TIMESTAMP;
         default:
           return null;
@@ -144,6 +149,8 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("iSequence", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.I_TITLE, new org.apache.thrift.meta_data.FieldMetaData("iTitle", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_VISIBLE, new org.apache.thrift.meta_data.FieldMetaData("iVisible", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.I_TEXT_CONTENT, new org.apache.thrift.meta_data.FieldMetaData("iTextContent", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -167,6 +174,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     int iId,
     int iSectionId,
     int iSequence,
+    String iTitle,
     boolean iVisible,
     String iTextContent,
     String iVideoSourceProvider,
@@ -181,6 +189,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     setISectionIdIsSet(true);
     this.iSequence = iSequence;
     setISequenceIsSet(true);
+    this.iTitle = iTitle;
     this.iVisible = iVisible;
     setIVisibleIsSet(true);
     this.iTextContent = iTextContent;
@@ -201,6 +210,9 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     this.iId = other.iId;
     this.iSectionId = other.iSectionId;
     this.iSequence = other.iSequence;
+    if (other.isSetITitle()) {
+      this.iTitle = other.iTitle;
+    }
     this.iVisible = other.iVisible;
     if (other.isSetITextContent()) {
       this.iTextContent = other.iTextContent;
@@ -227,6 +239,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     this.iSectionId = 0;
     setISequenceIsSet(false);
     this.iSequence = 0;
+    this.iTitle = null;
     setIVisibleIsSet(false);
     this.iVisible = false;
     this.iTextContent = null;
@@ -305,6 +318,30 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
 
   public void setISequenceIsSet(boolean value) {
     __isset_bit_vector.set(__ISEQUENCE_ISSET_ID, value);
+  }
+
+  public String getITitle() {
+    return this.iTitle;
+  }
+
+  public MyEduModule setITitle(String iTitle) {
+    this.iTitle = iTitle;
+    return this;
+  }
+
+  public void unsetITitle() {
+    this.iTitle = null;
+  }
+
+  /** Returns true if field iTitle is set (has been assigned a value) and false otherwise */
+  public boolean isSetITitle() {
+    return this.iTitle != null;
+  }
+
+  public void setITitleIsSet(boolean value) {
+    if (!value) {
+      this.iTitle = null;
+    }
   }
 
   public boolean isIVisible() {
@@ -474,6 +511,14 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       }
       break;
 
+    case I_TITLE:
+      if (value == null) {
+        unsetITitle();
+      } else {
+        setITitle((String)value);
+      }
+      break;
+
     case I_VISIBLE:
       if (value == null) {
         unsetIVisible();
@@ -536,6 +581,9 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     case I_SEQUENCE:
       return Integer.valueOf(getISequence());
 
+    case I_TITLE:
+      return getITitle();
+
     case I_VISIBLE:
       return Boolean.valueOf(isIVisible());
 
@@ -571,6 +619,8 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       return isSetISectionId();
     case I_SEQUENCE:
       return isSetISequence();
+    case I_TITLE:
+      return isSetITitle();
     case I_VISIBLE:
       return isSetIVisible();
     case I_TEXT_CONTENT:
@@ -624,6 +674,15 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
       if (!(this_present_iSequence && that_present_iSequence))
         return false;
       if (this.iSequence != that.iSequence)
+        return false;
+    }
+
+    boolean this_present_iTitle = true && this.isSetITitle();
+    boolean that_present_iTitle = true && that.isSetITitle();
+    if (this_present_iTitle || that_present_iTitle) {
+      if (!(this_present_iTitle && that_present_iTitle))
+        return false;
+      if (!this.iTitle.equals(that.iTitle))
         return false;
     }
 
@@ -703,6 +762,11 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     if (present_iSequence)
       builder.append(iSequence);
 
+    boolean present_iTitle = true && (isSetITitle());
+    builder.append(present_iTitle);
+    if (present_iTitle)
+      builder.append(iTitle);
+
     boolean present_iVisible = true;
     builder.append(present_iVisible);
     if (present_iVisible)
@@ -770,6 +834,16 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     }
     if (isSetISequence()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iSequence, typedOther.iSequence);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetITitle()).compareTo(typedOther.isSetITitle());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetITitle()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iTitle, typedOther.iTitle);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -875,7 +949,14 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // I_VISIBLE
+        case 4: // I_TITLE
+          if (field.type == org.apache.thrift.protocol.TType.STRING) {
+            this.iTitle = iprot.readString();
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 5: // I_VISIBLE
           if (field.type == org.apache.thrift.protocol.TType.BOOL) {
             this.iVisible = iprot.readBool();
             setIVisibleIsSet(true);
@@ -883,28 +964,28 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // I_TEXT_CONTENT
+        case 6: // I_TEXT_CONTENT
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iTextContent = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // I_VIDEO_SOURCE_PROVIDER
+        case 7: // I_VIDEO_SOURCE_PROVIDER
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iVideoSourceProvider = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 7: // I_VIDEO_URL
+        case 8: // I_VIDEO_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iVideoURL = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 8: // I_CREATION_TIMESTAMP
+        case 9: // I_CREATION_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iCreationTimestamp = iprot.readI64();
             setICreationTimestampIsSet(true);
@@ -912,7 +993,7 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 9: // I_LAST_UPDATE_TIMESTAMP
+        case 10: // I_LAST_UPDATE_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iLastUpdateTimestamp = iprot.readI64();
             setILastUpdateTimestampIsSet(true);
@@ -962,6 +1043,11 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     oprot.writeFieldBegin(I_SEQUENCE_FIELD_DESC);
     oprot.writeI32(this.iSequence);
     oprot.writeFieldEnd();
+    if (this.iTitle != null) {
+      oprot.writeFieldBegin(I_TITLE_FIELD_DESC);
+      oprot.writeString(this.iTitle);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldBegin(I_VISIBLE_FIELD_DESC);
     oprot.writeBool(this.iVisible);
     oprot.writeFieldEnd();
@@ -1005,6 +1091,14 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     if (!first) sb.append(", ");
     sb.append("iSequence:");
     sb.append(this.iSequence);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("iTitle:");
+    if (this.iTitle == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iTitle);
+    }
     first = false;
     if (!first) sb.append(", ");
     sb.append("iVisible:");
@@ -1051,6 +1145,9 @@ public class MyEduModule implements org.apache.thrift.TBase<MyEduModule, MyEduMo
     // alas, we cannot check 'iId' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iSectionId' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iSequence' because it's a primitive and you chose the non-beans generator.
+    if (iTitle == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTitle' was not present! Struct: " + toString());
+    }
     // alas, we cannot check 'iVisible' because it's a primitive and you chose the non-beans generator.
     if (iTextContent == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iTextContent' was not present! Struct: " + toString());

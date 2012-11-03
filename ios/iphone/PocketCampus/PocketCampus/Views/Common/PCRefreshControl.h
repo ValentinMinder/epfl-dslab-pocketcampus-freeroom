@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MSPullToRefreshController.h"
+
 typedef enum {
-    RefreshControlTypeNone = 0,
+    RefreshControlTypeDefault = 0,
     RefreshControlTypeRefreshing,
     RefreshControlTypeProblem
 } RefreshControlType;
 
-@interface PCRefreshControl : UIView
+@interface PCRefreshControl : NSObject<MSPullToRefreshDelegate>
 
 @property (nonatomic, weak, readonly) UITableViewController* tableViewController;
 @property (nonatomic) RefreshControlType type;
@@ -22,7 +24,7 @@ typedef enum {
 @property (nonatomic, readonly) BOOL isVisible;
 
 
-- (id)initWithTableViewController:(UITableViewController*)tableViewController compatibilityRefreshBarButtonItem:(UIBarButtonItem*)barButtonItem;
+- (id)initWithTableViewController:(UITableViewController*)tableViewController;
 - (void)setTarget:(id)target selector:(SEL)selector;
 
 - (void)startRefreshingWithMessage:(NSString*)message;
@@ -31,5 +33,9 @@ typedef enum {
 - (void)showForTimeInterval:(NSTimeInterval)timeInterval;
 - (void)hide;
 - (void)hideInTimeInterval:(NSTimeInterval)timeInterval;
+
+@end
+
+@interface CustomMSPullToRefresh : NSObject
 
 @end

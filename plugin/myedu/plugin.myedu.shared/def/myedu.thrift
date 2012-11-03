@@ -42,12 +42,13 @@ struct MyEduModule {
 	1: required i32 iId;
 	2: required i32 iSectionId;
 	3: required i32 iSequence;
-	4: required bool iVisible;
-	5: required string iTextContent;
-	6: required string iVideoSourceProvider;
-	7: required string iVideoURL;
-	8: required timestamp iCreationTimestamp;
-	9: required timestamp iLastUpdateTimestamp;
+	4: required string iTitle;
+	5: required bool iVisible;
+	6: required string iTextContent;
+	7: required string iVideoSourceProvider;
+	8: required string iVideoURL;
+	9: required timestamp iCreationTimestamp;
+	10: required timestamp iLastUpdateTimestamp;
 }
 
 struct MyEduMaterial {

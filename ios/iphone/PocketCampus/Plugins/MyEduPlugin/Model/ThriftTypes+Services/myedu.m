@@ -1173,7 +1173,7 @@
 
 @implementation MyEduModule
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
 {
   self = [super init];
   __iId = iId;
@@ -1182,6 +1182,8 @@
   __iSectionId_isset = YES;
   __iSequence = iSequence;
   __iSequence_isset = YES;
+  __iTitle = [iTitle retain];
+  __iTitle_isset = YES;
   __iVisible = iVisible;
   __iVisible_isset = YES;
   __iTextContent = [iTextContent retain];
@@ -1214,6 +1216,11 @@
   {
     __iSequence = [decoder decodeInt32ForKey: @"iSequence"];
     __iSequence_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iTitle"])
+  {
+    __iTitle = [[decoder decodeObjectForKey: @"iTitle"] retain];
+    __iTitle_isset = YES;
   }
   if ([decoder containsValueForKey: @"iVisible"])
   {
@@ -1262,6 +1269,10 @@
   {
     [encoder encodeInt32: __iSequence forKey: @"iSequence"];
   }
+  if (__iTitle_isset)
+  {
+    [encoder encodeObject: __iTitle forKey: @"iTitle"];
+  }
   if (__iVisible_isset)
   {
     [encoder encodeBool: __iVisible forKey: @"iVisible"];
@@ -1290,6 +1301,7 @@
 
 - (void) dealloc
 {
+  [__iTitle release];
   [__iTextContent release];
   [__iVideoSourceProvider release];
   [__iVideoURL release];
@@ -1345,6 +1357,27 @@
 
 - (void) unsetISequence {
   __iSequence_isset = NO;
+}
+
+- (NSString *) iTitle {
+  return [[__iTitle retain] autorelease];
+}
+
+- (void) setITitle: (NSString *) iTitle {
+  [iTitle retain];
+  [__iTitle release];
+  __iTitle = iTitle;
+  __iTitle_isset = YES;
+}
+
+- (BOOL) iTitleIsSet {
+  return __iTitle_isset;
+}
+
+- (void) unsetITitle {
+  [__iTitle release];
+  __iTitle = nil;
+  __iTitle_isset = NO;
 }
 
 - (BOOL) iVisible {
@@ -1501,6 +1534,14 @@
         }
         break;
       case 4:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setITitle: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
         if (fieldType == TType_BOOL) {
           BOOL fieldValue = [inProtocol readBool];
           [self setIVisible: fieldValue];
@@ -1508,7 +1549,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 5:
+      case 6:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setITextContent: fieldValue];
@@ -1516,7 +1557,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 6:
+      case 7:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setIVideoSourceProvider: fieldValue];
@@ -1524,7 +1565,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 7:
+      case 8:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setIVideoURL: fieldValue];
@@ -1532,7 +1573,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 8:
+      case 9:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setICreationTimestamp: fieldValue];
@@ -1540,7 +1581,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 9:
+      case 10:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setILastUpdateTimestamp: fieldValue];
@@ -1574,39 +1615,46 @@
     [outProtocol writeI32: __iSequence];
     [outProtocol writeFieldEnd];
   }
+  if (__iTitle_isset) {
+    if (__iTitle != nil) {
+      [outProtocol writeFieldBeginWithName: @"iTitle" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __iTitle];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__iVisible_isset) {
-    [outProtocol writeFieldBeginWithName: @"iVisible" type: TType_BOOL fieldID: 4];
+    [outProtocol writeFieldBeginWithName: @"iVisible" type: TType_BOOL fieldID: 5];
     [outProtocol writeBool: __iVisible];
     [outProtocol writeFieldEnd];
   }
   if (__iTextContent_isset) {
     if (__iTextContent != nil) {
-      [outProtocol writeFieldBeginWithName: @"iTextContent" type: TType_STRING fieldID: 5];
+      [outProtocol writeFieldBeginWithName: @"iTextContent" type: TType_STRING fieldID: 6];
       [outProtocol writeString: __iTextContent];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iVideoSourceProvider_isset) {
     if (__iVideoSourceProvider != nil) {
-      [outProtocol writeFieldBeginWithName: @"iVideoSourceProvider" type: TType_STRING fieldID: 6];
+      [outProtocol writeFieldBeginWithName: @"iVideoSourceProvider" type: TType_STRING fieldID: 7];
       [outProtocol writeString: __iVideoSourceProvider];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iVideoURL_isset) {
     if (__iVideoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"iVideoURL" type: TType_STRING fieldID: 7];
+      [outProtocol writeFieldBeginWithName: @"iVideoURL" type: TType_STRING fieldID: 8];
       [outProtocol writeString: __iVideoURL];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iCreationTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 8];
+    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 9];
     [outProtocol writeI64: __iCreationTimestamp];
     [outProtocol writeFieldEnd];
   }
   if (__iLastUpdateTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 9];
+    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 10];
     [outProtocol writeI64: __iLastUpdateTimestamp];
     [outProtocol writeFieldEnd];
   }
@@ -1622,6 +1670,8 @@
   [ms appendFormat: @"%i", __iSectionId];
   [ms appendString: @",iSequence:"];
   [ms appendFormat: @"%i", __iSequence];
+  [ms appendString: @",iTitle:"];
+  [ms appendFormat: @"\"%@\"", __iTitle];
   [ms appendString: @",iVisible:"];
   [ms appendFormat: @"%i", __iVisible];
   [ms appendString: @",iTextContent:"];

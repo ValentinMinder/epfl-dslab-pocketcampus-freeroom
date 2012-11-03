@@ -33,8 +33,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         grayView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
         rightViewController.view = grayView;
         
-        splitViewController.delegate = self;
         splitViewController.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:courseListViewController], [[UINavigationController alloc] initWithRootViewController:rightViewController]];
+        splitViewController.delegate = self;
         mainSplitViewController = splitViewController;
         mainSplitViewController.pluginIdentifier = [[self class] identifierName];
     }
@@ -80,7 +80,9 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     //TODO
 }
 - (void)pluginDidRegainActive {
-    //TODO
+    if ([self.mainSplitViewController.viewControllers[0] respondsToSelector:@selector(refresh)]) {
+        [self.mainSplitViewController.viewControllers[0] refresh];
+    }
 }
 
 #pragma mark UISplitViewControllerDelegate

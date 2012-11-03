@@ -214,6 +214,7 @@ typedef int64_t timestamp;
   int32_t __iId;
   int32_t __iSectionId;
   int32_t __iSequence;
+  NSString * __iTitle;
   BOOL __iVisible;
   NSString * __iTextContent;
   NSString * __iVideoSourceProvider;
@@ -224,6 +225,7 @@ typedef int64_t timestamp;
   BOOL __iId_isset;
   BOOL __iSectionId_isset;
   BOOL __iSequence_isset;
+  BOOL __iTitle_isset;
   BOOL __iVisible_isset;
   BOOL __iTextContent_isset;
   BOOL __iVideoSourceProvider_isset;
@@ -236,6 +238,7 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 @property (nonatomic, getter=iSequence, setter=setISequence:) int32_t iSequence;
+@property (nonatomic, retain, getter=iTitle, setter=setITitle:) NSString * iTitle;
 @property (nonatomic, getter=iVisible, setter=setIVisible:) BOOL iVisible;
 @property (nonatomic, retain, getter=iTextContent, setter=setITextContent:) NSString * iTextContent;
 @property (nonatomic, retain, getter=iVideoSourceProvider, setter=setIVideoSourceProvider:) NSString * iVideoSourceProvider;
@@ -244,7 +247,7 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iLastUpdateTimestamp, setter=setILastUpdateTimestamp:) timestamp iLastUpdateTimestamp;
 #endif
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -260,6 +263,10 @@ typedef int64_t timestamp;
 - (int32_t) iSequence;
 - (void) setISequence: (int32_t) iSequence;
 - (BOOL) iSequenceIsSet;
+
+- (NSString *) iTitle;
+- (void) setITitle: (NSString *) iTitle;
+- (BOOL) iTitleIsSet;
 
 - (BOOL) iVisible;
 - (void) setIVisible: (BOOL) iVisible;

@@ -77,6 +77,23 @@ public class MyEduServiceConfig {
 		public String updated_at;
 	}
 	
+	public class SectionDetailsJson {
+		public SectionJson section;
+		public List<ModuleJson> modules;
+	}
+	
+	public class ModuleJson {
+		public String created_at;
+		public int id;
+		public String title;
+		public Boolean is_visible;
+		public int section_id;
+		public int sequence;
+		public String text_content;
+		public String updated_at;
+		public String video_source;
+		public String video_url;
+	}
 	
 	
 	/* Help methods */

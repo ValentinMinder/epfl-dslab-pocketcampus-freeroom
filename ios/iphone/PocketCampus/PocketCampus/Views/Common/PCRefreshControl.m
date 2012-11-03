@@ -12,18 +12,18 @@
 
 #import "PCUtils.h"
 
-static CGFloat kHeight = 50.0;
-static CGFloat kShowHideAnimationDuration = 0.3;
-
 
 @interface PCRefreshControl ()
 
 @property (nonatomic, weak, readwrite) UITableViewController* tableViewController;
+@property (nonatomic, weak) UITableView* tableView;
+@property (nonatomic, strong) UIRefreshControl* refreshControl;
 @property (nonatomic) BOOL usesUIRefreshControl;
-@property (nonatomic, weak) UIBarButtonItem* compatibilityBarButtonItem;
+@property (nonatomic, strong) MSPullToRefreshController* msPtRController;
 @property (nonatomic, weak) id target;
 @property (nonatomic) SEL selector;
 @property (nonatomic, strong) NSTimer* showHideTimer;
+@property (nonatomic, strong) UIView* containerView;
 @property (nonatomic, strong) UILabel* messageLabel;
 @property (nonatomic, strong) UIView* signView;
 @property (nonatomic, readwrite) BOOL isVisible;
@@ -33,52 +33,60 @@ static CGFloat kShowHideAnimationDuration = 0.3;
 
 @implementation PCRefreshControl
 
-- (id)initWithTableViewController:(UITableViewController*)tableViewController compatibilityRefreshBarButtonItem:(UIBarButtonItem*)barButtonItem {
+- (id)initWithTableViewController:(UITableViewController*)tableViewController {
     self = [super init];
     if (self) {
         self.tableViewController = tableViewController;
-        self.compatibilityBarButtonItem = barButtonItem;
-        _type = 0;
+        self.tableView = self.tableViewController.tableView;
+        _type = -1;
         self.problemColor = [UIColor colorWithRed:0.827451 green:0.000000 blue:0.000000 alpha:1.0];
         if ([self.tableViewController respondsToSelector:@selector(refreshControl)]) { //>= iOS 6
             self.usesUIRefreshControl = YES;
-            self.compatibilityBarButtonItem.customView = [[UIView alloc] initWithFrame:CGRectNull];
-            self.compatibilityBarButtonItem.enabled = NO;
             self.tableViewController.refreshControl = [[UIRefreshControl alloc] init];
-        } else { //<= iOS 6
+            self.refreshControl = self.tableViewController.refreshControl;
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@""];
+        } else { //< iOS 6
             self.usesUIRefreshControl = NO;
-            self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            self.backgroundColor = [PCValues backgroundColor1];
-            self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(48.0, 9.0, self.tableViewController.tableView.frame.size.width-55, kHeight-20.0)];
+            self.msPtRController = [[MSPullToRefreshController alloc] initWithScrollView:self.tableView delegate:self];
+            self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.tableView.frame.size.height-25.0, self.tableView.frame.size.width-20.0, 20.0)];
             self.messageLabel.numberOfLines = 0;
             self.messageLabel.font = [UIFont boldSystemFontOfSize:14.0];
             self.messageLabel.shadowOffset = [PCValues shadowOffset1];
             self.messageLabel.shadowColor = [PCValues shadowColor1];
-            self.messageLabel.textAlignment = UITextAlignmentLeft;
+            self.messageLabel.textAlignment = UITextAlignmentCenter;
             self.messageLabel.backgroundColor = [UIColor clearColor];
             self.messageLabel.adjustsFontSizeToFitWidth = YES;
+            
+            self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, -self.tableView.frame.size.height, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+            [self.containerView addSubview:self.messageLabel];
+            
+            //self.containerView.backgroundColor = [UIColor yellowColor];
+            
+            self.type = RefreshControlTypeDefault;
+            self.message = @"Test message";
+            [self.tableView addSubview:self.containerView];
         }
     }
     return self;
 }
 
-- (void)drawRect:(CGRect)rect {
+/*- (void)drawRect:(CGRect)rect {
     if (self.usesUIRefreshControl) {
         //nothing
     } else {
         [self addSubview:self.messageLabel];
         UIImage* shadowImage = [[UIImage imageNamed:@"TopDown1pxShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         UIImageView* shadowImageView = [[UIImageView alloc] initWithImage:shadowImage];
-        shadowImageView.frame = CGRectMake(0, kHeight, self.tableViewController.tableView.frame.size.width, 10.0);
+        shadowImageView.frame = CGRectMake(0, kHeight, self.tableView.frame.size.width, 10.0);
         shadowImageView.alpha = 0.3;
         //[self addSubview:shadowImageView];
-        UIView* darkLine = [[UIView alloc] initWithFrame:CGRectMake(0.0, kHeight-1, self.tableViewController.tableView.frame.size.width, 2.0)];
+        UIView* darkLine = [[UIView alloc] initWithFrame:CGRectMake(0.0, kHeight-1, self.tableView.frame.size.width, 2.0)];
         darkLine.backgroundColor = [UIColor blackColor];
         darkLine.alpha = 0.2;
         [self addSubview:darkLine];
         [self setType:RefreshControlTypeRefreshing];
     }
-}
+}*/
 
 - (void)uiRefreshControlValueChanged {
     [self.target performSelectorOnMainThread:self.selector withObject:nil waitUntilDone:YES];
@@ -86,30 +94,23 @@ static CGFloat kShowHideAnimationDuration = 0.3;
 
 - (void)setTarget:(id)target selector:(SEL)selector {
     if (self.usesUIRefreshControl) {
-        [self.tableViewController.refreshControl removeTarget:self.target action:self.selector forControlEvents:UIControlEventValueChanged];
-        [self.tableViewController.refreshControl addTarget:self action:@selector(uiRefreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
+        [self.refreshControl removeTarget:self.target action:self.selector forControlEvents:UIControlEventValueChanged];
+        [self.refreshControl addTarget:self action:@selector(uiRefreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
     }
     self.target = target;
     self.selector = selector;
-    self.compatibilityBarButtonItem.target = target;
-    self.compatibilityBarButtonItem.action = selector;
 }
 
 - (void)startRefreshingWithMessage:(NSString*)message {
     [self setMessage:message];
     [self setType:RefreshControlTypeRefreshing];
-    if (self.usesUIRefreshControl) {
-        [self.tableViewController.refreshControl beginRefreshing];
-        [self.tableViewController.tableView scrollRectToVisible:CGRectMake(0, -1, 1, 1) animated:YES];
-    } else {
-        [self show];
-    }
+    [self show];
 }
 
 - (void)endRefreshing {
     if (self.usesUIRefreshControl) {
         self.message = nil;
-        [self.tableViewController.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
     } else {
         [self hide];
     }
@@ -122,9 +123,9 @@ static CGFloat kShowHideAnimationDuration = 0.3;
     _message = [message copy];
     if (self.usesUIRefreshControl) {
         if (self.type == RefreshControlTypeProblem) {
-            self.tableViewController.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:message attributes:[NSDictionary dictionaryWithObject:self.problemColor forKey:NSForegroundColorAttributeName]];
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:message attributes:[NSDictionary dictionaryWithObject:self.problemColor forKey:NSForegroundColorAttributeName]];
         } else {
-            self.tableViewController.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:message];
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:message];
         }
     } else {
         self.messageLabel.text = message;
@@ -136,34 +137,41 @@ static CGFloat kShowHideAnimationDuration = 0.3;
         return;
     }
     _type = type;
-    if (type == RefreshControlTypeNone) {
+    if (type == RefreshControlTypeDefault) {
         if (self.usesUIRefreshControl) {
-            self.message = @"";
-        } else {
-            self.messageLabel.textColor = [UIColor colorWithRed:0.419608 green:0.419608 blue:0.419608 alpha:1.0];
+            //nothing special
+        } else {            
             [self.signView removeFromSuperview];
-            self.signView = nil;
+            self.signView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowDownCircle"]];
+            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-35.0);
+            //self.signView.transform  = CGAffineTransformMakeRotation(M_PI);
+            [self.containerView addSubview:self.signView];
+            self.messageLabel.hidden = YES;
         }
+        self.message = @"";
     } else if (type == RefreshControlTypeRefreshing) {
         if (self.usesUIRefreshControl) {
-            self.tableViewController.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:self.message];
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:self.message];
         } else {
-            self.messageLabel.textColor = [UIColor colorWithRed:0.419608 green:0.419608 blue:0.419608 alpha:1.0];
+            self.messageLabel.textColor = [UIColor colorWithRed:0.521569 green:0.521569 blue:0.521569 alpha:1.0];
             [self.signView removeFromSuperview];
             UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             self.signView = activityIndicator;
-            self.signView.center = CGPointMake(25.0, kHeight/2.0);
-            [self addSubview: self.signView];
+            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-40.0);
+            [self.containerView addSubview:self.signView];
             [activityIndicator startAnimating];
+            self.messageLabel.hidden = NO;
         }
     } else if (type == RefreshControlTypeProblem) {
         if (self.usesUIRefreshControl) {
-            self.tableViewController.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:self.message attributes:[NSDictionary dictionaryWithObject:self.problemColor forKey:NSForegroundColorAttributeName]];
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:self.message attributes:[NSDictionary dictionaryWithObject:self.problemColor forKey:NSForegroundColorAttributeName]];
         } else {
             self.messageLabel.textColor = self.problemColor;
             [self.signView removeFromSuperview];
-            self.signView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WarningSignGray"]];
-            [self addSubview:self.signView];
+            self.signView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WarningSignRed"]];
+            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-40.0);
+            [self.containerView addSubview:self.signView];
+            self.messageLabel.hidden = NO;
         }
     } else {
         @throw [NSException exceptionWithName:@"bad argument" reason:@"imageType must be of enum type RefreshControlImageType" userInfo:nil];
@@ -183,7 +191,7 @@ static CGFloat kShowHideAnimationDuration = 0.3;
 
 - (BOOL)isVisible {
     if (self.usesUIRefreshControl) {
-        return self.tableViewController.refreshControl.refreshing;
+        return self.refreshControl.refreshing;
     } else {
         return _isVisible;
     }
@@ -203,17 +211,10 @@ static CGFloat kShowHideAnimationDuration = 0.3;
     }
     self.isVisible = YES;
     if (self.usesUIRefreshControl) {
-        [self.tableViewController.refreshControl beginRefreshing];
+        [self.refreshControl beginRefreshing];
+        [self.tableView scrollRectToVisible:CGRectMake(0.0, -1.0, 1.0, 1.0) animated:YES];
     } else {
-        CGRect prevFrame = self.tableViewController.tableView.frame;
-        [[self.tableViewController.tableView superview] addSubview:self];
-        self.frame = CGRectMake(0, -kHeight, prevFrame.size.width, kHeight);
-        [UIView animateWithDuration:kShowHideAnimationDuration delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.frame = CGRectMake(0, 0, prevFrame.size.width, kHeight);
-            self.tableViewController.tableView.frame = CGRectMake(0, kHeight, prevFrame.size.width, prevFrame.size.height-kHeight);
-        } completion:^(BOOL finished) {
-            //nothing
-        }];
+        [self.msPtRController startRefreshingDirection:MSRefreshDirectionTop animated:YES];
     }
 }
 
@@ -240,17 +241,19 @@ static CGFloat kShowHideAnimationDuration = 0.3;
     }
     self.isVisible = NO;
     if (self.usesUIRefreshControl) {
-        [self.tableViewController.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
         self.message = nil;
+        self.type = RefreshControlTypeDefault;
     } else {
-        CGRect prevFrame = self.tableViewController.tableView.frame;
-        [[self.tableViewController.tableView superview] addSubview:self];
-        [UIView animateWithDuration:kShowHideAnimationDuration delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.frame = CGRectMake(0, -kHeight, prevFrame.size.width, kHeight);
-            self.tableViewController.tableView.frame = CGRectMake(0, 0, prevFrame.size.width, prevFrame.size.height+kHeight);
+        [self.msPtRController finishRefreshingDirection:MSRefreshDirectionTop animated:YES];
+        [UIView animateWithDuration:0.2 animations:^{
+            self.messageLabel.transform = CGAffineTransformMakeScale(0.1, 0.1);
+            self.signView.transform = CGAffineTransformMakeScale(0.1, 0.1);
         } completion:^(BOOL finished) {
-            [self setType:RefreshControlTypeNone];
-            [self removeFromSuperview];
+            self.message = nil;
+            self.type = RefreshControlTypeDefault;
+            self.messageLabel.transform = CGAffineTransformIdentity;
+            self.signView.transform = CGAffineTransformIdentity;
         }];
     }
 }
@@ -261,6 +264,41 @@ static CGFloat kShowHideAnimationDuration = 0.3;
     }
     [self.showHideTimer invalidate];
     self.showHideTimer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(_hide) userInfo:nil repeats:NO];
+}
+
+#pragma mark - MSPullToRefreshDelegate
+
+- (BOOL) pullToRefreshController:(MSPullToRefreshController *) controller canRefreshInDirection:(MSRefreshDirection)direction {
+    return direction == MSRefreshDirectionTop;
+}
+
+- (CGFloat) pullToRefreshController:(MSPullToRefreshController *) controller refreshableInsetForDirection:(MSRefreshDirection) direction {
+    return 70.0;
+}
+
+- (CGFloat) pullToRefreshController:(MSPullToRefreshController *)controller refreshingInsetForDirection:(MSRefreshDirection)direction {
+    return 60.0;
+}
+
+- (void) pullToRefreshController:(MSPullToRefreshController *)controller canEngageRefreshDirection:(MSRefreshDirection)direction {
+    if (self.type == RefreshControlTypeDefault) {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.signView.transform = CGAffineTransformMakeRotation(M_PI);
+        }];
+    }
+}
+
+- (void) pullToRefreshController:(MSPullToRefreshController *) controller didDisengageRefreshDirection:(MSRefreshDirection) direction {
+    if (self.type == RefreshControlTypeDefault) {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.signView.transform = CGAffineTransformIdentity;
+        }];
+    }
+}
+
+- (void) pullToRefreshController:(MSPullToRefreshController *) controller didEngageRefreshDirection:(MSRefreshDirection) direction {
+    self.type = RefreshControlTypeRefreshing;
+    [self.target performSelectorOnMainThread:self.selector withObject:nil waitUntilDone:YES];
 }
 
 @end

@@ -14,6 +14,8 @@
 
 #import "PCRefreshControl.h"
 
+#import "MyEduModuleListViewController.h"
+
 @interface MyEduSectionListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -38,7 +40,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         self.title = course.iTitle;
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.authController = [[AuthenticationController alloc] init];
-        self.sections = [self.myEduService getFromCacheCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithICourseCode:self.course.iCode] myeduRequest:[self.myEduService createMyEduRequest]].iMyEduSections;
+        //self.sections = [self.myEduService getFromCacheCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithICourseCode:self.course.iCode] myeduRequest:[self.myEduService createMyEduRequest]].iMyEduSections;
     }
     return self;
 }
@@ -50,12 +52,10 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
      backgroundView.backgroundColor = [UIColor whiteColor];
      self.tableView.backgroundView = backgroundView;
      self.tableView.backgroundColor = [UIColor clearColor];*/
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
-    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self compatibilityRefreshBarButtonItem:self.navigationItem.rightBarButtonItem];
+    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
     [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
-    [self.tableView reloadData];
     if (!self.sections) {
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
+        [self refresh];
     }
 }
 
@@ -126,7 +126,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
     [self.myEduService saveSession:myEduSession];
-    [self.myEduService getCourseDetailsForRequest:[[MyEduCourseDetailsRequest alloc] initWithICourseCode:self.course.iCode] myeduRequest:[self.myEduService createMyEduRequest] delegate:self];
+    [self startGetCourseDetailsRequest];
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
@@ -163,7 +163,8 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //TODO
+    MyEduSection* section = self.sections[indexPath.row];
+    [self.navigationController pushViewController:[[MyEduModuleListViewController alloc] initWithMyEduCourse:self.course andSection:section] animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -175,6 +176,8 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMyEduSectionListCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     cell.textLabel.text = section.iTitle;

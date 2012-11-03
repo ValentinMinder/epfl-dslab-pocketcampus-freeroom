@@ -17,12 +17,15 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionCreateEPFL;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionEPFLLogin;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourse;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduModule;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsRequest;
 import org.pocketcampus.plugin.myedu.shared.MyEduRequest;
@@ -258,6 +261,82 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	}
 	
 	
+	@Override
+	public MyEduSectionDetailsReply getSectionDetails(
+			MyEduRequest iMyEduRequest,
+			MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
+			throws TException {
+		System.out.println("getSectionDetails");
+		
+		String json = null;
+		
+		try {
+			String path = String.format(MyEduServiceConfig.SECTION_DETAILS_PATH_WITH_FORMAT, iMyEduSectionDetailsRequest.iCourseCode, iMyEduSectionDetailsRequest.iSectionId);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			if (reply.getStatusCode() != 200) {
+				return new MyEduSectionDetailsReply(reply.getStatusCode()); 
+			}
+			json = reply.getReplyString();
+		} catch (IOException connExc) {
+			throw new TException("Failed to connect to MyEdu server");
+		} 
+		
+		Gson gson = new Gson();
+		ArrayList<MyEduModule> modulesList = new ArrayList<MyEduModule>();
+		
+		try {
+			TypeToken<SectionDetailsJson> type = new TypeToken<SectionDetailsJson>() {};
+			SectionDetailsJson sectionDetails = gson.fromJson(json, type.getType());
+			
+			for (ModuleJson module : sectionDetails.modules) {
+
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /*2012-10-22T10:30:28Z*/
+				
+				Date creationDate;
+				Date updateDate;
+				try {
+					creationDate =  dateFormat.parse(module.created_at); 
+				} catch (ParseException parseException1) {
+					throw new TException("Error while reading JSON of creation date"); 
+				}
+
+				try {
+					updateDate =  dateFormat.parse(module.updated_at);
+				} catch (ParseException parseException1) {
+					throw new TException("Error while reading JSON of update date"); 
+				}
+				
+				MyEduModule myEduModule = new MyEduModule();
+				myEduModule.setIId(module.id);
+				myEduModule.setISectionId(module.section_id);
+				myEduModule.setITitle(module.title);
+				myEduModule.setISequence(module.sequence);
+				myEduModule.setICreationTimestamp(creationDate.getTime());
+				myEduModule.setILastUpdateTimestamp(updateDate.getTime());
+				myEduModule.setIVisible(module.is_visible);
+				myEduModule.setITextContent(module.text_content);
+				myEduModule.setIVideoSourceProvider(module.video_source);
+				myEduModule.setIVideoURL(module.video_url);
+				modulesList.add(myEduModule);
+			}
+			
+		} catch (JsonSyntaxException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		} catch (JsonParseException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		}
+		
+		Collections.sort(modulesList, new Comparator<MyEduModule>() {
+			@Override
+			public int compare(MyEduModule o1, MyEduModule o2) {
+				return o1.getISequence()-o2.getISequence();
+			}
+		});
+		
+		return new MyEduSectionDetailsReply(200).setIMyEduModules(modulesList);
+	}
+	
+	
 	/**
 	 * HELPER METHODS
 	 */
@@ -321,15 +400,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 	}
 
-
-	@Override
-	public MyEduSectionDetailsReply getSectionDetails(
-			MyEduRequest iMyEduRequest,
-			MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
-			throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest,

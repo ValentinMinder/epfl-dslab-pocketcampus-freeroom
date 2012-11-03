@@ -51,6 +51,7 @@ static MyEduService* instance = nil;
 }
 
 - (BOOL)saveSession:(MyEduSession*)session {
+    self.session = session;
     return [ObjectArchiver saveObject:session forKey:kMyEduSessionIdentifier andPluginName:@"myedu"];
 }
 
@@ -128,10 +129,23 @@ static MyEduService* instance = nil;
     operation.serviceClientSelector = @selector(getSectionDetails::);
     operation.delegateDidReturnSelector = @selector(getSectionDetailsForRequest:myeduRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getSectionDetailsFailedForRequest:myeduRequest:);
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
     [operation addObjectArgument:myeduRequest];
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
+}
+
+- (MyEduCourseDetailsReply*)getFromCacheSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getSectionDetails::);
+    operation.delegateDidReturnSelector = @selector(getSectionDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getSectionDetailsFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 - (void)getModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {

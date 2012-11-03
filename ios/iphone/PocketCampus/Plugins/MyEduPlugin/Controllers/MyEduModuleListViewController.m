@@ -1,12 +1,12 @@
 //
-//  MyEduCourseListViewController.m
+//  MyEduModuleListViewController.m
 //  PocketCampus
 //
-//  Created by Loïc Gardiol on 24.10.12.
+//  Created by Loïc Gardiol on 02.11.12.
 //  Copyright (c) 2012 EPFL. All rights reserved.
 //
 
-#import "MyEduCourseListViewController.h"
+#import "MyEduModuleListViewController.h"
 
 #import "ObjectArchiver.h"
 
@@ -14,30 +14,33 @@
 
 #import "PCRefreshControl.h"
 
-#import "MyEduSectionListViewController.h"
-
-@interface MyEduCourseListViewController ()
+@interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
-@property (nonatomic, strong) NSArray* subscribedCourses;
+@property (nonatomic, strong) MyEduCourse* course;
+@property (nonatomic, strong) MyEduSection* section;
+@property (nonatomic, strong) NSArray* modules;
 @property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
 @end
 
-static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
+static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
-@implementation MyEduCourseListViewController
+@implementation MyEduModuleListViewController
 
-- (id)init
+- (id)initWithMyEduCourse:(MyEduCourse*)course andSection:(MyEduSection*)section
 {
-    self = [super initWithNibName:@"MyEduCourseListView" bundle:nil];
+    self = [super initWithNibName:@"MyEduModuleListView" bundle:nil];
     if (self) {
         // Custom initialization
+        self.course = course;
+        self.section = section;
+        self.title = section.iTitle;
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.authController = [[AuthenticationController alloc] init];
-        //self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
+        //self.modules = [self.myEduService getFromCacheSectionDetailsForRequest:[[MyEduSectionDetailsRequest alloc] initWithICourseCode:self.course.iCode iSectionId:self.section.iId] myeduRequest:[self.myEduService createMyEduRequest]].iMyEduModules;
     }
     return self;
 }
@@ -46,12 +49,12 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 {
     [super viewDidLoad];
     /*UIView* backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [UIColor whiteColor];
-    self.tableView.backgroundView = backgroundView;
-    self.tableView.backgroundColor = [UIColor clearColor];*/
+     backgroundView.backgroundColor = [UIColor whiteColor];
+     self.tableView.backgroundView = backgroundView;
+     self.tableView.backgroundColor = [UIColor clearColor];*/
     self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
     [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
-    if (!self.subscribedCourses) {
+    if (!self.modules) {
         [self refresh];
     }
 }
@@ -66,17 +69,17 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)refresh {
     [self.myEduService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingCourseList", @"MyEduPlugin", nil)];
-    [self startGetSubscribedCoursesListRequest];
+    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingModuleList", @"MyEduPlugin", nil)];
+    [self startGetSectionDetailsRequest];
 }
 
 - (void)login {
     [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
 }
 
-- (void)startGetSubscribedCoursesListRequest {
+- (void)startGetSectionDetailsRequest {
     if ([self.myEduService lastSession]) {
-        [self.myEduService getSubscribedCoursesListForRequest:[[MyEduRequest alloc] initWithIMyEduSession:[self.myEduService lastSession] iLanguage:[PCUtils userLanguageCode]] delegate:self];
+        [self.myEduService getSectionDetailsForRequest:[[MyEduSectionDetailsRequest alloc] initWithICourseCode:self.course.iCode iSectionId:self.section.iId] myeduRequest:[self.myEduService createMyEduRequest] delegate:self];
     } else {
         [self login];
     }
@@ -84,10 +87,10 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 #pragma mark - MyEduServiceDelegate
 
-- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(MyEduSubscribedCoursesListReply *)reply {
+- (void)getSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest didReturn:(MyEduSectionDetailsReply*)reply {
     switch (reply.iStatus) {
         case 200:
-            self.subscribedCourses = reply.iSubscribedCourses;
+            self.modules = reply.iMyEduModules;
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             break;
@@ -95,12 +98,12 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
             [self login];
             break;
         default:
-            [self getSubscribedCoursesListFailedForRequest:request];
+            [self getSectionDetailsFailedForRequest:request myeduRequest:myeduRequest];
             break;
     }
 }
 
-- (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
+- (void)getSectionDetailsFailedForRequest:(MyEduSectionDetailsRequest *)request myeduRequest:(MyEduRequest*)myeduRequest {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
     [self.pcRefreshControl hideInTimeInterval:2.0];
@@ -123,7 +126,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
     [self.myEduService saveSession:myEduSession];
-    [self startGetSubscribedCoursesListRequest];
+    [self startGetSectionDetailsRequest];
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
@@ -160,25 +163,22 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyEduCourse* course = self.subscribedCourses[indexPath.row];
-    [self.navigationController pushViewController:[[MyEduSectionListViewController alloc] initWithMyEduCourse:course] animated:YES];
+    //TODO
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyEduCourse* course = self.subscribedCourses[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduCourseListCell];
+    MyEduModule* module = self.modules[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduModuleListCell];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMyEduCourseListCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMyEduModuleListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = course.iTitle;
-    cell.detailTextLabel.text = course.iDescription;
+    cell.textLabel.text = module.iTitle;
     
     return cell;
 }
@@ -186,13 +186,13 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.subscribedCourses count];
+    return [self.modules count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (!self.subscribedCourses) {
+    if (!self.modules) {
         return 0;
     }
     return 1;

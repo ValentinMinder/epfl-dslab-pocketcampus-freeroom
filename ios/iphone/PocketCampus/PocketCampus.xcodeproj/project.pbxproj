@@ -52,6 +52,9 @@
 		321F37EB15B0307700E7BA6D /* GlobalSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */; };
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
+		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; };
+		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
+		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
 		322F326B1532F06300E53C6F /* BookmarksBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32691532F06300E53C6F /* BookmarksBlue@2x.png */; };
 		32311CF115A4A3E100E21C50 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 32311CF015A4A3E100E21C50 /* PCUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -160,6 +163,10 @@
 		329D4ACE151F810E000AC339 /* DestinationTransportArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */; };
 		329D4AD2151F86D7000AC339 /* BusTransport.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD0151F86D7000AC339 /* BusTransport.png */; };
 		329D4AD3151F86D7000AC339 /* BusTransport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329D4AD1151F86D7000AC339 /* BusTransport@2x.png */; };
+		329FD2FD164485DF003FF9BE /* ArrowDownCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */; };
+		329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */; };
+		329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30316449C67003FF9BE /* WarningSignRed.png */; };
+		329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329FD30416449C67003FF9BE /* WarningSignRed@2x.png */; };
 		32A47D6E15B9F48D00592477 /* DocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A47D6D15B9F48D00592477 /* DocumentViewController.m */; };
 		32A47D7115B9F4A600592477 /* DocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A47D7015B9F4A600592477 /* DocumentView.xib */; };
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
@@ -360,6 +367,11 @@
 		321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlobalSettingsView.xib; sourceTree = "<group>"; };
 		321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsHomeButton@2x.png"; sourceTree = "<group>"; };
 		321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsHomeButton.png; sourceTree = "<group>"; };
+		322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleListViewController.h; sourceTree = "<group>"; };
+		322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleListViewController.m; sourceTree = "<group>"; };
+		322BA0431643F4510063B632 /* MyEduModuleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleListView.xib; sourceTree = "<group>"; };
+		322BA0461643FBEB0063B632 /* MSPullToRefreshController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPullToRefreshController.h; sourceTree = "<group>"; };
+		322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPullToRefreshController.m; sourceTree = "<group>"; };
 		322F32681532F06300E53C6F /* BookmarksBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookmarksBlue.png; sourceTree = "<group>"; };
 		322F32691532F06300E53C6F /* BookmarksBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BookmarksBlue@2x.png"; sourceTree = "<group>"; };
 		32311CEF15A4A3E100E21C50 /* PCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCUtils.h; sourceTree = "<group>"; };
@@ -526,6 +538,10 @@
 		329D4ACC151F810E000AC339 /* DestinationTransportArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationTransportArrow@2x.png"; sourceTree = "<group>"; };
 		329D4AD0151F86D7000AC339 /* BusTransport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusTransport.png; sourceTree = "<group>"; };
 		329D4AD1151F86D7000AC339 /* BusTransport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BusTransport@2x.png"; sourceTree = "<group>"; };
+		329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowDownCircle.png; sourceTree = "<group>"; };
+		329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowDownCircle@2x.png"; sourceTree = "<group>"; };
+		329FD30316449C67003FF9BE /* WarningSignRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WarningSignRed.png; sourceTree = "<group>"; };
+		329FD30416449C67003FF9BE /* WarningSignRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WarningSignRed@2x.png"; sourceTree = "<group>"; };
 		32A47D6C15B9F48D00592477 /* DocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentViewController.h; sourceTree = "<group>"; };
 		32A47D6D15B9F48D00592477 /* DocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentViewController.m; sourceTree = "<group>"; };
 		32A47D7015B9F4A600592477 /* DocumentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentView.xib; sourceTree = "<group>"; };
@@ -879,6 +895,7 @@
 				3219EF6814FCE08300A271CD /* ThriftFramework */,
 				32D97C5415AF160D004384A5 /* STUtils */,
 				32B3F38616218CE0007A75C7 /* ZUUIRevealController */,
+				322BA0451643FBEB0063B632 /* MSPullToRefresh */,
 			);
 			name = ExternalFrameworks;
 			sourceTree = "<group>";
@@ -949,6 +966,8 @@
 		321F37DF15B02FBE00E7BA6D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				329FD2FB164485DF003FF9BE /* ArrowDownCircle.png */,
+				329FD2FC164485DF003FF9BE /* ArrowDownCircle@2x.png */,
 				32CBF057163450E500FD92E5 /* PocketCampusDrawing.png */,
 				32CBF058163450E500FD92E5 /* PocketCampusDrawing@2x.png */,
 				32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */,
@@ -965,10 +984,21 @@
 				321F37E415B02FBE00E7BA6D /* HomeNavbar@2x.png */,
 				323A913B1640783F007A63D3 /* TopDown1pxShadow.png */,
 				323A913E164078FF007A63D3 /* TopDown1pxShadow@2x.png */,
+				329FD30316449C67003FF9BE /* WarningSignRed.png */,
+				329FD30416449C67003FF9BE /* WarningSignRed@2x.png */,
 			);
 			name = Images;
 			path = PocketCampus/Views/Images;
 			sourceTree = SOURCE_ROOT;
+		};
+		322BA0451643FBEB0063B632 /* MSPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				322BA0461643FBEB0063B632 /* MSPullToRefreshController.h */,
+				322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */,
+			);
+			path = MSPullToRefresh;
+			sourceTree = "<group>";
 		};
 		324151C415373A1700CCFB22 /* MapPlugin */ = {
 			isa = PBXGroup;
@@ -1997,6 +2027,7 @@
 				CEC74EF19134E69FAE06810E /* Images */,
 				323586E716381E1200872ECE /* MyEduCourseListView.xib */,
 				32B92F231641BE2A0054B46F /* MyEduSectionListView.xib */,
+				322BA0431643F4510063B632 /* MyEduModuleListView.xib */,
 			);
 			name = Views;
 			path = Plugins/MyEduPlugin/Views;
@@ -2021,6 +2052,8 @@
 				323586E316381BF700872ECE /* MyEduCourseListViewController.m */,
 				32B92F1F1641BD630054B46F /* MyEduSectionListViewController.h */,
 				32B92F201641BD630054B46F /* MyEduSectionListViewController.m */,
+				322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */,
+				322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/MyEduPlugin/Controllers;
@@ -2082,7 +2115,7 @@
 		3219EF4314FCDE4800A271CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = EPFL;
 			};
 			buildConfigurationList = 3219EF4614FCDE4800A271CD /* Build configuration list for PBXProject "PocketCampus" */;
@@ -2232,6 +2265,11 @@
 				323A913C1640783F007A63D3 /* TopDown1pxShadow.png in Resources */,
 				323A913F164078FF007A63D3 /* TopDown1pxShadow@2x.png in Resources */,
 				32B92F241641BE2A0054B46F /* MyEduSectionListView.xib in Resources */,
+				322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */,
+				329FD2FD164485DF003FF9BE /* ArrowDownCircle.png in Resources */,
+				329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */,
+				329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */,
+				329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2378,6 +2416,8 @@
 				329840E316397ADB00FBADFA /* PluginController.m in Sources */,
 				3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */,
 				32B92F211641BD630054B46F /* MyEduSectionListViewController.m in Sources */,
+				322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */,
+				322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2527,6 +2567,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
 				COPY_PHASE_STRIP = NO;
@@ -2555,6 +2598,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Loic Gardiol";
 				COPY_PHASE_STRIP = YES;
@@ -2588,8 +2634,8 @@
 					"\"$(SRCROOT)/GALib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF735CC6-4170-4205-967F-AB8EACB73253";
+				PROVISIONING_PROFILE = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
