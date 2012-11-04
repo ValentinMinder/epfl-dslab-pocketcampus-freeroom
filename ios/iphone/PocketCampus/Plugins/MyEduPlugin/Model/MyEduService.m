@@ -19,6 +19,9 @@
 
 static NSString* kMyEduSessionIdentifier = @"myEduSession";
 
+
+static NSString* kVimeoEmbedHTMLFormat = @"<iframe src=\"http://player.vimeo.com/video/%@\" width=\"%d\" height=\"%d\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+
 @implementation MyEduService
 
 static MyEduService* instance = nil;
@@ -153,10 +156,23 @@ static MyEduService* instance = nil;
     operation.serviceClientSelector = @selector(getModuleDetails::);
     operation.delegateDidReturnSelector = @selector(getModuleDetailsForRequest:myeduRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getModuleDetailsFailedForRequest:myeduRequest:);
+    operation.keepInCache = YES;
+    operation.skipCache = YES;
     [operation addObjectArgument:myeduRequest];
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
+}
+
+- (MyEduModuleDetailsReply*)getFromCacheModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest {
+    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getModuleDetails::);
+    operation.delegateDidReturnSelector = @selector(getModuleDetailsForRequest:myeduRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getModuleDetailsFailedForRequest:myeduRequest:);
+    [operation addObjectArgument:myeduRequest];
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
 }
 
 - (void)submitFeedbackWithRequest:(MyEduSubmitFeedbackRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate {
@@ -168,6 +184,18 @@ static MyEduService* instance = nil;
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [operationQueue addOperation:operation];
+}
+
+/* Utility methods */
+
++ (NSString*)videoHTMLCodeForMyEduModule:(MyEduModule*)module videoWidth:(int)width videoHeight:(int)height {
+    if ([[module.iVideoSourceProvider lowercaseString] isEqualToString:@"vimeo"]) {
+        return [NSString stringWithFormat:kVimeoEmbedHTMLFormat, module.iVideoURL, width, height];
+    } else {
+        NSLog(@"!! Unsupported video provider");
+        //TODO
+    }
+    return nil;
 }
 
 - (void)dealloc

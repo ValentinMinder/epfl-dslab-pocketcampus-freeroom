@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.myedu.server;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MyEduServiceConfig {
@@ -39,6 +43,10 @@ public class MyEduServiceConfig {
 	
 	public final static String SUBMIT_MODULE_FEEDBACK_PATH_WITH_FORMAT = "/%s/%d/%d/submit_vote?feedback=%s&rating=%s";
 	//<course_code>, <section_id>, <module_id>, <feedback_text>, <star_rating>
+	
+	/* Date format */
+	
+	public final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"; /*2012-10-22T10:30:28Z*/
 	
 	/* JSON definitions */
 	
@@ -95,6 +103,33 @@ public class MyEduServiceConfig {
 		public String video_url;
 	}
 	
+	public class ModuleDetailsJson {
+		public ModuleJson module;
+		public List<MaterialJson> materials;
+		public ModuleRecordJson module_record;
+	}
+	
+	public class MaterialJson {
+		public String created_at;
+		public int id;
+		public int module_id;
+		public String name;
+		public String updated_at;
+		public String url;
+	}
+	
+	public class ModuleRecordJson {
+		public String created_at;
+		public String feedback;
+		public String feedback_time;
+		public int id;
+		public boolean is_completed;
+		public int module_id;
+		public int rating;
+		public String updated_at;
+		public int user_id;
+	}
+	
 	
 	/* Help methods */
 	
@@ -104,5 +139,9 @@ public class MyEduServiceConfig {
 	
 	public static String getFullUrlForAPIAccess(String path) {
 		return SERVICE_ROOT_URL+API_PATH+VERSION_PATH+path;
+	}
+	
+	public static Date getDateForString(String stringDate) throws ParseException {
+		return new SimpleDateFormat(DATE_FORMAT).parse(stringDate);
 	}
 }

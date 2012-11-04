@@ -18,6 +18,8 @@
 
 #import "MyEduModuleListViewController.h"
 
+#import "MyEduCourseInfoViewController.h"
+
 @interface MyEduSectionListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -88,6 +90,12 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
     } else {
         [self login];
     }
+}
+
+#pragma mark - PCMasterSplitDelegate
+
+- (UIViewController*)detailViewControllerThatShouldBeDisplayed {
+    return [[MyEduCourseInfoViewController alloc] initWithCourse:self.course];
 }
 
 #pragma mark - MyEduServiceDelegate
@@ -199,7 +207,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = section.iTitle;
+    cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", section.iSequence, section.iTitle];
     cell.detailTextLabel.text = section.iDescription;
     
     return cell;

@@ -25,16 +25,13 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         mainController = mainController_;
         MyEduCourseListViewController* courseListViewController = [[MyEduCourseListViewController alloc] init];
         courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
-        PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] init];
         
-        UIViewController* rightViewController = [[UIViewController alloc] init];
-        UIView* grayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-        grayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        grayView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-        rightViewController.view = grayView;
+        UINavigationController* masterNavigationController = [[UINavigationController alloc] initWithRootViewController:courseListViewController];
+        UIViewController* detailViewController = [[UIViewController alloc] init]; //detail view controller will be set by PluginSplitViewController that will ask to master view controller
         
-        splitViewController.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:courseListViewController], [[UINavigationController alloc] initWithRootViewController:rightViewController]];
+        PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
         splitViewController.delegate = self;
+        
         mainSplitViewController = splitViewController;
         mainSplitViewController.pluginIdentifier = [[self class] identifierName];
     }
@@ -88,6 +85,9 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 #pragma mark UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    /*if (orientation == UIInterfaceOrientationMaskPortrait) {
+        return YES;
+    }*/
     return NO;
 }
 

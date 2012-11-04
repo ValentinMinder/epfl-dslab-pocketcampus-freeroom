@@ -15,9 +15,11 @@
 @property (nonatomic, strong) MyEduCourse* course;
 
 @property (nonatomic, weak) IBOutlet UINavigationBar* navBar;
+@property (nonatomic, weak) IBOutlet UIView* containerView;
 @property (nonatomic, weak) IBOutlet UILabel* titleLabel;
 @property (nonatomic, weak) IBOutlet UITextView* descriptionTextView;
-@property (nonatomic, weak) IBOutlet UILabel* bottomLabel;
+@property (nonatomic, weak) IBOutlet UILabel* bottomLabel1;
+@property (nonatomic, weak) IBOutlet UILabel* bottomLabel2;
 
 - (id)initWithCourse:(MyEduCourse*)course;
 

@@ -18,7 +18,7 @@
 
 #import "MyEduSectionListViewController.h"
 
-#import "MyEduCourseInfoViewController.h"
+#import "MyEduSplashDetailViewController.h"
 
 @interface MyEduCourseListViewController ()
 
@@ -87,6 +87,13 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     } else {
         [self login];
     }
+}
+
+#pragma mark - PCMasterSplitDelegate
+
+- (UIViewController*)detailViewControllerThatShouldBeDisplayed {
+    MyEduSplashDetailViewController* detailViewController = [[MyEduSplashDetailViewController alloc] init];
+    return detailViewController;
 }
 
 #pragma mark - MyEduServiceDelegate
@@ -174,9 +181,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MyEduCourse* course = self.subscribedCourses[indexPath.row];
-    if (self.splitViewController) {
-        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[MyEduCourseInfoViewController alloc] initWithCourse:course]];
-    }
     [self.navigationController pushViewController:[[MyEduSectionListViewController alloc] initWithMyEduCourse:course] animated:YES];
 }
 

@@ -16,6 +16,8 @@
 
 #import "PCCenterMessageCell.h"
 
+#import "MyEduModuleDetailViewController.h"
+
 @interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -174,7 +176,13 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //TODO
+    MyEduModule* module = self.modules[indexPath.row];
+    MyEduModuleDetailViewController* detailViewController = [[MyEduModuleDetailViewController alloc] initWithModule:module section:self.section course:self.course];
+    if (self.splitViewController) {
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailViewController];
+    } else {
+        //TODO push on nav controller (iPhone)
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -197,7 +205,7 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    cell.textLabel.text = module.iTitle;
+    cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", module.iSequence, module.iTitle];
     
     return cell;
 }

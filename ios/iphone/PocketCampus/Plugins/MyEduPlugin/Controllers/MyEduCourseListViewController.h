@@ -12,6 +12,8 @@
 
 #import "AuthenticationController.h"
 
-@interface MyEduCourseListViewController : UITableViewController<MyEduServiceDelegate, AuthenticationCallbackDelegate>
+#import "PCMasterSplitDelegate.h"
+
+@interface MyEduCourseListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate, AuthenticationCallbackDelegate>
 
 @end

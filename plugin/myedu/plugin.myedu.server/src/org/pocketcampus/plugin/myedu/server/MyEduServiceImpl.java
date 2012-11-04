@@ -17,7 +17,10 @@ import org.apache.thrift.TException;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.MaterialJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleRecordJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionCreateEPFL;
@@ -25,9 +28,11 @@ import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionEPFLLogin;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourse;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduMaterial;
 import org.pocketcampus.plugin.myedu.shared.MyEduModule;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduModuleRecord;
 import org.pocketcampus.plugin.myedu.shared.MyEduRequest;
 import org.pocketcampus.plugin.myedu.shared.MyEduSection;
 import org.pocketcampus.plugin.myedu.shared.MyEduSectionDetailsReply;
@@ -151,32 +156,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			ArrayList<CourseJson> courses = gson.fromJson(json, listType.getType());
 			
 			for (CourseJson course : courses) {
-
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /*2012-10-22T10:30:28Z*/
-				
-				Date creationDate;
-				Date updateDate;
-				try {
-					creationDate =  dateFormat.parse(course.created_at); 
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of creation date"); 
-				}
-				
-				
-				try {
-					updateDate =  dateFormat.parse(course.updated_at);
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of update date"); 
-				}
-				
-				MyEduCourse myEduCourse = new MyEduCourse();
-				myEduCourse.setIId(course.id);
-				myEduCourse.setICode(course.code);
-				myEduCourse.setITitle(course.title);
-				myEduCourse.setIDescription(course.description);
-				myEduCourse.setICreationTimestamp(creationDate.getTime());
-				myEduCourse.setILastUpdateTimestamp(updateDate.getTime());
-				coursesList.add(myEduCourse);
+				coursesList.add(getMyEduCourseForJson(course));
 			}
 			
 		} catch (JsonSyntaxException jsonSyntaxException) {
@@ -184,7 +164,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		} catch (JsonParseException jsonSyntaxException) {
 			throw new TException("Error while parsing JSON");
 		}
-		
+		System.out.println("getSubscribedCoursesList will return");
 		return new MyEduSubscribedCoursesListReply(200).setISubscribedCourses(coursesList);
 	}
 	
@@ -216,32 +196,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			CourseDetailsJson courseDetails = gson.fromJson(json, type.getType());
 			
 			for (SectionJson section : courseDetails.sections) {
-
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /*2012-10-22T10:30:28Z*/
-				
-				Date creationDate;
-				Date updateDate;
-				try {
-					creationDate =  dateFormat.parse(section.created_at); 
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of creation date"); 
-				}
-
-				try {
-					updateDate =  dateFormat.parse(section.updated_at);
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of update date"); 
-				}
-				
-				MyEduSection myEduSection = new MyEduSection();
-				myEduSection.setIId(section.id);
-				myEduSection.setICourseId(section.cours_id);
-				myEduSection.setITitle(section.title);
-				myEduSection.setIDescription(section.description);
-				myEduSection.setISequence(section.sequence);
-				myEduSection.setICreationTimestamp(creationDate.getTime());
-				myEduSection.setILastUpdateTimestamp(updateDate.getTime());
-				sectionsList.add(myEduSection);
+				sectionsList.add(getMyEduSectionForJson(section));
 			}
 			
 		} catch (JsonSyntaxException jsonSyntaxException) {
@@ -289,35 +244,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			SectionDetailsJson sectionDetails = gson.fromJson(json, type.getType());
 			
 			for (ModuleJson module : sectionDetails.modules) {
-
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /*2012-10-22T10:30:28Z*/
-				
-				Date creationDate;
-				Date updateDate;
-				try {
-					creationDate =  dateFormat.parse(module.created_at); 
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of creation date"); 
-				}
-
-				try {
-					updateDate =  dateFormat.parse(module.updated_at);
-				} catch (ParseException parseException1) {
-					throw new TException("Error while reading JSON of update date"); 
-				}
-				
-				MyEduModule myEduModule = new MyEduModule();
-				myEduModule.setIId(module.id);
-				myEduModule.setISectionId(module.section_id);
-				myEduModule.setITitle(module.title);
-				myEduModule.setISequence(module.sequence);
-				myEduModule.setICreationTimestamp(creationDate.getTime());
-				myEduModule.setILastUpdateTimestamp(updateDate.getTime());
-				myEduModule.setIVisible(module.is_visible);
-				myEduModule.setITextContent(module.text_content);
-				myEduModule.setIVideoSourceProvider(module.video_source);
-				myEduModule.setIVideoURL(module.video_url);
-				modulesList.add(myEduModule);
+				modulesList.add(getMyEduModuleForJson(module));
 			}
 			
 		} catch (JsonSyntaxException jsonSyntaxException) {
@@ -336,6 +263,208 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		return new MyEduSectionDetailsReply(200).setIMyEduModules(modulesList);
 	}
 	
+	@Override
+	public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest,
+			MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
+			throws TException {
+		System.out.println("getModuleDetails");
+		
+		String json = null;
+		
+		try {
+			String path = String.format(MyEduServiceConfig.MODULE_DETAILS_PATH_WITH_FORMAT, iMyEduModuleDetailsRequest.iCourseCode, iMyEduModuleDetailsRequest.iSectionId, iMyEduModuleDetailsRequest.iModuleId);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			if (reply.getStatusCode() != 200) {
+				return new MyEduModuleDetailsReply(reply.getStatusCode()); 
+			}
+			json = reply.getReplyString();
+		} catch (IOException connExc) {
+			throw new TException("Failed to connect to MyEdu server");
+		} 
+		
+		Gson gson = new Gson();
+		ArrayList<MyEduMaterial> materialsList = new ArrayList<MyEduMaterial>();
+		MyEduModuleRecord moduleRecord = new MyEduModuleRecord();
+		
+		try {
+			TypeToken<ModuleDetailsJson> type = new TypeToken<ModuleDetailsJson>() {};
+			ModuleDetailsJson moduleDetails = gson.fromJson(json, type.getType());
+			
+			for (MaterialJson material : moduleDetails.materials) {
+				materialsList.add(getMyEduMaterialForJson(material));
+			}
+			
+			moduleRecord = getMyEduRecordForJson(moduleDetails.module_record);
+			
+		} catch (JsonSyntaxException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		} catch (JsonParseException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		}
+		
+		
+		MyEduModuleDetailsReply reply = new MyEduModuleDetailsReply(200);
+		reply.setIMyEduMaterial(materialsList);
+		reply.setIMyEduRecord(moduleRecord);
+		return reply;
+	}
+	
+	
+	/**
+	 * CONVERSION METHODS (JSON to MyEdu types)
+	 */
+	
+	private MyEduCourse getMyEduCourseForJson(CourseJson course) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(course.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(course.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduCourse myEduCourse = new MyEduCourse();
+		myEduCourse.setIId(course.id);
+		myEduCourse.setICode(course.code);
+		myEduCourse.setITitle(course.title);
+		myEduCourse.setIDescription(course.description);
+		myEduCourse.setICreationTimestamp(creationDate.getTime());
+		myEduCourse.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduCourse;
+	}
+	
+	private MyEduSection getMyEduSectionForJson(SectionJson section) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(section.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(section.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduSection myEduSection = new MyEduSection();
+		myEduSection.setIId(section.id);
+		myEduSection.setICourseId(section.cours_id);
+		myEduSection.setITitle(section.title);
+		myEduSection.setIDescription(section.description);
+		myEduSection.setISequence(section.sequence);
+		myEduSection.setICreationTimestamp(creationDate.getTime());
+		myEduSection.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduSection;
+	}
+	
+	private MyEduModule getMyEduModuleForJson(ModuleJson module) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(module.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(module.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduModule myEduModule = new MyEduModule();
+		
+		myEduModule.setIId(module.id);
+		myEduModule.setISectionId(module.section_id);
+		myEduModule.setITitle(module.title);
+		myEduModule.setISequence(module.sequence);
+		myEduModule.setICreationTimestamp(creationDate.getTime());
+		myEduModule.setILastUpdateTimestamp(updateDate.getTime());
+		myEduModule.setIVisible(module.is_visible);
+		myEduModule.setITextContent(module.text_content);
+		myEduModule.setIVideoSourceProvider(module.video_source);
+		myEduModule.setIVideoURL(module.video_url);
+		
+		return myEduModule;
+	}
+	
+	private MyEduMaterial getMyEduMaterialForJson(MaterialJson material) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(material.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(material.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduMaterial myEduMaterial = new MyEduMaterial();
+		
+		myEduMaterial.setIId(material.id);
+		myEduMaterial.setIModuleId(material.module_id);
+		myEduMaterial.setIName(material.name);
+		myEduMaterial.setIURL(material.url);
+		myEduMaterial.setICreationTimestamp(creationDate.getTime());
+		myEduMaterial.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduMaterial;
+	}
+	
+	private MyEduModuleRecord getMyEduRecordForJson(ModuleRecordJson record) throws TException {
+		Date creationDate;
+		Date updateDate;
+		Date feedbackDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(record.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(record.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		try {
+			feedbackDate =  MyEduServiceConfig.getDateForString(record.feedback_time);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of feedback date"); 
+		}
+		
+		MyEduModuleRecord myEduModuleRecord = new MyEduModuleRecord();
+		
+		myEduModuleRecord.setIId(record.id);
+		myEduModuleRecord.setIModuleId(record.module_id);
+		myEduModuleRecord.setIFeedbackText(record.feedback);
+		myEduModuleRecord.setIFeedbackTimestamp(feedbackDate.getTime());
+		myEduModuleRecord.setIModuleCompleted(record.is_completed);
+		myEduModuleRecord.setIRating(record.rating);
+		myEduModuleRecord.setIUserId(record.user_id);
+		myEduModuleRecord.setICreationTimestamp(creationDate.getTime());
+		myEduModuleRecord.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduModuleRecord;
+	}
 	
 	/**
 	 * HELPER METHODS
@@ -400,14 +529,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 	}
 
-
-	@Override
-	public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest,
-			MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
-			throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public MyEduSubmitFeedbackReply submitFeedback(MyEduRequest iMyEduRequest,

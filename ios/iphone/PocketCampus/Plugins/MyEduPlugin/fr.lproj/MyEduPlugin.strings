@@ -14,3 +14,10 @@
 "NoSection" = "Aucune section";
 "NoModule" = "Aucun module";
 "CreatedOn" = "Créé le";
+"LastUpdate" = "Dernière modification";
+"Video" = "Vidéo";
+"LoadingVideo" = "Chargement de la vidéo...";
+"NoVideoInModule" = "Pas de vidéo dans ce module";
+"VideoNotSupported" = "Désolé, cette vidéo n'est pas supportée";
+"Text" = "Texte";
+"NoTextInModule" = "Pas de texte dans ce module";

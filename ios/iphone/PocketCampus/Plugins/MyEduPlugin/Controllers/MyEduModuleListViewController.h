@@ -12,7 +12,9 @@
 
 #import "AuthenticationController.h"
 
-@interface MyEduModuleListViewController : UITableViewController<MyEduServiceDelegate, AuthenticationCallbackDelegate>
+#import "PCMasterSplitDelegate.h"
+
+@interface MyEduModuleListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate, AuthenticationCallbackDelegate>
 
 - (id)initWithMyEduCourse:(MyEduCourse*)course andSection:(MyEduSection*)section;
 
