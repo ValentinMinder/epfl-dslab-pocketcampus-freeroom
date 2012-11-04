@@ -1904,7 +1904,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -1926,7 +1926,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -1948,7 +1948,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -1970,7 +1970,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2059,11 +2059,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "248"
-         endingLineNumber = "248"
+         startingLineNumber = "264"
+         endingLineNumber = "264"
          landmarkName = "-_hide"
          landmarkType = "5">
          <Actions>
@@ -2081,11 +2081,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduCourseListViewController.m"
-         timestampString = "373570843.606504"
+         timestampString = "373679932.531879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "68"
-         endingLineNumber = "68"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
          landmarkName = "-refresh"
          landmarkType = "5">
          <Actions>
@@ -2103,11 +2103,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "273"
-         endingLineNumber = "273"
+         startingLineNumber = "289"
+         endingLineNumber = "289"
          landmarkName = "-pullToRefreshController:canRefreshInDirection:"
          landmarkType = "5">
          <Actions>
@@ -2125,11 +2125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduCourseListViewController.m"
-         timestampString = "373570843.606504"
+         timestampString = "373679932.531879"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "99"
+         endingLineNumber = "99"
          landmarkName = "-getSubscribedCoursesListForRequest:didReturn:"
          landmarkType = "5">
          <Actions>
@@ -2147,11 +2147,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "277"
-         endingLineNumber = "277"
+         startingLineNumber = "293"
+         endingLineNumber = "293"
          landmarkName = "-pullToRefreshController:refreshableInsetForDirection:"
          landmarkType = "5">
          <Actions>
@@ -2169,11 +2169,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "281"
-         endingLineNumber = "281"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
          landmarkName = "-pullToRefreshController:refreshingInsetForDirection:"
          landmarkType = "5">
          <Actions>
@@ -2191,11 +2191,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "294"
-         endingLineNumber = "294"
+         startingLineNumber = "310"
+         endingLineNumber = "310"
          landmarkName = "-pullToRefreshController:didDisengageRefreshDirection:"
          landmarkType = "5">
          <Actions>
@@ -2209,22 +2209,22 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "301"
-         endingLineNumber = "301"
+         startingLineNumber = "316"
+         endingLineNumber = "316"
          landmarkName = "-pullToRefreshController:didEngageRefreshDirection:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Log">
                <ActionContent
-                  message = "REFRESH"
+                  message = "didEngageRefreshDirection"
                   conveyanceType = "0">
                </ActionContent>
             </BreakpointActionProxy>
@@ -2235,11 +2235,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Views/Common/PCRefreshControl.m"
-         timestampString = "373595752.941552"
+         timestampString = "373673630.200324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "146"
-         endingLineNumber = "146"
+         startingLineNumber = "145"
+         endingLineNumber = "145"
          landmarkName = "-setType:"
          landmarkType = "5">
          <Actions>
@@ -2247,6 +2247,72 @@
                ActionType = "Xcode.BreakpointAction.Log">
                <ActionContent
                   message = "setType default"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
+         timestampString = "373657796.370156"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "82"
+         endingLineNumber = "82"
+         landmarkName = "-getSubscribedCoursesListForRequest:delegate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "getSubscribedCoursesListForRequest"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
+         timestampString = "373657808.94323"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
+         landmarkName = "-getTequilaTokenForMyEduWithDelegate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "getTequilaTokenForMyEduWithDelegate"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
+         timestampString = "373657820.494566"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
+         landmarkName = "-getMyEduSessionForTequilaToken:delegate:"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "getMyEduSessionForTequilaToken"
                   conveyanceType = "0">
                </ActionContent>
             </BreakpointActionProxy>

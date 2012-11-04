@@ -14,7 +14,11 @@
 
 #import "PCRefreshControl.h"
 
+#import "PCCenterMessageCell.h"
+
 #import "MyEduSectionListViewController.h"
+
+#import "MyEduCourseInfoViewController.h"
 
 @interface MyEduCourseListViewController ()
 
@@ -37,7 +41,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.authController = [[AuthenticationController alloc] init];
-        //self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
+        self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
     }
     return self;
 }
@@ -51,6 +55,9 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     self.tableView.backgroundColor = [UIColor clearColor];*/
     self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
     [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     if (!self.subscribedCourses) {
         [self refresh];
     }
@@ -101,9 +108,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self error];
 }
 
 - (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
@@ -116,9 +121,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getTequilaTokenForMyEduFailed {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self error];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
@@ -127,14 +130,24 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
+    [self error];
+}
+
+- (void)error {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    if (!self.subscribedCourses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
+    if (!self.subscribedCourses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
@@ -153,7 +166,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)invalidToken {
-    //TODO
+    [self startGetSubscribedCoursesListRequest];
 }
 
 #pragma mark - UITableViewDelegate
@@ -161,6 +174,9 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MyEduCourse* course = self.subscribedCourses[indexPath.row];
+    if (self.splitViewController) {
+        self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], [[MyEduCourseInfoViewController alloc] initWithCourse:course]];
+    }
     [self.navigationController pushViewController:[[MyEduSectionListViewController alloc] initWithMyEduCourse:course] animated:YES];
 }
 
@@ -168,6 +184,14 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.subscribedCourses && [self.subscribedCourses count] == 0) {
+        if (indexPath.row == 2) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
+    }
+    
     MyEduCourse* course = self.subscribedCourses[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduCourseListCell];
     
@@ -186,6 +210,9 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
+    if ([self.subscribedCourses count] == 0) {
+        return 2; //first empty cell, second cell says no content
+    }
     return [self.subscribedCourses count];
 }
 
@@ -196,6 +223,11 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         return 0;
     }
     return 1;
+}
+
+- (void)dealloc
+{
+    [self.myEduService cancelOperationsForDelegate:self];
 }
 
 

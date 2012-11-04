@@ -52,7 +52,7 @@
 		321F37EB15B0307700E7BA6D /* GlobalSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */; };
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
-		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; };
+		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
 		322F326A1532F06300E53C6F /* BookmarksBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 322F32681532F06300E53C6F /* BookmarksBlue.png */; };
@@ -202,8 +202,11 @@
 		32B8927E15458BA10058E472 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927D15458BA10058E472 /* SystemConfiguration.framework */; };
 		32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8927F15458BAB0058E472 /* MobileCoreServices.framework */; };
 		32B8928215458BD70058E472 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B8928115458BD70058E472 /* libz.dylib */; };
-		32B92F211641BD630054B46F /* MyEduSectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B92F201641BD630054B46F /* MyEduSectionListViewController.m */; };
+		32B92F211641BD630054B46F /* MyEduSectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B92F201641BD630054B46F /* MyEduSectionListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32B92F241641BE2A0054B46F /* MyEduSectionListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B92F231641BE2A0054B46F /* MyEduSectionListView.xib */; };
+		32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30701645D31A00909D82 /* PCCenterMessageCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */; };
+		32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32BCACDC15656D36008415A1 /* CamiproView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32BCACDB15656D36008415A1 /* CamiproView.xib */; };
 		32CAE42F1536256B00AB17CC /* ConnectionPartsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */; };
 		32CAE432153628C100AB17CC /* ConnectionPartsListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CAE431153628C000AB17CC /* ConnectionPartsListView.xib */; };
@@ -608,6 +611,11 @@
 		32B92F1F1641BD630054B46F /* MyEduSectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduSectionListViewController.h; sourceTree = "<group>"; };
 		32B92F201641BD630054B46F /* MyEduSectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduSectionListViewController.m; sourceTree = "<group>"; };
 		32B92F231641BE2A0054B46F /* MyEduSectionListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduSectionListView.xib; sourceTree = "<group>"; };
+		32BA306F1645D31900909D82 /* PCCenterMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCCenterMessageCell.h; sourceTree = "<group>"; };
+		32BA30701645D31A00909D82 /* PCCenterMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCCenterMessageCell.m; sourceTree = "<group>"; };
+		32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduCourseInfoView.xib; sourceTree = "<group>"; };
+		32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduCourseInfoViewController.h; sourceTree = "<group>"; };
+		32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduCourseInfoViewController.m; sourceTree = "<group>"; };
 		32BCACDB15656D36008415A1 /* CamiproView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CamiproView.xib; sourceTree = "<group>"; };
 		32CAE42D1536256B00AB17CC /* ConnectionPartsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPartsListViewController.h; sourceTree = "<group>"; };
 		32CAE42E1536256B00AB17CC /* ConnectionPartsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionPartsListViewController.m; sourceTree = "<group>"; };
@@ -1314,6 +1322,8 @@
 				3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */,
 				3292C31516402B4F00AE4D51 /* PCRefreshControl.h */,
 				3292C31616402B4F00AE4D51 /* PCRefreshControl.m */,
+				32BA306F1645D31900909D82 /* PCCenterMessageCell.h */,
+				32BA30701645D31A00909D82 /* PCCenterMessageCell.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2028,6 +2038,7 @@
 				323586E716381E1200872ECE /* MyEduCourseListView.xib */,
 				32B92F231641BE2A0054B46F /* MyEduSectionListView.xib */,
 				322BA0431643F4510063B632 /* MyEduModuleListView.xib */,
+				32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */,
 			);
 			name = Views;
 			path = Plugins/MyEduPlugin/Views;
@@ -2054,6 +2065,8 @@
 				32B92F201641BD630054B46F /* MyEduSectionListViewController.m */,
 				322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */,
 				322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */,
+				32BA30741645DF9200909D82 /* MyEduCourseInfoViewController.h */,
+				32BA30751645DF9200909D82 /* MyEduCourseInfoViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/MyEduPlugin/Controllers;
@@ -2270,6 +2283,7 @@
 				329FD2FE164485DF003FF9BE /* ArrowDownCircle@2x.png in Resources */,
 				329FD30516449C67003FF9BE /* WarningSignRed.png in Resources */,
 				329FD30616449C67003FF9BE /* WarningSignRed@2x.png in Resources */,
+				32BA30731645DCB200909D82 /* MyEduCourseInfoView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2418,6 +2432,8 @@
 				32B92F211641BD630054B46F /* MyEduSectionListViewController.m in Sources */,
 				322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */,
 				322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */,
+				32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */,
+				32BA30761645DF9200909D82 /* MyEduCourseInfoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2634,8 +2650,8 @@
 					"\"$(SRCROOT)/GALib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
+				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF735CC6-4170-4205-967F-AB8EACB73253";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

@@ -22,6 +22,7 @@
 @property (nonatomic, strong) MSPullToRefreshController* msPtRController;
 @property (nonatomic, weak) id target;
 @property (nonatomic) SEL selector;
+@property (nonatomic) BOOL engagedRefreshProgrammatically;
 @property (nonatomic, strong) NSTimer* showHideTimer;
 @property (nonatomic, strong) UIView* containerView;
 @property (nonatomic, strong) UILabel* messageLabel;
@@ -40,7 +41,7 @@
         self.tableView = self.tableViewController.tableView;
         _type = -1;
         self.problemColor = [UIColor colorWithRed:0.827451 green:0.000000 blue:0.000000 alpha:1.0];
-        if ([self.tableViewController respondsToSelector:@selector(refreshControl)]) { //>= iOS 6
+        if (NO && [self.tableViewController respondsToSelector:@selector(refreshControl)]) { //>= iOS 6
             self.usesUIRefreshControl = YES;
             self.tableViewController.refreshControl = [[UIRefreshControl alloc] init];
             self.refreshControl = self.tableViewController.refreshControl;
@@ -50,7 +51,7 @@
             self.msPtRController = [[MSPullToRefreshController alloc] initWithScrollView:self.tableView delegate:self];
             self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.tableView.frame.size.height-25.0, self.tableView.frame.size.width-20.0, 20.0)];
             self.messageLabel.numberOfLines = 0;
-            self.messageLabel.font = [UIFont boldSystemFontOfSize:14.0];
+            self.messageLabel.font = [UIFont boldSystemFontOfSize:13.0];
             self.messageLabel.shadowOffset = [PCValues shadowOffset1];
             self.messageLabel.shadowColor = [PCValues shadowColor1];
             self.messageLabel.textAlignment = UITextAlignmentCenter;
@@ -63,7 +64,6 @@
             //self.containerView.backgroundColor = [UIColor yellowColor];
             
             self.type = RefreshControlTypeDefault;
-            self.message = @"Test message";
             [self.tableView addSubview:self.containerView];
         }
     }
@@ -136,15 +136,13 @@
     if (self.type == type) {
         return;
     }
-    _type = type;
     if (type == RefreshControlTypeDefault) {
         if (self.usesUIRefreshControl) {
             //nothing special
         } else {            
             [self.signView removeFromSuperview];
             self.signView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowDownCircle"]];
-            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-35.0);
-            //self.signView.transform  = CGAffineTransformMakeRotation(M_PI);
+            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-25.0);
             [self.containerView addSubview:self.signView];
             self.messageLabel.hidden = YES;
         }
@@ -153,14 +151,30 @@
         if (self.usesUIRefreshControl) {
             self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:self.message];
         } else {
-            self.messageLabel.textColor = [UIColor colorWithRed:0.521569 green:0.521569 blue:0.521569 alpha:1.0];
-            [self.signView removeFromSuperview];
-            UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            self.signView = activityIndicator;
-            self.signView.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-40.0);
-            [self.containerView addSubview:self.signView];
+            UIActivityIndicatorView* activityIndicator __block = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            activityIndicator.center = CGPointMake(self.containerView.center.x, self.containerView.frame.size.height-40.0);
+            activityIndicator.alpha = 0.0;
             [activityIndicator startAnimating];
+            [self.containerView addSubview:activityIndicator];
+            self.messageLabel.alpha = 0.0;
             self.messageLabel.hidden = NO;
+            self.messageLabel.textColor = [UIColor colorWithRed:0.521569 green:0.521569 blue:0.521569 alpha:1.0];
+            
+            NSTimeInterval duration = 0.0;
+            
+            if (self.type == RefreshControlTypeDefault) {
+                duration = 0.2;
+            }
+            
+            [UIView animateWithDuration:duration animations:^{
+                self.signView.alpha = 0.0;
+                activityIndicator.alpha = 1.0;
+                self.messageLabel.alpha = 1.0;
+            } completion:^(BOOL finished) {
+                [self.signView removeFromSuperview];
+                self.signView = activityIndicator;
+            }];
+            
         }
     } else if (type == RefreshControlTypeProblem) {
         if (self.usesUIRefreshControl) {
@@ -176,6 +190,7 @@
     } else {
         @throw [NSException exceptionWithName:@"bad argument" reason:@"imageType must be of enum type RefreshControlImageType" userInfo:nil];
     }
+    _type = type;
 }
 
 /*- (UIActivityIndicatorView*)findActivityIndicatorSubview:(UIView*)view {
@@ -214,6 +229,7 @@
         [self.refreshControl beginRefreshing];
         [self.tableView scrollRectToVisible:CGRectMake(0.0, -1.0, 1.0, 1.0) animated:YES];
     } else {
+        self.engagedRefreshProgrammatically = YES;
         [self.msPtRController startRefreshingDirection:MSRefreshDirectionTop animated:YES];
     }
 }
@@ -298,7 +314,12 @@
 
 - (void) pullToRefreshController:(MSPullToRefreshController *) controller didEngageRefreshDirection:(MSRefreshDirection) direction {
     self.type = RefreshControlTypeRefreshing;
-    [self.target performSelectorOnMainThread:self.selector withObject:nil waitUntilDone:YES];
+    self.isVisible = YES;
+    if (self.engagedRefreshProgrammatically) {
+        self.engagedRefreshProgrammatically = NO; //library user is excepted to call it's refresh logic himself if he has started refresh animation programmatically
+    } else {
+        [self.target performSelectorOnMainThread:self.selector withObject:nil waitUntilDone:YES];
+    }
 }
 
 @end

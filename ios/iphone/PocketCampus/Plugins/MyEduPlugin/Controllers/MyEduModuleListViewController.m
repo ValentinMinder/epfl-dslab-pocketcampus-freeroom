@@ -14,6 +14,8 @@
 
 #import "PCRefreshControl.h"
 
+#import "PCCenterMessageCell.h"
+
 @interface MyEduModuleListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
@@ -37,10 +39,10 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
         // Custom initialization
         self.course = course;
         self.section = section;
-        self.title = section.iTitle;
+        self.title = NSLocalizedStringFromTable(@"Modules", @"MyEduPlugin", nil);
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.authController = [[AuthenticationController alloc] init];
-        //self.modules = [self.myEduService getFromCacheSectionDetailsForRequest:[[MyEduSectionDetailsRequest alloc] initWithICourseCode:self.course.iCode iSectionId:self.section.iId] myeduRequest:[self.myEduService createMyEduRequest]].iMyEduModules;
+        self.modules = [self.myEduService getFromCacheSectionDetailsForRequest:[[MyEduSectionDetailsRequest alloc] initWithICourseCode:self.course.iCode iSectionId:self.section.iId] myeduRequest:[self.myEduService createMyEduRequest]].iMyEduModules;
     }
     return self;
 }
@@ -54,6 +56,9 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
      self.tableView.backgroundColor = [UIColor clearColor];*/
     self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
     [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     if (!self.modules) {
         [self refresh];
     }
@@ -104,9 +109,7 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 }
 
 - (void)getSectionDetailsFailedForRequest:(MyEduSectionDetailsRequest *)request myeduRequest:(MyEduRequest*)myeduRequest {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self error];
 }
 
 - (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
@@ -119,9 +122,7 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 }
 
 - (void)getTequilaTokenForMyEduFailed {
-    self.pcRefreshControl.type = RefreshControlTypeProblem;
-    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
-    [self.pcRefreshControl hideInTimeInterval:2.0];
+    [self error];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
@@ -130,14 +131,24 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
+    [self error];
+}
+
+- (void)error {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    if (!self.modules) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 - (void)serviceConnectionToServerTimedOut {
     self.pcRefreshControl.type = RefreshControlTypeProblem;
     self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
+    if (!self.modules) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
     [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
@@ -156,7 +167,7 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 }
 
 - (void)invalidToken {
-    //TODO
+    [self startGetSectionDetailsRequest];
 }
 
 #pragma mark - UITableViewDelegate
@@ -170,6 +181,14 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.modules && [self.modules count] == 0) {
+        if (indexPath.row == 2) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoModule", @"MyEduPlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
+    }
+    
     MyEduModule* module = self.modules[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduModuleListCell];
     
@@ -186,6 +205,9 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
+    if ([self.modules count] == 0) {
+        return 3; //first empty cell, second cell says no content
+    }
     return [self.modules count];
 }
 
@@ -198,5 +220,9 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
     return 1;
 }
 
+- (void)dealloc
+{
+    [self.myEduService cancelOperationsForDelegate:self];
+}
 
 @end

@@ -5,6 +5,12 @@
 
 "PluginName" = "MyEdu";
 "MyCourses" = "My courses";
+"Sections" = "Sections";
+"Modules" = "Modules";
 "DownloadingCourseList" = "Downloading course list...";
 "DownloadingSectionList" = "Downloading section list...";
 "DownloadingModuleList" = "Downloading module list...";
+"NotSubscribedToAnyCourse" = "You are not registered with any MyEdu course";
+"NoSection" = "No section";
+"NoModule" = "No module";
+"CreatedOn" = "Created on";
