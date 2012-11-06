@@ -200,13 +200,16 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduCourseListCell];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMyEduCourseListCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMyEduCourseListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }
     
     cell.textLabel.text = course.iTitle;
-    cell.detailTextLabel.text = course.iDescription;
+    //cell.detailTextLabel.text = course.iDescription;
     
     return cell;
 }

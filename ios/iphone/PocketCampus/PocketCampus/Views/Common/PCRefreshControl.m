@@ -41,7 +41,7 @@
         self.tableView = self.tableViewController.tableView;
         _type = -1;
         self.problemColor = [UIColor colorWithRed:0.827451 green:0.000000 blue:0.000000 alpha:1.0];
-        if (NO && [self.tableViewController respondsToSelector:@selector(refreshControl)]) { //>= iOS 6
+        if ([self.tableViewController respondsToSelector:@selector(refreshControl)]) { //>= iOS 6
             self.usesUIRefreshControl = YES;
             self.tableViewController.refreshControl = [[UIRefreshControl alloc] init];
             self.refreshControl = self.tableViewController.refreshControl;

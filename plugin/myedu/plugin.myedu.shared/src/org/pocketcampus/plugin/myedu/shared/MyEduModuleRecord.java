@@ -144,7 +144,7 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_MODULE_ID, new org.apache.thrift.meta_data.FieldMetaData("iModuleId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.I_FEEDBACK_TEXT, new org.apache.thrift.meta_data.FieldMetaData("iFeedbackText", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.I_FEEDBACK_TEXT, new org.apache.thrift.meta_data.FieldMetaData("iFeedbackText", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_FEEDBACK_TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("iFeedbackTimestamp", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "timestamp")));
@@ -168,7 +168,6 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
   public MyEduModuleRecord(
     int iId,
     int iModuleId,
-    String iFeedbackText,
     long iFeedbackTimestamp,
     boolean iModuleCompleted,
     int iRating,
@@ -181,7 +180,6 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
     setIIdIsSet(true);
     this.iModuleId = iModuleId;
     setIModuleIdIsSet(true);
-    this.iFeedbackText = iFeedbackText;
     this.iFeedbackTimestamp = iFeedbackTimestamp;
     setIFeedbackTimestampIsSet(true);
     this.iModuleCompleted = iModuleCompleted;
@@ -968,9 +966,11 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
     oprot.writeI32(this.iModuleId);
     oprot.writeFieldEnd();
     if (this.iFeedbackText != null) {
-      oprot.writeFieldBegin(I_FEEDBACK_TEXT_FIELD_DESC);
-      oprot.writeString(this.iFeedbackText);
-      oprot.writeFieldEnd();
+      if (isSetIFeedbackText()) {
+        oprot.writeFieldBegin(I_FEEDBACK_TEXT_FIELD_DESC);
+        oprot.writeString(this.iFeedbackText);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldBegin(I_FEEDBACK_TIMESTAMP_FIELD_DESC);
     oprot.writeI64(this.iFeedbackTimestamp);
@@ -1006,14 +1006,16 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
     sb.append("iModuleId:");
     sb.append(this.iModuleId);
     first = false;
-    if (!first) sb.append(", ");
-    sb.append("iFeedbackText:");
-    if (this.iFeedbackText == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.iFeedbackText);
+    if (isSetIFeedbackText()) {
+      if (!first) sb.append(", ");
+      sb.append("iFeedbackText:");
+      if (this.iFeedbackText == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iFeedbackText);
+      }
+      first = false;
     }
-    first = false;
     if (!first) sb.append(", ");
     sb.append("iFeedbackTimestamp:");
     sb.append(this.iFeedbackTimestamp);
@@ -1046,9 +1048,6 @@ public class MyEduModuleRecord implements org.apache.thrift.TBase<MyEduModuleRec
     // check for required fields
     // alas, we cannot check 'iId' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iModuleId' because it's a primitive and you chose the non-beans generator.
-    if (iFeedbackText == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iFeedbackText' was not present! Struct: " + toString());
-    }
     // alas, we cannot check 'iFeedbackTimestamp' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iModuleCompleted' because it's a primitive and you chose the non-beans generator.
     // alas, we cannot check 'iRating' because it's a primitive and you chose the non-beans generator.

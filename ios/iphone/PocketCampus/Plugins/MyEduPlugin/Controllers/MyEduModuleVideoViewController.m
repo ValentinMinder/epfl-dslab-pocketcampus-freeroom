@@ -31,16 +31,18 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LightGrayTextureBackground"]];
     if (!self.module.iVideoURL || [self.module.iVideoURL isEqualToString:@""]) {
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"NoVideoInModule", @"MyEduPlugin", nil);
     } else {
         [self.loadingIndicator startAnimating];
         self.webView.layer.masksToBounds = NO;
         self.webView.layer.shadowOffset = CGSizeMake(0.0, 2.00);
-        self.webView.layer.shadowRadius = 3;
-        self.webView.layer.shadowOpacity = 0.5;
+        self.webView.layer.shadowRadius = 10.0;
+        self.webView.layer.shadowOpacity = 0.2;
+        self.webView.layer.shadowColor = [UIColor whiteColor].CGColor;
         self.webView.allowsInlineMediaPlayback = YES;
-        self.webView.scrollView.bounces = NO;
+        //self.webView.scrollView.bounces = NO;
         NSString* htmlString = [MyEduService videoHTMLCodeForMyEduModule:self.module videoWidth:self.webView.frame.size.width-16.0 videoHeight:self.webView.frame.size.height-16.0];
         if (htmlString) {
             [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://myedu.epfl.ch/"]];

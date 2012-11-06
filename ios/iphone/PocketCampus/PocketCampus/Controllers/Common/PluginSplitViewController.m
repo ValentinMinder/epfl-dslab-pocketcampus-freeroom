@@ -110,13 +110,13 @@
     CGFloat duration = 0.0;
     
     if (animated) {
-        duration = 0.2;
+        duration = 0.3;
     }
     
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
         detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
-    }];
+    } completion:NULL];
     
     _masterViewControllerHidden = hidden;
 

@@ -205,6 +205,7 @@ static NSString* kMyEduSectionListCell = @"MyEduSectionListCell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kMyEduSectionListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.numberOfLines = 3;
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", section.iSequence, section.iTitle];

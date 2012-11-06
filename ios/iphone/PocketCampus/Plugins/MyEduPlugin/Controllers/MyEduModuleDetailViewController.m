@@ -12,6 +12,8 @@
 
 #import "MyEduModuleTextViewController.h"
 
+#import "MyEduModuleMaterialsViewController.h"
+
 #import "PluginSplitViewController.h"
 
 #import "PCValues.h"
@@ -60,7 +62,15 @@
     textNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleText"];
     textNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
     
-    self.tabBarController.viewControllers = @[videoNavController, textNavController];
+    MyEduModuleMaterialsViewController* materialsController = [[MyEduModuleMaterialsViewController alloc] initWithMyEduModule:self.module section:self.section course:self.course];
+    materialsController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil)];
+    textController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
+    UINavigationController* materialsNavController = [[UINavigationController alloc] initWithRootViewController:materialsController];
+    materialsNavController.title = NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil);
+    materialsNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleMaterials"];
+    materialsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
+    
+    self.tabBarController.viewControllers = @[videoNavController, textNavController, materialsNavController];
     
     [self addChildViewController:self.tabBarController];
     [self.view addSubview:self.tabBarController.view];

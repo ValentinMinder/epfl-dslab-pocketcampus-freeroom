@@ -14,7 +14,7 @@
 "NoSection" = "Aucune section";
 "NoModule" = "Aucun module";
 "CreatedOn" = "Créé le";
-"LastUpdate" = "Dernière modification";
+"LastUpdateOn" = "Dernière modification le";
 "Video" = "Vidéo";
 "LoadingVideo" = "Chargement de la vidéo...";
 "NoVideoInModule" = "Pas de vidéo dans ce module";

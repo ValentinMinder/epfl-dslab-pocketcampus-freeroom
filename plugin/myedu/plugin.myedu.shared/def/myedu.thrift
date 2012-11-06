@@ -63,7 +63,7 @@ struct MyEduMaterial {
 struct MyEduModuleRecord {
 	1: required i32 iId;
 	2: required i32 iModuleId;
-	3: required string iFeedbackText;
+	3: optional string iFeedbackText;
 	4: required timestamp iFeedbackTimestamp;
 	5: required bool iModuleCompleted;
 	6: required i32 iRating; //between 1 and 5

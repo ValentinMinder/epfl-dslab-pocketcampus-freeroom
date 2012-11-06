@@ -27,6 +27,7 @@
 @property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
+@property (nonatomic, strong) NSIndexPath* selectedModuleIndexPath;
 
 @end
 
@@ -176,10 +177,23 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger selectedTabIndex = 0;
+    if ([self.selectedModuleIndexPath isEqual:indexPath]) {
+        return;
+    }
+    
+    if (self.splitViewController.viewControllers.count > 0 && [self.splitViewController.viewControllers[1] isKindOfClass:[MyEduModuleDetailViewController class]]) {
+        MyEduModuleDetailViewController* controller = (MyEduModuleDetailViewController*)(self.splitViewController.viewControllers[1]);
+        selectedTabIndex = controller.tabBarController.selectedIndex;
+    }
+    
     MyEduModule* module = self.modules[indexPath.row];
     MyEduModuleDetailViewController* detailViewController = [[MyEduModuleDetailViewController alloc] initWithModule:module section:self.section course:self.course];
+    self.selectedModuleIndexPath = indexPath;
+    
     if (self.splitViewController) {
         self.splitViewController.viewControllers = @[self.splitViewController.viewControllers[0], detailViewController];
+        detailViewController.tabBarController.selectedIndex = selectedTabIndex;
     } else {
         //TODO push on nav controller (iPhone)
     }
@@ -203,6 +217,9 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMyEduModuleListCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", module.iSequence, module.iTitle];
