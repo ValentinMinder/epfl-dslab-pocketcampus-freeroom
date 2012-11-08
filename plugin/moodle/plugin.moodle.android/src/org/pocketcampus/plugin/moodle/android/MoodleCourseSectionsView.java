@@ -149,7 +149,7 @@ public class MoodleCourseSectionsView extends PluginView implements IMoodleView 
 
 	@Override
 	public void gotMoodleCookie() {
-		mController.refreshCoursesList(true);
+		mController.refreshSectionsList(true, courseId);
 	}
 	
 	/*private void updateDisplay() {

@@ -143,7 +143,6 @@ public class MoodleCourseSectionResourcesView extends PluginView implements IMoo
 
 	@Override
 	public void gotMoodleCookie() {
-		mController.refreshCoursesList(true);
 	}
 	
 	private void updateDisplay() {

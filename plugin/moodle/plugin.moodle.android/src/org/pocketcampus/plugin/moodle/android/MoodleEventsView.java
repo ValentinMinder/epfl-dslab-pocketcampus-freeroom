@@ -127,7 +127,7 @@ public class MoodleEventsView extends PluginView implements IMoodleView {
 
 	@Override
 	public void gotMoodleCookie() {
-		mController.refreshCoursesList(true);
+		mController.refreshEventsList(true);
 	}
 	
 	private void updateDisplay() {
