@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.pocketcampus.R;
 import org.pocketcampus.android.platform.sdk.cache.RequestCache;
 import org.pocketcampus.android.platform.sdk.core.PluginController;
 import org.pocketcampus.android.platform.sdk.core.PluginModel;
@@ -32,6 +33,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * MoodleController - Main logic for the Moodle Plugin.
@@ -134,7 +136,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 	}
 	
 	public static String getLocalPath(String fileName) {
-		final String filePHP = "/file.php/";
+		final String filePHP = "/pluginfile.php/";
 		fileName = fileName.substring(fileName.indexOf(filePHP) + filePHP.length());
 		String extStr = Environment.getExternalStorageDirectory().getAbsolutePath();
 		fileName = extStr + "/PCMoodle/" + fileName;
@@ -206,6 +208,8 @@ public class MoodleController extends PluginController implements IMoodleControl
 
 	public void notLoggedIn() {
 		mModel.setMoodleCookie(null);
+		Toast.makeText(getApplicationContext(), getResources().getString(
+				R.string.moodle_session_timed_out), Toast.LENGTH_SHORT).show();
 		getTequilaToken();
 	}
 	

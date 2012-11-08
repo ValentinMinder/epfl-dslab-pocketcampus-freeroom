@@ -241,9 +241,11 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 		conn.setInstanceFollowRedirects(false);
 		conn.setRequestProperty("Cookie", cookie.cookie());
-		if(conn.getResponseCode() != 200)
+		if(conn.getResponseCode() == 200)
+			return new HttpPageReply(IOUtils.toString(conn.getInputStream(), "UTF-8"), null);
+		if(conn.getResponseCode() / 100 == 3)
 			return new HttpPageReply(null, conn.getHeaderField("Location"));
-		return new HttpPageReply(IOUtils.toString(conn.getInputStream(), "UTF-8"), null);
+		return new HttpPageReply(null, null);
 	}
 	
 	private String getSubstringBetween(String orig, String before, String after) {
@@ -488,9 +490,11 @@ public class MoodleServiceImpl implements MoodleService.Iface {
 					if(!urls.contains(j.getIUrl()))
 						urls.add(stripOffQueryString(j.getIUrl()));
 			}
-		} else {
+		} else if(httpReply.getLocation() != null) {
 			if(httpReply.getLocation().indexOf("/pluginfile.php/") != -1)
 				urls.add(stripOffQueryString(httpReply.getLocation()));
+		} else {
+			System.out.println("error while processing " + resourceUrl);
 		}
 		return urls;
 	}

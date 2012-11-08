@@ -16,4 +16,6 @@
     
     <string name="moodle_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
         
+    <string name="moodle_session_timed_out">Votre session a expiré. Tentative de reconnexion. Veuillez attendre.</string>
+    
 </resources>

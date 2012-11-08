@@ -15,5 +15,7 @@
     <string name="moodle_file_downloading">Downloading file... Please wait.</string>
 
     <string name="moodle_no_app_to_handle_filetype">Could not find any application to open this file.</string>
+
+    <string name="moodle_session_timed_out">Your session has timed out. Attempting to reauthenticate. Please wait.</string>
         
 </resources>

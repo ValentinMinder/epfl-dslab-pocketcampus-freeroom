@@ -21,16 +21,18 @@ import org.pocketcampus.plugin.moodle.android.MoodleModel;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, ResourceCookieComplex, Boolean> {
+public class FetchMoodleResourceRequest extends Request<MoodleController, DefaultHttpClient, ResourceCookieComplex, Integer> {
 	
 	File localFile;
 	
 	@Override
-	protected Boolean runInBackground(DefaultHttpClient client, ResourceCookieComplex param) throws Exception {
+	protected Integer runInBackground(DefaultHttpClient client, ResourceCookieComplex param) throws Exception {
 		HttpGet get = new HttpGet(param.resource);
 		get.addHeader("Cookie", param.cookie);
 		HttpResponse resp = client.execute(get);
 		InputStream in = resp.getEntity().getContent();
+		if(resp.getStatusLine().getStatusCode() != 200)
+			return resp.getStatusLine().getStatusCode();
 		localFile = new File(MoodleController.getLocalPath(param.resource));
 		FileOutputStream fos = new FileOutputStream(localFile);
 		byte[] buffer = new byte[4096];
@@ -39,14 +41,16 @@ public class FetchMoodleResourceRequest extends Request<MoodleController, Defaul
 			fos.write(buffer, 0, length);
 		}
 		fos.close();
-		return resp.getStatusLine().getStatusCode() == 200;
+		return 200;
 	}
 
 	@Override
-	protected void onResult(MoodleController controller, Boolean result) {
+	protected void onResult(MoodleController controller, Integer result) {
 		MoodleModel am = ((MoodleModel) controller.getModel());
-		if(result) {
+		if(result == 200) {
 			am.getListenersToNotify().downloadComplete(localFile);
+		} else if(result / 100 == 3) {
+			controller.notLoggedIn();
 		} else {
 			am.getListenersToNotify().moodleServersDown();
 		}
