@@ -15,4 +15,5 @@
 + (id<NSCoding>)objectForKey:(NSString*)key andPluginName:(NSString*)pluginName nilIfDiffIntervalLargerThan:(NSTimeInterval)interval; //nb seconds
 + (void)createComponentsForPath:(NSString*)path;
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName;
++ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName;
 @end

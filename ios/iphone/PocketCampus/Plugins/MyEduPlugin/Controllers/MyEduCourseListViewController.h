@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AuthenticationController.h"
-
 #import "MyEduService.h"
 
-@interface MyEduCourseListViewController : UITableViewController<MyEduServiceDelegate, AuthenticationCallbackDelegate>
+#import "AuthenticationController.h"
+
+#import "PCMasterSplitDelegate.h"
+
+@interface MyEduCourseListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate, AuthenticationCallbackDelegate>
+
+@property (nonatomic, strong) NSArray* elements;
 
 @end

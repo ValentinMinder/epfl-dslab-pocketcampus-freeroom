@@ -5,4 +5,24 @@
 
 "PluginName" = "MyEdu";
 "MyCourses" = "My courses";
-"DownloadingCourseList" = "Downloading course list...";
+"Course" = "Course";
+"Sections" = "Sections";
+"Section" = "Section";
+"Modules" = "Modules";
+"DownloadingCourseList" = "Refreshing course list...";
+"DownloadingSectionList" = "Refreshing section list...";
+"DownloadingModuleList" = "Refreshing module list...";
+"NotSubscribedToAnyCourse" = "You are not registered with any MyEdu course";
+"NoSection" = "No section";
+"NoModule" = "No module";
+"CreatedOn" = "Created on";
+"LastUpdateOn" = "Last update on";
+"Video" = "Video";
+"LoadingVideo" = "Loading video...";
+"NoVideoInModule" = "No video in this module";
+"VideoNotSupported" = "Sorry, this video is not supported";
+"Text" = "Text";
+"NoTextInModule" = "No text in this module";
+"Material" = "Material";
+"DownloadingFile" = "Downloading file...";
+"NoMaterial" = "No material";

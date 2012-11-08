@@ -10,7 +10,7 @@
 			<key>enabled</key>
 			<true/>
 			<key>supportedIdioms</key>
-			<string>phone+pad</string>
+			<string>phone</string>
 		</dict>
 		<dict>
 			<key>identifierName</key>

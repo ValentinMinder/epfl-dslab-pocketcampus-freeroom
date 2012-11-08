@@ -82,7 +82,7 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
     if (![self.revealController.frontViewController isViewLoaded]) {
         [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(mainMenuIsReady) userInfo:nil repeats:NO];
     } else {
-        [self revealMenuAfterSplash];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(revealMenuAfterSplash) userInfo:nil repeats:NO];
     }
 }
 

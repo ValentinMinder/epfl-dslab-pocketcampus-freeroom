@@ -12,12 +12,21 @@
 
 #import "PCUtils.h"
 
+#import "PCRefreshControl.h"
+
+#import "PCCenterMessageCell.h"
+
+#import "MyEduSectionListViewController.h"
+
+#import "MyEduSplashDetailViewController.h"
+
 @interface MyEduCourseListViewController ()
 
 @property (nonatomic, strong) MyEduService* myEduService;
 @property (nonatomic, strong) NSArray* subscribedCourses;
 @property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
+@property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
 @end
 
@@ -32,7 +41,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.authController = [[AuthenticationController alloc] init];
-        self.subscribedCourses = (NSArray*)[ObjectArchiver objectForKey:kMyEduSubscribedCoursesListIdentifier andPluginName:@"myedu"];
+        self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
     }
     return self;
 }
@@ -40,16 +49,18 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if ([self respondsToSelector:@selector(refreshControl)]) {
-        UIRefreshControl* refresh = [[UIRefreshControl alloc] init];
-        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@""];
-        [refresh addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-        self.refreshControl = refresh;
+    /*UIView* backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundView = backgroundView;
+    self.tableView.backgroundColor = [UIColor clearColor];*/
+    self.pcRefreshControl = [[PCRefreshControl alloc] initWithTableViewController:self];
+    [self.pcRefreshControl setTarget:self selector:@selector(refresh)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if (!self.subscribedCourses) {
         [self refresh];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
     }
-   
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,17 +69,12 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark refresh control
+#pragma mark - refresh control
 
 - (void)refresh {
-    if ([self respondsToSelector:@selector(refreshControl)]) {
-        if (!self.refreshControl.refreshing) {
-            [self.refreshControl beginRefreshing];
-        }
-        self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"DownloadingCourseList", @"MyEduPlugin", nil)];
-    }
-    
-    
+    [self.myEduService cancelOperationsForDelegate:self]; //cancel before retrying
+    [self.pcRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"DownloadingCourseList", @"MyEduPlugin", nil)];
+    [self startGetSubscribedCoursesListRequest];
 }
 
 - (void)login {
@@ -83,15 +89,23 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     }
 }
 
+#pragma mark - PCMasterSplitDelegate
+
+- (UIViewController*)detailViewControllerThatShouldBeDisplayed {
+    MyEduSplashDetailViewController* detailViewController = [[MyEduSplashDetailViewController alloc] init];
+    return detailViewController;
+}
+
 #pragma mark - MyEduServiceDelegate
 
-- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(SubscribedCoursesListReply *)reply {
+- (void)getSubscribedCoursesListForRequest:(MyEduRequest *)request didReturn:(MyEduSubscribedCoursesListReply *)reply {
     switch (reply.iStatus) {
         case 200:
             self.subscribedCourses = reply.iSubscribedCourses;
-            [PCUtils reloadTableView:self.tableView withFadingDuration:0.5];
+            [self.tableView reloadData];
+            [self.pcRefreshControl endRefreshing];
             break;
-        case 302:
+        case 407:
             [self login];
             break;
         default:
@@ -101,7 +115,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
-    //TODO
+    [self error];
 }
 
 - (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
@@ -114,20 +128,34 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getTequilaTokenForMyEduFailed {
-    //TODO
+    [self error];
 }
 
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
     [self.myEduService saveSession:myEduSession];
-    [self.myEduService getSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest] delegate:self];
+    [self startGetSubscribedCoursesListRequest];
 }
 
 - (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
-    //TODO
+    [self error];
+}
+
+- (void)error {
+    self.pcRefreshControl.type = RefreshControlTypeProblem;
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerErrorShort", @"PocketCampus", nil);
+    if (!self.subscribedCourses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 - (void)serviceConnectionToServerTimedOut {
-    //TODO
+    self.pcRefreshControl.type = RefreshControlTypeProblem;
+    self.pcRefreshControl.message = NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil);
+    if (!self.subscribedCourses) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    [self.pcRefreshControl hideInTimeInterval:2.0];
 }
 
 #pragma mark - AuthenticationCallbackDelegate
@@ -145,23 +173,43 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)invalidToken {
-    //TODO
+    [self startGetSubscribedCoursesListRequest];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //TODO
+    MyEduCourse* course = self.subscribedCourses[indexPath.row];
+    [self.navigationController pushViewController:[[MyEduSectionListViewController alloc] initWithMyEduCourse:course] animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduCourseListCell forIndexPath:indexPath];
+    if (self.subscribedCourses && [self.subscribedCourses count] == 0) {
+        if (indexPath.row == 2) {
+            return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NotSubscribedToAnyCourse", @"MyEduPlugin", nil)];
+        } else {
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        }
+    }
     
-    // Configure the cell...
+    MyEduCourse* course = self.subscribedCourses[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduCourseListCell];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMyEduCourseListCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    }
+    
+    cell.textLabel.text = course.iTitle;
+    //cell.detailTextLabel.text = course.iDescription;
     
     return cell;
 }
@@ -169,14 +217,24 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    if ([self.subscribedCourses count] == 0) {
+        return 2; //first empty cell, second cell says no content
+    }
+    return [self.subscribedCourses count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
     // Return the number of sections.
-    return 0;
+    if (!self.subscribedCourses) {
+        return 0;
+    }
+    return 1;
+}
+
+- (void)dealloc
+{
+    [self.myEduService cancelOperationsForDelegate:self];
 }
 
 

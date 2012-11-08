@@ -7,23 +7,43 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
 import org.pocketcampus.platform.sdk.shared.utils.Cookie;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseDetailsJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.CourseJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.MaterialJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleDetailsJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.ModuleRecordJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionDetailsJson;
+import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SectionJson;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionCreateEPFL;
 import org.pocketcampus.plugin.myedu.server.MyEduServiceConfig.SessionEPFLLogin;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourse;
+import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsReply;
+import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduMaterial;
+import org.pocketcampus.plugin.myedu.shared.MyEduMaterialType;
+import org.pocketcampus.plugin.myedu.shared.MyEduModule;
+import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsReply;
+import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduModuleRecord;
 import org.pocketcampus.plugin.myedu.shared.MyEduRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduSection;
+import org.pocketcampus.plugin.myedu.shared.MyEduSectionDetailsReply;
+import org.pocketcampus.plugin.myedu.shared.MyEduSectionDetailsRequest;
 import org.pocketcampus.plugin.myedu.shared.MyEduService;
 import org.pocketcampus.plugin.myedu.shared.MyEduSession;
+import org.pocketcampus.plugin.myedu.shared.MyEduSubmitFeedbackReply;
+import org.pocketcampus.plugin.myedu.shared.MyEduSubmitFeedbackRequest;
+import org.pocketcampus.plugin.myedu.shared.MyEduSubscribedCoursesListReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduTequilaToken;
-import org.pocketcampus.plugin.myedu.shared.SubscribedCoursesListReply;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -49,60 +69,6 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	@Override
 	public MyEduTequilaToken getTequilaTokenForMyEdu() throws TException {
 		System.out.println("getTequilaTokenForMyEdu");
-		
-		/*try {
-			
-			HttpURLConnection conn = (HttpURLConnection) new URL(MyEduServiceConfig.getFullUrlForAPIAccess(MyEduServiceConfig.CREATE_EPFL_SESSION_PATH)).openConnection();
-			conn.setInstanceFollowRedirects(false);
-			conn.getInputStream();
-			System.out.println(conn.getHeaderField("Location"));
-			URL url = new URL(conn.getHeaderField("Location"));
-			MultiMap<String> params = new MultiMap<String>();
-			UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
-			MyEduTequilaToken teqToken = new MyEduTequilaToken(params.getString("requestkey"));
-			Cookie cookie = new Cookie();
-			cookie.setCookie(conn.getHeaderFields().get("Set-Cookie"));
-			teqToken.setILoginCookie(cookie.cookie());
-			return teqToken;
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TException("Failed to getTequilaToken from upstream server");
-		}*/
-		
-		/*Gson gson = new Gson();
-		String json = null;
-		
-		MyEduTequilaToken teqToken;
-		try {
-			System.out.println("fetching...");
-			json = getPage(MyEduServiceConfig.CREATE_EPFL_SESSION_PATH, "");
-		} catch (IOException connExc) {
-			throw new TException("Failed to connect to MyEdu server");
-		} catch (HttpQueryException queryExc) {
-			throw new TException("Failed to connect to MyEdu server");
-		}
-		
-		try {
-			TypeToken<SessionCreateEPFL> replyType = new TypeToken<SessionCreateEPFL>() {};
-			SessionCreateEPFL reply = gson.fromJson(json, replyType.getType());
-			
-			
-			
-			teqToken = new MyEduTequilaToken(params.getString("requestkey"));
-			Cookie cookie = new Cookie();
-			cookie.setCookie(conn.getHeaderFields().get("Set-Cookie"));
-			teqToken.setILoginCookie(cookie.cookie());
-			return teqToken;
-			
-			
-		} catch (JsonSyntaxException jsonSyntaxException) {
-			throw new TException("Error while parsing JSON");
-		} catch (JsonParseException jsonSyntaxException) {
-			throw new TException("Error while parsing JSON");
-		}
-		
-		return new SubscribedCoursesListReply(200).setISubscribedCourses(coursesList);*/
-		
 		
 		try {
 			
@@ -140,18 +106,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		System.out.println("getMyEduSession");
 		
 		try {
-			/*HttpURLConnection conn = (HttpURLConnection) new URL(MyEduServiceConfig.getFullUrlForAPIAccess(MyEduServiceConfig.EPFL_LOGIN_PATH)).openConnection();
-			conn.setInstanceFollowRedirects(false);
-			conn.setRequestProperty("Cookie", iTequilaToken.getILoginCookie());
-			conn.getInputStream();
-			if(conn.getResponseCode() == 302) { //OK, means has redirected
-				Cookie cookie = new Cookie();
-				cookie.setCookie(conn.getHeaderFields().get("Set-Cookie"));
-				return new MyEduSession(cookie.cookie());
-			} else {
-				throw new TException("Authentication failed");
-			}*/
-			
+	
 			Gson gson = new Gson();
 			
 			HttpReply reply = getReply(MyEduServiceConfig.getFullUrlForAPIAccess(MyEduServiceConfig.EPFL_LOGIN_PATH), iTequilaToken.getILoginCookie());
@@ -178,47 +133,71 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 	}
 	
 	@Override
-	public SubscribedCoursesListReply getSubscribedCoursesList(
+	public MyEduSubscribedCoursesListReply getSubscribedCoursesList(
 			MyEduRequest iMyEduRequest) throws TException {
 		System.out.println("getSubscribedCoursesList");
 		
-		Gson gson = new Gson();
 		String json = null;
-		ArrayList<MyEduCourse> coursesList = new ArrayList<MyEduCourse>();
 		
 		try {
 			HttpReply reply = getReplyForMyEduRequest(MyEduServiceConfig.SUBSCRIBED_COURSES_LIST_PATH, iMyEduRequest);
 			if (reply.getStatusCode() != 200) {
-				return new SubscribedCoursesListReply(reply.getStatusCode()); 
+				return new MyEduSubscribedCoursesListReply(reply.getStatusCode()); 
 			}
 			json = reply.getReplyString();
 		} catch (IOException connExc) {
 			throw new TException("Failed to connect to MyEdu server");
 		} 
 		
+		Gson gson = new Gson();
+		ArrayList<MyEduCourse> coursesList = new ArrayList<MyEduCourse>();
+		
 		try {
 			TypeToken<ArrayList<CourseJson>> listType = new TypeToken<ArrayList<CourseJson>>() {};
 			ArrayList<CourseJson> courses = gson.fromJson(json, listType.getType());
 			
 			for (CourseJson course : courses) {
-				MyEduCourse myEduCourse = new MyEduCourse(course.id, course.code, course.title, course.description);
-
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /*2012-10-22T10:30:28Z*/
-				
-				try {
-					Date creationDate;
-					creationDate =  dateFormat.parse(course.created_at);
-					myEduCourse.setICreationTimestamp(creationDate.getTime()); 
-				} catch (ParseException parseException1) {}
-				
-				
-				try {
-					Date updateDate;
-					updateDate =  dateFormat.parse(course.updated_at);
-					myEduCourse.setILastUpdateTimestamp(updateDate.getTime()); 
-				} catch (ParseException parseException1) {}
-				
-				coursesList.add(myEduCourse);
+				coursesList.add(getMyEduCourseForJson(course));
+			}
+			
+		} catch (JsonSyntaxException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		} catch (JsonParseException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		}
+		System.out.println("getSubscribedCoursesList will return");
+		return new MyEduSubscribedCoursesListReply(200).setISubscribedCourses(coursesList);
+	}
+	
+	
+	@Override
+	public MyEduCourseDetailsReply getCourseDetails(MyEduRequest iMyEduRequest,
+			MyEduCourseDetailsRequest iMyEduCourseDetailsRequest)
+			throws TException {
+		System.out.println("getCourseDetails");
+		
+		String json = null;
+		
+		try {
+			String path = String.format(MyEduServiceConfig.COURSE_DETAILS_PATH_WITH_FORMAT, iMyEduCourseDetailsRequest.iCourseCode);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			if (reply.getStatusCode() != 200) {
+				return new MyEduCourseDetailsReply(reply.getStatusCode()); 
+			}
+			json = reply.getReplyString();
+		} catch (IOException connExc) {
+			throw new TException("Failed to connect to MyEdu server");
+		} 
+		
+		Gson gson = new Gson();
+		ArrayList<MyEduSection> sectionsList = new ArrayList<MyEduSection>();
+		
+		try {
+			TypeToken<CourseDetailsJson> type = new TypeToken<CourseDetailsJson>() {};
+			CourseDetailsJson courseDetails = gson.fromJson(json, type.getType());
+			
+			for (SectionJson section : courseDetails.sections) {
+				sectionsList.add(getMyEduSectionForJson(section));
 			}
 			
 		} catch (JsonSyntaxException jsonSyntaxException) {
@@ -227,7 +206,273 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			throw new TException("Error while parsing JSON");
 		}
 		
-		return new SubscribedCoursesListReply(200).setISubscribedCourses(coursesList);
+		Collections.sort(sectionsList, new Comparator<MyEduSection>() {
+			@Override
+			public int compare(MyEduSection o1, MyEduSection o2) {
+				return o1.getISequence()-o2.getISequence();
+			}
+		});
+		
+		return new MyEduCourseDetailsReply(200).setIMyEduSections(sectionsList);
+	}
+	
+	
+	@Override
+	public MyEduSectionDetailsReply getSectionDetails(
+			MyEduRequest iMyEduRequest,
+			MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
+			throws TException {
+		System.out.println("getSectionDetails");
+		
+		String json = null;
+		
+		try {
+			String path = String.format(MyEduServiceConfig.SECTION_DETAILS_PATH_WITH_FORMAT, iMyEduSectionDetailsRequest.iCourseCode, iMyEduSectionDetailsRequest.iSectionId);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			if (reply.getStatusCode() != 200) {
+				return new MyEduSectionDetailsReply(reply.getStatusCode()); 
+			}
+			json = reply.getReplyString();
+		} catch (IOException connExc) {
+			throw new TException("Failed to connect to MyEdu server");
+		} 
+		
+		Gson gson = new Gson();
+		ArrayList<MyEduModule> modulesList = new ArrayList<MyEduModule>();
+		
+		try {
+			TypeToken<SectionDetailsJson> type = new TypeToken<SectionDetailsJson>() {};
+			SectionDetailsJson sectionDetails = gson.fromJson(json, type.getType());
+			
+			for (ModuleJson module : sectionDetails.modules) {
+				modulesList.add(getMyEduModuleForJson(module));
+			}
+			
+		} catch (JsonSyntaxException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		} catch (JsonParseException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		}
+		
+		Collections.sort(modulesList, new Comparator<MyEduModule>() {
+			@Override
+			public int compare(MyEduModule o1, MyEduModule o2) {
+				return o1.getISequence()-o2.getISequence();
+			}
+		});
+		
+		return new MyEduSectionDetailsReply(200).setIMyEduModules(modulesList);
+	}
+	
+	@Override
+	public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest,
+			MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
+			throws TException {
+		System.out.println("getModuleDetails");
+		
+		String json = null;
+		
+		try {
+			String path = String.format(MyEduServiceConfig.MODULE_DETAILS_PATH_WITH_FORMAT, iMyEduModuleDetailsRequest.iCourseCode, iMyEduModuleDetailsRequest.iSectionId, iMyEduModuleDetailsRequest.iModuleId);
+			HttpReply reply = getReplyForMyEduRequest(path, iMyEduRequest);
+			if (reply.getStatusCode() != 200) {
+				return new MyEduModuleDetailsReply(reply.getStatusCode()); 
+			}
+			json = reply.getReplyString();
+		} catch (IOException connExc) {
+			throw new TException("Failed to connect to MyEdu server");
+		} 
+		
+		Gson gson = new Gson();
+		ArrayList<MyEduMaterial> materialsList = new ArrayList<MyEduMaterial>();
+		MyEduModuleRecord moduleRecord = new MyEduModuleRecord();
+		
+		try {
+			TypeToken<ModuleDetailsJson> type = new TypeToken<ModuleDetailsJson>() {};
+			ModuleDetailsJson moduleDetails = gson.fromJson(json, type.getType());
+			
+			for (MaterialJson material : moduleDetails.materials) {
+				materialsList.add(getMyEduMaterialForJson(material, iMyEduModuleDetailsRequest));
+			}
+			
+			moduleRecord = getMyEduRecordForJson(moduleDetails.module_record);
+			
+		} catch (JsonSyntaxException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		} catch (JsonParseException jsonSyntaxException) {
+			throw new TException("Error while parsing JSON");
+		}
+		
+		
+		MyEduModuleDetailsReply reply = new MyEduModuleDetailsReply(200);
+		reply.setIMyEduMaterials(materialsList);
+		reply.setIMyEduRecord(moduleRecord);
+		return reply;
+	}
+	
+	
+	/**
+	 * CONVERSION METHODS (JSON to MyEdu types)
+	 */
+	
+	private MyEduCourse getMyEduCourseForJson(CourseJson course) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(course.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(course.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduCourse myEduCourse = new MyEduCourse();
+		myEduCourse.setIId(course.id);
+		myEduCourse.setICode(course.code);
+		myEduCourse.setITitle(course.title);
+		myEduCourse.setIDescription(course.description);
+		myEduCourse.setICreationTimestamp(creationDate.getTime());
+		myEduCourse.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduCourse;
+	}
+	
+	private MyEduSection getMyEduSectionForJson(SectionJson section) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(section.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(section.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduSection myEduSection = new MyEduSection();
+		myEduSection.setIId(section.id);
+		myEduSection.setICourseId(section.cours_id);
+		myEduSection.setITitle(section.title);
+		myEduSection.setIDescription(section.description);
+		myEduSection.setISequence(section.sequence);
+		myEduSection.setICreationTimestamp(creationDate.getTime());
+		myEduSection.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduSection;
+	}
+	
+	private MyEduModule getMyEduModuleForJson(ModuleJson module) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(module.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(module.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduModule myEduModule = new MyEduModule();
+		
+		myEduModule.setIId(module.id);
+		myEduModule.setISectionId(module.section_id);
+		myEduModule.setITitle(module.title);
+		myEduModule.setISequence(module.sequence);
+		myEduModule.setICreationTimestamp(creationDate.getTime());
+		myEduModule.setILastUpdateTimestamp(updateDate.getTime());
+		myEduModule.setIVisible(module.is_visible);
+		myEduModule.setITextContent(module.text_content);
+		myEduModule.setIVideoSourceProvider(module.video_source);
+		myEduModule.setIVideoURL(module.video_url);
+		
+		return myEduModule;
+	}
+	
+	private MyEduMaterial getMyEduMaterialForJson(MaterialJson material, MyEduModuleDetailsRequest request) throws TException {
+		
+		Date creationDate;
+		Date updateDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(material.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(material.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		MyEduMaterial myEduMaterial = new MyEduMaterial();
+		
+		myEduMaterial.setIId(material.id);
+		myEduMaterial.setIModuleId(material.module_id);
+		myEduMaterial.setIName(material.name);
+		myEduMaterial.setICreationTimestamp(creationDate.getTime());
+		myEduMaterial.setILastUpdateTimestamp(updateDate.getTime());
+		
+		if (material.url == null || material.url.equals("")) {
+			myEduMaterial.setIType(MyEduMaterialType.MATERIAL_TYPE_DOCUMENT);
+			String path = String.format(MyEduServiceConfig.MATERIAL_FILE_DOWNLOAD_PATH_WITH_FORMAT, request.iCourseCode, request.iSectionId, request.iModuleId, material.id);
+			myEduMaterial.setIURL(MyEduServiceConfig.getFullUrlForAPIAccess(path));
+		} else {
+			myEduMaterial.setIType(MyEduMaterialType.MATERIAL_TYPE_WEBSITE);
+			myEduMaterial.setIURL(material.url);
+		}
+		
+		return myEduMaterial;
+	}
+	
+	private MyEduModuleRecord getMyEduRecordForJson(ModuleRecordJson record) throws TException {
+		Date creationDate;
+		Date updateDate;
+		Date feedbackDate;
+		try {
+			creationDate =  MyEduServiceConfig.getDateForString(record.created_at); 
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of creation date"); 
+		}
+		
+		try {
+			updateDate =  MyEduServiceConfig.getDateForString(record.updated_at);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of update date"); 
+		}
+		
+		try {
+			feedbackDate =  MyEduServiceConfig.getDateForString(record.feedback_time);
+		} catch (ParseException parseException1) {
+			throw new TException("Error while reading JSON of feedback date"); 
+		}
+		
+		MyEduModuleRecord myEduModuleRecord = new MyEduModuleRecord();
+		
+		myEduModuleRecord.setIId(record.id);
+		myEduModuleRecord.setIModuleId(record.module_id);
+		myEduModuleRecord.setIFeedbackText(record.feedback);
+		myEduModuleRecord.setIFeedbackTimestamp(feedbackDate.getTime());
+		myEduModuleRecord.setIModuleCompleted(record.is_completed);
+		myEduModuleRecord.setIRating(record.rating);
+		myEduModuleRecord.setIUserId(record.user_id);
+		myEduModuleRecord.setICreationTimestamp(creationDate.getTime());
+		myEduModuleRecord.setILastUpdateTimestamp(updateDate.getTime());
+		
+		return myEduModuleRecord;
 	}
 	
 	/**
@@ -291,6 +536,15 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			return redirectionURL;
 		}
 		
+	}
+
+
+	@Override
+	public MyEduSubmitFeedbackReply submitFeedback(MyEduRequest iMyEduRequest,
+			MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest)
+			throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

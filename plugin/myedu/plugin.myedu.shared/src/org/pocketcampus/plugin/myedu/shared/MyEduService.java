@@ -29,7 +29,15 @@ public class MyEduService {
 
     public MyEduSession getMyEduSession(MyEduTequilaToken iTequilaToken) throws org.apache.thrift.TException;
 
-    public SubscribedCoursesListReply getSubscribedCoursesList(MyEduRequest iMyEduRequest) throws org.apache.thrift.TException;
+    public MyEduSubscribedCoursesListReply getSubscribedCoursesList(MyEduRequest iMyEduRequest) throws org.apache.thrift.TException;
+
+    public MyEduCourseDetailsReply getCourseDetails(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest) throws org.apache.thrift.TException;
+
+    public MyEduSectionDetailsReply getSectionDetails(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest) throws org.apache.thrift.TException;
+
+    public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest) throws org.apache.thrift.TException;
+
+    public MyEduSubmitFeedbackReply submitFeedback(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest) throws org.apache.thrift.TException;
 
   }
 
@@ -40,6 +48,14 @@ public class MyEduService {
     public void getMyEduSession(MyEduTequilaToken iTequilaToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getMyEduSession_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getSubscribedCoursesList(MyEduRequest iMyEduRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSubscribedCoursesList_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getCourseDetails(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getCourseDetails_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getSectionDetails(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getSectionDetails_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getModuleDetails(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getModuleDetails_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void submitFeedback(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.submitFeedback_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -108,7 +124,7 @@ public class MyEduService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getMyEduSession failed: unknown result");
     }
 
-    public SubscribedCoursesListReply getSubscribedCoursesList(MyEduRequest iMyEduRequest) throws org.apache.thrift.TException
+    public MyEduSubscribedCoursesListReply getSubscribedCoursesList(MyEduRequest iMyEduRequest) throws org.apache.thrift.TException
     {
       send_getSubscribedCoursesList(iMyEduRequest);
       return recv_getSubscribedCoursesList();
@@ -121,7 +137,7 @@ public class MyEduService {
       sendBase("getSubscribedCoursesList", args);
     }
 
-    public SubscribedCoursesListReply recv_getSubscribedCoursesList() throws org.apache.thrift.TException
+    public MyEduSubscribedCoursesListReply recv_getSubscribedCoursesList() throws org.apache.thrift.TException
     {
       getSubscribedCoursesList_result result = new getSubscribedCoursesList_result();
       receiveBase(result, "getSubscribedCoursesList");
@@ -129,6 +145,102 @@ public class MyEduService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSubscribedCoursesList failed: unknown result");
+    }
+
+    public MyEduCourseDetailsReply getCourseDetails(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest) throws org.apache.thrift.TException
+    {
+      send_getCourseDetails(iMyEduRequest, iMyEduCourseDetailsRequest);
+      return recv_getCourseDetails();
+    }
+
+    public void send_getCourseDetails(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest) throws org.apache.thrift.TException
+    {
+      getCourseDetails_args args = new getCourseDetails_args();
+      args.setIMyEduRequest(iMyEduRequest);
+      args.setIMyEduCourseDetailsRequest(iMyEduCourseDetailsRequest);
+      sendBase("getCourseDetails", args);
+    }
+
+    public MyEduCourseDetailsReply recv_getCourseDetails() throws org.apache.thrift.TException
+    {
+      getCourseDetails_result result = new getCourseDetails_result();
+      receiveBase(result, "getCourseDetails");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getCourseDetails failed: unknown result");
+    }
+
+    public MyEduSectionDetailsReply getSectionDetails(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest) throws org.apache.thrift.TException
+    {
+      send_getSectionDetails(iMyEduRequest, iMyEduSectionDetailsRequest);
+      return recv_getSectionDetails();
+    }
+
+    public void send_getSectionDetails(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest) throws org.apache.thrift.TException
+    {
+      getSectionDetails_args args = new getSectionDetails_args();
+      args.setIMyEduRequest(iMyEduRequest);
+      args.setIMyEduSectionDetailsRequest(iMyEduSectionDetailsRequest);
+      sendBase("getSectionDetails", args);
+    }
+
+    public MyEduSectionDetailsReply recv_getSectionDetails() throws org.apache.thrift.TException
+    {
+      getSectionDetails_result result = new getSectionDetails_result();
+      receiveBase(result, "getSectionDetails");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSectionDetails failed: unknown result");
+    }
+
+    public MyEduModuleDetailsReply getModuleDetails(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest) throws org.apache.thrift.TException
+    {
+      send_getModuleDetails(iMyEduRequest, iMyEduModuleDetailsRequest);
+      return recv_getModuleDetails();
+    }
+
+    public void send_getModuleDetails(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest) throws org.apache.thrift.TException
+    {
+      getModuleDetails_args args = new getModuleDetails_args();
+      args.setIMyEduRequest(iMyEduRequest);
+      args.setIMyEduModuleDetailsRequest(iMyEduModuleDetailsRequest);
+      sendBase("getModuleDetails", args);
+    }
+
+    public MyEduModuleDetailsReply recv_getModuleDetails() throws org.apache.thrift.TException
+    {
+      getModuleDetails_result result = new getModuleDetails_result();
+      receiveBase(result, "getModuleDetails");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getModuleDetails failed: unknown result");
+    }
+
+    public MyEduSubmitFeedbackReply submitFeedback(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest) throws org.apache.thrift.TException
+    {
+      send_submitFeedback(iMyEduRequest, iMyEduSubmitFeedbackRequest);
+      return recv_submitFeedback();
+    }
+
+    public void send_submitFeedback(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest) throws org.apache.thrift.TException
+    {
+      submitFeedback_args args = new submitFeedback_args();
+      args.setIMyEduRequest(iMyEduRequest);
+      args.setIMyEduSubmitFeedbackRequest(iMyEduSubmitFeedbackRequest);
+      sendBase("submitFeedback", args);
+    }
+
+    public MyEduSubmitFeedbackReply recv_submitFeedback() throws org.apache.thrift.TException
+    {
+      submitFeedback_result result = new submitFeedback_result();
+      receiveBase(result, "submitFeedback");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "submitFeedback failed: unknown result");
     }
 
   }
@@ -232,13 +344,153 @@ public class MyEduService {
         prot.writeMessageEnd();
       }
 
-      public SubscribedCoursesListReply getResult() throws org.apache.thrift.TException {
+      public MyEduSubscribedCoursesListReply getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getSubscribedCoursesList();
+      }
+    }
+
+    public void getCourseDetails(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getCourseDetails_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getCourseDetails_call method_call = new getCourseDetails_call(iMyEduRequest, iMyEduCourseDetailsRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getCourseDetails_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private MyEduRequest iMyEduRequest;
+      private MyEduCourseDetailsRequest iMyEduCourseDetailsRequest;
+      public getCourseDetails_call(MyEduRequest iMyEduRequest, MyEduCourseDetailsRequest iMyEduCourseDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getCourseDetails_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.iMyEduRequest = iMyEduRequest;
+        this.iMyEduCourseDetailsRequest = iMyEduCourseDetailsRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getCourseDetails", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getCourseDetails_args args = new getCourseDetails_args();
+        args.setIMyEduRequest(iMyEduRequest);
+        args.setIMyEduCourseDetailsRequest(iMyEduCourseDetailsRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public MyEduCourseDetailsReply getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getCourseDetails();
+      }
+    }
+
+    public void getSectionDetails(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getSectionDetails_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getSectionDetails_call method_call = new getSectionDetails_call(iMyEduRequest, iMyEduSectionDetailsRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getSectionDetails_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private MyEduRequest iMyEduRequest;
+      private MyEduSectionDetailsRequest iMyEduSectionDetailsRequest;
+      public getSectionDetails_call(MyEduRequest iMyEduRequest, MyEduSectionDetailsRequest iMyEduSectionDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getSectionDetails_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.iMyEduRequest = iMyEduRequest;
+        this.iMyEduSectionDetailsRequest = iMyEduSectionDetailsRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getSectionDetails", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getSectionDetails_args args = new getSectionDetails_args();
+        args.setIMyEduRequest(iMyEduRequest);
+        args.setIMyEduSectionDetailsRequest(iMyEduSectionDetailsRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public MyEduSectionDetailsReply getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getSectionDetails();
+      }
+    }
+
+    public void getModuleDetails(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getModuleDetails_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getModuleDetails_call method_call = new getModuleDetails_call(iMyEduRequest, iMyEduModuleDetailsRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getModuleDetails_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private MyEduRequest iMyEduRequest;
+      private MyEduModuleDetailsRequest iMyEduModuleDetailsRequest;
+      public getModuleDetails_call(MyEduRequest iMyEduRequest, MyEduModuleDetailsRequest iMyEduModuleDetailsRequest, org.apache.thrift.async.AsyncMethodCallback<getModuleDetails_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.iMyEduRequest = iMyEduRequest;
+        this.iMyEduModuleDetailsRequest = iMyEduModuleDetailsRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getModuleDetails", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getModuleDetails_args args = new getModuleDetails_args();
+        args.setIMyEduRequest(iMyEduRequest);
+        args.setIMyEduModuleDetailsRequest(iMyEduModuleDetailsRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public MyEduModuleDetailsReply getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getModuleDetails();
+      }
+    }
+
+    public void submitFeedback(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest, org.apache.thrift.async.AsyncMethodCallback<submitFeedback_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      submitFeedback_call method_call = new submitFeedback_call(iMyEduRequest, iMyEduSubmitFeedbackRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class submitFeedback_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private MyEduRequest iMyEduRequest;
+      private MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest;
+      public submitFeedback_call(MyEduRequest iMyEduRequest, MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest, org.apache.thrift.async.AsyncMethodCallback<submitFeedback_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.iMyEduRequest = iMyEduRequest;
+        this.iMyEduSubmitFeedbackRequest = iMyEduSubmitFeedbackRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("submitFeedback", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        submitFeedback_args args = new submitFeedback_args();
+        args.setIMyEduRequest(iMyEduRequest);
+        args.setIMyEduSubmitFeedbackRequest(iMyEduSubmitFeedbackRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public MyEduSubmitFeedbackReply getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_submitFeedback();
       }
     }
 
@@ -258,6 +510,10 @@ public class MyEduService {
       processMap.put("getTequilaTokenForMyEdu", new getTequilaTokenForMyEdu());
       processMap.put("getMyEduSession", new getMyEduSession());
       processMap.put("getSubscribedCoursesList", new getSubscribedCoursesList());
+      processMap.put("getCourseDetails", new getCourseDetails());
+      processMap.put("getSectionDetails", new getSectionDetails());
+      processMap.put("getModuleDetails", new getModuleDetails());
+      processMap.put("submitFeedback", new submitFeedback());
       return processMap;
     }
 
@@ -305,6 +561,70 @@ public class MyEduService {
       protected getSubscribedCoursesList_result getResult(I iface, getSubscribedCoursesList_args args) throws org.apache.thrift.TException {
         getSubscribedCoursesList_result result = new getSubscribedCoursesList_result();
         result.success = iface.getSubscribedCoursesList(args.iMyEduRequest);
+        return result;
+      }
+    }
+
+    private static class getCourseDetails<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getCourseDetails_args> {
+      public getCourseDetails() {
+        super("getCourseDetails");
+      }
+
+      protected getCourseDetails_args getEmptyArgsInstance() {
+        return new getCourseDetails_args();
+      }
+
+      protected getCourseDetails_result getResult(I iface, getCourseDetails_args args) throws org.apache.thrift.TException {
+        getCourseDetails_result result = new getCourseDetails_result();
+        result.success = iface.getCourseDetails(args.iMyEduRequest, args.iMyEduCourseDetailsRequest);
+        return result;
+      }
+    }
+
+    private static class getSectionDetails<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getSectionDetails_args> {
+      public getSectionDetails() {
+        super("getSectionDetails");
+      }
+
+      protected getSectionDetails_args getEmptyArgsInstance() {
+        return new getSectionDetails_args();
+      }
+
+      protected getSectionDetails_result getResult(I iface, getSectionDetails_args args) throws org.apache.thrift.TException {
+        getSectionDetails_result result = new getSectionDetails_result();
+        result.success = iface.getSectionDetails(args.iMyEduRequest, args.iMyEduSectionDetailsRequest);
+        return result;
+      }
+    }
+
+    private static class getModuleDetails<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getModuleDetails_args> {
+      public getModuleDetails() {
+        super("getModuleDetails");
+      }
+
+      protected getModuleDetails_args getEmptyArgsInstance() {
+        return new getModuleDetails_args();
+      }
+
+      protected getModuleDetails_result getResult(I iface, getModuleDetails_args args) throws org.apache.thrift.TException {
+        getModuleDetails_result result = new getModuleDetails_result();
+        result.success = iface.getModuleDetails(args.iMyEduRequest, args.iMyEduModuleDetailsRequest);
+        return result;
+      }
+    }
+
+    private static class submitFeedback<I extends Iface> extends org.apache.thrift.ProcessFunction<I, submitFeedback_args> {
+      public submitFeedback() {
+        super("submitFeedback");
+      }
+
+      protected submitFeedback_args getEmptyArgsInstance() {
+        return new submitFeedback_args();
+      }
+
+      protected submitFeedback_result getResult(I iface, submitFeedback_args args) throws org.apache.thrift.TException {
+        submitFeedback_result result = new submitFeedback_result();
+        result.success = iface.submitFeedback(args.iMyEduRequest, args.iMyEduSubmitFeedbackRequest);
         return result;
       }
     }
@@ -1738,7 +2058,7 @@ public class MyEduService {
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
-    public SubscribedCoursesListReply success; // required
+    public MyEduSubscribedCoursesListReply success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1804,7 +2124,7 @@ public class MyEduService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SubscribedCoursesListReply.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduSubscribedCoursesListReply.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSubscribedCoursesList_result.class, metaDataMap);
     }
@@ -1813,7 +2133,7 @@ public class MyEduService {
     }
 
     public getSubscribedCoursesList_result(
-      SubscribedCoursesListReply success)
+      MyEduSubscribedCoursesListReply success)
     {
       this();
       this.success = success;
@@ -1824,7 +2144,7 @@ public class MyEduService {
      */
     public getSubscribedCoursesList_result(getSubscribedCoursesList_result other) {
       if (other.isSetSuccess()) {
-        this.success = new SubscribedCoursesListReply(other.success);
+        this.success = new MyEduSubscribedCoursesListReply(other.success);
       }
     }
 
@@ -1837,11 +2157,11 @@ public class MyEduService {
       this.success = null;
     }
 
-    public SubscribedCoursesListReply getSuccess() {
+    public MyEduSubscribedCoursesListReply getSuccess() {
       return this.success;
     }
 
-    public getSubscribedCoursesList_result setSuccess(SubscribedCoursesListReply success) {
+    public getSubscribedCoursesList_result setSuccess(MyEduSubscribedCoursesListReply success) {
       this.success = success;
       return this;
     }
@@ -1867,7 +2187,7 @@ public class MyEduService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((SubscribedCoursesListReply)value);
+          setSuccess((MyEduSubscribedCoursesListReply)value);
         }
         break;
 
@@ -1970,7 +2290,7 @@ public class MyEduService {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
-              this.success = new SubscribedCoursesListReply();
+              this.success = new MyEduSubscribedCoursesListReply();
               this.success.read(iprot);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
@@ -2002,6 +2322,2822 @@ public class MyEduService {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder("getSubscribedCoursesList_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getCourseDetails_args implements org.apache.thrift.TBase<getCourseDetails_args, getCourseDetails_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getCourseDetails_args");
+
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_COURSE_DETAILS_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduCourseDetailsRequest", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+
+    public MyEduRequest iMyEduRequest; // required
+    public MyEduCourseDetailsRequest iMyEduCourseDetailsRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      I_MY_EDU_REQUEST((short)1, "iMyEduRequest"),
+      I_MY_EDU_COURSE_DETAILS_REQUEST((short)2, "iMyEduCourseDetailsRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // I_MY_EDU_REQUEST
+            return I_MY_EDU_REQUEST;
+          case 2: // I_MY_EDU_COURSE_DETAILS_REQUEST
+            return I_MY_EDU_COURSE_DETAILS_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.I_MY_EDU_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduRequest.class)));
+      tmpMap.put(_Fields.I_MY_EDU_COURSE_DETAILS_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduCourseDetailsRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduCourseDetailsRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getCourseDetails_args.class, metaDataMap);
+    }
+
+    public getCourseDetails_args() {
+    }
+
+    public getCourseDetails_args(
+      MyEduRequest iMyEduRequest,
+      MyEduCourseDetailsRequest iMyEduCourseDetailsRequest)
+    {
+      this();
+      this.iMyEduRequest = iMyEduRequest;
+      this.iMyEduCourseDetailsRequest = iMyEduCourseDetailsRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getCourseDetails_args(getCourseDetails_args other) {
+      if (other.isSetIMyEduRequest()) {
+        this.iMyEduRequest = new MyEduRequest(other.iMyEduRequest);
+      }
+      if (other.isSetIMyEduCourseDetailsRequest()) {
+        this.iMyEduCourseDetailsRequest = new MyEduCourseDetailsRequest(other.iMyEduCourseDetailsRequest);
+      }
+    }
+
+    public getCourseDetails_args deepCopy() {
+      return new getCourseDetails_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.iMyEduRequest = null;
+      this.iMyEduCourseDetailsRequest = null;
+    }
+
+    public MyEduRequest getIMyEduRequest() {
+      return this.iMyEduRequest;
+    }
+
+    public getCourseDetails_args setIMyEduRequest(MyEduRequest iMyEduRequest) {
+      this.iMyEduRequest = iMyEduRequest;
+      return this;
+    }
+
+    public void unsetIMyEduRequest() {
+      this.iMyEduRequest = null;
+    }
+
+    /** Returns true if field iMyEduRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduRequest() {
+      return this.iMyEduRequest != null;
+    }
+
+    public void setIMyEduRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduRequest = null;
+      }
+    }
+
+    public MyEduCourseDetailsRequest getIMyEduCourseDetailsRequest() {
+      return this.iMyEduCourseDetailsRequest;
+    }
+
+    public getCourseDetails_args setIMyEduCourseDetailsRequest(MyEduCourseDetailsRequest iMyEduCourseDetailsRequest) {
+      this.iMyEduCourseDetailsRequest = iMyEduCourseDetailsRequest;
+      return this;
+    }
+
+    public void unsetIMyEduCourseDetailsRequest() {
+      this.iMyEduCourseDetailsRequest = null;
+    }
+
+    /** Returns true if field iMyEduCourseDetailsRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduCourseDetailsRequest() {
+      return this.iMyEduCourseDetailsRequest != null;
+    }
+
+    public void setIMyEduCourseDetailsRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduCourseDetailsRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        if (value == null) {
+          unsetIMyEduRequest();
+        } else {
+          setIMyEduRequest((MyEduRequest)value);
+        }
+        break;
+
+      case I_MY_EDU_COURSE_DETAILS_REQUEST:
+        if (value == null) {
+          unsetIMyEduCourseDetailsRequest();
+        } else {
+          setIMyEduCourseDetailsRequest((MyEduCourseDetailsRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return getIMyEduRequest();
+
+      case I_MY_EDU_COURSE_DETAILS_REQUEST:
+        return getIMyEduCourseDetailsRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return isSetIMyEduRequest();
+      case I_MY_EDU_COURSE_DETAILS_REQUEST:
+        return isSetIMyEduCourseDetailsRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getCourseDetails_args)
+        return this.equals((getCourseDetails_args)that);
+      return false;
+    }
+
+    public boolean equals(getCourseDetails_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_iMyEduRequest = true && this.isSetIMyEduRequest();
+      boolean that_present_iMyEduRequest = true && that.isSetIMyEduRequest();
+      if (this_present_iMyEduRequest || that_present_iMyEduRequest) {
+        if (!(this_present_iMyEduRequest && that_present_iMyEduRequest))
+          return false;
+        if (!this.iMyEduRequest.equals(that.iMyEduRequest))
+          return false;
+      }
+
+      boolean this_present_iMyEduCourseDetailsRequest = true && this.isSetIMyEduCourseDetailsRequest();
+      boolean that_present_iMyEduCourseDetailsRequest = true && that.isSetIMyEduCourseDetailsRequest();
+      if (this_present_iMyEduCourseDetailsRequest || that_present_iMyEduCourseDetailsRequest) {
+        if (!(this_present_iMyEduCourseDetailsRequest && that_present_iMyEduCourseDetailsRequest))
+          return false;
+        if (!this.iMyEduCourseDetailsRequest.equals(that.iMyEduCourseDetailsRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_iMyEduRequest = true && (isSetIMyEduRequest());
+      builder.append(present_iMyEduRequest);
+      if (present_iMyEduRequest)
+        builder.append(iMyEduRequest);
+
+      boolean present_iMyEduCourseDetailsRequest = true && (isSetIMyEduCourseDetailsRequest());
+      builder.append(present_iMyEduCourseDetailsRequest);
+      if (present_iMyEduCourseDetailsRequest)
+        builder.append(iMyEduCourseDetailsRequest);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getCourseDetails_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getCourseDetails_args typedOther = (getCourseDetails_args)other;
+
+      lastComparison = Boolean.valueOf(isSetIMyEduRequest()).compareTo(typedOther.isSetIMyEduRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduRequest, typedOther.iMyEduRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetIMyEduCourseDetailsRequest()).compareTo(typedOther.isSetIMyEduCourseDetailsRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduCourseDetailsRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduCourseDetailsRequest, typedOther.iMyEduCourseDetailsRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // I_MY_EDU_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduRequest = new MyEduRequest();
+              this.iMyEduRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // I_MY_EDU_COURSE_DETAILS_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduCourseDetailsRequest = new MyEduCourseDetailsRequest();
+              this.iMyEduCourseDetailsRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.iMyEduRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_REQUEST_FIELD_DESC);
+        this.iMyEduRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.iMyEduCourseDetailsRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_COURSE_DETAILS_REQUEST_FIELD_DESC);
+        this.iMyEduCourseDetailsRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getCourseDetails_args(");
+      boolean first = true;
+
+      sb.append("iMyEduRequest:");
+      if (this.iMyEduRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduRequest);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("iMyEduCourseDetailsRequest:");
+      if (this.iMyEduCourseDetailsRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduCourseDetailsRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getCourseDetails_result implements org.apache.thrift.TBase<getCourseDetails_result, getCourseDetails_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getCourseDetails_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public MyEduCourseDetailsReply success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduCourseDetailsReply.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getCourseDetails_result.class, metaDataMap);
+    }
+
+    public getCourseDetails_result() {
+    }
+
+    public getCourseDetails_result(
+      MyEduCourseDetailsReply success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getCourseDetails_result(getCourseDetails_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new MyEduCourseDetailsReply(other.success);
+      }
+    }
+
+    public getCourseDetails_result deepCopy() {
+      return new getCourseDetails_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public MyEduCourseDetailsReply getSuccess() {
+      return this.success;
+    }
+
+    public getCourseDetails_result setSuccess(MyEduCourseDetailsReply success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((MyEduCourseDetailsReply)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getCourseDetails_result)
+        return this.equals((getCourseDetails_result)that);
+      return false;
+    }
+
+    public boolean equals(getCourseDetails_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getCourseDetails_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getCourseDetails_result typedOther = (getCourseDetails_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new MyEduCourseDetailsReply();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getCourseDetails_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getSectionDetails_args implements org.apache.thrift.TBase<getSectionDetails_args, getSectionDetails_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSectionDetails_args");
+
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_SECTION_DETAILS_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduSectionDetailsRequest", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+
+    public MyEduRequest iMyEduRequest; // required
+    public MyEduSectionDetailsRequest iMyEduSectionDetailsRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      I_MY_EDU_REQUEST((short)1, "iMyEduRequest"),
+      I_MY_EDU_SECTION_DETAILS_REQUEST((short)2, "iMyEduSectionDetailsRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // I_MY_EDU_REQUEST
+            return I_MY_EDU_REQUEST;
+          case 2: // I_MY_EDU_SECTION_DETAILS_REQUEST
+            return I_MY_EDU_SECTION_DETAILS_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.I_MY_EDU_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduRequest.class)));
+      tmpMap.put(_Fields.I_MY_EDU_SECTION_DETAILS_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduSectionDetailsRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduSectionDetailsRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSectionDetails_args.class, metaDataMap);
+    }
+
+    public getSectionDetails_args() {
+    }
+
+    public getSectionDetails_args(
+      MyEduRequest iMyEduRequest,
+      MyEduSectionDetailsRequest iMyEduSectionDetailsRequest)
+    {
+      this();
+      this.iMyEduRequest = iMyEduRequest;
+      this.iMyEduSectionDetailsRequest = iMyEduSectionDetailsRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getSectionDetails_args(getSectionDetails_args other) {
+      if (other.isSetIMyEduRequest()) {
+        this.iMyEduRequest = new MyEduRequest(other.iMyEduRequest);
+      }
+      if (other.isSetIMyEduSectionDetailsRequest()) {
+        this.iMyEduSectionDetailsRequest = new MyEduSectionDetailsRequest(other.iMyEduSectionDetailsRequest);
+      }
+    }
+
+    public getSectionDetails_args deepCopy() {
+      return new getSectionDetails_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.iMyEduRequest = null;
+      this.iMyEduSectionDetailsRequest = null;
+    }
+
+    public MyEduRequest getIMyEduRequest() {
+      return this.iMyEduRequest;
+    }
+
+    public getSectionDetails_args setIMyEduRequest(MyEduRequest iMyEduRequest) {
+      this.iMyEduRequest = iMyEduRequest;
+      return this;
+    }
+
+    public void unsetIMyEduRequest() {
+      this.iMyEduRequest = null;
+    }
+
+    /** Returns true if field iMyEduRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduRequest() {
+      return this.iMyEduRequest != null;
+    }
+
+    public void setIMyEduRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduRequest = null;
+      }
+    }
+
+    public MyEduSectionDetailsRequest getIMyEduSectionDetailsRequest() {
+      return this.iMyEduSectionDetailsRequest;
+    }
+
+    public getSectionDetails_args setIMyEduSectionDetailsRequest(MyEduSectionDetailsRequest iMyEduSectionDetailsRequest) {
+      this.iMyEduSectionDetailsRequest = iMyEduSectionDetailsRequest;
+      return this;
+    }
+
+    public void unsetIMyEduSectionDetailsRequest() {
+      this.iMyEduSectionDetailsRequest = null;
+    }
+
+    /** Returns true if field iMyEduSectionDetailsRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduSectionDetailsRequest() {
+      return this.iMyEduSectionDetailsRequest != null;
+    }
+
+    public void setIMyEduSectionDetailsRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduSectionDetailsRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        if (value == null) {
+          unsetIMyEduRequest();
+        } else {
+          setIMyEduRequest((MyEduRequest)value);
+        }
+        break;
+
+      case I_MY_EDU_SECTION_DETAILS_REQUEST:
+        if (value == null) {
+          unsetIMyEduSectionDetailsRequest();
+        } else {
+          setIMyEduSectionDetailsRequest((MyEduSectionDetailsRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return getIMyEduRequest();
+
+      case I_MY_EDU_SECTION_DETAILS_REQUEST:
+        return getIMyEduSectionDetailsRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return isSetIMyEduRequest();
+      case I_MY_EDU_SECTION_DETAILS_REQUEST:
+        return isSetIMyEduSectionDetailsRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getSectionDetails_args)
+        return this.equals((getSectionDetails_args)that);
+      return false;
+    }
+
+    public boolean equals(getSectionDetails_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_iMyEduRequest = true && this.isSetIMyEduRequest();
+      boolean that_present_iMyEduRequest = true && that.isSetIMyEduRequest();
+      if (this_present_iMyEduRequest || that_present_iMyEduRequest) {
+        if (!(this_present_iMyEduRequest && that_present_iMyEduRequest))
+          return false;
+        if (!this.iMyEduRequest.equals(that.iMyEduRequest))
+          return false;
+      }
+
+      boolean this_present_iMyEduSectionDetailsRequest = true && this.isSetIMyEduSectionDetailsRequest();
+      boolean that_present_iMyEduSectionDetailsRequest = true && that.isSetIMyEduSectionDetailsRequest();
+      if (this_present_iMyEduSectionDetailsRequest || that_present_iMyEduSectionDetailsRequest) {
+        if (!(this_present_iMyEduSectionDetailsRequest && that_present_iMyEduSectionDetailsRequest))
+          return false;
+        if (!this.iMyEduSectionDetailsRequest.equals(that.iMyEduSectionDetailsRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_iMyEduRequest = true && (isSetIMyEduRequest());
+      builder.append(present_iMyEduRequest);
+      if (present_iMyEduRequest)
+        builder.append(iMyEduRequest);
+
+      boolean present_iMyEduSectionDetailsRequest = true && (isSetIMyEduSectionDetailsRequest());
+      builder.append(present_iMyEduSectionDetailsRequest);
+      if (present_iMyEduSectionDetailsRequest)
+        builder.append(iMyEduSectionDetailsRequest);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getSectionDetails_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getSectionDetails_args typedOther = (getSectionDetails_args)other;
+
+      lastComparison = Boolean.valueOf(isSetIMyEduRequest()).compareTo(typedOther.isSetIMyEduRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduRequest, typedOther.iMyEduRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetIMyEduSectionDetailsRequest()).compareTo(typedOther.isSetIMyEduSectionDetailsRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduSectionDetailsRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduSectionDetailsRequest, typedOther.iMyEduSectionDetailsRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // I_MY_EDU_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduRequest = new MyEduRequest();
+              this.iMyEduRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // I_MY_EDU_SECTION_DETAILS_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduSectionDetailsRequest = new MyEduSectionDetailsRequest();
+              this.iMyEduSectionDetailsRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.iMyEduRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_REQUEST_FIELD_DESC);
+        this.iMyEduRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.iMyEduSectionDetailsRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_SECTION_DETAILS_REQUEST_FIELD_DESC);
+        this.iMyEduSectionDetailsRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getSectionDetails_args(");
+      boolean first = true;
+
+      sb.append("iMyEduRequest:");
+      if (this.iMyEduRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduRequest);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("iMyEduSectionDetailsRequest:");
+      if (this.iMyEduSectionDetailsRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduSectionDetailsRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getSectionDetails_result implements org.apache.thrift.TBase<getSectionDetails_result, getSectionDetails_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSectionDetails_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public MyEduSectionDetailsReply success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduSectionDetailsReply.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSectionDetails_result.class, metaDataMap);
+    }
+
+    public getSectionDetails_result() {
+    }
+
+    public getSectionDetails_result(
+      MyEduSectionDetailsReply success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getSectionDetails_result(getSectionDetails_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new MyEduSectionDetailsReply(other.success);
+      }
+    }
+
+    public getSectionDetails_result deepCopy() {
+      return new getSectionDetails_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public MyEduSectionDetailsReply getSuccess() {
+      return this.success;
+    }
+
+    public getSectionDetails_result setSuccess(MyEduSectionDetailsReply success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((MyEduSectionDetailsReply)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getSectionDetails_result)
+        return this.equals((getSectionDetails_result)that);
+      return false;
+    }
+
+    public boolean equals(getSectionDetails_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getSectionDetails_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getSectionDetails_result typedOther = (getSectionDetails_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new MyEduSectionDetailsReply();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getSectionDetails_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getModuleDetails_args implements org.apache.thrift.TBase<getModuleDetails_args, getModuleDetails_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getModuleDetails_args");
+
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_MODULE_DETAILS_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduModuleDetailsRequest", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+
+    public MyEduRequest iMyEduRequest; // required
+    public MyEduModuleDetailsRequest iMyEduModuleDetailsRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      I_MY_EDU_REQUEST((short)1, "iMyEduRequest"),
+      I_MY_EDU_MODULE_DETAILS_REQUEST((short)2, "iMyEduModuleDetailsRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // I_MY_EDU_REQUEST
+            return I_MY_EDU_REQUEST;
+          case 2: // I_MY_EDU_MODULE_DETAILS_REQUEST
+            return I_MY_EDU_MODULE_DETAILS_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.I_MY_EDU_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduRequest.class)));
+      tmpMap.put(_Fields.I_MY_EDU_MODULE_DETAILS_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduModuleDetailsRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduModuleDetailsRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getModuleDetails_args.class, metaDataMap);
+    }
+
+    public getModuleDetails_args() {
+    }
+
+    public getModuleDetails_args(
+      MyEduRequest iMyEduRequest,
+      MyEduModuleDetailsRequest iMyEduModuleDetailsRequest)
+    {
+      this();
+      this.iMyEduRequest = iMyEduRequest;
+      this.iMyEduModuleDetailsRequest = iMyEduModuleDetailsRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getModuleDetails_args(getModuleDetails_args other) {
+      if (other.isSetIMyEduRequest()) {
+        this.iMyEduRequest = new MyEduRequest(other.iMyEduRequest);
+      }
+      if (other.isSetIMyEduModuleDetailsRequest()) {
+        this.iMyEduModuleDetailsRequest = new MyEduModuleDetailsRequest(other.iMyEduModuleDetailsRequest);
+      }
+    }
+
+    public getModuleDetails_args deepCopy() {
+      return new getModuleDetails_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.iMyEduRequest = null;
+      this.iMyEduModuleDetailsRequest = null;
+    }
+
+    public MyEduRequest getIMyEduRequest() {
+      return this.iMyEduRequest;
+    }
+
+    public getModuleDetails_args setIMyEduRequest(MyEduRequest iMyEduRequest) {
+      this.iMyEduRequest = iMyEduRequest;
+      return this;
+    }
+
+    public void unsetIMyEduRequest() {
+      this.iMyEduRequest = null;
+    }
+
+    /** Returns true if field iMyEduRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduRequest() {
+      return this.iMyEduRequest != null;
+    }
+
+    public void setIMyEduRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduRequest = null;
+      }
+    }
+
+    public MyEduModuleDetailsRequest getIMyEduModuleDetailsRequest() {
+      return this.iMyEduModuleDetailsRequest;
+    }
+
+    public getModuleDetails_args setIMyEduModuleDetailsRequest(MyEduModuleDetailsRequest iMyEduModuleDetailsRequest) {
+      this.iMyEduModuleDetailsRequest = iMyEduModuleDetailsRequest;
+      return this;
+    }
+
+    public void unsetIMyEduModuleDetailsRequest() {
+      this.iMyEduModuleDetailsRequest = null;
+    }
+
+    /** Returns true if field iMyEduModuleDetailsRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduModuleDetailsRequest() {
+      return this.iMyEduModuleDetailsRequest != null;
+    }
+
+    public void setIMyEduModuleDetailsRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduModuleDetailsRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        if (value == null) {
+          unsetIMyEduRequest();
+        } else {
+          setIMyEduRequest((MyEduRequest)value);
+        }
+        break;
+
+      case I_MY_EDU_MODULE_DETAILS_REQUEST:
+        if (value == null) {
+          unsetIMyEduModuleDetailsRequest();
+        } else {
+          setIMyEduModuleDetailsRequest((MyEduModuleDetailsRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return getIMyEduRequest();
+
+      case I_MY_EDU_MODULE_DETAILS_REQUEST:
+        return getIMyEduModuleDetailsRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return isSetIMyEduRequest();
+      case I_MY_EDU_MODULE_DETAILS_REQUEST:
+        return isSetIMyEduModuleDetailsRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getModuleDetails_args)
+        return this.equals((getModuleDetails_args)that);
+      return false;
+    }
+
+    public boolean equals(getModuleDetails_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_iMyEduRequest = true && this.isSetIMyEduRequest();
+      boolean that_present_iMyEduRequest = true && that.isSetIMyEduRequest();
+      if (this_present_iMyEduRequest || that_present_iMyEduRequest) {
+        if (!(this_present_iMyEduRequest && that_present_iMyEduRequest))
+          return false;
+        if (!this.iMyEduRequest.equals(that.iMyEduRequest))
+          return false;
+      }
+
+      boolean this_present_iMyEduModuleDetailsRequest = true && this.isSetIMyEduModuleDetailsRequest();
+      boolean that_present_iMyEduModuleDetailsRequest = true && that.isSetIMyEduModuleDetailsRequest();
+      if (this_present_iMyEduModuleDetailsRequest || that_present_iMyEduModuleDetailsRequest) {
+        if (!(this_present_iMyEduModuleDetailsRequest && that_present_iMyEduModuleDetailsRequest))
+          return false;
+        if (!this.iMyEduModuleDetailsRequest.equals(that.iMyEduModuleDetailsRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_iMyEduRequest = true && (isSetIMyEduRequest());
+      builder.append(present_iMyEduRequest);
+      if (present_iMyEduRequest)
+        builder.append(iMyEduRequest);
+
+      boolean present_iMyEduModuleDetailsRequest = true && (isSetIMyEduModuleDetailsRequest());
+      builder.append(present_iMyEduModuleDetailsRequest);
+      if (present_iMyEduModuleDetailsRequest)
+        builder.append(iMyEduModuleDetailsRequest);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getModuleDetails_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getModuleDetails_args typedOther = (getModuleDetails_args)other;
+
+      lastComparison = Boolean.valueOf(isSetIMyEduRequest()).compareTo(typedOther.isSetIMyEduRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduRequest, typedOther.iMyEduRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetIMyEduModuleDetailsRequest()).compareTo(typedOther.isSetIMyEduModuleDetailsRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduModuleDetailsRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduModuleDetailsRequest, typedOther.iMyEduModuleDetailsRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // I_MY_EDU_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduRequest = new MyEduRequest();
+              this.iMyEduRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // I_MY_EDU_MODULE_DETAILS_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduModuleDetailsRequest = new MyEduModuleDetailsRequest();
+              this.iMyEduModuleDetailsRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.iMyEduRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_REQUEST_FIELD_DESC);
+        this.iMyEduRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.iMyEduModuleDetailsRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_MODULE_DETAILS_REQUEST_FIELD_DESC);
+        this.iMyEduModuleDetailsRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getModuleDetails_args(");
+      boolean first = true;
+
+      sb.append("iMyEduRequest:");
+      if (this.iMyEduRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduRequest);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("iMyEduModuleDetailsRequest:");
+      if (this.iMyEduModuleDetailsRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduModuleDetailsRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class getModuleDetails_result implements org.apache.thrift.TBase<getModuleDetails_result, getModuleDetails_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getModuleDetails_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public MyEduModuleDetailsReply success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduModuleDetailsReply.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getModuleDetails_result.class, metaDataMap);
+    }
+
+    public getModuleDetails_result() {
+    }
+
+    public getModuleDetails_result(
+      MyEduModuleDetailsReply success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getModuleDetails_result(getModuleDetails_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new MyEduModuleDetailsReply(other.success);
+      }
+    }
+
+    public getModuleDetails_result deepCopy() {
+      return new getModuleDetails_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public MyEduModuleDetailsReply getSuccess() {
+      return this.success;
+    }
+
+    public getModuleDetails_result setSuccess(MyEduModuleDetailsReply success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((MyEduModuleDetailsReply)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getModuleDetails_result)
+        return this.equals((getModuleDetails_result)that);
+      return false;
+    }
+
+    public boolean equals(getModuleDetails_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(getModuleDetails_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getModuleDetails_result typedOther = (getModuleDetails_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new MyEduModuleDetailsReply();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getModuleDetails_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class submitFeedback_args implements org.apache.thrift.TBase<submitFeedback_args, submitFeedback_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("submitFeedback_args");
+
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField I_MY_EDU_SUBMIT_FEEDBACK_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduSubmitFeedbackRequest", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+
+    public MyEduRequest iMyEduRequest; // required
+    public MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      I_MY_EDU_REQUEST((short)1, "iMyEduRequest"),
+      I_MY_EDU_SUBMIT_FEEDBACK_REQUEST((short)2, "iMyEduSubmitFeedbackRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // I_MY_EDU_REQUEST
+            return I_MY_EDU_REQUEST;
+          case 2: // I_MY_EDU_SUBMIT_FEEDBACK_REQUEST
+            return I_MY_EDU_SUBMIT_FEEDBACK_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.I_MY_EDU_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduRequest.class)));
+      tmpMap.put(_Fields.I_MY_EDU_SUBMIT_FEEDBACK_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduSubmitFeedbackRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduSubmitFeedbackRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(submitFeedback_args.class, metaDataMap);
+    }
+
+    public submitFeedback_args() {
+    }
+
+    public submitFeedback_args(
+      MyEduRequest iMyEduRequest,
+      MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest)
+    {
+      this();
+      this.iMyEduRequest = iMyEduRequest;
+      this.iMyEduSubmitFeedbackRequest = iMyEduSubmitFeedbackRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public submitFeedback_args(submitFeedback_args other) {
+      if (other.isSetIMyEduRequest()) {
+        this.iMyEduRequest = new MyEduRequest(other.iMyEduRequest);
+      }
+      if (other.isSetIMyEduSubmitFeedbackRequest()) {
+        this.iMyEduSubmitFeedbackRequest = new MyEduSubmitFeedbackRequest(other.iMyEduSubmitFeedbackRequest);
+      }
+    }
+
+    public submitFeedback_args deepCopy() {
+      return new submitFeedback_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.iMyEduRequest = null;
+      this.iMyEduSubmitFeedbackRequest = null;
+    }
+
+    public MyEduRequest getIMyEduRequest() {
+      return this.iMyEduRequest;
+    }
+
+    public submitFeedback_args setIMyEduRequest(MyEduRequest iMyEduRequest) {
+      this.iMyEduRequest = iMyEduRequest;
+      return this;
+    }
+
+    public void unsetIMyEduRequest() {
+      this.iMyEduRequest = null;
+    }
+
+    /** Returns true if field iMyEduRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduRequest() {
+      return this.iMyEduRequest != null;
+    }
+
+    public void setIMyEduRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduRequest = null;
+      }
+    }
+
+    public MyEduSubmitFeedbackRequest getIMyEduSubmitFeedbackRequest() {
+      return this.iMyEduSubmitFeedbackRequest;
+    }
+
+    public submitFeedback_args setIMyEduSubmitFeedbackRequest(MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest) {
+      this.iMyEduSubmitFeedbackRequest = iMyEduSubmitFeedbackRequest;
+      return this;
+    }
+
+    public void unsetIMyEduSubmitFeedbackRequest() {
+      this.iMyEduSubmitFeedbackRequest = null;
+    }
+
+    /** Returns true if field iMyEduSubmitFeedbackRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetIMyEduSubmitFeedbackRequest() {
+      return this.iMyEduSubmitFeedbackRequest != null;
+    }
+
+    public void setIMyEduSubmitFeedbackRequestIsSet(boolean value) {
+      if (!value) {
+        this.iMyEduSubmitFeedbackRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        if (value == null) {
+          unsetIMyEduRequest();
+        } else {
+          setIMyEduRequest((MyEduRequest)value);
+        }
+        break;
+
+      case I_MY_EDU_SUBMIT_FEEDBACK_REQUEST:
+        if (value == null) {
+          unsetIMyEduSubmitFeedbackRequest();
+        } else {
+          setIMyEduSubmitFeedbackRequest((MyEduSubmitFeedbackRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return getIMyEduRequest();
+
+      case I_MY_EDU_SUBMIT_FEEDBACK_REQUEST:
+        return getIMyEduSubmitFeedbackRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case I_MY_EDU_REQUEST:
+        return isSetIMyEduRequest();
+      case I_MY_EDU_SUBMIT_FEEDBACK_REQUEST:
+        return isSetIMyEduSubmitFeedbackRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof submitFeedback_args)
+        return this.equals((submitFeedback_args)that);
+      return false;
+    }
+
+    public boolean equals(submitFeedback_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_iMyEduRequest = true && this.isSetIMyEduRequest();
+      boolean that_present_iMyEduRequest = true && that.isSetIMyEduRequest();
+      if (this_present_iMyEduRequest || that_present_iMyEduRequest) {
+        if (!(this_present_iMyEduRequest && that_present_iMyEduRequest))
+          return false;
+        if (!this.iMyEduRequest.equals(that.iMyEduRequest))
+          return false;
+      }
+
+      boolean this_present_iMyEduSubmitFeedbackRequest = true && this.isSetIMyEduSubmitFeedbackRequest();
+      boolean that_present_iMyEduSubmitFeedbackRequest = true && that.isSetIMyEduSubmitFeedbackRequest();
+      if (this_present_iMyEduSubmitFeedbackRequest || that_present_iMyEduSubmitFeedbackRequest) {
+        if (!(this_present_iMyEduSubmitFeedbackRequest && that_present_iMyEduSubmitFeedbackRequest))
+          return false;
+        if (!this.iMyEduSubmitFeedbackRequest.equals(that.iMyEduSubmitFeedbackRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_iMyEduRequest = true && (isSetIMyEduRequest());
+      builder.append(present_iMyEduRequest);
+      if (present_iMyEduRequest)
+        builder.append(iMyEduRequest);
+
+      boolean present_iMyEduSubmitFeedbackRequest = true && (isSetIMyEduSubmitFeedbackRequest());
+      builder.append(present_iMyEduSubmitFeedbackRequest);
+      if (present_iMyEduSubmitFeedbackRequest)
+        builder.append(iMyEduSubmitFeedbackRequest);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(submitFeedback_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      submitFeedback_args typedOther = (submitFeedback_args)other;
+
+      lastComparison = Boolean.valueOf(isSetIMyEduRequest()).compareTo(typedOther.isSetIMyEduRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduRequest, typedOther.iMyEduRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetIMyEduSubmitFeedbackRequest()).compareTo(typedOther.isSetIMyEduSubmitFeedbackRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetIMyEduSubmitFeedbackRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduSubmitFeedbackRequest, typedOther.iMyEduSubmitFeedbackRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 1: // I_MY_EDU_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduRequest = new MyEduRequest();
+              this.iMyEduRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // I_MY_EDU_SUBMIT_FEEDBACK_REQUEST
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.iMyEduSubmitFeedbackRequest = new MyEduSubmitFeedbackRequest();
+              this.iMyEduSubmitFeedbackRequest.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.iMyEduRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_REQUEST_FIELD_DESC);
+        this.iMyEduRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.iMyEduSubmitFeedbackRequest != null) {
+        oprot.writeFieldBegin(I_MY_EDU_SUBMIT_FEEDBACK_REQUEST_FIELD_DESC);
+        this.iMyEduSubmitFeedbackRequest.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("submitFeedback_args(");
+      boolean first = true;
+
+      sb.append("iMyEduRequest:");
+      if (this.iMyEduRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduRequest);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("iMyEduSubmitFeedbackRequest:");
+      if (this.iMyEduSubmitFeedbackRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.iMyEduSubmitFeedbackRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+  }
+
+  public static class submitFeedback_result implements org.apache.thrift.TBase<submitFeedback_result, submitFeedback_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("submitFeedback_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    public MyEduSubmitFeedbackReply success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduSubmitFeedbackReply.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(submitFeedback_result.class, metaDataMap);
+    }
+
+    public submitFeedback_result() {
+    }
+
+    public submitFeedback_result(
+      MyEduSubmitFeedbackReply success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public submitFeedback_result(submitFeedback_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new MyEduSubmitFeedbackReply(other.success);
+      }
+    }
+
+    public submitFeedback_result deepCopy() {
+      return new submitFeedback_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public MyEduSubmitFeedbackReply getSuccess() {
+      return this.success;
+    }
+
+    public submitFeedback_result setSuccess(MyEduSubmitFeedbackReply success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((MyEduSubmitFeedbackReply)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof submitFeedback_result)
+        return this.equals((submitFeedback_result)that);
+      return false;
+    }
+
+    public boolean equals(submitFeedback_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      HashCodeBuilder builder = new HashCodeBuilder();
+
+      boolean present_success = true && (isSetSuccess());
+      builder.append(present_success);
+      if (present_success)
+        builder.append(success);
+
+      return builder.toHashCode();
+    }
+
+    public int compareTo(submitFeedback_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      submitFeedback_result typedOther = (submitFeedback_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      org.apache.thrift.protocol.TField field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == org.apache.thrift.protocol.TType.STOP) { 
+          break;
+        }
+        switch (field.id) {
+          case 0: // SUCCESS
+            if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+              this.success = new MyEduSubmitFeedbackReply();
+              this.success.read(iprot);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          default:
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        this.success.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("submitFeedback_result(");
       boolean first = true;
 
       sb.append("success:");

@@ -37,6 +37,15 @@
     return [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
 }
 
++ (NSString*)lastUpdateNowString {
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    [dateFormatter setLocale:[NSLocale systemLocale]];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"LastUpdate", @"PocketCampus", nil),[dateFormatter stringFromDate:[NSDate date]]];
+}
+
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration {
     tableView.alpha = 0.0;
     [tableView reloadData];
@@ -44,6 +53,10 @@
     [UIView transitionWithView:tableView duration:duration options:UIViewAnimationCurveEaseIn animations:^{
         tableView.alpha = 1.0;
     } completion:NULL];
+}
+
++ (void)printFrame:(CGRect)frame {
+    NSLog(@"Frame : %lf, %lf, %lf, %lf", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 @end

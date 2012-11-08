@@ -171,6 +171,8 @@ static DirectoryService* instance = nil;
 
 @implementation ProfilePictureRequest
 
+static NSString* kProfilePictureURLbase = @"http://people.epfl.ch/cgi-bin/people/getPhoto?id=";
+
 @synthesize sciper;
 
 - (id)initWithSciper:(NSString*)sciper_ delegate:(id)delegate_ {

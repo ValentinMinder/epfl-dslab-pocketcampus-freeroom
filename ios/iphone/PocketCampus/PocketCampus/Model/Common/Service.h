@@ -48,6 +48,7 @@
 - (id)initWithServiceName:(NSString*)serviceName;
 + (NSTimeInterval)requestTimeoutInterval;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
+- (void)cancelAllOperations;
 - (id)thriftProtocolInstance;
 
 - (BOOL)serverIsReachable;
@@ -103,6 +104,7 @@ typedef enum {
 @property BOOL shouldRestart; //will be checked if server availaility returns NO. If shouldRestart==YES, operation will be restarted
 @property NSTimeInterval customTimeout;
 @property BOOL keepInCache;
+@property BOOL skipCache;
 @property BOOL returnCacheIfServerIsUnreachable;
 @property NSTimeInterval cacheValidity;
 @property SEL serviceClientSelector;
@@ -111,6 +113,9 @@ typedef enum {
 
 
 - (id)initWithThriftServiceClient:(id)serviceClient service:(Service*)service delegate:(id)delegate_;
+
+- (id)initForCachedResponseOnlyWithService:(Service*)service_;
+- (id)cachedResponseObjectEvenIfStale:(BOOL)evenIfStale;
 
 - (void)addObjectArgument:(id)object;
 

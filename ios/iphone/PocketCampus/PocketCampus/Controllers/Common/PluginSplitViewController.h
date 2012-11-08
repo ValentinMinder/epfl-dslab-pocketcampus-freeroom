@@ -10,8 +10,15 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface PluginSplitViewController : UISplitViewController
+#import "PCMasterSplitDelegate.h"
+
+@interface PluginSplitViewController : UISplitViewController<UINavigationControllerDelegate>
 
 @property (nonatomic, copy) NSString* pluginIdentifier;
+@property (nonatomic, weak) UINavigationController* masterNavigationController; //nil if master view controller is not kind of class UINavigationController
+@property (nonatomic) BOOL masterViewControllerHidden;
+
+- (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController;
+- (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated;
 
 @end

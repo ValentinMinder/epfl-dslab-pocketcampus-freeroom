@@ -47,6 +47,8 @@
 - (id)initWithMainController:(MainController2*)mainController_;
 + (NSString*)localizedName;
 + (NSString*)identifierName;
+
+@optional
 - (void)pluginWillLoseFocus; //called when menu is revealed and plugin shiften to the right
 - (void)pluginDidRegainActive; //called when plugin switches from background (passive) state to front (active) again or when menu is hidden again (=> plugin shifted back to the left)
 
