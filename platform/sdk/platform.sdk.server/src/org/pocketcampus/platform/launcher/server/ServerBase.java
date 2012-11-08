@@ -1,5 +1,8 @@
 package org.pocketcampus.platform.launcher.server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public abstract class ServerBase {
 	private static TProtocolFactory jsonProtocolFactory = new TJSONProtocol.Factory();
 	
 	public void start() throws Exception {
+		initializeConfig();
 		
 		Server server = new Server();
 		
@@ -102,6 +106,32 @@ public abstract class ServerBase {
 
 		server.start();
 		server.join();
+	}
+	
+	private void initializeConfig() {
+		
+		try {
+			
+			/**
+			* First load internal config.
+			*   This should be exhaustive/comprehensive
+			*   meaning all config params should be assigned a value here.
+			*/
+			PC_SRV_CONFIG.load(this.getClass().getResourceAsStream("pocketcampus-server.config"));
+			
+			/**
+			* Then override with config file in absolute path.
+			*   All meaningful params should be overridden
+			*   here.
+			*/
+			String configFile = "/etc/pocketcampus-server.config";
+			if(new File(configFile).exists()) {
+				PC_SRV_CONFIG.load(new FileInputStream(configFile));
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected abstract ArrayList<Processor> getServiceProcessors();
