@@ -24,17 +24,17 @@ import org.slf4j.LoggerFactory;
 public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduModuleDetailsReply, MyEduModuleDetailsReply._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MyEduModuleDetailsReply");
 
-  private static final org.apache.thrift.protocol.TField I_MY_EDU_MATERIAL_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduMaterial", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField I_MY_EDU_MATERIALS_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduMaterials", org.apache.thrift.protocol.TType.LIST, (short)1);
   private static final org.apache.thrift.protocol.TField I_MY_EDU_RECORD_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRecord", org.apache.thrift.protocol.TType.STRUCT, (short)2);
   private static final org.apache.thrift.protocol.TField I_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("iStatus", org.apache.thrift.protocol.TType.I32, (short)3);
 
-  public List<MyEduMaterial> iMyEduMaterial; // required
+  public List<MyEduMaterial> iMyEduMaterials; // required
   public MyEduModuleRecord iMyEduRecord; // required
   public int iStatus; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_MY_EDU_MATERIAL((short)1, "iMyEduMaterial"),
+    I_MY_EDU_MATERIALS((short)1, "iMyEduMaterials"),
     I_MY_EDU_RECORD((short)2, "iMyEduRecord"),
     I_STATUS((short)3, "iStatus");
 
@@ -51,8 +51,8 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_MY_EDU_MATERIAL
-          return I_MY_EDU_MATERIAL;
+        case 1: // I_MY_EDU_MATERIALS
+          return I_MY_EDU_MATERIALS;
         case 2: // I_MY_EDU_RECORD
           return I_MY_EDU_RECORD;
         case 3: // I_STATUS
@@ -103,7 +103,7 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.I_MY_EDU_MATERIAL, new org.apache.thrift.meta_data.FieldMetaData("iMyEduMaterial", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.I_MY_EDU_MATERIALS, new org.apache.thrift.meta_data.FieldMetaData("iMyEduMaterials", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduMaterial.class))));
     tmpMap.put(_Fields.I_MY_EDU_RECORD, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRecord", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
@@ -131,12 +131,12 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
   public MyEduModuleDetailsReply(MyEduModuleDetailsReply other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    if (other.isSetIMyEduMaterial()) {
-      List<MyEduMaterial> __this__iMyEduMaterial = new ArrayList<MyEduMaterial>();
-      for (MyEduMaterial other_element : other.iMyEduMaterial) {
-        __this__iMyEduMaterial.add(new MyEduMaterial(other_element));
+    if (other.isSetIMyEduMaterials()) {
+      List<MyEduMaterial> __this__iMyEduMaterials = new ArrayList<MyEduMaterial>();
+      for (MyEduMaterial other_element : other.iMyEduMaterials) {
+        __this__iMyEduMaterials.add(new MyEduMaterial(other_element));
       }
-      this.iMyEduMaterial = __this__iMyEduMaterial;
+      this.iMyEduMaterials = __this__iMyEduMaterials;
     }
     if (other.isSetIMyEduRecord()) {
       this.iMyEduRecord = new MyEduModuleRecord(other.iMyEduRecord);
@@ -150,48 +150,48 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
 
   @Override
   public void clear() {
-    this.iMyEduMaterial = null;
+    this.iMyEduMaterials = null;
     this.iMyEduRecord = null;
     setIStatusIsSet(false);
     this.iStatus = 0;
   }
 
-  public int getIMyEduMaterialSize() {
-    return (this.iMyEduMaterial == null) ? 0 : this.iMyEduMaterial.size();
+  public int getIMyEduMaterialsSize() {
+    return (this.iMyEduMaterials == null) ? 0 : this.iMyEduMaterials.size();
   }
 
-  public java.util.Iterator<MyEduMaterial> getIMyEduMaterialIterator() {
-    return (this.iMyEduMaterial == null) ? null : this.iMyEduMaterial.iterator();
+  public java.util.Iterator<MyEduMaterial> getIMyEduMaterialsIterator() {
+    return (this.iMyEduMaterials == null) ? null : this.iMyEduMaterials.iterator();
   }
 
-  public void addToIMyEduMaterial(MyEduMaterial elem) {
-    if (this.iMyEduMaterial == null) {
-      this.iMyEduMaterial = new ArrayList<MyEduMaterial>();
+  public void addToIMyEduMaterials(MyEduMaterial elem) {
+    if (this.iMyEduMaterials == null) {
+      this.iMyEduMaterials = new ArrayList<MyEduMaterial>();
     }
-    this.iMyEduMaterial.add(elem);
+    this.iMyEduMaterials.add(elem);
   }
 
-  public List<MyEduMaterial> getIMyEduMaterial() {
-    return this.iMyEduMaterial;
+  public List<MyEduMaterial> getIMyEduMaterials() {
+    return this.iMyEduMaterials;
   }
 
-  public MyEduModuleDetailsReply setIMyEduMaterial(List<MyEduMaterial> iMyEduMaterial) {
-    this.iMyEduMaterial = iMyEduMaterial;
+  public MyEduModuleDetailsReply setIMyEduMaterials(List<MyEduMaterial> iMyEduMaterials) {
+    this.iMyEduMaterials = iMyEduMaterials;
     return this;
   }
 
-  public void unsetIMyEduMaterial() {
-    this.iMyEduMaterial = null;
+  public void unsetIMyEduMaterials() {
+    this.iMyEduMaterials = null;
   }
 
-  /** Returns true if field iMyEduMaterial is set (has been assigned a value) and false otherwise */
-  public boolean isSetIMyEduMaterial() {
-    return this.iMyEduMaterial != null;
+  /** Returns true if field iMyEduMaterials is set (has been assigned a value) and false otherwise */
+  public boolean isSetIMyEduMaterials() {
+    return this.iMyEduMaterials != null;
   }
 
-  public void setIMyEduMaterialIsSet(boolean value) {
+  public void setIMyEduMaterialsIsSet(boolean value) {
     if (!value) {
-      this.iMyEduMaterial = null;
+      this.iMyEduMaterials = null;
     }
   }
 
@@ -244,11 +244,11 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case I_MY_EDU_MATERIAL:
+    case I_MY_EDU_MATERIALS:
       if (value == null) {
-        unsetIMyEduMaterial();
+        unsetIMyEduMaterials();
       } else {
-        setIMyEduMaterial((List<MyEduMaterial>)value);
+        setIMyEduMaterials((List<MyEduMaterial>)value);
       }
       break;
 
@@ -273,8 +273,8 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case I_MY_EDU_MATERIAL:
-      return getIMyEduMaterial();
+    case I_MY_EDU_MATERIALS:
+      return getIMyEduMaterials();
 
     case I_MY_EDU_RECORD:
       return getIMyEduRecord();
@@ -293,8 +293,8 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
     }
 
     switch (field) {
-    case I_MY_EDU_MATERIAL:
-      return isSetIMyEduMaterial();
+    case I_MY_EDU_MATERIALS:
+      return isSetIMyEduMaterials();
     case I_MY_EDU_RECORD:
       return isSetIMyEduRecord();
     case I_STATUS:
@@ -316,12 +316,12 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
     if (that == null)
       return false;
 
-    boolean this_present_iMyEduMaterial = true && this.isSetIMyEduMaterial();
-    boolean that_present_iMyEduMaterial = true && that.isSetIMyEduMaterial();
-    if (this_present_iMyEduMaterial || that_present_iMyEduMaterial) {
-      if (!(this_present_iMyEduMaterial && that_present_iMyEduMaterial))
+    boolean this_present_iMyEduMaterials = true && this.isSetIMyEduMaterials();
+    boolean that_present_iMyEduMaterials = true && that.isSetIMyEduMaterials();
+    if (this_present_iMyEduMaterials || that_present_iMyEduMaterials) {
+      if (!(this_present_iMyEduMaterials && that_present_iMyEduMaterials))
         return false;
-      if (!this.iMyEduMaterial.equals(that.iMyEduMaterial))
+      if (!this.iMyEduMaterials.equals(that.iMyEduMaterials))
         return false;
     }
 
@@ -350,10 +350,10 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
-    boolean present_iMyEduMaterial = true && (isSetIMyEduMaterial());
-    builder.append(present_iMyEduMaterial);
-    if (present_iMyEduMaterial)
-      builder.append(iMyEduMaterial);
+    boolean present_iMyEduMaterials = true && (isSetIMyEduMaterials());
+    builder.append(present_iMyEduMaterials);
+    if (present_iMyEduMaterials)
+      builder.append(iMyEduMaterials);
 
     boolean present_iMyEduRecord = true && (isSetIMyEduRecord());
     builder.append(present_iMyEduRecord);
@@ -376,12 +376,12 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
     int lastComparison = 0;
     MyEduModuleDetailsReply typedOther = (MyEduModuleDetailsReply)other;
 
-    lastComparison = Boolean.valueOf(isSetIMyEduMaterial()).compareTo(typedOther.isSetIMyEduMaterial());
+    lastComparison = Boolean.valueOf(isSetIMyEduMaterials()).compareTo(typedOther.isSetIMyEduMaterials());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIMyEduMaterial()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduMaterial, typedOther.iMyEduMaterial);
+    if (isSetIMyEduMaterials()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduMaterials, typedOther.iMyEduMaterials);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -423,17 +423,17 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
         break;
       }
       switch (field.id) {
-        case 1: // I_MY_EDU_MATERIAL
+        case 1: // I_MY_EDU_MATERIALS
           if (field.type == org.apache.thrift.protocol.TType.LIST) {
             {
               org.apache.thrift.protocol.TList _list12 = iprot.readListBegin();
-              this.iMyEduMaterial = new ArrayList<MyEduMaterial>(_list12.size);
+              this.iMyEduMaterials = new ArrayList<MyEduMaterial>(_list12.size);
               for (int _i13 = 0; _i13 < _list12.size; ++_i13)
               {
                 MyEduMaterial _elem14; // required
                 _elem14 = new MyEduMaterial();
                 _elem14.read(iprot);
-                this.iMyEduMaterial.add(_elem14);
+                this.iMyEduMaterials.add(_elem14);
               }
               iprot.readListEnd();
             }
@@ -475,12 +475,12 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.iMyEduMaterial != null) {
-      if (isSetIMyEduMaterial()) {
-        oprot.writeFieldBegin(I_MY_EDU_MATERIAL_FIELD_DESC);
+    if (this.iMyEduMaterials != null) {
+      if (isSetIMyEduMaterials()) {
+        oprot.writeFieldBegin(I_MY_EDU_MATERIALS_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iMyEduMaterial.size()));
-          for (MyEduMaterial _iter15 : this.iMyEduMaterial)
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, this.iMyEduMaterials.size()));
+          for (MyEduMaterial _iter15 : this.iMyEduMaterials)
           {
             _iter15.write(oprot);
           }
@@ -508,12 +508,12 @@ public class MyEduModuleDetailsReply implements org.apache.thrift.TBase<MyEduMod
     StringBuilder sb = new StringBuilder("MyEduModuleDetailsReply(");
     boolean first = true;
 
-    if (isSetIMyEduMaterial()) {
-      sb.append("iMyEduMaterial:");
-      if (this.iMyEduMaterial == null) {
+    if (isSetIMyEduMaterials()) {
+      sb.append("iMyEduMaterials:");
+      if (this.iMyEduMaterials == null) {
         sb.append("null");
       } else {
-        sb.append(this.iMyEduMaterial);
+        sb.append(this.iMyEduMaterials);
       }
       first = false;
     }

@@ -5,7 +5,9 @@
 
 "PluginName" = "MyEdu";
 "MyCourses" = "My courses";
+"Course" = "Course";
 "Sections" = "Sections";
+"Section" = "Section";
 "Modules" = "Modules";
 "DownloadingCourseList" = "Refreshing course list...";
 "DownloadingSectionList" = "Refreshing section list...";
@@ -21,3 +23,6 @@
 "VideoNotSupported" = "Sorry, this video is not supported";
 "Text" = "Text";
 "NoTextInModule" = "No text in this module";
+"Material" = "Material";
+"DownloadingFile" = "Downloading file...";
+"NoMaterial" = "No material";

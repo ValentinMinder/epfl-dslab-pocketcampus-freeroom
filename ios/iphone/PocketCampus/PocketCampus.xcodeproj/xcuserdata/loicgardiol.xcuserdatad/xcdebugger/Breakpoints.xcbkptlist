@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "641"
-         endingLineNumber = "641"
+         startingLineNumber = "643"
+         endingLineNumber = "643"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "721"
-         endingLineNumber = "721"
+         startingLineNumber = "723"
+         endingLineNumber = "723"
          landmarkName = "-addDoubleArgument:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "787"
-         endingLineNumber = "787"
+         startingLineNumber = "789"
+         endingLineNumber = "789"
          landmarkName = "+wrapArgumentChar:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,11 +164,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "595"
-         endingLineNumber = "595"
+         startingLineNumber = "597"
+         endingLineNumber = "597"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "985"
-         endingLineNumber = "985"
+         startingLineNumber = "987"
+         endingLineNumber = "987"
          landmarkName = "-dealloc"
          landmarkType = "5">
          <Actions>
@@ -778,11 +778,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
+         startingLineNumber = "83"
+         endingLineNumber = "83"
          landmarkName = "-serverIsReachable"
          landmarkType = "5">
          <Actions>
@@ -800,11 +800,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "83"
-         endingLineNumber = "83"
+         startingLineNumber = "85"
+         endingLineNumber = "85"
          landmarkName = "-serverIsReachable"
          landmarkType = "5">
          <Actions>
@@ -822,11 +822,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "370383482.667969"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "171"
-         endingLineNumber = "171"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
          landmarkName = "-notifyAll"
          landmarkType = "5">
          <Actions>
@@ -844,12 +844,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
-         landmarkName = "-requestFinished:"
+         startingLineNumber = "105"
+         endingLineNumber = "105"
+         landmarkName = "-checkServerRequestFinished:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -866,12 +866,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "116"
-         endingLineNumber = "116"
-         landmarkName = "-requestFailed:"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
+         landmarkName = "-checkServerRequestFailed:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -888,11 +888,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "370383482.667969"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "153"
-         endingLineNumber = "153"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -938,11 +938,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373912745.574116"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "396"
-         endingLineNumber = "396"
+         startingLineNumber = "398"
+         endingLineNumber = "398"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -1030,12 +1030,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "368382156.824114"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "106"
-         endingLineNumber = "106"
-         landmarkName = "-requestFinished:"
+         startingLineNumber = "108"
+         endingLineNumber = "108"
+         landmarkName = "-checkServerRequestFinished:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -1074,11 +1074,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "370383482.667969"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
+         startingLineNumber = "163"
+         endingLineNumber = "163"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -1536,11 +1536,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "370383482.667969"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "144"
-         endingLineNumber = "144"
+         startingLineNumber = "146"
+         endingLineNumber = "146"
          landmarkName = "-cancelOperationsForDelegate:"
          landmarkType = "5">
          <Actions>
@@ -1558,11 +1558,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373412328.70032"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "392"
-         endingLineNumber = "392"
+         startingLineNumber = "394"
+         endingLineNumber = "394"
          landmarkName = "-main"
          landmarkType = "5">
          <Actions>
@@ -2077,7 +2077,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduCourseListViewController.m"
@@ -2253,38 +2253,16 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "Yes"
-         filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "373739998.611831"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "85"
-         endingLineNumber = "85"
-         landmarkName = "-getSubscribedCoursesListForRequest:delegate:"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.Log">
-               <ActionContent
-                  message = "getSubscribedCoursesListForRequest"
-                  conveyanceType = "0">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "373739998.611831"
+         timestampString = "374062595.772815"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
-         landmarkName = "-getTequilaTokenForMyEduWithDelegate:"
+         startingLineNumber = "97"
+         endingLineNumber = "97"
+         landmarkName = "-deleteSession"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -2301,12 +2279,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "373739998.611831"
+         timestampString = "374062595.772815"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "75"
-         endingLineNumber = "75"
-         landmarkName = "-getMyEduSessionForTequilaToken:delegate:"
+         startingLineNumber = "106"
+         endingLineNumber = "106"
+         landmarkName = "-getTequilaTokenForMyEduWithDelegate:"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -2349,11 +2327,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleDetailViewController.m"
-         timestampString = "373912351.268132"
+         timestampString = "373983763.467944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
+         startingLineNumber = "109"
+         endingLineNumber = "109"
          landmarkName = "-toggleMasterVideoControllerHidden:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2362,12 +2340,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "PocketCampus/Model/Common/Service.m"
-         timestampString = "373912750.879242"
+         timestampString = "374012025.860369"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "415"
-         endingLineNumber = "415"
+         startingLineNumber = "417"
+         endingLineNumber = "417"
          landmarkName = "-main"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MyEduPlugin/Controllers/MyEduModuleMaterialsViewController.m"
+         timestampString = "374064001.374917"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
+         landmarkName = "-downloadOfMaterial:didFinish:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
+         timestampString = "374062505.304695"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "255"
+         endingLineNumber = "255"
+         landmarkName = "-downloadMaterialRequestFinished:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

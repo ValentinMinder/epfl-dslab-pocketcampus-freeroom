@@ -10,7 +10,15 @@
 
 #import "MyEduService.h"
 
-@interface MyEduModuleMaterialsViewController : UIViewController<MyEduServiceDelegate>
+#import "AuthenticationController.h"
+
+@interface MyEduModuleMaterialsViewController : UIViewController<MyEduServiceDelegate, AuthenticationCallbackDelegate, UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITableView* materialsTableView;
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
+@property (nonatomic, weak) IBOutlet UIProgressView* progressView;
 
 - (id)initWithMyEduModule:(MyEduModule*)module section:(MyEduSection*)section course:(MyEduCourse*)course;
 

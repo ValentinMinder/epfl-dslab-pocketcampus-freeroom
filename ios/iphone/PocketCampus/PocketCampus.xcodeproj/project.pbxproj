@@ -296,6 +296,8 @@
 		32E280AC156E618800B74825 /* DirectoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E280A8156E583A00B74825 /* DirectoryServiceTests.m */; };
 		32E280AD156E618C00B74825 /* PocketCampusLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E2809F156E52ED00B74825 /* PocketCampusLogicTests.m */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */; };
+		32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */; };
 		32F3EAAF16334DD200DA8902 /* MyEduPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F3EAB116334DD200DA8902 /* MyEduPlugin.strings */; };
 		32F3EAB61633506900DA8902 /* MyEduServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3EAB51633506900DA8902 /* MyEduServiceTests.m */; };
 		32FAC0F51500F40700925180 /* DirectoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FAC0E31500F40700925180 /* DirectoryController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -775,6 +777,8 @@
 		32E280AA156E613100B74825 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginSplitViewController.h; sourceTree = "<group>"; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginSplitViewController.m; sourceTree = "<group>"; };
+		32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduModuleMaterial.png; sourceTree = "<group>"; };
+		32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduModuleMaterial@2x.png"; sourceTree = "<group>"; };
 		32F3EAB016334DD200DA8902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB216334DDB00DA8902 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MyEduPlugin.strings; sourceTree = "<group>"; };
 		32F3EAB41633506900DA8902 /* MyEduServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduServiceTests.h; sourceTree = "<group>"; };
@@ -2149,8 +2153,10 @@
 		CEC74EF19134E69FAE06810E /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */,
 				74EB4361AD2616FF44DA66CB /* MyEdu.png */,
+				BB5245679D4E9E9B9F64BAC1 /* MyEdu@2x.png */,
+				32EC303C164B18A600D2112D /* MyEduModuleMaterial.png */,
+				32EC303D164B18A600D2112D /* MyEduModuleMaterial@2x.png */,
 				320073611646E101002AD7BA /* MyEduModuleText.png */,
 				320073621646E101002AD7BA /* MyEduModuleText@2x.png */,
 				320073581646CBF0002AD7BA /* MyEduModuleVideo.png */,
@@ -2379,6 +2385,8 @@
 				325368C0164932F600406801 /* StretchableInnerShadow.png in Resources */,
 				325368C1164932F600406801 /* StretchableInnerShadow@2x.png in Resources */,
 				325368C616496F8000406801 /* MyEduModuleMaterialsView.xib in Resources */,
+				32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */,
+				32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

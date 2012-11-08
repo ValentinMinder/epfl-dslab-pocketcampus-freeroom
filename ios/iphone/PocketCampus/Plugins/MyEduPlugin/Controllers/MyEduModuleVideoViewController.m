@@ -42,6 +42,7 @@
         self.webView.layer.shadowOpacity = 0.2;
         self.webView.layer.shadowColor = [UIColor whiteColor].CGColor;
         self.webView.allowsInlineMediaPlayback = YES;
+        self.webView.scrollView.bounces = NO;
         //self.webView.scrollView.bounces = NO;
         NSString* htmlString = [MyEduService videoHTMLCodeForMyEduModule:self.module videoWidth:self.webView.frame.size.width-16.0 videoHeight:self.webView.frame.size.height-16.0];
         if (htmlString) {

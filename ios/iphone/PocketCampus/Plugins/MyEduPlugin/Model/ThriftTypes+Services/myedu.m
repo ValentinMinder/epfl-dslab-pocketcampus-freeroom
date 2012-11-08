@@ -1692,7 +1692,7 @@
 
 @implementation MyEduMaterial
 
-- (id) initWithIId: (int32_t) iId iModuleId: (int32_t) iModuleId iName: (NSString *) iName iURL: (NSString *) iURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
+- (id) initWithIId: (int32_t) iId iModuleId: (int32_t) iModuleId iName: (NSString *) iName iType: (int) iType iURL: (NSString *) iURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
 {
   self = [super init];
   __iId = iId;
@@ -1701,6 +1701,8 @@
   __iModuleId_isset = YES;
   __iName = [iName retain];
   __iName_isset = YES;
+  __iType = iType;
+  __iType_isset = YES;
   __iURL = [iURL retain];
   __iURL_isset = YES;
   __iCreationTimestamp = iCreationTimestamp;
@@ -1727,6 +1729,11 @@
   {
     __iName = [[decoder decodeObjectForKey: @"iName"] retain];
     __iName_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iType"])
+  {
+    __iType = [decoder decodeIntForKey: @"iType"];
+    __iType_isset = YES;
   }
   if ([decoder containsValueForKey: @"iURL"])
   {
@@ -1759,6 +1766,10 @@
   if (__iName_isset)
   {
     [encoder encodeObject: __iName forKey: @"iName"];
+  }
+  if (__iType_isset)
+  {
+    [encoder encodeInt: __iType forKey: @"iType"];
   }
   if (__iURL_isset)
   {
@@ -1834,6 +1845,23 @@
   [__iName release];
   __iName = nil;
   __iName_isset = NO;
+}
+
+- (int) iType {
+  return __iType;
+}
+
+- (void) setIType: (int) iType {
+  __iType = iType;
+  __iType_isset = YES;
+}
+
+- (BOOL) iTypeIsSet {
+  return __iType_isset;
+}
+
+- (void) unsetIType {
+  __iType_isset = NO;
 }
 
 - (NSString *) iURL {
@@ -1931,6 +1959,14 @@
         }
         break;
       case 4:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setIType: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setIURL: fieldValue];
@@ -1938,7 +1974,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 5:
+      case 6:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setICreationTimestamp: fieldValue];
@@ -1946,7 +1982,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 6:
+      case 7:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setILastUpdateTimestamp: fieldValue];
@@ -1982,20 +2018,25 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__iType_isset) {
+    [outProtocol writeFieldBeginWithName: @"iType" type: TType_I32 fieldID: 4];
+    [outProtocol writeI32: __iType];
+    [outProtocol writeFieldEnd];
+  }
   if (__iURL_isset) {
     if (__iURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"iURL" type: TType_STRING fieldID: 4];
+      [outProtocol writeFieldBeginWithName: @"iURL" type: TType_STRING fieldID: 5];
       [outProtocol writeString: __iURL];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iCreationTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 5];
+    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 6];
     [outProtocol writeI64: __iCreationTimestamp];
     [outProtocol writeFieldEnd];
   }
   if (__iLastUpdateTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 6];
+    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 7];
     [outProtocol writeI64: __iLastUpdateTimestamp];
     [outProtocol writeFieldEnd];
   }
@@ -2011,6 +2052,8 @@
   [ms appendFormat: @"%i", __iModuleId];
   [ms appendString: @",iName:"];
   [ms appendFormat: @"\"%@\"", __iName];
+  [ms appendString: @",iType:"];
+  [ms appendFormat: @"%i", __iType];
   [ms appendString: @",iURL:"];
   [ms appendFormat: @"\"%@\"", __iURL];
   [ms appendString: @",iCreationTimestamp:"];
@@ -3754,11 +3797,11 @@
 
 @implementation MyEduModuleDetailsReply
 
-- (id) initWithIMyEduMaterial: (NSArray *) iMyEduMaterial iMyEduRecord: (MyEduModuleRecord *) iMyEduRecord iStatus: (int32_t) iStatus
+- (id) initWithIMyEduMaterials: (NSArray *) iMyEduMaterials iMyEduRecord: (MyEduModuleRecord *) iMyEduRecord iStatus: (int32_t) iStatus
 {
   self = [super init];
-  __iMyEduMaterial = [iMyEduMaterial retain];
-  __iMyEduMaterial_isset = YES;
+  __iMyEduMaterials = [iMyEduMaterials retain];
+  __iMyEduMaterials_isset = YES;
   __iMyEduRecord = [iMyEduRecord retain];
   __iMyEduRecord_isset = YES;
   __iStatus = iStatus;
@@ -3769,10 +3812,10 @@
 - (id) initWithCoder: (NSCoder *) decoder
 {
   self = [super init];
-  if ([decoder containsValueForKey: @"iMyEduMaterial"])
+  if ([decoder containsValueForKey: @"iMyEduMaterials"])
   {
-    __iMyEduMaterial = [[decoder decodeObjectForKey: @"iMyEduMaterial"] retain];
-    __iMyEduMaterial_isset = YES;
+    __iMyEduMaterials = [[decoder decodeObjectForKey: @"iMyEduMaterials"] retain];
+    __iMyEduMaterials_isset = YES;
   }
   if ([decoder containsValueForKey: @"iMyEduRecord"])
   {
@@ -3789,9 +3832,9 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  if (__iMyEduMaterial_isset)
+  if (__iMyEduMaterials_isset)
   {
-    [encoder encodeObject: __iMyEduMaterial forKey: @"iMyEduMaterial"];
+    [encoder encodeObject: __iMyEduMaterials forKey: @"iMyEduMaterials"];
   }
   if (__iMyEduRecord_isset)
   {
@@ -3805,30 +3848,30 @@
 
 - (void) dealloc
 {
-  [__iMyEduMaterial release];
+  [__iMyEduMaterials release];
   [__iMyEduRecord release];
   [super dealloc];
 }
 
-- (NSArray *) iMyEduMaterial {
-  return [[__iMyEduMaterial retain] autorelease];
+- (NSArray *) iMyEduMaterials {
+  return [[__iMyEduMaterials retain] autorelease];
 }
 
-- (void) setIMyEduMaterial: (NSArray *) iMyEduMaterial {
-  [iMyEduMaterial retain];
-  [__iMyEduMaterial release];
-  __iMyEduMaterial = iMyEduMaterial;
-  __iMyEduMaterial_isset = YES;
+- (void) setIMyEduMaterials: (NSArray *) iMyEduMaterials {
+  [iMyEduMaterials retain];
+  [__iMyEduMaterials release];
+  __iMyEduMaterials = iMyEduMaterials;
+  __iMyEduMaterials_isset = YES;
 }
 
-- (BOOL) iMyEduMaterialIsSet {
-  return __iMyEduMaterial_isset;
+- (BOOL) iMyEduMaterialsIsSet {
+  return __iMyEduMaterials_isset;
 }
 
-- (void) unsetIMyEduMaterial {
-  [__iMyEduMaterial release];
-  __iMyEduMaterial = nil;
-  __iMyEduMaterial_isset = NO;
+- (void) unsetIMyEduMaterials {
+  [__iMyEduMaterials release];
+  __iMyEduMaterials = nil;
+  __iMyEduMaterials_isset = NO;
 }
 
 - (MyEduModuleRecord *) iMyEduRecord {
@@ -3898,7 +3941,7 @@
             [_elem17 release];
           }
           [inProtocol readListEnd];
-          [self setIMyEduMaterial: fieldValue];
+          [self setIMyEduMaterials: fieldValue];
           [fieldValue release];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -3933,15 +3976,15 @@
 
 - (void) write: (id <TProtocol>) outProtocol {
   [outProtocol writeStructBeginWithName: @"MyEduModuleDetailsReply"];
-  if (__iMyEduMaterial_isset) {
-    if (__iMyEduMaterial != nil) {
-      [outProtocol writeFieldBeginWithName: @"iMyEduMaterial" type: TType_LIST fieldID: 1];
+  if (__iMyEduMaterials_isset) {
+    if (__iMyEduMaterials != nil) {
+      [outProtocol writeFieldBeginWithName: @"iMyEduMaterials" type: TType_LIST fieldID: 1];
       {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iMyEduMaterial count]];
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__iMyEduMaterials count]];
         int i19;
-        for (i19 = 0; i19 < [__iMyEduMaterial count]; i19++)
+        for (i19 = 0; i19 < [__iMyEduMaterials count]; i19++)
         {
-          [[__iMyEduMaterial objectAtIndex: i19] write: outProtocol];
+          [[__iMyEduMaterials objectAtIndex: i19] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -3966,8 +4009,8 @@
 
 - (NSString *) description {
   NSMutableString * ms = [NSMutableString stringWithString: @"MyEduModuleDetailsReply("];
-  [ms appendString: @"iMyEduMaterial:"];
-  [ms appendFormat: @"%@", __iMyEduMaterial];
+  [ms appendString: @"iMyEduMaterials:"];
+  [ms appendFormat: @"%@", __iMyEduMaterials];
   [ms appendString: @",iMyEduRecord:"];
   [ms appendFormat: @"%@", __iMyEduRecord];
   [ms appendString: @",iStatus:"];

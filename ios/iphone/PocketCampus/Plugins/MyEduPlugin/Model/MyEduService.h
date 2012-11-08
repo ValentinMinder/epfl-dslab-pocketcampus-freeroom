@@ -10,7 +10,18 @@
 
 #import "myedu.h"
 
-@interface MyEduService : Service <ServiceProtocol>
+#import "ASIHTTPRequest.h"
+
+@interface MyEduMaterialData : NSObject<NSCoding>
+
+@property (readonly, strong) MyEduMaterial* material;
+@property (readonly, strong) NSData* data;
+@property (readonly, copy) NSString* mimeType;
+@property (readonly, copy) NSString* textEncoding;
+
+@end
+
+@interface MyEduService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
 
 /* Utilitiy methods */
 - (MyEduRequest*)createMyEduRequest;
@@ -28,7 +39,7 @@
  - (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduRequest *) iMyEduRequest : (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;  // throws TException
 */
 
-/* Asynchronous methods */
+/* Asynchronous methods deriving from Thrift */
 - (void)getTequilaTokenForMyEduWithDelegate:(id)delegate;
 - (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken*)tequilaToken delegate:(id)delegate;
 - (void)getSubscribedCoursesListForRequest:(MyEduRequest*)request delegate:(id)delegate;
@@ -37,6 +48,9 @@
 - (void)getModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate;
 - (void)submitFeedbackWithRequest:(MyEduSubmitFeedbackRequest*)request myeduRequest:(MyEduRequest*)myeduRequest delegate:(id)delegate;
 
+/* Asynchronous methods - helpers */
+- (void)downloadMaterial:(MyEduMaterial*)material myeduRequest:(MyEduRequest*)myeduRequest progressView:(UIProgressView*)progressView delegate:(id)delegate;
+
 /* Synchronous methods (from cache) return nil if not in cache */
 
 - (MyEduSubscribedCoursesListReply*)getFromCacheSubscribedCoursesListForRequest:(MyEduRequest*)myeduRequest;
@@ -44,6 +58,7 @@
 - (MyEduSectionDetailsReply*)getFromCacheSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest;
 - (MyEduModuleDetailsReply*)getFromCacheModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request myeduRequest:(MyEduRequest*)myeduRequest;
 
+- (MyEduMaterialData*)materialDataIfExistsForMaterial:(MyEduMaterial*)material; //returns nil if not such stored material
 
 /* Utiliy methods */
 
@@ -68,5 +83,8 @@
 - (void)getModuleDetailsFailedForRequest:(MyEduModuleDetailsRequest *)request myeduRequest:(MyEduRequest*)myeduRequest;
 - (void)submitFeedbackForRequest:(MyEduSubmitFeedbackRequest*)request myeduRequest:(MyEduRequest*)myeduRequest didReturn:(MyEduSubmitFeedbackReply*)reply;
 - (void)submitFeedbackFailedForRequest:(MyEduSubmitFeedbackRequest *)request myeduRequest:(MyEduRequest*)myeduRequest;
+
+- (void)downloadOfMaterial:(MyEduMaterial *)meterial didFinish:(MyEduMaterialData*)materialData;
+- (void)downloadFailedForMaterial:(MyEduMaterial *)meterial;
 
 @end

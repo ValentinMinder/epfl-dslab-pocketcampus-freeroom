@@ -75,6 +75,8 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
             checkServerRequest.timeOutSeconds = kConnectivityCheckTimeout;
             //checkServerRequest.requestMethod = @"HEAD";
             checkServerRequest.delegate = self;
+            checkServerRequest.didFinishSelector = @selector(checkServerRequestFinished:);
+            checkServerRequest.didFailSelector = @selector(checkServerRequestFailed:);
             [checkServerRequest startAsynchronous];
         }
     }
@@ -99,7 +101,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
 
 /* ASIHTTPRequestDelegate delegation */
 
-- (void)requestFinished:(ASIHTTPRequest *)request {
+- (void)checkServerRequestFinished:(ASIHTTPRequest *)request {
     if (self.serviceWillBeReleased) {
         return;
     }
@@ -112,7 +114,7 @@ static NSTimeInterval kConnectivityCheckTimeout = 15.0;
     [self notifyAll];
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request {
+- (void)checkServerRequestFailed:(ASIHTTPRequest *)request {
     if (self.serviceWillBeReleased) {
         return;
     }

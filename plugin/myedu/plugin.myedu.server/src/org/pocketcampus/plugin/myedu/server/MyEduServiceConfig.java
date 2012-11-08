@@ -39,6 +39,10 @@ public class MyEduServiceConfig {
 	public final static String MODULE_DETAILS_PATH_WITH_FORMAT = "/%s/%d/%d"; 
 	//<course_code>, <section_id>, <module_id>
 	
+	/* Material file download */
+	
+	public final static String MATERIAL_FILE_DOWNLOAD_PATH_WITH_FORMAT = "/%s/%d/%d/load_material?material_id=%d";
+	//<course_code>, <section_id>, <module_id>, <material_id>
 	/* Submit feedback */
 	
 	public final static String SUBMIT_MODULE_FEEDBACK_PATH_WITH_FORMAT = "/%s/%d/%d/submit_vote?feedback=%s&rating=%s";

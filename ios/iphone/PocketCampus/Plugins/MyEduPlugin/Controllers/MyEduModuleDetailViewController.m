@@ -23,6 +23,7 @@
 @property (nonatomic, strong) MyEduModule* module;
 @property (nonatomic, strong) MyEduSection* section;
 @property (nonatomic, strong) MyEduCourse* course;
+@property (nonatomic, strong) NSMutableArray* showHideUIButtons;
 
 @end
 
@@ -35,6 +36,7 @@
         _module = module;
         _section = section;
         _course = course;
+        self.showHideUIButtons = [NSMutableArray arrayWithCapacity:3]; //at least video, text, materials
     }
     return self;
 }
@@ -64,12 +66,12 @@
     
     MyEduModuleMaterialsViewController* materialsController = [[MyEduModuleMaterialsViewController alloc] initWithMyEduModule:self.module section:self.section course:self.course];
     materialsController.navigationItem.title = [NSString stringWithFormat:@"%@ ‣ %@", title, NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil)];
-    textController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
+    materialsController.navigationItem.leftBarButtonItem = [self toggleMasterViewBarButtonItem];
     UINavigationController* materialsNavController = [[UINavigationController alloc] initWithRootViewController:materialsController];
     materialsNavController.title = NSLocalizedStringFromTable(@"Material", @"MyEduPlugin", nil);
-    materialsNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleMaterials"];
+    materialsNavController.tabBarItem.image = [UIImage imageNamed:@"MyEduModuleMaterial"];
     materialsNavController.navigationBar.tintColor = [PCValues pocketCampusRed];
-    
+
     self.tabBarController.viewControllers = @[videoNavController, textNavController, materialsNavController];
     
     [self addChildViewController:self.tabBarController];
@@ -82,13 +84,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - actions management
+
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
     UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 25.0, 25.0)];
     [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
     button.adjustsImageWhenHighlighted = NO;
     button.showsTouchWhenHighlighted = YES;
     [button addTarget:self action:@selector(toggleMasterVideoControllerHidden:) forControlEvents:UIControlEventTouchUpInside];
-
+    [self.showHideUIButtons addObject:button];
     return [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 
@@ -101,6 +105,18 @@
         } else {
             [sender setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
             [pluginSplitViewController setMasterViewControllerHidden:YES animated:YES];
+        }
+    }
+}
+
+#pragma mark UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    for (UIButton* button in self.showHideUIButtons) {
+        if ([(PluginSplitViewController*)(self.splitViewController)  masterViewControllerHidden]) {
+            [button setImage:[UIImage imageNamed:@"ArrowShow"] forState:UIControlStateNormal];
+        } else {
+            [button setImage:[UIImage imageNamed:@"ArrowHide"] forState:UIControlStateNormal];
         }
     }
 }

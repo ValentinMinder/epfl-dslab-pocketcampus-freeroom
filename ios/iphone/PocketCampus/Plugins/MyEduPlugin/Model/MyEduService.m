@@ -11,6 +11,37 @@
 
 #import "PCUtils.h"
 
+@interface MyEduMaterialData ()
+
+@property (strong) MyEduMaterial* material;
+@property (strong) NSData* data;
+@property (copy) NSString* mimeType;
+@property (copy) NSString* textEncoding;
+
+@end
+
+@implementation MyEduMaterialData
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (self) {
+        self.material = [decoder decodeObjectForKey:@"material"];
+        self.data = [decoder decodeObjectForKey:@"data"];
+        self.mimeType = [decoder decodeObjectForKey:@"mimeType"];
+        self.textEncoding = [decoder decodeObjectForKey:@"textEncoding"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:self.material forKey:@"material"];
+    [encoder encodeObject:self.data forKey:@"data"];
+    [encoder encodeObject:self.mimeType forKey:@"mimeType"];
+    [encoder encodeObject:self.textEncoding forKey:@"textEncoding"];
+}
+
+@end
+
 @interface MyEduService ()
 
 @property (strong) MyEduSession* session;
@@ -18,6 +49,9 @@
 @end
 
 static NSString* kMyEduSessionIdentifier = @"myEduSession";
+
+static NSString* kServiceDelegateKey = @"ServiceDelegate";
+static NSString* kMaterialKey = @"Material";
 
 
 static NSString* kVimeoEmbedHTMLFormat = @"<iframe src=\"http://player.vimeo.com/video/%@\" width=\"%d\" height=\"%d\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
@@ -186,7 +220,66 @@ static MyEduService* instance = nil;
     [operationQueue addOperation:operation];
 }
 
-/* Utility methods */
+/* Not from Thrift */
+
+- (NSString*)keyForMaterial:(MyEduMaterial*)material {
+    NSString* key = [NSString stringWithFormat:@"%u", [material.iURL hash]];
+    return key;
+}
+
+- (void)downloadMaterial:(MyEduMaterial*)material myeduRequest:(MyEduRequest*)myeduRequest progressView:(UIProgressView*)progressView delegate:(id)delegate {
+    ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:material.iURL]];
+    NSMutableDictionary* infos = [NSMutableDictionary dictionary];
+    [infos setObject:delegate forKey:kServiceDelegateKey];
+    [infos setObject:material forKey:kMaterialKey];
+    request.userInfo = infos;
+    request.delegate = self;
+    request.didFinishSelector = @selector(downloadMaterialRequestFinished:);
+    request.didFailSelector = @selector(downloadMaterialRequestFailed:);
+    request.downloadProgressDelegate = progressView;
+    request.showAccurateProgress = YES;
+    [request addRequestHeader:@"Cookie" value:myeduRequest.iMyEduSession.iMyEduCookie];
+    //request.downloadDestinationPath = [ObjectArchiver pathForKey:[self keyForMaterial:material] pluginName:@"myedu"];
+    [operationQueue addOperation:request];
+}
+
+- (MyEduMaterialData*)materialDataIfExistsForMaterial:(MyEduMaterial*)material {
+    return (MyEduMaterialData*)[ObjectArchiver objectForKey:[self keyForMaterial:material] andPluginName:@"myedu"];
+}
+
+#pragma mark - ASIHTTRequestDelegate
+
+- (void)downloadMaterialRequestFinished:(ASIHTTPRequest *)request {
+    id<MyEduServiceDelegate> delegate = [request.userInfo objectForKey:kServiceDelegateKey];
+    MyEduMaterial* material = [request.userInfo objectForKey:kMaterialKey];
+    MyEduMaterialData* materialData = [[MyEduMaterialData alloc] init];
+    materialData.material = material;
+    materialData.data = request.responseData;
+    NSString* contentType = [request.responseHeaders objectForKey:@"Content-Type"];
+    NSArray* parts = [contentType componentsSeparatedByString:@";"];
+    NSString* mimeType = parts[0]; //if contentType does not contain ";" NSString API assures that parts contains at least string itself as first element
+    materialData.mimeType = mimeType;
+    materialData.textEncoding = @""; //TODO
+    NSLog(@"!! WARNING: text encoding set not done");
+    
+    if ([delegate respondsToSelector:@selector(downloadOfMaterial:didFinish:)]) {
+        [delegate downloadOfMaterial:material didFinish:materialData];
+    }
+    
+    [ObjectArchiver saveObject:materialData forKey:[self keyForMaterial:material] andPluginName:@"myedu"];
+    
+    NSLog(@"!! WARNING: expired session case not treated !! (downloadMaterial)");
+}
+
+- (void)downloadMaterialRequestFailed:(ASIHTTPRequest *)request {
+    id<MyEduServiceDelegate> delegate = [request.userInfo objectForKey:kServiceDelegateKey];
+    if ([delegate respondsToSelector:@selector(downloadFailedForMaterial:)]) {
+        MyEduMaterial* material = [request.userInfo objectForKey:kMaterialKey];
+        [delegate downloadFailedForMaterial:material];
+    }
+}
+
+#pragma mark - Utility methods
 
 + (NSString*)videoHTMLCodeForMyEduModule:(MyEduModule*)module videoWidth:(int)width videoHeight:(int)height {
     if ([[module.iVideoSourceProvider lowercaseString] isEqualToString:@"vimeo"]) {
@@ -200,6 +293,7 @@ static MyEduService* instance = nil;
 
 - (void)dealloc
 {
+    [self cancelAllOperations];
     instance = nil;
 }
 

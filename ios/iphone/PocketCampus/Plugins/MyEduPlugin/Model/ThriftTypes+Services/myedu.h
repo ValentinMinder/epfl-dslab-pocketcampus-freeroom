@@ -12,6 +12,11 @@
 #import <TProcessor.h>
 
 
+enum MyEduMaterialType {
+  MyEduMaterialType_MATERIAL_TYPE_DOCUMENT = 0,
+  MyEduMaterialType_MATERIAL_TYPE_WEBSITE = 1
+};
+
 typedef int64_t timestamp;
 
 @interface MyEduTequilaToken : NSObject <NSCoding> {
@@ -298,6 +303,7 @@ typedef int64_t timestamp;
   int32_t __iId;
   int32_t __iModuleId;
   NSString * __iName;
+  int __iType;
   NSString * __iURL;
   timestamp __iCreationTimestamp;
   timestamp __iLastUpdateTimestamp;
@@ -305,6 +311,7 @@ typedef int64_t timestamp;
   BOOL __iId_isset;
   BOOL __iModuleId_isset;
   BOOL __iName_isset;
+  BOOL __iType_isset;
   BOOL __iURL_isset;
   BOOL __iCreationTimestamp_isset;
   BOOL __iLastUpdateTimestamp_isset;
@@ -314,12 +321,13 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iId, setter=setIId:) int32_t iId;
 @property (nonatomic, getter=iModuleId, setter=setIModuleId:) int32_t iModuleId;
 @property (nonatomic, retain, getter=iName, setter=setIName:) NSString * iName;
+@property (nonatomic, getter=iType, setter=setIType:) int iType;
 @property (nonatomic, retain, getter=iURL, setter=setIURL:) NSString * iURL;
 @property (nonatomic, getter=iCreationTimestamp, setter=setICreationTimestamp:) timestamp iCreationTimestamp;
 @property (nonatomic, getter=iLastUpdateTimestamp, setter=setILastUpdateTimestamp:) timestamp iLastUpdateTimestamp;
 #endif
 
-- (id) initWithIId: (int32_t) iId iModuleId: (int32_t) iModuleId iName: (NSString *) iName iURL: (NSString *) iURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+- (id) initWithIId: (int32_t) iId iModuleId: (int32_t) iModuleId iName: (NSString *) iName iType: (int) iType iURL: (NSString *) iURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -335,6 +343,10 @@ typedef int64_t timestamp;
 - (NSString *) iName;
 - (void) setIName: (NSString *) iName;
 - (BOOL) iNameIsSet;
+
+- (int) iType;
+- (void) setIType: (int) iType;
+- (BOOL) iTypeIsSet;
 
 - (NSString *) iURL;
 - (void) setIURL: (NSString *) iURL;
@@ -645,29 +657,29 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduModuleDetailsReply : NSObject <NSCoding> {
-  NSArray * __iMyEduMaterial;
+  NSArray * __iMyEduMaterials;
   MyEduModuleRecord * __iMyEduRecord;
   int32_t __iStatus;
 
-  BOOL __iMyEduMaterial_isset;
+  BOOL __iMyEduMaterials_isset;
   BOOL __iMyEduRecord_isset;
   BOOL __iStatus_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, retain, getter=iMyEduMaterial, setter=setIMyEduMaterial:) NSArray * iMyEduMaterial;
+@property (nonatomic, retain, getter=iMyEduMaterials, setter=setIMyEduMaterials:) NSArray * iMyEduMaterials;
 @property (nonatomic, retain, getter=iMyEduRecord, setter=setIMyEduRecord:) MyEduModuleRecord * iMyEduRecord;
 @property (nonatomic, getter=iStatus, setter=setIStatus:) int32_t iStatus;
 #endif
 
-- (id) initWithIMyEduMaterial: (NSArray *) iMyEduMaterial iMyEduRecord: (MyEduModuleRecord *) iMyEduRecord iStatus: (int32_t) iStatus;
+- (id) initWithIMyEduMaterials: (NSArray *) iMyEduMaterials iMyEduRecord: (MyEduModuleRecord *) iMyEduRecord iStatus: (int32_t) iStatus;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (NSArray *) iMyEduMaterial;
-- (void) setIMyEduMaterial: (NSArray *) iMyEduMaterial;
-- (BOOL) iMyEduMaterialIsSet;
+- (NSArray *) iMyEduMaterials;
+- (void) setIMyEduMaterials: (NSArray *) iMyEduMaterials;
+- (BOOL) iMyEduMaterialsIsSet;
 
 - (MyEduModuleRecord *) iMyEduRecord;
 - (void) setIMyEduRecord: (MyEduModuleRecord *) iMyEduRecord;

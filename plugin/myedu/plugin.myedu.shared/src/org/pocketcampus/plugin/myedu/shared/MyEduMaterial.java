@@ -27,13 +27,19 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
   private static final org.apache.thrift.protocol.TField I_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField I_MODULE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iModuleId", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField I_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("iName", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField I_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iURL", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)5);
-  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)6);
+  private static final org.apache.thrift.protocol.TField I_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("iType", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField I_URL_FIELD_DESC = new org.apache.thrift.protocol.TField("iURL", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField I_CREATION_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iCreationTimestamp", org.apache.thrift.protocol.TType.I64, (short)6);
+  private static final org.apache.thrift.protocol.TField I_LAST_UPDATE_TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("iLastUpdateTimestamp", org.apache.thrift.protocol.TType.I64, (short)7);
 
   public int iId; // required
   public int iModuleId; // required
   public String iName; // required
+  /**
+   * 
+   * @see MyEduMaterialType
+   */
+  public MyEduMaterialType iType; // required
   public String iURL; // required
   public long iCreationTimestamp; // required
   public long iLastUpdateTimestamp; // required
@@ -43,9 +49,14 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     I_ID((short)1, "iId"),
     I_MODULE_ID((short)2, "iModuleId"),
     I_NAME((short)3, "iName"),
-    I_URL((short)4, "iURL"),
-    I_CREATION_TIMESTAMP((short)5, "iCreationTimestamp"),
-    I_LAST_UPDATE_TIMESTAMP((short)6, "iLastUpdateTimestamp");
+    /**
+     * 
+     * @see MyEduMaterialType
+     */
+    I_TYPE((short)4, "iType"),
+    I_URL((short)5, "iURL"),
+    I_CREATION_TIMESTAMP((short)6, "iCreationTimestamp"),
+    I_LAST_UPDATE_TIMESTAMP((short)7, "iLastUpdateTimestamp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -66,11 +77,13 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
           return I_MODULE_ID;
         case 3: // I_NAME
           return I_NAME;
-        case 4: // I_URL
+        case 4: // I_TYPE
+          return I_TYPE;
+        case 5: // I_URL
           return I_URL;
-        case 5: // I_CREATION_TIMESTAMP
+        case 6: // I_CREATION_TIMESTAMP
           return I_CREATION_TIMESTAMP;
-        case 6: // I_LAST_UPDATE_TIMESTAMP
+        case 7: // I_LAST_UPDATE_TIMESTAMP
           return I_LAST_UPDATE_TIMESTAMP;
         default:
           return null;
@@ -127,6 +140,8 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.I_NAME, new org.apache.thrift.meta_data.FieldMetaData("iName", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.I_TYPE, new org.apache.thrift.meta_data.FieldMetaData("iType", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, MyEduMaterialType.class)));
     tmpMap.put(_Fields.I_URL, new org.apache.thrift.meta_data.FieldMetaData("iURL", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_CREATION_TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("iCreationTimestamp", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -144,6 +159,7 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     int iId,
     int iModuleId,
     String iName,
+    MyEduMaterialType iType,
     String iURL,
     long iCreationTimestamp,
     long iLastUpdateTimestamp)
@@ -154,6 +170,7 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     this.iModuleId = iModuleId;
     setIModuleIdIsSet(true);
     this.iName = iName;
+    this.iType = iType;
     this.iURL = iURL;
     this.iCreationTimestamp = iCreationTimestamp;
     setICreationTimestampIsSet(true);
@@ -171,6 +188,9 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     this.iModuleId = other.iModuleId;
     if (other.isSetIName()) {
       this.iName = other.iName;
+    }
+    if (other.isSetIType()) {
+      this.iType = other.iType;
     }
     if (other.isSetIURL()) {
       this.iURL = other.iURL;
@@ -190,6 +210,7 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     setIModuleIdIsSet(false);
     this.iModuleId = 0;
     this.iName = null;
+    this.iType = null;
     this.iURL = null;
     setICreationTimestampIsSet(false);
     this.iCreationTimestamp = 0;
@@ -264,6 +285,38 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
   public void setINameIsSet(boolean value) {
     if (!value) {
       this.iName = null;
+    }
+  }
+
+  /**
+   * 
+   * @see MyEduMaterialType
+   */
+  public MyEduMaterialType getIType() {
+    return this.iType;
+  }
+
+  /**
+   * 
+   * @see MyEduMaterialType
+   */
+  public MyEduMaterial setIType(MyEduMaterialType iType) {
+    this.iType = iType;
+    return this;
+  }
+
+  public void unsetIType() {
+    this.iType = null;
+  }
+
+  /** Returns true if field iType is set (has been assigned a value) and false otherwise */
+  public boolean isSetIType() {
+    return this.iType != null;
+  }
+
+  public void setITypeIsSet(boolean value) {
+    if (!value) {
+      this.iType = null;
     }
   }
 
@@ -363,6 +416,14 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
       }
       break;
 
+    case I_TYPE:
+      if (value == null) {
+        unsetIType();
+      } else {
+        setIType((MyEduMaterialType)value);
+      }
+      break;
+
     case I_URL:
       if (value == null) {
         unsetIURL();
@@ -401,6 +462,9 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     case I_NAME:
       return getIName();
 
+    case I_TYPE:
+      return getIType();
+
     case I_URL:
       return getIURL();
 
@@ -427,6 +491,8 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
       return isSetIModuleId();
     case I_NAME:
       return isSetIName();
+    case I_TYPE:
+      return isSetIType();
     case I_URL:
       return isSetIURL();
     case I_CREATION_TIMESTAMP:
@@ -474,6 +540,15 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
       if (!(this_present_iName && that_present_iName))
         return false;
       if (!this.iName.equals(that.iName))
+        return false;
+    }
+
+    boolean this_present_iType = true && this.isSetIType();
+    boolean that_present_iType = true && that.isSetIType();
+    if (this_present_iType || that_present_iType) {
+      if (!(this_present_iType && that_present_iType))
+        return false;
+      if (!this.iType.equals(that.iType))
         return false;
     }
 
@@ -525,6 +600,11 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     builder.append(present_iName);
     if (present_iName)
       builder.append(iName);
+
+    boolean present_iType = true && (isSetIType());
+    builder.append(present_iType);
+    if (present_iType)
+      builder.append(iType.getValue());
 
     boolean present_iURL = true && (isSetIURL());
     builder.append(present_iURL);
@@ -578,6 +658,16 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     }
     if (isSetIName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iName, typedOther.iName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIType()).compareTo(typedOther.isSetIType());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIType()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iType, typedOther.iType);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -652,14 +742,21 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // I_URL
+        case 4: // I_TYPE
+          if (field.type == org.apache.thrift.protocol.TType.I32) {
+            this.iType = MyEduMaterialType.findByValue(iprot.readI32());
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 5: // I_URL
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iURL = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // I_CREATION_TIMESTAMP
+        case 6: // I_CREATION_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iCreationTimestamp = iprot.readI64();
             setICreationTimestampIsSet(true);
@@ -667,7 +764,7 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // I_LAST_UPDATE_TIMESTAMP
+        case 7: // I_LAST_UPDATE_TIMESTAMP
           if (field.type == org.apache.thrift.protocol.TType.I64) {
             this.iLastUpdateTimestamp = iprot.readI64();
             setILastUpdateTimestampIsSet(true);
@@ -713,6 +810,11 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
       oprot.writeString(this.iName);
       oprot.writeFieldEnd();
     }
+    if (this.iType != null) {
+      oprot.writeFieldBegin(I_TYPE_FIELD_DESC);
+      oprot.writeI32(this.iType.getValue());
+      oprot.writeFieldEnd();
+    }
     if (this.iURL != null) {
       oprot.writeFieldBegin(I_URL_FIELD_DESC);
       oprot.writeString(this.iURL);
@@ -749,6 +851,14 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     }
     first = false;
     if (!first) sb.append(", ");
+    sb.append("iType:");
+    if (this.iType == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iType);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("iURL:");
     if (this.iURL == null) {
       sb.append("null");
@@ -774,6 +884,9 @@ public class MyEduMaterial implements org.apache.thrift.TBase<MyEduMaterial, MyE
     // alas, we cannot check 'iModuleId' because it's a primitive and you chose the non-beans generator.
     if (iName == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iName' was not present! Struct: " + toString());
+    }
+    if (iType == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iType' was not present! Struct: " + toString());
     }
     if (iURL == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iURL' was not present! Struct: " + toString());

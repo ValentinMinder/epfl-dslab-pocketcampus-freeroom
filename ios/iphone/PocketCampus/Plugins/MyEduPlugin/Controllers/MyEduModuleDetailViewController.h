@@ -12,7 +12,7 @@
 
 #import "MyEduService.h"
 
-@interface MyEduModuleDetailViewController : UIViewController
+@interface MyEduModuleDetailViewController : UIViewController<UITabBarControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UITabBarController* tabBarController;
 

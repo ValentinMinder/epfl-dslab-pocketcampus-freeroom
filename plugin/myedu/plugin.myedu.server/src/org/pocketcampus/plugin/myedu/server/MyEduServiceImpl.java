@@ -29,6 +29,7 @@ import org.pocketcampus.plugin.myedu.shared.MyEduCourse;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduCourseDetailsRequest;
 import org.pocketcampus.plugin.myedu.shared.MyEduMaterial;
+import org.pocketcampus.plugin.myedu.shared.MyEduMaterialType;
 import org.pocketcampus.plugin.myedu.shared.MyEduModule;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsReply;
 import org.pocketcampus.plugin.myedu.shared.MyEduModuleDetailsRequest;
@@ -291,7 +292,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 			ModuleDetailsJson moduleDetails = gson.fromJson(json, type.getType());
 			
 			for (MaterialJson material : moduleDetails.materials) {
-				materialsList.add(getMyEduMaterialForJson(material));
+				materialsList.add(getMyEduMaterialForJson(material, iMyEduModuleDetailsRequest));
 			}
 			
 			moduleRecord = getMyEduRecordForJson(moduleDetails.module_record);
@@ -304,7 +305,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		
 		
 		MyEduModuleDetailsReply reply = new MyEduModuleDetailsReply(200);
-		reply.setIMyEduMaterial(materialsList);
+		reply.setIMyEduMaterials(materialsList);
 		reply.setIMyEduRecord(moduleRecord);
 		return reply;
 	}
@@ -401,7 +402,7 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		return myEduModule;
 	}
 	
-	private MyEduMaterial getMyEduMaterialForJson(MaterialJson material) throws TException {
+	private MyEduMaterial getMyEduMaterialForJson(MaterialJson material, MyEduModuleDetailsRequest request) throws TException {
 		
 		Date creationDate;
 		Date updateDate;
@@ -422,9 +423,17 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		myEduMaterial.setIId(material.id);
 		myEduMaterial.setIModuleId(material.module_id);
 		myEduMaterial.setIName(material.name);
-		myEduMaterial.setIURL(material.url);
 		myEduMaterial.setICreationTimestamp(creationDate.getTime());
 		myEduMaterial.setILastUpdateTimestamp(updateDate.getTime());
+		
+		if (material.url == null || material.url.equals("")) {
+			myEduMaterial.setIType(MyEduMaterialType.MATERIAL_TYPE_DOCUMENT);
+			String path = String.format(MyEduServiceConfig.MATERIAL_FILE_DOWNLOAD_PATH_WITH_FORMAT, request.iCourseCode, request.iSectionId, request.iModuleId, material.id);
+			myEduMaterial.setIURL(MyEduServiceConfig.getFullUrlForAPIAccess(path));
+		} else {
+			myEduMaterial.setIType(MyEduMaterialType.MATERIAL_TYPE_WEBSITE);
+			myEduMaterial.setIURL(material.url);
+		}
 		
 		return myEduMaterial;
 	}

@@ -48,6 +48,7 @@
 - (id)initWithServiceName:(NSString*)serviceName;
 + (NSTimeInterval)requestTimeoutInterval;
 - (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate;
+- (void)cancelAllOperations;
 - (id)thriftProtocolInstance;
 
 - (BOOL)serverIsReachable;

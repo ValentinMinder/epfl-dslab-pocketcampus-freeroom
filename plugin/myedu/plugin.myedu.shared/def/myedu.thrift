@@ -51,13 +51,19 @@ struct MyEduModule {
 	10: required timestamp iLastUpdateTimestamp;
 }
 
+enum MyEduMaterialType {
+	MATERIAL_TYPE_DOCUMENT;
+	MATERIAL_TYPE_WEBSITE;
+}
+
 struct MyEduMaterial {
 	1: required i32 iId;
 	2: required i32 iModuleId;
 	3: required string iName;
-	4: required string iURL;
-	5: required timestamp iCreationTimestamp;
-	6: required timestamp iLastUpdateTimestamp;
+	4: required MyEduMaterialType iType;
+	5: required string iURL
+	6: required timestamp iCreationTimestamp;
+	7: required timestamp iLastUpdateTimestamp;
 }
 
 struct MyEduModuleRecord {
@@ -115,7 +121,7 @@ struct MyEduSectionDetailsReply {
 }
 
 struct MyEduModuleDetailsReply {
-	1: optional list<MyEduMaterial> iMyEduMaterial;
+	1: optional list<MyEduMaterial> iMyEduMaterials;
 	2: optional MyEduModuleRecord iMyEduRecord; 
 	3: required i32 iStatus;
 }
