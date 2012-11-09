@@ -60,7 +60,7 @@ public class PluginDashboard {
 		View launcherView = mInflater.inflate(R.layout.dashboard_plugin_button, null);
 
 		ImageView launcherImage = (ImageView) launcherView.findViewById(R.id.launcher_image);
-		launcherImage.setImageDrawable(pluginInfo.getIcon().getDrawable(mContext));
+		launcherImage.setImageDrawable(pluginInfo.getIcon());
 
 		TextView launcherText = (TextView) launcherView.findViewById(R.id.launcher_text);
 		launcherText.setText(pluginInfo.getLabel());
