@@ -59,6 +59,8 @@ public class FetchMoodleResourceRequest extends Request<MoodleController, Defaul
 	@Override
 	protected void onError(MoodleController controller, Exception e) {
 		controller.getModel().notifyNetworkError();
+		if(localFile != null && localFile.exists())
+			localFile.delete();
 		e.printStackTrace();
 	}
 	
