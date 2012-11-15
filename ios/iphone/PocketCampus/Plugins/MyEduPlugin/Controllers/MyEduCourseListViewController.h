@@ -10,11 +10,9 @@
 
 #import "MyEduService.h"
 
-#import "AuthenticationController.h"
-
 #import "PCMasterSplitDelegate.h"
 
-@interface MyEduCourseListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate, AuthenticationCallbackDelegate>
+@interface MyEduCourseListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate>
 
 @property (nonatomic, strong) NSArray* elements;
 

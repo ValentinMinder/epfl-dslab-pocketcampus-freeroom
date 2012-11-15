@@ -5,6 +5,39 @@
 
 #import "PCValues.h"
 
+
+#pragma mark - PCLoginObserver implementation
+
+@implementation PCLoginObserver
+
+@synthesize observer, operationIdentifier, successBlock, userCancelledBlock, failureBlock;
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    return [self isEqualToPCLoginObserver:object];
+}
+
+- (BOOL)isEqualToPCLoginObserver:(PCLoginObserver*)loginObserver {
+    return self.observer == loginObserver.observer && self.operationIdentifier == loginObserver.operationIdentifier;
+}
+
+- (NSUInteger)hash {
+    NSUInteger hash = 0;
+    hash += [self.observer hash];
+    hash += [self.operationIdentifier hash];
+    return hash;
+}
+
+@end
+
+
+#pragma mark - AuthenticationController implementation
+
 @implementation AuthenticationController
 
 - (id)init

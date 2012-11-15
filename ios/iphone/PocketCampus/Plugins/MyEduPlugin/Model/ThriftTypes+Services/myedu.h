@@ -440,19 +440,26 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduCourseDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -461,22 +468,29 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduSectionDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -489,25 +503,32 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduModuleDetailsRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
   int32_t __iModuleId;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
   BOOL __iModuleId_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 @property (nonatomic, getter=iModuleId, setter=setIModuleId:) int32_t iModuleId;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -524,12 +545,14 @@ typedef int64_t timestamp;
 @end
 
 @interface MyEduSubmitFeedbackRequest : NSObject <NSCoding> {
+  MyEduRequest * __iMyEduRequest;
   NSString * __iCourseCode;
   int32_t __iSectionId;
   int32_t __iModuleId;
   NSString * __iText;
   int32_t __iRating;
 
+  BOOL __iMyEduRequest_isset;
   BOOL __iCourseCode_isset;
   BOOL __iSectionId_isset;
   BOOL __iModuleId_isset;
@@ -538,6 +561,7 @@ typedef int64_t timestamp;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=iMyEduRequest, setter=setIMyEduRequest:) MyEduRequest * iMyEduRequest;
 @property (nonatomic, retain, getter=iCourseCode, setter=setICourseCode:) NSString * iCourseCode;
 @property (nonatomic, getter=iSectionId, setter=setISectionId:) int32_t iSectionId;
 @property (nonatomic, getter=iModuleId, setter=setIModuleId:) int32_t iModuleId;
@@ -545,10 +569,14 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iRating, setter=setIRating:) int32_t iRating;
 #endif
 
-- (id) initWithICourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating;
+- (id) initWithIMyEduRequest: (MyEduRequest *) iMyEduRequest iCourseCode: (NSString *) iCourseCode iSectionId: (int32_t) iSectionId iModuleId: (int32_t) iModuleId iText: (NSString *) iText iRating: (int32_t) iRating;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
+
+- (MyEduRequest *) iMyEduRequest;
+- (void) setIMyEduRequest: (MyEduRequest *) iMyEduRequest;
+- (BOOL) iMyEduRequestIsSet;
 
 - (NSString *) iCourseCode;
 - (void) setICourseCode: (NSString *) iCourseCode;
@@ -730,10 +758,10 @@ typedef int64_t timestamp;
 - (MyEduTequilaToken *) getTequilaTokenForMyEdu;  // throws TException
 - (MyEduSession *) getMyEduSession: (MyEduTequilaToken *) iTequilaToken;  // throws TException
 - (MyEduSubscribedCoursesListReply *) getSubscribedCoursesList: (MyEduRequest *) iMyEduRequest;  // throws TException
-- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduRequest *) iMyEduRequest : (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;  // throws TException
-- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduRequest *) iMyEduRequest : (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;  // throws TException
-- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduRequest *) iMyEduRequest : (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;  // throws TException
-- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduRequest *) iMyEduRequest : (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;  // throws TException
+- (MyEduCourseDetailsReply *) getCourseDetails: (MyEduCourseDetailsRequest *) iMyEduCourseDetailsRequest;  // throws TException
+- (MyEduSectionDetailsReply *) getSectionDetails: (MyEduSectionDetailsRequest *) iMyEduSectionDetailsRequest;  // throws TException
+- (MyEduModuleDetailsReply *) getModuleDetails: (MyEduModuleDetailsRequest *) iMyEduModuleDetailsRequest;  // throws TException
+- (MyEduSubmitFeedbackReply *) submitFeedback: (MyEduSubmitFeedbackRequest *) iMyEduSubmitFeedbackRequest;  // throws TException
 @end
 
 @interface MyEduServiceClient : NSObject <MyEduService> {

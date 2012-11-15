@@ -10,7 +10,9 @@
 
 @implementation AuthenticationService
 
-static NSString* kLastUsedUseramesKey = @"lastUsedUsernames";
+/* __unused are added to prevent unused warning, even though the variables ARE actually used */
+
+static NSString* kLastUsedUseramesKey __unused = @"lastUsedUsernames";
 static NSString* kKeychainServiceKey = @"PCGasparPassword";
 static NSString* kSavedUsernameKey = @"savedUsername";
 static NSString* kSavePasswordSwitchStateKey = @"savePasswordSwitch";

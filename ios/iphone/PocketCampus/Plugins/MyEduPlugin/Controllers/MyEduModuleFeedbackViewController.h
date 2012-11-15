@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MyEduService.h"
+
 @interface MyEduModuleFeedbackViewController : UIViewController
 
 @end

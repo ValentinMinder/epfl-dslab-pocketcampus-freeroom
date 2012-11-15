@@ -14,9 +14,9 @@
 
 @implementation MyEduModuleFeedbackViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithMyEduModule:(MyEduModule*)module section:(MyEduSection*)section course:(MyEduCourse*)course
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"MyEduModuleFeedbackView" bundle:nil];
     if (self) {
         // Custom initialization
     }

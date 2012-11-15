@@ -16,6 +16,8 @@
 
 #import "PCCenterMessageCell.h"
 
+#import "MyEduController.h"
+
 #import "MyEduSectionListViewController.h"
 
 #import "MyEduSplashDetailViewController.h"
@@ -24,7 +26,6 @@
 
 @property (nonatomic, strong) MyEduService* myEduService;
 @property (nonatomic, strong) NSArray* subscribedCourses;
-@property (nonatomic, strong) AuthenticationController* authController;
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 
@@ -40,7 +41,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     if (self) {
         // Custom initialization
         self.myEduService = [MyEduService sharedInstanceToRetain];
-        self.authController = [[AuthenticationController alloc] init];
         self.subscribedCourses = [self.myEduService getFromCacheSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest]].iSubscribedCourses;
     }
     return self;
@@ -77,15 +77,19 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
     [self startGetSubscribedCoursesListRequest];
 }
 
-- (void)login {
-    [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
-}
-
 - (void)startGetSubscribedCoursesListRequest {
+    VoidBlock successBlock = ^{
+         [self.myEduService getSubscribedCoursesListForRequest:[self.myEduService createMyEduRequest] delegate:self];
+    };
     if ([self.myEduService lastSession]) {
-        [self.myEduService getSubscribedCoursesListForRequest:[[MyEduRequest alloc] initWithIMyEduSession:[self.myEduService lastSession] iLanguage:[PCUtils userLanguageCode]] delegate:self];
+        successBlock();
     } else {
-        [self login];
+        NSLog(@"-> No saved session, loggin in...");
+        [[MyEduController currentInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+            [self.pcRefreshControl endRefreshing];
+        } failureBlock:^{
+            [self error];
+        }];
     }
 }
 
@@ -106,7 +110,8 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
             [self.pcRefreshControl endRefreshing];
             break;
         case 407:
-            [self login];
+            [self.myEduService deleteSession];
+            [self startGetSubscribedCoursesListRequest];
             break;
         default:
             [self getSubscribedCoursesListFailedForRequest:request];
@@ -115,28 +120,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 }
 
 - (void)getSubscribedCoursesListFailedForRequest:(MyEduRequest *)request {
-    [self error];
-}
-
-- (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
-    self.tequilaToken = tequilaToken;
-    if (self.splitViewController) {
-        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:self.splitViewController delegate:self];
-    } else {
-        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:self delegate:self];
-    }
-}
-
-- (void)getTequilaTokenForMyEduFailed {
-    [self error];
-}
-
-- (void)getMyEduSessionForTequilaToken:(MyEduTequilaToken *)tequilaToken didReturn:(MyEduSession *)myEduSession {
-    [self.myEduService saveSession:myEduSession];
-    [self startGetSubscribedCoursesListRequest];
-}
-
-- (void)getMyEduSessionFailedForTequilaToken:(MyEduTequilaToken *)tequilaToken {
     [self error];
 }
 
@@ -156,24 +139,6 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
     [self.pcRefreshControl hideInTimeInterval:2.0];
-}
-
-#pragma mark - AuthenticationCallbackDelegate
-
-- (void)authenticationSucceeded {
-    if (!self.tequilaToken) {
-        NSLog(@"-> ERROR : no tequilaToken saved after successful authentication");
-        return;
-    }
-    [self.myEduService getMyEduSessionForTequilaToken:self.tequilaToken delegate:self];
-}
-
-- (void)userCancelledAuthentication {
-    //TODO
-}
-
-- (void)invalidToken {
-    [self startGetSubscribedCoursesListRequest];
 }
 
 #pragma mark - UITableViewDelegate
@@ -235,6 +200,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)dealloc
 {
     [self.myEduService cancelOperationsForDelegate:self];
+    [[MyEduController currentInstance] removeLoginObserver:self];
 }
 
 

@@ -109,6 +109,7 @@ typedef enum {
 @property NSTimeInterval cacheValidity;
 @property SEL serviceClientSelector;
 @property ReturnType returnType;
+@property NSUInteger nbTrimmedArgumentsFromLeftInDelegateCall;
 @property (nonatomic, assign) Service* service;
 
 

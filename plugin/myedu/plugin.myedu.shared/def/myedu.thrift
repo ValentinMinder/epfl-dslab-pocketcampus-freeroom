@@ -81,26 +81,30 @@ struct MyEduModuleRecord {
 // REQUESTS //
 
 struct MyEduCourseDetailsRequest {
-	1: required string iCourseCode;
+	1: required MyEduRequest iMyEduRequest;
+	2: required string iCourseCode;
 }
 
 struct MyEduSectionDetailsRequest {
-	1: required string iCourseCode;
-	2: required i32 iSectionId;
+	1: required MyEduRequest iMyEduRequest;
+	2: required string iCourseCode;
+	3: required i32 iSectionId;
 }
 
 struct MyEduModuleDetailsRequest {
-	1: required string iCourseCode;
-	2: required i32 iSectionId;
-	3: required i32 iModuleId;
+	1: required MyEduRequest iMyEduRequest;
+	2: required string iCourseCode;
+	3: required i32 iSectionId;
+	4: required i32 iModuleId;
 }
 
 struct MyEduSubmitFeedbackRequest {
-	1: required string iCourseCode;
-	2: required i32 iSectionId;
-	3: required i32 iModuleId;
-	4: required string iText;
-	5: required i32 iRating; //between 1 and 5
+	1: required MyEduRequest iMyEduRequest;
+	2: required string iCourseCode;
+	3: required i32 iSectionId;
+	4: required i32 iModuleId;
+	5: required string iText;
+	6: required i32 iRating; //between 1 and 5
 }
 
 // REPLIES //
@@ -138,8 +142,8 @@ service MyEduService {
 	MyEduTequilaToken getTequilaTokenForMyEdu();
 	MyEduSession getMyEduSession(1: MyEduTequilaToken iTequilaToken);
 	MyEduSubscribedCoursesListReply getSubscribedCoursesList(1: MyEduRequest iMyEduRequest);
-	MyEduCourseDetailsReply getCourseDetails(1: MyEduRequest iMyEduRequest, 2: MyEduCourseDetailsRequest iMyEduCourseDetailsRequest);
-	MyEduSectionDetailsReply getSectionDetails(1: MyEduRequest iMyEduRequest, 2: MyEduSectionDetailsRequest iMyEduSectionDetailsRequest);
-	MyEduModuleDetailsReply getModuleDetails(1: MyEduRequest iMyEduRequest, 2: MyEduModuleDetailsRequest iMyEduModuleDetailsRequest);
-	MyEduSubmitFeedbackReply submitFeedback(1: MyEduRequest iMyEduRequest, 2: MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest);
+	MyEduCourseDetailsReply getCourseDetails(1: MyEduCourseDetailsRequest iMyEduCourseDetailsRequest);
+	MyEduSectionDetailsReply getSectionDetails(1: MyEduSectionDetailsRequest iMyEduSectionDetailsRequest);
+	MyEduModuleDetailsReply getModuleDetails(1: MyEduModuleDetailsRequest iMyEduModuleDetailsRequest);
+	MyEduSubmitFeedbackReply submitFeedback(1: MyEduSubmitFeedbackRequest iMyEduSubmitFeedbackRequest);
 }

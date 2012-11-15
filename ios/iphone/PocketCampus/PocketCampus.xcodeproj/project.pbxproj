@@ -94,6 +94,8 @@
 		3241F1D615B4AB2400C7DF3A /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */; };
 		3241F1DE15B4AB9C00C7DF3A /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */; };
 		3242DE1F150577050082D720 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 324715AD15001381007C230C /* Service.m */; };
+		3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */; };
+		3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */; };
 		32442FEB151CF87100685D10 /* NextDeparturesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */; };
 		32442FEE151CFDED00685D10 /* Transport.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FEC151CFDED00685D10 /* Transport.png */; };
 		32442FEF151CFDED00685D10 /* Transport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32442FED151CFDED00685D10 /* Transport@2x.png */; };
@@ -289,6 +291,8 @@
 		32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C9015AF169B004384A5 /* CLLocation+STAdditions.m */; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
 		32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */; };
+		32DE48B1164D3138009C6152 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48AF164D3138009C6152 /* Settings.png */; };
+		32DE48B2164D3138009C6152 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48B0164D3138009C6152 /* Settings@2x.png */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E1FDB515474F7E00B1B630 /* FloorDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB115474F7E00B1B630 /* FloorDown.png */; };
 		32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */; };
@@ -453,6 +457,8 @@
 		3241F1D515B4AB2400C7DF3A /* EditableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditableTableViewCell.xib; sourceTree = "<group>"; };
 		3241F1DC15B4AB9B00C7DF3A /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableTableViewCell.h; sourceTree = "<group>"; };
 		3241F1DD15B4AB9B00C7DF3A /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
+		3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyEduDrawersNavbar.png; sourceTree = "<group>"; };
+		3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyEduDrawersNavbar@2x.png"; sourceTree = "<group>"; };
 		32442FE9151CF87100685D10 /* NextDeparturesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextDeparturesListViewController.h; sourceTree = "<group>"; };
 		32442FEA151CF87100685D10 /* NextDeparturesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextDeparturesListViewController.m; sourceTree = "<group>"; };
 		32442FEC151CFDED00685D10 /* Transport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transport.png; sourceTree = "<group>"; };
@@ -765,6 +771,8 @@
 		32D97C9E15AF26B3004384A5 /* NSData+SSToolkitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SSToolkitAdditions.m"; sourceTree = "<group>"; };
 		32DE48AC164D2C1C009C6152 /* MyEduModuleFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleFeedbackViewController.h; sourceTree = "<group>"; };
 		32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleFeedbackViewController.m; sourceTree = "<group>"; };
+		32DE48AF164D3138009C6152 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
+		32DE48B0164D3138009C6152 /* Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings@2x.png"; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32E1FDB115474F7E00B1B630 /* FloorDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FloorDown.png; sourceTree = "<group>"; };
 		32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorDown@2x.png"; sourceTree = "<group>"; };
@@ -864,9 +872,9 @@
 		320A05B315B02D5F0057B15C /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				32B3F3931621956C007A75C7 /* MainMenuView.xib */,
 				32B3F3951621B6D2007A75C7 /* MainMenuItem.h */,
 				32B3F3961621B6D2007A75C7 /* MainMenuItem.m */,
+				32B3F3931621956C007A75C7 /* MainMenuView.xib */,
 				325C47A41621D63E006752B4 /* MainMenuItemCell.h */,
 				325C47A51621D63E006752B4 /* MainMenuItemCell.m */,
 				325C47AA1621D8FC006752B4 /* MainMenuItemCell.xib */,
@@ -1051,6 +1059,8 @@
 				32CC7B3715B804D3004F0A31 /* SettingsBarButton@2x.png */,
 				321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */,
 				321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */,
+				32DE48AF164D3138009C6152 /* Settings.png */,
+				32DE48B0164D3138009C6152 /* Settings@2x.png */,
 				321F37E115B02FBE00E7BA6D /* HelpBarButton.png */,
 				321F37E215B02FBE00E7BA6D /* HelpBarButton@2x.png */,
 				321F37E315B02FBE00E7BA6D /* HomeNavbar.png */,
@@ -2166,6 +2176,8 @@
 				320073621646E101002AD7BA /* MyEduModuleText@2x.png */,
 				320073581646CBF0002AD7BA /* MyEduModuleVideo.png */,
 				320073591646CBF0002AD7BA /* MyEduModuleVideo@2x.png */,
+				3242F4091655A5B900A8C3D7 /* MyEduDrawersNavbar.png */,
+				3242F40A1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png */,
 			);
 			name = Images;
 			path = Plugins/MyEduPlugin/Views/Images;
@@ -2392,6 +2404,10 @@
 				325368C616496F8000406801 /* MyEduModuleMaterialsView.xib in Resources */,
 				32EC303E164B18A600D2112D /* MyEduModuleMaterial.png in Resources */,
 				32EC303F164B18A600D2112D /* MyEduModuleMaterial@2x.png in Resources */,
+				32DE48B1164D3138009C6152 /* Settings.png in Resources */,
+				32DE48B2164D3138009C6152 /* Settings@2x.png in Resources */,
+				3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */,
+				3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2715,7 +2731,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF735CC6-4170-4205-967F-AB8EACB73253";
 				SDKROOT = iphoneos;
@@ -2739,7 +2755,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "A2204D84-A74E-4E3F-98C8-AD364DAB50ED";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A2204D84-A74E-4E3F-98C8-AD364DAB50ED";
@@ -2765,7 +2781,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF735CC6-4170-4205-967F-AB8EACB73253";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

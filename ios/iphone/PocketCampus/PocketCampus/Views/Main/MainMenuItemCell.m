@@ -28,7 +28,7 @@
     } else if (type == MainMenuItemTypeSectionHeader) {
         return 60.0;
     } else if (type == MainMenuItemTypeThinSeparator) {
-        return 4.0;
+        return 3.0;
     } else {
         NSLog(@"-> ERROR: unsupported MainMenuItem type property");
         return 0.0;
@@ -52,12 +52,16 @@
         //TODO
     } else if (self.menuItemType == MainMenuItemTypeThinSeparator) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        colorView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
+        colorView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     } else {
         NSLog(@"-> ERROR: unsupported MainMenuItem type property");
     }
     self.backgroundView = colorView;
+    /*CGRect colorFrame = self.backgroundView.frame;
+    colorFrame.origin.y = -10.0;
+    colorFrame.size.height += 10.0;
+    colorView.frame = colorFrame;*/
     
-} 
+}
 
 @end

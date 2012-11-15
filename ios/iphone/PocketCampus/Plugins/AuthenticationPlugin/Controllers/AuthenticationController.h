@@ -7,6 +7,18 @@
 
 @class GasparViewController;
 
+typedef void (^VoidBlock)();
+
+@interface PCLoginObserver : NSObject
+
+@property (nonatomic, assign) id observer;
+@property (nonatomic, copy) NSString* operationIdentifier;
+@property (nonatomic, copy) VoidBlock successBlock;
+@property (nonatomic, copy) VoidBlock userCancelledBlock;
+@property (nonatomic, copy) VoidBlock failureBlock;
+
+@end
+
 @interface AuthenticationController : PluginController<PluginControllerProtocol> {
     CredentialsAlertViewController* credentialsAlertViewController;
     GasparViewController* gasparViewController;

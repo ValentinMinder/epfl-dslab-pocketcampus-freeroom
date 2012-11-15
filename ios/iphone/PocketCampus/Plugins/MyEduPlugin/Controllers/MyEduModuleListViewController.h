@@ -14,7 +14,7 @@
 
 #import "PCMasterSplitDelegate.h"
 
-@interface MyEduModuleListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate, AuthenticationCallbackDelegate>
+@interface MyEduModuleListViewController : UITableViewController<PCMasterSplitDelegate, MyEduServiceDelegate>
 
 - (id)initWithMyEduCourse:(MyEduCourse*)course andSection:(MyEduSection*)section;
 

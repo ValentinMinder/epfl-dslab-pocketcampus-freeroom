@@ -24,12 +24,14 @@ import org.slf4j.LoggerFactory;
 public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEduSubmitFeedbackRequest, MyEduSubmitFeedbackRequest._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MyEduSubmitFeedbackRequest");
 
-  private static final org.apache.thrift.protocol.TField I_COURSE_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseCode", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField I_SECTION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSectionId", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField I_MODULE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iModuleId", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField I_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("iText", org.apache.thrift.protocol.TType.STRING, (short)4);
-  private static final org.apache.thrift.protocol.TField I_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("iRating", org.apache.thrift.protocol.TType.I32, (short)5);
+  private static final org.apache.thrift.protocol.TField I_MY_EDU_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("iMyEduRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField I_COURSE_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("iCourseCode", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField I_SECTION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iSectionId", org.apache.thrift.protocol.TType.I32, (short)3);
+  private static final org.apache.thrift.protocol.TField I_MODULE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("iModuleId", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField I_TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("iText", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField I_RATING_FIELD_DESC = new org.apache.thrift.protocol.TField("iRating", org.apache.thrift.protocol.TType.I32, (short)6);
 
+  public MyEduRequest iMyEduRequest; // required
   public String iCourseCode; // required
   public int iSectionId; // required
   public int iModuleId; // required
@@ -38,11 +40,12 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    I_COURSE_CODE((short)1, "iCourseCode"),
-    I_SECTION_ID((short)2, "iSectionId"),
-    I_MODULE_ID((short)3, "iModuleId"),
-    I_TEXT((short)4, "iText"),
-    I_RATING((short)5, "iRating");
+    I_MY_EDU_REQUEST((short)1, "iMyEduRequest"),
+    I_COURSE_CODE((short)2, "iCourseCode"),
+    I_SECTION_ID((short)3, "iSectionId"),
+    I_MODULE_ID((short)4, "iModuleId"),
+    I_TEXT((short)5, "iText"),
+    I_RATING((short)6, "iRating");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -57,15 +60,17 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // I_COURSE_CODE
+        case 1: // I_MY_EDU_REQUEST
+          return I_MY_EDU_REQUEST;
+        case 2: // I_COURSE_CODE
           return I_COURSE_CODE;
-        case 2: // I_SECTION_ID
+        case 3: // I_SECTION_ID
           return I_SECTION_ID;
-        case 3: // I_MODULE_ID
+        case 4: // I_MODULE_ID
           return I_MODULE_ID;
-        case 4: // I_TEXT
+        case 5: // I_TEXT
           return I_TEXT;
-        case 5: // I_RATING
+        case 6: // I_RATING
           return I_RATING;
         default:
           return null;
@@ -115,6 +120,8 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.I_MY_EDU_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("iMyEduRequest", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MyEduRequest.class)));
     tmpMap.put(_Fields.I_COURSE_CODE, new org.apache.thrift.meta_data.FieldMetaData("iCourseCode", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.I_SECTION_ID, new org.apache.thrift.meta_data.FieldMetaData("iSectionId", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -133,6 +140,7 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
   }
 
   public MyEduSubmitFeedbackRequest(
+    MyEduRequest iMyEduRequest,
     String iCourseCode,
     int iSectionId,
     int iModuleId,
@@ -140,6 +148,7 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     int iRating)
   {
     this();
+    this.iMyEduRequest = iMyEduRequest;
     this.iCourseCode = iCourseCode;
     this.iSectionId = iSectionId;
     setISectionIdIsSet(true);
@@ -156,6 +165,9 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
   public MyEduSubmitFeedbackRequest(MyEduSubmitFeedbackRequest other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetIMyEduRequest()) {
+      this.iMyEduRequest = new MyEduRequest(other.iMyEduRequest);
+    }
     if (other.isSetICourseCode()) {
       this.iCourseCode = other.iCourseCode;
     }
@@ -173,6 +185,7 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
 
   @Override
   public void clear() {
+    this.iMyEduRequest = null;
     this.iCourseCode = null;
     setISectionIdIsSet(false);
     this.iSectionId = 0;
@@ -181,6 +194,30 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     this.iText = null;
     setIRatingIsSet(false);
     this.iRating = 0;
+  }
+
+  public MyEduRequest getIMyEduRequest() {
+    return this.iMyEduRequest;
+  }
+
+  public MyEduSubmitFeedbackRequest setIMyEduRequest(MyEduRequest iMyEduRequest) {
+    this.iMyEduRequest = iMyEduRequest;
+    return this;
+  }
+
+  public void unsetIMyEduRequest() {
+    this.iMyEduRequest = null;
+  }
+
+  /** Returns true if field iMyEduRequest is set (has been assigned a value) and false otherwise */
+  public boolean isSetIMyEduRequest() {
+    return this.iMyEduRequest != null;
+  }
+
+  public void setIMyEduRequestIsSet(boolean value) {
+    if (!value) {
+      this.iMyEduRequest = null;
+    }
   }
 
   public String getICourseCode() {
@@ -302,6 +339,14 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case I_MY_EDU_REQUEST:
+      if (value == null) {
+        unsetIMyEduRequest();
+      } else {
+        setIMyEduRequest((MyEduRequest)value);
+      }
+      break;
+
     case I_COURSE_CODE:
       if (value == null) {
         unsetICourseCode();
@@ -347,6 +392,9 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case I_MY_EDU_REQUEST:
+      return getIMyEduRequest();
+
     case I_COURSE_CODE:
       return getICourseCode();
 
@@ -373,6 +421,8 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     }
 
     switch (field) {
+    case I_MY_EDU_REQUEST:
+      return isSetIMyEduRequest();
     case I_COURSE_CODE:
       return isSetICourseCode();
     case I_SECTION_ID:
@@ -399,6 +449,15 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
   public boolean equals(MyEduSubmitFeedbackRequest that) {
     if (that == null)
       return false;
+
+    boolean this_present_iMyEduRequest = true && this.isSetIMyEduRequest();
+    boolean that_present_iMyEduRequest = true && that.isSetIMyEduRequest();
+    if (this_present_iMyEduRequest || that_present_iMyEduRequest) {
+      if (!(this_present_iMyEduRequest && that_present_iMyEduRequest))
+        return false;
+      if (!this.iMyEduRequest.equals(that.iMyEduRequest))
+        return false;
+    }
 
     boolean this_present_iCourseCode = true && this.isSetICourseCode();
     boolean that_present_iCourseCode = true && that.isSetICourseCode();
@@ -452,6 +511,11 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
   public int hashCode() {
     HashCodeBuilder builder = new HashCodeBuilder();
 
+    boolean present_iMyEduRequest = true && (isSetIMyEduRequest());
+    builder.append(present_iMyEduRequest);
+    if (present_iMyEduRequest)
+      builder.append(iMyEduRequest);
+
     boolean present_iCourseCode = true && (isSetICourseCode());
     builder.append(present_iCourseCode);
     if (present_iCourseCode)
@@ -488,6 +552,16 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     int lastComparison = 0;
     MyEduSubmitFeedbackRequest typedOther = (MyEduSubmitFeedbackRequest)other;
 
+    lastComparison = Boolean.valueOf(isSetIMyEduRequest()).compareTo(typedOther.isSetIMyEduRequest());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIMyEduRequest()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.iMyEduRequest, typedOther.iMyEduRequest);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetICourseCode()).compareTo(typedOther.isSetICourseCode());
     if (lastComparison != 0) {
       return lastComparison;
@@ -555,14 +629,22 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
         break;
       }
       switch (field.id) {
-        case 1: // I_COURSE_CODE
+        case 1: // I_MY_EDU_REQUEST
+          if (field.type == org.apache.thrift.protocol.TType.STRUCT) {
+            this.iMyEduRequest = new MyEduRequest();
+            this.iMyEduRequest.read(iprot);
+          } else { 
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2: // I_COURSE_CODE
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iCourseCode = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // I_SECTION_ID
+        case 3: // I_SECTION_ID
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.iSectionId = iprot.readI32();
             setISectionIdIsSet(true);
@@ -570,7 +652,7 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // I_MODULE_ID
+        case 4: // I_MODULE_ID
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.iModuleId = iprot.readI32();
             setIModuleIdIsSet(true);
@@ -578,14 +660,14 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // I_TEXT
+        case 5: // I_TEXT
           if (field.type == org.apache.thrift.protocol.TType.STRING) {
             this.iText = iprot.readString();
           } else { 
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // I_RATING
+        case 6: // I_RATING
           if (field.type == org.apache.thrift.protocol.TType.I32) {
             this.iRating = iprot.readI32();
             setIRatingIsSet(true);
@@ -617,6 +699,11 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.iMyEduRequest != null) {
+      oprot.writeFieldBegin(I_MY_EDU_REQUEST_FIELD_DESC);
+      this.iMyEduRequest.write(oprot);
+      oprot.writeFieldEnd();
+    }
     if (this.iCourseCode != null) {
       oprot.writeFieldBegin(I_COURSE_CODE_FIELD_DESC);
       oprot.writeString(this.iCourseCode);
@@ -645,6 +732,14 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
     StringBuilder sb = new StringBuilder("MyEduSubmitFeedbackRequest(");
     boolean first = true;
 
+    sb.append("iMyEduRequest:");
+    if (this.iMyEduRequest == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.iMyEduRequest);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("iCourseCode:");
     if (this.iCourseCode == null) {
       sb.append("null");
@@ -678,6 +773,9 @@ public class MyEduSubmitFeedbackRequest implements org.apache.thrift.TBase<MyEdu
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    if (iMyEduRequest == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'iMyEduRequest' was not present! Struct: " + toString());
+    }
     if (iCourseCode == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'iCourseCode' was not present! Struct: " + toString());
     }
