@@ -159,7 +159,7 @@ static NSString* kSettingsIdentifier = @"SETTINGS";
     
     [menuItems addObject:[MainMenuItem menuItemThinSeparator]];
     
-    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"SettingsHomeButton"] identifier:kSettingsIdentifier];
+    MainMenuItem* settingsButton = [MainMenuItem menuItemButtonWithTitle:NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil) leftImage:[UIImage imageNamed:@"Settings"] identifier:kSettingsIdentifier];
     
     [menuItems addObject:settingsButton];
     

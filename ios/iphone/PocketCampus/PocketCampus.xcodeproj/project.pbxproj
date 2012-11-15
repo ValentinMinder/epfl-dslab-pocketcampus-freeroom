@@ -288,6 +288,7 @@
 		32D97C8C15AF160D004384A5 /* STKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C7A15AF160D004384A5 /* STKeychain.m */; };
 		32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C9015AF169B004384A5 /* CLLocation+STAdditions.m */; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
+		32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32E1FDB515474F7E00B1B630 /* FloorDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB115474F7E00B1B630 /* FloorDown.png */; };
 		32E1FDB615474F7E00B1B630 /* FloorDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */; };
@@ -762,6 +763,8 @@
 		32D97C9B15AF1BB8004384A5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		32D97C9D15AF26B2004384A5 /* NSData+SSToolkitAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+SSToolkitAdditions.h"; sourceTree = "<group>"; };
 		32D97C9E15AF26B3004384A5 /* NSData+SSToolkitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SSToolkitAdditions.m"; sourceTree = "<group>"; };
+		32DE48AC164D2C1C009C6152 /* MyEduModuleFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleFeedbackViewController.h; sourceTree = "<group>"; };
+		32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleFeedbackViewController.m; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32E1FDB115474F7E00B1B630 /* FloorDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FloorDown.png; sourceTree = "<group>"; };
 		32E1FDB215474F7E00B1B630 /* FloorDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FloorDown@2x.png"; sourceTree = "<group>"; };
@@ -2145,6 +2148,8 @@
 				3200735F1646DDB9002AD7BA /* MyEduModuleTextViewController.m */,
 				325368C21649638A00406801 /* MyEduModuleMaterialsViewController.h */,
 				325368C31649638B00406801 /* MyEduModuleMaterialsViewController.m */,
+				32DE48AC164D2C1C009C6152 /* MyEduModuleFeedbackViewController.h */,
+				32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/MyEduPlugin/Controllers;
@@ -2542,6 +2547,7 @@
 				320DFC361646C03700849907 /* MyEduModuleDetailViewController.m in Sources */,
 				320073601646DDB9002AD7BA /* MyEduModuleTextViewController.m in Sources */,
 				325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */,
+				32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

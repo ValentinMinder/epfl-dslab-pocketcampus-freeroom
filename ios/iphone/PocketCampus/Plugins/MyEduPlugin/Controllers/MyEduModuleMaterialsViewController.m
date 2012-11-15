@@ -191,6 +191,8 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 }
 
 - (void)dealloc {
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
     [self.myEduService cancelOperationsForDelegate:self];
 }
 

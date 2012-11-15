@@ -10,9 +10,10 @@
 
 #import "MyEduService.h"
 
-@interface MyEduModuleTextViewController : UIViewController
+@interface MyEduModuleTextViewController : UIViewController<UIWebViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UITextView* textView;
+@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
 
 - (id)initWithMyEduModule:(MyEduModule*)module;

@@ -14,6 +14,8 @@
 
 @end
 
+static int kTextContentSize = 15.0;
+
 @implementation MyEduModuleTextViewController
 
 - (id)initWithMyEduModule:(MyEduModule*)module
@@ -33,9 +35,11 @@
         self.centerMessageLabel.text = NSLocalizedStringFromTable(@"NoTextInModule", @"MyEduPlugin", nil);
         self.centerMessageLabel.hidden = NO;
     } else {
-        self.textView.text = self.module.iTextContent;
-        //self.textView.contentInset = UIEdgeInsetsMake(3.0, 5.0, 0.0, 10.0);
-        self.textView.hidden = NO;
+        [self.loadingIndicator startAnimating];
+        //NSLog(@"%@", self.module.iTextContent);
+        NSString* text = [self.module.iTextContent stringByReplacingOccurrencesOfString:@"\r\n" withString:@"<br>"];
+        NSString* textWithStyle = [NSString stringWithFormat:@"<meta charset='utf-8'><meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0;'><style type='text/css'> a { color:#B80000; text-decoration:none; }</style><span style='font-family: Helvetica; font-size: %dpx; word-wrap:break-word; text-align:left;'>%@</span>", kTextContentSize, text];
+        [self.webView loadHTMLString:textWithStyle baseURL:[NSURL URLWithString:@"https://myedu.epfl.ch"]];
     }
 }
 
@@ -43,6 +47,19 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UIWebView
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self.loadingIndicator stopAnimating];
+    self.webView.hidden = NO;
+}
+
+- (void)dealloc
+{
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
 }
 
 @end
