@@ -16,4 +16,5 @@
 + (void)createComponentsForPath:(NSString*)path;
 + (NSDictionary*)fileAttributesForKey:(NSString*)key andPluginName:(NSString*)pluginName;
 + (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName;
++ (NSString*)pathForKey:(NSString*)key pluginName:(NSString*)pluginName customFileExtension:(NSString*)customFileExtension; //extension without dot. Passing nil customExtension will result in extension .archive
 @end

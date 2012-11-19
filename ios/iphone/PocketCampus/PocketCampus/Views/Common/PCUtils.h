@@ -18,5 +18,6 @@
 + (NSString*)lastUpdateNowString;
 + (void)reloadTableView:(UITableView*)tableView withFadingDuration:(NSTimeInterval)duration;
 + (void)printFrame:(CGRect)frame;
++ (NSString*)stringFromFileSize:(unsigned long long)size;
 
 @end

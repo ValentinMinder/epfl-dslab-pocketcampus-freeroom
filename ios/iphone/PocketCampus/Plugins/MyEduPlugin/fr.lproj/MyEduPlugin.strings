@@ -26,3 +26,7 @@
 "Material" = "Matière";
 "DownloadingFile" = "Téléchargement du fichier...";
 "NoMaterial" = "Pas de contenu disponible";
+"StartingDownload" = "Démarrage du téléchargement...";
+"DownloadingVideo" = "Téléchargement de la vidéo";
+"DownloadProgressWithFormat" = "%@ sur %@";
+"DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\n\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus possible.";

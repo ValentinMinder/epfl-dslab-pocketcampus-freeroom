@@ -26,3 +26,7 @@
 "Material" = "Material";
 "DownloadingFile" = "Downloading file...";
 "NoMaterial" = "No material";
+"StartingDownload" = "Starting download...";
+"DownloadingVideo" = "Downloading video...";
+"DownloadProgressWithFormat" = "%@ of %@";
+"DeleteDownloadedVideoExplanation" = "Delete downloaded video ?\n\nThe file will be deleted and offline playing won't be available anymore.";

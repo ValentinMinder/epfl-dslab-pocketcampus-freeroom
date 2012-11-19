@@ -59,4 +59,19 @@
     NSLog(@"Frame : %lf, %lf, %lf, %lf", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
++ (NSString*)stringFromFileSize:(unsigned long long)size {
+    float floatSize = size;
+    if (size<1023)
+        return([NSString stringWithFormat:@"%llu bytes",size]);
+    floatSize = floatSize / 1024;
+    if (floatSize<1023)
+        return([NSString stringWithFormat:@"%1.1f KB",floatSize]);
+    floatSize = floatSize / 1024;
+    if (floatSize<1023)
+        return([NSString stringWithFormat:@"%1.1f MB",floatSize]);
+    floatSize = floatSize / 1024;
+    
+    return [NSString stringWithFormat:@"%1.1f GB",floatSize];
+}
+
 @end

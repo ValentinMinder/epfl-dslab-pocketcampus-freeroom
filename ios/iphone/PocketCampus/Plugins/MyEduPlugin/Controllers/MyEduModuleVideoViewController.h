@@ -12,7 +12,7 @@
 
 #import "MyEduService.h"
 
-@interface MyEduModuleVideoViewController : UIViewController<UIWebViewDelegate>
+@interface MyEduModuleVideoViewController : UIViewController<UIWebViewDelegate, NSURLConnectionDownloadDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView* loadingIndicator;

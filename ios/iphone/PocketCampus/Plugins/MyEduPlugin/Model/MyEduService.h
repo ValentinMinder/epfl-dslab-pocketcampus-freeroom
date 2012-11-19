@@ -12,6 +12,9 @@
 
 #import "ASIHTTPRequest.h"
 
+
+#pragma mark - MyEduMaterialData definition
+
 @interface MyEduMaterialData : NSObject<NSCoding>
 
 @property (readonly, strong) MyEduMaterial* material;
@@ -22,7 +25,27 @@
 
 @end
 
-@interface MyEduService : Service <ServiceProtocol, ASIHTTPRequestDelegate>
+#pragma mark - MyEduDownloadObserver definition
+
+typedef void (^DownloadDidFinishBlock)(NSURL* fileLocalURL);
+typedef void (^DownloadDidProgressBlock)(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio);
+typedef void (^DownloadWasCancelledBlock)(void);
+typedef void (^DownloadDidFailBlock)(int statusCode);
+
+@interface MyEduDownloadObserver : NSObject
+
+@property (nonatomic, assign) id observer;
+@property (nonatomic, copy) NSString* downloadIdentifier;
+@property (nonatomic, copy) DownloadDidFinishBlock finishBlock;
+@property (nonatomic, copy) DownloadDidProgressBlock progressBlock;
+@property (nonatomic, copy) DownloadWasCancelledBlock cancelledBlock;
+@property (nonatomic, copy) DownloadDidFailBlock failureBlock;
+
+@end
+
+#pragma mark - MyEduService definition
+
+@interface MyEduService : Service <ServiceProtocol, ASIHTTPRequestDelegate, ASIProgressDelegate>
 
 /* Utilitiy methods */
 - (MyEduRequest*)createMyEduRequest;
@@ -49,8 +72,16 @@
 - (void)getModuleDetailsForRequest:(MyEduModuleDetailsRequest*)request delegate:(id)delegate;
 - (void)submitFeedbackWithRequest:(MyEduSubmitFeedbackRequest*)request delegate:(id)delegate;
 
-/* Asynchronous methods - helpers */
+/* Material download */
+
 - (void)downloadMaterial:(MyEduMaterial*)material progressView:(UIProgressView*)progressView delegate:(id)delegate;
+
+/* Video download */
+
+- (void)addDownloadObserver:(id)observer forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload finishBlock:(DownloadDidFinishBlock)finishBlock progressBlock:(DownloadDidProgressBlock)progressBlock cancelledBlock:(DownloadWasCancelledBlock)cancelledBlock failureBlock:(DownloadDidFailBlock)failureBlock;
+- (void)removeDownloadObserver:(id)observer forVideoModule:(MyEduModule*)module;
+- (void)cancelVideoDownloadForModule:(MyEduModule*)module;
+- (void)removeDownloadedVideoOfModule:(MyEduModule*)module;
 
 /* Synchronous methods (from cache) return nil if not in cache */
 
@@ -63,6 +94,8 @@
 
 /* Utiliy methods */
 
+- (NSString*)localPathForVideoOfModule:(MyEduModule*)module;
+- (NSString*)localPathOfVideoForModule:(MyEduModule*)module nilIfNoFile:(BOOL)nilIfNoFile;
 + (NSString*)videoHTMLCodeForMyEduModule:(MyEduModule*)module videoWidth:(int)width videoHeight:(int)height;
 
 @end

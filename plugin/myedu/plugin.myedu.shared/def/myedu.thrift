@@ -46,9 +46,10 @@ struct MyEduModule {
 	5: required bool iVisible;
 	6: required string iTextContent;
 	7: required string iVideoSourceProvider;
-	8: required string iVideoURL;
-	9: required timestamp iCreationTimestamp;
-	10: required timestamp iLastUpdateTimestamp;
+	8: required string iVideoID;
+	9: optional string iVideoDownloadURL; //might not be available, depending on provider
+	10: required timestamp iCreationTimestamp;
+	11: required timestamp iLastUpdateTimestamp;
 }
 
 enum MyEduMaterialType {

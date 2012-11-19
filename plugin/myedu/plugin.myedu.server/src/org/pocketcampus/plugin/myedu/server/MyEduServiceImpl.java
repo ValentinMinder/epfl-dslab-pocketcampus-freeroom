@@ -393,7 +393,13 @@ public class MyEduServiceImpl implements MyEduService.Iface {
 		myEduModule.setIVisible(module.is_visible);
 		myEduModule.setITextContent(module.text_content);
 		myEduModule.setIVideoSourceProvider(module.video_source);
-		myEduModule.setIVideoURL(module.video_url);
+		myEduModule.setIVideoID(module.video_url); //normal, video_url is actually id
+		
+		if (module.video_source.equals("vimeo")) {
+			myEduModule.setIVideoDownloadURL("http://pocketcampus.epfl.ch/vimeo/vimeo.php?vid="+myEduModule.getIVideoID());
+		} else {
+			//download with other providers not suported
+		}
 		
 		return myEduModule;
 	}

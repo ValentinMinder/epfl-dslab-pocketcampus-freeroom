@@ -70,6 +70,7 @@
 		321F37EB15B0307700E7BA6D /* GlobalSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */; };
 		321F37ED15B0371500E7BA6D /* SettingsHomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */; };
 		321F37EF15B0499200E7BA6D /* SettingsHomeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */; };
+		32216D1616594005008F1D3B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32216D1516594005008F1D3B /* MediaPlayer.framework */; };
 		322BA0421643CF3A0063B632 /* MyEduModuleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		322BA0441643F4510063B632 /* MyEduModuleListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322BA0431643F4510063B632 /* MyEduModuleListView.xib */; };
 		322BA0481643FBEB0063B632 /* MSPullToRefreshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322BA0471643FBEB0063B632 /* MSPullToRefreshController.m */; };
@@ -196,6 +197,12 @@
 		32A54B7D15B5A8E100A7C882 /* GasparViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A54B7C15B5A8E100A7C882 /* GasparViewController.m */; };
 		32A54B8015B5AA5900A7C882 /* GasparView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A54B7F15B5AA5900A7C882 /* GasparView.xib */; };
 		32A63A4B1535FFF400237841 /* DestinationConnectionsHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A63A4D1535FFF400237841 /* DestinationConnectionsHeaderCell.xib */; };
+		32ADC70A165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */; };
+		32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */; };
+		32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */; };
+		32ADC7191659AAEB0039F6A6 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7171659AAEB0039F6A6 /* Download.png */; };
+		32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32ADC7181659AAEB0039F6A6 /* Download@2x.png */; };
 		32AF214415B193A200BB445D /* TransportHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214515B193A200BB445D /* TransportHelpView.xib */; };
 		32AF214815B197DE00BB445D /* TransportHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32AF214615B197DE00BB445D /* TransportHelp.html */; };
 		32B13A3F1634B0F4007B54A1 /* MainMenuNavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */; };
@@ -290,7 +297,7 @@
 		32D97C8C15AF160D004384A5 /* STKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C7A15AF160D004384A5 /* STKeychain.m */; };
 		32D97C9615AF169B004384A5 /* CLLocation+STAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D97C9015AF169B004384A5 /* CLLocation+STAdditions.m */; };
 		32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D97C9B15AF1BB8004384A5 /* Security.framework */; };
-		32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */; };
+		32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE48AD164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32DE48B1164D3138009C6152 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48AF164D3138009C6152 /* Settings.png */; };
 		32DE48B2164D3138009C6152 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE48B0164D3138009C6152 /* Settings@2x.png */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
@@ -422,6 +429,7 @@
 		321F37EA15B0307700E7BA6D /* GlobalSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlobalSettingsView.xib; sourceTree = "<group>"; };
 		321F37EC15B0371500E7BA6D /* SettingsHomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsHomeButton@2x.png"; sourceTree = "<group>"; };
 		321F37EE15B0499200E7BA6D /* SettingsHomeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsHomeButton.png; sourceTree = "<group>"; };
+		32216D1516594005008F1D3B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		322BA0401643CF3A0063B632 /* MyEduModuleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleListViewController.h; sourceTree = "<group>"; };
 		322BA0411643CF3A0063B632 /* MyEduModuleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleListViewController.m; sourceTree = "<group>"; };
 		322BA0431643F4510063B632 /* MyEduModuleListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleListView.xib; sourceTree = "<group>"; };
@@ -612,6 +620,13 @@
 		32A54B7F15B5AA5900A7C882 /* GasparView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GasparView.xib; sourceTree = "<group>"; };
 		32A63A4C1535FFF400237841 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
 		32A63A4F1536000100237841 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DestinationConnectionsHeaderCell.xib; sourceTree = "<group>"; };
+		32ADC708165994840039F6A6 /* MyEduModuleVideoDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEduModuleVideoDownloadViewController.h; sourceTree = "<group>"; };
+		32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEduModuleVideoDownloadViewController.m; sourceTree = "<group>"; };
+		32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyEduModuleVideoDownloadView.xib; sourceTree = "<group>"; };
+		32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelCrossRound@2x.png"; sourceTree = "<group>"; };
+		32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelCrossRound.png; sourceTree = "<group>"; };
+		32ADC7171659AAEB0039F6A6 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
+		32ADC7181659AAEB0039F6A6 /* Download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Download@2x.png"; sourceTree = "<group>"; };
 		32AF214515B193A200BB445D /* TransportHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransportHelpView.xib; sourceTree = "<group>"; };
 		32AF214715B197DE00BB445D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/TransportHelp.html; sourceTree = "<group>"; };
 		32AF214915B1AE2000BB445D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/TransportHelp.html; sourceTree = "<group>"; };
@@ -831,6 +846,7 @@
 			files = (
 				1997124D15EFC9CA00E2A679 /* libsqlite3.dylib in Frameworks */,
 				32B8928215458BD70058E472 /* libz.dylib in Frameworks */,
+				32216D1616594005008F1D3B /* MediaPlayer.framework in Frameworks */,
 				32D97C9C15AF1BB8004384A5 /* Security.framework in Frameworks */,
 				32B8928015458BAB0058E472 /* MobileCoreServices.framework in Frameworks */,
 				32B8927E15458BA10058E472 /* SystemConfiguration.framework in Frameworks */,
@@ -915,6 +931,7 @@
 				3219EF6714FCE02F00A271CD /* ExternalFrameworks */,
 				32B8928115458BD70058E472 /* libz.dylib */,
 				32B7322515C206F30091757D /* libsqlite3.dylib */,
+				32216D1516594005008F1D3B /* MediaPlayer.framework */,
 				32B7322715C2070E0091757D /* QuartzCore.framework */,
 				32D97C9B15AF1BB8004384A5 /* Security.framework */,
 				32B8927F15458BAB0058E472 /* MobileCoreServices.framework */,
@@ -1045,6 +1062,10 @@
 				320073661647128F002AD7BA /* ArrowHide@2x.png */,
 				32007369164718DA002AD7BA /* ArrowShow.png */,
 				3200736A164718DA002AD7BA /* ArrowShow@2x.png */,
+				32ADC7151659A2BA0039F6A6 /* CancelCrossRound.png */,
+				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
+				32ADC7171659AAEB0039F6A6 /* Download.png */,
+				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -2118,6 +2139,7 @@
 				32BA30721645DCB200909D82 /* MyEduCourseInfoView.xib */,
 				320073561646C51E002AD7BA /* MyEduModuleDetailView.xib */,
 				320DFC321646B3A200849907 /* MyEduModuleVideoView.xib */,
+				32ADC70D165995050039F6A6 /* MyEduModuleVideoDownloadView.xib */,
 				3200735C1646DD52002AD7BA /* MyEduModuleTextView.xib */,
 				325368C516496F7F00406801 /* MyEduModuleMaterialsView.xib */,
 			);
@@ -2154,6 +2176,8 @@
 				320DFC351646C03700849907 /* MyEduModuleDetailViewController.m */,
 				320DFC2F1646B35800849907 /* MyEduModuleVideoViewController.h */,
 				320DFC301646B35900849907 /* MyEduModuleVideoViewController.m */,
+				32ADC708165994840039F6A6 /* MyEduModuleVideoDownloadViewController.h */,
+				32ADC709165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m */,
 				3200735E1646DDB9002AD7BA /* MyEduModuleTextViewController.h */,
 				3200735F1646DDB9002AD7BA /* MyEduModuleTextViewController.m */,
 				325368C21649638A00406801 /* MyEduModuleMaterialsViewController.h */,
@@ -2408,6 +2432,11 @@
 				32DE48B2164D3138009C6152 /* Settings@2x.png in Resources */,
 				3242F40B1655A5B900A8C3D7 /* MyEduDrawersNavbar.png in Resources */,
 				3242F40C1655A5B900A8C3D7 /* MyEduDrawersNavbar@2x.png in Resources */,
+				32ADC70E165995050039F6A6 /* MyEduModuleVideoDownloadView.xib in Resources */,
+				32ADC710165999820039F6A6 /* CancelCrossRound@2x.png in Resources */,
+				32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */,
+				32ADC7191659AAEB0039F6A6 /* Download.png in Resources */,
+				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2564,6 +2593,7 @@
 				320073601646DDB9002AD7BA /* MyEduModuleTextViewController.m in Sources */,
 				325368C41649638B00406801 /* MyEduModuleMaterialsViewController.m in Sources */,
 				32DE48AE164D2C1C009C6152 /* MyEduModuleFeedbackViewController.m in Sources */,
+				32ADC70A165994840039F6A6 /* MyEduModuleVideoDownloadViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2714,6 +2744,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Loic Gardiol (NL782XD7Y6)";
@@ -2745,6 +2776,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Loic Gardiol";

@@ -1173,7 +1173,7 @@
 
 @implementation MyEduModule
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoID: (NSString *) iVideoID iVideoDownloadURL: (NSString *) iVideoDownloadURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp
 {
   self = [super init];
   __iId = iId;
@@ -1190,8 +1190,10 @@
   __iTextContent_isset = YES;
   __iVideoSourceProvider = [iVideoSourceProvider retain];
   __iVideoSourceProvider_isset = YES;
-  __iVideoURL = [iVideoURL retain];
-  __iVideoURL_isset = YES;
+  __iVideoID = [iVideoID retain];
+  __iVideoID_isset = YES;
+  __iVideoDownloadURL = [iVideoDownloadURL retain];
+  __iVideoDownloadURL_isset = YES;
   __iCreationTimestamp = iCreationTimestamp;
   __iCreationTimestamp_isset = YES;
   __iLastUpdateTimestamp = iLastUpdateTimestamp;
@@ -1237,10 +1239,15 @@
     __iVideoSourceProvider = [[decoder decodeObjectForKey: @"iVideoSourceProvider"] retain];
     __iVideoSourceProvider_isset = YES;
   }
-  if ([decoder containsValueForKey: @"iVideoURL"])
+  if ([decoder containsValueForKey: @"iVideoID"])
   {
-    __iVideoURL = [[decoder decodeObjectForKey: @"iVideoURL"] retain];
-    __iVideoURL_isset = YES;
+    __iVideoID = [[decoder decodeObjectForKey: @"iVideoID"] retain];
+    __iVideoID_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"iVideoDownloadURL"])
+  {
+    __iVideoDownloadURL = [[decoder decodeObjectForKey: @"iVideoDownloadURL"] retain];
+    __iVideoDownloadURL_isset = YES;
   }
   if ([decoder containsValueForKey: @"iCreationTimestamp"])
   {
@@ -1285,9 +1292,13 @@
   {
     [encoder encodeObject: __iVideoSourceProvider forKey: @"iVideoSourceProvider"];
   }
-  if (__iVideoURL_isset)
+  if (__iVideoID_isset)
   {
-    [encoder encodeObject: __iVideoURL forKey: @"iVideoURL"];
+    [encoder encodeObject: __iVideoID forKey: @"iVideoID"];
+  }
+  if (__iVideoDownloadURL_isset)
+  {
+    [encoder encodeObject: __iVideoDownloadURL forKey: @"iVideoDownloadURL"];
   }
   if (__iCreationTimestamp_isset)
   {
@@ -1304,7 +1315,8 @@
   [__iTitle release];
   [__iTextContent release];
   [__iVideoSourceProvider release];
-  [__iVideoURL release];
+  [__iVideoID release];
+  [__iVideoDownloadURL release];
   [super dealloc];
 }
 
@@ -1439,25 +1451,46 @@
   __iVideoSourceProvider_isset = NO;
 }
 
-- (NSString *) iVideoURL {
-  return [[__iVideoURL retain] autorelease];
+- (NSString *) iVideoID {
+  return [[__iVideoID retain] autorelease];
 }
 
-- (void) setIVideoURL: (NSString *) iVideoURL {
-  [iVideoURL retain];
-  [__iVideoURL release];
-  __iVideoURL = iVideoURL;
-  __iVideoURL_isset = YES;
+- (void) setIVideoID: (NSString *) iVideoID {
+  [iVideoID retain];
+  [__iVideoID release];
+  __iVideoID = iVideoID;
+  __iVideoID_isset = YES;
 }
 
-- (BOOL) iVideoURLIsSet {
-  return __iVideoURL_isset;
+- (BOOL) iVideoIDIsSet {
+  return __iVideoID_isset;
 }
 
-- (void) unsetIVideoURL {
-  [__iVideoURL release];
-  __iVideoURL = nil;
-  __iVideoURL_isset = NO;
+- (void) unsetIVideoID {
+  [__iVideoID release];
+  __iVideoID = nil;
+  __iVideoID_isset = NO;
+}
+
+- (NSString *) iVideoDownloadURL {
+  return [[__iVideoDownloadURL retain] autorelease];
+}
+
+- (void) setIVideoDownloadURL: (NSString *) iVideoDownloadURL {
+  [iVideoDownloadURL retain];
+  [__iVideoDownloadURL release];
+  __iVideoDownloadURL = iVideoDownloadURL;
+  __iVideoDownloadURL_isset = YES;
+}
+
+- (BOOL) iVideoDownloadURLIsSet {
+  return __iVideoDownloadURL_isset;
+}
+
+- (void) unsetIVideoDownloadURL {
+  [__iVideoDownloadURL release];
+  __iVideoDownloadURL = nil;
+  __iVideoDownloadURL_isset = NO;
 }
 
 - (int64_t) iCreationTimestamp {
@@ -1568,12 +1601,20 @@
       case 8:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
-          [self setIVideoURL: fieldValue];
+          [self setIVideoID: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
       case 9:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setIVideoDownloadURL: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 10:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setICreationTimestamp: fieldValue];
@@ -1581,7 +1622,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 10:
+      case 11:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setILastUpdateTimestamp: fieldValue];
@@ -1641,20 +1682,27 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__iVideoURL_isset) {
-    if (__iVideoURL != nil) {
-      [outProtocol writeFieldBeginWithName: @"iVideoURL" type: TType_STRING fieldID: 8];
-      [outProtocol writeString: __iVideoURL];
+  if (__iVideoID_isset) {
+    if (__iVideoID != nil) {
+      [outProtocol writeFieldBeginWithName: @"iVideoID" type: TType_STRING fieldID: 8];
+      [outProtocol writeString: __iVideoID];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__iVideoDownloadURL_isset) {
+    if (__iVideoDownloadURL != nil) {
+      [outProtocol writeFieldBeginWithName: @"iVideoDownloadURL" type: TType_STRING fieldID: 9];
+      [outProtocol writeString: __iVideoDownloadURL];
       [outProtocol writeFieldEnd];
     }
   }
   if (__iCreationTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 9];
+    [outProtocol writeFieldBeginWithName: @"iCreationTimestamp" type: TType_I64 fieldID: 10];
     [outProtocol writeI64: __iCreationTimestamp];
     [outProtocol writeFieldEnd];
   }
   if (__iLastUpdateTimestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 10];
+    [outProtocol writeFieldBeginWithName: @"iLastUpdateTimestamp" type: TType_I64 fieldID: 11];
     [outProtocol writeI64: __iLastUpdateTimestamp];
     [outProtocol writeFieldEnd];
   }
@@ -1678,8 +1726,10 @@
   [ms appendFormat: @"\"%@\"", __iTextContent];
   [ms appendString: @",iVideoSourceProvider:"];
   [ms appendFormat: @"\"%@\"", __iVideoSourceProvider];
-  [ms appendString: @",iVideoURL:"];
-  [ms appendFormat: @"\"%@\"", __iVideoURL];
+  [ms appendString: @",iVideoID:"];
+  [ms appendFormat: @"\"%@\"", __iVideoID];
+  [ms appendString: @",iVideoDownloadURL:"];
+  [ms appendFormat: @"\"%@\"", __iVideoDownloadURL];
   [ms appendString: @",iCreationTimestamp:"];
   [ms appendFormat: @"%qi", __iCreationTimestamp];
   [ms appendString: @",iLastUpdateTimestamp:"];

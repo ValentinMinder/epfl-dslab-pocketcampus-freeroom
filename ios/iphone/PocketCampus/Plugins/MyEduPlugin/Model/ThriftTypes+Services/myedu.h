@@ -223,7 +223,8 @@ typedef int64_t timestamp;
   BOOL __iVisible;
   NSString * __iTextContent;
   NSString * __iVideoSourceProvider;
-  NSString * __iVideoURL;
+  NSString * __iVideoID;
+  NSString * __iVideoDownloadURL;
   timestamp __iCreationTimestamp;
   timestamp __iLastUpdateTimestamp;
 
@@ -234,7 +235,8 @@ typedef int64_t timestamp;
   BOOL __iVisible_isset;
   BOOL __iTextContent_isset;
   BOOL __iVideoSourceProvider_isset;
-  BOOL __iVideoURL_isset;
+  BOOL __iVideoID_isset;
+  BOOL __iVideoDownloadURL_isset;
   BOOL __iCreationTimestamp_isset;
   BOOL __iLastUpdateTimestamp_isset;
 }
@@ -247,12 +249,13 @@ typedef int64_t timestamp;
 @property (nonatomic, getter=iVisible, setter=setIVisible:) BOOL iVisible;
 @property (nonatomic, retain, getter=iTextContent, setter=setITextContent:) NSString * iTextContent;
 @property (nonatomic, retain, getter=iVideoSourceProvider, setter=setIVideoSourceProvider:) NSString * iVideoSourceProvider;
-@property (nonatomic, retain, getter=iVideoURL, setter=setIVideoURL:) NSString * iVideoURL;
+@property (nonatomic, retain, getter=iVideoID, setter=setIVideoID:) NSString * iVideoID;
+@property (nonatomic, retain, getter=iVideoDownloadURL, setter=setIVideoDownloadURL:) NSString * iVideoDownloadURL;
 @property (nonatomic, getter=iCreationTimestamp, setter=setICreationTimestamp:) timestamp iCreationTimestamp;
 @property (nonatomic, getter=iLastUpdateTimestamp, setter=setILastUpdateTimestamp:) timestamp iLastUpdateTimestamp;
 #endif
 
-- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoURL: (NSString *) iVideoURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
+- (id) initWithIId: (int32_t) iId iSectionId: (int32_t) iSectionId iSequence: (int32_t) iSequence iTitle: (NSString *) iTitle iVisible: (BOOL) iVisible iTextContent: (NSString *) iTextContent iVideoSourceProvider: (NSString *) iVideoSourceProvider iVideoID: (NSString *) iVideoID iVideoDownloadURL: (NSString *) iVideoDownloadURL iCreationTimestamp: (timestamp) iCreationTimestamp iLastUpdateTimestamp: (timestamp) iLastUpdateTimestamp;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -285,9 +288,13 @@ typedef int64_t timestamp;
 - (void) setIVideoSourceProvider: (NSString *) iVideoSourceProvider;
 - (BOOL) iVideoSourceProviderIsSet;
 
-- (NSString *) iVideoURL;
-- (void) setIVideoURL: (NSString *) iVideoURL;
-- (BOOL) iVideoURLIsSet;
+- (NSString *) iVideoID;
+- (void) setIVideoID: (NSString *) iVideoID;
+- (BOOL) iVideoIDIsSet;
+
+- (NSString *) iVideoDownloadURL;
+- (void) setIVideoDownloadURL: (NSString *) iVideoDownloadURL;
+- (BOOL) iVideoDownloadURLIsSet;
 
 - (timestamp) iCreationTimestamp;
 - (void) setICreationTimestamp: (timestamp) iCreationTimestamp;

@@ -198,6 +198,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 }
 
 - (void)serviceConnectionToServerTimedOut {
+    [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.webView.hidden = YES;
@@ -205,6 +206,7 @@ static NSString* kMyEduModuleMaterialCell = @"MyEduModuleMaterialCell";
 }
 
 - (void)error {
+    [self.loadingIndicator stopAnimating];
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerError", @"PocketCampus", nil);
     self.centerMessageLabel.hidden = NO;
     self.webView.hidden = YES;

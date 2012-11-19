@@ -23,7 +23,7 @@
 }
 
 - (BOOL)isEqualToPCLoginObserver:(PCLoginObserver*)loginObserver {
-    return self.observer == loginObserver.observer && self.operationIdentifier == loginObserver.operationIdentifier;
+    return self.observer == loginObserver.observer && [self.operationIdentifier isEqual:loginObserver.operationIdentifier];
 }
 
 - (NSUInteger)hash {
