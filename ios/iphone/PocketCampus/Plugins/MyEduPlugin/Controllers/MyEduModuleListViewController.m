@@ -29,10 +29,9 @@
 @property (nonatomic, strong) MyEduTequilaToken* tequilaToken;
 @property (nonatomic, strong) PCRefreshControl* pcRefreshControl;
 @property (nonatomic, strong) NSIndexPath* selectedModuleIndexPath;
+@property (nonatomic, strong) NSArray* cells;
 
 @end
-
-static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
 @implementation MyEduModuleListViewController
 
@@ -46,6 +45,9 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
         self.title = NSLocalizedStringFromTable(@"Modules", @"MyEduPlugin", nil);
         self.myEduService = [MyEduService sharedInstanceToRetain];
         self.modules = [self.myEduService getFromCacheSectionDetailsForRequest:[[MyEduSectionDetailsRequest alloc] initWithIMyEduRequest:[self.myEduService createMyEduRequest] iCourseCode:self.course.iCode iSectionId:self.section.iId]].iMyEduModules;
+        if (self.modules) {
+            [self initCellsWithModules];
+        }
     }
     return self;
 }
@@ -97,12 +99,64 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
     }
 }
 
+- (void)initCellsWithModules {
+    if (!self.modules) {
+        return;
+    }
+    NSMutableArray* cellsTmp = [NSMutableArray arrayWithCapacity:[self.modules count]];
+    
+    [self.modules enumerateObjectsUsingBlock:^(MyEduModule* module, NSUInteger idx, BOOL *stop) {
+        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", module.iSequence, module.iTitle];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+        
+        if ([MyEduService localPathOfVideoForModule:module nilIfNoFile:YES]) {
+            UIImageView* downloadedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DownloadedRectSmall"]];
+            cell.accessoryView = downloadedImageView;
+        }
+        
+        [self.myEduService removeDownloadObserver:self forVideoModule:module];
+        [self.myEduService addDownloadObserver:self forVideoOfModule:module startDownload:NO startBlock:^{
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"      %@", NSLocalizedStringFromTable(@"StartingDownload", @"MyEduPlugin", nil)];
+            [cell setNeedsLayout];
+        } finishBlock:^(NSURL *fileLocalURL) {
+            UIImageView* downloadedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DownloadedRectSmall"]];
+            cell.accessoryView = downloadedImageView;
+            cell.detailTextLabel.text = nil;
+        } progressBlock:^(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio) {
+            NSString* text = [NSString stringWithFormat:@"      %@ %d%%", NSLocalizedStringFromTable(@"DownloadingVideo", @"MyEduPlugin", nil), (int)(ratio*100)];
+            cell.detailTextLabel.text = text;
+            [cell setNeedsLayout];
+        } cancelledBlock:^{
+            cell.accessoryView = nil;
+            cell.detailTextLabel.text = nil;
+            [cell setNeedsLayout];
+        } failureBlock:^(int statusCode) {
+            cell.accessoryView = nil;
+            cell.detailTextLabel.text = nil;
+            [cell setNeedsLayout];
+        } deletedBlock:^{
+            cell.accessoryView = nil;
+            cell.detailTextLabel.text = nil;
+            [cell setNeedsLayout];
+        }];
+        
+        [cellsTmp addObject:cell];
+    }];
+    self.cells = [cellsTmp copy];
+}
+
 #pragma mark - MyEduServiceDelegate
 
 - (void)getSectionDetailsForRequest:(MyEduSectionDetailsRequest*)request didReturn:(MyEduSectionDetailsReply*)reply {
     switch (reply.iStatus) {
         case 200:
             self.modules = reply.iMyEduModules;
+            [self initCellsWithModules];
             [self.tableView reloadData];
             [self.pcRefreshControl endRefreshing];
             break;
@@ -172,22 +226,11 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
         if (indexPath.row == 2) {
             return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"NoModule", @"MyEduPlugin", nil)];
         } else {
-            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
         }
     }
     
-    MyEduModule* module = self.modules[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMyEduModuleListCell];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kMyEduModuleListCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.adjustsFontSizeToFitWidth = YES;
-    }
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", module.iSequence, module.iTitle];
+    UITableViewCell* cell = self.cells[indexPath.row];
     
     return cell;
 }
@@ -212,6 +255,7 @@ static NSString* kMyEduModuleListCell = @"MyEduModuleListCell";
 
 - (void)dealloc
 {
+    [self.myEduService removeDownloadObserver:self];
     [self.myEduService cancelOperationsForDelegate:self];
     [[MyEduController currentInstance] removeLoginObserver:self];
 }

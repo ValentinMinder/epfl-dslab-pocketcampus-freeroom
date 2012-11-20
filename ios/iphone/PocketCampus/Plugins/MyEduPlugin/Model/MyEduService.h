@@ -27,19 +27,31 @@
 
 #pragma mark - MyEduDownloadObserver definition
 
+typedef void (^DownloadDidStartBlock)(void);
 typedef void (^DownloadDidFinishBlock)(NSURL* fileLocalURL);
 typedef void (^DownloadDidProgressBlock)(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio);
 typedef void (^DownloadWasCancelledBlock)(void);
 typedef void (^DownloadDidFailBlock)(int statusCode);
+typedef void (^DownloadWasDeletedBlock)(void); //called when downloaded file was deleted
 
 @interface MyEduDownloadObserver : NSObject
 
 @property (nonatomic, assign) id observer;
 @property (nonatomic, copy) NSString* downloadIdentifier;
+@property (nonatomic, copy) DownloadDidStartBlock startBlock; //this block will be called for any observer that was added before and after the download has started
 @property (nonatomic, copy) DownloadDidFinishBlock finishBlock;
 @property (nonatomic, copy) DownloadDidProgressBlock progressBlock;
 @property (nonatomic, copy) DownloadWasCancelledBlock cancelledBlock;
 @property (nonatomic, copy) DownloadDidFailBlock failureBlock;
+@property (nonatomic, copy) DownloadWasDeletedBlock deletedBlock;
+
+@end
+
+#pragma mark - MyEduModuleVideoDownloadObserver definition
+
+@interface MyEduModuleVideoDownloadObserver : MyEduDownloadObserver
+
+- (void)initWithModule:(MyEduModule*)module;
 
 @end
 
@@ -78,10 +90,14 @@ typedef void (^DownloadDidFailBlock)(int statusCode);
 
 /* Video download */
 
-- (void)addDownloadObserver:(id)observer forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload finishBlock:(DownloadDidFinishBlock)finishBlock progressBlock:(DownloadDidProgressBlock)progressBlock cancelledBlock:(DownloadWasCancelledBlock)cancelledBlock failureBlock:(DownloadDidFailBlock)failureBlock;
+- (void)addDownloadObserver:(MyEduDownloadObserver*)downloadObserver forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload;
+- (void)addDownloadObserver:(id)observer forVideoOfModule:(MyEduModule*)module startDownload:(BOOL)startDownload startBlock:(DownloadDidStartBlock)startBlock finishBlock:(DownloadDidFinishBlock)finishBlock progressBlock:(DownloadDidProgressBlock)progressBlock cancelledBlock:(DownloadWasCancelledBlock)cancelledBlock failureBlock:(DownloadDidFailBlock)failureBlock deletedBlock:(DownloadWasDeletedBlock)deletedBlock;
+- (void)removeDownloadObserver:(id)observer;
 - (void)removeDownloadObserver:(id)observer forVideoModule:(MyEduModule*)module;
+- (BOOL)downloadVideoOfModule:(MyEduModule*)module; //will start download (returns YES) if not started already (returns NO)
 - (void)cancelVideoDownloadForModule:(MyEduModule*)module;
 - (void)removeDownloadedVideoOfModule:(MyEduModule*)module;
+- (BOOL)videoOfModuleIsDownloading:(MyEduModule*)module;
 
 /* Synchronous methods (from cache) return nil if not in cache */
 
@@ -94,8 +110,11 @@ typedef void (^DownloadDidFailBlock)(int statusCode);
 
 /* Utiliy methods */
 
-- (NSString*)localPathForVideoOfModule:(MyEduModule*)module;
-- (NSString*)localPathOfVideoForModule:(MyEduModule*)module nilIfNoFile:(BOOL)nilIfNoFile;
++ (NSTimeInterval)lastPlaybackTimeForVideoForModule:(MyEduModule*)module;
++ (BOOL)saveLastPlaybackTime:(NSTimeInterval)time forVideoOfModule:(MyEduModule*)module;
++ (NSString*)keyForVideoOfModule:(MyEduModule*)module;
++ (NSString*)localPathForVideoOfModule:(MyEduModule*)module;
++ (NSString*)localPathOfVideoForModule:(MyEduModule*)module nilIfNoFile:(BOOL)nilIfNoFile;
 + (NSString*)videoHTMLCodeForMyEduModule:(MyEduModule*)module videoWidth:(int)width videoHeight:(int)height;
 
 @end

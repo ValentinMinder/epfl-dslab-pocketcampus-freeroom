@@ -79,10 +79,6 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<float key="IBUIProgress">0.5</float>
-						<object class="NSColor" key="IBUIProgressTintColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40OTk1NTQxNzggMC40OTk1NTQxNzggMC40OTk1NTQxNzgAA</bytes>
-						</object>
 					</object>
 					<object class="IBUILabel" id="780509462">
 						<reference key="NSNextResponder" ref="191373211"/>

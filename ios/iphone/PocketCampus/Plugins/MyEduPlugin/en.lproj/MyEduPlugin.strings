@@ -18,6 +18,7 @@
 "CreatedOn" = "Created on";
 "LastUpdateOn" = "Last update on";
 "Video" = "Video";
+"VideoDownloaded" = "Video downloaded";
 "LoadingVideo" = "Loading video...";
 "NoVideoInModule" = "No video in this module";
 "VideoNotSupported" = "Sorry, this video is not supported";
@@ -30,3 +31,4 @@
 "DownloadingVideo" = "Downloading video...";
 "DownloadProgressWithFormat" = "%@ of %@";
 "DeleteDownloadedVideoExplanation" = "Delete downloaded video ?\n\nThe file will be deleted and offline playing won't be available anymore.";
+"ErrorOccuredWhileDownloadingVideo" = "Sorry, an error occured while downloading the video.";

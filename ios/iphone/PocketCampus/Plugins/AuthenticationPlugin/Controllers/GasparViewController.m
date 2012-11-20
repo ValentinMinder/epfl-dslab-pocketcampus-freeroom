@@ -392,6 +392,7 @@
             loginCell = [cell retain];
             loginCell.textLabel.text = NSLocalizedStringFromTable(@"Login", @"AuthenticationPlugin", nil);
             loginCell.textLabel.textAlignment = UITextAlignmentCenter;
+            loginCell.textLabel.textColor = [UIColor colorWithRed:81.0/255.0 green:102.0/255.0 blue:145.0/255.0 alpha:1.0];
             loginCell.selectionStyle = UITableViewCellSelectionStyleNone;
             loginCell.textLabel.enabled = NO;
             loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

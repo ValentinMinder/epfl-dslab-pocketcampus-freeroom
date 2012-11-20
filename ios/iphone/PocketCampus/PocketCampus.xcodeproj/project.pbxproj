@@ -171,6 +171,8 @@
 		3292C31716402B4F00AE4D51 /* PCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3292C31616402B4F00AE4D51 /* PCRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3293AD2015D1BC7C0097D414 /* AboutPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */; };
 		3293AD2315D1BC930097D414 /* AboutPCView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3293AD2215D1BC930097D414 /* AboutPCView.xib */; };
+		3295DF0F165BC60D00CA3B9D /* DownloadedRectSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */; };
+		3295DF10165BC60D00CA3B9D /* DownloadedRectSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */; };
 		3296570B14FF9DDB00C44C12 /* PocketCampus.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3296570914FF9DDB00C44C12 /* PocketCampus.strings */; };
 		32969AB315FB92FD0051EF9A /* MyStationsHelp.html in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB115FB92FC0051EF9A /* MyStationsHelp.html */; };
 		32969ABB15FBA9150051EF9A /* Compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 32969AB915FBA9150051EF9A /* Compass.png */; };
@@ -588,6 +590,8 @@
 		3293AD1E15D1BC7C0097D414 /* AboutPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutPCViewController.h; sourceTree = "<group>"; };
 		3293AD1F15D1BC7C0097D414 /* AboutPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutPCViewController.m; sourceTree = "<group>"; };
 		3293AD2215D1BC930097D414 /* AboutPCView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutPCView.xib; sourceTree = "<group>"; };
+		3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DownloadedRectSmall.png; sourceTree = "<group>"; };
+		3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedRectSmall@2x.png"; sourceTree = "<group>"; };
 		3296570A14FF9DDB00C44C12 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PocketCampus.strings; sourceTree = "<group>"; };
 		3296570C14FF9DE300C44C12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PocketCampus.strings; sourceTree = "<group>"; };
 		32969AB215FB92FD0051EF9A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/MyStationsHelp.html; sourceTree = "<group>"; };
@@ -1066,6 +1070,8 @@
 				32ADC70F165999820039F6A6 /* CancelCrossRound@2x.png */,
 				32ADC7171659AAEB0039F6A6 /* Download.png */,
 				32ADC7181659AAEB0039F6A6 /* Download@2x.png */,
+				3295DF0D165BC60B00CA3B9D /* DownloadedRectSmall.png */,
+				3295DF0E165BC60C00CA3B9D /* DownloadedRectSmall@2x.png */,
 				3204C6CE1648412D003944D2 /* LightGrayTextureBackground.png */,
 				3204C6CF1648412D003944D2 /* LightGrayTextureBackground@2x.png */,
 				325368BE164932F600406801 /* StretchableInnerShadow.png */,
@@ -2437,6 +2443,8 @@
 				32ADC7161659A2BA0039F6A6 /* CancelCrossRound.png in Resources */,
 				32ADC7191659AAEB0039F6A6 /* Download.png in Resources */,
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
+				3295DF0F165BC60D00CA3B9D /* DownloadedRectSmall.png in Resources */,
+				3295DF10165BC60D00CA3B9D /* DownloadedRectSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2813,7 +2821,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "CF735CC6-4170-4205-967F-AB8EACB73253";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CF735CC6-4170-4205-967F-AB8EACB73253";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B935E5-5CDF-4D4D-BF7F-488249C407CD";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

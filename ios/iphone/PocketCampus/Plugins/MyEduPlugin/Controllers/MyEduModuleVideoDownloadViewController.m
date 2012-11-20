@@ -40,7 +40,7 @@
     
     MyEduModuleVideoDownloadViewController* controller __weak = self;
     
-    [self.myEduService addDownloadObserver:self forVideoOfModule:self.module startDownload:NO finishBlock:^(NSURL *fileLocalURL) {
+    [self.myEduService addDownloadObserver:self forVideoOfModule:self.module startDownload:NO startBlock:NULL finishBlock:^(NSURL *fileLocalURL) {
         controller.progressView.progress = 1.0;
     } progressBlock:^(unsigned long long nbBytesDownloaded, unsigned long long nbBytesToDownload, float ratio) {
         NSString* downloadedString = [PCUtils stringFromFileSize:nbBytesDownloaded];
@@ -48,11 +48,7 @@
         controller.titleLabel.text = NSLocalizedStringFromTable(@"DownloadingVideo", @"MyEduPlugin", nil);
         controller.progressionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"DownloadProgressWithFormat", @"MyEduPlugin", nil), downloadedString, toDownloadString];
         controller.progressView.progress = ratio;
-    } cancelledBlock:^{
-        //nothing
-    } failureBlock:^(int statusCode) {
-        //nothing
-    }];
+    } cancelledBlock:NULL failureBlock:NULL deletedBlock:NULL];
 }
 
 - (void)didReceiveMemoryWarning

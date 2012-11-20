@@ -18,6 +18,7 @@
 "CreatedOn" = "Créé le";
 "LastUpdateOn" = "Dernière modification le";
 "Video" = "Vidéo";
+"VideoDownloaded" = "Vidéo téléchargée";
 "LoadingVideo" = "Chargement de la vidéo...";
 "NoVideoInModule" = "Pas de vidéo dans ce module";
 "VideoNotSupported" = "Désolé, cette vidéo n'est pas supportée";
@@ -27,6 +28,7 @@
 "DownloadingFile" = "Téléchargement du fichier...";
 "NoMaterial" = "Pas de contenu disponible";
 "StartingDownload" = "Démarrage du téléchargement...";
-"DownloadingVideo" = "Téléchargement de la vidéo";
+"DownloadingVideo" = "Téléchargement de la vidéo...";
 "DownloadProgressWithFormat" = "%@ sur %@";
-"DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\n\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus possible.";
+"DeleteDownloadedVideoExplanation" = "Supprimer la vidéo téléchargée ?\n\nLe fichier sera supprimé et la lecture hors-ligne ne sera plus disponible.";
+"ErrorOccuredWhileDownloadingVideo" = "Désolé, une erreur est survenue pendant le téléchargement de la vidéo.";
