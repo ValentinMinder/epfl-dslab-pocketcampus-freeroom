@@ -10,6 +10,6 @@
 
 @implementation PluginController
 
-@synthesize mainViewController, mainNavigationController, mainSplitViewController, menuRevealingGesureRecognizers;
+@synthesize mainViewController;
 
 @end

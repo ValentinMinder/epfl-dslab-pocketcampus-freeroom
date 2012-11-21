@@ -12,16 +12,15 @@
 
 @implementation DirectoryController
 
-- (id)initWithMainController:(MainController2 *)mainController_
+- (id)init
 {
     self = [super init];
     if (self) {
-        mainController = mainController_;
         DirectorySearchViewController* directorySearchViewController = [[DirectorySearchViewController alloc] init];
         directorySearchViewController.title = [[self class] localizedName];
         PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:directorySearchViewController];
         navController.pluginIdentifier = [[self class] identifierName];
-        mainNavigationController = navController;
+        self.mainNavigationController = navController;
     }
     return self;
 }
@@ -40,13 +39,13 @@
 
 - (void)pluginWillLoseFocus {
     //NSLog(@"%@", mainNavigationController.visibleViewController);
-    if ([mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
-        [[(DirectorySearchViewController*)mainNavigationController.visibleViewController searchBar] resignFirstResponder];
+    if ([self.mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
+        [[(DirectorySearchViewController*)self.mainNavigationController.visibleViewController searchBar] resignFirstResponder];
     }
 }
 - (void)pluginDidRegainActive {
-    if ([mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
-        [[(DirectorySearchViewController*)mainNavigationController.visibleViewController searchBar] becomeFirstResponder];
+    if ([self.mainNavigationController.visibleViewController isKindOfClass:[DirectorySearchViewController class]]) {
+        [[(DirectorySearchViewController*)self.mainNavigationController.visibleViewController searchBar] becomeFirstResponder];
     }
 }
 

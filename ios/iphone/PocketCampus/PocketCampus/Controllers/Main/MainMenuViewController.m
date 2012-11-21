@@ -95,6 +95,12 @@ static NSString* kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 }
 
+#pragma mark - Actions
+
+- (IBAction)settingsButtonPressed {
+    [self.mainController showGlobalSettings];
+}
+
 #pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

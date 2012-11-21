@@ -17,13 +17,14 @@
 static BOOL settingsAreDirty = NO;
 static NSMutableDictionary* settings = nil;
 
-- (id)initWithMainController:(MainController2*)mainController_ {
+- (id)init {
     self = [super init];
     if (self) {
-        mainController = mainController_;
-        NextDeparturesListViewController* viewController = [[NextDeparturesListViewController alloc] init];
-        viewController.title = [[self class] localizedName];
-        mainViewController = viewController;
+        NextDeparturesListViewController* nextDeparturesListViewController = [[NextDeparturesListViewController alloc] init];
+        nextDeparturesListViewController.title = [[self class] localizedName];
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:nextDeparturesListViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }
@@ -37,10 +38,9 @@ static NSMutableDictionary* settings = nil;
 }
 
 - (void)refresh {
-    if (mainViewController == nil || ![mainViewController isKindOfClass:[NextDeparturesListViewController class]] || mainViewController.navigationController.visibleViewController != mainViewController) {
-        return;
+    if (self.mainNavigationController.visibleViewController == self.mainNavigationController.viewControllers[0]) {
+        [(NextDeparturesListViewController*)(self.mainNavigationController.viewControllers[0]) refresh];
     }
-    [(NextDeparturesListViewController*)mainViewController refresh];
 }
 
 + (BOOL)saveObjectSetting:(NSObject<NSCoding>*)val forKey:(NSString*)settingKey {

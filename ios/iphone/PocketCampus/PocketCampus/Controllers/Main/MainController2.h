@@ -23,4 +23,6 @@
 
 - (void)adaptInitializedNavigationOrSplitViewControllerOfPluginController:(PluginController*)pluginController;
 
+- (void)showGlobalSettings;
+
 @end

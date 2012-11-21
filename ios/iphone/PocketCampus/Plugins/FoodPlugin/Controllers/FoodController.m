@@ -17,17 +17,9 @@
     if (self) {
         RestaurantsListViewController* restaurantsListViewController = [[RestaurantsListViewController alloc] init];
         restaurantsListViewController.title = [[self class] localizedName];
-        mainViewController = restaurantsListViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:restaurantsListViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }
@@ -36,11 +28,11 @@
     if (mainViewController == nil || ![mainViewController isKindOfClass:[RestaurantsListViewController class]]) {
         return;
     }
-    if ([((RestaurantsListViewController*)mainViewController) shouldRefresh]) {
-        if (mainViewController.navigationController.topViewController != mainViewController) {
-            [mainViewController.navigationController popToViewController:mainViewController animated:NO];
+    if ([(RestaurantsListViewController*)(self.mainNavigationController.viewControllers[0]) shouldRefresh]) {
+        if (self.mainNavigationController.topViewController != self.mainNavigationController.viewControllers[0]) {
+            [self.mainNavigationController popToRootViewControllerAnimated:NO];
         }
-        [(RestaurantsListViewController*)mainViewController refresh];
+        [(RestaurantsListViewController*)(self.mainNavigationController.viewControllers[0]) refresh];
     }
 }
 

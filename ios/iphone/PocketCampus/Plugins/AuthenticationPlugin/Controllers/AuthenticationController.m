@@ -49,16 +49,6 @@
     return self;
 }
 
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
-    }
-    return self;
-}
-
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
     NSString* savedPassword = [AuthenticationService savedPasswordForUsername:[AuthenticationService savedUsername]];
     [gasparViewController release];

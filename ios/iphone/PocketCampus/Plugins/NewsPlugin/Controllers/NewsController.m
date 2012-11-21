@@ -18,27 +18,16 @@
     if (self) {
         NewsListViewController* newsListViewController = [[NewsListViewController alloc] init];
         newsListViewController.title = [[self class] localizedName];
-        mainViewController = newsListViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:newsListViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }
 
 - (void)refresh {
-    if (mainViewController == nil || ![mainViewController isKindOfClass:[NewsListViewController class]]) {
-        return;
-    }
-    if (((NewsListViewController*)mainViewController).shouldRefresh) {
-        [(NewsListViewController*)mainViewController refresh];
+    if (((NewsListViewController*)(self.mainNavigationController.viewControllers[0])).shouldRefresh) {
+        [((NewsListViewController*)(self.mainNavigationController.viewControllers[0])) refresh];
     }
 }
 

@@ -29,12 +29,11 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 @implementation MyEduController
 
-- (id)initWithMainController:(MainController2 *)mainController_
+- (id)init
 {
     self = [super init];
     if (self) {
         [[self class] deleteSessionIfNecessary];
-        mainController = mainController_;
         _loginObservers = [NSMutableArray array];
         MyEduCourseListViewController* courseListViewController = [[MyEduCourseListViewController alloc] init];
         courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
@@ -45,8 +44,8 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
         splitViewController.delegate = self;
         
-        mainSplitViewController = splitViewController;
-        mainSplitViewController.pluginIdentifier = [[self class] identifierName];
+        self.mainSplitViewController = splitViewController;
+        self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
     }
     instance = self;
     return self;
@@ -131,10 +130,10 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)getTequilaTokenForMyEduDidReturn:(MyEduTequilaToken *)tequilaToken {
     self.tequilaToken = tequilaToken;
-    if (mainSplitViewController) {
-        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:mainSplitViewController delegate:self];
+    if (self.mainSplitViewController) {
+        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:self.mainSplitViewController delegate:self];
     } else {
-        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:mainNavigationController delegate:self];
+        [self.authController authToken:tequilaToken.iTequilaKey presentationViewController:self.mainNavigationController delegate:self];
     }
 }
 
@@ -249,6 +248,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (void)dealloc
 {
+    [[self class] deleteSessionIfNecessary];
     [self.myEduService cancelOperationsForDelegate:self];
     instance = nil;
 }

@@ -50,7 +50,7 @@
 
 - (void)iconPressedWithIndex:(NSUInteger)index {
     Class pluginClass = NSClassFromString([mainController pluginControllerNameForIndex:index]);
-    PluginController* pluginController = [[pluginClass alloc] initWithMainController:mainController];
+    PluginController* pluginController = [[pluginClass alloc] init];
     [self.navigationController pushViewController:pluginController.mainViewController animated:YES];
     mainController.activePluginController = pluginController;
     [pluginController release];

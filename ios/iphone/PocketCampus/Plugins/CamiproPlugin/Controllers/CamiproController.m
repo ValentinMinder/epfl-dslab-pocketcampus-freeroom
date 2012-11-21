@@ -24,27 +24,16 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         [[self class] deleteSessionIfNecessary];
         CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
         camiproViewController.title = [[self class] localizedName];
-        mainViewController = camiproViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }
 
 - (void)refresh {
-    if (mainViewController == nil || ![mainViewController isKindOfClass:[CamiproViewController class]]) {
-        return;
-    }
-    if (((CamiproViewController*)mainViewController).shouldRefresh) {
-        [(CamiproViewController*)mainViewController refresh];
+    if (((CamiproViewController*)(self.mainNavigationController.visibleViewController)).shouldRefresh) {
+        [((CamiproViewController*)(self.mainNavigationController.visibleViewController)) refresh];
     }
 }
 

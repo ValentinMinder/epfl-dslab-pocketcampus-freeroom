@@ -16,17 +16,9 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         [[self class] deleteSessionIfNecessary];
         CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
         coursesListViewController.title = [[self class] localizedName];
-        mainViewController = coursesListViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }

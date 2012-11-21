@@ -16,7 +16,7 @@
 			<key>identifierName</key>
 			<string>Food</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -24,7 +24,7 @@
 			<key>identifierName</key>
 			<string>News</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -32,7 +32,7 @@
 			<key>identifierName</key>
 			<string>Map</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
@@ -40,7 +40,7 @@
 			<key>identifierName</key>
 			<string>Transport</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -48,7 +48,7 @@
 			<key>identifierName</key>
 			<string>Camipro</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>
@@ -56,7 +56,7 @@
 			<key>identifierName</key>
 			<string>Moodle</string>
 			<key>enabled</key>
-			<false/>
+			<true/>
 			<key>supportedIdioms</key>
 			<string>phone</string>
 		</dict>

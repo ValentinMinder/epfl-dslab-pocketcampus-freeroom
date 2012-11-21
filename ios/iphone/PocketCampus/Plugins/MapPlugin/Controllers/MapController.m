@@ -17,17 +17,9 @@
     self = [super init];
     if (self) {
         MapViewController* mapViewController = [[MapViewController alloc] init];
-        mainViewController = mapViewController;
-    }
-    return self;
-}
-
-- (id)initWithMainController:(MainController2 *)mainController_
-{
-    self = [self init];
-    if (self) {
-        mainController = mainController_;
-        
+        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:mapViewController];
+        navController.pluginIdentifier = [[self class] identifierName];
+        self.mainNavigationController = navController;
     }
     return self;
 }
