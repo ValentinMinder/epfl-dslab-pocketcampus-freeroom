@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Model/FoodService.m"
-         timestampString = "366545138.25907"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "123"
+         endingLineNumber = "123"
          landmarkName = "-setRatingForMeal:rating:deviceId:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-         timestampString = "369146098.701851"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "559"
-         endingLineNumber = "559"
+         startingLineNumber = "574"
+         endingLineNumber = "574"
          landmarkName = "-minimumDistanceBetweenStations"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-         timestampString = "366627373.356899"
+         timestampString = "375827877.29438"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
+         startingLineNumber = "113"
+         endingLineNumber = "113"
          landmarkName = "-getTripsFrom:to:delegate:priority:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -151,11 +151,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/TransportPlugin/Model/TransportService.m"
-         timestampString = "366662404.629499"
+         timestampString = "375827877.29438"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
+         startingLineNumber = "116"
+         endingLineNumber = "116"
          landmarkName = "-getTripsFrom:to:delegate:priority:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -730,24 +730,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/FoodPlugin/Controllers/FoodController.m"
-         timestampString = "375230331.876845"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "28"
-         endingLineNumber = "28"
-         landmarkName = "-refresh"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Plugins/FoodPlugin/Controllers/FoodController.m"
-         timestampString = "375230331.876845"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "35"
-         endingLineNumber = "35"
+         startingLineNumber = "56"
+         endingLineNumber = "56"
          landmarkName = "-refresh"
          landmarkType = "5">
       </FileBreakpoint>
@@ -910,11 +897,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/FoodPlugin/Model/FoodService.m"
-         timestampString = "366543792.930368"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "39"
-         endingLineNumber = "39"
+         startingLineNumber = "53"
+         endingLineNumber = "53"
          landmarkName = "-getMealsWithDelegate:"
          landmarkType = "5">
          <Actions>
@@ -1763,19 +1750,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "375229745.082413"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
-         landmarkName = "-init"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "PocketCampus/Controllers/Main/MainController2.m"
          timestampString = "375232132.258766"
          startingColumnNumber = "9223372036854775807"
@@ -1974,11 +1948,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-         timestampString = "372977258.252722"
+         timestampString = "375827316.486448"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "-application:supportedInterfaceOrientationsForWindow:"
          landmarkType = "5">
          <Actions>
@@ -2213,11 +2187,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375020244.136886"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "146"
-         endingLineNumber = "146"
+         startingLineNumber = "160"
+         endingLineNumber = "160"
          landmarkName = "-deleteSession"
          landmarkType = "5">
          <Actions>
@@ -2235,11 +2209,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375020244.136886"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
+         startingLineNumber = "171"
+         endingLineNumber = "171"
          landmarkName = "-getTequilaTokenForMyEduWithDelegate:"
          landmarkType = "5">
          <Actions>
@@ -2348,11 +2322,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "375229745.082413"
+         timestampString = "375828829.543189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
+         startingLineNumber = "112"
+         endingLineNumber = "112"
          landmarkName = "-addLoginObserver:operationIdentifier:successBlock:userCancelledBlock:failureBlock:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2361,11 +2335,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "375229745.082413"
+         timestampString = "375828829.543189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
+         startingLineNumber = "146"
+         endingLineNumber = "146"
          landmarkName = "-getTequilaTokenForMyEduDidReturn:"
          landmarkType = "5">
          <Actions>
@@ -2383,11 +2357,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Controllers/MyEduController.m"
-         timestampString = "375229745.082413"
+         timestampString = "375828829.543189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "141"
-         endingLineNumber = "141"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "-getTequilaTokenForMyEduFailed"
          landmarkType = "5">
          <Actions>
@@ -2405,11 +2379,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
-         timestampString = "375229745.082413"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
+         startingLineNumber = "76"
+         endingLineNumber = "76"
          landmarkName = "-authToken:presentationViewController:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2431,11 +2405,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375114196.270806"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "543"
-         endingLineNumber = "543"
+         startingLineNumber = "557"
+         endingLineNumber = "557"
          landmarkName = "-downloadMaterialRequestFailed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2444,11 +2418,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375114196.270806"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "519"
-         endingLineNumber = "519"
+         startingLineNumber = "533"
+         endingLineNumber = "533"
          landmarkName = "-downloadMaterialRequestFinished:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2457,11 +2431,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375114196.270806"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "467"
-         endingLineNumber = "467"
+         startingLineNumber = "481"
+         endingLineNumber = "481"
          landmarkName = "-downloadVideoOfModule:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2470,11 +2444,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375107167.89759"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "309"
-         endingLineNumber = "309"
+         startingLineNumber = "323"
+         endingLineNumber = "323"
          landmarkName = "+localPathOfVideoForModule:nilIfNoFile:"
          landmarkType = "5">
          <Actions>
@@ -2492,11 +2466,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/MyEduPlugin/Model/MyEduService.m"
-         timestampString = "375107167.89759"
+         timestampString = "375828128.899574"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
+         startingLineNumber = "313"
+         endingLineNumber = "313"
          landmarkName = "+localPathOfVideoForModule:nilIfNoFile:"
          landmarkType = "5">
          <Actions>
@@ -2557,7 +2531,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2579,7 +2553,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Common/PluginSplitViewController.m"
@@ -2601,7 +2575,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2623,7 +2597,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2645,7 +2619,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2667,7 +2641,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "ZUUIRevealController/ZUUIRevealController.m"
@@ -2689,15 +2663,15 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryController.m"
-         timestampString = "375232551.735387"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
+         startingLineNumber = "69"
+         endingLineNumber = "69"
          landmarkName = "-pluginDidRegainActive"
          landmarkType = "5">
          <Actions>
@@ -2711,7 +2685,7 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "PocketCampus/Controllers/Main/MainController2.m"
@@ -2733,15 +2707,15 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Plugins/DirectoryPlugin/Controllers/DirectoryController.m"
-         timestampString = "375232771.70698"
+         timestampString = "375831138.055739"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
          landmarkName = "-pluginWillLoseFocus"
          landmarkType = "5">
          <Actions>
@@ -2753,6 +2727,54 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "Yes"
+         filePath = "Plugins/MapPlugin/Model/MapService.m"
+         timestampString = "375829075.242238"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
+         landmarkName = "-dealloc"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Log">
+               <ActionContent
+                  message = "dealloc mapservice"
+                  conveyanceType = "0">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MapPlugin/Controllers/MapController.m"
+         timestampString = "375829314.924149"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "19"
+         endingLineNumber = "19"
+         landmarkName = "-init"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
+         timestampString = "375829640.013709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "660"
+         endingLineNumber = "660"
+         landmarkName = "-dealloc"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

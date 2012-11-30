@@ -85,7 +85,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
         successBlock();
     } else {
         NSLog(@"-> No saved session, loggin in...");
-        [[MyEduController currentInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
+        [[MyEduController sharedInstance] addLoginObserver:self operationIdentifier:nil successBlock:successBlock userCancelledBlock:^{
             [self.pcRefreshControl endRefreshing];
         } failureBlock:^{
             [self error];
@@ -200,7 +200,7 @@ static NSString* kMyEduCourseListCell = @"MyEduCourseListCell";
 - (void)dealloc
 {
     [self.myEduService cancelOperationsForDelegate:self];
-    [[MyEduController currentInstance] removeLoginObserver:self];
+    [[MyEduController sharedInstance] removeLoginObserver:self];
 }
 
 

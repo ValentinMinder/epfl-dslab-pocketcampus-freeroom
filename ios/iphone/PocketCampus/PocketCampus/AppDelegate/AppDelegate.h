@@ -14,6 +14,10 @@
 
 #import "GANTracker.h"
 
+static NSString* AppDidSucceedToRegisterToNotifications __unused = @"AppDidSucceedToRegisterToNotifications";
+static NSString* kPushDeviceTokenStringKey __unused = @"PushDeviceTokenString";
+static NSString* AppDidFailToRegisterToNotifications __unused = @"AppDidFailToRegisterToNotifications";
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, GANTrackerDelegate> {
     MainController* mainController;
 }

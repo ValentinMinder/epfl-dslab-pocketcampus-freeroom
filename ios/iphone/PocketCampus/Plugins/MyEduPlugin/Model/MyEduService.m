@@ -104,18 +104,32 @@ static NSString* kVimeoEmbedHTMLFormat = @"<iframe src=\"http://player.vimeo.com
 
 @implementation MyEduService
 
-static MyEduService* instance = nil;
+static MyEduService* instance __weak = nil;
+
+- (id)init {
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MyEduService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super initWithServiceName:@"myedu"];
+        if (self) {
+            instance = self;
+        }
+        return self;
+    }
+}
 
 + (id)sharedInstanceToRetain {
-    if (instance != nil) {
-        return instance;
-    }
-    @synchronized(self) {
-        if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"myedu"];
+    @synchronized (self) {
+        if (instance) {
+            return instance;
         }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return instance;
 }
 
 - (id)thriftServiceClientInstance {
@@ -597,7 +611,9 @@ static MyEduService* instance = nil;
 
 - (void)dealloc
 {
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
 }
 
 @end

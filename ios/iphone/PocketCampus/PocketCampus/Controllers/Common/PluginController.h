@@ -37,6 +37,7 @@
 @protocol PluginControllerProtocol <NSObject>
 
 @required
++ (id)sharedInstance;
 + (NSString*)localizedName;
 + (NSString*)identifierName;
 

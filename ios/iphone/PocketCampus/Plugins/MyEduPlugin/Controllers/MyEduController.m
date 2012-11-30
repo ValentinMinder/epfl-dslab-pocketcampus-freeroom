@@ -13,7 +13,7 @@
 
 #import "AuthenticationController.h"
 
-static MyEduController* instance = nil;
+static MyEduController* instance __weak = nil;
 
 static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
@@ -31,28 +31,42 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        [[self class] deleteSessionIfNecessary];
-        _loginObservers = [NSMutableArray array];
-        MyEduCourseListViewController* courseListViewController = [[MyEduCourseListViewController alloc] init];
-        courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
-        
-        UINavigationController* masterNavigationController = [[UINavigationController alloc] initWithRootViewController:courseListViewController];
-        UIViewController* detailViewController = [[UIViewController alloc] init]; //detail view controller will be set by PluginSplitViewController that will ask to master view controller
-        
-        PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
-        splitViewController.delegate = self;
-        
-        self.mainSplitViewController = splitViewController;
-        self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MyEduController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            [[self class] deleteSessionIfNecessary];
+            _loginObservers = [NSMutableArray array];
+            MyEduCourseListViewController* courseListViewController = [[MyEduCourseListViewController alloc] init];
+            courseListViewController.title = NSLocalizedStringFromTable(@"MyCourses", @"MyEduPlugin", nil);
+            
+            UINavigationController* masterNavigationController = [[UINavigationController alloc] initWithRootViewController:courseListViewController];
+            UIViewController* detailViewController = [[UIViewController alloc] init]; //detail view controller will be set by PluginSplitViewController that will ask to master view controller
+            
+            PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:masterNavigationController detailViewController:detailViewController];
+            splitViewController.delegate = self;
+            
+            self.mainSplitViewController = splitViewController;
+            self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
+            instance = self;
+        }
+        return self;
     }
-    instance = self;
-    return self;
 }
 
-+ (MyEduController*)currentInstance {
-    return instance;
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 + (void)deleteSessionIfNecessary {
@@ -97,7 +111,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
         [self.loginObservers addObject:loginObserver];
         if(!self.authController) {
             self.myEduService = [MyEduService sharedInstanceToRetain];
-            self.authController = [[AuthenticationController alloc] init];
+            self.authController = [AuthenticationController sharedInstance];
             [self.myEduService getTequilaTokenForMyEduWithDelegate:self];
         }
     }
@@ -111,7 +125,7 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     @synchronized(self) {
         for (PCLoginObserver* loginObserver in [self.loginObservers copy]) {
             if (loginObserver.observer == observer && (!identifier || [loginObserver.operationIdentifier isEqualToString:identifier])) {
-                [self.loginObservers removeObject:observer];
+                [self.loginObservers removeObject:loginObserver];
             }
         }
         if ([self.loginObservers count] == 0) {
@@ -120,10 +134,6 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
             self.authController = nil;
         }
     }
-}
-
-- (void)invalidToken {
-    [self.myEduService getTequilaTokenForMyEduWithDelegate:self]; //restart to get new token
 }
 
 #pragma mark - MyEduServiceDelegate
@@ -208,6 +218,10 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
     }
 }
 
+- (void)invalidToken {
+    [self.myEduService getTequilaTokenForMyEduWithDelegate:self]; //restart to get new token
+}
+
 #pragma mark - PluginControllerProtocol
 
 - (void)refresh {
@@ -250,7 +264,9 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 {
     [[self class] deleteSessionIfNecessary];
     [self.myEduService cancelOperationsForDelegate:self];
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
 }
 
 @end

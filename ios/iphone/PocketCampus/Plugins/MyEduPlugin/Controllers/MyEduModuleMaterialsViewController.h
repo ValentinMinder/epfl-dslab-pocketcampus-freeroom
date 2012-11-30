@@ -10,8 +10,6 @@
 
 #import "MyEduService.h"
 
-#import "AuthenticationController.h"
-
 @interface MyEduModuleMaterialsViewController : UIViewController<MyEduServiceDelegate, UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate, UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView* materialsTableView;

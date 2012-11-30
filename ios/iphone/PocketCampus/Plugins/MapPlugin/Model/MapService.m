@@ -12,18 +12,32 @@
 
 @implementation MapService
 
-static MapService* instance = nil;
+static MapService* instance __weak = nil;
+
+- (id)init {
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MapService cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super initWithServiceName:@"map"];
+        if (self) {
+            instance = self;
+        }
+        return self;
+    }
+}
 
 + (id)sharedInstanceToRetain {
-    if (instance != nil) {
-        return instance;
-    }
-    @synchronized(self) {
-        if (instance == nil) {
-            instance = [[[self class] alloc] initWithServiceName:@"map"];
+    @synchronized (self) {
+        if (instance) {
+            return instance;
         }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
     }
-    return [instance autorelease];
 }
 
 - (id)thriftServiceClientInstance {
@@ -69,8 +83,14 @@ static MapService* instance = nil;
 
 - (void)dealloc
 {
-    instance = nil;
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
+
 
 @end

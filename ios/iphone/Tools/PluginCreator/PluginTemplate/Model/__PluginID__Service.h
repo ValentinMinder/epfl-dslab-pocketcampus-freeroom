@@ -19,6 +19,6 @@
 @protocol __PluginID__ServiceDelegate <ServiceDelegate>
 
 @optional
-//TODO: prototy 2 callbacks methods (success and failure) for each service method defined above  
+//TODO: prototype 2 callbacks methods (success and failure) for each service method defined above  
 
 @end

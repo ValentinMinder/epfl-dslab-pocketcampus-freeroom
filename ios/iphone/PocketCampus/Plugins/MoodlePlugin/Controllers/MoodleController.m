@@ -6,21 +6,42 @@
 
 @implementation MoodleController
 
+static MoodleController* instance __weak = nil;
+
 static BOOL initObserversDone = NO;
 static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        [[self class] deleteSessionIfNecessary];
-        CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
-        coursesListViewController.title = [[self class] localizedName];
-        PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
-        navController.pluginIdentifier = [[self class] identifierName];
-        self.mainNavigationController = navController;
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"MoodleController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            [[self class] deleteSessionIfNecessary];
+            CoursesListViewController* coursesListViewController = [[CoursesListViewController alloc] init];
+            coursesListViewController.title = [[self class] localizedName];
+            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:coursesListViewController];
+            navController.pluginIdentifier = [[self class] identifierName];
+            self.mainNavigationController = navController;
+            instance = self;
+        }
+        return self;
     }
-    return self;
+}
+
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 + (void)deleteSessionIfNecessary {
@@ -66,7 +87,13 @@ static NSString* kDeleteSessionAtInitKey = @"DeleteSessionAtInit";
 - (void)dealloc
 {
     [[self class] deleteSessionIfNecessary];
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [super dealloc];
+#endif
 }
 
 @end

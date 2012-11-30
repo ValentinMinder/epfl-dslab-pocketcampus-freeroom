@@ -38,15 +38,35 @@
 
 #pragma mark - AuthenticationController implementation
 
+static AuthenticationController* instance __weak = nil;
+
 @implementation AuthenticationController
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        gasparViewController = nil;
+    @synchronized(self) {
+        if (instance) {
+            @throw [NSException exceptionWithName:@"Double instantiation attempt" reason:@"AuthenticationController cannot be instancied more than once at a time, use sharedInstance instead" userInfo:nil];
+        }
+        self = [super init];
+        if (self) {
+            instance = self;
+        }
+        return self;
     }
-    return self;
+}
+
++ (id)sharedInstance {
+    @synchronized (self) {
+        if (instance) {
+            return instance;
+        }
+#if __has_feature(objc_arc)
+        return [[[self class] alloc] init];
+#else
+        return [[[[self class] alloc] init] autorelease];
+#endif
+    }
 }
 
 - (void)authToken:(NSString*)token presentationViewController:(UIViewController*)presentationViewController delegate:(id<AuthenticationCallbackDelegate>)delegate; {
@@ -93,9 +113,15 @@
 
 - (void)dealloc
 {
+    @synchronized(self) {
+        instance = nil;
+    }
+#if __has_feature(objc_arc)
+#else
     [credentialsAlertViewController release];
     [gasparViewController release];
     [super dealloc];
+#endif
 }
 
 @end
