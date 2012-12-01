@@ -16,7 +16,7 @@ chdir(dirname(__FILE__));
 
 // ARGUMENTS: SET THE PLUGIN NAME HERE (set to "sdk" to compile common thrift definition files)
 
-$plugin_name = "pushnotif";
+$plugin_name = "PushNotif";
 
 // LOGIC: DONT TOUCH THE CODE BELOW
 
@@ -26,7 +26,8 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
 	$thrift_bin = "binaries/thrift-mac-0.7.0";
 }
-$plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/" . ucfirst($plugin_name) . "Plugin/Model/ThriftTypes+Services";
+$plugin_ios_dir = "../../ios/iphone/PocketCampus/Plugins/{$plugin_name}Plugin/Model/ThriftTypes+Services";
+$plugin_name = strtolower($plugin_name);
 $string_plugin = "plugin";
 if($plugin_name == "sdk") {
 	$string_plugin = "platform";
@@ -36,7 +37,7 @@ $plugin_shared_dir = "../../$string_plugin/$plugin_name/$string_plugin.$plugin_n
 
 foreach(glob("$plugin_shared_dir/def/*.thrift") as $def_file) {
 	echo "Compiling $def_file\n";
-	//echo "$thrift_bin -v --gen java:hashcode -out $plugin_shared_dir/src $def_file\n";
+	// TODO read package name from thrift file and clear corresponding directory
 	system("$thrift_bin --gen java:hashcode -out $plugin_shared_dir/src $def_file");
 	system("$thrift_bin --gen cocoa -out $plugin_ios_dir $def_file");
 }
