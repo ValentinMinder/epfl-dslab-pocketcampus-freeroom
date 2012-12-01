@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.pocketcampus"
+    package="org.pocketcampus.plugin.events"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -15,16 +15,16 @@
         <activity
             android:icon="@drawable/events_icon"
             android:label="@string/events_plugin_title"
-            android:name=".plugin.events.android.EventsMainView" >
+            android:name="org.pocketcampus.plugin.events.android.EventsMainView" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 
             </intent-filter>
         </activity>
-        <activity android:name=".plugin.events.android.EventsPreferences" >
+        <activity android:name="org.pocketcampus.plugin.events.android.EventsPreferences" >
         </activity>
-        <activity android:name=".plugin.events.android.EventsItemView" >
+        <activity android:name="org.pocketcampus.plugin.events.android.EventsItemView" >
         </activity>
 
         <service
